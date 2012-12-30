@@ -18,6 +18,10 @@
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+
+
+namespace amorphous
+{
 using namespace MeshModel;
 
 //#include "3DMath/PolygonMesh.hpp"
@@ -197,6 +201,9 @@ void AmbientOcclusionLightmapBuilder<T>::ScaleIntensityAndAddAmbientLight( vecto
 			}
 	}
 }*/
+
+} // amorphous
+
 
 
 #endif  /*  __AMBIENTOCCLUSIONLIGHTMAPBUILDER_H__  */

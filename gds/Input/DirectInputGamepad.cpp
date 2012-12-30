@@ -12,6 +12,10 @@
 
 #include <math.h>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -840,3 +844,6 @@ void CDirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
 		buffer.push_back( line );
 	}
 }
+
+
+} // namespace amorphous

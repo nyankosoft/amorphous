@@ -7,14 +7,14 @@
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/IndexedPolygon.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
-
 #include "Graphics/Rect.hpp"
 #include "Graphics/RectTree.hpp"
-using namespace Graphics;
-
 #include "fwd.hpp"
 #include "Lightmap.hpp"
+
+
+namespace amorphous
+{
 
 
 //==========================================================================================
@@ -118,6 +118,9 @@ public:
 	/// \param [in] filepath
 	bool SaveTextureImageToFile( const std::string& filepath );
 };
+
+} // amorphous
+
 
 
 #endif  /*  __MAPCOMPILER_LIGHTMAPTEXTURE_H__  */

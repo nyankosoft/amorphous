@@ -8,10 +8,10 @@
 #include "Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -36,9 +36,9 @@ inline IArchive& operator & ( IArchive& ar, SFloatRGBAColor& color )
 }
 
 
-}	  /*  Serialization  */
+} // namespace serialization
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __KGL_COLOR_SERIALIZATION_H__  */

@@ -11,6 +11,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 #include <algorithm>
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -513,3 +517,5 @@ void CGM_DialogManager::OnFocusedControlChanged( CGM_Control* pFocusedControl, C
 									m_CaptionParam.FontColor.GetARGB32() );
 			}
 		}*/
+
+} // namespace amorphous

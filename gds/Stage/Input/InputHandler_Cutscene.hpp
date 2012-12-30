@@ -4,6 +4,10 @@
 #include "Input/InputHandler.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCopyEntity;
 class CBE_CameraController;
 
@@ -31,6 +35,9 @@ public:
 //	void UpdateKeyBind();
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __INPUTHANDLER_CUTSCENE_H__  */

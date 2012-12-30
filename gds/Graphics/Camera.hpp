@@ -10,6 +10,10 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
+
 class CCamera
 {
 	/// position and direction of this camera
@@ -289,6 +293,9 @@ inline bool CCamera::ViewFrustumIntersectsWith( const AABB3& raabb ) const
 	}
 	return true;
 }
+
+
+} // namespace amorphous
 
 
 

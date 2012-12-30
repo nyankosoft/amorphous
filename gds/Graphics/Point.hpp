@@ -5,7 +5,7 @@
 #include "../3DMath/Vector2_Gen.hpp"
 
 
-namespace Graphics
+namespace amorphous
 {
 
 
@@ -44,7 +44,7 @@ inline SPoint SPoint::operator *=( float factor )
 }
 */
 
-}  /*  Graphics  */
+} // namespace amorphous
 
 
 #endif  /*  __GRAPHICS_POINT_H__  */

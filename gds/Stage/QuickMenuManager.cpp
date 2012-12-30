@@ -9,6 +9,10 @@
 
 #include "Item/WeaponSystem.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 
 
@@ -296,3 +300,6 @@ void CQuickMenuManager::Update( float dt )
 {
 	m_TimeSinceMenuOpened += dt;
 }
+
+
+} // namespace amorphous

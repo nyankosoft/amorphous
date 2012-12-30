@@ -4,6 +4,10 @@
 #include "BE_ParticleSet.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_ExplosionSmoke : public CBE_ParticleSet
 {
 private:
@@ -34,5 +38,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_EXPLOSIONSMOKE_H__  */

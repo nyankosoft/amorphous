@@ -10,6 +10,10 @@
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Vec3_StringAux.hpp"
+
+
+namespace amorphous
+{
 //#include "Support/msgbox.hpp"
 
 using namespace std;
@@ -555,3 +559,6 @@ void CBE_HomingMissile::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_SmokeTrail;
 	ar & m_FlameTrail;
 }
+
+
+} // namespace amorphous

@@ -7,6 +7,10 @@
 #include "gds/Graphics/MeshModel/CompositeMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 //==========================================================================
 // CCompositeMeshExporter_LW
 //==========================================================================
@@ -29,6 +33,9 @@ public:
 
 	bool SaveToFile( const char *pcFilename );
 };
+
+} // amorphous
+
 
 
 #endif		/*  __COMPOSITEMESHEXPORTER_LW_H__  */

@@ -5,6 +5,10 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -143,3 +147,6 @@ PyMethodDef g_PyModuleTextMessageMethod[] =
 //	{ "EndPreloadText",            EndPreloadText,            METH_VARARGS,  },
 	{NULL, NULL}
 };
+
+
+} // namespace amorphous

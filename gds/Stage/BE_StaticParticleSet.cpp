@@ -11,6 +11,10 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace boost;
 
@@ -406,3 +410,6 @@ void CBE_StaticParticleSet::CommitStaticParticles()
 //			i, to_string(vert.vPosition).c_str(), vert.offset.x, vert.offset.y, vert.color );
 	}*/
 }
+
+
+} // namespace amorphous

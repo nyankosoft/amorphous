@@ -6,6 +6,10 @@
 #include "3DMath/Matrix34.hpp"
 
 
+namespace amorphous
+{
+
+
 class CJL_Box
 {
 
@@ -92,6 +96,9 @@ inline void CJL_Box::GetCornerPoints( Vector3 pvDestEdgePt[8] ) const
 	pvDestEdgePt[FLU] = vPos - side.x * vRight + side.y * vUp + side.z * vFwd;
 
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_BOX__  */

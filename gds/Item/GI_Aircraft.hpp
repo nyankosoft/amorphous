@@ -18,6 +18,10 @@
 #include "gds/Input/ForceFeedback/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 //class CMeshBoneController_AircraftBase;
 
 /*
@@ -245,6 +249,9 @@ public:
 	friend class CItemDatabaseBuilder;
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GAMEITEM_AIRCRAFT_H__  */

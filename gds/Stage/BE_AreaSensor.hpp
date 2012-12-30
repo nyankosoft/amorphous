@@ -4,6 +4,10 @@
 #include "BaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_AreaSensor : public CBaseEntity
 {
 private:
@@ -27,5 +31,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_AREASENSOR_H__  */

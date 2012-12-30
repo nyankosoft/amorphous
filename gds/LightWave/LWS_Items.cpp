@@ -3,6 +3,10 @@
 #include "gds/Utilities/TextFileScannerExtensions.hpp"
 
 
+namespace amorphous
+{
+
+
 #define MAX_LINE_LENGTH	1024
 
 
@@ -725,3 +729,6 @@ CLWS_Fog::CLWS_Fog()
 	afColor[1] = 0;	// green
 	afColor[2] = 0;	// blue
 }
+
+
+} // amorphous

@@ -6,6 +6,10 @@
 #include "gds/Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 /*
  =======================================
  Using scripted camera for cutscene
@@ -47,6 +51,9 @@ extern PyObject* SetPose( PyObject* self, PyObject* args );
 }  /* py */
 
 }  /* gsf */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PYMODULE_CAMERA_H__  */

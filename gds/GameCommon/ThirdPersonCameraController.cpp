@@ -2,6 +2,10 @@
 #include "../3DMath/3DGameMath.hpp"
 #include "../Stage.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -84,3 +88,6 @@ void CThirdPersonCameraController::SetCameraPose( const Matrix34& pose )
 	m_CameraPosition.target    = m_CameraPosition.current    = pose.vPosition;
 	m_CameraOrientation.target = m_CameraOrientation.current = Quaternion( pose.matOrient );
 }
+
+
+} // namespace amorphous

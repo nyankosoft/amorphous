@@ -7,9 +7,11 @@
 #include "../Support/SafeDelete.hpp"
 #include "../Support/stream_buffer.hpp"
 #include "../Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
 
-using namespace MeshModel;
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CBitmapImage;
@@ -294,6 +296,9 @@ public:
 
 	bool LoadToGraphicsMemoryByRenderThread();
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __GraphicsResourceLoaders_H__ */

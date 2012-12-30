@@ -10,6 +10,10 @@
 #include "gds/Support/CameraController.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  Base class for graphics application
  - This class is for state-less application that uses a window and graphics.
@@ -78,6 +82,9 @@ public:
 
 	friend class CInputDataDelegate<CGraphicsApplicationBase>;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GraphicsApplicationBase_HPP__  */

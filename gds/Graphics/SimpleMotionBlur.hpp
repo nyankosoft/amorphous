@@ -6,6 +6,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
 
  CSimpleMotionBlur blur;
@@ -77,6 +81,9 @@ public:
 
 //	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SimpleMotionBlur_HPP__  */

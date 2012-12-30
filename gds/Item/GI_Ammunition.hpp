@@ -6,6 +6,10 @@
 #include "../Stage/Serialization_BaseEntityHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 //======================================================================================
 // CGI_Ammunition
 //======================================================================================
@@ -87,6 +91,9 @@ public:
 	friend class CItemDatabaseBuilder;
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GAMEITEM_AMMUNITION_H__  */

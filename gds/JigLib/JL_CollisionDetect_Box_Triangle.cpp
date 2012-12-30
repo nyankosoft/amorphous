@@ -2,6 +2,10 @@
 #include "JL_Shape_Box.hpp"
 #include "JL_CollisionFunctor.hpp"
 #include "3DMath/BSPTreeForBox.hpp"
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -347,3 +351,6 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 #endif
 
 }
+
+
+} // namespace amorphous

@@ -8,6 +8,10 @@
 #include "gds/Graphics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -94,6 +98,9 @@ void CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh, msy
 boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh );
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __SkeletalMeshTransform_HPP__ */

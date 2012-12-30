@@ -6,6 +6,10 @@
 #include "Support/FixedVector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_StaticParticleSet : public CBE_ParticleSet
 {
 private:
@@ -56,6 +60,9 @@ public:
 
 	void CommitStaticParticles();
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_STATICPARTICLESET_H__  */

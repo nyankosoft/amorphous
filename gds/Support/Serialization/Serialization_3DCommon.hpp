@@ -7,10 +7,10 @@
 #include "Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -22,9 +22,9 @@ inline IArchive& operator & ( IArchive& ar, TEXCOORD2& tex )
 }
 
 
-}	  /*  Serialization  */
+} // namespace serialization
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __KGL_3DCOMMON_SERIALIZATION_H__  */

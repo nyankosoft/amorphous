@@ -6,6 +6,10 @@
 #include "App/GameWindowManager_Win32.hpp"
 
 
+namespace amorphous
+{
+
+
 #define DIKEYBOARD_BUFFER_SIZE 32  // arbitrary number of buffer elements
 
 
@@ -535,3 +539,6 @@ void CDIKeyboard::Release()
     // Release any DirectInput objects.
     SAFE_RELEASE( m_pKeyboard );
 }
+
+
+} // namespace amorphous

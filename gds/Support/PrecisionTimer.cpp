@@ -1,6 +1,10 @@
 #include "PrecisionTimer.hpp"
 
 
+namespace amorphous
+{
+
+
 //---------------------- default constructor ------------------------------
 //
 //-------------------------------------------------------------------------
@@ -75,3 +79,6 @@ void PrecisionTimer::Start()
   return;
 }
 
+
+
+} // amorphous

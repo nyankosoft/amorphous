@@ -1,6 +1,10 @@
 #include "2DFrameRect.hpp"
 
 
+namespace amorphous
+{
+
+
 /*
 void C2DFrameRect::SetTextureUV( const D3DXVECTOR2& rvMin, const D3DXVECTOR2& rvMax)
 {
@@ -32,3 +36,5 @@ void C2DFrameRect::ScalePosition( float fScale )
 	for(int i=0; i<10; i++)
 		m_avRectVertex[i].m_vPosition *= fScale;
 }
+
+} // namespace amorphous

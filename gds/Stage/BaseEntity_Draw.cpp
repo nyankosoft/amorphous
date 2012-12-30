@@ -21,6 +21,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::pair;
@@ -919,3 +923,6 @@ void CBaseEntity::CreateMeshGenerator( CTextFileScanner& scanner )
 		m_MeshProperty.m_MeshDesc.pMeshGenerator = pBoxGenerator;
 	}
 }
+
+
+} // namespace amorphous

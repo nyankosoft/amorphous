@@ -9,6 +9,10 @@
 #include "../ConvexMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -37,6 +41,9 @@ public:
 
 
 } // namespace physics
+
+} // amorphous
+
 
 
 #endif  /*  __NxPhysConvexMesh_H__  */

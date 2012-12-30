@@ -7,6 +7,10 @@
 
 #include "BaseEntityHandle.hpp"
 
+
+namespace amorphous
+{
+
 class CCopyEntity;
 class CGI_Aircraft;
 class CStage;
@@ -40,6 +44,9 @@ public:
 					       CGI_Aircraft* pAircraft );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __BEC_AircraftNozzleFlames_H__ */

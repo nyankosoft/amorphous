@@ -7,6 +7,10 @@
 #include "SerializableStream.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  - Creates an image archive from an image file
    - Uses an FreeImage library to retrieve the width and height of the image
@@ -130,6 +134,9 @@ inline void CImageArchive::Serialize( IArchive& ar, const unsigned int version )
 		ar & vecData;
 	}*/
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __ImageArchive_H__  */

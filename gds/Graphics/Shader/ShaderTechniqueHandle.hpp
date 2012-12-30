@@ -5,6 +5,10 @@
 #include <string.h>
 
 
+namespace amorphous
+{
+
+
 /**
   - Don't use a shader technique handle for different shader managers.
     even if the shaders have techniques with the same name.
@@ -118,6 +122,9 @@ inline const CShaderTechniqueHandle& CShaderTechniqueHandle::operator=( const CS
 
 	return *this;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ShaderTechniqueHandle_H__  */

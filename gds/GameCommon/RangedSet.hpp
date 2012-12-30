@@ -4,7 +4,11 @@
 
 #include "gds/Support/MTRand.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 template<class T>
@@ -45,6 +49,9 @@ inline IArchive& operator & ( IArchive& ar, RangedSet<T>& range )
 	return ar & range.min & range.max;
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __RangedSet_H__ */

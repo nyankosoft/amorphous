@@ -5,6 +5,10 @@
 #include "GM_Button.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGM_DialogCloseButtonDesc;
 
 
@@ -40,6 +44,9 @@ public:
 
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GM_DialogCloseButton_H__  */

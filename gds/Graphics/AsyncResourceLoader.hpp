@@ -9,7 +9,10 @@
 #include "GraphicsResourceManager.hpp"
 
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CResourceLoadRequest
@@ -169,6 +172,9 @@ inline CAsyncResourceLoader& AsyncResourceLoader()
 {
 	return (*CAsyncResourceLoader::Get());
 }
+
+} // namespace amorphous
+
 
 
 #endif  /* __AsyncResourceLoader_H__ */

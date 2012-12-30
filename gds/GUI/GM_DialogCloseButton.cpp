@@ -6,6 +6,10 @@
 #include "GM_SoundPlayer.hpp"
 
 
+namespace amorphous
+{
+
+
 CGM_DialogCloseButton::CGM_DialogCloseButton( CGM_Dialog *pDialog, CGM_DialogCloseButtonDesc *pDesc )
 : CGM_Button( pDialog, pDesc )
 {
@@ -36,3 +40,6 @@ void CGM_DialogCloseButton::SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlob
 {
 	m_pSoundPlayer = pGlobalSoundPlayer->GetDialogCloseButtonSoundPlayer();
 }
+
+
+} // namespace amorphous

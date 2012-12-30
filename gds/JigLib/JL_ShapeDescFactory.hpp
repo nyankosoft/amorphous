@@ -4,7 +4,11 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 //===========================================================================
@@ -16,6 +20,9 @@ class CJL_ShapeDescFactory : public IArchiveObjectFactory
 public:
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __CJL_ShapeDescFACTORY_H__   */

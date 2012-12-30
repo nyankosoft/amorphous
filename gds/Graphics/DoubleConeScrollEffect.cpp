@@ -8,6 +8,10 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace boost;
 
@@ -315,3 +319,6 @@ void CDoubleConeScrollEffect::Render()
 
 	GraphicsDevice().SetTextureCoordTrasnform( 0, Matrix44Identity() );
 }
+
+
+} // namespace amorphous

@@ -4,9 +4,13 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include "gds/Utilities/TextFileScannerExtensions.hpp"
+
+
+namespace amorphous
+{
 
 /*
 class AircraftRecord : public IArchiveObjectBase
@@ -131,6 +135,9 @@ inline bool NozzleFlameParams::LoadFromFile( CTextFileScanner& scanner )
 
 	return false;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __NozzleFlameParams_H__  */

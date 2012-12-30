@@ -5,6 +5,10 @@
 #include "JL_CollisionFunctor.hpp"
 #include "Geometry/distance.hpp"
 
+
+namespace amorphous
+{
+
 using namespace JigLib;
 
 
@@ -12,3 +16,6 @@ void JL_CollisionDetect_Sphere_TriangleMesh( CJL_Shape_Sphere& rSphere, CTriangl
 											          CJL_CollisionFunctor& rColFunctor)
 {
 }
+
+
+} // namespace amorphous

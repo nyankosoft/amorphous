@@ -6,7 +6,14 @@
 #include "../Support/BuiltinImage.hpp"
 
 
+namespace amorphous
+{
+
+
 const CBuiltinImage& GetDefaultBuiltinSkyTexture();
+
+
+} // namespace amorphous
 
 
 

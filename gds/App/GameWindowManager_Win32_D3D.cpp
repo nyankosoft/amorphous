@@ -9,6 +9,10 @@
 #include "Support/StringAux.hpp"
 
 
+namespace amorphous
+{
+
+
 LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM ) = NULL;
 
 // definition of the singleton instance
@@ -173,3 +177,6 @@ void CGameWindowManager_Win32_D3D::ChangeScreenSize( int iNewScreenWidth,
 							     0 );
 */
 }
+
+
+} // namespace amorphous

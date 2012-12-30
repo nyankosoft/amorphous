@@ -12,6 +12,10 @@
 #include "NxPhysics.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -273,6 +277,9 @@ inline void CNxPhysActor::ClearBodyFlags( U32 flags_to_clear )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __NxPhysActor_H__  */

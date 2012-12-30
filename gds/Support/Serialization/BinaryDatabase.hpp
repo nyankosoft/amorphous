@@ -8,10 +8,10 @@
 #include "../Log/DefaultLog.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -416,12 +416,9 @@ public:
 	}
 };
 
+} // namespace serialization
 
-}	/*  Serialization  */
-
-
-}	/*  GameLib1  */
-
+} // namespace amorphous
 
 
 #endif		/*  __BinaryDatabase_HPP__  */

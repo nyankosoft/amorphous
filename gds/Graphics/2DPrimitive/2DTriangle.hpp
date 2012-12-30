@@ -6,6 +6,10 @@
 #include "2DPrimitiveRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class C2DTriangle : public C2DPrimitive
 {
 	CGeneral2DVertex m_avVertex[3];
@@ -254,6 +258,9 @@ inline void C2DTriangle::Rotate( const Matrix22& matOrient )
 		vert_pos.y = v.y;
 	}
 }
+
+
+} // namespace amorphous
 
 
 

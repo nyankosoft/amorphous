@@ -4,6 +4,10 @@
 #include "Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBSPTreeForBox
 {
 	float m_aDist[3];
@@ -45,6 +49,9 @@ inline void CBSPTreeForBox::SetSize( float width, float height, float depth )
 	m_aDist[1] = height / 2.0f;
 	m_aDist[2] = depth / 2.0f;
 }
+
+
+} // namespace amorphous
 
 
 

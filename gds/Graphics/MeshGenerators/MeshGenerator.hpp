@@ -4,7 +4,10 @@
 
 #include "../MeshModel/PrimitiveShapeMeshes.hpp"
 #include "../MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CMeshGenerator
@@ -74,6 +77,9 @@ public:
 
 	virtual Result::Name Generate() = 0;
 };
+
+
+} // namespace amorphous
 
 
 

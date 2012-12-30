@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 //========================================================================================
 // CGM_SubDialogButton
 //========================================================================================
@@ -217,3 +221,6 @@ void CGM_SubDialogButton::SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlobal
 {
 	m_pSoundPlayer = pGlobalSoundPlayer->GetSubDialogButtonSoundPlayer();
 }
+
+
+} // namespace amorphous

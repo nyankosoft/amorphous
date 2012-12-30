@@ -5,6 +5,10 @@
 #include "../Support/Log/DefaultLog.hpp"
 #include "../Support/ParamLoader.hpp"
 
+
+namespace amorphous
+{
+
 using namespace msynth;
 using namespace boost;
 
@@ -197,3 +201,6 @@ void CMotionPrimitive::SearchAndSetStartBlendNode( shared_ptr<CBlendNode>& pRoot
 		LOG_PRINT_WARNING( " The start bone '" + m_StartBoneName + "' was not found in the blend node tree." );
 	}
 }
+
+
+} // namespace amorphous

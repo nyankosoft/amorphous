@@ -10,6 +10,9 @@
 #include "misc.hpp"
 
 
+namespace amorphous
+{
+
 // global operators
 
 template<typename T>
@@ -262,3 +265,5 @@ inline T tVector3<T>::GetLengthSq() const
 {
 	return Vec3LengthSq(*this);
 }
+
+} // namespace amorphous

@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 CMeshBoneControllerFactory::CMeshBoneControllerFactory()
 {
 }
@@ -30,3 +34,6 @@ IArchiveObjectBase *CMeshBoneControllerFactory::CreateObject( const unsigned int
 			return NULL;
 	}
 }
+
+
+} // namespace amorphous

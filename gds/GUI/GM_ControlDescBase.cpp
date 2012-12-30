@@ -2,6 +2,10 @@
 #include "GM_ControlDescBase.hpp"
 
 
+namespace amorphous
+{
+
+
 void CGM_ControlDescBase::SetDefault()
 {
 	ID = -1;
@@ -75,3 +79,6 @@ void CGM_SliderDesc::SetDefault()
 	iMin = iMax = 0;
 	iInitialValue = 0; 
 }
+
+
+} // namespace amorphous

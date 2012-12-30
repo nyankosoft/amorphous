@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -272,3 +276,6 @@ void CBE_GeneralEntity::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_Explosion;
 	ar & m_Child;
 }
+
+
+} // namespace amorphous

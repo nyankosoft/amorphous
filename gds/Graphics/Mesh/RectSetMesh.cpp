@@ -2,6 +2,10 @@
 #include "Graphics/RectTriListIndex.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -246,3 +250,6 @@ void CRectSetMesh::SetRectColorARGB32( int rect_index, U32 color )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
+
+
+} // namespace amorphous

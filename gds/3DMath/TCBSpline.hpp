@@ -7,6 +7,10 @@
 #include "Quaternion.hpp"
 
 
+namespace amorphous
+{
+
+
 inline Vector2 TCBSplineMultiply( const Vector2& p1, const Vector2& p2, const Vector2& incoming_tangent, const Vector2& outgoing_tangent, const Vector4& hS )
 {
 	Vector2 dest;
@@ -85,6 +89,9 @@ inline T InterpolateWithTCBSpline( float fraction, const T& p0, const T& p1, con
 
 //	return P;
 }
+
+
+} // amorphous
 
 
 

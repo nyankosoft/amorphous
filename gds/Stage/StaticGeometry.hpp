@@ -16,6 +16,10 @@
 #include "Support/StringAux.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStaticGeometryDBKey
 {
 public:
@@ -214,6 +218,9 @@ public:
 	/// \param [in] dest scene
 	virtual physics::CActor *CreateCollisionGeometry( physics::CScene& physics_scene );
 };
+
+
+} // namespace amorphous
 
 
 

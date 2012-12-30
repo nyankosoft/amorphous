@@ -90,9 +90,14 @@ How to use MeshMender:
 #pragma warning( disable : 4100)
 
 #include "3DMath/Vector3.hpp"
+using amorphous::Vector3;
 #include <map>
 #include <set>
 #include <vector>
+
+
+//namespace amorphous
+//{
 
 
 class MeshMender
@@ -361,6 +366,9 @@ class MeshMender
 								std::vector< unsigned int >& mappingNewToOldVert);
 
 };
+
+
+//} // namespace amorphous
 
 
 

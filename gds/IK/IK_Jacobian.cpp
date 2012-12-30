@@ -4,6 +4,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 ///void Arrow(const dVector3& tail, const dVector3& head);
 
 //extern RestPositionOn;
@@ -627,3 +631,6 @@ void CIK_Jacobian::CalcDeltaThetasSDLSrev2()
 
 
 
+
+
+} // amorphous

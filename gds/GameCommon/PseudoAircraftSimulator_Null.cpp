@@ -1,6 +1,10 @@
 
 #include "PseudoAircraftSimulator.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -23,3 +27,6 @@ void CPseudoAircraftSimulator::SetAccel( float accel )
 void CPseudoAircraftSimulator::GetSatatus( vector<string>& rDestTextBuffer )
 {
 }
+
+
+} // amorphous

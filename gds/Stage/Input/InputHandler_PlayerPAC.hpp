@@ -4,6 +4,10 @@
 #include "InputHandler_PlayerBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CInputHandler_PlayerPAC : public CInputHandler_PlayerBase
 {
 
@@ -19,6 +23,9 @@ public:
 
 	static int ms_TaskOnPause;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __INPUTHANDLER_PLAYERPSEUDOAIRCRAFT_H__  */

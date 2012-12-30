@@ -14,6 +14,10 @@
 #include "JigLib/TriangleMesh.hpp"
 
 #include "Support/memory_helpers.hpp"
+
+
+namespace amorphous
+{
 //#include "PerformanceCheck.h"
 
 
@@ -1458,3 +1462,5 @@ void CBSPMap::RenderSkybox( const CCamera& rCamera )
 	}
 }
 */
+
+} // namespace amorphous

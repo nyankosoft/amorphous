@@ -5,6 +5,10 @@
 #include "EntityRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStandardEntityRenderer : public CEntityRenderer
 {
 	CEntityRenderManager *m_pEntityRenderManager;
@@ -179,6 +183,9 @@ public:
 //		pShaderMgr->SetWorldTransform( entity.GetWorldPose() );
 	}
 };
+
+
+} // namespace amorphous
 
 
 

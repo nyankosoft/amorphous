@@ -26,6 +26,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -1080,3 +1084,6 @@ void CGM_Dialog::UpdateGraphicsProperties()
 	CGM_ControlBase::UpdateGraphicsProperties();
 }
 
+
+
+} // namespace amorphous

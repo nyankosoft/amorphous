@@ -6,6 +6,10 @@
 #include "../../Support/FreeTypeAux.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  A font class that support the rendering of UTF-8 text
   - Created from TrueType font (*.ttf)
@@ -70,6 +74,9 @@ public:
 
 	friend class CFontTextureLoader;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __UTFFont_HPP__  */

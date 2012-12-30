@@ -10,6 +10,10 @@
 #include "Sound/SoundHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 // >>>==================================== template ====================================
 
 /*
@@ -191,6 +195,9 @@ public:
 	void SetSoundOnItemSelected( const std::string& resource_name )              { m_pListBoxSoundPlayer->SetSoundOnItemSelected( resource_name ); }
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_SoundPlayer_H__  */

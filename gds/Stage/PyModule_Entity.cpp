@@ -11,6 +11,10 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/fixed_string.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -418,3 +422,6 @@ PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
 	{ "SetMeshMaterialParamValue",SetMeshMaterialParamValue,       METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+} // namespace amorphous

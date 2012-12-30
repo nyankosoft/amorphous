@@ -7,6 +7,10 @@
 #include "Input/InputDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 class CForceFeedbackTargetDevice
 {
 public:
@@ -24,6 +28,9 @@ public:
 	m_Group(0)
 	{}
 };
+
+
+} // amorphous
 
 
 

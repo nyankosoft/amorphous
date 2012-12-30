@@ -5,6 +5,10 @@
 #include "MeshGenerators/MeshGenerators.hpp"
 #include "PrimitiveRenderer.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -292,3 +296,6 @@ void CPrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, c
 		GetPrimitiveRenderer().DrawLine( points[i*2], points[i*2+1], wireframe_color, wireframe_color );
 	}
 }
+
+
+} // namespace amorphous

@@ -2,6 +2,10 @@
 #include "Graphics/Font/FontBase.hpp"
 
 
+namespace amorphous
+{
+
+
 void HUD_TimerDisplay::Render( CFontBase *pFont, int sx, int sy )
 {
 	if( !m_bDisplay 
@@ -14,3 +18,6 @@ void HUD_TimerDisplay::Render( CFontBase *pFont, int sx, int sy )
 
 	pFont->DrawText( m_TextBuffer, sx, sy );
 }
+
+
+} // namespace amorphous

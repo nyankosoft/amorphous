@@ -10,6 +10,10 @@
 #ifdef _MSC_VER
 #include <direct.h>
 #include <assert.h>
+
+
+namespace amorphous
+{
 #define getcwd _getcwd
 #define chdir  _chdir
 #else /* _MSC_VER */
@@ -394,6 +398,9 @@ public:
 
 
 } // namespace lfs
+
+} // namespace amorphous
+
 
 
 #endif  /*  __LFS_HPP__  */

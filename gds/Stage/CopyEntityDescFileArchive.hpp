@@ -4,9 +4,13 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include "CopyEntityDesc.hpp"
+
+
+namespace amorphous
+{
 
 
 //===============================================================================================
@@ -49,6 +53,9 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 };
+
+
+} // namespace amorphous
 
 
 

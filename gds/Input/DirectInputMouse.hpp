@@ -8,6 +8,10 @@
 #include "../base.hpp"
 #include "MouseInputDevice.hpp"
 
+
+namespace amorphous
+{
+
 #pragma comment( lib, "dinput8.lib" )
 
 
@@ -80,6 +84,9 @@ inline void CDirectInputMouse::GetCurrentPosition( int& x, int& y ) const
 	x = m_iPosX;
 	y = m_iPosY;
 }
+
+
+} // namespace amorphous
 
 
 

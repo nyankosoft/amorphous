@@ -7,7 +7,10 @@
 #include "Support/MTRand.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObject.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CBillboardArrayMesh : public CD3DXMeshObject
@@ -67,6 +70,9 @@ inline float CBillboardArrayMeshGenerator::GetRandRadius()
 	float r = m_fParticleRadius;
 	return r * RangedRand( 0.9f, 1.1f );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /* __BillboardArrayMeshGenerator_H__ */

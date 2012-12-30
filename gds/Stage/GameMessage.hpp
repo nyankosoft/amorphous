@@ -5,6 +5,10 @@
 #include "CopyEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 enum eGameMessageEffect
 {
 	GM_INVALID = -1,
@@ -90,6 +94,9 @@ inline void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pTarget )
 
 	SendGameMessageTo( rGameMessage, target );
 }
+
+
+} // namespace amorphous
 
 
 

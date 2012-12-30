@@ -26,6 +26,10 @@
 #include <string>
 #include <gds/Support/Log/DefaultLog.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -1560,3 +1564,6 @@ void initExtensions(){
 #endif // GL_VERSION_2_0_PROTOTYPES
 	}
 }
+
+
+} // namespace amorphous

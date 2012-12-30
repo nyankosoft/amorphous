@@ -14,6 +14,10 @@
 #include "Support/BMPImageExporter.hpp"
 
 
+namespace amorphous
+{
+
+
 AmbientOcclusionLightmapBuilder::~AmbientOcclusionLightmapBuilder()
 {
 	Release();
@@ -274,3 +278,6 @@ void AmbientOcclusionLightmapBuilder::CalculateLightmapTexelIntensity( CLightmap
 	
 	m_NumProcessedLightmapTexels = num_processed_texels;
 }
+
+
+} // amorphous

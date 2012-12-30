@@ -1,6 +1,10 @@
 #ifndef  __ENTITYFILE_H__
 #define  __ENTITYFILE_H__
 
+
+namespace amorphous
+{
+
 struct SEntityFileHeader
 {
 	int iCopyEntityDescSize;
@@ -8,7 +12,7 @@ struct SEntityFileHeader
 	int iNumCopyEntities;
 };
 
-
+} // namespace amorphous
 
 
 #endif  /*  __ENTITYFILE_H__  */

@@ -5,10 +5,13 @@
 #include "../3DMath/Matrix34.hpp"
 #include "../Support/Serialization/Serialization.hpp"
 #include "../Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
-
 #include "fwd.hpp"
 #include "ShapeEnums.hpp"
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace physics
@@ -121,6 +124,9 @@ inline void ShapeDesc::RotateInertia( Matrix33 &matInertia )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysShapeDesc_H__  */

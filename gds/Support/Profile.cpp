@@ -19,6 +19,10 @@
 #include "SafeDelete.hpp"
 #include "Support/Timer.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -392,3 +396,5 @@ void GetProfileFromHistory( char* name, float* ave, float* min, float* max )
    }	
    *ave = *min = *max = 0.0f;
 }
+
+} // namespace amorphous

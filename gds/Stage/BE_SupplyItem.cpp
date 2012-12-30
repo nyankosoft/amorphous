@@ -11,6 +11,10 @@
 #include "Sound/SoundManager.hpp"
 #include "Sound/Serialization_SoundHandle.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -164,3 +168,6 @@ void CBE_SupplyItem::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fRotationSpeed;
 	ar & m_Sound;;
 }
+
+
+} // namespace amorphous

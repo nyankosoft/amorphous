@@ -6,6 +6,10 @@
 #include "3DMath/Plane.hpp"
 
 
+namespace amorphous
+{
+
+
 class CJL_LineSegment
 {
 public:
@@ -55,6 +59,9 @@ inline void CJL_LineSegment::SetDefault()
 
 	iMaterialIndex	= -1;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_LINESEGMENT_H__  */

@@ -3,6 +3,10 @@
 
 #include "Perlin.hpp"
 
+
+namespace amorphous
+{
+
 #define B SAMPLE_SIZE
 #define BM (SAMPLE_SIZE-1)
 
@@ -222,3 +226,6 @@ float Perlin::perlin_noise_2D(float vec[2])
 
 	return result;
 }
+
+
+} // namespace amorphous

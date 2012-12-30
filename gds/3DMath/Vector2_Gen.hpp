@@ -12,6 +12,10 @@
 #include "precision.h"
 
 
+namespace amorphous
+{
+
+
 template<class TScalar>
 class TVector2
 {
@@ -60,7 +64,9 @@ public:
 };
 
 
-#include "Vector2_Gen.inl"
+} // namespace amorphous
 
+
+#include "Vector2_Gen.inl"
 
 #endif		/*  __VECTOR2_GEN_H__  */

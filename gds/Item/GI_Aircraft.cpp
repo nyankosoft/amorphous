@@ -12,6 +12,10 @@
 #include "Stage/MeshBonesUpdateCallback.hpp"
 #include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -595,3 +599,6 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 
 }
 
+
+
+} // namespace amorphous

@@ -9,6 +9,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -753,3 +757,6 @@ void CGM_StdCaptionRenderer::OnMouseOverControlChanged( CGM_Control& control_und
 {
 	UpdateCaptionText( control_under_mouse );
 }
+
+
+} // namespace amorphous

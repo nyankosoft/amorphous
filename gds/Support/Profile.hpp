@@ -15,6 +15,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 class CProfileTimer
 {
 
@@ -81,6 +85,9 @@ public:
 #define PROFILE_FUNCTION_IF( enabled )          CScopeProfile scope_profile( __FUNCTION__, enabled )
 #define PROFILE_SCOPE( scope_name )             CScopeProfile scope_profile( scope_name, true )
 #define PROFILE_SCOPE_IF( scope_name, enabled ) CScopeProfile scope_profile( scope_name, enabled )
+
+} // namespace amorphous
+
 
 
 #endif /* __PROFILE_H__ */

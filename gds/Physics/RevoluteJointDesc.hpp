@@ -6,6 +6,10 @@
 #include "Enums.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -36,6 +40,9 @@ public:
 
 } // namespace physics
 
+
+
+} // amorphous
 
 
 

@@ -1,6 +1,13 @@
 #ifndef  __GM_INDEX_FWD_H__
 #define  __GM_INDEX_FWD_H__
 
+
+#include <boost/shared_ptr.hpp>
+
+
+namespace amorphous
+{
+
 class CGM_InputData;
 
 class CGM_ControlDescBase;
@@ -47,7 +54,6 @@ class CInputHandler_Dialog;
 typedef CInputHandler_Dialog CGM_DialogInputHandler;
 
 
-#include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<CGM_DialogManager> CGM_DialogManagerSharedPtr;
 typedef boost::shared_ptr<CGM_EventHandlerBase> CGM_DialogEventHandlerSharedPtr;
 typedef boost::shared_ptr<CGM_ButtonEventHandler> CGM_ButtonEventHandlerSharedPtr;
@@ -70,6 +76,8 @@ typedef boost::shared_ptr<CGM_ListBoxSoundPlayer> CGM_ListBoxSoundPlayerSharedPt
 
 // callback function pointer (C style)
 typedef void (*PCALLBACK_GM_GUIEVENT) ( CGM_Event& event );
+
+} // namespace amorphous
 
 
 #endif /* __GM_INDEX_FWD_H__ */

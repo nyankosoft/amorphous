@@ -6,6 +6,10 @@
 #include "gds/Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace gsf
 {
 
@@ -42,6 +46,9 @@ extern PyObject* CreateHSSpotlight(        PyObject* self, PyObject* args, PyObj
 }  /* py */
 
 }  /* gsf */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PyModule_Light_H__  */

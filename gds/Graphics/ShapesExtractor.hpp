@@ -8,6 +8,10 @@
 #include "../Graphics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CShapeContainerSet;
 class CShapeDetectionResults;
 
@@ -27,6 +31,9 @@ public:
 	/// \param output_filepath [in] pathname of output file.
 	Result::Name ExtractShapesAndSaveToFile( const boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __ShapesExtractor_HPP__ */

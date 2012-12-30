@@ -5,6 +5,10 @@
 #include "BuiltinFonts.hpp"
 #include "../../Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -94,3 +98,6 @@ CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type, const strin
 	LOG_PRINT_ERROR( " Not implemented." );
 	return NULL;
 }
+
+
+} // namespace amorphous

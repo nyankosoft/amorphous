@@ -5,6 +5,10 @@
 #include "StatusDisplayRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class CFont;
 
 
@@ -22,6 +26,9 @@ public:
 	void Render( CStatusDisplay* pStatusDisplay );
 
 };
+
+
+} // amorphous
 
 
 

@@ -5,6 +5,10 @@
 #include "MathMisc.hpp"
 
 
+namespace amorphous
+{
+
+
 class CTriangle
 {
 	Vector3 m_avVertex[3];
@@ -109,6 +113,9 @@ inline bool CTriangle::RayIntersect( const Vector3& vStart, Vector3& vGoal )
 
 	return true;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __TRIANGLE_H__  */

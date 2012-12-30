@@ -5,6 +5,10 @@
 #include "JL_PhysicsActorDesc.hpp"
 #include "GravityFunction.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 // limit the extra velocity during collision/penetration calculations
@@ -1637,3 +1641,6 @@ CJL_PhysicsActor *CJL_PhysicsManager::CreateStaticTriangleMesh( vector<Vector3>&
 	actor_desc.ActorFlag = JL_ACTOR_STATIC;
 	return CreateActor( actor_desc );
 }*/
+
+
+} // namespace amorphous

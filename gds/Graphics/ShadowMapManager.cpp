@@ -8,6 +8,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/ParamLoader.hpp"
 
+
+namespace amorphous
+{
+
 using std::map;
 using namespace boost;
 
@@ -689,3 +693,6 @@ void CShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
 {
 	m_pSceneRenderTarget->OutputImageFile( filename.c_str() );
 }
+
+
+} // namespace amorphous

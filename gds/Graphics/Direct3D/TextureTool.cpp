@@ -2,6 +2,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 bool CTextureTool::CreateTexture( DWORD *padwTexelData, int iWidth, int iHeight, LPDIRECT3DTEXTURE9 *ppTexture )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -29,3 +33,6 @@ bool CTextureTool::CreateTexture( DWORD *padwTexelData, int iWidth, int iHeight,
 
 	return true;
 }
+
+
+} // namespace amorphous

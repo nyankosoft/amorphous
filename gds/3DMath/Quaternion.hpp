@@ -13,6 +13,11 @@
 
 #include "Matrix33.hpp"
 
+
+namespace amorphous
+{
+
+
 class Quaternion
 {
 public:
@@ -142,9 +147,10 @@ public:
 inline Quaternion operator* ( Scalar fScalar, const Quaternion& q ) { return Quaternion( q ) * fScalar; }
 
 
+} // namespace amorphous
+
+
 #include "Quaternion.inl"
-
-
 
 #endif  /*  __3DMATH_QUATERNION_H__  */
 

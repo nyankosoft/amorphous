@@ -5,6 +5,10 @@
 #include <d3dx9.h>
 
 
+namespace amorphous
+{
+
+
 class CImageCapture
 {
 	int m_iImageWidth;
@@ -32,6 +36,9 @@ public:
 	void Release();
 
 };
+
+
+} // amorphous
 
 
 

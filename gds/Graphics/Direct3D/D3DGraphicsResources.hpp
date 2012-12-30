@@ -6,6 +6,10 @@
 #include "Graphics/GraphicsResources.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DTextureResource : public CTextureResource
 {
 	LPDIRECT3DTEXTURE9 m_pTexture;
@@ -162,7 +166,7 @@ public:
 
 	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
-	void CreateMeshAndLoadNonAsyncResources( MeshModel::C3DMeshModelArchive& archive );
+	void CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive );
 
 	friend class CGraphicsResourceManager;
 };
@@ -208,6 +212,9 @@ inline LPDIRECT3DTEXTURE9 CD3DTextureResource::GetTexture()
 	else
 		return NULL;
 }
+
+
+} // namespace amorphous
 
 
 

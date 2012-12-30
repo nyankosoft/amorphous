@@ -10,6 +10,10 @@
 #include "ClothDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -215,6 +219,9 @@ public:
 //================== inline implementations =======================
 
 //#include "Cloth.inl"
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PhysCloth_HPP__  */

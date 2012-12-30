@@ -2,6 +2,10 @@
 #include "../Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 PyObject *RegisterEmbeddedPythonModule( const char *module_name, const char *source )
 {
 	std::string filename = std::string("embedded:") + module_name;
@@ -29,3 +33,6 @@ PyObject *RegisterEmbeddedPythonModule( const CEmbeddedPythonModule& module )
 {
 	return RegisterEmbeddedPythonModule( module.GetModuleName(), module.GetSource() );
 }
+
+
+} // namespace amorphous

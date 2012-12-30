@@ -6,6 +6,10 @@
 #include "time.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  Performs timer operations.
  - Use GetGlobalTimer() or macro 'TIMER' to get the global instance.
@@ -65,6 +69,9 @@ protected:
 
 	struct timeval m_LastElapsedTime;
 };
+
+} // amorphous
+
 
 
 #endif  /* __Timer_posix_HPP__ */

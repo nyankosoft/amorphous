@@ -4,7 +4,11 @@
 
 #include "gds/Support/memory_helpers.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 class CGameItem;
 
@@ -63,6 +67,9 @@ public:
 
 	void SortItemsInAlphabeticalOrder();
 };
+
+
+} // namespace amorphous
 
 
 

@@ -4,6 +4,10 @@
 
 #include <vector>
 #include <string>
+
+
+namespace amorphous
+{
 //#include "Vector2.hpp"
 //#include "Vector3.hpp"
 
@@ -123,6 +127,9 @@ inline bool write_to_obj_file(
 
 
 } // wavefront_obj
+
+
+} // amorphous
 
 
 

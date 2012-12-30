@@ -16,7 +16,10 @@ valid combinations of geometry filters
 #include "../General3DVertex.hpp"
 #include "../IndexedPolygon.hpp"
 #include "3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 //class C3DModelLoadDesc
@@ -354,5 +357,8 @@ inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
 
 	return pMesh;
 }
+} // namespace amorphous
+
+
 
 #endif /* __General3DMesh_H__ */

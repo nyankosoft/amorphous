@@ -7,6 +7,10 @@
 #include "../Script/GameEventTypes.hpp"
 
 
+namespace amorphous
+{
+
+
 CBE_EventTrigger::CBE_EventTrigger()
 {
 	this->m_BoundingVolumeType = BVTYPE_AABB;
@@ -150,3 +154,6 @@ void CBE_EventTrigger::Serialize( IArchive& ar, const unsigned int version )
 //	ar & 
 //	ar & 
 }
+
+
+} // namespace amorphous

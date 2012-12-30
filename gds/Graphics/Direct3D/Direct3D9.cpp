@@ -9,6 +9,10 @@
 #include "Support/Macro.h"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -812,3 +816,6 @@ Result::Name CDirect3D9::SetScissorRect( const SRect& rect )
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
+
+
+} // namespace amorphous

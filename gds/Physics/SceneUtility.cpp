@@ -1,6 +1,10 @@
 #include "SceneUtility.hpp"
 #include "gds/Physics.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -87,3 +91,6 @@ CActor *CSceneUtility::CreateStaticPlaneActor( const Plane& plane, int material_
 
 	return m_pScene->CreateActor( actor_desc );
 }
+
+
+} // namespace amorphous

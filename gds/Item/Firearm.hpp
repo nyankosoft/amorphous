@@ -4,6 +4,10 @@
 #include "../GameCommon/Caliber.hpp"
 #include "GI_Weapon.hpp"
 
+
+namespace amorphous
+{
+
 class CWeaponSystem;
 struct SWeaponSlot;
 class CGI_Ammunition;
@@ -236,5 +240,8 @@ inline void CFirearm::ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWeap
 	}
 }
 */
+} // namespace amorphous
+
+
 
 #endif  __GameItem_Firearm_HPP__

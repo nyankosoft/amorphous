@@ -10,6 +10,10 @@
 #include "../GameCommon/CriticalDamping.hpp"
 
 
+namespace amorphous
+{
+
+
 //namespace ???
 //{
 
@@ -65,6 +69,9 @@ public:
 
 
 //} // namespace ???
+
+} // namespace amorphous
+
 
 
 #endif  /*  __DoubleConeScrollEffect_HPP__  */

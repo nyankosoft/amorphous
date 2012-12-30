@@ -14,6 +14,10 @@ http://www.boost.org/doc/libs/1_38_0/libs/python/doc/building.html#include-issue
 */
 #include <boost/python/detail/wrap_python.hpp>
 
+
+namespace amorphous
+{
+
 #else // GDS_USE_BOOST_PYTHON
 /*
 Use Python without boost::python
@@ -21,6 +25,9 @@ Use Python without boost::python
 #include <Python.h>
 
 #endif // GDS_USE_BOOST_PYTHON
+
+} // amorphous
+
 
 
 #endif /* __PythonHeaders_HPP__ */

@@ -6,6 +6,10 @@
 #include "TransformNode.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -160,6 +164,9 @@ inline void CKeyframe::Serialize( IArchive & ar, const unsigned int version )
 
 
 } // namespace msynth
+
+
+} // amorphous
 
 
 

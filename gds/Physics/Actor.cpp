@@ -3,6 +3,10 @@
 #include "3DMath/MathMisc.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace physics;
 
 
@@ -293,3 +297,6 @@ bool CActor::ClipTrace( const Vector3& vStartPos,	// [in]
 	else
 		return false;
 }*/
+
+
+} // namespace amorphous

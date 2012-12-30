@@ -10,6 +10,10 @@
 #include "OverlapTestAABB.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * node for entity tree
  * - the entities are linked to the entity node
@@ -81,6 +85,9 @@ public:
 	friend class CEntityRenderManager;
 	friend class CEntitySet;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __ENTITYNODE_H__  */

@@ -15,7 +15,11 @@
 #include "gds/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "gds/Support/TextFileScanner.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CBSPTree;
@@ -387,6 +391,9 @@ public:
 	};
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BaseEntity_HPP__  */

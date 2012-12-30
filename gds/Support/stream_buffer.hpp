@@ -9,6 +9,10 @@
 #include "lfs.hpp"
 
 
+namespace amorphous
+{
+
+
 class stream_buffer
 {
 protected:
@@ -124,6 +128,9 @@ inline bool stream_buffer::LoadTextFile( const std::string& filepath )
 
 	return true;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __stream_buffer_HPP__  */

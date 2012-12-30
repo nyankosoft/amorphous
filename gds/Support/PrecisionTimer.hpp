@@ -5,6 +5,10 @@
 #include <cassert>
 
 
+namespace amorphous
+{
+
+
 /**
  * Windows timer class.
  * nb. this only uses the high performance timer. There is no
@@ -141,6 +145,9 @@ inline double PrecisionTimer::CurrentTime()
 
 	return (m_CurrentTime - m_StartTime) * m_TimeScale;
 }
+
+} // amorphous
+
 
 
 #endif

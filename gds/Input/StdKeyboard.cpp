@@ -4,6 +4,10 @@
 #include <windows.h>
 
 
+namespace amorphous
+{
+
+
 CStdKeyboard::CStdKeyboard()
 {
 	InputDeviceHub().RegisterInputDeviceToGroup( this );
@@ -140,3 +144,6 @@ void CStdKeyboard::NotifyKeyUp( int iVK_Code )
 }
 
 
+
+
+} // namespace amorphous

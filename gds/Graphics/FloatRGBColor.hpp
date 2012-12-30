@@ -5,6 +5,10 @@
 #include "../base.hpp"
 
 
+namespace amorphous
+{
+
+
 struct SFloatRGBColor
 {
 	float red;
@@ -59,7 +63,11 @@ struct SFloatRGBColor
 };
 
 
+} // namespace amorphous
+
+
 #include "FloatRGBColor.inl"
+
 
 
 #endif  /*  __FLOATRGBCOLOR_H__  */

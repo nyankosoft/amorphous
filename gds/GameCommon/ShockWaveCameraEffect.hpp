@@ -6,6 +6,10 @@
 #include "3DMath/Matrix33.hpp"
 
 
+namespace amorphous
+{
+
+
 class CShockWaveCameraEffect
 {
 	Vector3 m_vForce;
@@ -54,6 +58,9 @@ public:
 
 	inline void SetCameraOrientation( const Matrix33& matOrient ) { m_CameraOrient = matOrient; }
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __SHOCKWAVECAMERAEFFECT_H__  */

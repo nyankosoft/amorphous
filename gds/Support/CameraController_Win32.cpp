@@ -2,6 +2,10 @@
 #include "Input/InputHandler.hpp"
 
 
+namespace amorphous
+{
+
+
 int ConvertGICodeToWin32VKCode( int general_input_code )
 {
 	static int s_Initialized = 0;
@@ -96,3 +100,6 @@ void CPlatformDependentCameraController::HandleMessage( UINT msg, WPARAM wParam,
 			break;
 	}
 }
+
+
+} // namespace amorphous

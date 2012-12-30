@@ -8,6 +8,10 @@
 
 #include "../base.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -64,3 +68,6 @@ void RegisterPythonModule_task()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

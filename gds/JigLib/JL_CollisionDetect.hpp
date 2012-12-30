@@ -3,6 +3,10 @@
 
 #include "Support/PreAllocDynamicLinkList.hpp"
 
+
+namespace amorphous
+{
+
 class CJL_PhysicsActor;
 class CJL_Shape_Box;
 class CJL_CollisionFunctor;
@@ -43,6 +47,9 @@ void JL_CollisionDetect_Capsule_TriangleMesh( CJL_Shape_Capsule& rCapsule, CTria
 											         CJL_CollisionFunctor& rColFunctor);
 
 //}
+
+} // namespace amorphous
+
 
 
 #endif /* __JL_COLLISIONDETECT_H__ */

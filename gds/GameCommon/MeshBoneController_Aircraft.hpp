@@ -7,6 +7,10 @@
 #include "gds/GameCommon/CriticalDamping.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * init steps for CMeshBoneController_Aircraft derived classes
  * 1. create an instance: pController = new CMeshBoneController_Flap()
@@ -498,6 +502,9 @@ public:
 
 	friend class CItemDatabaseBuilder;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __MeshBoneController_Aircraft_H__  */

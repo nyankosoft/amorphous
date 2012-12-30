@@ -4,6 +4,10 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 using namespace boost;
 
@@ -69,3 +73,6 @@ void CInputHandler_StageDebug::ProcessInput(SInputData& input)
 		break;
 	}
 }
+
+
+} // namespace amorphous

@@ -9,6 +9,10 @@
 #include "gds/Stage/fwd.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
 
+
+namespace amorphous
+{
+
 class CWeaponSystem;
 struct SWeaponSlot;
 
@@ -158,5 +162,8 @@ inline void CGI_Weapon::ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWe
 	}
 }
 */
+} // namespace amorphous
+
+
 
 #endif  __GAMEITEM_WEAPON_H__

@@ -10,6 +10,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -223,3 +227,6 @@ void CNxPhysicsEngine::ReleaseClothMesh( CTriangleMesh*& pClothMesh )
 {
 	SafeDelete( pClothMesh );
 }
+
+
+} // namespace amorphous

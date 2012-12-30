@@ -6,6 +6,10 @@
 #include "gds/Graphics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class HUD_TimerDisplay
 {
 	char m_TextBuffer[32];
@@ -42,5 +46,8 @@ inline void HUD_TimerDisplay::GetTimeMMSS( char *pDestBuffer )
 
 	sprintf( pDestBuffer, "%02d:%02d", min, sec );
 }
+} // namespace amorphous
+
+
 
 #endif		/*  __HUD_TimerDisplay_H__  */

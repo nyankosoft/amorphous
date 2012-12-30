@@ -8,6 +8,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 //namespace __framework_name__
 //{
 
@@ -133,6 +137,9 @@ const fixed_string<MaxLength> operator+( const fixed_string<LHSMaxLength>& lhs, 
 */
 
 //} // namespace __framework_name__
+
+
+} // amorphous
 
 
 

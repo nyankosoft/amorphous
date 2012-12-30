@@ -7,6 +7,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 // triangle mesh actor is created by providing vertices and indices for triangles
 // to trimesh desc
 
@@ -74,6 +78,9 @@ public:
 //		ar & *pvecsMaterialIndex;
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_SHAPEDESC_TRIANGLEMESH_H__  */

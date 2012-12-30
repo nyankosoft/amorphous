@@ -3,6 +3,10 @@
 #include "gds/Stage/BE_ScriptedCamera.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 using namespace physics;
 
@@ -86,3 +90,6 @@ void RegisterPythonModule_stage_util()
 
 
 } // stage_util
+
+
+} // namespace amorphous

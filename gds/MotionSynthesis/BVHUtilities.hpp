@@ -8,11 +8,18 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 void CopySkeletonFromBVH( const CBVHPlayer& src_bvh, msynth::CSkeleton& target );
 
 Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::CSkeleton& dest_skeleton );
 
 boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname );
+
+
+} // namespace amorphous
 
 
 

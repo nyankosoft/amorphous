@@ -17,6 +17,10 @@ using namespace fnop;
 #include <direct.h>
 
 
+namespace amorphous
+{
+
+
 void CMapCompileOption::LoadFromFile( const std::string& filename )
 {
 	CTextFileScanner scanner;
@@ -314,3 +318,5 @@ string CBSPMapCompiler::MakeFilenameForDebugFile( const string& debug_info )
 
 	return get_path(m_Filename) + string("\\DebugInfoFile\\") + get_nopath(filename);
 }
+
+} // amorphous

@@ -3,7 +3,11 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SerializableStream.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 using namespace std;
 using namespace boost;
@@ -236,3 +240,6 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 
 	return true;
 }
+
+
+} // namespace amorphous

@@ -1,13 +1,15 @@
 #include "TrueTypeTextureFont.hpp"
 #include "Graphics/Rect.hpp"
-using namespace Graphics;
-
 #include <string.h>
 #include "Support/lfs.hpp"
 #include "Support/FreeTypeAux.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
+
+
+namespace amorphous
+{
 
 using namespace std;
 using namespace boost;
@@ -397,3 +399,6 @@ bool CTrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
 
 	return (basic_info_added && texture_added);
 }
+
+
+} // namespace amorphous

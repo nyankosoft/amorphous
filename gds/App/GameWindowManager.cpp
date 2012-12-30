@@ -7,6 +7,10 @@
 #ifdef BUILD_WITH_DIRECT3D
 #include "GameWindowManager_Win32_D3D.hpp"
 #include "Graphics/Direct3D/D3DInitialization.hpp"
+
+
+namespace amorphous
+{
 #endif /* BUILD_WITH_DIRECT3D */
 
 using namespace std;
@@ -45,3 +49,6 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

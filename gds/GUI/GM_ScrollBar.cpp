@@ -5,6 +5,10 @@
 #include "GM_ControlRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 // Minimum scroll bar thumb size
 #define SCROLLBAR_MINTHUMBSIZE 8
 
@@ -430,3 +434,6 @@ void CGM_ScrollBar::Cap()
     if( m_nPosition + m_nPageSize > m_nEnd )
         m_nPosition = m_nEnd - m_nPageSize;
 }
+
+
+} // namespace amorphous

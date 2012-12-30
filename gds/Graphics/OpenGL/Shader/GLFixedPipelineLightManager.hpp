@@ -4,6 +4,10 @@
 #include "../../Shader/ShaderLightManager.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGLFixedPipelineLightManager : public CShaderLightManager
 {
 protected:
@@ -31,6 +35,9 @@ public:
 	virtual void CommitChanges() {}
 
 };
+
+
+} // namespace amorphous
 
 
 

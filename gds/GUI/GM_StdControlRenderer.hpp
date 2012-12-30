@@ -12,6 +12,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 class CGM_StdControlRenderer : public CGM_ControlRenderer
 {
 private:
@@ -385,6 +389,9 @@ public:
 
 	virtual void OnMouseOverControlChanged( CGM_Control& control_under_mouse );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_STDCONTROLRENDERER_H__  */

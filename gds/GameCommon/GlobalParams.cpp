@@ -2,6 +2,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <string>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -22,3 +26,6 @@ void CGlobalParams::LoadLogVerbosity( CParamLoader& loader )
 
 	g_Log.SetRefVal( verbosity );
 }
+
+
+} // namespace amorphous

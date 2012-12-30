@@ -5,6 +5,10 @@
 #include "3DMath/ConvexPolygon.hpp"
 
 
+namespace amorphous
+{
+
+
 CBSPTree_CollisionModel::CBSPTree_CollisionModel()
 {
 	m_iNumBSPNodes = 0;
@@ -29,3 +33,5 @@ void CBSPTree_CollisionModel::Release()
 	SafeDeleteArray( m_paCell_CollisionModel );
 	m_iNumCells = 0;
 }
+
+} // namespace amorphous

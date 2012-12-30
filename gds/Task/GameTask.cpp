@@ -12,6 +12,10 @@
 #include "Support/DebugOutput.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 //draft
@@ -381,7 +385,7 @@ void CGameTask::SetAnimatedGraphicsManagerForScript()
 	if( !ms_pAnimatedGraphicsManager )
 		return;
 
-	::SetAnimatedGraphicsManagerForScript( GetAnimatedGraphicsManager() );
+	amorphous::SetAnimatedGraphicsManagerForScript( GetAnimatedGraphicsManager() );
 }
 
 
@@ -390,7 +394,7 @@ void CGameTask::RemoveAnimatedGraphicsManagerForScript()
 	if( !ms_pAnimatedGraphicsManager )
 		return;
 
-	::RemoveAnimatedGraphicsManagerForScript();
+	amorphous::RemoveAnimatedGraphicsManagerForScript();
 }
 
 
@@ -412,3 +416,6 @@ int CGameTask::GetTaskIDFromTaskName( const std::string& task_name )
 		return CGameTask::ID_INVALID;
 	}
 }
+
+
+} // namespace amorphous

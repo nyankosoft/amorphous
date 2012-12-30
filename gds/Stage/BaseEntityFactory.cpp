@@ -43,6 +43,10 @@
 #include "BE_IndividualEntity.hpp"          // 20070909
 #include "BE_StaticLiquid.hpp"              // 20110418
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -160,3 +164,6 @@ IArchiveObjectBase *CUserBaseEntityFactory::CreateUserDefinedBaseEnitity( const 
 
 
 #endif
+
+
+} // namespace amorphous

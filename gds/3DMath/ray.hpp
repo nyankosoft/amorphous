@@ -3,6 +3,10 @@
 
 #include "Vector3.hpp"
 
+
+namespace amorphous
+{
+
 struct CRayHit
 {
 public:
@@ -75,6 +79,9 @@ public:
 	vGoal(Vector3(0,0,0))
 	{}
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __3DMATH_RAY_H__  */

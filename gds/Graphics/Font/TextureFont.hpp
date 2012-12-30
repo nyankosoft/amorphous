@@ -11,7 +11,11 @@
 #include "../../Support/Serialization/Serialization.hpp"
 #include "../../Support/Serialization/Serialization_3DCommon.hpp"
 #include "../../Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 extern void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend );
@@ -149,6 +153,9 @@ public:
 
 	static void ProfileTextureFont( bool enable ) { ms_ProfileTextureFont = enable; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __TEXTUREFONT_H__  */

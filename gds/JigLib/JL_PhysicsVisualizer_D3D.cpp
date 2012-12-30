@@ -5,6 +5,10 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/PrimitiveRenderer.hpp"
+
+
+namespace amorphous
+{
 //#include "Graphics/UnitCube.hpp"
 
 using namespace std;
@@ -220,3 +224,6 @@ void CJL_PhysicsVisualizer_D3D::LoadGraphicsResources( const CGraphicsParameters
 //	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );
 //	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
 }
+
+
+} // namespace amorphous

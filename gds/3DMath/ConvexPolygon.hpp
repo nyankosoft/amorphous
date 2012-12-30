@@ -9,6 +9,10 @@
 #include <stdio.h>
 
 
+namespace amorphous
+{
+
+
 #define EDGE_COLLISION_FLAG_OFFSET	16
 
 class CConvexPolygon
@@ -62,6 +66,9 @@ public:
   void SetEdgeCollisionFlag(int iIndex, bool bCheckCollision);
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __CONVEXPOLYGON_H__  */

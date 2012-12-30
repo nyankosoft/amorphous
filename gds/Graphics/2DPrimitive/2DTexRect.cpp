@@ -1,6 +1,10 @@
 #include "2DTexRect.hpp"
 
 
+namespace amorphous
+{
+
+
 void C2DTexRect::SetDefault()
 {
 	ZeroMemory(m_avRectVertex, sizeof(TLVERTEX2) * 4);
@@ -149,3 +153,6 @@ void C2DTexRect::ScalePosition( float fScale )
 		m_avRectVertex[i].vPosition *= fScale;
 
 }
+
+
+} // namespace amorphous

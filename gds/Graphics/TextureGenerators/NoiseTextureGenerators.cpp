@@ -1,6 +1,10 @@
 #include "NoiseTextureGenerators.hpp"
 
 
+namespace amorphous
+{
+
+
 void CUniformSingleColorNoiseTextureGenerator::FillTexture( CLockedTexture& texture )
 {
 	float density = m_fDensity;
@@ -53,3 +57,6 @@ void CStripeTextureGenerator::FillTexture( CLockedTexture& texture )
 		}
 	}
 }
+
+
+} // namespace amorphous

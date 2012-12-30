@@ -5,6 +5,10 @@
 #include "Support/Profile.hpp"
 
 
+namespace amorphous
+{
+
+
 GLenum ToGLPrimitiveType( PrimitiveType::Name pt )
 {
 	switch( pt )
@@ -122,3 +126,6 @@ void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vert
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( (GLfloat *)&matProj );
 }
+
+
+} // namespace amorphous

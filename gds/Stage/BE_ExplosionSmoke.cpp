@@ -5,6 +5,10 @@
 #include "Support/VectorRand.hpp"
 
 
+namespace amorphous
+{
+
+
 CBE_ExplosionSmoke::CBE_ExplosionSmoke()
 {
 	m_fRandPositionMin = m_fRandPositionMax = 0;
@@ -101,3 +105,6 @@ void CBE_ExplosionSmoke::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fRandPositionMin & m_fRandPositionMax;
 	ar & m_fRandVelocityMin & m_fRandVelocityMax;
 }
+
+
+} // namespace amorphous

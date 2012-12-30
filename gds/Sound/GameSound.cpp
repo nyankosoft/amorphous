@@ -7,6 +7,10 @@
 #include "Support/Macro.h"
 
 
+namespace amorphous
+{
+
+
 //-----------------------------------------------------------------------------
 // Name: CGameSound::CGameSound()
 // Desc: Constructs the class
@@ -480,3 +484,5 @@ BOOL CGameSound::IsSoundPlaying()
 
     return bIsPlaying;
 }
+
+} // amorphous

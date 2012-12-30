@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -69,6 +73,9 @@ inline CNxPhysOutputStream &NxPhysOutputStream()
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif  /*  __NxPhysOutputStream_H__  */

@@ -9,6 +9,10 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
+
 /// A column-major 4x4 matrix
 class Matrix44
 {
@@ -163,6 +167,9 @@ inline const Matrix44 & Matrix44Identity()
 
 // converts a rotation matrix into a rotation of degrees about axis
 //inline void calculate_rot_from_matrix(const Matrix44 & matrix, Vector3 & axis, Scalar & degrees);
+
+
+} // namespace amorphous
 
 
 #include "Matrix44.inl"

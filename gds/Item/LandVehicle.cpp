@@ -13,6 +13,10 @@
 #include "Item/RotatableTurret.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -327,3 +331,6 @@ bool CArmedVehicle::IsTargetGroupIndex( int group )
 {
 	return true;
 }
+
+
+} // namespace amorphous

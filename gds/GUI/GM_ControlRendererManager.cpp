@@ -5,6 +5,10 @@
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -105,3 +109,6 @@ void CGM_ControlRendererManager::Update( float dt )
 {
 	m_pGraphicsEffectManager->UpdateEffects( dt );
 }
+
+
+} // namespace amorphous

@@ -5,7 +5,10 @@
 #include <string>
 #include "fwd.hpp"
 #include "gds/Graphics/Rect.hpp"
-using namespace Graphics;
+
+
+namespace amorphous
+{
 
 
 class CGM_Keybind;
@@ -227,6 +230,9 @@ public:
 
 	friend class CGM_Dialog;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_CONTROL_H__  */

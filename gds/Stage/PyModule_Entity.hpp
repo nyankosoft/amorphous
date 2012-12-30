@@ -5,6 +5,10 @@
 #include "gds/Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStage;
 
 
@@ -32,6 +36,9 @@ extern PyObject* SetTimeOffset( PyObject* self, PyObject* args );
 }  /* py */
 
 }  /* gsf */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PYMODULE_ENTITY_H__  */

@@ -7,6 +7,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class COverlapTestAABB
 {
 public:
@@ -27,6 +31,9 @@ public:
 	/// - default: -1
 	int TargetEntityTypeID;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __OverlapTestAABB__H__  */

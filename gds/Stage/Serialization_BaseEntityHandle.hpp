@@ -6,10 +6,10 @@
 #include "gds/Support/Serialization/Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -34,9 +34,9 @@ inline IArchive& operator & ( IArchive& ar, CBaseEntityHandle& entity_handle )
 }
 
 
-}  /*  Serialization  */
+} // namespace serialization
 
-}  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __GAMELIB1_BEHANDLE_SERIALIZATION_H__  */

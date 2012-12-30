@@ -6,6 +6,10 @@
 #include "../../Support/BuiltinImage.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBuiltinImageTextureLoader : public CTextureFillingAlgorithm
 {
 	const CBuiltinImage& m_BuiltinImage;
@@ -66,6 +70,9 @@ CTextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image
 	else
 		return CTextureHandle();
 }
+
+
+} // namespace amorphous
 
 
 

@@ -1,5 +1,9 @@
 #include "LWO2_Surface.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -264,3 +268,6 @@ const CLWO2_SurfaceBlock *CLWO2_Surface::GetSurfaceBlockByChannel( UINT4 uiChann
 
 	return NULL;	// a surface block with the specified channel was not found
 }
+
+
+} // amorphous

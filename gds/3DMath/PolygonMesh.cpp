@@ -6,4 +6,11 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
 
+
+
+
+
+} // amorphous

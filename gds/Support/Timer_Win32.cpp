@@ -1,6 +1,10 @@
 #include "Timer.hpp"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "winmm.lib" )
 
 
@@ -251,3 +255,6 @@ double CTimer::GetFrameTime64()
 
     return fElapsedTime;
 }*/
+
+
+} // namespace amorphous

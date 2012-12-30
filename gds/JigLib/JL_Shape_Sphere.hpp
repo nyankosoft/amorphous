@@ -6,6 +6,10 @@
 #include "Geometry/line.hpp"
 
 
+namespace amorphous
+{
+
+
 //namespace JigLib
 //{
 
@@ -40,6 +44,9 @@ public:
 
 
 //}
+
+} // namespace amorphous
+
 
 
 #endif		/*  __JL_SHAPE_SPHERE_H__  */

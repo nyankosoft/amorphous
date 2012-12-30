@@ -3,6 +3,10 @@
 
 #include "3DMath/precision.h"
 
+
+namespace amorphous
+{
+
 class CJL_PhysicsManager;
 
 class CJL_SurfaceMaterial
@@ -25,6 +29,9 @@ public:
 
 	friend class CJL_PhysicsManager;
 };
+
+
+} // namespace amorphous
 
 
 

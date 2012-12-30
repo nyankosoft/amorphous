@@ -8,6 +8,10 @@
 #include <boost/python.hpp>
 
 
+namespace amorphous
+{
+
+
 bool (CTextureHandle::*LoadTextureFromResourcePath)( const std::string& ) = &CTextureHandle::Load;
 bool (CMeshObjectHandle::*LoadMeshFromResourcePath)( const std::string& ) = &CMeshObjectHandle::Load;
 bool (CShaderHandle::*LoadShaderFromResourcePath)( const std::string& ) = &CShaderHandle::Load;
@@ -238,3 +242,6 @@ void RegisterPythonModule_gfx()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

@@ -3,6 +3,10 @@
 #include "MotionPrimitive.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -234,3 +238,6 @@ void CTransformCacheTree::Create( CSkeleton& skeleton, const std::set<std::strin
 	m_pRootNode->CreateTransformCacheNodeTree_r( skeleton.GetRootBone(), target_bone_names );
 }
 */
+
+
+} // namespace amorphous

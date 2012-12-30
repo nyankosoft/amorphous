@@ -3,6 +3,10 @@
 #include "../base.hpp"
 #include <boost/thread/xtime.hpp>
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -258,3 +262,6 @@ void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
 		}
 	}
 }
+
+
+} // namespace amorphous

@@ -1,12 +1,14 @@
 #include "UTFFont.hpp"
 #include "../TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "../Rect.hpp"
-using namespace Graphics;
-
 #include "Support/FreeTypeAux.hpp"
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/UTF8/utf8.h"
+
+
+namespace amorphous
+{
 
 using std::string;
 using std::vector;
@@ -446,3 +448,6 @@ void CUTFFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 
 	DrawTextToTexture( utf8_code_points, vPos );
 }
+
+
+} // namespace amorphous

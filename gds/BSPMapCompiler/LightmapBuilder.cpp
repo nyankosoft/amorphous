@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 #include "LightmapLightingManager.hpp"
+
+
+namespace amorphous
+{
 //#include "AmbientOcclusionLightmapBuilder.hpp"
 
 using namespace std;
@@ -661,3 +665,5 @@ void CLightmapBuilder::SetUpLightMapPoints(CLightmap& rLightmap)
 
 }
 */
+
+} // amorphous

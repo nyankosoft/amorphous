@@ -5,6 +5,10 @@
 #include "JigLib/Geometry/line.hpp"
 #include "JigLib/Geometry/distance.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 //using namespace JigLib;
@@ -71,3 +75,6 @@ void JL_CollisionDetect_Capsule_Capsule( CJL_Shape_Capsule& rCapsule0, CJL_Shape
 
 #endif
 }
+
+
+} // namespace amorphous

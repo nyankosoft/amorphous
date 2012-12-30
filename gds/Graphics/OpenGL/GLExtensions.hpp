@@ -25,6 +25,10 @@
 //#include "../Platform.h"
 #include "Platform.h"
 
+
+namespace amorphous
+{
+
 #if defined(_WIN32)
 
 #include <GL/gl.h>
@@ -2622,5 +2626,8 @@ void initExtensions(Display *display);
 #elif defined(__APPLE__)
 void initExtensions();
 #endif
+} // namespace amorphous
+
+
 
 #endif // __GLEXTENSIONS_HPP__

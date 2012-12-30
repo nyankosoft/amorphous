@@ -5,6 +5,10 @@
 #include "TextFileScanner.hpp"
 
 
+namespace amorphous
+{
+
+
 /*  --- template 1 (inside a function) ---
 
 	CParamLoader loader( filename );
@@ -159,6 +163,9 @@ inline T LoadParamFromFile( const std::string& filepath, const char *param_name 
 	}\
 }\
 
+
+
+} // namespace amorphous
 
 
 

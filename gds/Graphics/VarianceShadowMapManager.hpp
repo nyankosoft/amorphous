@@ -6,6 +6,10 @@
 #include "Shader/ShaderParameter.hpp"
 
 
+namespace amorphous
+{
+
+
 typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;
 
 
@@ -71,6 +75,9 @@ public:
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __VarianceShadowMapManager_H__  */

@@ -9,6 +9,10 @@
 #include "NxPhysics.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -51,6 +55,9 @@ inline CShape *CNxPhysShapeFactory::CreateShape( NxShape *pNxShape )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __NxPhysShapeFactory_H__ */

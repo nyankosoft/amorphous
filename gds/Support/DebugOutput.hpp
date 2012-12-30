@@ -10,6 +10,13 @@
 #include "../Graphics/2DPrimitive/2DRect.hpp"
 #include "../Graphics/GraphicsComponentCollector.hpp"
 
+#include "SafeDelete.hpp" // Used by CGlobalDebugOutput
+#include "Singleton.hpp"  // Used by CGlobalDebugOutput
+
+
+namespace amorphous
+{
+
 
 template<class T>
 inline void SetPrevIndex( int& index, std::vector<T> target )
@@ -245,11 +252,6 @@ public:
 };
 
 
-
-#include "SafeDelete.hpp"
-#include "Singleton.hpp"
-using namespace NS_KGL;
-
 #define GlobalDebugOutput (*CGlobalDebugOutput::Get())
 #define DebugOutput (*(CGlobalDebugOutput::Get()->GetGlobalInstance()))
 
@@ -284,6 +286,9 @@ public:
 		return m_pDebugOutput;
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __DEBUGOUTPUT_H__ */

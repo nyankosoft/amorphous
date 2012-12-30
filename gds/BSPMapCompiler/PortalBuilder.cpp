@@ -4,6 +4,10 @@
 #include "Stage/BinaryNode.hpp"
 
 
+namespace amorphous
+{
+
+
 void CPortalBuilder::ConstructFrom( CBSPTreeBuilder* pBSPTBuilder,
 								    CCellBuilder* pCellBuilder)
 {
@@ -268,3 +272,5 @@ void CPortalBuilder::WritePortals( const string& filename )
 	}
 	fclose(fp);
 }
+
+} // amorphous

@@ -6,6 +6,10 @@
 #include "FloatRGBAColor.hpp"
 
 
+namespace amorphous
+{
+
+
 //=========================================================================================
 // CGeneral2DVertex
 //=========================================================================================
@@ -154,6 +158,9 @@ inline CGeneral2DVertex CGeneral2DVertex::operator/( float f ) const
 
 	return out;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GENERAL2DVERTEX_H__  */

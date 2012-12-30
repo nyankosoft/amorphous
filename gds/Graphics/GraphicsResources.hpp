@@ -13,6 +13,10 @@
 #include <gl/gl.h>
 
 
+namespace amorphous
+{
+
+
 class stream_buffer;
 
 
@@ -287,9 +291,9 @@ public:
 
 	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
-	void CreateMeshAndLoadNonAsyncResources( MeshModel::C3DMeshModelArchive& archive );
+	void CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive );
 
-	bool LoadMeshFromArchive( MeshModel::C3DMeshModelArchive& mesh_archive );
+	bool LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive );
 
 	friend class CGraphicsResourceManager;
 };
@@ -391,6 +395,9 @@ inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMeshInLoading()
 boost::shared_ptr<CCustomMesh> GetCustomMesh( CBasicMesh& src_mesh );
 boost::shared_ptr<CCustomMesh> GetCustomMesh( boost::shared_ptr<CBasicMesh> pSrcMesh );
 //boost::shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh );
+
+} // namespace amorphous
+
 
 
 #endif /* __GraphicsResources_HPP__ */

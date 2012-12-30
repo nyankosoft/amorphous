@@ -2,6 +2,10 @@
 #include "GraphicsResourceManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -51,3 +55,6 @@ CShaderManager *CShaderHandle::GetShaderManager()
 	else
 		return NULL;
 }
+
+
+} // namespace amorphous

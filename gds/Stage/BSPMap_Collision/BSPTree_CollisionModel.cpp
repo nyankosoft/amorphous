@@ -7,6 +7,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 // used to collect polygons which overlap with the volume of a point light
 void CBSPTree_CollisionModel::CheckCollision( Vector3& vCenter,
 											  float fRadius,
@@ -147,3 +151,5 @@ void CBSPTree_CollisionModel::LoadFromFile(FILE *fp)
 		}
 	}
 }
+
+} // namespace amorphous

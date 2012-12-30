@@ -7,6 +7,10 @@
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost::filesystem;
 
@@ -140,3 +144,6 @@ void UpdateScriptArchives( const std::string & src_dir_path,
 			LOG_PRINT( "no script file found in " + script_dir_path.string() );
 	}
 }
+
+
+} // namespace amorphous

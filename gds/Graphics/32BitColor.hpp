@@ -3,6 +3,9 @@
 #define __32BITCOLOR_H__
 
 
+namespace amorphous
+{
+
 struct S32BitColor
 {
 	/// color (r,g,b,a)
@@ -26,6 +29,8 @@ struct S32BitColor
 	}
 //		: color[0](r), color[1](g), color[2](b), color[3](a) {}
 };
+
+} // namespace amorphous
 
 
 #endif  /*  __32BITCOLOR_H__  */

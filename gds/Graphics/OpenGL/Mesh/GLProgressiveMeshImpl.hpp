@@ -5,6 +5,10 @@
 #include "GLBasicMeshImpl.hpp"
 
 
+namespace amorphous
+{
+
+
 /// NOT IMPLEMENTED YET
 class CGLProgressiveMeshImpl : public CGLBasicMeshImpl
 {
@@ -39,6 +43,9 @@ public:
 
 //	virtual CMeshType::Name GetMeshType() const { return CMeshType::PROGRESSIVE; }
 };
+
+
+} // namespace amorphous
 
 
 

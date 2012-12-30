@@ -26,6 +26,10 @@
 
 #include "ScreenEffectManager.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -1473,3 +1477,6 @@ void CEntityRenderManager::Render( CCamera& rCam )
 	}
 	// <<< experiment - render planar reflectors
 }
+
+
+} // namespace amorphous

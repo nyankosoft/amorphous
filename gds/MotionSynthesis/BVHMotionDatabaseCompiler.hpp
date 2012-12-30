@@ -5,6 +5,10 @@
 #include "MotionDatabaseBuilder.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -41,6 +45,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __BVHMotionDatabaseCompiler_HPP__ */

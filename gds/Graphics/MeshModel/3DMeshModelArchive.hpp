@@ -16,16 +16,11 @@
 #include "../../Support/2DArray.hpp"
 #include "../../Support/Serialization/SerializationEx.hpp"
 #include "../../Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
 
 
-
-
-//namespace GameLib1
-//{
-
-namespace MeshModel
+namespace amorphous
 {
+using namespace serialization;
 
 
 /// CMMA_ - Class of Mesh Model Archive
@@ -384,10 +379,8 @@ inline U32 ToVFF( uint src )
 }
 
 
+} // namespace amorphous
 
-} // namespace MeshModel
-
-//}	/*  GameLib1  */
 
 
 #endif		/*  __3DMeshModelArchive_H__  */

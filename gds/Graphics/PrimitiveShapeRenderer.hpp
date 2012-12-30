@@ -9,6 +9,10 @@
 #include "gds/Graphics/Mesh/CustomMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPrimitiveShapeRenderer
 {
 	CShaderHandle m_Shader; ///< default: fixed function pipeline manager
@@ -70,6 +74,9 @@ public:
 
 	void SetShader( CShaderHandle& shader ) { m_Shader = shader; }
 };
+
+
+} // namespace amorphous
 
 
 

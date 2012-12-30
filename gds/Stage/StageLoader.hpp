@@ -7,6 +7,10 @@
 #include <boost/thread/thread.hpp>
 
 
+namespace amorphous
+{
+
+
 class CStageLoader
 {
 public:
@@ -69,6 +73,9 @@ public:
 
 	friend class CASyncStageLoaderThread;
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __STAGELOADER_H__ */

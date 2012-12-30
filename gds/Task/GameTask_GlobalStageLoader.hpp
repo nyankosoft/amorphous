@@ -5,6 +5,10 @@
 
 #include "GameTask.hpp"
 
+
+namespace amorphous
+{
+
 class CInputHandler;
 class CGM_DialogManager;
 class CGM_StdControlRendererManager;
@@ -41,6 +45,9 @@ public:
 
 	static void SetTaskForGlobalStage( const std::string& next_task_name ) { ms_strStageTask = next_task_name; }
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GAMETASK_GLOBALSTAGELOADER_H__  */

@@ -4,6 +4,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 CConvexPolygon::CConvexPolygon()
 {
 	m_iNumVertices = 0;
@@ -157,3 +161,5 @@ void CConvexPolygon::SetEdgeCollisionFlag(int iIndex, bool bCheckCollision)
 		m_uiCollisionFlag &= ~( 1 << (iIndex + EDGE_COLLISION_FLAG_OFFSET) );
 	}
 }
+
+} // namespace amorphous

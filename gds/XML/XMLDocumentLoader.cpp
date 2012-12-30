@@ -6,6 +6,10 @@
 #include "XercesString.hpp"
 #include "xmlch2x.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -584,3 +588,6 @@ vector<string> GetTextContentsOfImmediateChildNodes( xercesc::DOMNode *pParentNo
 	return text_contents;
 }
 
+
+
+} // namespace amorphous

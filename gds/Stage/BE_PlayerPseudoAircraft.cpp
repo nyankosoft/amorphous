@@ -35,6 +35,10 @@
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 
 
+namespace amorphous
+{
+
+
 using std::string;
 using std::vector;
 using std::map;
@@ -1304,3 +1308,6 @@ void CBE_PlayerPseudoAircraft::Serialize( IArchive& ar, const unsigned int versi
 	for( int i=0; i<NUM_EXTRA_BASE_ENTITIES; i++ )
 		ar & m_aExtraBaseEntity[i];
 }
+
+
+} // namespace amorphous

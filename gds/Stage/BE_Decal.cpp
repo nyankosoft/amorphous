@@ -9,6 +9,10 @@
 #include "Stage.hpp"
 
 
+namespace amorphous
+{
+
+
 
 CBE_Decal::CBE_Decal()
 :
@@ -251,3 +255,6 @@ void CBE_Decal::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fDecalRadius;
 	ar & m_iNumSegments;
 }
+
+
+} // namespace amorphous

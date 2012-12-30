@@ -2,6 +2,10 @@
 #include "Keyframe.hpp"
 #include "../Support/Vec3_StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace msynth;
 
 
@@ -209,3 +213,6 @@ Vector3 CSkeleton::CalculateNodePositionInSkeletonSpace( const std::vector<int> 
 	Transform transform = Transform( Matrix34Identity() );
 	return m_RootBone.CalculateNodePositionInSkeletonSpace( node_locator, index, transform, keyframe.GetRootNode() );
 }
+
+
+} // namespace amorphous

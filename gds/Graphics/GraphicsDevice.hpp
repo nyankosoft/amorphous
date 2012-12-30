@@ -9,10 +9,11 @@
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
 #include "Rect.hpp"
-using namespace Graphics;
-
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CTextureStage;
@@ -333,6 +334,9 @@ inline CGraphicsDevice& GraphicsDevice()
 {
 	return CGraphicsDeviceHolder::Get()->GetDevice();
 }
+
+
+} // namespace amorphous
 
 
 

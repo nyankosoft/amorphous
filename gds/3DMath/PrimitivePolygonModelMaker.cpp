@@ -5,6 +5,10 @@
 //#include <gds/Support/Log/DefaultLog.hpp>
 #include <gds/Support/Vec3_StringAux.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -190,7 +194,7 @@ void CreateCylinder( const Vector3& vPos0_Top, const Vector3& vPos1_Bottom, cons
 //	const float afRadius[2] = { pafRadius[0], pafRadius[1] };
 	vector<Vector3> vecNormal;
 
-	::CreateCylinder( Vec3Length(vCore), pafRadius, num_segments, num_divisions,
+	CreateCylinder( Vec3Length(vCore), pafRadius, num_segments, num_divisions,
 		create_top_polygons, top_style, create_bottom_polygons, bottom_style,
 		vecDestPos, vecDestNormal, vecDestPoly );
 
@@ -384,3 +388,6 @@ void CreatePipe( float length, const float outer_radius, const float inner_radiu
 		}
 	}
 }
+
+
+} // namespace amorphous

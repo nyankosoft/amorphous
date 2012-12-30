@@ -5,6 +5,10 @@
 #include "IK_Node.hpp"
 
 
+namespace amorphous
+{
+
+
 class CIK_Tree
 {
 
@@ -67,5 +71,8 @@ inline CIK_Node* CIK_Tree::GetSuccessor ( const CIK_Node* node ) const
 		} 
 	}
 }
+} // amorphous
+
+
 
 #endif  /*  __CLASS_IK_TREE__   */

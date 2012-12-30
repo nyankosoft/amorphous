@@ -4,6 +4,10 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+
+namespace amorphous
+{
+
 struct COLORVERTEX
 {
 	D3DXVECTOR3 vPosition;
@@ -48,6 +52,8 @@ const D3DVERTEXELEMENT9 COLORVERTEX_DECLARATION[4] =
 	{ 0, 24, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR,    0 },
 	D3DDECL_END()
 };
+
+} // amorphous
 
 
 #endif	/* __FVFCOLORVERTEX_H__ */

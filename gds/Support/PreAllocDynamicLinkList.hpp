@@ -5,6 +5,10 @@
 #include  <assert.h>
 
 
+namespace amorphous
+{
+
+
 struct SLinkListNode;
 
 
@@ -293,6 +297,9 @@ private:
 //	void Release();
 
 };
+
+
+} // amorphous
 
 
 

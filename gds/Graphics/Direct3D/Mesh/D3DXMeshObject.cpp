@@ -5,9 +5,12 @@
 
 #include "Graphics/MeshModel/MeshBone.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
 
 #include "Support/Log/DefaultLog.hpp"
+
+
+namespace amorphous
+{
 
 
 CD3DXMeshObject::CD3DXMeshObject()
@@ -131,3 +134,6 @@ bool CD3DXMeshObject::CreateMesh( int num_vertices, int num_indices, U32 option_
 
 	return (m_pMesh != NULL);*/
 }
+
+
+} // namespace amorphous

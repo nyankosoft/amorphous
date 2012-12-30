@@ -5,6 +5,10 @@
 #include "Geometry/distance.hpp"
 
 
+namespace amorphous
+{
+
+
 void JL_CollisionDetect_Box_Capsule( CJL_Shape_Box& rBox, CJL_Shape_Capsule& rCapsule,
 									 CJL_CollisionFunctor& rColFunctor )
 {
@@ -72,3 +76,6 @@ void JL_CollisionDetect_Box_Capsule( CJL_Shape_Box& rBox, CJL_Shape_Capsule& rCa
 #endif
 
 }
+
+
+} // namespace amorphous

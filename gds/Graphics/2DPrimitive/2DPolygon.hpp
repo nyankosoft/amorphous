@@ -5,6 +5,10 @@
 #include "2DRoundRect.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
   polygon
 
@@ -76,6 +80,9 @@ m_vCenterPosition(Vector2(0,0))
 {
 	SetColor( 0xFFFFFFFF );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __2DPolygon_H__  */

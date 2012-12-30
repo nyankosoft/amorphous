@@ -15,6 +15,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 // TODO: support multiple PNTS / POLS chunks in a layer
 
 
@@ -405,6 +409,9 @@ inline bool CLWO2_WeightMap::FindWeight( UINT4 pnt_index, float& rfDestWeight )
 
 	return false;
 }
+
+
+} // amorphous
 
 
 

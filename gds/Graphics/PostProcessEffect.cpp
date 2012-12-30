@@ -9,6 +9,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -1912,3 +1916,6 @@ void CMonochromeColorFilter::Render()
 
 	return;
 }
+
+
+} // namespace amorphous

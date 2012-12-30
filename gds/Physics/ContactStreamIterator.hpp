@@ -6,6 +6,10 @@
 #include "../3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -53,5 +57,8 @@ public:
 
 
 } // physics
+} // namespace amorphous
+
+
 
 #endif /* __ContactStreamIterator_HPP__ */

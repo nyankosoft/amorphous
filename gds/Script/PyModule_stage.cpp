@@ -18,6 +18,10 @@
 #include <gds/Support/Vec3_StringAux.hpp>
 #include <gds/Support/Log/DefaultLog.hpp>
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace boost;
 
@@ -133,3 +137,6 @@ void RegisterPythonModule_stage()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

@@ -8,6 +8,10 @@
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -367,3 +371,6 @@ CTriangleMesh CTriangleMesh::operator=( const CTriangleMesh& rTriMesh )
 
 	return *this;
 }
+
+
+} // namespace amorphous

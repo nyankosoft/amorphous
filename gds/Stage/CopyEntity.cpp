@@ -2,6 +2,10 @@
 #include "BaseEntity.hpp"
 //#include "EntitySet.hpp"
 #include "Physics/Actor.hpp"
+
+
+namespace amorphous
+{
 using namespace physics;
 
 using boost::shared_ptr;
@@ -131,3 +135,6 @@ void CCopyEntity::UpdatePhysics()
 	Velocity()        = m_vecpPhysicsActor[0]->GetLinearVelocity();
 	AngularVelocity() = m_vecpPhysicsActor[0]->GetAngularVelocity();
 }
+
+
+} // namespace amorphous

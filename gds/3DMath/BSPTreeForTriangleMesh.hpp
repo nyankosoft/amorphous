@@ -7,6 +7,10 @@
 #include "IndexedTriangle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBSPTreeForTriangleMesh : public CLeafyAABTree<CIndexedTriangle>
 {
 	friend CTriangleMesh;
@@ -61,6 +65,9 @@ inline void CBSPTreeForTriangleMesh::GetIntersectingTriangles( const AABB3& aabb
 {
 	CLeafyAABTree<CIndexedTriangle>::GetIntersectingAABBs( aabb, rveciTriList );
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __BSPTreeForTriangleMesh__ */

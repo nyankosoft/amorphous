@@ -1,8 +1,11 @@
-//============================ inline implementations ============================
-
 #include "gds/Support/Log/DefaultLog.hpp"
 #include "gds/Support/Vec3_StringAux.hpp"
 
+
+namespace amorphous
+{
+
+//============================ inline implementations ============================
 
 template<class TGeometry>
 inline CAABTree<TGeometry>::CAABTree()
@@ -622,3 +625,5 @@ inline void CNonLeafyAABTree<TGeometry>::LinkGeometry( int geom_index )
 		}
 	}
 }
+
+} // namespace amorphous

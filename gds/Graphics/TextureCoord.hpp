@@ -2,6 +2,9 @@
 #define __TEXTURECOORD_H__
 
 
+namespace amorphous
+{
+
 class TEXCOORD2
 {
 public:
@@ -54,5 +57,8 @@ inline TEXCOORD2 TEXCOORD2::operator/( float f ) const
 	out.v = v / f;
 	return out;
 }
+
+} // namespace amorphous
+
 
 #endif  /*  __TEXTURECOORD_H__  */

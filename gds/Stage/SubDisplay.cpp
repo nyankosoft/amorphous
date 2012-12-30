@@ -13,6 +13,10 @@
 #include "Support/SafeDeleteVector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSubMonitorRenderTask : public CRenderTask
 {
 //	SubMonitor *m_pSubMonitor;
@@ -333,3 +337,6 @@ void CSubDisplay::Update( float dt )
 //	if( 0 < m_vecpMonitor.size() )
 //		m_vecpMonitor[m_CurrentMonitor]->Update( dt );
 }
+
+
+} // namespace amorphous

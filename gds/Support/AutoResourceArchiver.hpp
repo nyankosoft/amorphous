@@ -6,6 +6,10 @@
 #include "Support/thread_starter.hpp"
 
 
+namespace amorphous
+{
+
+
 class CAutoResourceArchiver : public thread_class
 {
 //	std::map<std::string,CResourceCompileInfo> m_mapInputPathToCompileInfo;
@@ -44,6 +48,9 @@ public:
 	void run();
 };
 
+
+
+} // amorphous
 
 
 

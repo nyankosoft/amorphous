@@ -9,6 +9,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 #ifndef USE_COMBINED_COLLISION_POINTS_INFO  /////////////////////////////////////////////////////////
 
 
@@ -178,6 +182,9 @@ inline void CJL_CollisionFunctor::AddTemporaryContacts( CJL_ShapeBase *pBody0,
 
 
 #endif  /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+} // namespace amorphous
 
 
 

@@ -4,7 +4,11 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /**
@@ -75,6 +79,9 @@ public:
 	~CSaveObjectBase() { SaveObjectManager.Release(this); }
 };
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __ASSAULTRECORD_H__ */

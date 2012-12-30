@@ -4,6 +4,10 @@
 #include "PseudoAircraftSimulator.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -603,3 +607,6 @@ void CMeshBoneController_GearUnit::Serialize( IArchive& ar, const unsigned int v
 //	ar & m_TirePose & m_ShaftPose & m_vecCoverPose;
 //	ar & m_fTireAngle & m_fShaftOpenAngle;
 }
+
+
+} // namespace amorphous

@@ -7,6 +7,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <map>
+
+
+namespace amorphous
+{
 //#include <vld.h>
 
 
@@ -43,6 +47,9 @@ inline boost::shared_ptr<CGraphicsElementManager> GetGraphicsElementManager( con
 	else
 		return boost::shared_ptr<CGraphicsElementManager>();
 }
+
+
+} // namespace amorphous
 
 
 

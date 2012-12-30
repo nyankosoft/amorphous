@@ -8,6 +8,10 @@
 #include "CopyEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Light;
 class CLightEntity;
 
@@ -328,6 +332,9 @@ public:
 	std::map< uint, boost::shared_ptr<CLightEntity> > m_mapEntityIDtoDynamicLight;
 };
 */
+
+
+} // namespace amorphous
 
 
 

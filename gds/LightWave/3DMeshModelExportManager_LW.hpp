@@ -10,6 +10,10 @@
 #include "gds/LightWave/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace morph
 {
 class progress_display;
@@ -72,6 +76,9 @@ public:
 
 
 }	/*  MeshModel  */
+
+} // amorphous
+
 
 
 #endif		/*  __3DMESHMODELEXPORTMANAGER_LW_H__  */

@@ -4,6 +4,10 @@
 #include "BE_ParticleSet.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Cloud : public CBE_ParticleSet
 {
 private:
@@ -29,5 +33,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_CLOUD_H__  */

@@ -5,6 +5,10 @@
 
 #include <algorithm>
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace boost;
 
@@ -826,3 +830,6 @@ void CAnimatedGraphicsManager::UpdateEffects( double dt )
 	}
 }
 */
+
+
+} // namespace amorphous

@@ -3,6 +3,10 @@
 
 #include "GM_Control.hpp"
 
+
+namespace amorphous
+{
+
 class CGM_Dialog;
 
 
@@ -179,6 +183,9 @@ public:
 
 	virtual unsigned int GetType() { return CGM_Control::SLIDER; }
 };
+
+
+} // namespace amorphous
 
 
 

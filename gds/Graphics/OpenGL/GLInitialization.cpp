@@ -13,6 +13,10 @@
 #include "../Shader/FixedFunctionPipelineManager.hpp"
 
 
+namespace amorphous
+{
+
+
 using boost::shared_ptr;
 
 
@@ -79,3 +83,6 @@ Result::Name InitializeOpenGLClasses()
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

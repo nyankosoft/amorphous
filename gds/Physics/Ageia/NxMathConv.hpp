@@ -7,6 +7,10 @@
 #include "NxPhysics.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -74,6 +78,9 @@ inline NxBounds3 ToNxBounds3( const AABB3& src )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __NxMathConv_H__ */

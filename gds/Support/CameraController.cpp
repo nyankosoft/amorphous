@@ -2,6 +2,10 @@
 #include "Input/InputDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 CCameraController::CCameraController( int input_handler_index )
 :
 m_InputHandlerIndex(input_handler_index)
@@ -51,3 +55,6 @@ bool CCameraController::IsKeyPressed( int general_input_code )
 //void CCameraControllerInputHandler::HandleInput( const SInputData& input )
 //{
 //}
+
+
+} // namespace amorphous

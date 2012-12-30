@@ -6,6 +6,10 @@
 #include "SurfaceMaterialHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSurfaceMaterialManager : public IArchiveObjectBase
 {
 	std::vector<CSurfaceMaterial> m_vecMaterial;
@@ -68,6 +72,9 @@ inline CSurfaceMaterial &CSurfaceMaterialManager::GetSurfaceMaterial( CSurfaceMa
 	else
 		return CSurfaceMaterial::Null();
 }
+
+
+} // namespace amorphous
 
 
 

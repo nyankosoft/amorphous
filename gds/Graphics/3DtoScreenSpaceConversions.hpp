@@ -7,6 +7,10 @@
 #include "Camera.hpp"
 
 
+namespace amorphous
+{
+
+
 inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const Vector3& vWorldPos, int screen_width, int screen_height )
 {
 	Vector3 vProjPos
@@ -61,6 +65,9 @@ inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
 		vDest
 		);
 }
+
+
+} // amorphous
 
 
 

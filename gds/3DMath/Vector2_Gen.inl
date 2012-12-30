@@ -9,6 +9,9 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
 // global operators
 
 template<class TScalar>
@@ -212,3 +215,5 @@ inline TScalar TVector2<TScalar>::GetLengthSq() const
 {
 	return Vec2LengthSq(*this);
 }
+
+} // namespace amorphous

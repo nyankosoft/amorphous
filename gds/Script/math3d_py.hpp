@@ -5,7 +5,14 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 const CEmbeddedPythonModule& GetEmbeddedPythonModule_math3d();
+
+
+} // namespace amorphous
 
 
 

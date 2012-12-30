@@ -5,6 +5,10 @@
 #include <boost/thread.hpp>
 
 
+namespace amorphous
+{
+
+
 /**
 
 */
@@ -92,6 +96,9 @@ public:
 		run();
 	}
 };
+
+} // amorphous
+
 
 
 #endif		/*  __thread_starter_H__  */

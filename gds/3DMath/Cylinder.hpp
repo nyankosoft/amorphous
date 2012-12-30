@@ -4,6 +4,10 @@
 #include "Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 class Cylinder
 {
 public:
@@ -63,6 +67,9 @@ public:
 
 	float GetLength() const { return Vec3Length( pos[1] - pos[0] ); }
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __Cylinder_HPP__ */

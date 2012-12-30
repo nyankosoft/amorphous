@@ -12,6 +12,10 @@
 #include "precision.h"
 
 
+namespace amorphous
+{
+
+
 class Vector4
 {
 public:
@@ -57,7 +61,9 @@ public:
 };
 
 
-#include "Vector4.inl"
+} // namespace amorphous
 
+
+#include "Vector4.inl"
 
 #endif		/*  __Vector4_HPP__  */

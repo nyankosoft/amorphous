@@ -9,6 +9,10 @@
 #include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
 #include "gds/Physics/fwd.hpp"
 
+
+namespace amorphous
+{
+
 using namespace msynth;
 
 
@@ -313,6 +317,9 @@ public:
 
 	bool HandleInput( const SInputData& input, int action_code );
 };
+
+
+} // namespace amorphous
 
 
 

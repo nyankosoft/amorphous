@@ -6,7 +6,11 @@
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 using namespace std;
 using namespace boost;
@@ -74,3 +78,6 @@ void CGraphicsResourceEntry::GetStatus( std::string& dest_buffer )
 	if( GetResource() )
 		GetResource()->GetStatus( dest_buffer );
 }
+
+
+} // namespace amorphous

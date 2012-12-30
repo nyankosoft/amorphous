@@ -6,6 +6,10 @@
 #include "../GameCommon/Caliber.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCartridge : public CGI_Ammunition
 {
 public:
@@ -34,6 +38,9 @@ public:
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 };
+
+
+} // namespace amorphous
 
 
 

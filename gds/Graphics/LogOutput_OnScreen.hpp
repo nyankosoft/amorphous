@@ -10,6 +10,10 @@
 #include "3DMath/Vector2.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * displays log texts on screen using D3D
  *
@@ -73,6 +77,9 @@ inline U32 CLogOutput_ScrolledTextBuffer::GetTextColor( int row )
 
 	return m_TextColor[row_index];
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __LogOutput_ScrolledTextBuffer_H__  */

@@ -7,6 +7,10 @@
 #include "3DMath/Transform.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBlendTransformsLoader : public CShaderParamsLoader
 {
 	std::vector<Transform> m_BlendTransforms;
@@ -46,6 +50,9 @@ public:
 
 	std::vector<Matrix44>& BlendMatrices() { return m_BlendMatrices; }
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __BlendTransformsLoader_HPP__ */

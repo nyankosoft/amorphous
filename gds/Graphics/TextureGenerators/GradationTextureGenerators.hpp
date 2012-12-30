@@ -7,6 +7,10 @@
 #include "../TextureHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGradationTextureGenerator : public CTextureFillingAlgorithm
 {
 public:
@@ -141,6 +145,9 @@ inline CTextureHandle CreateVerticalGradationTexture( uint width, uint height, T
 	boost::shared_ptr<CVerticalGradationTextureGenerator> pGenerator( new CVerticalGradationTextureGenerator(left_color,mid_color,right_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
+
+
+} // namespace amorphous
 
 
 

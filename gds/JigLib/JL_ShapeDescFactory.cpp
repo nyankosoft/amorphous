@@ -6,6 +6,10 @@
 #include "JL_ShapeDesc_TriangleMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 IArchiveObjectBase *CJL_ShapeDescFactory::CreateObject( const unsigned int id )
 {
 	switch( id )
@@ -17,3 +21,6 @@ IArchiveObjectBase *CJL_ShapeDescFactory::CreateObject( const unsigned int id )
 	default:	return NULL;
 	}
 }
+
+
+} // namespace amorphous

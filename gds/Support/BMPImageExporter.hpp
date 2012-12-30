@@ -3,6 +3,10 @@
 
 #include <windows.h>
 
+
+namespace amorphous
+{
+
 class CBMPImageExporter
 {
 
@@ -16,6 +20,9 @@ public:
 							DWORD *padwImageData );
 
 };
+
+
+} // namespace amorphous
 
 
 

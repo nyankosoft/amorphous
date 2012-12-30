@@ -13,6 +13,10 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+
+namespace amorphous
+{
+
 #else /* BUILD_WITH_DIRECT3D */
 
 
@@ -24,6 +28,9 @@ typedef void* LPD3DXEFFECT;
 
 
 #endif /* BUILD_WITH_DIRECT3D */
+
+
+} // amorphous
 
 
 

@@ -6,6 +6,10 @@
 #include "GM_ControlRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 //========================================================================================
 // CGM_Static
 //========================================================================================
@@ -30,3 +34,6 @@ void CGM_Static::SetText( const std::string& strText )
 	if( m_pRenderer.get() )
 		m_pRenderer->OnTextChanged( *this );
 }
+
+
+} // namespace amorphous

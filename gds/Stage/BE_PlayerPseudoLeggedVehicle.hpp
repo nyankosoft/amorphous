@@ -9,6 +9,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 #define PLAYERPLV_ROTATION_YAW		0
 #define PLAYERPLV_ROTATION_PITCH	1
 
@@ -162,6 +166,9 @@ inline void CBE_PlayerPseudoLeggedVehicle::AddJumpThrust( Vector3& vThrust )
 		m_fJumpThrustTime = 0;
 	}
 }
+
+
+} // namespace amorphous
 
 
 

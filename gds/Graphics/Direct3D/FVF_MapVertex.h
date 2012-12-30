@@ -9,6 +9,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+
 struct MAPVERTEX
 {
 	D3DXVECTOR3 vPosition;
@@ -193,5 +196,8 @@ inline MAPVERTEX MAPVERTEX::operator/( float f )
 
 	return v;
 }
+
+} // amorphous
+
 
 #endif  /*  __FVF_MAPVERTEX_H__  */

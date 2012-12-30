@@ -7,6 +7,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -129,6 +133,9 @@ inline void CMeshData::SetToDefault()
 
 //================== inline implementations =======================
 //#include "Joint.inl"
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PhysMeshData_HPP__  */

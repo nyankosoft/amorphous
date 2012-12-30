@@ -9,6 +9,10 @@
 #include "../Graphics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace firearm
 {
 
@@ -239,6 +243,9 @@ public:
 
 
 } // firearm
+
+
+} // amorphous
 
 
 

@@ -18,6 +18,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/macro.h"
 
+
+namespace amorphous
+{
+
 #define NUM_MAX_LIGHTSOURCEPOLYGONS 512
 #define NUM_MAX_NONLIGHTSOURCEPOLYGONS 3200
 
@@ -239,6 +243,9 @@ inline void CBSPMap::UnlockVertexBuffer()
 		m_pVertex = NULL;
 	}
 }
+
+
+} // namespace amorphous
 
 
 

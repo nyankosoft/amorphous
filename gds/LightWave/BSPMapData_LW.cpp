@@ -13,6 +13,10 @@ using namespace MeshModel;
 
 #include <string.h>
 
+
+namespace amorphous
+{
+
 //================================================================================
 // CBSPMapData_LW::Methods()                                     - CBSPMapData_LW
 //================================================================================
@@ -603,3 +607,5 @@ void CBSPMapData_LW::SetLight( CLightWaveSceneLoader& rLightWaveScene )
 	}
 
 }
+
+} // amorphous

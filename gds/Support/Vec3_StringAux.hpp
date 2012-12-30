@@ -10,6 +10,10 @@
 #include "../3DMath/AABB2.hpp"
 
 
+namespace amorphous
+{
+
+
 inline std::string to_string( const Vector3& v, int precision = 3, int num_zfills = 0 )
 {
 	std::string fmt_float = "%" + to_string(num_zfills) + "." + to_string(precision) + "f";
@@ -70,6 +74,9 @@ inline std::string to_string( const OBB3& obb )
 {
 	return std::string( "[obb3] radii" + to_string(obb.radii) + ", center" + to_string(obb.center.vPosition) + ", rotation" + to_string(Quaternion(obb.center.matOrient)) );
 }
+
+
+} // namespace amorphous
 
 
 

@@ -5,6 +5,10 @@
 #include "MeshGenerator.hpp"
 
 
+namespace amorphous
+{
+
+
 class TexCoordStyle
 {
 public:
@@ -102,6 +106,9 @@ public:
 
 	Result::Name Generate();
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __MeshGenerators_HPP__ */

@@ -5,9 +5,16 @@
 #include "../Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 extern PyMethodDef g_PyModuleSoundMethod[];
 
 extern void ReleaseAllScriptSounds();
+
+
+} // namespace amorphous
 
 
 

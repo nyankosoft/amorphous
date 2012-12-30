@@ -11,6 +11,10 @@
 #include "Support/Macro.h"
 #include "Support/VectorRand.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -401,3 +405,6 @@ void CBE_ScriptedCamera::CreateRenderTasks( CCopyEntity* pCopyEnt )
 {
 	pCopyEnt->CreateRenderTasks();
 }
+
+
+} // namespace amorphous

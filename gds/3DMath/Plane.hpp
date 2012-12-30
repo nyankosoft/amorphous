@@ -6,6 +6,10 @@
 #include <float.h>
 
 
+namespace amorphous
+{
+
+
 template<typename T>
 class tPlane
 {
@@ -107,6 +111,9 @@ typedef tPlane<float> Plane;
 typedef tPlane<double> dPlane;
 
 typedef tPlane<float> SPlane; // deprecated
+
+
+} // namespace amorphous
 
 
 

@@ -1,6 +1,10 @@
 #include "Scene.hpp"
 #include "Joint.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -14,3 +18,6 @@ void CScene::SetJointImpl( CJoint& joint, CJointImpl& impl )
 {
 	joint.m_pImpl = &impl;
 }
+
+
+} // namespace amorphous

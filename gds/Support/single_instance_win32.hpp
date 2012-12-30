@@ -4,6 +4,10 @@
 
 #include <windows.h> 
 
+
+namespace amorphous
+{
+
 /// This code is from Q243953 in case you lose the article and wonder
 /// where this code came from.
 class CLimitSingleInstance
@@ -45,6 +49,9 @@ inline bool is_another_instance_running( const char *unique_id )
 	static CLimitSingleInstance s_obj( unique_id );
 	return s_obj.IsAnotherInstanceRunning();
 }
+
+} // amorphous
+
 
 
 #endif /* __single_instance_win32_HPP__ */

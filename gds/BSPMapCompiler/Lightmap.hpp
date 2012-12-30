@@ -9,6 +9,10 @@
 #include "Graphics/IndexedPolygon.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/Rect.hpp"
+
+
+namespace amorphous
+{
 using namespace Graphics;
 
 
@@ -141,6 +145,9 @@ inline Vector3 CLightmap::GetPoint( int x, int y ) const
 		 + m_GlobalPose.matOrient.GetColumn(0) * m_fScaleU * ( (float)(x+0.5f) / (float)(m_Rect.GetWidth()) )
 		 + m_GlobalPose.matOrient.GetColumn(1) * m_fScaleV * ( (float)(y+0.5f) / (float)(m_Rect.GetHeight()) );
 }
+
+} // amorphous
+
 
 
 #endif  /*  __MAPCOMPILER_LIGHTMAP_H__  */

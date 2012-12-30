@@ -3,6 +3,10 @@
 #include "../PrimitiveRenderer.hpp"
 #include "../Shader/ShaderManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 //using namespace boost;
 
@@ -376,3 +380,6 @@ void CCustomMesh::RenderSubset( CShaderManager& rShaderMgr, int material_index )
 {
 	GetCustomMeshRenderer().RenderSubset( *this, rShaderMgr, material_index );
 }
+
+
+} // namespace amorphous

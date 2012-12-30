@@ -6,6 +6,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 class CEmbeddedHLSLShader
 {
 public:
@@ -71,6 +75,9 @@ public:
 
 	static CEmbeddedHLSLShader ms_VS_PPL_HSLs_QVertexBlend_Specular;
 };
+
+
+} // namespace amorphous
 
 
 

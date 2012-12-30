@@ -7,6 +7,10 @@
 #include "Support/Macro.h"
 #include "Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -248,3 +252,6 @@ void CSimpleMotionBlur::Render()
 
 	m_TargetTexIndex = ( m_TargetTexIndex + 1 ) % 2;
 }
+
+
+} // namespace amorphous

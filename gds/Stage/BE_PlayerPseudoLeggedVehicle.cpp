@@ -27,6 +27,10 @@
 #include "Physics/Actor.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace physics;
 
 
@@ -564,3 +568,6 @@ CInputHandler_PlayerBase *CBE_PlayerPseudoLeggedVehicle::CreatePlayerInputHandle
 {
 	return new CInputHandler_PlayerShip();
 }
+
+
+} // namespace amorphous

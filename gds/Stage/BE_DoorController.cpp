@@ -10,6 +10,10 @@
 #include "Support/Serialization/Serialization_FixedVector.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -187,3 +191,6 @@ void CBE_DoorController::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_OpenSound & m_CloseSound;
 	ar & m_vecDoorComponent;
 }
+
+
+} // namespace amorphous

@@ -10,6 +10,10 @@
 
 #include "Support/memory_helpers.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -386,3 +390,6 @@ void CGraphSegment::Draw()
 //	m_pFont->Print( acSegmentID, m_vIDPosition, 0xFFDDDDDD );
 	m_pFont->DrawText( acSegmentID, m_vIDPosition, 0xFF000000 );
 }
+
+
+} // amorphous

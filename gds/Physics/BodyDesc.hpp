@@ -7,9 +7,12 @@
 #include "../3DMath/Matrix34.hpp"
 #include "../Support/Serialization/Serialization.hpp"
 #include "../Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
-
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace physics
@@ -160,6 +163,9 @@ inline void CBodyDesc::Serialize( IArchive& ar, const unsigned int version )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysBodyDesc_H__  */

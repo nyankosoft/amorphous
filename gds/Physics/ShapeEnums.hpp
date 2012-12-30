@@ -2,6 +2,10 @@
 #define  __PhysShapeEnums_H__
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -25,6 +29,9 @@ public:
 
 
 } // namespace physics
+
+
+} // namespace amorphous
 
 
 #endif /* __PhysShapeEnums_H__ */

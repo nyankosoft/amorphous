@@ -6,6 +6,10 @@
 #include "gds/Graphics/Mesh/CustomMeshRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DCustomMeshRenderer : public CCustomMeshRenderer
 {
 	std::vector<int> m_SubsetIndices;
@@ -45,6 +49,9 @@ public:
 
 	static CD3DCustomMeshRenderer ms_Instance;
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __D3DCustomMeshRenderer_HPP__ */

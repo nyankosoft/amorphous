@@ -5,6 +5,10 @@
 #include "InputDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 /// - Send mouse positions in reference screen coordinates
 /// - When the screen resolution is changed, the mouse device object needs to be notified
 ///   by MouseInputDevice::UpdateScreenSize()
@@ -48,6 +52,9 @@ public:
 	virtual int GetCurrentPositionX() const { return 0; }
 	virtual int GetCurrentPositionY() const { return 0; }
 };
+
+} // amorphous
+
 
 
 #endif		/*  __MouseInputDevice_HPP__  */

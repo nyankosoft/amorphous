@@ -6,7 +6,11 @@
 #include "3DMath/Matrix33.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 //#define JL_NUM_MAX_SHAPES_PER_ACTOR	8
@@ -61,6 +65,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __JL_PHYSICSACTORDESC_H__  */

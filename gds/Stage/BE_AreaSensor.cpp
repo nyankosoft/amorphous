@@ -1,4 +1,8 @@
 #include "BE_AreaSensor.hpp"
+
+
+namespace amorphous
+{
 ///#include "../GameTextSystem/GameTextSet.hpp"
 ///#include "../Script/GameEventTypes.hpp"
 
@@ -69,3 +73,6 @@ void CBE_AreaSensor::Serialize( IArchive& ar, const unsigned int version )
 ///	CBaseEntity::Serialize( ar, version );
 
 }
+
+
+} // namespace amorphous

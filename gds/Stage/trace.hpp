@@ -7,6 +7,10 @@
 
 #include <vector>
 
+
+namespace amorphous
+{
+
 #define NUM_MAXTOUCHENTITIES	512
 
 class CCopyEntity;
@@ -241,6 +245,9 @@ struct SContact
 	// depth of the penetration. Can be -ve, indicating penetration isn't happening
 	float fPenetrationDepth;
 };
+
+
+} // namespace amorphous
 
 
 

@@ -12,6 +12,10 @@
 #include "gds/XML/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -521,6 +525,9 @@ inline void CMotionFSMInputHandler::ProcessInput(SInputData& input)
 
 
 } // msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __MotionFSM_HPP__ */

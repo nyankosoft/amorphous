@@ -9,6 +9,10 @@
 #include "Graphics/2DPrimitive/2DFrameRect.hpp"
 
 
+namespace amorphous
+{
+
+
 CAircraftCapsDisplay::CAircraftCapsDisplay()
 :
 m_pAircraft(NULL)
@@ -184,3 +188,6 @@ void CAircraftCapsDisplay::RenderStatic( CGM_Static& static_ctrl )
 	CGM_ControlRenderMgr_Default::RenderStatic( static_ctrl );
 }
 */
+
+
+} // namespace amorphous

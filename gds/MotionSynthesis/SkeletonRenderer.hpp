@@ -10,6 +10,10 @@
 #include "Skeleton.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -57,6 +61,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __SkeletonRenderer_H__ */

@@ -7,6 +7,10 @@
 #include "../Platform.hpp"
 
 
+namespace amorphous
+{
+
+
 #define separate_strings SeparateStrings
 
 /*
@@ -598,6 +602,9 @@ inline bool CTextFileScanner::FindLineWithTag( const std::string& tag )
 
 	return false;
 }
+
+
+} // namespace amorphous
 
 
 

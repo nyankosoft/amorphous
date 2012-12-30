@@ -7,6 +7,10 @@
 #include "Sound/SoundManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CBE_Floater::CBE_Floater()
 {
 	m_BoundingVolumeType = BVTYPE_AABB;
@@ -195,3 +199,6 @@ void CBE_Floater::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_Enemy::Serialize( ar, version );
 }
+
+
+} // namespace amorphous

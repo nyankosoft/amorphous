@@ -14,6 +14,10 @@
 #include "Stage/GameMessage.hpp"
 #include "Stage/PlayerInfo.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -211,3 +215,6 @@ bool CGI_Weapon::HandleInput( int input_code, int input_type, float fParam )
 
 	return false;
 }
+
+
+} // namespace amorphous

@@ -9,6 +9,10 @@
 
 #include "../base.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -54,3 +58,6 @@ PyMethodDef gsf::py::task::g_PyModuleTaskMethod[] =
 //	{ "RequestTransitionToNextTask",RequestTransitionToNextTask,METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+} // namespace amorphous

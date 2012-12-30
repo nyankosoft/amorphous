@@ -7,6 +7,10 @@
 #include <boost/shared_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 class CCameraControllerInputHandler;
 
 
@@ -26,6 +30,9 @@ public:
 
 	bool IsKeyPressed( int general_input_code );
 };
+
+
+} // namespace amorphous
 
 
 

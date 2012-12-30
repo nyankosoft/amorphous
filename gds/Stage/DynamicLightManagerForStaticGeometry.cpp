@@ -5,6 +5,10 @@
 #include "../Graphics/Shader/ShaderManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CDynamicLightManagerForStaticGeometry::CDynamicLightManagerForStaticGeometry()
 :
 m_pLightEntityManager(NULL)
@@ -260,3 +264,6 @@ void CDynamicLightManagerForStaticGeometry::ClearDynamicLightEffectsFromPolygons
 		}
 	}
 }
+
+
+} // namespace amorphous

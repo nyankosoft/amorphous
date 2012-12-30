@@ -6,6 +6,10 @@
 #include "GI_Weapon.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGI_GravityGun : public CGI_Weapon
 {
 
@@ -85,6 +89,9 @@ inline void CGI_GravityGun::Serialize( IArchive& ar, const unsigned int version 
 		m_iHoldingTargetToggle = 0;
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __WEAPON_GRAVITYGUN_H__  */

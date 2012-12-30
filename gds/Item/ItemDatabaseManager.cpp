@@ -6,6 +6,10 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -65,3 +69,6 @@ CGameItem *CItemDatabaseManager::GetItemRawPtr( const std::string& item_name, in
 
 	return pItem;
 }
+
+
+} // namespace amorphous

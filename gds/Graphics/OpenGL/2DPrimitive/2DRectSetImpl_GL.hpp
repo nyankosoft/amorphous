@@ -11,6 +11,10 @@
 #include "2DPrimitiveRenderer_GL.hpp"
 
 
+namespace amorphous
+{
+
+
 //=============================================================================
 // C2DRectSetImpl_GL
 //=============================================================================
@@ -280,6 +284,9 @@ inline void C2DRectSetImpl_GL::draw( int start_rect_index, int num_rects )
 
 	PrimitiveRenderer_GL().RenderGL( &(m_vecRectVertex[start_rect_index*4]), num_rects * 4, GL_QUADS );
 }
+
+
+} // namespace amorphous
 
 
 

@@ -5,6 +5,10 @@
 #include "2DGraph.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCorrelationGraph : public C2DGraph
 {
 public:
@@ -13,6 +17,9 @@ public:
 	void SetPosition(float sx, float ex, float sy, float ey);
 
 };
+
+} // amorphous
+
 
 
 #endif  /*  __CORRELATIONGRAPH_H__  */

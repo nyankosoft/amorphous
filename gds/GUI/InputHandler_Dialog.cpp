@@ -5,6 +5,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 CInputHandler_Dialog::CInputHandler_Dialog( CGM_DialogManager *pDialogManager )
 {
 	m_pDialogManager = pDialogManager;
@@ -124,3 +128,6 @@ void CInputHandler_Dialog::ClearKeyBinds()
 		m_aGICodeToGMInputCode[i] = CGM_Input::INVALID;
 	}
 }
+
+
+} // namespace amorphous

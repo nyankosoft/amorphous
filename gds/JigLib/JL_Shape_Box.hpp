@@ -4,6 +4,10 @@
 #include "JL_ShapeBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CTriangle;
 
 // stores a pair of indices to edge points
@@ -64,6 +68,9 @@ public:
 	}
 
 };
+
+
+} // namespace amorphous
 
 
 

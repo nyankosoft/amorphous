@@ -8,6 +8,10 @@
 #include "ForceFeedbackTargetDevice.hpp"
 #include "Input/fwd.hpp"
 
+
+namespace amorphous
+{
+
 class CForceFeedbackEffectDescVisitor
 {
 public:
@@ -172,6 +176,9 @@ inline Result::Name CForceFeedbackEffect::Init( const CForceFeedbackEffectDesc& 
 {
 	return m_pImpl->Init( desc, target );
 }
+
+
+} // namespace amorphous
 
 
 

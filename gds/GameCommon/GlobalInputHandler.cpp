@@ -10,6 +10,10 @@
 
 #include "Support/DebugOutput.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 
 
@@ -146,3 +150,6 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 		break;	// no action is assigned to this input
 	}
 }
+
+
+} // namespace amorphous

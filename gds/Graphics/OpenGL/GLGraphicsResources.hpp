@@ -10,7 +10,11 @@
 //#include "Support/2DArray.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 //template<class T>class CBinaryDatabase<T>;
 
@@ -122,6 +126,9 @@ public:
 
 
 //---------------------------- inline implementations ---------------------------- 
+
+
+} // namespace amorphous
 
 
 

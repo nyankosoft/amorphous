@@ -11,6 +11,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -200,3 +204,6 @@ void CGameTask_AsyncStageLoader::AsyncLoadThreadMain()
 		Sleep(20);
 }
 */
+
+
+} // namespace amorphous

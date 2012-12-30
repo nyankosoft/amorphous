@@ -5,6 +5,10 @@
 #include "TextureFillingAlgorithm.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSingleColorTextureGenerator : public CTextureFillingAlgorithm
 {
 	SFloatRGBAColor m_Color;
@@ -22,6 +26,9 @@ public:
 		texture.Clear( m_Color );
 	}
 };
+
+} // amorphous
+
 
 
 #endif /* __SingleColorTextureGenerator_HPP__ */

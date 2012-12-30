@@ -7,6 +7,10 @@
 #include "Support/MTRand.hpp"
 
 
+namespace amorphous
+{
+
+
 /// used by Vec3GetRandDir() & Vec3GetRandDir()
 inline float GetSignedRandNonZeroToOne()
 {
@@ -41,6 +45,9 @@ inline Vector3 Vec3RandDir()
 
 	return v;
 }
+
+} // amorphous
+
 
 
 #endif		/*  __VectorRand_H__  */

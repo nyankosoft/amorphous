@@ -7,10 +7,10 @@
 #include "Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -41,9 +41,9 @@ inline IArchive& operator & ( IArchive& ar, TCFixedVector<T, iArraySize>& vec )
 }
 
 
-}	  /*  Serialization  */
+} // namespace serialization
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __KGL_FIXEDVECTOR_SERIALIZATION_H__  */

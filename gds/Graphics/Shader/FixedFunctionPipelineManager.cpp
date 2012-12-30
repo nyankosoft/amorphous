@@ -2,6 +2,10 @@
 #include "ShaderManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CSingleton<CFixedFunctionPipelineManagerHolder> CFixedFunctionPipelineManagerHolder::m_obj;
 
 
@@ -21,3 +25,6 @@ CShaderManager& FixedFunctionPipelineManager()
 	return *sg_pFixedFunctionPipelineManager;
 }
 */
+
+
+} // namespace amorphous

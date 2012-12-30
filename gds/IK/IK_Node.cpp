@@ -2,6 +2,10 @@
 #include "3DMath/Matrix33.hpp"
 #include "3DMath/MathMisc.hpp"
 
+
+namespace amorphous
+{
+
 extern int RotAxesOn;
 
 
@@ -132,3 +136,6 @@ void CIK_Node::InitNode()
 {
 	theta = 0.0;
 }
+
+
+} // amorphous

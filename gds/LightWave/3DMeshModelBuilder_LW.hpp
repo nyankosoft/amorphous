@@ -8,6 +8,10 @@
 #include "gds/Graphics/MeshModel/General3DMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace MeshModel
 {
 
@@ -150,6 +154,9 @@ int GetGroupNumber( const std::vector<std::string>& words );
 
 
 }
+
+} // amorphous
+
 
 
 #endif		/*  __3DMESHMODELBUILDER_LW_H__  */

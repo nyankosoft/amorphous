@@ -2,6 +2,10 @@
 #include "3DMeshModelArchive.hpp"
 #include "General3DMesh.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -49,3 +53,6 @@ Result::Name CMeshArchiveToGeneral3DMeshConverer::Convert( const C3DMeshModelArc
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

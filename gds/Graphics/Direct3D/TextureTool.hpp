@@ -5,6 +5,10 @@
 #include <d3dx9.h>
 
 
+namespace amorphous
+{
+
+
 class CTextureTool
 {
 public:
@@ -14,6 +18,9 @@ public:
 	static bool CreateTexture( DWORD *padwTexelData, int iWidth, int iHeight, LPDIRECT3DTEXTURE9 *ppTexture );
 
 };
+
+
+} // namespace amorphous
 
 
 

@@ -11,6 +11,10 @@
 #include "JL_Shape_Box.hpp"
 #include "JL_Shape_Capsule.hpp"
 #include "TriangleMesh.hpp"
+
+
+namespace amorphous
+{
 //#include "JL_Shape_.h"
 //#include "JL_Shape_.h"
 
@@ -309,6 +313,9 @@ inline bool CJL_PhysicsManager::IsCollisionGroupEnabled( int iGroup0, int iGroup
 	else
 		return false;
 }
+
+
+} // namespace amorphous
 
 
 

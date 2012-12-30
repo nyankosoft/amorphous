@@ -5,6 +5,10 @@
 #include "GraphicsResourceHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CShaderHandle : public CGraphicsResourceHandle
 {
 protected:
@@ -33,6 +37,9 @@ public:
 /*
 inline const CShaderHandle &CShaderHandle::operator=( const CShaderHandle& handle ){}
 */
+
+} // namespace amorphous
+
 
 
 #endif  /* __ShaderHandle_H__ */

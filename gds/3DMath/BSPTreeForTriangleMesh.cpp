@@ -3,6 +3,10 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -162,3 +166,6 @@ bool CBSPTreeForTriangleMesh::CreateMesh( vector<Vector3>& rvecVertex,
 
 	return true;
 }
+
+
+} // namespace amorphous

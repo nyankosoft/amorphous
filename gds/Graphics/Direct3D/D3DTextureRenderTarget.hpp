@@ -6,6 +6,10 @@
 #include <d3d9.h>
 
 
+namespace amorphous
+{
+
+
 class CD3DTextureRenderTarget : public CTextureRenderTarget
 {
 private:
@@ -71,6 +75,9 @@ public:
 
 //	void SetInstanceCreationFunction();
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __D3DTextureRenderTarget_HPP__  */

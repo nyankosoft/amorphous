@@ -5,6 +5,10 @@
 #include "GameItem.hpp"
 
 
+namespace amorphous
+{
+
+
 //===========================================================================
 // CGI_Battery
 //===========================================================================
@@ -246,6 +250,9 @@ inline void CGI_Key::Serialize( IArchive& ar, const unsigned int version )
 	for( int i=0; i<KEY_CODE_LENGTH; i++ )
         ar & m_acKeyCode[i];
 }
+
+
+} // namespace amorphous
 
 
 

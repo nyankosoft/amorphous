@@ -2,6 +2,10 @@
 #include "Input/InputHub.hpp"
 
 
+namespace amorphous
+{
+
+
 CStdMouseInput::CStdMouseInput()
 {
 	m_iPosX = 0;
@@ -102,3 +106,6 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 	}
 
 }
+
+
+} // namespace amorphous

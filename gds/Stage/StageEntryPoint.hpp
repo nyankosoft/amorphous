@@ -8,6 +8,10 @@ using namespace std;
 #include "3DMath/Matrix33.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStageEntryPoint
 {
 	string m_strName;
@@ -26,6 +30,9 @@ public:
 	Matrix33 *GetDefaultOrientation();
 
 };
+
+
+} // namespace amorphous
 
 
 

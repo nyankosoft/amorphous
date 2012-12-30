@@ -11,6 +11,10 @@
 #include "gds/GameCommon/PseudoAircraftHUD.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_PlayerPseudoAircraft;
 
 class HUD_PlayerAircraft : public HUD_PlayerBase
@@ -169,6 +173,9 @@ inline bool HUD_PlayerAircraft::HandleInput( int iActionCode, int input_type, fl
 	return false;
 //	return m_QuickMenuManager.HandleMouseInput( iActionCode, input_type, fVal );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __HUD_PlayerAircraft_H__  */

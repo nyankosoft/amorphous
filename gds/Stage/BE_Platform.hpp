@@ -6,6 +6,10 @@
 #include "Sound/SoundHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Platform : public CBE_PhysicsBaseEntity
 {
 	CSoundHandle m_StartSound;
@@ -34,6 +38,9 @@ public:
 		STATE_REST,
 	};
 };
+
+} // namespace amorphous
+
 
 
 #endif /*  __BE_PLATFORM_H__  */

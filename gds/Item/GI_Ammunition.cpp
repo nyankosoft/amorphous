@@ -2,6 +2,10 @@
 #include "Stage/Serialization_BaseEntityHandle.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -76,3 +80,6 @@ void CGI_Ammunition::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "MuzzleFlashBaseEntity", muzzle_flash_base_entity_name );
 	m_MuzzleFlashBaseEntity.SetBaseEntityName( muzzle_flash_base_entity_name.c_str() );
 }
+
+
+} // namespace amorphous

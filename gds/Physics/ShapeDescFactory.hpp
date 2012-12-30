@@ -13,6 +13,10 @@
 #include "../Support/Serialization/ArchiveObjectFactory.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -58,6 +62,9 @@ inline CShapeDesc *CShapeDescFactory::CreateShapeDesc( const unsigned int id )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __PhysShapeDescFactory_H__ */

@@ -7,7 +7,7 @@
 #include "Rect.hpp"
 
 
-namespace Graphics
+namespace amorphous
 {
 
 
@@ -79,7 +79,7 @@ inline SRect *CRectTree::GetRectangle( const int index )
 }
 
 
-}  /*  Graphics  */
+} // namespace amorphous
 
 
 #endif		/*  __RECTTREE_H__  */

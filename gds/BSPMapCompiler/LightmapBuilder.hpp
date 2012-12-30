@@ -5,8 +5,6 @@
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
-using namespace MeshModel;
-
 #include "Support/TextFileScanner.hpp"
 #include "Support/FixedVector.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
@@ -14,6 +12,10 @@ using namespace MeshModel;
 
 #include "fwd.hpp"
 #include "LightmapTexture.hpp"
+
+
+namespace amorphous
+{
 
 
 #define LMB_NUM_MAX_LIGHTMAPTEXTURES	64
@@ -279,6 +281,9 @@ public:
 	// How to serialize image file content on memory to arbitrary image format
 //	void AddLightmapTexturesToDB( CBinaryDatabase<std::string>& db );
 };
+
+} // amorphous
+
 
 
 #endif  /*  __LIGHTMAPBUILDER_H__  */

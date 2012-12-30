@@ -7,6 +7,10 @@
 #include <utility>
 
 
+namespace amorphous
+{
+
+
 namespace firearm
 {
 
@@ -33,6 +37,9 @@ bool GetCaseDesc( Caliber::Name caliber, CaseDesc& dest );
 
 
 } // firearm
+
+} // amorphous
+
 
 
 #endif /* BuiltinCartridges */

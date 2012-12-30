@@ -17,6 +17,10 @@
 
 #include <vector>
 #include <list>
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -300,6 +304,9 @@ inline void CSG_Polygon::Draw( LPDIRECT3DDEVICE9 pd3dDevice )
 
 }
 
+
+
+} // amorphous
 
 
 

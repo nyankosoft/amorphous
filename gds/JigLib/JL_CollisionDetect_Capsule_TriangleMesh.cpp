@@ -6,6 +6,10 @@
 #include "Geometry/distance.hpp"
 
 #include <vector>
+
+
+namespace amorphous
+{
 using namespace std;
 using namespace JigLib;
 
@@ -123,3 +127,6 @@ void JL_CollisionDetect_Capsule_TriangleMesh( CJL_Shape_Capsule& rCapsule, CTria
 
 	}
 }
+
+
+} // namespace amorphous

@@ -2,6 +2,10 @@
 #include "Item/ItemDatabaseManager.hpp"
 #include "PyModule_ShopMethods.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 
 
@@ -39,3 +43,6 @@ PyMethodDef g_PyModuleShopMethod[] =
 
 
 
+
+
+} // namespace amorphous

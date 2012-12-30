@@ -2,6 +2,10 @@
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -127,3 +131,6 @@ void CMeshBoneControllerBase::Init()
 	}
 }
 */
+
+
+} // namespace amorphous

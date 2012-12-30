@@ -7,6 +7,10 @@
 #include "BE_PhysicsBaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_IndividualEntity : public CBE_PhysicsBaseEntity
 {
 public:
@@ -40,6 +44,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_IndividualEntity_H__  */

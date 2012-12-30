@@ -4,6 +4,10 @@
 #include <vector>
 #include "../Graphics/fwd.hpp"
 
+
+namespace amorphous
+{
+
 class CBSPMap;
 class CLightEntity;
 class CLightEntityManager;
@@ -40,6 +44,9 @@ public:
 
 	void ClearDynamicLightEffectsFromPolygons(CBSPMap *pMap);
 };
+
+
+} // namespace amorphous
 
 
 

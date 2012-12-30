@@ -1,6 +1,7 @@
 #ifndef  __BVHBONE_H__
 #define  __BVHBONE_H__
 
+#include "../Support/StringAux.hpp"
 #include <vector>
 #include <string>
 #include "fwd.hpp"
@@ -10,6 +11,10 @@
 #include "../Graphics/fwd.hpp"
 #include "../Graphics/FloatRGBAColor.hpp"
 #include "../Graphics/MeshObjectHandle.hpp"
+
+
+namespace amorphous
+{
 
 
 enum eChannelType
@@ -108,5 +113,8 @@ public:
 	friend class CBVHPlayer;
 
 };
+
+} // namespace amorphous
+
 
 #endif		/*  __BVHBONE_H__  */

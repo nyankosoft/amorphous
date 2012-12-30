@@ -2,6 +2,10 @@
 
 #include "Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -46,3 +50,6 @@ void  WriteNodeToFile_r( int node_index, vector<CAABNode>& nodes, int depth, FIL
 			WriteNodeToFile_r( node.child[i], nodes, depth + 1, fp );
 	}
 }
+
+
+} // namespace amorphous

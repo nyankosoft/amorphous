@@ -5,6 +5,10 @@
 #include "../Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 extern PyMethodDef g_PyModuleGraphicsElementMethod[];
 extern PyMethodDef g_PyModuleAnimatedGraphicsMethod[];
 
@@ -17,6 +21,9 @@ void RemoveGraphicsElementManagerForScript();
 
 void SetAnimatedGraphicsManagerForScript( CAnimatedGraphicsManager *pManager );
 void RemoveAnimatedGraphicsManagerForScript();
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PYMODULE_GRAPHICSELEMENT_H__  */

@@ -5,7 +5,14 @@
 #include "gds/Script/PythonHeaders.hpp"
 #include <string>
 
+
+namespace amorphous
+{
+
 extern PyMethodDef g_PyModuleHUDMethod[];
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PyModule_HUD_H__  */

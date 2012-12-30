@@ -4,6 +4,10 @@
 #include "../Support/Log/DefaultLog.hpp"
 #include "../Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace msynth;
 
@@ -86,3 +90,6 @@ CAnnotation CMotionDatabase::GetAnnotation( const std::string& annot_name )
 
 	return CAnnotation( annot_name, -1 );
 }
+
+
+} // namespace amorphous

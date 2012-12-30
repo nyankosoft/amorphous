@@ -24,6 +24,10 @@
 #include <direct.h>
 
 
+namespace amorphous
+{
+
+
 CBSPMap::CBSPMap( CStage *pStage )
 : CStaticGeometryBase( pStage )
 {
@@ -87,3 +91,6 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 void CBSPMap::SetDynamicLightManager( CEntitySet* pEntitySet )
 {
 }
+
+
+} // amorphous

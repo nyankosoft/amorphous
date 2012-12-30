@@ -12,6 +12,10 @@
 #include "2DArray.hpp"
 #include "Macro.h"
 
+
+namespace amorphous
+{
+
 // Comment out this header inclusion and do the following replacings
 // if you want to use CBitmapImage class without the log system.
 // 1. Replace 'LOG_PRINT_ERROR(x)' with 'cout << x'.
@@ -730,6 +734,9 @@ inline bool SaveGrayscaleToImageFile( const C2DArray<U8>& texel, const std::stri
 
 	return img.SaveToFile( filepath );
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __BitmapImage_H__ */

@@ -1,3 +1,5 @@
+namespace amorphous
+{
 
 //
 // global functions
@@ -164,3 +166,5 @@ D3DCOLOR SFloatRGBAColor::ConvertToD3DCOLOR()
 	return D3DCOLOR_ARGB( (int)(alpha * 255.0), (int)(red * 255.0), (int)(green * 255.0f), (int)(blue * 255.0f) );
 
 }*/
+
+} // namespace amorphous

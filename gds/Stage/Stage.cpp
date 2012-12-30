@@ -37,6 +37,10 @@
 #include "Input/InputHub.hpp"
 
 
+namespace amorphous
+{
+
+
 static uint gs_DebugInputHandlerIndex = 0;
 
 
@@ -848,3 +852,6 @@ void CStage::LoadSavedData(FILE* fp)
 	m_pEntitySet->LoadCopyEntitiesFromSavedData( fp );
 }
 */
+
+
+} // namespace amorphous

@@ -8,6 +8,10 @@
 #include "gds/GUI/GM_StdControlRendererManager.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGI_Aircraft;
 
 
@@ -121,6 +125,9 @@ static const char g_AircraftCapsText[CAircraftCapsDisplay::NUM_PERFS][32] =
 	"air-to-ground",
 	"stealth"
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __AircraftCapsDisplay_H__  */

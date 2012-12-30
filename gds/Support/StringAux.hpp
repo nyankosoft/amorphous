@@ -1,5 +1,5 @@
-#ifndef __STRINGAUX_H__
-#define __STRINGAUX_H__
+#ifndef __AMORPHOUS_STRING_AUX_HPP__
+#define __AMORPHOUS_STRING_AUX_HPP__
 
 #include <vector>
 #include <string>
@@ -12,6 +12,10 @@
 
 #include "../base.hpp"
 #include "Macro.h"
+
+
+namespace amorphous
+{
 
 
 #ifdef _MSC_VER
@@ -217,5 +221,8 @@ inline bool remove_newline_char_at_the_end( std::string& target )
 		return false;
 }
 
+} // namespace amorphous
 
-#endif  /*  __STRINGAUX_H__  */
+
+
+#endif  /*  __AMORPHOUS_STRING_AUX_HPP__  */

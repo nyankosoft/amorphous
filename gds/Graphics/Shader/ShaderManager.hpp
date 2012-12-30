@@ -14,6 +14,10 @@
 #include "../../Support/stream_buffer.hpp"
 
 
+namespace amorphous
+{
+
+
 class CShaderManager
 {
 /*
@@ -223,6 +227,9 @@ inline Matrix44 CShaderManager::GetProjectionTransform() const
 	return proj;
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __HLSLShaderManager_HPP__  */

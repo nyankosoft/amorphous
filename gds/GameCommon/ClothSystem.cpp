@@ -12,6 +12,10 @@
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/MTRand.hpp"
 #include "gds/Utilities/Physics/PhysicsMeshUtility.hpp"
+
+
+namespace amorphous
+{
 //#include "gds/Support/lfs.hpp"
 
 using std::string;
@@ -900,3 +904,6 @@ Result::Name CClothSystem::AddCollisionCapsule( const std::string& target_bone_n
 {
 	return Result::UNKNOWN_ERROR;
 }
+
+
+} // namespace amorphous

@@ -10,6 +10,10 @@
 #include "../Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
 
 
+namespace amorphous
+{
+
+
 class MeshShape
 {
 public:
@@ -87,6 +91,9 @@ public:
 	/// How to represent the detection results?
 	bool DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectionResults& results );
 };
+
+
+} // namespace amorphous
 
 
 

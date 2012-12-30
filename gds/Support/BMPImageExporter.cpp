@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <wingdi.h>
 
+
+namespace amorphous
+{
+
 CBMPImageExporter::CBMPImageExporter(){}
 
 CBMPImageExporter::~CBMPImageExporter(){}
@@ -61,3 +65,5 @@ bool CBMPImageExporter::OutputImage_24Bit( const char *pcFilename,
 
 	return true;
 }
+
+} // namespace amorphous

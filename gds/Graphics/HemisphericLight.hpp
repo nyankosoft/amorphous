@@ -5,6 +5,10 @@
 #include "FloatRGBColor.hpp"
 #include "LightStructs.hpp"
 
+
+namespace amorphous
+{
+
 inline SFloatRGBColor ToRGBColor( const SFloatRGBAColor& src )
 {
 	return SFloatRGBColor( src.red, src.green, src.blue );
@@ -181,6 +185,9 @@ inline void CHemisphericSpotlight::Serialize( IArchive& ar, const unsigned int v
 
 	ar & Attribute;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __HEMISPHERICLIGHT_H__  */

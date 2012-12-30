@@ -5,6 +5,10 @@
 #include "gds/Support/SerializableStream.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * stores scripts as text data
  */
@@ -34,6 +38,9 @@ public:
  */
 void UpdateScriptArchives( const std::string & src_dir_path,
 						   const std::string & output_dir_path );
+
+
+} // namespace amorphous
 
 
 

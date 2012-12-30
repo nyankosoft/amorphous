@@ -3,6 +3,10 @@
 #include "LWO2_Object.hpp"
 #include "gds/Graphics/ShapesExtractor.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -98,3 +102,6 @@ void C3DShapesExporter_LW::Release()
 {
 	m_pObject.reset();
 }
+
+
+} // amorphous

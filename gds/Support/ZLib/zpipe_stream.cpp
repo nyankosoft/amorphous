@@ -17,6 +17,8 @@
 
 #include "zpipe_stream.h"
 
+using namespace amorphous;
+
 
 #define CHUNK 16384
 

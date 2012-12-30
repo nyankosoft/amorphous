@@ -3,6 +3,10 @@
 #include "Support/Serialization/Serialization_3DMath.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 //vector<CGeneral3DVertex>* CIndexedPolygon::ms_pVertex;
@@ -198,3 +202,6 @@ bool CIndexedPolygon::IsInSweptVolume( const Vector3& rvPosition, float& rfDist 
 
 }
 */
+
+
+} // namespace amorphous

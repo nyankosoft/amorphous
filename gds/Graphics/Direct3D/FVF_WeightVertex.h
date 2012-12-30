@@ -9,6 +9,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+	
 const D3DVERTEXELEMENT9 WEIGHTVERTEX_DECLARATION[] =
 {
 	{ 0, 0,  D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION,     0 }, // 12
@@ -46,6 +49,8 @@ struct WEIGHTVERTEX
 		FVF = (D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_NORMAL|D3DFVF_TEX1| matrix indices | matrix blend weights)
 	};*/
 };
+
+} // amorphous
 
 
 #endif  /*  __WEIGHTVERTEX_H__  */

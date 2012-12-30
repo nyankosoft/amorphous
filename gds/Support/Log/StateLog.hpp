@@ -5,8 +5,10 @@
 #include <string>
 
 #include "../Singleton.hpp"
-using namespace NS_KGL;
 
+
+namespace amorphous
+{
 
 // for quick access to the singleton instance
 #define StateLog ( *CStateLog::Get() )
@@ -59,6 +61,9 @@ inline void CStateLog::Update( int index, const std::string& strLogText )
 
 	m_LogText[index] = strLogText;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __STATELOG_H__  */

@@ -5,7 +5,10 @@
 #include "gds/Support/MTRand.hpp"
 #include "gds/Graphics/Mesh/CustomMesh.hpp"
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CRectSetMesh : public CCustomMesh
@@ -136,6 +139,9 @@ inline float CRectSetMeshGenerator::GetRandRadius()
 	float r = m_fParticleRadius;
 	return r * RangedRand( 0.9f, 1.1f );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /* __RectSetMesh_HPP__ */

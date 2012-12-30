@@ -10,6 +10,10 @@
 #include "distance.hpp"
 #include "3DMath/Triangle.hpp"
 #include <limits>
+
+
+namespace amorphous
+{
 using namespace JigLib;
 
 //====================================================================
@@ -195,3 +199,5 @@ bool JigLib::SweptSphereTriangleOverlap(Vector3& pt, Vector3& N, Scalar& depth,
 }
 
 */
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -302,3 +306,6 @@ void CTextMessageManager::EndMessage()
 	m_pTextMessageWindow->DisplayTextMessage( m_vecTextMessageSet.size() - 1 );
 //	m_pTextMessageWindow->DisplayText( m_vecTextMessageSet.back() );
 }*/
+
+
+} // namespace amorphous

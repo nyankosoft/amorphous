@@ -1,6 +1,10 @@
 #include "ShadowVolumeMeshGenerator.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -687,3 +691,6 @@ xyzzy
  
 */
 
+
+
+} // namespace amorphous

@@ -17,6 +17,10 @@
 #include "../base.hpp"
 #include "../Script/convert_python_to_x.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 
 
@@ -533,3 +537,6 @@ BOOST_PYTHON_MODULE(Light)
     def( "CreateDirectionalLight", CreateDirectionalLight );
 }
 */
+
+
+} // namespace amorphous

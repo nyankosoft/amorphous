@@ -7,6 +7,10 @@
 #include "Stage/HUD_PlayerAircraft.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 using std::map;
 using namespace boost;
 
@@ -233,3 +237,6 @@ void CRadar::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "SensoringFrequency",        m_fSensoringFrequency );
 	reader.GetChildElementTextContent( "TargetInfoUpdateFrequency", m_TargetInfoUpdateFrequency );
 }
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "GE_SpawnEvent.hpp"
 
 
+namespace amorphous
+{
+
+
 CGameEvent::CGameEvent()
 {
 	m_Type = -1;
@@ -55,3 +59,6 @@ IArchiveObjectBase *CEventFactory::CreateObject( const unsigned int id )
 	default:	return NULL;
 	}
 }
+
+
+} // namespace amorphous

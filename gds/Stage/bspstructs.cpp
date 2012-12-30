@@ -1,5 +1,9 @@
 #include "bspstructs.hpp"
 
+
+namespace amorphous
+{
+
 float g_fEpsilon = 0.001f;
 Vector3 g_vEpsilon(0.001f, 0.001f, 0.001f);
 
@@ -82,3 +86,6 @@ int	ClassifyFace( const SPlane& plane, CFace& face, int iOnPlaneCondition )
 		return FCE_FRONT;
 	return FCE_BACK;
 }
+
+
+} // namespace amorphous

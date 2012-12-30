@@ -7,6 +7,10 @@
 #include "MeshObjectHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 //namespace graphics
 //{
 
@@ -24,6 +28,9 @@ CTextureHandle CreateCloudyNightSkyTexture();
 
 
 //}
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SkyboxMisc_HPP__  */

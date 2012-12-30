@@ -7,6 +7,10 @@
 #include "Stage/BE_ScriptedCamera.hpp"
 #include "Support/memory_helpers.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -108,3 +112,6 @@ void CEntityFactory::ReleaseAllEntities()
 
 	ReleaseAllDerivedEntities();
 }
+
+
+} // namespace amorphous

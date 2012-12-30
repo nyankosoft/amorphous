@@ -10,6 +10,10 @@
 #include "gds/Physics/Cloth.hpp"
 #include "gds/3DMath/PrimitivePolygonModelMaker.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -141,3 +145,6 @@ CCloth *CPhysicsMeshUtility::CreateClothFromMeshFile( const std::string& filepat
 	return NULL;
 }
 
+
+
+} // namespace amorphous

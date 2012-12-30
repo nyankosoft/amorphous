@@ -7,6 +7,10 @@
 #include "../3DMath/Matrix34.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSoundSourceImpl;
 
 
@@ -114,6 +118,9 @@ public:
 
 //	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) { return NULL; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SoundManagerImpl_H__  */

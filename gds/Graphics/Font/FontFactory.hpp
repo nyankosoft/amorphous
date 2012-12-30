@@ -7,6 +7,10 @@
 #include "FontBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CFontFactory
 {
 public:
@@ -25,6 +29,9 @@ public:
 	/// returns a owned ref
 	CFontBase* CreateFontRawPtr( CFontBase::FontType type, const std::string& font_name, int font_width, int font_height );
 };
+
+
+} // namespace amorphous
 
 
 

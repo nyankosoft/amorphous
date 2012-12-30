@@ -6,6 +6,10 @@
 #include <gds/3DMath/Plane.hpp>
 
 
+namespace amorphous
+{
+
+
 class ConvexVolume
 {
 public:
@@ -31,6 +35,9 @@ public:
 		return true;
 	}
 };
+
+
+} // amorphous
 
 
 

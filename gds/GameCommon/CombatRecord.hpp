@@ -8,6 +8,10 @@
 #include "gds/3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 // TODO:
 // - identifying the entity that destroyed a terget stored in KillReport
 // - script module
@@ -63,6 +67,9 @@ class CombatRecord
 public:
 	std::vector<KillReport> m_vecKillReport;
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __COMBATRECORD_H__ */

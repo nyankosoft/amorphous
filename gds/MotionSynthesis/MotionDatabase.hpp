@@ -4,10 +4,14 @@
 
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include "fwd.hpp"
 #include "MotionPrimitive.hpp"
+
+
+namespace amorphous
+{
 
 
 namespace msynth
@@ -59,6 +63,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif  /*  __MotionDatabase_H__  */

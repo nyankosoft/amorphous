@@ -11,7 +11,11 @@
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
 #include "gds/Support/Serialization/Serialization_Color.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CLightVisitor
@@ -417,6 +421,9 @@ inline void CSpotlight::Serialize( IArchive& ar, const unsigned int version )
 	ar & fOuterConeAngle;
 	ar & fFalloff;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __LIGHTSTRUCTS_H__  */

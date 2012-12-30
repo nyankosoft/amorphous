@@ -12,6 +12,10 @@
 #include "Sound/SoundHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 #define NUM_MAX_DOOR_COMPONENTS		8
 
 class CBE_DoorController : public CBaseEntity
@@ -51,6 +55,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif /*  __BE_DOORCONTROLLER_H__  */

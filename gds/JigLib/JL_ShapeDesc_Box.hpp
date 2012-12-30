@@ -5,6 +5,10 @@
 #include "JL_ShapeDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 class CJL_ShapeDesc_Box : public CJL_ShapeDesc
 {
 public:
@@ -44,6 +48,9 @@ public:
 		ar & vSideLength;
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_SHAPEDESC_BOX_H__  */

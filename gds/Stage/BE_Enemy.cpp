@@ -15,6 +15,10 @@
 #include "Support/MTRand.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -886,3 +890,6 @@ void CBE_Enemy::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_vecRewardItem;
 }
+
+
+} // namespace amorphous

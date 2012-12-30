@@ -5,7 +5,10 @@
 #include <vector>
 
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 #define RenderTaskProcessor ( (*CRenderTaskProcessor::Get()) )
@@ -46,6 +49,9 @@ public:
 		m_vecpTask.push_back( pTask );	
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __RenderTaskProcessor_H__ */

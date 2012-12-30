@@ -2,6 +2,10 @@
 #include "Shader/ShaderGenerator.hpp"
 #include "XML.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -175,3 +179,6 @@ bool CShaderResourceDesc::CanBeSharedAsSameShaderResource( const CShaderResource
 
 	return false;
 }
+
+
+} // namespace amorphous

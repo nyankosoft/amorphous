@@ -3,6 +3,10 @@
 #include "Mesh/SkeletalMesh.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -88,3 +92,5 @@ void CMeshObjectHandle::Serialize( IArchive& ar, const unsigned int version )
 	CGraphicsResourceHandle::Serialize( ar, version );
 }
 */
+
+} // namespace amorphous

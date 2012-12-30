@@ -1,6 +1,10 @@
 #include "GM_Keybind.hpp"
 
 
+namespace amorphous
+{
+
+
 void CGM_CompleteKeybind::SetDefault()
 {
 	m_aGICodeToGMInputCode[GIC_ENTER]            = CGM_Input::OK;
@@ -46,3 +50,6 @@ void CGM_CompleteKeybind::SetDefault()
 	m_aGICodeToGMInputCode[GIC_TAB]              = CGM_Input::NEXT_DIALOG_RIGHT;
 //	m_aGICodeToGMInputCode[GIC_TAB]              = CGM_Input::NEXT_DIALOG_LEFT;
 }
+
+
+} // namespace amorphous

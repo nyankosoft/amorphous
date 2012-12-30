@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 CHLSLShaderLightManager::CHLSLShaderLightManager()
 :
 m_pEffect(NULL)
@@ -170,3 +174,6 @@ void CHLSLShaderLightManager::LoadGraphicsResources( const CGraphicsParameters& 
 void CHLSLShaderLightManager::ReleaseGraphicsResources()
 {
 }
+
+
+} // namespace amorphous

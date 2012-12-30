@@ -10,6 +10,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -90,6 +94,9 @@ public:
 
 //================== inline implementations =======================
 //#include "NxPhysJoint.inl"
+
+} // namespace amorphous
+
 
 
 #endif  /*  __NxPhysJoint_H__  */

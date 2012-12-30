@@ -12,6 +12,10 @@
 #include "App/GameWindowManager_Win32.hpp"
 
 
+namespace amorphous
+{
+
+
 HUD_PlayerShip::HUD_PlayerShip()
 {
 	m_pTextWindow = NULL;
@@ -202,3 +206,6 @@ CGameTextSet *HUD_PlayerShip::GetCurrentTextSetInTextWindow()
 {
 	return m_pTextWindow->GetCurrentTextSet();
 }
+
+
+} // namespace amorphous

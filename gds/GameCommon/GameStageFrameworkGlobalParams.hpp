@@ -6,7 +6,11 @@
 #include <string>
 
 #include "Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /**
@@ -51,6 +55,9 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GSF_GLOBALPARAMS_H__  */

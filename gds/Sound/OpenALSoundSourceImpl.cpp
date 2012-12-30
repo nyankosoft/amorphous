@@ -7,6 +7,10 @@
 #include "Support/SerializableStream.hpp"
 #include "OggVorbisAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -631,3 +635,6 @@ void COpenALNonStreamedSoundSourceImpl::GetTextInfo( std::string& dest_buffer )
 
 	dest_buffer = buffer;
 }
+
+
+} // namespace amorphous

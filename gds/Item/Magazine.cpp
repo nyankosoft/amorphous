@@ -2,6 +2,10 @@
 #include "Cartridge.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -42,3 +46,6 @@ void CMagazine::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	reader.GetChildElementTextContent( "Capacity",      m_Capacity );
 }
+
+
+} // namespace amorphous

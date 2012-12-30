@@ -5,6 +5,10 @@
 #include "GM_ControlDescBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGM_ScrollBarDesc : public CGM_ControlDesc
 {
 public:
@@ -28,6 +32,9 @@ public:
 
 	virtual unsigned int GetType() { return CGM_Control::SCROLLBAR; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_SCROLLBARDESC_H__  */

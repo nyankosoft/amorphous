@@ -4,6 +4,10 @@
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 
+
+namespace amorphous
+{
+
 using std::vector;
 using std::map;
 using std::pair;
@@ -685,3 +689,6 @@ Result::Name CConvexMeshSplitter::SplitMesh( const CCustomMesh& src, const Plane
 		*(m_MeshSplitResults.m_pBackMesh)
 		);
 }
+
+
+} // namespace amorphous

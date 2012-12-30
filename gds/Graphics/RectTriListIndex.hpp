@@ -4,6 +4,12 @@
 
 #include "../base.hpp"
 
+#include <vector> // Used by CRectTriListIndexBuffer
+
+
+namespace amorphous
+{
+
 
 #define NUM_MAX_2DRECTS 128
 
@@ -143,9 +149,6 @@ static const U16 s_RectTriListIndex[NUM_MAX_2DRECTS * 6] =
 
 
 
-#include <vector>
-
-
 /// growable index buffer for triangle list indices of rectangles
 /// - Call SetNumMaxRects() before using the index buffer
 ///   CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
@@ -182,6 +185,9 @@ public:
 
 	static const std::vector<U16>& GetIndexBuffer() { return ms_vecIndex; }
 };
+
+
+} // namespace amorphous
 
 
 

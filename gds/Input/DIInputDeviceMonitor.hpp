@@ -12,7 +12,10 @@
 #include "Input/DirectInput.hpp"
 #include "Support/thread_starter.hpp"
 #include "Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CInputDeviceStateCallback
@@ -156,6 +159,9 @@ inline CDIInputDeviceMonitor& DIInputDeviceMonitor()
 {
 	return (*CDIInputDeviceMonitor::Get());
 }
+
+
+} // namespace amorphous
 
 
 

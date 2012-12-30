@@ -5,12 +5,19 @@
 #include "gds/Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 extern PyMethodDef g_PyModuleShopMethod[];
 
 
 class CGameItemShop;
 //extern bool AddShop( CGameItemShop* pShop )
 //extern bool ReleaseShop( const std::string& name )
+
+
+} // namespace amorphous
 
 
 

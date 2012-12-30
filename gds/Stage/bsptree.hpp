@@ -13,6 +13,10 @@
 #include "trace.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBSPTree
 {
 	SNode_f* m_paNode;
@@ -131,6 +135,9 @@ public:
 		rTrace.bvType = cOriginalBVType;
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif	/*  __BSPTREE_H__  */

@@ -10,7 +10,10 @@
 #include "../../Graphics/fwd.hpp"
 #include "../../Graphics/TextureHandle.hpp"
 #include "../../Graphics/Shader/ShaderTechniqueHandle.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class MeshLoadOption
@@ -375,6 +378,9 @@ public:
 	friend class CD3DXMeshVerticesLoader;
 	friend class CD3DXMeshIndicesLoader;
 };
+
+
+} // namespace amorphous
 
 
 

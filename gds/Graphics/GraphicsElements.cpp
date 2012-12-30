@@ -8,6 +8,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -1005,3 +1009,6 @@ void CGraphicsElementGroup::Draw()
 	//   - rationale: elements in a group might belong to different layers, and in such a case
 	//                rendering order need to be managed the same way as non-grouped elements
 }
+
+
+} // namespace amorphous

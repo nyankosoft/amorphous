@@ -8,6 +8,10 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -116,3 +120,6 @@ Result::Name CShapesExtractor::ExtractShapesAndSaveToFile( const shared_ptr<CGen
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

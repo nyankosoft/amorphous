@@ -9,6 +9,10 @@
 #include "JL_ShapeDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 class CJL_ShapeBase
 {
 protected:
@@ -99,6 +103,9 @@ inline void Serialize( IArchive& ar, const unsigned int version )
 {
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif		/*  __JL_SHAPEBASE_H__  */

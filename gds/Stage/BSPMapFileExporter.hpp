@@ -10,6 +10,10 @@
 
 #include "BinaryNode.hpp"
 
+
+namespace amorphous
+{
+
 class CBSPMapCompiler;
 //class CSkybox;
 class CBSPTree_CollisionModel_Exporter;
@@ -72,5 +76,8 @@ public:
 	void OutputVertexDataToFile( const std::string& filename );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BSPMAPFILEEXPORTER_H__  */

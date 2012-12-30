@@ -13,6 +13,10 @@
 #include "NxPhysConvexMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -119,3 +123,6 @@ NxShapeDesc *CNxPhysShapeDescFactory::CreateNxShapeDesc( CShapeDesc &src_desc )
 
 
 }
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "BitmapImage.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBuiltinImage
 {
 public:
@@ -54,6 +58,9 @@ inline boost::shared_ptr<CBitmapImage> LoadBuiltinImage( const CBuiltinImage& sr
 	else
 		return boost::shared_ptr<CBitmapImage>();
 }
+
+
+} // namespace amorphous
 
 
 

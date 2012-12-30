@@ -4,7 +4,10 @@
 
 #include "../../base.hpp"
 #include "../fwd.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CMeshArchiveToGeneral3DMeshConverer
@@ -20,6 +23,9 @@ public:
 	*/
 	Result::Name Convert( const C3DMeshModelArchive& src, CGeneral3DMesh& dest );
 };
+
+
+} // namespace amorphous
 
 
 

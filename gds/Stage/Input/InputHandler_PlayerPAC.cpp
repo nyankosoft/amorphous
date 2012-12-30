@@ -8,6 +8,10 @@
 #include "Task/GameTask.hpp"
 
 
+namespace amorphous
+{
+
+
 int CInputHandler_PlayerPAC::ms_TaskOnPause = CGameTask::ID_INVALID;
 
 
@@ -241,3 +245,6 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 		break;
 	}
 }
+
+
+} // namespace amorphous

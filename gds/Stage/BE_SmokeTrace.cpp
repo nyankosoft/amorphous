@@ -7,6 +7,10 @@
 #include "Support/VectorRand.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -442,3 +446,6 @@ void CBE_SmokeTrace::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_SmokeType;
 	ar & m_fSmokeTraceParticleRand;
 }
+
+
+} // namespace amorphous

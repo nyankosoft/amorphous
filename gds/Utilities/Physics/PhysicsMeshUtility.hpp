@@ -7,6 +7,10 @@
 #include "gds/Physics/SceneUtility.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -32,6 +36,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __PhysicsMeshUtility_HPP__ */

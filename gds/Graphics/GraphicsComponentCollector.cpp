@@ -1,5 +1,9 @@
 #include "GraphicsComponentCollector.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -107,3 +111,6 @@ void CGraphicsComponentCollector::LoadGraphicsResources( const CGraphicsParamete
 		m_vecpGraphicsComponent[i]->LoadGraphicsResources( rParam );
 	}
 }
+
+
+} // namespace amorphous

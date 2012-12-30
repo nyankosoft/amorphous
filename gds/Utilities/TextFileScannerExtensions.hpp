@@ -8,6 +8,10 @@
 #include "gds/Graphics/FloatRGBColor.hpp"
 #include "gds/Graphics/FloatRGBAColor.hpp"
 #include "gds/Graphics/Rect.hpp"
+
+
+namespace amorphous
+{
 using namespace Graphics;
 
 
@@ -70,6 +74,9 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, SRect& dest )
 		index += 4;
 	}
 }
+
+
+} // namespace amorphous
 
 
 

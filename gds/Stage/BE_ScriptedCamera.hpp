@@ -16,6 +16,10 @@
 #include "gds/GameCommon/CriticalDamping.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_CameraController;
 
 
@@ -464,6 +468,9 @@ public:
 
 	friend CBE_CameraController;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_ScriptedCamera_H__  */

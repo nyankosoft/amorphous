@@ -12,6 +12,10 @@
 #include <math.h>
 #include <limits.h>
 
+
+namespace amorphous
+{
+
 // some useful angle things
 #define PI 3.1415926535897932384626433832795
 //#define TWO_PI 6.28318530717958647692528676655901
@@ -93,6 +97,9 @@ inline bool is_finite(Scalar val)
 }
 
 #endif
+
+} // namespace amorphous
+
 
 
 #endif

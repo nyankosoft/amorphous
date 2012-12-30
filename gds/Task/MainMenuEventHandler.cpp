@@ -11,6 +11,10 @@
 //#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -181,3 +185,6 @@ void CResolutionChangeEventHandler::HandleEvent( CGM_Event &event )
 	}
 }
 
+
+
+} // namespace amorphous

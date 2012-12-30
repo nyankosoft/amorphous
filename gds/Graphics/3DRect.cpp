@@ -2,6 +2,10 @@
 #include "Graphics/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 /*
 C3DRect::C3DRect()
 {
@@ -112,3 +116,5 @@ void C3DRect::SetPosition(D3DXVECTOR3* pvRectPosition,
 	}
 
 }*/
+
+} // amorphous

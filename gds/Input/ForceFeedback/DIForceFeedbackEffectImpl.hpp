@@ -10,6 +10,10 @@
 #include "ForceFeedbackTargetDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 class CDIForceFeedbackEffectImpl : public CForceFeedbackEffectImpl
 {
 	LPDIRECTINPUTEFFECT   m_pEffect;
@@ -72,6 +76,9 @@ public:
 
 	Result::Name OnInputDevicePlugged();
 };
+
+
+} // namespace amorphous
 
 
 

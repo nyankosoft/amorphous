@@ -7,6 +7,10 @@
 #include "D3DShaderManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
+
+namespace amorphous
+{
+
 class CD3DFixedFunctionPipelineLightManager;
 
 
@@ -231,6 +235,9 @@ inline Result::Name CD3DFixedFunctionPipelineManager::SetTechnique( CShaderTechn
 	return Result::UNKNOWN_ERROR;
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __D3DFixedFunctionPipelineManager_HPP__  */

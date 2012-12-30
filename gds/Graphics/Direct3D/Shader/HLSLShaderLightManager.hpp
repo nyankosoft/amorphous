@@ -6,6 +6,10 @@
 #include "Graphics/Shader/ShaderLightManager.hpp"
 
 
+namespace amorphous
+{
+
+
 class CHLSLShaderLightManager : public CShaderLightManager
 {
 //	static const int m_iNumMaxLights = 6;	error
@@ -261,6 +265,9 @@ inline void CHLSLShaderLightManager::SetHemisphericSpotlight( const CHemispheric
 {
 	m_LightCache.vecHSSpotlight.push_back( light );
 }
+
+
+} // namespace amorphous
 
 
 

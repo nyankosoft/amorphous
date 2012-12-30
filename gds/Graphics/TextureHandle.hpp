@@ -9,6 +9,10 @@
 #include <boost/weak_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 class CTextureHandle : public CGraphicsResourceHandle
 {
 protected:
@@ -81,6 +85,9 @@ public:
 /*
 inline const CTextureHandle &CTextureHandle::operator=( const CTextureHandle& handle ){}
 */
+
+} // namespace amorphous
+
 
 
 #endif  /* __TextureHandle_H__ */

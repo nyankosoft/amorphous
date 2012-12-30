@@ -6,6 +6,10 @@
 #include "Matrix44.hpp"
 
 
+namespace amorphous
+{
+
+
 // global functions
 
 inline void ToMatrix44( const Matrix34& src, Matrix44& dest );
@@ -84,6 +88,9 @@ inline void ToMatrix34( const Matrix44& src, Matrix34& dest )
 	dest.vPosition.y = src(1,3);
 	dest.vPosition.z = src(2,3);
 }
+
+
+} // namespace amorphous
 
 
 

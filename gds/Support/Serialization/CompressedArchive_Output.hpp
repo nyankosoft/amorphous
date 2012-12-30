@@ -11,10 +11,10 @@
 #include "../Zlib/zpipe_stream.h"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -97,7 +97,7 @@ protected:
 }  /*  Serialization  */
 
 
-}  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif		/*  __CompressedArchive_Output_H__  */

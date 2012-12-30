@@ -13,6 +13,10 @@
 
 #include <string>
 
+
+namespace amorphous
+{
+
 std::wstring to_wstr( char* p )
 {
 	std::wstring dest;
@@ -155,5 +159,8 @@ inline bool GetFilenames( std::vector<std::string>& vecstrDestFilename, LPSTR pc
 	return true;
 }
 */
+} // amorphous
+
+
 
 #endif  /*  __FILE_OPEN_DIALOG_WIN32_VC8_H__  */

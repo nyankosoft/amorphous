@@ -7,7 +7,11 @@
 #include "gds/BVH/fwd.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace msynth
@@ -103,6 +107,9 @@ inline void CTransformNode::Serialize( IArchive & ar, const unsigned int version
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __TransformNode_H__ */

@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 #define RETURN_AFTER_LOGGING_ERROR(text,error_code) LOG_PRINT_ERROR(text); return error_code
 
 
@@ -531,3 +535,5 @@ HRESULT CWaveFile::Write( UINT nSizeToWrite, BYTE* pbSrcData, UINT* pnSizeWrote 
 
     return S_OK;
 }
+
+} // namespace amorphous

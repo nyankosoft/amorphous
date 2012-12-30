@@ -5,6 +5,10 @@
 #include "Joint.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -58,6 +62,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysRevoluteJoint_H__  */

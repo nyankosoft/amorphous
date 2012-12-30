@@ -5,6 +5,10 @@
 #include "GM_Control.hpp"
 
 
+namespace amorphous
+{
+
+
 /** Scrollbar
  - CGM_ListBox creates the scrollbar control
    - User does not create the scrollbar
@@ -86,6 +90,9 @@ protected:
     ARROWSTATE m_Arrow;	///< State of the arrows
     double m_dArrowTS;	///< Timestamp of last arrow event.
 };
+
+} // namespace amorphous
+
 
 
 #endif /*  __GM_CONTROL_SCROLLBAR__  */

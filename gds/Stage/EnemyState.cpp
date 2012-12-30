@@ -3,6 +3,10 @@
 #include "CopyEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 CEnemyState::CEnemyState()
 {
 }
@@ -141,3 +145,6 @@ void CES_UnderAttack::Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float d
 	rBaseEntity.AimAlong(&rEntity,rvDesiredDirection);
 	rBaseEntity.ManeuverUnderAttack(&rEntity,pExtraData);
 }
+
+
+} // namespace amorphous

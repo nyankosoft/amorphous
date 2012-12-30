@@ -3,6 +3,10 @@
 
 #include "GameItem.hpp"
 
+
+namespace amorphous
+{
+
 class CClothSystem;
 
 
@@ -56,6 +60,9 @@ public:
 
 	friend class CItemDatabaseBuilder;
 };
+
+
+} // namespace amorphous
 
 
 

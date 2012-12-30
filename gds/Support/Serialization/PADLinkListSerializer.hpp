@@ -5,7 +5,7 @@
 #include "Support/PreAllocDynamicLinkList.hpp"
 #include "Support/Serialization/ArchiveObjectBase.hpp"
 
-using namespace GameLib1;
+using namespace amorphous;
 
 template<class T>
 class TCPADLinkListSerializer : public IArchiveObjectBase

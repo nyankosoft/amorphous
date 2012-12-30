@@ -3,6 +3,10 @@
 
 #include "Input/InputHandler.hpp"
 
+
+namespace amorphous
+{
+
 //extern bool g_bAppExitRequested;
 
 
@@ -15,6 +19,9 @@ public:
 	void ProcessInput(SInputData& input);
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GlobalInputHandler_H__  */

@@ -8,6 +8,10 @@
 #include "Support/DebugOutput.hpp"
 
 
+namespace amorphous
+{
+
+
 CGameStageFrameworkGlobalParams::CGameStageFrameworkGlobalParams()
 :
 m_fDefaultPhysicsSimulationTimestep( 0.01f ),
@@ -63,3 +67,6 @@ void CGameStageFrameworkGlobalParams::Serialize( IArchive& ar, const unsigned in
 	ar & m_StartupDebugWindow;
 }
 
+
+
+} // namespace amorphous

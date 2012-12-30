@@ -8,6 +8,10 @@
 #include <windows.h>
 #include <mmsystem.h>
 
+
+namespace amorphous
+{
+
 // Visual Leak Detector
 // - Works only if you run the App in 1)Debug Mode (default: F5) of 2)Debug build
 // - Commented out: Xerces 3.0.1 (XML parser) crashes when the vld is used.
@@ -191,3 +195,5 @@ int main()
 
 
 #endif
+
+} // namespace amorphous

@@ -6,10 +6,11 @@
 
 #include "fwd.hpp"
 #include "Rect.hpp"
-using namespace Graphics;
-
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 //===============================================================================
@@ -168,6 +169,9 @@ public:
 };
 
 
+
+
+} // namespace amorphous
 
 
 

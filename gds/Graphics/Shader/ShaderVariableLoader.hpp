@@ -8,6 +8,10 @@
 #include "../MeshContainerRenderMethod.hpp"
 
 
+namespace amorphous
+{
+
+
 template<typename T>
 class CShaderVariableLoader : public CShaderParamsLoader
 {
@@ -44,6 +48,9 @@ public:
 		return LoadShaderParam( m_Parameter );
 	}
 };
+
+
+} // namespace amorphous
 
 
 

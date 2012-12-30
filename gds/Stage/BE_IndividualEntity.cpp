@@ -8,6 +8,10 @@
 #include "Physics/Actor.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -86,3 +90,6 @@ bool CBE_IndividualEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 	return false;
 }
 */
+
+
+} // namespace amorphous

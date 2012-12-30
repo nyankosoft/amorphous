@@ -4,6 +4,10 @@
 
 #include "Support/NamedResourceHandle.hpp"
 
+
+namespace amorphous
+{
+
 class CSurfaceMaterialManager;
 
 //typedef CNamedResourceHandle<CSurfaceMaterialManager> CSurfaceMaterialHandle;
@@ -14,6 +18,9 @@ public:
 
 	friend class CSurfaceMaterialManager;
 };
+
+} // amorphous
+
 
 
 #endif		/*  __SurfaceMaterialHandle_H__  */

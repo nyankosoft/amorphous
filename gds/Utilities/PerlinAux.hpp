@@ -8,6 +8,10 @@
 #include "../Support/2DArray.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPerlinNoiseParams
 {
 public:
@@ -76,6 +80,9 @@ inline void GetPerlinTexture( const CPerlinNoiseParams& params, C2DArray<float>&
 		}
 	}
 }
+
+
+} // amorphous
 
 
 

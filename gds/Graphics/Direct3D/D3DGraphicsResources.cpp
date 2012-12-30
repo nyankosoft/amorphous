@@ -10,7 +10,11 @@
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 using std::string;
 using std::vector;
@@ -546,3 +550,6 @@ CShaderManager *CD3DShaderResource::CreateFixedFunctionPipelineManager()
 {
 	return new CD3DFixedFunctionPipelineManager;
 }
+
+
+} // namespace amorphous

@@ -15,6 +15,10 @@
 #include "Input/InputHandler_Cutscene.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 
 
@@ -400,3 +404,6 @@ void CBE_CameraController::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_bUseCutsceneInputHandler;
 }
+
+
+} // namespace amorphous

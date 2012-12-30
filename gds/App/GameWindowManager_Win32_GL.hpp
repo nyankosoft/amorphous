@@ -6,6 +6,10 @@
 #include "../base.hpp"
 
 
+namespace amorphous
+{
+
+
 extern LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM );
 
 
@@ -49,6 +53,9 @@ inline CGameWindowManager_Win32_GL& GameWindowManager_Win32_GL()
 {
 	return CGameWindowManager_Win32_GL::ms_SingletonInstance_;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GameWindowManager_Win32_GL_H__  */

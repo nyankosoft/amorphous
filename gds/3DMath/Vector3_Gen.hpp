@@ -12,6 +12,9 @@
 #include "precision.h"
 
 
+namespace amorphous
+{
+
 template<typename T>
 class tVector3
 {
@@ -60,11 +63,15 @@ public:
 };
 
 
-#include "Vector3_Gen.inl"
-
 
 typedef tVector3<float> Vector3;
 typedef tVector3<double> dVector3;
+
+} // namespace amorphous
+
+
+#include "Vector3_Gen.inl"
+
 
 
 #endif		/*  __VECTOR3_GEN_H__  */

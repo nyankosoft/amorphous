@@ -1,6 +1,10 @@
 #include "GraphicsResourceHandle.hpp"
 #include "GraphicsResourceEntries.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -37,3 +41,6 @@ void CGraphicsResourceHandle::DecResourceRefCount()
         GetEntry()->DecRefCount();
 }
 */
+
+
+} // namespace amorphous

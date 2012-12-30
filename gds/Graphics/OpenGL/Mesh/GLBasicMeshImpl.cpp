@@ -5,6 +5,13 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+#include "Graphics/OpenGL/Mesh/GLProgressiveMeshImpl.hpp" // Used by CGLMeshImplFactory
+#include "Graphics/OpenGL/Mesh/GLSkeletalMeshImpl.hpp"	  // Used by CGLMeshImplFactory
+
+
+namespace amorphous
+{
+
 using namespace std;
 //using namespace boost;
 
@@ -558,10 +565,10 @@ void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
 {
 }
 
-#include "Graphics/OpenGL/Mesh/GLProgressiveMeshImpl.hpp"
-#include "Graphics/OpenGL/Mesh/GLSkeletalMeshImpl.hpp"
-
 
 CMeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new CGLBasicMeshImpl; }
 CMeshImpl* CGLMeshImplFactory::CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
 CMeshImpl* CGLMeshImplFactory::CreateSkeletalMeshImpl() { return new CGLSkeletalMeshImpl; }
+
+
+} // namespace amorphous

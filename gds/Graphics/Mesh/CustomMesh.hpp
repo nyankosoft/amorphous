@@ -9,7 +9,10 @@
 #include "gds/Graphics/General3DVertex.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CCustomMesh : public CMeshImpl
@@ -357,6 +360,9 @@ inline void CCustomMesh::CopyVertexTo( uint src_vertex_index, CCustomMesh& dest,
 		GetVertexSize()
 		);
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __CustomMesh_HPP__ */

@@ -9,6 +9,10 @@
 #include <map>
 
 
+namespace amorphous
+{
+
+
 Result::Name SplitMeshByPlane( const CCustomMesh& src, const Plane& split_plane, CCustomMesh& dest_front, CCustomMesh& dest_back );
 
 
@@ -83,6 +87,9 @@ public:
 
 	void GetSplitResults( CMeshSplitResults& dest ) const { dest = m_MeshSplitResults; }
 };
+
+
+} // namespace amorphous
 
 
 

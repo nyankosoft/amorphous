@@ -15,6 +15,10 @@
 #include <map>
 
 
+namespace amorphous
+{
+
+
 class CGameTask : public CGraphicsComponent
 {
 	/// Started in CGameTask::CGameTask()
@@ -260,6 +264,9 @@ public:
 		m_pGameTask->RenderBase();
  	}
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GameTask_H__  */

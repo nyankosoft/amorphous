@@ -10,7 +10,7 @@
 #include "General3DMesh.hpp"
 
 
-namespace MeshModel
+namespace amorphous
 {
 
 
@@ -237,7 +237,7 @@ public:
 };
 
 
-}
+} // namespace amorphous
 
 
 #endif		/*  __3DMESHMODELBUILDER_H__  */

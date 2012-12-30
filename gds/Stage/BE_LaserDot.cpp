@@ -10,6 +10,10 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CBE_LaserDot::CBE_LaserDot()
 {
 	m_bNoClip = true;
@@ -192,3 +196,6 @@ void CBE_LaserDot::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_LaserDotTexFilepath;
 }
+
+
+} // namespace amorphous

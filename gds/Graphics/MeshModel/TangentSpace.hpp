@@ -5,6 +5,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 class CTangentSpaceInfo
 {
 	Vector3 vBinormal;
@@ -28,6 +32,9 @@ public:
 	void Update();
 
 };
+
+
+} // namespace amorphous
 
 
 

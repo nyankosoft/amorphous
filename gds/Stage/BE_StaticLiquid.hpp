@@ -2,6 +2,10 @@
 #define __BE_StaticLiquid_HPP__
 
 #include "BaseEntity.hpp"
+
+
+namespace amorphous
+{
 //#include "CopyEntity.hpp"
 
 
@@ -32,6 +36,9 @@ public:
 
 	friend class CCoreBaseEntitiesLoader;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_StaticLiquid_HPP__  */

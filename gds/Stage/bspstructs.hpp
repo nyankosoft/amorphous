@@ -9,6 +9,10 @@
 #include "BSPMapCompiler/MapFace.hpp"
 
 
+namespace amorphous
+{
+
+
 #define OUTSIDE_NODE -32767
 #define HEAD_NODE 0
 enum { CLD_FRONT, CLD_BACK };
@@ -76,5 +80,8 @@ enum OnPlaneCondition { OPC_IF_NORMAL_SAME_DIRECTION = 1, OPC_DONTCARE_NORMAL_DI
 
 extern int	ClassifyFace( const SPlane& plane, CFace& face,
 						 int iOnPlaneCondition = OPC_IF_NORMAL_SAME_DIRECTION);
+} // namespace amorphous
+
+
 
 #endif  /*  __BSPSTRUCTS_H__  */

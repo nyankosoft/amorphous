@@ -6,6 +6,10 @@
 #include "GM_ControlRendererManager.hpp"
 #include "GM_Keybind.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -219,3 +223,6 @@ unsigned int CGM_Control::GetState() const
 	else if ( IsMouseOver() ) return STATE_MOUSEOVER;
 	else return STATE_NORMAL;
 }
+
+
+} // namespace amorphous

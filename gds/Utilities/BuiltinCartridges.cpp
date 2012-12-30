@@ -1,6 +1,10 @@
 #include "BuiltinCartridges.hpp"
 #include "../Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using std::pair;
 
 
@@ -178,3 +182,6 @@ bool GetCaseDesc( Caliber::Name caliber, CaseDesc& dest )
 
 
 } // firearm
+
+
+} // amorphous

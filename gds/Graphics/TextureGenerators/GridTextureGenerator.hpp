@@ -4,6 +4,10 @@
 
 #include "TextureFillingAlgorithm.hpp"
 
+
+namespace amorphous
+{
+
 class CGridTextureGenerator : public CTextureFillingAlgorithm
 {
 public:
@@ -125,6 +129,9 @@ public:
 //
 //	return tex;
 //}
+
+} // namespace amorphous
+
 
 
 #endif /* __GridTextureGenerator_HPP__ */

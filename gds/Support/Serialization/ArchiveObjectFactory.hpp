@@ -2,10 +2,10 @@
 #define  __KGL_ARCHIVEOBJECTFACTORY_H__
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -24,8 +24,8 @@ public:
 };
 
 
-}	/*  Serialization  */
+} // namespace serialization
 
-}	/*  GameLib1  */
+} // namespace amorphous
 
 #endif		/*  __KGL_ARCHIVEOBJECTFACTORY_H__  */

@@ -2,6 +2,9 @@
 #define __linear_interpolation_HPP__
 
 
+namespace amorphous
+{
+
 /// \brief Performes a uniform linear interpolation.
 template<typename T>
 inline T get_linearly_interpolated_value( const T *src, unsigned int num_elements, float position )
@@ -117,6 +120,7 @@ public:
 	}
 };
 
+} // namespace amorphous
 
 
 #endif /* __linear_interpolation_HPP__ */

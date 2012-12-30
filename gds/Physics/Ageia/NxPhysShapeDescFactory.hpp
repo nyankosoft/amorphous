@@ -11,6 +11,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -28,6 +32,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __NxPhysShapeDescFactory_H__ */

@@ -6,6 +6,10 @@
 #include "LWO2_Object.hpp"
 
 
+namespace amorphous
+{
+
+
 //==================================================================================
 // CBSPMapData_LW
 //   | map data class designed to load a "*.lwo" ( LWO2 - lightwave object) file  |
@@ -45,5 +49,8 @@ public:
 
 
 };
+} // amorphous
+
+
 
 #endif	/*  __BSPMAPDATA_LW_H__  */

@@ -1,6 +1,10 @@
 #include "SaveDataManager.hpp"
 #include <sys/stat.h>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -155,3 +159,6 @@ bool CSaveDataManager::RemoveComponent( CSaveDataComponent* pComponent )
 	}
 	return false;
 }
+
+
+} // namespace amorphous

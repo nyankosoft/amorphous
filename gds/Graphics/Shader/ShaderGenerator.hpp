@@ -5,6 +5,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 class CShaderGenerator
 {
 
@@ -25,6 +29,9 @@ public:
 
 	virtual bool IsSharableWith( const CShaderGenerator& other ) const { return false; }
 };
+
+
+} // namespace amorphous
 
 
 

@@ -4,6 +4,10 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+
+namespace amorphous
+{
+
 struct TEXTUREVERTEX2
 {
 	D3DXVECTOR3 vPosition;
@@ -13,5 +17,8 @@ struct TEXTUREVERTEX2
 };
 
 #define D3DFVF_TEXTUREVERTEX2 (D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX2)
+
+} // amorphous
+
 
 #endif	/* __FVFTEXTUREVERTEX2_H__ */

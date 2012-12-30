@@ -1,6 +1,10 @@
 #include "LensFlare.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -265,3 +269,6 @@ void CLensFlare::AddLensFlareRectUV( float dim,
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
+
+
+} // namespace amorphous

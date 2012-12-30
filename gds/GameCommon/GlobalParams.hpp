@@ -7,6 +7,10 @@
 #include "Support/Log/LogOutputBase.hpp"
 
 
+namespace amorphous
+{
+
+
 //>>>========================== default config file ==========================
 /*
 resolution 800	600
@@ -91,6 +95,9 @@ public:
 
 
 extern CGlobalParams GlobalParams;
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GLOBALPARAMS_H__  */

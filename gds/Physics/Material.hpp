@@ -4,6 +4,10 @@
 #include "../3DMath/precision.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -86,6 +90,9 @@ public:
 
 
 } // namespace physics
+
+
+} // namespace amorphous
 
 
 

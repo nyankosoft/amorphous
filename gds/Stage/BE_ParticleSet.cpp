@@ -16,6 +16,10 @@
 #include "Support/MTRand.hpp"
 #include "Support/Serialization/Serialization_Color.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using boost::shared_ptr;
 
@@ -961,7 +965,7 @@ bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner 
 }
 
 
-void CBE_ParticleSet::Serialize( GameLib1::Serialization::IArchive& ar, const unsigned int version )
+void CBE_ParticleSet::Serialize( serialization::IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 
@@ -984,3 +988,6 @@ void CBE_ParticleSet::Serialize( GameLib1::Serialization::IArchive& ar, const un
 	ar & m_VertexBufferType;
 	ar & m_BillboardTextureFilepath;
 }
+
+
+} // namespace amorphous

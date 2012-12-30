@@ -9,6 +9,10 @@
 #include "3DMath/MatrixMN.hpp"
 
 
+namespace amorphous
+{
+
+
 #ifdef _DYNAMIC
 const double BASEMAXDIST = 0.02;
 #else
@@ -112,6 +116,9 @@ private:
 	static const double BaseMaxTargetDist;
 
 };
+
+} // amorphous
+
 
 
 #endif  /*  __CLASS_IK_JACOBIAN_H__  */

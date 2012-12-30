@@ -6,6 +6,10 @@
 #include "gds/Task/fwd.hpp"
 #include "ApplicationBase.hpp"
 
+
+namespace amorphous
+{
+
 class CGlobalInputHandler;
 class CGameApplicationBase;
 class CLogOutput_ScrolledTextBuffer;
@@ -100,6 +104,9 @@ public:
 
 	friend void MainLoop( CApplicationBase *pApp );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GameApplicationBase_HPP__  */

@@ -4,7 +4,11 @@
 #include "Support/SerializableStream.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 using namespace std;
 using namespace boost;
@@ -94,7 +98,7 @@ bool CSoundBuffer::LoadOggVorbisSoundFromDisk( const std::string& resource_path 
 	OggVorbis_File ogg_vorbis_file;
 
 	// load on memory
-	bool loaded = ::LoadOggVorbisSoundFromDisk( resource_path, src_buffer, ogg_vorbis_file );
+	bool loaded = amorphous::LoadOggVorbisSoundFromDisk( resource_path, src_buffer, ogg_vorbis_file );
 	if( !loaded )
 		return false;
 
@@ -751,3 +755,6 @@ typedef vorbis_comment * (*LPOVCOMMENT)(OggVorbis_File *vf,int link);
 typedef int (*LPOVOPENCALLBACKS)(void *datasource, OggVorbis_File *vf,char *initial, long ibytes, ov_callbacks callbacks);
 
 */
+
+
+} // namespace amorphous

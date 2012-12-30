@@ -6,6 +6,10 @@
 #include "EntityMotionPathRequest.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGI_Weapon;
 class CGI_Ammunition;
 
@@ -122,6 +126,9 @@ inline int CBE_EnemyShip::GetNewExtraDataIndex()
 
 	return (int)num_extra_data;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_EnemyShip_H__  */

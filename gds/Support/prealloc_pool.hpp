@@ -6,6 +6,10 @@
 #include "SafeDeleteVector.hpp"
 
 
+namespace amorphous
+{
+
+
 template <class CElementType>
 class default_pooled_object_initializer
 {
@@ -231,6 +235,9 @@ public:
 			return NULL; // the requested object has already been released
 	}
 };
+
+} // amorphous
+
 
 
 #endif		/*  __gsf_prealloc_pool_H__  */

@@ -7,6 +7,10 @@
 #include "../3DMath/Vector4.hpp"
 
 
+namespace amorphous
+{
+
+
 class COriginalSceneFilter : public CPostProcessEffectFilter
 {
 public:
@@ -436,5 +440,8 @@ public:
 	void Render();
 };
 */
+} // namespace amorphous
+
+
 
 #endif  /* __PostProcessEffect_HPP__ */

@@ -6,6 +6,10 @@
 #include <GL/gl.h>
 
 
+namespace amorphous
+{
+
+
 class CGLTextureRenderTarget : public CTextureRenderTarget
 {
 private:
@@ -70,6 +74,9 @@ public:
 
 	static boost::shared_ptr<CTextureRenderTarget> Create() { boost::shared_ptr<CGLTextureRenderTarget> p( new CGLTextureRenderTarget ); return p; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GLTextureRenderTarget_HPP__  */

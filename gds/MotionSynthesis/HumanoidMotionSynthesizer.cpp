@@ -9,6 +9,10 @@
 
 #include <boost/foreach.hpp>
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 using namespace msynth;
@@ -281,3 +285,6 @@ void CHumanoidMotionSynthesizer::Walk()
 }
 
 */
+
+
+} // namespace amorphous

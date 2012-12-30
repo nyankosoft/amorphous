@@ -2,6 +2,10 @@
 #include "Script/PyModule_shop.hpp"
 #include "Item/ItemDatabaseManager.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -197,3 +201,6 @@ shared_ptr<CGameItemShop> CreateGameItemShop( const std::string& shop_name )
 
 	return pShop;
 }
+
+
+} // namespace amorphous

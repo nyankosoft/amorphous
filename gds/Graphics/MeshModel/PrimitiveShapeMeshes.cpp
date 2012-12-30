@@ -5,6 +5,10 @@
 #include "3DMeshModelArchive.hpp"
 #include "3DMeshModelBuilder.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace boost;
 
@@ -543,3 +547,6 @@ Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc, C3DMeshModelArc
 	CreateCapsuleMesh( desc, *pMesh );
 	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }
+
+
+} // namespace amorphous

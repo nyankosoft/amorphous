@@ -2,6 +2,10 @@
 #include "HUD_PlayerAircraft.hpp"
 
 
+namespace amorphous
+{
+
+
 HUD_PlayerAircraft::HUD_PlayerAircraft()
 {
 }
@@ -46,3 +50,6 @@ bool HUD_PlayerAircraft::OpenTextWindow( CGameTextSet *pTextSet )
 {
 	return false;
 }
+
+
+} // amorphous

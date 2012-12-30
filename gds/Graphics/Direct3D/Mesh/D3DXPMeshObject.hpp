@@ -8,6 +8,10 @@
 #include "D3DXMeshObjectBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DXPMeshObject : public CD3DXMeshObjectBase
 {
 protected:
@@ -79,6 +83,9 @@ inline void CD3DXPMeshObject::SetDetailLevel( float fLevel )
 
 	SetNumVertices( num_target_verts );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __D3DXPMESHOBJECT_H__  */

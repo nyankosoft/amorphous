@@ -5,6 +5,10 @@
 
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -602,3 +606,6 @@ void CHLSLShaderManager::SetVertexBlendTransforms( const std::vector<Transform>&
 		hr = m_pEffect->SetFloatArray( hTranslation, t, 4 );
 	}
 }
+
+
+} // namespace amorphous

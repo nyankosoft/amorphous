@@ -10,6 +10,10 @@
 #include "MotionPrimitive.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -191,6 +195,9 @@ void CHumanoidCharacterMotionController::Update( float dt )
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif		/*  __HumanoidMotionSynthesizer_H__  */

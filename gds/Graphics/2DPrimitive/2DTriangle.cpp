@@ -2,6 +2,10 @@
 #include "3DMath/aabb2.hpp"
 
 
+namespace amorphous
+{
+
+
 void C2DTriangle::SetPosition( const Vector2& vMin, const Vector2& vMax )
 {
 	AABB2 aabb;
@@ -20,3 +24,6 @@ void C2DTriangle::SetPosition( const Vector2& vMin, const Vector2& vMax )
 		SetPosition( i, vMin + Vector2( vLocalPos.x * scale_x, vLocalPos.y * scale_y ) );
 	}
 }
+
+
+} // namespace amorphous

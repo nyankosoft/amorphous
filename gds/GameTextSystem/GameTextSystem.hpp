@@ -7,6 +7,10 @@
 #include "Support/Serialization/Serialization.hpp"
 
 
+namespace amorphous
+{
+
+
 //----------------------------------------------------------------
 // SGameTextComponent
 // CGameTextSet
@@ -40,5 +44,8 @@ public:
 		return &m_paGameTextSet[iIndex];
 	}
 };
+} // namespace amorphous
+
+
 
 #endif		/*  __GAMETEXTSYSTEM_H__  */

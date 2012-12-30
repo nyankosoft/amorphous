@@ -7,6 +7,10 @@
 #include "TextureHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 // Implementaions of noise effects
 // - Create a noise look-up texture
 //   - No need to use programmable shader
@@ -53,6 +57,9 @@ public:
 
 	void UpdateScreenSize();
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PseudoNoiseEffect_H__  */

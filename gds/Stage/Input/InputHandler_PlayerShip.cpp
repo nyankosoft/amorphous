@@ -8,6 +8,10 @@
 #include "Task/GameTask.hpp"
 
 
+namespace amorphous
+{
+
+
 CInputHandler_PlayerShip::CInputHandler_PlayerShip()
 {
 /*	int i;
@@ -190,3 +194,5 @@ void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 		break;
 	}
 }
+
+} // namespace amorphous

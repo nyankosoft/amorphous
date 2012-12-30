@@ -1,7 +1,7 @@
 #include "BinaryArchive_Input.hpp"
 #include "ArchiveObjectBase.hpp"
 
-using namespace GameLib1::Serialization;
+using namespace amorphous::serialization;
 
 using namespace std;
 

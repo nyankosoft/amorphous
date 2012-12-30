@@ -6,6 +6,10 @@
 #include "../../Support/MTRand.hpp"
 
 
+namespace amorphous
+{
+
+
 class CUniformNoiseTextureGenerator : public CTextureFillingAlgorithm
 {
 public:
@@ -76,6 +80,9 @@ public:
 
 	void FillTexture( CLockedTexture& texture );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __NoiseTextureGenerators_HPP__ */

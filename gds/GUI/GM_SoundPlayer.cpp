@@ -3,6 +3,10 @@
 #include "Sound/SoundManager.hpp"
 
 
+namespace amorphous
+{
+
+
 //=================================================================================
 // CGM_DialogSoundPlayer
 //=================================================================================
@@ -105,3 +109,6 @@ CGM_GlobalSoundPlayer::CGM_GlobalSoundPlayer()
 	m_pDialogCloseButtonSoundPlayer = CGM_ButtonSoundPlayerSharedPtr( new CGM_ButtonSoundPlayer() );
 	m_pListBoxSoundPlayer           = CGM_ListBoxSoundPlayerSharedPtr( new CGM_ListBoxSoundPlayer() );
 }
+
+
+} // namespace amorphous

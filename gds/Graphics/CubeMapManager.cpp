@@ -4,6 +4,10 @@
 #include "Graphics/Shader/ShaderManagerHub.hpp"
 
 
+namespace amorphous
+{
+
+
 CCubeMapManager::CCubeMapManager()
 :
 m_pCubeMapSceneRenderer(NULL)
@@ -298,3 +302,6 @@ void CCubeMapManager::ReleaseGraphicsResources()
 
 	m_pCurrentCubeMap = NULL;
 }
+
+
+} // namespace amorphous

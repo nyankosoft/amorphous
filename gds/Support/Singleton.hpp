@@ -5,7 +5,7 @@
 #include <boost/thread/mutex.hpp>
 
 
-namespace NS_KGL
+namespace amorphous
 {
 
 
@@ -110,7 +110,7 @@ template <class T> void	CSingleton<T>::Release()
 }
 
 
-}	/*  NS_KGL  */
+} // namespace amorphous
 
 
 #endif  /*  __GDS_SINGLETON_H__  */

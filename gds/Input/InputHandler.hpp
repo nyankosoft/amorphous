@@ -2,6 +2,13 @@
 #define  __INPUTHANDLER_H__
 
 
+#include <vector> // Used by CInputHandler
+
+
+namespace amorphous
+{
+
+
 enum eGeneralInputCode
 {
 	GIC_KBD_MIN = 0x20,
@@ -223,8 +230,6 @@ inline bool SInputData::IsGamepadInput() const
 }
 
 
-#include <vector>
-
 
 class CInputHandler
 {
@@ -348,6 +353,9 @@ public:
 		m_pTarget->HandleInput( input );
 	}
 };
+
+
+} // namespace amorphous
 
 
 

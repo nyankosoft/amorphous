@@ -14,6 +14,10 @@
 #include "gds/3DMath/Matrix34.hpp"
 
 
+namespace amorphous
+{
+
+
 class CTextFileScanner;
 
 
@@ -363,6 +367,9 @@ public:
 
 	CLWS_Fog();
 };
+
+} // amorphous
+
 
 
 #endif /* __LWS_Items_HPP__ */

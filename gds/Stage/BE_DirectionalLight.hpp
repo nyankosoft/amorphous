@@ -4,6 +4,10 @@
 #include "BE_Light.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_DirectionalLight : public CBE_Light
 {
 private:
@@ -45,5 +49,8 @@ public:
 //	void ReleaseGraphicsResources();
 //	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_DIRECTIONALLIGHT_H__  */

@@ -7,7 +7,10 @@
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/Rect.hpp"
-using namespace Graphics;
+
+
+namespace amorphous
+{
 
 using std::vector;
 using namespace boost;
@@ -630,3 +633,6 @@ PyMethodDef g_PyModuleGraphicsElementMethod[] =
 	{NULL, NULL}
 };
 */
+
+
+} // namespace amorphous

@@ -1,6 +1,10 @@
 #include "GameTextSet.hpp"
 #include "Graphics/Font/FontBase.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -80,3 +84,5 @@ void CGameTextSet::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecTextComponent;
 }
+
+} // namespace amorphous

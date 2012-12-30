@@ -4,6 +4,10 @@
 #include "JL_PhysicsManager.hpp"
 #include "JL_CollisionFunctor.hpp"
 
+
+namespace amorphous
+{
+
 class CJL_Shape_Box;
 class CTriangleMesh;
 
@@ -463,3 +467,6 @@ void ReduceContactPointsX2( CJL_CollisionFunctor& rDestCollFunctor,
 }
 
 #endif  /*  USE_COMBINED_COLLISION_POINTS_INFO  */
+
+
+} // namespace amorphous

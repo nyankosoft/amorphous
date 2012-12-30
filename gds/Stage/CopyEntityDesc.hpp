@@ -11,6 +11,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 class CCopyEntityTypeID
 {
 public:
@@ -135,6 +139,9 @@ public:
 		WorldPose = rWorldPose;
 	}
 };
+
+
+} // namespace amorphous
 
 
 

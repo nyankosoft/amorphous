@@ -10,6 +10,10 @@
 #include "Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -590,3 +594,6 @@ bool CShaderLoader::LoadToGraphicsMemoryByRenderThread()
 	else
 		return false;*/
 }
+
+
+} // namespace amorphous

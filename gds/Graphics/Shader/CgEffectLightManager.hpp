@@ -6,6 +6,10 @@
 #include <Cg/cg.h>
 
 
+namespace amorphous
+{
+
+
 class CCgEffectLightManager : public CShaderLightManager
 {
 //	static const int m_iNumMaxLights = 6;	error
@@ -212,6 +216,9 @@ inline void CCgEffectLightManager::SetHemisphericSpotlight( const CHemisphericSp
 {
 	m_LightCache.vecHSSpotlight.push_back( light );
 }
+
+
+} // namespace amorphous
 
 
 

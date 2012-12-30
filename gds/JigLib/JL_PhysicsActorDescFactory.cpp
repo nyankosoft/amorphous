@@ -5,6 +5,10 @@
 #include "CJL_PhysicsActorDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 
 IArchiveObjectBase *CJL_PhysicsActorDescFactory::CreateObject( const unsigned int id )
 {
@@ -15,3 +19,5 @@ IArchiveObjectBase *CJL_PhysicsActorDescFactory::CreateObject( const unsigned in
 	default:	return NULL;
 	}
 }
+
+} // amorphous

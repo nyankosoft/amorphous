@@ -5,6 +5,10 @@
 #include "Support/Profile.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -131,3 +135,6 @@ void CGLCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, CShaderManager& sha
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
+
+
+} // namespace amorphous

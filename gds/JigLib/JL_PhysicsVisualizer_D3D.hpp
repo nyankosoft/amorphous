@@ -5,6 +5,10 @@
 #include "Graphics/GraphicsComponentCollector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CJL_PhysicsManager;
 //class CUnitCube;
 
@@ -55,6 +59,9 @@ public:
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
+
+
+} // namespace amorphous
 
 
 

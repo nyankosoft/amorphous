@@ -46,6 +46,11 @@
 */
 
 #include <stdio.h>
+#include <math.h> // Used by GaussianRand
+
+
+namespace amorphous
+{
 
 /* Period parameters */  
 #define MTR_N 624
@@ -234,8 +239,6 @@ inline float GaussianRandFloat32()
 // gaussian random number generator by Box-Muller method
 // ==============================================================
 
-#include <math.h>
-
 
 inline void GaussianRand( float& x, float& y )
 {
@@ -276,6 +279,9 @@ inline int main(void)
     return 0;
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __MERSENNETWISTERRAND_H__  */

@@ -9,6 +9,10 @@
 #include "ShapeEnums.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -438,6 +442,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysShape_H__  */

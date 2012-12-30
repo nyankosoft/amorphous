@@ -2,6 +2,10 @@
 #include "Matrix33.hpp"
 
 
+namespace amorphous
+{
+
+
 static void CreateHelix_AddCordFacePolygon(
 	unsigned int vertex_offset,
 	unsigned int num_cord_sides,
@@ -194,3 +198,6 @@ template void CreateUniformCylindricalHelix(
 	std::vector< tVector3<double> >& normals,
 	std::vector< std::vector<unsigned int> >& polygons
 	);
+
+
+} // namespace amorphous

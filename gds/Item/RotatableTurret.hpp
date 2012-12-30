@@ -9,6 +9,10 @@
 #include "../base.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGI_Weapon;
 class CGI_Ammunition;
 
@@ -123,6 +127,9 @@ public:
 
 	void SetOwner( boost::shared_ptr<CGameItem> pOwner ) { m_pOwner = pOwner; }
 };
+
+
+} // namespace amorphous
 
 
 

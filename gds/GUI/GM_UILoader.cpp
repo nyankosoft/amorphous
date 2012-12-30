@@ -7,6 +7,10 @@
 #include "UI/ui.h"
 
 
+namespace amorphous
+{
+
+
 CGM_Loader::CGM_Loader()
 {
 }
@@ -123,3 +127,5 @@ void CGM_Loader::LoadDesc( CTextFileScanner& scanner, CGM_StaticDesc& desc )
 	m_fRadius = sphere.radius;
 
 }
+
+} // amorphous

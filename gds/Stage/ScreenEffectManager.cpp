@@ -14,6 +14,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 //using namespace std;
 using namespace boost;
 
@@ -911,3 +915,6 @@ void CScreenEffectManager::CreateRenderTasks()
 		RenderTaskProcessor.AddRenderTask( new CSimpleMotionBlurRenderTask( m_pSimpleMotionBlur.get() ) );
 	}
 }
+
+
+} // namespace amorphous

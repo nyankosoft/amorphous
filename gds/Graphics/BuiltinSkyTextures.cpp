@@ -1,6 +1,10 @@
 #include "BuiltinSkyTextures.hpp"
 
 
+namespace amorphous
+{
+
+
 U32 s_Skygrad__Day_Sunny_Data[] =
 {
 	0x474e5089, 0x0a1a0a0d, 0x0d000000, 0x52444849,
@@ -41,3 +45,6 @@ const CBuiltinImage& GetDefaultBuiltinSkyTexture()
 {
 	return s_Skygrad__Day_Sunny;
 }
+
+
+} // namespace amorphous

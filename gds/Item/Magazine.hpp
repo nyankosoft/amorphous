@@ -7,6 +7,10 @@
 #include "GameItem.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCartridge;
 
 
@@ -60,6 +64,9 @@ public:
 
 	bool IsInserted() const { return m_IsInserted; }
 };
+
+
+} // namespace amorphous
 
 
 

@@ -18,6 +18,10 @@
 #include "CopyEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSubDisplayType
 {
 public:
@@ -213,6 +217,9 @@ inline SubMonitor *CSubDisplay::GetCurrentMonitor()
 	else
 		return NULL;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SubDisplay_H__  */

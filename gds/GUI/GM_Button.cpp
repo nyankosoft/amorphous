@@ -9,6 +9,10 @@
 #include "Support/SafeDelete.hpp"
 
 
+namespace amorphous
+{
+
+
 //========================================================================================
 // CGM_Button
 //========================================================================================
@@ -317,3 +321,6 @@ bool CGM_RadioButton::HandleMouseInput( CGM_InputData& input )
     return false;
 }
 */
+
+
+} // namespace amorphous

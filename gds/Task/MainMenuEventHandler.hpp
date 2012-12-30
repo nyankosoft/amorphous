@@ -5,6 +5,10 @@
 #include "Sound/SoundHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * event handler for basic menu operations
  *
@@ -60,6 +64,9 @@ public:
 	~CPhysSimVisEventHandler() {}
 	virtual void HandleEvent( CGM_Event &event );
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __MAINMENUEVENTHANDLER_H__ */

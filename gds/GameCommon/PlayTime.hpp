@@ -6,7 +6,11 @@
 
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CPlayTime : public IArchiveObjectBase
@@ -83,6 +87,9 @@ inline void CPlayTime::GetCurrentPlayTimeString( std::string& dest, int format )
 
 	dest = buf;
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __PLAYTIME_H__ */

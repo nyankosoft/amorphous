@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -797,3 +801,6 @@ void CGraphicsElementManager::SetScale( float scale )
 			m_vecpFont[i]->SetFontSize( (int)font_size.x, (int)font_size.y );
 	}
 }
+
+
+} // namespace amorphous

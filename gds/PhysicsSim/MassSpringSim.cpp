@@ -3,6 +3,10 @@
 #include "Support/FixedVector.hpp"
 
 
+namespace amorphous
+{
+
+
 int g_Counter = 0;
 
 
@@ -505,3 +509,6 @@ void CMS_MassSpringSim::UpdateWorldProperties( D3DXMATRIX *paWorldTransform )
 void CMS_MassSpringSim::UpdateWorldProperties( Matrix34 *paWorldTransform )
 {
 }
+
+
+} // amorphous

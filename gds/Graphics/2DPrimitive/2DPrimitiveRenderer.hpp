@@ -6,6 +6,10 @@
 #include "../GraphicsDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 class C2DPrimitiveRenderer
 {
 public:
@@ -47,6 +51,9 @@ inline C2DPrimitiveRenderer*& PrimitiveRendererPtr()
 
 /// 2D primitive renderer must be initialized before calling this.
 inline C2DPrimitiveRenderer& PrimitiveRenderer() { return *PrimitiveRendererPtr(); }
+
+
+} // namespace amorphous
 
 
 

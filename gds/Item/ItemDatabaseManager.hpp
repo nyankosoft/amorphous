@@ -5,12 +5,15 @@
 #include "fwd.hpp"
 #include "GameItem.hpp"
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
 #include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include <boost/shared_ptr.hpp>
+
+
+namespace amorphous
+{
 
 
 /**
@@ -71,6 +74,9 @@ inline CItemDatabaseManager& ItemDatabaseManager()
 {
 	return (*(CItemDatabaseManager::Get()));
 }
+
+
+} // namespace amorphous
 
 
 

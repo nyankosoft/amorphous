@@ -5,7 +5,7 @@
 #include "../fwd.hpp"
 
 
-namespace MeshModel
+namespace amorphous
 {
 
 
@@ -63,7 +63,7 @@ public:
 };
 
 
-}  /*  MeshModel  */
+} // namespace amorphous
 
 
 #endif  /*  __ShadowVolumeMeshGenerator_HPP__  */

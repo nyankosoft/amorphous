@@ -10,6 +10,10 @@
 #include "StageViewerGameTask.hpp"
 
 
+namespace amorphous
+{
+
+
 CGameTaskFactoryBase::~CGameTaskFactoryBase()
 {
 }
@@ -51,3 +55,6 @@ CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
 		return NULL;
 	}
 }
+
+
+} // namespace amorphous

@@ -6,6 +6,10 @@
 #include "../../Graphics/MeshModel/General3DMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 inline void General3DMeshToTriangleMeshDesc( const CGeneral3DMesh& src, physics::CTriangleMeshDesc& dest )
 {
 	using std::vector;
@@ -38,6 +42,9 @@ inline void General3DMeshToTriangleMeshDesc( const CGeneral3DMesh& src, physics:
 		dest.m_vecIndex[i*3+2] = triangulated_polygons[i].m_index[2];
 	}
 }
+
+
+} // amorphous
 
 
 

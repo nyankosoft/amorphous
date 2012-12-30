@@ -8,6 +8,10 @@
 #include "../Direct3D/Shader/Embedded/EmbeddedGenericHLSL.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGenericShaderGenerator : public CShaderGenerator
 {
 	CGenericShaderDesc m_Desc;
@@ -42,6 +46,9 @@ public:
 
 	const CGenericShaderDesc& GetGenericShaderDesc() const { return m_Desc; }
 };
+
+
+} // namespace amorphous
 
 
 

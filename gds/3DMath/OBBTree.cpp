@@ -4,6 +4,10 @@
 #include <float.h>
 
 
+namespace amorphous
+{
+
+
 COBBTree::COBBTree()
 {
 	pOBBTopNode = new OBBNODE;
@@ -472,3 +476,6 @@ bool COBBTree::Jacobi( float a[3][3], float v[3][3], float d[3] )
 
 	return false;
 }
+
+
+} // namespace amorphous

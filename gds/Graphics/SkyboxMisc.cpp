@@ -8,6 +8,10 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/TextureGenerators/GradationTextureGenerators.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -204,3 +208,6 @@ CTextureHandle CreateCloudyNightSkyTexture()
 	LOG_PRINT_ERROR( " Not implemented yet." );
 	return CTextureHandle();
 }
+
+
+} // namespace amorphous

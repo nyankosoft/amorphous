@@ -4,6 +4,10 @@
 
 #include "3DMath/Vector3.hpp"
 
+
+namespace amorphous
+{
+
 class CJL_PhysicsActor;
 
 
@@ -47,6 +51,9 @@ public:
 
 	CJL_ContactPair& GetContactPair( int index ) { return m_vecContactPair[index]; }
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __JL_CONTACTPAIR_H__  */

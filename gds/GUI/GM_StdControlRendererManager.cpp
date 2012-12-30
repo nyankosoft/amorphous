@@ -5,6 +5,10 @@
 #include "GUI.hpp"
 
 
+namespace amorphous
+{
+
+
 CGM_StdControlRendererManager::CGM_StdControlRendererManager()
 {
 	m_pGraphicsElementManager->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono-Bold-256", CFontBase::FONTTYPE_TEXTURE, 20, 32, 0, 0 );
@@ -110,3 +114,6 @@ CGM_ControlRenderer *CGM_StdControlRendererManager::CreateCaptionRenderer()
 {
 	return new CGM_StdCaptionRenderer();
 }
+
+
+} // namespace amorphous

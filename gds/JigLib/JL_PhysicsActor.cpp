@@ -8,6 +8,10 @@
 
 #include "Support/MsgBox.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -633,3 +637,6 @@ bool CJL_PhysicsActor::ClipTrace( const Vector3& vStartPos,	// [in]
 	else
 		return false;
 }*/
+
+
+} // namespace amorphous

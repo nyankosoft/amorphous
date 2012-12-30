@@ -6,6 +6,10 @@
 #include "Graphics/Mesh/RectSetMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 /// A note about alpha blending: the class does not have source/dest alpha blend settings
 /// because it always uses pre-multiplied alpha, which is the default blend setting
 /// of the mesh class.
@@ -64,6 +68,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif /*  __BASEENTITY_TEXTUREANIMATION_H__  */

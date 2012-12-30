@@ -5,9 +5,13 @@
 #include "Input/InputHandler.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
-
 #include "GM_Input.hpp"
+
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 
 class CGM_Keybind : public IArchiveObjectBase
@@ -99,6 +103,9 @@ public:
 		ar & m_mapGICodeToGMInputCode;
 	}
 };
+
+
+} // namespace amorphous
 
 
 

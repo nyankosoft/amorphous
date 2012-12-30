@@ -6,6 +6,10 @@
 
 #include "Support/FixedVector.hpp"
 
+
+namespace amorphous
+{
+
 class CJL_ShapeBase;
 
 
@@ -165,6 +169,9 @@ public:
 	{}
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_CONTACTINFO_H__  */

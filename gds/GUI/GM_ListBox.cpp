@@ -10,6 +10,10 @@
 
 #include "Support/SafeDeleteVector.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -779,3 +783,6 @@ void CGM_ListBox::OnItemUpdated( CGM_ListBoxItem& item )
 	if( m_pRenderer )
 		m_pRenderer->OnItemUpdated( *this, item );
 }
+
+
+} // namespace amorphous

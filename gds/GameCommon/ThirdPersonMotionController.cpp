@@ -3,6 +3,10 @@
 #include "../Item/SkeletalCharacter.hpp"
 #include "../Input/InputHandler.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -142,3 +146,6 @@ void CThirdPersonMotionController::HandleInput( int action_code, const SInputDat
 		break;
 	}
 }
+
+
+} // namespace amorphous

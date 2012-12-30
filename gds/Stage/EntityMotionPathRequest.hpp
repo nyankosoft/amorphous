@@ -9,6 +9,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 /**
  * holds a position of a path which an entity should follow
  */
@@ -272,6 +276,9 @@ public:
 
 	void Clear() { pTargetEntity = NULL; vecKeyPose.resize(0); }
 };
+
+
+} // namespace amorphous
 
 
 

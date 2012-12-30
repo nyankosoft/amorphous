@@ -8,6 +8,10 @@
 #include "MotionPrimitive.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -177,6 +181,9 @@ void CScalingMotionBlender::Update( const CMotionPrimitive& motion, CKeyframe& c
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif		/*  __MotionBlender_H__  */

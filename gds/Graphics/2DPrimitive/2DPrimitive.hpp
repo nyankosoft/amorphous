@@ -11,11 +11,13 @@
 #include "../../Graphics/General2DVertex.hpp"
 #include "../../Graphics/GraphicsDevice.hpp"
 #include "../../Graphics/TextureStage.hpp"
-using namespace::Graphics;
-
 #include "../../3DMath/Vector2.hpp"
 #include "../../3DMath/Matrix22.hpp"
 #include "../../3DMath/Vector3.hpp"
+
+
+namespace amorphous
+{
 
 
 /**
@@ -246,6 +248,9 @@ inline void C2DPrimitive::SetCornerColor( int corner, U32 color )
 	c.SetARGB32(color);
 	SetCornerColor( corner, c );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __2DPrimitive_H__  */

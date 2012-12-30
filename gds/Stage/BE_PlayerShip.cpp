@@ -14,6 +14,10 @@
 
 #include "Stage/BE_LaserDot.hpp"
 
+
+namespace amorphous
+{
+
 //#include "Sound/SoundManager.hpp"
 
 #include "Support/memory_helpers.hpp"
@@ -573,3 +577,6 @@ CInputHandler_PlayerBase *CBE_PlayerShip::CreatePlayerInputHandler()
 {
 	return new CInputHandler_PlayerShip();
 }
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "InputDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  Handles input from keyboard in Windows platform
  - takes keyup & keydown notification as virtual keycode
@@ -60,6 +64,9 @@ inline CStdKeyboard& StdWin32Keyboard()
 	}
 
 */
+
+} // namespace amorphous
+
 
 
 #endif		/*  __STDKEYBOARD_H__  */

@@ -8,6 +8,10 @@
 #include "App/GameWindowManager_Win32.hpp"
 
 
+namespace amorphous
+{
+
+
 //===========================================================================
 // CGameTextWindow
 //===========================================================================
@@ -220,3 +224,5 @@ void CGameTextWindow::LoadGraphicsResources( const CGraphicsParameters& rParam )
 	        m_apTexture[i] = NULL;
 	}*/
 }
+
+} // namespace amorphous

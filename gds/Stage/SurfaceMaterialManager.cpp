@@ -6,6 +6,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 CSurfaceMaterialManager::CSurfaceMaterialManager()
 {}
 
@@ -72,3 +76,5 @@ bool CSurfaceMaterialManager::LoadFromFile( const string& filename )
 	return true;
 }
 */
+
+} // namespace amorphous

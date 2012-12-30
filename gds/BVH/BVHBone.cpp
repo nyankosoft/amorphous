@@ -7,6 +7,10 @@
 #include "Graphics/PrimitiveRenderer.hpp"
 #include "Graphics/PrimitiveShapeRenderer.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -461,3 +465,6 @@ void CBVHBone::SetPointersToGlobalTransformMatrix_r( vector<Matrix34 *> *pvecpGl
 		m_vecChild[i].SetPointersToGlobalTransformMatrix_r( pvecpGlobalTransform );
 	}
 }
+
+
+} // namespace amorphous

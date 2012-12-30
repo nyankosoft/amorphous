@@ -4,6 +4,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -54,3 +58,6 @@ void CPreprocessor::Release()
 {
 	SafeDelete( m_pImpl );
 }
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "Stage/bspstructs.hpp"
 
 
+namespace amorphous
+{
+
+
 //=====================================================================================
 // CPlaneBuffer::Methods()                                        - class CPlaneBuffer
 //=====================================================================================
@@ -425,3 +429,5 @@ bool CFace::ClipTrace( CLineSegment& line_segment, CLineSegmentHit& results )
 
 	return false;
 }
+
+} // amorphous

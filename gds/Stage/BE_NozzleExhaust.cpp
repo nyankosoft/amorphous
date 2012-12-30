@@ -5,6 +5,10 @@
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -234,3 +238,6 @@ void CBE_NozzleExhaust::Serialize( IArchive& ar, const unsigned int version )
 //	ar & m_fMuzzleFlash_MaxRadius;
 	ar & m_MuzzleFlashLight;
 }
+
+
+} // namespace amorphous

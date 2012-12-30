@@ -10,6 +10,10 @@
 #include "Support/MTRand.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGI_Weapon;
 class CGI_Ammunition;
 
@@ -157,6 +161,9 @@ inline int CBE_EnemyAircraft::GetNewExtraDataIndex()
 
 	return num_extra_data;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_EnemyAircraft_H__  */

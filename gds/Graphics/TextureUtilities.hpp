@@ -6,6 +6,10 @@
 #include "TextureGenerators/SingleColorTextureGenerator.hpp"
 
 
+namespace amorphous
+{
+
+
 inline CTextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = SFloatRGBAColor::White(), uint width = 1, uint height = 1 )
 {
 	CTextureResourceDesc desc;
@@ -20,6 +24,9 @@ inline CTextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = S
 
 	return tex;
 }
+
+
+} // amorphous
 
 
 

@@ -5,6 +5,9 @@
 #include <d3dx9.h>
 
 
+namespace amorphous
+{
+	
 struct SHADOWVERTEX
 {
     D3DXVECTOR3 vPosition;
@@ -29,6 +32,9 @@ const D3DVERTEXELEMENT9 SHADOWVERTEX_DECLARATION[3] =
     { 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },
     D3DDECL_END()
 };
+
+} // amorphous
+
 
 #endif  /*  __FVF_SHADOW_VERTEX_H__  */
 

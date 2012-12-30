@@ -4,6 +4,10 @@
 #include "gds/Support/lfs.hpp"
 #include "gds/Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -483,3 +487,6 @@ void SetVertexBlendTransforms(  )
 	glUniform4fv( m_Locaiton, count, values );
 }
 */
+
+
+} // namespace amorphous

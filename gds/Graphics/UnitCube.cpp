@@ -3,6 +3,10 @@
 #include "Graphics/Direct3D/FVF_ColorVertex.h"
 
 
+namespace amorphous
+{
+
+
 CUnitCube::CUnitCube()
 {
 	m_pVB = NULL;
@@ -243,3 +247,5 @@ struct CUSTOMVERTEX
 // Our custom FVF, which describes our custom vertex structure
 #define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW|D3DFVF_DIFFUSE)
 */
+
+} // amorphous

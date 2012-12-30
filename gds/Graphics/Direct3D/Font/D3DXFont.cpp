@@ -4,6 +4,10 @@
 #include "Support/StringAux.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -126,3 +130,6 @@ void CD3DXFont::DrawText( const char *str, const Vector2& vPos, DWORD color )
 	strcpy( acTempStr, str );
 	DrawText( acTempStr, vPos, color );
 }*/
+
+
+} // namespace amorphous

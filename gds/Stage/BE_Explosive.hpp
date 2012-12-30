@@ -7,6 +7,10 @@
 #include "gds/Sound/SoundHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Explosive : public CBE_PhysicsBaseEntity
 {
 protected:
@@ -80,5 +84,8 @@ public:
 
 	friend class CCoreBaseEntitiesLoader;
 };
+} // namespace amorphous
+
+
 
 #endif	/*  __BE_EXPLOSIVE_H__  */

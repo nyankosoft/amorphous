@@ -8,6 +8,10 @@
 #include "GraphicsDevice.hpp" // TODO: Separate graphics device-related enums
 
 
+namespace amorphous
+{
+
+
 /*
 class CPrimitiveRendererImpl
 {
@@ -88,6 +92,9 @@ inline CPrimitiveRenderer*& RefPrimitiveRendererPtr()
 
 /// primitive renderer must be initialized before calling this.
 inline CPrimitiveRenderer& GetPrimitiveRenderer() { return *RefPrimitiveRendererPtr(); }
+
+
+} // namespace amorphous
 
 
 

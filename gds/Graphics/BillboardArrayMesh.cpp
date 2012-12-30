@@ -3,6 +3,10 @@
 #include "Support/Macro.h"
 #include "Graphics/Direct3D/FVF_BillboardVertex.h"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -280,3 +284,6 @@ bool CBillboardArrayMeshGenerator::GenerateForMultipleParticleGroups( int num_pa
 	return true;
 }
 
+
+
+} // namespace amorphous

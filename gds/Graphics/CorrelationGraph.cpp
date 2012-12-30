@@ -4,6 +4,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 void CCorrelationGraph::SetData(vector<float> *pvecfData, U32 dwColor)
 {
 	SGraphData new_graph;
@@ -157,3 +161,5 @@ void CCorrelationGraph::Draw()
 
 
 }
+
+} // amorphous

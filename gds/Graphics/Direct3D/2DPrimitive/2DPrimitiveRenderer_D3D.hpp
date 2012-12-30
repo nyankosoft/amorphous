@@ -8,6 +8,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 class C2DPrimitiveRenderer_D3D : public C2DPrimitiveRenderer
 {
 	LPDIRECT3DVERTEXDECLARATION9 m_pVertexDecleration;
@@ -48,6 +52,9 @@ inline C2DPrimitiveRenderer_D3D& PrimitiveRenderer_D3D()
 	static C2DPrimitiveRenderer_D3D s_Renderer;
 	return s_Renderer;
 }
+
+
+} // namespace amorphous
 
 
 

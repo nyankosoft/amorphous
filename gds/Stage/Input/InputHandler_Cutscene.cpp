@@ -3,6 +3,10 @@
 #include "../BE_CameraController.hpp"
 
 
+namespace amorphous
+{
+
+
 //CInputHandler_Cutscene::CInputHandler_Cutscene()
 CInputHandler_Cutscene::CInputHandler_Cutscene( /*CCopyEntity *pEntity,*/ CBE_CameraController *pCameraController )
 :
@@ -74,3 +78,6 @@ void CInputHandler_Cutscene::ProcessInput( SInputData& input )
 		break;	// no action is assigned to this input
 	}
 }
+
+
+} // namespace amorphous

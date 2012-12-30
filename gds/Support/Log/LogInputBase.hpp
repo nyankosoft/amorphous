@@ -9,6 +9,10 @@
 #include "../TimeFormats.hpp"
 
 
+namespace amorphous
+{
+
+
 class CLogOutputBase;
 class CTimer;
 
@@ -112,6 +116,9 @@ public:
 
 	virtual bool TestFilter( int filter_val );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __LOGINPUTBASE_H__  */

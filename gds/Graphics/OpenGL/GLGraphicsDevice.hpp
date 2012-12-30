@@ -7,6 +7,10 @@
 #include <gl/glu.h>			// Header File For The GLu32 Library
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "OpenGL32.lib" )
 #pragma comment( lib, "glu32.lib" )
 
@@ -155,6 +159,9 @@ inline void CGLGraphicsDevice::SetDestBlendMode( AlphaBlend::Mode dest_blend_mod
 	m_DestBlend = ToGLBlendModeEnum( dest_blend_mode );
 	glBlendFunc( m_SourceBlend, m_DestBlend );
 }
+
+
+} // namespace amorphous
 
 
 

@@ -16,6 +16,10 @@
 #include <d3dx9.h>
 
 
+namespace amorphous
+{
+
+
 CPhysicsManager_Visualizer::CPhysicsManager_Visualizer( CJL_PhysicsManager *pPhysicsManager )
 {
 	m_pPhysicsManager = pPhysicsManager;
@@ -200,3 +204,5 @@ void CPhysicsManager_Visualizer::LoadGraphicsResources( const CGraphicsParameter
 	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );
 	m_pUnitCube->SetRenderMode( CUnitCube::RS_WIREFRAME );
 }
+
+} // amorphous

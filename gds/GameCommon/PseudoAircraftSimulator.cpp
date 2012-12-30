@@ -3,6 +3,10 @@
 #include "GameCommon/GameMathMisc.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 //#define QFRIC_EPSILON	3.125f
@@ -177,3 +181,6 @@ class AircraftData
 
 	vector<CPA_WeaponBay> m_vecWeaponBay
 };*/
+
+
+} // namespace amorphous

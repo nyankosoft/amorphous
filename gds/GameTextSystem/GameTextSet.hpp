@@ -7,7 +7,11 @@
 #include "3DMath/Vector2.hpp"
 //#include "Graphics/32BITCOLOR.h"
 #include "Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CFontBase;
@@ -92,6 +96,9 @@ inline CGameTextComponent* CGameTextSet::GetComponent(int iComponent)
 {
 	return &m_vecTextComponent[iComponent];
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GTS_GAMETEXTSET_H__  */

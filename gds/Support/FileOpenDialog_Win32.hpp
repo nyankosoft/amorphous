@@ -11,6 +11,10 @@
 #include <windows.h>
 #include <commdlg.h>
 
+
+namespace amorphous
+{
+
 #pragma comment( lib, "Comdlg32.lib" )
 
 
@@ -124,6 +128,9 @@ inline bool GetFilenames( std::vector<std::string>& vecstrDestFilename, char* pc
 	delete [] pcFileNameBuffer;
 	return true;
 }
+
+} // amorphous
+
 
 
 #endif  /*  __FILE_OPEN_DIALOG_WIN32_H__  */

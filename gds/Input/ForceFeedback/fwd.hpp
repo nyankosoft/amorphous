@@ -1,3 +1,6 @@
+namespace amorphous
+{
+
 class CForceFeedbackEffectDesc;
 class CConstantForceFeedbackEffectDesc;
 class CRampForceFeedbackEffectDesc;
@@ -10,3 +13,5 @@ class CForceFeedbackTargetDevice;
 
 // DirectInput
 class CDIForceFeedbackEffectImpl;
+
+} // namespace amorphous

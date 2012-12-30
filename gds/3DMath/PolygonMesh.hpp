@@ -3,6 +3,10 @@
 
 
 #include <vector>
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -381,6 +385,9 @@ int CPolygonMesh<TCPolygon>::GetIntersectingPolygons( vector<int>& rveciPolygonL
 
 	return 0;
 }
+
+
+} // amorphous
 
 
 

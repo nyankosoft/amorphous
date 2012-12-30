@@ -9,6 +9,10 @@
 #include "TextureHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CTextureRenderTarget : public CGraphicsComponent
 {
 protected:
@@ -92,6 +96,9 @@ public:
 
 	static boost::shared_ptr<CTextureRenderTarget> Create();
 };
+
+
+} // namespace amorphous
 
 
 

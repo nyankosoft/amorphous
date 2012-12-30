@@ -8,7 +8,11 @@
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/Mesh/MeshFactory.hpp"
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CGLBasicMeshImpl : public CMeshImpl
@@ -104,6 +108,9 @@ public:
 	CMeshImpl* CreateProgressiveMeshImpl();
 	CMeshImpl* CreateSkeletalMeshImpl();
 };
+
+
+} // namespace amorphous
 
 
 

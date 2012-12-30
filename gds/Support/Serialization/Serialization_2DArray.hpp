@@ -7,10 +7,10 @@
 #include "Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -55,9 +55,9 @@ inline IArchive& operator & ( IArchive& ar, C2DArray<T>& r2DArray )
 }
 
 
-}	  /*  Serialization  */
+} // namespace serialization
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __KGL_2DARRAY_SERIALIZATION_H__  */

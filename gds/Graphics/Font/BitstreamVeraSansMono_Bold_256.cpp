@@ -1,6 +1,10 @@
 #include "SimpleBitmapFontData.hpp"
 
 
+namespace amorphous
+{
+
+
 //void InitBitstreamVeraSansMono_Bold_256()
 //{
 static const char *g_apTexelRow[192] =
@@ -211,3 +215,5 @@ CSimpleBitmapFontData g_BitstreamVeraSansMono_Bold_256
 						g_apTexelRow
 						);
 
+
+} // namespace amorphous

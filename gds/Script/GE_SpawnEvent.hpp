@@ -5,6 +5,10 @@
 #include "GameEvent.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGE_SpawnEvent : public CGameEvent
 {
 /*	class CEntitySpawnSet : public IArchiveObjectBase
@@ -34,6 +38,9 @@ public:
 
 	unsigned int GetArchiveObjectID() { return m_Type; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GAMEEVENT_SPAWNEVENT_H__  */

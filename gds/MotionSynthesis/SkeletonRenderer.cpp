@@ -6,6 +6,10 @@
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
+
+
+namespace amorphous
+{
 //#include "gds/Graphics/3DtoScreenSpaceConversions.hpp"
 
 using namespace msynth;
@@ -166,3 +170,6 @@ void CSkeletonRenderer::Render()
 		}
 	}
 }
+
+
+} // namespace amorphous

@@ -4,6 +4,10 @@
 
 #include <d3dx9.h>
 
+
+namespace amorphous
+{
+
 #define UNITCUBE_NUM_VERTICES 24
 
 
@@ -39,6 +43,9 @@ public:
 	enum eUnitCubeRenderMode { RS_POLYGON, RS_WIREFRAME };
 
 };
+
+} // amorphous
+
 
 
 #endif		/*  __UNITCUBE_H__  */

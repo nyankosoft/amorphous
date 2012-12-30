@@ -3,6 +3,10 @@
 
 #include "BSPTree_CollisionModel.hpp"
 
+
+namespace amorphous
+{
+
 class CBSPMapCompiler;
 class CMapFace;
 class CPlaneBuffer;
@@ -48,6 +52,9 @@ public:
 	void SaveToFile(FILE *fp);
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BSPTREE_COLLISIONMODEL_EXPORTER_H__  */

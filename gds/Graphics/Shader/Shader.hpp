@@ -4,9 +4,11 @@
 
 
 #include "Support/Singleton.hpp"
-using namespace NS_KGL;
-
 #include <stdlib.h>
+
+
+namespace amorphous
+{
 
 class CShaderManager;
 
@@ -32,6 +34,9 @@ public:
 //	void PushShaderManager( CShaderManager *pShaderManager ) { m_vecpShaderManager.push(  pShaderManager ); }
 //	CShaderManager *PopShaderManager() { if( 0 < m_vecpShaderManager.size() ) return m_pShaderManager.pop(); else return NULLL}
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __SHADER_SINGLETON_H__  */

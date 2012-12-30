@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 //======================================================================================
 // CWeaponSystem
 //======================================================================================
@@ -116,3 +120,6 @@ void CWeaponSystem::Disarm()
 			m_aWeaponSlot[i].pChargedAmmo->OnOwnerLeftStage();
 	}
 }
+
+
+} // namespace amorphous

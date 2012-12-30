@@ -6,6 +6,10 @@
 #include "Winsock2.h"
 #else
 #include <sys/time.h>
+
+
+namespace amorphous
+{
 #endif /* _MSC_VER */
 
 
@@ -58,6 +62,9 @@ public:
 		return (int)m_timeval.tv_sec * 1000000 + (int)m_timeval.tv_usec;
 	}
 };
+
+
+} // amorphous
 
 
 

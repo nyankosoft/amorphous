@@ -8,6 +8,10 @@
 #include "../Graphics/Mesh/SkeletalMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 /// Calculates the blend transforms for a skeletal mesh
 class CMeshBonesUpdateCallback : public CGraphicsResourcesUpdateCallback
 {
@@ -72,6 +76,9 @@ public:
 //void SetGraphicsUpdateCallbackForSkeletalMesh( CGamteItem& item )
 //{
 //}
+
+} // amorphous
+
 
 
 #endif /* __MeshBonesUpdateCallback_HPP__ */

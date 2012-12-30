@@ -12,6 +12,10 @@
 
 #include "GUI.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -254,3 +258,6 @@ void CGM_XMLParser::GetState()
 {
 }
 */
+
+
+} // namespace amorphous

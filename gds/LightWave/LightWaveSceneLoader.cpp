@@ -2,6 +2,10 @@
 #include "gds/Support/TextFileScanner.hpp"
 #include "gds/Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -399,3 +403,6 @@ void CLightWaveSceneLoader::Clear()
 	m_vecLight.resize( 0 );
 	m_vecpBone.resize( 0 );
 }
+
+
+} // amorphous

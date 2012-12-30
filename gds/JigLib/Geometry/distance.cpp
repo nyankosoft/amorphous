@@ -10,6 +10,10 @@
 #include "3DMath/Triangle.hpp"
 #include "Box.hpp"
 #include <limits>
+
+
+namespace amorphous
+{
 using namespace JigLib;
 
 //==============================================================
@@ -2142,3 +2146,6 @@ Scalar JigLib::SegmentTriangleDistanceSq(Scalar* segT, Scalar* triT0, Scalar* tr
   }
   return distSq;
 }
+
+
+} // namespace amorphous

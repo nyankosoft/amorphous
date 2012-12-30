@@ -5,6 +5,10 @@
 #include "JL_PhysicsActor.hpp"
 
 
+namespace amorphous
+{
+
+
 const SEdgeIndex CJL_Shape_Box::ms_aEdgeIndex[12] =
 {
 	{ 0, 1 },	// top
@@ -151,3 +155,6 @@ bool CJL_Shape_Box::SepAxisTest( Scalar& depth, Vector3& rvAxis, CJL_Shape_Box& 
 
 	return true;
 }
+
+
+} // namespace amorphous

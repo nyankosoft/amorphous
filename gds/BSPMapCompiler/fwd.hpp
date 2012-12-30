@@ -1,3 +1,6 @@
+namespace amorphous
+{
+
 class CFace;
 class CMapFace;
 class CPortalFace;
@@ -9,3 +12,5 @@ class CLightmap;
 class CLightmapTexture;
 class CLightmapBuilder;
 class CLightmapLightingManager;
+
+} // namespace amorphous

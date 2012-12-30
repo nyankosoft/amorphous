@@ -1,12 +1,13 @@
 #include "ForceFeedbackEffect.hpp"
 #include "Input/InputDevice.hpp"
+#include  "DIForceFeedbackEffectImpl.hpp"
 
+
+namespace amorphous
+{
 
 using namespace std;
 using namespace boost;
-
-
-#include  "DIForceFeedbackEffectImpl.hpp"
 
 
 class CDIForceFeedbackEffectImplList
@@ -76,3 +77,6 @@ CForceFeedbackEffect::~CForceFeedbackEffect()
 	// ForceFeedbackEffectImplManager( m_pImpl );
 	DIForceFeedbackEffectImplList().Unregister( m_pImpl );
 }
+
+
+} // namespace amorphous

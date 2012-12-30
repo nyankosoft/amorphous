@@ -2,6 +2,10 @@
 
 #include "Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -109,3 +113,6 @@ void CStaticGeometryArchiveFG::Serialize( IArchive& ar, const unsigned int versi
 	ar & m_SpecularColor;
 	ar & m_fSpecularIntensity;
 }
+
+
+} // namespace amorphous

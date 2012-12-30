@@ -4,6 +4,10 @@
 #include "../3DMath/OBBTree.hpp"
 
 
+namespace amorphous
+{
+
+
 #define D3DFVF_XYZ_COLOR		( D3DFVF_XYZ | D3DFVF_DIFFUSE )
 
 struct VERTEX_XYZ_COLOR{
@@ -79,3 +83,6 @@ void RenderOBBTree( const COBBTree& obb_tree, int draw_level )
 {
 	RenderOBBNode( obb_tree.GetTopNode(), draw_level, 0 );
 }
+
+
+} // namespace amorphous

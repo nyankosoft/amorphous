@@ -7,6 +7,10 @@
 #include "gds/3DMath/AABTree.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
+
+
+namespace amorphous
+{
 using namespace GameLib1::Serialization;
 
 
@@ -205,6 +209,9 @@ public:
 	std::vector<CMS_Sphere>& GetCollisionSphere() { return m_AABTree.GetGeometryBuffer(); }
 
 };
+
+} // amorphous
+
 
 
 #endif		/*  __MS_MASSSPRINGSIM_H__  */

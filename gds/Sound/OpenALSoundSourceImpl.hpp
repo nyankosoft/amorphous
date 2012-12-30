@@ -14,6 +14,10 @@
 #include <vorbis/vorbisfile.h>
 
 
+namespace amorphous
+{
+
+
 extern bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_file,
 										          ulong& ulFormat,
 										          ulong& ulFrequency,
@@ -271,6 +275,9 @@ public:
 
 	void GetTextInfo( std::string& dest_buffer );
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __OpenALSoundSourceImpl_H__ */

@@ -20,6 +20,10 @@
 
 #include "../base.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -503,3 +507,6 @@ PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 	{ "ClearMonochrome",                 ClearMonochrome,                 METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+} // namespace amorphous

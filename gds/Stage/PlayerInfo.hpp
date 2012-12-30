@@ -9,14 +9,16 @@
 #include "gds/GameCommon/PlayTime.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
-
 #include <boost/shared_ptr.hpp>
+
+
+namespace amorphous
+{
 
 
 //#include "Support/Serialization/Serialization.hpp"
 //#include "Support/Serialization/ArchiveObjectFactory.hpp"
-//using namespace GameLib1::Serialization;
+//using namespace serialization;
 
 
 // forward declerations
@@ -257,6 +259,9 @@ inline CSinglePlayerInfo& SinglePlayerInfo()
 {
 	return *CSinglePlayerInfo::Get();
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PLAYERINFO_H__  */

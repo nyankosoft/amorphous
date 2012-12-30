@@ -7,6 +7,10 @@
 #include "Mesh/CustomMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 /// \param whd [in] width(x), height(y), and depth of the box
 inline CMeshObjectHandle CreateBoxMesh( const Vector3& whd,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
@@ -132,6 +136,9 @@ inline Result::Name Set6FaceColors(
 
 	return Result::SUCCESS;
 }
+
+
+} // amorphous
 
 
 

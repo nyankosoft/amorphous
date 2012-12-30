@@ -7,8 +7,11 @@
 #include "../Support/prealloc_pool.hpp"
 #include "../Support/Serialization/ArchiveObjectBase.hpp"
 #include "../Support/Serialization/Archive.hpp"
-using namespace GameLib1;
-using namespace Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /// only for non-streamed sound
@@ -53,6 +56,9 @@ public:
 //	friend class CSoundManager;
 	friend class CSoundManagerImpl;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SoundHandle_H__  */

@@ -1,3 +1,5 @@
+namespace amorphous
+{
 
 //
 // global functions
@@ -113,3 +115,5 @@ inline void SFloatRGBColor::SetARGB32( U32 color )
 	green	= (float)( (color >>  8) & 0x000000FF ) / 256.0f;
 	blue	= (float)( (color)       & 0x000000FF ) / 256.0f;
 }
+
+} // namespace amorphous

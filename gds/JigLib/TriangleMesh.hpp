@@ -9,6 +9,10 @@
 #include "3DMath/BSPTreeForTriangleMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 struct STrace;
 
 
@@ -109,6 +113,9 @@ inline CTriangleMesh::SEdgeRecord::SEdgeRecord()
 	iTriangle = 0;
 	bIsConcave = false;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __TRIANGLEMESH_H__  */

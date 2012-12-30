@@ -21,6 +21,10 @@
 #include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -732,3 +736,6 @@ void CGI_MissileLauncher::Disarm()
 		m_vecMissileHolder[i].pLoadedAmmo = NULL;
 	}
 }
+
+
+} // namespace amorphous

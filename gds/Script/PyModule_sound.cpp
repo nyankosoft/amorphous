@@ -6,6 +6,10 @@
 #include <iostream>
 
 
+namespace amorphous
+{
+
+
 using namespace boost;
 using namespace boost::python;
 
@@ -226,3 +230,6 @@ void RegisterPythonModule_sound()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

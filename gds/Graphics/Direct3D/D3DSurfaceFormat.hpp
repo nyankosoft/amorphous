@@ -7,6 +7,10 @@
 #include <d3dx9.h>
 
 
+namespace amorphous
+{
+
+
 inline TextureFormat::Format FromD3DSurfaceFormat( D3DFORMAT d3d_fmt )
 {
 	switch(d3d_fmt)
@@ -94,6 +98,9 @@ inline D3DXIMAGE_FILEFORMAT GetD3DXImageFormatFromFilepath( const std::string& p
 	const std::string ext = pathname.substr( pathname.length() - 3 );
 	return GetD3DXImageFormatFromFileExt( ext );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SurfaceFormat_HPP__  */

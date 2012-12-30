@@ -4,6 +4,10 @@
 #include "Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 template<typename T>
 class tSphere
 {
@@ -27,6 +31,9 @@ public:
 
 typedef tSphere<float> Sphere;
 typedef tSphere<double> dSphere;
+
+
+} // namespace amorphous
 
 
 

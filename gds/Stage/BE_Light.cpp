@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 const SFloatRGBAColor CBE_Light::ms_InvalidColor = SFloatRGBAColor(0,0,0,-1000);
@@ -182,3 +186,6 @@ void CBE_Light::Serialize( IArchive& ar, const unsigned int version )
 	// world pose contains direction for directional light
 	ar & m_DefaultDesc.WorldPose;
 }
+
+
+} // namespace amorphous

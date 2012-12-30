@@ -5,6 +5,10 @@
 #include "../TextureGenerators/TextureFillingAlgorithm.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGrayscaleImageLoader : public CTextureFillingAlgorithm
 {
 	const int m_Width;
@@ -50,6 +54,9 @@ public:
 		}
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __GrayscaleImageLoader_HPP__ */

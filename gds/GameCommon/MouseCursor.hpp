@@ -3,15 +3,15 @@
 
 
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
-
 #include "gds/base.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
 #include "gds/Graphics/TextureHandle.hpp"
 #include "gds/Graphics/Rect.hpp"
-using namespace Graphics;
-
 #include <string>
+
+
+namespace amorphous
+{
 
 
 class CMouseCursor
@@ -85,6 +85,10 @@ inline CMouseCursor& MouseCursor()
 {
 	return (*(CMouseCursor::Get()));
 }
+
+
+} // amorphous
+
 
 
 #endif  /*  __MouseCursor_SINGLETON_H__  */

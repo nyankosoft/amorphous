@@ -6,6 +6,10 @@
 #include "Matrix33.hpp"
 #include "Quaternion.hpp"
 
+
+namespace amorphous
+{
+
 //#include <float.h>
 
 
@@ -167,6 +171,9 @@ inline Quaternion GetHorizontalized( const Quaternion& src )
 	Horizontalize( dest );
 	return dest;
 }
+
+
+} // amorphous
 
 
 

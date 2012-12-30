@@ -3,9 +3,13 @@
 
 
 #include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
-
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 
 /**
@@ -94,5 +98,8 @@ CBaseEntity *CUserBaseEntityFactory::CreateUserDefinedBaseEntity( const unsigned
 
 //------------------------------------------------------------------------
 */
+} // namespace amorphous
+
+
 
 #endif		/*  __BaseEntityFactory_H__  */

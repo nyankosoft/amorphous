@@ -9,6 +9,10 @@
 #include "Support/Serialization/Serialization_3DMath.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -215,3 +219,6 @@ void CBE_FixedTurretPod::Serialize( IArchive& ar, const unsigned int version )
 //		+ m_strTurretMeshName[MESH_POD] + " / " + m_strTurretMeshName[MESH_TURNTABLE] );
 }
 
+
+
+} // namespace amorphous

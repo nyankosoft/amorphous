@@ -6,6 +6,10 @@
 #include "Support/stream_buffer.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -146,6 +150,9 @@ inline NxStream& CNxPhysStream::storeBuffer( const void* buffer, NxU32 size )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __NxPhysStream_H__  */

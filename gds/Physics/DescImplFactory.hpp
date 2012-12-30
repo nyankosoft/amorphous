@@ -5,6 +5,10 @@
 #include "Support/Singleton.hpp"
 
 
+namespace amorphous
+{
+
+
 #define PhysDescImplFactoryHolder (CDescImplFactoryHolder::Get())
 #define PhysDescImplFactory (CDescImplFactoryHolder::Get()->GetFactory())
 
@@ -40,6 +44,9 @@ public:
 
 	CDescImplFactory *GetFactory() { return m_pFactory; }
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __PhysDescImplFactory_H__ */

@@ -2,6 +2,10 @@
 #include "Support/Timer.hpp"
 
 
+namespace amorphous
+{
+
+
 //===================================================================
 // CInputHub
 //===================================================================
@@ -35,3 +39,6 @@ void CInputHub::ReleaseInputHandlers()
 		SafeDelete( m_apInputHandler[i] );
 }
 */
+
+
+} // namespace amorphous

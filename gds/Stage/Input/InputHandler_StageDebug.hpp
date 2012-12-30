@@ -8,6 +8,10 @@
 #include "Input/InputHandler.hpp"
 
 
+namespace amorphous
+{
+
+
 class CInputHandler_StageDebug : public CInputHandler
 {
 	boost::weak_ptr<CStage> m_pStage;
@@ -31,6 +35,9 @@ public:
 	void ProcessInput( SInputData& input );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __InputHandler_StageDebug_H__  */

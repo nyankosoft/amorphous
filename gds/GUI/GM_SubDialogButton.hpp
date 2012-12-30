@@ -4,6 +4,10 @@
 #include "GM_Button.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * button that can own a sub-dialog and open it when the button is pressed.
  * - sub-dialog can be set through the desc at the initialization
@@ -58,6 +62,9 @@ public:
 
 	virtual void SetSoundPlayer( CGM_GlobalSoundPlayerSharedPtr pGlobalSoundPlayer );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GM_SUBDIALOGBUTTON_H__  */

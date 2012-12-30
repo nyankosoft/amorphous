@@ -6,7 +6,11 @@
 #include "Log/DefaultLog.hpp"
 #include "Serialization/Serialization.hpp"
 #include "Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /**
@@ -69,6 +73,9 @@ inline bool CSerializableStream::LoadTextFile( const std::string& filepath )
 		return false;
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SerializableStream_HPP__  */

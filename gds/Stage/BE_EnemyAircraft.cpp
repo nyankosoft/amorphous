@@ -18,6 +18,10 @@
 #include "Support/Log/StateLog.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -522,3 +526,6 @@ void CBE_EnemyAircraft::OnDestroyed( CCopyEntity* pCopyEnt )
 		m_pStage->CreateEntity( wreck );
 	}
 }
+
+
+} // namespace amorphous

@@ -10,6 +10,10 @@
 #include "SpringDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -58,6 +62,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysSphericalJointDesc_H__  */

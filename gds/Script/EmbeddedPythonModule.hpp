@@ -9,6 +9,10 @@
 #include <boost/python.hpp>
 
 
+namespace amorphous
+{
+
+
 class CEmbeddedPythonModule
 {
 	const char *m_pModuleName;
@@ -31,6 +35,9 @@ public:
 
 //PyObject *RegisterEmbeddedPythonModule( const char *module_name, const char *source );
 PyObject *RegisterEmbeddedPythonModule( const CEmbeddedPythonModule& module );
+
+} // namespace amorphous
+
 
 
 #endif /* __EmbeddedPythonModule_HPP__ */

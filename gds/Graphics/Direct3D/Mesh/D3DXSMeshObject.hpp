@@ -5,7 +5,10 @@
 #include "D3DXPMeshObject.hpp"
 #include "Graphics/fwd.hpp"
 #include "Graphics/MeshModel/MeshBone.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 /**
@@ -191,6 +194,9 @@ inline void CD3DXSMeshObject::SetLocalTransform( int matrix_index, const Matrix3
 
 	m_vecpBone[matrix_index]->SetLocalTransform( local_transform );
 }*/
+
+
+} // namespace amorphous
 
 
 

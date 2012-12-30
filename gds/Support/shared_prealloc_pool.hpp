@@ -6,6 +6,10 @@
 #include <boost/shared_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 /**
   See comments at prealloc_pool.hpp
 */
@@ -149,6 +153,9 @@ public:
 			return NULL; // the requested object has already been released
 	}
 };
+
+} // amorphous
+
 
 
 #endif		/*  __gsf_shared_prealloc_pool_H__  */

@@ -6,6 +6,10 @@
 #include "Plane.hpp"
 
 
+namespace amorphous
+{
+
+
 class sort_by_angle
 {
 public:
@@ -129,6 +133,9 @@ inline void TriangulateConvexPolygon(
 		}
 	}
 }
+
+
+} // namespace amorphous
 
 
 

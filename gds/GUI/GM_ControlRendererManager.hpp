@@ -10,6 +10,10 @@
 #include "GM_ControlRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  writing your own UI graphics code
 
@@ -130,6 +134,9 @@ public:
 // - Obviously, there will be a lot of typing involved.
 //   - each CGM_XXXRenderer class needs to define all the event handler virtual functions.
 //   - this is also true to user-defined classes
+
+
+} // namespace amorphous
 
 
 

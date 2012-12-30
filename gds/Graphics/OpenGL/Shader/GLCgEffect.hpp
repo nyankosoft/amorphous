@@ -5,6 +5,10 @@
 #include "../../Shader/CgEffectBase.hpp"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "cgGL.lib" )
 
 
@@ -55,6 +59,9 @@ public:
 //	void InitBlendTransformVariables();
 //	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 };
+
+
+} // namespace amorphous
 
 
 

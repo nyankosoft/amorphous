@@ -5,6 +5,10 @@
 
 #include "gds/Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace msynth;
 
@@ -100,3 +104,6 @@ void CSteeringMotionBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
 	rRootPose = rRootPose * steering_trans;
 */
 }
+
+
+} // namespace amorphous

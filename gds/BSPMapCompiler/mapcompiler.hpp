@@ -15,6 +15,10 @@
 #include "Support/Vec3_StringAux.hpp"
 
 
+namespace amorphous
+{
+
+
 #define DEFAULT_NUM_VERTICES	4096
 #define DEFAULT_NUM_MAINFACES	1024
 #define DEFAULT_NUM_PLANES		2048
@@ -96,6 +100,9 @@ public:
 	void SetClippingPortalVis_r( short sCellIndex, CPortalFace* pSrcPortal, CPortalFace* pDestPortal );
 	bool VisibilityClipping(CPortalFace& rSrcPortal, CPortalFace& rDestPortal, CPortalFace& rTgtPortal);
 };
+
+} // amorphous
+
 
 
 #endif		/*  __MAPCOMPILER_H__  */

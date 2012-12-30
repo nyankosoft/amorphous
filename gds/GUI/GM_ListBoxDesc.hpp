@@ -5,6 +5,10 @@
 #include "GM_ControlDescBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGM_ListBoxDesc : public CGM_ControlDesc
 {
 public:
@@ -56,6 +60,9 @@ public:
 	bool bDrag;	   // Whether the user is dragging the mouse to select
 
 };
+
+
+} // namespace amorphous
 
 
 

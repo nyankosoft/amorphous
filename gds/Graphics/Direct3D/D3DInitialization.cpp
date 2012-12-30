@@ -13,6 +13,10 @@
 #include "../Shader/FixedFunctionPipelineManager.hpp"
 
 
+namespace amorphous
+{
+
+
 using boost::shared_ptr;
 
 
@@ -83,3 +87,6 @@ Result::Name InitializeDirect3DClasses()
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

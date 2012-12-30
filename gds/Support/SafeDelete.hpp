@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+namespace amorphous
+{
+
 template<typename PointerType>
 void SafeDelete(PointerType*& p)
 {
@@ -32,5 +36,10 @@ void SafeDeleteArray(ArrayPointer*& p)
 		p = NULL;
 	}
 }
+
+
+} // namespace amorphous
+
+
 
 #endif  /*  __SAFE_DELETE_MEMORY_H__  */

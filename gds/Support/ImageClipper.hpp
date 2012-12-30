@@ -5,6 +5,10 @@
 #include "Support/BitmapImage.hpp"
 #include "Support/thread_starter.hpp"
 #include "Graphics/Rect.hpp"
+
+
+namespace amorphous
+{
 using namespace Graphics;
 
 
@@ -77,6 +81,9 @@ inline void CImageClipper::run()
 
 	img.SaveToFile( m_DestFilepath );
 }
+
+} // amorphous
+
 
 
 #endif  /*  __ImageClipper_H__  */

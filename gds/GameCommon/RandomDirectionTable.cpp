@@ -1,6 +1,10 @@
 #include "RandomDirectionTable.hpp"
 #include "../3DMath/Matrix33.hpp"
 
+
+namespace amorphous
+{
+
 // definition of the singleton instance
 CRandomDirectionTable CRandomDirectionTable::ms_SingletonInstance_;
 
@@ -30,3 +34,6 @@ CRandomDirectionTable::CRandomDirectionTable()
 
 
 //CRandomDirectionTable::~CRandomDirectionTable() {}
+
+
+} // namespace amorphous

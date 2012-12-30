@@ -8,6 +8,10 @@
 #include "gds/Physics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 extern PyMethodDef g_PyModuleStageMethod[];
 
 
@@ -19,6 +23,9 @@ extern CCopyEntity *CreateNamedEntity( const char *entity_name,
 								       const Matrix34& pose,
 								       const Vector3& vel,
 									   physics::CActorDesc *pPhysActorDesc = NULL );
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PyModule_Stage_H__  */

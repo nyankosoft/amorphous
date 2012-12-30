@@ -3,6 +3,10 @@
 #include "JL_PhysicsActor.hpp"
 
 
+namespace amorphous
+{
+
+
 
 CJL_Shape_Capsule::CJL_Shape_Capsule()
 {
@@ -40,3 +44,6 @@ void CJL_Shape_Capsule::UpdateWorldProperties()
 	m_WorldAABB.vMin -= Vector3(r,r,r);
 	m_WorldAABB.vMax += Vector3(r,r,r);
 }
+
+
+} // namespace amorphous

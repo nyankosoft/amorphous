@@ -2,6 +2,10 @@
 #include "RenderTask.hpp"
 #include "Support/SafeDeleteVector.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -23,3 +27,6 @@ void CRenderTaskProcessor::Render()
 	SafeDeleteVector( m_vecpTask );
 }
 
+
+
+} // namespace amorphous

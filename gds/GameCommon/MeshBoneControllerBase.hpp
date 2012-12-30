@@ -10,7 +10,11 @@
 #include "gds/XML/fwd.hpp"
 
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CMeshBoneControllerBase : public IArchiveObjectBase
@@ -97,6 +101,9 @@ public:
 
 	friend class CItemDatabaseBuilder;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __MeshBoneControllerBase_H__  */

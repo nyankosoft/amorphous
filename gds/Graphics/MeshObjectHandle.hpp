@@ -6,6 +6,10 @@
 #include "GraphicsResourceHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CMeshObjectHandle : public CGraphicsResourceHandle
 {
 protected:
@@ -56,6 +60,9 @@ inline boost::shared_ptr<CBasicMesh> CMeshObjectHandle::GetMesh()
 	else
 		return boost::shared_ptr<CBasicMesh>();
 }
+
+} // namespace amorphous
+
 
 
 #endif  /* __MeshObjectHandle_H__ */

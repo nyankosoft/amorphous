@@ -8,6 +8,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 class CSoundDesc
 {
 public:
@@ -65,6 +69,9 @@ public:
 
 	friend class CSoundManager;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SoundDesc_H__  */

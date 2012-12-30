@@ -2,6 +2,10 @@
 #include "StageEntryPoint.hpp"
 
 
+namespace amorphous
+{
+
+
 CStageEntryPoint::CStageEntryPoint()
 {
 	m_vPosition = Vector3(0,0,0);
@@ -17,3 +21,6 @@ Matrix33 *CStageEntryPoint::GetDefaultOrientation()
 	else
 		return &m_matDefaultOrient;
 }
+
+
+} // namespace amorphous

@@ -12,6 +12,10 @@
 #include "NxPhysContactStreamIterator.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -246,6 +250,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __NxPhysicsScene_H__  */

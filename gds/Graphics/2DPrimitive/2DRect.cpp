@@ -1,6 +1,10 @@
 #include "2DRect.hpp"
 
 
+namespace amorphous
+{
+
+
 C2DRect::~C2DRect()
 {
 }
@@ -94,3 +98,6 @@ void C2DRect::ScalePosition( float fScale )
 		m_avRectVertex[i].m_vPosition *= fScale;
 
 }
+
+
+} // namespace amorphous

@@ -6,6 +6,10 @@
 #include "Item/GI_Aircraft.hpp"
 #include "Stage.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -101,3 +105,6 @@ void CBEC_AircraftNozzleFlames::HideNozzleFlames( CCopyEntity* pCopyEnt,
 		pNozzleFlame->ClearEntityFlags( BETYPE_VISIBLE );	// don't render muzzle flash
 	}
 }
+
+
+} // namespace amorphous

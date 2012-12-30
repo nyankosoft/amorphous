@@ -4,6 +4,10 @@
 #include <Cg/cgD3D9.h> /* Cg Direct3D9 API (part of Cg Toolkit) */
 
 
+namespace amorphous
+{
+
+
 class CD3DCgManager : public CGraphicsComponent
 {
 public:
@@ -130,3 +134,6 @@ void CD3DCgEffect::InitCgContext()
 	cgD3D9SetManageTextureParameters(g_myCgContext, CG_TRUE);
 	CheckForCgError("manage texture parameters");
 }
+
+
+} // namespace amorphous

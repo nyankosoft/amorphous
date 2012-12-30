@@ -8,7 +8,10 @@
 #include "EntityRenderManager.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 using namespace boost;
 
@@ -152,3 +155,6 @@ void CBE_StaticLiquid::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 }
+
+
+} // namespace amorphous

@@ -12,6 +12,10 @@ using namespace std;
 #include "Stage/bspstructs.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCellBuilder
 {
 	vector<CCell> m_aCell;
@@ -31,6 +35,9 @@ public:
 	void AddFixedModel(vector<CMapFace>* paFace);
 	void AddInteriorModels(vector<CMapFace>* paFace);
 };
+
+} // amorphous
+
 
 
 #endif  /*  __CELLBUILDER_H__  */

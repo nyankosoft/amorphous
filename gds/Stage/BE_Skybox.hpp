@@ -5,6 +5,10 @@
 #include "BaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Skybox : public CBaseEntity
 {
 private:
@@ -42,5 +46,8 @@ public:
 	/// on the skybox mesh.
 	bool GetFogColor( SFloatRGBAColor& dest );
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_Skybox_H__  */

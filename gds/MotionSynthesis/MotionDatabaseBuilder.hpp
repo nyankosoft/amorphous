@@ -12,6 +12,10 @@
 #include "HumanoidMotionTable.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -329,6 +333,9 @@ extern void RegisterMotionPrimitiveCompilerCreator( boost::shared_ptr<CMotionPri
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __MotionDatabaseBuilder_H__ */

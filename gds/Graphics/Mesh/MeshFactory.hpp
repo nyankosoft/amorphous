@@ -5,6 +5,10 @@
 #include "BasicMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 class CMeshImplFactory
 {
 public:
@@ -124,6 +128,9 @@ public:
 													 CMeshType::Name mesh_type = CMeshType::SKELETAL );
 };
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __MeshFactory_HPP__ */

@@ -5,6 +5,10 @@
 #include "Stage/BinaryNode.hpp"
 
 
+namespace amorphous
+{
+
+
 CCellBuilder::CCellBuilder(CBSPTreeBuilder* pBSPTBuilder)
 {
 	m_pBSPTreeBuilder = pBSPTBuilder;
@@ -286,3 +290,5 @@ int CompareTextureID( const void *pFace1, const void *pFace2 )
 	else
 		return 1;
 }
+
+} // amorphous

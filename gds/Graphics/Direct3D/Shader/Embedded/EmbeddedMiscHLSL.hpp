@@ -6,6 +6,10 @@
 #include "../../../../base.hpp"
 
 
+namespace amorphous
+{
+
+
 class CEmbeddedMiscShader
 {
 public:
@@ -44,6 +48,9 @@ public:
 
 	static Result::Name GetShader( CEmbeddedMiscShader::ID shader_id, std::string& hlsl_effect );
 };
+
+
+} // namespace amorphous
 
 
 

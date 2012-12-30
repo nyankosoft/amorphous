@@ -6,6 +6,10 @@
 #include "Geometry/line.hpp"
 
 
+namespace amorphous
+{
+
+
 //namespace JigLib
 //{
 
@@ -55,6 +59,9 @@ inline tSegment CJL_Shape_Capsule::GetSegment()
 
 
 //}
+
+} // namespace amorphous
+
 
 
 #endif		/*  __JL_SHAPE_CAPSULE_H__  */

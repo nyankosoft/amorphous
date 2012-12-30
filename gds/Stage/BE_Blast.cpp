@@ -10,6 +10,10 @@
 #include "3DMath/MathMisc.hpp"
 #include "3DMath/MatrixConversions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -213,3 +217,6 @@ void CBE_Blast::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fLinearExpansionSpeed;
 	ar & m_fImpulse;
 }
+
+
+} // namespace amorphous

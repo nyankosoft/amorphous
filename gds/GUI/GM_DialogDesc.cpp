@@ -1,6 +1,10 @@
 
 #include "GM_DialogDesc.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -27,3 +31,6 @@ void CGM_DialogDesc::SetDefault()
 
 	strTitle = "";
 }
+
+
+} // namespace amorphous

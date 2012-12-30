@@ -8,7 +8,6 @@
 #include "../Graphics/FloatRGBColor.hpp"
 #include "../Graphics/FloatRGBAColor.hpp"
 #include "../Graphics/Rect.hpp"
-using namespace Graphics;
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
@@ -17,6 +16,10 @@ using namespace Graphics;
 #include <xercesc/util/XMLString.hpp>
 
 #include "xmlch2x.hpp"
+
+
+namespace amorphous
+{
 
 /*
 	<AABB3>
@@ -205,7 +208,7 @@ inline CXMLNodeReader CXMLNodeReader::GetChild( const std::string& name )
 inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_name )
 {
 	if( m_pNode )
-		return ::GetAttributeText( m_pNode, attrib_name );
+		return amorphous::GetAttributeText( m_pNode, attrib_name );
 	else
 		return std::string();
 }
@@ -219,11 +222,11 @@ inline void CXMLNodeReader::GetAttributeValue( const std::string& attrib_name, T
 	if( !m_pNode )
 		return;
 
-	bool has_attrib = ::HasAttribute( m_pNode, attrib_name );
+	bool has_attrib = amorphous::HasAttribute( m_pNode, attrib_name );
 	if( !has_attrib )
 		return;
 
-	std::string text = ::GetAttributeText( m_pNode, attrib_name );
+	std::string text = amorphous::GetAttributeText( m_pNode, attrib_name );
 	if( 0 < text.length() )
 		conv_to_x( text, dest );
 }
@@ -426,6 +429,9 @@ inline bool CXMLNodeReader::get( const std::string& name, SFloatRGBColor& color 
 	return true;
 }
 */
+
+
+} // namespace amorphous
 
 
 

@@ -7,6 +7,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 //===========================================================================
 // CGM_DialogManager
 //===========================================================================
@@ -185,6 +189,9 @@ inline void CGM_DialogManager::SetCaptionText( const std::string& string_id, con
 	if( pControl )
 		pControl->SetCaptionText( caption_text );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_DIALOGMANAGER_H__  */

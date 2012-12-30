@@ -7,6 +7,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -237,7 +241,7 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 	ReSizeGLScene(width, height);					// Set Up Our Perspective GL Screen
 
 //	if (!InitGL())									// Initialize Our Newly Created GL Window
-	if( !GLGraphicsDevice().Init( iScreenWidth, iScreenHeight, (screen_mode == ScreenMode::WINDOWED) ? ::ScreenMode::WINDOWED : ::ScreenMode::FULLSCREEN ) )
+	if( !GLGraphicsDevice().Init( iScreenWidth, iScreenHeight, (screen_mode == ScreenMode::WINDOWED) ? ScreenMode::WINDOWED : ScreenMode::FULLSCREEN ) )
 	{
 		KillGLWindow();								// Reset The Display
 		LOG_PRINT_ERROR( "InitGL() failed." );
@@ -385,3 +389,6 @@ Result::Name CGameWindowManager_Win32_GL::KillGLWindow()
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

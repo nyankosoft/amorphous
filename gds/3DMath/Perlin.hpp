@@ -6,6 +6,10 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
+
 #define SAMPLE_SIZE 1024
 
 //template<int SAMPLE_SIZE>
@@ -72,6 +76,9 @@ private:
 
 	bool  m_Start;
 };
+
+
+} // namespace amorphous
 
 
 

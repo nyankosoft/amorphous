@@ -4,7 +4,7 @@
 #include "CompressedArchive_Input.hpp"
 #include "CompressedArchive_Output.hpp"
 
-using namespace GameLib1::Serialization;
+using namespace amorphous::serialization;
 
 using namespace std;
 

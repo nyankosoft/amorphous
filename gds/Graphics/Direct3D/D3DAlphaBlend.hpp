@@ -6,6 +6,10 @@
 #include "../AlphaBlend.hpp"
 
 
+namespace amorphous
+{
+
+
 // conversion table: generic alpha blend mode enums > d3d blend enums
 static const DWORD g_dwD3DBlendMode[] =
 {
@@ -38,6 +42,9 @@ inline DWORD ToD3DTextureAddressMode( TextureAddress::Mode address_mode )
 
 
 //---------------------------- D3D adapter ----------------------------
+
+
+} // amorphous
 
 
 

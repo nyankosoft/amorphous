@@ -9,6 +9,10 @@
 #endif
 
 
+namespace amorphous
+{
+
+
 inline CTimer& GlobalTimer()
 {
 	// Using an accessor function gives control of the construction order
@@ -25,6 +29,9 @@ inline CTimer& GlobalTimer()
 
 	return timer;
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __Timer_HPP__ */

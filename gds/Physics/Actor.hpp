@@ -13,6 +13,10 @@
 #include "Shape.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -229,6 +233,9 @@ inline void CActor::SetCollisionGroup( U16 collision_group )
 
 
 } // namespace physics
+
+
+} // namespace amorphous
 
 
 

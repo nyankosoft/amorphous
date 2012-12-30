@@ -10,7 +10,11 @@
 #include "../3DMath/AABB3.hpp"
 #include "../Support/Serialization/Serialization.hpp"
 #include "../Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 #include "../Support/msgbox.hpp"
@@ -209,7 +213,7 @@ public:
 		ar & MaxIter;
 
 		/// Integration method.
-		MsgBox( "serializing enum type variable..." );
+//		MsgBox( "serializing enum type variable..." );
 		ar & (unsigned int&)TimeStepMethod;
 
 		/// Max scene bounds.
@@ -252,6 +256,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysSceneDesc_H__  */

@@ -14,6 +14,10 @@
 #include "gds/Support/FixedVector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CInputDevice
 {
 	enum Param
@@ -145,6 +149,9 @@ inline CInputDeviceClass *GetPrimaryInputDevice()
 
 	return NULL;
 }
+
+
+} // namespace amorphous
 
 
 

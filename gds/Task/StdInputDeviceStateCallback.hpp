@@ -6,6 +6,10 @@
 #include "Graphics/GraphicsEffectManager.hpp"
 
 
+namespace amorphous
+{
+
+
 
 // Set by the system at application init phase
 
@@ -139,6 +143,9 @@ public:
 		m_pText->SetAlpha( 0, 0.0f );
 	}
 };
+
+
+} // amorphous
 
 
 

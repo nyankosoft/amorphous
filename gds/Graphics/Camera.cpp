@@ -2,6 +2,10 @@
 #include "./Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 CCamera::CCamera( float fov, float aspectratio, float farclip, float nearclip )
 {
 	m_fFieldOfView = fov;
@@ -139,3 +143,6 @@ void CCamera::RotatePitch(float fPitch)
 
 	UpdateVFTreeForWorldSpace();
 }
+
+
+} // namespace amorphous

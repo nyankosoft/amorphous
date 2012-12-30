@@ -4,7 +4,10 @@
 
 #include "ProgressiveMesh.hpp"
 #include "../MeshModel/MeshBone.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CSkeletalMesh : public CProgressiveMesh
@@ -63,6 +66,9 @@ public:
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
 };
+
+
+} // namespace amorphous
 
 
 

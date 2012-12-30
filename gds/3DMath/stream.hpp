@@ -7,6 +7,10 @@
 #include "AABB3.hpp"
 
 
+namespace amorphous
+{
+
+
 inline std::ostream& operator << ( std::ostream& o, const AABB3& aabb )
 {
     o << "min( ";
@@ -27,6 +31,9 @@ inline std::ostream& operator << ( std::ostream& o, const AABB3& aabb )
     o << ")";*/
     return o;
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __3DMATH_STREAM_H__ */

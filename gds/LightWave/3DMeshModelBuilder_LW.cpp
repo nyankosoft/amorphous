@@ -7,6 +7,10 @@
 #include "gds/Support/Log/DefaultLog.hpp"
 
 #include "3DMeshModelBuilder_LW.hpp"
+
+
+namespace amorphous
+{
 using namespace MeshModel;
 
 using std::string;
@@ -939,3 +943,6 @@ std::string C3DMeshModelBuilder_LW::GetBasePath()
 {
 	return m_pSrcObject->GetFilename();
 }
+
+
+} // amorphous

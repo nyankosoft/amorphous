@@ -1,6 +1,10 @@
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 
+
+namespace amorphous
+{
+
 /*
 void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pEntity )
 {
@@ -9,3 +13,6 @@ void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pEntity )
 
 	pEntity->pBaseEntity->MessageProcedure( rGameMessage, pCopyEnt );
 }*/
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "TextureCoord.hpp"
 
 
+namespace amorphous
+{
+
+
 template<typename DiffuseColorType = SFloatRGBAColor, int NumTextureCoords = 1>
 class C3DRect
 {
@@ -104,6 +108,9 @@ public:
 	~TL3DRect(){}
 };
 */
+
+
+} // amorphous
 
 
 

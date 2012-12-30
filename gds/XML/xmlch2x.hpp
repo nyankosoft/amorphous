@@ -7,6 +7,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 inline int to_int( const XMLCh *pChar )
 {
 	return atoi( xercesc::XMLString::transcode( pChar ) );
@@ -83,6 +87,9 @@ inline std::string from_wchar_to_string( const wchar_t *pOrig )
 	return string(nstring);
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __XMLCH2X_H__ */

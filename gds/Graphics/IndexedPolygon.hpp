@@ -10,7 +10,11 @@
 #include "../3DMath/Triangle.hpp"
 #include "General3DVertex.hpp"
 #include "../Support/Serialization/ArchiveObjectBase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CIndexedPolygon : public IArchiveObjectBase
@@ -576,6 +580,9 @@ extern void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolyg
 extern void UnweldVerticesBetween2GroupsOfPolygons( std::vector<CIndexedPolygon>& polygon_buffer,
 													const std::vector<int>& polygon_indices0,
 													const std::vector<int>& polygon_indices1 );
+
+
+} // namespace amorphous
 
 
 

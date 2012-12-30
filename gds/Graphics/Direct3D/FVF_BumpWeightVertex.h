@@ -9,6 +9,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+
 const D3DVERTEXELEMENT9 BUMPWEIGHTVERTEX_DECLARATION[] =
 {
 	{ 0, 0,  D3DDECLTYPE_FLOAT3,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION,     0 }, // 12
@@ -42,6 +45,8 @@ struct BUMPWEIGHTVERTEX
 };
 
 //#define D3DFVF_BUMPWEIGHTVERTEX (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX0)
+
+} // amorphous
 
 
 #endif  /*  __BUMPWEIGHTVERTEX_H__  */

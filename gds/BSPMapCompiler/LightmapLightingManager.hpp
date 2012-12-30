@@ -14,6 +14,10 @@
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Support/SafeDeleteVector.hpp"
+
+
+namespace amorphous
+{
 //#include "Support/StatusDisplay/StatusDisplay.hpp"
 //#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
@@ -451,6 +455,9 @@ void CLightingForLightmap_SimpleRaytrace<T>::CalculateLightmapTexelIntensity( CL
 
 }
 */
+
+} // amorphous
+
 
 
 #endif  /*  __LightmapLightingManager_H__  */

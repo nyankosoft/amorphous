@@ -1,3 +1,6 @@
+namespace amorphous
+{
+
 namespace physics
 {
 
@@ -58,3 +61,5 @@ class CUserContactReport;
 
 
 } // namespace physics
+
+} // namespace amorphous

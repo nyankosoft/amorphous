@@ -6,6 +6,10 @@
 #include "Graphics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Blast : public CBaseEntity
 {
 	float m_fBaseDamage;
@@ -50,6 +54,9 @@ public:
 
 	friend class CCoreBaseEntitiesLoader;
 };
+
+} // namespace amorphous
+
 
 
 #endif	/*  __BASEENTITYBLAST_H__  */

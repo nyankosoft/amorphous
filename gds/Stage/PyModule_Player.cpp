@@ -8,6 +8,10 @@
 #include "Item/GI_Aircraft.hpp"
 #include <boost/weak_ptr.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 #define PlayerBaseEntity	(*SinglePlayerInfo().GetCurrentPlayerBaseEntity())
@@ -259,3 +263,6 @@ PyMethodDef g_PyModulePlayerMethod[] =
     { "CreateEntityFromCurrentVehicleItem",CreateEntityFromCurrentVehicleItem,METH_VARARGS, "Creates a player entity as an item entity." },
     {NULL, NULL}
 };
+
+
+} // namespace amorphous

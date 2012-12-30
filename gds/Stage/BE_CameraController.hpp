@@ -11,6 +11,10 @@
 #include "../base.hpp"
 
 
+namespace amorphous
+{
+
+
 class CInputHandler_Cutscene;
 
 /**
@@ -88,5 +92,8 @@ public:
 	friend class CInputHandler_Cutscene;
 	friend class CCoreBaseEntitiesLoader;
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_CameraController_H__  */

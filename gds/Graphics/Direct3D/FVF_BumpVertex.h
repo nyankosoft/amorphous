@@ -8,6 +8,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+
 // FVF format - possible for this bump vertex?
 //#define D3DFVF_BUMPVERTEX (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX2)
 
@@ -44,6 +47,7 @@ struct BUMPVERTEX
 
 };
 
+} // amorphous
 
 
 #endif  /*  __FVF_BUMPVERTEX_H__  */

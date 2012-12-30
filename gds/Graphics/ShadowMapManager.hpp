@@ -10,6 +10,10 @@
 #include "ShadowMaps.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * Still in an early stage of the development
  * - requires "Shader/ShadowMap.fx" to run
@@ -192,6 +196,9 @@ public:
 	/// For debugging
 	void SaveSceneTextureToFile( const std::string& filename );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ShadowMapManager_H__  */

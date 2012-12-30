@@ -2,7 +2,10 @@
 #include "Support/memory_helpers.hpp"
 
 #include "RectTree.hpp"
-using namespace Graphics;
+
+
+namespace amorphous
+{
 
 //==================================================================================
 // CRectTree
@@ -157,3 +160,6 @@ CRectNode *CRectNode::GetNode( const int index )
 			return NULL;
 	}
 }
+
+
+} // namespace amorphous

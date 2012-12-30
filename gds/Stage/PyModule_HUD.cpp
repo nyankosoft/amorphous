@@ -4,6 +4,10 @@
 #include "PlayerInfo.hpp"
 #include "HUD_PlayerBase.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -115,3 +119,6 @@ PyMethodDef g_PyModuleHUDMethod[] =
 //	{ "CreateEntityHrz",		CreateEntityHrz,		METH_VARARGS, "creates an entity at a given position" },
 	{ NULL, NULL }
 };
+
+
+} // namespace amorphous

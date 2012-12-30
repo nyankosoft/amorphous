@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/thread/mutex.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -302,3 +306,6 @@ Result::Name CDIForceFeedbackEffectImpl::Stop()
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
+
+
+} // namespace amorphous

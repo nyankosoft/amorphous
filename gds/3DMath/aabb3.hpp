@@ -6,6 +6,10 @@
 #include "Sphere.hpp"
 
 
+namespace amorphous
+{
+
+
 /// Axis-Aligned Bounding Box (3D)
 class AABB3
 {
@@ -159,6 +163,9 @@ inline float AABB3::GetRadiusForPlane( const SPlane& rPlane ) const
 			+ vExtents.z * fabs(rPlane.normal.z);
 	}*/
 }
+
+
+} // namespace amorphous
 
 
 

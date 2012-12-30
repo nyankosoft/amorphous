@@ -7,6 +7,10 @@
 #include "NxPhysics.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -70,6 +74,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __NxPhysShapeImpl_H__ */

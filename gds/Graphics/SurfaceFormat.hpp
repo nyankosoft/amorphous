@@ -2,6 +2,9 @@
 #define  __SurfaceFormat_HPP__
 
 
+namespace amorphous
+{
+
 class TextureFormat
 {
 public:
@@ -41,6 +44,8 @@ inline const char *GetSurfaceFormatName( TextureFormat::Format format )
 	}
 
 }
+
+} // namespace amorphous
 
 
 #endif		/*  __SurfaceFormat_HPP__  */

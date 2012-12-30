@@ -7,6 +7,10 @@
 #include "Utilities/TextFileScannerExtensions.hpp"
 #include "Physics/Actor.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -264,3 +268,6 @@ void CBE_Door::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_fSpring & m_fDamper;
 }
+
+
+} // namespace amorphous

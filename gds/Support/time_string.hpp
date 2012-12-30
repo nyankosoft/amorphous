@@ -6,6 +6,10 @@
 #include "TimeFormats.hpp"
 
 
+namespace amorphous
+{
+
+
 inline std::string get_time_stamp_string( unsigned long time_ms, TimeFormat::Format time_format )
 {
 	char strbuf[16];
@@ -64,6 +68,9 @@ inline std::string ms_to_hhmmssff( U32 time_ms )
 {
 	return get_time_stamp_string( time_ms, TimeFormat::HHMMSSFF );
 }
+
+
+} // amorphous
 
 
 

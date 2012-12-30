@@ -3,6 +3,10 @@
 #include "gds/Support/Macro.h"
 #include "gds/Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using std::list;
 using boost::shared_ptr;
@@ -803,3 +807,6 @@ void CMotionPrimitiveBlenderStatistics::Update()
 	m_Buffer.push_back( fmt_string( "Pos(H): %s", to_string(current_root_pose_h.vPosition).c_str() ) );
 	m_Buffer.push_back( fmt_string( "Fwd(H): %s", to_string(current_root_pose_h.matOrient.GetColumn(2)).c_str() ) );
 }
+
+
+} // namespace amorphous

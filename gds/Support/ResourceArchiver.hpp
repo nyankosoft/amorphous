@@ -11,7 +11,11 @@
 #include "SerializableStream.hpp"
 #include "Serialization/BinaryDatabase.hpp"
 #include "ImageArchive.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 typedef uint timestamp_type;
@@ -670,6 +674,9 @@ void some_function()
 	archiver.CreateDBs( "../resources/images/ss_imgs" );
 }
 */
+
+
+} // namespace amorphous
 
 
 

@@ -11,6 +11,10 @@
 #include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -108,6 +112,9 @@ public:
 
 
 } // msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __BlendNode_HPP__ */

@@ -4,6 +4,10 @@
 #include "../Support/Macro.h"
 #include "../Support/ParamLoader.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -308,3 +312,6 @@ shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton
 
 	return pWalkMotion;
 }
+
+
+} // amorphous

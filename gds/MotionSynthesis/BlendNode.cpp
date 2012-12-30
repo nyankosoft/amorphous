@@ -2,6 +2,10 @@
 #include "Skeleton.hpp"
 #include <map>
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -49,3 +53,6 @@ shared_ptr<CBlendNode> CBlendNode::GetBlendNodeByName( const std::string& name )
 
 
 } // namespace msynth
+
+
+} // namespace amorphous

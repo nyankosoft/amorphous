@@ -7,6 +7,10 @@
 #include "3DMath/Transform.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DShaderManager : public CShaderManager
 {
 public:
@@ -560,6 +564,9 @@ inline int CHLSLShaderManager::RegisterHLSLParam( CShaderParameter<T>& param )
 
 	return index;
 }
+
+
+} // namespace amorphous
 
 
 

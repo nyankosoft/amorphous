@@ -13,6 +13,10 @@
 #include "NxMathConv.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -130,6 +134,9 @@ inline Timestep::Method ToTimestepMethod( NxTimeStepMethod timestep_method )
 
 } // namespace physics
 
+
+
+} // namespace amorphous
 
 
 

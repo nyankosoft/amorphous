@@ -8,6 +8,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -41,6 +45,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PhysTriangleMeshShapeDesc_H__  */

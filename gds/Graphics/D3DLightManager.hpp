@@ -6,6 +6,10 @@
 #include "ShaderLightManager.hpp"
 
 
+namespace amorphous
+{
+
+
 inline D3DVECTOR ToD3DVECTOR( const Vector3& src )
 {
 	return D3DVECTOR( src.x, src.y, src.z );
@@ -117,6 +121,9 @@ void CD3DLightManager::SetHemisphericPointLight( const CHemisphericPointLight& l
 void CD3DLightManager::SetLight( const CLight& light );
 {
 }
+
+} // amorphous
+
 
 
 #endif /* __D3DLightManager_H__ */

@@ -3,6 +3,10 @@
 
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -22,3 +26,6 @@ CShaderManager::~CShaderManager()
 
 	m_RegisteredToHub = false;
 }
+
+
+} // namespace amorphous

@@ -7,6 +7,10 @@
 #include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -347,7 +351,7 @@ void CMeshContainerNode::Serialize( IArchive& ar, const unsigned int version )
 void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	// local pose of the node
-	::LoadFromXMLNode( reader.GetChild( "LocalPose" ), m_LocalPose );
+	amorphous::LoadFromXMLNode( reader.GetChild( "LocalPose" ), m_LocalPose );
 
 	vector<CXMLNodeReader> vecReader = reader.GetImmediateChildren( "MeshUnit" );
 	m_vecpMeshContainer.resize( vecReader.size() );
@@ -356,7 +360,7 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 	{
 		m_vecpMeshContainer[i] = boost::shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
 		m_vecpMeshContainer[i]->LoadFromXMLNode( vecReader[i].GetChild( "MeshContainer" ) );
-		::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
+		amorphous::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
 	}
 
 	vector<CXMLNodeReader> vecChild = reader.GetImmediateChildren( "MeshNode" );
@@ -367,3 +371,6 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 		m_vecpChild[i]->LoadFromXMLNode( vecChild[i] );
 	}
 }
+
+
+} // namespace amorphous

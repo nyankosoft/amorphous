@@ -4,6 +4,10 @@
 #include "GUI.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -66,3 +70,6 @@ void CSingleStageGameTask::Render()
 	// render GUI components over the stage
 	CGUIGameTask::Render();
 }
+
+
+} // namespace amorphous

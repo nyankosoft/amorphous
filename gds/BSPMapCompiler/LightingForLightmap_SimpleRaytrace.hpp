@@ -14,6 +14,10 @@ using namespace std;
 
 #include "Lightmap.hpp"
 
+
+namespace amorphous
+{
+
 //#include "3DMath/PolygonMesh.hpp"
 
 //class CLight;
@@ -573,6 +577,9 @@ void CLightingForLightmap_SimpleRaytrace<T>::ScaleIntensityAndAddAmbientLight( v
 			}
 	}
 }
+
+} // amorphous
+
 
 
 #endif  /*  __MAPCOMPILER_LIGHTINGFORLIGHTMAP_SIMPLERAYTRACE_H__  */

@@ -15,6 +15,10 @@
 #include "Support/Profile.hpp"
 #include "Support/Log/StateLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -335,3 +339,6 @@ void CDebugOutput::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	m_pFont->Reload();
 }
+
+
+} // namespace amorphous

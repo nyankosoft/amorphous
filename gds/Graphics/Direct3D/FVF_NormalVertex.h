@@ -6,6 +6,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+
 struct NORMALVERTEX
 {
 	D3DXVECTOR3 vPosition;
@@ -35,6 +38,8 @@ const D3DVERTEXELEMENT9 NORMALVERTEX_DECLARATION[5] =
 	{ 0, 28, D3DDECLTYPE_FLOAT2,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },
 	D3DDECL_END()
 };
+
+} // amorphous
 
 
 #endif	/* __FVF_NORMALVERTEX_H__ */

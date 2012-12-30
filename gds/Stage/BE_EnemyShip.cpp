@@ -14,6 +14,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Log/StateLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -295,3 +299,6 @@ void CBE_EnemyShip::OnDestroyed( CCopyEntity* pCopyEnt )
 		m_pStage->CreateEntity( wreck );
 	}
 }
+
+
+} // namespace amorphous

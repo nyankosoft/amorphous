@@ -11,6 +11,10 @@
 #include <gds/3DMath/Transform.hpp>
 
 
+namespace amorphous
+{
+
+
 //==============================================================================
 // Use glCreateShaderObjectARB, glShaderSourceARB, glCompileShaderARB, etc.
 //==============================================================================
@@ -225,6 +229,9 @@ public:
 	CGLFragmentProgram() {}
 };
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __GLShader_HPP__ */

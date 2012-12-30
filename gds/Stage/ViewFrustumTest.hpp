@@ -6,6 +6,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 #define NUM_MAX_VISIBLEENTITIES 256
 
 #define VFT_IGNORE_NOCLIP_ENTITIES	1
@@ -50,6 +54,9 @@ public:
 //=============================================================================
 // inline implementations
 //=============================================================================
+
+} // namespace amorphous
+
 
 
 #endif  /* __VIEWFRUSTUMTEST_H__ */

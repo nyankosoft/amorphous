@@ -11,6 +11,10 @@ using namespace std;
 
 #include "Graphics/Point.hpp"
 #include "Graphics/Rect.hpp"
+
+
+namespace amorphous
+{
 using namespace Graphics;
 
 
@@ -73,6 +77,9 @@ private:
 	CStatusDisplayRenderer *m_pRenderer;
 
 };
+
+} // amorphous
+
 
 
 #endif  /*  __STATUSDISPLAY_SINGLETON_H__  */

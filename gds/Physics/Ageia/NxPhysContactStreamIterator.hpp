@@ -7,6 +7,10 @@
 #include "../ContactStreamIterator.hpp" // header of this framework
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -55,5 +59,8 @@ public:
 
 
 } // physics
+} // namespace amorphous
+
+
 
 #endif /* __NxPhysContactStreamIterator_HPP__ */

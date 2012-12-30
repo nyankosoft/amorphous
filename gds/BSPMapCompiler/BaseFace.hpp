@@ -10,6 +10,10 @@
 #include "Graphics/Direct3D/Conversions.hpp"
 
 
+namespace amorphous
+{
+
+
 extern float g_fEpsilon;
 extern Vector3 g_vEpsilon;
 
@@ -146,6 +150,9 @@ inline void CFace::SetMAPVERTEX( int i, MAPVERTEX& v )
 
 	m_AABB.AddPoint( ToVector3( v.vPosition ) );
 }
+
+} // amorphous
+
 
 
 #endif  /*  __BASEFACE_H__  */

@@ -5,6 +5,10 @@
 #include <windows.h>
 
 
+namespace amorphous
+{
+
+
 inline void GetNonClientAreaSize( HWND hWnd, long& frame_width, long& frame_height )
 {
 	RECT rect;
@@ -58,6 +62,9 @@ inline void ChangeClientAreaSize( HWND hWnd, int new_width, int new_height )
 	// change window size
 	BOOL b = SetWindowPos( hWnd, HWND_TOP, 0, 0, new_width + frame_width, new_height + frame_height, SWP_NOMOVE );
 }
+
+} // amorphous
+
 
 
 #endif  /*  __WINDOWMISC_H__  */

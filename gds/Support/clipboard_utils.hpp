@@ -6,11 +6,18 @@
 
 #include "clipboard_utils_win32.hpp"
 
+
+namespace amorphous
+{
+
 #else /* _MSC_VER */
 
 ???
 
 #endif /* _MSC_VER */
+
+} // amorphous
+
 
 
 #endif /* __clipboard_utils_HPP__ */

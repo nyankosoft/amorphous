@@ -3,6 +3,10 @@
 
 
 #include <vector>
+
+
+namespace amorphous
+{
 using namespace std;
 
 class CBaseLight;
@@ -32,6 +36,9 @@ public:
 
 	virtual bool Calculate( vector<CLightmap>& rvecLightmap, CPolygonMesh<T>& rMesh ) = 0;
 };
+
+} // amorphous
+
 
 
 #endif  /*  __MAPCOMPILER_LIGHTINGFORLIGHTMAP_H__  */

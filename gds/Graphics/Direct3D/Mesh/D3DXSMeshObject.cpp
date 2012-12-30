@@ -4,6 +4,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 CD3DXSMeshObject::CD3DXSMeshObject()
 : m_iNumBones(0), m_paWorldTransforms(NULL), m_pRootBone(NULL)
 {
@@ -109,3 +113,6 @@ void CD3DXSMeshObject::DumpSkeletonToTextFile( const std::string& output_filepat
 
 	fclose(fp);
 }
+
+
+} // namespace amorphous

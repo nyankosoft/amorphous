@@ -9,6 +9,10 @@
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
@@ -313,7 +317,7 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 
 void C3DMeshModelBuilder::Triangulate()
 {
-	::Triangulate( m_vecTriangulatedPolygon, m_vecNonTriangulatedPolygon );
+	amorphous::Triangulate( m_vecTriangulatedPolygon, m_vecNonTriangulatedPolygon );
 }
 
 
@@ -767,3 +771,6 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 }
 */
 
+
+
+} // namespace amorphous

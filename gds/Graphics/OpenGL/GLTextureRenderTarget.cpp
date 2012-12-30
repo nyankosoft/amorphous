@@ -4,6 +4,10 @@
 #include "GLGraphicsDevice.hpp" // LOG_GL_ERROR macro
 
 
+namespace amorphous
+{
+
+
 CGLTextureRenderTarget::CGLTextureRenderTarget()
 {
 	m_Framebuffer = 0;
@@ -300,3 +304,6 @@ void CGLTextureRenderTarget::OutputImageFile( const std::string& image_file_path
 {
 	LOG_PRINT_ERROR( " not implemented." );
 }
+
+
+} // namespace amorphous

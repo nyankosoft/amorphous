@@ -5,6 +5,10 @@
 #include "../Support/Log/DefaultLog.hpp"
 #include "../Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -163,3 +167,6 @@ void CDefaultTextMessageRenderer::LoadGraphicsResources( const CGraphicsParamete
 	m_vSpeakerPos	= SPoint( 130, 34 ) * factor;*/
 }
 
+
+
+} // namespace amorphous

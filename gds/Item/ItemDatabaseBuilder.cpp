@@ -21,6 +21,10 @@
 #include "Support/lfs.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -671,3 +675,6 @@ bool CItemDatabaseBuilder::OutputSeparateFiles( const string& strDBFilename )
 //	return archive << database;
 }
 */
+
+
+} // namespace amorphous

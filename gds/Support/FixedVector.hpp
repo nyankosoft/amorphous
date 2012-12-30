@@ -3,6 +3,10 @@
 
 #include <assert.h>
 
+
+namespace amorphous
+{
+
 template <class CArrayType, int iArraySize>
 class fixed_vector
 {
@@ -197,5 +201,8 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, fixed_vector<T
 //		dest.push_back( t );
 //	}
 }*/
+} // amorphous
+
+
 
 #endif  /*  __fixed_vector_HPP__  */

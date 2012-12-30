@@ -3,6 +3,10 @@
 
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "gds/Graphics/MeshObjectHandle.hpp"
+
+
+namespace amorphous
+{
 //#include "gds/Graphics/MeshModel/MeshBone.hpp"
 using namespace MeshModel;
 
@@ -129,6 +133,9 @@ public:
 
 //	CD3DXMeshModel *GetMeshModel() { return m_pMesh; }
 };
+
+
+} // amorphous
 
 
 

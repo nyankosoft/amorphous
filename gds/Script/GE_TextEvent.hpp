@@ -6,6 +6,10 @@
 #include "../GameTextSystem/GameTextSet.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGE_TextEvent : public CGameEvent
 {
 	CGameTextSet m_TextSet;
@@ -22,6 +26,9 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return m_Type; }
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GE_TEXTEVENT_H__  */

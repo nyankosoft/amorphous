@@ -6,6 +6,10 @@
 #include <boost/python.hpp>
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 using namespace boost;
 
@@ -522,3 +526,6 @@ void CScriptManager::Update()
 		}
 	}
 }
+
+
+} // namespace amorphous

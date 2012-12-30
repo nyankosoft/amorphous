@@ -6,6 +6,10 @@
 #include "Stage.hpp"
 
 
+namespace amorphous
+{
+
+
 CBE_Turret::CBE_Turret()
 {
 	m_BoundingVolumeType = BVTYPE_AABB;
@@ -91,3 +95,6 @@ void CBE_Turret::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_Enemy::Serialize( ar, version );
 }
+
+
+} // namespace amorphous

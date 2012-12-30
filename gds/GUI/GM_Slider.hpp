@@ -5,6 +5,10 @@
 #include "GM_Control.hpp"
 
 
+namespace amorphous
+{
+
+
 //========================================================================================
 // CGM_Slider
 //========================================================================================
@@ -89,6 +93,9 @@ inline SRect CGM_Slider::GetLocalButtonRect() const
 	rect.Offset( -GetBoundingBox().GetTopLeftCorner() );
 	return rect;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GM_SLIDER_H__  */

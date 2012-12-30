@@ -4,6 +4,10 @@
 #include "BE_Enemy.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Turret : public CBE_Enemy
 {
 
@@ -26,6 +30,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif /*  __BE_Turret_H__  */

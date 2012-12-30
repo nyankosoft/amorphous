@@ -25,6 +25,10 @@
 #include "JigLib/JL_PhysicsActor.hpp"
 
 
+namespace amorphous
+{
+
+
 
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP
 
@@ -65,3 +69,6 @@ void CBE_PlayerShip::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_Player::Serialize( ar, version );
 }
+
+
+} // amorphous

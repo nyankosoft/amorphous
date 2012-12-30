@@ -5,6 +5,10 @@
 #include "MeshGenerators.hpp"
 
 
+namespace amorphous
+{
+
+
 class PipeMeshGenerator : public CMeshGenerator
 {
 	CCylinderDesc m_Desc;
@@ -37,6 +41,9 @@ public:
 
 
 //CMeshObjectHandle CreatePipeMesh( float outer_radius, float inner_radius, float height, unsigned int num_sides );
+
+
+} // namespace amorphous
 
 
 

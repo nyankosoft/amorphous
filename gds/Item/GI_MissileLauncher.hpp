@@ -11,6 +11,10 @@
 #include "gds/Input/ForceFeedback/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CWeaponSystem;
 struct SWeaponSlot;
 
@@ -173,6 +177,9 @@ public:
 	friend class CItemDatabaseBuilder;
 };
 
+
+
+} // namespace amorphous
 
 
 

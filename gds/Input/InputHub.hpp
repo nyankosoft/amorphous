@@ -9,6 +9,10 @@
 #include "../Support/SafeDelete.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
   Holds stacks of input handlers
   - This is a singleton class.
@@ -295,6 +299,9 @@ inline CInputHub& InputHub()
 //	return (*CInputHub::Get());
 	return CInputHub::GetInstance();
 }
+
+
+} // namespace amorphous
 
 
 

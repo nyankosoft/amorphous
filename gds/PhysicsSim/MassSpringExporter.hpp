@@ -5,6 +5,10 @@
 #include "gds/PhysicsSim/MassSpringSim.hpp"
 
 
+namespace amorphous
+{
+
+
 class CMassSpringExporter
 {
 protected:
@@ -23,6 +27,9 @@ public:
 
 
 };
+
+
+} // amorphous
 
 
 

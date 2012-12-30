@@ -6,6 +6,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Light;
 
 
@@ -28,6 +32,9 @@ public:
 
 	void LoadCoreBaseEntities( std::vector<CBaseEntity *>& pBaseEntities );
 };
+
+
+} // amorphous
 
 
 

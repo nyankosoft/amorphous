@@ -9,6 +9,10 @@
 #include <dinput.h>
 #include <windows.h>
 
+
+namespace amorphous
+{
+
 #pragma comment( lib, "dinput8.lib" )
 
 
@@ -58,6 +62,9 @@ public:
 
 	void Release();
 };
+
+
+} // namespace amorphous
 
 
 

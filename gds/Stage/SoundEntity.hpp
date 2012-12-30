@@ -4,6 +4,10 @@
 
 #include "Stage/fwd.hpp"
 #include "Stage/CopyEntity.hpp"
+
+
+namespace amorphous
+{
 //#include "Support/shared_prealloc_pool.hpp"
 
 
@@ -38,6 +42,9 @@ public:
 
 	void SetMaxRadius( float max_radius ) { m_fMaxRadius = max_radius; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SoundEntity_HPP__  */

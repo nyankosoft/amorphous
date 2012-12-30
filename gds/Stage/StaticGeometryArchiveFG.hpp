@@ -5,7 +5,10 @@
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CMeshSubset : public IArchiveObjectBase
@@ -174,6 +177,9 @@ public:
 
 	const static std::string ms_CollisionMeshTreeKey;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __STATICGEOMETRYARCHIVEFG_H__  */

@@ -6,6 +6,10 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -288,3 +292,6 @@ void CBE_TextureAnimation::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fExpansionFactor;
 	ar & m_AnimTypeFlag;
 }
+
+
+} // namespace amorphous

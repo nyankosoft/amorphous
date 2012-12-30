@@ -3,9 +3,13 @@
 
 
 #include "Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
-
 #include <string>
+
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 
 class CNamedResourceHandle : public IArchiveObjectBase
@@ -51,6 +55,9 @@ public:
 
 	enum eSpecialIndexVal { INVALID_INDEX = -1, UNINITIALIZED = -2 };
 };
+
+
+} // amorphous
 
 
 

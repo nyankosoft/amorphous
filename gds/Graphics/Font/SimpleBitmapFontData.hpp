@@ -5,6 +5,10 @@
 #include <stdlib.h>
 
 
+namespace amorphous
+{
+
+
 /// Stores a fixed pitch, 16-level grayscale font.
 /// - Used to store hardcoded font
 class CSimpleBitmapFontData
@@ -37,6 +41,10 @@ public:
 	const char **m_papTexelRow;
 //	std::vector<char *> m_vecpTexelRow;
 };
+
+
+} // namespace amorphous
+
 
 
 #endif // __CSimpleBitmapFontData_HPP__

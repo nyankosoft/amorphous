@@ -4,6 +4,10 @@
 #include <d3dx9.h>
 #include "../TextureCoord.hpp"
 
+
+namespace amorphous
+{
+
 struct TLVERTEX
 {
 	/// transformed position of the vertex
@@ -45,6 +49,8 @@ struct TLVERTEX2
 };
 
 #define D3DFVF_TLVERTEX2 (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX2)
+
+} // amorphous
 
 
 #endif  /*  __FVFTLVERTEX_H__  */

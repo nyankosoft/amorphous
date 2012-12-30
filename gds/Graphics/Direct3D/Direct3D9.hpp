@@ -5,6 +5,10 @@
 #include "../GraphicsDevice.hpp"
 #include <d3dx9.h>
 
+
+namespace amorphous
+{
+
 //#pragma comment( lib, "d3dx9dt.lib" )
 #pragma comment( lib, "d3d9.lib" )
 #pragma comment( lib, "d3dx9.lib" )
@@ -131,6 +135,9 @@ public:
 		WINDOWED
 	};
 };
+
+} // namespace amorphous
+
 
 
 #endif // __DIRECT3D9_H__

@@ -7,6 +7,10 @@
 #include "../Support/DebugOutput.hpp"
 
 
+namespace amorphous
+{
+
+
 class CItemStatusDebugDisplay : public CDebugItem_ResourceManager
 {
 	boost::weak_ptr<CGameItem> m_pItem;
@@ -37,6 +41,9 @@ public:
 		}
 	}
 };
+
+
+} // amorphous
 
 
 

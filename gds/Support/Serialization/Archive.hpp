@@ -13,10 +13,10 @@
 #include "ArchiveObjectFactory.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 #define BA_STRING_LENGTH	16
@@ -387,10 +387,10 @@ public:
 };
 
 
-}	/*  Serialization  */
+} // namespace serialization
 
 
-}	/*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __ARCHIVEBASE_H__  */

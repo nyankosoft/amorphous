@@ -7,6 +7,10 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 
 
+namespace amorphous
+{
+
+
 enum {GRAPHTYPE_POINT, GRAPHTYPE_LINE};
 
 
@@ -132,6 +136,9 @@ public:
 	void SetSegmentID( int iSegmentNum, int iNewSegmentID );
 
 };
+
+} // amorphous
+
 
 
 #endif		/*  __2DGraph_H__  */

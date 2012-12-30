@@ -10,6 +10,10 @@
 #include "InputDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "dinput8.lib" )
 
 
@@ -136,5 +140,8 @@ public:
 
 	void GetStatus( std::vector<std::string>& buffer );
 };
+} // namespace amorphous
+
+
 
 #endif		/*  __DIRECTINPUTGAMEPAD_H__  */

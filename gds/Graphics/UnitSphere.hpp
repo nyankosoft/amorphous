@@ -5,6 +5,10 @@
 #include <d3dx9.h>
 #include "Graphics/Direct3D/FVF_ColorVertex.h"
 
+
+namespace amorphous
+{
+
 #define UNITCUBE_NUM_VERTICES 24
 
 
@@ -48,6 +52,9 @@ public:
 //	short GetRenderMode() { m_RenderMode; }
 
 };
+
+} // amorphous
+
 
 
 #endif		/*  __UNITSPHERE_H__  */

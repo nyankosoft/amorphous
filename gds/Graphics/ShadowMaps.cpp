@@ -14,6 +14,10 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ParamLoader.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using namespace boost;
 
@@ -614,3 +618,6 @@ void CPointLightShadowMap::SaveShadowMapTextureToFileInternal( const std::string
 {
 	m_pCubeShadowMapManager->SaveCubeTextureToFile( filepath );
 }
+
+
+} // namespace amorphous

@@ -28,6 +28,10 @@
 #include "GUI/GM_ControlRendererManager.hpp"
 #include "GUI/InputHandler_Dialog.hpp"
 
+
+namespace amorphous
+{
+
 //#include "JigLib/JL_PhysicsActor.hpp"
 
 using std::string;
@@ -686,3 +690,6 @@ void CBE_Player::Serialize( IArchive& ar, const unsigned int version )
 
 //	ar & ;
 }
+
+
+} // namespace amorphous

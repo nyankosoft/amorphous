@@ -14,6 +14,10 @@
 #include "Graphics/ShaderHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CShadowMapManager;
 class CScreenEffectManager;
 
@@ -259,6 +263,9 @@ inline void CEntityRenderManager::UpdateCamera( CCamera* pCam )
 	m_pCurrentCamera = pCam;
 	pCam->GetPose( m_CameraPose );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __EntityRenderManager_H__  */

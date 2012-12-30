@@ -9,6 +9,10 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 
+namespace amorphous
+{
+
+
 extern void LoadVerticesForD3DXMesh( const CMMA_VertexSet& rVertexSet,                // [in]
 									 std::vector<D3DVERTEXELEMENT9>& vecVertElement,  // [out]
 						             int &vertex_size,                                // [out]
@@ -274,6 +278,9 @@ inline void CD3DXMeshObjectBase::RenderSubset( CShaderManager& rShaderMgr, int m
 
 	RenderSubsets( rShaderMgr, &material_index, 1 );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __D3DXMESHOBJECTBASE_H__  */

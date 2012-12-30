@@ -23,6 +23,10 @@
 #include <list>
 
 
+namespace amorphous
+{
+
+
 /*
 template<class T>
 class indexed_object_container<T>
@@ -832,6 +836,9 @@ inline CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( boost::shared_p
 
 
 typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;
+
+} // namespace amorphous
+
 
 
 #endif  /* __AnimatedGraphicsManager_H__ */

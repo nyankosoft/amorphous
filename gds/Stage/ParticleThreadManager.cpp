@@ -3,6 +3,10 @@
 
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 //#include "yaneSDK/Thread/index.h"
 
 using namespace std;
@@ -69,3 +73,6 @@ void CParticleThreadManager::
 {
 }
 */
+
+
+} // namespace amorphous

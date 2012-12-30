@@ -5,6 +5,10 @@
 #include <mmsystem.h>
 #include <mmreg.h>
 
+
+namespace amorphous
+{
+
 //-----------------------------------------------------------------------------
 // Typing macros 
 //-----------------------------------------------------------------------------
@@ -50,6 +54,9 @@ public:
     HRESULT ResetFile();
     WAVEFORMATEX* GetFormat() { return m_pwfx; };
 };
+
+} // namespace amorphous
+
 
 
 #endif // __WAVEFILE_H__

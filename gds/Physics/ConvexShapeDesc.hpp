@@ -8,6 +8,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -41,6 +45,9 @@ public:
 
 
 } // namespace physics
+
+} // amorphous
+
 
 
 #endif  /*  __PhysConvexShapeDesc_HPP__  */

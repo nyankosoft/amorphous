@@ -14,6 +14,10 @@
 #include "Support/prealloc_pool.hpp"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "OpenAL32.lib" )
 #pragma comment( lib, "alut.lib" )
 
@@ -197,6 +201,9 @@ public:
 	friend class COpenALStreamedSoundSourceImpl;
 	friend class COpenALNonStreamedSoundSourceImpl;
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __OpenALSoundManagerImpl_H__ */

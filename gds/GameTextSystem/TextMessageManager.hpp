@@ -9,8 +9,10 @@
 
 #include "../base.hpp"
 #include "fwd.hpp"
-//#include "Graphics/Rect.hpp"
-//using namespace Graphics;
+
+
+namespace amorphous
+{
 
 
 #define GTC_NUM_MAXLETTERS_PER_LINE 64
@@ -323,6 +325,9 @@ inline CTextMessageManagerHub& TextMessageManagerHub()
 	static CTextMessageManagerHub s_obj;
 	return s_obj;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __TextMessageManager_H__  */

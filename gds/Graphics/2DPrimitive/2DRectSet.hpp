@@ -10,6 +10,10 @@
 #include "2DPrimitive.hpp"
 
 
+namespace amorphous
+{
+
+
 //=============================================================================
 // C2DRectSetImpl
 //=============================================================================
@@ -338,6 +342,9 @@ inline void C2DRectSet::Draw( int start_rect_index, int num_rects )
 
 
 
+
+
+} // namespace amorphous
 
 
 

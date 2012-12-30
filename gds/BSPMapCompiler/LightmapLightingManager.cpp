@@ -1,6 +1,10 @@
 
 #include "LightmapLightingManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -338,3 +342,6 @@ bool CLightmapLightingManager::Calculate( vector<CLightmap>& rvecLightmap )
 	return true;
 }
 */
+
+
+} // amorphous

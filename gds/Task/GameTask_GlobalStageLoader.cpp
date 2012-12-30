@@ -10,6 +10,10 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -109,3 +113,6 @@ void CGameTask_GlobalStageLoader::LoadGraphicsResources( const CGraphicsParamete
 {
 }
 
+
+
+} // namespace amorphous

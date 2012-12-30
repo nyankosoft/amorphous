@@ -1,6 +1,10 @@
 #include "2DRoundRect.hpp"
 
 
+namespace amorphous
+{
+
+
 C2DRoundRect::~C2DRoundRect()
 {
 }
@@ -258,3 +262,6 @@ void C2DRoundFrameRect::Set2DCircularBorderTextureCoords( float margin )
 	m_vecRectVertex[vert_index].m_TextureCoord[0].u = m_vecRectVertex[1].m_TextureCoord[0].u;
 	m_vecRectVertex[vert_index].m_TextureCoord[0].v = m_vecRectVertex[1].m_TextureCoord[0].v;
 }
+
+
+} // namespace amorphous

@@ -11,7 +11,10 @@
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "Graphics/Rect.hpp"
 #include "Support/memory_helpers.hpp"
-using namespace Graphics;
+
+
+namespace amorphous
+{
 
 #define GTC_NUM_MAXLETTERS_PER_LINE 64
 
@@ -165,6 +168,9 @@ public:
 	void ReleaseGraphicsResources() {}
 	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __TextMessageRenderer_H__  */

@@ -12,6 +12,10 @@
 #include "Support/prealloc_pool.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Light : public CBaseEntity
 {
 protected:
@@ -88,6 +92,9 @@ public:
 	static const float ms_fInvalidIntensity;
 	static const float ms_fInvalidAttenuation;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_Light_H__  */

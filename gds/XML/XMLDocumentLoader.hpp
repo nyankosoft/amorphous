@@ -19,6 +19,10 @@
 
 #include "XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 #ifdef _DEBUG
 	#pragma comment( lib, "xerces-c_3D.lib" )
 #else // _DEBUG
@@ -94,6 +98,10 @@ inline boost::shared_ptr<CXMLDocument> CreateXMLDocument( const std::string& fil
 	CXMLDocumentLoader doc_loader;
 	return doc_loader.Load( filepath );
 }
+
+
+} // namespace amorphous
+
 
 
 #endif /* __XMLDocumentLoader_H__ */

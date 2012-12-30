@@ -5,6 +5,10 @@
 #include "BaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_StaticGeometry : public CBaseEntity
 {
 private:
@@ -40,6 +44,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_StaticGeometry_H__  */

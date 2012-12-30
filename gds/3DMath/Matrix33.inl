@@ -10,6 +10,9 @@
 #include <string.h> // for memcpy
 
 
+namespace amorphous
+{
+
 //########################################################################
 // 
 //                       Matrix3
@@ -558,3 +561,5 @@ void calculate_rot_from_matrix(const tMatrix33<T> & matrix, tVector3<T> & axis, 
   }
   axis.normalise();
 }*/
+
+} // namespace amorphous

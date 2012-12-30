@@ -7,6 +7,10 @@
 
 #include "gds/Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::list;
@@ -268,3 +272,6 @@ bool CCompositeMeshExporter_LW::SaveToFile( const char *pcFilename )
 
 	return true;
 }
+
+
+} // amorphous

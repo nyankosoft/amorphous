@@ -9,6 +9,10 @@
 
 #include "Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -260,3 +264,6 @@ Result::Name CNxPhysPreprocessorImpl::CreateClothMeshStream( CClothMeshDesc& des
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

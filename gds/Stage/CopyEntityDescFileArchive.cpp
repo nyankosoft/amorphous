@@ -2,6 +2,10 @@
 #include "CopyEntityDescFileArchive.hpp"
 
 
+namespace amorphous
+{
+
+
 /*
 CCopyEntityDescFileArchive::CCopyEntityDescFileArchive()
 {
@@ -43,3 +47,6 @@ void CCopyEntityDescFileArchive::Serialize( IArchive& ar, const unsigned int ver
 {
 	ar & m_vecCopyEntityDesc;
 }
+
+
+} // namespace amorphous

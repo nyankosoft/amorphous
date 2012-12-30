@@ -11,6 +11,10 @@
 #include "Support/SafeDelete.hpp"
 
 
+namespace amorphous
+{
+
+
 // particle implementations
 //
 //                HW vertex buffer     No HW vertex buffer 
@@ -298,7 +302,7 @@ public:
 
 	virtual unsigned int GetArchiveObjectID() const { return BE_PARTICLESET; }
 
-	virtual void Serialize( GameLib1::Serialization::IArchive& ar, const unsigned int version );
+	virtual void Serialize( serialization::IArchive& ar, const unsigned int version );
 
 	void UpdateVertexBuffer(CCopyEntity* pCopyEnt);
 
@@ -395,6 +399,9 @@ inline SBE_ParticleSetExtraData& CBE_ParticleSet::GetExtraData(int iExtraDataInd
 {
 	return m_paParticleSet[iExtraDataIndex];
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_PARTICLESET_H__  */

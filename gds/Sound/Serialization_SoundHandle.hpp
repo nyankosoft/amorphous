@@ -6,10 +6,10 @@
 #include "../Support/Serialization/Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -33,9 +33,9 @@ inline IArchive& operator & ( IArchive& ar, CSoundHandle& rSoundHandle )
 }
 
 
-}  /*  Serialization  */
+} // namespace serialization
 
-}  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __GAMELIB1_SOUNDHANDLE_SERIALIZATION_H__  */

@@ -1,6 +1,6 @@
 
 #include "BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+using namespace amorphous::serialization;
 
 #include "Support/memory_helpers.hpp"
 

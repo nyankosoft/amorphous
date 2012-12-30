@@ -9,7 +9,10 @@
 #include "SoundManagerImpl.hpp"
 #include "../base.hpp"
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CSoundManager
@@ -267,6 +270,9 @@ inline CSoundManager& SoundManager()
 {
 	return *(CSoundManager::Get());
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SoundManager_H__  */

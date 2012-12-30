@@ -2,6 +2,9 @@
 #define __EntityCollGroups_H__
 
 
+namespace amorphous
+{
+
 /**
  * entity collision groups for physics simulator
  */
@@ -15,6 +18,8 @@ enum eEntityCollGroup
 	ENTITY_COLL_GROUP_NOCLIP,
 	NUM_ENTITY_COLL_GROUPS
 };
+
+} // namespace amorphous
 
 
 #endif /* __EntityCollGroups_H__ */

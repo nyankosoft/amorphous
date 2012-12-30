@@ -9,6 +9,10 @@ using namespace MeshModel;
 #include "gds/Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -294,3 +298,6 @@ const morph::progress_display& C3DMeshModelExportManager_LW::GetSourceObjectLoad
 	else
 		return invalid_progress;
 }
+
+
+} // amorphous

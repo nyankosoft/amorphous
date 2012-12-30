@@ -2,6 +2,9 @@
 #define __ALPHABLEND_H__
 
 
+namespace amorphous
+{
+
 class AlphaBlend
 {
 public:
@@ -34,6 +37,7 @@ public:
 	};
 };
 
+} // namespace amorphous
 
 
 #endif  /* __ALPHABLEND_H__ */

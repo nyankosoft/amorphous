@@ -6,7 +6,11 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 enum eJL_ShapeType
@@ -130,6 +134,9 @@ inline void CJL_ShapeDesc::RotateInertia( Matrix33 &matInertia )
 	matInertia(1,2) = matInertia(2,1);
 }
 
+
+
+} // namespace amorphous
 
 
 

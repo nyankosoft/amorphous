@@ -7,6 +7,10 @@
 #include "../Graphics/Mesh/RectSetMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Decal : public CBaseEntity
 {
 	enum param { NUM_MAX_DECALS = 128 };
@@ -53,5 +57,8 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+} // namespace amorphous
+
+
 
 #endif /*  __BE_Decal_H__  */

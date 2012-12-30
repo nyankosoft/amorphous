@@ -3,6 +3,10 @@
 #include "NxPhysShapeFactory.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -28,3 +32,6 @@ CShape* CNxPhysActor::CreateShape( CShapeDesc& desc )
 
 
 } // namespace physics
+
+
+} // namespace amorphous

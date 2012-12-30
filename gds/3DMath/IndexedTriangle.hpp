@@ -4,7 +4,11 @@
 #include "AABB3.hpp"
 
 #include "../Support/Serialization/SerializationEx.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CTriangleMesh;
@@ -80,6 +84,9 @@ inline void CIndexedTriangle::Serialize( IArchive& ar, const unsigned int versio
 		ar & m_bVertexCollision[i];
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __INDEXEDTRIANGLE_H__ */

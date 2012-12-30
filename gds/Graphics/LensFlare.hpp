@@ -12,6 +12,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 /// holds one lens flare 
 /// - corresponds to one 2D rectangle
 class CLensFlareComponent
@@ -170,5 +174,8 @@ inline void CLensFlare::UpdateScreenSize( int screen_width, int screen_height )
 	m_ScreenHeight	= screen_height;
 }
 */
+} // namespace amorphous
+
+
 
 #endif		/*  __LensFlare_H__  */

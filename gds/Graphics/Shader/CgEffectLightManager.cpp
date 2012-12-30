@@ -2,6 +2,10 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CCgEffectLightManager::CCgEffectLightManager()
 :
 m_CgEffect(NULL)
@@ -151,3 +155,6 @@ void CCgEffectLightManager::LoadGraphicsResources( const CGraphicsParameters& rP
 void CCgEffectLightManager::ReleaseGraphicsResources()
 {
 }
+
+
+} // namespace amorphous

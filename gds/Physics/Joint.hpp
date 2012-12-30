@@ -8,6 +8,10 @@
 #include "JointDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -261,6 +265,9 @@ virtual void *  is (NxJointType type) = 0;
 
 //================== inline implementations =======================
 //#include "Joint.inl"
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PhysJoint_H__  */

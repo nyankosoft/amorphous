@@ -7,6 +7,10 @@
 #include "gds/Graphics/Camera.hpp"
 
 
+namespace amorphous
+{
+
+
 inline short& MissileState( CCopyEntity* pCopyEnt ) { return pCopyEnt->s1; }
 inline float& MissileIgnitionTimer(CCopyEntity* pCopyEnt) { return pCopyEnt->f5; }
 
@@ -101,5 +105,8 @@ public:
 	};
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_HOMINGMISSILE_H__  */

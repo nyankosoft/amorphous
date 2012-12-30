@@ -7,6 +7,10 @@
 #include "Item/ItemDatabaseManager.hpp"
 #include "Item/GameItemObjectFactory.hpp"
 #include "Item/WeaponSystem.hpp"
+
+
+namespace amorphous
+{
 //#include "HUD_PlayerShip.hpp"
 //#include "HUD_PlayerAircraft.hpp"
 
@@ -329,3 +333,5 @@ void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 	}
 
 }
+
+} // namespace amorphous

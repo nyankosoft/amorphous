@@ -11,6 +11,10 @@
 #include "gds/Stage/EntityGroupHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 // forward declerations
 class CGI_Weapon;
 class CGI_Ammunition;
@@ -251,6 +255,9 @@ inline void CWeaponSystem::UpdateWorldProperties( const Matrix34& rShooterWorldP
 //			= m_aWeaponSlot[i].WorldPose * pWeapon->GetMuzzleEndLocalPose();
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __WEAPONSYSTEM_H__  */

@@ -3,7 +3,10 @@
 
 
 #include "../../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CShaderManager;
@@ -43,6 +46,9 @@ inline CShaderManager& FixedFunctionPipelineManager()
 {
 	return *(CFixedFunctionPipelineManagerHolder::Get()->GetFFPMgr());
 }
+
+
+} // namespace amorphous
 
 
 

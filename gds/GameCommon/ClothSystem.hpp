@@ -18,7 +18,11 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /*
@@ -270,6 +274,9 @@ public:
 
 	Result::Name AddCollisionCapsule( const std::string& target_bone_name, const Capsule& capsule );
 };
+
+
+} // namespace amorphous
 
 
 

@@ -7,7 +7,10 @@
 #include <string>
 
 #include "Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CBE_ParticleSet;
@@ -42,6 +45,9 @@ public:
 
 	void AddParticleSetBaseEntity( CBE_ParticleSet *pBaseEntity );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ParticleThreadManager_H__  */

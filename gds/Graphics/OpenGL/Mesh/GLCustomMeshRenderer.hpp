@@ -5,6 +5,10 @@
 #include "gds/Graphics/Mesh/CustomMeshRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGLCustomMeshRenderer : public CCustomMeshRenderer
 {
 public:
@@ -23,6 +27,9 @@ public:
 
 	static CGLCustomMeshRenderer ms_Instance;
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __GLCustomMeshRenderer_HPP__ */

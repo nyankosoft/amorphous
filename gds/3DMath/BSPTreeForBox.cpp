@@ -2,6 +2,10 @@
 #include "BSPTreeForBox.hpp"
 
 
+namespace amorphous
+{
+
+
 CBSPTreeForBox::CBSPTreeForBox()
 {
 }
@@ -178,3 +182,6 @@ bool CBSPTreeForBox::ClipTrace( Vector3& vEndPos,
 
 	return false;
 }
+
+
+} // namespace amorphous

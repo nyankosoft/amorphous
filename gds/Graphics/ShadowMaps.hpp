@@ -13,6 +13,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 class CShadowMap;
 //class CDirectionalLightShadowMap;
 class COrthoShadowMap;
@@ -368,6 +372,9 @@ public:
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
+
+
+} // namespace amorphous
 
 
 

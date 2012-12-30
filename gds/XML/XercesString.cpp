@@ -2,6 +2,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+
+namespace amorphous
+{
+
 #ifdef XERCES_CPP_NAMESPACE_USE
 XERCES_CPP_NAMESPACE_USE
 #endif
@@ -96,3 +100,6 @@ const XMLCh XercesString::operator [] (const int i) const
 {
   return _wstr[i];
 }
+
+
+} // namespace amorphous

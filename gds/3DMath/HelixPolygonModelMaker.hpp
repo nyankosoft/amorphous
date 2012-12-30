@@ -7,6 +7,10 @@
 #include "Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 template<typename T>
 void CreateUniformCylindricalHelix(
 	T helix_length,
@@ -23,6 +27,9 @@ void CreateUniformCylindricalHelix(
 	std::vector< tVector3<T> >& normals,
 	std::vector< std::vector<unsigned int> >& polygons
 	);
+
+
+} // namespace amorphous
 
 
 

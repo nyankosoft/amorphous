@@ -8,6 +8,10 @@
 #include "gds/GameCommon/HUD_TimerDisplay.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGameTextWindow;
 class CGameTextSet;
 class CSubDisplay;
@@ -94,6 +98,9 @@ inline void HUD_PlayerBase::Update( float dt )
 	if( m_pGraphicsEffectManager )
 		m_pGraphicsEffectManager->UpdateEffects( dt );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __HUD_PLAYERBASE_H__  */

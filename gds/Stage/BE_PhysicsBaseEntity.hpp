@@ -6,6 +6,10 @@
 #include "gds/Physics/TriangleMeshDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_PhysicsBaseEntity : public CBaseEntity
 {
 protected:
@@ -49,6 +53,9 @@ public:
 
 	friend class CEntitySet;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_PHYSICSBASEENTITY_H__  */

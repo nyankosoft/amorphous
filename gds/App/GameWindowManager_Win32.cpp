@@ -2,6 +2,10 @@
 #include "Support/WindowMisc_Win32.hpp"
 
 
+namespace amorphous
+{
+
+
 CGameWindowManager_Win32 *g_pGameWindowManager_Win32 = NULL;
 
 
@@ -48,3 +52,6 @@ void CGameWindowManager_Win32::SetWindowLeftTopCornerPosition( int left, int top
 	// - use SWP_NOSIZE flag to ignore window size parameters
 	::SetWindowPos( m_hWnd, HWND_TOP, left, top, 0, 0, SWP_NOSIZE );
 }
+
+
+} // namespace amorphous

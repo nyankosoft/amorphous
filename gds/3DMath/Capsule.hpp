@@ -2,6 +2,10 @@
 #define __Capsule_HPP__
 
 
+namespace amorphous
+{
+
+
 class Capsule
 {
 public:
@@ -42,6 +46,8 @@ public:
 	}
 };
 
+
+} // namespace amorphous
 
 
 #endif /* __Capsule_HPP__ */

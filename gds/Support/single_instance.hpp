@@ -6,6 +6,10 @@
 
 #include "single_instance_win32.hpp"
 
+
+namespace amorphous
+{
+
 #else /* _MSC_VER */
 
 //inline bool is_another_instance_running( const char *application_name )
@@ -16,6 +20,9 @@ inline bool is_another_instance_running()
 }
 
 #endif /* _MSC_VER */
+
+} // amorphous
+
 
 
 #endif /* __single_instance_HPP__ */

@@ -3,6 +3,10 @@
 #include "OpenGL/GLGraphicsDevice.hpp"
 
 
+namespace amorphous
+{
+
+
 CSingleton<CGraphicsDeviceHolder> CGraphicsDeviceHolder::m_obj;
 
 
@@ -28,3 +32,6 @@ Result::Name CGraphicsDeviceHolder::SelectGraphicsDevice( const std::string& lib
 
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

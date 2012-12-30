@@ -5,6 +5,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/algorithm/string/replace.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -1069,3 +1073,5 @@ void ConfigureShader()
 	{
 	}*/
 }
+
+} // namespace amorphous

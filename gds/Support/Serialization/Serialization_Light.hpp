@@ -7,10 +7,10 @@
 #include "Serialization_Color.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 /*
@@ -46,9 +46,9 @@ inline IArchive& operator & ( IArchive& ar, CHemisphericDirectionalLight& light 
 }
 */
 
-}	  /*  Serialization  */
+} // namespace serialization
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __KGL_LIGHT_SERIALIZATION_H__  */

@@ -7,6 +7,10 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
+
 /// A 2x2 matrix
 class Matrix22
 {
@@ -133,6 +137,9 @@ inline const Matrix22 & Matrix22Identity()
 
 // converts a rotation matrix into a rotation of degrees about axis
 //inline void calculate_rot_from_matrix(const Matrix22 & matrix, Vector2 & axis, Scalar & degrees);
+
+
+} // namespace amorphous
 
 
 #include "Matrix22.inl"

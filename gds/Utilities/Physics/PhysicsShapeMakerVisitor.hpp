@@ -11,6 +11,10 @@
 #include "../../Support/SafeDeleteVector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPhysicsShapeMakerVisitor : public CShapeContainerVisitor
 {
 public:
@@ -75,6 +79,9 @@ public:
 //		m_pShapeDescs.push_back( pConvex );
 	}
 };
+
+
+} // namespace amorphous
 
 
 

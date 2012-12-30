@@ -8,6 +8,10 @@
 #include "Direct3D/FVF_TextureVertex.h"
 
 
+namespace amorphous
+{
+
+
 /**
  line type primtives
  - mainly for visual debugging
@@ -103,6 +107,9 @@ inline void DrawCoordAxes( const Matrix34& pose, float axis_length = 1.0f )
 	GetCoordAxesDisplay( axes, pose, axis_length );
 	axes.Draw();
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __LinePrimitives_H__ */

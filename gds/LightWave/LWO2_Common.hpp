@@ -6,6 +6,10 @@
 #include <stdlib.h>
 
 
+namespace amorphous
+{
+
+
 typedef unsigned short UINT2;
 typedef unsigned long UINT4;
 
@@ -150,6 +154,9 @@ extern int ReadName(char* pName, FILE* fp);
 
 // Progress the file pointer	'fp' by 'count' bytes 
 extern void AdvanceFP(FILE *fp, UINT4 count);
+
+
+} // amorphous
 
 
 

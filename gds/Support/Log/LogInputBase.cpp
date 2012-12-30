@@ -11,6 +11,10 @@
 #include "../../Support/SafeDelete.hpp"
 #include "../../Support/time_string.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -189,3 +193,6 @@ bool CLogInput_Default::TestFilter( int filter_val )
 	default: return true;
 	}
 }
+
+
+} // namespace amorphous

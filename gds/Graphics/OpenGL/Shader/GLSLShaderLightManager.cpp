@@ -1,5 +1,9 @@
 #include "GLSLShaderLightManager.hpp"
 #include "Graphics/OpenGL/GLExtensions.hpp"
+
+
+namespace amorphous
+{
 //#include <boost/filesystem.hpp>
 
 using namespace std;
@@ -79,3 +83,6 @@ void CGLSLShaderLightManager::ClearLights(){}
 void CGLSLShaderLightManager::CommitChanges()
 {
 }
+
+
+} // namespace amorphous

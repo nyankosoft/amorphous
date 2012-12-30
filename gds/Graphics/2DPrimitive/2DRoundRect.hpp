@@ -11,6 +11,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 /**
  * frame rectangle with rounded corners
  * - vertex indexing is done in clockwise order: [0,3] > top-left, top-right, bottom-right, bottom-left
@@ -624,6 +628,9 @@ class C2DCompositeRoundRect : public C2DPrimitive
 
 public:
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __2DRoundRect_H__  */

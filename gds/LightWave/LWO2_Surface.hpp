@@ -7,6 +7,10 @@
 #include "LWO2_Common.hpp"
 
 
+namespace amorphous
+{
+
+
 // SBSP : Structure of Basic Surface Parameters
 
 //=========================================================================================
@@ -127,6 +131,9 @@ public:
 	float GetBaseShadingValue( int iType ) const { return m_afBaseShadingValue[iType]; }
 
 };
+
+} // amorphous
+
 
 
 #endif  /*  __LWO2_SURFACE_H__  */

@@ -2,6 +2,9 @@
 #define  __TimeFormat_H__
 
 
+namespace amorphous
+{
+
 class TimeFormat
 {
 public:
@@ -14,6 +17,8 @@ public:
 		NUM_TIMEFORMATS
 	};
 };
+
+} // namespace amorphous
 
 
 #endif /* __TimeFormat_H__ */

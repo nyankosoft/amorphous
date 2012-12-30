@@ -4,6 +4,10 @@
 #include <string>
 #include <map>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -178,3 +182,5 @@ PyMethodDef g_PyModuleSoundMethod[] =
 //	{ "Play",              Play,              METH_VARARGS, "" },
 	{ NULL, NULL }
 };
+
+} // namespace amorphous

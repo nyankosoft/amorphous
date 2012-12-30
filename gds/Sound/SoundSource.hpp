@@ -6,6 +6,10 @@
 #include "../3DMath/Matrix34.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSoundSourceImpl;
 
 
@@ -246,6 +250,9 @@ inline void CSoundSource::GetTextInfo( std::string& dest_buffer )
 {
 	return m_pImpl->GetTextInfo( dest_buffer );
 }
+
+
+} // namespace amorphous
 
 
 #endif /* __SoundSource_H__ */

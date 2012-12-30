@@ -10,6 +10,10 @@
 #include "NxPhysics.h"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "PhysXLoader.lib" )
 
 
@@ -61,6 +65,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __NxPhysicsEngine_H__  */

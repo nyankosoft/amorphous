@@ -7,7 +7,10 @@
 #include "Stage/BSPStaticGeometry.hpp"
 
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CBaseLight;
@@ -141,6 +144,9 @@ public:
 
 	friend class CBSPMapCompiler;
 };
+
+
+} // amorphous
 
 
 

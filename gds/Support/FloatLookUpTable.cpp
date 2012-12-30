@@ -4,6 +4,10 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
+
 template <int iArraySize>
 bool TCFloatLookUpTable<iArraySize>::SetQuadraticFadeout(float fStartVal, float fEndVal,
 											float fFadeFactor, float fFadeDuration, float fSilence )
@@ -36,3 +40,5 @@ bool TCFloatLookUpTable<iArraySize>::SetQuadraticFadeout(float fStartVal, float 
 	return true;
 }
 */
+
+} // amorphous

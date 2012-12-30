@@ -2,6 +2,10 @@
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -517,3 +521,6 @@ void CLightmapTexture::OutputToBMPFiles( const std::string& image_body_filename 
 	delete [] padwImageData;
 }
 */
+
+
+} // amorphous

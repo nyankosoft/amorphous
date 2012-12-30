@@ -3,7 +3,11 @@
 
 
 #include "../../Support/Serialization/SerializationEx.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CBasicMaterialParams : public IArchiveObjectBase
@@ -32,6 +36,9 @@ public:
 		ar & fReflection;
 	}
 };
+
+
+} // amorphous
 
 
 

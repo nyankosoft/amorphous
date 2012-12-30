@@ -18,6 +18,10 @@
 
 #include "../base.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -411,3 +415,6 @@ PyMethodDef gsf::py::cam::g_PyModuleCameraMethod[] =
 	{ "SetTimeOffset",			gsf::py::cam::SetTimeOffset,		METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+} // namespace amorphous

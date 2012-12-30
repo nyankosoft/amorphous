@@ -5,6 +5,10 @@
 #include <windows.h>
 
 
+namespace amorphous
+{
+
+
 /**
  Performs timer operations.
  - Use GetGlobalTimer() or macro 'TIMER' to get the global instance.
@@ -79,6 +83,9 @@ protected:
 	/// stores FPS. updated about every one second in UpdateFrameTime()
 	float m_fFPS;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __Timer_Win32_HPP__ */

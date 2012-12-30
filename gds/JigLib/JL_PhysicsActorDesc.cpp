@@ -2,6 +2,10 @@
 #include "JL_ShapeDesc.hpp"
 #include "JL_ShapeDescFactory.hpp"
 
+
+namespace amorphous
+{
+
 void CJL_PhysicsActorDesc::CalculateMassProperties()
 {
 	memset( &m_matLocalInertia, 0, sizeof(Matrix33) );
@@ -26,3 +30,6 @@ void CJL_PhysicsActorDesc::Serialize( IArchive& ar, const unsigned int version )
 
 	ar.Polymorphic( vecpShapeDesc, shapedesc_factory );
 }
+
+
+} // namespace amorphous

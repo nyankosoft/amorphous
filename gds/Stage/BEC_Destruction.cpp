@@ -8,6 +8,10 @@
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/Stage.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -121,3 +125,6 @@ bool CBEC_Destruction::LoadFromFile( CTextFileScanner& scanner )
 
 	return false;
 }
+
+
+} // namespace amorphous

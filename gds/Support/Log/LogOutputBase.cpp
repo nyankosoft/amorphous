@@ -2,6 +2,10 @@
 #include "../../base.hpp"
 #include <boost/algorithm/string/replace.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -180,3 +184,6 @@ CLogOutput_Overlay::~CLogOutput_Overlay()
 void CLogOutput_Overlay::Print( const CLogMessage& msg )
 {
 }
+
+
+} // namespace amorphous

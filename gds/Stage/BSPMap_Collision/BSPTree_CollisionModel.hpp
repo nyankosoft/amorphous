@@ -2,6 +2,12 @@
 #define __BSPMAP_COLLISIONMODEL_H__
 
 #include "3DMath/3DStructs.hpp"
+#include <vector>
+using namespace std;
+
+
+namespace amorphous
+{
 
 
 struct SBSPNode
@@ -33,9 +39,6 @@ class CConvexPolygon;
 struct SNode;
 class CPlaneBuffer;
 class CMapFace;
-
-#include <vector>
-using namespace std;
 
 
 class CBSPTree_CollisionModel
@@ -69,6 +72,9 @@ public:
 								   vector<CMapFace> *pvecMapFace) {}
 	virtual void SaveToFile(FILE *fp) {} 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BSPMAP_COLLISIONMODEL_H__  */

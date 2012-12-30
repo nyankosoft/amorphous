@@ -7,6 +7,10 @@
 
 #include <vector>
 
+
+namespace amorphous
+{
+
 //class CIK_Jacobian;
 class CIK_Tree;
 
@@ -38,6 +42,9 @@ public:
 	void DoUpdateStep();
 
 };
+
+} // amorphous
+
 
 
 #endif		/*  __IK_CONTROLLER_H__  */

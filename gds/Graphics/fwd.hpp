@@ -2,6 +2,9 @@
 #define __FWD_Graphics_H__
 
 
+namespace amorphous
+{
+
 class CGraphicsParameters;
 class CGraphicsComponent;
 class CGraphicsComponentCollector;
@@ -74,8 +77,6 @@ class CFogParams;
 class TEXCOORD2;
 
 
-namespace MeshModel
-{
 class CMMA_VertexSet;
 class CMMA_TriangleSet;
 class CMMA_Material;
@@ -85,7 +86,6 @@ class CD3DXMeshModel;
 class C3DMeshModelBuilder;
 class C3DModelLoader;
 class CMeshBone;
-}
 
 class CGeneral3DMesh;
 
@@ -150,13 +150,6 @@ class CED_ChangeColor;
 class CED_Translate;
 
 
-#include <boost/shared_ptr.hpp>
-typedef boost::shared_ptr<CFontBase> CFontSharedPtr;
-typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
-typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
-typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;
-
-
 // D3D Implementation
 class CDirect3D9;
 class CD3DXMeshObjectBase;
@@ -190,6 +183,19 @@ public:
 		NUM_INIT_LAYOUTS
 	};
 };
+
+} // namespace amorphous
+
+
+#include <boost/shared_ptr.hpp>
+
+namespace amorphous
+{
+typedef boost::shared_ptr<CFontBase> CFontSharedPtr;
+typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
+typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
+typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;
+} // namespace amorphous
 
 
 #endif /* __FWD_Graphics_H__ */

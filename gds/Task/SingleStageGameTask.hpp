@@ -8,6 +8,10 @@
 #include "gds/Stage/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSingleStageGameTask : public CGUIGameTask
 {
 protected:
@@ -33,6 +37,9 @@ public:
 	virtual void Render();
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __SingleStageGameTask_H__  */

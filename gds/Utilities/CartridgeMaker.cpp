@@ -4,6 +4,10 @@
 #include "../Graphics/MeshModel/General3DMesh.hpp"
 #include "../Graphics/TextureCoord.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -521,3 +525,6 @@ Result::Name CartridgeMaker::Make(
 
 
 } // firearm
+
+
+} // amorphous

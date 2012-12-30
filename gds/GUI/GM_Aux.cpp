@@ -2,6 +2,10 @@
 #include "GM_Aux.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -84,3 +88,6 @@ CGM_Dialog *Create2ChoiceDialog( CGM_DialogManagerSharedPtr pDlgMgr, bool root_d
 		btn2_id, btn2_title, btn2_rect,
 		static_id, static_title, static_rect );
 }
+
+
+} // namespace amorphous

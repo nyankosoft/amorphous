@@ -4,6 +4,10 @@
 #include "IK_Jacobian.hpp"
 
 
+namespace amorphous
+{
+
+
 
 CIK_Controller::CIK_Controller()
 {
@@ -102,3 +106,6 @@ void CIK_Controller::DoUpdateStep()
 	}
 
 }
+
+
+} // amorphous

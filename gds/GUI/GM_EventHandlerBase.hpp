@@ -4,6 +4,10 @@
 
 #include "GM_Event.hpp"
 
+
+namespace amorphous
+{
+
 class GM_Event;
 
 class CGM_EventHandlerBase
@@ -90,6 +94,9 @@ void RegisterDialogEventHandler( CGM_Dialog *pDialog )
 
 
  <<< ================================= template ================================= */
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_EVENTHANDLERBASE_H__  */

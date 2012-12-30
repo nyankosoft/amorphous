@@ -13,6 +13,10 @@
 #include "Item/GameItem.hpp"
 #include "Physics/ActorDesc.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -333,3 +337,6 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 		actor_desc,
 		false );
 }
+
+
+} // namespace amorphous

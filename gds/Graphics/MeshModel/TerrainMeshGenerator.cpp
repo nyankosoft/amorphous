@@ -9,7 +9,10 @@
 #include <boost/filesystem.hpp>
 
 #include "3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 using namespace std;
 using namespace boost;
@@ -685,3 +688,6 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> 
 
 	return true;
 }
+
+
+} // namespace amorphous

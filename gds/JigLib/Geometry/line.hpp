@@ -16,6 +16,10 @@
 #include "3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace JigLib
 {
   /// A line goes through pos, and extends infinitely far in both
@@ -64,5 +68,8 @@ namespace JigLib
   };
   
 }
+} // namespace amorphous
+
+
 
 #endif

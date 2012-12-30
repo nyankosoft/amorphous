@@ -5,6 +5,10 @@
 #include "LWS_Items.hpp"
 
 
+namespace amorphous
+{
+
+
 class CTextFileScanner;
 
 
@@ -119,6 +123,9 @@ inline CLWS_Item *CLightWaveSceneLoader::GetItemByID( int item_id )
 
 	return NULL;
 }
+
+
+} // amorphous
 
 
 

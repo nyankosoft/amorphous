@@ -1,6 +1,10 @@
 #include "EmbeddedPostProcessEffectHLSLShader.hpp"
 
 
+namespace amorphous
+{
+
+
 //-----------------------------------------------------------------------------
 // Texture samplers
 //-----------------------------------------------------------------------------
@@ -489,3 +493,6 @@ void CPostProcessEffectFilterShaderGenerator::GetShader( std::string& shader )
 	else
 		LOG_PRINT_WARNING( "An unsupported effect name: " + m_EffectName );
 }
+
+
+} // namespace amorphous

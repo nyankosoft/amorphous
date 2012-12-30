@@ -12,6 +12,10 @@
 #include "GameCommon/RangedSet.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBEC_MotionPath;
 
 struct SBE_EnemyExtraData : public IArchiveObjectBase
@@ -193,6 +197,9 @@ public:
 	static float& FireCycleTime(CCopyEntity *pEntity)   { return pEntity->f4; }
 	static float& LastFireTime(CCopyEntity *pEntity)    { return pEntity->f5; }
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_Enemy_H__  */

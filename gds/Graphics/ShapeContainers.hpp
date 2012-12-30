@@ -8,7 +8,11 @@
 #include "../Support/SafeDeleteVector.hpp"
 #include "../Support/Serialization/Serialization.hpp"
 #include "../Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CAABB3Container;
@@ -167,6 +171,9 @@ public:
 		ar.Polymorphic( m_pShapes, factory );
 	}
 };
+
+
+} // namespace amorphous
 
 
 

@@ -5,7 +5,11 @@
 #include "3DActionCode.hpp"
 #include "gds/Input/InputHandler.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /**
@@ -234,6 +238,9 @@ inline CKeyBind::CKeyBind()
 		m_aGICodeToSystemMenuCode[i]      = ACTION_NOT_ASSIGNED;
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __KeyBind_H__  */

@@ -10,6 +10,10 @@
 #include "StageUtility.hpp"
 #include "../Script/convert_python_to_x.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 using namespace physics;
@@ -639,3 +643,6 @@ PyObject* CreateEntity( PyObject* self, PyObject* args, PyObject *keywds )
 
     return Py_None;
 }*/
+
+
+} // namespace amorphous

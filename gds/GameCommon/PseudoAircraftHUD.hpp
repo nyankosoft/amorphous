@@ -10,6 +10,10 @@
 #include <vector>
 #include <string>
 
+
+namespace amorphous
+{
+
 class CPseudoAircraftSimulator;
 
 
@@ -73,6 +77,9 @@ inline void CPseudoAircraftHUD::AddTargetInfo( const HUD_TargetInfo& info )
 	if( m_vecTargetInfo.size() < NUM_MAX_TGT_INFO )
 		m_vecTargetInfo.push_back( info );
 }*/
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PSEUDOAIRCRAFT_HUD_H__  */

@@ -9,6 +9,10 @@
 #include <iostream>
 
 
+namespace amorphous
+{
+
+
 Vector3 (*Vec3Cross_2Args)( const Vector3& lhs, const Vector3& rhs ) = Vec3Cross;
 void (*Vec3Cross_3Args)( Vector3& out, const Vector3& lhs, const Vector3& rhs ) = Vec3Cross;
 void (*Vec3Normalize_SingleArg)( Vector3& in ) = Vec3Normalize;
@@ -133,3 +137,6 @@ void RegisterPythonModule_math3d()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

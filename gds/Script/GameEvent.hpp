@@ -11,7 +11,11 @@ using namespace std;
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CGameEventCompiler;
@@ -150,6 +154,9 @@ class CEventFactory : public IArchiveObjectFactory
 public:
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 };
+
+
+} // namespace amorphous
 
 
 

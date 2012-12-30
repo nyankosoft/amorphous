@@ -8,6 +8,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DFixedFunctionPipelineLightManager : public CShaderLightManager
 {
 //	static const int m_iNumMaxLights = 6;	error
@@ -221,6 +225,9 @@ inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericSpotlight( cons
 {
 //	m_LightCache.vecHSSpotlight.push_back( light );
 }
+
+
+} // namespace amorphous
 
 
 

@@ -14,6 +14,10 @@
 #include "../Preprocessor.hpp"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "PhysXCooking.lib" )
 
 
@@ -52,6 +56,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __NxPhysPreprocessor_H__ */

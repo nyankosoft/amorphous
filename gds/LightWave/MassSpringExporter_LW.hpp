@@ -6,6 +6,10 @@
 #include "gds/LightWave/LightWaveObject.hpp"
 
 
+namespace amorphous
+{
+
+
 //==========================================================================
 // CMassSpringExporter_LW
 //==========================================================================
@@ -109,6 +113,9 @@ public:
 	CMS_MassSpringArchive& GetArchive() { return m_MassSpringArchive; }
 
 };
+
+
+} // amorphous
 
 
 

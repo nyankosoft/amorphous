@@ -2,7 +2,10 @@
 #include "3DMath/MatrixConversions.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 using namespace std;
 
@@ -237,3 +240,6 @@ void CMeshBone::DumpToTextFile( FILE* fp, int depth )
 	for( int i=0; i<m_iNumChildren; i++ )
 		m_paChild[i].DumpToTextFile( fp, depth + 1 );
 }
+
+
+} // namespace amorphous

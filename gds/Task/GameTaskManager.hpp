@@ -6,6 +6,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 // m_p = new CGameTaskManager( new CGameTaskFactoryCustomized, init_task_id );
 
 
@@ -41,6 +45,9 @@ public:
 
 	CGameTask *GetCurrentTask() { return m_pCurrentTask; }
 };
+
+
+} // namespace amorphous
 
 
 

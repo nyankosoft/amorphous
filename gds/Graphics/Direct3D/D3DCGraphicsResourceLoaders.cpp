@@ -3,6 +3,10 @@
 #include "Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace boost;
 
@@ -336,3 +340,6 @@ bool CD3DXMeshAttributeTableLoader::IsReadyToLock() const
 {
 	return GetSubResourceState( CMeshSubResource::INDEX ) == GraphicsResourceState::LOADED;
 }
+
+
+} // namespace amorphous

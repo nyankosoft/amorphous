@@ -10,6 +10,10 @@
 #include "Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
 #include "Utilities/TextFileScannerExtensions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -346,3 +350,6 @@ void CBE_PhysicsBaseEntity::Serialize( IArchive& ar, const unsigned int version 
 
 //	ar & m_fStaticFriction & m_fDynamicFriction;
 }
+
+
+} // namespace amorphous

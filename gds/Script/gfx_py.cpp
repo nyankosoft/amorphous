@@ -1,6 +1,10 @@
 #include "EmbeddedPythonModule.hpp"
 
 
+namespace amorphous
+{
+
+
 static const CEmbeddedPythonModule g_EmbeddedPythonModule_gfx = CEmbeddedPythonModule(
 "gfx",
 "import math\n"\
@@ -53,3 +57,6 @@ static const CEmbeddedPythonModule g_EmbeddedPythonModule_gfx = CEmbeddedPythonM
 
 
 const CEmbeddedPythonModule& GetEmbeddedPythonModule_gfx() { return g_EmbeddedPythonModule_gfx; }
+
+
+} // namespace amorphous

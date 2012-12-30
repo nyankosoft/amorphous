@@ -6,6 +6,10 @@
 #include <d3dx9.h>
 
 
+namespace amorphous
+{
+
+
 class CD3DXFont : public CFontBase
 {
 	std::string m_strFontName;
@@ -44,6 +48,9 @@ public:
 
 	virtual int GetFontType() const { return FONTTYPE_D3DX; }
 };
+
+
+} // namespace amorphous
 
 
 

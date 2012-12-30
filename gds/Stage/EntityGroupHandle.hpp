@@ -6,7 +6,11 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 #define ENTITY_GROUP_ID_UNINITIALIZED -2
@@ -136,6 +140,9 @@ inline void CEntityGroupHandle::SetID( int id )
 	// clear the name
 	m_EntityGroupName = "";
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __EntityGroupHandle_H__  */

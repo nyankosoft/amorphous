@@ -20,6 +20,10 @@
 #include "gds/GameCommon/ClothSystem.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::map;
@@ -1311,3 +1315,6 @@ bool CStandingMotionNode::HandleInput( const SInputData& input, int action_code 
 
 	return false;
 }
+
+
+} // namespace amorphous

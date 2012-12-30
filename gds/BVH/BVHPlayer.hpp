@@ -6,6 +6,10 @@
 #include "BVHBone.hpp"
 
 
+namespace amorphous
+{
+
+
 /// Holds translations / rotations for each joint at a frame in a single array of float values.
 /// Translations are in meters. angles are in radians.
 struct SBVHFrameData
@@ -106,6 +110,9 @@ public:
 
 //	void SetBoneOffsetMatricesForXMesh( char* pcFilename );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __BVHPLAYER_H__  */

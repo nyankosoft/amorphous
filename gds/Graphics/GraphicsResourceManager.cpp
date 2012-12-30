@@ -9,6 +9,10 @@
 #include "Support/SafeDelete.hpp"
 #include "Support/SafeDeleteVector.hpp"
 
+
+namespace amorphous
+{
+
 //#include "Support/Serialization/BinaryDatabase.hpp"
 
 using std::vector;
@@ -527,3 +531,6 @@ int CGraphicsResourceManager::LoadAsync( const CGraphicsResourceDesc& desc )
 	}
 }
 */
+
+
+} // namespace amorphous

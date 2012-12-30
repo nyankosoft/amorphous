@@ -8,7 +8,10 @@
 #include "GraphicsComponentCollector.hpp"
 
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 //=======================================================================================
@@ -115,6 +118,9 @@ inline CGraphicsResourceCacheManager& GraphicsResourceCacheManager()
 {
 	return (*CGraphicsResourceCacheManager::Get());
 }
+
+
+} // namespace amorphous
 
 
 

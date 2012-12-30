@@ -1,6 +1,10 @@
 #include "2DPrimitiveRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class VFF
 {
 public:
@@ -30,3 +34,6 @@ public:
 		VF_SHADOWWEIGHTVERTEX	= VF_POSITION|VF_NORMAL|VF_WEIGHT
 	};
 };
+
+
+} // namespace amorphous

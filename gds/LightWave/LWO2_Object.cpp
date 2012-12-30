@@ -1,6 +1,10 @@
 #include "LWO2_Object.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -593,3 +597,6 @@ vector<CLWO2_Layer *> CLWO2_Object::GetLayersWithKeywords( const vector<string> 
 	return vecpTargetLayer;
 }
 
+
+
+} // amorphous

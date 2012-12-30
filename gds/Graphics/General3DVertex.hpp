@@ -7,6 +7,10 @@
 #include "FloatRGBAColor.hpp"
 
 
+namespace amorphous
+{
+
+
 //=========================================================================================
 // CGeneral3DVertex
 //=========================================================================================
@@ -184,6 +188,9 @@ inline CGeneral3DVertex CGeneral3DVertex::operator/( float f ) const
 
 	return out;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GENERAL3DVERTEX_H__  */

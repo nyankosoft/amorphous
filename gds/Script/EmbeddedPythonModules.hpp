@@ -6,5 +6,12 @@
 #include "gfx_py.hpp"
 
 
+namespace amorphous
+{
+
+
+} // amorphous
+
+
 
 #endif /* __EmbeddedPythonModules_HPP__ */

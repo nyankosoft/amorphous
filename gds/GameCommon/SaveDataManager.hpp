@@ -7,10 +7,13 @@
 #include "gds/Support/StringAux.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
-
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 
 /**
@@ -167,6 +170,9 @@ public:
 	};
 };
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __SaveDataManager_H__ */

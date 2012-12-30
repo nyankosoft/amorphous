@@ -13,6 +13,10 @@
 #include "NxPhysics.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -320,6 +324,9 @@ inline void CNxPhysCloth::GetMeshData( CMeshData& mesh_data )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __NxPhysCloth_H__  */

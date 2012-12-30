@@ -1,6 +1,10 @@
 #include "2DPolygon.hpp"
 
 
+namespace amorphous
+{
+
+
 const float gs_fDefaultRadius = 100.0f;
 
 
@@ -134,3 +138,6 @@ void C2DRegularPolygon::SetVertexColor( int vertex, const SFloatRGBAColor& color
 	m_vecRectVertex[vertex+1].m_DiffuseColor = color;
 }
 
+
+
+} // namespace amorphous

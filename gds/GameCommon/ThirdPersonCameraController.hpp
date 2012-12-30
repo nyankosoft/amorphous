@@ -7,6 +7,10 @@
 #include "../GameCommon/CriticalDamping.hpp"
 
 
+namespace amorphous
+{
+
+
 class CThirdPersonCameraController
 {
 	CEntityHandle<> m_TargetEntity;
@@ -40,6 +44,9 @@ public:
 
 	float GetTargetVerticalAngle() { return m_VerticalAngle.target; }
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __ThirdPersonCameraController_HPP__ */

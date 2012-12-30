@@ -12,4 +12,11 @@
 #include "JL_PhysicsManager.hpp"
 
 
+namespace amorphous
+{
+
+} // namespace amorphous
+
+
+
 #endif  /*  __JIGLIB_H__  */

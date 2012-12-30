@@ -14,6 +14,10 @@
 #include "gds/Graphics/Camera.hpp"
 #include "gds/Physics/fwd.hpp"
 
+
+namespace amorphous
+{
+
 class CBSPTree;
 
 
@@ -390,6 +394,9 @@ inline int CEntitySet::GetEntityGroupFromName( const std::string& group_name )
 
 	return ENTITY_GROUP_INVALID_ID;
 }
+
+
+} // namespace amorphous
 
 
 

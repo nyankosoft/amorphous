@@ -8,6 +8,10 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include <boost/foreach.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::map;
@@ -602,3 +606,6 @@ void CMeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 		m_vecpChild[i]->LoadFromXMLNode( vecChild[i] );
 	}
 }
+
+
+} // namespace amorphous

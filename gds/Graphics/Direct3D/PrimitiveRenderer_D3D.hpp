@@ -7,6 +7,10 @@
 #include "../Direct3D/FVF_NormalVertex.h"
 
 
+namespace amorphous
+{
+
+
 class CPrimitiveRenderer_D3D : public CPrimitiveRenderer
 {
 	std::vector<COLORVERTEX> m_ColorVertices;
@@ -235,6 +239,9 @@ inline CPrimitiveRenderer_D3D& GetPrimitiveRenderer_D3D()
 	static CPrimitiveRenderer_D3D s_Renderer;
 	return s_Renderer;
 }
+
+
+} // amorphous
 
 
 

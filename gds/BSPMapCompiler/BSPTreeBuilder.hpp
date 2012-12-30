@@ -9,6 +9,10 @@ using namespace std;
 #include "../Stage/bspstructs.hpp"
 
 
+namespace amorphous
+{
+
+
 #define DEFAULT_ONPLANE_WEIGHT	4
 #define DEFAULT_SPLIT_WEIGHT	6
 #define DEFAULT_BALANCE_WEIGHT	1
@@ -54,6 +58,9 @@ public:
 
 	CBSPTreeBuilder operator=(CBSPTreeBuilder _BSPTBuilder);
 };
+
+} // amorphous
+
 
 
 #endif		/*  __BSPTREEBUILDER_H__  */

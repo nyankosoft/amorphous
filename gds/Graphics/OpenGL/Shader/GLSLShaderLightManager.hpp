@@ -6,6 +6,10 @@
 #include <GL/gl.h>
 
 
+namespace amorphous
+{
+
+
 class CGLSLShaderLightManager : public CGLFixedPipelineLightManager
 {
 	int m_VertexShader;
@@ -43,6 +47,9 @@ public:
 	virtual void CommitChanges();
 
 };
+
+
+} // namespace amorphous
 
 
 

@@ -10,6 +10,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 /**
  About font colors
  Options:
@@ -164,6 +168,9 @@ public:
 
 	virtual int GetFontType() const = 0;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __FONTBASE_H__  */

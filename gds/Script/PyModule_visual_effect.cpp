@@ -15,6 +15,10 @@
 
 #include "../base.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 
 /**
@@ -170,3 +174,6 @@ PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 	{NULL, NULL}
 };
 */
+
+
+} // namespace amorphous

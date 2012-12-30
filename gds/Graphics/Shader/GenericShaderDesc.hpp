@@ -2,6 +2,9 @@
 #define __GenericShaderDesc_HPP__
 
 
+namespace amorphous
+{
+
 class CLightingTechnique
 {
 public:
@@ -157,6 +160,8 @@ public:
 		}
 	}
 };
+
+} // namespace amorphous
 
 
 #endif  /* __GenericShaderDesc_HPP__ */

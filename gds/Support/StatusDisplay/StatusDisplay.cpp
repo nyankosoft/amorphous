@@ -3,6 +3,10 @@
 #include "StatusDisplayRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 
 NS_KGL::CSingleton<CStatusDisplay> CStatusDisplay::m_obj;
 
@@ -56,3 +60,5 @@ void CStatusDisplay::UpdateProgress( string &strTaskName, float fNewStatus )
 			m_vecTask[i].fStaus = fNewStatus;
 	}
 }
+
+} // amorphous

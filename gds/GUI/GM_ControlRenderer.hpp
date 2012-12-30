@@ -21,7 +21,6 @@
 #include "gds/3DMath/Vector2.hpp"
 #include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/Rect.hpp"
-using namespace Graphics;
 
 #include "fwd.hpp"
 #include "GM_Static.hpp"
@@ -31,6 +30,10 @@ using namespace Graphics;
 #include "GM_ScrollBar.hpp"
 #include "GM_SubDialogButton.hpp"
 #include "GM_Dialog.hpp"
+
+
+namespace amorphous
+{
 
 
 /**
@@ -302,5 +305,8 @@ m_pControl(NULL)
 
 
 */
+} // namespace amorphous
+
+
 
 #endif		/*  __GM_CONTROLRENDERER_H__  */

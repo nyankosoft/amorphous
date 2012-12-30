@@ -6,6 +6,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 //=====================================================================================
 // CMapFace::Methods()                                 - class CMapFace : public CFace
 //=====================================================================================
@@ -326,3 +330,6 @@ bool CMapFace::IsInSweptVolume( D3DXVECTOR3& rvPosition, float& rfDist )
 
 }
 
+
+
+} // amorphous

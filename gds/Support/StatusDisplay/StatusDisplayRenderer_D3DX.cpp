@@ -9,6 +9,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 CStatusDisplayRenderer_D3DX::CStatusDisplayRenderer_D3DX()
 : m_pFont(NULL)
 {
@@ -89,3 +93,5 @@ void CStatusDisplayRenderer_D3DX::Render( CStatusDisplay* pStatusDisplay )
     // Present the backbuffer contents to the display
     pd3dDev->Present( NULL, NULL, NULL, NULL );
 }
+
+} // amorphous

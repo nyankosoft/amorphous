@@ -5,7 +5,10 @@
 #include "../../base.hpp"
 #include "../fwd.hpp"
 #include "../../3DMath/Vector3.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class AxisAndDirection
@@ -241,6 +244,9 @@ extern Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,     C3DMes
 extern Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
 
 extern Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );
+
+
+} // namespace amorphous
 
 
 

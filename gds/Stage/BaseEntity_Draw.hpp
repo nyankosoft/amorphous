@@ -10,6 +10,10 @@
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 extern void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
 
 extern void InitMeshRenderMethod( CCopyEntity &entity,
@@ -44,6 +48,9 @@ public:
 			SetLightsToShader( *(pEntity.get()), rShaderMgr );
 	}
 };
+
+
+} // namespace amorphous
 
 
 

@@ -8,6 +8,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -309,3 +313,6 @@ void CPostProcessEffectFilter::SaveProcessedSceneToImageFile()
 	bool saved = m_pDest->m_Texture.SaveTextureToImageFile( image_pathname );
 //	hr = D3DXSaveTextureToFile( img_fmt, m_pDest->m_Texture.GetTexture(), NULL );
 }
+
+
+} // namespace amorphous

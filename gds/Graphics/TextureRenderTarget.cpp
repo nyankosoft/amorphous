@@ -1,5 +1,9 @@
 #include "TextureRenderTarget.hpp"
 #include "Support/Profile.hpp"
+
+
+namespace amorphous
+{
 //#include "Support/BMPImageExporter.hpp"
 
 
@@ -107,3 +111,6 @@ boost::shared_ptr<CTextureRenderTarget> CTextureRenderTarget::Create()
 	else
 		return boost::shared_ptr<CTextureRenderTarget>();
 }
+
+
+} // namespace amorphous

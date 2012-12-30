@@ -6,6 +6,10 @@
 #include "3DMath/Matrix33.hpp"
 
 
+namespace amorphous
+{
+
+
 
 
 class tBox
@@ -31,6 +35,9 @@ m_matOrient(matOrient)
 {}
 
 
+
+
+} // namespace amorphous
 
 
 

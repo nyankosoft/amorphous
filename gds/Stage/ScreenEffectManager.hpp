@@ -14,6 +14,10 @@
 #include "ScreenEffect.hpp"
 
 
+namespace amorphous
+{
+
+
 class CScreenEffectTargetSceneRenderer : public CGraphicsComponent
 {
 public:
@@ -385,6 +389,9 @@ inline void CScreenEffectManager::ClearGlareLuminanceThreshold( int priority_id 
 	if( m_mapGlareLuminanceThreshold.size() == 0 )
 		ClearEffectFlag( ScreenEffect::Glare );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SCREENEFFECTMANAGER_H__  */

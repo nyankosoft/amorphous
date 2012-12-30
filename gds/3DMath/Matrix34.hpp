@@ -6,6 +6,10 @@
 #include "Matrix33.hpp"
 
 
+namespace amorphous
+{
+
+
 template<typename T>
 class tMatrix34
 {
@@ -181,6 +185,9 @@ typedef tMatrix34<double> dMatrix34;
 
 #define Matrix34Identity tMatrix34Identity<float>
 #define dMatrix3Identity tMatrix34Identity<double>
+
+
+} // namespace amorphous
 
 
 

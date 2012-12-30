@@ -8,13 +8,11 @@
 #include "gds/Stage/EntityMotionPathRequest.hpp"
 #include "gds/Stage/BaseEntityHandle.hpp"
 #include "gds/Stage/GraphicsResourcesUpdateCallback.hpp"
+#include "fwd.hpp"
 
 
-class CGameItem;
-
-class CBlendTransformsLoader;
-
-class CMeshBonesUpdateCallback;
+namespace amorphous
+{
 
 
 class CItemModuleEntityTypeID
@@ -198,6 +196,9 @@ inline CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( boost::sh
 {
 	return CreateItemEntity( pItem, m_BaseEntityHandle, actor_desc, true );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ItemEntity_H__  */

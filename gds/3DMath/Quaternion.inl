@@ -10,6 +10,10 @@
 
 //----------------------------------------------------------------------------
  
+
+namespace amorphous
+{
+
 Quaternion::Quaternion ( Scalar fX, Scalar fY, Scalar fZ, Scalar fW )
 {
 	x = fX;
@@ -809,3 +813,5 @@ inline Quaternion operator* ( Scalar fScalar, const Quaternion& q )
 		kProd[i] = fScalar*q[i];
 	return kProd;
 }*/
+
+} // namespace amorphous

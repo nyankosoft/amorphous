@@ -8,6 +8,10 @@
 #include "../3DMath/Vector2.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGraphicsEffectHandle
 {
 	CAnimatedGraphicsManager *m_pManager;
@@ -89,5 +93,8 @@ void CNonLinearGraphicsEffectHandle::SetDestPos( const Vecotor2& vDestPos )
 {
 }
 */
+} // namespace amorphous
+
+
 
 #endif /* __GraphicsEffectHandle_H__ */

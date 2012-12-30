@@ -6,6 +6,10 @@
 #include "../FloatRGBAColor.hpp"
 
 
+namespace amorphous
+{
+
+
 class CLockedTexture
 {
 public:
@@ -48,6 +52,9 @@ public:
 	/// called by the system after the texture resource is created
 	virtual void FillTexture( CLockedTexture& texture ) = 0;
 };
+
+
+} // amorphous
 
 
 

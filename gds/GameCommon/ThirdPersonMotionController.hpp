@@ -7,6 +7,10 @@
 #include "../Input/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CSkeletalCharacter;
 
 
@@ -36,6 +40,9 @@ public:
 
 	void HandleInput( int action_code, const SInputData& input );
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __ThirdPersonMotionController_HPP__ */

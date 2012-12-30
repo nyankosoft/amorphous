@@ -10,6 +10,10 @@
 #include "GameEvent/GameEventManager.hpp"
 
 #include "Item/WeaponSystem.hpp"
+
+
+namespace amorphous
+{
 //#include "GameCommon/WeaponDatabase.hpp"
 //#include "GameCommon/AmmoDatabase.hpp"
 
@@ -182,3 +186,5 @@ CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
 {
 	return NULL;
 }
+
+} // amorphous

@@ -5,9 +5,11 @@
 #include <string>
 #include "../3DMath/precision.h"
 #include "../Support/Singleton.hpp"
-using namespace NS_KGL;
-
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
 
 
 namespace physics
@@ -103,6 +105,9 @@ inline CPhysicsEngine& PhysicsEngine()
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __Physics_PhysicsEngine_H__  */

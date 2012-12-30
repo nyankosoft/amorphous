@@ -3,6 +3,10 @@
 
 #include <stdlib.h>
 
+
+namespace amorphous
+{
+
 /**
  * friction calc function from QUAKE code
  * \param dt [in] delta-t
@@ -49,6 +53,9 @@ inline void ApplySQFriction( float& rfSpeed, float dt, float fFriction, float fT
 
 	rfSpeed = unsigned_val * sign;
 }
+
+} // namespace amorphous
+
 
 
 #endif /*  __GAMEMATH_H__  */

@@ -8,6 +8,10 @@
 #include "XML/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGameItem;
 class CTextFileScanner;
 class CGI_Weapon;
@@ -74,6 +78,9 @@ public:
 //	unsigned int GetItemID( string& strClassName );
 	int GetItemID( const std::string& class_name );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ITEMDATABASEBUILDER_H__  */

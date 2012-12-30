@@ -6,6 +6,10 @@
 #include "gds/Support/StringAux.hpp"
 #include <boost/foreach.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -148,3 +152,6 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 		CreateMotionPrimitive( desc, desc_group, bvh_player );
 	}
 }
+
+
+} // namespace amorphous

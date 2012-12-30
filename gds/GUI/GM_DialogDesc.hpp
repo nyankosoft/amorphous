@@ -7,6 +7,10 @@
 #include "Graphics/Rect.hpp"
 
 
+namespace amorphous
+{
+
+
 //========================================================================================
 // CGM_DialogDesc
 //========================================================================================
@@ -48,6 +52,9 @@ public:
 
 	CGM_DialogSoundPlayerSharedPtr pSoundPlayer;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_DIALOGDESC_H__  */

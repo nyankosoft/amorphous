@@ -3,6 +3,10 @@
 #include "../MeshModel/General3DMesh.hpp"
 #include "../MeshModel/3DMeshModelBuilder.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using boost::shared_ptr;
 
@@ -273,7 +277,7 @@ Result::Name CCylinderMeshGenerator::Generate()
 	CreateCylinderMesh( m_Desc, *pMesh );
 	GenerateTextureCoords( *pMesh );
 
-	Result::Name res = ::CreateArchiveFromGeneral3DMesh( pMesh, m_MeshArchive );
+	Result::Name res = amorphous::CreateArchiveFromGeneral3DMesh( pMesh, m_MeshArchive );
 
 	SetMiscMeshAttributes(); // set texture filename if it is specified.
 	return res;
@@ -294,3 +298,6 @@ Result::Name CCapsuleMeshGenerator::Generate()
 	SetMiscMeshAttributes(); // set texture filename if it is specified.
 	return res;
 }
+
+
+} // namespace amorphous

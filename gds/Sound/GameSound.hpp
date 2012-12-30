@@ -5,6 +5,10 @@
 #include "3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 // define 'DWORD_PTR' for "dsound.h" in DX9 SDK Summer 2004
 #ifndef DWORD_PTR
 #define DWORD_PTR DWORD*
@@ -66,5 +70,8 @@ public:
 	HRESULT Reset();
 	BOOL    IsSoundPlaying();
 };
+} // amorphous
+
+
 
 #endif // __GAMESOUND_H__

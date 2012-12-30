@@ -6,6 +6,10 @@
 #include "Stage.hpp"
 #include "GUI.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -68,3 +72,6 @@ void CStageViewerGameTask::UpdateCameraPose()
 {
 //	m_Camera.SetPose(  );
 }
+
+
+} // namespace amorphous

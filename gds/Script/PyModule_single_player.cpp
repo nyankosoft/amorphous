@@ -5,6 +5,10 @@
 #include "3DMath/Matrix34.hpp"
 #include <boost/python.hpp>
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -155,3 +159,6 @@ void RegisterPythonModule_single_player()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

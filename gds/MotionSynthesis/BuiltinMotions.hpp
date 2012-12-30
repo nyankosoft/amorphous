@@ -7,6 +7,10 @@
 #include "fwd.hpp"
 #include "../Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using namespace msynth;
 
 
@@ -18,6 +22,9 @@ using namespace msynth;
 
 
 boost::shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton );
+
+
+} // amorphous
 
 
 

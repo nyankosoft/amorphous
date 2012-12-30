@@ -2,6 +2,10 @@
 #include "gds/BVH/BVHBone.hpp"
 #include "gds/3DMath/TCBSpline.hpp"
 
+
+namespace amorphous
+{
+
 using namespace msynth;
 
 
@@ -207,3 +211,6 @@ CTransformNode *CTransformNode::GetNode( const std::vector<int>& node_locator, u
 	else
 		return NULL;
 }
+
+
+} // namespace amorphous

@@ -16,6 +16,10 @@
 #include "Sound/SoundManager.hpp"
 #include "Support/ParamLoader.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using std::string;
 using namespace boost;
@@ -748,3 +752,6 @@ void CBE_Bullet::Draw(CCopyEntity* pCopyEnt)
 
 	rvPrevPosition = pCopyEnt->GetWorldPosition();
 }*/
+
+
+} // namespace amorphous

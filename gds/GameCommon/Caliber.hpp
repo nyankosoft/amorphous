@@ -5,6 +5,10 @@
 #include <string.h>
 
 
+namespace amorphous
+{
+
+
 class Caliber
 {
 public:
@@ -152,6 +156,9 @@ inline Caliber::Name GetCaliberFromName( const char *caliber_name )
 
 	return Caliber::OTHER;
 }
+
+
+} // namespace amorphous
 
 
 

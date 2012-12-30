@@ -9,6 +9,10 @@
 
 #include "Physics/Actor.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -170,3 +174,6 @@ void CGI_LaserGun::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "Radius",    m_fRadius );
 	reader.GetChildElementTextContent( "Power",     m_fPower );
 }
+
+
+} // namespace amorphous

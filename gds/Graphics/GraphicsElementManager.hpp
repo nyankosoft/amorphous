@@ -19,6 +19,10 @@
 #include <boost/shared_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 class CGraphicsElementManagerBase// : public CGraphicsComponent
 {
 public:
@@ -272,6 +276,9 @@ inline CFontBase *CGraphicsElementManager::GetFont( int font_id )
 	else
 		return m_vecpFont[font_id];
 }
+
+} // namespace amorphous
+
 
 
 #endif  /* __GraphicsElementManager_H__ */

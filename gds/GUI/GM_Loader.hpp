@@ -6,6 +6,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 
 class CGM_Loader
 {
@@ -41,6 +45,9 @@ public:
 	inline void SetVariable02( const VarType02& obj ) const { m_Variable02 = obj; }
 
 };
+
+
+} // amorphous
 
 
 

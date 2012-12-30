@@ -8,6 +8,10 @@
 #include "GameCommon/3DActionCode.hpp"
 #include "Input/InputHandler.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -237,3 +241,6 @@ void CGI_Suppressor::OnSelected()
 void CGI_Key::OnSelected()
 {
 }
+
+
+} // namespace amorphous

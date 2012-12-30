@@ -5,6 +5,10 @@
 #include "../3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 #define  RANDDIRTBL_NUM_RANDOM_DIRECTIONS	(32*32)
 
 #define RANDOM_DIRECTION_TABLE ( CRandomDirectionTable::ms_SingletonInstance_ )
@@ -38,6 +42,9 @@ inline Vector3 CRandomDirectionTable::GetRandomDirection()
 
 	return m_avRandomDirectionTable[ iRandNum ];
 }
+
+
+} // namespace amorphous
 
 
 

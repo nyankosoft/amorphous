@@ -10,6 +10,10 @@
 #include "Enums.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -415,6 +419,9 @@ inline CShape *CScene::LineSegmentTestClosestShape( const CLineSegment& world_li
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysScene_H__  */

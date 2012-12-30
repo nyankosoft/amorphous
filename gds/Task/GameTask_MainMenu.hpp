@@ -7,6 +7,10 @@
 #include "GUI/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 enum eUIControlID
 {
 	ID_UI_DLG_ROOT = 10000,
@@ -106,6 +110,9 @@ public:
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GAMETASK_MAINMENU_H__  */

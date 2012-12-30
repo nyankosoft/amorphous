@@ -4,6 +4,10 @@
 #include "GameEvent.hpp"
 
 #include <vector>
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -27,6 +31,9 @@ public:
 	bool SaveToFile( const char *pcFilename );
 	bool LoadFromFile( const char *pcFilename );
 };
+
+
+} // namespace amorphous
 
 
 

@@ -5,6 +5,10 @@
 #include "../Graphics/2DPrimitive/2DRect.hpp"
 #include "../Graphics/GraphicsComponentCollector.hpp"
 
+
+namespace amorphous
+{
+
 #define SCREENEFFECT_FADE_OUT 0
 #define SCREENEFFECT_FADE_IN  1
 
@@ -49,6 +53,9 @@ inline void CFadeEffect::Update( float fFrameTime )
 		return;
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __FADEEFFECT_H__  */

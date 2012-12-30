@@ -16,6 +16,10 @@
 #include "gds/Stage/LightEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStageUtility
 {
 protected:
@@ -359,6 +363,9 @@ public:
 extern void SetFloatShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value );
 extern void SetColorShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value );
 extern void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path );
+
+} // namespace amorphous
+
 
 
 #endif /* __StageUtility_HPP__ */

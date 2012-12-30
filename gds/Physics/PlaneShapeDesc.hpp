@@ -7,6 +7,10 @@
 #include "../3DMath/Plane.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -37,6 +41,9 @@ public:
 
 
 } // namespace physics
+
+} // amorphous
+
 
 
 #endif  /*  __PhysPlaneShapeDesc_H__  */

@@ -6,6 +6,10 @@
 #include "Utilities/TextFileScannerExtensions.hpp"
 
 
+namespace amorphous
+{
+
+
 CBE_DirectionalLight::CBE_DirectionalLight()
 {
 	m_bNoClip = true;
@@ -110,3 +114,6 @@ void CBE_DirectionalLight::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_DirLight;
 }
+
+
+} // namespace amorphous

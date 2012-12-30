@@ -5,6 +5,10 @@
 #include "3DMath/AABB3.hpp"
 
 
+namespace amorphous
+{
+
+
 #define CONTENTS_SOLID	-1
 #define CONTENTS_EMPTY	-2
 
@@ -21,6 +25,9 @@ struct SNode_f
 
 	AABB3 aabb;
 };
+
+
+} // namespace amorphous
 
 
 

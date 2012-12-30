@@ -3,6 +3,10 @@
 
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -107,3 +111,6 @@ bool CTextureHandle::Load( CImageArchive& img_archive )
 	return false;
 }
 */
+
+
+} // namespace amorphous

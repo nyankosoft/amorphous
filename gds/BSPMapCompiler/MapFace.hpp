@@ -5,6 +5,10 @@
 #include "BaseFace.hpp"
 
 
+namespace amorphous
+{
+
+
 class CMapFace : public CFace
 {
 	int m_iTypeFlag;
@@ -89,6 +93,9 @@ inline bool CMapFace::IsCollidable()
 	else
 		return true;
 }
+
+} // amorphous
+
 
 
 #endif  /*  __MAPFACE_H__  */

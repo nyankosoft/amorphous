@@ -1,3 +1,6 @@
+namespace amorphous
+{
+
 //
 //  CopyEntity.inl
 //  inline functions of CCopyEntity
@@ -400,3 +403,5 @@ inline bool IsValidEntity( CCopyEntity *pEntity )
 {
 	return ( pEntity && pEntity->IsInUse() );
 }
+
+} // namespace amorphous

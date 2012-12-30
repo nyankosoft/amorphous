@@ -5,7 +5,7 @@
 #include "Point.hpp"
 
 
-namespace Graphics
+namespace amorphous
 {
 
 
@@ -159,7 +159,7 @@ inline SRect RectCWH( const SPoint& center, int width, int height )
 }
 
 
-}  /*  Graphics  */
+} // namespace amorphous
 
 
 #endif  /*  __GRAPHICS_RECT_H__  */

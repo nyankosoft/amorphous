@@ -5,6 +5,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -439,3 +443,6 @@ void CTextureFont::SetDefaultTextureStageStates()
     pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
     pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 }*/
+
+
+} // namespace amorphous

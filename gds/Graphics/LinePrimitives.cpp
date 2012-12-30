@@ -2,6 +2,10 @@
 #include "Direct3D/Direct3D9.hpp"
 #include "Direct3D/Conversions.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -101,3 +105,6 @@ void CLineList::AddLineSegment( Vector3 start, Vector3 end, U32 color )
 		m_vecPoint.back().tex       = TEXCOORD2( 0.0f, 0.0f );
 	}
 }
+
+
+} // namespace amorphous

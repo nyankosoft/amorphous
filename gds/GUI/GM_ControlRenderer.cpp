@@ -7,6 +7,10 @@
 #include "Graphics/GraphicsElementManager.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -164,3 +168,6 @@ public:
 	void SetTextOffset();
 };
 */
+
+
+} // namespace amorphous

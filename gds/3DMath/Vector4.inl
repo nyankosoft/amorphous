@@ -10,6 +10,9 @@
 #include "misc.hpp"
 
 
+namespace amorphous
+{
+
 // global operators
 
 inline Vector4 operator*( const Scalar f, const Vector4& v )
@@ -239,3 +242,5 @@ inline Scalar Vector4::GetLengthSq() const
 	return Vec3LengthSq(*this);
 }
 */
+
+} // namespace amorphous

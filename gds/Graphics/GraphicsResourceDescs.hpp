@@ -11,7 +11,11 @@
 #include "SurfaceFormat.hpp"
 #include "../XML/fwd.hpp"
 #include "../Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class GraphicsResourceType
@@ -332,6 +336,9 @@ VertexFormatFlags(0),
 LoadOptionFlags(0),
 VertexSize(0)
 {}
+
+} // namespace amorphous
+
 
 
 #endif  __GraphicsResourceDescs_H__

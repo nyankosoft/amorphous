@@ -7,6 +7,10 @@
 #include "Graphics/HemisphericLight.hpp"
 
 
+namespace amorphous
+{
+
+
 #define CEDL_HAS_PARENT	1	// TODO: better parent/child control system
 
 
@@ -51,5 +55,8 @@ public:
 
 	void DeleteDynamicLight(CCopyEntity* pCopyEnt);
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_PointLight_H__  */

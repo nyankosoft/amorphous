@@ -6,6 +6,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGM_SubEvent
 {
 public:
@@ -71,6 +75,9 @@ public:
 
 	~CGM_Event() {}
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_EVENT_H__  */

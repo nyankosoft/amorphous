@@ -6,10 +6,10 @@
 #include "gds/Support/Serialization/Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -33,9 +33,9 @@ inline IArchive& operator & ( IArchive& ar, CShaderTechniqueHandle& rShaderTechn
 }
 
 
-}  /*  Serialization  */
+} // namespace serialization
 
-}  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __Serialization_ShaderTechniqueHandle_H__  */

@@ -2,6 +2,10 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CD3DFixedFunctionPipelineLightManager::CD3DFixedFunctionPipelineLightManager()
 :
 m_NumLights(0)
@@ -71,3 +75,6 @@ void CD3DFixedFunctionPipelineLightManager::LoadGraphicsResources( const CGraphi
 void CD3DFixedFunctionPipelineLightManager::ReleaseGraphicsResources()
 {
 }
+
+
+} // namespace amorphous

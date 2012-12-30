@@ -12,6 +12,10 @@
 #include "Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -408,3 +412,6 @@ void CBE_PointLight::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fTimer;
 	ar & m_PointLight;
 }
+
+
+} // namespace amorphous

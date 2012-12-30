@@ -1,6 +1,10 @@
 #include "GravityFunction.hpp"
 
 
+namespace amorphous
+{
+
+
 //float g_fGFreeMaxRadius = 8.0f;
 //float g_fOmegaSq = 0.16333333333f;
 
@@ -24,3 +28,6 @@ Vector3 GravityAccel_CylindricalColony( Vector3& rvPosition )
 		return vPosOnZPlane * CGravityFunction::ms_fOmegaSq;
 	}
 }
+
+
+} // namespace amorphous

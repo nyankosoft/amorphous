@@ -9,6 +9,10 @@
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -239,3 +243,6 @@ void CRotatableTurret::SetMeshTransform( Matrix34& transform )
 	m_MountMeshTransform = m_MeshTransform * m_MountLocalPose.GetInverseROT();
 	m_GunMeshTransform   = m_MeshTransform * m_GunLocalPose.GetInverseROT();
 }
+
+
+} // namespace amorphous

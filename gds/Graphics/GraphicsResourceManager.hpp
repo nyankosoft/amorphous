@@ -11,7 +11,10 @@
 #include "GraphicsResourceLoaders.hpp"
 
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 /**
@@ -117,6 +120,9 @@ inline CGraphicsResourceManager& GraphicsResourceManager()
 {
 	return (*CGraphicsResourceManager::Get());
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GraphicsResourceManager_H__  */

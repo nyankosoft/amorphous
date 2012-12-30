@@ -17,6 +17,10 @@
 #include "EntitySet.hpp"
 
 
+namespace amorphous
+{
+
+
 #ifndef TEST_STATICGEOMETRY_FG
 
 #include "Stage.hpp"
@@ -500,3 +504,6 @@ void CStaticGeometryFG::RenderTreeNode( node )
 	}
 }
 */
+
+
+} // namespace amorphous

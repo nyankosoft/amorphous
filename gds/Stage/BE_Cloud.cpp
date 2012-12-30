@@ -6,6 +6,10 @@
 #include "Support/MTRand.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -186,3 +190,6 @@ void CBE_Cloud::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_ParticleSet::Serialize( ar, version );
 }
+
+
+} // namespace amorphous

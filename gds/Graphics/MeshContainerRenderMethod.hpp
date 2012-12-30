@@ -11,6 +11,10 @@
 #include "gds/XML/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CShaderParamsLoader
 {
 public:
@@ -224,6 +228,9 @@ inline void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, con
 
 	RenderMesh( *pMesh, world_transform );
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __MeshContainerRenderMethod_HPP__ */

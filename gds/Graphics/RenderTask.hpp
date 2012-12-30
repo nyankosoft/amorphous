@@ -5,6 +5,10 @@
 #include "gds/Support/Log/DefaultLog.hpp"
 
 
+namespace amorphous
+{
+
+
 class CRenderTask
 {
 protected:
@@ -63,6 +67,9 @@ inline void CRenderTask::RenderBase()
 //		pd3dDev->Present( NULL, NULL, NULL, NULL );
 	}
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __RenderTask_H__  */

@@ -2,6 +2,10 @@
 #include <stdio.h>
 
 
+namespace amorphous
+{
+
+
 /**
 Naming scheme
 
@@ -375,3 +379,6 @@ int main()// { return 0; }
 	printf( "content: %s\n", CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular.pContent );
 }
 */
+
+
+} // namespace amorphous

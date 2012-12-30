@@ -2,6 +2,9 @@
 #define __PolygonModelStyle_HPP__
 
 
+namespace amorphous
+{
+
 class PolygonModelStyle
 {
 public:
@@ -13,6 +16,7 @@ public:
 	};
 };
 
+} // namespace amorphous
 
 
 #endif /* __PolygonModelStyle_HPP__ */

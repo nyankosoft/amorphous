@@ -4,6 +4,10 @@
 //#include "Graphics/Direct3D/Direct3D9.hpp"
 //#include "Graphics/Direct3D/FVF_ColorVertex.h"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -544,3 +548,6 @@ void CBVHPlayer::SetBoneOffsetMatricesForXMesh( char* pcFilename )
 	m_RootBone.SetBoneOffsetMetricesForXMesh(
 		&vecXMeshBoneInPreorder, count, Vector3(0,0,0) );
 }*/
+
+
+} // namespace amorphous

@@ -6,6 +6,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+	
 struct TEXTUREVERTEX
 {
 	D3DXVECTOR3 vPosition;
@@ -45,6 +48,8 @@ const D3DVERTEXELEMENT9 TEXTUREVERTEX::VertexElements[4] =
 };*/
 
 //extern const D3DVERTEXELEMENT9 TEXTUREVERTEX_DECLARATION[4];
+
+} // amorphous
 
 
 #endif	/* __FVFTEXTUREVERTEX_H__ */

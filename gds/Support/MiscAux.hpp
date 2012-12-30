@@ -2,6 +2,9 @@
 #define __MiscAux_H__
 
 
+namespace amorphous
+{
+
 inline const char *GetBuildInfo()
 {
 #ifdef _MSC_VER
@@ -15,6 +18,7 @@ inline const char *GetBuildInfo()
 #endif /* MSC_VER */
 }
 
+} // namespace amorphous
 
 
 #endif /* __MiscAux_H__ */

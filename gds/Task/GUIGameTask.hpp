@@ -6,6 +6,10 @@
 #include "gds/GUI/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGUIGameTask : public CGameTask
 {
 	/// Initialized in ctor
@@ -38,6 +42,9 @@ public:
 
 	virtual void Render();
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GUIGameTask_H__  */

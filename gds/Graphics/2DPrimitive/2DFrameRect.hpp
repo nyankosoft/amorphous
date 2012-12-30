@@ -6,6 +6,10 @@
 #include "2DPrimitiveRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class C2DFrameRect : public C2DPrimitive
 {
 	CGeneral2DVertex m_avRectVertex[10];
@@ -285,6 +289,9 @@ void C2DFrameRect::SetBorderWidth( int border_width )
 		Vector2( pVert[1].m_vPosition.x, pVert[1].m_vPosition.y ),
 		Vector2( pVert[5].m_vPosition.x, pVert[5].m_vPosition.y ) );
 }
+
+
+} // namespace amorphous
 
 
 

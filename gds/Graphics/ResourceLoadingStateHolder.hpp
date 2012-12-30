@@ -9,6 +9,10 @@
 #include <boost/weak_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 // draft
 class CResourceLoadingStateSet
 {
@@ -107,6 +111,9 @@ public:
 
 	bool AreAllResourceLoaded();
 };
+
+
+} // namespace amorphous
 
 
 

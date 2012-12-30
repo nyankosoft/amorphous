@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -47,3 +51,6 @@ void CPhysicsEngine::Release()
 
 
 //void CPhysicsEngine::SetDefault(){}
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/ShaderHandle.hpp"
 
+
+namespace amorphous
+{
+
 using std::list;
 using boost::shared_ptr;
 
@@ -170,3 +174,6 @@ bool CResourceLoadingStateHolder::AreAllResourceLoaded()
 
 	return true;
 }
+
+
+} // namespace amorphous

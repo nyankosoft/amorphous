@@ -7,7 +7,11 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace msynth
@@ -53,6 +57,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __HumanoidMotionTable_H__ */

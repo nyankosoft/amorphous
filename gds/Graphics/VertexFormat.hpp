@@ -2,6 +2,9 @@
 #define  __VertexFormat_HPP__
 
 
+namespace amorphous
+{
+
 /// Vertex format flags
 class VFF
 {
@@ -50,6 +53,8 @@ public:
 		NUM_VERTEX_ELEMENTS
 	};
 };
+
+} // namespace amorphous
 
 
 #endif /* __VertexFormat_HPP__ */

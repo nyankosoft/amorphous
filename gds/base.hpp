@@ -38,6 +38,10 @@ typedef boost::int64_t I64;
 #endif
 
 
+namespace amorphous
+{
+
+
 //
 // inline functions
 //
@@ -110,6 +114,9 @@ public:
 };
 
 
+} // namespace amorphous
+
+
 
 //==========================================================================
 // platform-dependent settings
@@ -125,6 +132,7 @@ public:
 // Put things linux needs in common.
 
 #endif // _MSC_VER
+
 
 
 #endif  /* __BASETYPES_H__ */

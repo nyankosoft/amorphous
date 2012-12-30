@@ -14,6 +14,10 @@
 #include <map>
 
 
+namespace amorphous
+{
+
+
 namespace stage_util
 {
 
@@ -93,6 +97,9 @@ inline boost::shared_ptr<CStageEntityUtility> CreateStageEntityUtility()
 
 
 } // stage_util
+
+
+} // namespace amorphous
 
 
 

@@ -7,6 +7,10 @@
 #include "Stage/EntityMotionPathRequest.hpp"
 
 
+namespace amorphous
+{
+
+
 // How to direct the turret
 
 // calculate the current world pose of the turret
@@ -137,6 +141,9 @@ public:
 
 
 } // namespace item
+
+} // namespace amorphous
+
 
 
 #endif  /*  __Item_LandVehicle_H__  */

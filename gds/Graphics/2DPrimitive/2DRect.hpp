@@ -6,6 +6,10 @@
 #include "2DPrimitiveRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  hold a 2D rectangle
  - coord are set as left, top, right, bottom if 4 values are used as arguments without any notice
@@ -267,6 +271,9 @@ inline void C2DRect::Rotate( const Matrix22& matOrient )
 		vert_pos.y = v.y;
 	}
 }
+
+
+} // namespace amorphous
 
 
 

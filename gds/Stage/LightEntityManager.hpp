@@ -12,6 +12,10 @@ using namespace std;
 #include "LightEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 extern int g_iNumDynamicLights;
 
 // control the lighting for entities
@@ -225,5 +229,8 @@ inline CLightEntity *CLightEntityManager::GetLightEntity( int light_index )
 		return &m_aStaticLightEntity[light_index];
 	}*/
 }
+} // amorphous
+
+
 
 #endif		/*  __LIGHTENTITYMANAGER_H__  */

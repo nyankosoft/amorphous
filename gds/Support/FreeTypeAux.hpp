@@ -7,6 +7,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+
+namespace amorphous
+{
+
 #ifdef _DEBUG
 #pragma comment( lib, "freetype244_D.lib" )
 #else
@@ -103,6 +107,9 @@ inline void DrawBitmap( FT_Bitmap *bitmap, int left, int top, C2DArray<U8>& dest
 
 
 
+
+
+} // amorphous
 
 
 

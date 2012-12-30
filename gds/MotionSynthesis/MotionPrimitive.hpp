@@ -8,6 +8,10 @@
 #include "Keyframe.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -219,6 +223,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif  /*  __MotionPrimitive_H__  */

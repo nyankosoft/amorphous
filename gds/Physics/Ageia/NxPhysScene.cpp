@@ -19,6 +19,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using namespace physics;
 
@@ -405,7 +409,7 @@ CJoint* CNxPhysScene::CreateJoint( const CJointDesc& desc )
 		return NULL;
 	}
 
-	CJoint *pJoint = ::CreateJoint( desc.GetType() );
+	CJoint *pJoint = amorphous::CreateJoint( desc.GetType() );
 
 	CNxPhysJointImpl *pNxJointImpl = CreateNxJointImpl( desc.GetType() );
 
@@ -694,3 +698,6 @@ void CNxPhysScene::SetUserContactReport( CUserContactReport *pCallback )
 {
 	m_NxUserContactReport.m_pUserContactReport = pCallback;
 }
+
+
+} // namespace amorphous

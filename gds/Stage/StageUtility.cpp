@@ -22,6 +22,10 @@
 #include "Utilities/Physics/MeshConversions.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::map;
@@ -1469,3 +1473,6 @@ void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *paramete
 	bool tex_loaded = tex_param.m_Handle.Load( tex_param.m_Desc );
 	SetShaderParamLoaderToEntity( entity, parameter_name, tex_param );
 }
+
+
+} // namespace amorphous

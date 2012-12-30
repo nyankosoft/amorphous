@@ -28,6 +28,10 @@ inline void MsgBoxAlert( const char *message ) {}
 #include <string>
 
 
+namespace amorphous
+{
+
+
 inline void MsgBox( const char *message )
 {
 	MessageBox( NULL, message, "message", MB_OK );
@@ -98,6 +102,9 @@ inline CScopeMsgBox::~CScopeMsgBox()
 
 
 #define MSGBOX_FUNCTION_SCOPE() CScopeMsgBox function_scope_msgbox(__FUNCTION__"()")
+
+
+} // amorphous
 
 
 

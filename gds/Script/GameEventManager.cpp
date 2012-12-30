@@ -4,6 +4,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 CGameEventManager::CGameEventManager()
 {
 }
@@ -50,3 +54,5 @@ bool CGameEventManager::LoadFromFile( const char *pcFilename )
 
 	return true;
 }
+
+} // namespace amorphous

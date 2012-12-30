@@ -8,6 +8,10 @@
 #include "lfs.hpp"
 
 
+namespace amorphous
+{
+
+
 class CTBBImageSplitterImpl;
 
 
@@ -183,6 +187,9 @@ inline void CTBBImageSplitterImpl::operator() ( const tbb::blocked_range<int>& r
 		m_pSplitter->Clip( I );
 	}
 }
+
+} // amorphous
+
 
 
 #endif  /*  __ImageSplitter_H__  */

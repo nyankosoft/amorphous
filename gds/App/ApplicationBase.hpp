@@ -6,6 +6,10 @@
 #include <vector>
 #include "gds/Input/fwd.hpp"
 
+
+namespace amorphous
+{
+
 class CApplicationBase;
 
 
@@ -90,6 +94,9 @@ public:
 	friend void MainLoop( CApplicationBase *pApp );
 	friend CApplicationBase *CreateApplicationInstance();
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ApplicationBase_HPP__  */

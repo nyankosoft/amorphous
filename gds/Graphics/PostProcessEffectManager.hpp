@@ -7,6 +7,10 @@
 #include "PostProcessEffectFilter.hpp"
 
 
+namespace amorphous
+{
+
+
 class CHDRLightingFilter;
 class COriginalSceneFilter;
 class CFullScreenBlurFilter;
@@ -246,6 +250,9 @@ public:
 
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __PostProcessEffectManager_HPP__ */

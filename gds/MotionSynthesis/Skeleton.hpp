@@ -4,10 +4,14 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include "fwd.hpp"
 #include "TransformNode.hpp"
+
+
+namespace amorphous
+{
 
 
 /// set a blend weight for a particular bone
@@ -131,6 +135,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __Skeleton_H__ */

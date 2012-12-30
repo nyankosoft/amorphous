@@ -30,6 +30,10 @@
 
 #include "line.hpp"
 
+
+namespace amorphous
+{
+
 class CTriangle;
 class tBox;
 
@@ -82,5 +86,8 @@ namespace JigLib
 
 //#include "../geometry/include/distance.inl"
 }
+} // namespace amorphous
+
+
 
 #endif

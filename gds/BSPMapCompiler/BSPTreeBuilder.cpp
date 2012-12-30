@@ -6,6 +6,10 @@
 
 #include <string>
 #include <algorithm>
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -598,3 +602,6 @@ short CBSPTreeBuilder::LineCheck_r( D3DXVECTOR3& vP1, D3DXVECTOR3& vP2,
 		return LineCheck_r(vMid, vP2, sNodeIndex, rearlinenode);
 
 }
+
+
+} // amorphous

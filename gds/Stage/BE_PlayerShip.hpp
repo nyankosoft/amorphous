@@ -9,6 +9,10 @@
 #include "Graphics/Camera.hpp"
 #include "fwd.hpp"
 
+
+namespace amorphous
+{
+
 class CShockWaveCameraEffect;
 
 /*
@@ -102,6 +106,9 @@ inline void CBE_PlayerShip::SetBoost( float fValue )
 	// m_fBoost == 1.0f : double speed
 	m_fBoost = fValue * 0.65f;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __BE_PLAYERSHIP_H__  */

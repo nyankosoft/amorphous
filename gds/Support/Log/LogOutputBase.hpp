@@ -8,6 +8,10 @@
 #include <fstream>
 
 
+namespace amorphous
+{
+
+
 enum LogWarningLevel
 {
 	WL_VERBOSE,
@@ -132,6 +136,9 @@ public:
 	virtual void Print( const CLogMessage& msg );
 
 };
+
+
+} // namespace amorphous
 
 
 

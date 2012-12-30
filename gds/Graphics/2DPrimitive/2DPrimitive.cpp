@@ -1,6 +1,10 @@
 #include "2DPrimitive.hpp"
 
 
+namespace amorphous
+{
+
+
 void C2DPrimitive::SetTextureCoords( int stretch_x, int stretch_y,
 	                                 const TEXCOORD2& left_top_offset,
 	                                 TextureAddress::Mode mode )
@@ -11,3 +15,6 @@ void C2DPrimitive::SetTextureCoords( int stretch_x, int stretch_y,
 		left_top_offset + TEXCOORD2( vExtent.x / (float)stretch_x, vExtent.y / (float)stretch_y )
 		);
 }
+
+
+} // namespace amorphous

@@ -10,6 +10,10 @@
 #include "HUD_PlayerBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGameTextWindow;
 class CGameTextSet;
 
@@ -71,6 +75,9 @@ inline bool HUD_PlayerShip::HandleInput( int iActionCode, int input_type, float 
 {
 	return m_QuickMenuManager.HandleMouseInput( iActionCode, input_type, fVal );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __HUD_PLAYERSHIP_H__  */

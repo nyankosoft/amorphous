@@ -13,6 +13,10 @@
 #include "../fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  - When created, automatically registers itself to ShaderManagerHub
 
@@ -241,6 +245,9 @@ inline Result::Name CGLFixedFunctionPipelineManager::SetTechnique( CShaderTechni
 
 	return Result::UNKNOWN_ERROR;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GLFixedFunctionPipelineManager_HPP__  */

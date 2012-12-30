@@ -6,6 +6,10 @@
 #include "../../Utilities/PerlinAux.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPerlinNoiseTextureGenerator : public CTextureFillingAlgorithm
 {
 public:
@@ -38,6 +42,9 @@ public:
 
 	void FillTexture( CLockedTexture& texture );
 };
+
+
+} // namespace amorphous
 
 
 

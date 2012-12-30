@@ -8,6 +8,10 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/fnop.hpp"
+
+
+namespace amorphous
+{
 using namespace fnop;
 
 
@@ -713,3 +717,5 @@ void CBSPMapData::SetLocalLightDirections()
 	}
 }
 */
+
+} // amorphous

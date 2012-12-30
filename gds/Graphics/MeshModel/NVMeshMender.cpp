@@ -31,6 +31,10 @@ Comments:
 #include "nvMeshMender.hpp"
 #include "assert.h"
 
+
+//namespace amorphous
+//{
+
 namespace
 {
 	const unsigned int NO_GROUP = 0xFFFFFFFF;
@@ -143,7 +147,7 @@ public:
 	}
 };
 
-
+namespace amorphous{
 bool operator<( const Vector3& lhs, const Vector3& rhs )
 {
 	//needed to have a vertex in a map.
@@ -172,7 +176,7 @@ bool operator<( const Vector3& lhs, const Vector3& rhs )
         return ( lhs.x < rhs.x );
     }
 }
-
+}
 
 MeshMender::MeshMender()
 {
@@ -1156,3 +1160,5 @@ void MeshMender::AppendToMapping(	const size_t oldIndex,
 		mappingNewToOldVert.push_back( oldIndex );
 	}
 }
+
+//} // namespace amorphous

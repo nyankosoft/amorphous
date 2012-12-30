@@ -6,11 +6,13 @@
 #include "Graphics/Direct3D/FVF_TLVertex.h"
 #include "Graphics/TextureCoord.hpp"
 #include "Graphics/Rect.hpp"
-using namespace::Graphics;
-
 #include "3DMath/Vector2.hpp"
 #include "3DMath/Matrix22.hpp"
 #include "3DMath/Vector3.hpp"
+
+
+namespace amorphous
+{
 
 
 /**
@@ -252,6 +254,9 @@ inline void C2DTexRect::Rotate( const Matrix22& matOrient )
 		vert_pos.y = v.y;
 	}
 }
+
+
+} // namespace amorphous
 
 
 

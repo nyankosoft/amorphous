@@ -6,6 +6,10 @@
 #include <vorbis/vorbisfile.h>
 
 
+namespace amorphous
+{
+
+
 class CSerializableStream;
 class stream_buffer;
 
@@ -30,6 +34,9 @@ extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
 extern unsigned long DecodeOggVorbis( OggVorbis_File *psOggVorbisFile, unsigned long ulChannels, stream_buffer& dest_buffer );
 
 extern unsigned long DecodeOggVorbis(OggVorbis_File *psOggVorbisFile, char *pDecodeBuffer, unsigned long ulBufferSize, unsigned long ulChannels);
+
+
+} // namespace amorphous
 
 
 

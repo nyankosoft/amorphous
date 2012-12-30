@@ -9,7 +9,11 @@
 //#include "Support/FixedVector.hpp"
 #include "Support/MTRand.hpp"
 #include "Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CTextFileScanner;
@@ -160,6 +164,9 @@ inline CSoundHandle& CSurfaceMaterial::GetSound_Random( int ReactionType )
 
 	return m_vecSound[ReactionType][i];
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SURFACEMATERIAL_H__  */

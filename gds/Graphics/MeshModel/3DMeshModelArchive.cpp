@@ -7,8 +7,11 @@
 #include "Support/ImageArchive.hpp"
 #include "Support/lfs.hpp"
 
-using namespace GameLib1::Serialization;
-using namespace MeshModel;
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 using namespace std;
 
@@ -289,10 +292,10 @@ void CMMA_Bone::Serialize( IArchive& ar, const unsigned int version )
 
 //void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive, ... ) /// error: must specify the namespace. See below
 
-void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
-								             const string& db_filepath,
-								             CBinaryDatabase<string> &db,
-								             bool bUseTextureBasenameForKey )
+void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
+								  const string& db_filepath,
+								  CBinaryDatabase<string> &db,
+								  bool bUseTextureBasenameForKey )
 {
 	const size_t num_materials = mesh_archive.GetMaterial().size();
 	for( size_t i=0; i<num_materials; i++ )
@@ -348,7 +351,7 @@ void MeshModel::AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 }
 
 
-Result::Name MeshModel::CreateSingleSubsetMeshArchive(
+Result::Name CreateSingleSubsetMeshArchive(
 	const vector<Vector3>& positions,
 	const vector<Vector3>& normals,
 	const vector<SFloatRGBAColor>& diffuse_colors,
@@ -756,3 +759,6 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 
 	fclose(fp);
 }
+
+
+} // namespace amorphous

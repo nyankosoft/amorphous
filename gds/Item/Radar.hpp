@@ -5,6 +5,10 @@
 #include "GameItem.hpp"
 
 
+namespace amorphous
+{
+
+
 class CRadar;
 
 
@@ -192,6 +196,9 @@ public:
 //	void AddTargetEntityGroup( int group_id );
 //	void ClearTargetEntityGroup
 };
+
+
+} // namespace amorphous
 
 
 

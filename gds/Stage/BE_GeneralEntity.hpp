@@ -7,6 +7,10 @@
 #include "BE_PhysicsBaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 #define GETYPE_LIFETIMER	1
 
 
@@ -60,5 +64,8 @@ public:
 
 	static float& LifeTimer( CCopyEntity* pCopyEnt ) { return pCopyEnt->f3; }
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_GENERALENTITY_H__  */

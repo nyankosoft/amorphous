@@ -10,6 +10,10 @@
 #include "ShapeDescFactory.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -85,6 +89,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysActorDesc_H__  */

@@ -6,6 +6,10 @@
 #include "NxJoint.h"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -58,6 +62,9 @@ public:
 
 
 } // namespace physics
+
+
+} // amorphous
 
 
 

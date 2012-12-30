@@ -3,6 +3,10 @@
 
 #include "GM_Control.hpp"
 
+
+namespace amorphous
+{
+
 class CGM_StaticDesc;
 
 
@@ -28,6 +32,9 @@ public:
 
 	void SetText( const std::string& strText );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_STATIC_H__  */

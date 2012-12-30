@@ -5,6 +5,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -159,3 +163,6 @@ PyMethodDef g_PyModuleStageGraphMethod[] =
 	{NULL, NULL}
 };
 
+
+
+} // namespace amorphous

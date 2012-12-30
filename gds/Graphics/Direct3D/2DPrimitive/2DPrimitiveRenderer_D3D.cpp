@@ -4,6 +4,10 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 
 
+namespace amorphous
+{
+
+
 static LPDIRECT3DVERTEXDECLARATION9 sg_pTLVertDeclaration = NULL;
 
 
@@ -226,3 +230,6 @@ void C2DPrimitiveRenderer_D3D::RenderRect( CShaderManager& rShaderManager, const
 
 	Render( rShaderManager, verts, 4, PrimitiveType::TRIANGLE_FAN );
 }
+
+
+} // namespace amorphous

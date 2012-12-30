@@ -5,6 +5,10 @@
 #include "Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 /// A 3x3 matrix
 template<typename T>
 class tMatrix33
@@ -141,9 +145,6 @@ inline const tMatrix33<T> & tMatrix33Identity()
 //inline void calculate_rot_from_matrix(const tMatrix33 & matrix, tVector3<T> & axis, T & degrees);
 
 
-#include "Matrix33.inl"
-
-
 typedef tMatrix33<float> Matrix33;
 typedef tMatrix33<double> dMatrix33;
 
@@ -151,6 +152,10 @@ typedef tMatrix33<double> dMatrix33;
 #define dMatrix33Identity tMatrix33Identity<double>
 
 
+} // namespace amorphous
+
+
+#include "Matrix33.inl"
 
 #endif  /*  __3DMATH_MATRIX33_H__  */
 

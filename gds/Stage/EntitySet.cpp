@@ -22,6 +22,10 @@
 #include "Support/macro.h"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using boost::shared_ptr;
@@ -1463,3 +1467,6 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 	}
 }
 */
+
+
+} // namespace amorphous

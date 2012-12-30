@@ -4,7 +4,11 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CGameItem;
@@ -22,6 +26,9 @@ public:
 
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 };
+
+} // namespace amorphous
+
 
 
 #endif  /* __GameItemObjectFactory_H__   */

@@ -11,6 +11,10 @@
 #include "Support/memory_helpers.hpp"
 #include "PseudoAircraftSimulator.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -291,3 +295,6 @@ void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 	m_pFont->SetDestAlphaBlendMode( AlphaBlend::One );
 	m_pFont->DrawCachedText();
 }
+
+
+} // namespace amorphous

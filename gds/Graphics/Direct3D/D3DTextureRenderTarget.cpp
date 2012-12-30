@@ -2,6 +2,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Support/Profile.hpp"
+
+
+namespace amorphous
+{
 //#include "Support/BMPImageExporter.hpp"
 
 
@@ -288,3 +292,6 @@ void CD3DTextureRenderTarget::OutputImageFile( const std::string& image_file_pat
 
 	pTex->UnlockRect( 0 );*/
 }
+
+
+} // namespace amorphous

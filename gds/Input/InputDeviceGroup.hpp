@@ -10,6 +10,10 @@
 #include "gds/Support/FixedVector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CInputDeviceGroup
 {
 	std::vector<CInputDevice *> m_vecpDevice;
@@ -31,6 +35,9 @@ public:
 	friend class CInputDevice;
 	friend class CInputDeviceHub;
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __InputDeviceGroup_HPP__  */

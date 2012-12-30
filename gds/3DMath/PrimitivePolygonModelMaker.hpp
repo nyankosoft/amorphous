@@ -7,6 +7,10 @@
 #include "PolygonModelStyle.hpp"
 
 
+namespace amorphous
+{
+
+
 /// \param height                 [in] height of the cylinder
 /// \param pafRadius              [in] 2 radii of the cylinder
 /// \param num_segments           [in] The number of divisions around the cylinder. The higher value geenrates smoother & better looking cylinder. Settings this to 4 generates a box.
@@ -49,6 +53,9 @@ void CreatePipe( float length, const float outer_radius, const float inner_radiu
                  std::vector<Vector3>& vecDestPos,
                  std::vector<Vector3>& vecDestNormal,
                  std::vector< std::vector<int> >& vecDestPoly );
+
+
+} // namespace amorphous
 
 
 

@@ -9,6 +9,10 @@
 #include "gds/GameCommon/CriticalDamping.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPseudoAircraftSimulator
 {
 	Matrix34 m_WorldPose;
@@ -184,6 +188,9 @@ inline void CPseudoAircraftSimulator::SetForwardVelocity( const Vector3& velocit
 {
 	m_Forward.m_fSpeed = Vec3Dot( GetWorldPose().matOrient.GetColumn(2), velocity );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PseudoAircraftSimulator_H__  */

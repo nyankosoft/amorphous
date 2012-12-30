@@ -6,6 +6,10 @@
 #include "GI_Weapon.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGI_LaserGun : public CGI_Weapon
 {
 	float m_fMaxRange;
@@ -36,6 +40,9 @@ public:
 
 	friend class CItemDatabaseBuilder;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __WEAPON_GI_LaserGun_H__  */

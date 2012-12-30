@@ -2,6 +2,10 @@
 #include "GraphicsResources.hpp"
 
 
+namespace amorphous
+{
+
+
 using boost::shared_ptr;
 
 
@@ -118,3 +122,6 @@ void CGraphicsResourceCacheManager::ReleaseGraphicsResources()
 		m_vecpResurceCache[i]->ReleaseCachedResource();
 	}
 }
+
+
+} // namespace amorphous

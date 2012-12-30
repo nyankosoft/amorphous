@@ -4,6 +4,10 @@
 #include "Support/TextFileScanner.hpp"
 #include "Support/Serialization/SerializationEx.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -200,3 +204,6 @@ void CSurfaceMaterial::Load( CSurfaceMaterialData& src_material )
 	}
 }
 */
+
+
+} // namespace amorphous

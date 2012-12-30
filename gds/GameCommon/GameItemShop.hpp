@@ -5,7 +5,10 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 class CGameItem;
@@ -117,6 +120,9 @@ inline CGameItemShopList& GameItemShopList()
 
 
 extern boost::shared_ptr<CGameItemShop> CreateGameItemShop( const std::string& shop_name );
+
+
+} // namespace amorphous
 
 
 

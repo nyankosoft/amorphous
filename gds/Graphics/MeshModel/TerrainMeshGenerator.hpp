@@ -11,6 +11,10 @@
 #include "3DMath/AABB3.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * Leaf nodes are used to store polygons contained in their subspace
  *
@@ -167,7 +171,7 @@ private:
 	/// subdivide textures
 	bool SplitTexture( const std::string& src_tex_filename );
 
-	void CopyVerticesAndTriangles( MeshModel::C3DMeshModelArchive& src_mesh );
+	void CopyVerticesAndTriangles( C3DMeshModelArchive& src_mesh );
 
 	void CreateMeshTree();
 
@@ -207,6 +211,9 @@ public:
 	void SetTerrainTexCoordShiftU( double shift_u ) { m_MeshTree.SetTerrainTexCoordShiftU( shift_u ); }
 	void SetTerrainTexCoordShiftV( double shift_v ) { m_MeshTree.SetTerrainTexCoordShiftV( shift_v ); }
 };
+
+
+} // namespace amorphous
 
 
 

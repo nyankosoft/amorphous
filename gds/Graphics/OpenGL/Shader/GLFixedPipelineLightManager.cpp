@@ -1,6 +1,10 @@
 #include "GLFixedPipelineLightManager.hpp"
 #include <GL/gl.h>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -123,3 +127,6 @@ void CGLFixedPipelineLightManager::ClearLights()
 	for( int i=0; i<GL_MAX_LIGHTS; i++ )
 		glDisable( GL_LIGHT0 + i );
 }
+
+
+} // namespace amorphous

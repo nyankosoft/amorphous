@@ -2,6 +2,9 @@
 #define  __BASEENTITYHANDLE_H__
 
 
+namespace amorphous
+{
+
 class CBaseEntity;
 
 class CBaseEntityHandle
@@ -101,6 +104,7 @@ public:
 	};
 };
 
+} // namespace amorphous
 
 
 #endif		/*  __BASEENTITYHANDLE_H__  */

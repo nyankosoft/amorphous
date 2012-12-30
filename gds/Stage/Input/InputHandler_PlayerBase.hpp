@@ -5,6 +5,10 @@
 #include "gds/GameCommon/3DActionCode.hpp"
 
 
+namespace amorphous
+{
+
+
 class CInputHandler_PlayerBase : public CInputHandler
 {
 protected:
@@ -65,6 +69,9 @@ inline float CInputHandler_PlayerBase::GetActionState( int iActionCode )
 {
 	return m_afActionState[iActionCode];
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __INPUTHANDLER_PLAYER_H__  */

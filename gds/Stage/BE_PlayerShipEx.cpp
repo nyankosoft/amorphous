@@ -4,6 +4,10 @@
 #include "trace.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -85,3 +89,6 @@ void CBE_PlayerShip::MoveEx(CCopyEntity *pEntity)
 	pEntity->world_aabb.TransformCoord( pEntity->local_aabb, pEntity->GetWorldPosition() );
 
 }
+
+
+} // namespace amorphous

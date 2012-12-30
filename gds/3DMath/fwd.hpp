@@ -1,6 +1,10 @@
 #ifndef __FWD_3DMath_HPP__
 #define __FWD_3DMath_HPP__
 
+
+namespace amorphous
+{
+
 template<typename T> class TVector2;
 class Matrix22;
 class Matrix23;
@@ -18,6 +22,8 @@ class Quaternion;
 class CTriangle;
 class Capsule;
 class Matrix44;
+
+} // namespace amorphous
 
 
 #endif /* __FWD_3DMath_HPP__ */

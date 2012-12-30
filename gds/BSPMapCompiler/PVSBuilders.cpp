@@ -1,5 +1,9 @@
 #include "MapCompiler.h"
 
+
+namespace amorphous
+{
+
 //===================================================================================
 // CPortalVisibilityBuilder::Methods()                    - CPortalVisibilityBuilder
 //===================================================================================
@@ -258,3 +262,6 @@ bool CClippingVisibilityBuilder::VisibilityClipping(CPortalFace& rSrcPortal,
 	else
 		return false;
 }
+
+
+} // amorphous

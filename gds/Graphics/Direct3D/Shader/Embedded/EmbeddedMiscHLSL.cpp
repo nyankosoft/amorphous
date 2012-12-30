@@ -1,6 +1,10 @@
 #include "EmbeddedMiscHLSL.hpp"
 
 
+namespace amorphous
+{
+
+
 const char *CEmbeddedMiscHLSL::ms_pSingleDiffuseColor =
 "float4 DiffuseColor = float4(1,1,1,1);"\
 "float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
@@ -179,3 +183,6 @@ Result::Name CEmbeddedMiscHLSL::GetShader( CEmbeddedMiscShader::ID shader_id, st
 		return Result::INVALID_ARGS;
 	}
 }
+
+
+} // namespace amorphous

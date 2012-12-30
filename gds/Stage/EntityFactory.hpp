@@ -9,6 +9,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CEntityFactory
 {
 	shared_prealloc_pool<CCopyEntity> m_CopyEntityPool;
@@ -182,6 +186,9 @@ void CDerivedEntityFactory::ReleaseAllDerivedEntities()
 }
 
 */
+
+} // namespace amorphous
+
 
 
 #endif		/*  __EntityFactory_H__  */

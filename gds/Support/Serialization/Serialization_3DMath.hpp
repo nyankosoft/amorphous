@@ -13,10 +13,10 @@
 #include "Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -142,10 +142,10 @@ inline IArchive& operator & ( IArchive& ar, AABB2& aabb )
 }
 
 
-}	  /*  Serialization  */
+} // namespace serialization
 
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __GAMELIB1_3DMATH_SERIALIZATION_H__  */

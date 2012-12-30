@@ -9,6 +9,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 CImageCapture::CImageCapture()
 {
 	m_iImageWidth  = 0;
@@ -191,3 +195,6 @@ bool CImageCapture::GetCapturedImage( DWORD *pdwImageData )
 
 	return true;
 }
+
+
+} // amorphous

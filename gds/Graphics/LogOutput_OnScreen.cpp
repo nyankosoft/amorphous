@@ -6,6 +6,10 @@
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -84,3 +88,6 @@ int CLogOutput_ScrolledTextBuffer::GetNumCurrentRows()
 	else
 		return m_NumRows;
 }
+
+
+} // namespace amorphous

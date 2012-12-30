@@ -13,6 +13,10 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 
 
+namespace amorphous
+{
+
+
 //==========================================================-
 // CMA_CompositeMeshArchive
 //==========================================================-
@@ -300,3 +304,6 @@ void CCompositeMesh::RenderShadowVolume()
 	if( m_pShadowVolumeMesh )
 		m_pShadowVolumeMesh->Render();
 }
+
+
+} // amorphous

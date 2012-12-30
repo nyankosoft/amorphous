@@ -17,6 +17,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -992,3 +996,6 @@ CGameTextSet *HUD_PlayerAircraft::GetCurrentTextSetInTextWindow()
 {
 	return m_pTextWindow->GetCurrentTextSet();
 }*/
+
+
+} // namespace amorphous

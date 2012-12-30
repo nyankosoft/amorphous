@@ -22,6 +22,10 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "BE_Platform.hpp"
 #include "BE_Player.hpp"
+
+
+namespace amorphous
+{
 //#include "BE_PlayerPseudoAircraft.hpp"		// 20061119
 //#include "BE_PlayerPseudoLeggedVehicle.hpp"
 //#include "BE_PlayerShip.hpp"
@@ -198,3 +202,6 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;
 }
+
+
+} // namespace amorphous

@@ -5,6 +5,10 @@
 #include "gds/Physics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCopyEntity;
 
 
@@ -27,6 +31,9 @@ public:
 //	virtual void OnCopyEntityHitByAnother( CCopyEntity* pSelf, CCopyEntity* pOther );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __CCOPYENTITYCALLBACK_H__  */

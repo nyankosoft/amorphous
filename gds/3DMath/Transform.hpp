@@ -6,6 +6,10 @@
 #include "Matrix34.hpp"
 
 
+namespace amorphous
+{
+
+
 class Transform
 {
 public:
@@ -173,6 +177,9 @@ inline Transform IdentityTransform()
 	return Transform( Quaternion(0,0,0,1), Vector3(0,0,0) );
 
 }
+
+
+} // namespace amorphous
 
 
 

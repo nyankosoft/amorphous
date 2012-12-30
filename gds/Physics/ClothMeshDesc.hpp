@@ -7,6 +7,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -29,6 +33,9 @@ public:
 
 
 } // namespace physics
+
+} // amorphous
+
 
 
 #endif  /*  __PhysClothMeshDesc_HPP__  */

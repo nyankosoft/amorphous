@@ -9,10 +9,10 @@
 #include "ArchiveObjectBase.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -59,10 +59,10 @@ protected:
 };
 
 
-}  /*  Serialization  */
+} // namespace serialization
 
 
-}  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif		/*  __BINARYARCHIVE_INPUT_H__  */

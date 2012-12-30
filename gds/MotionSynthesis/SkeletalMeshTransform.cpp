@@ -2,6 +2,10 @@
 #include "gds/Graphics/Mesh/SkeletalMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -183,3 +187,6 @@ boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const CSkel
 
 
 } // namespace msynth
+
+
+} // namespace amorphous

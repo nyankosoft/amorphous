@@ -5,6 +5,10 @@
 #include <vector>
 #include "Matrix34.hpp"
 
+
+namespace amorphous
+{
+
 #define for if( 0 );else for
 
 struct FACE{
@@ -65,5 +69,8 @@ private:
 public:
 	OBBNODE *pOBBTopNode;
 };
+} // namespace amorphous
+
+
 
 #endif // __OBBTree_HPP__

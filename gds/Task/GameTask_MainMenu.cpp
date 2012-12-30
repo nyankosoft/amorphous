@@ -9,6 +9,10 @@
 #include "GUI/GM_StdControlRendererManager.hpp"
 #include "Input/InputHub.hpp"
 #include "Stage/Stage.hpp"
+
+
+namespace amorphous
+{
 //#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
 
 //#include "Sound/SoundManager.hpp"
@@ -555,3 +559,6 @@ void LoadCaptionText( vector<string>& strCaption )
 //	strCaption[] = "";
 
 }
+
+
+} // namespace amorphous

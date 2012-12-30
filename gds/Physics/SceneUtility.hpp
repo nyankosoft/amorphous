@@ -8,6 +8,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -46,6 +50,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif /* __SceneUtility_HPP__ */

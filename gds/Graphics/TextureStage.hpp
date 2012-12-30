@@ -5,6 +5,10 @@
 #include "../base.hpp"
 
 
+namespace amorphous
+{
+
+
 class TexStageArg
 {
 public:
@@ -63,6 +67,9 @@ public:
 	uint NumElements;
 };
 
+
+
+} // amorphous
 
 
 

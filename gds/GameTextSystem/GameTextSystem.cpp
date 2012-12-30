@@ -4,6 +4,10 @@
 #include "../Graphics/Font/FontBase.hpp"
 #include "../Support/memory_helpers.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -66,3 +70,5 @@ int CGameTextManager::GetIndexForGameTextSet( char* pcTag )
 	return TEXTSET_INVALID_INDEX;
 }
 */
+
+} // namespace amorphous

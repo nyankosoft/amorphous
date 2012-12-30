@@ -9,6 +9,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 /** 
   item owned by CGM_ListBox
  */
@@ -238,6 +242,9 @@ public:
 	virtual void OnItemInserted( CGM_ListBoxItem& item, int item_index ) {}
 };
 */
+
+} // namespace amorphous
+
 
 
 #endif /*  __GM_CONTROL_LISTBOX__  */

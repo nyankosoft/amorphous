@@ -14,6 +14,10 @@
 
 #include <algorithm>
 
+
+namespace amorphous
+{
+
 void CBSPMapFileExporter::OutputBSPFile( const string filename )
 {
 
@@ -776,3 +780,5 @@ CBSPMapFileExporter::~CBSPMapFileExporter()
 	m_asVisibleCellIndex.clear();
 	m_aFCModel.clear();
 }
+
+} // namespace amorphous

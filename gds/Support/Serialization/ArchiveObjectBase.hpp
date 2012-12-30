@@ -6,10 +6,10 @@
 #include <string>
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -171,10 +171,10 @@ public:
 };
 
 
-}  /*  Serialization  */
+} // namespace serialization
 
 
-}  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __ARCHIVEOBJECTBASE_H__  */

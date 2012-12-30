@@ -5,7 +5,14 @@
 #include "../../base.hpp"
 
 
+namespace amorphous
+{
+
+
 Result::Name InitializeOpenGLClasses();
+
+} // namespace amorphous
+
 
 
 #endif /* __GLInitialization_HPP__ */

@@ -7,6 +7,9 @@
 #include "misc.hpp"
 
 
+namespace amorphous
+{
+
 //########################################################################
 // 
 //                       Matrix22
@@ -337,3 +340,5 @@ inline Scalar trace(const Matrix22 & rhs)
   return rhs(0,0) + rhs(1,1) + rhs(2,2);
 }
 */
+
+} // namespace amorphous

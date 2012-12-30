@@ -5,6 +5,10 @@
 #include "GM_ControlRendererManager.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGM_StdControlRendererManager : public CGM_ControlRendererManager
 {
 //	std::string m_PrimaryFontName;
@@ -51,6 +55,9 @@ public:
 	virtual void OnSubDialogButtonCreated( CGM_SubDialogButton *pSubDlgButton );
 	virtual void OnDialogCreated( CGM_Dialog *pDialog );
 */
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_STDCONTROLRENDERERMANAGER_H__  */

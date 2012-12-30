@@ -5,6 +5,10 @@
 #include "Matrix34.hpp"
 
 
+namespace amorphous
+{
+
+
 class OBB3
 {
 public:
@@ -26,6 +30,9 @@ public:
 	Matrix34 center; ///< center pose
 	Vector3 radii;   ///< radii of the box
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __3DMath_OBB3_HPP__ */

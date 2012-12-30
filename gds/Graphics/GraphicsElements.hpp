@@ -25,6 +25,10 @@
 #include <boost/weak_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 inline AABB2 AABB2Null()
 {
 	return AABB2( Vector2(FLT_MAX,FLT_MAX), Vector2(-FLT_MAX,-FLT_MAX) );
@@ -1116,6 +1120,9 @@ public:
 	virtual int GetElementType() const { return TYPE_FRAMERECT; }
 };
 */
+
+} // namespace amorphous
+
 
 
 #endif  /* __GraphicsElements_H__ */

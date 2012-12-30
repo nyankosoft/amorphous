@@ -3,6 +3,10 @@
 #include "TextureGenerators/NoiseTextureGenerators.hpp"
 #include "../Support/MTRand.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -158,3 +162,6 @@ void CPseudoNoiseEffect::SetNoiseTexture()
 	m_FullscreenRect.SetTextureCoord( i3, 0, TEXCOORD2( 0, v ) + shift );
 	//<<< single texture & rect class version
 }
+
+
+} // namespace amorphous

@@ -4,6 +4,10 @@
 
 #include <assert.h>
 
+
+namespace amorphous
+{
+
 template <class CArrayType, int iArraySize>
 class TCFixedStackVector
 {
@@ -47,6 +51,9 @@ public:
 	}
 
 };
+
+} // amorphous
+
 
 
 #endif  /*  __TFIXEDSTACKVECTOR_H__  */

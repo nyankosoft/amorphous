@@ -7,6 +7,10 @@
 #include "Vector2.hpp"
 
 
+namespace amorphous
+{
+
+
 /// Axis-Aligned Bounding Box (2D)
 class AABB2
 {
@@ -101,6 +105,9 @@ inline void AABB2::Nullify()
 	vMax = Vector2(-FLT_MAX, -FLT_MAX);
 	vMin = Vector2( FLT_MAX,  FLT_MAX);
 }
+
+
+} // namespace amorphous
 
 
 

@@ -28,6 +28,10 @@
 #include "Stage/SurfaceMaterialManager.hpp"
 #include "App/GameWindowManager.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using namespace boost;
 
@@ -477,3 +481,6 @@ void CGameApplicationBase::Run()
 
 	g_Log.RemoveLogOutput( &html_log );
 }
+
+
+} // namespace amorphous

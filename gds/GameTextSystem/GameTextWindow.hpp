@@ -10,6 +10,10 @@
 
 #include "../Support/FixedVector.hpp"
 
+
+namespace amorphous
+{
+
 /*
 enum eGameTextWindowState
 {
@@ -111,6 +115,9 @@ public:
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GAMETEXTWINDOW_H__  */

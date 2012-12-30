@@ -5,6 +5,10 @@
 
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -116,3 +120,6 @@ boost::shared_ptr<CShaderLightManager> CD3DFixedFunctionPipelineManager::GetShad
 {
 	return m_pFFPLightManager;
 }
+
+
+} // namespace amorphous

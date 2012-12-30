@@ -9,6 +9,10 @@
 #include "Graphics/GraphicsComponentCollector.hpp"
 
 
+namespace amorphous
+{
+
+
 /*
 class CInputDeviceFactory
 {
@@ -364,3 +368,6 @@ Result::Name CDirectInputMouse::SendBufferedInputToInputHandlers()
 	else
 		return Result::UNKNOWN_ERROR;
 }
+
+
+} // namespace amorphous

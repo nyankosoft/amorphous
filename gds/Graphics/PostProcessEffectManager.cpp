@@ -7,6 +7,10 @@
 #include "Support/ParamLoader.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -750,3 +754,5 @@ LPCWSTR g_aszPpDesc[] =
     L"Normal Map",
     L"Position Map",
 };*/
+
+} // namespace amorphous

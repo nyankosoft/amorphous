@@ -5,6 +5,10 @@
 #include "BE_ParticleSet.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_SmokeTrace : public CBE_ParticleSet
 {
 private:
@@ -79,5 +83,8 @@ public:
 	}*/
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_SMOKETRACE_H__  */

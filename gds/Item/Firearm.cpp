@@ -17,6 +17,10 @@
 #include "Stage/GameMessage.hpp"
 #include "Stage/PlayerInfo.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using boost::shared_ptr;
 
@@ -658,3 +662,6 @@ void CFirearm::Fire()
 //		SendGameMessageTo( msg, m_pOwnerEntity );
 
 }
+
+
+} // namespace amorphous

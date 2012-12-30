@@ -14,6 +14,10 @@
 #include "Shader/ShaderTechniqueHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPostProcessFilterShader;
 class CFilterShaderContainer;
 
@@ -284,6 +288,9 @@ public:
 
 	static int ms_SaveFilterResultsAtThisFrame;
 };
+
+
+} // namespace amorphous
 
 
 

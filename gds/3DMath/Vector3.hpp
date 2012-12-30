@@ -9,6 +9,9 @@
 #include "Vector3_Gen.hpp"
 
 
+namespace amorphous
+{
+
 inline Scalar Vec3GetAngleBetween( const Vector3& a, const Vector3& b )
 {
 	const Scalar margin = 0.000001f;
@@ -30,6 +33,9 @@ inline Scalar Vec3GetAngleBetween( const Vector3& a, const Vector3& b )
 
 	return acos( acos_arg );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __3DMATH_VECTOR3_H__  */

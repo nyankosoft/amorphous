@@ -4,6 +4,10 @@
 #include "../3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 class CIK_Node
 {
 	friend class CIK_Tree;
@@ -63,6 +67,9 @@ private:
 
 	void DrawBox() const;
 };
+
+} // amorphous
+
 
 
 #endif  /*  __CLASS_IK_NODE_H__  */

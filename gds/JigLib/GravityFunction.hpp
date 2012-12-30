@@ -5,6 +5,10 @@
 #include "3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 //extern float g_fGFreeMaxRadius;
 //extern float g_fOmegaSq;
 
@@ -25,6 +29,9 @@ inline Vector3 GravityAccel_CylindricalColony( Vector3 vPosition )
 extern Vector3 GravityAccel_CylindricalColony( Vector3& rvPosition );
 
 
+
+
+} // namespace amorphous
 
 
 

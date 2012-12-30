@@ -5,6 +5,10 @@
 #include "JL_ShapeDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 class CJL_ShapeDesc_Sphere : public CJL_ShapeDesc
 {
 public:
@@ -39,6 +43,9 @@ public:
 		ar & fRadius;
 	}
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_SHAPEDESC_SPHERE_H__  */

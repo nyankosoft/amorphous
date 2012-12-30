@@ -8,6 +8,9 @@
 #include <string.h> // for memcpy
 
 
+namespace amorphous
+{
+
 //########################################################################
 // 
 //                       Matrix44
@@ -520,3 +523,5 @@ inline Matrix44 Matrix44Mirror( const SPlane& plane )
 
 	return out;
 }
+
+} // namespace amorphous

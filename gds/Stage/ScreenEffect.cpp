@@ -2,6 +2,10 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 
 
+namespace amorphous
+{
+
+
 CFadeEffect::CFadeEffect()
 {
 	in_use = false;
@@ -50,3 +54,6 @@ void CFadeEffect::SetScreenSize( int iScreenWidth, int iScreenHeight )
 {
 	m_ScreenRect.SetPosition( Vector2(0,0), Vector2((float)iScreenWidth,(float)iScreenHeight) );
 }
+
+
+} // namespace amorphous

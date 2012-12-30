@@ -4,6 +4,10 @@
 
 #include "FloatRGBAColor.hpp"
 
+
+namespace amorphous
+{
+
 /*
 Usage
 
@@ -51,6 +55,9 @@ public:
 	virtual ~CFogParams() {}
 
 };
+
+
+} // amorphous
 
 
 

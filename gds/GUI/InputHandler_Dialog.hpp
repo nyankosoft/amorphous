@@ -9,6 +9,10 @@
 #include <math.h>
 
 
+namespace amorphous
+{
+
+
 /**
  * converts gamepad input into keyboard input
  */
@@ -168,6 +172,9 @@ inline void CInputHandler_Dialog::BindGICodeToGMInputCode( int gi_code, int gm_i
 
 	m_aGICodeToGMInputCode[gi_code] = gm_input_code;
 }
+
+
+} // namespace amorphous
 
 
 

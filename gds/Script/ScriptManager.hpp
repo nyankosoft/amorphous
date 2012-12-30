@@ -9,7 +9,10 @@
 #include <boost/thread.hpp>
 #include "ScriptArchive.hpp"
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 //=========================================================================
@@ -175,6 +178,9 @@ public:
 
 	static bool ms_UseBoostPythonModules;
 };
+
+
+} // namespace amorphous
 
 
 

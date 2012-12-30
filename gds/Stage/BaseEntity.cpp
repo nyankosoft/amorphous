@@ -23,6 +23,10 @@
 #include "Physics/RaycastHit.hpp"
 #include "Physics.hpp"
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::map;
@@ -1326,3 +1330,6 @@ void CBaseEntity::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_MeshProperty;
 }
+
+
+} // namespace amorphous

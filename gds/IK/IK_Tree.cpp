@@ -1,6 +1,10 @@
 #include "IK_Tree.hpp"
 
 
+namespace amorphous
+{
+
+
 CIK_Tree::CIK_Tree()
 {
 	root = NULL;
@@ -234,3 +238,6 @@ void CIK_Tree::UnFreeze(void)
 {
 	UnFreezeTree(root);
 }
+
+
+} // amorphous

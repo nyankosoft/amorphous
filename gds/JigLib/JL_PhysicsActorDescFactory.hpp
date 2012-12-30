@@ -5,6 +5,10 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
+
+
+namespace amorphous
+{
 using namespace GameLib1::Serialization;
 
 
@@ -17,6 +21,9 @@ class CJL_PhysicsActorDescFactory : public IArchiveObjectFactory
 public:
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 };
+
+} // amorphous
+
 
 
 #endif  /* __CJL_PhysicsActorDescFACTORY_H__   */

@@ -1,6 +1,10 @@
 #ifndef  __ENEMYSTATE_H__
 #define  __ENEMYSTATE_H__
 
+
+namespace amorphous
+{
+
 class CCopyEntity;
 class CBE_Enemy;
 
@@ -44,6 +48,8 @@ class CES_UnderAttack : public CEnemyState
 public:
 	void Act( CCopyEntity& rEntity, CBE_Enemy& rBaseEntity, float dt );
 };
+
+} // namespace amorphous
 
 
 #endif		/*  __ENEMYSTATE_H__  */

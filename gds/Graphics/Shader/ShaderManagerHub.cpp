@@ -1,5 +1,9 @@
 #include "ShaderManagerHub.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -32,3 +36,6 @@ bool CShaderManagerHub::ReleaseShaderManager( CShaderManager* pShaderMgr )
 	return false;	// the requested component was not found
 }
 
+
+
+} // namespace amorphous

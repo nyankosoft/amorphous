@@ -30,6 +30,10 @@
 #include "JigLib/JL_LineSegment.hpp"
 
 
+namespace amorphous
+{
+
+
 //================================================================================
 // CVehicleLeg
 //================================================================================
@@ -89,3 +93,6 @@ void CBE_PlayerPseudoLeggedVehicle::Serialize( IArchive& ar, const unsigned int 
 {
 	CBE_Player::Serialize( ar, version );
 }
+
+
+} // amorphous

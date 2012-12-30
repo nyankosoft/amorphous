@@ -8,6 +8,10 @@
 #include "SurfaceFormat.hpp"
 
 
+namespace amorphous
+{
+
+
 class CCubeMapSceneRenderer
 {
 public:
@@ -86,6 +90,9 @@ public:
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 };
+
+
+} // namespace amorphous
 
 
 

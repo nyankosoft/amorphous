@@ -13,6 +13,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPVC_JointHub;
 
 class CBVHRenderer
@@ -35,5 +39,8 @@ public:
 
 	void DrawBoxForBone(D3DXMATRIX &rmatParent, D3DXMATRIX &rmatWorldTransform);
 };
+} // amorphous
+
+
 
 #endif		/*  __BVHBONE_H__  */

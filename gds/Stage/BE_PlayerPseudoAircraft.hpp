@@ -15,6 +15,10 @@
 #include "gds/Item/Radar.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPlayerVisionMode
 {
 public:
@@ -361,5 +365,8 @@ inline void CBE_PlayerPseudoAircraft::ToggleNightVision()
     EnableNightVision( m_bNightVisionEnabled );
 }
 */
+} // namespace amorphous
+
+
 
 #endif		/*  __BE_PLAYERPSEUDOAIRCRAFT_H__  */

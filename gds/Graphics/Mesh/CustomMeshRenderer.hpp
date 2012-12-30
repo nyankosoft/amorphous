@@ -2,6 +2,10 @@
 #define  __CustomMeshRenderer_HPP__
 
 
+namespace amorphous
+{
+
+
 class CCustomMesh;
 class CShaderManager;
 
@@ -36,6 +40,8 @@ inline CCustomMeshRenderer& GetCustomMeshRenderer()
 	return *(CCustomMeshRenderer::GetInstance());
 }
 
+
+} // namespace amorphous
 
 
 #endif /* __CustomMeshRenderer_HPP__ */

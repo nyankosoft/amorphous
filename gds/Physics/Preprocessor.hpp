@@ -6,10 +6,12 @@
 #include "../base.hpp"
 #include "3DMath/precision.h"
 #include "Support/Singleton.hpp"
-using namespace NS_KGL;
-
 #include "fwd.hpp"
 #include "Stream.hpp"
+
+
+namespace amorphous
+{
 
 
 namespace physics
@@ -121,6 +123,9 @@ inline CPreprocessor& Preprocessor()
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __Physics_PhysPreprocessor_H__  */

@@ -11,6 +11,10 @@
 #include "Support/BitmapImage.hpp"
 #include "Support/StringAux.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -157,3 +161,6 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 	fclose(fp);
 */
 }
+
+
+} // namespace amorphous

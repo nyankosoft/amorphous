@@ -4,6 +4,10 @@
 #include <assert.h>
 #include <algorithm>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -157,3 +161,6 @@ void CGameItemDatabase::SaveItem( const char *pFilename, CGameItem *pItem )
 	temp_serializer.pItem = pItem;
 	archive << temp_serializer;
 }
+
+
+} // namespace amorphous

@@ -2,6 +2,10 @@
 #include "Skeleton.hpp"
 #include "../BVH/BVHPlayer.hpp"
 
+
+namespace amorphous
+{
+
 using boost::shared_ptr;
 using namespace msynth;
 
@@ -65,3 +69,6 @@ boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromBVHFile( const std::strin
 	else
 		return shared_ptr<CSkeleton>();
 }
+
+
+} // namespace amorphous

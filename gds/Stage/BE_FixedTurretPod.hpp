@@ -5,6 +5,10 @@
 #include "BaseEntityHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_FixedTurretPod : public CBaseEntity
 {
 private:
@@ -48,5 +52,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_FIXEDTURRETPOD_H__  */

@@ -2,6 +2,10 @@
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -244,3 +248,6 @@ void CLightmap::ApplySmoothing()
 		}
 	}
 }
+
+
+} // amorphous

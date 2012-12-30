@@ -5,6 +5,10 @@
 #include "../PrimitiveRenderer.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPrimitiveRenderer_GL : public CPrimitiveRenderer
 {
 public:
@@ -134,6 +138,9 @@ inline CPrimitiveRenderer_GL& GetPrimitiveRenderer_GL()
 	static CPrimitiveRenderer_GL s_Renderer;
 	return s_Renderer;
 }
+
+
+} // amorphous
 
 
 

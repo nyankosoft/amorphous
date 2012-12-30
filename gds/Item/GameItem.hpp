@@ -9,9 +9,13 @@
 #include "gds/Stage/fwd.hpp"
 #include "gds/XML/fwd.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
 
 
 template<class T>
@@ -231,6 +235,9 @@ public:
 	template<class T> friend inline boost::shared_ptr<T> CreateGameItem();
 
 };
+
+
+} // namespace amorphous
 
 
 

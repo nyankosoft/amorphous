@@ -7,6 +7,10 @@
 #include "Graphics/FVF_ColorVertex.h"
 #include "Graphics/FVF_TLVertex.h"
 
+
+namespace amorphous
+{
+
 class CLineSegmentRenderer
 {
 public:
@@ -116,5 +120,8 @@ inline void C2DLineSegment::Draw( const D3DXVECTOR2& rvStart, const D3DXVECTOR2&
 
 
 }
+} // amorphous
+
+
 
 #endif		/*  __LINESEGMENTRENDERER_HPP__  */

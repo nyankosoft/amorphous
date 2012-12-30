@@ -5,6 +5,10 @@
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 CD3DXPMeshObject::CD3DXPMeshObject()
 :
 m_iPMeshCur(0)
@@ -411,3 +415,6 @@ void CD3DXPMeshObject::SetNumVertices( DWORD dwNumVertices )
         m_vecpPMesh[m_iPMeshCur]->SetNumVertices( dwNumVertices );
     }
 }
+
+
+} // namespace amorphous

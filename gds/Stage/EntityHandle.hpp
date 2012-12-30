@@ -5,6 +5,10 @@
 #include "gds/3DMath/Matrix34.hpp"
 #include <boost/weak_ptr.hpp>
 
+
+namespace amorphous
+{
+
 class CCopyEntity;
 
 
@@ -80,6 +84,9 @@ public:
 //	virtual void OnCopyEntityHitByAnother( CCopyEntity* pSelf, CCopyEntity* pOther );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __EntityHandle_H__  */

@@ -8,6 +8,10 @@
 #include "Support/shared_prealloc_pool.hpp"
 
 
+namespace amorphous
+{
+
+
 class CAlphaEntityDesc;
 
 
@@ -51,6 +55,9 @@ public:
 
 	void SetAlphaMaterialIndex( int alpha_mat_index ) { m_AlphaMaterialIndex = alpha_mat_index; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __AlphaEntity_H__  */

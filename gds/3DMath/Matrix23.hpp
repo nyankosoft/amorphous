@@ -6,6 +6,10 @@
 #include "Matrix22.hpp"
 
 
+namespace amorphous
+{
+
+
 class Matrix23
 {
 public:
@@ -124,5 +128,8 @@ inline Matrix23 Matrix23Identity()
 	return Matrix23( Vector2(0,0), Matrix22Identity() );
 
 }
+} // namespace amorphous
+
+
 
 #endif  /*  __Matrix23_H__  */

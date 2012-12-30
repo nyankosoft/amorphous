@@ -6,6 +6,10 @@
 
 #include "Physics/Actor.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace physics;
 
@@ -49,3 +53,6 @@ void CBaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPa
 		}
 	}
 }
+
+
+} // namespace amorphous

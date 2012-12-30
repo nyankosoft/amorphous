@@ -2,6 +2,10 @@
 #include "GLFixedPipelineLightManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -64,3 +68,6 @@ bool CGLFixedFunctionPipelineManager::LoadShaderFromText( const stream_buffer& b
 void CGLFixedFunctionPipelineManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
 {
 }
+
+
+} // namespace amorphous

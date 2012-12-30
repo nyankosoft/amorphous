@@ -2,6 +2,10 @@
 #include "../../3DMath/PrimitivePolygonModelMaker.hpp"
 #include "../MeshModel/General3DMesh.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using boost::shared_ptr;
 
@@ -46,10 +50,13 @@ Result::Name PipeMeshGenerator::Generate()
 
 	mesh.GetMaterialBuffer().resize( 1 );
 
-	Result::Name res = ::CreateArchiveFromGeneral3DMesh( pMesh, m_MeshArchive );
+	Result::Name res = amorphous::CreateArchiveFromGeneral3DMesh( pMesh, m_MeshArchive );
 
 	SetMiscMeshAttributes(); // set texture filename if it is specified.
 
 	return res;
 }
 
+
+
+} // namespace amorphous

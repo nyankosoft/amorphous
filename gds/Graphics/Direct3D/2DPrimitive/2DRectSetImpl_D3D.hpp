@@ -11,6 +11,10 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
+
 //=============================================================================
 // C2DRectSetImpl_D3D
 //=============================================================================
@@ -373,6 +377,9 @@ inline void C2DRectSetImpl_D3D::WriteVerticesToFileForDebugging( int start_rect_
 
 	fclose( fp );
 }
+
+
+} // namespace amorphous
 
 
 

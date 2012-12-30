@@ -11,7 +11,11 @@
 #include "gds/XML/fwd.hpp"
 #include "gds/Support/2DArray.hpp"
 #include "gds/Support/Serialization/Serialization_2DArray.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 /**
@@ -176,6 +180,9 @@ inline void CMeshContainerNode::SetMeshContainer( int index,
 	m_vecpMeshContainer[index] = pContainer;
 	m_vecMeshLocalPose[index] = local_pose;
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __MeshObjectContainer_H__ */

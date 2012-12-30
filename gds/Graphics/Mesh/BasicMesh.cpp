@@ -5,6 +5,10 @@
 #include "../TextureGenerators/SingleColorTextureGenerator.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
@@ -273,3 +277,6 @@ CBasicMesh::CBasicMesh()
 	CMeshImpl *pImpl = MeshImplFactory()->CreateBasicMeshImpl();
 	m_pImpl.reset( pImpl );
 }
+
+
+} // namespace amorphous

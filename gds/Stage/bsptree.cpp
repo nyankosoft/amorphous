@@ -9,6 +9,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 CBSPTree::CBSPTree( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes )
 {
 	m_paNode = NULL; m_NumNodes = 0;
@@ -545,3 +549,6 @@ CBSPTree& CBSPTree::operator=( const CBSPTree& src )
 // static member variable definition for 'CBSPTreeForAABB'
 
 CBSPTree CBSPTreeForAABB::ms_BSPTree;
+
+
+} // namespace amorphous

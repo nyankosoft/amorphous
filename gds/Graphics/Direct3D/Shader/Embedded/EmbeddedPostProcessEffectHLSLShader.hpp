@@ -6,6 +6,10 @@
 #include "../../../PostProcessEffectFilter.hpp"
 
 
+namespace amorphous
+{
+
+
 class CEmbeddedPostProcessEffectHLSLShader
 {
 public:
@@ -51,6 +55,9 @@ public:
 
 	void GetShader( std::string& shader );
 };
+
+
+} // namespace amorphous
 
 
 

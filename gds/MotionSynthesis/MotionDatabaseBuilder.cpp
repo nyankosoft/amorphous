@@ -5,6 +5,10 @@
 #include "gds/Support/StringAux.hpp"
 #include "gds/XML/XMLDocumentLoader.hpp"
 
+
+namespace amorphous
+{
+
 using std::vector;
 using std::string;
 using std::map;
@@ -979,3 +983,6 @@ bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_fil
 
 	return true;
 }
+
+
+} // namespace amorphous

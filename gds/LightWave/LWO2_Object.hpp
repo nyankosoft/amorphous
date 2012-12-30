@@ -7,6 +7,10 @@
 #include "gds/Support/progress_display.hpp"
 
 
+namespace amorphous
+{
+
+
 //=========================================================================================
 // CLWO2_TAGChunk
 //=========================================================================================
@@ -155,6 +159,9 @@ public:
 
 	const morph::progress_display& GetProgressDisplay() const { return m_ProgressDisplay; }
 };
+
+
+} // amorphous
 
 
 

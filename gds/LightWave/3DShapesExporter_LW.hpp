@@ -10,6 +10,10 @@
 #include "gds/LightWave/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * extract shapes from an lwo file
  * [in] a loaded lwo object or filename of an .lwo files
@@ -36,6 +40,9 @@ public:
 
 	bool ExtractShapes( boost::shared_ptr<CLWO2_Object> pObject, const std::string& output_filepath );
 };
+
+
+} // amorphous
 
 
 

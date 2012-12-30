@@ -5,6 +5,10 @@
 #include "../../Shader/CgEffectBase.hpp"
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "cgD3D9.lib" )
 
 
@@ -68,6 +72,9 @@ public:
 
 //	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 };
+
+} // namespace amorphous
+
 
 
 #endif /* __D3DCgEffect_HPP__ */

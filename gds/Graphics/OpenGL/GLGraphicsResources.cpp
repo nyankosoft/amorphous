@@ -10,7 +10,11 @@
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 using namespace std;
 
@@ -471,3 +475,6 @@ bool CGLShaderResource::LoadFromFile( const std::string& filepath )
 	return false;
 }
 */
+
+
+} // namespace amorphous

@@ -6,6 +6,10 @@
 #include "Sound/SoundHandle.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_SupplyItem : public CBaseEntity
 {
 	/// used for 'iEffect' in SGameMessage structure
@@ -46,6 +50,9 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+
+
+} // namespace amorphous
 
 
 

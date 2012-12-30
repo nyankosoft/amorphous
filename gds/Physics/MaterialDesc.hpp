@@ -4,7 +4,11 @@
 #include "../3DMath/precision.h"
 
 #include "../Support/Serialization/Serialization.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace physics
@@ -52,6 +56,9 @@ inline void CMaterialDesc::Serialize( IArchive& ar, const unsigned int version )
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysMaterialDesc_H__  */

@@ -13,7 +13,14 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/Macro.h"
 
+#include "D3DXMeshObject.hpp"  // Used by CD3DMeshImplFactory
+#include "D3DXSMeshObject.hpp" // Used by CD3DMeshImplFactory
+
 #include <boost/filesystem.hpp>
+
+
+namespace amorphous
+{
 
 using namespace std;
 using namespace boost;
@@ -1066,12 +1073,6 @@ void CD3DXMeshObjectBase::SetVertexDeclaration()
 }
 
 
-
-#include "D3DXMeshObject.hpp"
-#include "D3DXSMeshObject.hpp"
-
-using namespace boost;
-
 /*
 CMeshImpl* CD3DMeshImplFactory::CreateMeshImpl( CMeshType::Name mesh_type )
 {
@@ -1165,3 +1166,6 @@ CD3DXMeshObjectBase* CD3DMeshImplFactory::LoadMeshObjectFromArchive( C3DMeshMode
 	}
 }
 */
+
+
+} // namespace amorphous

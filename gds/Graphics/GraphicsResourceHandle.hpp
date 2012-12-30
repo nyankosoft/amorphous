@@ -9,6 +9,10 @@
 #include "GraphicsResourceEntries.hpp"
 
 
+namespace amorphous
+{
+
+
 class CGraphicsResourceHandle
 {
 protected:
@@ -103,6 +107,9 @@ inline CGraphicsResourceHandle::CGraphicsResourceHandle( const CGraphicsResource
 {
 	copy( handle );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /* __GraphicsResourceHandle_H__ */

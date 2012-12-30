@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/thread/xtime.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -272,3 +276,6 @@ void CDIInputDeviceMonitor::AcquireInputDevices()
 			itr->m_pGamepad->Acquire();
 	}
 }
+
+
+} // namespace amorphous

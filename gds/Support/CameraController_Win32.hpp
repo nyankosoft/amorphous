@@ -6,6 +6,10 @@
 #include "CameraControllerBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CPlatformDependentCameraController : public CCameraControllerBase
 {
 public:
@@ -19,6 +23,9 @@ public:
 	/// Call this in window messege handler
     void HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __CameraController_Win32_H__  */

@@ -11,7 +11,11 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 //===============================================================================
@@ -386,6 +390,9 @@ void CNonLeafyAABTree::ClipTrace( const CLineSegment& line_segment, CLineSegment
 	}
 }
 */
+
+} // namespace amorphous
+
 
 #include "AABTree.inl"
 

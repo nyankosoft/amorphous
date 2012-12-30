@@ -14,6 +14,10 @@
 #include "gds/GUI/fwd.hpp"
 #include "gds/Sound/SoundHandle.hpp"
 
+
+namespace amorphous
+{
+
 class CInputHandler_PlayerBase;
 class HUD_PlayerBase;
 class CShockWaveCameraEffect;
@@ -195,6 +199,9 @@ inline float CBE_Player::GetCurrentLife()
 	else
 		return 0;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __BE_PLAYER_H__  */

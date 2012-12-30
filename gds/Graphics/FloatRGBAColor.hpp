@@ -5,6 +5,10 @@
 #include "FloatRGBColor.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  floating point r,g,b,a color
  - range of each component is usually [ 0.0, 1.0 ]
@@ -71,7 +75,11 @@ struct SFloatRGBAColor
 };
 
 
+} // namespace amorphous
+
+
 #include "FloatRGBAColor.inl"
+
 
 
 #endif  /*  __FLOATRGBACOLOR_H__  */

@@ -9,6 +9,10 @@
 #include "3DMath/ConvexPolygon.hpp"
 
 #include <vector>
+
+
+namespace amorphous
+{
 using namespace std;
 
 
@@ -345,3 +349,6 @@ void CBSPTree_CollisionModel_Exporter::SetPolygonCollisionInfo()
 		}
 	}
 }
+
+
+} // namespace amorphous

@@ -9,10 +9,7 @@
 #include "../../3DMath/Transform.hpp"
 
 
-//namespace GameLib1
-//{
-
-namespace MeshModel
+namespace amorphous
 {
 
 
@@ -145,10 +142,8 @@ inline const CMeshBone& CMeshBone::GetChild( unsigned int index ) const
 }
 
 
+} // namespace amorphous
 
-}	//  MeshModel
-
-//}	// GameLib1
 
 
 #endif		/*  __MeshBone_HPP__  */

@@ -3,6 +3,10 @@
 #include "SkeletalMesh.hpp"
 #include "CustomMesh.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -89,3 +93,6 @@ CBasicMesh* CMeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_a
 		return NULL;
 	}
 }
+
+
+} // namespace amorphous

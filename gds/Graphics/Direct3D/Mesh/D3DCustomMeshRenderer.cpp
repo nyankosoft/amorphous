@@ -5,6 +5,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace std;
 
 
@@ -238,3 +242,6 @@ void CD3DCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, CShaderManager& sh
 	single_subset[0] = subset_index;
 	RenderMesh( mesh, shader_mgr, single_subset, false );
 }
+
+
+} // namespace amorphous

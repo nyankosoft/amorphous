@@ -5,6 +5,10 @@
 #include <gds/base.hpp>
 
 
+namespace amorphous
+{
+
+
 class GameWindow
 {
 public:
@@ -58,6 +62,9 @@ inline CGameWindowManager& GameWindowManager()
 {
 	return *g_pGameWindowManager;
 }
+
+} // namespace amorphous
+
 
 
 #endif // __GameWindowManager_HPP__

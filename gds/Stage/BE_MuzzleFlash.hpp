@@ -5,6 +5,10 @@
 
 #include "BaseEntityHandle.hpp"
 
+
+namespace amorphous
+{
+
 #define CBE_MUZZLEFLASH_NUM_RAND_POSITIONS	32
 #define CBE_MUZZLEFLASH_NUM_RAND_DIRECTIONS	32
 
@@ -43,5 +47,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_MUZZLEFLASH_H__  */

@@ -5,6 +5,10 @@
 #include "BE_PhysicsBaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Door : public CBE_PhysicsBaseEntity
 {
 	float m_fOpenLength;			// how much the door slides when it opens
@@ -38,5 +42,8 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
+} // namespace amorphous
+
+
 
 #endif /*  __BASEENTITYDOOR_H__  */

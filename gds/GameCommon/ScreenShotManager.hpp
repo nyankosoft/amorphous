@@ -5,6 +5,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 class CScreenShotManager
 {
 	std::string m_ImageFileExtension;
@@ -24,6 +28,9 @@ public:
 
 	void SetImageOutputDirectoryPath( const std::string& dir_path ) { m_ImageOutputDirectoryPath = dir_path; }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __SCREENSHOTMANAGER_H__  */

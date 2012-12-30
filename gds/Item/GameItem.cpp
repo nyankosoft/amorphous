@@ -3,6 +3,10 @@
 #include "Support/memory_helpers.hpp"
 #include "Stage/MeshBonesUpdateCallback.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -133,3 +137,6 @@ void CGameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 
 	pItemEntity->m_pGraphicsUpdate.reset( new CMeshBonesUpdateCallback );
 }
+
+
+} // namespace amorphous

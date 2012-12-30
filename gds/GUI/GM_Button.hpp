@@ -5,6 +5,10 @@
 #include "GM_Static.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
  * base class for button control
  */
@@ -147,5 +151,8 @@ public:
 	virtual void OnReleased() {}
 };
 */
+} // namespace amorphous
+
+
 
 #endif  /*  __GM_BUTTON_H__  */

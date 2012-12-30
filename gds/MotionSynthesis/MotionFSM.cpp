@@ -4,6 +4,10 @@
 #include "gds/Support/ParamLoader.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using std::vector;
 using std::pair;
@@ -999,3 +1003,6 @@ void CMotionFSMManager::LoadFromDatabase()
 
 
 } // namespace msynth
+
+
+} // namespace amorphous

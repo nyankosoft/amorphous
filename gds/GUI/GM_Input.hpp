@@ -3,7 +3,10 @@
 
 
 #include "Graphics/Point.hpp"
-using namespace Graphics;
+
+
+namespace amorphous
+{
 
 
 class CGM_Input
@@ -104,6 +107,9 @@ public:
 
 	bool IsMouseInput() { return ( MIN_VALID_MOUSE_COORD < pos.x && MIN_VALID_MOUSE_COORD < pos.y ); }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_INPUT_H__  */

@@ -4,6 +4,10 @@
 #include "InputHandler_PlayerBase.hpp"
 
 
+namespace amorphous
+{
+
+
 //#define NUM_PLAYERSHIP_ACTIONS 256
 
 
@@ -49,6 +53,9 @@ inline float CInputHandler_PlayerShip::GetActionState( int iActionCode )
 {
 	return m_afActionState[iActionCode];
 }*/
+
+} // namespace amorphous
+
 
 
 #endif		/*  __INPUTHANDLER_PLAYERSHIP_H__  */

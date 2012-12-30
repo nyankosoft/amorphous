@@ -1,6 +1,10 @@
 #include "Cartridge.hpp"
 #include "XML/XMLNodeReader.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -22,3 +26,6 @@ void CCartridge::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	reader.GetChildElementTextContent( "NumPellets", m_NumPellets );
 }
+
+
+} // namespace amorphous

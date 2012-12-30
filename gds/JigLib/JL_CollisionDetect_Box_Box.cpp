@@ -5,6 +5,10 @@
 #include "Geometry/JL_Box.hpp"
 #include "3DMath/BSPTreeForBox.hpp"
 
+
+namespace amorphous
+{
+
 //#include "Stage/bsptree.hpp"
 // static bool SepAxisTest( float& rfDepth, Vector3& rvAxis, CJL_Shape_Box& rBox0, CJL_Shape_Box& rBox1 ){}
 
@@ -592,3 +596,6 @@ void JL_CollisionDetect_Box_Box( CJL_Shape_Box& rBox0, CJL_Shape_Box& rBox1,
 									  &vecCollPointInfo[0],
 									  vecCollPointInfo.size() );
 }
+
+
+} // namespace amorphous

@@ -4,13 +4,15 @@
 
 #include "Graphics/Point.hpp"
 #include "Graphics/Rect.hpp"
-using namespace Graphics;
-
 #include <string>
 #include <vector>
 
 
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
 
 
 class CXMLNodeReader;
@@ -57,6 +59,9 @@ public:
 
 	bool LoadFromXMLFile( const std::string& xml_filename );
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __GM_XMLParser_H__  */

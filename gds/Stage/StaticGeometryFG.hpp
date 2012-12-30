@@ -9,7 +9,10 @@
 #include "gds/Graphics/MeshObjectHandle.hpp"
 #include "gds/Graphics/TextureHandle.hpp"
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
-using namespace MeshModel;
+
+
+namespace amorphous
+{
 
 
 class CTriangleMesh;
@@ -107,6 +110,9 @@ public:
 
 	void Release();
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __STATICGEOMETRYFG_H__  */

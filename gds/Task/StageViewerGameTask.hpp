@@ -8,6 +8,10 @@
 #include <boost/shared_ptr.hpp>
 
 
+namespace amorphous
+{
+
+
 class CStageViewerGameTask : public CSingleStageGameTask
 {
 	CCamera m_Camera;
@@ -44,6 +48,9 @@ public:
 
 	bool IsCameraControllerEnabled() const { return m_EnableCameraController; }
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __StageViewerGameTask_H__  */

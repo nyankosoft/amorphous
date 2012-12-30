@@ -12,6 +12,10 @@
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -45,3 +49,6 @@ void CClothing::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	reader.GetAttributeValue( "cloth_simulation", m_ApplyClothSimulation );
 }
+
+
+} // namespace amorphous

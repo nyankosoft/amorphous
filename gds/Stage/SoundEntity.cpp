@@ -4,6 +4,10 @@
 #include "trace.hpp"
 #include "../Sound/SoundManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -109,3 +113,6 @@ void CSoundEntity::TerminateDerived()
 //	shared_ptr<CCopyEntity> pSelf = this->Self().lock();
 //	m_pPool->release( pSelf ); // pSelf is CCopyEntity type pointer!!!
 }
+
+
+} // namespace amorphous

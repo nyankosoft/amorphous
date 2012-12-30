@@ -7,6 +7,10 @@
 #include "../../Support/FixedVector.hpp"
 
 
+namespace amorphous
+{
+
+
 class CLightCache
 {
 public:
@@ -75,6 +79,9 @@ public:
 //	void VisitTriPointLight( CTriPointLight& tri_point_light ) { m_pShaderLightManager->Set?Light(  ); }
 //	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) { m_pShaderLightManager->Set?Light(  ); }
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __ShaderLightManager_H__  */

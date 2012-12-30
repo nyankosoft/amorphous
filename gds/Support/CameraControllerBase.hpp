@@ -6,6 +6,10 @@
 #include "../Input/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CameraControl
 {
 public:
@@ -131,6 +135,9 @@ public:
 	/// otherwise the mouse input will be processed twice
 	void HandleInput( const SInputData& input );
 };
+
+
+} // namespace amorphous
 
 
 

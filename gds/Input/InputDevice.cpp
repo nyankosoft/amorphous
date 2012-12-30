@@ -4,6 +4,10 @@
 #include "Support/StringAux.hpp"
 #include "Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -314,3 +318,6 @@ void CInputDeviceHub::GetInputDeviceStatus( std::vector<std::string>& dest_text_
 		dest_text_buffer.insert( dest_text_buffer.end(), buffer.begin(), buffer.end() );
 	}
 }
+
+
+} // namespace amorphous

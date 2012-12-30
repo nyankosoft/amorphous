@@ -10,6 +10,10 @@
 #include "gds/Physics/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStaticGeometryBase : public CGraphicsComponent
 {
 
@@ -120,6 +124,9 @@ public:
 */
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __StaticGeometryBase_H__  */

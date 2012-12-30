@@ -2,6 +2,10 @@
 #define  __2DARRAY_H__
 
 #include <vector>
+
+
+namespace amorphous
+{
 //using namespace std;
 
 
@@ -127,6 +131,9 @@ inline void C2DArray<T>::clear()
 {
 	return m_vecData.clear();
 }
+
+} // amorphous
+
 
 
 #endif		/*  __2DARRAY_H__  */

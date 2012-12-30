@@ -2,6 +2,10 @@
 #include <memory.h>
 
 
+namespace amorphous
+{
+
+
 //--------------------------------------------------------------------------------------
 CTimer::CTimer()
 {
@@ -100,3 +104,6 @@ void CTimer::UpdateFrameTime()
 double CTimer::GetFrameTime64()
 {
 }*/
+
+
+} // amorphous

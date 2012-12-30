@@ -4,6 +4,10 @@
 #include "BaseEntity.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_EventTrigger : public CBaseEntity
 {
 private:
@@ -27,5 +31,8 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_EVENTTRIGGER_H__  */

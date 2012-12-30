@@ -5,6 +5,10 @@
 #include "Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 inline void GetViewportSize( int& width, int& height )
 {
 	D3DVIEWPORT9 viewport;
@@ -21,6 +25,9 @@ inline void GetViewportSize( float& width, float& height )
 	width  = (float)viewport.Width;
 	height = (float)viewport.Height;
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __D3DMISC_H__  */

@@ -6,6 +6,10 @@
 #include "Sound/SoundManager.hpp"
 #include "Physics/Actor.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 using namespace physics;
 
@@ -234,3 +238,6 @@ void CBE_Platform::Serialize( IArchive& ar, const unsigned int version )
 //	ar & m_fSpring & m_fDamper;
 //	ar & 
 }
+
+
+} // namespace amorphous

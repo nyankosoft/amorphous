@@ -1,6 +1,8 @@
-namespace physics
+namespace amorphous
 {
 
+namespace physics
+{
 
 class CNxPhysActor;
 class CNxPhysActorDescImpl;
@@ -13,5 +15,6 @@ class CNxPhysShapeDescFactory;
 class CNxPhysStream;
 class CNxPhysTriangleMesh;
 
-
 } // namespace physics
+
+} // namespace amorphous

@@ -7,6 +7,10 @@
 #include "../../Support/Macro.h"
 #include "../../Support/Profile.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -464,3 +468,6 @@ Result::Name CGLGraphicsDevice::SetScissorRect( const SRect& rect )
 	glScissor( rect.left, rect.top, rect.GetWidth(), rect.GetHeight() );
 	return Result::SUCCESS;
 }
+
+
+} // namespace amorphous

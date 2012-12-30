@@ -5,6 +5,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 class CEntityRenderer
 {
 public:
@@ -15,6 +19,9 @@ public:
 
 	virtual void RenderEntity( CCopyEntity& entity ) = 0;
 };
+
+
+} // namespace amorphous
 
 
 

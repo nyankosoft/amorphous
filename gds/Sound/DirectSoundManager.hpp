@@ -6,6 +6,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 // define 'DWORD_PTR' for "dsound.h" in DX9 SDK Summer 2004
 #ifndef DWORD_PTR
 #define DWORD_PTR DWORD*
@@ -227,6 +231,9 @@ inline void CDirectSoundManager::SetListenerVelocity( const Vector3& vVelocity )
 
 	m_pDSListener->SetVelocity( vVelocity.x, vVelocity.y, vVelocity.z, DS3D_DEFERRED );
 }
+
+} // amorphous
+
 
 
 #endif		/*  __DirectSoundManager_H__  */

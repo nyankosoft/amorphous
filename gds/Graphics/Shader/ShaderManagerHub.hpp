@@ -6,7 +6,10 @@
 #include "ShaderManager.hpp"
 #include "../Camera.hpp"
 #include "../../Support/Singleton.hpp"
-using namespace NS_KGL;
+
+
+namespace amorphous
+{
 
 
 #define ShaderManagerHub ( (*CShaderManagerHub::Get()) )
@@ -116,6 +119,9 @@ inline void CShaderManagerHub::PopViewAndProjectionMatrices_NoRestore()
 	m_vecViewMatrix.pop_back();
 	m_vecProjMatrix.pop_back();
 }
+
+
+} // namespace amorphous
 
 
 

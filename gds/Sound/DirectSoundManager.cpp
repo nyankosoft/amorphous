@@ -9,6 +9,10 @@
 #include "DirectSoundManager.hpp"
 #include "WaveFile.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -296,3 +300,6 @@ LFail:
     SafeDelete( apDSBuffer );
     return hr;
 }
+
+
+} // amorphous

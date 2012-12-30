@@ -10,6 +10,10 @@
 #include "Graphics/Mesh/RectSetMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 class CBE_Bullet : public CBaseEntity
 {
 	std::string m_BillboardTextureFilepath;
@@ -116,6 +120,9 @@ inline void CBE_Bullet::CreateBulletHoleDecal(Vector3& rvPosition, Vector3& rvNo
 ///	this->m_pStage->CreateEntity( "htsmk", rvPosition,	Vector3(0,0,0), rvNormal );
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif /*  __BASEENTITYBULLET_H__  */

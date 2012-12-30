@@ -12,6 +12,10 @@
 #include "Support/Profile.hpp"
 
 
+namespace amorphous
+{
+
+
 int CEntityNode::ms_NumRenderedEntities = 0;
 
 
@@ -531,3 +535,6 @@ void CEntityNode::CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree )
 	}
 
 }
+
+
+} // namespace amorphous

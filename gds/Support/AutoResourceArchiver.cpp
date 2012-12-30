@@ -2,6 +2,10 @@
 #include "AutoResourceArchiver.hpp"
 #include <boost/exception/get_error_info.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
@@ -178,3 +182,6 @@ void CAutoResourceArchiver::run()
 	}
 
 }
+
+
+} // amorphous

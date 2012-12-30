@@ -9,6 +9,10 @@
 #include "fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace msynth
 {
 
@@ -123,6 +127,9 @@ public:
 
 
 } // namespace msynth
+
+} // namespace amorphous
+
 
 
 #endif /* __TransformCacheTree_HPP__ */

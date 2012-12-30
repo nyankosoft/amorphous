@@ -6,6 +6,9 @@
 #include "SafeDeleteVector.hpp"
 
 
+namespace amorphous
+{
+
 template< class T1, class T2 >
 inline void CopyVector( std::vector<T1>& dest, const std::vector<T2>& src )
 {
@@ -14,6 +17,9 @@ inline void CopyVector( std::vector<T1>& dest, const std::vector<T2>& src )
 	for( i=0; i<size; i++ )
 		dest[i] = src[i];
 }
+
+} // amorphous
+
 
 
 #endif  /*  __MEMHELPERS_H__  */

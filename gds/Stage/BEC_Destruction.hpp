@@ -5,11 +5,15 @@
 #include "gds/GameCommon/RangedSet.hpp"
 #include "gds/Support/Serialization/Archive.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 #include "BaseEntityHandle.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
 
 
 class CTextFileScanner;
@@ -92,6 +96,9 @@ inline void OnEntityDestroyed( CBEC_Destruction& destruction,
 	destruction.CreateExplosion( entity, pStage );
 	destruction.CreateFragments( entity, pStage, num_max_fragments );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __BEC_Destruction_H__  */

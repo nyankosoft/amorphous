@@ -3,6 +3,10 @@
 
 #include <xercesc/util/XMLString.hpp>
 
+
+namespace amorphous
+{
+
 // TODO:
 // - Avoid conflicts with DOMDocument in Microsoft Visual Studio 8/VC/PlatformSDK/Include/msxml.h 
 
@@ -49,5 +53,8 @@ public:
 		return !( this->operator ==(rhs) );
 	}
 };
+} // namespace amorphous
+
+
 
 #endif

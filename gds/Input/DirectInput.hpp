@@ -9,6 +9,10 @@
 
 #include <dinput.h>
 
+
+namespace amorphous
+{
+
 #pragma comment( lib, "dinput8.lib" )
 #pragma comment( lib, "dxguid.lib" )
 
@@ -33,6 +37,9 @@ public:
 	LPDIRECTINPUT8 GetDirectInputObject();
 
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __DIRECTINPUT_H__  */

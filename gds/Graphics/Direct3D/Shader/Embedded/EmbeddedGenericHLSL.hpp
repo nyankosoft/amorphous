@@ -7,6 +7,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 class CEmbeddedGenericHLSL
 {
 	static const char *ms_pMatrix;
@@ -41,6 +45,9 @@ public:
 
 	static Result::Name GenerateShader( CGenericShaderDesc& desc, std::string& hlsl_effect );
 };
+
+
+} // namespace amorphous
 
 
 

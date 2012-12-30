@@ -19,6 +19,9 @@
 #include "BaseEntity.hpp"
 
 
+namespace amorphous
+{
+	
 
 enum eEntityState
 {
@@ -392,6 +395,8 @@ public:
 	friend class CEntityNode;
 	friend class CEntityRenderManager;
 };
+
+} // namespace amorphous
 
 
 #include "CopyEntity.inl"

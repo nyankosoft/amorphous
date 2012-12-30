@@ -5,6 +5,10 @@
 #include "../Support/Log/DefaultLog.hpp"
 #include <set>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -435,3 +439,6 @@ bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectio
 
 	return false;
 }
+
+
+} // namespace amorphous

@@ -5,11 +5,14 @@
 #include "gds/Script/PythonHeaders.hpp"
 
 #include "gds/Support/Singleton.hpp"
-using namespace NS_KGL;
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
 
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 
 extern PyMethodDef g_PyModuleStageGraphMethod[];
@@ -140,6 +143,9 @@ public:
 	bool LoadFromFile( const std::string& filename );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __STAGEGRAPH_SINGLETON_H__  */

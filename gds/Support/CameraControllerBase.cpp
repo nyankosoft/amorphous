@@ -2,6 +2,10 @@
 #include "Input/InputHandler.hpp"
 
 
+namespace amorphous
+{
+
+
 CCameraControllerBase::CCameraControllerBase()
 :
 m_Pose( Matrix34Identity() )
@@ -153,3 +157,6 @@ void CCameraControllerBase::HandleInput( const SInputData& input )
 		break;
 	}
 }
+
+
+} // namespace amorphous

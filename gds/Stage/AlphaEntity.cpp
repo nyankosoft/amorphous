@@ -7,6 +7,10 @@
 #include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -93,3 +97,6 @@ void CAlphaEntity::TerminateDerived()
 //	shared_ptr<CCopyEntity> pSelf = this->Self().lock();
 //	m_pPool->release( pSelf ); // pSelf is CCopyEntity type pointer!!!
 }
+
+
+} // namespace amorphous

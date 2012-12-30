@@ -26,6 +26,10 @@
 #include "JigLib/JL_LineSegment.hpp"
 
 
+namespace amorphous
+{
+
+
 
 //================================================================================
 // CBE_PlayerPseudoAircraft
@@ -97,3 +101,6 @@ void CBE_PlayerPseudoAircraft::Serialize( IArchive& ar, const unsigned int versi
 {
 	CBE_Player::Serialize( ar, version );
 }
+
+
+} // amorphous

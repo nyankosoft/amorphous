@@ -11,6 +11,10 @@
 #include <string>
 #include "Log.hpp"
 
+
+namespace amorphous
+{
+
 extern CLogInput_Default g_Log;
 
 #define PrintLog(n)	g_Log.Print(n)
@@ -27,10 +31,14 @@ extern CLogInput_Default g_Log;
 #define LOG_PRINTF_ERROR(x)   LOG_PRINT_ERROR(   std::string(" ") + fmt_string x )
 #define LOG_PRINTF(x)         LOG_PRINT(         std::string(" ") + fmt_string x )
 
+} // namespace amorphous
+
+
 #include "ScopeLog.hpp"
 
 
 #endif  /*  DISABLE_DEFAULT_LOG  */
+
 
 
 #endif  /*  __DEFAULTLOG_H__  */

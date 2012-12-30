@@ -5,6 +5,10 @@
 #include "BasicMesh.hpp"
 
 
+namespace amorphous
+{
+
+
 class CProgressiveMesh : public CBasicMesh
 {
 public:
@@ -15,6 +19,9 @@ public:
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::PROGRESSIVE; }
 };
+
+
+} // namespace amorphous
 
 
 

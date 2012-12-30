@@ -6,6 +6,10 @@
 #include "gds/Script/PythonHeaders.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace gsf
 {
 
@@ -24,6 +28,9 @@ extern PyMethodDef g_PyModuleVisualEffectMethod[];
 }  /* py */
 
 }  /* gsf */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PyModule_VisualEffect_H__  */

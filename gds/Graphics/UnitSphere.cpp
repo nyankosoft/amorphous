@@ -2,6 +2,10 @@
 #include "Graphics/Direct3D/Direct3D9.hpp"
 
 
+namespace amorphous
+{
+
+
 CUnitSphere::CUnitSphere()
 {
 	m_pVB = NULL;
@@ -291,3 +295,5 @@ void CUnitSphere::SetVertices( COLORVERTEX *pv )
 	pv[90].vPosition = D3DXVECTOR3(-0.934172f,-0.187592f,0.303531f); pv[90].vNormal = D3DXVECTOR3(-0.934172f,-0.187592f,0.303531f);
 	pv[91].vPosition = D3DXVECTOR3(0.000000f,-0.187592f,0.982247f); pv[91].vNormal = D3DXVECTOR3(0.000000f,-0.187592f,0.982247f);
 }
+
+} // amorphous

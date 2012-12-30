@@ -8,6 +8,10 @@
 #include "gds/Stage/StageLoader.hpp"
 #include "gds/Support/Timer.hpp"
 
+
+namespace amorphous
+{
+
 class CFontBase;
 
 
@@ -94,5 +98,8 @@ public:
 	}
 };
 */
+} // namespace amorphous
+
+
 
 #endif  /*  __GameTask_AsyncStageLoader_H__  */

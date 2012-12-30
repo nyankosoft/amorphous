@@ -6,6 +6,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
@@ -247,3 +251,6 @@ bool CBaseEntityManager::UpdateDatabase( const string& strSrcTextFile, string& d
 
 	return true;
 }
+
+
+} // namespace amorphous

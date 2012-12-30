@@ -11,6 +11,10 @@
 #include <windows.h>
 #include <commdlg.h>
 
+
+namespace amorphous
+{
+
 #define FILE_SAVE_DIALOG_MAX_FILENAMES_LENGTH 1024
 
 
@@ -63,6 +67,9 @@ inline bool GetSaveFileName( std::string strDestFilename, char* pcFilterString =
 
 	return selected;
 }
+
+} // amorphous
+
 
 
 #endif  /*  __FILE_SAVE_DIALOG_WIN32_H__  */

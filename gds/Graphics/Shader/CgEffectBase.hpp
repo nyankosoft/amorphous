@@ -6,6 +6,10 @@
 #include <Cg/cg.h>     /* Cg Core API: Can't include this?  Is Cg Toolkit installed! */
 
 
+namespace amorphous
+{
+
+
 #pragma comment( lib, "cg.lib" )
 
 
@@ -368,6 +372,9 @@ inline void CCgEffectBase::SetViewerPosition( const Vector3& vEyePosition )
 	cgSetParameter3fv( m_aHandle[HANDLE_VIEWER_POS], &vEyePosition, sizeof(Vector3) );
 }
 */
+
+} // namespace amorphous
+
 
 
 #endif /* __CgEffectBase_HPP__ */

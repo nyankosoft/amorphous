@@ -1,5 +1,9 @@
 #include "DirectInput.hpp"
 
+
+namespace amorphous
+{
+
 // definition of the singleton instance
 CDirectInput CDirectInput::ms_SingletonInstance_;
 
@@ -39,3 +43,6 @@ LPDIRECTINPUT8 CDirectInput::GetDirectInputObject()
 
 	return m_pDI;
 }
+
+
+} // namespace amorphous

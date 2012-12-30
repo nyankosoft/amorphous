@@ -8,6 +8,10 @@
 #include "../../Support/ImageArchive.hpp"
 
 
+namespace amorphous
+{
+
+
 /**
   - archived resource of ANSI texture font
     - filename suffix: ".tfa"
@@ -138,6 +142,9 @@ public:
 
 	friend class CFontTextureLoader;
 };
+
+} // namespace amorphous
+
 
 
 #endif		/*  __TrueTypeTextureFont_H__  */

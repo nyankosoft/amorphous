@@ -4,6 +4,10 @@
 
 #include "gds/Script/PythonHeaders.hpp"
 
+
+namespace amorphous
+{
+
 class CStage;
 
 
@@ -27,6 +31,9 @@ extern PyMethodDef g_PyModuleTaskMethod[];
 }  /* py */
 
 }  /* gsf */
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PYMODULE_CAMERA_H__  */

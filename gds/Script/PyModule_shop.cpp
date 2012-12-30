@@ -4,6 +4,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
 
+
+namespace amorphous
+{
+
 using std::string;
 using boost::shared_ptr;
 
@@ -58,3 +62,6 @@ void RegisterPythonModule_shop()
 		throw std::runtime_error( msg );
 	}
 }
+
+
+} // namespace amorphous

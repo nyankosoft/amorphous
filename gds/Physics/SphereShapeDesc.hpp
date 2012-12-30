@@ -6,6 +6,10 @@
 #include "ShapeDesc.hpp"
 
 
+namespace amorphous
+{
+
+
 namespace physics
 {
 
@@ -54,6 +58,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif  /*  __PhysSphereShapeDesc_H__  */

@@ -4,9 +4,12 @@
 #include "3DMath/precision.h"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace GameLib1::Serialization;
-
 #include "fwd.hpp"
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace physics
@@ -50,6 +53,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysSpringDesc_H__  */

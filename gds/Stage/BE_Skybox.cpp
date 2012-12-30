@@ -13,6 +13,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -241,3 +245,6 @@ void CBE_Skybox::Serialize( IArchive& ar, const unsigned int version )
 
 	ar & m_SkyboxTextureFilepath;
 }
+
+
+} // namespace amorphous

@@ -6,6 +6,10 @@
 #include "Graphics/3DRect.hpp"
 
 
+namespace amorphous
+{
+
+
 //#define BE_LASERDOT_OFF	0
 #define BE_LASERDOT_ON	1
 #define BE_LASERDOT_OFF_SURFACE	2
@@ -42,6 +46,9 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __BE_LaserDot_H__  */

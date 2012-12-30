@@ -11,7 +11,11 @@
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 using std::string;
 using namespace boost;
@@ -709,3 +713,6 @@ bool CShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
 
 	return loaded;
 }
+
+
+} // namespace amorphous

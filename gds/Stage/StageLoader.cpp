@@ -3,6 +3,10 @@
 #include "Script/PyModule_StageUtility.hpp"
 #include "Graphics/ResourceLoadingStateHolder.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -162,3 +166,6 @@ void CASyncStageLoaderThread::operator()()
 		sleep_milliseonds( 10 );
 	}
 }
+
+
+} // namespace amorphous

@@ -6,6 +6,10 @@
 #include "assert.h"
 #include <algorithm>
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -856,3 +860,5 @@ bool CLWO2_Layer::GetVertexColor( SFloatRGBAColor& color,	 // [out] vertex color
 #endif /* LWO2LAYER_USE_BINARY_SEARCH */
 
 }
+
+} // amorphous

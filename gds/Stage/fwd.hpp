@@ -2,6 +2,12 @@
 #define __FWD_Stage_H__
 
 
+#include <boost/weak_ptr.hpp>
+
+
+namespace amorphous
+{
+
 class CStage;
 class CCopyEntity;
 class CCopyEntityDesc;
@@ -35,11 +41,11 @@ class EntityMotionPathRequest;
 //class CDynamicLightManagerForStaticGeometry;
 class CScriptManager;
 
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 typedef boost::shared_ptr<CStage> CStageSharedPtr;
 typedef boost::weak_ptr<CStage> CStageWeakPtr;
 typedef boost::shared_ptr<CBaseEntityFactory> CBaseEntityFactorySharedPtr;
+
+} // namespace amorphous
 
 
 #endif /* __FWD_Stage_H__ */

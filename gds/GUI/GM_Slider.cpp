@@ -7,6 +7,10 @@
 #include "GM_Keybind.hpp"
 
 
+namespace amorphous
+{
+
+
 //========================================================================================
 // CGM_Slider
 //========================================================================================
@@ -299,3 +303,5 @@ void CGM_Slider::Render()
 	m_ButtonElement.Draw( m_pDialog );
 
 }*/
+
+} // namespace amorphous

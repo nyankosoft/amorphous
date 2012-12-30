@@ -5,6 +5,10 @@
 #include "time.hpp"
 
 
+namespace amorphous
+{
+
+
 #ifdef MSC_VER
 
 void sleep( const stime& t )
@@ -20,6 +24,9 @@ void sleep( const stime& t )
 }
 
 #endif /* MSC_VER */
+
+
+} // amorphous
 
 
 

@@ -3,6 +3,10 @@
 
 #include "BE_Enemy.hpp"
 
+
+namespace amorphous
+{
+
 class CBE_Floater : public CBE_Enemy
 {
 public:
@@ -29,5 +33,8 @@ public:
 	void AttackManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExtraData);
 //	void ManeuverUnderAttack(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExtraData);
 };
+} // namespace amorphous
+
+
 
 #endif  /*  __BE_Floater_H__  */

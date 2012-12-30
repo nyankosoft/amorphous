@@ -16,6 +16,10 @@
 #include <assert.h>
 
 
+namespace amorphous
+{
+
+
 class CFontBase;
 class CGameItem;
 
@@ -258,6 +262,9 @@ inline void CQuickMenuManager::Render( CFontBase *pFont )
 	if( 0 <= m_iCurrentMenu )
 		m_aQuickMenu[m_iCurrentMenu].Render( pFont );
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __QUICKMENU_H__  */

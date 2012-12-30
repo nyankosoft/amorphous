@@ -5,6 +5,10 @@
 #include <windows.h>
 
 
+namespace amorphous
+{
+
+
 class CStdMouseInput : public MouseInputDevice
 {
 	int m_iPosX, m_iPosY;	// current mouse position
@@ -26,5 +30,8 @@ public:
 	void UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam );
 
 };
+} // namespace amorphous
+
+
 
 #endif		/*  __STDMOUSEINPUT_H__  */

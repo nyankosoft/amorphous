@@ -17,6 +17,10 @@
 #include "SkeletalCharacter.hpp"
 
 
+namespace amorphous
+{
+
+
 using namespace item;
 
 
@@ -52,3 +56,6 @@ IArchiveObjectBase *CGameItemObjectFactory::CreateObject( const unsigned int id 
 {
 	return CreateGameItem( id );
 }
+
+
+} // namespace amorphous

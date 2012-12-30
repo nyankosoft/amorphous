@@ -15,6 +15,10 @@
 #include "Input/InputHub.hpp"
 #include "Sound/SoundManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -206,3 +210,6 @@ void CGameTask_Stage::Render()
 	ProfileEnd( "Main Loop" );
 //	ProfileDumpOutputToBuffer();
 }
+
+
+} // namespace amorphous

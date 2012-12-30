@@ -1,6 +1,10 @@
 #include "GLCgEffect.hpp"
 #include <Cg/cgGL.h> /* Cg OpenGL API (part of Cg Toolkit) */
 
+
+namespace amorphous
+{
+
 extern CGcontext g_myCgContext;
 extern void InitCg();
 
@@ -31,3 +35,6 @@ void CGLCgEffect::InitCgContext()
 	cgGLSetManageTextureParameters(g_myCgContext, CG_TRUE);
 	CheckForCgError("manage texture parameters");
 }
+
+
+} // namespace amorphous

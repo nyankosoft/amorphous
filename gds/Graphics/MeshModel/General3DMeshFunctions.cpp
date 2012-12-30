@@ -1,6 +1,10 @@
 #include "General3DMeshFunctions.hpp"
 #include "General3DMesh.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -100,3 +104,6 @@ void GetConnectedSets( const CGeneral3DMesh& src_mesh, std::vector< boost::share
 	}
 }
 
+
+
+} // namespace amorphous

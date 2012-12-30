@@ -5,6 +5,9 @@
 #include "../TextureCoord.hpp"
 
 
+namespace amorphous
+{
+
 struct BILLBOARDVERTEX
 {
 	D3DXVECTOR3 vPosition;
@@ -57,6 +60,8 @@ const D3DVERTEXELEMENT9 STATICBILLBOARDVERTEX_DECLARATION[] =
     { 0, 24, D3DDECLTYPE_FLOAT2,   D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },
 	D3DDECL_END()
 };
+
+} // amorphous
 
 
 #endif	/* __FVFBILLBOARDVERTEX_H__ */

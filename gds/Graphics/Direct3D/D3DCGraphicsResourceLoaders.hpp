@@ -5,6 +5,10 @@
 #include "../GraphicsResourceLoaders.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DMeshLoader : public CMeshLoader
 {
 
@@ -236,6 +240,9 @@ inline void CD3DXMeshLoaderBase::SetSubResourceState( CMeshSubResource::Name sub
 		GetResourceEntry()->GetMeshResource()->SetSubResourceState( subresource, state );
 	}
 }
+
+
+} // namespace amorphous
 
 
 

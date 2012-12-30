@@ -1,6 +1,10 @@
 #include "JL_ShapeBase.hpp"
 
 
+namespace amorphous
+{
+
+
 CJL_ShapeBase::CJL_ShapeBase()
 {
 	m_sShape = JL_SHAPE_INVALID;
@@ -25,3 +29,6 @@ void CJL_ShapeBase::SetShape( CJL_ShapeDesc& rDesc )
 	m_LocalPose.matOrient = rDesc.matLocalOrient;
 	m_sMaterialIndex = rDesc.sMaterialIndex;
 }
+
+
+} // namespace amorphous

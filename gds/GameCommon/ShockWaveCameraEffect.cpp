@@ -5,6 +5,10 @@
 #include "Support/MTRand.hpp"
 
 
+namespace amorphous
+{
+
+
 CShockWaveCameraEffect::CShockWaveCameraEffect()
 {
 	m_fOverlapTime = 0;
@@ -127,3 +131,6 @@ void CShockWaveCameraEffect::Update( float fFrameTime )
 
 	m_vForce = Vector3(0,0,0);
 }
+
+
+} // namespace amorphous

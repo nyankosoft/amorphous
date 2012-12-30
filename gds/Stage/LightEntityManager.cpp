@@ -5,6 +5,10 @@ w#include "LightEntityManager.hpp"
 #include "Support/memory_helpers.hpp"
 
 
+namespace amorphous
+{
+
+
 int g_iNumDynamicLights = 0;
 
 
@@ -407,3 +411,5 @@ void CLightEntityManager::LoadGraphicsResources()
 {
 	InitShaderLightManager();
 }
+
+} // amorphous

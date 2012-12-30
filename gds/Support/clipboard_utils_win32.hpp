@@ -6,6 +6,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 inline void get_from_clipboard( std::string& text )
 {
 	if( !OpenClipboard( NULL ) )
@@ -73,6 +77,9 @@ inline void send_to_clipboard( const std::string& text )
 
 	CloseClipboard();
 }
+
+
+} // amorphous
 
 
 

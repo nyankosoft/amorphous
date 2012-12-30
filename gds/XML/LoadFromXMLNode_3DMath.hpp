@@ -6,6 +6,10 @@
 #include "XML/XMLNodeReader.hpp"
 
 
+namespace amorphous
+{
+
+
 /*
 goal
 <Pose>
@@ -50,6 +54,9 @@ inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix34& dest )
 	LoadFromXMLNode( reader, dest.vPosition );
 	LoadFromXMLNode( reader.GetChild( "Rotation" ), dest.matOrient );
 }
+
+} // amorphous
+
 
 
 #endif /* __LoadFromXMLNode_3DMath_H__ */

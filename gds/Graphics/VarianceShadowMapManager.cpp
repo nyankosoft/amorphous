@@ -6,6 +6,10 @@
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -384,3 +388,6 @@ void CVarianceShadowMapManager::LoadGraphicsResources( const CGraphicsParameters
 
 	Init();
 }
+
+
+} // namespace amorphous

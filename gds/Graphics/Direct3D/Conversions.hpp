@@ -5,6 +5,10 @@
 #include <d3dx9.h>
 #include "../../3DMath/Vector3.hpp"
 
+
+namespace amorphous
+{
+
 // Direct3D to 3DMath
 
 inline Vector3 ToVector3( const D3DXVECTOR3& src )
@@ -29,6 +33,9 @@ inline D3DXVECTOR3 ToD3DXVECTOR3( const Vector3& src )
 {
 	return D3DXVECTOR3(src.x,src.y,src.z);
 }
+
+
+} // amorphous
 
 
 

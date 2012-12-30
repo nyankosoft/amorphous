@@ -2,6 +2,9 @@
 #define  __MATHMISC_H__
 
 
+namespace amorphous
+{
+
 template<typename T>
 void Limit( T& val, const T& min, const T& max )
 {
@@ -38,6 +41,8 @@ inline float TakeMin( T a, T b, T c )
 {
 	return TakeMin( TakeMin(a,b), c );
 }
+
+} // namespace amorphous
 
 
 #endif		/*  __MATHMISC_H__  */

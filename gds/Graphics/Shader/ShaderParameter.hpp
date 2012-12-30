@@ -8,7 +8,11 @@
 #include "../../Support/Serialization/Serialization.hpp"
 #include "../../Support/Serialization/Serialization_3DMath.hpp"
 #include "../../Support/Serialization/Serialization_Color.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 class CTextureParam : public IArchiveObjectBase
@@ -113,6 +117,9 @@ inline bool LoadShaderParam( CShaderParameter<CTextureParam>& param )
 	return param.Parameter().m_Handle.Load( param.Parameter().m_Desc );
 }
 
+
+
+} // namespace amorphous
 
 
 

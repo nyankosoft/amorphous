@@ -12,7 +12,11 @@
 #include "GraphicsResourceDescs.hpp"
 
 #include "../Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 //template<class T>class CBinaryDatabase<T>;
 
@@ -157,6 +161,9 @@ inline void CGraphicsResourceEntry::SetResource( boost::shared_ptr<CGraphicsReso
 	m_pMeshResource    = boost::dynamic_pointer_cast<CMeshResource,CGraphicsResource>(pResource);
 	m_pShaderResource  = boost::dynamic_pointer_cast<CShaderResource,CGraphicsResource>(pResource);
 }
+
+
+} // namespace amorphous
 
 
 

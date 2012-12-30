@@ -16,6 +16,10 @@
 #include <string>
 
 
+namespace amorphous
+{
+
+
 struct SFog;
 class CTriangleMesh;
 
@@ -115,6 +119,9 @@ public:
 	short LineCheck( Vector3& vP1, Vector3& vP2 );
 
 };
+
+} // amorphous
+
 
 
 #endif  /*  __BSPMAPCOMPILER_H__  */

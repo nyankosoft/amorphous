@@ -7,6 +7,10 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -59,3 +63,6 @@ void CGUIGameTask::SetGUIRendererManager( CGM_ControlRendererManagerSharedPtr pR
 {
 //	m_pDialogBoxManager->Set...
 }
+
+
+} // namespace amorphous

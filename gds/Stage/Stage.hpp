@@ -16,6 +16,10 @@
 #include "EntityCollisionGroups.hpp"
 
 
+namespace amorphous
+{
+
+
 class CStage
 {
 	std::string m_ScriptArchiveFilename;
@@ -283,6 +287,9 @@ inline void CStage::TerminateEntity( CCopyEntity*& pEntity )
 	pEntity->Terminate();
 	pEntity = NULL;
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __STAGE_H__  */

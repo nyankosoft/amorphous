@@ -10,6 +10,10 @@
 #include "JL_ShapeBase.hpp"
 
 
+namespace amorphous
+{
+
+
 enum eJL_ActorTypeFlag
 {
 	JL_ACTOR_STATIC						= 1,
@@ -398,6 +402,9 @@ private:
 
 //================== inline implementations =======================
 #include "JL_PhysicsActor.inl"
+
+} // namespace amorphous
+
 
 
 #endif  /*  __JL_PHYSICSACTOR_H__  */

@@ -21,6 +21,10 @@
 #include "Support/macro.h"
 #include <boost/filesystem.hpp>
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 using namespace physics;
@@ -835,3 +839,6 @@ physics::CActor *CStaticGeometry::CreateCollisionGeometry( physics::CScene& phys
 
 	return m_pTriangleMeshActor;
 }
+
+
+} // namespace amorphous

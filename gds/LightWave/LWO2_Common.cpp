@@ -1,6 +1,10 @@
 #include "LWO2_Common.hpp"
 
 
+namespace amorphous
+{
+
+
 UINT4 ReadVLIndex(FILE* fp, int *pIndexSize)
 {
 	UINT2 wRead, wRead2;
@@ -60,3 +64,6 @@ void AdvanceFP(FILE *fp, UINT4 count)
 	}
 }
 
+
+
+} // amorphous

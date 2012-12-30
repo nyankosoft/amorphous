@@ -10,6 +10,10 @@
 
 #include "Physics/Actor.hpp"
 
+
+namespace amorphous
+{
+
 using namespace physics;
 
 
@@ -285,3 +289,6 @@ void CGI_GravityGun::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "GraspRange", m_fGraspRange );
 	reader.GetChildElementTextContent( "Power",      m_fPower );
 }
+
+
+} // namespace amorphous

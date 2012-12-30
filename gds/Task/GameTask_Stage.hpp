@@ -6,6 +6,10 @@
 #include "gds/Stage/fwd.hpp"
 
 
+namespace amorphous
+{
+
+
 extern CStageSharedPtr g_pStage;
 
 extern void SetGlobalStageScriptFilename( const std::string& filename );
@@ -48,6 +52,9 @@ public:
 		STAGE_NOT_LOADED
 	};
 };
+
+} // namespace amorphous
+
 
 
 #endif  /*  __GAMETASK_STAGE_H__  */

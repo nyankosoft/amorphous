@@ -1,17 +1,20 @@
 #ifndef  __BASEENTITYMANAGER_H__
 #define  __BASEENTITYMANAGER_H__
 
+
 #include <vector>
 #include <map>
 #include "fwd.hpp"
-
 #include "Support/Singleton.hpp"
-using namespace NS_KGL;
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-using namespace GameLib1::Serialization;
 
+
+namespace amorphous
+{
+
+using namespace serialization;
 
 
 //===================================================================================
@@ -90,6 +93,9 @@ inline CBaseEntityManager& BaseEntityManager()
 {
 	return *(CBaseEntityManager::Get());
 }
+
+} // namespace amorphous
+
 
 
 #endif		/*  __BASEENTITYMANAGER_H__  */

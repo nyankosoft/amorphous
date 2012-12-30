@@ -2,6 +2,9 @@
 #define __ConvexMesh_HPP__
 
 
+namespace amorphous
+{
+
 namespace physics
 {
 
@@ -15,6 +18,8 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
 
 
 #endif /* __ConvexMesh_HPP__ */

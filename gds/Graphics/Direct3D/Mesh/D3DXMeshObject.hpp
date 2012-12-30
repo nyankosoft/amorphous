@@ -7,6 +7,10 @@
 #include "D3DXMeshObjectBase.hpp"
 
 
+namespace amorphous
+{
+
+
 class CD3DXMeshObject : public CD3DXMeshObjectBase
 {
 private:
@@ -42,6 +46,9 @@ public:
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::BASIC; }
 
 };
+
+} // namespace amorphous
+
 
 
 #endif	/*  __D3DXMESHOBJECT_H__  */

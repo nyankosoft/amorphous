@@ -3,6 +3,10 @@
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
+
+namespace amorphous
+{
+
 using namespace std;
 using namespace boost;
 
@@ -564,3 +568,6 @@ void CCgEffectBase::SetVertexBlendTransforms( const std::vector<Transform>& src_
 		hr = m_pEffect->SetFloatArray( hTranslation, t, 4 );
 	}*/
 }
+
+
+} // namespace amorphous

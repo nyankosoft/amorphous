@@ -7,10 +7,10 @@
 #include "Archive.hpp"
 
 
-namespace GameLib1
+namespace amorphous
 {
 
-namespace Serialization
+namespace serialization
 {
 
 
@@ -25,9 +25,9 @@ inline IArchive& operator & ( IArchive& ar, S32BitColor& color )
 }
 
 
-}	  /*  Serialization  */
+} // namespace serialization
 
-}	  /*  GameLib1  */
+} // namespace amorphous
 
 
 #endif  /*  __KGL_32BITCOLOR_SERIALIZATION_H__  */

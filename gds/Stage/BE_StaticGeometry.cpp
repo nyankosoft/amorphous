@@ -12,6 +12,10 @@
 #include "StaticGeometryBase.hpp"
 #include "ScreenEffectManager.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
 
@@ -117,3 +121,6 @@ void CBE_StaticGeometry::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBaseEntity::Serialize( ar, version );
 }
+
+
+} // namespace amorphous

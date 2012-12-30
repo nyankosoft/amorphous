@@ -6,6 +6,10 @@
 #include <gl/gl.h>
 
 
+namespace amorphous
+{
+
+
 class C2DPrimitiveRenderer_GL : public C2DPrimitiveRenderer
 {
 
@@ -35,6 +39,9 @@ inline C2DPrimitiveRenderer_GL& PrimitiveRenderer_GL()
 	static C2DPrimitiveRenderer_GL s_Renderer;
 	return s_Renderer;
 }
+
+
+} // namespace amorphous
 
 
 

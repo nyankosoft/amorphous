@@ -9,6 +9,10 @@
 #include "../3DMath/aabb3.hpp"
 
 
+namespace amorphous
+{
+
+
 inline void convert_python_to_cpp_Vector2( PyObject* src, void *address )
 {
 	Vector2 dest(0,0);
@@ -96,6 +100,9 @@ inline void convert_python_to_cpp_FloatRGBA( PyObject* src, void *address )
 
 	memcpy( address, &dest, sizeof(dest) );
 }
+
+} // amorphous
+
 
 
 #endif /* __convert_python_to_x_HPP__ */

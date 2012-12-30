@@ -9,6 +9,10 @@
 #include "Support/Log/StateLog.hpp"
 #include "Support/memory_helpers.hpp"
 
+
+namespace amorphous
+{
+
 using namespace boost;
 
 
@@ -384,3 +388,6 @@ void CLightEntity::HandleMessage( SGameMessage& msg )
 			}
 //			CLightFactory factory;
 //			m_pLight = factory.CreateLight( light_desc );*/
+
+
+} // namespace amorphous

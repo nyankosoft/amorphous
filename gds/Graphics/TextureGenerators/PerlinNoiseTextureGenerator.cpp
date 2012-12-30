@@ -4,6 +4,10 @@
 #include "../../3DMath/Vector3.hpp"
 
 
+namespace amorphous
+{
+
+
 void CPerlinNoiseTextureGenerator::FillTexture( CLockedTexture& texture )
 {
 	int w = texture.GetWidth();
@@ -70,3 +74,6 @@ void CPerlinNoiseNormalMapGenerator::FillTexture( CLockedTexture& texture )
 		}
 	}
 }
+
+
+} // namespace amorphous

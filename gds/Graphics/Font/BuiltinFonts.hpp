@@ -8,6 +8,10 @@
 #include "TextureFont.hpp"
 
 
+namespace amorphous
+{
+
+
 inline const CSimpleBitmapFontData *GetBuiltinFontData( const std::string& builtin_font_name )
 {
 	if( builtin_font_name == "BitstreamVeraSansMono-Bold-256" )
@@ -39,6 +43,9 @@ inline boost::shared_ptr<CTextureFont> CreateDefaultBuiltinFont()
 	boost::shared_ptr<CTextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
 	return pTexFont;
 }
+
+} // namespace amorphous
+
 
 
 #endif /* __BuiltinFonts_HPP__ */

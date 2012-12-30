@@ -10,6 +10,10 @@
 #include "Support/Profile.hpp"
 
 
+namespace amorphous
+{
+
+
 CGameTask *CGameTaskManager::CreateTask( int iTaskID )
 {
 	return m_pFactory->CreateTask( iTaskID );
@@ -143,3 +147,6 @@ void CGameTaskManager::Render()
 		}
 	}
 }
+
+
+} // namespace amorphous

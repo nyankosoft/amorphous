@@ -6,6 +6,9 @@
 #include <vector>
 
 
+namespace amorphous
+{
+
 template<class PointerType>
 void SafeDeleteVector( std::vector<PointerType>& vecp )
 {
@@ -15,6 +18,9 @@ void SafeDeleteVector( std::vector<PointerType>& vecp )
 
 	vecp.resize( 0 );
 }
+
+} // namespace amorphous
+
 
 
 #endif  /*  __SAFE_DELETE_VECTOR_H__  */

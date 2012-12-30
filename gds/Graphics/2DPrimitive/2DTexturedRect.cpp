@@ -1,6 +1,10 @@
 #include "2DTexturedRect.hpp"
 
 
+namespace amorphous
+{
+
+
 C2DTexturedRectRenderer_D3D::C2DTexturedRectRenderer_D3D()
 {
 	m_FVFs[0] = D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1;
@@ -105,3 +109,6 @@ void C2DTexturedRectRenderer_GL::Render( const C2DTexturedRect<1,U32>& rect, CTe
 void C2DTexturedRectRenderer_GL::Render( const C2DTexturedRect<2,U32>& rect, CTextureHandle& tex0, CTextureHandle& tex1 )
 {
 }
+
+
+} // amorphous

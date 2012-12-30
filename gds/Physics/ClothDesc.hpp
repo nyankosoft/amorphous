@@ -7,10 +7,13 @@
 #include "3DMath/Matrix34.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace GameLib1::Serialization;
-
 #include "fwd.hpp"
 #include "MeshData.hpp"
+
+
+namespace amorphous
+{
+using namespace serialization;
 
 
 namespace physics
@@ -137,6 +140,9 @@ public:
 
 
 } // namespace physics
+
+} // namespace amorphous
+
 
 
 #endif		/*  __PhysClothDesc_HPP__  */
