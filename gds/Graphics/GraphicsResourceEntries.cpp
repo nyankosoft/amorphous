@@ -16,27 +16,6 @@ using namespace std;
 using namespace boost;
 
 
-static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( CImageArchive::ImageFormat img_archive_format )
-{
-	switch(img_archive_format)
-	{
-	case CImageArchive::IMGFMT_BMP24: return D3DXIFF_BMP;
-	case CImageArchive::IMGFMT_BMP32: return D3DXIFF_BMP;
-	case CImageArchive::IMGFMT_JPEG:  return D3DXIFF_JPG;
-	case CImageArchive::IMGFMT_TGA:   return D3DXIFF_TGA;
-	case CImageArchive::IMGFMT_PNG:   return D3DXIFF_PNG;
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_DDS,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_PPM,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_DIB,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_HDR,       //high dynamic range formats
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_PFM,       //
-	default: return D3DXIFF_BMP;
-	}
-
-	return D3DXIFF_BMP;
-}
-
-
 /**
  Graphics Resource
  - Graphics resources are not sharable if the loading modes are different
