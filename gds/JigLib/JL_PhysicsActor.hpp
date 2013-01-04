@@ -399,12 +399,11 @@ private:
 	std::vector<CJL_ShapeBase *> m_vecpShape;
 };
 
+} // namespace amorphous
+
 
 //================== inline implementations =======================
 #include "JL_PhysicsActor.inl"
-
-} // namespace amorphous
-
 
 
 #endif  /*  __JL_PHYSICSACTOR_H__  */

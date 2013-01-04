@@ -7,13 +7,13 @@
 #include "gds/Support/Singleton.hpp"
 #include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
-using namespace serialization;
-
 #include <boost/shared_ptr.hpp>
 
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 
 /**

@@ -2,6 +2,8 @@
 
 #include "gds/Support/Macro.h"
 #include "gds/Support/Log/DefaultLog.hpp"
+#include "gds/Support/StringAux.hpp"
+#include "gds/Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous
@@ -792,9 +794,6 @@ void CPVC_MotionPrimitivePlayManager::PlayInterpolaitonMotion( float dt )
 
 */
 
-
-#include "gds/Support/StringAux.hpp"
-#include "gds/Support/Vec3_StringAux.hpp"
 
 void CMotionPrimitiveBlenderStatistics::Update()
 {

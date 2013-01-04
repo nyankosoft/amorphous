@@ -229,8 +229,8 @@ void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 			m_vecpAmmunitionLoading.push_back( pAmmunition );
 	}
 */
-	::LoadFromXMLNode( reader.GetChild( "Mount/LocalPose" ), m_MountLocalPose );
-	::LoadFromXMLNode( reader.GetChild( "Gun/LocalPose" ),   m_GunLocalPose );
+	amorphous::LoadFromXMLNode( reader.GetChild( "Mount/LocalPose" ), m_MountLocalPose );
+	amorphous::LoadFromXMLNode( reader.GetChild( "Gun/LocalPose" ),   m_GunLocalPose );
 
 	m_MountMeshTransform = m_MeshTransform * m_MountLocalPose.GetInverseROT();
 	m_GunMeshTransform   = m_MeshTransform * m_GunLocalPose.GetInverseROT();

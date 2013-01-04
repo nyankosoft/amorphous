@@ -1,3 +1,5 @@
+namespace amorphous
+{
 
 //==============================================================
 // SetDefault
@@ -306,3 +308,5 @@ inline void CJL_PhysicsActor::RestoreState()
 	m_vVelocity			= m_vStoredVelocity;
 	m_vAngularVelocity	= m_vStoredAngularVelocity;
 }
+
+} // namespace amorphous

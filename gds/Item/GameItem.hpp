@@ -9,13 +9,13 @@
 #include "gds/Stage/fwd.hpp"
 #include "gds/XML/fwd.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace serialization;
-
 #include "fwd.hpp"
 
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 
 template<class T>

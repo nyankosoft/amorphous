@@ -5,8 +5,6 @@
 #include "gds/GameCommon/RangedSet.hpp"
 #include "gds/Support/Serialization/Archive.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace serialization;
-
 #include "BaseEntityHandle.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include "fwd.hpp"
@@ -14,6 +12,8 @@ using namespace serialization;
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 
 class CTextFileScanner;

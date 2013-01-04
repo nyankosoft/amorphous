@@ -308,7 +308,7 @@ void CArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 //		if( !m_vecTurret[i].pTurret )
 //			continue;
 
-		::LoadFromXMLNode( vecTurret[i].GetChild( "LocalPose" ), m_vecTurret[i].LocalPose );
+		amorphous::LoadFromXMLNode( vecTurret[i].GetChild( "LocalPose" ), m_vecTurret[i].LocalPose );
 //		m_vecTurret[i].pTurret->LoadFromXMLNode( vecTurret[i] );
 
 		bool use_inv_local_pose_for_mesh_transform = true;

@@ -9,16 +9,13 @@
 #include "Graphics/TextureRenderTarget.hpp"
 
 #include "Support/DebugOutput.hpp"
+#include <boost/filesystem.hpp>
 
 
 namespace amorphous
 {
 
 using std::string;
-
-
-
-#include <boost/filesystem.hpp>
 
 
 inline int GetCurrentCountOfCounterFileAndIncrementCount( const std::string& counter_file_path, int max_count = 1000 )

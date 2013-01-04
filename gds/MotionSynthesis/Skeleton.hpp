@@ -4,14 +4,14 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace serialization;
-
 #include "fwd.hpp"
 #include "TransformNode.hpp"
 
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 
 /// set a blend weight for a particular bone

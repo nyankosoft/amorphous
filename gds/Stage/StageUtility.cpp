@@ -1,4 +1,5 @@
 #include "StageUtility.hpp"
+#include "3DMath/3DGameMath.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
 #include "Graphics/MeshGenerators/MeshGenerators.hpp"
@@ -344,6 +345,8 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 	return ReturnLightEntityHandle( pEntity );
 }
 
+} // namespace amorphous
+
 
 
 //========================================================================================
@@ -356,6 +359,10 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 #include "Graphics/ShapeDetector.hpp"
 #include "Physics/ConvexShapeDesc.hpp"
 #include "Physics/ConvexMesh.hpp"
+
+
+namespace amorphous
+{
 
 using namespace physics;
 
@@ -1297,6 +1304,8 @@ CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 		return CEntityHandle<>();
 }
 
+} // namespace amorphous
+
 
 
 //=============================================================================
@@ -1305,6 +1314,9 @@ CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 
 #include "Graphics/MeshContainerRenderMethod.hpp"
 
+
+namespace amorphous
+{
 
 Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod )
 {
@@ -1473,6 +1485,5 @@ void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *paramete
 	bool tex_loaded = tex_param.m_Handle.Load( tex_param.m_Desc );
 	SetShaderParamLoaderToEntity( entity, parameter_name, tex_param );
 }
-
 
 } // namespace amorphous

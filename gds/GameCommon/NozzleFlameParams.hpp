@@ -4,13 +4,13 @@
 
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
-using namespace serialization;
-
 #include "gds/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 /*
 class AircraftRecord : public IArchiveObjectBase

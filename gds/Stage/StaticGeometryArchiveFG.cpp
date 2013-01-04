@@ -1,6 +1,7 @@
 #include "StaticGeometryArchiveFG.hpp"
 
 #include "Support/StringAux.hpp"
+#include "3DMath/stream.hpp"
 
 
 namespace amorphous
@@ -59,9 +60,6 @@ void CStaticGeometryArchiveFG::Scale( float factor )
 
 }
 */
-
-
-#include "3DMath/stream.hpp"
 
 
 void CStaticGeometryArchiveFG::WriteToTextFile( const string& filename )

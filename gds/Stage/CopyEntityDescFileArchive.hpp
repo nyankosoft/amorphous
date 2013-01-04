@@ -4,13 +4,13 @@
 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
-using namespace serialization;
-
 #include "CopyEntityDesc.hpp"
 
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 
 //===============================================================================================

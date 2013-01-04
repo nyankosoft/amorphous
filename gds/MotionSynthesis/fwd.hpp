@@ -2,6 +2,9 @@
 #define  __MotionSynthesis_Fwd_H__
 
 
+namespace amorphous
+{
+
 namespace msynth
 {
 
@@ -43,6 +46,8 @@ class CTransformCacheTree;
 
 
 } // namespace msynth
+
+} // namespace amorphous
 
 
 #endif /* __MotionSynthesis_Fwd_H__*/

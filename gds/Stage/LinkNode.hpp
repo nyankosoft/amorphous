@@ -2,6 +2,9 @@
 #define  __LinkNode_H__
 
 
+namespace amorphous
+{
+
 template<class T>
 class CLinkNode
 {
@@ -43,6 +46,8 @@ public:
 		pNext = pNode;
 	}
 };
+
+} // namespace amorphous
 
 
 #endif		/*  __LinkNode_H__  */

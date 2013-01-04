@@ -4,14 +4,14 @@
 
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-using namespace serialization;
-
 #include "fwd.hpp"
 #include "MotionPrimitive.hpp"
 
 
 namespace amorphous
 {
+
+using namespace serialization;
 
 
 namespace msynth

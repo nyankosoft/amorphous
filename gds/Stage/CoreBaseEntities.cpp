@@ -24,8 +24,6 @@
 #include "BE_Player.hpp"
 
 
-namespace amorphous
-{
 //#include "BE_PlayerPseudoAircraft.hpp"		// 20061119
 //#include "BE_PlayerPseudoLeggedVehicle.hpp"
 //#include "BE_PlayerShip.hpp"
@@ -47,6 +45,8 @@ namespace amorphous
 #include "BE_StaticLiquid.hpp"       // 20110418
 
 
+namespace amorphous
+{
 
 
 template<class CDerivedBaseEntity>

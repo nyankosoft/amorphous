@@ -1,4 +1,5 @@
 #include "ApplicationBase.hpp"
+#include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Support/lfs.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Input/StdKeyboard.hpp"
@@ -9,9 +10,6 @@
 #include <mmsystem.h>
 
 
-namespace amorphous
-{
-
 // Visual Leak Detector
 // - Works only if you run the App in 1)Debug Mode (default: F5) of 2)Debug build
 // - Commented out: Xerces 3.0.1 (XML parser) crashes when the vld is used.
@@ -19,11 +17,12 @@ namespace amorphous
 
 #include "GameWindowManager_Win32.hpp"
 
+
+namespace amorphous
+{
+
 using namespace std;
 
-
-// draft
-extern void SetCurrentThreadAsRenderThread();
 
 // global variable(s)
 CApplicationBase *g_pAppBase = NULL;
@@ -147,22 +146,24 @@ static void SetCommandLineArguments( LPSTR lpCmdLine )
 	CApplicationBase::ms_CommandLineArguments[0] = cmd_line;
 }
 
+} // namespace amorphous
+
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
-	SetCurrentThreadAsRenderThread();
+	amorphous::SetCurrentThreadAsRenderThread();
 
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
 
 	// set the message procedure for the game window
-	g_pMessageProcedureForGameWindow = MsgProc;
+	amorphous::g_pMessageProcedureForGameWindow = amorphous::MsgProc;
 
-	lfs::set_wd( lfs::get_parent_path(GetExeFilepath()) );
+	amorphous::lfs::set_wd( amorphous::lfs::get_parent_path(amorphous::GetExeFilepath()) );
 
-	SetCommandLineArguments( lpCmdLine );
+	amorphous::SetCommandLineArguments( lpCmdLine );
 
-	StartApp();
+	amorphous::StartApp();
 
 	timeEndPeriod( APPBASE_TIMER_RESOLUTION );
 
@@ -195,5 +196,3 @@ int main()
 
 
 #endif
-
-} // namespace amorphous

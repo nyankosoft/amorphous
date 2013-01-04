@@ -13,13 +13,15 @@
 #include "TriangleMesh.hpp"
 
 
-namespace amorphous
-{
 //#include "JL_Shape_.h"
 //#include "JL_Shape_.h"
 
 #include "JL_ContactInfo.hpp"
 #include "JL_SurfaceMaterial.hpp"
+
+
+namespace amorphous
+{
 
 #define NUM_MAX_COLLISIONS_PER_FRAME	512
 //#define NUM_MAX_RIGID_BODIES			512

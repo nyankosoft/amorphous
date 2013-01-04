@@ -8,6 +8,7 @@
 #include "fwd.hpp"
 #include "FloatRGBColor.hpp"
 #include "gds/3DMath/Vector3.hpp"
+#include "gds/3DMath/AABB3.hpp" // Used by CZoneAmbientLight
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/Serialization_3DMath.hpp"
 #include "gds/Support/Serialization/Serialization_Color.hpp"
@@ -329,8 +330,6 @@ public:
 //------------------------------- ZoneAmbientLight (experimental) -------------------------------
 // A light which is applied to objects included in an aabb
 // - introduced experimentally to adjust the indoor brightness
-
-#include "gds/3DMath/AABB3.hpp"
 
 class CZoneAmbientLight : public CLight
 {

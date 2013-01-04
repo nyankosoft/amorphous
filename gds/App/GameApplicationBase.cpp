@@ -424,7 +424,7 @@ void CGameApplicationBase::Execute()
 	// initialize rand generator
 	InitRand( timeGetTime() );
 
-	::MainLoop( this );
+	::amorphous::MainLoop( this );
 
 	// Release graphics resources before the graphics device is released
 

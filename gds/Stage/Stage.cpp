@@ -36,6 +36,10 @@
 #include "Sound/SoundManager.hpp"
 #include "Input/InputHub.hpp"
 
+// For TestTriggerReport and TestContactReport
+#include "Physics/Actor.hpp"
+#include "Physics/Shape.hpp"
+
 
 namespace amorphous
 {
@@ -127,9 +131,6 @@ CStaticGeometryBase *CreateStaticGeometry( CStage* pStage, const string& filenam
 	}
 }
 
-
-#include "Physics/Actor.hpp"
-#include "Physics/Shape.hpp"
 
 class TestTriggerReport : public physics::CUserTriggerReport
 {
