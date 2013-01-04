@@ -5,15 +5,15 @@
 #include  <assert.h>
 
 
-namespace amorphous
-{
-
-
 struct SLinkListNode;
 
 
 #include <vector>
 #include <algorithm>
+
+
+namespace amorphous
+{
 
 
 /*

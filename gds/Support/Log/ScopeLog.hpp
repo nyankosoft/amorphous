@@ -44,8 +44,8 @@ inline CScopeLog::~CScopeLog()
 }
 
 
-#define LOG_SCOPE( title )   amorphous::CScopeLog scope_log(title)
-#define LOG_FUNCTION_SCOPE() amorphous::CScopeLog function_scope_log(__FUNCTION__"()")
+#define LOG_SCOPE( title )   CScopeLog scope_log(title)
+#define LOG_FUNCTION_SCOPE() CScopeLog function_scope_log(__FUNCTION__"()")
 
 } // amorphous
 

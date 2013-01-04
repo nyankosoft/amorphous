@@ -7,6 +7,13 @@
 //using namespace std;
 
 
+#include <math.h>
+
+
+namespace amorphous
+{
+
+
 template <int iArraySize>
 class TCFloatLookUpTable
 {
@@ -50,13 +57,6 @@ inline float TCFloatLookUpTable<iArraySize>::GetValue( float f )
 
 	return m_afArray[i] * (1.0f - t) + m_afArray[i+1] * t;
 }
-
-
-#include <math.h>
-
-
-namespace amorphous
-{
 
 
 template <int iArraySize>
