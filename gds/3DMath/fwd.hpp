@@ -18,6 +18,7 @@ template<typename T> class tPlane;
 template<typename T> class tSphere;
 class AABB3;
 class OBB3;
+class COBBTree;
 class Quaternion;
 class CTriangle;
 class Capsule;
