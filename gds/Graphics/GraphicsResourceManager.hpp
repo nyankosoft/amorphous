@@ -121,6 +121,10 @@ inline CGraphicsResourceManager& GraphicsResourceManager()
 	return (*CGraphicsResourceManager::Get());
 }
 
+//------------------------------- global functions -------------------------------
+
+void SetCurrentThreadAsRenderThread();
+
 } // namespace amorphous
 
 
