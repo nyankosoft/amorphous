@@ -51,6 +51,7 @@ class CFontBase;
 class CFont;
 class CTextureFont;
 class CTrueTypeTextureFont;
+class CUTFFont;
 class CSimpleBitmapFontData;
 class CCamera;
 class CShaderManager;
