@@ -208,7 +208,7 @@ inline CXMLNodeReader CXMLNodeReader::GetChild( const std::string& name )
 inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_name )
 {
 	if( m_pNode )
-		return amorphous::GetAttributeText( m_pNode, attrib_name );
+		return ::amorphous::GetAttributeText( m_pNode, attrib_name );
 	else
 		return std::string();
 }
@@ -222,11 +222,11 @@ inline void CXMLNodeReader::GetAttributeValue( const std::string& attrib_name, T
 	if( !m_pNode )
 		return;
 
-	bool has_attrib = amorphous::HasAttribute( m_pNode, attrib_name );
+	bool has_attrib = ::amorphous::HasAttribute( m_pNode, attrib_name );
 	if( !has_attrib )
 		return;
 
-	std::string text = amorphous::GetAttributeText( m_pNode, attrib_name );
+	std::string text = ::amorphous::GetAttributeText( m_pNode, attrib_name );
 	if( 0 < text.length() )
 		conv_to_x( text, dest );
 }
