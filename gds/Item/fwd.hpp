@@ -6,6 +6,8 @@ namespace amorphous
 {
 
 class CGameItem;
+class ItemEntity;
+class CSkeletalCharacter;
 
 } // amorphous
 
