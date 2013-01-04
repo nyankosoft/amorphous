@@ -12,7 +12,6 @@
 
 namespace amorphous
 {
-using namespace Graphics;
 
 
 inline void conv_to_x( std::vector<std::string>& src, int& index, Vector2& dest )
