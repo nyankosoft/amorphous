@@ -73,7 +73,6 @@
 /// 
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
-using namespace serialization;
 
 
 /// deprecated headers
