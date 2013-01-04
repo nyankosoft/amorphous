@@ -1,12 +1,8 @@
 #include "JL_PhysicsActor.hpp"
 #include "JL_PhysicsActorDesc.hpp"
 #include "JL_PhysicsManager.hpp"
-
 #include "JL_Shape_Box.hpp"
-
 #include "3DMath/MathMisc.hpp"
-
-#include "Support/MsgBox.hpp"
 
 
 namespace amorphous
@@ -528,7 +524,7 @@ void CJL_PhysicsActor::Init( CJL_PhysicsActorDesc &rActorDesc )
 	size_t num_shapes = rActorDesc.vecpShapeDesc.size();
 	if( num_shapes < 0 || 100 < num_shapes )
 	{
-		MsgBoxFmt( "CJL_PhysicsActor::Init() - invalid actor desc: %d shapes" );
+		LOG_PRINTF_ERROR(( "CJL_PhysicsActor::Init() - invalid actor desc: %d shapes", (int)num_shapes ));
 		return;
 	}
 
