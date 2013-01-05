@@ -1,3 +1,4 @@
+#include "2DPrimitivesTest.hpp"
 #include "AsyncLoadingTest.hpp"
 #include "CustomMeshTest.hpp"
 #include "EnvMapTest.hpp"
@@ -27,6 +28,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 {
 	if( demo_name == "" )
 		return NULL;
+	else if( demo_name == "2DPrimitivesTest" )                return new C2DPrimitivesTest;
 	else if( demo_name == "AsyncLoadingTest" )                return new CAsyncLoadingTest;
 	else if( demo_name == "CustomMeshTest" )                  return new CCustomMeshTest;
 	else if( demo_name == "EnvMapTest" )                      return new CEnvMapTest;

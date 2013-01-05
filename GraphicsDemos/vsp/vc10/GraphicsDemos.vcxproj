@@ -82,6 +82,7 @@
     <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp" />
     <ClInclude Include="..\..\..\_Common\KeyState.hpp" />
     <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp" />
+    <ClInclude Include="..\..\src\2DPrimitivesTest.hpp" />
     <ClInclude Include="..\..\src\AsyncLoadingTest.hpp" />
     <ClInclude Include="..\..\src\CustomMeshTest.hpp" />
     <ClInclude Include="..\..\src\EnvMapTest.hpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp" />
+    <ClCompile Include="..\..\src\2DPrimitivesTest.cpp" />
     <ClCompile Include="..\..\src\AsyncLoadingTest.cpp" />
     <ClCompile Include="..\..\src\CustomMeshTest.cpp" />
     <ClCompile Include="..\..\src\EnvMapTest.cpp" />

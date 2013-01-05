@@ -93,6 +93,9 @@
     <ClInclude Include="..\..\src\TextureRenderTargetTest.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\2DPrimitivesTest.hpp">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
@@ -165,6 +168,9 @@
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TextureRenderTargetTest.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\2DPrimitivesTest.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>
