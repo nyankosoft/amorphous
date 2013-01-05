@@ -36,9 +36,6 @@ public:
 };
 
 
-class CCameraController;
-
-
 class CMeshSplitterTest : public CGraphicsTestBase
 {
 	typedef binary_node<CSplitMeshNodeObjects> CMeshNode;

@@ -16,9 +16,6 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class CUTFFont;
-
-
 class CMultibyteFontTest : public CGraphicsTestBase
 {
 	CShaderHandle m_Shader;

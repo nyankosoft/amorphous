@@ -11,11 +11,6 @@
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
-using namespace MeshModel;
-
-
-class COBBTree;
-
 
 class COBBTreeTest : public CGraphicsTestBase
 {
