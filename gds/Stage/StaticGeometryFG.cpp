@@ -17,10 +17,6 @@
 #include "EntitySet.hpp"
 
 
-namespace amorphous
-{
-
-
 #ifndef TEST_STATICGEOMETRY_FG
 
 #include "Stage.hpp"
@@ -34,6 +30,10 @@ namespace amorphous
 //#include "JigLib/TriangleMesh.hpp"
 
 #endif /* TEST_STATICGEOMETRY_FG */
+
+
+namespace amorphous
+{
 
 using namespace std;
 
