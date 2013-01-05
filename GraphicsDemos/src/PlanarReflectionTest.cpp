@@ -38,7 +38,9 @@ public:
 
 #include "gds/Graphics/Direct3D/Direct3D9.hpp"
 
+namespace amorphous {
 extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in gds/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
+}
 
 void DrawPrimitives( PrimitiveType::Name primitive_type, const TLVertex<U32> *vertices, uint num_vertices )//, int u32_color_componets_order == always ARGB )
 {
@@ -48,7 +50,7 @@ void DrawPrimitives( PrimitiveType::Name primitive_type, const TLVertex<U32> *ve
 	// Support primitives types other than triangle fan and triangle strips
 	uint num_primitives = num_vertices - 2;
 
-	D3DPRIMITIVETYPE d3d_pt = ToD3DPrimitiveType( primitive_type );
+	D3DPRIMITIVETYPE d3d_pt = amorphous::ToD3DPrimitiveType( primitive_type );
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
@@ -88,11 +90,11 @@ void RenderPlane( const Matrix34& plane_pose, float x, float y )
 
 
 
-extern void InitCg();
+//extern void InitCg();
 
 CPlanarReflectionTest::CPlanarReflectionTest()
 {
-	InitCg();
+//	InitCg();
 }
 
 
