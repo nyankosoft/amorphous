@@ -33,9 +33,6 @@ using namespace boost;
 
 extern CGraphicsTestBase *CreateTestInstance();
 
-// draft
-extern void SetCurrentThreadAsRenderThread();
-
 
 // global variable
 std::string g_CmdLine;
