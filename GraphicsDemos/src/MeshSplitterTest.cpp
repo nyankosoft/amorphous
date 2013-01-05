@@ -93,7 +93,7 @@ void CMeshSplitterTest::Reset()
 //	m_RootMeshNode.object.Release();
 
 	string mesh_pathname;
-	LoadParamFromFile( "params.txt", "mesh", mesh_pathname );
+	LoadParamFromFile( "MeshSplitterDemo/params.txt", "mesh", mesh_pathname );
 
 	const char *builtin_mesh_prefix = "built-in_mesh::";
 	if( mesh_pathname.find( builtin_mesh_prefix ) == 0 )
@@ -109,6 +109,7 @@ void CMeshSplitterTest::Reset()
 	}
 	else
 	{
+		mesh_pathname = "MeshSplitterDemo/" + mesh_pathname;
 		m_RootMeshNode.object.pMesh.reset( new CCustomMesh );
 		bool res = m_RootMeshNode.object.pMesh->LoadFromFile( mesh_pathname );
 	}
