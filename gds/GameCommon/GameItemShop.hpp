@@ -5,13 +5,11 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include "gds/Support/Singleton.hpp"
+#include "gds/Item/fwd.hpp"
 
 
 namespace amorphous
 {
-
-
-class CGameItem;
 
 
 class CCustomer

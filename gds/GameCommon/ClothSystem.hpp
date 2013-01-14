@@ -2,22 +2,16 @@
 #define  __ClothSystem_HPP__
 
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
 #include "gds/3DMath/fwd.hpp"
 #include "gds/Physics/fwd.hpp"
 #include "gds/Physics/ShapeDesc.hpp"
 #include "gds/Physics/Cloth.hpp"
 #include "gds/Graphics/Mesh/CustomMesh.hpp"
 #include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/fwd.hpp"
 #include "gds/MotionSynthesis/fwd.hpp"
 #include "gds/MotionSynthesis/TransformCacheTree.hpp"
 #include "gds/XML/fwd.hpp"
-
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "gds/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous
