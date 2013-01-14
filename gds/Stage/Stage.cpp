@@ -816,13 +816,6 @@ void CStage::UpdateListener()
 
 
 /*
-CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
-{
-	return m_pPhysicsVisualizer;
-}
-*/
-
-/*
 void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )
 {
 	SoundManager().PlayAt( pcSoundName, rvPosition );
