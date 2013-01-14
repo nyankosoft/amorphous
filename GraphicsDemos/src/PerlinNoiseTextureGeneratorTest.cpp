@@ -68,16 +68,17 @@ void CPerlinNoiseTextureGeneratorTest::CreatePerlinNoiseTexture()
 	CPerlinNoiseParams pn_params;
 	pn_params.seed = (int)RandInt32();
 //	int octaves = 1; float freq = 1; float amp = 1; int seed = 0;
-	LoadParamFromFile( "params.txt", "image_size",      m_ImageWidth );
-	LoadParamFromFile( "params.txt", "texture_repeats", m_fTextureRepeats );
+	const char *params_file = "PerlinNoiseTextureGeneratorDemo/params.txt";
+	LoadParamFromFile( params_file, "image_size",      m_ImageWidth );
+	LoadParamFromFile( params_file, "texture_repeats", m_fTextureRepeats );
 
 	int tilable = 0;
-	LoadParamFromFile( "params.txt", "octaves", pn_params.octaves );
-	LoadParamFromFile( "params.txt", "freq",    pn_params.freq );
-	LoadParamFromFile( "params.txt", "amp",     pn_params.amp );
-	LoadParamFromFile( "params.txt", "range",   pn_params.min_value, pn_params.max_value );
-	LoadParamFromFile( "params.txt", "seed",    pn_params.seed );
-	LoadParamFromFile( "params.txt", "tilable", tilable );
+	LoadParamFromFile( params_file, "octaves", pn_params.octaves );
+	LoadParamFromFile( params_file, "freq",    pn_params.freq );
+	LoadParamFromFile( params_file, "amp",     pn_params.amp );
+	LoadParamFromFile( params_file, "range",   pn_params.min_value, pn_params.max_value );
+	LoadParamFromFile( params_file, "seed",    pn_params.seed );
+	LoadParamFromFile( params_file, "tilable", tilable );
 	pn_params.tilable = (tilable!=0) ? true : false;
 
 	bool loaded = false;
