@@ -10,15 +10,15 @@ namespace amorphous
 {
 
 
-class CSkeletalMesh : public CProgressiveMesh
+class SkeletalMesh : public ProgressiveMesh
 {
 public:
 
-	CSkeletalMesh();
+	SkeletalMesh();
 
-	CSkeletalMesh( const std::string& filename );
+	SkeletalMesh( const std::string& filename );
 
-	~CSkeletalMesh() {}
+	~SkeletalMesh() {}
 
 //	virtual void Release();
 

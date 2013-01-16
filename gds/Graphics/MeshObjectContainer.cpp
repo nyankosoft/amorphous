@@ -218,7 +218,7 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 
 	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
 	{
-		boost::shared_ptr<CBasicMesh> pMesh
+		boost::shared_ptr<BasicMesh> pMesh
 			= m_vecpMeshContainer[i]->m_MeshObjectHandle.GetMesh();
 
 		if( !pMesh )

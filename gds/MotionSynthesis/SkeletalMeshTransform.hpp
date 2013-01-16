@@ -43,38 +43,38 @@ public:
 
 /// This is a private function of the msynth module
 /// Client code should not call this.
-void UpdateMeshBoneTransforms_r( const CBone& bone, const CTransformNode& node, CSkeletalMesh& mesh );
+void UpdateMeshBoneTransforms_r( const CBone& bone, const CTransformNode& node, SkeletalMesh& mesh );
 
 /// This is a private function of the msynth module
 /// Client code should not call this.
-void UpdateMeshBoneTransforms_r( const CTransformNodeMap& map_node, const CTransformNode& node, CSkeletalMesh& mesh );
+void UpdateMeshBoneTransforms_r( const CTransformNodeMap& map_node, const CTransformNode& node, SkeletalMesh& mesh );
 
 /// This is a private function of the msynth module
 /// Client code should not call this.
-void UpdateMeshBoneTransforms_r( const CBone& bone, const CTransformNode& node, const CSkeletalMesh& mesh, std::vector<Transform>& mesh_bone_local_transforms );
+void UpdateMeshBoneTransforms_r( const CBone& bone, const CTransformNode& node, const SkeletalMesh& mesh, std::vector<Transform>& mesh_bone_local_transforms );
 
 /// This is a private function of the msynth module
 /// Client code should not call this.
 void UpdateMeshBoneTransforms_r( const CTransformNodeMap& map_node, const CTransformNode& node, std::vector<Transform>& mesh_bone_local_transforms );
 
 /// Set transforms to mesh bones.
-/// For each bone, search the corresponding mesh bone with CSkeletalMesh::GetBoneMatrixIndexByName() (slow)
+/// For each bone, search the corresponding mesh bone with SkeletalMesh::GetBoneMatrixIndexByName() (slow)
 /// \param keyframe [in] source keyframe
 /// \param skeleton [in] tree of bones
 /// \param target_skeletal_mesh [out] skeletal mesh
-inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CSkeleton& skeleton, CSkeletalMesh& target_skeletal_mesh )
+inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CSkeleton& skeleton, SkeletalMesh& target_skeletal_mesh )
 {
 	UpdateMeshBoneTransforms_r( skeleton.GetRootBone(), keyframe.GetRootNode(), target_skeletal_mesh );
 }
 
 
-inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CTransformNodeMap& root_map_node, CSkeletalMesh& target_skeletal_mesh )
+inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CTransformNodeMap& root_map_node, SkeletalMesh& target_skeletal_mesh )
 {
 	UpdateMeshBoneTransforms_r( root_map_node, keyframe.GetRootNode(), target_skeletal_mesh );
 }
 
 
-inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CSkeleton& skeleton, const CSkeletalMesh& mesh, std::vector<Transform>& mesh_bone_local_transforms )
+inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CSkeleton& skeleton, const SkeletalMesh& mesh, std::vector<Transform>& mesh_bone_local_transforms )
 {
 	UpdateMeshBoneTransforms_r( skeleton.GetRootBone(), keyframe.GetRootNode(), mesh, mesh_bone_local_transforms );
 }
@@ -89,13 +89,13 @@ inline void UpdateMeshBoneTransforms( const CKeyframe& keyframe, const CTransfor
 /// Creates a tree of CTransformNodeMap that has the same hierarchical structure with that of src_skeleton
 /// Each created node of CTransformNodeMap is provided with the index
 /// to its corresponding mesh bone transform in the transform array of the skeletal mesh
-void CreateTransformMapTree( const CSkeleton& src_skeleton, CTransformNodeMap& root_map_node, const CSkeletalMesh& mesh );
+void CreateTransformMapTree( const CSkeleton& src_skeleton, CTransformNodeMap& root_map_node, const SkeletalMesh& mesh );
 
 /// \param src_skeletal_mesh [in] source
 /// \param dest_skeleton [out] destination
-void CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh, msynth::CSkeleton& dest_skeleton );
+void CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh, msynth::CSkeleton& dest_skeleton );
 
-boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh );
+boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh );
 
 } // namespace msynth
 

@@ -281,7 +281,7 @@ void CFlatShadowMap::BeginSceneShadowMap()
 //	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
 
 
-/*	shared_ptr<CBasicMesh> pMesh = m_ShadowCasterBoundingBox.GetMesh();
+/*	shared_ptr<BasicMesh> pMesh = m_ShadowCasterBoundingBox.GetMesh();
 	if( pMesh )
 	{
 		const float far_clip = 100.0f;//m_LightCamera.GetFarClip();

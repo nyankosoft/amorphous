@@ -124,7 +124,7 @@ void CGameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 	if( !pMeshContainer )
 		return;
 
-	shared_ptr<CBasicMesh> pBasicMesh = pMeshContainer->m_MeshObjectHandle.GetMesh();
+	shared_ptr<BasicMesh> pBasicMesh = pMeshContainer->m_MeshObjectHandle.GetMesh();
 	if( !pBasicMesh )
 		return;
 

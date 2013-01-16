@@ -31,7 +31,7 @@ attach obj  ---     ---        No
 */
 
 /*
-class CBasicMesh
+class BasicMesh
 {
 public:
 	/// Used, for example, by a module such as cloth simulation engine
@@ -71,7 +71,7 @@ public:
 	physics::CCloth *m_pCloth;
 	physics::CClothDesc m_Desc;
 
-//	CCustomMesh m_Mesh;
+//	CustomMesh m_Mesh;
 	CMeshObjectHandle m_Mesh;
 	std::string m_MeshFilepath;
 
@@ -165,7 +165,7 @@ public:
 
 	void UpdateWorldTransform();
 
-	void UpdateWorldTransform( CSkeletalMesh& skeletal_mesh, const Matrix34& world_pose );
+	void UpdateWorldTransform( SkeletalMesh& skeletal_mesh, const Matrix34& world_pose );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
@@ -220,7 +220,7 @@ public:
 
 	void UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe, const Matrix34& world_pose = Matrix34Identity() );
 
-	void UpdateCollisionObjectPoses( CSkeletalMesh& skeletal_mesh, const Matrix34& world_pose = Matrix34Identity() );
+	void UpdateCollisionObjectPoses( SkeletalMesh& skeletal_mesh, const Matrix34& world_pose = Matrix34Identity() );
 
 	int FindAttachTarget( const std::string& target_name )
 	{
@@ -235,7 +235,7 @@ public:
 
 	uint GetNumCloths() const { return (uint)m_Cloths.size(); }
 
-//	CCustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
+//	CustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
 	const CMeshObjectHandle& GetClothMesh( int i ) const { return m_Cloths[i].m_Mesh; }
 
 	CMeshObjectHandle GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }

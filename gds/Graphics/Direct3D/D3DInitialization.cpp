@@ -75,15 +75,15 @@ Result::Name InitializeDirect3DClasses()
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_D3D();
 	GraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
-	MeshImplFactory().reset( new CD3DMeshImplFactory );
+	GetMeshImplFactory().reset( new CD3DMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
 	CTextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
-	CCustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
+	CustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
 
 	// For Direct3D, Use ARGB32 as the default vertex diffuse color format to support
 	// fixed function pipeline (FFP). On some graphics cards, the application crashes
 	// when floating point RGBA is used for vertex diffuse color in the FFP mode.
-	CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_ARGB32 );
+	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_ARGB32 );
 
 	return Result::SUCCESS;
 }

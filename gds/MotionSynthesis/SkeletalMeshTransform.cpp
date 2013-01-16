@@ -15,7 +15,7 @@ namespace msynth
 
 void UpdateMeshBoneTransforms_r( const msynth::CBone& bone,
                                  const msynth::CTransformNode& node,
-								 CSkeletalMesh& mesh )
+								 SkeletalMesh& mesh )
 {
 	// find the matrix index from the bone name (slow).
 	int index = mesh.GetBoneMatrixIndexByName( bone.GetName() );
@@ -43,7 +43,7 @@ void UpdateMeshBoneTransforms_r( const msynth::CBone& bone,
 
 void UpdateMeshBoneTransforms_r( const msynth::CTransformNodeMap& map_node,
                                  const msynth::CTransformNode& node,
-								 CSkeletalMesh& mesh )
+								 SkeletalMesh& mesh )
 {
 	// find the matrix index from the bone name (slow).
 	int index = map_node.m_DestIndex;
@@ -74,7 +74,7 @@ void UpdateMeshBoneTransforms_r( const msynth::CTransformNodeMap& map_node,
 
 void UpdateMeshBoneTransforms_r( const msynth::CBone& bone,
                                  const msynth::CTransformNode& node,
-								 const CSkeletalMesh& mesh,
+								 const SkeletalMesh& mesh,
 								 std::vector<Transform>& mesh_bone_local_transforms )
 {
 	// find the matrix index from the bone name (slow).
@@ -131,7 +131,7 @@ void UpdateMeshBoneTransforms_r( const msynth::CTransformNodeMap& map_node,
 
 void CreateTransformMapTree_r( const msynth::CBone& src_bone,
 							  msynth::CTransformNodeMap& map_node,
-							  const CSkeletalMesh& mesh )
+							  const SkeletalMesh& mesh )
 {
 	// find the matrix index from the bone name (slow).
 	map_node.m_DestIndex = mesh.GetBoneMatrixIndexByName( src_bone.GetName() );
@@ -151,7 +151,7 @@ void CreateTransformMapTree_r( const msynth::CBone& src_bone,
 }
 
 
-void CreateTransformMapTree( const msynth::CSkeleton& src_skeleton, msynth::CTransformNodeMap& root_map_node, const CSkeletalMesh& mesh )
+void CreateTransformMapTree( const msynth::CSkeleton& src_skeleton, msynth::CTransformNodeMap& root_map_node, const SkeletalMesh& mesh )
 {
 	CreateTransformMapTree_r( src_skeleton.GetRootBone(), root_map_node, mesh );
 }
@@ -171,13 +171,13 @@ void CreateMSynthSkeletonFromMeshSkeleton_r( const CMeshBone& src_bone, msynth::
 }
 
 
-void CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh, msynth::CSkeleton& dest_skeleton )
+void CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh, msynth::CSkeleton& dest_skeleton )
 {
 	CreateMSynthSkeletonFromMeshSkeleton_r( src_skeletal_mesh.GetRootBone(), dest_skeleton.RootBone() );
 }
 
 
-boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const CSkeletalMesh& src_skeletal_mesh )
+boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh )
 {
 	boost::shared_ptr<msynth::CSkeleton> pSkeleton( new msynth::CSkeleton );
 	CreateSkeletonFromMeshSkeleton( src_skeletal_mesh, *pSkeleton );

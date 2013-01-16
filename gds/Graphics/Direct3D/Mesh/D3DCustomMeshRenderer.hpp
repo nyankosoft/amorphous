@@ -10,42 +10,42 @@ namespace amorphous
 {
 
 
-class CD3DCustomMeshRenderer : public CCustomMeshRenderer
+class CD3DCustomMeshRenderer : public CustomMeshRenderer
 {
 	std::vector<int> m_SubsetIndices;
 
 public:
 
-	const std::vector<int>& GetAllSubsetIndices( const CCustomMesh& mesh );
+	const std::vector<int>& GetAllSubsetIndices( const CustomMesh& mesh );
 
-	void DrawPrimitives( const CCustomMesh& mesh, int subset_index, bool use_zsorted_indices );
+	void DrawPrimitives( const CustomMesh& mesh, int subset_index, bool use_zsorted_indices );
 
 	void RenderMesh(
-		CCustomMesh& mesh,
+		CustomMesh& mesh,
 		CShaderManager& shader_mgr,
 		const std::vector<int> subsets_to_render,
 		bool use_zsorted_indices
 		);
 
 	void RenderMesh(
-		CCustomMesh& mesh,
+		CustomMesh& mesh,
 		const std::vector<int> subsets_to_render,
 		bool use_zsorted_indices
 		);
 
 public:
 
-	void RenderMesh( CCustomMesh& mesh ) { RenderMesh( mesh, GetAllSubsetIndices(mesh), false ); }
+	void RenderMesh( CustomMesh& mesh ) { RenderMesh( mesh, GetAllSubsetIndices(mesh), false ); }
 
-	void RenderSubset( CCustomMesh& mesh, int subset_index );
+	void RenderSubset( CustomMesh& mesh, int subset_index );
 
-	void RenderZSortedMesh( CCustomMesh& mesh ) { RenderMesh( mesh, GetAllSubsetIndices(mesh), true ); }
+	void RenderZSortedMesh( CustomMesh& mesh ) { RenderMesh( mesh, GetAllSubsetIndices(mesh), true ); }
 
-	void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), false ); }
+	void RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), false ); }
 
-	void RenderSubset( CCustomMesh& mesh, CShaderManager& shader_mgr, int subset_index );
+	void RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index );
 
-	void RenderZSortedMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), true ); }
+	void RenderZSortedMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), true ); }
 
 	static CD3DCustomMeshRenderer ms_Instance;
 };

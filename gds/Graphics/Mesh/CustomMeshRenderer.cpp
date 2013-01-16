@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-CCustomMeshRenderer *CCustomMeshRenderer::ms_pInstance = NULL;
+CustomMeshRenderer *CustomMeshRenderer::ms_pInstance = NULL;
 
 
 } // namespace amorphous

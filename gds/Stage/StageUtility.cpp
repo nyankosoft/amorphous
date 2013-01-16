@@ -369,7 +369,7 @@ using namespace physics;
 
 Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box_desc )
 {
-	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
 		return Result::UNKNOWN_ERROR;
 
@@ -391,7 +391,7 @@ Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box
 
 Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvexShapeDesc& convex_desc )
 {
-	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
 		return Result::UNKNOWN_ERROR;
 
@@ -445,7 +445,7 @@ Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvex
 
 Result::Name SetSphereShapeDesc( CMeshObjectHandle& mesh_handle, CSphereShapeDesc& sphere_desc )
 {
-	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
 		return Result::UNKNOWN_ERROR;
 
@@ -481,7 +481,7 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_
 	if( !mesh_loaded )
 		return CEntityHandle<>();
 
-	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
 		return CEntityHandle<>();
 

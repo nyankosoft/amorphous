@@ -111,7 +111,7 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 	// set transformed particle data to dest buffer 'm_avDestParticle'
 	int vert_offset;
 //	TEXTUREVERTEX *pParticleVertex = m_avBillboardRect;
-	CCustomMesh& mesh = m_ParticleSetMesh;
+	CustomMesh& mesh = m_ParticleSetMesh;
 	uchar *pParticleVertex = mesh.GetVertexBufferPtr();// = m_avBillboardRect_S;
 	const int pos_offset = mesh.GetVertexElementOffset( VEE::POSITION );
 	const uint vert_size = mesh.GetVertexSize();

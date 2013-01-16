@@ -6,38 +6,38 @@ namespace amorphous
 {
 
 
-class CCustomMesh;
+class CustomMesh;
 class CShaderManager;
 
 
-class CCustomMeshRenderer
+class CustomMeshRenderer
 {
 public:
 
-	virtual ~CCustomMeshRenderer() {}
+	virtual ~CustomMeshRenderer() {}
 
-	virtual void RenderMesh( CCustomMesh& mesh ) = 0;
+	virtual void RenderMesh( CustomMesh& mesh ) = 0;
 
-	virtual void RenderSubset( CCustomMesh& mesh, int subset_index ) = 0;
+	virtual void RenderSubset( CustomMesh& mesh, int subset_index ) = 0;
 
-	virtual void RenderZSortedMesh( CCustomMesh& mesh ) = 0;
+	virtual void RenderZSortedMesh( CustomMesh& mesh ) = 0;
 
-	virtual void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) = 0;
+	virtual void RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) = 0;
 
-	virtual void RenderSubset( CCustomMesh& mesh, CShaderManager& shader_mgr, int subset_index ) = 0;
+	virtual void RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index ) = 0;
 
 	/// NOTE: only works with the mesh that has only one subset.
-	virtual void RenderZSortedMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) = 0;
+	virtual void RenderZSortedMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) = 0;
 
-	static CCustomMeshRenderer *ms_pInstance;
+	static CustomMeshRenderer *ms_pInstance;
 
-	static CCustomMeshRenderer *GetInstance() { return ms_pInstance; }
+	static CustomMeshRenderer *GetInstance() { return ms_pInstance; }
 };
 
 
-inline CCustomMeshRenderer& GetCustomMeshRenderer()
+inline CustomMeshRenderer& GetCustomMeshRenderer()
 {
-	return *(CCustomMeshRenderer::GetInstance());
+	return *(CustomMeshRenderer::GetInstance());
 }
 
 

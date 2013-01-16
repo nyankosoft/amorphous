@@ -137,11 +137,11 @@ public:
 
 	CMeshBoneController_AircraftBase()
 		:
-	CMeshBoneControllerBase(boost::shared_ptr<CSkeletalMesh>()),
+	CMeshBoneControllerBase(boost::shared_ptr<SkeletalMesh>()),
 	m_pSimulator(NULL)
 	{}
 
-	CMeshBoneController_AircraftBase( boost::shared_ptr<CSkeletalMesh> pTargetMesh,
+	CMeshBoneController_AircraftBase( boost::shared_ptr<SkeletalMesh> pTargetMesh,
 		CPseudoAircraftSimulator *pSimulator,
 		boost::shared_ptr<CMeshBoneController_AircraftBase> pParent = boost::shared_ptr<CMeshBoneController_AircraftBase>() )
 		:
@@ -152,7 +152,7 @@ public:
 
 	virtual ~CMeshBoneController_AircraftBase() {}
 
-	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
+	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	void SetPseudoAircraftSimulator( CPseudoAircraftSimulator *pSimulator ) { m_pSimulator = pSimulator; }
 
@@ -190,12 +190,12 @@ public:
 
 	CMeshBoneController_Flap() : m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
 
-	CMeshBoneController_Flap( boost::shared_ptr<CSkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_Flap( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
 
 	virtual void UpdateTransforms();
 
-	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
+	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
@@ -235,14 +235,14 @@ public:
 
 	CMeshBoneController_VFlap() : m_fAnglePerYawAccel(0.5f), m_Type(TYPE_SINGLE) {}
 
-	CMeshBoneController_VFlap( boost::shared_ptr<CSkeletalMesh> pTargetMesh,
+	CMeshBoneController_VFlap( boost::shared_ptr<SkeletalMesh> pTargetMesh,
 		                       CPseudoAircraftSimulator *pSimulator,
 							   int type = TYPE_SINGLE )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_Type(type) { m_fAnglePerYawAccel = 0.7f; }
 
 	virtual void UpdateTransforms();
 
-	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
+	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
@@ -279,12 +279,12 @@ public:
 
 	CMeshBoneController_Rotor() : m_fRotationSpeed(5.0f), m_fAngle(0), m_fAngleOffset(0), m_RotationDirection(DIR_CW) {}
 
-	CMeshBoneController_Rotor( boost::shared_ptr<CSkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_Rotor( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_RotationDirection(DIR_CW) {}
 
 	virtual void UpdateTransforms();
 
-	virtual void Init( const CSkeletalMesh& target_skeletal_mesh );
+	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	void Update( float dt );
 
@@ -365,7 +365,7 @@ public:
 		m_Angle.vel = 1.0f;
 	}
 
-	void Init( const CSkeletalMesh& target_skeletal_mesh );
+	void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	void Update( float dt );
 
@@ -453,14 +453,14 @@ public:
 
 	CMeshBoneController_GearUnit() {}
 
-	CMeshBoneController_GearUnit( boost::shared_ptr<CSkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_GearUnit( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
 
 	virtual void UpdateTransforms();
 
-	virtual void SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh );
+	virtual void SetTargetMesh( boost::shared_ptr<SkeletalMesh> pTargetMesh );
 
-	void Init( const CSkeletalMesh& target_skeletal_mesh );
+	void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	void Update( float dt );
 
@@ -487,7 +487,7 @@ class CMeshBoneController_CockpitCanopy : public CMeshBoneController_AircraftBas
 
 public:
 
-	CMeshBoneController_CockpitCanopy( boost::shared_ptr<CSkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+	CMeshBoneController_CockpitCanopy( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
 		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
 
 	virtual void UpdateTransforms() {}

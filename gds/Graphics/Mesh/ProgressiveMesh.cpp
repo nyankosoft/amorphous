@@ -1,16 +1,16 @@
 #include "ProgressiveMesh.hpp"
-#include "MeshFactory.hpp" // ctor of CProgressiveMesh needs the mesh impl factory 
+#include "MeshFactory.hpp" // ctor of ProgressiveMesh needs the mesh impl factory 
 
 
 namespace amorphous
 {
 
 
-CProgressiveMesh::CProgressiveMesh()
+ProgressiveMesh::ProgressiveMesh()
 {
 //	m_pImpl = MeshFactory().CreateProgressiveMeshImpl();
-	CMeshImpl *pImpl = MeshImplFactory()->CreateProgressiveMeshImpl();
-	m_pImpl = boost::shared_ptr<CMeshImpl>( pImpl );
+	MeshImpl *pImpl = GetMeshImplFactory()->CreateProgressiveMeshImpl();
+	m_pImpl = boost::shared_ptr<MeshImpl>( pImpl );
 }
 
 

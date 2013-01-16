@@ -75,11 +75,11 @@ Result::Name InitializeOpenGLClasses()
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
 	GraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
-	MeshImplFactory().reset( new CGLMeshImplFactory );
+	GetMeshImplFactory().reset( new CGLMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
 	CTextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
-	CCustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
-	CCustomMesh::SetDefaultVertexDiffuseColorFormat( CCustomMesh::VCF_FRGBA );
+	CustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
+	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_FRGBA );
 
 	return Result::SUCCESS;
 }

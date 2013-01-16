@@ -173,7 +173,7 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 //			m_vecpMesh[mesh_index]->UpdateVisibility( rCamera );
 //			m_vecpMesh[mesh_index]->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 
-			CBasicMesh *pMesh = m_vecMesh[mesh_index].GetMesh().get();
+			BasicMesh *pMesh = m_vecMesh[mesh_index].GetMesh().get();
 			pMesh->UpdateVisibility( rCamera );
 //			pMesh->Render( pEffect, pEffect->GetParameterByName( 0, "Texture0" ) );
 			pMesh->Render( *m_pShaderManager );
@@ -389,7 +389,7 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 	if( 0 < archive.m_SkyboxMeshArchive.GetVertexSet().GetNumVertices() 
 	 && 0 < archive.m_SkyboxMeshArchive.GetMaterial().size() )
 	{
-		m_pSkyboxMesh.reset( new CBasicMesh );
+		m_pSkyboxMesh.reset( new BasicMesh );
 		bool loaded = m_pSkyboxMesh->LoadFromArchive( archive.m_SkyboxMeshArchive, db_filename, 0 );
 		if( !loaded )
 			m_pSkyboxMesh.reset();

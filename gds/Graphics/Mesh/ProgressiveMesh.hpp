@@ -9,13 +9,13 @@ namespace amorphous
 {
 
 
-class CProgressiveMesh : public CBasicMesh
+class ProgressiveMesh : public BasicMesh
 {
 public:
 
-	CProgressiveMesh();
+	ProgressiveMesh();
 
-	virtual ~CProgressiveMesh() {}
+	virtual ~ProgressiveMesh() {}
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::PROGRESSIVE; }
 };

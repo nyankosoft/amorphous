@@ -125,7 +125,7 @@ private:
 
 	void SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor );
 
-	inline boost::shared_ptr<CSkeletalMesh> GetCharacterSkeletalMesh();
+	inline boost::shared_ptr<SkeletalMesh> GetCharacterSkeletalMesh();
 
 	void ClipMotion( CCopyEntity& entity );
 

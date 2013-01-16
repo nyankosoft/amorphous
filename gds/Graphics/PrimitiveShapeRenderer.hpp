@@ -17,9 +17,9 @@ class CPrimitiveShapeRenderer
 {
 	CShaderHandle m_Shader; ///< default: fixed function pipeline manager
 
-	static CCustomMesh ms_BoxMesh;
+	static CustomMesh ms_BoxMesh;
 
-	static CCustomMesh ms_RectMesh;
+	static CustomMesh ms_RectMesh;
 	
 private:
 

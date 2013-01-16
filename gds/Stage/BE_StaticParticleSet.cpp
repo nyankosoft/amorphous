@@ -95,7 +95,7 @@ HRESULT CBE_StaticParticleSet::InitIndexBuffer()
 
 void CBE_StaticParticleSet::InitStaticParticleSetMesh()
 {
-/*	CCustomMesh& mesh = m_StaticParticleSetMesh;
+/*	CustomMesh& mesh = m_StaticParticleSetMesh;
 
 	U32 vertex_format_flags
 		= VFF::POSITION
@@ -126,7 +126,7 @@ void CBE_StaticParticleSet::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	LOG_PRINT_ERROR( " The static particle system has not been implemented yet." ) ;
 
-//	CCustomMesh& mesh = m_StaticParticleSetMesh;
+//	CustomMesh& mesh = m_StaticParticleSetMesh;
 
 	IndexOffset(pCopyEnt) = 0;//(float)( m_vecParticleVertex.size() / 4 * 6 );
 	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
@@ -291,7 +291,7 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 //		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
 //		pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA /*m_DestAlphaBlendMode*/ );
 
-		shared_ptr<CBasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
 		if( pMesh )
 			pMesh->Render( shader_mgr );
 /*

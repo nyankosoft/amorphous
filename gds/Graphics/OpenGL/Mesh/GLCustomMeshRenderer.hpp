@@ -9,21 +9,21 @@ namespace amorphous
 {
 
 
-class CGLCustomMeshRenderer : public CCustomMeshRenderer
+class CGLCustomMeshRenderer : public CustomMeshRenderer
 {
 public:
 
-	void RenderMesh( CCustomMesh& mesh );
+	void RenderMesh( CustomMesh& mesh );
 
-	void RenderSubset( CCustomMesh& mesh, int subset_index );
+	void RenderSubset( CustomMesh& mesh, int subset_index );
 
-	void RenderZSortedMesh( CCustomMesh& mesh ) { RenderMesh( mesh ); }
+	void RenderZSortedMesh( CustomMesh& mesh ) { RenderMesh( mesh ); }
 
-	void RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr );
+	void RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr );
 
-	void RenderSubset( CCustomMesh& mesh, CShaderManager& shader_mgr, int subset_index );
+	void RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index );
 
-	void RenderZSortedMesh( CCustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr ); }
+	void RenderZSortedMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr ); }
 
 	static CGLCustomMeshRenderer ms_Instance;
 };

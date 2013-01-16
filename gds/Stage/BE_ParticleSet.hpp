@@ -29,9 +29,9 @@ namespace amorphous
 
 // Candidates of mesh classes for particle set
 //
-// CCustomMesh
+// CustomMesh
 // CRectSetMesh
-// CBasicMesh
+// BasicMesh
 //
 // Differences between mesh classes
 // - Need / do not need mesh handles
@@ -234,7 +234,7 @@ protected:
 
 	SFloatRGBColor m_VertexColor;
 
-	CCustomMesh m_ParticleSetMesh;
+	CustomMesh m_ParticleSetMesh;
 
 	std::string m_BillboardTextureFilepath;
 

@@ -29,8 +29,8 @@ public:
 };
 
 Result::Name CConvexMeshSplitter::CreateTrianglesOnSplitSurface(
-	CCustomMesh& dest_front,
-	CCustomMesh& dest_back,
+	CustomMesh& dest_front,
+	CustomMesh& dest_back,
 	std::vector<U16>& front_mesh_indices,
 	std::vector<U16>& back_mesh_indices
 	)
@@ -69,7 +69,7 @@ Result::Name CConvexMeshSplitter::CreateTrianglesOnSplitSurface(
 
 	for( int i=0; i<2; i++ )
 	{
-		CCustomMesh& dest_mesh = (i==0) ? dest_front : dest_back;
+		CustomMesh& dest_mesh = (i==0) ? dest_front : dest_back;
 //		Vector3 normal = split_plane.normal;
 //		if( i==1 )
 //			normal *= (-1);
@@ -147,13 +147,13 @@ Need to sort the vertices created as 3 and 4 to connect them in the right orders
 
 /// Note that return value does not represent an edge, but it represents 2 indices.
 std::pair<U16,U16> AddSplitVertices(
-	const CCustomMesh& src,
+	const CustomMesh& src,
 	float f,
 	U16 vertex_index0,
 	U16 vertex_index1,
 	const Plane& split_plane,
-	CCustomMesh& dest_front,
-	CCustomMesh& dest_back,
+	CustomMesh& dest_front,
+	CustomMesh& dest_back,
 	std::vector<U16>& split_surface_vertex_indices_front,
 	std::vector<U16>& split_surface_vertex_indices_back
 	)
@@ -267,13 +267,13 @@ void TriangulateIndices( std::vector<U16>& indices )
 
 /// Called when a triangle is crossing the split planne and needs to be split.
 void CConvexMeshSplitter::SplitTriangle(
-	const CCustomMesh& src,
+	const CustomMesh& src,
 	const vector<char>& vertex_sides,
 	const vector< std::pair<uint,uint> >& new_vertex_indices,
 	int triangle_index,
 	const Plane& split_plane,
-	CCustomMesh& dest_front,
-	CCustomMesh& dest_back,
+	CustomMesh& dest_front,
+	CustomMesh& dest_back,
 	vector<U16>& front_polygon_indices,
 	vector<U16>& back_polygon_indices,
 	vector<U16>& split_surface_vertex_indices_front,
@@ -410,7 +410,7 @@ void CConvexMeshSplitter::SplitTriangle(
 
 
 void CalculateVertexSides(
-	const CCustomMesh& src,
+	const CustomMesh& src,
 	const Plane& split_plane,
 	vector<char>& vertex_sides,
 	int& num_front_vertices,
@@ -446,7 +446,7 @@ void CalculateVertexSides(
 }
 
 
-Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CCustomMesh& src, const Plane& split_plane, CCustomMesh& dest_front, CCustomMesh& dest_back )
+Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back )
 {
 	const int num_vertices = src.GetNumVertices();
 	vector<char> vertex_sides;
@@ -674,13 +674,13 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CCustomMesh& src, cons
 }
 
 
-Result::Name CConvexMeshSplitter::SplitMesh( const CCustomMesh& src, const Plane& split_plane )
+Result::Name CConvexMeshSplitter::SplitMesh( const CustomMesh& src, const Plane& split_plane )
 {
 	m_EdgeToEdgeSplitInfo.clear();
 	m_SplitSurfacePoints.clear();
 
-	m_MeshSplitResults.m_pBackMesh.reset(  new CCustomMesh );
-	m_MeshSplitResults.m_pFrontMesh.reset( new CCustomMesh );
+	m_MeshSplitResults.m_pBackMesh.reset(  new CustomMesh );
+	m_MeshSplitResults.m_pFrontMesh.reset( new CustomMesh );
 
 	return SplitMeshByPlane(
 		src,

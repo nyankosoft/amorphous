@@ -1074,7 +1074,7 @@ void CD3DXMeshObjectBase::SetVertexDeclaration()
 
 
 /*
-CMeshImpl* CD3DMeshImplFactory::CreateMeshImpl( CMeshType::Name mesh_type )
+MeshImpl* CD3DMeshImplFactory::CreateMeshImpl( CMeshType::Name mesh_type )
 {
 	switch( mesh_type )
 	{
@@ -1093,9 +1093,9 @@ CMeshImpl* CD3DMeshImplFactory::CreateMeshImpl( CMeshType::Name mesh_type )
 */
 
 
-CMeshImpl* CD3DMeshImplFactory::CreateBasicMeshImpl()       { return new CD3DXMeshObject(); }
-CMeshImpl* CD3DMeshImplFactory::CreateProgressiveMeshImpl() { return new CD3DXPMeshObject(); }
-CMeshImpl* CD3DMeshImplFactory::CreateSkeletalMeshImpl()    { return new CD3DXSMeshObject(); }
+MeshImpl* CD3DMeshImplFactory::CreateBasicMeshImpl()       { return new CD3DXMeshObject(); }
+MeshImpl* CD3DMeshImplFactory::CreateProgressiveMeshImpl() { return new CD3DXPMeshObject(); }
+MeshImpl* CD3DMeshImplFactory::CreateSkeletalMeshImpl()    { return new CD3DXSMeshObject(); }
 
 /*
 shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( CMeshType::Name mesh_type )
@@ -1123,14 +1123,14 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::stri
 }
 
 
-shared_ptr<CMeshImpl> CD3DMeshImplFactory::CreateMesh( CMeshType::Name mesh_type )
+shared_ptr<MeshImpl> CD3DMeshImplFactory::CreateMesh( CMeshType::Name mesh_type )
 {
 	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
 	return pMesh;
 }
 
 
-CMeshImpl* CD3DMeshImplFactory::LoadMeshObjectFromFile( const std::string& filepath,
+MeshImpl* CD3DMeshImplFactory::LoadMeshObjectFromFile( const std::string& filepath,
 																 U32 load_option_flags,
 																 CMeshType::Name mesh_type )
 {

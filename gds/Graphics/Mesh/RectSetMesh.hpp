@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CRectSetMesh : public CCustomMesh
+class CRectSetMesh : public CustomMesh
 {
 protected:
 

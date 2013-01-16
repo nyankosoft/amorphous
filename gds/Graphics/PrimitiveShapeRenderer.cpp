@@ -15,7 +15,7 @@ using namespace std;
 /// Used when a rectangle in 3D space is rendered via custom mesh
 /// This function do not set vertex positions of the rect mesh,
 /// since they are calculated when Draw3DRect() is called.
-static void InitRectMesh( CCustomMesh& mesh, const SFloatRGBAColor& vertex_diffuse_color )
+static void InitRectMesh( CustomMesh& mesh, const SFloatRGBAColor& vertex_diffuse_color )
 {
 	U32 vertex_format_flags
 		= VFF::POSITION
@@ -53,9 +53,9 @@ static void InitRectMesh( CCustomMesh& mesh, const SFloatRGBAColor& vertex_diffu
 
 
 
-CCustomMesh CPrimitiveShapeRenderer::ms_BoxMesh;
+CustomMesh CPrimitiveShapeRenderer::ms_BoxMesh;
 
-CCustomMesh CPrimitiveShapeRenderer::ms_RectMesh;
+CustomMesh CPrimitiveShapeRenderer::ms_RectMesh;
 
 
 CPrimitiveShapeRenderer::CPrimitiveShapeRenderer()

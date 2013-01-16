@@ -113,7 +113,7 @@ public:
 private:
 
 	void RenderMeshOrMeshSubsets(
-		CBasicMesh &mesh,
+		BasicMesh &mesh,
 		const std::vector<int>& subset_indices,
 		CSubsetRenderMethod& render_method,
 		const Matrix34& world_transform );
@@ -127,7 +127,7 @@ public:
 
 	virtual ~CMeshContainerRenderMethod() {}
 
-	void RenderMesh( CBasicMesh &mesh, const Matrix34& world_transform );
+	void RenderMesh( BasicMesh &mesh, const Matrix34& world_transform );
 
 	inline void RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform );
 
@@ -221,7 +221,7 @@ public:
 
 inline void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
 {
-	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 
 	if( !pMesh )
 		return;

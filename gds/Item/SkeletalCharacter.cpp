@@ -65,20 +65,20 @@ void DisplayCharacterPosition( const Vector3& world_position )
 }
 
 
-inline boost::shared_ptr<CSkeletalMesh> CSkeletalCharacter::GetCharacterSkeletalMesh()
+inline boost::shared_ptr<SkeletalMesh> CSkeletalCharacter::GetCharacterSkeletalMesh()
 {
 	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
-		return shared_ptr<CSkeletalMesh>();
+		return shared_ptr<SkeletalMesh>();
 
 	shared_ptr<CMeshObjectContainer> pContainer = m_MeshContainerRootNode.GetMeshContainer( 0 );
 	if( !pContainer )
-		return shared_ptr<CSkeletalMesh>();
+		return shared_ptr<SkeletalMesh>();
 
-	shared_ptr<CBasicMesh> pMesh = pContainer->m_MeshObjectHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = pContainer->m_MeshObjectHandle.GetMesh();
 	if( !pMesh )
-		return shared_ptr<CSkeletalMesh>();
+		return shared_ptr<SkeletalMesh>();
 
-	shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( pMesh );
+	shared_ptr<SkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pMesh );
 
 	return pSkeletalMesh;
 }
@@ -172,7 +172,7 @@ Result::Name CSkeletalCharacter::InitClothSystem()
 	if( exists( ".debug" ) )
 	{
 		m_pSkeletonSrcMotion->GetSkeleton()->DumpToTextFile( ".debug/msynth_skeleton.txt" );
-		shared_ptr<CSkeletalMesh> pSMesh = GetCharacterSkeletalMesh();
+		shared_ptr<SkeletalMesh> pSMesh = GetCharacterSkeletalMesh();
 		if( pSMesh )
 			pSMesh->DumpSkeletonToTextFile( ".debug/mesh_skeleton.txt" );
 	}
@@ -376,7 +376,7 @@ void CSkeletalCharacter::Update( float dt )
 
 void CSkeletalCharacter::Render()
 {
-	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
+	shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( !pSkeletalMesh )
 	{
 		int skeletal_mesh_not_found = 1;
@@ -753,7 +753,7 @@ void CSkeletalCharacter::UpdateGraphics()
 	if( !m_pMotionFSMManager )
 		return;
 
-	boost::shared_ptr<CSkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
+	boost::shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( !pSkeletalMesh )
 		return;
 
@@ -795,7 +795,7 @@ Result::Name CSkeletalCharacter::LoadCharacterMesh( const std::string& skeletal_
 	bool mesh_laoded = m_MeshContainerRootNode.LoadMeshesFromDesc();
 
 	// Update mappings of skeleton bones and mesh bones
-	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
+	shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( pSkeletalMesh
 	 && m_pSkeletonSrcMotion
 	 && m_pSkeletonSrcMotion->GetSkeleton() )

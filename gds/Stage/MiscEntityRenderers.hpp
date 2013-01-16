@@ -176,7 +176,7 @@ public:
 //		if( !pShaderMgr )
 //			return;
 //
-//		boost::shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+//		boost::shared_ptr<BasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 //		if( !pMesh )
 //			return;
 //

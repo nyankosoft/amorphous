@@ -24,7 +24,7 @@ public:
 		DO_NOT_LOAD_TEXTURES = ( 1 << 0 ), ///< specify this to load textures later. e.g., for asynchronous loading
 		LOAD_ASYNC           = ( 1 << 1 ), ///< asynchronously load the mesh
 		LOAD_TEXTURES_ASYNC  = ( 1 << 2 ), ///< asynchronously load the textures of the mesh
-		CUSTOM_MESH          = ( 1 << 3 ), ///< Choose CCustomMesh, a platform independent implementation, for mesh's impl class. This is a mesh creation option rather than a mesh loading option.
+		CUSTOM_MESH          = ( 1 << 3 ), ///< Choose CustomMesh, a platform independent implementation, for mesh's impl class. This is a mesh creation option rather than a mesh loading option.
 //		ANOTHER_OPTION       = ( 1 << 4 ),
 //		YET_ANOTHER_OPTION   = ( 1 << 5 ),
 	};
@@ -63,7 +63,7 @@ base class of mesh implementation
 - Derived by implementation classes of Direct3D and OpenGL
 - Platform independent attributes are stored here.
 */
-class CMeshImpl
+class MeshImpl
 {
 protected:
 
@@ -100,7 +100,7 @@ protected:
 
 public:
 
-	CMeshImpl();
+	MeshImpl();
 
 	/// returns true on success
 	virtual bool LoadFromFile( const std::string& filename, U32 option_flags = 0 );
@@ -243,22 +243,22 @@ public:
 };
 
 
-class CBasicMesh
+class BasicMesh
 {
 protected:
 
-	boost::shared_ptr<CMeshImpl> m_pImpl;
+	boost::shared_ptr<MeshImpl> m_pImpl;
 
 public:
 
-	CBasicMesh();
+	BasicMesh();
 /*
-	CBasicMesh( boost::shared_ptr<CMeshImpl pImpl )
+	BasicMesh( boost::shared_ptr<MeshImpl pImpl )
 		:
 	m_pImpl(pImpl)
 	{}
 */
-	virtual ~CBasicMesh() {}
+	virtual ~BasicMesh() {}
 
 	virtual CMeshType::Name GetMeshType() const { return CMeshType::BASIC; }
 
@@ -369,10 +369,10 @@ public:
 
 	void UpdateVisibility( const CCamera& cam ) { m_pImpl->UpdateVisibility( cam ); }
 
-	friend boost::shared_ptr<CCustomMesh> GetCustomMesh( CBasicMesh& src_mesh );
+	friend boost::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
 
-	/// Overwrites the m_pImpl with a CCustomMesh instance
-	friend void SetCustomMesh( CBasicMesh& src_mesh );
+	/// Overwrites the m_pImpl with a CustomMesh instance
+	friend void SetCustomMesh( BasicMesh& src_mesh );
 
 	// Access GetImpl() and dynamic_cast the returned pointer to lock/unlock vertex/index buffer, and to do other operations on mesh
 	friend class CD3DXMeshVerticesLoader;

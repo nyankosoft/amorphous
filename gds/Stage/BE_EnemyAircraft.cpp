@@ -505,8 +505,8 @@ void CBE_EnemyAircraft::AddExtraData()
 	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
 	{
 		ex.m_pAircraft->ResetMeshController();
-		shared_ptr<CBasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
-		shared_ptr<CSkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pBaseMesh);
+		shared_ptr<BasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		shared_ptr<SkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBaseMesh);
 		ex.m_pAircraft->InitMeshController( pSkeletalMesh );
 	}
 }

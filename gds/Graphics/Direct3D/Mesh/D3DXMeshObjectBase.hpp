@@ -28,7 +28,7 @@ extern void GetAttributeTableFromTriangleSet( const std::vector<CMMA_TriangleSet
 /**
  Base class of the D3D implementation of the mesh class
 */
-class CD3DXMeshObjectBase : public CMeshImpl
+class CD3DXMeshObjectBase : public MeshImpl
 {
 protected:
 
@@ -227,15 +227,15 @@ public:
 };
 
 
-class CD3DMeshImplFactory : public CMeshImplFactory
+class CD3DMeshImplFactory : public MeshImplFactory
 {
 public:
 
-//	CMeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
+//	MeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
 
-	CMeshImpl* CreateBasicMeshImpl();
-	CMeshImpl* CreateProgressiveMeshImpl();
-	CMeshImpl* CreateSkeletalMeshImpl();
+	MeshImpl* CreateBasicMeshImpl();
+	MeshImpl* CreateProgressiveMeshImpl();
+	MeshImpl* CreateSkeletalMeshImpl();
 };
 
 
@@ -259,14 +259,14 @@ inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr )
 	if( &rShaderMgr == &FixedFunctionPipelineManager() )
 		Render();
 	else
-		CMeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
+		MeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices );
 }
 
 
 inline void CD3DXMeshObjectBase::Render( CShaderManager& rShaderMgr,
 										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
 {
-	CMeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices, vecShaderTechnique );
+	MeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices, vecShaderTechnique );
 }
 
 

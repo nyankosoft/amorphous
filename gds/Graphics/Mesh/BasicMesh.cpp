@@ -1,5 +1,5 @@
 #include "BasicMesh.hpp"
-#include "MeshFactory.hpp" // ctor of CBasicMesh needs the mesh impl factory 
+#include "MeshFactory.hpp" // ctor of BasicMesh needs the mesh impl factory 
 #include "../MeshModel/3DMeshModelArchive.hpp"
 #include "../MeshModel/MeshBone.hpp"
 #include "../TextureGenerators/SingleColorTextureGenerator.hpp"
@@ -44,29 +44,29 @@ void CMeshMaterial::LoadTextureAsync( int i )
 
 
 //=============================================================================
-// CMeshImpl
+// MeshImpl
 //=============================================================================
 
-CMeshImpl::CMeshImpl()
+MeshImpl::MeshImpl()
 :
 m_bViewFrustumTest(false)
 {
 }
 
 
-const CMeshBone& CMeshImpl::GetBone( const std::string& bone_name ) const
+const CMeshBone& MeshImpl::GetBone( const std::string& bone_name ) const
 {
 	return CMeshBone::NullBone();
 }
 
 
-const CMeshBone& CMeshImpl::GetRootBone() const
+const CMeshBone& MeshImpl::GetRootBone() const
 {
 	return CMeshBone::NullBone();
 }
 
 
-Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags )
+Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, U32 option_flags )
 {
 	const vector<CMMA_Material>& rvecSrcMaterial = rArchive.GetMaterial();
 
@@ -190,7 +190,7 @@ Result::Name CMeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive,
 }
 
 
-bool CMeshImpl::LoadFromFile( const std::string& filename, U32 option_flags )
+bool MeshImpl::LoadFromFile( const std::string& filename, U32 option_flags )
 {
 //	Release();
 
@@ -218,7 +218,7 @@ bool CMeshImpl::LoadFromFile( const std::string& filename, U32 option_flags )
 }
 
 
-void CMeshImpl::Render( CShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+void MeshImpl::Render( CShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
 {
 	const int num_shader_techniques = (int)vecShaderTechnique.size();
 	const int num_loops
@@ -247,24 +247,24 @@ class CD3DMeshFactory : public CMeshFactory
 {
 public:
 
-	boost::shared_ptr<CBasicMesh> CreateBasicMeshImpl()
+	boost::shared_ptr<BasicMesh> CreateBasicMeshImpl()
 	{
 		shared_ptr<CD3DBasicMeshImpl> pImpl( new CD3DBasicMeshImpl );
-		shared_ptr<CBasicMesh> p( new CBasicMesh(pImpl) );
+		shared_ptr<BasicMesh> p( new BasicMesh(pImpl) );
 		return p;
 	}
 
-	boost::shared_ptr<CProgressiveMesh> CreateProgressiveMeshImpl()
+	boost::shared_ptr<ProgressiveMesh> CreateProgressiveMeshImpl()
 	{
 		shared_ptr<CD3DProgressiveMeshImpl> pImpl( new CD3DProgressiveMeshImpl );
-		shared_ptr<CProgressiveMesh> p( new CProgressiveMesh(pImpl) );
+		shared_ptr<ProgressiveMesh> p( new ProgressiveMesh(pImpl) );
 		return p;
 	}
 
-	boost::shared_ptr<CSkeletalMesh> CreateSkeletalMeshImpl()
+	boost::shared_ptr<SkeletalMesh> CreateSkeletalMeshImpl()
 	{
 		shared_ptr<CD3DSkeletalMeshImpl> pImpl( new CD3DSkeletalMeshImpl );
-		shared_ptr<CSkeletalMesh> p( new CSkeletalMesh(pImpl) );
+		shared_ptr<SkeletalMesh> p( new SkeletalMesh(pImpl) );
 		return p;
 	}
 };
@@ -272,9 +272,9 @@ public:
 
 
 
-CBasicMesh::CBasicMesh()
+BasicMesh::BasicMesh()
 {
-	CMeshImpl *pImpl = MeshImplFactory()->CreateBasicMeshImpl();
+	MeshImpl *pImpl = GetMeshImplFactory()->CreateBasicMeshImpl();
 	m_pImpl.reset( pImpl );
 }
 

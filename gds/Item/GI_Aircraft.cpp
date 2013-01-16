@@ -367,12 +367,12 @@ int CGI_Aircraft::GetPayloadForAmmunition( const CGI_Ammunition& ammo, int weapo
 }
 
 
-bool CGI_Aircraft::InitMeshController( shared_ptr<CSkeletalMesh> pMesh )
+bool CGI_Aircraft::InitMeshController( shared_ptr<SkeletalMesh> pMesh )
 {
 	// determine the target mesh
 	// - This is either mesh of this aircraft or the argument 'pMesh'.
 	// - The target mesh has to be a skeletal mesh (i.e. mesh type must be CD3DXMeshObjectBase::TYPE_SMESH )
-	shared_ptr<CSkeletalMesh> pTargetMesh;
+	shared_ptr<SkeletalMesh> pTargetMesh;
 	if( pMesh )
 	{
 		// init mesh controller with external mesh object
@@ -383,13 +383,13 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<CSkeletalMesh> pMesh )
 	else
 	{
 //		shared_ptr<CD3DXMeshObjectBase> pMeshObject = m_MeshObjectContainer.m_MeshObjectHandle.GetMesh();
-		shared_ptr<CBasicMesh> pMeshObject;
+		shared_ptr<BasicMesh> pMeshObject;
 		if( 0 < m_MeshContainerRootNode.GetNumMeshContainers() )
 			pMeshObject = m_MeshContainerRootNode.MeshContainer(0)->m_MeshObjectHandle.GetMesh();
 
 		if( pMeshObject && pMeshObject->GetMeshType() == CMeshType::SKELETAL )
 		{
-			pTargetMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMeshObject);
+			pTargetMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMeshObject);
 		}
 	}
 
@@ -423,7 +423,7 @@ void CGI_Aircraft::ResetMeshController()
 
 //	size_t i, num = m_vecpMeshController.size();
 //	for( i=0; i<num; i++ )
-//		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<CSkeletalMesh>() );
+//		m_vecpMeshController[i]->SetTargetMesh( shared_ptr<SkeletalMesh>() );
 }
 
 

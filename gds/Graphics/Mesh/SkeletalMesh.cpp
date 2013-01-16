@@ -1,16 +1,16 @@
 #include "SkeletalMesh.hpp"
-#include "MeshFactory.hpp" // ctor of CSkeletalMesh needs the mesh impl factory 
+#include "MeshFactory.hpp" // ctor of SkeletalMesh needs the mesh impl factory 
 
 
 namespace amorphous
 {
 
 
-CSkeletalMesh::CSkeletalMesh()
+SkeletalMesh::SkeletalMesh()
 {
 //	m_pImpl = MeshFactory()->CreateSkeletalMeshImpl();
-	CMeshImpl *pImpl = MeshImplFactory()->CreateSkeletalMeshImpl();
-	m_pImpl = boost::shared_ptr<CMeshImpl>( pImpl );
+	MeshImpl *pImpl = GetMeshImplFactory()->CreateSkeletalMeshImpl();
+	m_pImpl = boost::shared_ptr<MeshImpl>( pImpl );
 }
 
 

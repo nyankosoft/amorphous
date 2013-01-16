@@ -26,9 +26,9 @@ public:
 
 	CMeshType::Name GetMeshType();
 
-	inline boost::shared_ptr<CBasicMesh> GetMesh();
+	inline boost::shared_ptr<BasicMesh> GetMesh();
 
-	boost::shared_ptr<CSkeletalMesh> GetSkeletalMesh();
+	boost::shared_ptr<SkeletalMesh> GetSkeletalMesh();
 
 	bool Load( const std::string& resource_path );
 
@@ -52,13 +52,13 @@ inline const CMeshObjectHandle &CMeshObjectHandle::operator=( const CMeshObjectH
 }
 
 
-inline boost::shared_ptr<CBasicMesh> CMeshObjectHandle::GetMesh()
+inline boost::shared_ptr<BasicMesh> CMeshObjectHandle::GetMesh()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )
 		return GetEntry()->GetMeshResource()->GetMesh();
 	else
-		return boost::shared_ptr<CBasicMesh>();
+		return boost::shared_ptr<BasicMesh>();
 }
 
 } // namespace amorphous

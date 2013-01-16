@@ -15,7 +15,7 @@ using namespace std;
 CGLCustomMeshRenderer CGLCustomMeshRenderer::ms_Instance;
 
 
-void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
+void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 {
 	PROFILE_FUNCTION();
 
@@ -115,13 +115,13 @@ void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh )
 }
 
 
-void CGLCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, int subset_index )
+void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
-void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shader_mgr )
+void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr )
 {
 //	LOG_PRINT_ERROR( " Not implemented." );
 
@@ -131,7 +131,7 @@ void CGLCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, CShaderManager& shade
 }
 
 
-void CGLCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
+void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }

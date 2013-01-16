@@ -185,7 +185,7 @@ void CSubsetRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 //static int sg_iPrevShaderManagerID = -1;
 
 
-void CMeshContainerRenderMethod::RenderMeshOrMeshSubsets( CBasicMesh &mesh,
+void CMeshContainerRenderMethod::RenderMeshOrMeshSubsets( BasicMesh &mesh,
 	                                                      const vector<int>& subset_indices,
 //														  CShaderManager& shader_mgr,
 														  CSubsetRenderMethod& render_method,
@@ -242,7 +242,7 @@ void CMeshContainerRenderMethod::RenderMeshOrMeshSubsets( CBasicMesh &mesh,
 // - Set the world transform 'world_transform' to shader
 // - Update shader params
 // - Set technique
-void CMeshContainerRenderMethod::RenderMesh( CBasicMesh &mesh, const Matrix34& world_transform )
+void CMeshContainerRenderMethod::RenderMesh( BasicMesh &mesh, const Matrix34& world_transform )
 {
 	if( !m_RenderMethodsAndSubsetIndices.empty() )
 	{

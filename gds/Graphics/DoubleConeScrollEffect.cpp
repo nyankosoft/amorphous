@@ -271,7 +271,7 @@ void CDoubleConeScrollEffect::Render()
 	ts.AlphaOp = TexStageOp::DISABLE;
 	GraphicsDevice().SetTextureStageParams( 1, ts );
 
-	shared_ptr<CBasicMesh> pMesh = m_DoubleConeMesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_DoubleConeMesh.GetMesh();
 	if( !pMesh )
 		return;
 

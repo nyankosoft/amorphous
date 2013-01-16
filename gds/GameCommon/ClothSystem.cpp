@@ -270,7 +270,7 @@ void CClothCollisionObject::UpdateWorldTransform()
 }
 
 
-void CClothCollisionObject::UpdateWorldTransform( CSkeletalMesh& skeletal_mesh, const Matrix34& world_pose )
+void CClothCollisionObject::UpdateWorldTransform( SkeletalMesh& skeletal_mesh, const Matrix34& world_pose )
 {
 	if( m_MeshBoneIndex == -1 || !m_pActor )
 		return;
@@ -459,7 +459,7 @@ void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe
 }
 
 /// \param skeletal_mesh [in] a skeletal mesh which has local transforms set at each bone
-void CClothSystem::UpdateCollisionObjectPoses( CSkeletalMesh& skeletal_mesh, const Matrix34& world_pose )
+void CClothSystem::UpdateCollisionObjectPoses( SkeletalMesh& skeletal_mesh, const Matrix34& world_pose )
 {
 	const size_t num_coll_objects = m_ClothCollisionObjects.size();
 	for( size_t i=0; i<num_coll_objects; i++ )
@@ -659,7 +659,7 @@ void CClothSystem::RenderObjectsForDebugging()
 
 /*			for( int k=0; k<(int)obj.m_ShapeMeshes.size(); k++ )
 			{
-				shared_ptr<CBasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
+				shared_ptr<BasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
 				if( !pMesh )
 					continue;
 
@@ -678,7 +678,7 @@ void CClothSystem::RenderObjectsForDebugging()
 				if( (int)obj.m_ShapeMeshes.size() <= k )
 					continue;
 
-				shared_ptr<CBasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
+				shared_ptr<BasicMesh> pMesh = obj.m_ShapeMeshes[k].GetMesh();
 				if( !pMesh )
 					continue;
 
@@ -720,7 +720,7 @@ void CClothSystem::RenderObjectsForDebugging()
 }
 
 /*
-//void CClothSystem::AddCloth( const std::string& cloth_name, boost::shared_ptr<CCustomMesh>& pClothMesh, const std::string& name_of_bone_to_attach_cloth_to )
+//void CClothSystem::AddCloth( const std::string& cloth_name, boost::shared_ptr<CustomMesh>& pClothMesh, const std::string& name_of_bone_to_attach_cloth_to )
 int CClothSystem::AddClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to )
 {
 	const int num_cloths = (int)m_Cloths.size();
@@ -751,7 +751,7 @@ bool IsPointInside( const Sphere& sphere, const Vector3& pos )
 }
 
 
-boost::shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& mesh )
+boost::shared_ptr<CustomMesh> GetCustomMesh( CMeshObjectHandle& mesh )
 {
 	return GetCustomMesh( mesh.GetMesh() );
 }
@@ -783,9 +783,9 @@ Result::Name CClothSystem::AttachClothMesh( const std::string& cloth_name, CMesh
 	if( 0 <= index )
 		return Result::INVALID_ARGS; // The cloth object with the specified name already exists
 
-	shared_ptr<CBasicMesh> pMesh = cloth_mesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = cloth_mesh.GetMesh();
 
-	boost::shared_ptr<CCustomMesh> pClothMesh = GetCustomMesh( pMesh );
+	boost::shared_ptr<CustomMesh> pClothMesh = GetCustomMesh( pMesh );
 	if( !pClothMesh || !pClothMesh->IsValid() )
 		return Result::INVALID_ARGS;
 

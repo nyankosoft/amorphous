@@ -566,9 +566,9 @@ void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
 }
 
 
-CMeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new CGLBasicMeshImpl; }
-CMeshImpl* CGLMeshImplFactory::CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
-CMeshImpl* CGLMeshImplFactory::CreateSkeletalMeshImpl() { return new CGLSkeletalMeshImpl; }
+MeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new CGLBasicMeshImpl; }
+MeshImpl* CGLMeshImplFactory::CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
+MeshImpl* CGLMeshImplFactory::CreateSkeletalMeshImpl() { return new CGLSkeletalMeshImpl; }
 
 
 } // namespace amorphous

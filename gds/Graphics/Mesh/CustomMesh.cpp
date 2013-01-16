@@ -11,10 +11,10 @@ using namespace std;
 //using namespace boost;
 
 
-CCustomMesh::VertexColorFormat CCustomMesh::ms_DefaultVertexDiffuseColorFormat = CCustomMesh::VCF_FRGBA;
+CustomMesh::VertexColorFormat CustomMesh::ms_DefaultVertexDiffuseColorFormat = CustomMesh::VCF_FRGBA;
 
 
-CCustomMesh::CCustomMesh()
+CustomMesh::CustomMesh()
 :
 m_VertexFlags(0),
 m_VertexSize(0),
@@ -25,7 +25,7 @@ m_NumUpdatedIndices(0)
 }
 
 
-void CCustomMesh::SetNormals( const Vector3& normal )
+void CustomMesh::SetNormals( const Vector3& normal )
 {
 	const int num_vertices = GetNumVertices();
 	const int offset = m_ElementOffsets[VEE::NORMAL];
@@ -36,7 +36,7 @@ void CCustomMesh::SetNormals( const Vector3& normal )
 }
 
 
-void CCustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors )
+void CustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_colors )
 {
 	const int num = (int)diffuse_colors.size();
 	const int offset = m_ElementOffsets[VEE::DIFFUSE_COLOR];
@@ -57,7 +57,7 @@ void CCustomMesh::SetDiffuseColors( const std::vector<SFloatRGBAColor>& diffuse_
 }
 
 
-void CCustomMesh::SetDiffuseColors( const SFloatRGBAColor& diffuse_color )
+void CustomMesh::SetDiffuseColors( const SFloatRGBAColor& diffuse_color )
 {
 	const int num_vertices = GetNumVertices();
 	const int offset = m_ElementOffsets[VEE::DIFFUSE_COLOR];
@@ -77,7 +77,7 @@ void CCustomMesh::SetDiffuseColors( const SFloatRGBAColor& diffuse_color )
 }
 
 
-void CCustomMesh::SetBlendWeights( const std::vector< TCFixedVector<float,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& vecfMatrixWeight )
+void CustomMesh::SetBlendWeights( const std::vector< TCFixedVector<float,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& vecfMatrixWeight )
 {
 	const int offset = m_ElementOffsets[VEE::BLEND_WEIGHTS];
 	float zeros[CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX];
@@ -108,7 +108,7 @@ void CCustomMesh::SetBlendWeights( const std::vector< TCFixedVector<float,CMMA_V
 }
 
 
-void CCustomMesh::SetBlendIndices( const std::vector< TCFixedVector<int,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& veciMatrixIndex )
+void CustomMesh::SetBlendIndices( const std::vector< TCFixedVector<int,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& veciMatrixIndex )
 {
 	const int offset = m_ElementOffsets[VEE::BLEND_INDICES];
 	for( size_t i=0; i<veciMatrixIndex.size(); i++ )
@@ -124,7 +124,7 @@ void CCustomMesh::SetBlendIndices( const std::vector< TCFixedVector<int,CMMA_Ver
 }
 
 
-void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
+void CustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 {
 	m_VertexFlags = vertex_format_flags;
 	uint vert_size = 0;
@@ -205,7 +205,7 @@ void CCustomMesh::InitVertexBuffer( int num_vertices, U32 vertex_format_flags )
 }
 
 
-void CCustomMesh::GetVertexIndices( std::vector<unsigned int>& dest )
+void CustomMesh::GetVertexIndices( std::vector<unsigned int>& dest )
 {
 	if( m_IndexBuffer.empty() )
 		return;
@@ -224,7 +224,7 @@ void CCustomMesh::GetVertexIndices( std::vector<unsigned int>& dest )
 }
 
 
-bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
+bool CustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
 	const CMMA_VertexSet& vs = archive.GetVertexSet();
 	const int num_verts = vs.GetNumVertices();
@@ -276,7 +276,7 @@ bool CCustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::stri
 }
 
 
-bool CCustomMesh::LoadFromFile( const std::string& mesh_archive_filepath )
+bool CustomMesh::LoadFromFile( const std::string& mesh_archive_filepath )
 {
 	C3DMeshModelArchive archive;
 	bool loaded = archive.LoadFromFile( mesh_archive_filepath );
@@ -289,13 +289,13 @@ bool CCustomMesh::LoadFromFile( const std::string& mesh_archive_filepath )
 }
 
 
-void CCustomMesh::Render()
+void CustomMesh::Render()
 {
 	GetCustomMeshRenderer().RenderMesh( *this );
 }
 
 
-void CCustomMesh::Render( CShaderManager& rShaderMgr )
+void CustomMesh::Render( CShaderManager& rShaderMgr )
 {
 	GetCustomMeshRenderer().RenderMesh( *this, rShaderMgr );
 }
@@ -307,7 +307,7 @@ static bool rear_to_front( const std::pair<float,int>& lhs, const std::pair<floa
 }
 
 
-void CCustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
+void CustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
 {
 	if( GetNumVertices() == 0
 	 || GetNumIndices() == 0 )
@@ -376,7 +376,7 @@ void CCustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
 }
 
 
-void CCustomMesh::RenderSubset( CShaderManager& rShaderMgr, int material_index )
+void CustomMesh::RenderSubset( CShaderManager& rShaderMgr, int material_index )
 {
 	GetCustomMeshRenderer().RenderSubset( *this, rShaderMgr, material_index );
 }

@@ -15,7 +15,7 @@ using namespace std;
 CD3DCustomMeshRenderer CD3DCustomMeshRenderer::ms_Instance;
 
 
-static HRESULT SetD3DFVF( const CCustomMesh& mesh )
+static HRESULT SetD3DFVF( const CustomMesh& mesh )
 {
 	const U32 vert_flags = mesh.GetVertexFormatFlags();
 	DWORD fvf = 0;
@@ -38,7 +38,7 @@ static HRESULT SetD3DFVF( const CCustomMesh& mesh )
 /*
 ///  Render the only subset of the mesh
 ///  - Replaced by the implementation below this function.
-void CD3DCustomMeshRenderer::DrawPrimitivesOfSingleSubsetMesh( const CCustomMesh& mesh, bool use_zsorted_indices )
+void CD3DCustomMeshRenderer::DrawPrimitivesOfSingleSubsetMesh( const CustomMesh& mesh, bool use_zsorted_indices )
 {
 	const uint num_verts   = mesh.GetNumVertices();
 	const uint num_indices = mesh.GetNumIndices();
@@ -59,7 +59,7 @@ void CD3DCustomMeshRenderer::DrawPrimitivesOfSingleSubsetMesh( const CCustomMesh
 */
 
 
-const std::vector<int>& CD3DCustomMeshRenderer::GetAllSubsetIndices( const CCustomMesh& mesh )
+const std::vector<int>& CD3DCustomMeshRenderer::GetAllSubsetIndices( const CustomMesh& mesh )
 {
 	if( (int)m_SubsetIndices.size() < mesh.GetNumMaterials() )
 	{
@@ -73,7 +73,7 @@ const std::vector<int>& CD3DCustomMeshRenderer::GetAllSubsetIndices( const CCust
 }
 
 
-void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset_index, bool use_zsorted_indices )
+void CD3DCustomMeshRenderer::DrawPrimitives( const CustomMesh& mesh, int subset_index, bool use_zsorted_indices )
 {
 	if( use_zsorted_indices && 1 < mesh.GetTriangleSets().size() )
 		return; // z-sorting is not supported for mesh with multiple subsets 
@@ -108,7 +108,7 @@ void CD3DCustomMeshRenderer::DrawPrimitives( const CCustomMesh& mesh, int subset
 }
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, const std::vector<int> subsets_to_render, bool use_zsorted_indices )
+void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const std::vector<int> subsets_to_render, bool use_zsorted_indices )
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
@@ -176,7 +176,7 @@ void CD3DCustomMeshRenderer::RenderMesh( CCustomMesh& mesh, const std::vector<in
 
 
 void CD3DCustomMeshRenderer::RenderMesh(
-	CCustomMesh& mesh, CShaderManager& shader_mgr,
+	CustomMesh& mesh, CShaderManager& shader_mgr,
 	const std::vector<int> subsets_to_render,
 	bool use_zsorted_indices )
 {
@@ -229,13 +229,13 @@ void CD3DCustomMeshRenderer::RenderMesh(
 }
 
 
-void CD3DCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, int subset_index )
+void CD3DCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
-void CD3DCustomMeshRenderer::RenderSubset( CCustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
+void CD3DCustomMeshRenderer::RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
 {
 	vector<int> single_subset;
 	single_subset.resize( 1 );

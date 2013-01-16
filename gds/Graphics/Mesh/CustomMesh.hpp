@@ -15,7 +15,7 @@ namespace amorphous
 {
 
 
-class CCustomMesh : public CMeshImpl
+class CustomMesh : public MeshImpl
 {
 public:
 
@@ -63,7 +63,7 @@ public:
 
 public:
 
-	CCustomMesh();
+	CustomMesh();
 
 	U32 GetVertexFormatFlags() const { return m_VertexFlags; }
 
@@ -153,7 +153,7 @@ public:
 	template<typename src_index_type>
 	inline void SetIndices( const std::vector<src_index_type>& src );
 
-	inline void CopyVertexTo( uint src_vertex_index, CCustomMesh& dest, uint dest_vertex_index ) const;
+	inline void CopyVertexTo( uint src_vertex_index, CustomMesh& dest, uint dest_vertex_index ) const;
 
 //	void SetIndices( const std::vector<U32>& src );
 
@@ -177,7 +177,7 @@ public:
 
 //================================ inline implementations ================================
 
-inline Vector3 CCustomMesh::GetVec3Element( unsigned int vertex_index, VEE::ElementName element ) const
+inline Vector3 CustomMesh::GetVec3Element( unsigned int vertex_index, VEE::ElementName element ) const
 {
 //	U32 flag = VFF::TEXCOORD2_0 << tex_coord_index;
 
@@ -190,7 +190,7 @@ inline Vector3 CCustomMesh::GetVec3Element( unsigned int vertex_index, VEE::Elem
 }
 
 
-inline void CCustomMesh::SetVec3Elements( const Vector3 *src, const unsigned int num_src_elements, VEE::ElementName element, U32 flag )
+inline void CustomMesh::SetVec3Elements( const Vector3 *src, const unsigned int num_src_elements, VEE::ElementName element, U32 flag )
 {
 	if( !(m_VertexFlags & flag) || m_VertexBuffer.empty() )
 		return;
@@ -201,7 +201,7 @@ inline void CCustomMesh::SetVec3Elements( const Vector3 *src, const unsigned int
 }
 
 
-inline void CCustomMesh::SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag )
+inline void CustomMesh::SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag )
 {
 	if( src.empty() )
 		return;
@@ -210,7 +210,7 @@ inline void CCustomMesh::SetVec3Elements( const std::vector<Vector3>& src, VEE::
 }
 
 
-inline void CCustomMesh::SetVec3Element( uint vertex_index, const Vector3& src, VEE::ElementName element, U32 flag )
+inline void CustomMesh::SetVec3Element( uint vertex_index, const Vector3& src, VEE::ElementName element, U32 flag )
 {
 	if( !(m_VertexFlags & flag) || m_VertexBuffer.empty() )
 		return;
@@ -220,7 +220,7 @@ inline void CCustomMesh::SetVec3Element( uint vertex_index, const Vector3& src, 
 }
 
 
-inline void CCustomMesh::AddVertices( const unsigned int num_vertices )
+inline void CustomMesh::AddVertices( const unsigned int num_vertices )
 {
 	if( m_VertexFlags == 0 || m_VertexSize == 0 )
 		return;
@@ -229,7 +229,7 @@ inline void CCustomMesh::AddVertices( const unsigned int num_vertices )
 }
 
 
-inline TEXCOORD2 CCustomMesh::Get2DTexCoord( unsigned int vertex_index, int tex_coord_index ) const
+inline TEXCOORD2 CustomMesh::Get2DTexCoord( unsigned int vertex_index, int tex_coord_index ) const
 {
 	U32 flag = VFF::TEXCOORD2_0 << tex_coord_index;
 
@@ -243,7 +243,7 @@ inline TEXCOORD2 CCustomMesh::Get2DTexCoord( unsigned int vertex_index, int tex_
 }
 
 
-inline SFloatRGBAColor CCustomMesh::GetDiffuseColor( unsigned int vertex_index ) const
+inline SFloatRGBAColor CustomMesh::GetDiffuseColor( unsigned int vertex_index ) const
 {
 	if( !(m_VertexFlags & VFF::DIFFUSE_COLOR) || m_VertexBuffer.size() <= vertex_index )
 		return SFloatRGBAColor::White();
@@ -266,7 +266,7 @@ inline SFloatRGBAColor CCustomMesh::GetDiffuseColor( unsigned int vertex_index )
 }
 
 
-inline void CCustomMesh::Set2DTexCoords( const TEXCOORD2 *tex_coords, unsigned int num_elements, int tex_coord_index )
+inline void CustomMesh::Set2DTexCoords( const TEXCOORD2 *tex_coords, unsigned int num_elements, int tex_coord_index )
 {
 	if( !tex_coords )
 		return;
@@ -283,7 +283,7 @@ inline void CCustomMesh::Set2DTexCoords( const TEXCOORD2 *tex_coords, unsigned i
 }
 
 
-inline void CCustomMesh::Set2DTexCoords( const std::vector<TEXCOORD2>& tex_coords, int tex_coord_index )
+inline void CustomMesh::Set2DTexCoords( const std::vector<TEXCOORD2>& tex_coords, int tex_coord_index )
 {
 	if( tex_coords.empty() )
 		return;
@@ -292,7 +292,7 @@ inline void CCustomMesh::Set2DTexCoords( const std::vector<TEXCOORD2>& tex_coord
 }
 
 
-inline void CCustomMesh::Set2DTexCoord( uint vertex_index, const TEXCOORD2& tex_coord, int tex_coord_index )
+inline void CustomMesh::Set2DTexCoord( uint vertex_index, const TEXCOORD2& tex_coord, int tex_coord_index )
 {
 	int element = VEE::TEXCOORD2_0 + tex_coord_index;
 	U32 flag = VFF::TEXCOORD2_0 << tex_coord_index;
@@ -305,7 +305,7 @@ inline void CCustomMesh::Set2DTexCoord( uint vertex_index, const TEXCOORD2& tex_
 }
 
 
-inline void CCustomMesh::SetDiffuseColor( uint vertex_index, const SFloatRGBAColor& diffuse_color )
+inline void CustomMesh::SetDiffuseColor( uint vertex_index, const SFloatRGBAColor& diffuse_color )
 {
 	const int offset = m_ElementOffsets[VEE::DIFFUSE_COLOR];
 	const uint write_pos = m_VertexSize * vertex_index + offset;
@@ -328,7 +328,7 @@ inline void CCustomMesh::SetDiffuseColor( uint vertex_index, const SFloatRGBACol
 }
 
 
-inline void CCustomMesh::GetPositions( std::vector<Vector3>& dest ) const
+inline void CustomMesh::GetPositions( std::vector<Vector3>& dest ) const
 {
 	const uint num_verts = GetNumVertices();
 	dest.resize( num_verts );
@@ -339,7 +339,7 @@ inline void CCustomMesh::GetPositions( std::vector<Vector3>& dest ) const
 
 
 template<typename src_index_type>
-inline void CCustomMesh::SetIndices( const std::vector<src_index_type>& src )//, uint dest_index_size )
+inline void CustomMesh::SetIndices( const std::vector<src_index_type>& src )//, uint dest_index_size )
 {
 	const size_t dest_index_size = sizeof(dest_index_type);
 	const size_t num_indices = src.size();
@@ -352,7 +352,7 @@ inline void CCustomMesh::SetIndices( const std::vector<src_index_type>& src )//,
 }
 
 
-inline void CCustomMesh::CopyVertexTo( uint src_vertex_index, CCustomMesh& dest, uint dest_vertex_index ) const
+inline void CustomMesh::CopyVertexTo( uint src_vertex_index, CustomMesh& dest, uint dest_vertex_index ) const
 {
 	memcpy(
 		dest.GetVertexBufferPtr() + dest.GetVertexSize() * dest_vertex_index,

@@ -42,7 +42,7 @@ public:
 */
 
 
-void CMeshBoneController_AircraftBase::Init( const CSkeletalMesh& target_mesh )
+void CMeshBoneController_AircraftBase::Init( const SkeletalMesh& target_mesh )
 {
 //	if( !m_pTargetMesh )
 //		return;
@@ -75,7 +75,7 @@ void CMeshBoneController_AircraftBase::Init( const CSkeletalMesh& target_mesh )
 
 
 */
-void CMeshBoneController_Flap::Init( const CSkeletalMesh& target_skeletal_mesh )
+void CMeshBoneController_Flap::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
@@ -150,7 +150,7 @@ void CMeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
  - m_Type == TYPE_TWIN:   "VFlapR", "VFlapL"
 
 */
-void CMeshBoneController_VFlap::Init( const CSkeletalMesh& target_skeletal_mesh )
+void CMeshBoneController_VFlap::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
@@ -217,7 +217,7 @@ void CMeshBoneController_Rotor::Update( float dt )
 */
 
 
-void CMeshBoneController_Rotor::Init( const CSkeletalMesh& target_skeletal_mesh )
+void CMeshBoneController_Rotor::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	if( m_vecBoneControlParam.size() != 1 )
 	{
@@ -313,7 +313,7 @@ void CMeshBoneController_Cover::Close()
 }
 
 
-void CMeshBoneController_Cover::Init( const CSkeletalMesh& target_skeletal_mesh )
+void CMeshBoneController_Cover::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 
@@ -487,7 +487,7 @@ void CMeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
 //=====================================================================================
 // CMeshBoneController_GearUnit
 //=====================================================================================
-void CMeshBoneController_GearUnit::Init( const CSkeletalMesh& target_skeletal_mesh )
+void CMeshBoneController_GearUnit::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	for( size_t i=0; i<m_vecpComponent.size(); i++ )
 	{
@@ -534,7 +534,7 @@ void CMeshBoneController_GearUnit::UpdateTransforms()
 }
 
 
-void CMeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<CSkeletalMesh> pTargetMesh )
+void CMeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<SkeletalMesh> pTargetMesh )
 {
 //	CMeshBoneControllerBase::SetTargetMesh( pTargetMesh );
 

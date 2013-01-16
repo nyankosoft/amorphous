@@ -56,7 +56,7 @@ void CreateCachedResources()
 
 
 // temporary measure to avoid D3DXFilterTexture() calls in async loading at runtime
-static void ForceTextureMipMapLevelsToOne( boost::shared_ptr<CBasicMesh> pMesh )
+static void ForceTextureMipMapLevelsToOne( boost::shared_ptr<BasicMesh> pMesh )
 {
 	if( !pMesh )
 		return;
@@ -255,7 +255,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 	}
 	else if( state == GraphicsResourceState::LOADED )
 	{
-		CBasicMesh *pMesh = mesh_holder.m_Mesh.GetMesh().get();
+		BasicMesh *pMesh = mesh_holder.m_Mesh.GetMesh().get();
 		if( !pMesh )
 			return;
 
@@ -510,7 +510,7 @@ bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag
 				if( !rvecMesh[subset.MeshIndex].m_Mesh.IsLoaded() )
 					continue;
 
-				CBasicMesh *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
+				BasicMesh *pMesh = rvecMesh[subset.MeshIndex].m_Mesh.GetMesh().get();
 
 				CShaderContainer& shader_container = rvecShaderContainer[subset.ShaderIndex];
 				if( !shader_container.m_ShaderHandle.IsLoaded() )

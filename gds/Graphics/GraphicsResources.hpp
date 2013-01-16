@@ -237,7 +237,7 @@ public:
 
 class CMeshResource : public CGraphicsResource
 {
-	boost::shared_ptr<CBasicMesh> m_pMeshObject;
+	boost::shared_ptr<BasicMesh> m_pMeshObject;
 
 	CMeshResourceDesc m_MeshDesc;
 
@@ -271,9 +271,9 @@ public:
 
 	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
 
-	inline boost::shared_ptr<CBasicMesh> GetMesh();
+	inline boost::shared_ptr<BasicMesh> GetMesh();
 
-	inline boost::shared_ptr<CBasicMesh> GetMeshInLoading();
+	inline boost::shared_ptr<BasicMesh> GetMeshInLoading();
 
 	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
@@ -375,16 +375,16 @@ inline GraphicsResourceState::Name CGraphicsResource::GetState()
 // CMeshResource
 //================================================================================
 
-inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMesh()
+inline boost::shared_ptr<BasicMesh> CMeshResource::GetMesh()
 {
 	if( GetState() == GraphicsResourceState::LOADED )
 		return m_pMeshObject;
 	else
-		return boost::shared_ptr<CBasicMesh>();
+		return boost::shared_ptr<BasicMesh>();
 }
 
 
-inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMeshInLoading()
+inline boost::shared_ptr<BasicMesh> CMeshResource::GetMeshInLoading()
 {
 	return m_pMeshObject;
 }
@@ -392,9 +392,9 @@ inline boost::shared_ptr<CBasicMesh> CMeshResource::GetMeshInLoading()
 
 //---------------------------- forward declarations ----------------------------
 
-boost::shared_ptr<CCustomMesh> GetCustomMesh( CBasicMesh& src_mesh );
-boost::shared_ptr<CCustomMesh> GetCustomMesh( boost::shared_ptr<CBasicMesh> pSrcMesh );
-//boost::shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh );
+boost::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
+boost::shared_ptr<CustomMesh> GetCustomMesh( boost::shared_ptr<BasicMesh> pSrcMesh );
+//boost::shared_ptr<CustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh );
 
 } // namespace amorphous
 

@@ -68,7 +68,7 @@ Skeletal meshes and transforms
 
   plan 2. separate skeletal mesh and storage of world transforms
   - Every entity which uses skeletal mesh has std::vector<Transform> world_transforms
-  - CSkeletalMesh::CalculateWorldTransformsFromLocalTransforms( local_transforms, world_transforms ); // Calculates world transforms from local transforms based on the skeleton of the mesh.
+  - SkeletalMesh::CalculateWorldTransformsFromLocalTransforms( local_transforms, world_transforms ); // Calculates world transforms from local transforms based on the skeleton of the mesh.
 
 */
 
@@ -285,14 +285,14 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 			= m_MeshProperty.m_pMeshRenderMethod;
 	}*/
 
-	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
 	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-//		shared_ptr<CSkeletalMesh> pSkeletalMesh
-//			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+//		shared_ptr<SkeletalMesh> pSkeletalMesh
+//			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 		shared_ptr<CBlendTransformsLoader> pBlendMatricesLoader( new CBlendTransformsLoader );//(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
@@ -302,7 +302,7 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 }
 
 
-static void InitShadowCasterReceiverSettings( shared_ptr<CSkeletalMesh> pSkeletalMesh, CBE_MeshObjectProperty& mesh_property )
+static void InitShadowCasterReceiverSettings( shared_ptr<SkeletalMesh> pSkeletalMesh, CBE_MeshObjectProperty& mesh_property )
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
 
@@ -325,7 +325,7 @@ void CBaseEntity::Init3DModel()
 
 	m_MeshProperty.LoadMeshObject();
 
-	shared_ptr<CBasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
 
 	// shader
 	// - load shader of its own if the shader filepath has been specified.
@@ -422,7 +422,7 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 
 
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
-								  CBasicMesh *pMeshObject,
+								  BasicMesh *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
 							      C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
@@ -450,7 +450,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	if( !pShadowMgr )
 		return;
 
-	shared_ptr<CBasicMesh> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
@@ -471,8 +471,8 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	{
 		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowCasterRenderMethod;
 
-		shared_ptr<CSkeletalMesh> pSkeletalMesh
-			= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+		shared_ptr<SkeletalMesh> pSkeletalMesh
+			= dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 //		if( !this->m_MeshProperty.m_pBlendTransformsLoader )
 //			InitShadowCasterReceiverSettings( pSkeletalMesh, this->m_MeshProperty );
@@ -519,7 +519,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	if( !pShadowMgr )
 		return;
 
-	shared_ptr<CBasicMesh> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = pCopyEnt->m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
@@ -547,8 +547,8 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	{
 		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod;
 
-		shared_ptr<CSkeletalMesh> pSkeletalMesh
-			= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+		shared_ptr<SkeletalMesh> pSkeletalMesh
+			= dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 //		if( !this->m_MeshProperty.m_pBlendTransformsLoader )
 //			InitShadowCasterReceiverSettings( pSkeletalMesh, this->m_MeshProperty );
@@ -591,7 +591,7 @@ void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context 
 
 	shader_mgr.SetWorldTransform( entity.GetWorldPose() );
 
-	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 	if( pMesh )
 		pMesh->Render( shader_mgr );*/
 }
@@ -653,11 +653,11 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoade
 	if( pBlendTransformsLoader )
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
 /*
-	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
 	{
-//		shared_ptr<CSkeletalMesh> pSkeletalMesh
-//			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+//		shared_ptr<SkeletalMesh> pSkeletalMesh
+//			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 		if( !pBlendTransformsLoader )
 			pBlendTransformsLoader.reset( new CBlendTransformsLoader() );
@@ -672,7 +672,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoade
 }
 
 
-Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, CBasicMesh& mesh, int subset_index )
+Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int subset_index )
 {
 	const AABB3& aabb = mesh.GetAABB(subset_index);
 
@@ -733,7 +733,7 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, CBasicMesh& mesh, int 
 }
 
 
-bool RegisterAsMirrorIfReflective( CCopyEntity& entity, CBasicMesh& mesh, int subset_index, CGenericShaderDesc& shader_desc )
+bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int subset_index, CGenericShaderDesc& shader_desc )
 {
 	if( mesh.GetMaterial(subset_index).m_Mat.fReflection < 0.001f )
 		return false;
@@ -838,11 +838,11 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 		CreateAlphaEntities( &entity );
 	}
 
-	shared_ptr<CBasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return;
 
-	CBasicMesh& mesh = *pMesh;
+	BasicMesh& mesh = *pMesh;
 	const int num_mesh_materials = mesh.GetNumMaterials();
 
 	std::vector<CGenericShaderDesc> shader_descs;

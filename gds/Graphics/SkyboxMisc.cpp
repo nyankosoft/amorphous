@@ -111,14 +111,14 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 
 void RenderAsSkybox( CMeshObjectHandle& mesh, const Matrix34& vCamPose )
 {
-	boost::shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 
 	if( pMesh )
 		RenderAsSkybox( *pMesh, vCamPose );
 }
 
 
-void RenderSkyMesh( CCustomMesh& mesh, CTextureHandle& sky_texture, const Matrix34& vCamPose )
+void RenderSkyMesh( CustomMesh& mesh, CTextureHandle& sky_texture, const Matrix34& vCamPose )
 {
 	if( 0 < mesh.GetNumMaterials() )
 	{
@@ -134,7 +134,7 @@ void RenderSkyMesh( CCustomMesh& mesh, CTextureHandle& sky_texture, const Matrix
 
 void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 {
-	static CCustomMesh s_SkyboxMesh;
+	static CustomMesh s_SkyboxMesh;
 
 	if( !s_SkyboxMesh.IsValid() )
 	{
@@ -158,7 +158,7 @@ void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 /// at least for rendering the sky, but decided to keep it for now as a reminder.
 void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 {
-	static CCustomMesh s_SkyCylinderMesh;
+	static CustomMesh s_SkyCylinderMesh;
 
 	if( !s_SkyCylinderMesh.IsValid() )
 	{

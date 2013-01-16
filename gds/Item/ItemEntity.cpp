@@ -55,16 +55,16 @@ CMeshObjectHandle GetPrimaryMeshHandle( CGameItem& item )
 		return CMeshObjectHandle();
 }
 
-boost::shared_ptr<CBasicMesh> GetPrimaryMesh( CGameItem& item )
+boost::shared_ptr<BasicMesh> GetPrimaryMesh( CGameItem& item )
 {
-	boost::shared_ptr<CBasicMesh> pMesh = GetPrimaryMeshHandle(item).GetMesh();
+	boost::shared_ptr<BasicMesh> pMesh = GetPrimaryMeshHandle(item).GetMesh();
 	return pMesh;
 }
 
-boost::shared_ptr<CSkeletalMesh> GetPrimarySkeletalMesh( CGameItem& item )
+boost::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( CGameItem& item )
 {
-	boost::shared_ptr<CSkeletalMesh> pSkeletalMesh
-		= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( GetPrimaryMesh(item) );
+	boost::shared_ptr<SkeletalMesh> pSkeletalMesh
+		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( GetPrimaryMesh(item) );
 
 	return pSkeletalMesh;
 }
@@ -99,8 +99,8 @@ void CItemEntity::UpdateGraphicsUpdateCallbacks()
 //	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
 
 	CMeshObjectHandle mesh = GetPrimaryMeshHandle( *m_pItem );
-	shared_ptr<CSkeletalMesh> pSkeletalMesh
-		= dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( mesh.GetMesh() );
+	shared_ptr<SkeletalMesh> pSkeletalMesh
+		= dynamic_pointer_cast<SkeletalMesh,BasicMesh>( mesh.GetMesh() );
 
 	if( pSkeletalMesh )
 	{
@@ -134,7 +134,7 @@ void CItemEntity::RenderAs( CRenderContext& rc )
 	if( render_skeletal_mesh )
 		shader_mgr.SetVertexBlendTransforms( m_pBlendTransformsLoader->BlendTransforms() );
 
-	shared_ptr<CBasicMesh> pMesh = GetPrimaryMesh(*m_pItem);
+	shared_ptr<BasicMesh> pMesh = GetPrimaryMesh(*m_pItem);
 	if( pMesh )
 		pMesh->Render( shader_mgr );
 }

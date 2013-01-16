@@ -154,13 +154,13 @@ protected:
 	//
 
 	void DrawMeshObject( const Matrix34& world_pose,
-						 CBasicMesh *pMeshObject,
+						 BasicMesh *pMeshObject,
 						 const std::vector<int>& vecTargetMaterialIndex,
 						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 						 int ShaderLOD = 0 );
 
 //	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
-//		                   CSkeletalMesh *pSkeletalMesh,
+//		                   SkeletalMesh *pSkeletalMesh,
 //		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
 //						   int ShaderLOD = 0 );
 

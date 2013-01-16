@@ -65,13 +65,13 @@ bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
 }
 
 
-boost::shared_ptr<CSkeletalMesh> CMeshObjectHandle::GetSkeletalMesh()
+boost::shared_ptr<SkeletalMesh> CMeshObjectHandle::GetSkeletalMesh()
 {
-	boost::shared_ptr<CBasicMesh> pBasicMesh = GetMesh();
+	boost::shared_ptr<BasicMesh> pBasicMesh = GetMesh();
 	if( pBasicMesh )
-		return boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pBasicMesh);
+		return boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBasicMesh);
 	else
-		return boost::shared_ptr<CSkeletalMesh>();
+		return boost::shared_ptr<SkeletalMesh>();
 }
 
 

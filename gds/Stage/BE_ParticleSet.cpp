@@ -263,7 +263,7 @@ void CBE_ParticleSet::InitParticles()
 
 void CBE_ParticleSet::InitBillboardRects()
 {
-	CCustomMesh& mesh = m_ParticleSetMesh;
+	CustomMesh& mesh = m_ParticleSetMesh;
 
 	// vert buffer initialization - done in InitParticleSetMesh()
 /*	U32 vert_flags
@@ -537,7 +537,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 {
 	PROFILE_FUNCTION();
 
-	CCustomMesh& mesh = m_ParticleSetMesh;
+	CustomMesh& mesh = m_ParticleSetMesh;
 
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
@@ -604,7 +604,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 	const float zero_rgb[3] = {0,0,0};
 
 	// for visual debugging
-	shared_ptr<CBasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
+	shared_ptr<BasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
 
 	for(i=0; i<num_particles; i++)
 	{
@@ -702,7 +702,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 {
 	PROFILE_FUNCTION();
 
-	CCustomMesh& mesh = m_ParticleSetMesh;
+	CustomMesh& mesh = m_ParticleSetMesh;
 
 	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
@@ -760,7 +760,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 	const float zero_rgba[4] = {0,0,0,0};
 
 	// for visual debugging
-//	shared_ptr<CBasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
+//	shared_ptr<BasicMesh> pBoxMesh = m_ParticleDebugBox.GetMesh();
 
 	for(i=0; i<num_particles; i++)
 	{

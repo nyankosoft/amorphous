@@ -64,7 +64,7 @@ public:
 
 	bool AcquireResource() { return true; }
 
-	inline CBasicMesh *GetMesh();
+	inline BasicMesh *GetMesh();
 
 	Result::Name Load();
 
@@ -202,7 +202,7 @@ public:
 // CD3DXMeshObjectBase
 //==============================================================================
 
-inline CBasicMesh *CD3DXMeshLoaderBase::GetMesh()
+inline BasicMesh *CD3DXMeshLoaderBase::GetMesh()
 {
 	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry )

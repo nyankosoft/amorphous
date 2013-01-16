@@ -817,7 +817,7 @@ Result::Name CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, 
 	}
 	else
 	{
-		shared_ptr<CBasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
+		shared_ptr<BasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
 		if( pMesh )
 		{
 			const AABB3 entity_mesh_aabb = pMesh->GetAABB();

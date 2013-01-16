@@ -100,12 +100,12 @@ class CShaderParamsLoader;
 class CBlendTransformsLoader;
 
 
-class CBasicMesh;
-class CProgressiveMesh;
-class CSkeletalMesh;
-class CMeshImpl;
+class BasicMesh;
+class ProgressiveMesh;
+class SkeletalMesh;
+class MeshImpl;
 
-class CCustomMesh;
+class CustomMesh;
 
 
 class CGraphicsElement;

@@ -13,16 +13,16 @@ namespace amorphous
 {
 
 
-Result::Name SplitMeshByPlane( const CCustomMesh& src, const Plane& split_plane, CCustomMesh& dest_front, CCustomMesh& dest_back );
+Result::Name SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
 
 class CMeshSplitResults
 {
 public:
 
-	boost::shared_ptr<CCustomMesh> m_pFrontMesh;
+	boost::shared_ptr<CustomMesh> m_pFrontMesh;
 
-	boost::shared_ptr<CCustomMesh> m_pBackMesh;
+	boost::shared_ptr<CustomMesh> m_pBackMesh;
 };
 
 
@@ -50,16 +50,16 @@ class CConvexMeshSplitter
 
 	CMeshSplitResults m_MeshSplitResults;
 
-	Result::Name SplitMeshByPlane( const CCustomMesh& src, const Plane& split_plane, CCustomMesh& dest_front, CCustomMesh& dest_back );
+	Result::Name SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
 	void SplitTriangle(
-		const CCustomMesh& src,
+		const CustomMesh& src,
 		const std::vector<char>& vertex_sides,
 		const std::vector< std::pair<uint,uint> >& new_vertex_indices,
 		int triangle_index,
 		const Plane& split_plane,
-		CCustomMesh& dest_front,
-		CCustomMesh& dest_back,
+		CustomMesh& dest_front,
+		CustomMesh& dest_back,
 		std::vector<U16>& front_polygon_indices,
 		std::vector<U16>& back_polygon_indices,
 		std::vector<U16>& split_surface_vertex_indices_front,
@@ -67,8 +67,8 @@ class CConvexMeshSplitter
 		);
 
 	Result::Name CreateTrianglesOnSplitSurface(
-		CCustomMesh& dest_front,
-		CCustomMesh& dest_back,
+		CustomMesh& dest_front,
+		CustomMesh& dest_back,
 		std::vector<U16>& front_mesh_indices,
 		std::vector<U16>& back_mesh_indices
 		);
@@ -79,9 +79,9 @@ public:
 
 	~CConvexMeshSplitter(){}
 
-//	Result::Name SplitMesh( const CCustomMesh& src, const Plane& split_plane, CCustomMesh& dest_front, CCustomMesh& dest_back );
+//	Result::Name SplitMesh( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
-	Result::Name SplitMesh( const CCustomMesh& src, const Plane& split_plane );
+	Result::Name SplitMesh( const CustomMesh& src, const Plane& split_plane );
 
 	const CMeshSplitResults& GetSplitResults() const { return m_MeshSplitResults; }
 

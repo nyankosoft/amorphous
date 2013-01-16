@@ -40,7 +40,7 @@ protected:
 
 	boost::weak_ptr<CClothSystem> m_pClothSystem;
 
-	boost::shared_ptr<CCustomMesh> m_pClothMesh;
+	boost::shared_ptr<CustomMesh> m_pClothMesh;
 
 public:
 

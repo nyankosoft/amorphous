@@ -67,7 +67,7 @@ CBE_MeshObjectProperty::~CBE_MeshObjectProperty()
 
 void CBE_MeshObjectProperty::ValidateShaderTechniqueTable()
 {
-	CBasicMesh *pMeshObject = m_MeshObjectHandle.GetMesh().get();
+	BasicMesh *pMeshObject = m_MeshObjectHandle.GetMesh().get();
 	if( !pMeshObject )
 		return;
 
@@ -112,7 +112,7 @@ bool CBE_MeshObjectProperty::LoadMeshObject()
 	m_MeshObjectHandle.Load( m_MeshDesc );
 
 	// validate shader technique table
-	CBasicMesh *pMeshObject = m_MeshObjectHandle.GetMesh().get();
+	BasicMesh *pMeshObject = m_MeshObjectHandle.GetMesh().get();
 	if( pMeshObject )
 	{
 		ValidateShaderTechniqueTable();
@@ -251,7 +251,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 		return;
 
 	// test with the plane model in the aircraft select menu
-	CBasicMesh *pMesh = mesh.GetMesh().get();//m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+	BasicMesh *pMesh = mesh.GetMesh().get();//m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMesh )
 	{
 //		pMesh = pCopyEnt->m_MeshHandle.GetMesh().get();

@@ -15,7 +15,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CGLBasicMeshImpl : public CMeshImpl
+class CGLBasicMeshImpl : public MeshImpl
 {
 private:
 
@@ -98,15 +98,15 @@ public:
 };
 */
 
-class CGLMeshImplFactory : public CMeshImplFactory
+class CGLMeshImplFactory : public MeshImplFactory
 {
 public:
 
-//	CMeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
+//	MeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
 
-	CMeshImpl* CreateBasicMeshImpl();
-	CMeshImpl* CreateProgressiveMeshImpl();
-	CMeshImpl* CreateSkeletalMeshImpl();
+	MeshImpl* CreateBasicMeshImpl();
+	MeshImpl* CreateProgressiveMeshImpl();
+	MeshImpl* CreateSkeletalMeshImpl();
 };
 
 

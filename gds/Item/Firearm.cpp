@@ -494,11 +494,11 @@ bool CFirearm::IsReadyToFire() const
 
 void CFirearm::InitFirearmMesh()
 {
-	CBasicMesh *pMesh = NULL;
+	BasicMesh *pMesh = NULL;
 	if( !pMesh )
 		return;
 
-	CBasicMesh& mesh = *pMesh;
+	BasicMesh& mesh = *pMesh;
 
 //	CMeshContainerRenderMethod render_method;
 //	CSubsetRenderMethod slide_render_method;

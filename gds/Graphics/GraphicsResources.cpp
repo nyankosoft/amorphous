@@ -278,22 +278,22 @@ void CTextureResource::GetStatus( std::string& dest_buffer )
 // CMeshResource
 //==================================================================================================
 
-shared_ptr<CCustomMesh> GetCustomMesh( CBasicMesh& src_mesh )
+shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh )
 {
-	shared_ptr<CMeshImpl> pMeshImpl = src_mesh.m_pImpl;
+	shared_ptr<MeshImpl> pMeshImpl = src_mesh.m_pImpl;
 	if( !pMeshImpl )
-		return shared_ptr<CCustomMesh>();
+		return shared_ptr<CustomMesh>();
 
-	shared_ptr<CCustomMesh> pCustomMesh = boost::dynamic_pointer_cast<CCustomMesh,CMeshImpl>( pMeshImpl );
+	shared_ptr<CustomMesh> pCustomMesh = boost::dynamic_pointer_cast<CustomMesh,MeshImpl>( pMeshImpl );
 
 	return pCustomMesh;
 }
 
 
-shared_ptr<CCustomMesh> GetCustomMesh( shared_ptr<CBasicMesh> pSrcMesh )
+shared_ptr<CustomMesh> GetCustomMesh( shared_ptr<BasicMesh> pSrcMesh )
 {
 	if( !pSrcMesh )
-		return shared_ptr<CCustomMesh>();
+		return shared_ptr<CustomMesh>();
 
 	return GetCustomMesh( *pSrcMesh );
 }
@@ -301,7 +301,7 @@ shared_ptr<CCustomMesh> GetCustomMesh( shared_ptr<CBasicMesh> pSrcMesh )
 /*
 // Need to include MeshObjectHandle.hpp to define this
 // Should move this to MeshObjectHandle.cpp?
-shared_ptr<CCustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh )
+shared_ptr<CustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh )
 {
 	return GetCustomMesh( src_mesh.GetMesh() );
 }*/
@@ -338,8 +338,8 @@ bool CMeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 	db.GetData( mesh_archive_key, mesh_archive );
 
 	CMeshFactory factory;
-	CBasicMesh *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
-	m_pMeshObject = boost::shared_ptr<CBasicMesh>( pMesh );
+	BasicMesh *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
+	m_pMeshObject = boost::shared_ptr<BasicMesh>( pMesh );
 
 	return ( m_pMeshObject ? true : false );
 }
@@ -350,12 +350,12 @@ bool CMeshResource::LoadFromFile( const std::string& filepath )
 	m_pMeshObject.reset();
 
 	CMeshFactory factory;
-	CBasicMesh *pMeshObject
+	BasicMesh *pMeshObject
 		= factory.LoadMeshObjectFromFile( filepath, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
 
 	if( pMeshObject )
 	{
-		m_pMeshObject = shared_ptr<CBasicMesh>( pMeshObject );
+		m_pMeshObject = shared_ptr<BasicMesh>( pMeshObject );
 		return true;
 	}
 	else
@@ -394,7 +394,7 @@ bool CMeshResource::CreateFromDesc()
 		return false;
 
 	CMeshFactory factory;
-	CBasicMesh *pMeshObject
+	BasicMesh *pMeshObject
 		= factory.LoadMeshObjectFromArchive( m_MeshDesc.pMeshGenerator->MeshArchive(),
 		                                     m_MeshDesc.ResourcePath,
 											 m_MeshDesc.LoadOptionFlags,
@@ -402,7 +402,7 @@ bool CMeshResource::CreateFromDesc()
 
 	if( pMeshObject )
 	{
-		m_pMeshObject = shared_ptr<CBasicMesh>( pMeshObject );
+		m_pMeshObject = shared_ptr<BasicMesh>( pMeshObject );
 		SetState( GraphicsResourceState::LOADED );
 		return true;
 	}
