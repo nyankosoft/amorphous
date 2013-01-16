@@ -12,7 +12,7 @@ namespace amorphous
 
 
 /// \param whd [in] width(x), height(y), and depth of the box
-inline CMeshObjectHandle CreateBoxMesh( const Vector3& whd,
+inline MeshHandle CreateBoxMesh( const Vector3& whd,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity(),
 								const std::string& texture_pathname = "" )
@@ -24,17 +24,17 @@ inline CMeshObjectHandle CreateBoxMesh( const Vector3& whd,
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 	mesh_desc.pMeshGenerator->SetTexturePath( texture_pathname );
 
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 
 	if( loaded )
 		return mesh;
 	else
-		return CMeshObjectHandle();
+		return MeshHandle();
 }
 
 
-inline CMeshObjectHandle CreateSphereMesh( float radius,
+inline MeshHandle CreateSphereMesh( float radius,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
@@ -45,17 +45,17 @@ inline CMeshObjectHandle CreateSphereMesh( float radius,
 	mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 
 	if( loaded )
 		return mesh;
 	else
-		return CMeshObjectHandle();
+		return MeshHandle();
 }
 
 
-inline CMeshObjectHandle CreateConeMesh( const CConeDesc& desc,
+inline MeshHandle CreateConeMesh( const CConeDesc& desc,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
@@ -63,17 +63,17 @@ inline CMeshObjectHandle CreateConeMesh( const CConeDesc& desc,
 	mesh_desc.pMeshGenerator.reset( new CConeMeshGenerator(desc) );
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 
 	if( loaded )
 		return mesh;
 	else
-		return CMeshObjectHandle();
+		return MeshHandle();
 }
 
 
-inline CMeshObjectHandle CreateConeMesh( float radius = 0.5f, float height = 1.0f,
+inline MeshHandle CreateConeMesh( float radius = 0.5f, float height = 1.0f,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
@@ -85,7 +85,7 @@ inline CMeshObjectHandle CreateConeMesh( float radius = 0.5f, float height = 1.0
 }
 
 
-inline CMeshObjectHandle CreateCylinderMesh( float radius = 0.5f, float height = 1.0f,
+inline MeshHandle CreateCylinderMesh( float radius = 0.5f, float height = 1.0f,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
@@ -97,13 +97,13 @@ inline CMeshObjectHandle CreateCylinderMesh( float radius = 0.5f, float height =
 	mesh_desc.pMeshGenerator.reset( new CCylinderMeshGenerator(cylinder_desc) );
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 
 	if( loaded )
 		return mesh;
 	else
-		return CMeshObjectHandle();
+		return MeshHandle();
 }
 
 
