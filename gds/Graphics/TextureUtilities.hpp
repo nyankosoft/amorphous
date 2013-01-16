@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-inline CTextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = SFloatRGBAColor::White(), uint width = 1, uint height = 1 )
+inline TextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = SFloatRGBAColor::White(), uint width = 1, uint height = 1 )
 {
 	CTextureResourceDesc desc;
 	desc.Width     = width;
@@ -19,7 +19,7 @@ inline CTextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = S
 	desc.Format    = TextureFormat::A8R8G8B8;
 	desc.pLoader.reset( new CSingleColorTextureGenerator( color ) );
 
-	CTextureHandle tex;
+	TextureHandle tex;
 	bool loaded = tex.Load( desc );
 
 	return tex;

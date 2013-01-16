@@ -18,7 +18,7 @@ class CMouseCursor
 {
 	static CSingleton<CMouseCursor> m_obj;
 
-	CTextureHandle m_Texture[4];
+	TextureHandle m_Texture[4];
 	C2DRect m_Rect[4];
 
 	bool m_bDisplay;

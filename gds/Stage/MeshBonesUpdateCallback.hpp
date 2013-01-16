@@ -17,7 +17,7 @@ class CMeshBonesUpdateCallback : public CGraphicsResourcesUpdateCallback
 {
 	std::vector<Transform> m_LocalTransforms;
 
-	CMeshObjectHandle m_TargetSkeletalMesh;
+	MeshHandle m_TargetSkeletalMesh;
 
 	boost::shared_ptr<CBlendTransformsLoader> m_pBlendTransformsLoader;
 
@@ -30,13 +30,13 @@ public:
 	m_pBlendTransformsLoader(pBlendTransformsLoader)
 	{}
 
-	Result::Name SetSkeletalMesh( CMeshObjectHandle target_skeletal_mesh )
+	Result::Name SetSkeletalMesh( MeshHandle target_skeletal_mesh )
 	{
-		boost::shared_ptr<CBasicMesh> pMesh = target_skeletal_mesh.GetMesh();
+		boost::shared_ptr<BasicMesh> pMesh = target_skeletal_mesh.GetMesh();
 		if( !pMesh )
 			return Result::INVALID_ARGS;
 
-		boost::shared_ptr<CSkeletalMesh> pSMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+		boost::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( !pSMesh )
 			return Result::INVALID_ARGS;
 
@@ -58,11 +58,11 @@ public:
 		std::vector<Transform>& dest_blend_transforms = m_pBlendTransformsLoader->BlendTransforms();
 		dest_blend_transforms.resize( m_LocalTransforms.size() );
 
-		boost::shared_ptr<CBasicMesh> pMesh = m_TargetSkeletalMesh.GetMesh();
+		boost::shared_ptr<BasicMesh> pMesh = m_TargetSkeletalMesh.GetMesh();
 		if( !pMesh )
 			return;
 
-		boost::shared_ptr<CSkeletalMesh> pSMesh = boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+		boost::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( !pSMesh )
 			return;
 

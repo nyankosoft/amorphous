@@ -108,7 +108,7 @@ inline MeshHandle CreateCylinderMesh( float radius = 0.5f, float height = 1.0f,
 
 
 inline Result::Name Set6FaceColors(
-	CCustomMesh& box_mesh,
+	CustomMesh& box_mesh,
 	const SFloatRGBAColor& px = SFloatRGBAColor::Red(),
 	const SFloatRGBAColor& py = SFloatRGBAColor::Green(),
 	const SFloatRGBAColor& pz = SFloatRGBAColor::Blue(),
