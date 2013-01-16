@@ -6,20 +6,14 @@
 #include "Graphics/Font/BuiltinFonts.hpp"
 #include "Graphics/GraphicsElementManager.hpp"
 #include "GUI.hpp"
-#include "GUI/GM_StdControlRendererManager.hpp"
 #include "Input/InputHub.hpp"
 #include "Stage/Stage.hpp"
+#include "Support/memory_helpers.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
 {
-//#include "JigLib/JL_PhysicsVisualizer.hpp"
-
-//#include "Sound/SoundManager.hpp"
-
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
-//#include "Support/Profile.hpp"
 
 using namespace std;
 
