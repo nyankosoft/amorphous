@@ -371,7 +371,7 @@ void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 }
 
 
-Result::Name CDirect3D9::SetTexture( int stage, const CTextureHandle& texture )
+Result::Name CDirect3D9::SetTexture( int stage, const TextureHandle& texture )
 {
 	if( !m_pD3DDevice )
 		return Result::UNKNOWN_ERROR;

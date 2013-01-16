@@ -78,7 +78,7 @@ protected:
 	/// - Stores light direction and position
 	CCamera m_LightCamera;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
 	/// borrowed reference of scene camera
 	/// - Used by CDirectionalLightShadowMap
@@ -117,7 +117,7 @@ public:
 	m_UseLightPosInWorldSpace(true)
 	{}
 
-//	CShadowMap( const CShaderHandle& shader );
+//	CShadowMap( const ShaderHandle& shader );
 //	CShadowMap( int texture_width, int texture_height );
 
 	virtual ~CShadowMap();
@@ -137,7 +137,7 @@ public:
 	/// returns true on success
 	virtual bool Init() { return true; }
 
-	void SetShader( CShaderHandle& shader ) { m_Shader = shader; }
+	void SetShader( ShaderHandle& shader ) { m_Shader = shader; }
 
 	void SetSceneCamera( CCamera *pCamera ) { m_pSceneCamera = pCamera; }
 
@@ -219,7 +219,7 @@ protected:
 
 	boost::shared_ptr<CTextureRenderTarget> m_pShadowmapRenderTarget;
 
-	CMeshObjectHandle m_ShadowCasterBoundingBox;
+	MeshHandle m_ShadowCasterBoundingBox;
 
 protected:
 

@@ -208,7 +208,7 @@ public:
 
 //	boost::shared_ptr<CMeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
 
-	CMeshObjectHandle m_MeshHandle;
+	MeshHandle m_MeshHandle;
 
 	boost::shared_ptr<CMeshContainerRenderMethod> m_pMeshRenderMethod;
 

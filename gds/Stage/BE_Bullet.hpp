@@ -17,7 +17,7 @@ namespace amorphous
 class CBE_Bullet : public CBaseEntity
 {
 	std::string m_BillboardTextureFilepath;
-	CTextureHandle m_BillboardTexture;
+	TextureHandle m_BillboardTexture;
 
 	float m_fBillboardRadius;
 

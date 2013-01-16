@@ -60,7 +60,7 @@ m_PropertyFlags(0)
 
 CBE_MeshObjectProperty::~CBE_MeshObjectProperty()
 {
-	// texture is released in the destructor of 'CTextureHandle'
+	// texture is released in the destructor of 'TextureHandle'
 //	m_SpecTex.Release();
 }
 
@@ -246,7 +246,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 	if( pCopyEnt->GetEntityTypeID() == CCopyEntityTypeID::ALPHA_ENTITY )
 		return;
 
-	CMeshObjectHandle& mesh = pCopyEnt->m_MeshHandle;
+	MeshHandle& mesh = pCopyEnt->m_MeshHandle;
 	if( !mesh.IsLoaded() )
 		return;
 
@@ -1220,7 +1220,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "SPEC_TEX", tex_filename ) )
 		{
-			m_MeshProperty.m_vecExtraTexture.push_back( CTextureHandle() );
+			m_MeshProperty.m_vecExtraTexture.push_back( TextureHandle() );
 			m_MeshProperty.m_vecExtraTextureFilepath.push_back( tex_filename );
 			continue;
 		}

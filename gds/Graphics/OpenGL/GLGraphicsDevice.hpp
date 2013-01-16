@@ -75,7 +75,7 @@ public:
 
 	bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const;
 
-	Result::Name SetTexture( int stage, const CTextureHandle& texture );
+	Result::Name SetTexture( int stage, const TextureHandle& texture );
 
 	Result::Name SetTextureStageParams( uint stage, const CTextureStage& params );
 

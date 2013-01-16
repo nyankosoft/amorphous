@@ -103,9 +103,9 @@ public:
 	/// \param pLoadingState owned reference of a loading state object
 	void Add( CResourceLoadingState *pLoadingState );
 
-	void Add( CTextureHandle& texture_handle );
-	void Add( CMeshObjectHandle& mesh_handle );
-	void Add( CShaderHandle& shader_handle );
+	void Add( TextureHandle& texture_handle );
+	void Add( MeshHandle& mesh_handle );
+	void Add( ShaderHandle& shader_handle );
 
 	void AddFromResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> pEntry );
 

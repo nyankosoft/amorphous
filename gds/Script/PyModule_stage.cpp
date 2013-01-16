@@ -26,7 +26,7 @@ using std::vector;
 using namespace boost;
 
 
-void SetShaderToEntity( CEntityHandle<>& entity, CShaderHandle& shader, CShaderTechniqueHandle& tech )
+void SetShaderToEntity( CEntityHandle<>& entity, ShaderHandle& shader, CShaderTechniqueHandle& tech )
 {
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
 	if( !pEntity )

@@ -52,7 +52,7 @@ public:
 	std::vector<CLensFlareComponent> m_vecComponent;
 
 	C2DRectSet m_RectGroup;
-	CTextureHandle m_Texture;
+	TextureHandle m_Texture;
 
 	int m_NumTextureSegmentsX;
 	int m_NumTextureSegmentsY;

@@ -13,17 +13,17 @@ namespace amorphous
 {
 
 
-class CTextureHandle : public CGraphicsResourceHandle
+class TextureHandle : public GraphicsResourceHandle
 {
 protected:
 
-	static const CTextureHandle ms_NullHandle;
+	static const TextureHandle ms_NullHandle;
 
 public:
 
-	inline CTextureHandle() {}
+	inline TextureHandle() {}
 
-	~CTextureHandle() { Release(); }
+	~TextureHandle() { Release(); }
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
@@ -63,8 +63,8 @@ public:
 
 	/// Creates an empty texture
 	/// - Created as a shareable resource (Right now resource are always sharable)
-	/// - CGraphicsResourceHandle::filename is used as an id
-	///   - The resources are shared if CGraphicsResourceHandle::filenames are the same
+	/// - GraphicsResourceHandle::filename is used as an id
+	///   - The resources are shared if GraphicsResourceHandle::filenames are the same
 	///     just like texture resources loaded from file
 	/// \param mip_levels number of mip levels. set 0 to create a complete mipmap chain (0 by default).
 	bool Create( boost::shared_ptr<CTextureFillingAlgorithm> pTextureLoader, const std::string& resource_name, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
@@ -74,16 +74,16 @@ public:
 	/// loads texture from memory in the form of image archive
 //	bool Load( CImageArchive& img_archive );
 
-	static const CTextureHandle& Null() { return ms_NullHandle; }
+	static const TextureHandle& Null() { return ms_NullHandle; }
 
-//	inline const CTextureHandle &operator=( const CTextureHandle& handle );
+//	inline const TextureHandle &operator=( const TextureHandle& handle );
 };
 
 
 //--------------------------------- inline implementations ---------------------------------
 
 /*
-inline const CTextureHandle &CTextureHandle::operator=( const CTextureHandle& handle ){}
+inline const TextureHandle &TextureHandle::operator=( const TextureHandle& handle ){}
 */
 
 } // namespace amorphous

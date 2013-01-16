@@ -106,7 +106,7 @@ public:
 
 	void DrawBoxForBone(Matrix44 &rmatParent, Matrix44 &rmatWorldTransform);
 
-//	static CMeshObjectHandle ms_TestCube;
+//	static MeshHandle ms_TestCube;
 
 	friend class CPVC_JointHub;
 

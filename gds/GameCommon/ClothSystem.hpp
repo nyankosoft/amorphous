@@ -72,7 +72,7 @@ public:
 	physics::CClothDesc m_Desc;
 
 //	CustomMesh m_Mesh;
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 	std::string m_MeshFilepath;
 
 	// The names of target objects to attach the cloth to.
@@ -99,11 +99,11 @@ public:
 
 	physics::CCloth *GetCloth() { return m_pCloth; }
 
-	const CMeshObjectHandle& GetMesh() const { return m_Mesh; }
+	const MeshHandle& GetMesh() const { return m_Mesh; }
 
-	CMeshObjectHandle GetMesh() { return m_Mesh; }
+	MeshHandle GetMesh() { return m_Mesh; }
 
-	void SetMesh( const CMeshObjectHandle& cloth_mesh ) { m_Mesh = cloth_mesh; }
+	void SetMesh( const MeshHandle& cloth_mesh ) { m_Mesh = cloth_mesh; }
 
 	const std::vector<std::string>& GetAttachTargetNames() const { return m_AttachTargetNames; }
 
@@ -139,7 +139,7 @@ public:
 	/// Should store this as a member variable like this or take from a mesh bone every time?
 	Matrix34 m_InvBoneTransform;
 
-	std::vector<CMeshObjectHandle> m_ShapeMeshes; ///< Used to display the shapes for visual debugging
+	std::vector<MeshHandle> m_ShapeMeshes; ///< Used to display the shapes for visual debugging
 
 public:
 
@@ -236,9 +236,9 @@ public:
 	uint GetNumCloths() const { return (uint)m_Cloths.size(); }
 
 //	CustomMesh& GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
-	const CMeshObjectHandle& GetClothMesh( int i ) const { return m_Cloths[i].m_Mesh; }
+	const MeshHandle& GetClothMesh( int i ) const { return m_Cloths[i].m_Mesh; }
 
-	CMeshObjectHandle GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
+	MeshHandle GetClothMesh( int i ) { return m_Cloths[i].m_Mesh; }
 
 	void LoadMeshes();
 
@@ -256,11 +256,11 @@ public:
 
 //	void SetSkeleton( boost::shared_ptr<msynth::CSkeleton>& pSkeleton ) { m_pSkeleton = pSkeleton; }
 
-	Result::Name AttachClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume );
+	Result::Name AttachClothMesh( const std::string& cloth_name, MeshHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume );
 
 	void AttachClothMesh( int mesh_index, const std::string& target_bone_name, const Capsule& vertices_catcher_volume );
 
-//	int AddCloth( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to );
+//	int AddCloth( const std::string& cloth_name, MeshHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to );
 
 	Result::Name RemoveCloth( const std::string& cloth_name );
 

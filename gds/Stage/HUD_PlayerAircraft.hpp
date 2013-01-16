@@ -90,9 +90,9 @@ private:
 
 	SRect m_GlobalRadarRect;
 
-	CTextureHandle m_TexCache;
+	TextureHandle m_TexCache;
 
-	CTextureHandle m_GlobalMap;
+	TextureHandle m_GlobalMap;
 
 	int m_ContainerSize;
 

@@ -17,7 +17,7 @@ class CD3DCgManager;
 
 class CD3DCgEffect : public CCgEffectBase
 {
-	void SetCGTextureParameter( CGparameter& param, CTextureHandle& texture );
+	void SetCGTextureParameter( CGparameter& param, TextureHandle& texture );
 
 	static uint ms_RefCount;
 
@@ -48,7 +48,7 @@ public:
 
 //	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
-//	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
+//	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
 //	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 

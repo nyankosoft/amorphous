@@ -67,7 +67,7 @@ class CPostProcessFilterShader
 	};
 
 	/// Effect object for this technique
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 //	LPD3DXEFFECT m_pEffect;
 
 	/// filepath of the HLSL effect file for the effect interface above
@@ -112,7 +112,7 @@ public:
 	
 	const std::string& GetShaderFilename() const { return m_ShaderDesc.ResourcePath; }
 
-	CShaderHandle GetShader() { return m_Shader; }
+	ShaderHandle GetShader() { return m_Shader; }
 
 //	inline void Cleanup() { SAFE_RELEASE( m_pEffect ); }
 //	LPD3DXEFFECT GetEffect() { return m_pEffect; }
@@ -167,7 +167,7 @@ class CPostProcessEffectManager : public CGraphicsComponent
 	CFilterShaderContainer m_FilterShaderContainer;
 
 	/// render target to render the scene
-	CTextureHandle m_SceneRenderTarget;
+	TextureHandle m_SceneRenderTarget;
 
 	boost::shared_ptr<COriginalSceneFilter> m_pOriginalSceneFilter;
 

@@ -311,7 +311,7 @@ public:
 
 	bool m_StarEffectEnabled;
 
-	CTextureHandle m_BlancTextureForDisabledStarEffect;
+	TextureHandle m_BlancTextureForDisabledStarEffect;
 
 public:
 

@@ -114,7 +114,7 @@ protected:
 
 	void CheckForCgError( const char *situation );
 
-	virtual void SetCGTextureParameter( CGparameter& param, CTextureHandle& texture ) = 0;
+	virtual void SetCGTextureParameter( CGparameter& param, TextureHandle& texture ) = 0;
 
 public:
 

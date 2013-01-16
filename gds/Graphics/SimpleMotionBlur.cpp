@@ -130,7 +130,7 @@ void CSimpleMotionBlur::End()
 }
 
 
-static void SetRectRenderStates( CTextureHandle& texture )
+static void SetRectRenderStates( TextureHandle& texture )
 {
 	// enable alpha blending
 	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );

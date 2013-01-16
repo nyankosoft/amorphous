@@ -238,7 +238,7 @@ public:
 //	virtual void SetViewTransform();
 //	virtual void SetProjectionTransform();
 
-	virtual Result::Name SetTexture( int stage, const CTextureHandle& texture ) = 0;
+	virtual Result::Name SetTexture( int stage, const TextureHandle& texture ) = 0;
 
 	virtual Result::Name SetTextureStageParams( uint stage, const CTextureStage& params ) = 0;
 

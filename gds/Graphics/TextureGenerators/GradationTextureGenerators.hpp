@@ -102,7 +102,7 @@ public:
 };
 
 
-inline CTextureHandle CreateTextureFromGenerator( uint width, uint height, TextureFormat::Format format, boost::shared_ptr<CTextureFillingAlgorithm> pTextureGenerator )
+inline TextureHandle CreateTextureFromGenerator( uint width, uint height, TextureFormat::Format format, boost::shared_ptr<CTextureFillingAlgorithm> pTextureGenerator )
 {
 	CTextureResourceDesc desc;
 	desc.Width  = (int)width;
@@ -110,7 +110,7 @@ inline CTextureHandle CreateTextureFromGenerator( uint width, uint height, Textu
 	desc.Format = format;
 	desc.pLoader = pTextureGenerator;
 
-	CTextureHandle tex;
+	TextureHandle tex;
 	bool loaded = tex.Load( desc );
 //	if( !loaded )
 //		LOG_PRINT_WARNING(  );
@@ -119,28 +119,28 @@ inline CTextureHandle CreateTextureFromGenerator( uint width, uint height, Textu
 }
 
 
-inline CTextureHandle CreateHorizontalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& top_color, const SFloatRGBAColor& bottom_color )
+inline TextureHandle CreateHorizontalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& top_color, const SFloatRGBAColor& bottom_color )
 {
 	boost::shared_ptr<CHorizontalGradationTextureGenerator> pGenerator( new CHorizontalGradationTextureGenerator(top_color,bottom_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 
 
-inline CTextureHandle CreateHorizontalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& top_color, const SFloatRGBAColor& mid_color, const SFloatRGBAColor& bottom_color )
+inline TextureHandle CreateHorizontalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& top_color, const SFloatRGBAColor& mid_color, const SFloatRGBAColor& bottom_color )
 {
 	boost::shared_ptr<CHorizontalGradationTextureGenerator> pGenerator( new CHorizontalGradationTextureGenerator(top_color,mid_color,bottom_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 
 
-inline CTextureHandle CreateVerticalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& left_color, const SFloatRGBAColor& right_color )
+inline TextureHandle CreateVerticalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& left_color, const SFloatRGBAColor& right_color )
 {
 	boost::shared_ptr<CVerticalGradationTextureGenerator> pGenerator( new CVerticalGradationTextureGenerator(left_color,right_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 
 
-inline CTextureHandle CreateVerticalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& left_color, const SFloatRGBAColor& mid_color, const SFloatRGBAColor& right_color )
+inline TextureHandle CreateVerticalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& left_color, const SFloatRGBAColor& mid_color, const SFloatRGBAColor& right_color )
 {
 	boost::shared_ptr<CVerticalGradationTextureGenerator> pGenerator( new CVerticalGradationTextureGenerator(left_color,mid_color,right_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );

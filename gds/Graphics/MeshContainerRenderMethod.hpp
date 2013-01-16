@@ -36,7 +36,7 @@ public:
 
 	CShaderResourceDesc m_ShaderDesc;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 	CShaderTechniqueHandle m_Technique;
 
 	/// Need to be set at runtime
@@ -108,7 +108,7 @@ public:
 	/// For example,
 	/// - look-up texture for specular highlight
 	/// - look-up texture for membrane effect
-	std::vector<CTextureHandle> m_vecExtraTexture;
+	std::vector<TextureHandle> m_vecExtraTexture;
 */
 private:
 
@@ -129,7 +129,7 @@ public:
 
 	void RenderMesh( BasicMesh &mesh, const Matrix34& world_transform );
 
-	inline void RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform );
+	inline void RenderMesh( MeshHandle& mesh, const Matrix34& world_transform );
 
 	void RenderMeshContainer( CMeshObjectContainer& mesh_container,
 		                      const Matrix34& world_transform );
@@ -219,7 +219,7 @@ public:
 
 //================================ inline implementations ================================
 
-inline void CMeshContainerRenderMethod::RenderMesh( CMeshObjectHandle& mesh, const Matrix34& world_transform )
+inline void CMeshContainerRenderMethod::RenderMesh( MeshHandle& mesh, const Matrix34& world_transform )
 {
 	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 

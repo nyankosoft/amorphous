@@ -24,8 +24,8 @@ class HUD_PlayerShip : public HUD_PlayerBase
 	C2DRect m_ShipIcon;
 	C2DRect m_Crosshair;
 
-	CTextureHandle m_ShipIconTexture;
-	CTextureHandle m_CrosshairTexture;
+	TextureHandle m_ShipIconTexture;
+	TextureHandle m_CrosshairTexture;
 
 	CTextureFont m_StatusFont;
 

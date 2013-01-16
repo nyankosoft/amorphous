@@ -362,7 +362,7 @@ void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
 
 	CGI_Ammunition& rCurrentAmmo = *(m_pWeaponSlot->pChargedAmmo);
 
-	CMeshObjectHandle mesh_handle;
+	MeshHandle mesh_handle;
 	if( 0 < rCurrentAmmo.GetMeshContainerRootNode().GetNumMeshContainers() )
 		mesh_handle = rCurrentAmmo.GetMeshContainerRootNode().GetMeshContainer( 0 )->m_MeshObjectHandle;
 

@@ -48,7 +48,7 @@ public:
 
 	/// used during runtime
 	/// - Not serialized.
-	CShaderHandle m_ShaderHandle;
+	ShaderHandle m_ShaderHandle;
 
 	CShaderParameterGroup m_ParamGroup;
 
@@ -86,7 +86,7 @@ public:
 
 	/// used during runtime
 	/// - Not serialized.
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
 public:
 

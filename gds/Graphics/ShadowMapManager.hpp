@@ -79,7 +79,7 @@ protected:
 	/// Stores the shader necessasry for shadowmap.
 	/// The shader supposed to contain 2 techniques
 	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to calculate  
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
 	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
 
@@ -125,7 +125,7 @@ public:
 
 	void RenderShadowReceivers( CCamera& camera );
 
-	CShaderHandle& GetShader() { return m_Shader; }
+	ShaderHandle& GetShader() { return m_Shader; }
 
 	CShaderTechniqueHandle ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
 
@@ -188,7 +188,7 @@ public:
 
 //	boost::shared_ptr<CTextureRenderTarget> GetSceneShadowTexture() { return m_apShadowTexture[0]; }
 
-	CTextureHandle GetSceneShadowTexture();
+	TextureHandle GetSceneShadowTexture();
 
 //	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
 	void SetShadowMapShaderFilename( const std::string& filename ) { m_ShadowMapShaderFilename = filename; }

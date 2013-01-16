@@ -40,7 +40,7 @@ int CRenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc 
 
 Result::Name CRenderTargetTextureCache::AddTexture( const CTextureResourceDesc& desc )
 {
-	CTextureHandle new_tex;
+	TextureHandle new_tex;
 	bool created = new_tex.Load( desc );
 	if( !created )
 		return Result::UNKNOWN_ERROR;
@@ -254,7 +254,7 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 	if( GetDebugImageFilenameExtraString() == "-for-gaussblur" )
 	{
 		Render();
-/*		static CTextureHandle test_tex;
+/*		static TextureHandle test_tex;
 		static bool tex_loaded = false;
 		ONCE( tex_loaded = test_tex.Load( "debug/post-process_effect/test_tex.png" ) );
 		C2DRect test_rect( 0, 0, 199, 149, SFloatRGBAColor::White().GetARGB32() );

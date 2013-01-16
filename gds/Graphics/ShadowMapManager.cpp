@@ -575,9 +575,9 @@ void CShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey
 }
 
 
-CTextureHandle CShadowMapManager::GetSceneShadowTexture()
+TextureHandle CShadowMapManager::GetSceneShadowTexture()
 {
-	return m_apShadowTexture[0] ? m_apShadowTexture[0]->GetRenderTargetTexture() : CTextureHandle();
+	return m_apShadowTexture[0] ? m_apShadowTexture[0]->GetRenderTargetTexture() : TextureHandle();
 }
 
 

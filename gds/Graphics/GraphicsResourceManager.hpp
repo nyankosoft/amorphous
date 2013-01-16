@@ -107,10 +107,10 @@ public:
 
 	void GetStatus( GraphicsResourceType::Name type, std::vector<std::string>& dest_buffer );
 
-	friend class CGraphicsResourceHandle;
-	friend class CTextureHandle;
-	friend class CMeshObjectHandle;
-	friend class CShaderHandle;
+	friend class GraphicsResourceHandle;
+	friend class TextureHandle;
+	friend class MeshHandle;
+	friend class ShaderHandle;
 };
 
 

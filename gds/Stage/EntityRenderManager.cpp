@@ -937,7 +937,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTextures( CCamera& rCam )
 }
 
 
-CTextureHandle CEntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& entity )
+TextureHandle CEntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& entity )
 {
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
@@ -964,7 +964,7 @@ CTextureHandle CEntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& en
 		}
 	}
 
-	return CTextureHandle();
+	return TextureHandle();
 }
 
 
@@ -1015,7 +1015,7 @@ void CEntityRenderManager::RenderMirroredScene()
 }
 
 
-//CTextureHandle CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
+//TextureHandle CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
 LPDIRECT3DCUBETEXTURE9 CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
 {
 	if( m_pCubeMapManager )
@@ -1023,7 +1023,7 @@ LPDIRECT3DCUBETEXTURE9 CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
 	else
 		return NULL;
 
-//	return CTextureHandle();
+//	return TextureHandle();
 }
 
 

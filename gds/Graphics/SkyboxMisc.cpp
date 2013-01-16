@@ -48,12 +48,12 @@ static boost::shared_ptr<CCylinderMeshGenerator> CreateSkyCylinderMeshGenerator(
 }
 
 
-CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath )
+MeshHandle CreateSkyboxMesh( const std::string& texture_filepath )
 {
 	CMeshResourceDesc skybox_mesh_desc;
 	skybox_mesh_desc.pMeshGenerator = CreateSkyboxMeshGenerator( texture_filepath );
 
-	CMeshObjectHandle skybox_mesh;
+	MeshHandle skybox_mesh;
 	bool loaded = skybox_mesh.Load( skybox_mesh_desc );
 
 	return skybox_mesh;
@@ -109,7 +109,7 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 }
 
 
-void RenderAsSkybox( CMeshObjectHandle& mesh, const Matrix34& vCamPose )
+void RenderAsSkybox( MeshHandle& mesh, const Matrix34& vCamPose )
 {
 	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 
@@ -118,7 +118,7 @@ void RenderAsSkybox( CMeshObjectHandle& mesh, const Matrix34& vCamPose )
 }
 
 
-void RenderSkyMesh( CustomMesh& mesh, CTextureHandle& sky_texture, const Matrix34& vCamPose )
+void RenderSkyMesh( CustomMesh& mesh, TextureHandle& sky_texture, const Matrix34& vCamPose )
 {
 	if( 0 < mesh.GetNumMaterials() )
 	{
@@ -132,7 +132,7 @@ void RenderSkyMesh( CustomMesh& mesh, CTextureHandle& sky_texture, const Matrix3
 }
 
 
-void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose )
+void RenderSkybox( TextureHandle& sky_texture, const Matrix34& vCamPose )
 {
 	static CustomMesh s_SkyboxMesh;
 
@@ -156,7 +156,7 @@ void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 /// Always use RenderSkybox()
 /// I have a real heartbun for leaving this function knowing that it does not work
 /// at least for rendering the sky, but decided to keep it for now as a reminder.
-void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose )
+void RenderSkyCylinder( TextureHandle& sky_texture, const Matrix34& vCamPose )
 {
 	static CustomMesh s_SkyCylinderMesh;
 
@@ -176,7 +176,7 @@ void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose )
 }
 
 
-CTextureHandle CreateClearDaySkyTexture()
+TextureHandle CreateClearDaySkyTexture()
 {
 	return CreateHorizontalGradationTexture(
 		256,
@@ -189,24 +189,24 @@ CTextureHandle CreateClearDaySkyTexture()
 }
 
 
-CTextureHandle CreateCloudyDaySkyTexture()
+TextureHandle CreateCloudyDaySkyTexture()
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
-	return CTextureHandle();
+	return TextureHandle();
 }
 
 
-CTextureHandle CreateClearNightSkyTexture()
+TextureHandle CreateClearNightSkyTexture()
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
-	return CTextureHandle();
+	return TextureHandle();
 }
 
 
-CTextureHandle CreateCloudyNightSkyTexture()
+TextureHandle CreateCloudyNightSkyTexture()
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
-	return CTextureHandle();
+	return TextureHandle();
 }
 
 

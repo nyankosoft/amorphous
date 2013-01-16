@@ -29,7 +29,7 @@ class CStaticGeometryFG : public CStaticGeometryBase
 //	std::string m_strArchiveFilename;
 
 	/// terrain and other static geometry
-	std::vector<CMeshObjectHandle> m_vecMesh;
+	std::vector<MeshHandle> m_vecMesh;
 
 	std::vector<CStaticGeometryMeshGroup> m_vecMeshGroup;
 
@@ -39,7 +39,7 @@ class CStaticGeometryFG : public CStaticGeometryBase
 
 	CShaderManager *m_pShaderManager;
 
-	CTextureHandle m_FadeTex;
+	TextureHandle m_FadeTex;
 
 	SFloatRGBAColor m_AmbientColor;
 
@@ -50,9 +50,9 @@ class CStaticGeometryFG : public CStaticGeometryBase
 	float m_FarClipDist;
 
 	/// global overlay texture
-	CTextureHandle m_TileTexture;	/// experimental
+	TextureHandle m_TileTexture;	/// experimental
 
-	CTextureHandle m_NormalMapForWaterSurface;	/// experimental
+	TextureHandle m_NormalMapForWaterSurface;	/// experimental
 
 	/// holds triangle mesh registered to physics simulator
 	physics::CActor *m_pTriangleMesh;

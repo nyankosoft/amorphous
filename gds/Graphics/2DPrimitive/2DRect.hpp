@@ -50,7 +50,7 @@ public:
 
 	void Draw() { C2DPrimitive::Draw(); }
 
-	void Draw( const CTextureHandle& texture ) { C2DPrimitive::Draw( texture ); }
+	void Draw( const TextureHandle& texture ) { C2DPrimitive::Draw( texture ); }
 
 	void DrawWireframe();
 

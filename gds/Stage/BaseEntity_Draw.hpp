@@ -20,7 +20,7 @@ extern void InitMeshRenderMethod( CCopyEntity &entity,
 								  boost::shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader = boost::shared_ptr<CBlendTransformsLoader>() );
 
 extern void CreateMeshRenderMethod( CEntityHandle<>& entity, 
-							        CShaderHandle& shader,
+							        ShaderHandle& shader,
 							        CShaderTechniqueHandle& tech );
 
 extern void UpdateEntityForRendering( CCopyEntity& entity );

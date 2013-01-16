@@ -30,7 +30,7 @@ private:
 
 	D3DVIEWPORT9 m_OriginalViewport;
 
-	CTextureHandle m_RenderTargetCopyTexture;
+	TextureHandle m_RenderTargetCopyTexture;
 
 //	CTextureResourceDesc m_TextureDesc;
 
@@ -63,7 +63,7 @@ public:
 	/// returns the lockable texture of the scene
 //	inline LPDIRECT3DTEXTURE9 GetD3DRenderTargetCopyTexture() { return m_pRenderTargetCopyTexture; }
 
-	CTextureHandle GetRenderTargetCopytexture() { return m_RenderTargetCopyTexture; }
+	TextureHandle GetRenderTargetCopytexture() { return m_RenderTargetCopyTexture; }
 
 	bool LoadTextures();
 

@@ -19,7 +19,7 @@ class CBE_PointLight : public CBE_Light//, CBEC_Billboard
 private:
 
 	std::string m_GlareTextureFilepath;
-	CTextureHandle m_GlareTexture;
+	TextureHandle m_GlareTexture;
 
 //	TEXTUREVERTEX m_avGlareRect[4];
 

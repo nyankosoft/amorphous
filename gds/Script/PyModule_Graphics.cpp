@@ -12,9 +12,9 @@ namespace amorphous
 {
 
 
-bool (CTextureHandle::*LoadTextureFromResourcePath)( const std::string& ) = &CTextureHandle::Load;
-bool (CMeshObjectHandle::*LoadMeshFromResourcePath)( const std::string& ) = &CMeshObjectHandle::Load;
-bool (CShaderHandle::*LoadShaderFromResourcePath)( const std::string& ) = &CShaderHandle::Load;
+bool (TextureHandle::*LoadTextureFromResourcePath)( const std::string& ) = &TextureHandle::Load;
+bool (MeshHandle::*LoadMeshFromResourcePath)( const std::string& ) = &MeshHandle::Load;
+bool (ShaderHandle::*LoadShaderFromResourcePath)( const std::string& ) = &ShaderHandle::Load;
 
 boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
 boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
@@ -94,15 +94,15 @@ BOOST_PYTHON_MODULE(gfx)
 	def( "RectLTWH", RectLTWH );
 	def( "RectLTRB", RectLTRB );
 
-	class_<CTextureHandle>("TextureHandle")
+	class_<TextureHandle>("TextureHandle")
 		.def( "Load", LoadTextureFromResourcePath,      ( python::arg("resource_path") ) )
 	;
 
-	class_<CMeshObjectHandle>("MeshHandle")
+	class_<MeshHandle>("MeshHandle")
 		.def( "Load", LoadMeshFromResourcePath,   ( python::arg("resource_path") ) )
 	;
 
-	class_<CShaderHandle>("ShaderHandle")
+	class_<ShaderHandle>("ShaderHandle")
 		.def( "Load", LoadShaderFromResourcePath,       ( python::arg("resource_path") ) )
 	;
 

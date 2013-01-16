@@ -136,7 +136,7 @@ inline void C2DTriangle::SetDefault()
 
 
 /*
-inline void C2DTriangle::Draw( const CTextureHandle& texture )
+inline void C2DTriangle::Draw( const TextureHandle& texture )
 {
 	Draw( texture.GetTexture() );
 }

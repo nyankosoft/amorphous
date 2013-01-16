@@ -41,7 +41,7 @@ protected:
 	inline void SetStdRenderStates();
 
 	/// set render states to draw with texture
-	inline void SetStdRenderStatesForTexture( const CTextureHandle& texture );
+	inline void SetStdRenderStatesForTexture( const TextureHandle& texture );
 
 public:
 
@@ -70,7 +70,7 @@ public:
 
 	inline virtual void Draw();
 
-	inline virtual void Draw( const CTextureHandle& texture );
+	inline virtual void Draw( const TextureHandle& texture );
 
 	virtual Vector2 GetPosition2D( int vert_index ) const { return Vector2(0,0); }
 
@@ -141,7 +141,7 @@ inline void C2DPrimitive::SetBasicRenderStates()
 
 inline void C2DPrimitive::SetStdRenderStates()
 {
-	GraphicsDevice().SetTexture( 0, CTextureHandle() );
+	GraphicsDevice().SetTexture( 0, TextureHandle() );
 
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
@@ -160,7 +160,7 @@ inline void C2DPrimitive::SetStdRenderStates()
 //		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 //	}
 
-	GraphicsDevice().SetTexture( 0, CTextureHandle() );
+	GraphicsDevice().SetTexture( 0, TextureHandle() );
 
 	CTextureStage tex_stage_0, tex_stage_1;
 
@@ -176,7 +176,7 @@ inline void C2DPrimitive::SetStdRenderStates()
 }
 
 
-inline void C2DPrimitive::SetStdRenderStatesForTexture( const CTextureHandle& texture )
+inline void C2DPrimitive::SetStdRenderStatesForTexture( const TextureHandle& texture )
 {
 	GraphicsDevice().SetTexture( 0, texture );
 /*
@@ -224,7 +224,7 @@ inline void C2DPrimitive::Draw()
 }
 
 
-inline void C2DPrimitive::Draw( const CTextureHandle& texture )
+inline void C2DPrimitive::Draw( const TextureHandle& texture )
 {
 	SetBasicRenderStates();
 

@@ -45,7 +45,7 @@ public:
 								const Matrix34& pose,
 								const Vector3& vel,
 								physics::CActorDesc *pPhysActorDesc,
-								CMeshObjectHandle& mesh );
+								MeshHandle& mesh );
 };
 
 

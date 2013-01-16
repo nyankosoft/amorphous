@@ -67,11 +67,11 @@ class CGameTextWindow : public CGraphicsComponent
 	C2DRect m_WindowRect;
 
 	/// texture for window rectangle
-	CTextureHandle m_WindowTexture;
+	TextureHandle m_WindowTexture;
 
 	C2DRect m_TexturedIcon;
 
-	TCFixedVector< CTextureHandle, NUM_MAX_ICONTEXTURES > m_IconTexture;
+	TCFixedVector< TextureHandle, NUM_MAX_ICONTEXTURES > m_IconTexture;
 
 //	int m_iNumIconTextures;
 //	char m_acTextureFilename[NUM_MAX_ICONTEXTURES][256];

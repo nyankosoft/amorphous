@@ -42,7 +42,7 @@ public:
 
 	U32 m_EntityID; ///< target of the env map
 
-	CTextureHandle m_Texture; ///< stores env map texture
+	TextureHandle m_Texture; ///< stores env map texture
 
 	boost::shared_ptr<CCubeTextureParamsLoader> m_pCubeMapTextureLoader;
 };
@@ -87,7 +87,7 @@ private:
 	std::vector<CBaseEntity *> m_vecpSweepRenderBaseEntity;
 
 	std::string m_FallbackShaderFilepath;
-	CShaderHandle m_FallbackShader;
+	ShaderHandle m_FallbackShader;
 
 	//
 	// shadow
@@ -182,7 +182,7 @@ public:
 
 	bool LoadFallbackShader();
 
-	const CShaderHandle& GetFallbackShader() { return m_FallbackShader; }
+	const ShaderHandle& GetFallbackShader() { return m_FallbackShader; }
 
     void UpdateEntityTree( CEntityNode* pRootNode, int num_nodes );
 
@@ -207,7 +207,7 @@ public:
 	void EnableEnvironmentMap() { m_bEnableEnvironmentMap = true; }
 	void DisableEnvironmentMap() { m_bEnableEnvironmentMap = false; }
 
-//	CTextureHandle GetEnvMapTexture( U32 entity_id );
+//	TextureHandle GetEnvMapTexture( U32 entity_id );
 	LPDIRECT3DCUBETEXTURE9 GetEnvMapTexture( U32 entity_id );
 
 	bool AddEnvMapTarget( CCopyEntity *pEntity );
@@ -240,7 +240,7 @@ public:
 	Result::Name RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
 	void UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group );
 	void UpdatePlanarReflectionTextures( CCamera& rCam );
-	CTextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
+	TextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
 	int GetCurrentlyRenderedPlanarReflectionSceneID() const;
 
 	void RenderPlanarReflectionSurfaces();

@@ -57,7 +57,7 @@ protected:
 
 	std::string m_strTextureFilename;
 
-	CTextureHandle m_FontTexture;
+	TextureHandle m_FontTexture;
 
 	std::vector<CharRect> m_vecCharRect;
 

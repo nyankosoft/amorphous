@@ -535,7 +535,7 @@ bool CGraphicsElementManager::LoadTexture( int texture_id, const std::string& te
 	const int required_size = texture_id + 1;
 	const int shortage = required_size - (int)m_vecTexHandle.size();
 	for( int i=0; i<shortage; i++ )
-		m_vecTexHandle.push_back( CTextureHandle() );
+		m_vecTexHandle.push_back( TextureHandle() );
 
 	return m_vecTexHandle[texture_id].Load( tex_filename );
 }
@@ -543,7 +543,7 @@ bool CGraphicsElementManager::LoadTexture( int texture_id, const std::string& te
 
 int CGraphicsElementManager::LoadTexture( const std::string& tex_filename )
 {
-	m_vecTexHandle.push_back( CTextureHandle() );
+	m_vecTexHandle.push_back( TextureHandle() );
 
 	bool res = m_vecTexHandle.back().Load( tex_filename );
 

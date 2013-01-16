@@ -238,7 +238,7 @@ protected:
 
 	std::string m_BillboardTextureFilepath;
 
-	CMeshObjectHandle m_ParticleDebugBox;
+	MeshHandle m_ParticleDebugBox;
 
 protected:
 

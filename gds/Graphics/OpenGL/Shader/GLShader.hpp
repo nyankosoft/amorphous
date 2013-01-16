@@ -88,8 +88,8 @@ class CGLProgram : public CShaderManager
 	CGLVertexShader *m_pVertexShader;
 	CGLFragmentShader *m_pFragmentShader;
 
-	CShaderHandle m_VertexShader;
-	CShaderHandle m_FragmentShader;
+	ShaderHandle m_VertexShader;
+	ShaderHandle m_FragmentShader;
 
 	boost::shared_ptr<CGLSLShaderLightManager> m_pLightManager;
 
@@ -150,7 +150,7 @@ public:
 /*
 	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
 */
-	Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
+	Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
 //	HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture ) { return E_FAIL; }
 

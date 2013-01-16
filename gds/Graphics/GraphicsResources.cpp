@@ -301,7 +301,7 @@ shared_ptr<CustomMesh> GetCustomMesh( shared_ptr<BasicMesh> pSrcMesh )
 /*
 // Need to include MeshObjectHandle.hpp to define this
 // Should move this to MeshObjectHandle.cpp?
-shared_ptr<CustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh )
+shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& src_mesh )
 {
 	return GetCustomMesh( src_mesh.GetMesh() );
 }*/

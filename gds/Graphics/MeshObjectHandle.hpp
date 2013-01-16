@@ -10,17 +10,17 @@ namespace amorphous
 {
 
 
-class CMeshObjectHandle : public CGraphicsResourceHandle
+class MeshHandle : public GraphicsResourceHandle
 {
 protected:
 
-	static const CMeshObjectHandle ms_NullHandle;
+	static const MeshHandle ms_NullHandle;
 
 public:
 
-	inline CMeshObjectHandle() {}
+	inline MeshHandle() {}
 
-	~CMeshObjectHandle() { Release(); }
+	~MeshHandle() { Release(); }
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
@@ -36,23 +36,23 @@ public:
 
 	boost::shared_ptr<CMeshResource> GetMeshResource();
 
-	inline virtual const CMeshObjectHandle &operator=( const CMeshObjectHandle& handle );
+	inline virtual const MeshHandle &operator=( const MeshHandle& handle );
 
-	static const CMeshObjectHandle& Null() { return ms_NullHandle; }
+	static const MeshHandle& Null() { return ms_NullHandle; }
 };
 
 
 //--------------------------------- inline implementations ---------------------------------
 
-inline const CMeshObjectHandle &CMeshObjectHandle::operator=( const CMeshObjectHandle& handle )
+inline const MeshHandle &MeshHandle::operator=( const MeshHandle& handle )
 {
-	CGraphicsResourceHandle::operator=(handle);
+	GraphicsResourceHandle::operator=(handle);
 
 	return *this;
 }
 
 
-inline boost::shared_ptr<BasicMesh> CMeshObjectHandle::GetMesh()
+inline boost::shared_ptr<BasicMesh> MeshHandle::GetMesh()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )

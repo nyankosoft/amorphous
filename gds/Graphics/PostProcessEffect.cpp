@@ -420,8 +420,8 @@ Result::Name GetSampleOffsets_Star( unsigned int dwD3DTexSize,
  Get the texture coordinates to use when rendering into the destination
  texture, given the source and destination rectangles
 */
-HRESULT GetTextureCoords( CTextureHandle& tex_src, RECT* pRectSrc,
-						  CTextureHandle& tex_dest, RECT* pRectDest, CoordRect* pCoords )
+HRESULT GetTextureCoords( TextureHandle& tex_src, RECT* pRectSrc,
+						  TextureHandle& tex_dest, RECT* pRectDest, CoordRect* pCoords )
 {
 	LPDIRECT3DTEXTURE9 pTexSrc  = tex_src.GetTexture();
 	LPDIRECT3DTEXTURE9 pTexDest = tex_dest.GetTexture();

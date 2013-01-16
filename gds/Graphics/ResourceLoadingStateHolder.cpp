@@ -82,7 +82,7 @@ bool CMeshLoadingStateHolder::IsLoaded()
 		const int num_textures = pMesh->GetNumTextures( i );
 		for( int j=0; j<num_textures; j++ )
 		{
-			CTextureHandle tex = pMesh->GetTexture( i, j );
+			TextureHandle tex = pMesh->GetTexture( i, j );
 
 			if( tex.GetEntryState() != GraphicsResourceState::LOADED )
 				return false;
@@ -112,21 +112,21 @@ void CResourceLoadingStateHolder::Add( CResourceLoadingState *pLoadingState )
 }
 
 
-void CResourceLoadingStateHolder::Add( CTextureHandle& texture_handle )
+void CResourceLoadingStateHolder::Add( TextureHandle& texture_handle )
 {
 	CTextureLoadingStateHolder *p = new CTextureLoadingStateHolder( texture_handle.GetEntry() );
 	Add( p );
 }
 
 
-void CResourceLoadingStateHolder::Add( CMeshObjectHandle& mesh_handle )
+void CResourceLoadingStateHolder::Add( MeshHandle& mesh_handle )
 {
 	CMeshLoadingStateHolder *p = new CMeshLoadingStateHolder( mesh_handle.GetEntry() );
 	Add( p );
 }
 
 
-void CResourceLoadingStateHolder::Add( CShaderHandle& shader_handle )
+void CResourceLoadingStateHolder::Add( ShaderHandle& shader_handle )
 {
 	CShaderLoadingStateHolder *p = new CShaderLoadingStateHolder( shader_handle.GetEntry() );
 	Add( p );

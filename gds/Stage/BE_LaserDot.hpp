@@ -22,7 +22,7 @@ private:
 	C3DRect<SFloatRGBAColor,1> m_LaserDotRect;
 
 	std::string m_LaserDotTexFilepath;
-	CTextureHandle m_LaserDotTex;
+	TextureHandle m_LaserDotTex;
 
 public:
 

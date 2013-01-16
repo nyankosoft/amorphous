@@ -11,13 +11,13 @@ using namespace std;
 
 
 //==================================================================================================
-// CTextureHandle
+// TextureHandle
 //==================================================================================================
 
-const CTextureHandle CTextureHandle::ms_NullHandle;
+const TextureHandle TextureHandle::ms_NullHandle;
 
 
-bool CTextureHandle::Load( const CTextureResourceDesc& desc )
+bool TextureHandle::Load( const CTextureResourceDesc& desc )
 {
 	Release();
 
@@ -37,7 +37,7 @@ bool CTextureHandle::Load( const CTextureResourceDesc& desc )
 }
 
 
-bool CTextureHandle::Load( const std::string& resource_path )
+bool TextureHandle::Load( const std::string& resource_path )
 {
 	CTextureResourceDesc desc;
 	desc.ResourcePath = resource_path;
@@ -45,7 +45,7 @@ bool CTextureHandle::Load( const std::string& resource_path )
 }
 
 
-bool CTextureHandle::LoadAsync( const std::string& resource_path )
+bool TextureHandle::LoadAsync( const std::string& resource_path )
 {
 	CTextureResourceDesc desc;
 	desc.ResourcePath = resource_path;
@@ -55,7 +55,7 @@ bool CTextureHandle::LoadAsync( const std::string& resource_path )
 
 
 /*
-bool CTextureHandle::LoadAsync( const CTextureResourceDesc& desc )
+bool TextureHandle::LoadAsync( const CTextureResourceDesc& desc )
 {
 
 	return true;
@@ -65,7 +65,7 @@ bool CTextureHandle::LoadAsync( const CTextureResourceDesc& desc )
 /// \param weak pointer to an instance of CTextureFillingAlgorithm class that fill the texture content after the graphics device is released and recreated.
 /// Owner of the texture handle is supposed to hold shared_ptr of texture loader and set it to the first argument
 /// This can be set to null as boost::weak_ptr<CTextureFillingAlgorithm>() if you don't have to fill the content of the texture when it is re-created. e.g.) Texture for rendertarget
-bool CTextureHandle::Create( boost::shared_ptr<CTextureFillingAlgorithm> pTextureLoader,
+bool TextureHandle::Create( boost::shared_ptr<CTextureFillingAlgorithm> pTextureLoader,
 							 const std::string& resource_name,
 							 int width, int height, TextureFormat::Format format, int mip_levels )
 {
@@ -92,7 +92,7 @@ bool CTextureHandle::Create( boost::shared_ptr<CTextureFillingAlgorithm> pTextur
 }
 
 
-bool CTextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
+bool TextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
 {
 	if( GetEntry()
 	 && GetEntry()->GetTextureResource() )
@@ -106,7 +106,7 @@ bool CTextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
 
 
 /*
-bool CTextureHandle::Load( CImageArchive& img_archive )
+bool TextureHandle::Load( CImageArchive& img_archive )
 {
 	return false;
 }

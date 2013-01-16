@@ -74,7 +74,7 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 								const Matrix34& pose,
 								const Vector3& vel,
 								physics::CActorDesc *pPhysActorDesc,
-								CMeshObjectHandle& mesh
+								MeshHandle& mesh
 								)
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
@@ -367,7 +367,7 @@ namespace amorphous
 using namespace physics;
 
 
-Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box_desc )
+Result::Name SetBoxShapeDesc( MeshHandle& mesh_handle, CBoxShapeDesc& box_desc )
 {
 	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
@@ -389,7 +389,7 @@ Result::Name SetBoxShapeDesc( CMeshObjectHandle& mesh_handle, CBoxShapeDesc& box
 }
 
 
-Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvexShapeDesc& convex_desc )
+Result::Name SetCylinderConvexShapeDesc( MeshHandle& mesh_handle, CConvexShapeDesc& convex_desc )
 {
 	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
@@ -443,7 +443,7 @@ Result::Name SetCylinderConvexShapeDesc( CMeshObjectHandle& mesh_handle, CConvex
 }
 
 
-Result::Name SetSphereShapeDesc( CMeshObjectHandle& mesh_handle, CSphereShapeDesc& sphere_desc )
+Result::Name SetSphereShapeDesc( MeshHandle& mesh_handle, CSphereShapeDesc& sphere_desc )
 {
 	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
@@ -476,7 +476,7 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_
 //							  const std::string& material_name,
 							  bool static_actor )
 {
-	CMeshObjectHandle mesh_handle;
+	MeshHandle mesh_handle;
 	bool mesh_loaded = mesh_handle.Load( mesh_desc );
 	if( !mesh_loaded )
 		return CEntityHandle<>();
@@ -523,7 +523,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc
 							  const std::string& material_name,
 							  bool static_actor )
 {
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 	if( !loaded )
 		return CEntityHandle<>();
@@ -565,7 +565,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( CMeshResourceDesc& mesh_de
 							  const std::string& material_name,
 							  bool static_actor )
 {
-//	CMeshObjectHandle mesh;
+//	MeshHandle mesh;
 //	bool loaded = mesh.Load( mesh_desc );
 //	if( !loaded )
 //		return CEntityHandle<>();
@@ -613,7 +613,7 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( CMeshResourceDesc& mesh
 							  const std::string& material_name,
 							  bool static_actor )
 {
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 	if( !loaded )
 		return CEntityHandle<>();
@@ -642,7 +642,7 @@ CEntityHandle<> CStageMiscUtility::CreateSphereEntity( CMeshResourceDesc& mesh_d
 							  const std::string& material_name,
 							  bool static_actor )
 {
-	CMeshObjectHandle mesh;
+	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 	if( !loaded )
 		return CEntityHandle<>();

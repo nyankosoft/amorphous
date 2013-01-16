@@ -635,8 +635,8 @@ void CClothSystem::RenderObjectsForDebugging()
 	vector<CClothCollisionObject> *pObjs[] = { &m_ClothAttachObjects, &m_ClothCollisionObjects };
 	SFloatRGBAColor colors[] = { SFloatRGBAColor::Blue(), SFloatRGBAColor::Red() };
 
-/*	static CMeshObjectHandle m_SphereMesh;
-	static CMeshObjectHandle m_CapsuleMesh;
+/*	static MeshHandle m_SphereMesh;
+	static MeshHandle m_CapsuleMesh;
 	if( !m_SphereMesh.IsLoaded() )
 	{
 		CMeshResourceDesc mesh_desc;
@@ -721,7 +721,7 @@ void CClothSystem::RenderObjectsForDebugging()
 
 /*
 //void CClothSystem::AddCloth( const std::string& cloth_name, boost::shared_ptr<CustomMesh>& pClothMesh, const std::string& name_of_bone_to_attach_cloth_to )
-int CClothSystem::AddClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to )
+int CClothSystem::AddClothMesh( const std::string& cloth_name, MeshHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to )
 {
 	const int num_cloths = (int)m_Cloths.size();
 	for( int i=0; i<num_cloths; i++ )
@@ -751,7 +751,7 @@ bool IsPointInside( const Sphere& sphere, const Vector3& pos )
 }
 
 
-boost::shared_ptr<CustomMesh> GetCustomMesh( CMeshObjectHandle& mesh )
+boost::shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& mesh )
 {
 	return GetCustomMesh( mesh.GetMesh() );
 }
@@ -768,7 +768,7 @@ int CClothSystem::GetClothObjectIndexByName( const std::string& cloth_name )
 }
 
 
-Result::Name CClothSystem::AttachClothMesh( const std::string& cloth_name, CMeshObjectHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume )
+Result::Name CClothSystem::AttachClothMesh( const std::string& cloth_name, MeshHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume )
 {
 	// Get one of the shape of the actor stored in the collision object specified by target_bone_name
 	int coll_obj_index = GetCollisionObjectIndexByBoneName( "target_bone_name" );

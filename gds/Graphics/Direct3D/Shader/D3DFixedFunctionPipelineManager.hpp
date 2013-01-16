@@ -79,7 +79,7 @@ public:
 
 	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
-	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
+	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
 	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
@@ -187,7 +187,7 @@ inline HRESULT CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, c
 }
 
 
-inline Result::Name CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, const CTextureHandle& texture )
+inline Result::Name CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
 	HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( iStage, texture.GetTexture() );
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;

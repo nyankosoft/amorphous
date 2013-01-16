@@ -26,7 +26,7 @@ protected:
 
 	CTextureResourceDesc m_TextureDesc;
 
-	CTextureHandle m_RenderTargetTexture;
+	TextureHandle m_RenderTargetTexture;
 
 	SFloatRGBAColor m_BackgroundColor;
 
@@ -73,7 +73,7 @@ public:
 
 	virtual void CopyRenderTarget() {}// { GetRenderTargetData( m_RenderTargetSurface, m_RenderTargetCopySurface ); }
 
-	CTextureHandle GetRenderTargetTexture() { return m_RenderTargetTexture; }
+	TextureHandle GetRenderTargetTexture() { return m_RenderTargetTexture; }
 
 	virtual LPDIRECT3DTEXTURE9 GetD3DRenderTargetTexture() { return NULL; }
 

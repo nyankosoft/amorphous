@@ -682,7 +682,7 @@ void CPostProcessEffectManager::DisplayAdaptedLuminance()
 //		pShader->SetTexture( tex_index, pRTTexHolder->m_Texture );
 		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->m_Texture.GetTexture() );
 /*
-		static CTextureHandle s_tex;
+		static TextureHandle s_tex;
 		s_tex.Load( "debug/test_images/Meerkat_256.jpg" );
 		pShader->SetTexture( tex_index, s_tex );
 */

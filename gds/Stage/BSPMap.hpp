@@ -130,7 +130,7 @@ private:
 
 	CShaderTechniqueHandle m_aShaderTechHandle[NUM_SHADER_TECHNIQUE_TYPES];
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
 private:
 

@@ -96,7 +96,7 @@ bool IsExtensionSupported( char* szTargetExtension )
 
 static void SetGLTextures( CMeshMaterial& mat )
 {
-	vector<CTextureHandle>& vecTex = mat.Texture;
+	vector<TextureHandle>& vecTex = mat.Texture;
 	for( int j=0; j<(int)vecTex.size(); j++ )
 	{
 		GLuint texture_id = vecTex[j].GetGLTextureID();

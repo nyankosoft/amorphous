@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-class CGraphicsResourceHandle
+class GraphicsResourceHandle
 {
 protected:
 
@@ -22,14 +22,14 @@ protected:
 //	void IncResourceRefCount();
 //	void DecResourceRefCount();
 
-	inline void copy( const CGraphicsResourceHandle& handle );
+	inline void copy( const GraphicsResourceHandle& handle );
 
 public:
 
-	inline CGraphicsResourceHandle() {}
+	inline GraphicsResourceHandle() {}
 
 	/// Release() is called in the dtor of each derived handle class
-	virtual ~CGraphicsResourceHandle() {}
+	virtual ~GraphicsResourceHandle() {}
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
@@ -46,12 +46,12 @@ public:
 	/// reload any updated file since the last load
 //	void Refresh();
 
-	inline const CGraphicsResourceHandle &operator=( const CGraphicsResourceHandle& handle );
+	inline const GraphicsResourceHandle &operator=( const GraphicsResourceHandle& handle );
 
-	inline CGraphicsResourceHandle( const CGraphicsResourceHandle& handle );
+	inline GraphicsResourceHandle( const GraphicsResourceHandle& handle );
 
-//	static const CGraphicsResourceHandle ms_NullHandle;
-//	static const CGraphicsResourceHandle& Null() { return ms_NullHandle; }
+//	static const GraphicsResourceHandle ms_NullHandle;
+//	static const GraphicsResourceHandle& Null() { return ms_NullHandle; }
 
 	friend class CGraphicsResourceManager;
 };
@@ -60,7 +60,7 @@ public:
 //=================================== inline implementations ===================================
 
 
-inline void CGraphicsResourceHandle::Release()
+inline void GraphicsResourceHandle::Release()
 {
 	if( m_pResourceEntry )
 	{
@@ -70,7 +70,7 @@ inline void CGraphicsResourceHandle::Release()
 }
 
 
-inline bool CGraphicsResourceHandle::IsLoaded() const
+inline bool GraphicsResourceHandle::IsLoaded() const
 {
 	if( GetEntry()
 	 && GetEntry()->GetResource()
@@ -83,7 +83,7 @@ inline bool CGraphicsResourceHandle::IsLoaded() const
 }
 
 
-inline void CGraphicsResourceHandle::copy( const CGraphicsResourceHandle& handle )
+inline void GraphicsResourceHandle::copy( const GraphicsResourceHandle& handle )
 {
 	if( m_pResourceEntry )
         m_pResourceEntry->DecRefCount(); // decrement the reference count of the current resource
@@ -95,7 +95,7 @@ inline void CGraphicsResourceHandle::copy( const CGraphicsResourceHandle& handle
 }
 
 
-inline const CGraphicsResourceHandle &CGraphicsResourceHandle::operator=( const CGraphicsResourceHandle& handle )
+inline const GraphicsResourceHandle &GraphicsResourceHandle::operator=( const GraphicsResourceHandle& handle )
 {
 	copy( handle );
 
@@ -103,7 +103,7 @@ inline const CGraphicsResourceHandle &CGraphicsResourceHandle::operator=( const 
 }
 
 
-inline CGraphicsResourceHandle::CGraphicsResourceHandle( const CGraphicsResourceHandle& handle )
+inline GraphicsResourceHandle::GraphicsResourceHandle( const GraphicsResourceHandle& handle )
 {
 	copy( handle );
 }

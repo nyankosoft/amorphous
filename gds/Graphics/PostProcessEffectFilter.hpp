@@ -68,7 +68,7 @@ class CRenderTargetTextureHolder
 
 public:
 	LPDIRECT3DSURFACE9 m_pTexSurf;
-	CTextureHandle m_Texture;
+	TextureHandle m_Texture;
 	CTextureResourceDesc m_Desc;
 
 	CRenderTargetTextureHolder()

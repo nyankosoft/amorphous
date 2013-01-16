@@ -25,7 +25,7 @@ class CVarianceShadowMapManager : public CShadowMapManager
 
 	boost::shared_ptr<CTextureRenderTarget> m_pBlurredShadowMap;
 
-	CShaderHandle m_BlurShader;
+	ShaderHandle m_BlurShader;
 
 	CShaderParamFloatArray m_SampleOffsetsH;
 	CShaderParamFloatArray m_SampleOffsetsV;

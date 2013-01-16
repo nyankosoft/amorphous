@@ -14,7 +14,7 @@ using namespace boost;
 /*
 
 {
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 	CMeshHandle m_Mesh;
 }
 {
@@ -266,8 +266,8 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 	{
 		// use handles
 
-//		CShaderHandle m_VertexShader;
-//		CShaderHandle m_FragmentShader;
+//		ShaderHandle m_VertexShader;
+//		ShaderHandle m_FragmentShader;
 
 		CShaderResourceDesc vs_desc, fs_desc;
 
@@ -384,7 +384,7 @@ void CGLProgram::SetVertexBlendTransforms( const std::vector<Transform>& src_tra
 
 
 
-Result::Name CGLProgram::SetTexture( const int iStage, const CTextureHandle& texture )
+Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& texture )
 {
 	if( glActiveTexture )
 		glActiveTexture( GL_TEXTURE0 + iStage );

@@ -307,7 +307,7 @@ public:
 	void CreateAlphaEntities( CCopyEntity *pCopyEnt );
 
 	void InitEntityGraphics( CCopyEntity &entity,
-                             CShaderHandle& shader = CShaderHandle(),
+                             ShaderHandle& shader = ShaderHandle(),
                              CShaderTechniqueHandle& tech = CShaderTechniqueHandle() );
 
 	virtual void UpdateBaseEntity( float frametime )

@@ -9,7 +9,7 @@ using namespace std;
 using namespace boost;
 
 
-GraphicsResourceState::Name CGraphicsResourceHandle::GetEntryState()
+GraphicsResourceState::Name GraphicsResourceHandle::GetEntryState()
 {
 	if( GetEntry() )
 	{
@@ -28,14 +28,14 @@ GraphicsResourceState::Name CGraphicsResourceHandle::GetEntryState()
 }
 
 /*
-void CGraphicsResourceHandle::IncResourceRefCount()
+void GraphicsResourceHandle::IncResourceRefCount()
 {
 	if( GetEntry() )
         GetEntry()->IncRefCount();
 }
 
 
-void CGraphicsResourceHandle::DecResourceRefCount()
+void GraphicsResourceHandle::DecResourceRefCount()
 {
 	if( GetEntry() )
         GetEntry()->DecRefCount();

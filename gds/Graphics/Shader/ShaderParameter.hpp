@@ -21,7 +21,7 @@ public:
 
 	CTextureResourceDesc m_Desc;
 
-	CTextureHandle m_Handle;
+	TextureHandle m_Handle;
 
 	int m_Stage;
 

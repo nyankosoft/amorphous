@@ -120,7 +120,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	// save the original texture and temporarily overwrite it with the sky texture
-	CTextureHandle orig_tex;
+	TextureHandle orig_tex;
 	if( 0 < num_materials )
 	{
 		if( pMeshObject->Material(0).Texture.empty() )

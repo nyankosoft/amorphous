@@ -394,7 +394,7 @@ inline boost::shared_ptr<BasicMesh> CMeshResource::GetMeshInLoading()
 
 boost::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
 boost::shared_ptr<CustomMesh> GetCustomMesh( boost::shared_ptr<BasicMesh> pSrcMesh );
-//boost::shared_ptr<CustomMesh> GetCustomMesh( CMeshObjectHandle& src_mesh );
+//boost::shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& src_mesh );
 
 } // namespace amorphous
 

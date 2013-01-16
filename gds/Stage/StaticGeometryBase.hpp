@@ -41,11 +41,11 @@ protected:
 		NUM_EXTRA_TEXTURES
 	};
 
-	CTextureHandle m_apExtraTexture[NUM_EXTRA_TEXTURES];
+	TextureHandle m_apExtraTexture[NUM_EXTRA_TEXTURES];
 
 	CDynamicLightManagerForStaticGeometry *m_pDynamicLightManager;
-	CTextureHandle m_Lightmap_PL;	///< lightmap texture for point light
-	CTextureHandle m_Normalmap_PL;	///< normal map texture for point light
+	TextureHandle m_Lightmap_PL;	///< lightmap texture for point light
+	TextureHandle m_Normalmap_PL;	///< normal map texture for point light
 */
 
 public:

@@ -9,17 +9,17 @@ namespace amorphous
 {
 
 
-class CShaderHandle : public CGraphicsResourceHandle
+class ShaderHandle : public GraphicsResourceHandle
 {
 protected:
 
-	static const CShaderHandle ms_NullHandle;
+	static const ShaderHandle ms_NullHandle;
 
 public:
 
-	inline CShaderHandle() {}
+	inline ShaderHandle() {}
 
-	~CShaderHandle() { Release(); }
+	~ShaderHandle() { Release(); }
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 
@@ -27,15 +27,15 @@ public:
 
 	bool Load( const CShaderResourceDesc& desc );
 
-	static const CShaderHandle& Null() { return ms_NullHandle; }
+	static const ShaderHandle& Null() { return ms_NullHandle; }
 
 	CShaderManager *GetShaderManager();
 
-//	inline const CShaderHandle &operator=( const CShaderHandle& handle );
+//	inline const ShaderHandle &operator=( const ShaderHandle& handle );
 };
 
 /*
-inline const CShaderHandle &CShaderHandle::operator=( const CShaderHandle& handle ){}
+inline const ShaderHandle &ShaderHandle::operator=( const ShaderHandle& handle ){}
 */
 
 } // namespace amorphous

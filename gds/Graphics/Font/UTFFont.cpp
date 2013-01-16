@@ -407,7 +407,7 @@ static inline void ConvertToUTF8CodePoints( const std::string& src_text, std::ve
 }
 
 
-//CTextureHandle sg_TestTexture;
+//TextureHandle sg_TestTexture;
 
 
 void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
@@ -427,7 +427,7 @@ void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
 
 	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
 
-//	CTextureHandle orig = m_FontTexture;
+//	TextureHandle orig = m_FontTexture;
 //	m_FontTexture = sg_TestTexture;
 
 	DrawCachedText();

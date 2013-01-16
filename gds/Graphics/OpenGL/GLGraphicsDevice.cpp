@@ -135,7 +135,7 @@ void CGLGraphicsDevice::EnumAdapterModesForDefaultAdapter()
 }
 
 
-Result::Name CGLGraphicsDevice::SetTexture( int stage, const CTextureHandle& texture )
+Result::Name CGLGraphicsDevice::SetTexture( int stage, const TextureHandle& texture )
 {
 //	PROFILE_FUNCTION();
 

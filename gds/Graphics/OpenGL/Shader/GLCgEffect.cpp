@@ -20,7 +20,7 @@ CGLCgEffect::CGLCgEffect()
 }
 
 
-void CGLCgEffect::SetCGTextureParameter( CGparameter& param, CTextureHandle& texture )
+void CGLCgEffect::SetCGTextureParameter( CGparameter& param, TextureHandle& texture )
 {
 	cgGLSetTextureParameter( param, texture.GetGLTextureID() );
 }

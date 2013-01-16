@@ -454,7 +454,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	if( !pMesh )
 		return;
 
-	CShaderHandle shader = pShadowMgr->GetShader();
+	ShaderHandle shader = pShadowMgr->GetShader();
 	CShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
@@ -523,7 +523,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	if( !pMesh )
 		return;
 
-	CShaderHandle shader = pShadowMgr->GetShader();
+	ShaderHandle shader = pShadowMgr->GetShader();
 	CShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
@@ -776,7 +776,7 @@ bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int sub
 // - If the lighting is enabled for the entity, a light parameter loader is set
 // - If the mesh of the entity is skeletal, a blend transforms loader is set.
 void CreateMeshRenderMethod( CEntityHandle<>& entity, 
-							 CShaderHandle& shader,
+							 ShaderHandle& shader,
 							 CShaderTechniqueHandle& tech )
 {
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
@@ -802,7 +802,7 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 // - Create alpha entities
 // - Creates a shader
 void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
-                                      CShaderHandle& shader,
+                                      ShaderHandle& shader,
                                       CShaderTechniqueHandle& tech )
 {
 	if( shader.IsLoaded()

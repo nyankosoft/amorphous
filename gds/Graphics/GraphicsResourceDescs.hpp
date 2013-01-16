@@ -63,7 +63,7 @@ class CGraphicsResourceDesc : public IArchiveObjectBase
 public:
 
 	/// filled out by the system
-	/// - User chooses a mode by calling CGraphicsResourceHandle::Load() or CGraphicsResourceHandle::LoadAsync();
+	/// - User chooses a mode by calling GraphicsResourceHandle::Load() or GraphicsResourceHandle::LoadAsync();
 	CResourceLoadingMode::Name LoadingMode;
 
 	int LoadingPriority;

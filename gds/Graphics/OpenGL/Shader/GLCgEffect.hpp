@@ -14,7 +14,7 @@ namespace amorphous
 
 class CGLCgEffect : public CCgEffectBase
 {
-	void SetCGTextureParameter( CGparameter& param, CTextureHandle& texture );
+	void SetCGTextureParameter( CGparameter& param, TextureHandle& texture );
 
 	void InitCgContext();
 
@@ -37,7 +37,7 @@ public:
 //	inline void SetVertexBlendMatrix( int i, const Matrix44& mat );
 
 //	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
-//	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
+//	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 //	inline HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
 //	inline void Begin();

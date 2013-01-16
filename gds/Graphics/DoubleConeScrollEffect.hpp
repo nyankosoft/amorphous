@@ -30,13 +30,13 @@ class CDoubleConeScrollEffect
 {
 	std::string m_TextureFilepath;
 
-//	CTextureHandle m_Texture;
+//	TextureHandle m_Texture;
 
 	Matrix34 m_CameraPose;
 
 	Vector3 m_vCameraVelocity;
 
-	CMeshObjectHandle m_DoubleConeMesh;
+	MeshHandle m_DoubleConeMesh;
 
 	float m_fTexShiftV;
 

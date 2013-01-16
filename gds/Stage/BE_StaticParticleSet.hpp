@@ -26,7 +26,7 @@ private:
 //	LPDIRECT3DVERTEXBUFFER9 m_pVB; // Buffer to hold vertices
 	LPDIRECT3DINDEXBUFFER9  m_pIB;
 
-	CTextureHandle m_BillboardTex;
+	TextureHandle m_BillboardTex;
 
 	std::vector<STATICBILLBOARDVERTEX> m_vecParticleVertex;
 

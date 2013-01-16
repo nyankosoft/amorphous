@@ -43,7 +43,7 @@ public:
 	//   - normal map
 	//   - specular map (often stored in alpha channel of normal map)
 	// A texture handle will be empty if no texture is used for the stage
-	std::vector<CTextureHandle> Texture;
+	std::vector<TextureHandle> Texture;
 
 	std::vector<CTextureResourceDesc> TextureDesc;
 
@@ -190,7 +190,7 @@ public:
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
 
-	inline CTextureHandle& GetTexture( int material_index, int tex_index ) { return m_vecMaterial[material_index].Texture[tex_index]; }
+	inline TextureHandle& GetTexture( int material_index, int tex_index ) { return m_vecMaterial[material_index].Texture[tex_index]; }
 
 	const AABB3& GetAABB( int material_index ) const { return m_vecAABB[material_index]; }
 
@@ -331,7 +331,7 @@ public:
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return m_pImpl->GetNumTextures( material_index ); }
 
-	inline CTextureHandle& GetTexture( int material_index, int tex_index ) { return m_pImpl->GetTexture( material_index, tex_index ); }
+	inline TextureHandle& GetTexture( int material_index, int tex_index ) { return m_pImpl->GetTexture( material_index, tex_index ); }
 
 	const AABB3& GetAABB() const { return m_pImpl->GetAABB(); }
 

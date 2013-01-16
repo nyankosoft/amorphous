@@ -100,7 +100,7 @@ public:
 };
 
 
-//inline CTextureHandle CreateGridTexture(
+//inline TextureHandle CreateGridTexture(
 //	int width,
 //	int height,
 //	int num_rows,
@@ -122,7 +122,7 @@ public:
 //	pGenerator->m_NumColumns   = num_column;
 //	desc.pLoader = pGenerator;
 //
-//	CTextureHandle tex;
+//	TextureHandle tex;
 //	bool loaded = tex.Load( desc );
 //	if( !loaded )
 //		LOG_PRINT_ERROR( " Failed to create a grid texture." );

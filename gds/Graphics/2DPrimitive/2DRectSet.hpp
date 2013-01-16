@@ -83,9 +83,9 @@ public:
 	/// renders all the rects
 //	 virtual void Draw() { Draw( 0, (int)m_vecRectVertex.size() / 4 ) = 0; }
 
-	 virtual void Draw( int start_rect_index, int num_rects, const CTextureHandle& texture ) = 0;
+	 virtual void Draw( int start_rect_index, int num_rects, const TextureHandle& texture ) = 0;
 
-//	 virtual void Draw( const CTextureHandle& texture ) { Draw( 0, (int)m_vecRectVertex.size() / 4, texture ); }
+//	 virtual void Draw( const TextureHandle& texture ) { Draw( 0, (int)m_vecRectVertex.size() / 4, texture ); }
 };
 
 
@@ -165,9 +165,9 @@ public:
 
 	inline void Draw( int start_rect_index, int num_rects );
 
-	inline void Draw( int start_rect_index, int num_rects, const CTextureHandle& texture );
+	inline void Draw( int start_rect_index, int num_rects, const TextureHandle& texture );
 
-	inline void Draw( const CTextureHandle& texture ) { m_pImpl->Draw( 0, GetNumRects(), texture ); }
+	inline void Draw( const TextureHandle& texture ) { m_pImpl->Draw( 0, GetNumRects(), texture ); }
 };
 
 
@@ -264,7 +264,7 @@ inline void C2DRectSet::Draw( int start_rect_index, int num_rects )
 }
 
 
-inline void C2DRectSet::Draw( int start_rect_index, int num_rects, const CTextureHandle& texture )
+inline void C2DRectSet::Draw( int start_rect_index, int num_rects, const TextureHandle& texture )
 {
 	SetBasicRenderStates();
 	m_pImpl->Draw( start_rect_index, num_rects, texture );

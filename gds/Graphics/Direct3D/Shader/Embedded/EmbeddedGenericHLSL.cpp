@@ -1044,9 +1044,9 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 }
 
 /*
-CShaderHandle GetGenericShader( CGenericShaderDesc& desc )
+ShaderHandle GetGenericShader( CGenericShaderDesc& desc )
 {
-	CShaderHandle handle
+	ShaderHandle handle
 	bool res = Get( desc, handle );
 	if( res )
 		return handle;

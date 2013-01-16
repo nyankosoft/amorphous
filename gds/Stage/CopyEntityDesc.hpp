@@ -62,7 +62,7 @@ public:
 
 	/// use this when copy entities managed by a same base entity
 	/// need to have different mesh objects.
-	CMeshObjectHandle MeshObjectHandle;
+	MeshHandle MeshObjectHandle;
 
 	// general purpose variables
 	float f1, f2, f3, f4;

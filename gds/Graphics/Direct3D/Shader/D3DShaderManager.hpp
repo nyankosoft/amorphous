@@ -225,7 +225,7 @@ public:
 
 	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
-	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
+	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
 	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
@@ -473,7 +473,7 @@ inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const LPDIRECT3
 }
 
 
-inline Result::Name CHLSLShaderManager::SetTexture( const int iStage, const CTextureHandle& texture )
+inline Result::Name CHLSLShaderManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
 	HRESULT hr = m_pEffect->SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;

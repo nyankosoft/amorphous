@@ -28,7 +28,7 @@ private:
 
 	/// texture for billboard animation
 	std::string m_AnimTextureFilepath;
-	CTextureHandle m_AnimTexture;
+	TextureHandle m_AnimTexture;
 
 	float m_fTotalAnimationTime;
 

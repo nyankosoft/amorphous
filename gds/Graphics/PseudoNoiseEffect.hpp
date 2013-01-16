@@ -20,14 +20,14 @@ class CPseudoNoiseEffect : public CGraphicsComponent
 {
 	C2DRect m_FullscreenRect;
 
-	CTextureHandle m_NoiseTexture;
+	TextureHandle m_NoiseTexture;
 
 	uint m_NoiseTextureSize;
 
 	uint m_NoisePixelSize;
 
 	/// an extra texture which is rendered with noise effect
-//	CTextureHandle m_ExtraTexture;
+//	TextureHandle m_ExtraTexture;
 
 	int m_iScreenWidth;
 	int m_iScreenHeight;

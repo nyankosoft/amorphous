@@ -15,7 +15,7 @@ namespace amorphous
 
 class CPrimitiveShapeRenderer
 {
-	CShaderHandle m_Shader; ///< default: fixed function pipeline manager
+	ShaderHandle m_Shader; ///< default: fixed function pipeline manager
 
 	static CustomMesh ms_BoxMesh;
 
@@ -27,7 +27,7 @@ private:
 		const Vector3 *positions,
 		const Vector3& normal,
 		const SFloatRGBAColor& color,
-		CTextureHandle& texture,
+		TextureHandle& texture,
 		const TEXCOORD2& top_left,
 		const TEXCOORD2& bottom_right,
 		CShaderManager& shader_mgr
@@ -50,7 +50,7 @@ public:
 		float width  = 100.0f,
 		float height = 100.0f,
 		const SFloatRGBAColor& color = SFloatRGBAColor::White(),
-		CTextureHandle& tex = CTextureHandle(),
+		TextureHandle& tex = TextureHandle(),
 		const TEXCOORD2& top_left     = TEXCOORD2(0,0),
 		const TEXCOORD2& bottom_right = TEXCOORD2(1,1)
 		);
@@ -62,17 +62,17 @@ public:
 		float span_0 = 100.0f,
 		float span_1 = 100.0f,
 		const SFloatRGBAColor& color = SFloatRGBAColor::White(),
-		CTextureHandle& texture = CTextureHandle(),
+		TextureHandle& texture = TextureHandle(),
 		const TEXCOORD2& top_left     = TEXCOORD2(0,0),
 		const TEXCOORD2& bottom_right = TEXCOORD2(1,1)
 		);
 
-	void RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, CTextureHandle& texture = CTextureHandle(), const TEXCOORD2& top_left = TEXCOORD2(0,0), const TEXCOORD2& bottom_right = TEXCOORD2(1,1) );
+	void RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, TextureHandle& texture = TextureHandle(), const TEXCOORD2& top_left = TEXCOORD2(0,0), const TEXCOORD2& bottom_right = TEXCOORD2(1,1) );
 
 	void RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color = SFloatRGBAColor::White() );
 
 
-	void SetShader( CShaderHandle& shader ) { m_Shader = shader; }
+	void SetShader( ShaderHandle& shader ) { m_Shader = shader; }
 };
 
 

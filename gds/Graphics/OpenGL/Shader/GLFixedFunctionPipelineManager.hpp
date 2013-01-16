@@ -72,7 +72,7 @@ public:
 	inline void SetViewerPosition( const Vector3& vEyePosition );
 
 
-	inline Result::Name SetTexture( const int iStage, const CTextureHandle& texture );
+	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
 //	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
@@ -199,7 +199,7 @@ inline HRESULT CGLFixedFunctionPipelineManager::SetTexture( const int iStage, co
 }*/
 
 
-inline Result::Name CGLFixedFunctionPipelineManager::SetTexture( const int iStage, const CTextureHandle& texture )
+inline Result::Name CGLFixedFunctionPipelineManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
 //	glBindTexture( GL_TEXTURE_2D, texture.GetTextureID() );
 	return Result::UNKNOWN_ERROR;

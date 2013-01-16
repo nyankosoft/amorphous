@@ -33,7 +33,7 @@ public:
 
 	/// Used during runtime
 	/// - Not serialized
-	CMeshObjectHandle m_MeshObjectHandle;
+	MeshHandle m_MeshObjectHandle;
 
 
 	//
@@ -47,7 +47,7 @@ public:
 
 	CShaderResourceDesc m_ShaderDesc;
 
-	CShaderHandle m_ShaderHandle;
+	ShaderHandle m_ShaderHandle;
 
 	Matrix34 m_MeshTransform;
 
@@ -65,7 +65,7 @@ public:
 	/// For example,
 	/// - look-up texture for specular highlight
 	/// - look-up texture for membrane effect
-	std::vector<CTextureHandle> m_vecExtraTexture;
+	std::vector<TextureHandle> m_vecExtraTexture;
 
 public:
 

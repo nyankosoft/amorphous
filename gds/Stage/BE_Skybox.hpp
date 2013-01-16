@@ -15,7 +15,7 @@ private:
 
 	/// load texture separately from the mesh
 	std::string m_SkyboxTextureFilepath;
-	CTextureHandle m_SkyboxTexture;
+	TextureHandle m_SkyboxTexture;
 
 	// CBaseEntity::m_MeshProperty is used for the mesh of the skybox
 	
@@ -39,7 +39,7 @@ public:
 
 	bool LoadSkyboxTexture( const std::string& texture_filename );
 
-	CTextureHandle GetSkyboxTexture() { return m_SkyboxTexture; }
+	TextureHandle GetSkyboxTexture() { return m_SkyboxTexture; }
 
 	/// Returns a single color for simple fog effect
 	/// Right now, it simply returns the texel at the center of the skybox texture, the texel which mapped near the horizon

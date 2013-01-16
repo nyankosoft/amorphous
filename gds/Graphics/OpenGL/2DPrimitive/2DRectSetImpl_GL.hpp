@@ -90,9 +90,9 @@ public:
 	/// renders all the rects
 //	inline virtual void Draw() { Draw( 0, (int)m_vecRectVertex.size() / 4 ); }
 
-	inline virtual void Draw( int start_rect_index, int num_rects, const CTextureHandle& texture );
+	inline virtual void Draw( int start_rect_index, int num_rects, const TextureHandle& texture );
 
-//	inline virtual void Draw( const CTextureHandle& texture ) { Draw( 0, (int)m_vecRectVertex.size() / 4, texture ); }
+//	inline virtual void Draw( const TextureHandle& texture ) { Draw( 0, (int)m_vecRectVertex.size() / 4, texture ); }
 };
 
 
@@ -263,7 +263,7 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects )
 }
 
 
-inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const CTextureHandle& texture )
+inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const TextureHandle& texture )
 {
 	PROFILE_FUNCTION_IF( PrimitiveRenderer().m_Profile );
 

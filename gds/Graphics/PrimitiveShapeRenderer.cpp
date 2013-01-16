@@ -106,7 +106,7 @@ Result::Name CPrimitiveShapeRenderer::RenderPlane(
 	const Vector3 *positions,
 	const Vector3& normal,
 	const SFloatRGBAColor& color,
-	CTextureHandle& texture,
+	TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right,
 	CShaderManager& shader_mgr
@@ -143,7 +143,7 @@ Result::Name CPrimitiveShapeRenderer::RenderPlane(
 
 	ms_RectMesh.Render( shader_mgr );
 
-	ms_RectMesh.Material(0).Texture[0] = CTextureHandle();
+	ms_RectMesh.Material(0).Texture[0] = TextureHandle();
 
 	return Result::SUCCESS;
 }
@@ -154,7 +154,7 @@ void CPrimitiveShapeRenderer::RenderPlane(
 	float width,
 	float height,
 	const SFloatRGBAColor& color,
-	CTextureHandle& texture,
+	TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right
 	)
@@ -187,7 +187,7 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
 	float span_0,
 	float span_1,
 	const SFloatRGBAColor& color,
-	CTextureHandle& texture,
+	TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right
 	)
@@ -223,9 +223,9 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
 	corners[3][span_index_0] -= span_0 * 0.5f;
 	corners[3][span_index_1] -= span_1 * 0.5f;
 
-	CTextureHandle default_texture;
+	TextureHandle default_texture;
 
-	CTextureHandle texture_to_set;
+	TextureHandle texture_to_set;
 	if( texture.IsLoaded() )
 		texture_to_set = texture;
 	else
@@ -247,7 +247,7 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
 }
 
 
-void CPrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, CTextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
+void CPrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, TextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
 {
 	RenderAxisAlignedPlane( 1, vCenter, width, depth, color, texture, top_left, bottom_right );
 }

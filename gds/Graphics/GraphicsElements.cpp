@@ -171,7 +171,7 @@ void CPrimitiveElement::DrawPrimitive()
 
 	if( 0 <= m_TextureID )
 	{
-		const CTextureHandle& tex = m_pManager->GetTexture(m_TextureID);
+		const TextureHandle& tex = m_pManager->GetTexture(m_TextureID);
 		m_pPrimitive->Draw( tex );
 	}
 	else

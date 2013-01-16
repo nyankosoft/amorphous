@@ -15,7 +15,7 @@ using namespace std;
 
 
 SFloatRGBAColor CBVHBone::ms_dwSkeletonColor;
-//CMeshObjectHandle CBVHBone::ms_TestCube;
+//MeshHandle CBVHBone::ms_TestCube;
 //CUnitCube *CBVHBone::ms_pUnitCube = NULL;
 
 

@@ -40,7 +40,7 @@ public:
 };
 
 
-//CMeshObjectHandle CreatePipeMesh( float outer_radius, float inner_radius, float height, unsigned int num_sides );
+//MeshHandle CreatePipeMesh( float outer_radius, float inner_radius, float height, unsigned int num_sides );
 
 
 } // namespace amorphous

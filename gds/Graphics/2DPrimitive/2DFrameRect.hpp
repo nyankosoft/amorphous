@@ -40,7 +40,7 @@ public:
 	/// draw framerect without any render state changes
 	inline virtual void draw();
 
-//	virtual void Draw( const CTextureHandle& texture );
+//	virtual void Draw( const TextureHandle& texture );
 //	virtual void Draw() { C2DPrimitive::Draw(); }
 
 //	inline Vector2 GetCornerPos2D( int vert_index ) const;

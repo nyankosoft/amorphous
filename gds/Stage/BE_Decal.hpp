@@ -19,7 +19,7 @@ class CBE_Decal : public CBaseEntity
 	int m_NumTotalUsedDecals;
 
 	std::string m_DecalTextureFilepath;
-	CTextureHandle m_DecalTexture;
+	TextureHandle m_DecalTexture;
 
 	C2DRect m_DecalRect;
 

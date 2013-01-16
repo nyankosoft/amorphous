@@ -44,7 +44,7 @@ using namespace boost;
 
 // Make these member functions of CGameItem if they are frequently called.
 
-CMeshObjectHandle GetPrimaryMeshHandle( CGameItem& item )
+MeshHandle GetPrimaryMeshHandle( CGameItem& item )
 {
 	if( 0 < item.GetMeshContainerRootNode().GetNumMeshContainers()
 	 && item.GetMeshContainerRootNode().GetMeshContainer(0) )
@@ -52,7 +52,7 @@ CMeshObjectHandle GetPrimaryMeshHandle( CGameItem& item )
 		return item.GetMeshContainerRootNode().GetMeshContainer(0)->m_MeshObjectHandle;
 	}
 	else
-		return CMeshObjectHandle();
+		return MeshHandle();
 }
 
 boost::shared_ptr<BasicMesh> GetPrimaryMesh( CGameItem& item )
@@ -98,7 +98,7 @@ void CItemEntity::UpdateGraphicsUpdateCallbacks()
 //	if( m_MeshHandle.GetMesh()
 //	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
 
-	CMeshObjectHandle mesh = GetPrimaryMeshHandle( *m_pItem );
+	MeshHandle mesh = GetPrimaryMeshHandle( *m_pItem );
 	shared_ptr<SkeletalMesh> pSkeletalMesh
 		= dynamic_pointer_cast<SkeletalMesh,BasicMesh>( mesh.GetMesh() );
 

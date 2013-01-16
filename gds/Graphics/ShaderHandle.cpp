@@ -10,13 +10,13 @@ using namespace std;
 
 
 //==================================================================================================
-// CShaderHandle
+// ShaderHandle
 //==================================================================================================
 
-const CShaderHandle CShaderHandle::ms_NullHandle;
+const ShaderHandle ShaderHandle::ms_NullHandle;
 
 
-bool CShaderHandle::Load( const CShaderResourceDesc& desc )
+bool ShaderHandle::Load( const CShaderResourceDesc& desc )
 {
 	Release();
 
@@ -37,7 +37,7 @@ bool CShaderHandle::Load( const CShaderResourceDesc& desc )
 }
 
 
-bool CShaderHandle::Load( const std::string& resource_path )
+bool ShaderHandle::Load( const std::string& resource_path )
 {
 	CShaderResourceDesc desc;
 	desc.ResourcePath = resource_path;
@@ -45,7 +45,7 @@ bool CShaderHandle::Load( const std::string& resource_path )
 }
 
 
-CShaderManager *CShaderHandle::GetShaderManager()
+CShaderManager *ShaderHandle::GetShaderManager()
 {
 	if( GetEntry()
 	 && GetEntry()->GetShaderResource() )

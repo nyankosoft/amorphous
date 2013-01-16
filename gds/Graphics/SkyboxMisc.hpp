@@ -16,15 +16,15 @@ namespace amorphous
 
 
 boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath );
-CMeshObjectHandle CreateSkyboxMesh( const std::string& texture_filepath );
-void RenderAsSkybox( CMeshObjectHandle& mesh, const Matrix34& vCamPose );
-void RenderSkybox( CTextureHandle& sky_texture, const Matrix34& vCamPose );
-void RenderSkyCylinder( CTextureHandle& sky_texture, const Matrix34& vCamPose );
+MeshHandle CreateSkyboxMesh( const std::string& texture_filepath );
+void RenderAsSkybox( MeshHandle& mesh, const Matrix34& vCamPose );
+void RenderSkybox( TextureHandle& sky_texture, const Matrix34& vCamPose );
+void RenderSkyCylinder( TextureHandle& sky_texture, const Matrix34& vCamPose );
 
-CTextureHandle CreateClearDaySkyTexture();
-CTextureHandle CreateCloudyDaySkyTexture();
-CTextureHandle CreateClearNightSkyTexture();
-CTextureHandle CreateCloudyNightSkyTexture();
+TextureHandle CreateClearDaySkyTexture();
+TextureHandle CreateCloudyDaySkyTexture();
+TextureHandle CreateClearNightSkyTexture();
+TextureHandle CreateCloudyNightSkyTexture();
 
 
 //}

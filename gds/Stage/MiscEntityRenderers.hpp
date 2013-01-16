@@ -162,7 +162,7 @@ public:
 
 class CEntityDepthRenderer : public CEntityRenderer
 {
-	CShaderHandle m_DepthRenderShader;
+	ShaderHandle m_DepthRenderShader;
 public:
 
 	bool ShouldRenderEntity( CCopyEntity& entity )

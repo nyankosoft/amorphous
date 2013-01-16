@@ -93,7 +93,7 @@ void C2DRoundRect::Draw()
 }
 
 
-void C2DRoundRect::Draw( const CTextureHandle& texture )
+void C2DRoundRect::Draw( const TextureHandle& texture )
 {
 	if( m_vecRectVertex.size() == 0 )
 		return;

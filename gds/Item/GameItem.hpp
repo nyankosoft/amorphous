@@ -101,13 +101,13 @@ public:
  
 //	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshDesc.ResourcePath; }
 
-//	const CMeshObjectHandle& GetMeshObjectHandle() const { return m_MeshObjectContainer.m_MeshObjectHandle; }
-/*	const CMeshObjectHandle& GetMeshObjectHandle() const
+//	const MeshHandle& GetMeshObjectHandle() const { return m_MeshObjectContainer.m_MeshObjectHandle; }
+/*	const MeshHandle& GetMeshObjectHandle() const
 	{
 		if( 0 < m_MeshContainerRootNode.GetNumChildren() )
 			return m_MeshContainerRootNode.GetChild(0)->m_MeshObjectHandle;
 		else
-			return CMeshObjectHandle::Null();
+			return MeshHandle::Null();
 	}
 */
 

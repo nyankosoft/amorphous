@@ -132,7 +132,7 @@ void CBE_StaticLiquid::Act(CCopyEntity* pCopyEnt)
 /// Renders the surface of the liquid
 void CBE_StaticLiquid::Draw(CCopyEntity* pCopyEnt)
 {
-	CTextureHandle reflected_scene_texture;
+	TextureHandle reflected_scene_texture;
 }
 
 void CBE_StaticLiquid::OnEntityDestroyed(CCopyEntity* pCopyEnt)

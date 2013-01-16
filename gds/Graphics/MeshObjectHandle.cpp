@@ -11,13 +11,13 @@ using namespace std;
 
 
 //==================================================================================================
-// CMeshObjectHandle
+// MeshHandle
 //==================================================================================================
 
-const CMeshObjectHandle CMeshObjectHandle::ms_NullHandle;
+const MeshHandle MeshHandle::ms_NullHandle;
 
 
-boost::shared_ptr<CMeshResource> CMeshObjectHandle::GetMeshResource()
+boost::shared_ptr<CMeshResource> MeshHandle::GetMeshResource()
 {
 	if( GetEntry() )
 		return GetEntry()->GetMeshResource();
@@ -26,7 +26,7 @@ boost::shared_ptr<CMeshResource> CMeshObjectHandle::GetMeshResource()
 }
 
 
-CMeshType::Name CMeshObjectHandle::GetMeshType()
+CMeshType::Name MeshHandle::GetMeshType()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )
@@ -36,7 +36,7 @@ CMeshType::Name CMeshObjectHandle::GetMeshType()
 }
 
 
-bool CMeshObjectHandle::Load( const std::string& resource_path )
+bool MeshHandle::Load( const std::string& resource_path )
 {
 	CMeshResourceDesc desc;
 	desc.ResourcePath = resource_path;
@@ -44,7 +44,7 @@ bool CMeshObjectHandle::Load( const std::string& resource_path )
 }
 
 
-bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
+bool MeshHandle::Load( const CMeshResourceDesc& desc )
 {
 	// if currently holding a mesh, release it
 	Release();
@@ -65,7 +65,7 @@ bool CMeshObjectHandle::Load( const CMeshResourceDesc& desc )
 }
 
 
-boost::shared_ptr<SkeletalMesh> CMeshObjectHandle::GetSkeletalMesh()
+boost::shared_ptr<SkeletalMesh> MeshHandle::GetSkeletalMesh()
 {
 	boost::shared_ptr<BasicMesh> pBasicMesh = GetMesh();
 	if( pBasicMesh )
@@ -77,7 +77,7 @@ boost::shared_ptr<SkeletalMesh> CMeshObjectHandle::GetSkeletalMesh()
 
 
 /*
-bool CMeshObjectHandle::LoadAsync( int priority )
+bool MeshHandle::LoadAsync( int priority )
 {
 	CMeshResourceDesc desc;
 	desc.Filename = filename;
@@ -87,9 +87,9 @@ bool CMeshObjectHandle::LoadAsync( int priority )
 }
 */
 /*
-void CMeshObjectHandle::Serialize( IArchive& ar, const unsigned int version )
+void MeshHandle::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGraphicsResourceHandle::Serialize( ar, version );
+	GraphicsResourceHandle::Serialize( ar, version );
 }
 */
 

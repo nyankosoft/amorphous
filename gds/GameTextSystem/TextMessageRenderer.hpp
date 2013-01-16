@@ -87,7 +87,7 @@ class CDefaultTextMessageRenderer : public CTextMessageRenderer
 	boost::shared_ptr<CTextElement> m_pSpeaker;
 
 	/// texture for window rectangle
-	CTextureHandle m_WindowTexture;
+	TextureHandle m_WindowTexture;
 
 	C2DRect m_TexturedIcon;
 
@@ -96,7 +96,7 @@ class CDefaultTextMessageRenderer : public CTextMessageRenderer
 	float m_fBGRectAlpha;
 
 
-//	TCFixedVector< CTextureHandle, NUM_MAX_ICONTEXTURES > m_IconTexture;
+//	TCFixedVector< TextureHandle, NUM_MAX_ICONTEXTURES > m_IconTexture;
 
 //	std::string m_strFontName[NUM_FONTS];
 

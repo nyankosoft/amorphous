@@ -43,7 +43,7 @@ inline HRESULT CD3DCgEffect::SetTexture( const int iStage, const LPDIRECT3DTEXTU
 }
 
 
-inline Result::Name CD3DCgEffect::SetTexture( const int iStage, const CTextureHandle& texture )
+inline Result::Name CD3DCgEffect::SetTexture( const int iStage, const TextureHandle& texture )
 {
 //	HRESULT hr = cgD3D9SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
 	HRESULT hr = cgD3D9SetTexture( m_Textures[iStage], texture.GetTexture() );
@@ -121,7 +121,7 @@ CD3DCgEffect::~CD3DCgEffect()
 }
 
 
-void CD3DCgEffect::SetCGTextureParameter( CGparameter& param, CTextureHandle& texture )
+void CD3DCgEffect::SetCGTextureParameter( CGparameter& param, TextureHandle& texture )
 {
 	cgD3D9SetTextureParameter( param, texture.GetTexture() );
 }

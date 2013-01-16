@@ -82,7 +82,7 @@ public:
 
 	inline void Draw();
 
-	inline void Draw( const CTextureHandle& texture );
+	inline void Draw( const TextureHandle& texture );
 
 	inline virtual Vector2 GetPosition2D( int vert_index ) const;
 

@@ -54,7 +54,7 @@ public:
 };
 
 
-CTextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image )
+TextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image )
 {
 	CTextureResourceDesc desc;
 	desc.Width     = builtin_image.width;
@@ -63,12 +63,12 @@ CTextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image
 	desc.MipLevels = 0;
 	desc.pLoader.reset( new CBuiltinImageTextureLoader( builtin_image ) );
 
-	CTextureHandle texture;
+	TextureHandle texture;
 	bool loaded = texture.Load( desc );
 	if( loaded )
 		return texture;
 	else
-		return CTextureHandle();
+		return TextureHandle();
 }
 
 
