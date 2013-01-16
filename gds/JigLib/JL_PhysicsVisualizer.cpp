@@ -1,4 +1,4 @@
-#include "JL_PhysicsVisualizer_D3D.hpp"
+#include "JL_PhysicsVisualizer.hpp"
 #include "JL_PhysicsManager.hpp"
 #include "3DMath/AABB3.hpp"
 #include "3DMath/MatrixConversions.hpp"
@@ -14,7 +14,7 @@ namespace amorphous
 using namespace std;
 
 
-CJL_PhysicsVisualizer_D3D::CJL_PhysicsVisualizer_D3D( CJL_PhysicsManager *pPhysicsManager )
+CJL_PhysicsVisualizer::CJL_PhysicsVisualizer( CJL_PhysicsManager *pPhysicsManager )
 {
 	m_pPhysicsManager = pPhysicsManager;
 
@@ -31,17 +31,17 @@ CJL_PhysicsVisualizer_D3D::CJL_PhysicsVisualizer_D3D( CJL_PhysicsManager *pPhysi
 }
 
 
-CJL_PhysicsVisualizer_D3D::~CJL_PhysicsVisualizer_D3D()
+CJL_PhysicsVisualizer::~CJL_PhysicsVisualizer()
 {
 //	SafeDelete( m_pUnitCube );
 }
 
 
-//void CJL_PhysicsVisualizer_D3D::Init(){}
-//void CJL_PhysicsVisualizer_D3D::Release(){}
+//void CJL_PhysicsVisualizer::Init(){}
+//void CJL_PhysicsVisualizer::Release(){}
 
 
-void CJL_PhysicsVisualizer_D3D::RenderVisualInfo()
+void CJL_PhysicsVisualizer::RenderVisualInfo()
 {
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
@@ -55,9 +55,9 @@ void CJL_PhysicsVisualizer_D3D::RenderVisualInfo()
 }
 
 
-void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
+void CJL_PhysicsVisualizer::DisplayContactPoints()
 {
-//	MsgBox( "CJL_PhysicsVisualizer_D3D::DisplayContactPoints()" );
+//	MsgBox( "CJL_PhysicsVisualizer::DisplayContactPoints()" );
 
 	int i;
 
@@ -140,13 +140,13 @@ void CJL_PhysicsVisualizer_D3D::DisplayContactPoints()
 #endif
 
 
-//	MsgBox( "CJL_PhysicsVisualizer_D3D::DisplayContactPoints() - end" );
+//	MsgBox( "CJL_PhysicsVisualizer::DisplayContactPoints() - end" );
 
 
 }
 
 
-void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
+void CJL_PhysicsVisualizer::DisplayActorInfo()
 {
 	Vector3 vExtent;
 	Vector3 avLineSegment[2];
@@ -212,13 +212,13 @@ void CJL_PhysicsVisualizer_D3D::DisplayActorInfo()
 }
 
 
-void CJL_PhysicsVisualizer_D3D::ReleaseGraphicsResources()
+void CJL_PhysicsVisualizer::ReleaseGraphicsResources()
 {
 //	m_pUnitCube->Release();
 }
 
 
-void CJL_PhysicsVisualizer_D3D::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CJL_PhysicsVisualizer::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 //	m_pUnitCube->Init();
 //	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );

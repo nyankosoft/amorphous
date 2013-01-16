@@ -540,9 +540,6 @@
     <ClInclude Include="..\..\gds\JigLib\JL_PhysicsManager.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\JigLib\JL_PhysicsVisualizer_D3D.hpp">
-      <Filter>Source Files\JigLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\JigLib\JL_Shape_Box.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
@@ -821,6 +818,9 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\gfx_py.hpp">
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\JigLib\JL_PhysicsVisualizer.hpp">
+      <Filter>Source Files\JigLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1235,9 +1235,6 @@
     <ClCompile Include="..\..\gds\JigLib\JL_PhysicsManager.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\JigLib\JL_PhysicsVisualizer_D3D.cpp">
-      <Filter>Source Files\JigLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\JigLib\JL_Shape_Box.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
@@ -1462,6 +1459,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\gfx_py.cpp">
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\JigLib\JL_PhysicsVisualizer.cpp">
+      <Filter>Source Files\JigLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

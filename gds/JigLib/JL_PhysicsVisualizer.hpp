@@ -1,5 +1,5 @@
-#ifndef  __JL_PHYSICSVISUALIZER_D3D_H__
-#define  __JL_PHYSICSVISUALIZER_D3D_H__
+#ifndef  __JL_PHYSICSVISUALIZER_H__
+#define  __JL_PHYSICSVISUALIZER_H__
 
 
 #include "Graphics/GraphicsComponentCollector.hpp"
@@ -21,12 +21,12 @@ class CJL_PhysicsManager;
 
 
 /**
- * CJL_PhysicsVisualizer_D3D
+ * CJL_PhysicsVisualizer
  *  - used for visual debugging of JigLib physics library
  *  - displays physics-related information such as velocities,
  *    bounding boxes, contact points, etc.
 */
-class CJL_PhysicsVisualizer_D3D : public CGraphicsComponent
+class CJL_PhysicsVisualizer : public CGraphicsComponent
 {
 	CJL_PhysicsManager *m_pPhysicsManager;
 
@@ -40,9 +40,9 @@ class CJL_PhysicsVisualizer_D3D : public CGraphicsComponent
 
 public:
 
-	CJL_PhysicsVisualizer_D3D( CJL_PhysicsManager *pPhysicsManager );
+	CJL_PhysicsVisualizer( CJL_PhysicsManager *pPhysicsManager );
 
-	~CJL_PhysicsVisualizer_D3D();
+	~CJL_PhysicsVisualizer();
 
 	void RaiseRenderStateFlag(int Flag) { m_RenderStateFlag |= Flag; }
 
@@ -65,4 +65,4 @@ public:
 
 
 
-#endif		/*  __JL_PHYSICSVISUALIZER_D3D_H__  */
+#endif		/*  __JL_PHYSICSVISUALIZER_H__  */

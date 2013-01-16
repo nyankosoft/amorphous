@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonCameraController.hpp" />
     <ClInclude Include="..\..\gds\GameCommon\ThirdPersonMotionController.hpp" />
+    <ClInclude Include="..\..\gds\JigLib\JL_PhysicsVisualizer.hpp" />
     <ClInclude Include="..\..\gds\MotionSynthesis\BVHUtilities.hpp" />
     <ClInclude Include="..\..\gds\Script.hpp" />
     <ClInclude Include="..\..\gds\Script\EmbeddedPythonModule.hpp" />
@@ -256,7 +257,6 @@
     <ClInclude Include="..\..\gds\JigLib\JL_PhysicsActor.hpp" />
     <ClInclude Include="..\..\gds\JigLib\JL_PhysicsActorDesc.hpp" />
     <ClInclude Include="..\..\gds\JigLib\JL_PhysicsManager.hpp" />
-    <ClInclude Include="..\..\gds\JigLib\JL_PhysicsVisualizer_D3D.hpp" />
     <ClInclude Include="..\..\gds\JigLib\JL_Shape_Box.hpp" />
     <ClInclude Include="..\..\gds\JigLib\JL_Shape_Capsule.hpp" />
     <ClInclude Include="..\..\gds\JigLib\JL_Shape_Sphere.hpp" />
@@ -339,6 +339,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonCameraController.cpp" />
     <ClCompile Include="..\..\gds\GameCommon\ThirdPersonMotionController.cpp" />
+    <ClCompile Include="..\..\gds\JigLib\JL_PhysicsVisualizer.cpp" />
     <ClCompile Include="..\..\gds\MotionSynthesis\BVHUtilities.cpp" />
     <ClCompile Include="..\..\gds\Script\EmbeddedPythonModule.cpp" />
     <ClCompile Include="..\..\gds\Script\gfx_py.cpp" />
@@ -488,7 +489,6 @@
     <ClCompile Include="..\..\gds\JigLib\JL_PhysicsActor.cpp" />
     <ClCompile Include="..\..\gds\JigLib\JL_PhysicsActorDesc.cpp" />
     <ClCompile Include="..\..\gds\JigLib\JL_PhysicsManager.cpp" />
-    <ClCompile Include="..\..\gds\JigLib\JL_PhysicsVisualizer_D3D.cpp" />
     <ClCompile Include="..\..\gds\JigLib\JL_Shape_Box.cpp" />
     <ClCompile Include="..\..\gds\JigLib\JL_Shape_Capsule.cpp" />
     <ClCompile Include="..\..\gds\JigLib\JL_Shape_Sphere.cpp" />

@@ -8,7 +8,7 @@
 #include "Stage/PlayerInfo.hpp"
 //#include "Stage/ScreenEffectManager.hpp"
 #include "Stage/Stage.hpp"
-//#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
+//#include "JigLib/JL_PhysicsVisualizer.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 
@@ -56,7 +56,7 @@ void CPhysSimVisEventHandler::HandleEvent( CGM_Event &event )
 		return;
 
 //	CPhysicsManager_Visualizer *pVisualizer = g_pStage->GetPhysicsVisualizer();
-/*	CJL_PhysicsVisualizer_D3D *pVisualizer = g_pStage->GetPhysicsVisualizer();
+/*	CJL_PhysicsVisualizer *pVisualizer = g_pStage->GetPhysicsVisualizer();
 	CGM_ControlBase *pControl = event.pControl;
 
 	switch( event.pControl->GetID() )

@@ -13,7 +13,7 @@
 
 namespace amorphous
 {
-//#include "JigLib/JL_PhysicsVisualizer_D3D.hpp"
+//#include "JigLib/JL_PhysicsVisualizer.hpp"
 
 //#include "Sound/SoundManager.hpp"
 
@@ -422,7 +422,7 @@ CGM_Dialog *CGameTask_MainMenu::CreatePhysicsDebugSubDialog()
 
 /*	if( g_pStage )
 	{
-//		CJL_PhysicsVisualizer_D3D *pVisualizer = g_pStage->GetPhysicsVisualizer();
+//		CJL_PhysicsVisualizer *pVisualizer = g_pStage->GetPhysicsVisualizer();
 //		phys_checked[0] = pVisualizer->GetRenderStateFlag() & JL_VIS_CONTACT_POINTS ? true : false;
 //		phys_checked[1] = pVisualizer->GetRenderStateFlag() & JL_VIS_CONTACT_NORMALS ?  true : false;
 //		phys_checked[2] = pVisualizer->GetRenderStateFlag() & JL_VIS_AABB ? true : false;

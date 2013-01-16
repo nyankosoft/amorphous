@@ -12,7 +12,7 @@ class CJL_PhysicsActorDesc;
 class CJL_PhysicsActor;
 class CJL_PhysicsManager;
 class CJL_LineSegment;
-class CJL_PhysicsVisualizer_D3D;
+class CJL_PhysicsVisualizer;
 
 } // namespace amorphous
 
