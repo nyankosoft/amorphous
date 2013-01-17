@@ -4,7 +4,7 @@
 #include "LightEntity.hpp"
 #include "trace.hpp"
 #include "ViewFrustumTest.hpp"
-#include "RenderContext.hpp"
+//#include "RenderContext.hpp"
 #include "BE_Skybox.hpp"
 
 #include "Graphics/ShadowMapManager.hpp"
