@@ -54,7 +54,7 @@ public:
 	/// - Called after all the graphics elements are rendered
 	virtual void RenderImpl() {};
 
-	virtual CFontBase *GetFont() { return NULL; }
+	virtual FontBase *GetFont() { return NULL; }
 
 	/// Must be called by derived classes if overridden
 	inline virtual void Update( float dt );

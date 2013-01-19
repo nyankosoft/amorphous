@@ -130,7 +130,7 @@ void CGI_Binocular::GetStatus( std::string& dest_buffer )
 //void CGI_Binocular::OnSelected() {}
 //bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam ) { return false; }
 //void CGI_Binocular::Update( float dt ) {}
-//void CGI_Binocular::RenderStatus( int index, CFontBase *pFont ) {}
+//void CGI_Binocular::RenderStatus( int index, FontBase *pFont ) {}
 
 
 
@@ -213,7 +213,7 @@ void CGI_NightVision::GetStatus( std::string& dest_buffer )
 
 //void CGI_NightVision::OnSelected() {}
 //void CGI_NightVision::Update( float dt ) {}
-//void CGI_NightVision::RenderStatus( int index, CFontBase *pFont ) {}
+//void CGI_NightVision::RenderStatus( int index, FontBase *pFont ) {}
 
 
 //===========================================================================

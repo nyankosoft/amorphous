@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CD3DXFont : public CFontBase
+class CD3DXFont : public FontBase
 {
 	std::string m_strFontName;
 

@@ -14,7 +14,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CFontBase;
+class FontBase;
 class CGameEventCompiler;
 class CGameTextWindow;
 class CGameTextSet;
@@ -51,7 +51,7 @@ public:
 
 	inline int GetLineLength() { return m_strText.size(); }
 
-	void DrawLine( Vector2& rvPos, int iNumChars, CFontBase *pFont );
+	void DrawLine( Vector2& rvPos, int iNumChars, FontBase *pFont );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 

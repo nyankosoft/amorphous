@@ -21,7 +21,7 @@ using namespace serialization;
 extern void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend );
 
 
-class CTextureFont : public CFontBase
+class TextureFont : public FontBase
 {
 public:
 
@@ -89,13 +89,13 @@ protected:
 
 public:
 
-	CTextureFont();
+	TextureFont();
 
-	CTextureFont( const std::string texture_filename,
+	TextureFont( const std::string texture_filename,
 		          int font_width, int font_height,
 		          int num_tex_divisions_x = 16, int num_tex_divisions_y = 8 );
 
-	virtual ~CTextureFont();
+	virtual ~TextureFont();
 
 	void Release();
 

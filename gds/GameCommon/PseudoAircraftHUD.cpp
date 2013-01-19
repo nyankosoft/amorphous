@@ -36,7 +36,7 @@ CPseudoAircraftHUD::~CPseudoAircraftHUD()
 
 void CPseudoAircraftHUD::Init()
 {
-	CTextureFont *pTexFont = new CTextureFont;
+	TextureFont *pTexFont = new TextureFont;
 	pTexFont->InitFont( "./Texture/MainFont.dds", 8, 12, 16, 8 );
 	m_pFont = pTexFont;
 

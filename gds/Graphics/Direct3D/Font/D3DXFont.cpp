@@ -40,14 +40,14 @@ int CD3DXFont::InitFont( const std::string font_name, int font_width, int font_h
 	if( !DIRECT3D9.GetDevice() )
 		LOG_PRINT_ERROR( " - D3D has not been initialized." );
 
-	UINT weight = m_TypeFlag & CFontBase::BOLD ? 1000 : 0;
+	UINT weight = m_TypeFlag & FontBase::BOLD ? 1000 : 0;
 
 	HRESULT hr = D3DXCreateFont(DIRECT3D9.GetDevice(),
 		                        font_height,
 								font_width,
 								weight,
 								0,
-								m_TypeFlag & CFontBase::ITALIC ? TRUE : FALSE,
+								m_TypeFlag & FontBase::ITALIC ? TRUE : FALSE,
 								SHIFTJIS_CHARSET, 0, 0, 0,
 								font_name.c_str(),
 								&pTempD3DXFont);

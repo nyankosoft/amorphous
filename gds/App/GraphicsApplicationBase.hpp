@@ -25,7 +25,7 @@ class CGraphicsApplicationBase : public CApplicationBase
 //	CPlatformDependentCameraController m_CameraController;
 	boost::shared_ptr<CCameraControllerBase> m_pCameraController;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	boost::shared_ptr<CInputHandler> m_pInputHandler;
 

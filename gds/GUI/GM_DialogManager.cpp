@@ -509,7 +509,7 @@ void CGM_DialogManager::OnFocusedControlChanged( CGM_Control* pFocusedControl, C
 			// render caption text
 			D3DXVECTOR2 vPos = D3DXVECTOR2( m_CaptionParam.fPosX, m_CaptionParam.fPosY );
 
-			CFontBase *pFont = GetFont( m_CaptionParam.iFontIndex );
+			FontBase *pFont = GetFont( m_CaptionParam.iFontIndex );
 			if( pFont )
 			{
 				pFont->DrawText( m_pControlForCaption->GetCaptionText().c_str(),

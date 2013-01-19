@@ -12,17 +12,17 @@ namespace amorphous
 using namespace std;
 
 
-CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type )
+FontBase* FontFactory::CreateFontRawPtr( FontBase::FontType type )
 {
 	switch( type )
 	{
-	case CFontBase::FONTTYPE_TEXTURE:
-		return new CTextureFont;
-	case CFontBase::FONTTYPE_TRUETYPETEXTURE:
-		return new CTrueTypeTextureFont;
-	case CFontBase::FONTTYPE_UTF:
-		return new CUTFFont;
-//	case CFontBase::FONTTYPE_DIRECT3D:
+	case FontBase::FONTTYPE_TEXTURE:
+		return new TextureFont;
+	case FontBase::FONTTYPE_TRUETYPETEXTURE:
+		return new TrueTypeTextureFont;
+	case FontBase::FONTTYPE_UTF:
+		return new UTFFont;
+//	case FontBase::FONTTYPE_DIRECT3D:
 //		return new CD3DFont;
 	default:
 		LOG_PRINT_ERROR( " An unsupported font type." );
@@ -31,7 +31,7 @@ CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type )
 }
 
 
-CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int font_width, int font_height )
+FontBase* FontFactory::CreateFontRawPtr( const std::string& font_name, int font_width, int font_height )
 {
 	string ext;
 	size_t pos = font_name.rfind( "." );
@@ -45,16 +45,16 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 	 || ext == "tga"
 	 || ext == "jpg" )
 	{
-		return new CTextureFont( font_name, font_width, font_height );
+		return new TextureFont( font_name, font_width, font_height );
 	}
-	else if( ext == CTrueTypeTextureFont::GetTextureFontArchiveExtension() )
+	else if( ext == TrueTypeTextureFont::GetTextureFontArchiveExtension() )
 	{
-		return new CTrueTypeTextureFont( font_name, font_width, font_height );
+		return new TrueTypeTextureFont( font_name, font_width, font_height );
 	}
 	else if( font_name.find( "BuiltinFont::" ) == 0 )
 	{
 		const string builtin_font_name = font_name.substr( strlen("BuiltinFont::") );
-		CTextureFont *pFont = new CTextureFont;
+		TextureFont *pFont = new TextureFont;
 		bool initialized = pFont->InitFont( GetBuiltinFontData( builtin_font_name ) );
 
 		if( initialized )
@@ -75,7 +75,7 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 		 || dot_and_ext == ".otf" )
 		{
 			// Consider font_name as a filename
-			CUTFFont *pUTFFont = new CUTFFont;
+			UTFFont *pUTFFont = new UTFFont;
 			pUTFFont->InitFont( font_name );
 			return pUTFFont;
 		}
@@ -85,7 +85,7 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 	else
 		return NULL;
 
-//	CTextureFont *pTexFont = new CTextureFont;
+//	TextureFont *pTexFont = new TextureFont;
 //	pTexFont->InitFont( font_name, 16, 32 );
 //	return pTexFont;
 
@@ -93,7 +93,7 @@ CFontBase* CFontFactory::CreateFontRawPtr( const std::string& font_name, int fon
 }
 
 
-CFontBase* CFontFactory::CreateFontRawPtr( CFontBase::FontType type, const string& font_name, int font_width, int font_height )
+FontBase* FontFactory::CreateFontRawPtr( FontBase::FontType type, const string& font_name, int font_width, int font_height )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 	return NULL;

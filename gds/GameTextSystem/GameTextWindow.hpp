@@ -77,7 +77,7 @@ class CGameTextWindow : public CGraphicsComponent
 //	char m_acTextureFilename[NUM_MAX_ICONTEXTURES][256];
 //	LPDIRECT3DTEXTURE9 m_apTexture[NUM_MAX_ICONTEXTURES];
 
-	CFontBase* m_pFont;
+	FontBase* m_pFont;
 	std::string m_strFontName;
 	float m_fFontWidth;
 	float m_fFontHeight;

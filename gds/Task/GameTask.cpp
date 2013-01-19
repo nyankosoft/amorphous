@@ -374,7 +374,7 @@ void CGameTask::InitAnimatedGraphicsManager()
 	ms_pAnimatedGraphicsManager->GetGraphicsElementManager()->LoadFont(
 		0,
 		"BuiltinFont::BitstreamVeraSansMono-Bold-256",
-		CFontBase::FONTTYPE_TEXTURE,
+		FontBase::FONTTYPE_TEXTURE,
 		16, 32 // width & height
 		);
 }

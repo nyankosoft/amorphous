@@ -92,7 +92,7 @@ class CDebugOutput : public CGraphicsComponent
 	std::vector<CDebugItemBase *> m_vecpDebugItem;
 
 	/// owned reference
-	CFontBase* m_pFont;
+	FontBase* m_pFont;
 
 	bool m_bDisplay;
 
@@ -145,7 +145,7 @@ protected:
 	std::string m_Name;
 
 	/// borrowed reference
-	CFontBase* m_pFont;
+	FontBase* m_pFont;
 
 	Vector2 m_vTopLeftPos;
 
@@ -155,7 +155,7 @@ public:
 
 	virtual ~CDebugItemBase() {}
 
-	virtual void SetFont( CFontBase* pFont ) { m_pFont = pFont; }
+	virtual void SetFont( FontBase* pFont ) { m_pFont = pFont; }
 	virtual void SetName( std::string name ) { m_Name = name; }
 	virtual void SetTopLeftPos( Vector2& pos ) { m_vTopLeftPos = pos; }
 	const std::string& GetName() const { return m_Name; }

@@ -12,7 +12,7 @@
 namespace amorphous
 {
 
-class CFontBase;
+class FontBase;
 
 
 class CGameTask_AsyncStageLoader : public CGameTask
@@ -38,7 +38,7 @@ protected:
 	/// stores loaded stage
 	CStageSharedPtr m_pStage;
 
-	CFontBase *m_pFont;
+	FontBase *m_pFont;
 
 	int m_State;
 

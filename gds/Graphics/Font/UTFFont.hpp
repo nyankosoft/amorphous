@@ -14,7 +14,7 @@ namespace amorphous
  A font class that support the rendering of UTF-8 text
   - Created from TrueType font (*.ttf)
 */
-class CUTFFont : public CTextureFont
+class UTFFont : public TextureFont
 {
 private:
 
@@ -39,11 +39,11 @@ private:
 
 public:
 
-	CUTFFont();
+	UTFFont();
 
-	CUTFFont( const std::string& filename, int font_pt = 32, int resolution = 1 );
+	UTFFont( const std::string& filename, int font_pt = 32, int resolution = 1 );
 
-	virtual ~CUTFFont();
+	virtual ~UTFFont();
 
 //	void Release();
 

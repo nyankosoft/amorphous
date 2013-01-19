@@ -222,7 +222,7 @@ void CGraphicsApplicationBase::Run()
 //		= "Lucida Console";
 		= "DotumChe";
 	g_pFont = pTexFontCFontSharedPtr( new CFont( font_name, 8, 16 ) );*/
-/*	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+/*	shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
 	pTexFont->SetFontSize( 8, 16 );
 	m_pFont = pTexFont;*/

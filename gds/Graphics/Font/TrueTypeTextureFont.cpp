@@ -57,10 +57,10 @@ void CFontTextureLoader::FillTexture( CLockedTexture& texture )
 	// Save the image for faster loading from the next time
 /*	string filename_minus_ext = m_pFont->m_FontFilepath.substr( 0, m_pFont->m_FontFilepath.length() - 4 );
 	CBinaryDatabase<string> db;
-	bool db_open = db.Open( CTrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath + "/" + filename_minus_ext + ".tfd", CBinaryDatabase<string>::DB_MODE_NEW );
+	bool db_open = db.Open( TrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath + "/" + filename_minus_ext + ".tfd", CBinaryDatabase<string>::DB_MODE_NEW );
 	if( db_open )
 	{
-		CTextureFontArchive archive;
+		TextureFontArchive archive;
 		archive.BaseCharHeight = m_pFont->m_BaseHeight;
 		archive.vecCharRect    = m_pFont->m_vecCharRect;
 		db.AddData( "Base", archive );
@@ -83,19 +83,19 @@ void CFontTextureLoader::FillTexture( CLockedTexture& texture )
 
 
 //=========================================================================================
-// CTrueTypeTextureFont
+// TrueTypeTextureFont
 //=========================================================================================
 
-std::string CTrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath = "./Texture";
+std::string TrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath = "./Texture";
 
 
-CTrueTypeTextureFont::CTrueTypeTextureFont()
+TrueTypeTextureFont::TrueTypeTextureFont()
 {
 	InitTrueTypeFontInternal();
 }
 
 
-CTrueTypeTextureFont::CTrueTypeTextureFont( const std::string& filename,
+TrueTypeTextureFont::TrueTypeTextureFont( const std::string& filename,
  		                    int resolution, int font_width, int font_height )
 
 {
@@ -104,15 +104,15 @@ CTrueTypeTextureFont::CTrueTypeTextureFont( const std::string& filename,
 }
 
 
-CTrueTypeTextureFont::~CTrueTypeTextureFont()
+TrueTypeTextureFont::~TrueTypeTextureFont()
 {
 	Release();
 }
 
 
-void CTrueTypeTextureFont::InitTrueTypeFontInternal()
+void TrueTypeTextureFont::InitTrueTypeFontInternal()
 {
-	CTextureFont::InitInternal();
+	TextureFont::InitInternal();
 
 	m_BaseHeight = 64;
 
@@ -125,7 +125,7 @@ void RenderTextToBuffer( FT_Face& face,
 						const std::string &text,
 						int char_height,
 						C2DArray<U8>& dest_bitmap_buffer,
-						vector<CTrueTypeTextureFont::CharRect>& char_rect )
+						vector<TrueTypeTextureFont::CharRect>& char_rect )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -213,7 +213,7 @@ void RenderTextToBuffer( FT_Face& face,
 }
 
 
-bool CTrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest_bitmap_buffer )
+bool TrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest_bitmap_buffer )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -268,7 +268,7 @@ bool CTrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest
 }
 
 
-bool CTrueTypeTextureFont::InitFont( const std::string& filename,
+bool TrueTypeTextureFont::InitFont( const std::string& filename,
  		                     int resolution, int font_width, int font_height )
 {
 	if( filename.length() == 0 )
@@ -301,7 +301,7 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		bool db_open = db.Open( filename, CBinaryDatabase<string>::DB_MODE_APPEND );
 		if( db_open )
 		{
-			CTextureFontArchive archive;
+			TextureFontArchive archive;
 			bool loaded = db.GetData( gs_FontBasicInfoKeyname, archive );
 			if( loaded )
 			{
@@ -333,7 +333,7 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 		string charset_archive_filepath( filename );
 		lfs::change_ext( charset_archive_filepath, "tfc" );
 
-		CTextureFontArchive archive;
+		TextureFontArchive archive;
 		bool archive_loaded = archive.LoadFromFile( charset_archive_filepath );
 		if( !archive_loaded )
 			return false;
@@ -348,14 +348,14 @@ bool CTrueTypeTextureFont::InitFont( const std::string& filename,
 }
 
 
-bool CTrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& texture_filepath )
+bool TrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& texture_filepath )
 {
 	m_FontTexture.SaveTextureToImageFile( texture_filepath );
 
 	string charset_filepath = texture_filepath;
 	lfs::change_ext( charset_filepath, "tfc" );
 
-	CTextureFontArchive tex_font_archive;
+	TextureFontArchive tex_font_archive;
 	tex_font_archive.BaseCharHeight = m_BaseHeight;
 	tex_font_archive.vecCharRect    = m_vecCharRect;
 	bool saved = tex_font_archive.SaveToFile( charset_filepath );
@@ -364,14 +364,14 @@ bool CTrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& textur
 }
 
 
-bool CTrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
+bool TrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
 {
 	string temporary_texture_pathname = "temporary_font_texture.png";
 	bool tex_saved = m_FontTexture.SaveTextureToImageFile( temporary_texture_pathname );
 	if( !tex_saved )
 		return false;
 
-	CTextureFontArchive tex_font_archive;
+	TextureFontArchive tex_font_archive;
 	tex_font_archive.BaseCharHeight = m_BaseHeight;
 	tex_font_archive.vecCharRect    = m_vecCharRect;
 //	bool image_loaded = tex_font_archive.TextureImage.LoadFromFile( temporary_texture_pathname );

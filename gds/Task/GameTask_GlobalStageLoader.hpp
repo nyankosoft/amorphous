@@ -13,7 +13,7 @@ class CInputHandler;
 class CGM_DialogManager;
 class CGM_StdControlRendererManager;
 class TitleEventHandler;
-class CFontBase;
+class FontBase;
 
 
 class CGameTask_GlobalStageLoader : public CGameTask
@@ -24,7 +24,7 @@ class CGameTask_GlobalStageLoader : public CGameTask
 //	CGM_ControlRendererManagerSharedPtr m_pUIRenderManager;
 //	TitleEventHandler* m_pEventHandler;
 
-	CFontBase *m_pFont;
+	FontBase *m_pFont;
 
 	bool m_bRendered;
 

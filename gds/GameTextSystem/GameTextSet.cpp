@@ -29,7 +29,7 @@ void CGameTextComponent::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CGameTextComponent::DrawLine( Vector2& rvPos, int iNumChars, CFontBase *pFont )
+void CGameTextComponent::DrawLine( Vector2& rvPos, int iNumChars, FontBase *pFont )
 {
 	int iStrLength = strlen(m_strText.c_str());
 	if( iStrLength <= iNumChars )

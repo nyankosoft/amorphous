@@ -47,11 +47,11 @@ class C2DRect;
 class C2DFrameRect;
 class C2DTriangle;
 class C2DRegularPolygon;
-class CFontBase;
+class FontBase;
 class CFont;
-class CTextureFont;
-class CTrueTypeTextureFont;
-class CUTFFont;
+class TextureFont;
+class TrueTypeTextureFont;
+class UTFFont;
 class CSimpleBitmapFontData;
 class CCamera;
 class CShaderManager;
@@ -192,7 +192,7 @@ public:
 
 namespace amorphous
 {
-typedef boost::shared_ptr<CFontBase> CFontSharedPtr;
+typedef boost::shared_ptr<FontBase> CFontSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
 typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;

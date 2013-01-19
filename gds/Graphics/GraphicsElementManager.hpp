@@ -52,7 +52,7 @@ public:
 //	virtual bool SetTexture( int texture_id, int element_id ) { return false; }
 //	virtual bool SetTextureCoord( int element_id, const TEXCOORD2& vMin, const TEXCOORD2& vMax ) { return false; }
 	virtual const TextureHandle& GetTexture( int tex_id ) { return TextureHandle::Null(); }
-	virtual CFontBase *GetFont( int font_id ) { return NULL; }
+	virtual FontBase *GetFont( int font_id ) { return NULL; }
 	virtual bool RemoveElement( CGraphicsElement*& pElement ) { return false; }
 	virtual bool RemoveAllElements() { return false; }
 	virtual void Render() {}
@@ -90,7 +90,7 @@ class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGrap
 //	std::vector<CTextureEntity> m_vecTexHandle;	CTextureEntity cannot be used with vector<> - relase & reallocation of vector will screw up the release & load mechanism
 	TCFixedVector<TextureHandle,NUM_MAX_TEXTURES> m_vecTexHandle;
 
-	std::vector<CFontBase *> m_vecpFont;
+	std::vector<FontBase *> m_vecpFont;
 
 	std::vector<Vector2> m_vecOrigFontSize;
 
@@ -215,7 +215,7 @@ public:
 	inline const TextureHandle& GetTexture( int tex_id );
 
 	/// \return borrowed reference to a font object
-	inline CFontBase *GetFont( int font_id );
+	inline FontBase *GetFont( int font_id );
 
 	bool RemoveElement( boost::shared_ptr<CGraphicsElement> pElement );
 
@@ -269,7 +269,7 @@ inline const TextureHandle& CGraphicsElementManager::GetTexture( int tex_id )
 }
 
 
-inline CFontBase *CGraphicsElementManager::GetFont( int font_id )
+inline FontBase *CGraphicsElementManager::GetFont( int font_id )
 {
 	if( font_id < 0 || (int)m_vecpFont.size() <= font_id )
 		return NULL;

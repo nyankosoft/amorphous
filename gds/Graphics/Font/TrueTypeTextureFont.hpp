@@ -39,19 +39,19 @@ namespace amorphous
 	  and re-creating the D3D device object.
 
   - Why a separate archive class? What about deriving font class from IArchiveObjectBase?
-    - CFontBase would need to be an archive object to avoid mulitple inheritance.
+    - FontBase would need to be an archive object to avoid mulitple inheritance.
 */
-class CTextureFontArchive : public IArchiveObjectBase
+class TextureFontArchive : public IArchiveObjectBase
 {
 public:
 
 	int BaseCharHeight;
 
-	std::vector<CTextureFont::CharRect> vecCharRect;
+	std::vector<TextureFont::CharRect> vecCharRect;
 
 public:
 
-	CTextureFontArchive() : BaseCharHeight(64) {}
+	TextureFontArchive() : BaseCharHeight(64) {}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -62,11 +62,11 @@ public:
 
 class CFontTextureLoader : public CTextureFillingAlgorithm
 {
-	CTrueTypeTextureFont *m_pFont;
+	TrueTypeTextureFont *m_pFont;
 
 public:
 
-	CFontTextureLoader( CTrueTypeTextureFont *pFont )
+	CFontTextureLoader( TrueTypeTextureFont *pFont )
 		:
 	m_pFont(pFont)
 	{}
@@ -83,7 +83,7 @@ public:
     from the next time
 
 */
-class CTrueTypeTextureFont : public CTextureFont
+class TrueTypeTextureFont : public TextureFont
 {
 private:
 
@@ -102,12 +102,12 @@ private:
 
 public:
 
-	CTrueTypeTextureFont();
+	TrueTypeTextureFont();
 
-	CTrueTypeTextureFont( const std::string& filename,
+	TrueTypeTextureFont( const std::string& filename,
 		          int resolution = 64, int font_width = 0, int font_height = 32 );
 
-	virtual ~CTrueTypeTextureFont();
+	virtual ~TrueTypeTextureFont();
 
 //	void Release();
 

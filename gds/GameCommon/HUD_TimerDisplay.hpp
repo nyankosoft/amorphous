@@ -26,7 +26,7 @@ public:
 
 	HUD_TimerDisplay() : m_TimeMS(0), m_bDisplay(false) { memset( m_TextBuffer, 0, sizeof(m_TextBuffer) ); }
 
-	void Render( CFontBase *pFont, int sx, int sy );
+	void Render( FontBase *pFont, int sx, int sy );
 
 	inline void GetTimeMMSS( char *pDestBuffer );
 

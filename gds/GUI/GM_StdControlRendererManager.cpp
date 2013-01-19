@@ -11,7 +11,7 @@ namespace amorphous
 
 CGM_StdControlRendererManager::CGM_StdControlRendererManager()
 {
-	m_pGraphicsElementManager->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono-Bold-256", CFontBase::FONTTYPE_TEXTURE, 20, 32, 0, 0 );
+	m_pGraphicsElementManager->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono-Bold-256", FontBase::FONTTYPE_TEXTURE, 20, 32, 0, 0 );
 }
 
 
@@ -28,15 +28,15 @@ void CGM_StdControlRendererManager::LoadPrimaryFont( const std::string& font_nam
 		if( font_name.rfind( ".ttf" ) == font_name.length() - 4
 		 || font_name.rfind( ".TTF" ) == font_name.length() - 4 )
 		{
-			font_type = CFontBase::FONTTYPE_TRUETYPETEXTURE;
+			font_type = FontBase::FONTTYPE_TRUETYPETEXTURE;
 		}
 		else
 		{
-			font_type = CFontBase::FONTTYPE_NORMAL;
+			font_type = FontBase::FONTTYPE_NORMAL;
 		}
 	}
 
-	m_pGraphicsElementManager->LoadFont( 0, m_PrimaryFontName, CFontBase::FONTTYPE_TRUETYPETEXTURE, 20, 32, 0, 0 );
+	m_pGraphicsElementManager->LoadFont( 0, m_PrimaryFontName, FontBase::FONTTYPE_TRUETYPETEXTURE, 20, 32, 0, 0 );
 
 }
 */

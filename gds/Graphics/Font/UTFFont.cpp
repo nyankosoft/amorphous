@@ -14,7 +14,7 @@ using std::string;
 using std::vector;
 using namespace boost;
 
-typedef CTextureFont CASCIIFont;
+typedef TextureFont ASCIIFont;
 
 
 template<class dest_buffer_type, typename BitmapCalc>
@@ -79,16 +79,16 @@ class texture_render_target_of_freetype_bitmap
 
 
 //=========================================================================================
-// CUTFFont
+// UTFFont
 //=========================================================================================
 
-CUTFFont::CUTFFont()
+UTFFont::UTFFont()
 {
 	InitUTFFontInternal();
 }
 
 
-CUTFFont::CUTFFont( const std::string& filename, int font_pt, int resolution )
+UTFFont::UTFFont( const std::string& filename, int font_pt, int resolution )
 
 {
 	InitUTFFontInternal();
@@ -96,16 +96,16 @@ CUTFFont::CUTFFont( const std::string& filename, int font_pt, int resolution )
 }
 
 
-CUTFFont::~CUTFFont()
+UTFFont::~UTFFont()
 {
 	Release();
 }
 
 
-void CUTFFont::InitUTFFontInternal()
+void UTFFont::InitUTFFontInternal()
 {
-	CASCIIFont::InitInternal();
-//	CTextureFont::InitInternal();
+	ASCIIFont::InitInternal();
+//	TextureFont::InitInternal();
 
 //	m_BaseHeight = 64;
 
@@ -123,7 +123,7 @@ static void RenderTextToBufferAndSetUpRects(
 						int char_height,
 //						C2DArray<U8>& dest_bitmap_buffer,
 						CLockedTexture& dest_texture,
-//						vector<CUTFFont::CharRect>& char_rects,
+//						vector<UTFFont::CharRect>& char_rects,
 						C2DRectSet& text_boxes,
 						int start_index,
 						const Vector2& vTopLeftPos
@@ -220,8 +220,8 @@ static void RenderTextToBufferAndSetUpRects(
 
 //		DrawRect( dest_bitmap_buffer, RectLTRB( _left, _top, _right, _bottom ), 0x90 );
 
-		CUTFFont::CharRect char_rect;
-//		CUTFFont::CharRect& char_rect = char_rects[n];
+		UTFFont::CharRect char_rect;
+//		UTFFont::CharRect& char_rect = char_rects[n];
 
 		char_rect.tex_min = TEXCOORD2( (float)_left  / (float)img_width, (float)_top    / (float)img_height );
 		char_rect.tex_max = TEXCOORD2( (float)_right / (float)img_width, (float)_bottom / (float)img_height );
@@ -255,7 +255,7 @@ static void RenderTextToBufferAndSetUpRects(
 }
 
 
-bool CUTFFont::InitFont( const std::string& font_file_path, int font_pt, int resolution )
+bool UTFFont::InitFont( const std::string& font_file_path, int font_pt, int resolution )
 {
 	int font_height = font_pt;
 	int font_width  = font_pt; // not used
@@ -301,7 +301,7 @@ bool CUTFFont::InitFont( const std::string& font_file_path, int font_pt, int res
 }
 
 
-bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2& vTopLeftPos )
+bool UTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2& vTopLeftPos )
 {
 	// lock texture
 	if( !m_FontTexture.GetEntry() )
@@ -325,7 +325,7 @@ bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector
 
 	// draw text to texture
 
-	vector<CUTFFont::CharRect>& char_rects = m_vecCharRect;
+	vector<UTFFont::CharRect>& char_rects = m_vecCharRect;
 	RenderTextToBufferAndSetUpRects(
 		m_Face,
 		utf_text,
@@ -348,9 +348,9 @@ bool CUTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector
 }
 
 
-void CUTFFont::SetFontSize(int font_width, int font_height)
+void UTFFont::SetFontSize(int font_width, int font_height)
 {
-	CTextureFont::SetFontSize( font_width, font_height );
+	TextureFont::SetFontSize( font_width, font_height );
 
 	if( !m_Face )
 	{
@@ -410,7 +410,7 @@ static inline void ConvertToUTF8CodePoints( const std::string& src_text, std::ve
 //TextureHandle sg_TestTexture;
 
 
-void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
+void UTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
 {
 //	ONCE( sg_TestTexture.Load( "tex1024_yellow.bmp" ) );
 
@@ -441,7 +441,7 @@ void CUTFFont::DrawText( const char* pcStr, const Vector2& vPos, U32 color )
 }
 
 
-void CUTFFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
+void UTFFont::CacheText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 {
 	vector<U32> utf8_code_points;
 	ConvertToUTF8CodePoints( string(pcStr), utf8_code_points );

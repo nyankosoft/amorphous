@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-void HUD_TimerDisplay::Render( CFontBase *pFont, int sx, int sy )
+void HUD_TimerDisplay::Render( FontBase *pFont, int sx, int sy )
 {
 	if( !m_bDisplay 
 	 || !pFont )

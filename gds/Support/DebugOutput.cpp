@@ -32,7 +32,7 @@ m_pLogOutput(pLogOutput)
 
 void CDebugItem_Log::Render()
 {
-	CFontBase *pFont = m_pFont;
+	FontBase *pFont = m_pFont;
 
 	const int font_width  = pFont->GetFontWidth();
 	const int font_height = pFont->GetFontHeight();
@@ -111,7 +111,7 @@ void CDebugItem_Profile::Render()
 
 	// draw text
 	Vector2 vPos = m_vTopLeftPos;
-	CFontBase *pFont = m_pFont;
+	FontBase *pFont = m_pFont;
 	for( i=0; i<num_lines; i++ )
 	{
 		pFont->DrawText( rvecProfileText[i].c_str(), vPos, 0xFFFFFFFF );
@@ -122,7 +122,7 @@ void CDebugItem_Profile::Render()
 
 void CDebugItem_StateLog::Render()
 {
-	CFontBase* pFont = m_pFont;
+	FontBase* pFont = m_pFont;
 
 	float fLetterHeight = (float)pFont->GetFontHeight();
 	Vector2 v2d = m_vTopLeftPos;
@@ -203,10 +203,10 @@ CSingleton<CGlobalDebugOutput> CGlobalDebugOutput::m_obj;
 CDebugOutput::CDebugOutput( const std::string& font_name, int w, int h, U32 color )
 : m_ItemIndex(0)
 {
-//	m_pFont = new CTextureFont( font_name, w, h );
+//	m_pFont = new TextureFont( font_name, w, h );
 //	m_pFont->SetColor( color );
 
-	CFontFactory factory;
+	FontFactory factory;
 	m_pFont = factory.CreateFontRawPtr( font_name );
 	m_pFont->SetFontSize( w, h );
 	m_pFont->SetFontColor( color );

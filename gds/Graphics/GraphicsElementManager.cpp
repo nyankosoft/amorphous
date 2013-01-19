@@ -412,7 +412,7 @@ shared_ptr<CFillPolygonElement> CGraphicsElementManager::CreateRegularPolygon( i
 shared_ptr<CTextElement> CGraphicsElementManager::CreateText( int font_id, const string& text, float x, float y,
 										       const SFloatRGBAColor& color, int font_w, int font_h, int layer )
 {
-	CFontBase *pFont = this->GetFont(font_id);
+	FontBase *pFont = this->GetFont(font_id);
 	if( pFont )
 	{
 		Vector2 non_scaled_size = m_vecOrigFontSize[font_id];
@@ -576,8 +576,8 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 
 	m_vecOrigFontSize[font_id] = Vector2( (float)w, (float)h );
 
-	CFontFactory font_factory;
-	CFontBase *pFont = font_factory.CreateFontRawPtr( font_name );
+	FontFactory font_factory;
+	FontBase *pFont = font_factory.CreateFontRawPtr( font_name );
 	if( !pFont )
 		return false;
 
@@ -593,19 +593,19 @@ bool CGraphicsElementManager::LoadFont( int font_id, const string& font_name, in
 
 bool CGraphicsElementManager::LoadFont( int font_id, const std::string& font_name, int width, int height, float bold, float italic, float shadow )
 {
-	CFontBase::FontType font_type;
+	FontBase::FontType font_type;
 	if( font_name.rfind( ".ttf" ) == font_name.length() - 4 )
-		font_type = CFontBase::FONTTYPE_TRUETYPETEXTURE;
+		font_type = FontBase::FONTTYPE_TRUETYPETEXTURE;
 	else if( font_name.rfind( ".bmp" ) == font_name.length() - 4
 		|| font_name.rfind( ".jpg" ) == font_name.length() - 4
 		|| font_name.rfind( ".tga" ) == font_name.length() - 4
 		|| font_name.rfind( ".dds" ) == font_name.length() - 4 )
 	{
-		font_type = CFontBase::FONTTYPE_TEXTURE;
+		font_type = FontBase::FONTTYPE_TEXTURE;
 	}
 	else
 	{
-		font_type = CFontBase::FONTTYPE_UTF;
+		font_type = FontBase::FONTTYPE_UTF;
 	}
 
 	return LoadFont( font_id, font_name, font_type, width, height, bold, italic, shadow );
@@ -628,7 +628,7 @@ int CGraphicsElementManager::LoadTextureFont( const string& font_texture_filenam
 {
 	LOG_PRINT( " - Loading a texture for font: " + font_texture_filename );
 
-	CTextureFont* pFont = new CTextureFont();
+	TextureFont* pFont = new TextureFont();
 	bool res = pFont->InitFont( font_texture_filename, (int)(width * m_fScale), (int)(height * m_fScale) );
 	if( res )
 	{

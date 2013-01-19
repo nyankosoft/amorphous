@@ -30,7 +30,7 @@ class CSkeletonRenderer
 
 //	CUnitCube m_Cube;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	bool m_DisplayBoneNames;
 

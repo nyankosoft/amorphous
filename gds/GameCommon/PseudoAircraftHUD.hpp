@@ -27,7 +27,7 @@ class CPseudoAircraftSimulator;
  */
 class CPseudoAircraftHUD : public CGraphicsComponent
 {
-	CTextureFont *m_pFont;
+	TextureFont *m_pFont;
 
 	C2DRectSet m_RectSet;
 

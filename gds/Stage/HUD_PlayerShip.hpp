@@ -27,7 +27,7 @@ class HUD_PlayerShip : public HUD_PlayerBase
 	TextureHandle m_ShipIconTexture;
 	TextureHandle m_CrosshairTexture;
 
-	CTextureFont m_StatusFont;
+	TextureFont m_StatusFont;
 
 	CGameTextWindow *m_pTextWindow;
 
@@ -51,7 +51,7 @@ public:
 
 	void RenderImpl();
 
-	inline CFontBase *GetFont() { return &m_StatusFont; }
+	inline FontBase *GetFont() { return &m_StatusFont; }
 
 	inline virtual void Update( float dt );
 

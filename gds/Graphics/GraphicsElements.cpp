@@ -651,7 +651,7 @@ void CTextElement::Draw()
 {
 	PROFILE_FUNCTION();
 
-	CFontBase *pFont = m_pManager->GetFont(m_FontID);
+	FontBase *pFont = m_pManager->GetFont(m_FontID);
 	if( !pFont )
 		return;
 
@@ -693,7 +693,7 @@ void CTextElement::SetTextAlignment( int horizontal_alignment, int vertical_alig
 
 void CTextElement::UpdateLocalTextOffset()
 {
-	CFontBase *pFont = m_pManager->GetFont( m_FontID );
+	FontBase *pFont = m_pManager->GetFont( m_FontID );
 	if( !pFont )
 		return;
 

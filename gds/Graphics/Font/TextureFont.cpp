@@ -13,8 +13,8 @@ using namespace std;
 using namespace boost;
 
 
-const std::string CTextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";
-bool CTextureFont::ms_ProfileTextureFont = false;
+const std::string TextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";
+bool TextureFont::ms_ProfileTextureFont = false;
 
 
 void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
@@ -41,13 +41,13 @@ void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
 
 
 
-CTextureFont::CTextureFont()
+TextureFont::TextureFont()
 {
 	InitInternal();
 }
 
 
-CTextureFont::CTextureFont( const std::string texture_filename,
+TextureFont::TextureFont( const std::string texture_filename,
  		                    int font_width, int font_height,
                             int num_tex_divisions_x, int num_tex_divisions_y )
 
@@ -57,13 +57,13 @@ CTextureFont::CTextureFont( const std::string texture_filename,
 }
 
 
-CTextureFont::~CTextureFont()
+TextureFont::~TextureFont()
 {
 	Release();
 }
 
 
-void CTextureFont::InitInternal()
+void TextureFont::InitInternal()
 {
 	m_fItalic = 0.0f;
 
@@ -75,12 +75,12 @@ void CTextureFont::InitInternal()
 }
 
 
-void CTextureFont::Release()
+void TextureFont::Release()
 {
 }
 
 
-void CTextureFont::Reload()
+void TextureFont::Reload()
 {
 	// When the graphics device is released and re-created,
 	// textures are automatically released and reloaded by GraphicsResourceManager
@@ -88,7 +88,7 @@ void CTextureFont::Reload()
 }
 
 
-bool CTextureFont::InitFont( const std::string texture_filename,
+bool TextureFont::InitFont( const std::string texture_filename,
  		                     int font_width, int font_height,
                              int num_tex_divisions_x, int num_tex_divisions_y )
 {
@@ -110,7 +110,7 @@ bool CTextureFont::InitFont( const std::string texture_filename,
 }
 
 
-bool CTextureFont::InitCharacterRects()
+bool TextureFont::InitCharacterRects()
 {
 //	base_char_height = 64;
 
@@ -145,7 +145,7 @@ bool CTextureFont::InitCharacterRects()
 }
 
 
-bool CTextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
+bool TextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
 {
 	CTextureResourceDesc desc;
 
@@ -182,7 +182,7 @@ bool CTextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
 }
 
 
-void CTextureFont::SetFontSize(int font_width, int font_height)
+void TextureFont::SetFontSize(int font_width, int font_height)
 {
 	m_FontWidth  = font_width;
 	m_FontHeight = font_height;
@@ -193,7 +193,7 @@ void CTextureFont::SetFontSize(int font_width, int font_height)
 // vPos : top left corner of the text box
 // font_width : width of a letter (in screen coodinate)
 // font_height : height of a letter (in screen coodinate)
-void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor )
+void TextureFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor )
 {
 	m_CacheIndex = 0;
 	CacheText( pcStr, vPos, Vector2(0,0), 0, dwColor );
@@ -202,7 +202,7 @@ void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, U32 dwColor
 }
 
 
-void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor )
+void TextureFont::DrawText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor )
 {
 	m_CacheIndex = 0;
 	CacheText( pcStr, vPos, vPivotPoint, rotation_angle, dwColor );
@@ -211,7 +211,7 @@ void CTextureFont::DrawText( const char* pcStr, const Vector2& vPos, const Vecto
 }
 
 
-int CTextureFont::GetTextWidth( const char *text ) const
+int TextureFont::GetTextWidth( const char *text ) const
 {
 	if( !text )
 		return 0;
@@ -252,7 +252,7 @@ int CTextureFont::GetTextWidth( const char *text ) const
 }
 
 
-void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor )
+void TextureFont::CacheText( const char* pcStr, const Vector2& vPos, const Vector2& vPivotPoint, float rotation_angle, U32 dwColor )
 {
 	if( m_vecCharRect.size() == 0 )
 		return;
@@ -351,7 +351,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, const Vect
 	const int num_rects_created_in_this_call = rect_index - start_rect_index;
 
 //	m_vShadowShift = Vector2(3,3);
-	if( m_TypeFlag & CFontBase::SHADOW )
+	if( m_TypeFlag & FontBase::SHADOW )
 	{
 		if( m_ShadowTextBox.GetNumRects() < num_total_letters )
 		{
@@ -383,7 +383,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, const Vect
 	{
 		Matrix22 rotation_matrix = Matrix22Rotation( deg_to_rad(rotation_angle) );
 
-		const int num_text_boxes = (m_TypeFlag & CFontBase::SHADOW) ? 2 : 1;
+		const int num_text_boxes = (m_TypeFlag & FontBase::SHADOW) ? 2 : 1;
 		for( int n=0; n<num_text_boxes; n++ )
 		{
 			C2DRectSet& text_box = (n==0) ? m_TextBox : m_ShadowTextBox;
@@ -404,7 +404,7 @@ void CTextureFont::CacheText( const char* pcStr, const Vector2& vPos, const Vect
 }
 
 
-void CTextureFont::DrawCachedText()
+void TextureFont::DrawCachedText()
 {
 	PROFILE_FUNCTION_IF( ms_ProfileTextureFont );
 
@@ -413,14 +413,14 @@ void CTextureFont::DrawCachedText()
 
 	m_TextBox.SetDestAlphaBlendMode( m_DestAlphaBlend );
 
-	if( m_TypeFlag & CFontBase::SHADOW )
+	if( m_TypeFlag & FontBase::SHADOW )
 		m_ShadowTextBox.Draw( 0, num_letters, m_FontTexture );
 
 	m_TextBox.Draw( 0, num_letters, m_FontTexture );
 }
 
 /*
-void CTextureFont::SetDefaultTextureStageStates()
+void TextureFont::SetDefaultTextureStageStates()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 

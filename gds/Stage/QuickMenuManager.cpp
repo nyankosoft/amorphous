@@ -36,7 +36,7 @@ CQM_Menu::CQM_Menu()
 }
 
 
-void CQM_Menu::Render( CFontBase *pFont )
+void CQM_Menu::Render( FontBase *pFont )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
     pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );

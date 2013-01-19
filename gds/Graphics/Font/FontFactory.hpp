@@ -11,23 +11,23 @@ namespace amorphous
 {
 
 
-class CFontFactory
+class FontFactory
 {
 public:
 
-	CFontBase* CreateFontRawPtr( CFontBase::FontType type );
+	FontBase* CreateFontRawPtr( FontBase::FontType type );
 
 	/// Create a font
 	/// Determines the font class from the font_name
-	/// If font_name is a pathname of an image file, CTextureFont is created
+	/// If font_name is a pathname of an image file, TextureFont is created
 	/// and the image file is loaded as a texture that contains the fixed-pitch ascii characters.
-	/// If font_name is a *.ttf or *.otf file, CUTFFont is created.
-	/// If font_name begins with the string, "BuiltinFont::" CTextureFont is created
+	/// If font_name is a *.ttf or *.otf file, UTFFont is created.
+	/// If font_name begins with the string, "BuiltinFont::" TextureFont is created
 	/// and the specified built-in font is loaded
-	CFontBase* CreateFontRawPtr( const std::string& font_name, int font_width = 16, int font_height = 32 );
+	FontBase* CreateFontRawPtr( const std::string& font_name, int font_width = 16, int font_height = 32 );
 
 	/// returns a owned ref
-	CFontBase* CreateFontRawPtr( CFontBase::FontType type, const std::string& font_name, int font_width, int font_height );
+	FontBase* CreateFontRawPtr( FontBase::FontType type, const std::string& font_name, int font_width, int font_height );
 };
 
 

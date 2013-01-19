@@ -57,7 +57,7 @@ void CGameTextWindow::InitFont( const char *pcFontName, float fFontWidth, float 
 
 	SafeDelete( m_pFont );
 //	CFont *pFont = new CFont;
-	CTextureFont *pFont = new CTextureFont;
+	TextureFont *pFont = new TextureFont;
 	pFont->InitFont( pcFontName, (int)(fFontWidth * fScreenWidth), (int)(fFontHeight * fScreenWidth) );
 	m_pFont = pFont;
 }

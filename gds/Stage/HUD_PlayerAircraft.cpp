@@ -148,7 +148,7 @@ void HUD_PlayerAircraft::Init()
 	pElementMgr->CreateFillRect( RectLTRB( x-r, y-w, x+r, y+w ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
 	pElementMgr->CreateFillRect( RectLTRB( x-w, y-r, x+w, y+r ), m_aHUDColor[COLOR_WHITEFRAME], base_layer );
 
-	pElementMgr->LoadFont( GLOBAL_FONT_INDEX, "./Texture/BitstreamVeraSansMono_Bold.dds", CFontBase::FONTTYPE_TEXTURE, 30, 40 );
+	pElementMgr->LoadFont( GLOBAL_FONT_INDEX, "./Texture/BitstreamVeraSansMono_Bold.dds", FontBase::FONTTYPE_TEXTURE, 30, 40 );
 
 	// text for time display
 	m_pTimeText = pElementMgr->CreateText( 0, "", RectAtRightTop( 200, 50, 50, 32 ),
@@ -859,7 +859,7 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 	CWeaponSystem& weapon_system = pAircraft->WeaponSystem();
 
 	// borrow the font from graphics element manager
-	CFontBase *pFont = m_pGraphicsEffectManager->GetGraphicsElementManager()->GetFont( GLOBAL_FONT_INDEX );
+	FontBase *pFont = m_pGraphicsEffectManager->GetGraphicsElementManager()->GetFont( GLOBAL_FONT_INDEX );
 	pFont->SetFontColor( m_aHUDColor[COLOR_NORMAL].GetARGB32() );
 	const int orig_font_w = pFont->GetFontWidth();
 	const int orig_font_h = pFont->GetFontHeight();

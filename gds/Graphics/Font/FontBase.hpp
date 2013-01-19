@@ -25,7 +25,7 @@ namespace amorphous
  3) individual colors
    - different colors for chars
 
-   availability           D3DXFont  CTextureFont
+   availability           D3DXFont  TextureFont
    -----------------------------------------------------------
    uniform colors           yes         yes
    uniform corner colors     no         yes?
@@ -34,7 +34,7 @@ namespace amorphous
 */
 
 
-class CFontBase
+class FontBase
 {
 protected:
 
@@ -66,9 +66,9 @@ public:
 		SHADOW  = (1 << 2),
 	};
 
-	CFontBase() : m_FontWidth(1), m_FontHeight(1), m_dwFontColor(0xFFFFFFFF), m_TypeFlag(0), m_DestAlphaBlend(AlphaBlend::InvSrcAlpha) {}
+	FontBase() : m_FontWidth(1), m_FontHeight(1), m_dwFontColor(0xFFFFFFFF), m_TypeFlag(0), m_DestAlphaBlend(AlphaBlend::InvSrcAlpha) {}
 
-	virtual ~CFontBase() {};
+	virtual ~FontBase() {};
 
 	virtual void Release() {};
 

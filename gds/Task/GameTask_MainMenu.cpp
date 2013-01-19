@@ -336,7 +336,7 @@ void CGameTask_MainMenu::InitFont()
 	font_desc.height = 24;
 */
 ///	if( !m_pUIRenderManager->AddFont( 0, font_desc ) )
-	if( !m_pUIRenderManager->GetGraphicsElementManager()->LoadFont( 0, "Texture\\HGGE_16x8_256.dds", CFontBase::FONTTYPE_TEXTURE, 12, 24 )  )
+	if( !m_pUIRenderManager->GetGraphicsElementManager()->LoadFont( 0, "Texture\\HGGE_16x8_256.dds", FontBase::FONTTYPE_TEXTURE, 12, 24 )  )
 		PrintLog( "cannot create a font. CGameTask_MainMenu::InitFont()" );
 }
 
@@ -507,7 +507,7 @@ void CGameTask_MainMenu::Render()
 
 void CGameTask_MainMenu::InitFontForBackgroundText()
 {
-	boost::shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	boost::shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	int w = 16 * GameWindowManager().GetScreenWidth() / 800;
 	int h = w * 2;

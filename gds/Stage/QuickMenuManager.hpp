@@ -20,7 +20,7 @@ namespace amorphous
 {
 
 
-class CFontBase;
+class FontBase;
 class CGameItem;
 
 //===============================================================================
@@ -91,7 +91,7 @@ public:
 
 	inline int GetParentMenuID() { return m_iParentMenuID; }
 
-	void Render( CFontBase *pFont );
+	void Render( FontBase *pFont );
 
 	friend class CQuickMenuManager;
 };
@@ -128,7 +128,7 @@ public:
 //	bool HandleMouseInput( SInputData& input );
 	bool HandleMouseInput( int iActionCode, int input_type, float fVal );
 
-	void Render( CFontBase *pFont );
+	void Render( FontBase *pFont );
 };
 
 
@@ -257,7 +257,7 @@ inline int CQM_Menu::GetNumMaxItems()
 }
 
 
-inline void CQuickMenuManager::Render( CFontBase *pFont )
+inline void CQuickMenuManager::Render( FontBase *pFont )
 {
 	if( 0 <= m_iCurrentMenu )
 		m_aQuickMenu[m_iCurrentMenu].Render( pFont );

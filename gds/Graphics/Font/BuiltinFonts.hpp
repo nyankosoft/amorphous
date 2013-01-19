@@ -29,18 +29,18 @@ inline const CSimpleBitmapFontData *GetDefaultBuitinFontData()
 }
 
 
-inline CTextureFont* CreateDefaultBuiltinFontRawPtr()
+inline TextureFont* CreateDefaultBuiltinFontRawPtr()
 {
-	CTextureFont *pTexFont = new CTextureFont;
+	TextureFont *pTexFont = new TextureFont;
 	pTexFont->InitFont( GetDefaultBuitinFontData() );
 	pTexFont->SetFontSize( 6, 12 );
 	return pTexFont;
 }
 
 
-inline boost::shared_ptr<CTextureFont> CreateDefaultBuiltinFont()
+inline boost::shared_ptr<TextureFont> CreateDefaultBuiltinFont()
 {
-	boost::shared_ptr<CTextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
+	boost::shared_ptr<TextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
 	return pTexFont;
 }
 
