@@ -241,7 +241,7 @@ void CBE_ParticleSet::Init()
 	}*/
 
 	CMeshResourceDesc mesh_desc;
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) * 0.1f );
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	m_ParticleDebugBox.Load( mesh_desc );

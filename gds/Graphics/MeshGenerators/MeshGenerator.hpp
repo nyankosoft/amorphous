@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CMeshGenerator
+class MeshGenerator
 {
 protected:
 
@@ -51,7 +51,7 @@ public:
 		|CMMA_VertexSet::VF_2D_TEXCOORD0
 	};
 
-	CMeshGenerator()
+	MeshGenerator()
 		:
 	m_DiffuseColor( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) ),
 	m_RequestedVertexFormatFlags( DEFAULT_VERTEX_FLAGS ),
@@ -59,7 +59,7 @@ public:
 	m_PolygonDirection(MeshPolygonDirection::OUTWARD)
 	{}
 
-	virtual ~CMeshGenerator() {}
+	virtual ~MeshGenerator() {}
 
 	const C3DMeshModelArchive& GetMeshArchive() const { return m_MeshArchive; }
 

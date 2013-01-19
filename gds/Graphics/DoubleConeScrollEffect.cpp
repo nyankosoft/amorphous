@@ -16,7 +16,7 @@ using std::vector;
 using namespace boost;
 
 
-class CDoubleConeMeshGenerator : public CMeshGenerator
+class CDoubleConeMeshGenerator : public MeshGenerator
 {
 public:
 

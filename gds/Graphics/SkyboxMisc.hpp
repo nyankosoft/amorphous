@@ -15,7 +15,7 @@ namespace amorphous
 //{
 
 
-boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath );
+boost::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath );
 MeshHandle CreateSkyboxMesh( const std::string& texture_filepath );
 void RenderAsSkybox( MeshHandle& mesh, const Matrix34& vCamPose );
 void RenderSkybox( TextureHandle& sky_texture, const Matrix34& vCamPose );

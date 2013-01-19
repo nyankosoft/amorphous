@@ -80,8 +80,8 @@ void CPrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matr
 
 	if( ms_BoxMesh.GetNumVertices() == 0 )
 	{
-		CBoxMeshGenerator generator;
-		generator.Generate( Vector3(1,1,1), CMeshGenerator::DEFAULT_VERTEX_FLAGS, color );
+		BoxMeshGenerator generator;
+		generator.Generate( Vector3(1,1,1), MeshGenerator::DEFAULT_VERTEX_FLAGS, color );
 		C3DMeshModelArchive mesh_archive( generator.GetMeshArchive() );
 		bool loaded = ms_BoxMesh.LoadFromArchive( mesh_archive );
 	}

@@ -25,7 +25,7 @@ inline std::string to_string( const SFloatRGBAColor& c, int precision = 3, int n
 
 
 
-void CMeshGenerator::SetMiscMeshAttributes()
+void MeshGenerator::SetMiscMeshAttributes()
 {
 	SFloatRGBAColor diffuse_color = m_DiffuseColor;
 	CMMA_VertexSet& vert_set = m_MeshArchive.GetVertexSet();
@@ -58,7 +58,7 @@ void CMeshGenerator::SetMiscMeshAttributes()
 }
 
 
-void CMeshGenerator::GenerateTextureCoords( CGeneral3DMesh& mesh )
+void MeshGenerator::GenerateTextureCoords( CGeneral3DMesh& mesh )
 {
 	AABB3 aabb;
 	Result::Name res = CalculateAABB( mesh, aabb );
@@ -92,17 +92,17 @@ void CMeshGenerator::GenerateTextureCoords( CGeneral3DMesh& mesh )
 
 
 //====================================================================================
-// CBoxMeshGenerator
+// BoxMeshGenerator
 //====================================================================================
 
-CBoxMeshGenerator::CBoxMeshGenerator()
+BoxMeshGenerator::BoxMeshGenerator()
 :
 m_vEdgeLengths(Vector3(1,1,1))
 {
 }
 
 
-Result::Name CBoxMeshGenerator::Generate()
+Result::Name BoxMeshGenerator::Generate()
 {
 	return Generate( m_vEdgeLengths,
 		m_RequestedVertexFormatFlags,
@@ -111,7 +111,7 @@ Result::Name CBoxMeshGenerator::Generate()
 }
 
 
-Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, const SFloatRGBAColor& diffuse_color, MeshPolygonDirection::Type polygon_direction )
+Result::Name BoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, const SFloatRGBAColor& diffuse_color, MeshPolygonDirection::Type polygon_direction )
 {
 	const int num_vertices = 24;
 	const int num_faces = 6;
@@ -258,7 +258,7 @@ Result::Name CBoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, co
 }
 
 
-Result::Name CConeMeshGenerator::Generate()
+Result::Name ConeMeshGenerator::Generate()
 {
 	CreateConeMeshArchive( m_Desc, m_MeshArchive );
 
@@ -269,7 +269,7 @@ Result::Name CConeMeshGenerator::Generate()
 
 
 
-Result::Name CCylinderMeshGenerator::Generate()
+Result::Name CylinderMeshGenerator::Generate()
 {
 //	Result::Name res = CreateCylinderMeshArchive( m_Desc, m_MeshArchive );
 
@@ -284,7 +284,7 @@ Result::Name CCylinderMeshGenerator::Generate()
 }
 
 
-Result::Name CSphereMeshGenerator::Generate()
+Result::Name SphereMeshGenerator::Generate()
 {
 	Result::Name res = CreateSphereMeshArchive( m_Desc, m_MeshArchive );
 	SetMiscMeshAttributes(); // set texture filename if it is specified.
@@ -292,7 +292,7 @@ Result::Name CSphereMeshGenerator::Generate()
 }
 
 
-Result::Name CCapsuleMeshGenerator::Generate()
+Result::Name CapsuleMeshGenerator::Generate()
 {
 	Result::Name res = CreateCapsuleMeshArchive( m_Desc, m_MeshArchive );
 	SetMiscMeshAttributes(); // set texture filename if it is specified.

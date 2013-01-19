@@ -17,7 +17,7 @@ inline MeshHandle CreateBoxMesh( const Vector3& whd,
 								const Matrix34& model_pose = Matrix34Identity(),
 								const std::string& texture_pathname = "" )
 {
-	boost::shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	boost::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
@@ -42,7 +42,7 @@ inline MeshHandle CreateSphereMesh( float radius,
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = radius;
 	sphere_desc.axis = 1;
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
 	MeshHandle mesh;
@@ -60,7 +60,7 @@ inline MeshHandle CreateConeMesh( const CConeDesc& desc,
 								const Matrix34& model_pose = Matrix34Identity() )
 {
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.pMeshGenerator.reset( new CConeMeshGenerator(desc) );
+	mesh_desc.pMeshGenerator.reset( new ConeMeshGenerator(desc) );
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
 	MeshHandle mesh;
@@ -94,7 +94,7 @@ inline MeshHandle CreateCylinderMesh( float radius = 0.5f, float height = 1.0f,
 	cylinder_desc.height = height;
 
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.pMeshGenerator.reset( new CCylinderMeshGenerator(cylinder_desc) );
+	mesh_desc.pMeshGenerator.reset( new CylinderMeshGenerator(cylinder_desc) );
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
 
 	MeshHandle mesh;

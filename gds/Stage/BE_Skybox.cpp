@@ -56,7 +56,7 @@ void CBE_Skybox::Init()
 		sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
 		sphere_desc.axis = 1; // shift texture coords along y-axis
 		sphere_desc.poly_dir = MeshPolygonDirection::INWARD;
-		mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+		mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 	}
 
 	Init3DModel();

@@ -16,9 +16,9 @@ using namespace std;
 using namespace boost;
 
 
-boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath )
+boost::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath )
 {
-	boost::shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	boost::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -29,7 +29,7 @@ boost::shared_ptr<CBoxMeshGenerator> CreateSkyboxMeshGenerator( const std::strin
 }
 
 
-static boost::shared_ptr<CCylinderMeshGenerator> CreateSkyCylinderMeshGenerator( const std::string& texture_filepath )
+static boost::shared_ptr<CylinderMeshGenerator> CreateSkyCylinderMeshGenerator( const std::string& texture_filepath )
 {
 	CCylinderDesc desc;
 	desc.style_flags |= CCylinderMeshStyleFlags::WELD_VERTICES;
@@ -37,7 +37,7 @@ static boost::shared_ptr<CCylinderMeshGenerator> CreateSkyCylinderMeshGenerator(
 	desc.radii[0] = desc.radii[1] = 10.0f;
 	desc.height = 10.0f;
 
-	boost::shared_ptr<CCylinderMeshGenerator> pCylinderMeshGenerator( new CCylinderMeshGenerator(desc) );
+	boost::shared_ptr<CylinderMeshGenerator> pCylinderMeshGenerator( new CylinderMeshGenerator(desc) );
 
 //	pCylinderMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
 	pCylinderMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_Y | TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -138,7 +138,7 @@ void RenderSkybox( TextureHandle& sky_texture, const Matrix34& vCamPose )
 
 	if( !s_SkyboxMesh.IsValid() )
 	{
-		boost::shared_ptr<CBoxMeshGenerator> pSkyboxMeshGenerator
+		boost::shared_ptr<BoxMeshGenerator> pSkyboxMeshGenerator
 			= CreateSkyboxMeshGenerator( "" );
 		if( pSkyboxMeshGenerator )
 		{
@@ -162,7 +162,7 @@ void RenderSkyCylinder( TextureHandle& sky_texture, const Matrix34& vCamPose )
 
 	if( !s_SkyCylinderMesh.IsValid() )
 	{
-		boost::shared_ptr<CCylinderMeshGenerator> pSkyCylinderMeshGenerator
+		boost::shared_ptr<CylinderMeshGenerator> pSkyCylinderMeshGenerator
 			= CreateSkyCylinderMeshGenerator( "" );
 		if( pSkyCylinderMeshGenerator )
 		{

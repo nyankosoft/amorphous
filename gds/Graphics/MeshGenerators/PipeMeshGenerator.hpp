@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class PipeMeshGenerator : public CMeshGenerator
+class PipeMeshGenerator : public MeshGenerator
 {
 	CCylinderDesc m_Desc;
 

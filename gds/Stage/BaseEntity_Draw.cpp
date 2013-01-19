@@ -916,7 +916,7 @@ void CBaseEntity::CreateMeshGenerator( CTextFileScanner& scanner )
 	{
 		float x=1,y=1,z=1;
 		scanner.ScanLine( tag, type, x, y, z );
-		shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
+		shared_ptr<BoxMeshGenerator> pBoxGenerator( new BoxMeshGenerator() );
 		pBoxGenerator->SetDiffuseColor( SFloatRGBAColor(0.1f,0.1f,0.1f,1.0f) );
 		pBoxGenerator->SetEdgeLengths( Vector3(x,y,z) );
 

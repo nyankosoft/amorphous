@@ -24,15 +24,15 @@ public:
 };
 
 
-class CBoxMeshGenerator : public CMeshGenerator
+class BoxMeshGenerator : public MeshGenerator
 {
 	Vector3 m_vEdgeLengths;
 
 public:
 
-	CBoxMeshGenerator();
+	BoxMeshGenerator();
 
-	~CBoxMeshGenerator() {}
+	~BoxMeshGenerator() {}
 
 	void SetEdgeLengths( Vector3 vEdgeLengths ) { m_vEdgeLengths = vEdgeLengths; }
 
@@ -46,30 +46,30 @@ public:
 };
 
 
-class CCylinderMeshGenerator : public CMeshGenerator
+class CylinderMeshGenerator : public MeshGenerator
 {
 	CCylinderDesc m_Desc;
 
 public:
 
-	CCylinderMeshGenerator( const CCylinderDesc& desc )
+	CylinderMeshGenerator( const CCylinderDesc& desc )
 		:
 	m_Desc(desc)
 	{}
 
-	~CCylinderMeshGenerator() {}
+	~CylinderMeshGenerator() {}
 
 	Result::Name Generate();
 };
 
 
-class CConeMeshGenerator : public CMeshGenerator
+class ConeMeshGenerator : public MeshGenerator
 {
 	CConeDesc m_Desc;
 
 public:
 
-	CConeMeshGenerator( const CConeDesc& desc )
+	ConeMeshGenerator( const CConeDesc& desc )
 		:
 	m_Desc(desc)
 	{}
@@ -78,13 +78,13 @@ public:
 };
 
 
-class CSphereMeshGenerator : public CMeshGenerator
+class SphereMeshGenerator : public MeshGenerator
 {
 	CSphereDesc m_Desc;
 
 public:
 
-	CSphereMeshGenerator( const CSphereDesc& desc )
+	SphereMeshGenerator( const CSphereDesc& desc )
 		:
 	m_Desc(desc)
 	{}
@@ -93,13 +93,13 @@ public:
 };
 
 
-class CCapsuleMeshGenerator : public CMeshGenerator
+class CapsuleMeshGenerator : public MeshGenerator
 {
 	CCapsuleDesc m_Desc;
 
 public:
 
-	CCapsuleMeshGenerator( const CCapsuleDesc& desc )
+	CapsuleMeshGenerator( const CCapsuleDesc& desc )
 		:
 	m_Desc(desc)
 	{}

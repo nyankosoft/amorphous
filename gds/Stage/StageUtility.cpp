@@ -676,7 +676,7 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromDimension__";
 
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
 	pBoxMeshGenerator->SetDiffuseColor( diffuse_color );
 	CMeshResourceDesc mesh_desc;
@@ -721,7 +721,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 {
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromDimension__";
 
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
 	pBoxMeshGenerator->SetDiffuseColor( diffuse_color );
 	CMeshResourceDesc mesh_desc;
@@ -768,7 +768,7 @@ CEntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
 
 	CSphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = diameter * 0.5f;
-	shared_ptr<CSphereMeshGenerator> pSphereMeshGenerator( new CSphereMeshGenerator(sphere_desc) );
+	shared_ptr<SphereMeshGenerator> pSphereMeshGenerator( new SphereMeshGenerator(sphere_desc) );
 	pSphereMeshGenerator->SetDiffuseColor( diffuse_color );
 	CMeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pSphereMeshGenerator;
@@ -1234,7 +1234,7 @@ void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_pat
 	sphere_desc.num_segments = 6;
 	sphere_desc.num_sides    = 12;
 	CMeshResourceDesc mesh_desc;
-	mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 	desc.MeshObjectHandle.Load( sphere_desc );
 
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );

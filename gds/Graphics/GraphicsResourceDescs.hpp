@@ -202,7 +202,7 @@ public:
 
 	U32 VertexFormatFlags;
 
-	boost::shared_ptr<CMeshGenerator> pMeshGenerator;
+	boost::shared_ptr<MeshGenerator> pMeshGenerator;
 
 	//
 	// Used by Direct3D

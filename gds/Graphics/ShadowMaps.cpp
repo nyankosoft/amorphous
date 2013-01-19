@@ -94,7 +94,7 @@ void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
 
 CFlatShadowMap::CFlatShadowMap()
 {
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 //	pBoxMeshGenerator->SetTexturePath( texture_filepath );
