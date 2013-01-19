@@ -88,6 +88,7 @@
     <ClInclude Include="..\..\src\EnvMapTest.hpp" />
     <ClInclude Include="..\..\src\GenericShaderTest.hpp" />
     <ClInclude Include="..\..\src\GLSLTest.hpp" />
+    <ClInclude Include="..\..\src\GraphicsElementEffectTest.hpp" />
     <ClInclude Include="..\..\src\GraphicsElementsTest.hpp" />
     <ClInclude Include="..\..\src\HLSLEffectTest.hpp" />
     <ClInclude Include="..\..\src\LensFlareTest.hpp" />
@@ -115,6 +116,7 @@
     <ClCompile Include="..\..\src\GenericShaderTest.cpp" />
     <ClCompile Include="..\..\src\GLSLTest.cpp" />
     <ClCompile Include="..\..\src\GraphicsDemos.cpp" />
+    <ClCompile Include="..\..\src\GraphicsElementEffectTest.cpp" />
     <ClCompile Include="..\..\src\GraphicsElementsTest.cpp" />
     <ClCompile Include="..\..\src\HLSLEffectTest.cpp" />
     <ClCompile Include="..\..\src\LensFlareTest.cpp" />

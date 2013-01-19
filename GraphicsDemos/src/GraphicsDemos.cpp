@@ -4,6 +4,7 @@
 #include "EnvMapTest.hpp"
 #include "GenericShaderTest.hpp"
 #include "GLSLTest.hpp"
+#include "GraphicsElementEffectTest.hpp"
 #include "GraphicsElementsTest.hpp"
 #include "HLSLEffectTest.hpp"
 #include "LensFlareTest.hpp"
@@ -34,6 +35,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 	else if( demo_name == "EnvMapTest" )                      return new CEnvMapTest;
 	else if( demo_name == "GenericShaderTest" )               return new CGenericShaderTest;
 	else if( demo_name == "GLSLTest" )                        return new CGLSLTest;
+	else if( demo_name == "GraphicsElementEffectTest" )       return new CGraphicsElementEffectTest;
 	else if( demo_name == "GraphicsElementsTest" )            return new CGraphicsElementsTest;
 	else if( demo_name == "HLSLEffectTest" )                  return new CHLSLEffectTest;
 	else if( demo_name == "LensFlareTest" )                   return new CLensFlareTest;
