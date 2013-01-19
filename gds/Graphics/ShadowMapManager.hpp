@@ -113,13 +113,13 @@ public:
 
 	void SetSceneRenderer( boost::shared_ptr<CShadowMapSceneRenderer> pSceneRenderer );
 
-	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadowMap( U32 id, const CLight& light );
+	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadowMap( U32 id, const Light& light );
 
-	Result::Name UpdateLightForShadow( U32 id, const CLight& light );
+	Result::Name UpdateLightForShadow( U32 id, const Light& light );
 
 	void RemoveShadowForLight( int shadowmap_id );
 
-	void UpdateLight( int shadowmap_id, const CLight& light );
+	void UpdateLight( int shadowmap_id, const Light& light );
 
 	void RenderShadowCasters( CCamera& camera );
 

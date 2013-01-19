@@ -33,15 +33,15 @@ public:
 
 	void CommitChanges();
 
-	inline void SetAmbientLight( const CAmbientLight& light );
-	inline void SetDirectionalLight( const CDirectionalLight& light );
-	inline void SetPointLight( const CPointLight& light );
-	inline void SetSpotlight( const CSpotlight& light );
-	inline void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
-	inline void SetHemisphericPointLight( const CHemisphericPointLight& light );
-	inline void SetHemisphericSpotlight( const CHemisphericSpotlight& light );
-//	inline void SetTriDirectionalLight( const CTriDirectionalLight& light );
-//	inline void SetTriPointLight( const CTriPointLight& light );
+	inline void SetAmbientLight( const AmbientLight& light );
+	inline void SetDirectionalLight( const DirectionalLight& light );
+	inline void SetPointLight( const PointLight& light );
+	inline void SetSpotlight( const Spotlight& light );
+	inline void SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light );
+	inline void SetHemisphericPointLight( const HemisphericPointLight& light );
+	inline void SetHemisphericSpotlight( const HemisphericSpotlight& light );
+//	inline void SetTriDirectionalLight( const TriDirectionalLight& light );
+//	inline void SetTriPointLight( const TriPointLight& light );
 
 	/// set light to shader variables
 	/// user is responsible for calling CommitChanges() after setting the light
@@ -119,22 +119,22 @@ inline void CD3DFixedFunctionPipelineLightManager::SetPointLightOffset( const in
 }
 */
 /*
-inline void CD3DFixedFunctionPipelineLightManager::SetLight( const int index, const CHemisphericPointLight& rLight )
+inline void CD3DFixedFunctionPipelineLightManager::SetLight( const int index, const HemisphericPointLight& rLight )
 {
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetLight( const int index, const CHemisphericDirectionalLight& rLight )
+inline void CD3DFixedFunctionPipelineLightManager::SetLight( const int index, const HemisphericDirectionalLight& rLight )
 {
 }
 */
 
-inline void CD3DFixedFunctionPipelineLightManager::SetAmbientLight( const CAmbientLight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetAmbientLight( const AmbientLight& light )
 {
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetDirectionalLight( const CDirectionalLight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetDirectionalLight( const DirectionalLight& light )
 {
 //	m_LightCache.vecDirecitonalLight.push_back( light );
 	D3DLIGHT9 d3d_light;
@@ -159,7 +159,7 @@ inline void CD3DFixedFunctionPipelineLightManager::SetDirectionalLight( const CD
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetPointLight( const CPointLight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetPointLight( const PointLight& light )
 {
 //	m_LightCache.vecPointLight.push_back( light );
 	D3DLIGHT9 d3d_light;
@@ -184,7 +184,7 @@ inline void CD3DFixedFunctionPipelineLightManager::SetPointLight( const CPointLi
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetSpotlight( const CSpotlight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetSpotlight( const Spotlight& light )
 {
 //	m_LightCache.vecPointLight.push_back( light );
 	D3DLIGHT9 d3d_light;
@@ -209,19 +209,19 @@ inline void CD3DFixedFunctionPipelineLightManager::SetSpotlight( const CSpotligh
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light )
 {
 //	m_LightCache.vecHSDirecitonalLight.push_back( light );
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericPointLight( const CHemisphericPointLight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericPointLight( const HemisphericPointLight& light )
 {
 //	m_LightCache.vecHSPointLight.push_back( light );
 }
 
 
-inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericSpotlight( const CHemisphericSpotlight& light )
+inline void CD3DFixedFunctionPipelineLightManager::SetHemisphericSpotlight( const HemisphericSpotlight& light )
 {
 //	m_LightCache.vecHSSpotlight.push_back( light );
 }

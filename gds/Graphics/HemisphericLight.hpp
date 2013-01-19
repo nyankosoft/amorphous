@@ -15,7 +15,7 @@ inline SFloatRGBColor ToRGBColor( const SFloatRGBAColor& src )
 }
 
 
-class CHemisphericLightAttribute : public IArchiveObjectBase
+class HemisphericLightAttribute : public IArchiveObjectBase
 {
 public:
 
@@ -24,13 +24,13 @@ public:
 
 public:
 
-	CHemisphericLightAttribute()
+	HemisphericLightAttribute()
 		:
 	UpperDiffuseColor( SFloatRGBAColor::Black() ),
 	LowerDiffuseColor( SFloatRGBAColor::Black() )
 	{}
 
-	CHemisphericLightAttribute( const SFloatRGBAColor& upper_diffuse_color, const SFloatRGBAColor& lower_diffuse_color )
+	HemisphericLightAttribute( const SFloatRGBAColor& upper_diffuse_color, const SFloatRGBAColor& lower_diffuse_color )
 		:
 	UpperDiffuseColor( upper_diffuse_color ),
 	LowerDiffuseColor( lower_diffuse_color )
@@ -45,7 +45,7 @@ public:
 };
 
 /*
-class CHemisphericLight : public CLight
+class HemisphericLight : public Light
 {
 public:
 
@@ -61,23 +61,23 @@ protected:
 
 public:
 
-	CHemisphericLight() {}
-	virtual ~CHemisphericLight() {}
+	HemisphericLight() {}
+	virtual ~HemisphericLight() {}
 };
 */
 
-class CHemisphericPointLight : public CPointLight
+class HemisphericPointLight : public PointLight
 {
 public:
 
-	CHemisphericLightAttribute Attribute;
+	HemisphericLightAttribute Attribute;
 
 public:
 
-//	CHemisphericPointLight();
-//	~CHemisphericPointLight();
+//	HemisphericPointLight();
+//	~HemisphericPointLight();
 
-	Type GetLightType() const { return CLight::HEMISPHERIC_POINT; }
+	Type GetLightType() const { return Light::HEMISPHERIC_POINT; }
 
 	SFloatRGBColor CalcPointLightFactor( float NdotL )
 	{
@@ -88,7 +88,7 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericPointLight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitHemisphericPointLight( *this ); }
 
 	SFloatRGBAColor& UpperColor() { return Attribute.UpperDiffuseColor; }
 	SFloatRGBAColor& LowerColor() { return Attribute.LowerDiffuseColor; }
@@ -96,26 +96,26 @@ public:
 
 
 
-class CHemisphericDirectionalLight : public CDirectionalLight
+class HemisphericDirectionalLight : public DirectionalLight
 {
 public:
 
-	CHemisphericLightAttribute Attribute;
+	HemisphericLightAttribute Attribute;
 
 public:
 
-	CHemisphericDirectionalLight() {}
+	HemisphericDirectionalLight() {}
 
-	CHemisphericDirectionalLight( const Vector3& direction, const SFloatRGBAColor& upper_diffuse_color, const SFloatRGBAColor& lower_diffuse_color )
+	HemisphericDirectionalLight( const Vector3& direction, const SFloatRGBAColor& upper_diffuse_color, const SFloatRGBAColor& lower_diffuse_color )
 	{
 		vDirection = direction;
 		Attribute.UpperDiffuseColor = upper_diffuse_color;
 		Attribute.LowerDiffuseColor = lower_diffuse_color;
 	}
 
-//	~CHemisphericDirectionalLight();
+//	~HemisphericDirectionalLight();
 
-	Type GetLightType() const { return CLight::HEMISPHERIC_DIRECTIONAL; }
+	Type GetLightType() const { return Light::HEMISPHERIC_DIRECTIONAL; }
 
 	inline SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
 	{
@@ -127,7 +127,7 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericDirectionalLight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitHemisphericDirectionalLight( *this ); }
 
 	SFloatRGBAColor& UpperColor() { return Attribute.UpperDiffuseColor; }
 	SFloatRGBAColor& LowerColor() { return Attribute.LowerDiffuseColor; }
@@ -135,15 +135,15 @@ public:
 
 
 
-class CHemisphericSpotlight : public CSpotlight
+class HemisphericSpotlight : public Spotlight
 {
 public:
 
-	CHemisphericLightAttribute Attribute;
+	HemisphericLightAttribute Attribute;
 
 public:
 
-	Type GetLightType() const { return CLight::HEMISPHERIC_SPOTLIGHT; }
+	Type GetLightType() const { return Light::HEMISPHERIC_SPOTLIGHT; }
 
 	SFloatRGBColor CalcSpotlightColor( float NdotL )
 	{
@@ -154,7 +154,7 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitHemisphericSpotlight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitHemisphericSpotlight( *this ); }
 
 	SFloatRGBAColor& UpperColor() { return Attribute.UpperDiffuseColor; }
 	SFloatRGBAColor& LowerColor() { return Attribute.LowerDiffuseColor; }
@@ -163,25 +163,25 @@ public:
 
 // ================================ inline implementations ================================ 
 
-inline void CHemisphericPointLight::Serialize( IArchive& ar, const unsigned int version )
+inline void HemisphericPointLight::Serialize( IArchive& ar, const unsigned int version )
 {
-	CPointLight::Serialize( ar, version );
+	PointLight::Serialize( ar, version );
 
 	ar & Attribute;
 }
 
 
-inline void CHemisphericDirectionalLight::Serialize( IArchive& ar, const unsigned int version )
+inline void HemisphericDirectionalLight::Serialize( IArchive& ar, const unsigned int version )
 {
-	CDirectionalLight::Serialize( ar, version );
+	DirectionalLight::Serialize( ar, version );
 
 	ar & Attribute;
 }
 
 
-inline void CHemisphericSpotlight::Serialize( IArchive& ar, const unsigned int version )
+inline void HemisphericSpotlight::Serialize( IArchive& ar, const unsigned int version )
 {
-	CSpotlight::Serialize( ar, version );
+	Spotlight::Serialize( ar, version );
 
 	ar & Attribute;
 }

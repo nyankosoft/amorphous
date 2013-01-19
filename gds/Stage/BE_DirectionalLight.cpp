@@ -82,7 +82,7 @@ bool CBE_DirectionalLight::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 {
 	CBE_Light::LoadSpecificPropertiesFromFile( scanner );
 
-	CHemisphericDirectionalLight& light = m_DirLight;
+	HemisphericDirectionalLight& light = m_DirLight;
 	float r,g,b;
 
 	if( scanner.TryScanLine( "UPPER_COLOR", r, g, b ) )

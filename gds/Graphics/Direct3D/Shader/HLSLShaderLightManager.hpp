@@ -62,15 +62,15 @@ public:
 
 	void CommitChanges();
 
-	inline void SetAmbientLight( const CAmbientLight& light );
-	inline void SetDirectionalLight( const CDirectionalLight& light );
-	inline void SetPointLight( const CPointLight& light );
-	inline void SetSpotlight( const CSpotlight& light );
-	inline void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
-	inline void SetHemisphericPointLight( const CHemisphericPointLight& light );
-	inline void SetHemisphericSpotlight( const CHemisphericSpotlight& light );
-//	inline void SetTriDirectionalLight( const CTriDirectionalLight& light );
-//	inline void SetTriPointLight( const CTriPointLight& light );
+	inline void SetAmbientLight( const AmbientLight& light );
+	inline void SetDirectionalLight( const DirectionalLight& light );
+	inline void SetPointLight( const PointLight& light );
+	inline void SetSpotlight( const Spotlight& light );
+	inline void SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light );
+	inline void SetHemisphericPointLight( const HemisphericPointLight& light );
+	inline void SetHemisphericSpotlight( const HemisphericSpotlight& light );
+//	inline void SetTriDirectionalLight( const TriDirectionalLight& light );
+//	inline void SetTriPointLight( const TriPointLight& light );
 
 	/// set light to shader variables
 	/// user is responsible for calling CommitChanges() after setting the light
@@ -78,11 +78,11 @@ public:
 
 	/// set light to shader variables
 	/// user is responsible for calling CommitChanges() after setting the light
-	inline void SetLight( const int index, const CHemisphericPointLight& rLight );
+	inline void SetLight( const int index, const HemisphericPointLight& rLight );
 
-	inline void SetLight( const int index, const CHemisphericDirectionalLight& rLight );
+	inline void SetLight( const int index, const HemisphericDirectionalLight& rLight );
 
-	inline void SetLight( const int index, const CHemisphericSpotlight& rLight );
+	inline void SetLight( const int index, const HemisphericSpotlight& rLight );
 
 	/// set the number of directional lights
 	/// user is responsible for calling CommitChanges() after this call
@@ -179,7 +179,7 @@ inline void CHLSLShaderLightManager::SetPointLightOffset( const int iPointLightO
 }
 
 
-inline void CHLSLShaderLightManager::SetLight( const int index, const CHemisphericPointLight& rLight )
+inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericPointLight& rLight )
 {
 	HRESULT hr;
 	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
@@ -198,7 +198,7 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const CHemispher
 }
 
 
-inline void CHLSLShaderLightManager::SetLight( const int index, const CHemisphericDirectionalLight& rLight )
+inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericDirectionalLight& rLight )
 {
 	HRESULT hr;
 	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
@@ -212,7 +212,7 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const CHemispher
 }
 
 
-inline void CHLSLShaderLightManager::SetLight( const int index, const CHemisphericSpotlight& rLight )
+inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericSpotlight& rLight )
 {
 	HRESULT hr;
 	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
@@ -226,42 +226,42 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const CHemispher
 }
 
 
-inline void CHLSLShaderLightManager::SetAmbientLight( const CAmbientLight& light )
+inline void CHLSLShaderLightManager::SetAmbientLight( const AmbientLight& light )
 {
 }
 
 
-inline void CHLSLShaderLightManager::SetDirectionalLight( const CDirectionalLight& light )
+inline void CHLSLShaderLightManager::SetDirectionalLight( const DirectionalLight& light )
 {
 	m_LightCache.vecDirecitonalLight.push_back( light );
 }
 
 
-inline void CHLSLShaderLightManager::SetPointLight( const CPointLight& light )
+inline void CHLSLShaderLightManager::SetPointLight( const PointLight& light )
 {
 	m_LightCache.vecPointLight.push_back( light );
 }
 
 
-inline void CHLSLShaderLightManager::SetSpotlight( const CSpotlight& light )
+inline void CHLSLShaderLightManager::SetSpotlight( const Spotlight& light )
 {
 	m_LightCache.vecSpotlight.push_back( light );
 }
 
 
-inline void CHLSLShaderLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
+inline void CHLSLShaderLightManager::SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light )
 {
 	m_LightCache.vecHSDirecitonalLight.push_back( light );
 }
 
 
-inline void CHLSLShaderLightManager::SetHemisphericPointLight( const CHemisphericPointLight& light )
+inline void CHLSLShaderLightManager::SetHemisphericPointLight( const HemisphericPointLight& light )
 {
 	m_LightCache.vecHSPointLight.push_back( light );
 }
 
 
-inline void CHLSLShaderLightManager::SetHemisphericSpotlight( const CHemisphericSpotlight& light )
+inline void CHLSLShaderLightManager::SetHemisphericSpotlight( const HemisphericSpotlight& light )
 {
 	m_LightCache.vecHSSpotlight.push_back( light );
 }

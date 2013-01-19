@@ -76,7 +76,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	CLightHolder *GetPooledLight( CLight::Type light_type );
+	CLightHolder *GetPooledLight( Light::Type light_type );
 
 	void ReleasePooledLight( CLightHolder *pLightHolder );
 

@@ -20,15 +20,15 @@ public:
 
 	virtual ~CGLFixedPipelineLightManager() {}
 
-	virtual void SetAmbientLight( const CAmbientLight& light );
+	virtual void SetAmbientLight( const AmbientLight& light );
 
-	void SetDirectionalLight( const CDirectionalLight& light );
-	void SetPointLight( const CPointLight& light );
+	void SetDirectionalLight( const DirectionalLight& light );
+	void SetPointLight( const PointLight& light );
 
-	virtual void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
-	virtual void SetHemisphericPointLight( const CHemisphericPointLight& light );
-//	virtual void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
-//	virtual void SetTriPointLight( const CTriPointLight& light ) {}
+	virtual void SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light );
+	virtual void SetHemisphericPointLight( const HemisphericPointLight& light );
+//	virtual void SetTriDirectionalLight( const TriDirectionalLight& light ) {}
+//	virtual void SetTriPointLight( const TriPointLight& light ) {}
 
 	virtual void ClearLights();
 

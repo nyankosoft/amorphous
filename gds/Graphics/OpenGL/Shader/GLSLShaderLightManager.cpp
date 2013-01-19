@@ -36,7 +36,7 @@ void CGLSLShaderLightManager::Init()
 }
 
 
-void CGLSLShaderLightManager::SetHSDiffuseColors( const CHemisphericLightAttribute& hs_light, GLenum light_id )
+void CGLSLShaderLightManager::SetHSDiffuseColors( const HemisphericLightAttribute& hs_light, GLenum light_id )
 {
 	const SFloatRGBAColor& ldc = hs_light.LowerDiffuseColor;
 	glUniform4f( m_VSLowerLightColor[light_id], ldc.red, ldc.green, ldc.blue, ldc.alpha );
@@ -50,12 +50,12 @@ void CGLSLShaderLightManager::SetHSDiffuseColors( const CHemisphericLightAttribu
 }
 
 
-void CGLSLShaderLightManager::SetAmbientLight( const CAmbientLight& light )
+void CGLSLShaderLightManager::SetAmbientLight( const AmbientLight& light )
 {
 }
 
 
-void CGLSLShaderLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
+void CGLSLShaderLightManager::SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light )
 {
 	GLenum light_id = m_NumCurrentLights;
 
@@ -65,7 +65,7 @@ void CGLSLShaderLightManager::SetHemisphericDirectionalLight( const CHemispheric
 }
 
 
-void CGLSLShaderLightManager::SetHemisphericPointLight( const CHemisphericPointLight& light )
+void CGLSLShaderLightManager::SetHemisphericPointLight( const HemisphericPointLight& light )
 {
 	GLenum light_id = m_NumCurrentLights;
 

@@ -60,15 +60,15 @@ public:
 
 	void CommitChanges();
 
-	inline void SetAmbientLight( const CAmbientLight& light );
-	inline void SetDirectionalLight( const CDirectionalLight& light );
-	inline void SetPointLight( const CPointLight& light );
-	inline void SetSpotlight( const CSpotlight& light );
-	inline void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
-	inline void SetHemisphericPointLight( const CHemisphericPointLight& light );
-	inline void SetHemisphericSpotlight( const CHemisphericSpotlight& light );
-//	inline void SetTriDirectionalLight( const CTriDirectionalLight& light );
-//	inline void SetTriPointLight( const CTriPointLight& light );
+	inline void SetAmbientLight( const AmbientLight& light );
+	inline void SetDirectionalLight( const DirectionalLight& light );
+	inline void SetPointLight( const PointLight& light );
+	inline void SetSpotlight( const Spotlight& light );
+	inline void SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light );
+	inline void SetHemisphericPointLight( const HemisphericPointLight& light );
+	inline void SetHemisphericSpotlight( const HemisphericSpotlight& light );
+//	inline void SetTriDirectionalLight( const TriDirectionalLight& light );
+//	inline void SetTriPointLight( const TriPointLight& light );
 
 	/// set light to shader variables
 	/// user is responsible for calling CommitChanges() after setting the light
@@ -76,9 +76,9 @@ public:
 
 	/// set light to shader variables
 	/// user is responsible for calling CommitChanges() after setting the light
-	inline void SetLight( const int index, const CHemisphericPointLight& rLight );
+	inline void SetLight( const int index, const HemisphericPointLight& rLight );
 
-	inline void SetLight( const int index, const CHemisphericDirectionalLight& rLight );
+	inline void SetLight( const int index, const HemisphericDirectionalLight& rLight );
 
 	/// set the number of directional lights
 	/// user is responsible for calling CommitChanges() after this call
@@ -146,7 +146,7 @@ inline void CCgEffectLightManager::SetPointLightOffset( const int iPointLightOff
 }
 
 
-inline void CCgEffectLightManager::SetLight( const int index, const CHemisphericPointLight& rLight )
+inline void CCgEffectLightManager::SetLight( const int index, const HemisphericPointLight& rLight )
 {
 	cgSetParameter4fv( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], (const float *)&rLight.Attribute.UpperDiffuseColor );
 	cgSetParameter4fv( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], (const float *)&rLight.Attribute.LowerDiffuseColor );
@@ -164,7 +164,7 @@ inline void CCgEffectLightManager::SetLight( const int index, const CHemispheric
 }
 
 
-inline void CCgEffectLightManager::SetLight( const int index, const CHemisphericDirectionalLight& rLight )
+inline void CCgEffectLightManager::SetLight( const int index, const HemisphericDirectionalLight& rLight )
 {
 	cgSetParameter4fv( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], (const float *)&rLight.Attribute.UpperDiffuseColor );
 	cgSetParameter4fv( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], (const float *)&rLight.Attribute.LowerDiffuseColor );
@@ -177,42 +177,42 @@ inline void CCgEffectLightManager::SetLight( const int index, const CHemispheric
 }
 
 
-inline void CCgEffectLightManager::SetAmbientLight( const CAmbientLight& light )
+inline void CCgEffectLightManager::SetAmbientLight( const AmbientLight& light )
 {
 }
 
 
-inline void CCgEffectLightManager::SetDirectionalLight( const CDirectionalLight& light )
+inline void CCgEffectLightManager::SetDirectionalLight( const DirectionalLight& light )
 {
 	m_LightCache.vecDirecitonalLight.push_back( light );
 }
 
 
-inline void CCgEffectLightManager::SetSpotlight( const CSpotlight& light )
+inline void CCgEffectLightManager::SetSpotlight( const Spotlight& light )
 {
 	m_LightCache.vecSpotlight.push_back( light );
 }
 
 
-inline void CCgEffectLightManager::SetPointLight( const CPointLight& light )
+inline void CCgEffectLightManager::SetPointLight( const PointLight& light )
 {
 	m_LightCache.vecPointLight.push_back( light );
 }
 
 
-inline void CCgEffectLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
+inline void CCgEffectLightManager::SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light )
 {
 	m_LightCache.vecHSDirecitonalLight.push_back( light );
 }
 
 
-inline void CCgEffectLightManager::SetHemisphericPointLight( const CHemisphericPointLight& light )
+inline void CCgEffectLightManager::SetHemisphericPointLight( const HemisphericPointLight& light )
 {
 	m_LightCache.vecHSPointLight.push_back( light );
 }
 
 
-inline void CCgEffectLightManager::SetHemisphericSpotlight( const CHemisphericSpotlight& light )
+inline void CCgEffectLightManager::SetHemisphericSpotlight( const HemisphericSpotlight& light )
 {
 	m_LightCache.vecHSSpotlight.push_back( light );
 }

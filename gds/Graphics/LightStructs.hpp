@@ -19,41 +19,41 @@ namespace amorphous
 using namespace serialization;
 
 
-class CLightVisitor
+class LightVisitor
 {
 public:
 
-	virtual void VisitLight( CLight& light ) {}
-	virtual void VisitAmbientLight( CAmbientLight& ambient_light ) {}
-	virtual void VisitPointLight( CPointLight& point_light ) {}
-	virtual void VisitDirectionalLight( CDirectionalLight& directional_light ) {}
-	virtual void VisitSpotlight( CSpotlight& spotlight ) {}
-	virtual void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) {}
-	virtual void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) {}
-	virtual void VisitHemisphericSpotlight( CHemisphericSpotlight& hs_spotlight ) {}
+	virtual void VisitLight( Light& light ) {}
+	virtual void VisitAmbientLight( AmbientLight& ambient_light ) {}
+	virtual void VisitPointLight( PointLight& point_light ) {}
+	virtual void VisitDirectionalLight( DirectionalLight& directional_light ) {}
+	virtual void VisitSpotlight( Spotlight& spotlight ) {}
+	virtual void VisitHemisphericPointLight( HemisphericPointLight& hs_point_light ) {}
+	virtual void VisitHemisphericDirectionalLight( HemisphericDirectionalLight& hs_directional_light ) {}
+	virtual void VisitHemisphericSpotlight( HemisphericSpotlight& hs_spotlight ) {}
 //	virtual void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
 //	virtual void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
 };
 
 
-class CConstLightVisitor
+class ConstLightVisitor
 {
 public:
 
-	virtual void VisitLight( const CLight& light ) {}
-	virtual void VisitAmbientLight( const CAmbientLight& ambient_light ) {}
-	virtual void VisitPointLight( const CPointLight& point_light ) {}
-	virtual void VisitDirectionalLight( const CDirectionalLight& directional_light ) {}
-	virtual void VisitSpotlight( const CSpotlight& spotlight ) {}
-	virtual void VisitHemisphericPointLight( const CHemisphericPointLight& hs_point_light ) {}
-	virtual void VisitHemisphericDirectionalLight( const CHemisphericDirectionalLight& hs_directional_light ) {}
-	virtual void VisitHemisphericSpotlight( const CHemisphericSpotlight& hs_spotlight ) {}
+	virtual void VisitLight( const Light& light ) {}
+	virtual void VisitAmbientLight( const AmbientLight& ambient_light ) {}
+	virtual void VisitPointLight( const PointLight& point_light ) {}
+	virtual void VisitDirectionalLight( const DirectionalLight& directional_light ) {}
+	virtual void VisitSpotlight( const Spotlight& spotlight ) {}
+	virtual void VisitHemisphericPointLight( const HemisphericPointLight& hs_point_light ) {}
+	virtual void VisitHemisphericDirectionalLight( const HemisphericDirectionalLight& hs_directional_light ) {}
+	virtual void VisitHemisphericSpotlight( const HemisphericSpotlight& hs_spotlight ) {}
 //	virtual void VisitTriPointLight( const CTriPointLight& tri_point_light ) {}
 //	virtual void VisitTriDirectionalLight( const CTriDirectionalLight& tri_directional_light ) {}
 };
 
 
-class CLight : public IArchiveObjectBase
+class Light : public IArchiveObjectBase
 {
 public:
 
@@ -98,9 +98,9 @@ public:
 
 public:
 
-	inline CLight();
+	inline Light();
 
-	virtual ~CLight() {}
+	virtual ~Light() {}
 
 	virtual Type GetLightType() const = 0;
 
@@ -114,13 +114,13 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitLight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitLight( *this ); }
 
-	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitLight( *this ); }
+	virtual void Accept( ConstLightVisitor& visitor ) const { visitor.VisitLight( *this ); }
 };
 
 
-class CAmbientLight : public CLight
+class AmbientLight : public Light
 {
 public:
 
@@ -128,21 +128,21 @@ public:
 
 public:
 
-	CAmbientLight() { /*iAmbientIdentifier = 0;*/ }
+	AmbientLight() { /*iAmbientIdentifier = 0;*/ }
 
-	Type GetLightType() const { return CLight::AMBIENT; }
+	Type GetLightType() const { return Light::AMBIENT; }
 
 	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal ) { return DiffuseColor; }
 
 //	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitAmbientLight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitAmbientLight( *this ); }
 
-	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitAmbientLight( *this ); }
+	virtual void Accept( ConstLightVisitor& visitor ) const { visitor.VisitAmbientLight( *this ); }
 };
 
 
-class CDistAttenuationLight : public CLight
+class CDistAttenuationLight : public Light
 {
 public:
 
@@ -170,7 +170,7 @@ public:
 };
 
 
-class CDirectionalLight : public CLight
+class DirectionalLight : public Light
 {
 public:
 
@@ -179,11 +179,11 @@ public:
 
 public:
 
-	inline CDirectionalLight();
+	inline DirectionalLight();
 
-	virtual ~CDirectionalLight() {}
+	virtual ~DirectionalLight() {}
 
-	CLight::Type GetLightType() const { return CLight::DIRECTIONAL; }
+	Light::Type GetLightType() const { return Light::DIRECTIONAL; }
 
 	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
 	{
@@ -201,13 +201,13 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitDirectionalLight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitDirectionalLight( *this ); }
 
-	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitDirectionalLight( *this ); }
+	virtual void Accept( ConstLightVisitor& visitor ) const { visitor.VisitDirectionalLight( *this ); }
 };
 
 
-class CPointLight : public CDistAttenuationLight
+class PointLight : public CDistAttenuationLight
 {
 public:
 
@@ -217,11 +217,11 @@ public:
 
 public:
 
-	inline CPointLight();
+	inline PointLight();
 
-	virtual ~CPointLight() {}
+	virtual ~PointLight() {}
 
-	virtual CLight::Type GetLightType() const { return CLight::POINT; }
+	virtual Light::Type GetLightType() const { return Light::POINT; }
 
 	virtual SFloatRGBColor CalcLightAmount( const Vector3& pos, const Vector3& normal )
 	{
@@ -248,13 +248,13 @@ public:
 		return CalcLightColorFromNdotL( NdotL );
 	}
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitPointLight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitPointLight( *this ); }
 
-	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitPointLight( *this ); }
+	virtual void Accept( ConstLightVisitor& visitor ) const { visitor.VisitPointLight( *this ); }
 };
 
 
-class CSpotlight : public CDistAttenuationLight
+class Spotlight : public CDistAttenuationLight
 {
 public:
 
@@ -268,7 +268,7 @@ public:
 
 public:
 
-	CSpotlight()
+	Spotlight()
 		:
 	vPosition( Vector3(0,0,0) ),
 	vDirection( Vector3(0,-1,0) ),
@@ -277,9 +277,9 @@ public:
 	fFalloff(1.0f)
 	{}
 
-	virtual ~CSpotlight() {}
+	virtual ~Spotlight() {}
 
-	virtual CLight::Type GetLightType() const { return CLight::SPOTLIGHT; }
+	virtual Light::Type GetLightType() const { return Light::SPOTLIGHT; }
 
 	virtual SFloatRGBColor CalcSpotlightColor( float NdotL )
 	{
@@ -321,9 +321,9 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void Accept( CLightVisitor& visitor ) { visitor.VisitSpotlight( *this ); }
+	virtual void Accept( LightVisitor& visitor ) { visitor.VisitSpotlight( *this ); }
 
-	virtual void Accept( CConstLightVisitor& visitor ) const { visitor.VisitSpotlight( *this ); }
+	virtual void Accept( ConstLightVisitor& visitor ) const { visitor.VisitSpotlight( *this ); }
 };
 
 
@@ -331,7 +331,7 @@ public:
 // A light which is applied to objects included in an aabb
 // - introduced experimentally to adjust the indoor brightness
 
-class CZoneAmbientLight : public CLight
+class CZoneAmbientLight : public Light
 {
 public:
 
@@ -342,7 +342,7 @@ public:
 
 //========================== inline implementations ==========================
 
-inline CLight::CLight()
+inline Light::Light()
 :
 DiffuseColor(SFloatRGBColor(0,0,0)),
 fIntensity(1.0f),
@@ -351,7 +351,7 @@ fRange(FLT_MAX)
 }
 
 
-inline void CLight::Serialize( IArchive& ar, const unsigned int version )
+inline void Light::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & strName;
 	ar & DiffuseColor;
@@ -370,30 +370,30 @@ inline CDistAttenuationLight::CDistAttenuationLight()
 
 inline void CDistAttenuationLight::Serialize( IArchive& ar, const unsigned int version )
 {
-	CLight::Serialize( ar, version );
+	Light::Serialize( ar, version );
 
 	for( int i=0; i<3; i++ )
 		ar & fAttenuation[i];
 }
 
 
-inline CDirectionalLight::CDirectionalLight()
+inline DirectionalLight::DirectionalLight()
 {
 	vDirection      = Vector3(0,-1,0);
 	vPseudoPosition = Vector3(0,0,0);
 }
 
 
-inline void CDirectionalLight::Serialize( IArchive& ar, const unsigned int version )
+inline void DirectionalLight::Serialize( IArchive& ar, const unsigned int version )
 {
-	CLight::Serialize( ar, version );
+	Light::Serialize( ar, version );
 
 	ar & vPseudoPosition;
 	ar & vDirection;
 }
 
 
-inline CPointLight::CPointLight()
+inline PointLight::PointLight()
 :
 vPosition(Vector3(0,0,0))
 {
@@ -401,7 +401,7 @@ vPosition(Vector3(0,0,0))
 }
 
 
-inline void CPointLight::Serialize( IArchive& ar, const unsigned int version )
+inline void PointLight::Serialize( IArchive& ar, const unsigned int version )
 {
 	CDistAttenuationLight::Serialize( ar, version );
 
@@ -410,7 +410,7 @@ inline void CPointLight::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-inline void CSpotlight::Serialize( IArchive& ar, const unsigned int version )
+inline void Spotlight::Serialize( IArchive& ar, const unsigned int version )
 {
 	CDistAttenuationLight::Serialize( ar, version );
 

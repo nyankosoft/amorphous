@@ -112,7 +112,7 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
 
 PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( CLight::DIRECTIONAL );
+	CLightEntityDesc desc( Light::DIRECTIONAL );
 	char *base_name = "";
 	char *light_name = "";
 	int shadow_for_light = 1; // true(1) by default
@@ -167,7 +167,7 @@ PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args
 
 PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( CLight::POINT );
+	CLightEntityDesc desc( Light::POINT );
 	char *base_name = "";
 	char *light_name = "";
 	int shadow_for_light = 1;     // true(1) by default
@@ -222,7 +222,7 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args, PyObj
 
 PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
+	CLightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
 
 	// alias
 	SFloatRGBAColor& uc = desc.aColor[0];
@@ -286,7 +286,7 @@ PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* ar
 
 PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+	CLightEntityDesc desc( Light::HEMISPHERIC_POINT );
 
 	// alias
 	Vector3& pos = desc.WorldPose.vPosition;

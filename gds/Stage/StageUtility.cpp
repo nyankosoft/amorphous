@@ -219,7 +219,7 @@ CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::stri
 	if( !pStage )
 		return CLightEntityHandle();
 
-	CLightEntityDesc desc( CLight::HEMISPHERIC_POINT );
+	CLightEntityDesc desc( Light::HEMISPHERIC_POINT );
 
 	int group = 0;
 
@@ -261,7 +261,7 @@ CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std
 	if( !pStage )
 		return CLightEntityHandle();
 
-	CLightEntityDesc desc( CLight::HEMISPHERIC_DIRECTIONAL );
+	CLightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
 
 	int group = 0;
 
@@ -305,7 +305,7 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 	if( !pStage )
 		return CLightEntityHandle();
 
-	CLightEntityDesc desc( CLight::HEMISPHERIC_SPOTLIGHT );
+	CLightEntityDesc desc( Light::HEMISPHERIC_SPOTLIGHT );
 
 	int group = 0;
 

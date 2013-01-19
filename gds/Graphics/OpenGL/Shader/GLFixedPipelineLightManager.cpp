@@ -26,7 +26,7 @@ inline void FRGBAtoFloat4( const SFloatRGBAColor& src, float *dest )
 }
 
 
-void SetBaseLight( const CLight& light, GLenum light_id )
+void SetBaseLight( const Light& light, GLenum light_id )
 {
 //	SFloatRGBAColor dc( light.DiffuseColor );
 //	dc.MultiplyRGB( light.fIntensity );
@@ -59,12 +59,12 @@ m_NumCurrentLights(0)
 }
 
 
-void CGLFixedPipelineLightManager::SetAmbientLight( const CAmbientLight& light )
+void CGLFixedPipelineLightManager::SetAmbientLight( const AmbientLight& light )
 {
 }
 
 
-void CGLFixedPipelineLightManager::SetDirectionalLight( const CDirectionalLight& light )
+void CGLFixedPipelineLightManager::SetDirectionalLight( const DirectionalLight& light )
 {
 	if( GL_MAX_LIGHTS <= m_NumCurrentLights )
 		return;
@@ -79,7 +79,7 @@ void CGLFixedPipelineLightManager::SetDirectionalLight( const CDirectionalLight&
 }
 
 
-void CGLFixedPipelineLightManager::SetPointLight( const CPointLight& light )
+void CGLFixedPipelineLightManager::SetPointLight( const PointLight& light )
 {
 	if( GL_MAX_LIGHTS <= m_NumCurrentLights )
 		return;
@@ -99,13 +99,13 @@ void CGLFixedPipelineLightManager::SetPointLight( const CPointLight& light )
 }
 
 
-void CGLFixedPipelineLightManager::SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light )
+void CGLFixedPipelineLightManager::SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light )
 {
 	SetDirectionalLight( light );
 }
 
 
-void CGLFixedPipelineLightManager::SetHemisphericPointLight( const CHemisphericPointLight& light )
+void CGLFixedPipelineLightManager::SetHemisphericPointLight( const HemisphericPointLight& light )
 {
 //	SetHSLight
 //	glLightfv( light, GL_DIFFUSE,  (GLfloat *)&upper_rgba ); // 4 floats

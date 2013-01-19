@@ -28,33 +28,33 @@ CBE_Light::CBE_Light()
 }
 
 
-CLightHolder *CBE_Light::GetPooledLight( CLight::Type light_type )
+CLightHolder *CBE_Light::GetPooledLight( Light::Type light_type )
 {
 	switch( light_type )
 	{
-//	case CLight::AMBIENT:
+//	case Light::AMBIENT:
 //		m_pLightHolder = shared_ptr<CAmbientLight>( new CAmbientLight( pLightDesc->aColor[0], fLightIntensity ) );
 //		break;
-	case CLight::DIRECTIONAL:
+	case Light::DIRECTIONAL:
 		return m_DirectionalLightPool.get_new_object();
 		// new CDirectionalLight( vLightDir, pLightDesc->aColor[0], fLightIntensity, vLightPos );
 		break;
-	case CLight::POINT:
+	case Light::POINT:
 		return m_PointLightPool.get_new_object();
 		//( new CPointLight( vLightPos, pLightDesc->aColor[0], fLightIntensity );
 		break;
-	case CLight::SPOTLIGHT:
+	case Light::SPOTLIGHT:
 		return m_SpotlightPool.get_new_object();
 		break;
-	case CLight::HEMISPHERIC_DIRECTIONAL:
+	case Light::HEMISPHERIC_DIRECTIONAL:
 		return m_HSDirectionalLightPool.get_new_object();
 		//( new CHemisphericDirectionalLight( vLightDir, pLightDesc->aColor[0], pLightDesc->aColor[1], fLightIntensity, vLightPos );
 		break;
-	case CLight::HEMISPHERIC_POINT:
+	case Light::HEMISPHERIC_POINT:
 		return m_HSPointLightPool.get_new_object();
 		//( new CHemisphericPointLight( vLightPos, pLightDesc->aColor[0], pLightDesc->aColor[1], fLightIntensity );
 		break;
-	case CLight::HEMISPHERIC_SPOTLIGHT:
+	case Light::HEMISPHERIC_SPOTLIGHT:
 		return m_HSSpotlightPool.get_new_object();
 		break;
 	default:
@@ -68,25 +68,25 @@ void CBE_Light::ReleasePooledLight( CLightHolder *pLightHolder )
 {
 	switch( pLightHolder->pLight->GetLightType() )
 	{
-//	case CLight::AMBIENT:
+//	case Light::AMBIENT:
 //		m_pLightHolder = shared_ptr<CAmbientLight>( new CAmbientLight( pLightDesc->aColor[0], fLightIntensity ) );
 //		break;
-	case CLight::DIRECTIONAL:
+	case Light::DIRECTIONAL:
 		m_DirectionalLightPool.release( pLightHolder );
 		break;
-	case CLight::POINT:
+	case Light::POINT:
 		m_PointLightPool.release( pLightHolder );
 		break;
-	case CLight::SPOTLIGHT:
+	case Light::SPOTLIGHT:
 		m_SpotlightPool.release( pLightHolder );
 		break;
-	case CLight::HEMISPHERIC_DIRECTIONAL:
+	case Light::HEMISPHERIC_DIRECTIONAL:
 		m_HSDirectionalLightPool.release( pLightHolder );
 		break;
-	case CLight::HEMISPHERIC_POINT:
+	case Light::HEMISPHERIC_POINT:
 		m_HSPointLightPool.release( pLightHolder );
 		break;
-	case CLight::HEMISPHERIC_SPOTLIGHT:
+	case Light::HEMISPHERIC_SPOTLIGHT:
 		m_HSSpotlightPool.release( pLightHolder );
 		break;
 	default:
@@ -97,12 +97,12 @@ void CBE_Light::ReleasePooledLight( CLightHolder *pLightHolder )
 
 void CBE_Light::Init()
 {
-	CLightHolderInitializer<CPointLight> initializer;
+	CLightHolderInitializer<PointLight> initializer;
 	m_PointLightPool.init( 64, initializer );
 
-	m_DirectionalLightPool.init(   16, CLightHolderInitializer<CDirectionalLight>() );
-	m_HSDirectionalLightPool.init( 16, CLightHolderInitializer<CHemisphericDirectionalLight>() );
-	m_HSPointLightPool.init(       64, CLightHolderInitializer<CHemisphericPointLight>() );
+	m_DirectionalLightPool.init(   16, CLightHolderInitializer<DirectionalLight>() );
+	m_HSDirectionalLightPool.init( 16, CLightHolderInitializer<HemisphericDirectionalLight>() );
+	m_HSPointLightPool.init(       64, CLightHolderInitializer<HemisphericPointLight>() );
 }
 
 

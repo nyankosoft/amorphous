@@ -14,12 +14,12 @@ namespace amorphous
 class CLightCache
 {
 public:
-	fixed_vector<CDirectionalLight,8> vecDirecitonalLight;
-	fixed_vector<CPointLight,8> vecPointLight;
-	fixed_vector<CSpotlight,8> vecSpotlight;
-	fixed_vector<CHemisphericDirectionalLight,8> vecHSDirecitonalLight;
-	fixed_vector<CHemisphericPointLight,8> vecHSPointLight;
-	fixed_vector<CHemisphericSpotlight,8> vecHSSpotlight;
+	fixed_vector<DirectionalLight,8> vecDirecitonalLight;
+	fixed_vector<PointLight,8> vecPointLight;
+	fixed_vector<Spotlight,8> vecSpotlight;
+	fixed_vector<HemisphericDirectionalLight,8> vecHSDirecitonalLight;
+	fixed_vector<HemisphericPointLight,8> vecHSPointLight;
+	fixed_vector<HemisphericSpotlight,8> vecHSSpotlight;
 
 public:
 
@@ -42,15 +42,15 @@ public:
 	CShaderLightManager() {}
 	virtual ~CShaderLightManager() {}
 
-	virtual void SetAmbientLight( const CAmbientLight& light ) {}
-	virtual void SetDirectionalLight( const CDirectionalLight& light ) {}
-	virtual void SetPointLight( const CPointLight& light ) {}
-	virtual void SetSpotlight( const CSpotlight& light ) {}
-	virtual void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light ) {}
-	virtual void SetHemisphericPointLight( const CHemisphericPointLight& light ) {}
-	virtual void SetHemisphericSpotlight( const CHemisphericSpotlight& light ) {}
-//	virtual void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
-//	virtual void SetTriPointLight( const CTriPointLight& light ) {}
+	virtual void SetAmbientLight( const AmbientLight& light ) {}
+	virtual void SetDirectionalLight( const DirectionalLight& light ) {}
+	virtual void SetPointLight( const PointLight& light ) {}
+	virtual void SetSpotlight( const Spotlight& light ) {}
+	virtual void SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light ) {}
+	virtual void SetHemisphericPointLight( const HemisphericPointLight& light ) {}
+	virtual void SetHemisphericSpotlight( const HemisphericSpotlight& light ) {}
+//	virtual void SetTriDirectionalLight( const TriDirectionalLight& light ) {}
+//	virtual void SetTriPointLight( const TriPointLight& light ) {}
 
 	virtual void ClearLights() {}
 
@@ -59,7 +59,7 @@ public:
 };
 
 
-class CShaderLightParamsWriter : public CLightVisitor
+class CShaderLightParamsWriter : public LightVisitor
 {
 	CShaderLightManager *m_pShaderLightManager;
 
@@ -70,14 +70,14 @@ public:
 	m_pShaderLightManager(pMgr)
 	{}
 
-//	void VisitLight( CLight& light ) {}
-	void VisitAmbientLight( CAmbientLight& ambient_light ) { m_pShaderLightManager->SetAmbientLight( ambient_light ); }
-	void VisitPointLight( CPointLight& point_light )       { m_pShaderLightManager->SetPointLight( point_light ); }
-	void VisitDirectionalLight( CDirectionalLight& directional_light )        { m_pShaderLightManager->SetDirectionalLight( directional_light ); }
-	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { m_pShaderLightManager->SetHemisphericPointLight( hs_point_light ); }
-	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { m_pShaderLightManager->SetHemisphericDirectionalLight(  hs_directional_light ); }
-//	void VisitTriPointLight( CTriPointLight& tri_point_light ) { m_pShaderLightManager->Set?Light(  ); }
-//	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) { m_pShaderLightManager->Set?Light(  ); }
+//	void VisitLight( Light& light ) {}
+	void VisitAmbientLight( AmbientLight& ambient_light ) { m_pShaderLightManager->SetAmbientLight( ambient_light ); }
+	void VisitPointLight( PointLight& point_light )       { m_pShaderLightManager->SetPointLight( point_light ); }
+	void VisitDirectionalLight( DirectionalLight& directional_light )        { m_pShaderLightManager->SetDirectionalLight( directional_light ); }
+	void VisitHemisphericPointLight( HemisphericPointLight& hs_point_light ) { m_pShaderLightManager->SetHemisphericPointLight( hs_point_light ); }
+	void VisitHemisphericDirectionalLight( HemisphericDirectionalLight& hs_directional_light ) { m_pShaderLightManager->SetHemisphericDirectionalLight(  hs_directional_light ); }
+//	void VisitTriPointLight( TriPointLight& tri_point_light ) { m_pShaderLightManager->Set?Light(  ); }
+//	void VisitTriDirectionalLight( TriDirectionalLight& tri_directional_light ) { m_pShaderLightManager->Set?Light(  ); }
 };
 
 } // namespace amorphous

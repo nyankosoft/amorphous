@@ -18,7 +18,7 @@ class CGLSLShaderLightManager : public CGLFixedPipelineLightManager
 	int m_VSLowerLightColor[8];
 	int m_FSLowerLightColor[8];
 
-	void SetHSDiffuseColors( const CHemisphericLightAttribute& hs_light, GLenum light_id );
+	void SetHSDiffuseColors( const HemisphericLightAttribute& hs_light, GLenum light_id );
 
 public:
 
@@ -27,17 +27,17 @@ public:
 
 	void Init();
 
-	void SetAmbientLight( const CAmbientLight& light );
+	void SetAmbientLight( const AmbientLight& light );
 
 	// Use the implementation of CGLFixedPipelineLightManager
-//	virtual void SetDirectionalLight( const CDirectionalLight& light );
-//	virtual void SetPointLight( const CPointLight& light );
+//	virtual void SetDirectionalLight( const DirectionalLight& light );
+//	virtual void SetPointLight( const PointLight& light );
 
-	virtual void SetHemisphericDirectionalLight( const CHemisphericDirectionalLight& light );
-	virtual void SetHemisphericPointLight( const CHemisphericPointLight& light );
+	virtual void SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light );
+	virtual void SetHemisphericPointLight( const HemisphericPointLight& light );
 
-//	virtual void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
-//	virtual void SetTriPointLight( const CTriPointLight& light ) {}
+//	virtual void SetTriDirectionalLight( const TriDirectionalLight& light ) {}
+//	virtual void SetTriPointLight( const TriPointLight& light ) {}
 
 //	virtual void ClearLights();
 

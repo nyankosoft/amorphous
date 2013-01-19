@@ -52,7 +52,7 @@ public:
 
 	~CLightHolder() { SafeDelete( pLight ); }
 
-	CLight *pLight;
+	Light *pLight;
 };
 
 
@@ -70,12 +70,12 @@ public:
 };
 
 
-class CLightColorVisitor : public CLightVisitor
+class CLightColorVisitor : public LightVisitor
 {
 	int m_Index;
 	SFloatRGBAColor m_Color;
 
-	void SetHSLightColor( CHemisphericLightAttribute& dest )
+	void SetHSLightColor( HemisphericLightAttribute& dest )
 	{
 		switch( m_Index )
 		{
@@ -95,11 +95,11 @@ public:
 	{}
 
 //	void VisitLight( CLight& light ) {}
-	void VisitAmbientLight( CAmbientLight& ambient_light ) { ambient_light.DiffuseColor = m_Color.GetRGBColor(); }
-	void VisitPointLight( CPointLight& point_light ) { point_light.DiffuseColor = m_Color.GetRGBColor(); }
-	void VisitDirectionalLight( CDirectionalLight& directional_light ) { directional_light.DiffuseColor = m_Color.GetRGBColor(); }
-	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light ) { SetHSLightColor( hs_point_light.Attribute ); }
-	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light ) { SetHSLightColor( hs_directional_light.Attribute ); }
+	void VisitAmbientLight( AmbientLight& ambient_light ) { ambient_light.DiffuseColor = m_Color.GetRGBColor(); }
+	void VisitPointLight( PointLight& point_light ) { point_light.DiffuseColor = m_Color.GetRGBColor(); }
+	void VisitDirectionalLight( DirectionalLight& directional_light ) { directional_light.DiffuseColor = m_Color.GetRGBColor(); }
+	void VisitHemisphericPointLight( HemisphericPointLight& hs_point_light ) { SetHSLightColor( hs_point_light.Attribute ); }
+	void VisitHemisphericDirectionalLight( HemisphericDirectionalLight& hs_directional_light ) { SetHSLightColor( hs_directional_light.Attribute ); }
 //	void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
 //	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
 };
@@ -109,7 +109,7 @@ class CLightDesc
 {
 public:
 
-	CLight::Type LightType;
+	Light::Type LightType;
 
 	SFloatRGBAColor aColor[3];
 
@@ -129,18 +129,18 @@ class CLightEntityDesc : public CCopyEntityDesc
 {
 public:
 
-	boost::shared_ptr<CLight> pLight;
+	boost::shared_ptr<Light> pLight;
 
 //	or 
 
-//	CLight *pLightRawPtr;
+//	Light *pLightRawPtr;
 
 // or
 
 	// use pose of CCopyEntityDesc to specify light position, direction, etc.
 //	CLightDesc Desc;
 
-	CLight::Type LightType;
+	Light::Type LightType;
 
 	float fIntensity;
 
@@ -155,7 +155,7 @@ public:
 
 public:
 
-	CLightEntityDesc( CLight::Type light_type = CLight::DIRECTIONAL )
+	CLightEntityDesc( Light::Type light_type = Light::DIRECTIONAL )
 		:
 	LightType(light_type),
 	LightGroup(0),
@@ -179,12 +179,12 @@ class CLightEntity : public CCopyEntity
 	/// Use 1 or 2 to store the light object
 
 	/// 1. owned reference of light
-	boost::shared_ptr<CLight> m_pLight;
+	boost::shared_ptr<Light> m_pLight;
 
 	/// 2. hold light object taken from pooled resources
 	CLightHolder *m_pLightHolder;
 
-//	CLight::Type m_LightType;
+//	Light::Type m_LightType;
 
 	boost::weak_ptr<CLightEntity> m_pLightEntitySelf;
 
@@ -220,15 +220,15 @@ public:
 
 //	inline float *GetColor() { return (float *)&m_Light.Diffuse; }
 
-	CLight::Type GetLightType() const { return m_pLightHolder->pLight->GetLightType(); } 
+	Light::Type GetLightType() const { return m_pLightHolder->pLight->GetLightType(); } 
 
 	inline void SetColor( int index, const SFloatRGBAColor& color );
 	inline void SetColor( int index, const SFloatRGBColor& color );
 
 	inline void SetAttenuationFactors( float a0, float a1, float a2 );
 
-//	boost::shared_ptr<CLight>& GetLightObject() { return m_pLight; }
-	CLight *GetLightObject() { return m_pLightHolder ? m_pLightHolder->pLight : NULL; }
+//	boost::shared_ptr<Light>& GetLightObject() { return m_pLight; }
+	Light *GetLightObject() { return m_pLightHolder ? m_pLightHolder->pLight : NULL; }
 
 	bool ReachesEntity( CCopyEntity *pEntity );
 
@@ -244,11 +244,11 @@ public:
 
 //	inline void SetLightFrom( CCopyEntity& rEntity, int light_type	);
 
-	/*inline*/ void SetLight( const CHemisphericPointLight& point_light, int light_type );
-	/*inline*/ void SetLight( const CHemisphericDirectionalLight& dir_light, int light_type );
+	/*inline*/ void SetLight( const HemisphericPointLight& point_light, int light_type );
+	/*inline*/ void SetLight( const HemisphericDirectionalLight& dir_light, int light_type );
 
-//	inline const CHemisphericPointLight& GetHemisphericLight() { return m_HemisphericLight; }
-//	inline const CHemisphericDirectionalLight& GetHemisphericDirLight() { return m_HemisphericDirLight; }
+//	inline const HemisphericPointLight& GetHemisphericLight() { return m_HemisphericLight; }
+//	inline const HemisphericDirectionalLight& GetHemisphericDirLight() { return m_HemisphericDirLight; }
 
 	friend class CEntityFactory;
 	friend class CEntityNode;
@@ -276,7 +276,7 @@ inline void CLightEntity::SetPosition( const Vector3& rvPosition )
 //	CCopyEntity::SetPosition( rvPosition );
 	CCopyEntity::SetWorldPosition( rvPosition );
 
-	CLight *pLight = GetLightObject();
+	Light *pLight = GetLightObject();
 	if( pLight )
 		pLight->SetPosition( rvPosition );
 }
@@ -296,7 +296,7 @@ inline void CLightEntity::SetDiffuseColor( float *pafColor )
 */
 inline void CLightEntity::SetAttenuationFactors( float a0, float a1, float a2 )
 {
-	CPointLight *pPointLight = dynamic_cast<CPointLight *>(GetLightObject());
+	PointLight *pPointLight = dynamic_cast<PointLight *>(GetLightObject());
 	if( pPointLight )
 	{
 		pPointLight->fAttenuation[0] = a0;

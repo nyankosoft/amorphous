@@ -202,10 +202,10 @@ BOOST_PYTHON_MODULE(gfx)
 
 
 /*
-	class_<CLight>("Light")
-		.def_readwrite("DiffuseColor", &CLight::DiffuseColor)
-		.def_readwrite("fIntensity",   &CLight::fIntensity)
-		.def_readwrite("fRange",       &CLight::fRange)
+	class_<Light>("Light")
+		.def_readwrite("DiffuseColor", &Light::DiffuseColor)
+		.def_readwrite("fIntensity",   &Light::fIntensity)
+		.def_readwrite("fRange",       &Light::fRange)
 	;
 */
 

@@ -171,9 +171,9 @@ public:
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-	virtual void UpdateDirectionalLight( const CDirectionalLight& light ) {}
-	virtual void UpdatePointLight( const CPointLight& light ) {}
-	virtual void UpdateSpotlight( const CSpotlight& light ) {}
+	virtual void UpdateDirectionalLight( const DirectionalLight& light ) {}
+	virtual void UpdatePointLight( const PointLight& light ) {}
+	virtual void UpdateSpotlight( const Spotlight& light ) {}
 //	virtual void UpdateLight( const CSpotLight& light ) {}
 
 	virtual CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
@@ -275,7 +275,7 @@ public:
 
 	COrthoShadowMap();
 
-	void UpdateDirectionalLight( const CDirectionalLight& light );
+	void UpdateDirectionalLight( const DirectionalLight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
@@ -289,7 +289,7 @@ public:
 
 	CDirectionalLightShadowMap();
 
-	void UpdateDirectionalLight( CDirectionalLight& light );
+	void UpdateDirectionalLight( DirectionalLight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };*/
@@ -311,9 +311,9 @@ public:
 	CSpotlightShadowMap();
 
 	/// Called when shadow of directional light is done with spotlight shadow map
-	void UpdateDirectionalLight( const CDirectionalLight& light );
+	void UpdateDirectionalLight( const DirectionalLight& light );
 
-	void UpdateSpotlight( const CSpotlight& light );
+	void UpdateSpotlight( const Spotlight& light );
 
 	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
 };
@@ -358,7 +358,7 @@ public:
 
 	void EndSceneShadowMap();
 
-	void UpdatePointLight( const CPointLight& light );
+	void UpdatePointLight( const PointLight& light );
 
 	std::string CreateTextureFilename();
 

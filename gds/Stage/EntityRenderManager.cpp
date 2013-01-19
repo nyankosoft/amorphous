@@ -1185,7 +1185,7 @@ void CEntityRenderManager::UpdateLightsForShadow()
 		if( !pLightEntity )
 			continue;
 
-		CLight *pLight = pLightEntity->GetLightObject();
+		Light *pLight = pLightEntity->GetLightObject();
 		if( !pLight )
 			continue;
 

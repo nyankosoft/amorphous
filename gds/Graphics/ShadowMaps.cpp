@@ -380,7 +380,7 @@ COrthoShadowMap::COrthoShadowMap()
 }
 
 
-void COrthoShadowMap::UpdateDirectionalLight( const CDirectionalLight& light )
+void COrthoShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
 {
 	if( CShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
@@ -481,7 +481,7 @@ CSpotlightShadowMap::CSpotlightShadowMap()
 }
 
 
-void CSpotlightShadowMap::UpdateDirectionalLight( const CDirectionalLight& light )
+void CSpotlightShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
 {
 	if( CShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
@@ -495,7 +495,7 @@ void CSpotlightShadowMap::UpdateDirectionalLight( const CDirectionalLight& light
 }
 
 
-void CSpotlightShadowMap::UpdateSpotlight( const CSpotlight& light )
+void CSpotlightShadowMap::UpdateSpotlight( const Spotlight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
@@ -602,7 +602,7 @@ void CPointLightShadowMap::EndSceneShadowMap()
 }
 
 
-void CPointLightShadowMap::UpdatePointLight( const CPointLight& light )
+void CPointLightShadowMap::UpdatePointLight( const PointLight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 }

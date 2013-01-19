@@ -86,9 +86,9 @@ public:
 	/// returns index to the registered light
 	int RegisterLight( CCopyEntity& rLightEntity, int light_type );
 
-	int RegisterHemisphericPointLight( CHemisphericPointLight& light, int light_type );
+	int RegisterHemisphericPointLight( HemisphericPointLight& light, int light_type );
 
-	int RegisterHemisphericDirLight( CHemisphericDirectionalLight& dir_light, int light_type );
+	int RegisterHemisphericDirLight( HemisphericDirectionalLight& dir_light, int light_type );
 
 	/// updates the position of the dynamic point light
 	void UpdateLightPosition( int light_index, Vector3& rvNewPosition );

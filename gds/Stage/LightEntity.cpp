@@ -16,11 +16,11 @@ namespace amorphous
 using namespace boost;
 
 
-class CLightInitializer : public CLightVisitor
+class CLightInitializer : public LightVisitor
 {
 	CLightDesc *m_pDesc;
 
-	void InitHSLightAttribute( CHemisphericLightAttribute& hs_attrib )
+	void InitHSLightAttribute( HemisphericLightAttribute& hs_attrib )
 	{
 		hs_attrib.UpperDiffuseColor = m_pDesc->aColor[0];
 		hs_attrib.LowerDiffuseColor = m_pDesc->aColor[1];
@@ -30,7 +30,7 @@ public:
 
 	CLightInitializer( CLightDesc &desc ) : m_pDesc(&desc) {}
 
-	void VisitLight( CLight& light )
+	void VisitLight( Light& light )
 	{
 		light.DiffuseColor = m_pDesc->aColor[0].GetRGBColor();
 		light.fIntensity   = m_pDesc->fIntensity;
@@ -38,7 +38,7 @@ public:
 
 //	void VisitAmbientLight( CAmbientLight& ambient_light ) {}
 
-	void VisitPointLight( CPointLight& point_light )
+	void VisitPointLight( PointLight& point_light )
 	{
 		VisitLight( point_light );
 		point_light.vPosition        = m_pDesc->vPosition;
@@ -46,26 +46,26 @@ public:
 			point_light.fAttenuation[i]  = m_pDesc->afAttenuation[i];
 	}
 
-	void VisitDirectionalLight( CDirectionalLight& directional_light )
+	void VisitDirectionalLight( DirectionalLight& directional_light )
 	{
 		VisitLight( directional_light );
 		directional_light.vDirection = m_pDesc->vDirection;
 	}
 
-	void VisitHemisphericPointLight( CHemisphericPointLight& hs_point_light )
+	void VisitHemisphericPointLight( HemisphericPointLight& hs_point_light )
 	{
 		VisitPointLight( hs_point_light );
 		InitHSLightAttribute( hs_point_light.Attribute );
 	}
 
-	void VisitHemisphericDirectionalLight( CHemisphericDirectionalLight& hs_directional_light )
+	void VisitHemisphericDirectionalLight( HemisphericDirectionalLight& hs_directional_light )
 	{
 		VisitDirectionalLight( hs_directional_light );
 		InitHSLightAttribute( hs_directional_light.Attribute );
 	}
 
-//	void VisitTriPointLight( CTriPointLight& tri_point_light ) {}
-//	void VisitTriDirectionalLight( CTriDirectionalLight& tri_directional_light ) {}
+//	void VisitTriPointLight( TriPointLight& tri_point_light ) {}
+//	void VisitTriDirectionalLight( TriDirectionalLight& tri_directional_light ) {}
 };
 
 
@@ -136,12 +136,12 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 	// link the entity to the light entity list on the entity node
 //	GetStage()->GetEntitySet()->LinkLightEntity( this );
 /*
-	shared_prealloc_pool<CPointLight> m_PointLightPool;
-	shared_prealloc_pool<CDirectionalLight> m_DirectionalLightPool;
-	shared_prealloc_pool<CHemisphericPointLight> m_HSPointLightPool;
-	shared_prealloc_pool<CHemisphericLight> m_HSDirectionalLightPool;
-//	shared_prealloc_pool<CTriPointLight> m_TriPointLightPool;
-//	shared_prealloc_pool<CTriDirctionalLight> m_TriDirectionalLightPool;
+	shared_prealloc_pool<PointLight> m_PointLightPool;
+	shared_prealloc_pool<DirectionalLight> m_DirectionalLightPool;
+	shared_prealloc_pool<HemisphericPointLight> m_HSPointLightPool;
+	shared_prealloc_pool<HemisphericLight> m_HSDirectionalLightPool;
+//	shared_prealloc_pool<TriPointLight> m_TriPointLightPool;
+//	shared_prealloc_pool<TriDirctionalLight> m_TriDirectionalLightPool;
 */
 	CBE_Light *pBaseEntity = dynamic_cast<CBE_Light *>(this->pBaseEntity);
 
@@ -217,13 +217,13 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 	float r = 1.0f;
 	switch( pLightDesc->LightType )
 	{
-	case CLight::POINT:
-	case CLight::HEMISPHERIC_POINT:
+	case Light::POINT:
+	case Light::HEMISPHERIC_POINT:
 		r = 100.0f;
 		break;
-	case CLight::AMBIENT:
-	case CLight::DIRECTIONAL:
-	case CLight::HEMISPHERIC_DIRECTIONAL:
+	case Light::AMBIENT:
+	case Light::DIRECTIONAL:
+	case Light::HEMISPHERIC_DIRECTIONAL:
 		r = FLT_MAX;
 		break;
 	default:
@@ -259,19 +259,19 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 
 	Vector3 vLightCenterPos, vLightToEntity, vLightRefPos;
 
-	const CLight::Type light_type = GetLightType();
+	const Light::Type light_type = GetLightType();
 
-	if( light_type == CLight::POINT
-	 || light_type == CLight::HEMISPHERIC_POINT
-	 || light_type == CLight::TRI_POINT
+	if( light_type == Light::POINT
+	 || light_type == Light::HEMISPHERIC_POINT
+	 || light_type == Light::TRI_POINT
 	)
 	{
 		vLightCenterPos = this->GetWorldPosition();
 		tr.vStart = vLightCenterPos;
 	}
-	else if( light_type == CLight::DIRECTIONAL
-	      || light_type == CLight::HEMISPHERIC_DIRECTIONAL
-	      || light_type == CLight::TRI_DIRECTIONAL
+	else if( light_type == Light::DIRECTIONAL
+	      || light_type == Light::HEMISPHERIC_DIRECTIONAL
+	      || light_type == Light::TRI_DIRECTIONAL
 	)
 	{
 		vLightRefPos = pEntity->GetWorldPosition() - this->GetDirection() * s_DirLightCheckDist;
@@ -294,7 +294,7 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 
 	// Shouldn't this be done in tree node traversal
 /*
-	if( pLightEntity->GetLightType() == CLight::TYPE_POINT )
+	if( pLightEntity->GetLightType() == Light::TYPE_POINT )
 	{
 		fMaxRangeSq = pLightEntity->GetRadius() + pEntity->fRadius;
 		fMaxRangeSq = fMaxRangeSq * fMaxRangeSq;
@@ -366,22 +366,22 @@ void CLightEntity::HandleMessage( SGameMessage& msg )
 //			m_pLight = factory.CreateLight( light_desc );
 /*			switch( pLightDesc->LightType )
 			{
-			case CLight::AMBIENT:
-				m_pLight = shared_ptr<CAmbientLight>( new CAmbientLight( pLightDesc->aColor[0], fLightIntensity ) );
+			case Light::AMBIENT:
+				m_pLight = shared_ptr<AmbientLight>( new AmbientLight( pLightDesc->aColor[0], fLightIntensity ) );
 				break;
-			case CLight::DIRECTIONAL:
-				m_pLight = shared_ptr<CPointLight>( new CDirectionalLight( vLightDir, pLightDesc->aColor[0], fLightIntensity, vLightPos );
+			case Light::DIRECTIONAL:
+				m_pLight = shared_ptr<PointLight>( new DirectionalLight( vLightDir, pLightDesc->aColor[0], fLightIntensity, vLightPos );
 				break;
-			case CLight::POINT:
-				m_pLight = shared_ptr<CPointLight>( new CPointLight( vLightPos, pLightDesc->aColor[0], fLightIntensity );
+			case Light::POINT:
+				m_pLight = shared_ptr<PointLight>( new PointLight( vLightPos, pLightDesc->aColor[0], fLightIntensity );
 				break;
-			case CLight::HEMISPHERIC_DIRECTIONAL:
+			case Light::HEMISPHERIC_DIRECTIONAL:
 				m_pLight
-				= shared_ptr<CHemisphericDirectionalLight>( new CHemisphericDirectionalLight( vLightDir, pLightDesc->aColor[0], pLightDesc->aColor[1], fLightIntensity, vLightPos );
+				= shared_ptr<HemisphericDirectionalLight>( new HemisphericDirectionalLight( vLightDir, pLightDesc->aColor[0], pLightDesc->aColor[1], fLightIntensity, vLightPos );
 				break;
-			case CLight::HEMISPHERIC_POINT:
+			case Light::HEMISPHERIC_POINT:
 				m_pLight
-				= shared_ptr<CHemisphericPointLight>( new CHemisphericPointLight( vLightPos, pLightDesc->aColor[0], pLightDesc->aColor[1], fLightIntensity );
+				= shared_ptr<HemisphericPointLight>( new HemisphericPointLight( vLightPos, pLightDesc->aColor[0], pLightDesc->aColor[1], fLightIntensity );
 				break;
 			default:
 				break;

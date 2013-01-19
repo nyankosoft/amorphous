@@ -496,9 +496,9 @@ void CEntityNode::CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree )
 	{
 		pLightEntity = pLinkNode->pOwner;
 
-		if( pLightEntity->GetLightType() == CLight::POINT
-		 || pLightEntity->GetLightType() == CLight::HEMISPHERIC_POINT
-		 || pLightEntity->GetLightType() == CLight::TRI_POINT )
+		if( pLightEntity->GetLightType() == Light::POINT
+		 || pLightEntity->GetLightType() == Light::HEMISPHERIC_POINT
+		 || pLightEntity->GetLightType() == Light::TRI_POINT )
 		{
 			fMaxRange = pLightEntity->GetRadius() + pEntity->GetRadius();
 			fMaxRangeSq = fMaxRange * fMaxRange;

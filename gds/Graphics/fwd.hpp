@@ -34,14 +34,14 @@ class CResourceLoadingStateHolder;
 class CShaderGenerator;
 class CGenericShaderDesc;
 
-class CLight;
-class CAmbientLight;
-class CDirectionalLight;
-class CPointLight;
-class CSpotlight;
-class CHemisphericDirectionalLight;
-class CHemisphericPointLight;
-class CHemisphericSpotlight;
+class Light;
+class AmbientLight;
+class DirectionalLight;
+class PointLight;
+class Spotlight;
+class HemisphericDirectionalLight;
+class HemisphericPointLight;
+class HemisphericSpotlight;
 
 class C2DRect;
 class C2DFrameRect;

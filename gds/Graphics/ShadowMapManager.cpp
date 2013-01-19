@@ -22,7 +22,7 @@ const char *sg_pShadowMapDebugParamsFile = ".debug/shadowmap.txt";
 //std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
 
 
-class CShadowMapLightVisitor : public CConstLightVisitor
+class CShadowMapLightVisitor : public ConstLightVisitor
 {
 	CShadowMap *m_pShadowMap;
 
@@ -33,12 +33,12 @@ public:
 	m_pShadowMap(pShadowMap)
 	{}
 
-	void VisitPointLight( const CPointLight& point_light )                   { m_pShadowMap->UpdatePointLight( point_light ); }
-	void VisitDirectionalLight( const CDirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
-	void VisitSpotlight( const CSpotlight& spotlight )                       { m_pShadowMap->UpdateSpotlight( spotlight ); }
-	void VisitHemisphericPointLight( const CHemisphericPointLight& hs_point_light )                   { m_pShadowMap->UpdatePointLight( hs_point_light ); }
-	void VisitHemisphericDirectionalLight( const CHemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
-	void VisitHemisphericSpotlight( const CHemisphericSpotlight& hs_spotlight )                       { m_pShadowMap->UpdateSpotlight( hs_spotlight ); }
+	void VisitPointLight( const PointLight& point_light )                   { m_pShadowMap->UpdatePointLight( point_light ); }
+	void VisitDirectionalLight( const DirectionalLight& directional_light ) { m_pShadowMap->UpdateDirectionalLight( directional_light ); }
+	void VisitSpotlight( const Spotlight& spotlight )                       { m_pShadowMap->UpdateSpotlight( spotlight ); }
+	void VisitHemisphericPointLight( const HemisphericPointLight& hs_point_light )                   { m_pShadowMap->UpdatePointLight( hs_point_light ); }
+	void VisitHemisphericDirectionalLight( const HemisphericDirectionalLight& hs_directional_light ) { m_pShadowMap->UpdateDirectionalLight( hs_directional_light ); }
+	void VisitHemisphericSpotlight( const HemisphericSpotlight& hs_spotlight )                       { m_pShadowMap->UpdateSpotlight( hs_spotlight ); }
 };
 
 
@@ -46,26 +46,26 @@ class CShadowMapFactory
 {
 public:
 
-	shared_ptr<CShadowMap> CreateShadowMap( const CLight& light )
+	shared_ptr<CShadowMap> CreateShadowMap( const Light& light )
 	{
 		shared_ptr<CShadowMap> pShadowMap;
 
 		switch( light.GetLightType() )
 		{
-		case CLight::DIRECTIONAL:
-		case CLight::HEMISPHERIC_DIRECTIONAL:
+		case Light::DIRECTIONAL:
+		case Light::HEMISPHERIC_DIRECTIONAL:
 //			pShadowMap.reset( new CDirectionalLightShadowMap() );
 //			pShadowMap.reset( new CSpotlightShadowMap() );
 			pShadowMap.reset( new COrthoShadowMap() );
 			break;
 
-//		case CLight::POINT:
-//		case CLight::HEMISPHERIC_POINT:
+//		case Light::POINT:
+//		case Light::HEMISPHERIC_POINT:
 //			pShadowMap.reset( new CPointLightShadowMap() );
 			break;
 
-		case CLight::SPOTLIGHT:
-		case CLight::HEMISPHERIC_SPOTLIGHT:
+		case Light::SPOTLIGHT:
+		case Light::HEMISPHERIC_SPOTLIGHT:
 			pShadowMap.reset( new CSpotlightShadowMap() );
 			break;
 
@@ -189,12 +189,12 @@ void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pS
 /// returns -1 on failure
 /// \param [in] light must be either directional or point light
 /// TODO: support spotlight
-std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadowMap( U32 id, const CLight& light )
+std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadowMap( U32 id, const Light& light )
 {
-	if( light.GetLightType() != CLight::DIRECTIONAL
-	 && light.GetLightType() != CLight::HEMISPHERIC_DIRECTIONAL
-	 && light.GetLightType() != CLight::POINT
-	 && light.GetLightType() != CLight::HEMISPHERIC_POINT )
+	if( light.GetLightType() != Light::DIRECTIONAL
+	 && light.GetLightType() != Light::HEMISPHERIC_DIRECTIONAL
+	 && light.GetLightType() != Light::POINT
+	 && light.GetLightType() != Light::HEMISPHERIC_POINT )
 	{
 		return m_mapIDtoShadowMap.end();
 	}
@@ -229,7 +229,7 @@ std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::Crea
 }
 
 
-Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, const CLight& light )
+Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, const Light& light )
 {
 	map< int, shared_ptr<CShadowMap> >::iterator itrShadowMap
 		= m_mapIDtoShadowMap.find((int)id);
@@ -269,7 +269,7 @@ void CShadowMapManager::RemoveShadowForLight( int shadowmap_id )
 }
 
 
-void CShadowMapManager::UpdateLight( int shadowmap_id, const CLight& light )
+void CShadowMapManager::UpdateLight( int shadowmap_id, const Light& light )
 {
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.find( shadowmap_id );
 
