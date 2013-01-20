@@ -87,7 +87,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	Matrix44 world( Matrix44Scaling( 10.0f, 10.0f, 10.0f ) );
 
 	Vector3 vPos;
-	CCamera* pCamera = m_pStage->GetCurrentCamera();
+	Camera* pCamera = m_pStage->GetCurrentCamera();
 	if( pCamera )
 		vPos = pCamera->GetPosition();
 	else
@@ -136,7 +136,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	{
 		if( shift_camera_height )
 		{
-			CCamera *pCam = m_pStage->GetCurrentCamera();
+			Camera *pCam = m_pStage->GetCurrentCamera();
 			float fCamHeight;
 			if( pCam )
 				fCamHeight = pCam->GetPosition().y;

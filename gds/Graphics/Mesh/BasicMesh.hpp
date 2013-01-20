@@ -84,7 +84,7 @@ protected:
 	std::vector<AABB3> m_vecAABB;
 
 	/// enable / disable visibility clipping based on view frustum test.
-	/// If true, user is responsible for calling UpdateVisibility( const CCamera& camera )
+	/// If true, user is responsible for calling UpdateVisibility( const Camera& camera )
 	/// every time the mesh is rendered.
 	bool m_bViewFrustumTest;
 
@@ -239,7 +239,7 @@ public:
 
 	virtual void SetVertexDeclaration() {}
 
-	virtual void UpdateVisibility( const CCamera& cam ) {}
+	virtual void UpdateVisibility( const Camera& cam ) {}
 };
 
 
@@ -367,7 +367,7 @@ public:
 	// Call this before rendering when you render subsets separately by RenderSubsets()
 	void SetVertexDeclaration() { m_pImpl->SetVertexDeclaration(); }
 
-	void UpdateVisibility( const CCamera& cam ) { m_pImpl->UpdateVisibility( cam ); }
+	void UpdateVisibility( const Camera& cam ) { m_pImpl->UpdateVisibility( cam ); }
 
 	friend boost::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
 

@@ -281,7 +281,7 @@ void CShadowMapManager::UpdateLight( int shadowmap_id, const Light& light )
 }
 
 
-void CShadowMapManager::RenderShadowCasters( CCamera& camera )
+void CShadowMapManager::RenderShadowCasters( Camera& camera )
 {
 	if( m_mapIDtoShadowMap.empty() )
 		return;
@@ -310,7 +310,7 @@ void CShadowMapManager::RenderShadowCasters( CCamera& camera )
 }
 
 
-void CShadowMapManager::RenderShadowReceivers( CCamera& camera )
+void CShadowMapManager::RenderShadowReceivers( Camera& camera )
 {
 	if( m_mapIDtoShadowMap.empty() )
 		return;

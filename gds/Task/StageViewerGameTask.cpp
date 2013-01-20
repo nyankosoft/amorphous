@@ -27,7 +27,7 @@ CStageViewerGameTask::CStageViewerGameTask()
 m_EnableCameraController(true)
 {
 	// An input handler for camera control is added as a child of m_pInputHandler.
-	m_pCameraController.reset( new CCameraController( m_pInputHandler ) );
+	m_pCameraController.reset( new CameraController( m_pInputHandler ) );
 
 	m_Camera.SetAspectRatio( (float)CGraphicsComponent::GetScreenWidth() / (float)CGraphicsComponent::GetScreenHeight() );
 }

@@ -27,7 +27,7 @@ public:
 	
 	virtual void CreateRenderTasks( bool create_scene_render_task ) {}
 
-	virtual void RenderSceneForScreenEffect( CCamera& rCamera ) {}
+	virtual void RenderSceneForScreenEffect( Camera& rCamera ) {}
 };
 
 
@@ -224,11 +224,11 @@ public:
 	bool Init();
 
 	/// set texture as render target to apply post process effects later
-	void BeginRender( const CCamera &rCam );
+	void BeginRender( const Camera &rCam );
 
 	void EndRender();
 
-	void Render( CCamera &rCam );
+	void Render( Camera &rCam );
 
 	/// call this after render the scene
 	/// \param frametime used by fade-in/fade-out effects

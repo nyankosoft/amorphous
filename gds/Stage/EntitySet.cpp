@@ -309,7 +309,7 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 //
 //==========================================================================
 
-void CEntitySet::Render(CCamera& rCam)
+void CEntitySet::Render(Camera& rCam)
 {
 	m_pRenderManager->Render( rCam );
 }
@@ -1186,7 +1186,7 @@ void CEntitySet::UpdateGraphics()
 
 void CEntitySet::GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const
 {
-	CCamera* pCamera = m_pStage->GetCurrentCamera();
+	Camera* pCamera = m_pStage->GetCurrentCamera();
 
 	if( pCamera )
 		pCamera->GetOrientation( rmatBillboard );

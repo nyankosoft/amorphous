@@ -142,7 +142,7 @@ public:
 	inline int GetEntityGroupFromName( const std::string& group_name );
 
 	//============ functions for rendering ============
-	void Render( CCamera& rCam );
+	void Render( Camera& rCam );
 
 	//============ functions for lighting control============
 	inline void LinkLightEntity(CLightEntity *pLightEntity)	{ m_paEntityTree->LinkLightEntity_r(pLightEntity, m_paEntityTree); }
@@ -194,7 +194,7 @@ public:
 	/// find base entity by name
 	CBaseEntity* FindBaseEntity( const char* pcBaseEntityName );
 
-	inline CCamera *GetCurrentCamera();	// return access to the current camera
+	inline Camera *GetCurrentCamera();	// return access to the current camera
 	inline void UpdateCamera();
 	inline void SetCameraEntity( CCopyEntity *pEntity ) { m_pCameraEntity = pEntity; }
 	inline CCopyEntity *GetCameraEntity() { return m_pCameraEntity; }
@@ -310,7 +310,7 @@ inline bool CEntitySet::EntityDestroyed( const std::string& name ) const
 
 
 // returns access to the current camera
-inline CCamera *CEntitySet::GetCurrentCamera()
+inline Camera *CEntitySet::GetCurrentCamera()
 {
 	if( m_pCameraEntity )
 		return m_pCameraEntity->pBaseEntity->GetCamera();

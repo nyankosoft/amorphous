@@ -168,11 +168,11 @@ class CStaticGeometry : public CStaticGeometryBase
 
 private:
 
-	void UpdateResources( const CCamera& rCam );
+	void UpdateResources( const Camera& rCam );
 
-	void UpdateResources_NonHierarchical( const CCamera& rCam );
+	void UpdateResources_NonHierarchical( const Camera& rCam );
 
-	void UpdateMeshSubsetResources( CMeshSubset& subset, const CCamera& rCam, const Sphere& cam_sphere );
+	void UpdateMeshSubsetResources( CMeshSubset& subset, const Camera& rCam, const Sphere& cam_sphere );
 
 public:
 
@@ -182,7 +182,7 @@ public:
 
 	virtual int GetType() const { return CStaticGeometryBase::TYPE_GENERAL; }
 
-	virtual bool Render( const CCamera& rCam, const unsigned int EffectFlag );
+	virtual bool Render( const Camera& rCam, const unsigned int EffectFlag );
 
 	virtual bool LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly = false );
 

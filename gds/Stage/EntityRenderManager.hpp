@@ -79,7 +79,7 @@ private:
 	/// - used for z-sort
 	Matrix34 m_CameraPose;
 
-	CCamera *m_pCurrentCamera;
+	Camera *m_pCurrentCamera;
 	
 	/// used for z-sort
 	float m_fCameraFarClipDist;
@@ -131,7 +131,7 @@ private:
 
 private:
 
-	void RenderEntityNodeUp_r( short sEntNodeIndex, CCamera& rCam );
+	void RenderEntityNodeUp_r( short sEntNodeIndex, Camera& rCam );
 
 	void MoveSkyboxToListHead();
 
@@ -140,17 +140,17 @@ private:
 
 	void ClearZSortTable();
 
-	void RenderScene( CCamera& rCam );
+	void RenderScene( Camera& rCam );
 
-	void RenderShadowCasters( CCamera& rCam );
+	void RenderShadowCasters( Camera& rCam );
 
-	void RenderShadowReceivers( CCamera& rCam );
+	void RenderShadowReceivers( Camera& rCam );
 
 	void UpdateLightsForShadow();
 
-	void RenderAllButEnvMapTarget( CCamera& rCam, U32 target_entity_id );
+	void RenderAllButEnvMapTarget( Camera& rCam, U32 target_entity_id );
 
-	virtual void RenderSceneToCubeMap( CCamera& camera );
+	virtual void RenderSceneToCubeMap( Camera& camera );
 
 	virtual Vector3 GetCameraPosition() { return m_CameraPose.vPosition; }
 
@@ -161,13 +161,13 @@ private:
 	/// envmap to render itself
 	void UpdateEnvironmentMapTextures();
 
-	void UpdateFogParams( const CCamera& rCam );
+	void UpdateFogParams( const Camera& rCam );
 
 	void CreateEnvMapRenderTasks();
 
-	void CreateShadowMapRenderTasks( CCamera& rCam );
+	void CreateShadowMapRenderTasks( Camera& rCam );
 
-	void CreateSceneRenderTask( CCamera& rCam );
+	void CreateSceneRenderTask( Camera& rCam );
 
 	static std::string ms_DefaultFallbackShaderFilename;
 
@@ -191,14 +191,14 @@ public:
 	/// put an entity that have transparent parts to z-sort list
 	void SendToZSortTable(CCopyEntity* pCopyEnt);
 
-	void Render( CCamera& rCam );
+	void Render( Camera& rCam );
 
 	void CreateRenderTasks( bool create_scene_render_task );
 
 	/// implementation of CScreenEffectTargetSceneRenderer::RenderSceneForScreenEffect()
-	virtual void RenderSceneForScreenEffect( CCamera& rCamera ) { Render( rCamera ); }
+	virtual void RenderSceneForScreenEffect( Camera& rCamera ) { Render( rCamera ); }
 
-	inline void UpdateCamera( CCamera* pCam );
+	inline void UpdateCamera( Camera* pCam );
 
 	//
 	// environemnt mapping
@@ -234,12 +234,12 @@ public:
 	void SetOverrideShadowMapLightPosition( const Vector3& pos ) { m_vOverrideShadowMapPosition = pos; }
 	void SetOverrideShadowMapLightDirection( const Vector3& dir ) { m_vOverrideShadowMapDirection = dir; }
 
-	void RenderSceneWithShadows( CCamera& rCam );
+	void RenderSceneWithShadows( Camera& rCam );
 
 	Result::Name AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
 	Result::Name RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
-	void UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group );
-	void UpdatePlanarReflectionTextures( CCamera& rCam );
+	void UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group );
+	void UpdatePlanarReflectionTextures( Camera& rCam );
 	TextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
 	int GetCurrentlyRenderedPlanarReflectionSceneID() const;
 
@@ -258,7 +258,7 @@ public:
 
 // ================================ inline implementations ================================ 
 
-inline void CEntityRenderManager::UpdateCamera( CCamera* pCam )
+inline void CEntityRenderManager::UpdateCamera( Camera* pCam )
 {
 	m_pCurrentCamera = pCam;
 	pCam->GetPose( m_CameraPose );

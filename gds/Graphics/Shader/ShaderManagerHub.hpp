@@ -46,7 +46,7 @@ public:
 	inline void PushViewAndProjectionMatrices( const Matrix44& view, const Matrix44& proj );
 
 	/// must be called in pairs with PopViewAndProjectionMatrices()
-	inline void PushViewAndProjectionMatrices( const CCamera& camera );
+	inline void PushViewAndProjectionMatrices( const Camera& camera );
 
 	/// must be called in pairs with PushViewAndProjectionMatrices()
 	inline void PopViewAndProjectionMatrices();
@@ -75,7 +75,7 @@ inline void CShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& vi
 }
 
 
-inline void CShaderManagerHub::PushViewAndProjectionMatrices( const CCamera& camera )
+inline void CShaderManagerHub::PushViewAndProjectionMatrices( const Camera& camera )
 {
 	PushViewAndProjectionMatrices( camera.GetCameraMatrix(), camera.GetProjectionMatrix() );
 }

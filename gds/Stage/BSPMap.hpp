@@ -135,13 +135,13 @@ private:
 private:
 
 	/// renders skybox
-	void RenderSkybox( const CCamera& rCamera );
+	void RenderSkybox( const Camera& rCamera );
 
 	void LoadTextures();
 
-	void DrawCell( short sCellIndex, CCamera& rCam );
+	void DrawCell( short sCellIndex, Camera& rCam );
 
-	void DrawCell_TS( short sCellIndex, const CCamera& rCam );
+	void DrawCell_TS( short sCellIndex, const Camera& rCam );
 
 	void DrawTextureSortedPolygons();
 
@@ -159,7 +159,7 @@ public:
 
 	virtual int GetType() const { return TYPE_BSPMAP; }
 
-	bool Render( const CCamera& rCam, const unsigned int EffectFlag );
+	bool Render( const Camera& rCam, const unsigned int EffectFlag );
 
 	bool LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly = false );
 

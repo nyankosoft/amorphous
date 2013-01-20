@@ -70,7 +70,7 @@ void CBE_StaticGeometry::Draw(CCopyEntity* pCopyEnt)
 
 	CStaticGeometryBase* pStaticGeometry = m_vecpStaticGeometry[pCopyEnt->iExtraDataIndex];
 	
-	CCamera* pCamera = m_pStage->GetCurrentCamera();
+	Camera* pCamera = m_pStage->GetCurrentCamera();
 	if( !pCamera )
 	{
 		ONCE( g_Log.Print( "CBE_StaticGeometry::Draw() - cannot find a camera for the stage" ) );

@@ -65,13 +65,13 @@ public:
 	void Link(CCopyEntity* pEntity) { m_EntityLinkHead.InsertNext( &pEntity->m_EntityLink ); }
 
 	/// Render all the entites on this entity tree node.
-	void RenderEntities( CEntityRenderer& entity_renderer, CCamera& rCam );
+	void RenderEntities( CEntityRenderer& entity_renderer, Camera& rCam );
 
 	/// Recursively render all the entites in this sub-space.
 	void RenderEntitiesWithDownwardTraversal(
 		CEntityNode *pEntityTree,
 		CEntityRenderer& entity_renderer,
-		CCamera& rCam,
+		Camera& rCam,
 		bool do_camera_frustom_culling
 	);
 

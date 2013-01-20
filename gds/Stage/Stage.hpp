@@ -28,7 +28,7 @@ class CStage
 	CStageWeakPtr m_pSelf;
 
 	/// borrowed reference to the camera which is used to render the stage
-	CCamera *m_pCamera;
+	Camera *m_pCamera;
 
     /// holds static geometry
 	CStaticGeometryBase *m_pStaticGeometry;
@@ -103,14 +103,14 @@ public:
 	/// the camera is not destroyed during entity updates while CStage::Render() is running
 	/// TODO: make this thread safe
 	/// the same caution applies to the above CStage::Render() as well
-	void Render( CCamera& rCam );
+	void Render( Camera& rCam );
 
 	void CreateRenderTasks();
 
-	void CreateStageRenderTasks( CCamera *pCamera );
+	void CreateStageRenderTasks( Camera *pCamera );
 
-//	inline CCamera* GetCurrentCamera() { return m_pEntitySet->GetCurrentCamera(); }
-	inline CCamera* GetCurrentCamera() { return m_pCamera; }
+//	inline Camera* GetCurrentCamera() { return m_pEntitySet->GetCurrentCamera(); }
+	inline Camera* GetCurrentCamera() { return m_pCamera; }
 	inline void GetBillboardRotationMatrix( Matrix33& matBillboard ) const;
 	inline boost::shared_ptr<CScreenEffectManager> GetScreenEffectManager() { return m_pScreenEffectManager; }
 

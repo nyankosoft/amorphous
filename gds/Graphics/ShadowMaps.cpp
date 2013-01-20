@@ -56,7 +56,7 @@ void CShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_director
 }
 
 
-void CShadowMap::RenderSceneToShadowMap( CCamera& camera )
+void CShadowMap::RenderSceneToShadowMap( Camera& camera )
 {
 	if( !m_pSceneRenderer )
 		return;
@@ -70,7 +70,7 @@ void CShadowMap::RenderSceneToShadowMap( CCamera& camera )
 }
 
 
-void CShadowMap::RenderShadowReceivers( CCamera& camera )
+void CShadowMap::RenderShadowReceivers( Camera& camera )
 {
 	if( !m_pSceneRenderer )
 		return;
@@ -587,7 +587,7 @@ void CPointLightShadowMap::RenderSceneToShadowMap()
 {
 	m_pCubeShadowMapManager->RenderToCubeMap();
 
-//	CCamera cam;
+//	Camera cam;
 //	m_CubeShadowMapSceneRenderer.RenderSceneToCubeMap( cam );
 }
 

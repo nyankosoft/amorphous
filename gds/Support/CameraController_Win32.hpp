@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CPlatformDependentCameraController : public CCameraControllerBase
+class CPlatformDependentCameraController : public CameraControllerBase
 {
 public:
 

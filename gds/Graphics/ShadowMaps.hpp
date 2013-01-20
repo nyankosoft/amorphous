@@ -29,10 +29,10 @@ class CShadowMapSceneRenderer
 public:
 
 	/// render objects that cast shadows
-	virtual void RenderSceneToShadowMap( CCamera& camera ) = 0;
+	virtual void RenderSceneToShadowMap( Camera& camera ) = 0;
 
 	/// render objects which are cast shadows by others
-	virtual void RenderShadowReceivers( CCamera& camera ) = 0;
+	virtual void RenderShadowReceivers( Camera& camera ) = 0;
 };
 
 
@@ -44,7 +44,7 @@ public:
 
 	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
 
-	void RenderSceneToCubeMap( CCamera& camera )
+	void RenderSceneToCubeMap( Camera& camera )
 	{
 		m_pSceneRenderer->RenderSceneToShadowMap( camera );
 	}
@@ -76,13 +76,13 @@ protected:
 
 	/// used to create camera matrix and projection matrix to render shadow map
 	/// - Stores light direction and position
-	CCamera m_LightCamera;
+	Camera m_LightCamera;
 
 	ShaderHandle m_Shader;
 
 	/// borrowed reference of scene camera
 	/// - Used by CDirectionalLightShadowMap
-	CCamera *m_pSceneCamera;
+	Camera *m_pSceneCamera;
 
 	bool m_DisplayShadowMapTexturesForDebugging;
 
@@ -130,16 +130,16 @@ public:
 
 	virtual void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
 
-	virtual void RenderSceneToShadowMap( CCamera& camera );
+	virtual void RenderSceneToShadowMap( Camera& camera );
 
-	virtual void RenderShadowReceivers( CCamera& camera );
+	virtual void RenderShadowReceivers( Camera& camera );
 
 	/// returns true on success
 	virtual bool Init() { return true; }
 
 	void SetShader( ShaderHandle& shader ) { m_Shader = shader; }
 
-	void SetSceneCamera( CCamera *pCamera ) { m_pSceneCamera = pCamera; }
+	void SetSceneCamera( Camera *pCamera ) { m_pSceneCamera = pCamera; }
 
 //	void Init( int texture_width, int texture_height );
 
@@ -163,7 +163,7 @@ public:
 
 //	void SetLightDirection( const Vector3& vLightDir ) { m_LightCamera.SetOrientation( CreateOrientFromFwdDir( vLightDir ) ); }
 //	void SetLightPosition( const Vector3& vLightPos ) { m_LightCamera.SetPosition( vLightPos ); }
-	void SetLightCamera( const CCamera& camera ) { m_LightCamera = camera; }
+	void SetLightCamera( const Camera& camera ) { m_LightCamera = camera; }
 
 	/// for visual debugging
 	virtual void RenderShadowMapTexture( int sx, int sy, int ex, int ey ) {}

@@ -35,10 +35,10 @@ void CSoundEntity::Update( float dt )
 	bool sound_attenuation = false;
 	if( !sound_attenuation )
 	{
-		const CCamera *pCamera = GetStage()->GetCurrentCamera();
+		const Camera *pCamera = GetStage()->GetCurrentCamera();
 		if( pCamera )
 		{
-			const CCamera& camera = *pCamera;
+			const Camera& camera = *pCamera;
 			const float dist_to_camera = Vec3Length( camera.GetPosition() - GetWorldPosition() );
 			if( dist_to_camera <= m_fCurrentRadius )
 			{

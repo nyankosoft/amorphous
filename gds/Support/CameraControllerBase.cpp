@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-CCameraControllerBase::CCameraControllerBase()
+CameraControllerBase::CameraControllerBase()
 :
 m_Pose( Matrix34Identity() )
 {
@@ -30,12 +30,12 @@ m_Pose( Matrix34Identity() )
 }
 
 
-CCameraControllerBase::~CCameraControllerBase()
+CameraControllerBase::~CameraControllerBase()
 {
 }
 
 
-void CCameraControllerBase::UpdateCameraPose( float dt )
+void CameraControllerBase::UpdateCameraPose( float dt )
 {
 	float forward=0, right=0, up=0, spd;
 //	Matrix33 matRot;
@@ -78,13 +78,13 @@ void CCameraControllerBase::UpdateCameraPose( float dt )
 }
 
 
-void CCameraControllerBase::AddYaw( float fYaw )
+void CameraControllerBase::AddYaw( float fYaw )
 {
 	m_fYaw += fYaw;
 }
 
 
-bool CCameraControllerBase::IsKeyPressed( int general_input_code )
+bool CameraControllerBase::IsKeyPressed( int general_input_code )
 {
 	switch( general_input_code )
 	{
@@ -98,13 +98,13 @@ bool CCameraControllerBase::IsKeyPressed( int general_input_code )
 }
 
 
-void CCameraControllerBase::AddPitch( float fPitch )
+void CameraControllerBase::AddPitch( float fPitch )
 {
 	m_fPitch += fPitch;
 }
 
 
-void CCameraControllerBase::AssignKeyForCameraControl( int general_input_code, CameraControl::Operation cam_control_op )
+void CameraControllerBase::AssignKeyForCameraControl( int general_input_code, CameraControl::Operation cam_control_op )
 {
 	if( NUM_GENERAL_INPUT_CODES <= general_input_code )
 		return;
@@ -113,7 +113,7 @@ void CCameraControllerBase::AssignKeyForCameraControl( int general_input_code, C
 }
 
 
-void CCameraControllerBase::HandleInput( const SInputData& input )
+void CameraControllerBase::HandleInput( const SInputData& input )
 {
 	switch( input.iGICode )
     {

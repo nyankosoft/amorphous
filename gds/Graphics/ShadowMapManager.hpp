@@ -74,7 +74,7 @@ protected:
 	/// to the original, non-shadowed scene.
 	boost::shared_ptr<CTextureRenderTarget> m_apShadowTexture[NUM_MAX_SCENE_SHADOW_TEXTURES];
 
-	CCamera m_SceneCamera;
+	Camera m_SceneCamera;
 
 	/// Stores the shader necessasry for shadowmap.
 	/// The shader supposed to contain 2 techniques
@@ -121,9 +121,9 @@ public:
 
 	void UpdateLight( int shadowmap_id, const Light& light );
 
-	void RenderShadowCasters( CCamera& camera );
+	void RenderShadowCasters( Camera& camera );
 
-	void RenderShadowReceivers( CCamera& camera );
+	void RenderShadowReceivers( Camera& camera );
 
 	ShaderHandle& GetShader() { return m_Shader; }
 
@@ -176,9 +176,9 @@ public:
 
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }
-	void SetSceneCamera( const CCamera& camera ) { m_SceneCamera = camera; }
+	void SetSceneCamera( const Camera& camera ) { m_SceneCamera = camera; }
 
-	CCamera& SceneCamera() { return m_SceneCamera; }
+	Camera& SceneCamera() { return m_SceneCamera; }
 
 	/// for visual debugging
 //	void RenderShadowMapTexture( int sx, int sy, int ex, int ey );

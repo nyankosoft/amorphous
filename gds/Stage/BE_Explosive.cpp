@@ -199,7 +199,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 
 void CBE_Explosive::FlashScreen(CCopyEntity* pCopyEnt)
 {
-	CCamera *pCamera = m_pStage->GetEntitySet()->GetCurrentCamera();
+	Camera *pCamera = m_pStage->GetEntitySet()->GetCurrentCamera();
 
 	if( !pCamera )
 		return;

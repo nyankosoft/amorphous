@@ -14,7 +14,7 @@ namespace amorphous
 {
 
 
-class CCamera
+class Camera
 {
 	/// position and direction of this camera
 	Vector3 m_vPosition;
@@ -60,7 +60,7 @@ class CCamera
 
 public:
 
-	CCamera(float fov = 3.141592f / 3.0f, float aspectratio = 4.0f / 3.0f,
+	Camera(float fov = 3.141592f / 3.0f, float aspectratio = 4.0f / 3.0f,
 				 float farclip = 500.0f, float nearclip = 0.05f);
 
 	void CreateVFTree();
@@ -132,7 +132,7 @@ public:
 
 // ================================ inline implementations ================================ 
 
-inline void CCamera::GetRowMajorCameraMatrix44( float *pDest ) const
+inline void Camera::GetRowMajorCameraMatrix44( float *pDest ) const
 {
 	const Vector3& w = m_vFront;
 	const Vector3& u = m_vRight;
@@ -149,7 +149,7 @@ inline void CCamera::GetRowMajorCameraMatrix44( float *pDest ) const
 }
 
 
-inline void CCamera::GetRowMajorProjectionMatrix44( float *pDest ) const
+inline void Camera::GetRowMajorProjectionMatrix44( float *pDest ) const
 {
 	Matrix44 src;
 	GetProjectionMatrix( src );
@@ -157,7 +157,7 @@ inline void CCamera::GetRowMajorProjectionMatrix44( float *pDest ) const
 }
 
 
-inline void CCamera::GetCameraMatrix( Matrix44& dest ) const
+inline void Camera::GetCameraMatrix( Matrix44& dest ) const
 {
 	const Vector3& w = m_vFront;
 	const Vector3& u = m_vRight;
@@ -171,13 +171,13 @@ inline void CCamera::GetCameraMatrix( Matrix44& dest ) const
 }
 
 
-inline void CCamera::GetProjectionMatrix( Matrix44& dest ) const
+inline void Camera::GetProjectionMatrix( Matrix44& dest ) const
 {
 	dest = Matrix44PerspectiveFoV_LH( m_fFieldOfView, m_fAspectRatio, m_fNearClip, m_fFarClip );
 }
 
 
-inline void CCamera::SetFOV( float fFieldOfView )
+inline void Camera::SetFOV( float fFieldOfView )
 {
 	m_fFieldOfView = fFieldOfView;
 
@@ -186,7 +186,7 @@ inline void CCamera::SetFOV( float fFieldOfView )
 }
 
 
-inline void CCamera::SetAspectRatio( float fAspectRatio )
+inline void Camera::SetAspectRatio( float fAspectRatio )
 {
 	m_fAspectRatio = fAspectRatio;
 
@@ -195,7 +195,7 @@ inline void CCamera::SetAspectRatio( float fAspectRatio )
 }
 
 
-inline void CCamera::SetNearClip( float fNearClip )
+inline void Camera::SetNearClip( float fNearClip )
 {
 	m_fNearClip = fNearClip;
 
@@ -205,7 +205,7 @@ inline void CCamera::SetNearClip( float fNearClip )
 }
 
 
-inline void CCamera::SetFarClip( float fFarClip )
+inline void Camera::SetFarClip( float fFarClip )
 {
 	m_fFarClip = fFarClip;
 
@@ -215,13 +215,13 @@ inline void CCamera::SetFarClip( float fFarClip )
 }
 
 /*
-inline void CCamera::CommitChanges()
+inline void Camera::CommitChanges()
 {
 	UpdateVFTreeForWorldSpace();
 }*/
 
 
-inline void CCamera::GetOrientation( Matrix33& matDestOrient ) const
+inline void Camera::GetOrientation( Matrix33& matDestOrient ) const
 {
 	matDestOrient.SetColumn( 0, m_vRight );
 	matDestOrient.SetColumn( 1, m_vUp );
@@ -229,7 +229,7 @@ inline void CCamera::GetOrientation( Matrix33& matDestOrient ) const
 }
 
 
-inline void CCamera::SetOrientation( const Matrix33& matOrient )
+inline void Camera::SetOrientation( const Matrix33& matOrient )
 {
 	m_vRight = matOrient.GetColumn(0);
 	m_vUp    = matOrient.GetColumn(1);
@@ -237,7 +237,7 @@ inline void CCamera::SetOrientation( const Matrix33& matOrient )
 }
 
 
-inline void CCamera::GetPose( Matrix34& rDestPose ) const
+inline void Camera::GetPose( Matrix34& rDestPose ) const
 {
 	rDestPose.vPosition = m_vPosition;
 
@@ -247,7 +247,7 @@ inline void CCamera::GetPose( Matrix34& rDestPose ) const
 }
 
 
-inline void CCamera::SetPose( const Matrix34& rSrcPose )
+inline void Camera::SetPose( const Matrix34& rSrcPose )
 {
 	m_vRight	= rSrcPose.matOrient.GetColumn(0);
 	m_vUp		= rSrcPose.matOrient.GetColumn(1);
@@ -257,7 +257,7 @@ inline void CCamera::SetPose( const Matrix34& rSrcPose )
 }
 
 
-inline bool CCamera::ViewFrustumIntersectsWith( const Sphere& rSphere ) const
+inline bool Camera::ViewFrustumIntersectsWith( const Sphere& rSphere ) const
 {
 	float d;
 
@@ -273,7 +273,7 @@ inline bool CCamera::ViewFrustumIntersectsWith( const Sphere& rSphere ) const
 }
 
 
-inline bool CCamera::ViewFrustumIntersectsWith( const AABB3& raabb ) const
+inline bool Camera::ViewFrustumIntersectsWith( const AABB3& raabb ) const
 {
 	int i;
 	float d;

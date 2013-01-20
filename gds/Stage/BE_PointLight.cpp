@@ -233,7 +233,7 @@ bool CBE_PointLight::CheckRayToCamera( CCopyEntity* pCopyEnt )
 	if( !pCameraEntity )
 		return false;	// camera entity was not found
 
-/*	CCamera *pCamera = pCameraEntity->pBaseEntity->GetCamera();
+/*	Camera *pCamera = pCameraEntity->pBaseEntity->GetCamera();
 	if( !pCamera )
 		return false;
 
@@ -242,7 +242,7 @@ bool CBE_PointLight::CheckRayToCamera( CCopyEntity* pCopyEnt )
 ///	Vector3 vCameraPos = pCameraEntity->Position();
 
 	Vector3 vCameraPos;
-	CCamera *pCamera = pCameraEntity->pBaseEntity->GetCamera();
+	Camera *pCamera = pCameraEntity->pBaseEntity->GetCamera();
 	if( pCamera )
 		vCameraPos = pCamera->GetPosition();
 	else

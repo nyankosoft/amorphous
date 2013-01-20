@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-CCamera::CCamera( float fov, float aspectratio, float farclip, float nearclip )
+Camera::Camera( float fov, float aspectratio, float farclip, float nearclip )
 {
 	m_fFieldOfView = fov;
 	m_fAspectRatio = aspectratio;
@@ -22,7 +22,7 @@ CCamera::CCamera( float fov, float aspectratio, float farclip, float nearclip )
 }
 
 
-void CCamera::UpdateLocalVFTreeSidePlanes()
+void Camera::UpdateLocalVFTreeSidePlanes()
 {
 	float fovy = m_fFieldOfView;
 	float aspect = m_fAspectRatio;
@@ -48,7 +48,7 @@ void CCamera::UpdateLocalVFTreeSidePlanes()
 }
 
 
-void CCamera::CreateVFTree()
+void Camera::CreateVFTree()
 {
 
 	for(int i=0; i<6; i++)
@@ -80,7 +80,7 @@ void CCamera::CreateVFTree()
 }
 
 
-void CCamera::UpdatePosition( const Vector3& vPos, const Vector3& vDir,
+void Camera::UpdatePosition( const Vector3& vPos, const Vector3& vDir,
 							  const Vector3& vRight, const Vector3& vUp)
 {
 	m_vPosition = vPos;
@@ -92,7 +92,7 @@ void CCamera::UpdatePosition( const Vector3& vPos, const Vector3& vDir,
 }
 
 
-void CCamera::UpdateVFTreeForWorldSpace()
+void Camera::UpdateVFTreeForWorldSpace()
 {
 	const Vector3& vPosition = m_vPosition;
 
@@ -116,7 +116,7 @@ void CCamera::UpdateVFTreeForWorldSpace()
 }
 
 
-void CCamera::RotateYaw(float fYaw)
+void Camera::RotateYaw(float fYaw)
 {
 	Matrix33 matRotYaw = Matrix33RotationAxis( fYaw, m_vUp );
 
@@ -130,7 +130,7 @@ void CCamera::RotateYaw(float fYaw)
 	UpdateVFTreeForWorldSpace();
 }
 
-void CCamera::RotatePitch(float fPitch)
+void Camera::RotatePitch(float fPitch)
 {
 	Matrix33 matRotPitch = Matrix33RotationAxis( fPitch, m_vRight );
 

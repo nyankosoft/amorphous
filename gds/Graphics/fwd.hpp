@@ -53,7 +53,7 @@ class TextureFont;
 class TrueTypeTextureFont;
 class UTFFont;
 class CSimpleBitmapFontData;
-class CCamera;
+class Camera;
 class CShaderManager;
 class CShaderLightManager;
 

@@ -101,7 +101,7 @@ void CStaticGeometryFG::SetDepthFogParams()
 }
 
 
-void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
+void CStaticGeometryFG::RenderTerrainMesh( const Camera& rCamera )
 {
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -184,7 +184,7 @@ void CStaticGeometryFG::RenderTerrainMesh( const CCamera& rCamera )
 }
 
 
-void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
+void CStaticGeometryFG::RenderSkybox( const Camera& rCamera )
 {
 	if( !m_pSkyboxMesh )
 		return;
@@ -236,7 +236,7 @@ void CStaticGeometryFG::RenderSkybox( const CCamera& rCamera )
 }
 
 
-bool CStaticGeometryFG::Render( const CCamera& rCamera, const unsigned int EffectFlag )
+bool CStaticGeometryFG::Render( const Camera& rCamera, const unsigned int EffectFlag )
 {
 	Matrix44 view, proj;
 	rCamera.GetCameraMatrix( view );

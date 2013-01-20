@@ -60,11 +60,11 @@ class CStaticGeometryFG : public CStaticGeometryBase
 
 private:
 
-	void RenderSkybox( const CCamera& rCamera );
+	void RenderSkybox( const Camera& rCamera );
 
 	void SetDepthFogParams();
 
-	void RenderTerrainMesh( const CCamera& rCamera );
+	void RenderTerrainMesh( const Camera& rCamera );
 
 	bool LoadCollisionMesh( CStaticGeometryArchiveFG& archive );
 
@@ -80,7 +80,7 @@ public:
 
 	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
 
-	virtual bool Render( const CCamera& rCamera, const unsigned int EffectFlag );
+	virtual bool Render( const Camera& rCamera, const unsigned int EffectFlag );
 
 	// load static geometry from binary database file
 	virtual bool LoadFromFile( const std::string& db_filename, bool bLoadGraphicsOnly = false );

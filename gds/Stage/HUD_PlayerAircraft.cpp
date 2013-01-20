@@ -365,7 +365,7 @@ void HUD_PlayerAircraft::RenderImpl()
 	// render focused target position indicator
 	//
 
-	CCamera* pCamera = pBaseEntity->GetCamera();
+	Camera* pCamera = pBaseEntity->GetCamera();
 	if( !pCamera )
 		return;
 
@@ -460,7 +460,7 @@ void HUD_PlayerAircraft::RenderImpl()
 
 void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *plane )
 {
-	CCamera* pCamera = plane->GetCamera();
+	Camera* pCamera = plane->GetCamera();
 	if( !pCamera )
 		return;
 

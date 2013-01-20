@@ -14,9 +14,9 @@ namespace amorphous
 
 class CStageViewerGameTask : public CSingleStageGameTask
 {
-	CCamera m_Camera;
+	Camera m_Camera;
 
-	boost::shared_ptr<CCameraController> m_pCameraController;
+	boost::shared_ptr<CameraController> m_pCameraController;
 
 	/// Use the above camera controller to control the camera movement.
 	/// - default: true
@@ -24,9 +24,9 @@ class CStageViewerGameTask : public CSingleStageGameTask
 
 protected:
 
-	const CCamera& GetCamera() const { return m_Camera; }
+	const Camera& GetCamera() const { return m_Camera; }
 
-	boost::shared_ptr<CCameraController> CameraController() { return m_pCameraController; }
+	const boost::shared_ptr<CameraController> GetCameraController() const { return m_pCameraController; }
 
 	void SetCameraPosition( const Vector3& pos ) { m_Camera.SetPosition(pos); m_pCameraController->SetPosition(pos); }
 

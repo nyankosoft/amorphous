@@ -31,33 +31,33 @@ public:
 #include <boost/shared_ptr.hpp>
 
 
-class CCameraControllerBase : public CCameraController
+class CameraControllerBase : public CameraController
 {
 public:
 };
 
 
-class CCameraController_Linux: public CCameraController
+class CameraController_Linux: public CameraController
 {
 public:
 };
 
 
-boost::shared_ptr<CCameraController> CreateCameraController()
+boost::shared_ptr<CameraController> CreateCameraController()
 {
-	boost::shared_ptr<CCameraController> ptr;
+	boost::shared_ptr<CameraController> ptr;
 
 #ifdef WIN32
-	ptr = boost::shared_ptr<CCameraController>( new CCameraControllerBase() );
+	ptr = boost::shared_ptr<CameraController>( new CameraControllerBase() );
 #else
-	ptr = boost::shared_ptr<CCameraController>( new CCameraController_Linux() );
+	ptr = boost::shared_ptr<CameraController>( new CameraController_Linux() );
 #endif
 
 	return ptr;
 }
 */
 
-class CCameraControllerBase
+class CameraControllerBase
 {
 	float m_fYaw;
 	float m_fPitch;
@@ -80,16 +80,16 @@ class CCameraControllerBase
 
 protected:
 
-	/// Move these variables CCameraController_Win32 if it's the only one
+	/// Move these variables CameraController_Win32 if it's the only one
 	/// who needs these.
 	int m_iPrevMousePosX;
 	int m_iPrevMousePosY;
 
 public:
 
-	CCameraControllerBase();
+	CameraControllerBase();
 
-	virtual ~CCameraControllerBase();
+	virtual ~CameraControllerBase();
 
 	/// must be called every frame
 	void UpdateCameraPose( float dt );

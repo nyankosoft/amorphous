@@ -44,7 +44,7 @@ protected:
 
 	Matrix34 m_OwnerWorldPose;
 
-	CCamera m_Camera;
+	Camera m_Camera;
 
 
 public:
@@ -71,7 +71,7 @@ public:
 
 	virtual void Render();
 
-	virtual CCamera& GetCamera() { return m_Camera; }
+	virtual Camera& GetCamera() { return m_Camera; }
 
 	void SetOwnerWorldPose( const Matrix34& world_pose ) { m_OwnerWorldPose = world_pose; }
 

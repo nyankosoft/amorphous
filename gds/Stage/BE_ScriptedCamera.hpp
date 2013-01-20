@@ -357,7 +357,7 @@ public:
 */
 class CScriptedCameraEntity : public CCopyEntity
 {
-	CCamera m_Camera;
+	Camera m_Camera;
 
 	CBEC_MotionPath m_Path;
 
@@ -464,7 +464,7 @@ public:
 //	virtual void Serialize( IArchive& ar, const unsigned int version );
 	
 	virtual void UpdateCamera( CCopyEntity *pCopyEnt ) {}
-//	virtual CCamera *GetCamera() { return &m_Camera; }
+//	virtual Camera *GetCamera() { return &m_Camera; }
 
 	friend CBE_CameraController;
 };

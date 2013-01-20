@@ -66,7 +66,7 @@ protected:
 
 	int m_LauncherType;
 
-	CCamera m_SensorCamera;
+	Camera m_SensorCamera;
 
 	float m_fValidSensorAngle;	///< in [rad]
 	float m_fMaxSensorRange;

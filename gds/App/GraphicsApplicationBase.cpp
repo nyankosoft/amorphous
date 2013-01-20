@@ -30,7 +30,7 @@ CGraphicsApplicationBase::CGraphicsApplicationBase()
 m_UseCameraController(true),
 m_BackgroundColor( SFloatRGBAColor::Blue() )
 {
-	m_pCameraController.reset( new CCameraController( sg_CameraControllerInputHandlerIndex ) );
+	m_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
 
 	m_pInputHandler.reset( new CInputDataDelegate<CGraphicsApplicationBase>( this ) );
 

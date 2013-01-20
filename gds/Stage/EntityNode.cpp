@@ -75,7 +75,7 @@ inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
 //   Rendering Copy Entities
 //               Draw all the copy entities linked to this node
 //=====================================================================
-void CEntityNode::RenderEntities( CEntityRenderer& entity_renderer, CCamera& rCam )
+void CEntityNode::RenderEntities( CEntityRenderer& entity_renderer, Camera& rCam )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
 //		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
@@ -103,7 +103,7 @@ void CEntityNode::RenderEntities( CEntityRenderer& entity_renderer, CCamera& rCa
 void CEntityNode::RenderEntitiesWithDownwardTraversal(
 	CEntityNode *pEntityTree,
 	CEntityRenderer& entity_renderer,
-	CCamera& rCam,
+	Camera& rCam,
 	bool do_camera_frustom_culling
 	)
 {

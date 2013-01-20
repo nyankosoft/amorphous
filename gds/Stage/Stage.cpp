@@ -263,7 +263,7 @@ void CStage::Render()
 		return;
 	}
 /*
-	CCamera *pCurrentCamera = m_pEntitySet->GetCurrentCamera();
+	Camera *pCurrentCamera = m_pEntitySet->GetCurrentCamera();
 	if( pCurrentCamera )
 	{
 		Render( *pCurrentCamera );
@@ -278,7 +278,7 @@ void CStage::Render()
 
 /*
 // render stage by directly providing the camera
-void CStage::Render( CCamera& rCam )
+void CStage::Render( Camera& rCam )
 {
 	// save the current camera
 	// the camera must not be released / destroyed untill the Render() finishes
@@ -315,7 +315,7 @@ void CStage::Render( CCamera& rCam )
 
 
 // render stage by directly providing the camera
-void CStage::Render( CCamera& rCam )
+void CStage::Render( Camera& rCam )
 {
 	m_pCamera = &rCam;
 
@@ -340,7 +340,7 @@ void CStage::CreateRenderTasks()
 /// called from base entity.
 /// Module that wants to render the stage by directly calling CStage::Render()
 /// needs to call this function in advance
-void CStage::CreateStageRenderTasks( CCamera *pCamera )
+void CStage::CreateStageRenderTasks( Camera *pCamera )
 {
 	// creates render tasks for
 	// - envmap
@@ -786,7 +786,7 @@ void CStage::NotifyEntityTerminationToEventManager( CCopyEntity* pEntity )
 void CStage::UpdateListener()
 {
 	Matrix34 cam_pose;
-	CCamera *pCamera;
+	Camera *pCamera;
 
 	// get the pose of the current camera
 	pCamera = this->GetCurrentCamera();

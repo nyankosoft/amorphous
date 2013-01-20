@@ -182,19 +182,19 @@ public:
 	m_pRenderer(pRenderer)
 	{}
 
-	void RenderSceneToShadowMap( CCamera& camera );
+	void RenderSceneToShadowMap( Camera& camera );
 
-	void RenderShadowReceivers( CCamera& camera );
+	void RenderShadowReceivers( Camera& camera );
 };
 
 
-void CEntityShadowMapRenderer::RenderSceneToShadowMap( CCamera& camera )
+void CEntityShadowMapRenderer::RenderSceneToShadowMap( Camera& camera )
 {
 	m_pRenderer->RenderShadowCasters( camera );
 }
 
 
-void CEntityShadowMapRenderer::RenderShadowReceivers( CCamera& camera )
+void CEntityShadowMapRenderer::RenderShadowReceivers( Camera& camera )
 {
 	m_pRenderer->RenderShadowReceivers( camera );
 }
@@ -224,14 +224,14 @@ class CEntityShadowMapRenderTask : public CRenderTask
 {
 	CEntityRenderManager *m_pRenderManager;
 
-	CCamera *m_pCamera;
+	Camera *m_pCamera;
 
 //	CScreenEffectManager *m_pScreenEffectManager;
 
 public:
 
 	CEntityShadowMapRenderTask( CEntityRenderManager *pRenderMgr,
-		CCamera *pCam,
+		Camera *pCam,
 		CScreenEffectManager *pScreenEffectManager)
 		:
 	m_pRenderManager(pRenderMgr),
@@ -261,11 +261,11 @@ class CEntitySceneRenderTask : public CRenderTask
 {
 	CEntityRenderManager *m_pRenderManager;
 
-	CCamera *m_pCamera;
+	Camera *m_pCamera;
 
 public:
 
-	CEntitySceneRenderTask( CEntityRenderManager *pRenderMgr, CCamera *pCam )
+	CEntitySceneRenderTask( CEntityRenderManager *pRenderMgr, Camera *pCam )
 		:
 	m_pRenderManager(pRenderMgr),
 	m_pCamera(pCam)
@@ -377,7 +377,7 @@ void CEntityRenderManager::AddSweepRenderEntity( CBaseEntity* pBaseEntity )
 }
 
 
-void CEntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, CCamera& rCam )
+void CEntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, Camera& rCam )
 {
 	CEntityNode* pFirstEntNode = m_paEntityTree;
 	CEntityNode* pEntNode = pFirstEntNode + sEntNodeIndex;
@@ -539,7 +539,7 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 }
 
 
-void CEntityRenderManager::RenderScene( CCamera& rCam )
+void CEntityRenderManager::RenderScene( Camera& rCam )
 {
 	PROFILE_FUNCTION();
 
@@ -581,7 +581,7 @@ void CEntityRenderManager::RenderScene( CCamera& rCam )
 }
 
 
-void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_entity_id )
+void CEntityRenderManager::RenderAllButEnvMapTarget( Camera& rCam, U32 target_entity_id )
 {
 	//==================== render the entities ====================
 
@@ -608,7 +608,7 @@ void CEntityRenderManager::RenderAllButEnvMapTarget( CCamera& rCam, U32 target_e
 }
 
 
-void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
+void CEntityRenderManager::RenderShadowCasters( Camera& rCam )
 {
 /*	CEntityNode& rRootNode = m_paEntityTree[0];
 	if( !m_pShadowManager )
@@ -636,7 +636,7 @@ void CEntityRenderManager::RenderShadowCasters( CCamera& rCam )
 }
 
 
-void CEntityRenderManager::RenderShadowReceivers( CCamera& rCam )
+void CEntityRenderManager::RenderShadowReceivers( Camera& rCam )
 {
 	//==================== render the entities ====================
 
@@ -667,13 +667,13 @@ void CEntityRenderManager::SetLightForShadow( const string& light_entity_name )
 }
 
 
-void CEntityRenderManager::RenderSceneToCubeMap( CCamera& camera )
+void CEntityRenderManager::RenderSceneToCubeMap( Camera& camera )
 {
 	RenderAllButEnvMapTarget( camera, m_CurrentEnvMapTargetEntityID );
 }
 
 /*
-void CEntityRenderManager::RenderSceneWithShadowMap( CCamera& rCam, 
+void CEntityRenderManager::RenderSceneWithShadowMap( Camera& rCam, 
 													 CScreenEffectManager *pScreenEffectMgr )
 {
 	pScreenEffectMgr->RaiseEffectFlag( ScreenEffect::ShadowMap );
@@ -869,7 +869,7 @@ Result::Name CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entit
 }
 
 
-void CEntityRenderManager::UpdatePlanarReflectionTexture( CCamera& rCam, CPlanarReflectionGroup& group )
+void CEntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group )
 {
 	if( !group.m_pReflectionRenderTarget )
 //	if( !m_pMirroredScene )
@@ -917,7 +917,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTexture( CCamera& rCam, CPlanar
 }
 
 
-void CEntityRenderManager::UpdatePlanarReflectionTextures( CCamera& rCam )
+void CEntityRenderManager::UpdatePlanarReflectionTextures( Camera& rCam )
 {
 	// Render all the polygons in the mirrored scene.
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
@@ -1229,7 +1229,7 @@ void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rPa
  - Render the shadow receiver entities.
  - Render the scene without shadow to render target texture.
 */
-void CEntityRenderManager::RenderSceneWithShadows( CCamera& rCam )//, 
+void CEntityRenderManager::RenderSceneWithShadows( Camera& rCam )//, 
 //													 CScreenEffectManager *pScreenEffectMgr )
 {
 	if( m_bOverrideShadowMapLight )
@@ -1301,13 +1301,13 @@ void CEntityRenderManager::CreateEnvMapRenderTasks()
 }
 
 
-void CEntityRenderManager::CreateShadowMapRenderTasks( CCamera& rCam )
+void CEntityRenderManager::CreateShadowMapRenderTasks( Camera& rCam )
 {
 	RenderTaskProcessor.AddRenderTask( new CEntityShadowMapRenderTask( this, &rCam, NULL ) );
 }
 
 
-void CEntityRenderManager::CreateSceneRenderTask( CCamera& rCam )
+void CEntityRenderManager::CreateSceneRenderTask( Camera& rCam )
 {
 	RenderTaskProcessor.AddRenderTask( new CEntitySceneRenderTask( this, &rCam ) );
 }
@@ -1342,7 +1342,7 @@ void CEntityRenderManager::CreateRenderTasks( bool create_scene_render_task )
 }
 
 
-void CEntityRenderManager::UpdateFogParams( const CCamera& rCam )
+void CEntityRenderManager::UpdateFogParams( const Camera& rCam )
 {
 	CFogParams fog_params;
 
@@ -1369,7 +1369,7 @@ void CEntityRenderManager::UpdateFogParams( const CCamera& rCam )
 }
 
 
-void CEntityRenderManager::Render( CCamera& rCam )
+void CEntityRenderManager::Render( Camera& rCam )
 {
 	PROFILE_FUNCTION();
 

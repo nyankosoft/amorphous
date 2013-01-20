@@ -232,7 +232,7 @@ void CScreenEffectManager::ReleaseNoiseEffect()
 
 
 /*
-void CScreenEffectManager::BeginRender( const CCamera &rCam )
+void CScreenEffectManager::BeginRender( const Camera &rCam )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
@@ -570,7 +570,7 @@ void CScreenEffectManager::LoadGraphicsResources( const CGraphicsParameters& rPa
 }
 
 
-void CScreenEffectManager::BeginRender( const CCamera &rCam )
+void CScreenEffectManager::BeginRender( const Camera &rCam )
 {
 //	DoPseudoNightVisionEffectSettings();
 
@@ -641,7 +641,7 @@ void CScreenEffectManager::EndRender()
 }
 
 
-void CScreenEffectManager::Render( CCamera &rCam )
+void CScreenEffectManager::Render( Camera &rCam )
 {
 	PROFILE_FUNCTION();
 
@@ -707,7 +707,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 //======================================================================
 
 /*
-void CScreenEffectManager::Render( CCamera &rCam )
+void CScreenEffectManager::Render( Camera &rCam )
 {
 	if( m_bPseudoMotionBlurEnabled )
 	{

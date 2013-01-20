@@ -78,7 +78,7 @@ bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam )
 
 void CGI_Binocular::Update( float dt )
 {
- 	CCamera *pCamera = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetCamera();
+ 	Camera *pCamera = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetCamera();
 	if( !pCamera )
 		return;
 

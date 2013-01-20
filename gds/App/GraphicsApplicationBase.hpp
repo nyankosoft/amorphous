@@ -20,10 +20,10 @@ namespace amorphous
  */
 class CGraphicsApplicationBase : public CApplicationBase
 {
-	CCamera m_Camera;
+	Camera m_Camera;
 
 //	CPlatformDependentCameraController m_CameraController;
-	boost::shared_ptr<CCameraControllerBase> m_pCameraController;
+	boost::shared_ptr<CameraControllerBase> m_pCameraController;
 
 	boost::shared_ptr<FontBase> m_pFont;
 
@@ -58,9 +58,9 @@ protected:
 
 	bool m_UseCameraController;
 
-	boost::shared_ptr<CCameraControllerBase> GetCameraController() { return m_pCameraController; }
+	boost::shared_ptr<CameraControllerBase> GetCameraController() { return m_pCameraController; }
 
-	CCamera& Camera() { return m_Camera; }
+	Camera& Camera() { return m_Camera; }
 
 	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
 

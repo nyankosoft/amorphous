@@ -442,7 +442,7 @@ void CBE_Player::RenderStage(CCopyEntity* pCopyEnt)
 	// BeginScene() & EndScene() pairs are called inside the function
 //	ProfileBegin( "render stage (player)" );
 
-	CCamera* pCamera = GetCamera();
+	Camera* pCamera = GetCamera();
 
 	if( pCamera )
 		m_pStage->Render( *pCamera );
@@ -465,7 +465,7 @@ void CBE_Player::RenderStage(CCopyEntity* pCopyEnt)
 
 void CBE_Player::RenderStage(CCopyEntity* pCopyEnt)
 {
-	CCamera* pCamera = GetCamera();
+	Camera* pCamera = GetCamera();
 
 	if( pCamera )
 		m_pStage->Render( *pCamera );

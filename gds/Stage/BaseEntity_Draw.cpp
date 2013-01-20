@@ -238,7 +238,7 @@ void UpdateEntityForRendering( CCopyEntity& entity )
 	const float offset_world_transform_threshold = 150000.0f;
 	if( square(offset_world_transform_threshold) < Vec3LengthSq(entity.GetWorldPose().vPosition) )
 	{
-		CCamera* pCam = entity.GetStage()->GetCurrentCamera();
+		Camera* pCam = entity.GetStage()->GetCurrentCamera();
 		if( pCam )
 		{
 			sg_pWorldTransLoader->SetActive( true );

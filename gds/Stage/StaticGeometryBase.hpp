@@ -58,7 +58,7 @@ public:
 
 	const AABB3& GetAABB() const { return m_AABB; }
 
-	virtual bool Render( const CCamera& rCam, const unsigned int EffectFlag ) = 0;
+	virtual bool Render( const Camera& rCam, const unsigned int EffectFlag ) = 0;
 
 	virtual bool LoadFromFile( const std::string& filename, bool bLoadGraphicsOnly = false ) = 0;
 

@@ -30,7 +30,7 @@ public:
 	///   RenderSceneToCubeMap() calls.
 	///   User must call them in this functions?
 	///   - changed: BeginScene() and EndScene() are called in CCubeMapManager::RenderToCubeMap()
-	virtual void RenderSceneToCubeMap( CCamera& camera ) = 0;
+	virtual void RenderSceneToCubeMap( Camera& camera ) = 0;
 };
 
 
@@ -52,7 +52,7 @@ class CCubeMapManager : public CGraphicsComponent
 
 	int m_NumCubes;
 
-	CCamera m_Camera;
+	Camera m_Camera;
 
 	/// borrowed reference
 	CCubeMapSceneRenderer *m_pCubeMapSceneRenderer;

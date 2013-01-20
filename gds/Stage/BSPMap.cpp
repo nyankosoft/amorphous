@@ -733,7 +733,7 @@ void CBSPMap::ClipTraceToInteriorModel_r(STrace& tr, short nodeindex)
 //
 //==========================================================================
 
-bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
+bool CBSPMap::Render( const Camera &rCam, const unsigned int EffectFlag )
 {
 	STrace tr;
 	tr.vEnd = rCam.GetPosition();
@@ -976,7 +976,7 @@ bool CBSPMap::Render( const CCamera &rCam, const unsigned int EffectFlag )
 
 
 //actually, some optimizaiton is necessary
-void CBSPMap::DrawCell(short sCellIndex, CCamera& rCam)
+void CBSPMap::DrawCell(short sCellIndex, Camera& rCam)
 {
 	short i;
 	CSG_Cell& rCell = m_paCellData[sCellIndex];
@@ -1032,7 +1032,7 @@ void CBSPMap::DrawCell(short sCellIndex, CCamera& rCam)
 }
 
 
-void CBSPMap::DrawCell_TS(short sCellIndex, const CCamera& rCam)
+void CBSPMap::DrawCell_TS(short sCellIndex, const Camera& rCam)
 {
 	if( !m_pIB )
 		return;
@@ -1391,7 +1391,7 @@ void CBSPMap::RenderGlareImage()
 }*/
 
 /*
-void CBSPMap::RenderSkybox( const CCamera& rCamera )
+void CBSPMap::RenderSkybox( const Camera& rCamera )
 {
 	CD3DXMeshObject *pSkyboxMesh = m_pSkybox;
 	if( !pSkyboxMesh || !pSkyboxMesh->GetBaseMesh() )

@@ -21,7 +21,7 @@ namespace amorphous
 class CViewFrustumTest
 {
 public:
-	CCamera *m_pCamera;
+	Camera *m_pCamera;
 
 	int m_Flag;
 
@@ -36,8 +36,8 @@ public:
 		m_pvecpVisibleEntity = NULL;
 	}
 
-	inline void SetCamera(CCamera *pCamera) { m_pCamera  = pCamera; }
-	inline CCamera *GetCamera() { return m_pCamera; }
+	inline void SetCamera(Camera *pCamera) { m_pCamera  = pCamera; }
+	inline Camera *GetCamera() { return m_pCamera; }
 
 	inline void SetBuffer( std::vector<CCopyEntity *>& rvecpVisibleEntity ) { m_pvecpVisibleEntity = &rvecpVisibleEntity; }
 

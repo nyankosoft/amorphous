@@ -31,7 +31,7 @@ private:
 		NUM_MAX_ACTIVE_CAMERAS = 2
 	};
 
-//	CCamera m_Camera;
+//	Camera m_Camera;
 
 	// TODO: stack is probably better
 	CEntityHandle<> m_PrevCameraEntity;
@@ -87,7 +87,7 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void UpdateCamera( CCopyEntity *pCopyEnt ) {}
-//	virtual CCamera *GetCamera() { return &m_Camera; }
+//	virtual Camera *GetCamera() { return &m_Camera; }
 
 	friend class CInputHandler_Cutscene;
 	friend class CCoreBaseEntitiesLoader;

@@ -86,7 +86,7 @@ protected:
 	CSoundHandle m_aDamageSound[NUM_DAMAGE_TYPES][PLYAER_DAMAGESOUND_VARIATION];
 
 	/// view from the player
-	CCamera m_Camera;
+	Camera m_Camera;
 
 	Matrix34 m_CameraLocalPose;
 
@@ -154,7 +154,7 @@ public:
 	virtual void Draw(CCopyEntity *pCopyEnt);
 
 	virtual void UpdateCamera(CCopyEntity* pCopyEnt);
-	CCamera *GetCamera() { return &m_Camera; }
+	Camera *GetCamera() { return &m_Camera; }
 
 	virtual void Move( CCopyEntity *pCopyEnt );
 

@@ -30,7 +30,7 @@ private:
 	/// true if the missile has its own sensor and capable of spotting & locking on targets
 	bool m_bSensor;
 
-	CCamera m_InitSensorCamera;
+	Camera m_InitSensorCamera;
 
 	float m_fValidSensorAngle;
 	float m_fMaxSensorRange;

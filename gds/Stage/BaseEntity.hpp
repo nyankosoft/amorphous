@@ -292,7 +292,7 @@ public:
 
 	/// called when a copy entity of this base entity is being used as a camera entity
 	virtual void UpdateCamera( CCopyEntity *pCopyEnt ) {}
-	virtual CCamera *GetCamera() { return NULL; }
+	virtual Camera *GetCamera() { return NULL; }
 
 	// Updates for properties that need to be calculated with fixed size timestep.
 	// Mainly used for physics properties.

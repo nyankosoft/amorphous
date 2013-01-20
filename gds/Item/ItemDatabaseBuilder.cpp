@@ -157,7 +157,7 @@ void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, CGI_M
 	scanner.GetTagString( tag );
 	int num_release_positions;
 
-	CCamera m_SensorCamera;
+	Camera m_SensorCamera;
 
 	scanner.TryScanLine( "sensor_angle",	pItem->m_fValidSensorAngle );
 

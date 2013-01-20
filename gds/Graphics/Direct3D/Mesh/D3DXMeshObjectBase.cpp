@@ -660,7 +660,7 @@ HRESULT CD3DXMeshObjectBase::SetAttributeTable( LPD3DXMESH pMesh,
 }
 
 
-void CD3DXMeshObjectBase::UpdateVisibility( const CCamera& cam )
+void CD3DXMeshObjectBase::UpdateVisibility( const Camera& cam )
 {
 	if( !cam.ViewFrustumIntersectsWith( m_AABB ) )
 	{

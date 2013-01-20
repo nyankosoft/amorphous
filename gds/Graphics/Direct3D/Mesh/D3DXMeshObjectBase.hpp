@@ -139,10 +139,10 @@ public:
 
 	int GetVertexSize() const { return m_iVertexSize; }
 
-	/// user is responsible for updating the visibility by calling UpdateVisibility( const CCamera& cam )
+	/// user is responsible for updating the visibility by calling UpdateVisibility( const Camera& cam )
 	void ViewFrustumTest( bool do_test ) { m_bViewFrustumTest = do_test; }
 
-	void UpdateVisibility( const CCamera& cam );
+	void UpdateVisibility( const Camera& cam );
 
 	inline bool IsMeshVisible( int triset_index ) const { return m_IsVisible[triset_index]==1 ? true : false; }
 

@@ -11,22 +11,22 @@ namespace amorphous
 {
 
 
-class CCameraControllerInputHandler;
+class CameraControllerInputHandler;
 
 
-class CCameraController : public CCameraControllerBase
+class CameraController : public CameraControllerBase
 {
 	int m_InputHandlerIndex;
 
-	boost::shared_ptr< CInputDataDelegate<CCameraController> > m_pInputDataDelagate;
+	boost::shared_ptr< CInputDataDelegate<CameraController> > m_pInputDataDelagate;
 
 public:
 
-	CCameraController( int input_handler_index );
+	CameraController( int input_handler_index );
 
-	CCameraController( CInputHandler *pParentInputHandler );
+	CameraController( CInputHandler *pParentInputHandler );
 
-	~CCameraController();
+	~CameraController();
 
 	bool IsKeyPressed( int general_input_code );
 };

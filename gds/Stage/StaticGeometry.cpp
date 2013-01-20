@@ -242,7 +242,7 @@ void CStaticGeometryBase::MakeEntityTree( CBSPTree& bsptree )
 
 static float gs_fDistMarginFactor = 1.5f;
 
-void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCamera& rCam, const Sphere& cam_sphere )
+void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const Camera& rCam, const Sphere& cam_sphere )
 {
 	CStaticGeometryMeshHolder& mesh_holder = m_Archive.m_vecMesh[subset.MeshIndex];
 
@@ -303,7 +303,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const CCam
 }
 
 
-void CStaticGeometry::UpdateResources( const CCamera& rCam )
+void CStaticGeometry::UpdateResources( const Camera& rCam )
 {
 	CNonLeafyAABTree<CMeshSubset>& mesh_subset_tree = m_Archive.m_MeshSubsetTree;
 
@@ -349,7 +349,7 @@ void CStaticGeometry::UpdateResources( const CCamera& rCam )
 }
 
 
-void CStaticGeometry::UpdateResources_NonHierarchical( const CCamera& rCam )
+void CStaticGeometry::UpdateResources_NonHierarchical( const Camera& rCam )
 {
 	vector<CMeshSubset>& vecMeshSubset = m_Archive.m_MeshSubsetTree.GetGeometryBuffer();
 	const int num_mesh_subsets = (int)vecMeshSubset.size();
@@ -455,7 +455,7 @@ void CStaticGeometry::SetGlobalParams()
 
 #define NUM_MAX_VISIBLE_SUBSETS_PER_NODE 24
 
-bool CStaticGeometry::Render( const CCamera& rCam, const unsigned int EffectFlag )
+bool CStaticGeometry::Render( const Camera& rCam, const unsigned int EffectFlag )
 {
 //	this->UpdateResources( rCam );
 
