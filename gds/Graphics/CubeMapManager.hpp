@@ -22,19 +22,19 @@ public:
 
 	virtual Vector3 GetCameraPosition() = 0;
 
-	/// Called by CCubeMapManager in CCubeMapManager::RenderToCubeMap()
+	/// Called by CubeMapManager in CubeMapManager::RenderToCubeMap()
 	/// to render the scene to the cube map surface.
 	/// - called 6 times in total to render the scene to all the cube map surfaces
 	/// - IDirect3DDevice9::BeginScene() & EndScene() pair is not called
-	///   in CCubeMapManager::RenderToCubeMap() before and after the 
+	///   in CubeMapManager::RenderToCubeMap() before and after the 
 	///   RenderSceneToCubeMap() calls.
 	///   User must call them in this functions?
-	///   - changed: BeginScene() and EndScene() are called in CCubeMapManager::RenderToCubeMap()
+	///   - changed: BeginScene() and EndScene() are called in CubeMapManager::RenderToCubeMap()
 	virtual void RenderSceneToCubeMap( Camera& camera ) = 0;
 };
 
 
-class CCubeMapManager : public CGraphicsComponent
+class CubeMapManager : public CGraphicsComponent
 {
 	int m_CubeTextureSize;
 
@@ -65,8 +65,8 @@ private:
 
 public:
 
-	CCubeMapManager();
-	~CCubeMapManager();
+	CubeMapManager();
+	~CubeMapManager();
 
 	void Init( int tex_edge_length = 256,
 		       TextureFormat::Format tex_format = TextureFormat::A8R8G8B8 );

@@ -150,13 +150,13 @@ private:
 
 //	int m_aFilterIndex[NUM_FILTERS];
 
-	boost::shared_ptr<CSimpleMotionBlur> m_pSimpleMotionBlur;
+	boost::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
 
-	CPseudoNoiseEffect m_NoiseEffect;
+	PseudoNoiseEffect m_NoiseEffect;
 
 	TCFixedVector< CExtraTextureEffect, NUM_MAX_EXTRA_TEXTURES > m_vecExtraTexEffect;
 
-	boost::shared_ptr<CLensFlare> m_pLensFlare;
+	boost::shared_ptr<LensFlare> m_pLensFlare;
 
 //	CTextureRenderTarget m_TexRenderTarget;
 
@@ -273,7 +273,7 @@ public:
 	Result::Name SetHDRLightingParams( U32 param_flags, const CHDRLightingParams& params );
 	Result::Name EnableHDRLighting( bool enable );
 
-	boost::shared_ptr<CLensFlare> GetLensFlare() { return m_pLensFlare; }
+	boost::shared_ptr<LensFlare> GetLensFlare() { return m_pLensFlare; }
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const CGraphicsParameters& rParam );

@@ -560,7 +560,7 @@ void CSpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 
 CPointLightShadowMap::CPointLightShadowMap()
 {
-	m_pCubeShadowMapManager = new CCubeMapManager();
+	m_pCubeShadowMapManager = new CubeMapManager();
 	m_pCubeShadowMapManager->SetCubeMapSceneRenderer( &m_CubeShadowMapSceneRenderer );
 //	m_CubeShadowMapSceneRenderer.SetRenderer( m_pSceneRenderer );
 //	m_pCubeShadowMapManager->SetSceneRenderer( m_pCubeShadowMapSceneRenderer );

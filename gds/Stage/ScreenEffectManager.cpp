@@ -25,11 +25,11 @@ using namespace boost;
 class CSimpleMotionBlurRenderTask : public CRenderTask
 {
 	/// borrowed reference
-	CSimpleMotionBlur *m_pMotionBlurMgr;
+	SimpleMotionBlur *m_pMotionBlurMgr;
 
 public:
 
-	CSimpleMotionBlurRenderTask( CSimpleMotionBlur *pMotionBlurMgr )
+	CSimpleMotionBlurRenderTask( SimpleMotionBlur *pMotionBlurMgr )
 		:
 	m_pMotionBlurMgr(pMotionBlurMgr)
 	{
@@ -134,7 +134,7 @@ m_pTargetSceneRenderer(NULL)
 
 	m_DefaultShaderTechnique.SetTechniqueName( "Default" );
 
-	m_pLensFlare.reset( new CLensFlare );
+	m_pLensFlare.reset( new LensFlare );
 }
 
 
@@ -199,7 +199,7 @@ void CScreenEffectManager::ReleasePostProcessEffect()
 
 Result::Name CScreenEffectManager::InitMotionBlurEffect()
 {
-	m_pSimpleMotionBlur.reset( new CSimpleMotionBlur );
+	m_pSimpleMotionBlur.reset( new SimpleMotionBlur );
 
 	m_pSimpleMotionBlur->InitForScreenSize();
 	m_pSimpleMotionBlur->SetBlurWeight( 0.85f );

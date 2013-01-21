@@ -8,7 +8,7 @@ namespace amorphous
 using namespace std;
 
 
-CLensFlareGroup::CLensFlareGroup()
+LensFlareGroup::LensFlareGroup()
 :
 m_NumTextureSegmentsX(1),
 m_NumTextureSegmentsY(1)
@@ -18,26 +18,26 @@ m_NumTextureSegmentsY(1)
 
 
 
-CLensFlare::CLensFlare()
+LensFlare::LensFlare()
 :
 m_vLightPosition( Vector3(1,1,1) )
 {
 }
 
 
-CLensFlare::~CLensFlare()
+LensFlare::~LensFlare()
 {
 	Release();
 }
 
 
-void CLensFlare::Release()
+void LensFlare::Release()
 {
 	m_vecLensFlareGroup.resize( 0 );
 }
 
 
-void CLensFlare::UpdateLensFlares()
+void LensFlare::UpdateLensFlares()
 {
 	// update rect positions
 	Matrix44 matProjView;
@@ -67,12 +67,12 @@ void CLensFlare::UpdateLensFlares()
 
 	for( size_t i=0; i<num_groups; i++ )
 	{
-		CLensFlareGroup& group = m_vecLensFlareGroup[i];
+		LensFlareGroup& group = m_vecLensFlareGroup[i];
 	
 		const size_t num_flares = group.m_vecComponent.size();
 		for( size_t j=0; j<num_flares; j++ )
 		{
-			const CLensFlareComponent& rFlare = group.m_vecComponent[j];
+			const LensFlareComponent& rFlare = group.m_vecComponent[j];
 
 			fDistFactor  = rFlare.m_fDistFactor;
 			fScaleFactor = rFlare.m_fScaleFactor;
@@ -106,7 +106,7 @@ void CLensFlare::UpdateLensFlares()
 }
 
 /*
-void CLensFlare::Render()
+void LensFlare::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
@@ -152,13 +152,13 @@ void CLensFlare::Render()
 */
 
 
-void CLensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
+void LensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
 {
 	Render();
 }
 
 
-void CLensFlare::Render()
+void LensFlare::Render()
 {
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
@@ -181,7 +181,7 @@ void CLensFlare::Render()
 	const size_t num_groups = m_vecLensFlareGroup.size();
 	for( size_t i=0; i<num_groups; i++ )
 	{
-		CLensFlareGroup& group = m_vecLensFlareGroup[i];
+		LensFlareGroup& group = m_vecLensFlareGroup[i];
 
 //		rShaderManager.SetTexture( texture_stage, group.m_Texture );
 
@@ -205,14 +205,14 @@ void CLensFlare::Render()
 }
 
 
-bool CLensFlare::AddTexture( const std::string& texture_filename, int group_index, int num_segments_x, int num_segments_y )
+bool LensFlare::AddTexture( const std::string& texture_filename, int group_index, int num_segments_x, int num_segments_y )
 {
 	while( (int)m_vecLensFlareGroup.size() <= group_index )
 	{
-		m_vecLensFlareGroup.push_back( CLensFlareGroup() );
+		m_vecLensFlareGroup.push_back( LensFlareGroup() );
 	}
 
-	CLensFlareGroup& rDestGroup = m_vecLensFlareGroup[group_index];
+	LensFlareGroup& rDestGroup = m_vecLensFlareGroup[group_index];
 
 	rDestGroup.m_NumTextureSegmentsX = num_segments_x;
 	rDestGroup.m_NumTextureSegmentsY = num_segments_y;
@@ -221,7 +221,7 @@ bool CLensFlare::AddTexture( const std::string& texture_filename, int group_inde
 }
 
 
-void CLensFlare::AddLensFlareRect( float dim,
+void LensFlare::AddLensFlareRect( float dim,
 								   float scale_factor,
 								   float dist_factor,
 								   const SFloatRGBAColor& color,
@@ -230,11 +230,11 @@ void CLensFlare::AddLensFlareRect( float dim,
 								   int tex_seg_index_y )
 {
 	while( (int)m_vecLensFlareGroup.size() <= group_index )
-		m_vecLensFlareGroup.push_back( CLensFlareGroup() );
+		m_vecLensFlareGroup.push_back( LensFlareGroup() );
 
-	CLensFlareGroup& rDestGroup = m_vecLensFlareGroup[group_index];
+	LensFlareGroup& rDestGroup = m_vecLensFlareGroup[group_index];
 
-	CLensFlareComponent flare;
+	LensFlareComponent flare;
 
 	flare.m_Color = color;
 	flare.m_fDistFactor	 = dist_factor;
@@ -259,7 +259,7 @@ void CLensFlare::AddLensFlareRect( float dim,
 }
 
 
-void CLensFlare::AddLensFlareRectUV( float dim,
+void LensFlare::AddLensFlareRectUV( float dim,
 									 float scale_factor,
 									 float dist_factor,
 									 const SFloatRGBAColor& color,

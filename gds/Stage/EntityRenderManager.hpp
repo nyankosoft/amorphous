@@ -116,7 +116,7 @@ private:
 	/// When on, environment map texture is updated whenever the camera moves
 	bool m_bEnableEnvironmentMap;
 
-	CCubeMapManager *m_pCubeMapManager;
+	CubeMapManager *m_pCubeMapManager;
 
 	// stores enitities which need env map texture
 	std::vector<CEnvMapTarget> m_vecEnvMapTarget;

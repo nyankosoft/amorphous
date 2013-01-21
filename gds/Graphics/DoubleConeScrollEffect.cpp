@@ -196,7 +196,7 @@ Result::Name CDoubleConeMeshGenerator::Generate()
 }
 
 
-CDoubleConeScrollEffect::CDoubleConeScrollEffect()
+DoubleConeScrollEffect::DoubleConeScrollEffect()
 :
 m_CameraPose( Matrix34Identity() ),
 m_vCameraVelocity( Vector3(0,0,0) ),
@@ -206,9 +206,9 @@ m_fTexShiftV(0.0f)
 
 
 /*
-void CDoubleConeScrollEffect::SetTextureFilepath( const std::string& tex_filepath ){}
+void DoubleConeScrollEffect::SetTextureFilepath( const std::string& tex_filepath ){}
 */
-void CDoubleConeScrollEffect::Update( float dt )
+void DoubleConeScrollEffect::Update( float dt )
 {
 	m_fTexShiftV -= ( dt * 1.0f );
 
@@ -217,7 +217,7 @@ void CDoubleConeScrollEffect::Update( float dt )
 }
 
 
-void CDoubleConeScrollEffect::Init()
+void DoubleConeScrollEffect::Init()
 {
 	// Quaternion - how can I use critical damping with it?
 //	m_qTilt.target.FromRotationMatrix( Matrix33Identity() );
@@ -248,7 +248,7 @@ void CDoubleConeScrollEffect::Init()
 }
 
 
-void CDoubleConeScrollEffect::Render()
+void DoubleConeScrollEffect::Render()
 {
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 //	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );

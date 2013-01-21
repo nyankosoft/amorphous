@@ -11,10 +11,10 @@ using namespace boost;
 
 
 //============================================================================================
-// CPseudoNoiseEffect
+// PseudoNoiseEffect
 //============================================================================================
 
-CPseudoNoiseEffect::CPseudoNoiseEffect()
+PseudoNoiseEffect::PseudoNoiseEffect()
 :
 m_NoiseTextureSize(512),
 m_NoisePixelSize(1)
@@ -22,23 +22,23 @@ m_NoisePixelSize(1)
 }
 
 
-CPseudoNoiseEffect::~CPseudoNoiseEffect()
+PseudoNoiseEffect::~PseudoNoiseEffect()
 {
 }
 
 
-void CPseudoNoiseEffect::ReleaseGraphicsResources()
+void PseudoNoiseEffect::ReleaseGraphicsResources()
 {
 }
 
 
-void CPseudoNoiseEffect::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void PseudoNoiseEffect::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	UpdateScreenSize();
 }
 
 
-void CPseudoNoiseEffect::Init( float strength, uint noise_pixel_size )
+void PseudoNoiseEffect::Init( float strength, uint noise_pixel_size )
 {
 	UpdateScreenSize();
 
@@ -59,12 +59,12 @@ void CPseudoNoiseEffect::Init( float strength, uint noise_pixel_size )
 
 
 /*
-void CPseudoNoiseEffect::LoadExtraTexture( const char *pcTextureFilename, float fScale )
+void PseudoNoiseEffect::LoadExtraTexture( const char *pcTextureFilename, float fScale )
 {
 }*/
 
 
-void CPseudoNoiseEffect::UpdateScreenSize()
+void PseudoNoiseEffect::UpdateScreenSize()
 {
 //	m_iScreenWidth  = GameWindowManager().GetScreenWidth();
 //	m_iScreenHeight = GameWindowManager().GetScreenHeight();
@@ -81,7 +81,7 @@ void CPseudoNoiseEffect::UpdateScreenSize()
 }
 
 
-void CPseudoNoiseEffect::RenderNoiseEffect()
+void PseudoNoiseEffect::RenderNoiseEffect()
 {
 	// single texture & rect class version
 	m_FullscreenRect.SetColor( 0x30FFFFFF );
@@ -131,7 +131,7 @@ void CPseudoNoiseEffect::RenderNoiseEffect()
 }
 
 
-void CPseudoNoiseEffect::SetNoiseTexture()
+void PseudoNoiseEffect::SetNoiseTexture()
 {
 	//>>> single texture & rect class version
 	float t = (float)m_iScreenWidth / (float)m_NoiseTextureSize;	// scalse the noise texture according to the screen size

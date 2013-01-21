@@ -18,7 +18,7 @@ namespace amorphous
 //{
 
 
-class CDoubleConeScrollEffectDesc
+class DoubleConeScrollEffectDesc
 {
 public:
 	float m_fStreakLength;
@@ -26,7 +26,7 @@ public:
 };
 
 
-class CDoubleConeScrollEffect
+class DoubleConeScrollEffect
 {
 	std::string m_TextureFilepath;
 
@@ -45,9 +45,9 @@ class CDoubleConeScrollEffect
 
 public:
 
-	CDoubleConeScrollEffect();
+	DoubleConeScrollEffect();
 
-	~CDoubleConeScrollEffect() {}
+	~DoubleConeScrollEffect() {}
 
 	void SetTextureFilepath( const std::string& tex_filepath ) { m_TextureFilepath = tex_filepath; }
 

@@ -1053,7 +1053,7 @@ bool CEntityRenderManager::AddEnvMapTarget( CCopyEntity *pEntity )
 	if( !m_pCubeMapManager )
 	{
 		LOG_PRINT( " - creating a cube map manager" );
-		m_pCubeMapManager = new CCubeMapManager();
+		m_pCubeMapManager = new CubeMapManager();
 		m_pCubeMapManager->Init();
 		m_pCubeMapManager->SetCubeMapSceneRenderer( this );
 	}

@@ -18,7 +18,7 @@ namespace amorphous
 
 /// holds one lens flare 
 /// - corresponds to one 2D rectangle
-class CLensFlareComponent
+class LensFlareComponent
 {
 public:
 	int m_TexIndex;
@@ -27,11 +27,11 @@ public:
 	SFloatRGBAColor m_Color;
 	float m_fRadius;
 
-	inline CLensFlareComponent();
+	inline LensFlareComponent();
 };
 
 
-inline CLensFlareComponent::CLensFlareComponent()
+inline LensFlareComponent::LensFlareComponent()
 :
 m_TexIndex(0),
 m_fScaleFactor(1.0f),
@@ -46,10 +46,10 @@ m_fRadius(1.0f)
 /// - Ideally, there should be only one lens flare group, since
 ///   - No texture switching is necessary to draw flares in a group
 ///   - A single DrawPrimitive() call draws all the flares in a group
-class CLensFlareGroup
+class LensFlareGroup
 {
 public:
-	std::vector<CLensFlareComponent> m_vecComponent;
+	std::vector<LensFlareComponent> m_vecComponent;
 
 	C2DRectSet m_RectGroup;
 	TextureHandle m_Texture;
@@ -59,7 +59,7 @@ public:
 
 public:
 
-	CLensFlareGroup();
+	LensFlareGroup();
 };
 
 
@@ -67,7 +67,7 @@ public:
 //==============================================================
 // 
 
-class CLensFlare
+class LensFlare
 {
 	enum Params
 	{
@@ -79,10 +79,10 @@ class CLensFlare
 //	WORD m_awIndex[NUM_MAX_FLARES * 6];
 //	C2DRectSet m_RectGroup;
 
-	std::vector<CLensFlareGroup> m_vecLensFlareGroup;
+	std::vector<LensFlareGroup> m_vecLensFlareGroup;
 //	int m_NumTextures;
 
-//	std::vector<CLensFlareComponent> m_vecFlareComponent;
+//	std::vector<LensFlareComponent> m_vecFlareComponent;
 
 //	int m_ScreenWidth;
 //	int m_ScreenHeight;
@@ -98,8 +98,8 @@ class CLensFlare
 
 public:
 
-	CLensFlare();
-	~CLensFlare();
+	LensFlare();
+	~LensFlare();
 
 	void Release();
 
@@ -161,14 +161,14 @@ public:
 // -------------------------- inline implementations --------------------------
 
 
-inline void CLensFlare::UpdateTransforms( const Matrix44& matView, const Matrix44& matProj )
+inline void LensFlare::UpdateTransforms( const Matrix44& matView, const Matrix44& matProj )
 {
 	m_matView = matView;
 	m_matProj = matProj;
 }
 
 /*
-inline void CLensFlare::UpdateScreenSize( int screen_width, int screen_height )
+inline void LensFlare::UpdateScreenSize( int screen_width, int screen_height )
 {
 	m_ScreenWidth	= screen_width;
 	m_ScreenHeight	= screen_height;

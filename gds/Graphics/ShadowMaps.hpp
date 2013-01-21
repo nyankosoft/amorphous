@@ -331,7 +331,7 @@ class CPointLightShadowMap : public CShadowMap
 
 	// or 
 
-	CCubeMapManager *m_pCubeShadowMapManager;
+	CubeMapManager *m_pCubeShadowMapManager;
 
 	CCubeShadowMapSceneRenderer m_CubeShadowMapSceneRenderer;
 

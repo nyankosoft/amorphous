@@ -59,8 +59,8 @@ class CShaderLightManager;
 
 class CTextureRenderTarget;
 
-class CSimpleMotionBlur;
-class CCubeMapManager;
+class SimpleMotionBlur;
+class CubeMapManager;
 class CShadowMapManager;
 
 class CPostProcessEffect;
@@ -72,7 +72,7 @@ class CUnitSphere;
 
 class CGeneral3DVertex;
 
-class CLensFlare;
+class LensFlare;
 class CFogParams;
 
 class TEXCOORD2;

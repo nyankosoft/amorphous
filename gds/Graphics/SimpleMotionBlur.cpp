@@ -15,7 +15,7 @@ using namespace std;
 using namespace boost;
 
 
-CSimpleMotionBlur::CSimpleMotionBlur()
+SimpleMotionBlur::SimpleMotionBlur()
 {
 	m_TargetTexIndex = 0;
 
@@ -30,7 +30,7 @@ CSimpleMotionBlur::CSimpleMotionBlur()
 }
 
 
-CSimpleMotionBlur::CSimpleMotionBlur( int texture_width, int texture_height )
+SimpleMotionBlur::SimpleMotionBlur( int texture_width, int texture_height )
 {
 	m_TargetTexIndex = 0;
 
@@ -50,13 +50,13 @@ CSimpleMotionBlur::CSimpleMotionBlur( int texture_width, int texture_height )
 }
 
 
-CSimpleMotionBlur::~CSimpleMotionBlur()
+SimpleMotionBlur::~SimpleMotionBlur()
 {
 	ReleaseTextures();
 }
 
 
-void CSimpleMotionBlur::Init( int texture_width, int texture_height )
+void SimpleMotionBlur::Init( int texture_width, int texture_height )
 {
 	ReleaseTextures();
 
@@ -74,7 +74,7 @@ void CSimpleMotionBlur::Init( int texture_width, int texture_height )
 }
 
 
-void CSimpleMotionBlur::InitForScreenSize()
+void SimpleMotionBlur::InitForScreenSize()
 {
 	ReleaseTextures();
 
@@ -89,14 +89,14 @@ void CSimpleMotionBlur::InitForScreenSize()
 
 	InitTextureRenderTargetBGColors();
 
-	// CSimpleMotionBlur::Render() uses these variables to
+	// SimpleMotionBlur::Render() uses these variables to
 	// determine rect size
 	m_TextureWidth  = CGraphicsComponent::GetScreenWidth();
 	m_TextureHeight = CGraphicsComponent::GetScreenHeight();
 }
 
 
-void CSimpleMotionBlur::ReleaseTextures()
+void SimpleMotionBlur::ReleaseTextures()
 {
 	m_pSceneRenderTarget.reset();
 	m_apTexRenderTarget[0].reset();
@@ -104,7 +104,7 @@ void CSimpleMotionBlur::ReleaseTextures()
 }
 
 
-void CSimpleMotionBlur::InitTextureRenderTargetBGColors()
+void SimpleMotionBlur::InitTextureRenderTargetBGColors()
 {
 	m_pSceneRenderTarget->SetBackgroundColor( SFloatRGBAColor(1,0,1,1) );//( 0xFFFF00FF );
 	m_apTexRenderTarget[0]->SetBackgroundColor( SFloatRGBAColor(0,1,1,1) );//( 0xFF00FFFF );
@@ -112,7 +112,7 @@ void CSimpleMotionBlur::InitTextureRenderTargetBGColors()
 }
 
 
-void CSimpleMotionBlur::Begin()
+void SimpleMotionBlur::Begin()
 {
 	if( !m_pSceneRenderTarget )
 		return;
@@ -121,7 +121,7 @@ void CSimpleMotionBlur::Begin()
 }
 
 
-void CSimpleMotionBlur::End()
+void SimpleMotionBlur::End()
 {
 	if( !m_pSceneRenderTarget )
 		return;
@@ -165,7 +165,7 @@ static void SetRectRenderStates( TextureHandle& texture )
 }
 
 
-void CSimpleMotionBlur::Render()
+void SimpleMotionBlur::Render()
 {
 	// create a rect that covers the entire screen
 //	C2DRect rect( 0, 0, m_TextureWidth, m_TextureHeight );

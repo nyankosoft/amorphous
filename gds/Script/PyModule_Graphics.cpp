@@ -209,9 +209,9 @@ BOOST_PYTHON_MODULE(gfx)
 	;
 */
 
-	class_< CLensFlare, boost::shared_ptr<CLensFlare> >("LensFlare")
-		.def( "AddTexture",            &CLensFlare::AddTexture,                          (  py::arg("texture_path"), py::arg("group_index") = 0, py::arg("num_segs_x") = 1, py::arg("num_segs_y") = 1 ) )
-		.def( "AddLensFlareRect",      &CLensFlare::AddLensFlareRect,                    (  py::arg("dim"), py::arg("scale_factor") = 1, py::arg("dist_factor") = 1, py::arg("color") = SFloatRGBAColor::White(), py::arg("group_index") = 0, py::arg("tex_seg_index_x") = 0, py::arg("tex_seg_index_y") = 0 ) )
+	class_< LensFlare, boost::shared_ptr<LensFlare> >("LensFlare")
+		.def( "AddTexture",            &LensFlare::AddTexture,                          (  py::arg("texture_path"), py::arg("group_index") = 0, py::arg("num_segs_x") = 1, py::arg("num_segs_y") = 1 ) )
+		.def( "AddLensFlareRect",      &LensFlare::AddLensFlareRect,                    (  py::arg("dim"), py::arg("scale_factor") = 1, py::arg("dist_factor") = 1, py::arg("color") = SFloatRGBAColor::White(), py::arg("group_index") = 0, py::arg("tex_seg_index_x") = 0, py::arg("tex_seg_index_y") = 0 ) )
 	;
 
 	class_< CShaderVariableLoader<float>, boost::shared_ptr< CShaderVariableLoader<float> > >("ShaderFloatLoader")

@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-CCubeMapManager::CCubeMapManager()
+CubeMapManager::CubeMapManager()
 :
 m_pCubeMapSceneRenderer(NULL)
 {
@@ -35,20 +35,20 @@ m_pCubeMapSceneRenderer(NULL)
 }
 
 
-CCubeMapManager::~CCubeMapManager()
+CubeMapManager::~CubeMapManager()
 {
 	ReleaseGraphicsResources();
 }
 
 
-void CCubeMapManager::Init( int tex_edge_length, TextureFormat::Format tex_format )
+void CubeMapManager::Init( int tex_edge_length, TextureFormat::Format tex_format )
 {
 	CreateTextures( tex_edge_length, tex_format );
 }
 
 
 /// \param tex_format [in] TextureFormat::A8R8G8B8 if cube map is used to render the scene
-void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format tex_format )
+void CubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format tex_format )
 {
 	m_CubeTextureSize = tex_edge_length;
 	m_TextureFormat = tex_format;
@@ -156,7 +156,7 @@ void CCubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format
 }
 
 
-bool CCubeMapManager::IsReady()
+bool CubeMapManager::IsReady()
 {
 	if( m_pCurrentCubeMap && m_pDepthCube )
 		return true;
@@ -165,7 +165,7 @@ bool CCubeMapManager::IsReady()
 }
 
 
-void CCubeMapManager::UpdateCameraOrientation( int face )
+void CubeMapManager::UpdateCameraOrientation( int face )
 {
 	Vector3 vDir, vUp, vRight;
 
@@ -186,7 +186,7 @@ void CCubeMapManager::UpdateCameraOrientation( int face )
 
 
 // Calls RenderSceneToCubeMap() of the cube map scene renderer 6 times
-void CCubeMapManager::RenderToCubeMap()
+void CubeMapManager::RenderToCubeMap()
 {
 	if( !m_pCubeMapSceneRenderer )
 		return;
@@ -270,10 +270,10 @@ void CCubeMapManager::RenderToCubeMap()
 }
 
 
-//void CCubeMapManager::EndRenderToCubeMap(){}
+//void CubeMapManager::EndRenderToCubeMap(){}
 
 
-void CCubeMapManager::SaveCubeTextureToFile( const std::string& output_filename )
+void CubeMapManager::SaveCubeTextureToFile( const std::string& output_filename )
 {
 	if( m_pCurrentCubeMap )
 	{
@@ -287,13 +287,13 @@ void CCubeMapManager::SaveCubeTextureToFile( const std::string& output_filename 
 }
 
 
-void CCubeMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CubeMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	CreateTextures( m_CubeTextureSize, m_TextureFormat );
 }
 
 
-void CCubeMapManager::ReleaseGraphicsResources()
+void CubeMapManager::ReleaseGraphicsResources()
 {
 	SAFE_RELEASE( m_apCubeMapFp[0] );
 	SAFE_RELEASE( m_apCubeMapFp[1] );

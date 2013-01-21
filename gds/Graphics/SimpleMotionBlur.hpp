@@ -12,7 +12,7 @@ namespace amorphous
 
 /**
 
- CSimpleMotionBlur blur;
+ SimpleMotionBlur blur;
 
  blur.Begin();
  
@@ -25,7 +25,7 @@ namespace amorphous
  
  NOTE: derived from CGraphicsComponent to retrieve the screen resolution in InitForScreenSize()
  */
-class CSimpleMotionBlur// : public CGraphicsComponent
+class SimpleMotionBlur// : public CGraphicsComponent
 {
 	/// used to render the scene
 	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
@@ -47,11 +47,11 @@ private:
 	
 public:
 
-	CSimpleMotionBlur();
+	SimpleMotionBlur();
 
-	CSimpleMotionBlur( int texture_width, int texture_height );
+	SimpleMotionBlur( int texture_width, int texture_height );
 
-	~CSimpleMotionBlur();
+	~SimpleMotionBlur();
 
 	void Init( int texture_width, int texture_height );
 
