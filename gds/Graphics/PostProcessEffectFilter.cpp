@@ -18,7 +18,7 @@ using namespace boost;
 
 
 /// Does not consider the current lock count
-int CRenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc )
+int RenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc )
 {
 	int num_matches = 0;
 	size_t i=0;
@@ -38,7 +38,7 @@ int CRenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc 
 }
 
 
-Result::Name CRenderTargetTextureCache::AddTexture( const CTextureResourceDesc& desc )
+Result::Name RenderTargetTextureCache::AddTexture( const CTextureResourceDesc& desc )
 {
 	TextureHandle new_tex;
 	bool created = new_tex.Load( desc );
@@ -62,7 +62,7 @@ Result::Name CRenderTargetTextureCache::AddTexture( const CTextureResourceDesc& 
 }
 
 
-Result::Name CRenderTargetTextureCache::AddTexture( int width, int height, TextureFormat::Format format )
+Result::Name RenderTargetTextureCache::AddTexture( int width, int height, TextureFormat::Format format )
 {
 	CTextureResourceDesc tex_desc;
 	tex_desc.Width     = width;
@@ -74,7 +74,7 @@ Result::Name CRenderTargetTextureCache::AddTexture( int width, int height, Textu
 }
 
 
-boost::shared_ptr<CRenderTargetTextureHolder> CRenderTargetTextureCache::GetTexture( const CTextureResourceDesc& desc )
+boost::shared_ptr<CRenderTargetTextureHolder> RenderTargetTextureCache::GetTexture( const CTextureResourceDesc& desc )
 {
 	size_t i=0;
 	for( i=0; i<m_vecpHolder.size(); i++ )
@@ -96,15 +96,15 @@ boost::shared_ptr<CRenderTargetTextureHolder> CRenderTargetTextureCache::GetText
 
 
 //============================================================================
-// CPostProcessEffectFilter
+// PostProcessEffectFilter
 //============================================================================
 
 
-int CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
+int PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
 
 
-//bool CPostProcessEffectFilter::GetRenderTarget( CPostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
-bool CPostProcessEffectFilter::GetRenderTarget( CPostProcessEffectFilter& prev_filter )
+//bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
+bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_filter )
 {
 /*	int width  = prev_filter.m_pDest->m_Desc.Width;
 	int height = prev_filter.m_pDest->m_Desc.Height;
@@ -133,8 +133,8 @@ bool CPostProcessEffectFilter::GetRenderTarget( CPostProcessEffectFilter& prev_f
 
 
 /// default implementation - use the current texture desc to specify the render target
-//Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
-Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter& prev_filter )
+//Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
+Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter )
 {
 	HRESULT hr = S_OK;
 	if( 0 < m_vecpNextFilter.size() )
@@ -188,12 +188,12 @@ Result::Name CPostProcessEffectFilter::SetRenderTarget( CPostProcessEffectFilter
 }
 
 
-void CPostProcessEffectFilter::StorePrevFilterResults( CPostProcessEffectFilter& prev_filter )
+void PostProcessEffectFilter::StorePrevFilterResults( PostProcessEffectFilter& prev_filter )
 {
 }
 
 
-Result::Name CPostProcessEffectFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name PostProcessEffectFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -201,7 +201,7 @@ Result::Name CPostProcessEffectFilter::Init( CRenderTargetTextureCache& cache, C
 }
 
 
-void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
+void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 {
 //	RenderChildFilters();
 
@@ -267,13 +267,13 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 //		test_rect.draw( m_pPrevScene->m_Texture );
 //		test_rect.Draw();
 //		test_rect.Draw( test_tex );
-		if( 0 < CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame )
+		if( 0 < PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame )
 			m_pPrevScene->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/prev_scene_of_gauss_blur.png" );
 */	}
 	else
 		Render();
 
-	if( 0 < CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame && m_pDest )
+	if( 0 < PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame && m_pDest )
 	{
 		SaveProcessedSceneToImageFile();
 	}
@@ -293,7 +293,7 @@ void CPostProcessEffectFilter::RenderBase( CPostProcessEffectFilter& prev_filter
 }
 
 
-void CPostProcessEffectFilter::SaveProcessedSceneToImageFile()
+void PostProcessEffectFilter::SaveProcessedSceneToImageFile()
 {
 //	D3DXIMAGE_FILEFORMAT img_fmt;
 	string ext;
@@ -308,7 +308,7 @@ void CPostProcessEffectFilter::SaveProcessedSceneToImageFile()
 		ext = ".pfm";
 	}*/
 
-//	boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in CPostProcessEffectManager::RenderPostProcessEffects()
+//	boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in PostProcessEffectManager::RenderPostProcessEffects()
 	string image_pathname = "debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
 	bool saved = m_pDest->m_Texture.SaveTextureToImageFile( image_pathname );
 //	hr = D3DXSaveTextureToFile( img_fmt, m_pDest->m_Texture.GetTexture(), NULL );

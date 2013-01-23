@@ -157,10 +157,10 @@ boost::shared_ptr<CPostProcessFilterShader> GetShaderFromFilename( const std::st
 
 
 //================================================================================
-// CPostProcessEffectManager
+// PostProcessEffectManager
 //================================================================================
 
-CPostProcessEffectManager::CPostProcessEffectManager()
+PostProcessEffectManager::PostProcessEffectManager()
 :
 m_EnabledEffectFlags(0),
 m_IsRedering(false),
@@ -170,17 +170,17 @@ m_pSurfDS(NULL),
 m_pFloatMSRT(NULL),
 m_pFloatMSDS(NULL)
 {
-	m_pTextureCache.reset( new CRenderTargetTextureCache );
+	m_pTextureCache.reset( new RenderTargetTextureCache );
 	m_pTextureCache->m_pSelf = m_pTextureCache;
 }
 
 
-CPostProcessEffectManager::~CPostProcessEffectManager()
+PostProcessEffectManager::~PostProcessEffectManager()
 {
 }
 
 
-Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_directory_path )
+Result::Name PostProcessEffectManager::Init( const std::string& base_shader_directory_path )
 {
 	using namespace boost::filesystem;
 
@@ -263,7 +263,7 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 //									  1, D3DUSAGE_RENDERTARGET, D3DFMT_A16B16G16R16F,
 //									  D3DPOOL_DEFAULT, &m_SceneRenderTarget, NULL );
 
-	m_pOriginalSceneFilter.reset( new COriginalSceneFilter( m_pOrigSceneHolder ) );
+	m_pOriginalSceneFilter.reset( new OriginalSceneFilter( m_pOrigSceneHolder ) );
 
 	m_pTextureCache->m_pOrigSceneHolder = m_pOrigSceneHolder;
 
@@ -277,7 +277,7 @@ Result::Name CPostProcessEffectManager::Init( const std::string& base_shader_dir
 
 // Save the current render target.
 // Set a render target on which client renders the scene.
-Result::Name CPostProcessEffectManager::BeginRender()
+Result::Name PostProcessEffectManager::BeginRender()
 {
 	if( !m_pOrigSceneHolder )
 		return Result::UNKNOWN_ERROR;
@@ -334,7 +334,7 @@ Result::Name CPostProcessEffectManager::BeginRender()
 }
 
 
-Result::Name CPostProcessEffectManager::EndRender()
+Result::Name PostProcessEffectManager::EndRender()
 {
 /*	if( m_EnabledEffectFlags == 0 )
 		return;
@@ -347,8 +347,8 @@ Result::Name CPostProcessEffectManager::EndRender()
 
 // Run post process effect filters.
 // Renders the final post process effects to the original render target
-// saved in CPostProcessEffectManager::BeginRender().
-Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
+// saved in PostProcessEffectManager::BeginRender().
+Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 {
 	if( m_EnabledEffectFlags == 0 )
 	{
@@ -358,8 +358,8 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	shared_ptr<CPostProcessEffectFilter> pLastFilter;
-	if( m_pHDRLightingFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_HDR_LIGHTING) )
+	shared_ptr<PostProcessEffectFilter> pLastFilter;
+	if( m_pHDRLightingFilter && (m_EnabledEffectFlags & PostProcessEffect::TF_HDR_LIGHTING) )
 	{
 		m_pHDRLightingFilter->ClearNextFilters();
 
@@ -368,7 +368,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 		pLastFilter = m_pHDRLightingFilter;
 	}
 
-	if( m_pMonochromeColorFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_MONOCHROME_COLOR) )
+	if( m_pMonochromeColorFilter && (m_EnabledEffectFlags & PostProcessEffect::TF_MONOCHROME_COLOR) )
 	{
 		m_pMonochromeColorFilter->ClearNextFilters();
 		if( pLastFilter )
@@ -379,7 +379,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 		pLastFilter = m_pMonochromeColorFilter;
 	}
 
-	if( m_pFullScreenBlurFilter && (m_EnabledEffectFlags & CPostProcessEffect::TF_BLUR) )
+	if( m_pFullScreenBlurFilter && (m_EnabledEffectFlags & PostProcessEffect::TF_BLUR) )
 	{
 		m_pFullScreenBlurFilter->ClearNextFilters();
 		if( pLastFilter )
@@ -399,7 +399,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 	// increment the lock count of the original scene because it is decremented by the first filter
 	m_pOrigSceneHolder->IncrementLockCount();
 
-	if( CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame == 1 )
+	if( PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame == 1 )
 	{
 		boost::filesystem::create_directories( "debug/post-process_effect" );
 		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
@@ -409,10 +409,10 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 	// The last filter renders the result to m_pTextureCache->m_pOrigRenderTarget(=m_pSurfLDR), the original render target
 	m_pFilter->RenderBase( *(m_pOriginalSceneFilter.get()) );
 
-	m_pFilter = shared_ptr<CPostProcessEffectFilter>();
+	m_pFilter = shared_ptr<PostProcessEffectFilter>();
 
 	// reset the debug setting
-	CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
+	PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
 
 	// If using floating point multi sampling, stretchrect to the rendertarget
 /*	if( m_bUseMultiSampleFloat16 )
@@ -482,7 +482,7 @@ Result::Name CPostProcessEffectManager::RenderPostProcessEffects()
 }
 
 
-void CPostProcessEffectManager::SetFirstFilterParams()
+void PostProcessEffectManager::SetFirstFilterParams()
 {
 /*	if( !m_pFirstFilter )
 		return;
@@ -503,12 +503,12 @@ void CPostProcessEffectManager::SetFirstFilterParams()
 }
 
 
-Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
+Result::Name PostProcessEffectManager::InitHDRLightingFilter()
 {
 	if( !m_pTextureCache )
 		return Result::UNKNOWN_ERROR;
 
-	m_pHDRLightingFilter.reset( new CHDRLightingFilter );
+	m_pHDRLightingFilter.reset( new HDRLightingFilter );
 	Result::Name res = m_pHDRLightingFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 	if( res != Result::SUCCESS )
 	{
@@ -519,22 +519,22 @@ Result::Name CPostProcessEffectManager::InitHDRLightingFilter()
 }
 
 
-Result::Name CPostProcessEffectManager::InitBlurFilter()
+Result::Name PostProcessEffectManager::InitBlurFilter()
 {
 	if( !m_pTextureCache )
 		return Result::UNKNOWN_ERROR;
 
-	m_pFullScreenBlurFilter.reset( new CFullScreenBlurFilter );
+	m_pFullScreenBlurFilter.reset( new FullScreenBlurFilter );
 	return m_pFullScreenBlurFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 }
 
 
-Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
+Result::Name PostProcessEffectManager::InitMonochromeColorFilter()
 {
 	if( !m_pTextureCache )
 		return Result::UNKNOWN_ERROR;
 
-	m_pMonochromeColorFilter.reset( new CMonochromeColorFilter );
+	m_pMonochromeColorFilter.reset( new MonochromeColorFilter );
 
 	Result::Name res = m_pMonochromeColorFilter->Init( *m_pTextureCache, m_FilterShaderContainer );
 
@@ -542,43 +542,43 @@ Result::Name CPostProcessEffectManager::InitMonochromeColorFilter()
 }
 
 
-Result::Name CPostProcessEffectManager::EnableHDRLighting( bool enable )
+Result::Name PostProcessEffectManager::EnableHDRLighting( bool enable )
 {
 	if( m_IsRedering )
 		return Result::UNKNOWN_ERROR;
 
 	if( enable )
 	{
-		m_EnabledEffectFlags |= CPostProcessEffect::TF_HDR_LIGHTING;
+		m_EnabledEffectFlags |= PostProcessEffect::TF_HDR_LIGHTING;
 		if( !m_pHDRLightingFilter )
 			return InitHDRLightingFilter();
 	}
 	else
-		m_EnabledEffectFlags &= ~(CPostProcessEffect::TF_HDR_LIGHTING);
+		m_EnabledEffectFlags &= ~(PostProcessEffect::TF_HDR_LIGHTING);
 
 	return Result::SUCCESS;
 }
 
 
-Result::Name CPostProcessEffectManager::EnableBlur( bool enable )
+Result::Name PostProcessEffectManager::EnableBlur( bool enable )
 {
 	if( m_IsRedering )
 		return Result::UNKNOWN_ERROR;
 
 	if( enable )
 	{
-		m_EnabledEffectFlags |= CPostProcessEffect::TF_BLUR;
+		m_EnabledEffectFlags |= PostProcessEffect::TF_BLUR;
 		if( !m_pFullScreenBlurFilter )
 			return InitBlurFilter();
 	}
 	else
-		m_EnabledEffectFlags &= ~(CPostProcessEffect::TF_BLUR);
+		m_EnabledEffectFlags &= ~(PostProcessEffect::TF_BLUR);
 
 	return Result::SUCCESS;
 }
 
 
-Result::Name CPostProcessEffectManager::EnableEffect( U32 effect_flags )
+Result::Name PostProcessEffectManager::EnableEffect( U32 effect_flags )
 {
 	if( m_IsRedering )
 		return Result::UNKNOWN_ERROR;
@@ -589,19 +589,19 @@ Result::Name CPostProcessEffectManager::EnableEffect( U32 effect_flags )
 
 		Result::Name res = Result::UNKNOWN_ERROR;
 
-		if( effect_flags & CPostProcessEffect::TF_HDR_LIGHTING )
+		if( effect_flags & PostProcessEffect::TF_HDR_LIGHTING )
 		{
 			if( !m_pHDRLightingFilter )
 				res = InitHDRLightingFilter();
 		}
 
-		if( effect_flags & CPostProcessEffect::TF_MONOCHROME_COLOR )
+		if( effect_flags & PostProcessEffect::TF_MONOCHROME_COLOR )
 		{
 			if( !m_pMonochromeColorFilter )
 				res = InitMonochromeColorFilter();
 		}
 
-		if( effect_flags & CPostProcessEffect::TF_BLUR )
+		if( effect_flags & PostProcessEffect::TF_BLUR )
 		{
 			if( !m_pFullScreenBlurFilter )
 				res = InitBlurFilter();
@@ -612,7 +612,7 @@ Result::Name CPostProcessEffectManager::EnableEffect( U32 effect_flags )
 }
 
 
-Result::Name CPostProcessEffectManager::DisableEffect( U32 effect_flags )
+Result::Name PostProcessEffectManager::DisableEffect( U32 effect_flags )
 {
 	m_EnabledEffectFlags &= ~(effect_flags);
 
@@ -620,23 +620,23 @@ Result::Name CPostProcessEffectManager::DisableEffect( U32 effect_flags )
 }
 
 
-void CPostProcessEffectManager::SetHDRLightingParams( U32 hdr_lighting_param_flags, const CHDRLightingParams& params )
+void PostProcessEffectManager::SetHDRLightingParams( U32 hdr_lighting_param_flags, const HDRLightingParams& params )
 {
 	if( !m_pHDRLightingFilter )
 		return;
 
-	if( hdr_lighting_param_flags & CHDRLightingParams::KEY_VALUE )
+	if( hdr_lighting_param_flags & HDRLightingParams::KEY_VALUE )
 		m_pHDRLightingFilter->SetToneMappingKeyValue( params.key_value );
 
-	if( hdr_lighting_param_flags & CHDRLightingParams::TONE_MAPPING )
+	if( hdr_lighting_param_flags & HDRLightingParams::TONE_MAPPING )
 		m_pHDRLightingFilter->EnableToneMapping( params.tone_mapping );
 
-	if( hdr_lighting_param_flags & CHDRLightingParams::LUMINANCE_ADAPTATION_RATE )
+	if( hdr_lighting_param_flags & HDRLightingParams::LUMINANCE_ADAPTATION_RATE )
 		m_pHDRLightingFilter->SetLuminanceAdaptationRate( params.luminance_adaptation_rate );
 }
 
 
-void CPostProcessEffectManager::SetBlurStrength( float fBlurStrength )
+void PostProcessEffectManager::SetBlurStrength( float fBlurStrength )
 {
 	if( !m_pFullScreenBlurFilter )
 		return;
@@ -645,22 +645,22 @@ void CPostProcessEffectManager::SetBlurStrength( float fBlurStrength )
 }
 
 
-void CPostProcessEffectManager::SetMonochromeColorOffset( const SFloatRGBColor& color )
+void PostProcessEffectManager::SetMonochromeColorOffset( const SFloatRGBColor& color )
 {
 }
 
 
-void CPostProcessEffectManager::ReleaseGraphicsResources()
+void PostProcessEffectManager::ReleaseGraphicsResources()
 {
 }
 
 
-void CPostProcessEffectManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void PostProcessEffectManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 }
 
 
-void CPostProcessEffectManager::DisplayAdaptedLuminance()
+void PostProcessEffectManager::DisplayAdaptedLuminance()
 {
 	// TODO: implement the feature to render 2D rects with programmable shader
 	shared_ptr<CRenderTargetTextureHolder> pRTTexHolder
@@ -702,8 +702,8 @@ void CPostProcessEffectManager::DisplayAdaptedLuminance()
 
 
 /*
-	boost::shared_ptr<CPostProcessEffectManager> m_pPostProcessEffectManager;
-	m_pPostProcessEffectManager = shared_ptr<CPostProcessEffectManager>( new CPostProcessEffectManager );
+	boost::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
+	m_pPostProcessEffectManager = shared_ptr<PostProcessEffectManager>( new PostProcessEffectManager );
 
 	m_pPostProcessEffectManager->Init();
 */

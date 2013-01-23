@@ -11,13 +11,13 @@ namespace amorphous
 {
 
 
-class CHDRLightingFilter;
-class COriginalSceneFilter;
-class CFullScreenBlurFilter;
-class CMonochromeColorFilter;
+class HDRLightingFilter;
+class OriginalSceneFilter;
+class FullScreenBlurFilter;
+class MonochromeColorFilter;
 
 
-class CHDRLightingParams
+class HDRLightingParams
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
 //	CStarEffectType::Name start_effect;
 
-	CHDRLightingParams()
+	HDRLightingParams()
 		:
 	key_value(0.5f),
 	blue_shift(false),
@@ -148,30 +148,30 @@ struct CRenderTargetChain
 
 
 //======================================================================================
-// CPostProcessEffectManager
+// PostProcessEffectManager
 //  A class that manages post process effects
 //  Only the color channel is available
 //======================================================================================
 
-class CPostProcessEffectManager : public CGraphicsComponent
+class PostProcessEffectManager : public CGraphicsComponent
 {
-	boost::shared_ptr<CHDRLightingFilter> m_pHDRLightingFilter;
+	boost::shared_ptr<HDRLightingFilter> m_pHDRLightingFilter;
 
-	boost::shared_ptr<CFullScreenBlurFilter> m_pFullScreenBlurFilter;
+	boost::shared_ptr<FullScreenBlurFilter> m_pFullScreenBlurFilter;
 
-	boost::shared_ptr<CMonochromeColorFilter> m_pMonochromeColorFilter;
+	boost::shared_ptr<MonochromeColorFilter> m_pMonochromeColorFilter;
 
 
-	boost::shared_ptr<CRenderTargetTextureCache> m_pTextureCache;
+	boost::shared_ptr<RenderTargetTextureCache> m_pTextureCache;
 
 	CFilterShaderContainer m_FilterShaderContainer;
 
 	/// render target to render the scene
 	TextureHandle m_SceneRenderTarget;
 
-	boost::shared_ptr<COriginalSceneFilter> m_pOriginalSceneFilter;
+	boost::shared_ptr<OriginalSceneFilter> m_pOriginalSceneFilter;
 
-	boost::shared_ptr<CPostProcessEffectFilter> m_pFilter;
+	boost::shared_ptr<PostProcessEffectFilter> m_pFilter;
 
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pOrigSceneHolder;
 
@@ -199,9 +199,9 @@ private:
 
 public:
 
-   CPostProcessEffectManager();
+   PostProcessEffectManager();
 
-	~CPostProcessEffectManager();
+	~PostProcessEffectManager();
 
 	/// Returns the index of the added shader.
 	/// Returns -1 on failure
@@ -240,7 +240,7 @@ public:
 
 	bool IsEnabled( U32 flag ) const { return (m_EnabledEffectFlags & flag) ? true : false; }
 
-	void SetHDRLightingParams( U32 hdr_lighting_param_flags, const CHDRLightingParams& params );
+	void SetHDRLightingParams( U32 hdr_lighting_param_flags, const HDRLightingParams& params );
 
 	void SetBlurStrength( float fBlurStrength );
 

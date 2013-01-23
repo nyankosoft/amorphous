@@ -483,7 +483,7 @@ HRESULT GetTextureCoords( TextureHandle& tex_src, RECT* pRectSrc,
 }
 
 
-CShaderManager *GetShaderManager(CPostProcessEffectFilter& filter)
+CShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
 {
 	boost::shared_ptr<CPostProcessFilterShader> pFilterShader = filter.GetFilterShader();
 	if( !pFilterShader )
@@ -493,7 +493,7 @@ CShaderManager *GetShaderManager(CPostProcessEffectFilter& filter)
 }
 
 
-LPD3DXEFFECT GetD3DXEffect(CPostProcessEffectFilter& filter)
+LPD3DXEFFECT GetD3DXEffect(PostProcessEffectFilter& filter)
 {
 	CShaderManager *pShaderMgr = GetShaderManager(filter);
 	if( !pShaderMgr )
@@ -504,10 +504,10 @@ LPD3DXEFFECT GetD3DXEffect(CPostProcessEffectFilter& filter)
 
 
 //============================================================================
-// CDownScale4x4Filter
+// DownScale4x4Filter
 //============================================================================
 
-CDownScale4x4Filter::CDownScale4x4Filter()
+DownScale4x4Filter::DownScale4x4Filter()
 {
 	m_Technique.SetTechniqueName( "DownScale4x4" );
 
@@ -515,7 +515,7 @@ CDownScale4x4Filter::CDownScale4x4Filter()
 }
 
 
-Result::Name CDownScale4x4Filter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name DownScale4x4Filter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -524,7 +524,7 @@ Result::Name CDownScale4x4Filter::Init( CRenderTargetTextureCache& cache, CFilte
 
 
 /*
-bool CDownScale4x4Filter::GetRenderTarget( CPostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
+bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
 {
 	int src_w = prev_filter.pDest->m_Desc.Width;
 	int src_h = prev_filter.pDest->m_Desc.Height;
@@ -540,7 +540,7 @@ bool CDownScale4x4Filter::GetRenderTarget( CPostProcessEffectFilter& prev_filter
 */
 
 
-void CDownScale4x4Filter::Render()
+void DownScale4x4Filter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
@@ -617,10 +617,10 @@ void CDownScale4x4Filter::Render()
 
 
 //============================================================================
-// CDownScale2x2Filter
+// DownScale2x2Filter
 //============================================================================
 
-CDownScale2x2Filter::CDownScale2x2Filter()
+DownScale2x2Filter::DownScale2x2Filter()
 {
 	m_Technique.SetTechniqueName( "DownScale2x2" );
 
@@ -628,7 +628,7 @@ CDownScale2x2Filter::CDownScale2x2Filter()
 }
 
 
-Result::Name CDownScale2x2Filter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name DownScale2x2Filter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -641,7 +641,7 @@ Result::Name CDownScale2x2Filter::Init( CRenderTargetTextureCache& cache, CFilte
 // Desc: Scale down m_pTexStarSource by 1/2 x 1/2 and place the result in 
 //       m_pTexBloomSource
 //-----------------------------------------------------------------------------
-void CDownScale2x2Filter::Render()
+void DownScale2x2Filter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = m_pFilterShader->GetShader()->GetEffect();
@@ -707,16 +707,16 @@ void CDownScale2x2Filter::Render()
 
 
 //============================================================================
-// CHDRBrightPassFilter
+// HDRBrightPassFilter
 //============================================================================
 
-CHDRBrightPassFilter::CHDRBrightPassFilter()
+HDRBrightPassFilter::HDRBrightPassFilter()
 {
 	m_Technique.SetTechniqueName( "BrightPassFilter" );
 }
 
 
-Result::Name CHDRBrightPassFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name HDRBrightPassFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -726,7 +726,7 @@ Result::Name CHDRBrightPassFilter::Init( CRenderTargetTextureCache& cache, CFilt
 
 /// Run the bright-pass filter on source render target texture
 /// and place the result in dest render target texture.
-void CHDRBrightPassFilter::Render()
+void HDRBrightPassFilter::Render()
 {
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = m_pFilterShader->GetShader()->GetEffect();
@@ -791,10 +791,10 @@ void CHDRBrightPassFilter::Render()
 
 
 //=======================================================================
-// CGaussianBlurFilter
+// GaussianBlurFilter
 //=======================================================================
 
-CGaussianBlurFilter::CGaussianBlurFilter()
+GaussianBlurFilter::GaussianBlurFilter()
 {
 	m_Technique.SetTechniqueName( "GaussBlur5x5" );
 
@@ -809,7 +809,7 @@ CGaussianBlurFilter::CGaussianBlurFilter()
 //       in m_pTexStarSource. The bright-pass filtered image is blurred before
 //       being used for star operations to avoid aliasing artifacts.
 //-----------------------------------------------------------------------------
-void CGaussianBlurFilter::Render()
+void GaussianBlurFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
@@ -886,10 +886,10 @@ void CGaussianBlurFilter::Render()
 
 
 //=======================================================================
-// CBloomFilter
+// BloomFilter
 //=======================================================================
 
-CBloomFilter::CBloomFilter()
+BloomFilter::BloomFilter()
 {
 	m_Technique.SetTechniqueName( "Bloom" );
 
@@ -909,7 +909,7 @@ CBloomFilter::CBloomFilter()
 }
 
 
-void CBloomFilter::Render()
+void BloomFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
@@ -1001,14 +1001,14 @@ void CBloomFilter::Render()
 }
 
 
-CHorizontalBloomFilter::CHorizontalBloomFilter()
+HorizontalBloomFilter::HorizontalBloomFilter()
 {
 	m_DoScissorTesting = true;
 }
 
 
 /// The greater deviation value makes the image more blurrier
-void CHorizontalBloomFilter::GetSampleOffsets()
+void HorizontalBloomFilter::GetSampleOffsets()
 {
 //	float fDeviation = 3.0f; // original D3D sample
 	static float fDeviation = 0.5f; // experiment
@@ -1022,13 +1022,13 @@ void CHorizontalBloomFilter::GetSampleOffsets()
 }
 
 
-CVerticalBloomFilter::CVerticalBloomFilter()
+VerticalBloomFilter::VerticalBloomFilter()
 {
 	m_DoScissorTesting = false;
 }
 
 
-void CVerticalBloomFilter::GetSampleOffsets()
+void VerticalBloomFilter::GetSampleOffsets()
 {
 	memset( m_afSampleOffsets, 0, sizeof(m_afSampleOffsets) );
 	memset( m_avSampleWeights, 0, sizeof(m_avSampleWeights) );
@@ -1041,7 +1041,7 @@ void CVerticalBloomFilter::GetSampleOffsets()
 
 
 
-CCombinedBloomFilter::CCombinedBloomFilter()
+CombinedBloomFilter::CombinedBloomFilter()
 {
 	SRectangular cbb = GetCropWidthAndHeight(); // cropped back buffer
 
@@ -1051,7 +1051,7 @@ CCombinedBloomFilter::CCombinedBloomFilter()
 }
 
 
-Result::Name CCombinedBloomFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name CombinedBloomFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1089,21 +1089,21 @@ Result::Name CCombinedBloomFilter::Init( CRenderTargetTextureCache& cache, CFilt
 			LOG_PRINT_ERROR( " Failed to create a render target texture." );
 	}
 
-	m_pGaussianBlurFilter.reset( new CGaussianBlurFilter );
+	m_pGaussianBlurFilter.reset( new GaussianBlurFilter );
 	m_pGaussianBlurFilter->SetRenderTargetSize( base_plane.width + 2, base_plane.height + 2 );
 	m_pGaussianBlurFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "GaussBlur5x5" ) );
 	m_pGaussianBlurFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pGaussianBlurFilter->SetDebugImageFilenameExtraString( "-for-bloom" );
 
-	m_pHBloomFilter.reset( new CHorizontalBloomFilter );
+	m_pHBloomFilter.reset( new HorizontalBloomFilter );
 	m_pHBloomFilter->SetRenderTargetSize( base_plane.width + 2, base_plane.height + 2 );
 	m_pHBloomFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pHBloomFilter->SetFilterShader( filter_shader_container.GetFilterShader( "Bloom" ) );
 	m_pHBloomFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pHBloomFilter->SetDebugImageFilenameExtraString( "-for-horizontal-bloom" );
 
-	m_pVBloomFilter.reset( new CVerticalBloomFilter );
+	m_pVBloomFilter.reset( new VerticalBloomFilter );
 	m_pVBloomFilter->SetRenderTargetSize( base_plane.width,     base_plane.height );
 	m_pVBloomFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pVBloomFilter->SetFilterShader( filter_shader_container.GetFilterShader( "Bloom" ) );
@@ -1121,13 +1121,13 @@ Result::Name CCombinedBloomFilter::Init( CRenderTargetTextureCache& cache, CFilt
 
 
 
-void CCombinedBloomFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
+void CombinedBloomFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 {
 	return m_pGaussianBlurFilter->RenderBase( prev_filter );
 }
 
 
-void CCombinedBloomFilter::UseAsGaussianBlurFilter( bool use_as_gauss_blur )
+void CombinedBloomFilter::UseAsGaussianBlurFilter( bool use_as_gauss_blur )
 {
 //	float fGaussianWeightsSum = 1.976f;
 //	m_pHBloomFilter->SetBloomFactor( 1.0f / fGaussianWeightsSum );
@@ -1139,7 +1139,7 @@ void CCombinedBloomFilter::UseAsGaussianBlurFilter( bool use_as_gauss_blur )
 }
 
 
-void CCombinedBloomFilter::SetBlurStrength( float strength )
+void CombinedBloomFilter::SetBlurStrength( float strength )
 {
 	m_pHBloomFilter->SetDeviation( strength );
 	m_pVBloomFilter->SetDeviation( strength );
@@ -1147,7 +1147,7 @@ void CCombinedBloomFilter::SetBlurStrength( float strength )
 
 
 /*
-void CCombinedBloomFilter::AddNextFilter( boost::shared_ptr<CPostProcessEffectFilter> pFilter )
+void CombinedBloomFilter::AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter )
 {
 	m_vecpNextFilter.push_back( pFilter );
 }
@@ -1179,10 +1179,10 @@ void GetLuminanceTextureDesc( CTextureResourceDesc& dest )
 
 
 //=======================================================================
-// CLuminanceCalcFilter
+// LuminanceCalcFilter
 //=======================================================================
 
-CLuminanceCalcFilter::CLuminanceCalcFilter( const std::string& technique_name, int num_samples, int render_target_size )
+LuminanceCalcFilter::LuminanceCalcFilter( const std::string& technique_name, int num_samples, int render_target_size )
 {
 	m_Technique.SetTechniqueName( technique_name.c_str() );
 	m_NumSamples = num_samples;
@@ -1195,7 +1195,7 @@ CLuminanceCalcFilter::CLuminanceCalcFilter( const std::string& technique_name, i
 }
 
 
-Result::Name CLuminanceCalcFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name LuminanceCalcFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1207,7 +1207,7 @@ Result::Name CLuminanceCalcFilter::Init( CRenderTargetTextureCache& cache, CFilt
 }
 
 
-void CLuminanceCalcFilter::GetSampleOffsets_DownScale3x3( int width, int height, Vector2 avSampleOffsets[] )
+void LuminanceCalcFilter::GetSampleOffsets_DownScale3x3( int width, int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
         return;
@@ -1237,7 +1237,7 @@ void CLuminanceCalcFilter::GetSampleOffsets_DownScale3x3( int width, int height,
 // Desc: Get the texture coordinate offsets to be used inside the DownScale4x4
 //       pixel shader.
 //-----------------------------------------------------------------------------
-void CLuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height, Vector2 avSampleOffsets[] )
+void LuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
         return;
@@ -1262,7 +1262,7 @@ void CLuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height,
 }
 
 
-void CLuminanceCalcFilter::Render()
+void LuminanceCalcFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
@@ -1297,10 +1297,10 @@ void CLuminanceCalcFilter::Render()
 
 
 //=======================================================================
-// CAdaptationCalcFilter
+// AdaptationCalcFilter
 //=======================================================================
 
-CAdaptationCalcFilter::CAdaptationCalcFilter()
+AdaptationCalcFilter::AdaptationCalcFilter()
 :
 m_fElapsedTime(0.01666666667f),
 m_fLuminanceAdaptationRate(0.02f)
@@ -1309,7 +1309,7 @@ m_fLuminanceAdaptationRate(0.02f)
 }
 
 
-CAdaptationCalcFilter::~CAdaptationCalcFilter()
+AdaptationCalcFilter::~AdaptationCalcFilter()
 {
 	if( m_pTexAdaptedLuminanceLast )
 		m_pTexAdaptedLuminanceLast->DecrementLockCount();
@@ -1319,14 +1319,14 @@ CAdaptationCalcFilter::~CAdaptationCalcFilter()
 }
 
 
-Result::Name CAdaptationCalcFilter::SetRenderTarget( CPostProcessEffectFilter& prev_filter )
+Result::Name AdaptationCalcFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter )
 {
-	// The render target is set in CAdaptationCalcFilter::Render()
+	// The render target is set in AdaptationCalcFilter::Render()
 	return Result::SUCCESS;
 }
 
 
-Result::Name CAdaptationCalcFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1366,7 +1366,7 @@ Result::Name CAdaptationCalcFilter::Init( CRenderTargetTextureCache& cache, CFil
 /**
  Increment the user's adapted luminance
 */
-void CAdaptationCalcFilter::Render()
+void AdaptationCalcFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
@@ -1417,10 +1417,10 @@ void CAdaptationCalcFilter::Render()
 
 
 //====================================================================================
-// CHDRLightingFinalPassFilter
+// HDRLightingFinalPassFilter
 //====================================================================================
 
-CHDRLightingFinalPassFilter::CHDRLightingFinalPassFilter()
+HDRLightingFinalPassFilter::HDRLightingFinalPassFilter()
 :
 m_fKeyValue(0.5f),
 m_ToneMappingEnabled(true),
@@ -1438,7 +1438,7 @@ m_StarEffectEnabled(false)
 }
 
 
-bool CHDRLightingFinalPassFilter::IsReadyToRender()
+bool HDRLightingFinalPassFilter::IsReadyToRender()
 {
 	if( m_pBloom
 	 && ( m_pStar || !m_StarEffectEnabled )
@@ -1450,18 +1450,18 @@ bool CHDRLightingFinalPassFilter::IsReadyToRender()
 }
 
 
-void CHDRLightingFinalPassFilter::StorePrevFilterResults( CPostProcessEffectFilter& prev_filter )
+void HDRLightingFinalPassFilter::StorePrevFilterResults( PostProcessEffectFilter& prev_filter )
 {
 	switch( prev_filter.GetFilterType() )
 	{
-//	case CPostProcessEffectFilter::TYPE_COMBINED_BLOOM:
-	case CPostProcessEffectFilter::TYPE_VERTICAL_BLOOM: // last filter of CCombinedBloomFilter
+//	case PostProcessEffectFilter::TYPE_COMBINED_BLOOM:
+	case PostProcessEffectFilter::TYPE_VERTICAL_BLOOM: // last filter of CombinedBloomFilter
 		m_pBloom = prev_filter.GetDestRenderTarget();
 		break;
-	case CPostProcessEffectFilter::TYPE_STAR:
+	case PostProcessEffectFilter::TYPE_STAR:
 		m_pStar = prev_filter.GetDestRenderTarget();
 		break;
-	case CPostProcessEffectFilter::TYPE_ADAPTATION_CALC:
+	case PostProcessEffectFilter::TYPE_ADAPTATION_CALC:
 		m_pAdaptedLuminance = prev_filter.GetDestRenderTarget();
 		break;
 	default:
@@ -1472,7 +1472,7 @@ void CHDRLightingFinalPassFilter::StorePrevFilterResults( CPostProcessEffectFilt
 }
 
 
-void CHDRLightingFinalPassFilter::Render()
+void HDRLightingFinalPassFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
@@ -1547,10 +1547,10 @@ void CHDRLightingFinalPassFilter::Render()
 
 
 //=======================================================================
-// CHDRLightingFilter
+// HDRLightingFilter
 //=======================================================================
 
-CHDRLightingFilter::CHDRLightingFilter()
+HDRLightingFilter::HDRLightingFilter()
 :
 //m_fKeyValue(0)
 m_EnableStarFilter(false)
@@ -1558,7 +1558,7 @@ m_EnableStarFilter(false)
 }
 
 
-Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1572,20 +1572,20 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 
 	SRectangular cbb = GetCropWidthAndHeight();
 
-	m_pDownScale4x4Filter.reset( new CDownScale4x4Filter );
+	m_pDownScale4x4Filter.reset( new DownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
 	m_pDownScale4x4Filter->SetRenderTargetSurfaceFormat( TextureFormat::A16R16G16B16F );
 	m_pDownScale4x4Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pDownScale4x4Filter->Init( cache, filter_shader_container );
 
-	m_pBrightPassFilter.reset( new CHDRBrightPassFilter );
+	m_pBrightPassFilter.reset( new HDRBrightPassFilter );
 	m_pBrightPassFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pBrightPassFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pBrightPassFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pBrightPassFilter->Init( cache, filter_shader_container );
 //	m_pBrightPassFilter->SetExtraTexelBorderWidth( 1 );
 
-	m_pGaussianBlurFilter.reset( new CGaussianBlurFilter );
+	m_pGaussianBlurFilter.reset( new GaussianBlurFilter );
 	m_pGaussianBlurFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pGaussianBlurFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1594,7 +1594,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 //	m_pGaussianBlurFilter->Init();
 //	m_pDownScale2x2Filter->SetExtraTexelBorderWidth( 1 );
 
-	m_pDownScale2x2Filter.reset( new CDownScale2x2Filter );
+	m_pDownScale2x2Filter.reset( new DownScale2x2Filter );
 	m_pDownScale2x2Filter->SetRenderTargetSize( cbb.width / 8 + 2, cbb.height / 8 + 2 );
 	m_pDownScale2x2Filter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pDownScale2x2Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1603,13 +1603,13 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 
 	if( m_EnableStarFilter )
 	{
-		m_pStarFilter.reset( new CStarFilter );
+		m_pStarFilter.reset( new StarFilter );
 	}
 
-	m_apLumCalcFilter[0].reset( new CLuminanceCalcFilter( "SampleAvgLum",       9, 64 ) );
-	m_apLumCalcFilter[1].reset( new CLuminanceCalcFilter( "ResampleAvgLum",    16, 16 ) );
-	m_apLumCalcFilter[2].reset( new CLuminanceCalcFilter( "ResampleAvgLum",    16,  4 ) );
-	m_apLumCalcFilter[3].reset( new CLuminanceCalcFilter( "ResampleAvgLumExp", 16,  1 ) );
+	m_apLumCalcFilter[0].reset( new LuminanceCalcFilter( "SampleAvgLum",       9, 64 ) );
+	m_apLumCalcFilter[1].reset( new LuminanceCalcFilter( "ResampleAvgLum",    16, 16 ) );
+	m_apLumCalcFilter[2].reset( new LuminanceCalcFilter( "ResampleAvgLum",    16,  4 ) );
+	m_apLumCalcFilter[3].reset( new LuminanceCalcFilter( "ResampleAvgLumExp", 16,  1 ) );
 
 	for( int i=0; i<NUM_TONEMAP_TEXTURES; i++ )
 	{
@@ -1617,17 +1617,17 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 		m_apLumCalcFilter[i]->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	}
 
-	m_pAdaptationCalcFilter.reset( new CAdaptationCalcFilter() );
+	m_pAdaptationCalcFilter.reset( new AdaptationCalcFilter() );
 	m_pAdaptationCalcFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pAdaptationCalcFilter->Init( cache, filter_shader_container );
 
-	m_pBloomFilter.reset( new CCombinedBloomFilter );
+	m_pBloomFilter.reset( new CombinedBloomFilter );
 	res = m_pBloomFilter->Init( cache, filter_shader_container );
 
-//	m_pHorizontalBloomFilter = shared_ptr<CDownScale2x2Filter>( new CDownScale2x2Filter );
-//	m_pVerticalBloomFilter   = shared_ptr<CDownScale2x2Filter>( new CDownScale2x2Filter );
+//	m_pHorizontalBloomFilter = shared_ptr<DownScale2x2Filter>( new DownScale2x2Filter );
+//	m_pVerticalBloomFilter   = shared_ptr<DownScale2x2Filter>( new DownScale2x2Filter );
 
-	m_pFinalPassFilter.reset( new CHDRLightingFinalPassFilter );
+	m_pFinalPassFilter.reset( new HDRLightingFinalPassFilter );
 //	m_pFinalPassFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pFinalPassFilter->SetRenderTargetSize( cbb.width, cbb.height );
 	m_pFinalPassFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
@@ -1731,7 +1731,7 @@ Result::Name CHDRLightingFilter::Init( CRenderTargetTextureCache& cache, CFilter
 }
 
 
-void CHDRLightingFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
+void HDRLightingFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 {
 	m_apLumCalcFilter[0]->RenderBase( prev_filter );
 
@@ -1748,24 +1748,24 @@ void CHDRLightingFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
 
 
 //============================================================================
-// CFullScreenBlurFilter
+// FullScreenBlurFilter
 //============================================================================
 
-CFullScreenBlurFilter::CFullScreenBlurFilter()
+FullScreenBlurFilter::FullScreenBlurFilter()
 :
 m_fBlurStrength(1.0f)
 {
 }
 
 
-Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name FullScreenBlurFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
 	Result::Name res;
 	const SRectangular cbb = GetCropWidthAndHeight();
 
-	m_pDownScale4x4Filter.reset( new CDownScale4x4Filter );
+	m_pDownScale4x4Filter.reset( new DownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
 	m_pDownScale4x4Filter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 	m_pDownScale4x4Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1774,7 +1774,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 /*
 	for( int i=0; i<2; i++ )
 	{
-		m_apHorizontalBloomFilter[i] = shared_ptr<CHorizontalBloomFilter>( new CHorizontalBloomFilter );
+		m_apHorizontalBloomFilter[i] = shared_ptr<HorizontalBloomFilter>( new HorizontalBloomFilter );
 		m_apHorizontalBloomFilter[i]->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
 		m_apHorizontalBloomFilter[i]->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
 		m_apHorizontalBloomFilter[i]->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
@@ -1783,7 +1783,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 	res = m_pDownScale4x4Filter->Init( cache, filter_shader_container );
 */
 
-	m_pBloomFilter.reset( new CCombinedBloomFilter );
+	m_pBloomFilter.reset( new CombinedBloomFilter );
 	m_pBloomFilter->SetBasePlane( SRectangular( cbb.width / 4, cbb.height / 4 ) );
 	res = m_pBloomFilter->Init( cache, filter_shader_container );
 	m_pBloomFilter->UseAsGaussianBlurFilter( true );
@@ -1818,7 +1818,7 @@ Result::Name CFullScreenBlurFilter::Init( CRenderTargetTextureCache& cache, CFil
 }
 
 
-void CFullScreenBlurFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
+void FullScreenBlurFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 {
 	m_pBloomFilter->SetBlurStrength( m_fBlurStrength );
 
@@ -1830,10 +1830,10 @@ void CFullScreenBlurFilter::RenderBase( CPostProcessEffectFilter& prev_filter )
 
 
 //============================================================================
-// CMonochromeColorFilter
+// MonochromeColorFilter
 //============================================================================
 
-CMonochromeColorFilter::CMonochromeColorFilter()
+MonochromeColorFilter::MonochromeColorFilter()
 {
 	m_Technique.SetTechniqueName( "MonochromeColor" );
 
@@ -1845,7 +1845,7 @@ CMonochromeColorFilter::CMonochromeColorFilter()
 }
 
 
-Result::Name CMonochromeColorFilter::Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 	SetFilterShader( filter_shader_container.GetShader( "HDRPostProcessor" ) );
@@ -1867,7 +1867,7 @@ Result::Name CMonochromeColorFilter::Init( CRenderTargetTextureCache& cache, CFi
 }
 
 
-void CMonochromeColorFilter::Render()
+void MonochromeColorFilter::Render()
 {
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);

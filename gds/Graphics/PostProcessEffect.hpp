@@ -11,13 +11,13 @@ namespace amorphous
 {
 
 
-class COriginalSceneFilter : public CPostProcessEffectFilter
+class OriginalSceneFilter : public PostProcessEffectFilter
 {
 public:
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_ORIGINAL_SCENE; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_ORIGINAL_SCENE; }
 
-	COriginalSceneFilter( boost::shared_ptr<CRenderTargetTextureHolder> pHolder )
+	OriginalSceneFilter( boost::shared_ptr<CRenderTargetTextureHolder> pHolder )
 	{
 		m_pDest = pHolder;
 	}
@@ -29,25 +29,25 @@ public:
 };
 
 
-class CCombinedFilter : public CPostProcessEffectFilter
+class CombinedFilter : public PostProcessEffectFilter
 {
 protected:
 
-//	std::vector< boost::shared_ptr<CPostProcessEffectFilter> > m_vecpChildFilter;
+//	std::vector< boost::shared_ptr<PostProcessEffectFilter> > m_vecpChildFilter;
 
-	boost::shared_ptr<CPostProcessEffectFilter> m_pLastFilter;
+	boost::shared_ptr<PostProcessEffectFilter> m_pLastFilter;
 
 public:
 
-	virtual ~CCombinedFilter() {}
+	virtual ~CombinedFilter() {}
 
-	void AddNextFilter( boost::shared_ptr<CPostProcessEffectFilter> pFilter ) { if(m_pLastFilter) { m_pLastFilter->AddNextFilter( pFilter ); } }
+	void AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter ) { if(m_pLastFilter) { m_pLastFilter->AddNextFilter( pFilter ); } }
 
 	void ClearNextFilters() { if(m_pLastFilter) { m_pLastFilter->ClearNextFilters(); } }
 };
 
 
-class CGaussianBlurFilter : public CPostProcessEffectFilter
+class GaussianBlurFilter : public PostProcessEffectFilter
 {
 	enum Params
 	{
@@ -56,9 +56,9 @@ class CGaussianBlurFilter : public CPostProcessEffectFilter
 
 public:
 
-	CGaussianBlurFilter();
+	GaussianBlurFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_GAUSSIAN_BLUR; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_GAUSSIAN_BLUR; }
 
 	void Render();
 
@@ -69,7 +69,7 @@ public:
 };
 
 
-class CBloomFilter : public CPostProcessEffectFilter
+class BloomFilter : public PostProcessEffectFilter
 {
 protected:
 
@@ -94,9 +94,9 @@ protected:
 
 public:
 
-	CBloomFilter();
+	BloomFilter();
 
-	virtual ~CBloomFilter() {}
+	virtual ~BloomFilter() {}
 
 	void Render();
 
@@ -108,48 +108,48 @@ public:
 };
 
 
-class CHorizontalBloomFilter : public CBloomFilter
+class HorizontalBloomFilter : public BloomFilter
 {
 public:
 
-	CHorizontalBloomFilter();
+	HorizontalBloomFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_HORIZONTAL_BLOOM; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HORIZONTAL_BLOOM; }
 
 	void GetSampleOffsets();
 };
 
 
-class CVerticalBloomFilter : public CBloomFilter
+class VerticalBloomFilter : public BloomFilter
 {
 public:
 
-	CVerticalBloomFilter();
+	VerticalBloomFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_VERTICAL_BLOOM; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_VERTICAL_BLOOM; }
 
 	void GetSampleOffsets();
 };
 
 
-class CCombinedBloomFilter : public CCombinedFilter
+class CombinedBloomFilter : public CombinedFilter
 {
-	boost::shared_ptr<CGaussianBlurFilter> m_pGaussianBlurFilter;
-	boost::shared_ptr<CHorizontalBloomFilter> m_pHBloomFilter;
-	boost::shared_ptr<CVerticalBloomFilter>   m_pVBloomFilter;
+	boost::shared_ptr<GaussianBlurFilter> m_pGaussianBlurFilter;
+	boost::shared_ptr<HorizontalBloomFilter> m_pHBloomFilter;
+	boost::shared_ptr<VerticalBloomFilter>   m_pVBloomFilter;
 
 	SRectangular m_BasePlane;
 
 public:
 
-	CCombinedBloomFilter();
+	CombinedBloomFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_COMBINED_BLOOM; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_COMBINED_BLOOM; }
 
-//	Result::Name Init( CRenderTargetTextureCache& cache );
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+//	Result::Name Init( RenderTargetTextureCache& cache );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
-	void RenderBase( CPostProcessEffectFilter& prev_filter );
+	void RenderBase( PostProcessEffectFilter& prev_filter );
 
 	void SetBasePlane( SRectangular base_plane ) { m_BasePlane = base_plane; }
 
@@ -157,23 +157,23 @@ public:
 
 	void SetBlurStrength( float strength );
 
-//	void AddNextFilter( boost::shared_ptr<CPostProcessEffectFilter> pFilter );
+//	void AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter );
 };
 
 
-class CStarFilter : public CPostProcessEffectFilter
+class StarFilter : public PostProcessEffectFilter
 {
 public:
 
-	CStarFilter() {}
+	StarFilter() {}
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_STAR; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_STAR; }
 
 	void Render() {}
 };
 
 
-class CDownScale4x4Filter : public CPostProcessEffectFilter
+class DownScale4x4Filter : public PostProcessEffectFilter
 {
 	enum Params
 	{
@@ -182,11 +182,11 @@ class CDownScale4x4Filter : public CPostProcessEffectFilter
 
 public:
 
-	CDownScale4x4Filter();
+	DownScale4x4Filter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_DOWN_SCALE_4x4; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_DOWN_SCALE_4x4; }
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
 //	void Update();
 
@@ -194,7 +194,7 @@ public:
 };
 
 
-class CDownScale2x2Filter : public CPostProcessEffectFilter
+class DownScale2x2Filter : public PostProcessEffectFilter
 {
 	enum Params
 	{
@@ -203,11 +203,11 @@ class CDownScale2x2Filter : public CPostProcessEffectFilter
 
 public:
 
-	CDownScale2x2Filter();
+	DownScale2x2Filter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_DOWN_SCALE_2x2; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_DOWN_SCALE_2x2; }
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
 //	void Update();
 
@@ -216,7 +216,7 @@ public:
 
 
 /// Uses square render target
-class CLuminanceCalcFilter : public CPostProcessEffectFilter
+class LuminanceCalcFilter : public PostProcessEffectFilter
 {
 	enum Params
 	{
@@ -235,17 +235,17 @@ private:
 
 public:
 
-	CLuminanceCalcFilter( const std::string& technique_name, int num_samples, int render_target_size );
+	LuminanceCalcFilter( const std::string& technique_name, int num_samples, int render_target_size );
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_LUMINANCE_CALC; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_LUMINANCE_CALC; }
 
 	void Render();
 };
 
 
-class CAdaptationCalcFilter : public CPostProcessEffectFilter
+class AdaptationCalcFilter : public PostProcessEffectFilter
 {
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pTexAdaptedLuminanceLast;
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pTexAdaptedLuminanceCur;
@@ -256,17 +256,17 @@ class CAdaptationCalcFilter : public CPostProcessEffectFilter
 
 private:
 
-	Result::Name SetRenderTarget( CPostProcessEffectFilter& prev_filter );
+	Result::Name SetRenderTarget( PostProcessEffectFilter& prev_filter );
 
 public:
 
-	CAdaptationCalcFilter();
+	AdaptationCalcFilter();
 
-	~CAdaptationCalcFilter();
+	~AdaptationCalcFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_ADAPTATION_CALC; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_ADAPTATION_CALC; }
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
 	void Render();
 
@@ -278,17 +278,17 @@ public:
 };
 
 
-class CHDRBrightPassFilter : public CPostProcessEffectFilter
+class HDRBrightPassFilter : public PostProcessEffectFilter
 {
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pAdaptedLuminanceTexture;
 
 public:
 
-	CHDRBrightPassFilter();
+	HDRBrightPassFilter();
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_HDR_BRIGHT_PASS; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HDR_BRIGHT_PASS; }
 
 	void Render();
 
@@ -296,7 +296,7 @@ public:
 };
 
 
-class CHDRLightingFinalPassFilter : public CPostProcessEffectFilter
+class HDRLightingFinalPassFilter : public PostProcessEffectFilter
 {
 public:
 
@@ -315,13 +315,13 @@ public:
 
 public:
 
-	CHDRLightingFinalPassFilter();
+	HDRLightingFinalPassFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_HDR_LIGHTING_FINAL_PASS; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HDR_LIGHTING_FINAL_PASS; }
 
 	bool IsReadyToRender();
 
-	void StorePrevFilterResults( CPostProcessEffectFilter& prev_filter );
+	void StorePrevFilterResults( PostProcessEffectFilter& prev_filter );
 
 	void Render();
 
@@ -333,7 +333,7 @@ public:
 };
 
 
-class CHDRLightingFilter : public CCombinedFilter
+class HDRLightingFilter : public CombinedFilter
 {
 	enum Params
 	{
@@ -342,35 +342,35 @@ class CHDRLightingFilter : public CCombinedFilter
 
 //	boost::shared_ptr<CHDROverlayEffectFilter> m_pOverlayEffectFilter;
 
-	boost::shared_ptr<CLuminanceCalcFilter> m_apLumCalcFilter[NUM_TONEMAP_TEXTURES];
+	boost::shared_ptr<LuminanceCalcFilter> m_apLumCalcFilter[NUM_TONEMAP_TEXTURES];
 
-	boost::shared_ptr<CAdaptationCalcFilter> m_pAdaptationCalcFilter;
+	boost::shared_ptr<AdaptationCalcFilter> m_pAdaptationCalcFilter;
 
-	boost::shared_ptr<CDownScale4x4Filter> m_pDownScale4x4Filter;
+	boost::shared_ptr<DownScale4x4Filter> m_pDownScale4x4Filter;
 
-	boost::shared_ptr<CHDRBrightPassFilter> m_pBrightPassFilter;
+	boost::shared_ptr<HDRBrightPassFilter> m_pBrightPassFilter;
 
-	boost::shared_ptr<CGaussianBlurFilter> m_pGaussianBlurFilter;
+	boost::shared_ptr<GaussianBlurFilter> m_pGaussianBlurFilter;
 
-	boost::shared_ptr<CDownScale2x2Filter> m_pDownScale2x2Filter;
+	boost::shared_ptr<DownScale2x2Filter> m_pDownScale2x2Filter;
 
-	boost::shared_ptr<CCombinedBloomFilter> m_pBloomFilter;
+	boost::shared_ptr<CombinedBloomFilter> m_pBloomFilter;
 
-	boost::shared_ptr<CHDRLightingFinalPassFilter> m_pFinalPassFilter;
+	boost::shared_ptr<HDRLightingFinalPassFilter> m_pFinalPassFilter;
 
-	boost::shared_ptr<CStarFilter> m_pStarFilter;
+	boost::shared_ptr<StarFilter> m_pStarFilter;
 
 	bool m_EnableStarFilter;
 
 public:
 	
-	CHDRLightingFilter();
+	HDRLightingFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_HDR_LIGHTING; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HDR_LIGHTING; }
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
-	void RenderBase( CPostProcessEffectFilter& prev_filter );
+	void RenderBase( PostProcessEffectFilter& prev_filter );
 
 	void EnableToneMapping( bool enable ) { if(m_pFinalPassFilter) m_pFinalPassFilter->EnableToneMapping( enable ); }
 
@@ -383,30 +383,30 @@ public:
 	void UnlockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
 
 	/// used to display adapted luminance for debugging
-	boost::shared_ptr<CAdaptationCalcFilter> GetAdaptationCalcFilter() { return m_pAdaptationCalcFilter; }
+	boost::shared_ptr<AdaptationCalcFilter> GetAdaptationCalcFilter() { return m_pAdaptationCalcFilter; }
 };
 
 
-class CFullScreenBlurFilter : public CCombinedFilter
+class FullScreenBlurFilter : public CombinedFilter
 {
 	float m_fBlurStrength;
 
-	boost::shared_ptr<CDownScale4x4Filter> m_pDownScale4x4Filter;
+	boost::shared_ptr<DownScale4x4Filter> m_pDownScale4x4Filter;
 
-//	boost::shared_ptr<CHorizontalBloomFilter> m_apHorizontalBloomFilter[2];
-//	boost::shared_ptr<CVerticalBloomFilter> m_apVerticalBloomFilter[2];
+//	boost::shared_ptr<HorizontalBloomFilter> m_apHorizontalBloomFilter[2];
+//	boost::shared_ptr<VerticalBloomFilter> m_apVerticalBloomFilter[2];
 
-	boost::shared_ptr<CCombinedBloomFilter> m_pBloomFilter;
+	boost::shared_ptr<CombinedBloomFilter> m_pBloomFilter;
 
 public:
 
-	CFullScreenBlurFilter();
+	FullScreenBlurFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_FULL_SCREEN_BLUR; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_FULL_SCREEN_BLUR; }
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
-	void RenderBase( CPostProcessEffectFilter& prev_filter );
+	void RenderBase( PostProcessEffectFilter& prev_filter );
 
 	void Render() {}
 
@@ -414,15 +414,15 @@ public:
 };
 
 
-class CMonochromeColorFilter : public CPostProcessEffectFilter
+class MonochromeColorFilter : public PostProcessEffectFilter
 {
 public:
 
-	CMonochromeColorFilter();
+	MonochromeColorFilter();
 
-	FilterType GetFilterType() const { return CPostProcessEffectFilter::TYPE_MONOCHROME_COLOR; }
+	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_MONOCHROME_COLOR; }
 
-	Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
 	void SetColorOffset( float* pafRGB ) {}
 
@@ -431,7 +431,7 @@ public:
 
 
 /*
-class CGlareFilter : public CCombinedFilter
+class GlareFilter : public CombinedFilter
 {
 public:
 

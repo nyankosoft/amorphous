@@ -27,7 +27,7 @@ SRectangular GetBackBufferWidthAndHeight();
 SRectangular GetCropWidthAndHeight();
 
 
-class CPostProcessEffect
+class PostProcessEffect
 {
 public:
 	enum TypeFlag
@@ -104,7 +104,7 @@ public:
 };
 
 
-class CRenderTargetTextureCache
+class RenderTargetTextureCache
 {
 public:
 
@@ -114,11 +114,11 @@ public:
 
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pOrigSceneHolder;
 
-	boost::weak_ptr<CRenderTargetTextureCache> m_pSelf;
+	boost::weak_ptr<RenderTargetTextureCache> m_pSelf;
 
 public:
 
-	CRenderTargetTextureCache()
+	RenderTargetTextureCache()
 		:
 	m_pOrigRenderTarget(NULL)
 	{}
@@ -134,9 +134,9 @@ public:
 
 	boost::shared_ptr<CRenderTargetTextureHolder> GetTexture( const CTextureResourceDesc& desc );
 
-	void SetSelfPtr( boost::weak_ptr<CRenderTargetTextureCache> pSelf ) { m_pSelf = pSelf; }
+	void SetSelfPtr( boost::weak_ptr<RenderTargetTextureCache> pSelf ) { m_pSelf = pSelf; }
 
-	boost::weak_ptr<CRenderTargetTextureCache> GetSelfPtr() { return m_pSelf; }
+	boost::weak_ptr<RenderTargetTextureCache> GetSelfPtr() { return m_pSelf; }
 };
 
 
@@ -145,8 +145,8 @@ public:
 
 /// A class that represents an instance of a post-process to be applied
 /// to the scene.
-/// Render target size is determined by the preceeding filter and CPostProcessEffectFilter::m_fScalingFactor
-class CPostProcessEffectFilter
+/// Render target size is determined by the preceeding filter and PostProcessEffectFilter::m_fScalingFactor
+class PostProcessEffectFilter
 {
 protected:
 
@@ -178,22 +178,22 @@ protected:
 
 	float m_fScalingFactor;
 
-	std::vector< boost::shared_ptr<CPostProcessEffectFilter> > m_vecpNextFilter;
+	std::vector< boost::shared_ptr<PostProcessEffectFilter> > m_vecpNextFilter;
 
-	boost::shared_ptr<CRenderTargetTextureCache> m_pCache;
+	boost::shared_ptr<RenderTargetTextureCache> m_pCache;
 
 	std::string m_DebugImageFilenameExtraString;
 
 private:
 
-	virtual Result::Name SetRenderTarget( CPostProcessEffectFilter& prev_filter );
+	virtual Result::Name SetRenderTarget( PostProcessEffectFilter& prev_filter );
 
 	/// For debugging
 	void SaveProcessedSceneToImageFile();
 
 protected:
 
-	virtual bool GetRenderTarget( CPostProcessEffectFilter& prev_filter );
+	virtual bool GetRenderTarget( PostProcessEffectFilter& prev_filter );
 
 //	LPD3DXEFFECT GetD3DXEffect();
 
@@ -219,7 +219,7 @@ public:
 		NUM_FILTER_TYPES
 	};
 
-	inline CPostProcessEffectFilter( int fx_index = -1 ) :
+	inline PostProcessEffectFilter( int fx_index = -1 ) :
 //		m_nFxIndex(fx_index),
 		m_fScaleX(1),
 		m_fScaleY(1),
@@ -231,14 +231,14 @@ public:
 //		ZeroMemory( m_avParam, sizeof( m_avParam ) );
 	}
 
-	virtual ~CPostProcessEffectFilter()
+	virtual ~PostProcessEffectFilter()
 	{}
 
 	virtual FilterType GetFilterType() const = 0;
 
-	virtual Result::Name Init( CRenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	virtual Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
 
-	void SetTextureCache( boost::shared_ptr<CRenderTargetTextureCache> pCache ) { m_pCache = pCache; }
+	void SetTextureCache( boost::shared_ptr<RenderTargetTextureCache> pCache ) { m_pCache = pCache; }
 
 	inline void SetScale( float fScaleX, float fScaleY ) { m_fScaleX = fScaleX; m_fScaleY = fScaleY; }
 
@@ -248,18 +248,18 @@ public:
 
 	void SetSourceRect( RECT rect ) { m_SourceRect = rect; }
 
-//	void Render( CPostProcessEffectFilter& prev_filter );
+//	void Render( PostProcessEffectFilter& prev_filter );
 
 	/// \brief Sets the render target of the previous filter, i.e. the input for this filter,
 	/// to the stage 0 of the fixed function pipeline.
-	virtual void RenderBase( CPostProcessEffectFilter& prev_filter );
+	virtual void RenderBase( PostProcessEffectFilter& prev_filter );
 
 	/// \brief Renders the post processsed scene to the render target texture.
 	/// The render target of the previous filter, i.e. the input for this filter,
 	/// is set in RenderBase() before this function is called.
 	virtual void Render() {}
 
-	virtual void StorePrevFilterResults( CPostProcessEffectFilter& prev_filter );
+	virtual void StorePrevFilterResults( PostProcessEffectFilter& prev_filter );
 
 	virtual bool IsReadyToRender() { return true; }
 
@@ -267,7 +267,7 @@ public:
 
 	void SetRenderTargetSize( int width, int height ) { m_Desc.Width = width; m_Desc.Height = height; }
 
-	virtual void AddNextFilter( boost::shared_ptr<CPostProcessEffectFilter> pFilter ) { m_vecpNextFilter.push_back( pFilter ); }
+	virtual void AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter ) { m_vecpNextFilter.push_back( pFilter ); }
 
 	virtual void ClearNextFilters() { m_vecpNextFilter.resize( 0 ); }
 

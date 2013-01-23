@@ -51,11 +51,11 @@ public:
 class CPostProcessPerformRenderTask : public CRenderTask
 {
 	/// borrowed reference
-	CPostProcessEffectManager *m_pPPMgr;
+	PostProcessEffectManager *m_pPPMgr;
 
 public:
 
-	CPostProcessPerformRenderTask( CPostProcessEffectManager *pPPMgr )
+	CPostProcessPerformRenderTask( PostProcessEffectManager *pPPMgr )
 		:
 	m_pPPMgr(pPPMgr)
 	{
@@ -83,11 +83,11 @@ public:
 class CPostProcessRenderTask : public CRenderTask
 {
 	/// borrowed reference
-	CPostProcessEffectManager *m_pPPMgr;
+	PostProcessEffectManager *m_pPPMgr;
 
 public:
 
-	CPostProcessRenderTask( CPostProcessEffectManager *pPPMgr )
+	CPostProcessRenderTask( PostProcessEffectManager *pPPMgr )
 		:
 	m_pPPMgr(pPPMgr)
 	{
@@ -184,7 +184,7 @@ bool CScreenEffectManager::Init()
 
 Result::Name CScreenEffectManager::InitPostProcessEffect()
 {
-	m_pPPEffectManager.reset( new CPostProcessEffectManager );
+	m_pPPEffectManager.reset( new PostProcessEffectManager );
 	Result::Name res = m_pPPEffectManager->Init( "Shader/PostProcessEffect" );
 
 	return res;
@@ -428,7 +428,7 @@ void CScreenEffectManager::UpdateMonochromeColorEffect()
 //	const float rgba[4] = { color.red, color.green, color.blue, 1.0f }; // always set alpha to 1.0
 //	pEffect->SetFloatArray( "ColorOffset", rgba, 4 );
 
-	m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
+	m_pPPEffectManager->EnableEffect( PostProcessEffect::TF_MONOCHROME_COLOR );
 	m_pPPEffectManager->SetMonochromeColorOffset( color );
 }
 
@@ -531,7 +531,7 @@ void CScreenEffectManager::UpdateScreenSize()
 }
 
 
-Result::Name CScreenEffectManager::SetHDRLightingParams( U32 param_flags, const CHDRLightingParams& params )
+Result::Name CScreenEffectManager::SetHDRLightingParams( U32 param_flags, const HDRLightingParams& params )
 {
 	if( !m_pPPEffectManager )
 		return Result::UNKNOWN_ERROR;
@@ -548,9 +548,9 @@ Result::Name CScreenEffectManager::EnableHDRLighting( bool enable )
 		return Result::UNKNOWN_ERROR;
 
 	if( enable )
-		return m_pPPEffectManager->EnableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
+		return m_pPPEffectManager->EnableEffect( PostProcessEffect::TF_HDR_LIGHTING );
 	else
-		return m_pPPEffectManager->DisableEffect( CPostProcessEffect::TF_HDR_LIGHTING );
+		return m_pPPEffectManager->DisableEffect( PostProcessEffect::TF_HDR_LIGHTING );
 }
 
 

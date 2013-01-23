@@ -63,9 +63,9 @@ class SimpleMotionBlur;
 class CubeMapManager;
 class CShadowMapManager;
 
-class CPostProcessEffect;
-class CPostProcessEffectManager;
-class CHDRLightingParams;
+class PostProcessEffect;
+class PostProcessEffectManager;
+class HDRLightingParams;
 
 class CUnitCube;
 class CUnitSphere;

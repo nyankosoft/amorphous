@@ -93,7 +93,7 @@ public:
  - About Post Process Effects
    - There are 2 types of post process effects
      - pp effect by pixel shader
-	   - uses CPostProcessEffectManager class
+	   - uses PostProcessEffectManager class
      - simpler pp effect
 	   - rendering screen size quad over the entire screen
 	     - e.g.) fade in/out, noise
@@ -144,7 +144,7 @@ private:
 	C2DRect m_ScreenColor;
 
 	/// manages post-process effects
-	boost::shared_ptr<CPostProcessEffectManager> m_pPPEffectManager;
+	boost::shared_ptr<PostProcessEffectManager> m_pPPEffectManager;
 
 //	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
 
@@ -270,7 +270,7 @@ public:
 	inline void SetGlareLuminanceThreshold( float fLuminance, int priority_id = MIN_EFFECT_PRIORITY_ID );
 	inline void ClearGlareLuminanceThreshold( int priority_id = MIN_EFFECT_PRIORITY_ID );
 
-	Result::Name SetHDRLightingParams( U32 param_flags, const CHDRLightingParams& params );
+	Result::Name SetHDRLightingParams( U32 param_flags, const HDRLightingParams& params );
 	Result::Name EnableHDRLighting( bool enable );
 
 	boost::shared_ptr<LensFlare> GetLensFlare() { return m_pLensFlare; }
