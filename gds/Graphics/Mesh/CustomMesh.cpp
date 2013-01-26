@@ -354,7 +354,7 @@ void CustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
 		rShaderMgr.SetTexture( (int)i, GetMaterial(0).Texture[i] );
 	}
 
-	CGeneral3DVertex verts[3];
+	General3DVertex verts[3];
 
 	vector<U16> indices;
 	indices.resize( 0 );

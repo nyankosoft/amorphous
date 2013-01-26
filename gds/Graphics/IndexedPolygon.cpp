@@ -9,10 +9,10 @@ namespace amorphous
 
 using namespace std;
 
-//vector<CGeneral3DVertex>* CIndexedPolygon::ms_pVertex;
+//vector<General3DVertex>* IndexedPolygon::ms_pVertex;
 
 
-bool CIndexedPolygon::IsOnTriangle( int iTriangleIndex, const Vector3& rvPosition ) const
+bool IndexedPolygon::IsOnTriangle( int iTriangleIndex, const Vector3& rvPosition ) const
 {
 	if( GetNumVertices() - 2 <= iTriangleIndex )
 		return false;
@@ -38,7 +38,7 @@ bool CIndexedPolygon::IsOnTriangle( int iTriangleIndex, const Vector3& rvPositio
 }
 
 
-Vector3 CIndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) const
+Vector3 IndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) const
 {
 	int i;
 	SPlane plane_12;
@@ -55,9 +55,9 @@ Vector3 CIndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) cons
 	if( GetNumVertices() - 2 <= i )
 		return GetPlane().normal;	// couldn't find a triangle which includes 'rvPosition'
 
-	const CGeneral3DVertex& v0 = GetVertex(i);
-	const CGeneral3DVertex& v1 = GetVertex(i+1);
-	const CGeneral3DVertex& v2 = GetVertex(i+2);
+	const General3DVertex& v0 = GetVertex(i);
+	const General3DVertex& v1 = GetVertex(i+1);
+	const General3DVertex& v2 = GetVertex(i+2);
 
 	if( Vec3LengthSq( rvPosition - v0.m_vPosition ) < 0.0001f )
 		return v0.m_vNormal;	// 'rvPosition' is close to 'v0' - just use the normal of 'v0' as an approximation
@@ -86,7 +86,7 @@ Vector3 CIndexedPolygon::GetInterpolatedNormal( const Vector3& rvPosition ) cons
 }
 
 
-void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
+void IndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_Plane;
 
@@ -104,7 +104,7 @@ void CIndexedPolygon::Serialize( IArchive& ar, const unsigned int version )
 //
 
 
-inline void UnweldVertices( const CIndexedPolygon& polygon0, CIndexedPolygon& polygon1 )
+inline void UnweldVertices( const IndexedPolygon& polygon0, IndexedPolygon& polygon1 )
 {
 	const size_t num_vertices0 = polygon0.m_index.size();
 	for( size_t i=0; i<num_vertices0; i++ )
@@ -133,15 +133,15 @@ inline void UnweldVertices( const CIndexedPolygon& polygon0, CIndexedPolygon& po
 /// - When a shared is found for a pair of polygons
 ///   - Add vertices to vertex buffer
 ///   - Update the vertex index of the second polygon
-void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& polygon_buffer )
+void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<IndexedPolygon>& polygon_buffer )
 {
 	const size_t num_polygons = polygon_buffer.size();
 	for( size_t i=0; i<num_polygons; i++ )
 	{
-		const CIndexedPolygon& polygon0 = polygon_buffer[i];
+		const IndexedPolygon& polygon0 = polygon_buffer[i];
 		for( size_t j=i+1; j<num_polygons; j++ )
 		{
-			CIndexedPolygon& polygon1 = polygon_buffer[j];
+			IndexedPolygon& polygon1 = polygon_buffer[j];
 
 			if( !polygon0.GetAABB().IsIntersectingWith( polygon1.GetAABB() ) )
 				continue;
@@ -155,7 +155,7 @@ void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& po
 }
 
 
-void UnweldVerticesBetween2GroupsOfPolygons( std::vector<CIndexedPolygon>& polygon_buffer,
+void UnweldVerticesBetween2GroupsOfPolygons( std::vector<IndexedPolygon>& polygon_buffer,
 											 const std::vector<int>& polygon_indices0,
 											 const std::vector<int>& polygon_indices1 )
 {
@@ -180,7 +180,7 @@ void UnweldVerticesBetween2GroupsOfPolygons( std::vector<CIndexedPolygon>& polyg
 // which is defined by sweeping the face in the direction of the face normal
 // rvPosition : [in]
 // rfDist : [out]
-bool CIndexedPolygon::IsInSweptVolume( const Vector3& rvPosition, float& rfDist )
+bool IndexedPolygon::IsInSweptVolume( const Vector3& rvPosition, float& rfDist )
 {
 	rfDist = -99999;
 	int i;

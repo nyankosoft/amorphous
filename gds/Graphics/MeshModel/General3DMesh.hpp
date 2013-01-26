@@ -23,11 +23,11 @@ namespace amorphous
 
 
 //class C3DModelLoadDesc
-class CGeometryFilter
+class GeometryFilter
 {
 public:
 
-	class CTarget
+	class Target
 	{
 	public:
 		std::vector<std::string> Layers;
@@ -38,11 +38,11 @@ public:
 
 	/// exclusive filter (strict filter)
 	/// - compile only the geometry specified as Include targets
-	CTarget Include;
+	Target Include;
 
 	/// inclusive filter (loose filter)
 	/// - take in any geometry not specified here
-	CTarget Exclude;
+	Target Exclude;
 
 	bool IncludeName(
 		const std::string& target_name,
@@ -84,20 +84,20 @@ Represents a mesh that comprises vertices and indexed polygons.
   to C3DMeshModelArchive with C3DMeshModelBuilder
 
 */
-class CGeneral3DMesh
+class General3DMesh
 {
 	unsigned int m_MeshFlag;
 
 	unsigned int m_VertexFormatFlag;
 
 	/// shared pointer of the vertex buffer. The pointer is shared by all the polygons in m_vecPolygon
-	boost::shared_ptr< std::vector<CGeneral3DVertex> > m_pVertexBuffer;
+	boost::shared_ptr< std::vector<General3DVertex> > m_pVertexBuffer;
 
 	/// Polygons that hold indices to vertices
 	/// - Can be retrieved later
 	/// - The polygons can include non-triangle polygons (with more than 4 vertices)
 	/// - They are triangulated and sotred in mesh model archive by C3DMeshModelBuilder
-	std::vector<CIndexedPolygon> m_vecPolygon;
+	std::vector<IndexedPolygon> m_vecPolygon;
 
 	/// stores surface property
 	std::vector<CMMA_Material> m_vecMaterial;
@@ -107,20 +107,20 @@ class CGeneral3DMesh
 
 public:
 
-	inline CGeneral3DMesh();
+	inline General3DMesh();
 
 	/// Converts the general 3d mesh into the triangulated mesh archive
 	/// \param dest [out] mesh archive
 	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
 
-	boost::shared_ptr< std::vector<CGeneral3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
+	boost::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
 
-	const boost::shared_ptr< std::vector<CGeneral3DVertex> > GetVertexBuffer() const { return m_pVertexBuffer; }
+	const boost::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() const { return m_pVertexBuffer; }
 
 
-	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return m_vecPolygon; }
+	std::vector<IndexedPolygon>& GetPolygonBuffer() { return m_vecPolygon; }
 
-	const std::vector<CIndexedPolygon>& GetPolygonBuffer() const { return m_vecPolygon; }
+	const std::vector<IndexedPolygon>& GetPolygonBuffer() const { return m_vecPolygon; }
 
 	void ClearPolygonBuffer() { m_vecPolygon.clear(); }
 
@@ -150,7 +150,7 @@ public:
 
 	inline void CalculateVertexNormalsFromPolygonPlanes();
 
-//	void Append( CGeneral3DMesh& mesh );
+//	void Append( General3DMesh& mesh );
 
 	/// Sets positoins, normals, and texture coordinates.
 	/// NOTE: the vertex format flags are not updated. Client code is responsible
@@ -166,17 +166,17 @@ public:
 
 // ============================ inline implementations ============================
 
-inline CGeneral3DMesh::CGeneral3DMesh()
+inline General3DMesh::General3DMesh()
 :
 m_MeshFlag(0),
 m_VertexFormatFlag(0)
 {
 	m_pVertexBuffer
-		= boost::shared_ptr< std::vector<CGeneral3DVertex> >( new std::vector<CGeneral3DVertex>() );
+		= boost::shared_ptr< std::vector<General3DVertex> >( new std::vector<General3DVertex>() );
 }
 
 
-inline int CGeneral3DMesh::GetMaterialIndexFromName( const std::string& material_name )
+inline int General3DMesh::GetMaterialIndexFromName( const std::string& material_name )
 {
 	for( size_t i=0; i<m_vecMaterial.size(); i++ )
 	{
@@ -188,7 +188,7 @@ inline int CGeneral3DMesh::GetMaterialIndexFromName( const std::string& material
 }
 
 
-inline void CGeneral3DMesh::UpdatePolygonBuffer()
+inline void General3DMesh::UpdatePolygonBuffer()
 {
 	size_t i, num_pols = m_vecPolygon.size();
 	for( i=0; i<num_pols; i++ )
@@ -199,11 +199,11 @@ inline void CGeneral3DMesh::UpdatePolygonBuffer()
 }
 
 
-inline void CGeneral3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex,
+inline void General3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex,
 		                                         std::vector<int>& vecIndex,
 		                                         std::vector<int>& vecMaterialIndex )
 {
-	std::vector<CIndexedPolygon> triangulated_polygon_buffer;
+	std::vector<IndexedPolygon> triangulated_polygon_buffer;
 	Triangulate( triangulated_polygon_buffer, m_vecPolygon );
 
 	// copy vertices
@@ -220,7 +220,7 @@ inline void CGeneral3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex
 	vecMaterialIndex.resize( num_triangles );
 	for( size_t i=0; i<num_triangles; i++ )
 	{
-		CIndexedPolygon& triangle = triangulated_polygon_buffer[i];
+		IndexedPolygon& triangle = triangulated_polygon_buffer[i];
 		vecIndex[i*3  ] = triangle.m_index[0];
 		vecIndex[i*3+1] = triangle.m_index[1];
 		vecIndex[i*3+2] = triangle.m_index[2];
@@ -230,7 +230,7 @@ inline void CGeneral3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex
 }
 
 
-inline void CGeneral3DMesh::FlipPolygons()
+inline void General3DMesh::FlipPolygons()
 {
 	const size_t num_polygons = m_vecPolygon.size();
 	for( size_t i=0; i<num_polygons; i++ )
@@ -240,15 +240,15 @@ inline void CGeneral3DMesh::FlipPolygons()
 }
 
 
-inline void CGeneral3DMesh::CalculateVertexNormalsFromPolygonPlanes()
+inline void General3DMesh::CalculateVertexNormalsFromPolygonPlanes()
 {
 	using std::vector;
 
-	boost::shared_ptr< std::vector<CGeneral3DVertex> > pVB = GetVertexBuffer();
+	boost::shared_ptr< std::vector<General3DVertex> > pVB = GetVertexBuffer();
 	if( !pVB )
 		return;
 
-	std::vector<CGeneral3DVertex>& vertices = *pVB;
+	std::vector<General3DVertex>& vertices = *pVB;
 
 	if( vertices.empty() )
 		return;
@@ -280,7 +280,7 @@ inline void CGeneral3DMesh::CalculateVertexNormalsFromPolygonPlanes()
 }
 
 
-inline void CGeneral3DMesh::SetVertices(
+inline void General3DMesh::SetVertices(
 	const std::vector<Vector3>& positions,
 	const std::vector<Vector3>& normals,
 	const std::vector<TEXCOORD2>& tex_uvs )
@@ -293,11 +293,11 @@ inline void CGeneral3DMesh::SetVertices(
 
 	const size_t num_vertices = positions.size();
 
-	boost::shared_ptr< std::vector<CGeneral3DVertex> > pVB = GetVertexBuffer();
+	boost::shared_ptr< std::vector<General3DVertex> > pVB = GetVertexBuffer();
 	if( !pVB )
 		return;
 
-	std::vector<CGeneral3DVertex>& vertices = *pVB;
+	std::vector<General3DVertex>& vertices = *pVB;
 
 	vertices.resize( num_vertices );
 	for( size_t i=0; i<num_vertices; i++ )
@@ -312,9 +312,9 @@ inline void CGeneral3DMesh::SetVertices(
 
 /// T must be a singed or an unsigned integer type
 template<typename T>
-inline void CGeneral3DMesh::SetPolygons( const std::vector< std::vector<T> >& polygons )
+inline void General3DMesh::SetPolygons( const std::vector< std::vector<T> >& polygons )
 {
-	std::vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	std::vector<IndexedPolygon>& polygon_buffer = GetPolygonBuffer();
 	polygon_buffer.resize( 0 );
 
 	size_t num_polygons = polygons.size();
@@ -331,14 +331,14 @@ inline void CGeneral3DMesh::SetPolygons( const std::vector< std::vector<T> >& po
 }
 
 
-inline Result::Name CalculateAABB( const CGeneral3DMesh& src_mesh, AABB3& dest_aabb )
+inline Result::Name CalculateAABB( const General3DMesh& src_mesh, AABB3& dest_aabb )
 {
 	dest_aabb.Nullify();
 
 	if( !src_mesh.GetVertexBuffer() )
 		return Result::INVALID_ARGS;
 
-	const std::vector<CGeneral3DVertex>& vert_buffer = *(src_mesh.GetVertexBuffer().get());
+	const std::vector<General3DVertex>& vert_buffer = *(src_mesh.GetVertexBuffer().get());
 	const size_t num_verts = vert_buffer.size();
 	for( size_t i=0; i<num_verts; i++ )
 	{
@@ -350,10 +350,10 @@ inline Result::Name CalculateAABB( const CGeneral3DMesh& src_mesh, AABB3& dest_a
 
 
 
-inline boost::shared_ptr<CGeneral3DMesh> CreateGeneral3DMesh()
+inline boost::shared_ptr<General3DMesh> CreateGeneral3DMesh()
 {
-	boost::shared_ptr<CGeneral3DMesh> pMesh
-		= boost::shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+	boost::shared_ptr<General3DMesh> pMesh
+		= boost::shared_ptr<General3DMesh>( new General3DMesh() );
 
 	return pMesh;
 }

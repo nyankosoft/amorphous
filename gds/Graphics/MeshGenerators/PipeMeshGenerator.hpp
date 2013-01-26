@@ -15,9 +15,9 @@ class PipeMeshGenerator : public MeshGenerator
 
 	float m_fWallThickness;
 
-	Result::Name CreateVertices( CGeneral3DMesh& mesh );
+	Result::Name CreateVertices( General3DMesh& mesh );
 
-	Result::Name CreatePolygons( CGeneral3DMesh& mesh );
+	Result::Name CreatePolygons( General3DMesh& mesh );
 
 public:
 

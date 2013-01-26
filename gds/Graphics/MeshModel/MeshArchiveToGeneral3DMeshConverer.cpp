@@ -10,18 +10,18 @@ using namespace std;
 using namespace boost;
 
 
-Result::Name CMeshArchiveToGeneral3DMeshConverer::Convert( const C3DMeshModelArchive& src, CGeneral3DMesh& dest )
+Result::Name CMeshArchiveToGeneral3DMeshConverer::Convert( const C3DMeshModelArchive& src, General3DMesh& dest )
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
 	return Result::UNKNOWN_ERROR;
 
 	// copy vertices
 
-	boost::shared_ptr< vector<CGeneral3DVertex> >& pVerts = dest.GetVertexBuffer();
+	boost::shared_ptr< vector<General3DVertex> >& pVerts = dest.GetVertexBuffer();
 	if( !pVerts )
 		return Result::INVALID_ARGS;
 
-	vector<CGeneral3DVertex>& dest_verts = *pVerts;
+	vector<General3DVertex>& dest_verts = *pVerts;
 
 	const CMMA_VertexSet& src_verts = src.GetVertexSet();
 	const uint num_vertices = (uint)src_verts.GetNumVertices();
@@ -35,13 +35,13 @@ Result::Name CMeshArchiveToGeneral3DMeshConverer::Convert( const C3DMeshModelArc
 	if( src.GetVertexIndex().size() % 3 != 0 )
 		return Result::INVALID_ARGS;
 
-	std::vector<CIndexedPolygon>& dest_polygons = dest.GetPolygonBuffer();
+	std::vector<IndexedPolygon>& dest_polygons = dest.GetPolygonBuffer();
 
 	const uint num_triangles = (uint)src.GetVertexIndex().size() / 3;
 	dest_polygons.resize( num_triangles );
 	for( uint i=0; i<num_triangles; i++ )
 	{
-		CIndexedPolygon& dest_polygon = dest_polygons[i];
+		IndexedPolygon& dest_polygon = dest_polygons[i];
 		dest_polygon.SetVertexBuffer( pVerts );
 		dest_polygon.m_index.resize( 3 );
 		dest_polygon.m_index[i*3]   = src.GetVertexIndex()[i*3];

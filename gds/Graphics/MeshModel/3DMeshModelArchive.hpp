@@ -77,10 +77,10 @@ public:
 
 	void Clear();
 
-//	inline void Addvertex( CGeneral3DVertex& src_vertex );
+//	inline void Addvertex( General3DVertex& src_vertex );
 
-	/// convert and put the vertices to an array of CGeneral3DVertex
-	void GetVertices( std::vector<CGeneral3DVertex>& dest_buffer ) const;
+	/// convert and put the vertices to an array of General3DVertex
+	void GetVertices( std::vector<General3DVertex>& dest_buffer ) const;
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
@@ -111,7 +111,7 @@ public:
 };
 
 /*
-inline void CMMA_VertexSet::Addvertex( CGeneral3DVertex& src_vertex )
+inline void CMMA_VertexSet::Addvertex( General3DVertex& src_vertex )
 {
 	if( m_VertexFormatFlag & VF_POSITION )
 		vecPosition.push_back( src_vertex.m_vPosition );

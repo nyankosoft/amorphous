@@ -53,7 +53,7 @@ void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pMod
 
 
 /// \param [in] borrowed reference
-void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh,
+void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh> pGeneralMesh,
 												 U32 build_option_flags )
 {
 	LOG_FUNCTION_SCOPE();
@@ -169,7 +169,7 @@ Result::Name C3DMeshModelBuilder::GetArchive( C3DMeshModelArchive& dest )
 
 void C3DMeshModelBuilder::CreateMeshArchive()
 {
-	CGeneral3DMesh& general_mesh = *m_pMesh;
+	General3DMesh& general_mesh = *m_pMesh;
 
 	// copy materials
 	vector<CMMA_Material>& dest_material_buffer = m_MeshModelArchive.GetMaterial();
@@ -229,13 +229,13 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 	std::vector< unsigned int > mappingNewToOld;
 
 	// put indexed triangle polygons into a single index array
-	std::vector<CIndexedPolygon>& polygon_buffer = m_vecTriangulatedPolygon;
+	std::vector<IndexedPolygon>& polygon_buffer = m_vecTriangulatedPolygon;
 
 	size_t i, iNumTriangles = polygon_buffer.size();
 	theIndices.reserve( iNumTriangles * 3 );
 	for( i=0; i<iNumTriangles; i++ )
 	{
-		CIndexedPolygon& triangle = polygon_buffer[i];
+		IndexedPolygon& triangle = polygon_buffer[i];
 		assert( triangle.m_index.size() == 3 );
 
 		theIndices.push_back( triangle.m_index[0] );
@@ -245,7 +245,7 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 
 
 	// fill up the vectors with your mesh's data
-	std::vector<CGeneral3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
+	std::vector<General3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
     size_t iNumVertices = vert_buffer.size();
 	for( i = 0; i < iNumVertices; ++i )
 	{
@@ -284,7 +284,7 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 	// new vertices may have been created and added to 'theVerts' by mesh mender
 	size_t iNumUpdatedVertices = theVerts.size();
 
-	vector<CGeneral3DVertex> vecNewVertexBuffer;	// temporary vertex buffer to hold new vertices
+	vector<General3DVertex> vecNewVertexBuffer;	// temporary vertex buffer to hold new vertices
 	vecNewVertexBuffer.resize( iNumUpdatedVertices );
 
 	for( i=0; i<iNumUpdatedVertices; ++i )
@@ -306,7 +306,7 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 	int vertex_index = 0;
 	for( i=0; i<iNumTriangles; ++i )
 	{
-		CIndexedPolygon& triangle = polygon_buffer[i];
+		IndexedPolygon& triangle = polygon_buffer[i];
 
 		triangle.m_index[0] = theIndices[vertex_index++];
 		triangle.m_index[1] = theIndices[vertex_index++];
@@ -323,9 +323,9 @@ void C3DMeshModelBuilder::Triangulate()
 
 void C3DMeshModelBuilder::CreateVertices()
 {
-	CGeneral3DMesh& general_mesh = *m_pMesh;
+	General3DMesh& general_mesh = *m_pMesh;
 
-	const std::vector<CGeneral3DVertex>& vert_buffer = *general_mesh.GetVertexBuffer().get();
+	const std::vector<General3DVertex>& vert_buffer = *general_mesh.GetVertexBuffer().get();
 	const size_t iNumVertices = vert_buffer.size();
 	size_t i;
 
@@ -409,16 +409,16 @@ void C3DMeshModelBuilder::CreateVertices()
 
 void C3DMeshModelBuilder::ForceWeightMatrixCount()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
+	std::vector<General3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
 	const size_t num_vertices = vert_buffer.size();
 
 	int num_blend_mats;
 
-	const int num_max_blend_mats = CGeneral3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX;
+	const int num_max_blend_mats = General3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX;
 
 	for( size_t i=0; i<num_vertices; i++ )
 	{
-		CGeneral3DVertex& rVertex = vert_buffer[i];
+		General3DVertex& rVertex = vert_buffer[i];
 
 		num_blend_mats = rVertex.m_iMatrixIndex.size();
 
@@ -437,7 +437,7 @@ void C3DMeshModelBuilder::ForceWeightMatrixCount()
 
 void C3DMeshModelBuilder::NormalizeVertexBlendWeights()
 {
-	std::vector<CGeneral3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
+	std::vector<General3DVertex>& vert_buffer = *m_pMesh->GetVertexBuffer().get();
 
 	size_t i, iNumVertices = vert_buffer.size();
 	int j, num_blend_mats;
@@ -461,7 +461,7 @@ void C3DMeshModelBuilder::CreateTriangleSets()
 {
 	// m_vecIndexedPolygon must be triangulated before calling this function
 
-	std::vector<CIndexedPolygon>& polygon_buffer = m_vecTriangulatedPolygon;
+	std::vector<IndexedPolygon>& polygon_buffer = m_vecTriangulatedPolygon;
 
 	int iMat, i;
 	size_t iNumTriangles = polygon_buffer.size();
@@ -487,7 +487,7 @@ void C3DMeshModelBuilder::CreateTriangleSets()
 
 		for( size_t j=0; j<iNumTriangles; j++ )
 		{
-            CIndexedPolygon& rTriangle = polygon_buffer[j];
+            IndexedPolygon& rTriangle = polygon_buffer[j];
 
 			if( rTriangle.m_MaterialIndex != iMat )
 				continue;

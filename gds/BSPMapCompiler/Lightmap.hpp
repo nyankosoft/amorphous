@@ -61,22 +61,22 @@ class CLightmap
 
 	C2DArray<Vector3> m_vecvLightDir;
 
-	std::vector<CIndexedPolygon> *m_vecpPolygonBuffer;
+	std::vector<IndexedPolygon> *m_vecpPolygonBuffer;
 
 private:
 
-	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return *m_vecpPolygonBuffer; }
+	std::vector<IndexedPolygon>& GetPolygonBuffer() { return *m_vecpPolygonBuffer; }
 
 public:
 
 	CLightmap();
 
-	void SetPolygonBuffer( std::vector<CIndexedPolygon> *vecpPolygonBuffer ) { m_vecpPolygonBuffer = vecpPolygonBuffer; }
+	void SetPolygonBuffer( std::vector<IndexedPolygon> *vecpPolygonBuffer ) { m_vecpPolygonBuffer = vecpPolygonBuffer; }
 
 	int GetNumPolygons() const { return (int)m_vecGroupedFaceIndex.size(); }
 
 	/// returns a NON-const reference to a polygon
-	CIndexedPolygon& GetPolygon( int index ) const { return (*m_vecpPolygonBuffer)[m_vecGroupedFaceIndex[index]]; }
+	IndexedPolygon& GetPolygon( int index ) const { return (*m_vecpPolygonBuffer)[m_vecGroupedFaceIndex[index]]; }
 
 	void Clear();
 

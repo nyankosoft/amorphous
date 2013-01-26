@@ -55,7 +55,7 @@ private:
 
 protected:
 
-	boost::shared_ptr<CGeneral3DMesh> m_pMesh;
+	boost::shared_ptr<General3DMesh> m_pMesh;
 
 	/// used to specify the way of exporting the texture filename
 	TexturePathnameOption::Option m_TextureFilePathOption;
@@ -77,11 +77,11 @@ public:
 
 	int GetNumMaterials() const { return m_pMesh->GetNumMaterials(); }
 
-	const std::vector<CGeneral3DVertex>& GetVertexBuffer() const { return (*m_pMesh->GetVertexBuffer().get()); }
+	const std::vector<General3DVertex>& GetVertexBuffer() const { return (*m_pMesh->GetVertexBuffer().get()); }
 
 	std::vector<CMMA_Material>& GetMaterialBuffer() { return m_pMesh->GetMaterialBuffer(); }
 
-	std::vector<CIndexedPolygon>& GetPolygonBuffer() { return m_pMesh->GetPolygonBuffer(); }
+	std::vector<IndexedPolygon>& GetPolygonBuffer() { return m_pMesh->GetPolygonBuffer(); }
 
 //	CMMA_Bone& GetSkeletonRootBoneBuffer() { return ; }
 
@@ -101,11 +101,11 @@ public:
 	const std::string& GetFixedPathForTextureFilename() const { return m_strTexPath; }
 
 	/// Returns a copy of the instance of general 3d mesh currently stored in the loader
-	void GetGeneral3DMesh( CGeneral3DMesh& dest ) { dest = *m_pMesh; }
+	void GetGeneral3DMesh( General3DMesh& dest ) { dest = *m_pMesh; }
 
-	CGeneral3DMesh& GetGeneral3DMesh() { return *m_pMesh; }
+	General3DMesh& GetGeneral3DMesh() { return *m_pMesh; }
 
-	boost::shared_ptr<CGeneral3DMesh> GetGeneral3DMeshSharedPtr() { return m_pMesh; }
+	boost::shared_ptr<General3DMesh> GetGeneral3DMeshSharedPtr() { return m_pMesh; }
 
 	void SetVertexFormatFlags( unsigned int flags ) { m_pMesh->m_VertexFormatFlag = flags; }
 
@@ -114,7 +114,7 @@ public:
 	/// Returns true on success
 	/// If geometry_filter is not provided, or no include/exclude filters were in geometry_filter,
 	/// all the geometry in the model file is processed.
-	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter = CGeometryFilter() ) = 0;
+	virtual bool LoadFromFile( const std::string& model_filepath, const GeometryFilter& geometry_filter = GeometryFilter() ) = 0;
 
 	virtual std::string GetBasePath() { return std::string(); }
 };
@@ -126,12 +126,12 @@ public:
 
  [in] A General 3D Mesh loaded by C3DModelLoader which has
    - non-triangulated polygons
-   - verties represented as an array of CGeneral3DVertex
+   - verties represented as an array of General3DVertex
  [out] a mesh archive
    - 
 
  common routines to create mesh archives.
- NOTE: vertex buffer in CIndexedPolygon is not used. Vertices are
+ NOTE: vertex buffer in IndexedPolygon is not used. Vertices are
  stored and managed separately by the mesh model builder
  */
 class C3DMeshModelBuilder
@@ -158,7 +158,7 @@ protected:
 
 	boost::shared_ptr<C3DModelLoader> m_pModelLoader;
 
-	boost::shared_ptr<CGeneral3DMesh> m_pMesh;
+	boost::shared_ptr<General3DMesh> m_pMesh;
 
 	/// file name of the original model data
 	std::string m_strSrcFilename;
@@ -170,9 +170,9 @@ protected:
 	/// these models are serialized and save into files
 	C3DMeshModelArchive m_MeshModelArchive;
 
-	std::vector<CIndexedPolygon> m_vecNonTriangulatedPolygon;
+	std::vector<IndexedPolygon> m_vecNonTriangulatedPolygon;
 
-	std::vector<CIndexedPolygon> m_vecTriangulatedPolygon;
+	std::vector<IndexedPolygon> m_vecTriangulatedPolygon;
 
 	/// input texture filepath -> output texture filepath
 //	std::map<std::string,std::string> m_DetectedTextureFilepaths;
@@ -200,7 +200,7 @@ protected:
 	void CheckShadowVolume();
 
 	/// make sure that every vertex has the same number of blend matrices
-	/// the number of matrices is determined by CGeneral3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX
+	/// the number of matrices is determined by General3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX
 	void ForceWeightMatrixCount();
 
 	void NormalizeVertexBlendWeights();
@@ -220,7 +220,7 @@ public:
 	void BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags = 0 );
 
 	/// \param [in] borrowed reference
-	void BuildMeshModelArchive( boost::shared_ptr<CGeneral3DMesh> pGeneralMesh, U32 build_option_flags = 0 );
+	void BuildMeshModelArchive( boost::shared_ptr<General3DMesh> pGeneralMesh, U32 build_option_flags = 0 );
 
 //	void SetTextureFilenameOption( unsigned int option ) { m_TextureFilenameOption = option; }
 	void SetTextureFilenameOption( TexturePathnameOption::Option option ) { m_pModelLoader->SetTexturePathnameOption( option ); }
@@ -230,7 +230,7 @@ public:
 
 	Result::Name GetArchive( C3DMeshModelArchive& dest );
 
-	std::vector<CIndexedPolygon>& GetNonTriangulatedPolygonBuffer() { return m_vecNonTriangulatedPolygon; }
+	std::vector<IndexedPolygon>& GetNonTriangulatedPolygonBuffer() { return m_vecNonTriangulatedPolygon; }
 
 //	const std::map<std::string,std::string> GetDetectedTextureFilepaths() const { return m_DetectedTextureFilepaths; }
 	const std::vector< std::vector<std::string> >& GetOriginalTextureFilepaths() const { return m_OrigTextureFilepaths; }

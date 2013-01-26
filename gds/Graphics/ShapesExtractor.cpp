@@ -22,7 +22,7 @@ void CreatePhysicsShapes( CShapeContainerSet& shape_set )
 }
 
 
-void CShapesExtractor::AddShapeContainer( CGeneral3DMesh& connected_mesh,
+void CShapesExtractor::AddShapeContainer( General3DMesh& connected_mesh,
 											  const CShapeDetectionResults& results,
 											  CShapeContainerSet& shape_set )
 {
@@ -58,22 +58,22 @@ void CShapesExtractor::AddShapeContainer( CGeneral3DMesh& connected_mesh,
 }
 
 
-Result::Name CShapesExtractor::ExtractShapes( const shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set )
+Result::Name CShapesExtractor::ExtractShapes( const shared_ptr<General3DMesh> pSrcMesh, CShapeContainerSet& shape_set )
 {
 	if( !pSrcMesh )
 		return Result::INVALID_ARGS;
 
 	// Divide general 3D mesh(es) into connected  sets
-	vector< const shared_ptr<CGeneral3DMesh> > pSrcMeshes;
+	vector< const shared_ptr<General3DMesh> > pSrcMeshes;
 	pSrcMeshes.push_back( pSrcMesh );
-	vector< shared_ptr<CGeneral3DMesh> > pConnectedMeshes;
+	vector< shared_ptr<General3DMesh> > pConnectedMeshes;
 	pConnectedMeshes.reserve( 16 );
 	for( int i=0; i<(int)pSrcMeshes.size(); i++ )
 	{
 		if( !pSrcMeshes[i] )
 			continue;
 
-		vector< shared_ptr<CGeneral3DMesh> > pConnected;
+		vector< shared_ptr<General3DMesh> > pConnected;
 		GetConnectedSets( *(pSrcMeshes[i]), pConnected );
 
 		if( pConnected.empty() )
@@ -106,7 +106,7 @@ Result::Name CShapesExtractor::ExtractShapes( const shared_ptr<CGeneral3DMesh> p
 }
 
 
-Result::Name CShapesExtractor::ExtractShapesAndSaveToFile( const shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath )
+Result::Name CShapesExtractor::ExtractShapesAndSaveToFile( const shared_ptr<General3DMesh> pSrcMesh, const std::string& output_filepath )
 {
 	CShapeContainerSet shape_set;
 	Result::Name res = ExtractShapes( pSrcMesh, shape_set );

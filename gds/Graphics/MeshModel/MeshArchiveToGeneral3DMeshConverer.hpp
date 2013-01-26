@@ -21,7 +21,7 @@ public:
 	- Only copies positions of vertices
 
 	*/
-	Result::Name Convert( const C3DMeshModelArchive& src, CGeneral3DMesh& dest );
+	Result::Name Convert( const C3DMeshModelArchive& src, General3DMesh& dest );
 };
 
 

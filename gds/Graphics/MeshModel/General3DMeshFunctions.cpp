@@ -8,14 +8,14 @@ namespace amorphous
 using namespace std;
 
 
-static void GetConnectedSets_r( const std::vector<CIndexedPolygon>& polygons, //const CGeneral3DMesh& src_mesh,// std::vector< boost::shared_ptr<CGeneral3DMesh> >& pDestMeshes,
+static void GetConnectedSets_r( const std::vector<IndexedPolygon>& polygons, //const General3DMesh& src_mesh,// std::vector< boost::shared_ptr<General3DMesh> >& pDestMeshes,
 							   std::vector<int>& group,
 							   std::vector<int>& already_selected )
 {
-//	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
+//	const std::vector<IndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 
-	const CIndexedPolygon& polygon0 = polygons[group.back()];
+	const IndexedPolygon& polygon0 = polygons[group.back()];
 	const int num_verts0 = polygon0.GetNumVertices();
 
 	for( int i=0; i<num_polygons; i++ )
@@ -23,7 +23,7 @@ static void GetConnectedSets_r( const std::vector<CIndexedPolygon>& polygons, //
 		if( already_selected[i] )
 			continue;
 
-		const CIndexedPolygon& polygon1 = polygons[i];
+		const IndexedPolygon& polygon1 = polygons[i];
 		const int num_verts1 = polygon1.GetNumVertices();
 		for( int j=0; j<num_verts0; j++ )
 		{
@@ -45,11 +45,11 @@ static void GetConnectedSets_r( const std::vector<CIndexedPolygon>& polygons, //
 }
 
 
-void GetConnectedSets( const CGeneral3DMesh& src_mesh, std::vector< std::vector<int> >& connected_polygon_sets )
+void GetConnectedSets( const General3DMesh& src_mesh, std::vector< std::vector<int> >& connected_polygon_sets )
 {
 	using namespace std;
 
-	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
+	const std::vector<IndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 
 	vector<int> already_selected;
@@ -78,7 +78,7 @@ void GetConnectedSets( const CGeneral3DMesh& src_mesh, std::vector< std::vector<
 }
 
 
-void GetConnectedSets( const CGeneral3DMesh& src_mesh, std::vector< boost::shared_ptr<CGeneral3DMesh> >& pDestMeshes )
+void GetConnectedSets( const General3DMesh& src_mesh, std::vector< boost::shared_ptr<General3DMesh> >& pDestMeshes )
 {
 	std::vector< std::vector<int> > connected_polygon_sets;
 
@@ -88,10 +88,10 @@ void GetConnectedSets( const CGeneral3DMesh& src_mesh, std::vector< boost::share
 
 	for( int i=0; i<num_connected_sets; i++ )
 	{
-		pDestMeshes.push_back( boost::shared_ptr<CGeneral3DMesh>() );
-		pDestMeshes.back().reset( new CGeneral3DMesh );
+		pDestMeshes.push_back( boost::shared_ptr<General3DMesh>() );
+		pDestMeshes.back().reset( new General3DMesh );
 
-		CGeneral3DMesh& connected = *(pDestMeshes.back());
+		General3DMesh& connected = *(pDestMeshes.back());
 
 		const vector<int>& connected_polygons = connected_polygon_sets[i];
 		connected.GetPolygonBuffer().resize( connected_polygons.size() );

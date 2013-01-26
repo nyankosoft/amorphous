@@ -39,7 +39,7 @@ public:
 	}
 };
 
-static inline bool have_shared_point( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
+static inline bool have_shared_point( const IndexedPolygon& polygon0, const IndexedPolygon& polygon1 )
 {
 	const uint num_verts0 = (uint)polygon0.m_index.size();
 	const uint num_verts1 = (uint)polygon1.m_index.size();
@@ -56,7 +56,7 @@ static inline bool have_shared_point( const CIndexedPolygon& polygon0, const CIn
 }
 
 
-bool CShapeDetector::IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb )
+bool CShapeDetector::IsAABox( const General3DMesh& src_mesh, AABB3& aabb )
 {
 	float aa_plane_dists[6] = {0,0,0,0,0,0};
 	int aa_plane_found[6];
@@ -72,7 +72,7 @@ bool CShapeDetector::IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb )
 		Vector3(0,0,-1),
 	};
 
-	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
+	const std::vector<IndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
@@ -114,7 +114,7 @@ bool CShapeDetector::IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb )
 }
 
 
-bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose )
+bool CShapeDetector::IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose )
 {
 	// collect normals
 	// If the mesh
@@ -124,7 +124,7 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matr
 	// detect it as a box
 
 	std::vector<Plane> polygon_planes;
-	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
+	const std::vector<IndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
@@ -205,19 +205,19 @@ bool CShapeDetector::IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matr
 }
 
 
-bool CShapeDetector::IsConvex( const CGeneral3DMesh& src_mesh )
+bool CShapeDetector::IsConvex( const General3DMesh& src_mesh )
 {
 	bool is_not_sphere = false;
 
-	const boost::shared_ptr< vector<CGeneral3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
+	const boost::shared_ptr< vector<General3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
 	if( !pVertBuffer )
 		return false;
 
-	vector<CGeneral3DVertex>& vert_buffer = *pVertBuffer;
+	vector<General3DVertex>& vert_buffer = *pVertBuffer;
 
 	// max_angle_between_normals_of_connected_polygons
 	float max_angle = -FLT_MAX;
-	const std::vector<CIndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
+	const std::vector<IndexedPolygon>& polygons = src_mesh.GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
@@ -249,12 +249,12 @@ bool CShapeDetector::IsConvex( const CGeneral3DMesh& src_mesh )
 }
 
 
-bool CShapeDetector::IsSphere( const CGeneral3DMesh& src_mesh, Sphere& sphere )
+bool CShapeDetector::IsSphere( const General3DMesh& src_mesh, Sphere& sphere )
 {
 	if( !src_mesh.GetVertexBuffer() )
 		return false;
 
-	const vector<CGeneral3DVertex>& vertex_buffer = *(src_mesh.GetVertexBuffer());
+	const vector<General3DVertex>& vertex_buffer = *(src_mesh.GetVertexBuffer());
 	const int num_vertices = (int)vertex_buffer.size();
 
 	if( num_vertices < 5 )
@@ -291,12 +291,12 @@ bool CShapeDetector::IsSphere( const CGeneral3DMesh& src_mesh, Sphere& sphere )
   - capsules that are unevenly scaled along 1 or 2 axis.
   - capsules that have redudant vertices on sides, or the cylinder part of the capsule.
 */
-bool CShapeDetector::IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule )
+bool CShapeDetector::IsCapsule( const General3DMesh& src_mesh, Capsule& capsule )
 {
 	if( !src_mesh.GetVertexBuffer() )
 		return false;
 
-	const vector<CGeneral3DVertex>& vertex_buffer = *(src_mesh.GetVertexBuffer());
+	const vector<General3DVertex>& vertex_buffer = *(src_mesh.GetVertexBuffer());
 
 	const int num_polygons = 0;
 	const int num_vertices = (int)vertex_buffer.size();
@@ -383,13 +383,13 @@ bool CShapeDetector::IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule
 }
 
 /*
-bool CShapeDetector::IsCylinder( const CGeneral3DMesh& src_mesh, CCylinderDesc& cylinder );
+bool CShapeDetector::IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
 {
 	return false;
 }
 */
 
-bool CShapeDetector::DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectionResults& results )
+bool CShapeDetector::DetectShape( const General3DMesh& src_mesh, CShapeDetectionResults& results )
 {
 	AABB3 aabb;
 	CBoxDesc box_desc;

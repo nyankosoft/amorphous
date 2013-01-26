@@ -70,7 +70,7 @@ class HDRLightingParams;
 class CUnitCube;
 class CUnitSphere;
 
-class CGeneral3DVertex;
+class General3DVertex;
 
 class LensFlare;
 class CFogParams;
@@ -88,7 +88,7 @@ class C3DMeshModelBuilder;
 class C3DModelLoader;
 class CMeshBone;
 
-class CGeneral3DMesh;
+class General3DMesh;
 
 
 

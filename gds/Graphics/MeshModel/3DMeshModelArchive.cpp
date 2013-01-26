@@ -108,7 +108,7 @@ void CMMA_VertexSet::GetBlendMatrixWeights_4Floats( int iVertexIndex, float *pWe
 }
 
 
-void CMMA_VertexSet::GetVertices( vector<CGeneral3DVertex>& dest_buffer ) const
+void CMMA_VertexSet::GetVertices( vector<General3DVertex>& dest_buffer ) const
 {
 	dest_buffer.resize( GetNumVertices() );
 

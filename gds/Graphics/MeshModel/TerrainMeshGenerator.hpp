@@ -75,9 +75,9 @@ class TerrainMeshTree
 	/// in tree nodes
 //	std::vector<C3DMeshModelArchive> m_vecMeshArchive;
 
-	boost::shared_ptr<CGeneral3DMesh> m_pSrcMesh;
+	boost::shared_ptr<General3DMesh> m_pSrcMesh;
 
-	boost::shared_ptr<CGeneral3DMesh> m_pDestMesh;
+	boost::shared_ptr<General3DMesh> m_pDestMesh;
 
 	int m_NumMaxTrianglesPerMesh;
 
@@ -119,7 +119,7 @@ public:
 	/// Remember that the content of the polygon buffer may be changed
 	/// since polygons that cross subdivision planes will be split
 	/// and new polygons will be added to the buffer.
-	bool Build( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, int target_depth );
+	bool Build( boost::shared_ptr<General3DMesh> pSrcMesh, int target_depth );
 
 	void ScaleTexCoords();
 
@@ -139,7 +139,7 @@ public:
 
 	int GetNumNodes() { return m_RootNode.GetNumNodes_r(); }
 
-	boost::shared_ptr<CGeneral3DMesh> GetDestMesh() { return m_pDestMesh; }
+	boost::shared_ptr<General3DMesh> GetDestMesh() { return m_pDestMesh; }
 
 	// extension of the output texture image file
 	void SetOutputTextureImageFormat( const std::string& image_ext );
@@ -155,7 +155,7 @@ public:
 
 class CTerrainMeshGenerator
 {
-	boost::shared_ptr<CGeneral3DMesh> m_pSrcMesh;
+	boost::shared_ptr<General3DMesh> m_pSrcMesh;
 
 	TerrainMeshTree m_MeshTree;
 
@@ -183,7 +183,7 @@ public:
 
 	~CTerrainMeshGenerator();
 
-	bool BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> pSrcMesh );
+	bool BuildTerrainMesh( boost::shared_ptr<General3DMesh> pSrcMesh );
 
 //	std::vector<C3DMeshModelArchive>& GetMeshArchive() { return m_MeshTree.GetMeshArchive(); }
 //	size_t GetNumMeshArchives() { return m_MeshTree.GetMeshArchive().size(); }
@@ -199,7 +199,7 @@ public:
 
 	TerrainMeshTree& GetMeshTree() { return m_MeshTree; }
 
-	boost::shared_ptr<CGeneral3DMesh> GetDestMesh() { return m_MeshTree.GetDestMesh(); }
+	boost::shared_ptr<General3DMesh> GetDestMesh() { return m_MeshTree.GetDestMesh(); }
 
 	bool SaveToFiles();
 

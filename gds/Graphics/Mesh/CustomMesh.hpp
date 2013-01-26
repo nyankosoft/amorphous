@@ -71,7 +71,7 @@ public:
 
 	int GetVertexElementOffset( VEE::ElementName vert_element ) const { return m_ElementOffsets[vert_element]; }
 
-	void SetVertices( const std::vector<CGeneral3DVertex>& vertices, U32 vertex_format_flags );
+	void SetVertices( const std::vector<General3DVertex>& vertices, U32 vertex_format_flags );
 
 	inline void AddVertices( const unsigned int num_vertices );
 

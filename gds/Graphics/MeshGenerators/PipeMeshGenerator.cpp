@@ -31,9 +31,9 @@ Result::Name PipeMeshGenerator::Generate()
 
 	// Copy vertices and polygons to a general 3D mesh.
 
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 
-	CGeneral3DMesh& mesh = *pMesh;
+	General3DMesh& mesh = *pMesh;
 
 	mesh.SetVertexFormatFlags(
 		 CMMA_VertexSet::VF_POSITION

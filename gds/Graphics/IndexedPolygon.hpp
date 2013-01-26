@@ -17,13 +17,13 @@ namespace amorphous
 using namespace serialization;
 
 
-class CIndexedPolygon : public IArchiveObjectBase
+class IndexedPolygon : public IArchiveObjectBase
 {
 	/// Pointer to the vertex buffer (shared pointer).
 	/// - Usually shared by polygons that belongs to the same polygon buffer
 	/// - When GetVertex() is called, the object will internally
 	///   access this buffer and return the reference to the vertex
-	boost::shared_ptr< std::vector<CGeneral3DVertex> > m_pVertexBuffer;
+	boost::shared_ptr< std::vector<General3DVertex> > m_pVertexBuffer;
 
 	SPlane m_Plane;
 
@@ -44,31 +44,31 @@ public:
 
 	/// Default constructor
 	/// - Remember that the vertex buffer must be manually restored
-	inline CIndexedPolygon()
+	inline IndexedPolygon()
 		:
 	m_MaterialIndex(0)
 	{}
 
-	inline CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer )
+	inline IndexedPolygon( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer )
 		:
 	m_pVertexBuffer(pVertexBuffer),
 	m_MaterialIndex(0)
 	{}
 
 	/// creates an indexed triangle
-	inline CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2,
+	inline IndexedPolygon( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer, int i0, int i1, int i2,
 		                    int mat_index = 0, const SPlane& plane = SPlane(), const AABB3& aabb = AABB3() );
 
 	/// polygon must be convex
-	inline void Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane ) const;
+	inline void Split( IndexedPolygon& front, IndexedPolygon& back, const SPlane& plane ) const;
 
-	inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer ) const;
+	inline void Triangulate( std::vector<IndexedPolygon>& dest_polygon_buffer ) const;
 
-	const CGeneral3DVertex& GetVertex( int vert_index ) const { return (*m_pVertexBuffer.get())[m_index[vert_index]]; }
+	const General3DVertex& GetVertex( int vert_index ) const { return (*m_pVertexBuffer.get())[m_index[vert_index]]; }
 
-	const CGeneral3DVertex& GetVertex( size_t vert_index ) const { return GetVertex( (int)vert_index ); }
+	const General3DVertex& GetVertex( size_t vert_index ) const { return GetVertex( (int)vert_index ); }
 
-	CGeneral3DVertex& Vertex( int vert_index ) { return (*m_pVertexBuffer.get())[m_index[vert_index]]; }
+	General3DVertex& Vertex( int vert_index ) { return (*m_pVertexBuffer.get())[m_index[vert_index]]; }
 
 	int GetNumVertices() const { return (int)m_index.size(); }
 
@@ -89,24 +89,24 @@ public:
 
 	Vector3 GetInterpolatedNormal( const Vector3& rvPosition ) const;
 
-	inline bool SharesPointWith( const CIndexedPolygon& polygon );
+	inline bool SharesPointWith( const IndexedPolygon& polygon );
 
 	/// Returns true if the line segment hits the polygon
 	inline bool ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const;
 
 	inline void Flip();
 
-	/// Added to use CIndexedPolygon with CAABTree
+	/// Added to use IndexedPolygon with CAABTree
 	/// - Not added for actual use
 	/// - m_pVertexBuffer would have to be separately serialized and restored
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void SetVertexBuffer( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
+	void SetVertexBuffer( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
 
-	boost::shared_ptr< std::vector<CGeneral3DVertex> > VertexBuffer() { return m_pVertexBuffer; }
+	boost::shared_ptr< std::vector<General3DVertex> > VertexBuffer() { return m_pVertexBuffer; }
 
 
-//	static std::vector<CGeneral3DVertex>& VertexBuffer() { return (*m_pVertexBuffer); }
+//	static std::vector<General3DVertex>& VertexBuffer() { return (*m_pVertexBuffer); }
 };
 
 
@@ -118,7 +118,7 @@ public:
 enum ePolygonStatus { POLYGON_ONPLANE, POLYGON_FRONT, POLYGON_BACK, POLYGON_INTERSECTING };
 
 
-inline CIndexedPolygon::CIndexedPolygon( boost::shared_ptr< std::vector<CGeneral3DVertex> > pVertexBuffer, int i0, int i1, int i2,
+inline IndexedPolygon::IndexedPolygon( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer, int i0, int i1, int i2,
 										 int mat_index, const SPlane& plane, const AABB3& aabb )
 :
 m_pVertexBuffer(pVertexBuffer),
@@ -133,12 +133,12 @@ m_AABB(aabb)
 }
 
 
-inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& back, const SPlane& plane ) const
+inline void IndexedPolygon::Split( IndexedPolygon& front, IndexedPolygon& back, const SPlane& plane ) const
 {
 	size_t i, num_orig_verts = m_index.size();  //the number of points of this face
 //	SFloatRGBColor col, col0, col1;
 
-	std::vector<CGeneral3DVertex>& vert_buffer = *m_pVertexBuffer.get();
+	std::vector<General3DVertex>& vert_buffer = *m_pVertexBuffer.get();
 
 	// copy the properties of the source polygon. e.g.) material index
 	front = *this;
@@ -153,8 +153,8 @@ inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& bac
 	//check if each edge of this face and the 'cutplane' intersect
 	for( i=0; i<num_orig_verts; i++)
 	{
-		const CGeneral3DVertex& mv0 = vert_buffer[m_index[i]];
-		const CGeneral3DVertex& mv1 = vert_buffer[m_index[(i+1) % num_orig_verts]];
+		const General3DVertex& mv0 = vert_buffer[m_index[i]];
+		const General3DVertex& mv1 = vert_buffer[m_index[(i+1) % num_orig_verts]];
 		const Vector3& p0 = mv0.m_vPosition;      /// pick up 2 vertices on the polygon face
 		const Vector3& p1 = mv1.m_vPosition;      /// see if they are in front of, behind or crossing the plane 
 		int c0 = ClassifyPoint( plane, p0 );
@@ -171,7 +171,7 @@ inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& bac
 
 			// calculate properties for the new vertex at the cross point.
 			// vertex color, tex coord, etc.
-			CGeneral3DVertex new_vert;
+			General3DVertex new_vert;
 
 			new_vert = mv0 + ( mv1 - mv0 ) * f;
 
@@ -209,7 +209,7 @@ inline void CIndexedPolygon::Split( CIndexedPolygon& front, CIndexedPolygon& bac
 }
 
 
-inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer ) const
+inline void IndexedPolygon::Triangulate( std::vector<IndexedPolygon>& dest_polygon_buffer ) const
 {
 	if( m_index.size() <= 2 )
 		return;
@@ -224,7 +224,7 @@ inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_pol
 	for( i=0; i<num_tris; i++ )
 	{
 		dest_polygon_buffer.push_back(
-			CIndexedPolygon( m_pVertexBuffer, m_index[0], m_index[i+1], m_index[i+2], m_MaterialIndex, m_Plane, m_AABB ) );
+			IndexedPolygon( m_pVertexBuffer, m_index[0], m_index[i+1], m_index[i+2], m_MaterialIndex, m_Plane, m_AABB ) );
 	}
 
 	/// experimental
@@ -280,7 +280,7 @@ inline void CIndexedPolygon::Triangulate( std::vector<CIndexedPolygon>& dest_pol
 }
 
 
-inline void CIndexedPolygon::UpdateAABB()
+inline void IndexedPolygon::UpdateAABB()
 {
 	m_AABB.Nullify();
 
@@ -292,7 +292,7 @@ inline void CIndexedPolygon::UpdateAABB()
 }
 
 
-inline bool CIndexedPolygon::UpdatePlane()
+inline bool IndexedPolygon::UpdatePlane()
 {
 	if( m_index.size() <= 2 )
 		return false;
@@ -350,7 +350,7 @@ inline bool CIndexedPolygon::UpdatePlane()
 }
 
 
-inline bool CIndexedPolygon::IsOnPolygon( const Vector3& rvPosition ) const
+inline bool IndexedPolygon::IsOnPolygon( const Vector3& rvPosition ) const
 {
 	const int num_triangles = GetNumVertices() - 2;
 	for( int i=0; i<num_triangles; i++ )
@@ -363,7 +363,7 @@ inline bool CIndexedPolygon::IsOnPolygon( const Vector3& rvPosition ) const
 }
 
 
-inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
+inline bool IndexedPolygon::SharesPointWith( const IndexedPolygon& polygon )
 {
 	const size_t num_vertices0 = m_index.size();
 	const size_t num_vertices1 = polygon.m_index.size();
@@ -383,7 +383,7 @@ inline bool CIndexedPolygon::SharesPointWith( const CIndexedPolygon& polygon )
 }
 
 
-inline bool CIndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const
+inline bool IndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, CLineSegmentHit& results ) const
 {
 	if( m_index.size() <= 2 )
 		return false;
@@ -419,7 +419,7 @@ inline bool CIndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, 
 }
 
 
-inline void CIndexedPolygon::Flip()
+inline void IndexedPolygon::Flip()
 {
 	if( m_index.size() <= 1 )
 		return;
@@ -436,7 +436,7 @@ inline void CIndexedPolygon::Flip()
 }
 
 
-inline float CIndexedPolygon::CalculateArea() const
+inline float IndexedPolygon::CalculateArea() const
 {
 	float fCos, fSin;
 	Vector3 vEdge1, vEdge2;
@@ -464,8 +464,8 @@ inline float CIndexedPolygon::CalculateArea() const
 
 /// \param src_polygon_buffer [in] array of polygons to triangulate
 /// \param dest_polygon_buffer [out] array of polygons that stores the triangulated polygons
-inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer,
-						 const std::vector<CIndexedPolygon>& src_polygon_buffer )
+inline void Triangulate( std::vector<IndexedPolygon>& dest_polygon_buffer,
+						 const std::vector<IndexedPolygon>& src_polygon_buffer )
 {
 	const size_t num_pols = src_polygon_buffer.size();
 	for( size_t i=0; i<num_pols; i++ )
@@ -475,7 +475,7 @@ inline void Triangulate( std::vector<CIndexedPolygon>& dest_polygon_buffer,
 }
 
 
-inline AABB3 GetAABB( const std::vector<CIndexedPolygon>& polygon_buffer )
+inline AABB3 GetAABB( const std::vector<IndexedPolygon>& polygon_buffer )
 {
 	AABB3 aabb;
 	aabb.Nullify();
@@ -498,7 +498,7 @@ inline AABB3 GetAABB( const std::vector<CIndexedPolygon>& polygon_buffer )
 }
 
 
-inline void UpdateAABBs( std::vector<CIndexedPolygon>& polygon_buffer )
+inline void UpdateAABBs( std::vector<IndexedPolygon>& polygon_buffer )
 {
 	size_t i, num_pols = polygon_buffer.size();
 	for( i=0; i<num_pols; i++ )
@@ -508,7 +508,7 @@ inline void UpdateAABBs( std::vector<CIndexedPolygon>& polygon_buffer )
 }
 
 
-inline bool AreOnSamePlane( const CIndexedPolygon& polygon0, const CIndexedPolygon& polygon1 )
+inline bool AreOnSamePlane( const IndexedPolygon& polygon0, const IndexedPolygon& polygon1 )
 {
 	if( fabs(polygon1.GetPlane().dist - polygon0.GetPlane().dist) < 0.000001
 	 && Vec3LengthSq( polygon1.GetPlane().normal - polygon0.GetPlane().normal ) < 0.000001 )
@@ -529,8 +529,8 @@ inline bool AreOnSamePlane( const CIndexedPolygon& polygon0, const CIndexedPolyg
  *	the face is regarded as on-plane if its normal is in the same direction as the plane
  */
 inline int	ClassifyPolygon( const SPlane& plane,
-						     const CIndexedPolygon& polygon,
-							 int iOnPlaneCondition = CIndexedPolygon::OPC_DONTCARE_NORMAL_DIRECTION )
+						     const IndexedPolygon& polygon,
+							 int iOnPlaneCondition = IndexedPolygon::OPC_DONTCARE_NORMAL_DIRECTION )
 {
 	int front = 0;
 	int back = 0;
@@ -575,9 +575,9 @@ inline int	ClassifyPolygon( const SPlane& plane,
 }
 
 
-extern void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<CIndexedPolygon>& polygon_buffer );
+extern void UnweldVerticesOfPolygonsOnDifferentPlanes( std::vector<IndexedPolygon>& polygon_buffer );
 
-extern void UnweldVerticesBetween2GroupsOfPolygons( std::vector<CIndexedPolygon>& polygon_buffer,
+extern void UnweldVerticesBetween2GroupsOfPolygons( std::vector<IndexedPolygon>& polygon_buffer,
 													const std::vector<int>& polygon_indices0,
 													const std::vector<int>& polygon_indices1 );
 

@@ -69,7 +69,7 @@ m_TargetMaterialIndex(0)
  */
 void TerrainMeshTree::MakeMeshNodes_r( TerrainMeshNode& node, int axis, int depth )
 {
-	vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
 
 	// calculate a plane that splits the subspace of this node
 	SPlane split_plane;
@@ -80,7 +80,7 @@ void TerrainMeshTree::MakeMeshNodes_r( TerrainMeshNode& node, int axis, int dept
 
 	node.m_Axis = axis;
 
-	CIndexedPolygon front, back;
+	IndexedPolygon front, back;
 
 	size_t i, num_pols = node.m_vecPolygonIndex.size();
 	node.m_child[0].m_vecPolygonIndex.reserve( num_pols / 2 );
@@ -175,7 +175,7 @@ void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 {
 	int new_mat_index = m_pDestMesh->GetNumMaterials();
 
-	vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
 
 	// udpate the material indices of the polygons
 	const size_t num_polygons_at_node = node.m_vecPolygonIndex.size();
@@ -301,7 +301,7 @@ void TerrainMeshTree::SetTextureOutputDirectory( const std::string& tex_output_d
 /**
  Stores the subdivided mesh to m_pDestMesh
 */
-bool TerrainMeshTree::Build( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, int target_depth )
+bool TerrainMeshTree::Build( boost::shared_ptr<General3DMesh> pSrcMesh, int target_depth )
 {
 	LOG_FUNCTION_SCOPE();
 	LOG_PRINT( " target_depth: " + to_string(target_depth) );
@@ -323,7 +323,7 @@ bool TerrainMeshTree::Build( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, int tar
 	// set target depth
 	m_TargetDepth = target_depth;
 
-	std::vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
+	std::vector<IndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
 
 	// push all polygons to the root node
 	int i, num_pols = (int)vecPolygonBuffer.size();
@@ -348,8 +348,8 @@ bool TerrainMeshTree::Build( boost::shared_ptr<CGeneral3DMesh> pSrcMesh, int tar
 }
 
 /*
-bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pVertexBuffer,
-							 vector<CIndexedPolygon>& vecPolygonBuffer,
+bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<General3DVertex>> pVertexBuffer,
+							 vector<IndexedPolygon>& vecPolygonBuffer,
 							 int target_depth )
 {
 	LOG_PRINT( " target_depth: " + to_string(target_depth) );
@@ -380,7 +380,7 @@ bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<CGeneral3DVertex>> pV
 //	}
 
 	// triangulate polygons at each leaf node
-	vector<CIndexedPolygon> dest_triangle_buffer;
+	vector<IndexedPolygon> dest_triangle_buffer;
 	dest_triangle_buffer.reserve( (size_t)(m_pvecPolygonBuffer->size() * 1.2f) );
 	Triangulate_r( m_RootNode, dest_triangle_buffer );
 
@@ -399,7 +399,7 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 {
 	LOG_FUNCTION_SCOPE();
 
-	vector<CIndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& vecPolygonBuffer = m_pDestMesh->GetPolygonBuffer();
 
 	if( 0 < node.m_child.size() )
 	{
@@ -425,14 +425,14 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 			mesh_length_x, root_aabb.vMin.x, root_aabb.vMax.x, num_segs_x ) );
 		for( i=0; i<num_pols; i++ )
 		{
-			CIndexedPolygon& polygon = vecPolygonBuffer[node.m_vecPolygonIndex[i]];
+			IndexedPolygon& polygon = vecPolygonBuffer[node.m_vecPolygonIndex[i]];
 			num_verts = polygon.m_index.size();
 			for( j=0; j<num_verts; j++ )
 			{
 				if( s_processed[polygon.m_index[j]] == 1 )
 					continue;	// already done
 
-				CGeneral3DVertex& vert = polygon.Vertex((int)j);//m_index[j] )m_pVertexBuffer[node.m_vecPolygonIndex];
+				General3DVertex& vert = polygon.Vertex((int)j);//m_index[j] )m_pVertexBuffer[node.m_vecPolygonIndex];
 				TEXCOORD2& tex = vert.m_TextureCoord[0];
 
 				double u = tex.u, v = tex.v;
@@ -527,7 +527,7 @@ CTerrainMeshGenerator::CTerrainMeshGenerator()
 	SetOutputTextureFormat( "jpg" );
 
 //	m_pVertexBuffer
-//		= shared_ptr<std::vector<CGeneral3DVertex>>( new std::vector<CGeneral3DVertex>() );
+//		= shared_ptr<std::vector<General3DVertex>>( new std::vector<General3DVertex>() );
 }
 
 
@@ -632,7 +632,7 @@ void CTerrainMeshGenerator::SetOutputTextureFormat( const std::string& image_ext
 }
 
 
-bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<CGeneral3DMesh> pSrcMesh )
+bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<General3DMesh> pSrcMesh )
 {
 	LOG_FUNCTION_SCOPE();
 

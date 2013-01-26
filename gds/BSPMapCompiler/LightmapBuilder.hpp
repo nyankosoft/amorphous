@@ -107,7 +107,7 @@ public:
 	State m_State;
 
 	/// target geometry
-	CGeneral3DMesh *m_pMesh;
+	General3DMesh *m_pMesh;
 
 	/// controls whether lightmaps are created for a surface or not
 	std::vector<int> m_vecEnableLightmapForSurface;

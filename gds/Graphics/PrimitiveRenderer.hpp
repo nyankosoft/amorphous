@@ -76,7 +76,7 @@ class CD3DGraphicsDevice
 public:
 
 	// render points, lines, or triangles
-	void RenderPrimitives( PrimitiveType::Name mode, const std::vector<CGeneral3DVertex>& vertices, U32 vertex_format_flags );
+	void RenderPrimitives( PrimitiveType::Name mode, const std::vector<General3DVertex>& vertices, U32 vertex_format_flags );
 };*/
 
 

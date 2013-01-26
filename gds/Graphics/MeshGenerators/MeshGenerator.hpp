@@ -36,9 +36,9 @@ protected:
 
 	/// Derived classes are responsible for calling this function if it wants to
 	/// generate texture coords based on m_TexCoordStyleFlags.
-	void GenerateTextureCoords( CGeneral3DMesh& mesh );
+	void GenerateTextureCoords( General3DMesh& mesh );
 
-	Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& pSrcMesh );
+	Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh );
 
 public:
 

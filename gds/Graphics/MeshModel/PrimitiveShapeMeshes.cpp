@@ -35,7 +35,7 @@ void SetDefaultMeshAttributes( C3DMeshModelArchive& mesh_archive )
 }
 
 
-Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive )
+Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive )
 {
 	C3DMeshModelBuilder mesh_builder;
 	mesh_builder.BuildMeshModelArchive( pSrcMesh );
@@ -81,7 +81,7 @@ static Matrix33 GetRotationMatrixToAlignToAxisForCylinder( AxisAndDirection::Nam
 }
 
 
-void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
+void CreateCylinderMesh( const CCylinderDesc& desc, General3DMesh& mesh )
 {
 	mesh.SetVertexFormatFlags(
 		 CMMA_VertexSet::VF_POSITION
@@ -124,8 +124,8 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 	Matrix33 rotation = GetRotationMatrixToAlignToAxisForCylinder( desc.axis );
 
 	const size_t num_vertices = vertices.size();
-	vector<CGeneral3DVertex>& vert_buffer = *(mesh.GetVertexBuffer());
-	vert_buffer.resize( num_vertices, CGeneral3DVertex() );
+	vector<General3DVertex>& vert_buffer = *(mesh.GetVertexBuffer());
+	vert_buffer.resize( num_vertices, General3DVertex() );
 	for( size_t i=0; i<num_vertices; i++ )
 	{
 		vert_buffer[i].m_vPosition = rotation * vertices[i];
@@ -142,7 +142,7 @@ void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh )
 }
 
 
-void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
+void CreateConeMesh( const CConeDesc& desc, General3DMesh& mesh )
 {
 	int i,j;
 	int vert_index = 0;
@@ -155,9 +155,9 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 		|CMMA_VertexSet::VF_2D_TEXCOORD0 );
 
 
-//	CGeneral3DMesh mesh;
-	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
-	vector<CGeneral3DVertex>& vecVertex = *(pVertexBuffer.get());
+//	General3DMesh mesh;
+	shared_ptr< vector<General3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
+	vector<General3DVertex>& vecVertex = *(pVertexBuffer.get());
 
 	const int num_vertices = (desc.num_sides + 1) * (desc.num_segments + 1);
 	vecVertex.resize( num_vertices );
@@ -207,12 +207,12 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 //	int index = 0;
 	vert_index = 0;
 
-	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
-	polygon_buffer.resize( num_rects, CIndexedPolygon( pVertexBuffer ) );
+	vector<IndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+	polygon_buffer.resize( num_rects, IndexedPolygon( pVertexBuffer ) );
 
 	for( i=0; i<num_rects; i++ )
 	{
-		CIndexedPolygon& polygon = polygon_buffer[i];
+		IndexedPolygon& polygon = polygon_buffer[i];
 		polygon.m_index.resize( 4 );
 		polygon.m_index[0] = vert_index + desc.num_sides + 1;
 		polygon.m_index[1] = vert_index + desc.num_sides + 2;
@@ -253,7 +253,7 @@ void CreateConeMesh( const CConeDesc& desc, CGeneral3DMesh& mesh )
 }
 
 
-static void RotateVertices( vector<CGeneral3DVertex>& vecVertex, Matrix33 matRotation )
+static void RotateVertices( vector<General3DVertex>& vecVertex, Matrix33 matRotation )
 {
 	const int num_vertices = (int)vecVertex.size();
 	for( int i=0; i<num_vertices; i++ )
@@ -264,7 +264,7 @@ static void RotateVertices( vector<CGeneral3DVertex>& vecVertex, Matrix33 matRot
 }
 
 
-void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
+void CreateSphereMesh( const CSphereDesc& desc, General3DMesh& mesh )
 {
 	if( !desc.IsValid() )
 		return;
@@ -280,8 +280,8 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 
 	// vertices
 
-	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
-	vector<CGeneral3DVertex>& vecVertex = *pVertexBuffer;
+	shared_ptr< vector<General3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
+	vector<General3DVertex>& vecVertex = *pVertexBuffer;
 
 	const int num_vertices = num_sides * (num_segs - 1) + 2;
 	vecVertex.resize( num_vertices );
@@ -352,7 +352,7 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 	}
 
 	// polygons
-	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
 	polygon_buffer.resize( num_sides * num_segs );
 	int poly_index = 0;
 
@@ -365,7 +365,7 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 		int i1=i+1,i2=2-i;
 		for( int j=0; j<num_sides; j++ )
 		{
-			CIndexedPolygon& poly = polygon_buffer[poly_index_offset+j];
+			IndexedPolygon& poly = polygon_buffer[poly_index_offset+j];
 			poly.m_index.resize( 3 );
 			poly.m_index[0]  = center_vert_index;
 			poly.m_index[i1] = vert_index_offset + j;
@@ -380,7 +380,7 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 		int index_offset_l = 1 + num_sides * (i+1);
 		for( int j=0; j<num_sides; j++ )
 		{
-			CIndexedPolygon& poly = polygon_buffer[mid_pols_index_offset + i*num_sides + j];
+			IndexedPolygon& poly = polygon_buffer[mid_pols_index_offset + i*num_sides + j];
 			poly.m_index.resize( 4 );
 			poly.m_index[0] = index_offset_u + (j+1) % num_sides;
 			poly.m_index[1] = index_offset_u + j;
@@ -399,7 +399,7 @@ void CreateSphereMesh( const CSphereDesc& desc, CGeneral3DMesh& mesh )
 }
 
 
-void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
+void CreateCapsuleMesh( const CCapsuleDesc& desc, General3DMesh& mesh )
 {
 	if( !desc.IsValid() )
 		return;
@@ -415,8 +415,8 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 
 	// vertices
 
-	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
-	vector<CGeneral3DVertex>& vecVertex = *pVertexBuffer;
+	shared_ptr< vector<General3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
+	vector<General3DVertex>& vecVertex = *pVertexBuffer;
 
 	const int num_vertices = desc.num_sides * (desc.num_segments * 2) + 2;
 	vecVertex.resize( num_vertices );
@@ -444,7 +444,7 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 			z *= sign;
 			for( int j=0; j<num_sides; j++ )
 			{
-				CGeneral3DVertex& vert = vecVertex[num_sides * i + j + offset + 1];
+				General3DVertex& vert = vecVertex[num_sides * i + j + offset + 1];
 
 				float inclination_sin = (float)sin( inclination );
 				x = (float)cos( azimuth_delta * (float)j ) * radius * inclination_sin;
@@ -456,7 +456,7 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 	}
 
 	// polygons
-	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
 
 	int i1=0,i2=0,i3=0;
 	for( int n=0; n<2; n++ )
@@ -468,8 +468,8 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 		// top row - triangles
 		for( int i=0; i<num_sides; i++ )
 		{
-			polygon_buffer.push_back( CIndexedPolygon() );
-			CIndexedPolygon& polygon = polygon_buffer.back();
+			polygon_buffer.push_back( IndexedPolygon() );
+			IndexedPolygon& polygon = polygon_buffer.back();
 			polygon.m_index.resize( 3 );
 			polygon.m_index[0]  = offset;
 			polygon.m_index[i1] = offset + 1 + i;
@@ -484,8 +484,8 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 			for( int j=0; j<num_sides; j++ )
 			{
 				int start = offset + 1 + i * num_sides;
-				polygon_buffer.push_back( CIndexedPolygon() );
-				CIndexedPolygon& polygon = polygon_buffer.back();
+				polygon_buffer.push_back( IndexedPolygon() );
+				IndexedPolygon& polygon = polygon_buffer.back();
 				polygon.m_index.resize( 4, 0 );
 				polygon.m_index[0]  = start + (j + 1) % num_sides;
 				polygon.m_index[i1] = start + j;
@@ -500,8 +500,8 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 	int offset_1 = (num_segs * num_sides + 1) * 2 - num_sides;
 	for( int i=0; i<num_sides; i++ )
 	{
-		polygon_buffer.push_back( CIndexedPolygon() );
-		CIndexedPolygon& polygon = polygon_buffer.back();
+		polygon_buffer.push_back( IndexedPolygon() );
+		IndexedPolygon& polygon = polygon_buffer.back();
 		polygon.m_index.resize( 4 );
 		polygon.m_index[0] = offset_0 + (i + 1) % num_sides;
 		polygon.m_index[1] = offset_0 + i;
@@ -516,7 +516,7 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, CGeneral3DMesh& mesh )
 
 Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelArchive& mesh_archive )
 {
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateCylinderMesh( desc, *pMesh );
 	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }
@@ -524,18 +524,18 @@ Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelA
 
 Result::Name CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& mesh_archive )
 {
-//	CGeneral3DMesh mesh;
+//	General3DMesh mesh;
 //	CreateConeMesh( desc, mesh );
 //	mesh.Create3DMeshModelArchive( mesh_archive );
 
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateConeMesh( desc, *pMesh );
 	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }
 
 Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,   C3DMeshModelArchive& mesh_archive )
 {
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateSphereMesh( desc, *pMesh );
 	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }
@@ -543,7 +543,7 @@ Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,   C3DMeshModelArc
 
 Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc, C3DMeshModelArchive& mesh_archive )
 {
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateCapsuleMesh( desc, *pMesh );
 	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }

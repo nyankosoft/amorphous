@@ -233,17 +233,17 @@ public:
 
 
 
-extern void CreateCylinderMesh( const CCylinderDesc& desc, CGeneral3DMesh& mesh );
-extern void CreateConeMesh( const CConeDesc& desc,         CGeneral3DMesh& mesh );
-extern void CreateSphereMesh( const CSphereDesc& desc,     CGeneral3DMesh& mesh );
-extern void CreateCapsuleMesh( const CCapsuleDesc& desc,   CGeneral3DMesh& mesh );
+extern void CreateCylinderMesh( const CCylinderDesc& desc, General3DMesh& mesh );
+extern void CreateConeMesh( const CConeDesc& desc,         General3DMesh& mesh );
+extern void CreateSphereMesh( const CSphereDesc& desc,     General3DMesh& mesh );
+extern void CreateCapsuleMesh( const CCapsuleDesc& desc,   General3DMesh& mesh );
 
 extern Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateConeMeshArchive( const CConeDesc& desc,         C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,     C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
 
-extern Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<CGeneral3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );
+extern Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );
 
 
 } // namespace amorphous

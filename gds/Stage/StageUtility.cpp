@@ -398,7 +398,7 @@ Result::Name SetCylinderConvexShapeDesc( MeshHandle& mesh_handle, CConvexShapeDe
 	// pMesh (above) == graphical representation of the cylinder and may contain redundant vertex unweldings and polygon subdivisions
 	// pCylinderMesh (below) == 
 
-	shared_ptr<CGeneral3DMesh> pCylinderMesh( new CGeneral3DMesh );
+	shared_ptr<General3DMesh> pCylinderMesh( new General3DMesh );
 
 //	const AABB3 aabb = pMesh->GetAABB();
 	AABB3 aabb;
@@ -1071,7 +1071,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 			// Guess shape(s) from the model
 			C3DMeshModelArchive ma;
 			bool ma_loaded = ma.LoadFromFile( model );
-			boost::shared_ptr<CGeneral3DMesh> pMesh = CreateGeneral3DMesh();
+			boost::shared_ptr<General3DMesh> pMesh = CreateGeneral3DMesh();
 			if( !pMesh )
 				return CEntityHandle<>();
 			CMeshArchiveToGeneral3DMeshConverer converter;

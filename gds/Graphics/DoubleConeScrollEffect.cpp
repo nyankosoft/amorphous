@@ -37,8 +37,8 @@ Result::Name CDoubleConeMeshGenerator::Generate()
 {
 	const int num_sides = 12;
 
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh );
-	CGeneral3DMesh& mesh = *pMesh;
+	shared_ptr<General3DMesh> pMesh( new General3DMesh );
+	General3DMesh& mesh = *pMesh;
 
 	// vertex format
 	// - No need for normals
@@ -49,8 +49,8 @@ Result::Name CDoubleConeMeshGenerator::Generate()
 
 	// vertices
 
-	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
-	vector<CGeneral3DVertex>& vert_buffer = *pVertexBuffer;
+	shared_ptr< vector<General3DVertex> > pVertexBuffer = mesh.GetVertexBuffer();
+	vector<General3DVertex>& vert_buffer = *pVertexBuffer;
 	vert_buffer.resize( (num_sides+1) * 3 );
 
 	float y = 0.5f;
@@ -89,7 +89,7 @@ Result::Name CDoubleConeMeshGenerator::Generate()
 	{
 		for( int j=0; j<num_sides+1; j++ )
 		{
-			CGeneral3DVertex& vert = vert_buffer[ i * (num_sides+1) + j ];
+			General3DVertex& vert = vert_buffer[ i * (num_sides+1) + j ];
 			vert.m_TextureCoord.resize( 1 );
 
 			float u = fTexShiftV * (float)j;
@@ -100,7 +100,7 @@ Result::Name CDoubleConeMeshGenerator::Generate()
 	}
 
 	// polygons
-	vector<CIndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = mesh.GetPolygonBuffer();
 	int num_polygons = num_sides * 2;
 	polygon_buffer.reserve( num_polygons );
 	for( int i=0; i<2; i++ )
@@ -110,8 +110,8 @@ Result::Name CDoubleConeMeshGenerator::Generate()
 		int i0 = (i==0) ? 0 : 1;
 		for( int j=0; j<num_sides; j++ )
 		{
-			polygon_buffer.push_back( CIndexedPolygon() );
-			CIndexedPolygon& poly = polygon_buffer.back();
+			polygon_buffer.push_back( IndexedPolygon() );
+			IndexedPolygon& poly = polygon_buffer.back();
 			poly.m_index.resize( 4 );
 			poly.m_index[0] = vert_offset + j + i1;
 			poly.m_index[1] = vert_offset + j + i0;

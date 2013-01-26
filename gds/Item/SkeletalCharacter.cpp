@@ -109,7 +109,7 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 	m_pRenderMethod->LoadRenderMethodResources();
 
 	// TODO: add shader resource desc as a member variable to CSubsetRenderMethod
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	CGenericShaderDesc gen_shader_desc;
 	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;

@@ -76,20 +76,20 @@ inline IArchive& operator & ( IArchive& ar, Capsule& cap )
 class CShapeDetector
 {
 public:
-	bool IsAABox( const CGeneral3DMesh& src_mesh, AABB3& aabb );
+	bool IsAABox( const General3DMesh& src_mesh, AABB3& aabb );
 
-	bool IsBox( const CGeneral3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose );
+	bool IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose );
 
-	bool IsConvex( const CGeneral3DMesh& src_mesh );
+	bool IsConvex( const General3DMesh& src_mesh );
 
-	bool IsSphere( const CGeneral3DMesh& src_mesh, Sphere& sphere );
+	bool IsSphere( const General3DMesh& src_mesh, Sphere& sphere );
 
-	bool IsCapsule( const CGeneral3DMesh& src_mesh, Capsule& capsule );
+	bool IsCapsule( const General3DMesh& src_mesh, Capsule& capsule );
 
-//	bool IsCylinder( const CGeneral3DMesh& src_mesh, CCylinderDesc& cylinder );
+//	bool IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
 
 	/// How to represent the detection results?
-	bool DetectShape( const CGeneral3DMesh& src_mesh, CShapeDetectionResults& results );
+	bool DetectShape( const General3DMesh& src_mesh, CShapeDetectionResults& results );
 };
 
 

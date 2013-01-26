@@ -10,19 +10,19 @@ namespace amorphous
 {
 
 
-inline void General3DMeshToTriangleMeshDesc( const CGeneral3DMesh& src, physics::CTriangleMeshDesc& dest )
+inline void General3DMeshToTriangleMeshDesc( const General3DMesh& src, physics::CTriangleMeshDesc& dest )
 {
 	using std::vector;
 
-	vector<CIndexedPolygon> triangulated_polygons;
+	vector<IndexedPolygon> triangulated_polygons;
 	Triangulate( triangulated_polygons, src.GetPolygonBuffer() );
 
-	const boost::shared_ptr< vector<CGeneral3DVertex> > pVertices = src.GetVertexBuffer();
+	const boost::shared_ptr< vector<General3DVertex> > pVertices = src.GetVertexBuffer();
 
 	if( !pVertices )
 		return;
 
-	const vector<CGeneral3DVertex>& vertices = *pVertices;
+	const vector<General3DVertex>& vertices = *pVertices;
 	const int num_verts = (int)vertices.size();
 	dest.m_vecVertex.resize( num_verts );
 	for( int i=0; i<num_verts; i++ )

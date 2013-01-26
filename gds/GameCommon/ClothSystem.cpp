@@ -599,7 +599,7 @@ void CClothSystem::LoadFromXMLNode( CXMLNodeReader& node )
 		bool mesh_loaded = mesh_archive.LoadFromFile( mesh_filepath );
 		if( mesh_loaded )
 		{
-			shared_ptr<CGeneral3DMesh> pMesh = ToGeneral3DMesh( mesh_archive );
+			shared_ptr<General3DMesh> pMesh = ToGeneral3DMesh( mesh_archive );
 			if( pMesh )
 			{
 				connected_sets = GetConnectedSets( pMesh, surface_name );

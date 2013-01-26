@@ -58,14 +58,14 @@ void MeshGenerator::SetMiscMeshAttributes()
 }
 
 
-void MeshGenerator::GenerateTextureCoords( CGeneral3DMesh& mesh )
+void MeshGenerator::GenerateTextureCoords( General3DMesh& mesh )
 {
 	AABB3 aabb;
 	Result::Name res = CalculateAABB( mesh, aabb );
 	if( res != Result::SUCCESS )
 		return;
 
-	vector<CGeneral3DVertex>& vert_buffer = *(mesh.GetVertexBuffer().get());
+	vector<General3DVertex>& vert_buffer = *(mesh.GetVertexBuffer().get());
 
 	const float margin = 0.01f;
 	if( m_TexCoordStyleFlags & (TexCoordStyle::LINEAR_SHIFT_Y | TexCoordStyle::LINEAR_SHIFT_INV_Y) )
@@ -118,13 +118,13 @@ Result::Name BoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, con
 
 //	CMMA_VertexSet& vertex_set = m_MeshArchive.GetVertexSet();
 
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	pMesh->SetVertexFormatFlags( vertex_flags );
 
-	shared_ptr< vector<CGeneral3DVertex> > pVertexBuffer = pMesh->GetVertexBuffer();
+	shared_ptr< vector<General3DVertex> > pVertexBuffer = pMesh->GetVertexBuffer();
 
 	pVertexBuffer->resize( num_vertices );
-	vector<CGeneral3DVertex>& vecVertex = (*pVertexBuffer.get());
+	vector<General3DVertex>& vecVertex = (*pVertexBuffer.get());
 
 //	vertex_set.Resize( num_vertices );
 //	vector<Vector3>& vecPosition = vertex_set.vecPosition;
@@ -200,7 +200,7 @@ Result::Name BoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, con
 	}
 
 	// indices
-	vector<CIndexedPolygon>& polygon_buffer = pMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = pMesh->GetPolygonBuffer();
 	polygon_buffer.resize( num_faces );
 	for( i=0; i<num_faces; i++ )
 	{
@@ -273,7 +273,7 @@ Result::Name CylinderMeshGenerator::Generate()
 {
 //	Result::Name res = CreateCylinderMeshArchive( m_Desc, m_MeshArchive );
 
-	shared_ptr<CGeneral3DMesh> pMesh( new CGeneral3DMesh() );
+	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateCylinderMesh( m_Desc, *pMesh );
 	GenerateTextureCoords( *pMesh );
 

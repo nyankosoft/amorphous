@@ -12,10 +12,10 @@ namespace amorphous
 
 
 //=========================================================================================
-// CGeneral3DVertex
+// General3DVertex
 //=========================================================================================
 
-class CGeneral3DVertex
+class General3DVertex
 {
 public:
 
@@ -45,18 +45,18 @@ public:
 
 public:
 
-	inline CGeneral3DVertex();
+	inline General3DVertex();
 
 	/// TODO: support vertices with blend weights
-	inline CGeneral3DVertex operator+( const CGeneral3DVertex& v ) const;
-	inline CGeneral3DVertex operator-( const CGeneral3DVertex& v ) const;
+	inline General3DVertex operator+( const General3DVertex& v ) const;
+	inline General3DVertex operator-( const General3DVertex& v ) const;
 
-	inline CGeneral3DVertex operator*( float f ) const;
-	inline CGeneral3DVertex operator/( float f ) const;
+	inline General3DVertex operator*( float f ) const;
+	inline General3DVertex operator/( float f ) const;
 };
 
 
-inline CGeneral3DVertex::CGeneral3DVertex()
+inline General3DVertex::General3DVertex()
 :
 m_vPosition(Vector3(0,0,0)),
 m_vNormal(Vector3(0,0,0)),
@@ -67,9 +67,9 @@ m_DiffuseColor( SFloatRGBAColor(1.0f, 1.0f, 1.0f, 1.0f) )
 }
 
 
-inline CGeneral3DVertex CGeneral3DVertex::operator+( const CGeneral3DVertex& v ) const
+inline General3DVertex General3DVertex::operator+( const General3DVertex& v ) const
 {
-	CGeneral3DVertex out;
+	General3DVertex out;
 
 	out.m_vPosition	= m_vPosition	+ v.m_vPosition;
 	out.m_vNormal	= m_vNormal		+ v.m_vNormal;
@@ -97,9 +97,9 @@ inline CGeneral3DVertex CGeneral3DVertex::operator+( const CGeneral3DVertex& v )
 }
 
 
-inline CGeneral3DVertex CGeneral3DVertex::operator-( const CGeneral3DVertex& v ) const
+inline General3DVertex General3DVertex::operator-( const General3DVertex& v ) const
 {
-	CGeneral3DVertex out;
+	General3DVertex out;
 
 	out.m_vPosition	= m_vPosition	- v.m_vPosition;
 	out.m_vNormal	= m_vNormal		- v.m_vNormal;
@@ -127,9 +127,9 @@ inline CGeneral3DVertex CGeneral3DVertex::operator-( const CGeneral3DVertex& v )
 }
 
 
-inline CGeneral3DVertex CGeneral3DVertex::operator*( float f ) const
+inline General3DVertex General3DVertex::operator*( float f ) const
 {
-	CGeneral3DVertex out;
+	General3DVertex out;
 
 	out.m_vPosition	= m_vPosition	* f;
 	out.m_vNormal	= m_vNormal		* f;
@@ -158,9 +158,9 @@ inline CGeneral3DVertex CGeneral3DVertex::operator*( float f ) const
 }
 
 
-inline CGeneral3DVertex CGeneral3DVertex::operator/( float f ) const
+inline General3DVertex General3DVertex::operator/( float f ) const
 {
-	CGeneral3DVertex out;
+	General3DVertex out;
 
 	out.m_vPosition	= m_vPosition	/ f;
 	out.m_vNormal	= m_vNormal		/ f;

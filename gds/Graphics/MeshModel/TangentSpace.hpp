@@ -20,15 +20,15 @@ class CTangentSpaceInfo
 
 class CTangentSpace
 {
-	std::vector<CGeneral3DVertex>* m_pvecVertexBuffer;
+	std::vector<General3DVertex>* m_pvecVertexBuffer;
 
 	std::vector< std::vector<CTangentSpaceInfo> > m_vecLocalSpace;
 
 public:
-	CTangentSpace( std::vector<CGeneral3DVertex>& rvecVertexBuffer ) { m_pvecVertexBuffer = &rvecVertexBuffer; }
+	CTangentSpace( std::vector<General3DVertex>& rvecVertexBuffer ) { m_pvecVertexBuffer = &rvecVertexBuffer; }
 	~CTangentSpace();
 
-	void Calculate( std::vector<CIndexedPolygon>& rvecPolygon );
+	void Calculate( std::vector<IndexedPolygon>& rvecPolygon );
 	void Update();
 
 };
@@ -55,7 +55,7 @@ CTangentSpace::~CTangentSpace()
 }
 
 
-void CTangentSpace::Calculate( std::vector<CIndexedPolygon>& rvecPolygon, std::vector<CGeneral3DVertex>& rvecVertexBuffer )
+void CTangentSpace::Calculate( std::vector<IndexedPolygon>& rvecPolygon, std::vector<General3DVertex>& rvecVertexBuffer )
 {
 
 	// normalize each light direction vector
@@ -66,13 +66,13 @@ void CTangentSpace::Calculate( std::vector<CIndexedPolygon>& rvecPolygon, std::v
 	Vector3 vPos01, vPos02, vPos;
 	int i, j, iNumVertices = m_pvecVertexBuffer->size();
 	int iNumPolygons = rvecPolygon.size();
-	std::vector<CGeneral3DVertex>& rvecVertex = *m_pvecVertexBuffer;
+	std::vector<General3DVertex>& rvecVertex = *m_pvecVertexBuffer;
 
 	TEXCOORD2 tex01, tex02, tex;
 
 	for( i=0; i<iNumPolygons; i++ )
 	{
-		CIndexedPolygon& rPolygon = rvecPolygon[i];
+		IndexedPolygon& rPolygon = rvecPolygon[i];
 		std::vector<int>& index = rPolygon.m_Index;
 
 		// compute axis[0] (axis along 'u' direction)

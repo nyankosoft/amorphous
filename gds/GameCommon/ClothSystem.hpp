@@ -37,7 +37,7 @@ public:
 	/// Used, for example, by a module such as cloth simulation engine
 	/// which needs to update the vertex positions and normals based on the simulation results
 	/// Lock the vertex buffer, copy the vertices, and unlock the vertex buffer
-	Result::Name SetVertices( const std::vector<CGeneral3DVertex>& src, U32 flags );
+	Result::Name SetVertices( const std::vector<General3DVertex>& src, U32 flags );
 };
 */
 

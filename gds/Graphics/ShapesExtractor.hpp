@@ -18,7 +18,7 @@ class CShapeDetectionResults;
 
 class CShapesExtractor
 {
-	void AddShapeContainer( CGeneral3DMesh& connected_mesh, const CShapeDetectionResults& results, CShapeContainerSet& shape_set );
+	void AddShapeContainer( General3DMesh& connected_mesh, const CShapeDetectionResults& results, CShapeContainerSet& shape_set );
 
 public:
 
@@ -26,10 +26,10 @@ public:
 
 	~CShapesExtractor(){}
 
-	Result::Name ExtractShapes( const boost::shared_ptr<CGeneral3DMesh> pSrcMesh, CShapeContainerSet& shape_set );
+	Result::Name ExtractShapes( const boost::shared_ptr<General3DMesh> pSrcMesh, CShapeContainerSet& shape_set );
 
 	/// \param output_filepath [in] pathname of output file.
-	Result::Name ExtractShapesAndSaveToFile( const boost::shared_ptr<CGeneral3DMesh> pSrcMesh, const std::string& output_filepath );
+	Result::Name ExtractShapesAndSaveToFile( const boost::shared_ptr<General3DMesh> pSrcMesh, const std::string& output_filepath );
 };
 
 } // namespace amorphous
