@@ -28,18 +28,18 @@ public:
 
 private:
 
-	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
+	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 	/// all the loaders have resource desc?
-	boost::shared_ptr<CGraphicsResourceLoader> m_pLoader;
+	boost::shared_ptr<GraphicsResourceLoader> m_pLoader;
 
 	Type m_RequestType;
 
 public:
 
 	CResourceLoadRequest( Type type,
-		boost::shared_ptr<CGraphicsResourceLoader> pLoader,
-		boost::weak_ptr<CGraphicsResourceEntry> pEntry
+		boost::shared_ptr<GraphicsResourceLoader> pLoader,
+		boost::weak_ptr<GraphicsResourceEntry> pEntry
 		)
 		:
 	m_RequestType(type),
@@ -49,10 +49,10 @@ public:
 
 	Type GetRequestType() const { return m_RequestType; }
 
-//	boost::weak_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry; }
+//	boost::weak_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry; }
 
-	friend class CAsyncResourceLoader;
-	friend class CGraphicsResourceManager;
+	friend class AsyncResourceLoader;
+	friend class GraphicsResourceManager;
 };
 
 
@@ -72,17 +72,17 @@ public:
 
 	Type m_RequestType;
 
-	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
+	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 	/// all the loaders have resource desc?
-	boost::shared_ptr<CGraphicsResourceLoader> m_pLoader;
+	boost::shared_ptr<GraphicsResourceLoader> m_pLoader;
 
 public:
 
 	CGraphicsDeviceRequest(
 		CGraphicsDeviceRequest::Type type,
-		boost::shared_ptr<CGraphicsResourceLoader> pLoader,
-		boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+		boost::shared_ptr<GraphicsResourceLoader> pLoader,
+		boost::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_RequestType(type),
 	m_pLoader(pLoader),
@@ -90,11 +90,11 @@ public:
 	{}
 
 
-	friend class CAsyncResourceLoader;
+	friend class AsyncResourceLoader;
 };
 
 
-class CAsyncResourceLoader
+class AsyncResourceLoader
 {
 	std::queue<CResourceLoadRequest> m_ResourceLoadRequestQueue;
 
@@ -112,11 +112,11 @@ private:
 
 	class CIOThreadStarter
 	{
-		CAsyncResourceLoader *m_pAsyncLoader;
+		AsyncResourceLoader *m_pAsyncLoader;
 
 	public:
 
-		CIOThreadStarter( CAsyncResourceLoader *pAsyncLoader )
+		CIOThreadStarter( AsyncResourceLoader *pAsyncLoader )
 			:
 		m_pAsyncLoader(pAsyncLoader)
 		{}
@@ -136,18 +136,18 @@ private:
 protected:
 
 	/// singleton
-	static CSingleton<CAsyncResourceLoader> m_obj;
+	static CSingleton<AsyncResourceLoader> m_obj;
 
 public:
 
-	CAsyncResourceLoader();
+	AsyncResourceLoader();
 
-	~CAsyncResourceLoader();
+	~AsyncResourceLoader();
 
 	/// Release the resource IO thread
 	void Release();
 
-	static CAsyncResourceLoader* Get() { return m_obj.get(); }
+	static AsyncResourceLoader* Get() { return m_obj.get(); }
 
 	bool AddResourceLoadRequest( const CResourceLoadRequest& req );
 
@@ -168,9 +168,9 @@ public:
 };
 
 
-inline CAsyncResourceLoader& AsyncResourceLoader()
+inline AsyncResourceLoader& GetAsyncResourceLoader()
 {
-	return (*CAsyncResourceLoader::Get());
+	return (*AsyncResourceLoader::Get());
 }
 
 } // namespace amorphous

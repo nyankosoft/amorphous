@@ -104,7 +104,7 @@ public:
 
 inline TextureHandle CreateTextureFromGenerator( uint width, uint height, TextureFormat::Format format, boost::shared_ptr<CTextureFillingAlgorithm> pTextureGenerator )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width  = (int)width;
 	desc.Height = (int)height;
 	desc.Format = format;

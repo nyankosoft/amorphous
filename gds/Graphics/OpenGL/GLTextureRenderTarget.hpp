@@ -38,7 +38,7 @@ public:
 
 	CGLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
 
-	CGLTextureRenderTarget( const CTextureResourceDesc& texture_desc );
+	CGLTextureRenderTarget( const TextureResourceDesc& texture_desc );
 
 	~CGLTextureRenderTarget();
 
@@ -48,7 +48,7 @@ public:
 			   TextureFormat::Format texture_format,
 			   uint option_flags );
 
-	bool Init( const CTextureResourceDesc& texture_desc );
+	bool Init( const TextureResourceDesc& texture_desc );
 
 	/// Creates the render target of the current screen size
 	/// - The texture size is automatically resized to screen size (viewport size)

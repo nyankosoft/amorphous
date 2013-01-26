@@ -77,7 +77,7 @@ CPostProcessFilterShader::CPostProcessFilterShader()
 }
 
 
-Result::Name CPostProcessFilterShader::Init( const CShaderResourceDesc& shader_desc )
+Result::Name CPostProcessFilterShader::Init( const ShaderResourceDesc& shader_desc )
 {
 	m_ShaderDesc = shader_desc;
 	bool loaded = m_Shader.Load( m_ShaderDesc );
@@ -95,7 +95,7 @@ Result::Name CPostProcessFilterShader::Init( const std::string& filename )
 }
 
 
-Result::Name CFilterShaderContainer::AddShader( const CShaderResourceDesc& shader_desc )
+Result::Name CFilterShaderContainer::AddShader( const ShaderResourceDesc& shader_desc )
 {
 	m_vecpShader.resize( 1 );
 	m_vecpShader[0].reset( new CPostProcessFilterShader );
@@ -106,7 +106,7 @@ Result::Name CFilterShaderContainer::AddShader( const CShaderResourceDesc& shade
 
 Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
 {
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	shader_desc.ResourcePath = filepath;
 	return AddShader( shader_desc );
 }
@@ -188,7 +188,7 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 
     const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
 
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	if( base_shader_directory_path.length() == 0 )
 	{
 		// Create the shader which contains all the effects.

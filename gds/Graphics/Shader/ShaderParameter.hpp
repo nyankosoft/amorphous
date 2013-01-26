@@ -19,7 +19,7 @@ class CTextureParam : public IArchiveObjectBase
 {
 public:
 
-	CTextureResourceDesc m_Desc;
+	TextureResourceDesc m_Desc;
 
 	TextureHandle m_Handle;
 

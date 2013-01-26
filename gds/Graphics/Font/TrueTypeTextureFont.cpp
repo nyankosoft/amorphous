@@ -315,7 +315,7 @@ bool TrueTypeTextureFont::InitFont( const std::string& filename,
 			// - The resource manager needs to open the db
 			db.Close();
 
-			CTextureResourceDesc tex_desc;
+			TextureResourceDesc tex_desc;
 			tex_desc.ResourcePath = filename + "::" + gs_FontTextureImageKeyname;
 			return m_FontTexture.Load( tex_desc );
 		}

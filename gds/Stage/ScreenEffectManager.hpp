@@ -121,7 +121,7 @@ public:
 	{
 	public:
 
-		CTextureResourceDesc m_Desc;
+		TextureResourceDesc m_Desc;
 		TextureHandle m_Texture;
 		C2DRect Rect;
 

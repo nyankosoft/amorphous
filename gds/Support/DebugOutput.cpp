@@ -164,7 +164,7 @@ void CDebugItem_ResourceManager::Render()
 void CDebugItem_GraphicsResourceManager::GetTextInfo()
 {
 	m_TextBuffer.resize( 0 );
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
+	GetGraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
 	// Debug info of graphics resource tends to grow too big.
 	// For now, we just cut them short because they will not fit to the screen any way.

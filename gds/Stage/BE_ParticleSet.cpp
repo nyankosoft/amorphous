@@ -240,7 +240,7 @@ void CBE_ParticleSet::Init()
 		shared_loaded = m_MeshProperty.m_ShaderHandle.Load( shader_path );
 	}*/
 
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) * 0.1f );
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;

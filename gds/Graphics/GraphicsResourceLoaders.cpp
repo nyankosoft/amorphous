@@ -20,16 +20,16 @@ using namespace boost;
 
 
 //===================================================================================
-// CGraphicsResourceLoader
+// GraphicsResourceLoader
 //===================================================================================
 
-Result::Name CGraphicsResourceLoader::Load()
+Result::Name GraphicsResourceLoader::Load()
 {
 	return LoadFromDisk();
 }
 
 
-Result::Name CGraphicsResourceLoader::LoadFromDisk()
+Result::Name GraphicsResourceLoader::LoadFromDisk()
 {
 	bool loaded = false;
 	string target_filepath;
@@ -76,9 +76,9 @@ Result::Name CGraphicsResourceLoader::LoadFromDisk()
 }
 
 
-bool CGraphicsResourceLoader::AcquireResource()
+bool GraphicsResourceLoader::AcquireResource()
 {
-	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+	shared_ptr<GraphicsResourceEntry> pHolder = GetResourceEntry();
 
 	if( !pHolder )
 		return false;
@@ -91,7 +91,7 @@ bool CGraphicsResourceLoader::AcquireResource()
 		return true;
 	}
 
-	shared_ptr<CGraphicsResource> pResource = GraphicsResourceCacheManager().GetCachedResource( *GetDesc() );
+	shared_ptr<GraphicsResource> pResource = GraphicsResourceCacheManager().GetCachedResource( *GetDesc() );
 
 	if( pResource )
 	{
@@ -104,7 +104,7 @@ bool CGraphicsResourceLoader::AcquireResource()
 	{
 		// create resource instance from desc
 		// - Actual resource creation is not done in this call
-		pResource = GraphicsResourceFactory().CreateGraphicsResource( *GetDesc() );
+		pResource = GetGraphicsResourceFactory().CreateGraphicsResource( *GetDesc() );
 
 		pHolder->SetResource( pResource );
 
@@ -115,11 +115,11 @@ bool CGraphicsResourceLoader::AcquireResource()
 }
 
 
-bool CGraphicsResourceLoader::Lock()
+bool GraphicsResourceLoader::Lock()
 {
 	LOG_FUNCTION_SCOPE();
 
-	shared_ptr<CGraphicsResource> pResource = GetResource();
+	shared_ptr<GraphicsResource> pResource = GetResource();
 	if( pResource )
 		return pResource->Lock();
 	else
@@ -127,11 +127,11 @@ bool CGraphicsResourceLoader::Lock()
 }
 
 
-bool CGraphicsResourceLoader::Unlock()
+bool GraphicsResourceLoader::Unlock()
 {
 	LOG_FUNCTION_SCOPE();
 
-	shared_ptr<CGraphicsResource> pResource = GetResource();
+	shared_ptr<GraphicsResource> pResource = GetResource();
 	if( pResource )
 		return pResource->Unlock();
 	else
@@ -139,7 +139,7 @@ bool CGraphicsResourceLoader::Unlock()
 }
 
 
-void CGraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
+void GraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	FillResourceDesc();
 
@@ -147,11 +147,11 @@ void CGraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsRes
 	//   to copy the loaded resource to some graphics memory
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, pSelf, GetResourceEntry() );
 
-	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+	GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
 }
 
 
-void CGraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
+void GraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
 {
 	if( GetResource() )
 		GetResource()->SetState( GraphicsResourceState::LOADED );
@@ -169,11 +169,11 @@ static inline double log2( double scalar )
 }
 
 
-shared_ptr<CTextureResource> CDiskTextureLoader::GetTextureResource()
+shared_ptr<TextureResource> CDiskTextureLoader::GetTextureResource()
 {
-	shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+	shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( !pEntry )
-		return shared_ptr<CTextureResource>();
+		return shared_ptr<TextureResource>();
 
 	return pEntry->GetTextureResource();
 }
@@ -184,7 +184,7 @@ bool CDiskTextureLoader::InitImageArray( boost::shared_ptr<CBitmapImage> pBaseIm
 	if( !pBaseImage )
 		return false;
 
-	CTextureResourceDesc& desc = m_TextureDesc;
+	TextureResourceDesc& desc = m_TextureDesc;
 	int num_mipmaps = 0;
 	if( desc.MipLevels == 0 ) // complete mipmap chain
 		num_mipmaps = take_min( (int)log2( (double)pBaseImage->GetWidth() ), (int)log2( (double)pBaseImage->GetHeight() ) );
@@ -274,7 +274,7 @@ bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 
 bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 {
-	shared_ptr<CTextureResource> pTexture = GetTextureResource();
+	shared_ptr<TextureResource> pTexture = GetTextureResource();
 
 	if( !pTexture )
 		return false;
@@ -293,7 +293,7 @@ bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 
 bool CDiskTextureLoader::Lock()
 {
-	shared_ptr<CTextureResource> pTexture = GetTextureResource();
+	shared_ptr<TextureResource> pTexture = GetTextureResource();
 
 	if( !pTexture )
 		return false;
@@ -380,13 +380,13 @@ void CDiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
 	if( (int)m_vecpImage.size() <= m_CurrentMipLevel )
 	{
 		// Loaded all the mipmaps
-		CGraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory();
+		GraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory();
 	}
 	else
 	{
 		// Load the next mipmap
 		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, m_pSelf.lock(), GetResourceEntry() );
-		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+		GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
 	}
 }
 
@@ -396,9 +396,9 @@ void CDiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
 // CMeshLoader
 //===================================================================================
 
-CMeshLoader::CMeshLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CMeshResourceDesc& desc )
+CMeshLoader::CMeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc )
 :
-CGraphicsResourceLoader(pEntry),
+GraphicsResourceLoader(pEntry),
 m_MeshDesc(desc),
 m_MeshLoaderStateFlags(0)
 {
@@ -445,7 +445,7 @@ bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 	if( !GetResourceEntry() )
 		return false;
 /*
-	CMeshResource *pMesh = GetResourceEntry()->GetMeshResource();
+	MeshResource *pMesh = GetResourceEntry()->GetMeshResource();
 	if( !pMeshEntry )
 		return false;
 
@@ -464,7 +464,7 @@ bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 
 bool CMeshLoader::AcquireResource()
 {
-	bool res = CGraphicsResourceLoader::AcquireResource();
+	bool res = GraphicsResourceLoader::AcquireResource();
 	if( !res )
 		return false;
 
@@ -506,15 +506,15 @@ bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
 	m_MeshDesc.NumVertices = 0;
 	m_MeshDesc.NumIndices = 0;
 
-	bool res = CGraphicsResourceLoader::AcquireResource();
+	bool res = GraphicsResourceLoader::AcquireResource();
 	if( !res )
 		return false;
 
-	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+	shared_ptr<GraphicsResourceEntry> pHolder = GetResourceEntry();
 	if( !pHolder )
 		return false;
 
-	shared_ptr<CMeshResource> pMeshResource = pHolder->GetMeshResource();
+	shared_ptr<MeshResource> pMeshResource = pHolder->GetMeshResource();
 	if( !pMeshResource )
 		return false;
 /*
@@ -535,14 +535,14 @@ bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
 /// - Load from file
 bool CShaderLoader::AcquireResource()
 {
-	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+	shared_ptr<GraphicsResourceEntry> pHolder = GetResourceEntry();
 
 	if( !pHolder )
 		return false;
 
-	pHolder->SetResource( GraphicsResourceFactory().CreateGraphicsResource( m_ShaderDesc ) );
+	pHolder->SetResource( GetGraphicsResourceFactory().CreateGraphicsResource( m_ShaderDesc ) );
 
-	shared_ptr<CShaderResource> pShaderResource = pHolder->GetShaderResource();
+	shared_ptr<ShaderResource> pShaderResource = pHolder->GetShaderResource();
 	if( !pShaderResource )
 		return false;
 
@@ -560,25 +560,25 @@ bool CShaderLoader::LoadFromFile( const std::string& filepath )
 }
 
 
-void CShaderLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
+void CShaderLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
-	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+	GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
 	return;
 }
 
 
 bool CShaderLoader::LoadToGraphicsMemoryByRenderThread()
 {
-	bool res = CGraphicsResourceLoader::AcquireResource();
+	bool res = GraphicsResourceLoader::AcquireResource();
 	if( !res )
 		return false;
 
-	shared_ptr<CGraphicsResourceEntry> pHolder = GetResourceEntry();
+	shared_ptr<GraphicsResourceEntry> pHolder = GetResourceEntry();
 	if( !pHolder )
 		return false;
 
-	shared_ptr<CShaderResource> pShaderResource = pHolder->GetShaderResource();
+	shared_ptr<ShaderResource> pShaderResource = pHolder->GetShaderResource();
 	if( !pShaderResource )
 		return false;
 

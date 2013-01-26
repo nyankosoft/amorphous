@@ -33,7 +33,7 @@ CTextureRenderTarget( texture_width, texture_height, texture_format )
 }
 
 
-CGLTextureRenderTarget::CGLTextureRenderTarget( const CTextureResourceDesc& texture_desc )
+CGLTextureRenderTarget::CGLTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 CTextureRenderTarget(texture_desc)
 {
@@ -80,7 +80,7 @@ bool CGLTextureRenderTarget::Init( int texture_width, int texture_height, Textur
 }
 
 
-bool CGLTextureRenderTarget::Init( const CTextureResourceDesc& texture_desc )
+bool CGLTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
 {
 	m_TextureDesc = texture_desc;
 

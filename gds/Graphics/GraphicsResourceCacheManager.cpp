@@ -10,62 +10,62 @@ using boost::shared_ptr;
 
 
 //===============================================================
-// CGraphicsResourceFactory
+// GraphicsResourceFactory
 //===============================================================
 
 /// define the singleton instance
-CSingleton<CGraphicsResourceFactory> CGraphicsResourceFactory::m_obj;
+CSingleton<GraphicsResourceFactory> GraphicsResourceFactory::m_obj;
 
 
-CGraphicsResourceFactory::CGraphicsResourceFactory()
+GraphicsResourceFactory::GraphicsResourceFactory()
 {
 }
 
 
-CGraphicsResourceFactory::~CGraphicsResourceFactory()
+GraphicsResourceFactory::~GraphicsResourceFactory()
 {
 }
 
 
-void CGraphicsResourceFactory::Init( CGraphicsResourceFactoryImpl *pFactoryImpl )
+void GraphicsResourceFactory::Init( GraphicsResourceFactoryImpl *pFactoryImpl )
 {
-	m_pImpl = shared_ptr<CGraphicsResourceFactoryImpl>( pFactoryImpl );
+	m_pImpl = shared_ptr<GraphicsResourceFactoryImpl>( pFactoryImpl );
 }
 
 
-shared_ptr<CGraphicsResource> CGraphicsResourceFactory::CreateGraphicsResource( const CGraphicsResourceDesc &desc )
+shared_ptr<GraphicsResource> GraphicsResourceFactory::CreateGraphicsResource( const GraphicsResourceDesc &desc )
 {
 	switch(desc.GetResourceType())
 	{
-	case GraphicsResourceType::Texture: return CreateTextureResource( *dynamic_cast<const CTextureResourceDesc*>(&desc) );
-	case GraphicsResourceType::Mesh:    return CreateMeshResource( *dynamic_cast<const CMeshResourceDesc*>(&desc) );
-	case GraphicsResourceType::Shader:  return CreateShaderResource( *dynamic_cast<const CShaderResourceDesc*>(&desc) );
+	case GraphicsResourceType::Texture: return CreateTextureResource( *dynamic_cast<const TextureResourceDesc*>(&desc) );
+	case GraphicsResourceType::Mesh:    return CreateMeshResource( *dynamic_cast<const MeshResourceDesc*>(&desc) );
+	case GraphicsResourceType::Shader:  return CreateShaderResource( *dynamic_cast<const ShaderResourceDesc*>(&desc) );
 	default:
-		return shared_ptr<CGraphicsResource>();
+		return shared_ptr<GraphicsResource>();
 	}
 }
 
 
 //===============================================================
-// CGraphicsResourceCacheManager
+// GraphicsResourceCacheManager
 //===============================================================
 
 /// define the singleton instance
-CSingleton<CGraphicsResourceCacheManager> CGraphicsResourceCacheManager::m_obj;
+CSingleton<GraphicsResourceCacheManager> GraphicsResourceCacheManager::m_obj;
 
 
-bool CGraphicsResourceCacheManager::Preload( const std::string& xml_filename )
+bool GraphicsResourceCacheManager::Preload( const std::string& xml_filename )
 {
 	return true;
 }
 
 
-void CGraphicsResourceCacheManager::AddCache( CGraphicsResourceDesc& desc )
+void GraphicsResourceCacheManager::AddCache( GraphicsResourceDesc& desc )
 {
 	// create as a cached resource
 	desc.m_IsCachedResource = true;
 
-	shared_ptr<CGraphicsResource> ptr = GraphicsResourceFactory().CreateGraphicsResource( desc );
+	shared_ptr<GraphicsResource> ptr = GraphicsResourceFactory().CreateGraphicsResource( desc );
 
 //	ptr->IsCachedResource = true;
 
@@ -77,14 +77,14 @@ void CGraphicsResourceCacheManager::AddCache( CGraphicsResourceDesc& desc )
 
 
 /// find preloaded cached resource that best matches the argument description
-shared_ptr<CGraphicsResource> CGraphicsResourceCacheManager::GetCachedResource( const CGraphicsResourceDesc& desc )
+shared_ptr<GraphicsResource> GraphicsResourceCacheManager::GetCachedResource( const GraphicsResourceDesc& desc )
 {
 	const int num_resources = (int)m_vecpResurceCache.size();
 	int max_score = 0;
 	int max_score_resource_index = -1;
 	for( int i=0; i<num_resources; i++ )
 	{
-		shared_ptr<CGraphicsResource> pResource = m_vecpResurceCache[i];
+		shared_ptr<GraphicsResource> pResource = m_vecpResurceCache[i];
 		int score = pResource->CanBeUsedAsCache( desc );
 		if( max_score < score )
 		{
@@ -99,11 +99,11 @@ shared_ptr<CGraphicsResource> CGraphicsResourceCacheManager::GetCachedResource( 
 		return m_vecpResurceCache[ max_score_resource_index ];
 	}
 
-	return shared_ptr<CGraphicsResource>();
+	return shared_ptr<GraphicsResource>();
 }
 
 
-void CGraphicsResourceCacheManager::LoadGraphicsResources( const GraphicsParameters& rParam )
+void GraphicsResourceCacheManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	const size_t num_resources = m_vecpResurceCache.size();
 	for( size_t i=0; i<num_resources; i++ )
@@ -114,7 +114,7 @@ void CGraphicsResourceCacheManager::LoadGraphicsResources( const GraphicsParamet
 
 
 // Release all the cached resources
-void CGraphicsResourceCacheManager::ReleaseGraphicsResources()
+void GraphicsResourceCacheManager::ReleaseGraphicsResources()
 {
 	const size_t num_resources = m_vecpResurceCache.size();
 	for( size_t i=0; i<num_resources; i++ )

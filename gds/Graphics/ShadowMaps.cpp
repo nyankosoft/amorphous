@@ -98,7 +98,7 @@ FlatShadowMap::FlatShadowMap()
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 //	pBoxMeshGenerator->SetTexturePath( texture_filepath );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	bool loaded = m_ShadowCasterBoundingBox.Load( mesh_desc );
 }

@@ -32,7 +32,7 @@ private:
 
 	TextureHandle m_RenderTargetCopyTexture;
 
-//	CTextureResourceDesc m_TextureDesc;
+//	TextureResourceDesc m_TextureDesc;
 
 //	DWORD m_dwBackgroundColor;
 	
@@ -42,11 +42,11 @@ public:
 
 	CD3DTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
 
-	CD3DTextureRenderTarget( const CTextureResourceDesc& texture_desc );
+	CD3DTextureRenderTarget( const TextureResourceDesc& texture_desc );
 
 	~CD3DTextureRenderTarget();
 
-//	bool Init( const CTextureResourceDesc& texture_desc );
+//	bool Init( const TextureResourceDesc& texture_desc );
 
 //	void SetTextureWidth( const int width, const int height );
 

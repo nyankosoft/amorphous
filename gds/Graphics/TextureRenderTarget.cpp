@@ -42,7 +42,7 @@ m_bScreenSizeRenderTarget( false )
 }
 
 
-CTextureRenderTarget::CTextureRenderTarget( const CTextureResourceDesc& texture_desc )
+CTextureRenderTarget::CTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 m_TextureDesc(texture_desc),
 m_BackgroundColor( SFloatRGBAColor( 0.449f, 0.398f, 0.738f, 1.0f ) ),
@@ -69,7 +69,7 @@ bool CTextureRenderTarget::Init( int texture_width, int texture_height, TextureF
 }
 
 
-bool CTextureRenderTarget::Init( const CTextureResourceDesc& texture_desc )
+bool CTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
 {
 	m_TextureDesc = texture_desc;
 

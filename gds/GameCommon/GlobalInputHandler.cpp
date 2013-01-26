@@ -102,7 +102,7 @@ void CGlobalInputHandler::ProcessInput(SInputData& input)
 
 	case GIC_F5:
 		if( input.iType == ITYPE_KEY_PRESSED )
-			GraphicsResourceManager().Refresh();
+			GetGraphicsResourceManager().Refresh();
 		break;
 
 	case GIC_F7:	// quick load

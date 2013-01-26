@@ -22,10 +22,10 @@ using namespace boost;
 
 
 //==================================================================================================
-// CGraphicsResource
+// GraphicsResource
 //==================================================================================================
 
-CGraphicsResource::CGraphicsResource()
+GraphicsResource::GraphicsResource()
 :
 m_OptionFlags(0),
 m_LastModifiedTimeOfFile(0),
@@ -35,14 +35,14 @@ m_Index(0)
 {}
 
 
-CGraphicsResource::~CGraphicsResource()
+GraphicsResource::~GraphicsResource()
 {
 //	Release();	// LNK2019 - why???
 }
 
 
 /*
-void CGraphicsResource::Release()
+void GraphicsResource::Release()
 {}
 */
 
@@ -51,7 +51,7 @@ void CGraphicsResource::Release()
   Release and reload resource if the file has been modified since the last time is was load
    - This method does not change the reference count
  */
-void CGraphicsResource::Refresh()
+void GraphicsResource::Refresh()
 {
 	const string& resource_path = GetDesc().ResourcePath;
 	string filepath, keyname;
@@ -72,7 +72,7 @@ void CGraphicsResource::Refresh()
 
 
 /// Starting point of the synchronous loading.
-bool CGraphicsResource::Load()
+bool GraphicsResource::Load()
 {
 	if( IsDiskResource() )
 	{
@@ -90,21 +90,21 @@ bool CGraphicsResource::Load()
 }
 
 
-void CGraphicsResource::ReleaseNonChachedResource()
+void GraphicsResource::ReleaseNonChachedResource()
 {
 	if( !m_IsCachedResource )
 		Release();
 }
 
 
-void CGraphicsResource::ReleaseCachedResource()
+void GraphicsResource::ReleaseCachedResource()
 {
 	if( m_IsCachedResource )
 		Release();
 }
 
 
-bool CGraphicsResource::LoadFromDisk()
+bool GraphicsResource::LoadFromDisk()
 {
 	bool loaded = false;
 	string target_filepath;
@@ -147,7 +147,7 @@ bool CGraphicsResource::LoadFromDisk()
 }
 
 
-bool CGraphicsResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+bool GraphicsResource::CanBeSharedAsSameResource( const GraphicsResourceDesc& desc )
 {
 	if( !GetDesc().Sharable || !desc.Sharable )
 		return false;
@@ -168,7 +168,7 @@ bool CGraphicsResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& 
 }
 
 
-void CGraphicsResource::GetStatus( std::string& dest_buffer )
+void GraphicsResource::GetStatus( std::string& dest_buffer )
 {
 	dest_buffer += ( " / " + GetDesc().ResourcePath );
 }
@@ -176,10 +176,10 @@ void CGraphicsResource::GetStatus( std::string& dest_buffer )
 
 
 //==================================================================================================
-// CTextureResource
+// TextureResource
 //==================================================================================================
 
-CTextureResource::CTextureResource( const CTextureResourceDesc *pDesc )
+TextureResource::TextureResource( const TextureResourceDesc *pDesc )
 {
 	if( pDesc )
 		m_TextureDesc = *pDesc;
@@ -190,19 +190,19 @@ CTextureResource::CTextureResource( const CTextureResourceDesc *pDesc )
 }
 
 
-CTextureResource::~CTextureResource()
+TextureResource::~TextureResource()
 {
 	Release();
 }
 
 
-bool CTextureResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+bool TextureResource::CanBeSharedAsSameResource( const GraphicsResourceDesc& desc )
 {
-	return CGraphicsResource::CanBeSharedAsSameResource( desc );
+	return GraphicsResource::CanBeSharedAsSameResource( desc );
 }
 
 
-int CTextureResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
+int TextureResource::CanBeUsedAsCache( const GraphicsResourceDesc& desc )
 {
 	if( GetState() != GraphicsResourceState::RELEASED )
 		return 0;
@@ -211,13 +211,13 @@ int CTextureResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
 }
 
 
-void CTextureResource::UpdateDescForCachedResource( const CGraphicsResourceDesc& desc )
+void TextureResource::UpdateDescForCachedResource( const GraphicsResourceDesc& desc )
 {
 	desc.UpdateCachedTextureResourceDesc( m_TextureDesc );
 }
 
 
-bool CTextureResource::GetLockedTexture( shared_ptr<CLockedTexture>& pLockedTexture )
+bool TextureResource::GetLockedTexture( shared_ptr<CLockedTexture>& pLockedTexture )
 {
 	// TODO: increment the ref count when the async loading process is started
 //	m_iRefCount++;
@@ -230,13 +230,13 @@ bool CTextureResource::GetLockedTexture( shared_ptr<CLockedTexture>& pLockedText
 }
 
 
-void CTextureResource::Release()
+void TextureResource::Release()
 {
 	SetState( GraphicsResourceState::RELEASED );
 }
 
 
-bool CTextureResource::IsDiskResource() const
+bool TextureResource::IsDiskResource() const
 {
 	if( m_TextureDesc.pLoader
 	 || m_TextureDesc.ResourcePath.length() == 0
@@ -263,11 +263,11 @@ bool CTextureResource::IsDiskResource() const
 }
 
 
-void CTextureResource::GetStatus( std::string& dest_buffer )
+void TextureResource::GetStatus( std::string& dest_buffer )
 {
-	CGraphicsResource::GetStatus( dest_buffer );
+	GraphicsResource::GetStatus( dest_buffer );
 
-	const CTextureResourceDesc& desc = m_TextureDesc;
+	const TextureResourceDesc& desc = m_TextureDesc;
 
 	dest_buffer += ( " / " + to_string(desc.Width) + " x " + to_string(desc.Height) );
 }
@@ -275,7 +275,7 @@ void CTextureResource::GetStatus( std::string& dest_buffer )
 
 
 //==================================================================================================
-// CMeshResource
+// MeshResource
 //==================================================================================================
 
 shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh )
@@ -307,7 +307,7 @@ shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& src_mesh )
 }*/
 
 
-CMeshResource::CMeshResource( const CMeshResourceDesc *pDesc )
+MeshResource::MeshResource( const MeshResourceDesc *pDesc )
 {
 	if( pDesc )
 		m_MeshDesc = *pDesc;
@@ -321,13 +321,13 @@ CMeshResource::CMeshResource( const CMeshResourceDesc *pDesc )
 }
 
 
-CMeshResource::~CMeshResource()
+MeshResource::~MeshResource()
 {
 	Release();
 }
 
 
-bool CMeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool MeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	m_pMeshObject.reset();
 
@@ -345,7 +345,7 @@ bool CMeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::str
 }
 
 
-bool CMeshResource::LoadFromFile( const std::string& filepath )
+bool MeshResource::LoadFromFile( const std::string& filepath )
 {
 	m_pMeshObject.reset();
 
@@ -363,7 +363,7 @@ bool CMeshResource::LoadFromFile( const std::string& filepath )
 }
 
 
-void CMeshResource::Release()
+void MeshResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
 
@@ -373,7 +373,7 @@ void CMeshResource::Release()
 }
 
 
-bool CMeshResource::IsDiskResource() const
+bool MeshResource::IsDiskResource() const
 {
 	if( m_MeshDesc.pMeshGenerator )
 	{
@@ -384,7 +384,7 @@ bool CMeshResource::IsDiskResource() const
 }
 
 
-bool CMeshResource::CreateFromDesc()
+bool MeshResource::CreateFromDesc()
 {
 	if( !m_MeshDesc.pMeshGenerator )
 		return false;
@@ -411,13 +411,13 @@ bool CMeshResource::CreateFromDesc()
 }
 
 
-bool CMeshResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+bool MeshResource::CanBeSharedAsSameResource( const GraphicsResourceDesc& desc )
 {
 	return desc.CanBeSharedAsSameMeshResource( m_MeshDesc );
 }
 
 
-int CMeshResource::CanBeUsedAsCache( const CGraphicsResourceDesc& desc )
+int MeshResource::CanBeUsedAsCache( const GraphicsResourceDesc& desc )
 {
 	if( GetState() != GraphicsResourceState::RELEASED )
 		return 0;
@@ -445,7 +445,7 @@ IDAndString g_MeshTypes[] =
 */
 
 
-bool CMeshResource::Create()
+bool MeshResource::Create()
 {
 /*	LPD3DXMESH pMesh;
 
@@ -504,7 +504,7 @@ bool CMeshResource::Create()
 }
 
 
-void CMeshResource::SetSubResourceState( CMeshSubResource::Name subresource,
+void MeshResource::SetSubResourceState( MeshSubResource::Name subresource,
 										 GraphicsResourceState::Name state )
 {
 	m_aSubResourceState[subresource] = state;
@@ -525,7 +525,7 @@ void CMeshResource::SetSubResourceState( CMeshSubResource::Name subresource,
 }
 
 
-void CMeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive )
+void MeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive )
 {
 	lfs::dir_stack dirstk( lfs::get_parent_path(m_MeshDesc.ResourcePath) );
 
@@ -540,7 +540,7 @@ void CMeshResource::CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& arc
 }
 
 
-bool CMeshResource::LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive )
+bool MeshResource::LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive )
 {
 	if( GetState() == GraphicsResourceState::LOADED )
 		return false;
@@ -566,21 +566,21 @@ bool CMeshResource::LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive )
 }
 
 
-void CMeshResource::GetStatus( std::string& dest_buffer )
+void MeshResource::GetStatus( std::string& dest_buffer )
 {
-	CGraphicsResource::GetStatus( dest_buffer );
+	GraphicsResource::GetStatus( dest_buffer );
 
-	const CMeshResourceDesc& desc = m_MeshDesc;
+	const MeshResourceDesc& desc = m_MeshDesc;
 
 	dest_buffer += " / " + to_string((int)desc.MeshType);
 }
 
 
 //==================================================================================================
-// CShaderResource
+// ShaderResource
 //==================================================================================================
 
-CShaderResource::CShaderResource( const CShaderResourceDesc *pDesc )
+ShaderResource::ShaderResource( const ShaderResourceDesc *pDesc )
 :
 m_pShaderManager(NULL)
 {
@@ -593,7 +593,7 @@ m_pShaderManager(NULL)
 }
 
 
-CShaderResource::~CShaderResource()
+ShaderResource::~ShaderResource()
 {
 //	LOG_FUNCTION_SCOPE();
 
@@ -601,7 +601,7 @@ CShaderResource::~CShaderResource()
 }
 
 
-bool CShaderResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool ShaderResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	SafeDelete( m_pShaderManager );
 
@@ -618,7 +618,7 @@ bool CShaderResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::s
 }
 
 
-bool CShaderResource::Create()
+bool ShaderResource::Create()
 {
 	SafeDelete( m_pShaderManager );
 	m_pShaderManager = CreateShaderManager();
@@ -627,7 +627,7 @@ bool CShaderResource::Create()
 }
 
 
-bool CShaderResource::LoadFromFile( const std::string& filepath )
+bool ShaderResource::LoadFromFile( const std::string& filepath )
 {
 	SafeDelete( m_pShaderManager );
 
@@ -642,13 +642,13 @@ bool CShaderResource::LoadFromFile( const std::string& filepath )
 }
 
 
-bool CShaderResource::CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc )
+bool ShaderResource::CanBeSharedAsSameResource( const GraphicsResourceDesc& desc )
 {
 	return desc.CanBeSharedAsSameShaderResource( m_ShaderDesc );
 }
 
 
-void CShaderResource::Release()
+void ShaderResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
 
@@ -658,7 +658,7 @@ void CShaderResource::Release()
 }
 
 
-bool CShaderResource::IsDiskResource() const
+bool ShaderResource::IsDiskResource() const
 {
 	if( m_ShaderDesc.ShaderType == CShaderType::PROGRAMMABLE
 	 && 0 < m_ShaderDesc.ResourcePath.length() )
@@ -672,7 +672,7 @@ bool CShaderResource::IsDiskResource() const
 }
 
 
-bool CShaderResource::CreateFromDesc()
+bool ShaderResource::CreateFromDesc()
 {
 	if( m_ShaderDesc.pShaderGenerator )
 	{
@@ -701,7 +701,7 @@ bool CShaderResource::CreateFromDesc()
 }
 
 
-bool CShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
+bool ShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
 {
 	if( !m_pShaderManager )
 		m_pShaderManager = CreateShaderManager();

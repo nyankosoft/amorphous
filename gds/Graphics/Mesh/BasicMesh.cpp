@@ -14,7 +14,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-void SetSingleColorTextureDesc( CTextureResourceDesc& desc,
+void SetSingleColorTextureDesc( TextureResourceDesc& desc,
 							   const SFloatRGBAColor& color = SFloatRGBAColor::White(),
 							   int tex_width = 1,
 							   int tex_height = 1 )
@@ -36,7 +36,7 @@ void CMeshMaterial::LoadTextureAsync( int i )
 	if( i < 0 || (int)Texture.size() <= i )
 		return;
 
-	CTextureResourceDesc desc = TextureDesc[i];
+	TextureResourceDesc desc = TextureDesc[i];
 	desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
 	Texture[i].Load( desc );
 }
@@ -142,7 +142,7 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 			else if( texture_archive.type == CMMA_Texture::SINGLECOLOR
 				&& 0 < texture_archive.vecfTexelData.size_x() )
 			{
-				CTextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
+				TextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
 
 				current_desc.pLoader.reset( new CSingleColorTextureGenerator( texture_archive.vecfTexelData(0,0) ) );
 

@@ -486,7 +486,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	Init3DModel();
 
 	//>>> experiment
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	CGenericShaderDesc gen_shader_desc;
 	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;

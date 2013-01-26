@@ -19,7 +19,7 @@ using namespace serialization;
 //template<class T>class CBinaryDatabase<T>;
 
 
-class CGLTextureResource : public CTextureResource
+class CGLTextureResource : public TextureResource
 {
 	GLuint m_TextureID;
 
@@ -34,8 +34,8 @@ class CGLTextureResource : public CTextureResource
 protected:
 
 	/// Release texture without changing the reference count
-	/// called only from CGraphicsResourceManager
-	/// and from CTextureResource if Refresh() is used
+	/// called only from GraphicsResourceManager
+	/// and from TextureResource if Refresh() is used
 	virtual void Release();
 
 	/// returns false if m_TextureDesc has valid width, height, and format 
@@ -45,7 +45,7 @@ protected:
 	/// - texture settings are read from m_TextureDesc
 	bool CreateFromDesc();
 
-//	void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc );
+//	void UpdateDescForCachedResource( const GraphicsResourceDesc& desc );
 
 	bool CreateGLTexture( GLenum target, const GLenum& src_format, const GLenum& src_type, void *pImageData );
 
@@ -55,7 +55,7 @@ protected:
 
 public:
 
-	CGLTextureResource( const CTextureResourceDesc *pDesc );
+	CGLTextureResource( const TextureResourceDesc *pDesc );
 
 	~CGLTextureResource();
 
@@ -93,12 +93,12 @@ public:
 	/// - Returns an object that provides access to the locked texture surface
 //	bool GetLockedTexture( boost::shared_ptr<CLockedTexture>& pLockedTexture );
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 };
 
 
 
-class CGLShaderResource : public CShaderResource
+class CGLShaderResource : public ShaderResource
 {
 protected:
 
@@ -112,15 +112,15 @@ protected:
 
 public:
 
-	CGLShaderResource( const CShaderResourceDesc *pDesc );
+	CGLShaderResource( const ShaderResourceDesc *pDesc );
 
 	~CGLShaderResource();
 /*
 	virtual bool LoadFromFile( const std::string& filepath );
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
-//	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+//	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	friend class CGraphicsResourceManager;*/
+	friend class GraphicsResourceManager;*/
 };
 
 

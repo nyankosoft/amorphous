@@ -50,7 +50,7 @@ static boost::shared_ptr<CylinderMeshGenerator> CreateSkyCylinderMeshGenerator( 
 
 MeshHandle CreateSkyboxMesh( const std::string& texture_filepath )
 {
-	CMeshResourceDesc skybox_mesh_desc;
+	MeshResourceDesc skybox_mesh_desc;
 	skybox_mesh_desc.pMeshGenerator = CreateSkyboxMeshGenerator( texture_filepath );
 
 	MeshHandle skybox_mesh;

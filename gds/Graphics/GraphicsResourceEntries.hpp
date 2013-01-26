@@ -25,12 +25,12 @@ using namespace serialization;
  - base class of the graphics resources
    - derived classes are,
      - CTextureEntry: texture resource
-	 - CMeshResource: mesh (3D model) resource
+	 - MeshResource: mesh (3D model) resource
 	 - CShaderManagerEntry: shader resource
    - each derived class has derived class instance of resource desc as one of their member variables
 
 */
-class CGraphicsResourceEntry
+class GraphicsResourceEntry
 {
 public:
 
@@ -47,19 +47,19 @@ private:
 
 	int m_iRefCount;
 
-	boost::shared_ptr<CGraphicsResource> m_pResource;
+	boost::shared_ptr<GraphicsResource> m_pResource;
 
 	/// cache derived class pointers to avoid dynamic casting during runtime
-	boost::shared_ptr<CTextureResource> m_pTextureResource;
-	boost::shared_ptr<CMeshResource> m_pMeshResource;
-	boost::shared_ptr<CShaderResource> m_pShaderResource;
+	boost::shared_ptr<TextureResource> m_pTextureResource;
+	boost::shared_ptr<MeshResource> m_pMeshResource;
+	boost::shared_ptr<ShaderResource> m_pShaderResource;
 
 	/// holds a copy of desc
-	boost::shared_ptr<CGraphicsResourceDesc> m_pDesc;
+	boost::shared_ptr<GraphicsResourceDesc> m_pDesc;
 
 public:
 
-	inline CGraphicsResourceEntry();
+	inline GraphicsResourceEntry();
 
 	inline void IncRefCount();
 
@@ -69,21 +69,21 @@ public:
 
 	State GetState() const { return m_State; }
 
-	boost::shared_ptr<CGraphicsResource> GetResource() { return m_pResource; }
+	boost::shared_ptr<GraphicsResource> GetResource() { return m_pResource; }
 
-	inline void SetResource( boost::shared_ptr<CGraphicsResource> pResource );
+	inline void SetResource( boost::shared_ptr<GraphicsResource> pResource );
 
-	boost::shared_ptr<CTextureResource> GetTextureResource() { return m_pTextureResource; }
-	boost::shared_ptr<CMeshResource> GetMeshResource() { return m_pMeshResource; }
-	boost::shared_ptr<CShaderResource> GetShaderResource() { return m_pShaderResource; }
+	boost::shared_ptr<TextureResource> GetTextureResource() { return m_pTextureResource; }
+	boost::shared_ptr<MeshResource> GetMeshResource() { return m_pMeshResource; }
+	boost::shared_ptr<ShaderResource> GetShaderResource() { return m_pShaderResource; }
 
-	const boost::shared_ptr<CTextureResource> GetTextureResource() const { return m_pTextureResource; }
-	const boost::shared_ptr<CMeshResource> GetMeshResource() const { return m_pMeshResource; }
-	const boost::shared_ptr<CShaderResource> GetShaderResource() const { return m_pShaderResource; }
+	const boost::shared_ptr<TextureResource> GetTextureResource() const { return m_pTextureResource; }
+	const boost::shared_ptr<MeshResource> GetMeshResource() const { return m_pMeshResource; }
+	const boost::shared_ptr<ShaderResource> GetShaderResource() const { return m_pShaderResource; }
 
 	void GetStatus( std::string& dest_buffer );
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 
 //	boost::shared_ptr<T> GetResource() { return m_pResource; }
 //	void SetResource( boost::shared_ptr<T> pResource ) { m_pResource = pResource; }
@@ -94,10 +94,10 @@ public:
 //---------------------------- inline implementations ---------------------------- 
 
 //================================================================================
-// CGraphicsResourceEntry
+// GraphicsResourceEntry
 //================================================================================
 
-inline CGraphicsResourceEntry::CGraphicsResourceEntry()
+inline GraphicsResourceEntry::GraphicsResourceEntry()
 :
 m_State(STATE_RELEASED),
 m_iRefCount(0)
@@ -108,7 +108,7 @@ m_iRefCount(0)
 /**
  Load the resource when the reference count is incremented from 0 to 1
 */
-inline void CGraphicsResourceEntry::IncRefCount()
+inline void GraphicsResourceEntry::IncRefCount()
 {
 	m_iRefCount++;
 
@@ -129,7 +129,7 @@ inline void CGraphicsResourceEntry::IncRefCount()
 /**
  Release the resource when the reference count is decremented from 1 to 0
 */
-inline void CGraphicsResourceEntry::DecRefCount()
+inline void GraphicsResourceEntry::DecRefCount()
 {
 	if( m_iRefCount == 0 )
 	{
@@ -153,13 +153,13 @@ inline void CGraphicsResourceEntry::DecRefCount()
 }
 
 
-inline void CGraphicsResourceEntry::SetResource( boost::shared_ptr<CGraphicsResource> pResource )
+inline void GraphicsResourceEntry::SetResource( boost::shared_ptr<GraphicsResource> pResource )
 {
 	m_pResource = pResource;
 
-	m_pTextureResource = boost::dynamic_pointer_cast<CTextureResource,CGraphicsResource>(pResource);
-	m_pMeshResource    = boost::dynamic_pointer_cast<CMeshResource,CGraphicsResource>(pResource);
-	m_pShaderResource  = boost::dynamic_pointer_cast<CShaderResource,CGraphicsResource>(pResource);
+	m_pTextureResource = boost::dynamic_pointer_cast<TextureResource,GraphicsResource>(pResource);
+	m_pMeshResource    = boost::dynamic_pointer_cast<MeshResource,GraphicsResource>(pResource);
+	m_pShaderResource  = boost::dynamic_pointer_cast<ShaderResource,GraphicsResource>(pResource);
 }
 
 

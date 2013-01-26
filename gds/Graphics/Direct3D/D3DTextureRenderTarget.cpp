@@ -41,7 +41,7 @@ CTextureRenderTarget( texture_width, texture_height, texture_format, option_flag
 }
 
 
-CD3DTextureRenderTarget::CD3DTextureRenderTarget( const CTextureResourceDesc& texture_desc )
+CD3DTextureRenderTarget::CD3DTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 CTextureRenderTarget(texture_desc)
 {
@@ -127,7 +127,7 @@ bool CD3DTextureRenderTarget::LoadTextures()
 //	if( FAILED(hr) )
 //		return false;
 
-	CTextureResourceDesc copy_desc = m_TextureDesc;
+	TextureResourceDesc copy_desc = m_TextureDesc;
 	copy_desc.UsageFlags = 0;
 	m_RenderTargetCopyTexture.Load( copy_desc );
 

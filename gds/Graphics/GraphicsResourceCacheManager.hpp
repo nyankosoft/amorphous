@@ -15,61 +15,61 @@ namespace amorphous
 
 
 //=======================================================================================
-// CGraphicsResourceFactoryImpl
+// GraphicsResourceFactoryImpl
 //=======================================================================================
 
-class CGraphicsResourceFactoryImpl
+class GraphicsResourceFactoryImpl
 {
 public:
 
-	CGraphicsResourceFactoryImpl() {}
+	GraphicsResourceFactoryImpl() {}
 
-	virtual ~CGraphicsResourceFactoryImpl() {}
+	virtual ~GraphicsResourceFactoryImpl() {}
 
-//	virtual void CreateGraphicsResource( CGraphicsResourceDesc &desc ) = 0;
+//	virtual void CreateGraphicsResource( GraphicsResourceDesc &desc ) = 0;
 
-	virtual boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc ) = 0;
-	virtual boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc ) = 0;
-	virtual boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc ) = 0;
+	virtual boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc ) = 0;
+	virtual boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc ) = 0;
+	virtual boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc ) = 0;
 };
 
 
 
 //=======================================================================================
-// CGraphicsResourceFactory
+// GraphicsResourceFactory
 //=======================================================================================
 
-class CGraphicsResourceFactory
+class GraphicsResourceFactory
 {
-	boost::shared_ptr<CGraphicsResourceFactoryImpl> m_pImpl;
+	boost::shared_ptr<GraphicsResourceFactoryImpl> m_pImpl;
 
 protected:
 
-	static CSingleton<CGraphicsResourceFactory> m_obj;
+	static CSingleton<GraphicsResourceFactory> m_obj;
 
 public:
 
-	CGraphicsResourceFactory();
+	GraphicsResourceFactory();
 
-	~CGraphicsResourceFactory();
+	~GraphicsResourceFactory();
 
-	static CGraphicsResourceFactory* Get() { return m_obj.get(); }
+	static GraphicsResourceFactory* Get() { return m_obj.get(); }
 
 	static void ReleaseSingleton() { m_obj.Release(); }
 
-	void Init( CGraphicsResourceFactoryImpl *pFactoryImpl );
+	void Init( GraphicsResourceFactoryImpl *pFactoryImpl );
 
-	boost::shared_ptr<CGraphicsResource> CreateGraphicsResource( const CGraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
+	boost::shared_ptr<GraphicsResource> CreateGraphicsResource( const GraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
 
-	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc ) { return ( m_pImpl ? m_pImpl->CreateTextureResource(desc) : boost::shared_ptr<CTextureResource>() ); }
-	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc )       { return ( m_pImpl ? m_pImpl->CreateMeshResource(desc)    : boost::shared_ptr<CMeshResource>()    ); }
-	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc )   { return ( m_pImpl ? m_pImpl->CreateShaderResource(desc)  : boost::shared_ptr<CShaderResource>()  ); }
+	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc ) { return ( m_pImpl ? m_pImpl->CreateTextureResource(desc) : boost::shared_ptr<TextureResource>() ); }
+	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc )       { return ( m_pImpl ? m_pImpl->CreateMeshResource(desc)    : boost::shared_ptr<MeshResource>()    ); }
+	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc )   { return ( m_pImpl ? m_pImpl->CreateShaderResource(desc)  : boost::shared_ptr<ShaderResource>()  ); }
 };
 
 
-inline CGraphicsResourceFactory& GraphicsResourceFactory()
+inline GraphicsResourceFactory& GetGraphicsResourceFactory()
 {
-	return (*CGraphicsResourceFactory::Get());
+	return (*GraphicsResourceFactory::Get());
 }
 
 
@@ -82,17 +82,17 @@ inline CGraphicsResourceFactory& GraphicsResourceFactory()
      but this feature should not be used.
 
 */
-class CGraphicsResourceCacheManager : public GraphicsComponent
+class GraphicsResourceCacheManager : public GraphicsComponent
 {
-	std::vector< boost::shared_ptr<CGraphicsResource> > m_vecpResurceCache;
+	std::vector< boost::shared_ptr<GraphicsResource> > m_vecpResurceCache;
 
 protected:
 
-	static CSingleton<CGraphicsResourceCacheManager> m_obj;
+	static CSingleton<GraphicsResourceCacheManager> m_obj;
 
 public:
 
-	static CGraphicsResourceCacheManager* Get() { return m_obj.get(); }
+	static GraphicsResourceCacheManager* Get() { return m_obj.get(); }
 
 	static void ReleaseSingleton() { m_obj.Release(); }
 
@@ -100,23 +100,23 @@ public:
 
 	/// Create a resource and store it as a cache.
 	/// Must be called by the render thread.
-	void AddCache( CGraphicsResourceDesc& desc );
+	void AddCache( GraphicsResourceDesc& desc );
 
 	/// Returns a cached resource that matches the desc
-	boost::shared_ptr<CGraphicsResource> GetCachedResource( const CGraphicsResourceDesc& desc );
+	boost::shared_ptr<GraphicsResource> GetCachedResource( const GraphicsResourceDesc& desc );
 
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
-	/// Release resources currently not used by CGraphicsResourceManager
+	/// Release resources currently not used by GraphicsResourceManager
 	void ReleaseGraphicsResources();
 };
 
 
 //------------------------------- inline implementations -------------------------------
 
-inline CGraphicsResourceCacheManager& GraphicsResourceCacheManager()
+inline GraphicsResourceCacheManager& GetGraphicsResourceCacheManager()
 {
-	return (*CGraphicsResourceCacheManager::Get());
+	return (*GraphicsResourceCacheManager::Get());
 }
 
 

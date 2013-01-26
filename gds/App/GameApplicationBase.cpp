@@ -111,7 +111,7 @@ void CGameApplicationBase::Release()
 	SafeDelete( m_pGlobalInputHandler );
 
 	// release any singleton class that inherits GraphicsComponent
-	GraphicsResourceManager().ReleaseSingleton();
+	GetGraphicsResourceManager().ReleaseSingleton();
 }
 
 
@@ -395,7 +395,7 @@ void CGameApplicationBase::UpdateFrame()
 	m_pTaskManager->Render();
 
 
-	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
+	GetAsyncResourceLoader().ProcessGraphicsDeviceRequests();
 
 	ProfileDumpOutputToBuffer();
 

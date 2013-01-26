@@ -147,7 +147,7 @@ bool TextureFont::InitCharacterRects()
 
 bool TextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 
 	const int grayscale_levels = 16;
 	desc.pLoader.reset( new CGrayscaleImageLoader(

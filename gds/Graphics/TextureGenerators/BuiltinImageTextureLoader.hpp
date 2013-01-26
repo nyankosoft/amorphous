@@ -56,7 +56,7 @@ public:
 
 TextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width     = builtin_image.width;
 	desc.Height    = builtin_image.height;
 	desc.Format    = TextureFormat::A8R8G8B8;

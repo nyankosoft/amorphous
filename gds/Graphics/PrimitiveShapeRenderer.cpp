@@ -60,7 +60,7 @@ CustomMesh CPrimitiveShapeRenderer::ms_RectMesh;
 
 CPrimitiveShapeRenderer::CPrimitiveShapeRenderer()
 {
-//	CShaderResourceDesc desc;
+//	ShaderResourceDesc desc;
 //	desc = non_programmable;
 
 //	m_Shader.Load( desc );

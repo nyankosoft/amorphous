@@ -164,7 +164,7 @@ bool VarianceShadowMapManager::Init()
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 //	HRESULT hr;
 
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width  = m_ShadowMapSize;
 	desc.Height = m_ShadowMapSize;
 	desc.Format = TextureFormat::G16R16F;

@@ -29,7 +29,7 @@ public:
 	// mesh
 	//
 
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
 	/// Used during runtime
 	/// - Not serialized
@@ -45,7 +45,7 @@ public:
 	/// - column: corresponds to resolution (intended to be shader version of LOD)
 	C2DArray<CShaderTechniqueHandle> m_ShaderTechnique;
 
-	CShaderResourceDesc m_ShaderDesc;
+	ShaderResourceDesc m_ShaderDesc;
 
 	ShaderHandle m_ShaderHandle;
 

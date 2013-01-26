@@ -17,12 +17,12 @@ using namespace std;
 const MeshHandle MeshHandle::ms_NullHandle;
 
 
-boost::shared_ptr<CMeshResource> MeshHandle::GetMeshResource()
+boost::shared_ptr<MeshResource> MeshHandle::GetMeshResource()
 {
 	if( GetEntry() )
 		return GetEntry()->GetMeshResource();
 	else
-		return boost::shared_ptr<CMeshResource>();
+		return boost::shared_ptr<MeshResource>();
 }
 
 
@@ -38,24 +38,24 @@ CMeshType::Name MeshHandle::GetMeshType()
 
 bool MeshHandle::Load( const std::string& resource_path )
 {
-	CMeshResourceDesc desc;
+	MeshResourceDesc desc;
 	desc.ResourcePath = resource_path;
 	return Load( desc );
 }
 
 
-bool MeshHandle::Load( const CMeshResourceDesc& desc )
+bool MeshHandle::Load( const MeshResourceDesc& desc )
 {
 	// if currently holding a mesh, release it
 	Release();
 
 	if( desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadMesh( desc );
+		m_pResourceEntry = GetGraphicsResourceManager().LoadMesh( desc );
 	}
 	else
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadAsync( desc );
+		m_pResourceEntry = GetGraphicsResourceManager().LoadAsync( desc );
 	}
 
 	if( m_pResourceEntry )
@@ -79,7 +79,7 @@ boost::shared_ptr<SkeletalMesh> MeshHandle::GetSkeletalMesh()
 /*
 bool MeshHandle::LoadAsync( int priority )
 {
-	CMeshResourceDesc desc;
+	MeshResourceDesc desc;
 	desc.Filename = filename;
 
 

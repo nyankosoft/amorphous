@@ -1061,7 +1061,7 @@ Result::Name CombinedBloomFilter::Init( RenderTargetTextureCache& cache, CFilter
 	const SRectangular base_plane = m_BasePlane;
 
 	// shared settings for bloom textures
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	desc.Format     = TextureFormat::A8R8G8B8;
 	desc.MipLevels  = 1;
@@ -1153,7 +1153,7 @@ void CombinedBloomFilter::AddNextFilter( boost::shared_ptr<PostProcessEffectFilt
 }
 */
 
-void GetLuminanceTextureDesc( CTextureResourceDesc& dest )
+void GetLuminanceTextureDesc( TextureResourceDesc& dest )
 {
 	LPDIRECT3D9 pD3D = DIRECT3D9.GetD3D();
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -1188,7 +1188,7 @@ LuminanceCalcFilter::LuminanceCalcFilter( const std::string& technique_name, int
 	m_NumSamples = num_samples;
 	m_RenderTargetSize = render_target_size;
 
-//	CTextureResourceDesc tex_desc;
+//	TextureResourceDesc tex_desc;
 	GetLuminanceTextureDesc( m_Desc );
 	m_Desc.Width  = m_RenderTargetSize;
 	m_Desc.Height = m_RenderTargetSize;
@@ -1429,7 +1429,7 @@ m_StarEffectEnabled(false)
 	m_Technique.SetTechniqueName( "FinalScenePass" );
 
 	// Create a small black texture which is used when the star effect is off
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width  = 16;
 	desc.Height = 16;
 	desc.Format = TextureFormat::A8R8G8B8;
@@ -1639,7 +1639,7 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, CFilterSh
 	//
 
 	cbb = GetCropWidthAndHeight();
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
 
 	// for 4x4 scaled down scene
@@ -1788,7 +1788,7 @@ Result::Name FullScreenBlurFilter::Init( RenderTargetTextureCache& cache, CFilte
 	res = m_pBloomFilter->Init( cache, filter_shader_container );
 	m_pBloomFilter->UseAsGaussianBlurFilter( true );
 
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Width  = cbb.width  / 4;
 	tex_desc.Height = cbb.height / 4;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
@@ -1853,7 +1853,7 @@ Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, CFilt
 	const SRectangular cbb = GetCropWidthAndHeight();
 	SetRenderTargetSize( cbb.width, cbb.height );
 
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Width  = cbb.width;
 	tex_desc.Height = cbb.height;
 	tex_desc.Format = TextureFormat::A8R8G8B8;

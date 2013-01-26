@@ -18,7 +18,7 @@ using namespace boost;
 /*
 class CStaticLiquidEntity : public CCopyEntity;
 {
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
 	Vector3 m_vLiquidFlowVelocity;
 
@@ -81,7 +81,7 @@ void CBE_StaticLiquid::Init()
 	CGenericShaderDesc shader_desc;
 	shader_desc.PlanarReflection = CPlanarReflectionOption::PERTURBED;
 
-	CShaderResourceDesc& desc = render_method.m_ShaderDesc;
+	ShaderResourceDesc& desc = render_method.m_ShaderDesc;
 	desc.pShaderGenerator.reset( new CGenericShaderGenerator( shader_desc ) );
 
 //	bool shader_loaded = shader.Load( desc );

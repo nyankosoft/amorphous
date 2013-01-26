@@ -33,13 +33,13 @@ class CResourceLoadingState
 
 protected:
 
-	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
+	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 public:
 
 	CResourceLoadingState();
 
-	CResourceLoadingState( boost::shared_ptr<CGraphicsResourceEntry> pEntry )
+	CResourceLoadingState( boost::shared_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_pResourceEntry( pEntry )
 	{}
@@ -57,7 +57,7 @@ class CTextureLoadingStateHolder : public CResourceLoadingState
 {
 public:
 
-	CTextureLoadingStateHolder( boost::shared_ptr<CGraphicsResourceEntry> pTextureResourceEntry )
+	CTextureLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pTextureResourceEntry )
 		:
 	CResourceLoadingState(pTextureResourceEntry)
 	{}
@@ -70,7 +70,7 @@ class CMeshLoadingStateHolder : public CResourceLoadingState
 {
 public:
 
-	CMeshLoadingStateHolder( boost::shared_ptr<CGraphicsResourceEntry> pMeshResourceEntry )
+	CMeshLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pMeshResourceEntry )
 		:
 	CResourceLoadingState(pMeshResourceEntry)
 	{}
@@ -81,11 +81,11 @@ public:
 
 class CShaderLoadingStateHolder : public CResourceLoadingState
 {
-	boost::weak_ptr<CGraphicsResourceEntry> m_pShaderResourceEntry;
+	boost::weak_ptr<GraphicsResourceEntry> m_pShaderResourceEntry;
 
 public:
 
-	CShaderLoadingStateHolder( boost::shared_ptr<CGraphicsResourceEntry> pShaderResourceEntry )
+	CShaderLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pShaderResourceEntry )
 		:
 	CResourceLoadingState(pShaderResourceEntry)
 	{}
@@ -107,7 +107,7 @@ public:
 	void Add( MeshHandle& mesh_handle );
 	void Add( ShaderHandle& shader_handle );
 
-	void AddFromResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> pEntry );
+	void AddFromResourceEntry( boost::shared_ptr<GraphicsResourceEntry> pEntry );
 
 	bool AreAllResourceLoaded();
 };

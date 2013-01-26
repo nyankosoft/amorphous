@@ -49,7 +49,7 @@ public:
 };
 
 
-class CGraphicsResource
+class GraphicsResource
 {
 protected:
 
@@ -82,13 +82,13 @@ protected:
 
 	void SetIndex( int index ) { m_Index = index; }
 
-	virtual void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc ) {}
+	virtual void UpdateDescForCachedResource( const GraphicsResourceDesc& desc ) {}
 
 public:
 
-	CGraphicsResource();
+	GraphicsResource();
 
-	virtual ~CGraphicsResource();
+	virtual ~GraphicsResource();
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
@@ -113,13 +113,13 @@ public:
 	/// - These are the strings obtained by decomposing m_Filename to "(db_filepath)::(keyname)"
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname ) = 0;
 
-	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	virtual int CanBeUsedAsCache( const CGraphicsResourceDesc& desc ) { return 0; }
+	virtual int CanBeUsedAsCache( const GraphicsResourceDesc& desc ) { return 0; }
 
 	void Refresh();
 
-	virtual const CGraphicsResourceDesc& GetDesc() const = 0;
+	virtual const GraphicsResourceDesc& GetDesc() const = 0;
 
 	virtual bool Lock() { return false; }
 
@@ -134,24 +134,24 @@ public:
 	/// Appends a string which represents the status of the graphics resource to dest_buffer
 	virtual void GetStatus( std::string& dest_buffer );
 
-	friend class CGraphicsResourceManager;
-	friend class CGraphicsResourceCacheManager;
+	friend class GraphicsResourceManager;
+	friend class GraphicsResourceCacheManager;
 };
 
 
-class CTextureResource : public CGraphicsResource
+class TextureResource : public GraphicsResource
 {
 protected:
 
-	CTextureResourceDesc m_TextureDesc;
+	TextureResourceDesc m_TextureDesc;
 
 	boost::shared_ptr<CLockedTexture> m_pLockedTexture;
 
 protected:
 
 	/// Release texture without changing the reference count
-	/// called only from CGraphicsResourceManager
-	/// and from CTextureResource if Refresh() is used
+	/// called only from GraphicsResourceManager
+	/// and from TextureResource if Refresh() is used
 	virtual void Release();
 
 	/// returns false if m_TextureDesc has valid width, height, and format 
@@ -161,13 +161,13 @@ protected:
 	/// - texture settings are read from m_TextureDesc
 	virtual bool CreateFromDesc() = 0;
 
-	void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc );
+	void UpdateDescForCachedResource( const GraphicsResourceDesc& desc );
 
 public:
 
-	CTextureResource( const CTextureResourceDesc *pDesc );
+	TextureResource( const TextureResourceDesc *pDesc );
 
-	virtual ~CTextureResource();
+	virtual ~TextureResource();
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }
 
@@ -175,9 +175,9 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname ) = 0;
 
-	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
+	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
 
 	/// For Direct3D
 	inline virtual LPDIRECT3DTEXTURE9 GetTexture() { return NULL; }
@@ -185,7 +185,7 @@ public:
 	/// For OpenGL
 	inline virtual GLuint GetGLTextureID() const { return 0; }
 
-	const CGraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
+	const GraphicsResourceDesc& GetDesc() const { return m_TextureDesc; }
 
 	/// Save the texture to disk as an image file
 	/// - For debugging
@@ -218,11 +218,11 @@ public:
 
 	void GetStatus( std::string& dest_buffer );
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 };
 
 
-class CMeshSubResource
+class MeshSubResource
 {
 public:
 	enum Name
@@ -235,13 +235,13 @@ public:
 };
 
 
-class CMeshResource : public CGraphicsResource
+class MeshResource : public GraphicsResource
 {
 	boost::shared_ptr<BasicMesh> m_pMeshObject;
 
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
-	GraphicsResourceState::Name m_aSubResourceState[CMeshSubResource::NUM_SUBRESOURCES];
+	GraphicsResourceState::Name m_aSubResourceState[MeshSubResource::NUM_SUBRESOURCES];
 
 protected:
 
@@ -257,9 +257,9 @@ protected:
 
 public:
 
-	CMeshResource( const CMeshResourceDesc *pDesc );
+	MeshResource( const MeshResourceDesc *pDesc );
 
-	virtual ~CMeshResource();
+	virtual ~MeshResource();
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
@@ -267,9 +267,9 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
-	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
+	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
 
 	inline boost::shared_ptr<BasicMesh> GetMesh();
 
@@ -277,7 +277,7 @@ public:
 
 	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
-	const CGraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
+	const GraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
 
 	void GetStatus( std::string& dest_buffer );
 
@@ -287,25 +287,25 @@ public:
 
 	bool Create();
 
-	GraphicsResourceState::Name GetSubResourceState( CMeshSubResource::Name subresource ) const { return m_aSubResourceState[subresource]; }
+	GraphicsResourceState::Name GetSubResourceState( MeshSubResource::Name subresource ) const { return m_aSubResourceState[subresource]; }
 
-	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
+	void SetSubResourceState( MeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	void CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive );
 
 	bool LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive );
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 };
 
 
-class CShaderResource : public CGraphicsResource
+class ShaderResource : public GraphicsResource
 {
 	CShaderManager *m_pShaderManager;
 
 protected:
 
-	CShaderResourceDesc m_ShaderDesc;
+	ShaderResourceDesc m_ShaderDesc;
 
 protected:
 
@@ -323,9 +323,9 @@ protected:
 
 public:
 
-	CShaderResource( const CShaderResourceDesc *pDesc );
+	ShaderResource( const ShaderResourceDesc *pDesc );
 
-	virtual ~CShaderResource();
+	virtual ~ShaderResource();
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
 
@@ -333,27 +333,27 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
-	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
 	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
 
-	const CGraphicsResourceDesc& GetDesc() const { return m_ShaderDesc; }
+	const GraphicsResourceDesc& GetDesc() const { return m_ShaderDesc; }
 
 	bool Create();
 
 	bool CreateShaderFromTextBuffer( stream_buffer& buffer );
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 };
 
 
 //---------------------------- inline implementations ----------------------------
 
 //================================================================================
-// CGraphicsResource
+// GraphicsResource
 //================================================================================
 
-inline void CGraphicsResource::SetState( GraphicsResourceState::Name state )
+inline void GraphicsResource::SetState( GraphicsResourceState::Name state )
 {
 	boost::mutex::scoped_lock scoped_lock(m_StateChangeLock);
 
@@ -361,7 +361,7 @@ inline void CGraphicsResource::SetState( GraphicsResourceState::Name state )
 }
 
 
-inline GraphicsResourceState::Name CGraphicsResource::GetState()
+inline GraphicsResourceState::Name GraphicsResource::GetState()
 {
 	boost::mutex::scoped_lock scoped_lock(m_StateChangeLock);
 
@@ -372,10 +372,10 @@ inline GraphicsResourceState::Name CGraphicsResource::GetState()
 
 
 //================================================================================
-// CMeshResource
+// MeshResource
 //================================================================================
 
-inline boost::shared_ptr<BasicMesh> CMeshResource::GetMesh()
+inline boost::shared_ptr<BasicMesh> MeshResource::GetMesh()
 {
 	if( GetState() == GraphicsResourceState::LOADED )
 		return m_pMeshObject;
@@ -384,7 +384,7 @@ inline boost::shared_ptr<BasicMesh> CMeshResource::GetMesh()
 }
 
 
-inline boost::shared_ptr<BasicMesh> CMeshResource::GetMeshInLoading()
+inline boost::shared_ptr<BasicMesh> MeshResource::GetMeshInLoading()
 {
 	return m_pMeshObject;
 }

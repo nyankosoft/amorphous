@@ -45,7 +45,7 @@ public:
 	// A texture handle will be empty if no texture is used for the stage
 	std::vector<TextureHandle> Texture;
 
-	std::vector<CTextureResourceDesc> TextureDesc;
+	std::vector<TextureResourceDesc> TextureDesc;
 
 	std::string Name;
 

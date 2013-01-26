@@ -23,65 +23,65 @@ namespace amorphous
  * - singleton class
  *   - must be released before the GraphicsComponentCollector singleton is destroyed.
 */
-class CGraphicsResourceManager : public GraphicsComponent
+class GraphicsResourceManager : public GraphicsComponent
 {
 private:
 
 	bool m_AsyncLoadingAllowed;
 
-	boost::shared_ptr<CGraphicsResourceCacheManager> m_pCacheManager;
+	boost::shared_ptr<GraphicsResourceCacheManager> m_pCacheManager;
 
-	std::vector< boost::shared_ptr<CGraphicsResourceEntry> > m_vecpResourceEntry;
+	std::vector< boost::shared_ptr<GraphicsResourceEntry> > m_vecpResourceEntry;
 
 	boost::mutex m_ResourceLock;
 
 private:
 
 	/// Synchronously loads a graphics resource
-	boost::shared_ptr<CGraphicsResourceEntry> LoadGraphicsResource( const CGraphicsResourceDesc& desc );
+	boost::shared_ptr<GraphicsResourceEntry> LoadGraphicsResource( const GraphicsResourceDesc& desc );
 
 	/// creates and registers a graphics resources of the specified type
 	/// returns the shared ointer to the created and registered resource
-	boost::shared_ptr<CGraphicsResourceEntry> CreateGraphicsResourceEntry();
+	boost::shared_ptr<GraphicsResourceEntry> CreateGraphicsResourceEntry();
 
 	/// called from handle
-	boost::shared_ptr<CGraphicsResourceEntry> LoadTexture( const CTextureResourceDesc& desc );
+	boost::shared_ptr<GraphicsResourceEntry> LoadTexture( const TextureResourceDesc& desc );
 
-	boost::shared_ptr<CGraphicsResourceEntry> CreateTexture( const CTextureResourceDesc& desc );
-
-	/// called from handle
-	boost::shared_ptr<CGraphicsResourceEntry> LoadMesh( const CMeshResourceDesc& desc );
+	boost::shared_ptr<GraphicsResourceEntry> CreateTexture( const TextureResourceDesc& desc );
 
 	/// called from handle
-	boost::shared_ptr<CGraphicsResourceEntry> LoadShaderManager( const CShaderResourceDesc& desc );
+	boost::shared_ptr<GraphicsResourceEntry> LoadMesh( const MeshResourceDesc& desc );
 
-	bool ReleaseResourceEntry( boost::shared_ptr<CGraphicsResourceEntry> ptr );
+	/// called from handle
+	boost::shared_ptr<GraphicsResourceEntry> LoadShaderManager( const ShaderResourceDesc& desc );
 
-	boost::shared_ptr<CGraphicsResourceLoader> CreateResourceLoader(
-		boost::shared_ptr<CGraphicsResourceEntry> pEntry,
-		const CGraphicsResourceDesc& desc );
+	bool ReleaseResourceEntry( boost::shared_ptr<GraphicsResourceEntry> ptr );
 
-	boost::shared_ptr<CGraphicsResourceEntry> FindSameLoadedResource( const CGraphicsResourceDesc& desc );
+	boost::shared_ptr<GraphicsResourceLoader> CreateResourceLoader(
+		boost::shared_ptr<GraphicsResourceEntry> pEntry,
+		const GraphicsResourceDesc& desc );
+
+	boost::shared_ptr<GraphicsResourceEntry> FindSameLoadedResource( const GraphicsResourceDesc& desc );
 
 	/// asynchronously loads a graphics resource
 	/// - sends load request and returns
 	/// - index to the entry is returned immediately
-	boost::shared_ptr<CGraphicsResourceEntry> LoadAsync( const CGraphicsResourceDesc& desc );
+	boost::shared_ptr<GraphicsResourceEntry> LoadAsync( const GraphicsResourceDesc& desc );
 
 protected:
-///	CGraphicsResourceManager();		//singleton
+///	GraphicsResourceManager();		//singleton
 
-	static CSingleton<CGraphicsResourceManager> m_obj;
+	static CSingleton<GraphicsResourceManager> m_obj;
 
 public:
 
-	static CGraphicsResourceManager* Get() { return m_obj.get(); }
+	static GraphicsResourceManager* Get() { return m_obj.get(); }
 
 	static void ReleaseSingleton() { m_obj.Release(); }
 
-	CGraphicsResourceManager();
+	GraphicsResourceManager();
 
-	virtual ~CGraphicsResourceManager();
+	virtual ~GraphicsResourceManager();
 
 	/// need to be called by user?
 	/// - this class is a singleton, and the graphics component collector is also a singleton
@@ -96,12 +96,12 @@ public:
 
 	void AllowAsyncLoading( bool allow );
 
-//	boost::shared_ptr<CGraphicsResourceEntry> CreateAt( const CGraphicsResourceDesc& desc, int dest_index );
+//	boost::shared_ptr<GraphicsResourceEntry> CreateAt( const GraphicsResourceDesc& desc, int dest_index );
 
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 
-	void AddCache( CGraphicsResourceDesc& desc );
+	void AddCache( GraphicsResourceDesc& desc );
 
 	void GetStatus( GraphicsResourceType::Name type, std::string& dest_buffer );
 
@@ -116,9 +116,9 @@ public:
 
 //------------------------------- inline implementations -------------------------------
 
-inline CGraphicsResourceManager& GraphicsResourceManager()
+inline GraphicsResourceManager& GetGraphicsResourceManager()
 {
-	return (*CGraphicsResourceManager::Get());
+	return (*GraphicsResourceManager::Get());
 }
 
 //------------------------------- global functions -------------------------------

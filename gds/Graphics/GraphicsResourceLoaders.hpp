@@ -20,29 +20,29 @@ class CBitmapImage;
 const std::string g_NullString = "";
 
 
-class CGraphicsResourceLoader
+class GraphicsResourceLoader
 {
 	/// entry that stores the loaded resource
-	boost::weak_ptr<CGraphicsResourceEntry> m_pResourceEntry;
+	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 protected:
 
-//	virtual boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() = 0;
+//	virtual boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() = 0;
 
-	boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry.lock(); }
+	boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry.lock(); }
 
-	const boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() const { return m_pResourceEntry.lock(); }
+	const boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() const { return m_pResourceEntry.lock(); }
 
 	inline const std::string& GetSourceFilepath();
 
 public:
 
-	CGraphicsResourceLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	GraphicsResourceLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_pResourceEntry(pEntry)
 	{}
 
-	inline boost::shared_ptr<CGraphicsResource> GetResource();
+	inline boost::shared_ptr<GraphicsResource> GetResource();
 
 	virtual Result::Name Load();
 
@@ -69,10 +69,10 @@ public:
 	///   -> See Lock() above
 	virtual bool Unlock();
 
-//	virtual void SetEntry( boost::weak_ptr<CGraphicsResourceEntry> pEntry ) = 0;
+//	virtual void SetEntry( boost::weak_ptr<GraphicsResourceEntry> pEntry ) = 0;
 
 	/// add a lock request to the graphics device request queue of the async resource loader
-	virtual void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
+	virtual void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf );
 
 	/// - Called by async resource loader when the resource is loaded on locked graphics memory
 	///   and the memory is successfully unlocked.
@@ -87,18 +87,18 @@ public:
 	virtual void FillResourceDesc() {}
 
 	/// sub resource loaders of mesh don't have descs
-	virtual const CGraphicsResourceDesc *GetDesc() const { return NULL; }
+	virtual const GraphicsResourceDesc *GetDesc() const { return NULL; }
 
 	virtual bool LoadToGraphicsMemoryByRenderThread() { return false; }
 };
 
 
 /// loads a texture from disk
-class CDiskTextureLoader : public CGraphicsResourceLoader
+class CDiskTextureLoader : public GraphicsResourceLoader
 {
 	/// Stores image properties such as width and height.
 	/// - Image properties are obtained from m_Image after the image is loaded
-	CTextureResourceDesc m_TextureDesc;
+	TextureResourceDesc m_TextureDesc;
 
 	/// Stores texture data loaded from disk
 //	boost::shared_ptr<CBitmapImage> m_pImage;
@@ -108,11 +108,11 @@ class CDiskTextureLoader : public CGraphicsResourceLoader
 
 	int m_CurrentMipLevel;
 
-	boost::shared_ptr<CTextureResource> GetTextureResource();
+	boost::shared_ptr<TextureResource> GetTextureResource();
 
 protected:
 
-//	boost::shared_ptr<CGraphicsResourceEntry> GetResourceEntry() { return m_pTextureEntry.lock(); }
+//	boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pTextureEntry.lock(); }
 
 	/// Returns true on success
 	bool InitImageArray( boost::shared_ptr<CBitmapImage> pBaseImage );
@@ -123,9 +123,9 @@ protected:
 
 public:
 
-	CDiskTextureLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CTextureResourceDesc& desc )
+	CDiskTextureLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const TextureResourceDesc& desc )
 		:
-	CGraphicsResourceLoader(pEntry),
+	GraphicsResourceLoader(pEntry),
 	m_TextureDesc(desc),
 	m_CurrentMipLevel(0)
 	{}
@@ -144,7 +144,7 @@ public:
 
 	void FillResourceDesc();
 
-	const CGraphicsResourceDesc *GetDesc() const { return &m_TextureDesc; }
+	const GraphicsResourceDesc *GetDesc() const { return &m_TextureDesc; }
 
 	/// called by the system
 	/// - called inside CopyTo()
@@ -156,11 +156,11 @@ public:
 };
 
 
-class CMeshLoader : public CGraphicsResourceLoader
+class CMeshLoader : public GraphicsResourceLoader
 {
 protected:
 
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
 	boost::shared_ptr<C3DMeshModelArchive> m_pArchive;
 
@@ -170,7 +170,7 @@ protected:
 
 public:
 
-	CMeshLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CMeshResourceDesc& desc );
+	CMeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc );
 
 	virtual ~CMeshLoader();
 
@@ -191,7 +191,7 @@ public:
 	/// - See the comment of Lock()
 	bool Unlock() { return false; }
 
-	virtual void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf ) {}
+	virtual void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf ) {}
 
 	virtual void OnResourceLoadedOnGraphicsMemory() {}
 
@@ -199,7 +199,7 @@ public:
 
 	void SetWeakPtr( boost::weak_ptr<CMeshLoader> pSelf ) { m_pSelf = pSelf; }
 
-	const CGraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
+	const GraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
 
 	void RaiseStateFlags( U32 flags );
 
@@ -221,23 +221,23 @@ public:
 //--------------------------- inline implementations ---------------------------
 
 //==============================================================================
-// CGraphicsResourceLoader
+// GraphicsResourceLoader
 //==============================================================================
 
-inline boost::shared_ptr<CGraphicsResource> CGraphicsResourceLoader::GetResource()
+inline boost::shared_ptr<GraphicsResource> GraphicsResourceLoader::GetResource()
 {
-	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+	boost::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 
 	if( pEntry )
 		return pEntry->GetResource();
 	else
-		return boost::shared_ptr<CGraphicsResource>();
+		return boost::shared_ptr<GraphicsResource>();
 }
 
 
-inline const std::string& CGraphicsResourceLoader::GetSourceFilepath()
+inline const std::string& GraphicsResourceLoader::GetSourceFilepath()
 {
-	const CGraphicsResourceDesc *pDesc = GetDesc();
+	const GraphicsResourceDesc *pDesc = GetDesc();
 
 	if( pDesc )
 	{
@@ -246,7 +246,7 @@ inline const std::string& CGraphicsResourceLoader::GetSourceFilepath()
 	else
 		return g_NullString;
 
-/*	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+/*	boost::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry && pEntry->GetResource() )
 		return pEntry->GetResource()->GetDesc().ResourcePath;
 	else
@@ -256,19 +256,19 @@ inline const std::string& CGraphicsResourceLoader::GetSourceFilepath()
 
 
 /// loads a shader from disk
-class CShaderLoader : public CGraphicsResourceLoader
+class CShaderLoader : public GraphicsResourceLoader
 {
 	/// Stores filepath
-	CShaderResourceDesc m_ShaderDesc;
+	ShaderResourceDesc m_ShaderDesc;
 
 	/// Stores shader contents
 	stream_buffer m_ShaderTextBuffer;
 
 public:
 
-	CShaderLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry, const CShaderResourceDesc& desc )
+	CShaderLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const ShaderResourceDesc& desc )
 		:
-	CGraphicsResourceLoader(pEntry),
+	GraphicsResourceLoader(pEntry),
 	m_ShaderDesc(desc)
 	{}
 
@@ -282,7 +282,7 @@ public:
 
 //	void FillResourceDesc();
 
-	const CGraphicsResourceDesc *GetDesc() const { return &m_ShaderDesc; }
+	const GraphicsResourceDesc *GetDesc() const { return &m_ShaderDesc; }
 
 	bool CopyLoadedContentToGraphicsResource() { return true; }
 
@@ -292,7 +292,7 @@ public:
 
 	bool Unlock() { return true; }
 
-	void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
+	void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf );
 
 	bool LoadToGraphicsMemoryByRenderThread();
 };

@@ -32,9 +32,9 @@ public:
 
 	bool Load( const std::string& resource_path );
 
-	bool Load( const CMeshResourceDesc& desc );
+	bool Load( const MeshResourceDesc& desc );
 
-	boost::shared_ptr<CMeshResource> GetMeshResource();
+	boost::shared_ptr<MeshResource> GetMeshResource();
 
 	inline virtual const MeshHandle &operator=( const MeshHandle& handle );
 

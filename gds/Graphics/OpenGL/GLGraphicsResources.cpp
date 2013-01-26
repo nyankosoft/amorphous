@@ -72,9 +72,9 @@ public:
 };
 
 
-CGLTextureResource::CGLTextureResource( const CTextureResourceDesc *pDesc )
+CGLTextureResource::CGLTextureResource( const TextureResourceDesc *pDesc )
 :
-CTextureResource(pDesc)
+TextureResource(pDesc)
 {
 	m_TextureID = 0;
 }
@@ -179,7 +179,7 @@ inline static int CalcNumMipmaps( int src )
 }
 
 
-inline static int GetNumMipmaps( const CTextureResourceDesc& desc )
+inline static int GetNumMipmaps( const TextureResourceDesc& desc )
 {
 	if( 0 < desc.MipLevels )
 		return desc.MipLevels;
@@ -282,7 +282,7 @@ bool CGLTextureResource::UpdateGLTextureImage( GLenum target, int level, int wid
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-	CTextureResourceDesc& desc = m_TextureDesc;
+	TextureResourceDesc& desc = m_TextureDesc;
 
 //	GLint level = 0;
 //	GLint level = (0 < desc.MipLevels) ? (desc.MipLevels - 1) : min( mip_level_calc(desc.Width), mip_level_calc(desc.Height) );
@@ -344,7 +344,7 @@ bool CGLTextureResource::UpdateGLTextureImage( GLenum target, int level, int wid
 
 bool CGLTextureResource::CreateFromDesc()
 {
-	const CTextureResourceDesc& desc = m_TextureDesc;
+	const TextureResourceDesc& desc = m_TextureDesc;
 
 	glGenTextures( 1, &m_TextureID );
 
@@ -424,9 +424,9 @@ void CGLTextureResource::Release()
 // CGLShaderResource
 //==================================================================================================
 
-CGLShaderResource::CGLShaderResource( const CShaderResourceDesc *pDesc )
+CGLShaderResource::CGLShaderResource( const ShaderResourceDesc *pDesc )
 :
-CShaderResource( pDesc )
+ShaderResource( pDesc )
 {
 }
 

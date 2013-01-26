@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CD3DTextureResource : public CTextureResource
+class CD3DTextureResource : public TextureResource
 {
 	LPDIRECT3DTEXTURE9 m_pTexture;
 
@@ -19,8 +19,8 @@ class CD3DTextureResource : public CTextureResource
 protected:
 
 	/// Release texture without changing the reference count
-	/// called only from CGraphicsResourceManager
-	/// and from CTextureResource if Refresh() is used
+	/// called only from GraphicsResourceManager
+	/// and from TextureResource if Refresh() is used
 	virtual void Release();
 
 	/// returns false if m_TextureDesc has valid width, height, and format 
@@ -30,7 +30,7 @@ protected:
 	/// - texture settings are read from m_TextureDesc
 	bool CreateFromDesc();
 
-//	void UpdateDescForCachedResource( const CGraphicsResourceDesc& desc );
+//	void UpdateDescForCachedResource( const GraphicsResourceDesc& desc );
 
 	virtual LPDIRECT3DBASETEXTURE9 GetD3DBaseTexture() { return m_pTexture; }
 
@@ -38,11 +38,11 @@ protected:
 
 	virtual LPDIRECT3DSURFACE9 GetPrimaryTextureSurface();
 
-	virtual HRESULT CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
+	virtual HRESULT CreateD3DTexture( const TextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
 
 public:
 
-	CD3DTextureResource( const CTextureResourceDesc *pDesc );
+	CD3DTextureResource( const TextureResourceDesc *pDesc );
 
 	virtual ~CD3DTextureResource();
 
@@ -52,9 +52,9 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
-//	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+//	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-//	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
+//	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
 
 	inline LPDIRECT3DTEXTURE9 GetTexture();
 
@@ -78,7 +78,7 @@ public:
 	/// Called by the render thread.
 	bool Create();
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 };
 
 
@@ -90,7 +90,7 @@ private:
 
 	LPDIRECT3DBASETEXTURE9 GetD3DBaseTexture() { return m_pCubeTexture; }
 
-	HRESULT CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
+	HRESULT CreateD3DTexture( const TextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
 
 	HRESULT CreateD3DTextureFromFile( const std::string& filepath );
 
@@ -99,7 +99,7 @@ private:
 
 
 /*
-class CMeshSubResource
+class MeshSubResource
 {
 public:
 	enum Name
@@ -112,13 +112,13 @@ public:
 };
 
 
-class CMeshResource : public CGraphicsResource
+class MeshResource : public GraphicsResource
 {
 	boost::shared_ptr<CD3DXMeshObjectBase> m_pMeshObject;
 
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
-	GraphicsResourceState::Name m_aSubResourceState[CMeshSubResource::NUM_SUBRESOURCES];
+	GraphicsResourceState::Name m_aSubResourceState[MeshSubResource::NUM_SUBRESOURCES];
 
 protected:
 
@@ -134,9 +134,9 @@ protected:
 
 public:
 
-	CMeshResource( const CMeshResourceDesc *pDesc );
+	MeshResource( const MeshResourceDesc *pDesc );
 
-	virtual ~CMeshResource();
+	virtual ~MeshResource();
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
@@ -144,9 +144,9 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
-	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	int CanBeUsedAsCache( const CGraphicsResourceDesc& desc );
+	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
 
 	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
 
@@ -154,7 +154,7 @@ public:
 
 	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
-	const CGraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
+	const GraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
 
 	void GetStatus( char *pDestBuffer );
 
@@ -164,15 +164,15 @@ public:
 
 	bool Create();
 
-	void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
+	void SetSubResourceState( MeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	void CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive );
 
-	friend class CGraphicsResourceManager;
+	friend class GraphicsResourceManager;
 };
 */
 
-class CD3DShaderResource : public CShaderResource
+class CD3DShaderResource : public ShaderResource
 {
 protected:
 
@@ -186,15 +186,15 @@ protected:
 
 public:
 
-	CD3DShaderResource( const CShaderResourceDesc *pDesc );
+	CD3DShaderResource( const ShaderResourceDesc *pDesc );
 
 	~CD3DShaderResource();
 /*
 	virtual bool LoadFromFile( const std::string& filepath );
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
-//	virtual bool CanBeSharedAsSameResource( const CGraphicsResourceDesc& desc );
+//	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	friend class CGraphicsResourceManager;*/
+	friend class GraphicsResourceManager;*/
 };
 
 

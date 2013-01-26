@@ -41,31 +41,31 @@ public:
 // CD3DGraphicsResourceFactoryImpl
 //=======================================================================================
 
-class CD3DGraphicsResourceFactoryImpl : public CGraphicsResourceFactoryImpl
+class CD3DGraphicsResourceFactoryImpl : public GraphicsResourceFactoryImpl
 {
 public:
 
-//	CreateGraphicsResource( CGraphicsResourceDesc &desc );
+//	CreateGraphicsResource( GraphicsResourceDesc &desc );
 
-	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc );
-	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc );
-	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
+	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
+	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
+	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
 };
 
 
-shared_ptr<CTextureResource> CD3DGraphicsResourceFactoryImpl::CreateTextureResource( const CTextureResourceDesc& desc )
+shared_ptr<TextureResource> CD3DGraphicsResourceFactoryImpl::CreateTextureResource( const TextureResourceDesc& desc )
 {
 	return shared_ptr<CD3DTextureResource>( new CD3DTextureResource(&desc) );
 }
 
-shared_ptr<CMeshResource> CD3DGraphicsResourceFactoryImpl::CreateMeshResource( const CMeshResourceDesc& desc )
+shared_ptr<MeshResource> CD3DGraphicsResourceFactoryImpl::CreateMeshResource( const MeshResourceDesc& desc )
 {
-	return shared_ptr<CMeshResource>( new CMeshResource(&desc) );
+	return shared_ptr<MeshResource>( new MeshResource(&desc) );
 }
 
-shared_ptr<CShaderResource> CD3DGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
+shared_ptr<ShaderResource> CD3DGraphicsResourceFactoryImpl::CreateShaderResource( const ShaderResourceDesc& desc )
 {
-	return shared_ptr<CShaderResource>( new CD3DShaderResource(&desc) );
+	return shared_ptr<ShaderResource>( new CD3DShaderResource(&desc) );
 }
 
 
@@ -73,7 +73,7 @@ Result::Name InitializeDirect3DClasses()
 {
 	PrimitiveRendererPtr() = &PrimitiveRenderer_D3D();
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_D3D();
-	GraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );
+	GetGraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
 	GetMeshImplFactory().reset( new CD3DMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );

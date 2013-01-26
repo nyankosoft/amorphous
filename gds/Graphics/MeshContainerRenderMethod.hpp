@@ -34,7 +34,7 @@ class CSubsetRenderMethod : public IArchiveObjectBase
 {
 public:
 
-	CShaderResourceDesc m_ShaderDesc;
+	ShaderResourceDesc m_ShaderDesc;
 
 	ShaderHandle m_Shader;
 	CShaderTechniqueHandle m_Technique;

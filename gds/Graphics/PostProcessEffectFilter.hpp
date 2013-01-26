@@ -69,7 +69,7 @@ class CRenderTargetTextureHolder
 public:
 	LPDIRECT3DSURFACE9 m_pTexSurf;
 	TextureHandle m_Texture;
-	CTextureResourceDesc m_Desc;
+	TextureResourceDesc m_Desc;
 
 	CRenderTargetTextureHolder()
 		:
@@ -126,13 +126,13 @@ public:
 	/// Returns the number of textures that match the description of desc
 	/// and currently exist in the cache.
 	/// Checks only width, height and surface format of the desc
-	int GetNumTextures( const CTextureResourceDesc& desc );
+	int GetNumTextures( const TextureResourceDesc& desc );
 
-	Result::Name AddTexture( const CTextureResourceDesc& desc );
+	Result::Name AddTexture( const TextureResourceDesc& desc );
 
 	Result::Name AddTexture( int width, int height, TextureFormat::Format format );
 
-	boost::shared_ptr<CRenderTargetTextureHolder> GetTexture( const CTextureResourceDesc& desc );
+	boost::shared_ptr<CRenderTargetTextureHolder> GetTexture( const TextureResourceDesc& desc );
 
 	void SetSelfPtr( boost::weak_ptr<RenderTargetTextureCache> pSelf ) { m_pSelf = pSelf; }
 
@@ -163,7 +163,7 @@ protected:
 	boost::shared_ptr<CRenderTargetTextureHolder> m_pPrevScene;
 
 	/// The specification of the render target.
-	CTextureResourceDesc m_Desc;
+	TextureResourceDesc m_Desc;
 
 	RECT m_SourceRect;
 

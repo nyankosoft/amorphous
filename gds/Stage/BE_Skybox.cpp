@@ -47,7 +47,7 @@ CBE_Skybox::~CBE_Skybox()
 
 void CBE_Skybox::Init()
 {
-	CMeshResourceDesc& mesh_desc = m_MeshProperty.m_MeshDesc;
+	MeshResourceDesc& mesh_desc = m_MeshProperty.m_MeshDesc;
 	if( !lfs::file_exists( mesh_desc.ResourcePath ) )
 	{
 		// The default mesh for skybox, which is currently "./Model/skybox.msh", was not found;
@@ -187,7 +187,7 @@ void CBE_Skybox::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopy
 
 bool CBE_Skybox::LoadSkyboxTexture( const std::string& texture_filename )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	if( texture_filename.length() == 0 )
 	{
 		const CBuiltinImage& default_sky_image = GetDefaultBuiltinSkyTexture();
@@ -213,7 +213,7 @@ bool CBE_Skybox::GetFogColor( SFloatRGBAColor& dest )
 	if( !GetSkyboxTexture().GetEntry() )
 		return false;
 
-	boost::shared_ptr<CTextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
+	boost::shared_ptr<TextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
 	if( !pTexResource )
 		return false;
 

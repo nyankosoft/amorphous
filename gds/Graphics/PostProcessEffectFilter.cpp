@@ -18,13 +18,13 @@ using namespace boost;
 
 
 /// Does not consider the current lock count
-int RenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc )
+int RenderTargetTextureCache::GetNumTextures( const TextureResourceDesc& desc )
 {
 	int num_matches = 0;
 	size_t i=0;
 	for( i=0; i<m_vecpHolder.size(); i++ )
 	{
-		CTextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
+		TextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
 		if( current.Width     == desc.Width
 		 && current.Height    == desc.Height
 		 && current.Format    == desc.Format
@@ -38,7 +38,7 @@ int RenderTargetTextureCache::GetNumTextures( const CTextureResourceDesc& desc )
 }
 
 
-Result::Name RenderTargetTextureCache::AddTexture( const CTextureResourceDesc& desc )
+Result::Name RenderTargetTextureCache::AddTexture( const TextureResourceDesc& desc )
 {
 	TextureHandle new_tex;
 	bool created = new_tex.Load( desc );
@@ -51,7 +51,7 @@ Result::Name RenderTargetTextureCache::AddTexture( const CTextureResourceDesc& d
 	m_vecpHolder.back()->m_Texture = new_tex;
 
 	// debug - check the texture which was just created.
-	shared_ptr<CTextureResource> pTex = new_tex.GetEntry()->GetTextureResource();
+	shared_ptr<TextureResource> pTex = new_tex.GetEntry()->GetTextureResource();
 	D3DSURFACE_DESC surf_desc;
 	if( pTex && pTex->GetTexture() )
 	{
@@ -64,7 +64,7 @@ Result::Name RenderTargetTextureCache::AddTexture( const CTextureResourceDesc& d
 
 Result::Name RenderTargetTextureCache::AddTexture( int width, int height, TextureFormat::Format format )
 {
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Width     = width;
 	tex_desc.Height    = height;
 	tex_desc.Format    = format;
@@ -74,12 +74,12 @@ Result::Name RenderTargetTextureCache::AddTexture( int width, int height, Textur
 }
 
 
-boost::shared_ptr<CRenderTargetTextureHolder> RenderTargetTextureCache::GetTexture( const CTextureResourceDesc& desc )
+boost::shared_ptr<CRenderTargetTextureHolder> RenderTargetTextureCache::GetTexture( const TextureResourceDesc& desc )
 {
 	size_t i=0;
 	for( i=0; i<m_vecpHolder.size(); i++ )
 	{
-		const CTextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
+		const TextureResourceDesc& current = m_vecpHolder[i]->m_Desc;
 		if( current.Width     == desc.Width
 		 && current.Height    == desc.Height
 		 && current.Format    == desc.Format

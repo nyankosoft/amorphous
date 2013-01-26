@@ -25,7 +25,7 @@ public:
 
 	bool Load( const std::string& resource_path );
 
-	bool Load( const CShaderResourceDesc& desc );
+	bool Load( const ShaderResourceDesc& desc );
 
 	static const ShaderHandle& Null() { return ms_NullHandle; }
 

@@ -1,5 +1,5 @@
-#ifndef __D3DCGraphicsResourceLoaders_HPP__
-#define __D3DCGraphicsResourceLoaders_HPP__
+#ifndef __D3DGraphicsResourceLoaders_HPP__
+#define __D3DGraphicsResourceLoaders_HPP__
 
 
 #include "../GraphicsResourceLoaders.hpp"
@@ -26,7 +26,7 @@ public:
 
 	void LoadMeshSubresources();
 
-	void OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf );
+	void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf );
 
 	void OnResourceLoadedOnGraphicsMemory();
 
@@ -38,14 +38,14 @@ public:
 };
 
 
-class CD3DXMeshLoaderBase : public CGraphicsResourceLoader
+class CD3DXMeshLoaderBase : public GraphicsResourceLoader
 {
 protected:
 
 	/// entry to that stores the loaded resource
-//	boost::weak_ptr<CGraphicsResourceEntry> m_pMeshEntry;
+//	boost::weak_ptr<GraphicsResourceEntry> m_pMeshEntry;
 
-//	CMeshResourceDesc m_Desc;
+//	MeshResourceDesc m_Desc;
 
 	boost::shared_ptr<C3DMeshModelArchive> m_pArchive;
 
@@ -55,9 +55,9 @@ protected:
 
 public:
 
-	CD3DXMeshLoaderBase( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	CD3DXMeshLoaderBase( boost::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
-	CGraphicsResourceLoader(pEntry)
+	GraphicsResourceLoader(pEntry)
 	{}
 
 	virtual ~CD3DXMeshLoaderBase() {}
@@ -70,9 +70,9 @@ public:
 
 	virtual bool LoadFromArchive() = 0;
 
-	inline GraphicsResourceState::Name GetSubResourceState( CMeshSubResource::Name subresource ) const;
+	inline GraphicsResourceState::Name GetSubResourceState( MeshSubResource::Name subresource ) const;
 
-	inline void SetSubResourceState( CMeshSubResource::Name subresource, GraphicsResourceState::Name state );
+	inline void SetSubResourceState( MeshSubResource::Name subresource, GraphicsResourceState::Name state );
 
 	CD3DXMeshObjectBase *GetD3DMeshImpl();
 
@@ -95,7 +95,7 @@ protected:
 
 public:
 
-	CD3DXMeshVerticesLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	CD3DXMeshVerticesLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	CD3DXMeshLoaderBase(pEntry),
 	m_pLockedVertexBuffer(NULL),
@@ -136,7 +136,7 @@ protected:
 
 public:
 
-	CD3DXMeshIndicesLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	CD3DXMeshIndicesLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	CD3DXMeshLoaderBase(pEntry),
 	m_pLockedIndexBuffer(NULL),
@@ -170,7 +170,7 @@ protected:
 
 public:
 
-	CD3DXMeshAttributeTableLoader( boost::weak_ptr<CGraphicsResourceEntry> pEntry )
+	CD3DXMeshAttributeTableLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	CD3DXMeshLoaderBase(pEntry),
 	m_pLockedAttributeBuffer(NULL)
@@ -204,10 +204,10 @@ public:
 
 inline BasicMesh *CD3DXMeshLoaderBase::GetMesh()
 {
-	boost::shared_ptr<CGraphicsResourceEntry> pEntry = GetResourceEntry();
+	boost::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry )
 	{
-		boost::shared_ptr<CMeshResource> pMesh = pEntry->GetMeshResource();
+		boost::shared_ptr<MeshResource> pMesh = pEntry->GetMeshResource();
 
 		if( pMesh )
 			return pMesh->GetMeshInLoading().get();
@@ -219,7 +219,7 @@ inline BasicMesh *CD3DXMeshLoaderBase::GetMesh()
 }
 
 
-inline GraphicsResourceState::Name CD3DXMeshLoaderBase::GetSubResourceState( CMeshSubResource::Name subresource ) const
+inline GraphicsResourceState::Name CD3DXMeshLoaderBase::GetSubResourceState( MeshSubResource::Name subresource ) const
 {
 	if( GetResourceEntry()
 	 && GetResourceEntry()->GetMeshResource() )
@@ -231,7 +231,7 @@ inline GraphicsResourceState::Name CD3DXMeshLoaderBase::GetSubResourceState( CMe
 }
 
 
-inline void CD3DXMeshLoaderBase::SetSubResourceState( CMeshSubResource::Name subresource,
+inline void CD3DXMeshLoaderBase::SetSubResourceState( MeshSubResource::Name subresource,
 													  GraphicsResourceState::Name state )
 {
 	if( GetResourceEntry()
@@ -246,4 +246,4 @@ inline void CD3DXMeshLoaderBase::SetSubResourceState( CMeshSubResource::Name sub
 
 
 
-#endif /* __D3DCGraphicsResourceLoaders_HPP__ */
+#endif /* __D3DGraphicsResourceLoaders_HPP__ */

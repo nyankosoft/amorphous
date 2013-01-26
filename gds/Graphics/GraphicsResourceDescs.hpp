@@ -56,7 +56,7 @@ public:
 };
 
 
-class CGraphicsResourceDesc : public IArchiveObjectBase
+class GraphicsResourceDesc : public IArchiveObjectBase
 {
 	bool m_IsCachedResource;
 
@@ -78,7 +78,7 @@ public:
 
 public:
 
-	inline CGraphicsResourceDesc();
+	inline GraphicsResourceDesc();
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
@@ -88,27 +88,27 @@ public:
 
 	bool IsCachedResource() const { return m_IsCachedResource; }
 
-	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const = 0;
+	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const = 0;
 
-	virtual bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const { return false; }
-	virtual bool CanBeSharedAsSameMeshResource( const CMeshResourceDesc& desc ) const { return false; }
-	virtual bool CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const { return false; }
+	virtual bool CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const { return false; }
+	virtual bool CanBeSharedAsSameMeshResource( const MeshResourceDesc& desc ) const { return false; }
+	virtual bool CanBeSharedAsSameShaderResource( const ShaderResourceDesc& desc ) const { return false; }
 
 	/// Returns the score that shows how much the cache is preferable to be used as the requested resource.
 	/// 0 means the cache cannot be used for a requested resource.
 	/// These CanBeUsedAsXXXCache() should actually be CanUseAsXXXCache()?
-	virtual int CanBeUsedAsTextureCache( const CTextureResourceDesc& desc ) const { return 0; }
-	virtual int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const { return 0; } // CanUseAsMeshCache
-	virtual int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
+	virtual int CanBeUsedAsTextureCache( const TextureResourceDesc& desc ) const { return 0; }
+	virtual int CanBeUsedAsMeshCache( const MeshResourceDesc& desc ) const { return 0; } // CanUseAsMeshCache
+	virtual int CanBeUsedAsShaderCache( const ShaderResourceDesc& desc ) const { return 0; }
 
 	/// Copy attributes to the desc of the cached resource
 	/// e.g., resource path
 	/// - Cached texture resources maintain preloaded empty textures.
 	///   A resource path (usu. a filepath) needs to be copied to it every time a new texture is loaded
 	///   so that the same texture can be shared by multiple texture handles.
-	virtual void UpdateCachedTextureResourceDesc( CTextureResourceDesc& desc ) const {}
-	virtual void UpdateCachedMeshResourceDesc( CMeshResourceDesc& desc ) const {}
-	virtual void UpdateCachedShaderResourceDesc( CTextureResourceDesc& desc ) const {}
+	virtual void UpdateCachedTextureResourceDesc( TextureResourceDesc& desc ) const {}
+	virtual void UpdateCachedMeshResourceDesc( MeshResourceDesc& desc ) const {}
+	virtual void UpdateCachedShaderResourceDesc( TextureResourceDesc& desc ) const {}
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -119,15 +119,15 @@ public:
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
-	friend class CGraphicsResourceCacheManager;
+	friend class GraphicsResourceCacheManager;
 };
 
 
-class CTextureResourceDesc : public CGraphicsResourceDesc
+class TextureResourceDesc : public GraphicsResourceDesc
 {
 public:
 
-	/// Used together with the texture loader (CTextureResourceDesc::pLoader).
+	/// Used together with the texture loader (TextureResourceDesc::pLoader).
 	/// If you load texture from disk (i.e. file or database(CBinaryDatabase)),
 	/// there is nothing you have to do with these variables (Width and Height).
 	int Width;
@@ -144,7 +144,7 @@ public:
 
 public:
 
-	CTextureResourceDesc()
+	TextureResourceDesc()
 		:
 	Width(0),
 	Height(0),
@@ -157,11 +157,11 @@ public:
 
 	virtual bool IsValid() const;
 
-	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CTextureResourceDesc>( new CTextureResourceDesc(*this) ); }
+	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<TextureResourceDesc>( new TextureResourceDesc(*this) ); }
 
-	bool CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const;
+	bool CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const;
 
-	int CanBeUsedAsTextureCache( const CTextureResourceDesc& desc ) const
+	int CanBeUsedAsTextureCache( const TextureResourceDesc& desc ) const
 	{
 		if( Width     == desc.Width
 		 && Height    == desc.Height
@@ -172,7 +172,7 @@ public:
 			return 0;
 	}
 
-	void UpdateCachedTextureResourceDesc( CTextureResourceDesc& desc ) const
+	void UpdateCachedTextureResourceDesc( TextureResourceDesc& desc ) const
 	{
 		desc.ResourcePath = ResourcePath;
 		desc.pLoader      = pLoader;
@@ -180,7 +180,7 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CGraphicsResourceDesc::Serialize( ar, version );
+		GraphicsResourceDesc::Serialize( ar, version );
 
 		ar & Width & Height & MipLevels;
 		ar & (int&)Format;
@@ -190,7 +190,7 @@ public:
 };
 
 
-class CMeshResourceDesc : public CGraphicsResourceDesc
+class MeshResourceDesc : public GraphicsResourceDesc
 {
 public:
 
@@ -219,15 +219,15 @@ public:
 
 public:
 
-	inline CMeshResourceDesc();
+	inline MeshResourceDesc();
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
 	bool IsValid() const;
 
-	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CMeshResourceDesc>( new CMeshResourceDesc(*this) ); }
+	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<MeshResourceDesc>( new MeshResourceDesc(*this) ); }
 
-	bool CanBeSharedAsSameMeshResource( const CMeshResourceDesc& desc ) const
+	bool CanBeSharedAsSameMeshResource( const MeshResourceDesc& desc ) const
 	{
 		if( MeshType        == desc.MeshType
 		 && LoadOptionFlags == desc.LoadOptionFlags )
@@ -242,16 +242,16 @@ public:
 			return false;
 	}
 
-	int CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const;
+	int CanBeUsedAsMeshCache( const MeshResourceDesc& desc ) const;
 
-	void UpdateCachedTextureResourceDesc( CMeshResourceDesc& desc ) const
+	void UpdateCachedTextureResourceDesc( MeshResourceDesc& desc ) const
 	{
 		desc.ResourcePath = ResourcePath;
 	}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CGraphicsResourceDesc::Serialize( ar, version );
+		GraphicsResourceDesc::Serialize( ar, version );
 
 		ar & (int&)MeshType;
 		ar & LoadOptionFlags;
@@ -276,7 +276,7 @@ public:
 };
 
 
-class CShaderResourceDesc : public CGraphicsResourceDesc
+class ShaderResourceDesc : public GraphicsResourceDesc
 {
 public:
 
@@ -284,7 +284,7 @@ public:
 
 	boost::shared_ptr<CShaderGenerator> pShaderGenerator;
 
-	CShaderResourceDesc()
+	ShaderResourceDesc()
 		:
 	ShaderType(CShaderType::PROGRAMMABLE)
 	{}
@@ -293,20 +293,20 @@ public:
 
 	virtual bool IsValid() const;
 
-	virtual boost::shared_ptr<CGraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<CShaderResourceDesc>( new CShaderResourceDesc(*this) ); }
+	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<ShaderResourceDesc>( new ShaderResourceDesc(*this) ); }
 
-	virtual bool CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const;
+	virtual bool CanBeSharedAsSameShaderResource( const ShaderResourceDesc& desc ) const;
 
-	int CanBeUsedAsShaderCache( const CShaderResourceDesc& desc ) const { return 0; }
+	int CanBeUsedAsShaderCache( const ShaderResourceDesc& desc ) const { return 0; }
 
-	void UpdateCachedTextureResourceDesc( CMeshResourceDesc& desc ) const
+	void UpdateCachedTextureResourceDesc( MeshResourceDesc& desc ) const
 	{
 		desc.ResourcePath = ResourcePath;
 	}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CGraphicsResourceDesc::Serialize( ar, version );
+		GraphicsResourceDesc::Serialize( ar, version );
 	}
 };
 
@@ -314,10 +314,10 @@ public:
 //-------------------------------------- inline implementations --------------------------------------
 
 //==================================================================================================
-// CGraphicsResourceDesc and its derived classes
+// GraphicsResourceDesc and its derived classes
 //==================================================================================================
 
-inline CGraphicsResourceDesc::CGraphicsResourceDesc()
+inline GraphicsResourceDesc::GraphicsResourceDesc()
 :
 m_IsCachedResource(false),
 LoadingMode(CResourceLoadingMode::SYNCHRONOUS),
@@ -327,7 +327,7 @@ Sharable(true)
 {}
 
 
-inline CMeshResourceDesc::CMeshResourceDesc()
+inline MeshResourceDesc::MeshResourceDesc()
 :
 MeshType(CMeshType::BASIC),
 NumVertices(0),

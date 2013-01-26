@@ -10,14 +10,14 @@ namespace amorphous
 using namespace boost;
 
 
-CSingleton<CAsyncResourceLoader> CAsyncResourceLoader::m_obj;
+CSingleton<AsyncResourceLoader> AsyncResourceLoader::m_obj;
 
 
-CAsyncResourceLoader::CAsyncResourceLoader()
+AsyncResourceLoader::AsyncResourceLoader()
 :
 m_bEndIOThread(false)
 {
-	if( !GraphicsResourceManager().IsAsyncLoadingAllowed() )
+	if( !GetGraphicsResourceManager().IsAsyncLoadingAllowed() )
 	{
 		// asynchronous loading is turned off
 		return;
@@ -30,14 +30,14 @@ m_bEndIOThread(false)
 }
 
 
-CAsyncResourceLoader::~CAsyncResourceLoader()
+AsyncResourceLoader::~AsyncResourceLoader()
 {
 	Release();
 }
 
 
 /// Release the resource IO thread
-void CAsyncResourceLoader::Release()
+void AsyncResourceLoader::Release()
 {
 	if( m_pIOThread )
 	{
@@ -48,7 +48,7 @@ void CAsyncResourceLoader::Release()
 }
 
 
-bool CAsyncResourceLoader::AddResourceLoadRequest( const CResourceLoadRequest& req )
+bool AsyncResourceLoader::AddResourceLoadRequest( const CResourceLoadRequest& req )
 {
 	mutex::scoped_lock scoped_lock(m_IOMutex);
 
@@ -58,7 +58,7 @@ bool CAsyncResourceLoader::AddResourceLoadRequest( const CResourceLoadRequest& r
 }
 
 
-bool CAsyncResourceLoader::AddGraphicsDeviceRequest( const CGraphicsDeviceRequest& req )
+bool AsyncResourceLoader::AddGraphicsDeviceRequest( const CGraphicsDeviceRequest& req )
 {
 	mutex::scoped_lock scoped_lock(m_GraphicsDeviceMutex);
 
@@ -68,18 +68,18 @@ bool CAsyncResourceLoader::AddGraphicsDeviceRequest( const CGraphicsDeviceReques
 }
 
 
-void CAsyncResourceLoader::IOThreadMain()
+void AsyncResourceLoader::IOThreadMain()
 {
 	ProcessResourceLoadRequests();
 }
 
 
-void CAsyncResourceLoader::ProcessResourceLoadRequest()
+void AsyncResourceLoader::ProcessResourceLoadRequest()
 {
 	bool copied = false;
 	Result::Name res = Result::SUCCESS;
-	shared_ptr<CGraphicsResourceLoader> pLoader;
-	CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, shared_ptr<CGraphicsResourceLoader>(), weak_ptr<CGraphicsResourceEntry>() );
+	shared_ptr<GraphicsResourceLoader> pLoader;
+	CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, shared_ptr<GraphicsResourceLoader>(), weak_ptr<GraphicsResourceEntry>() );
 
 	if( 0 < m_ResourceLoadRequestQueue.size() )
 	{
@@ -153,7 +153,7 @@ void CAsyncResourceLoader::ProcessResourceLoadRequest()
 
 
 /// called by file IO thread
-void CAsyncResourceLoader::ProcessResourceLoadRequests()
+void AsyncResourceLoader::ProcessResourceLoadRequests()
 {
 	boost::xtime xt;
 	boost::xtime_get(&xt, boost::TIME_UTC);
@@ -168,13 +168,13 @@ void CAsyncResourceLoader::ProcessResourceLoadRequests()
 }
 
 
-void CAsyncResourceLoader::ProcessGraphicsDeviceRequests()
+void AsyncResourceLoader::ProcessGraphicsDeviceRequests()
 {
 	PROFILE_FUNCTION();
 
 	bool resource_locked = false;
-	shared_ptr<CGraphicsResourceEntry> pSrcEntry, pEntry;
-	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, shared_ptr<CGraphicsResourceLoader>(), weak_ptr<CGraphicsResourceEntry>() );
+	shared_ptr<GraphicsResourceEntry> pSrcEntry, pEntry;
+	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, shared_ptr<GraphicsResourceLoader>(), weak_ptr<GraphicsResourceEntry>() );
 	bool res = false;
 
 	for( int i=0; i<1; i++ )

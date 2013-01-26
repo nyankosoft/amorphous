@@ -16,18 +16,18 @@ using namespace std;
 const ShaderHandle ShaderHandle::ms_NullHandle;
 
 
-bool ShaderHandle::Load( const CShaderResourceDesc& desc )
+bool ShaderHandle::Load( const ShaderResourceDesc& desc )
 {
 	Release();
 
 	// TODO: support asynchronous loading
 	if( true /*desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS*/ )
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadShaderManager( desc );
+		m_pResourceEntry = GetGraphicsResourceManager().LoadShaderManager( desc );
 	}
 	else
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadAsync( desc );
+		m_pResourceEntry = GetGraphicsResourceManager().LoadAsync( desc );
 	}
 
 	if( m_pResourceEntry )
@@ -39,7 +39,7 @@ bool ShaderHandle::Load( const CShaderResourceDesc& desc )
 
 bool ShaderHandle::Load( const std::string& resource_path )
 {
-	CShaderResourceDesc desc;
+	ShaderResourceDesc desc;
 	desc.ResourcePath = resource_path;
 	return Load( desc );
 }

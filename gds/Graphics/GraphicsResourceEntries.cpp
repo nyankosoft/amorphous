@@ -42,10 +42,10 @@ inline bool str_includes( const std::string& src, const std::string& target )
 
 
 //==================================================================================================
-// CGraphicsResourceEntry
+// GraphicsResourceEntry
 //==================================================================================================
 
-void CGraphicsResourceEntry::GetStatus( std::string& dest_buffer )
+void GraphicsResourceEntry::GetStatus( std::string& dest_buffer )
 {
 	dest_buffer += "ref: ";
 

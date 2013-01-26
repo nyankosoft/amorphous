@@ -376,7 +376,7 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 
 	size_t i, num_meshes = archive.m_vecMeshArchiveKey.size();
 
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	m_vecMesh.resize( num_meshes );
 	for( i=0; i<num_meshes; i++ )
 	{

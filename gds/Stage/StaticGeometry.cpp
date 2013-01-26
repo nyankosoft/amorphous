@@ -40,7 +40,7 @@ const char *CStaticGeometryDBKey::GraphicsMeshArchive     = "GraphicsMeshArchive
 
 void CreateCachedResources()
 {
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Format    = TextureFormat::A8R8G8B8;
 	tex_desc.Width     = 1024;
 	tex_desc.Height    = 1024;
@@ -50,7 +50,7 @@ void CreateCachedResources()
 	const int num_textures_to_preload = 8;
 	for( int i=0; i<num_textures_to_preload; i++ )
 	{
-		GraphicsResourceCacheManager().AddCache( tex_desc );
+		GetGraphicsResourceCacheManager().AddCache( tex_desc );
 	}
 }
 

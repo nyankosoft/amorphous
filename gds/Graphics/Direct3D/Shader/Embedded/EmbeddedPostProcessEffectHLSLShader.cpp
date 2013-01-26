@@ -456,7 +456,7 @@ const char *CEmbeddedPostProcessEffectHLSLShader::m_pHDR =
 
 void InitPPEffectShader()
 {
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	shader_desc.pShaderGenerator.reset( new CPostProcessEffectFilterShaderGenerator("monochrome") );
 }
 

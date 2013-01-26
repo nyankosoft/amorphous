@@ -269,7 +269,7 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 //		ShaderHandle m_VertexShader;
 //		ShaderHandle m_FragmentShader;
 
-		CShaderResourceDesc vs_desc, fs_desc;
+		ShaderResourceDesc vs_desc, fs_desc;
 
 		// vertex program
 		vs_desc.ResourcePath = vs_path;

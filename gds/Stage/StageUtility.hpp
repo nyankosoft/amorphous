@@ -104,7 +104,7 @@ public:
 
 class CStageMiscUtility : public CStageUtility
 {
-	CEntityHandle<> CreatePhysicsEntity( CMeshResourceDesc& mesh_desc,
+	CEntityHandle<> CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
@@ -113,7 +113,7 @@ class CStageMiscUtility : public CStageUtility
 								  float mass,
 								  bool static_actor );
 
-	CEntityHandle<> CreateBoxEntity( CMeshResourceDesc& mesh_desc,
+	CEntityHandle<> CreateBoxEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
@@ -122,7 +122,7 @@ class CStageMiscUtility : public CStageUtility
 								  const std::string& material_name,
 								  bool static_actor );
 
-	CEntityHandle<> CreateCylinderEntity( CMeshResourceDesc& mesh_desc,
+	CEntityHandle<> CreateCylinderEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -131,7 +131,7 @@ class CStageMiscUtility : public CStageUtility
 							  const std::string& material_name,
 							  bool static_actor );
 
-	CEntityHandle<> CreateSphereEntity( CMeshResourceDesc& mesh_desc,
+	CEntityHandle<> CreateSphereEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
@@ -140,7 +140,7 @@ class CStageMiscUtility : public CStageUtility
 								  const std::string& material_name,
 								  bool static_actor );
 
-	CEntityHandle<> CreateBoxesEntity( CMeshResourceDesc& mesh_desc,
+	CEntityHandle<> CreateBoxesEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -253,7 +253,7 @@ public:
 								float mass = 1.0f,
 								const std::string& material_name = "default" )
 	{
-		CMeshResourceDesc mesh_desc;
+		MeshResourceDesc mesh_desc;
 		mesh_desc.ResourcePath = model;
 		Vector3 vel( Vector3(0,0,0) );
 //		std::string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";

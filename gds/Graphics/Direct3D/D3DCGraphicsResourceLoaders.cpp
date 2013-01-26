@@ -55,7 +55,7 @@ void CD3DMeshLoader::LoadMeshSubresources()
 
 /// Called by I/O thread after the mesh archive is loaded and stored to 'm_pArchive'
 /// - Usually loaded from disk
-void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoader> pSelf )
+void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	// change this to true if async loading is fixed
 	bool preferred_async_loading_method = false;
@@ -64,7 +64,7 @@ void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoad
 	{
 		LOG_PRINT( "Sending a LoadToGraphicsMemoryByRenderThread request for a mesh: " + m_MeshDesc.ResourcePath );
 		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
-		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+		GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
 		return;
 	}
 
@@ -72,7 +72,7 @@ void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoad
 	//   - Actually does not lock. Send the lock request to call AcquireResource.
 	//   - Must be processed before the lock requrests of the subresources below.
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, pSelf, GetResourceEntry() );
-	AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+	GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
 
 	// create subresource loaders
 	shared_ptr<CD3DXMeshLoaderBase> apLoader[3];
@@ -90,12 +90,12 @@ void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<CGraphicsResourceLoad
 
 		// add requests to load subresource from the mesh archive
 //		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
-//		AsyncResourceLoader().AddResourceLoadRequest( req );
+//		GetAsyncResourceLoader().AddResourceLoadRequest( req );
 
 		// subresources have been loaded
 		// - send lock requests for each mesh sub resource
 		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::Lock, apLoader[i], GetResourceEntry() );
-		AsyncResourceLoader().AddGraphicsDeviceRequest( req );
+		GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
 	}
 
 	// create mesh instance
@@ -194,7 +194,7 @@ bool CD3DXMeshVerticesLoader::Unlock()
 
 void CD3DXMeshVerticesLoader::OnResourceLoadedOnGraphicsMemory()
 {
-	SetSubResourceState( CMeshSubResource::VERTEX, GraphicsResourceState::LOADED );
+	SetSubResourceState( MeshSubResource::VERTEX, GraphicsResourceState::LOADED );
 }
 
 
@@ -264,13 +264,13 @@ bool CD3DXMeshIndicesLoader::CopyLoadedContentToGraphicsResource()
 
 void CD3DXMeshIndicesLoader::OnResourceLoadedOnGraphicsMemory()
 {
-	SetSubResourceState( CMeshSubResource::INDEX, GraphicsResourceState::LOADED );
+	SetSubResourceState( MeshSubResource::INDEX, GraphicsResourceState::LOADED );
 }
 
 
 bool CD3DXMeshIndicesLoader::IsReadyToLock() const
 {
-	return GetSubResourceState( CMeshSubResource::VERTEX ) == GraphicsResourceState::LOADED;
+	return GetSubResourceState( MeshSubResource::VERTEX ) == GraphicsResourceState::LOADED;
 }
 
 
@@ -332,13 +332,13 @@ bool CD3DXMeshAttributeTableLoader::CopyLoadedContentToGraphicsResource()
 
 void CD3DXMeshAttributeTableLoader::OnResourceLoadedOnGraphicsMemory()
 {
-	SetSubResourceState( CMeshSubResource::ATTRIBUTE_TABLE, GraphicsResourceState::LOADED );
+	SetSubResourceState( MeshSubResource::ATTRIBUTE_TABLE, GraphicsResourceState::LOADED );
 }
 
 
 bool CD3DXMeshAttributeTableLoader::IsReadyToLock() const
 {
-	return GetSubResourceState( CMeshSubResource::INDEX ) == GraphicsResourceState::LOADED;
+	return GetSubResourceState( MeshSubResource::INDEX ) == GraphicsResourceState::LOADED;
 }
 
 

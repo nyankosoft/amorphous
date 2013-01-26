@@ -41,31 +41,31 @@ public:
 // CGLGraphicsResourceFactoryImpl
 //=======================================================================================
 
-class CGLGraphicsResourceFactoryImpl : public CGraphicsResourceFactoryImpl
+class CGLGraphicsResourceFactoryImpl : public GraphicsResourceFactoryImpl
 {
 public:
 
-//	CreateGraphicsResource( CGraphicsResourceDesc &desc );
+//	CreateGraphicsResource( GraphicsResourceDesc &desc );
 
-	boost::shared_ptr<CTextureResource> CreateTextureResource( const CTextureResourceDesc& desc );
-	boost::shared_ptr<CMeshResource>    CreateMeshResource( const CMeshResourceDesc& desc );
-	boost::shared_ptr<CShaderResource>  CreateShaderResource( const CShaderResourceDesc& desc );
+	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
+	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
+	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
 };
 
 
-shared_ptr<CTextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResource( const CTextureResourceDesc& desc )
+shared_ptr<TextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResource( const TextureResourceDesc& desc )
 {
 	return shared_ptr<CGLTextureResource>( new CGLTextureResource(&desc) );
 }
 
-shared_ptr<CMeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( const CMeshResourceDesc& desc )
+shared_ptr<MeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( const MeshResourceDesc& desc )
 {
-	return shared_ptr<CMeshResource>( new CMeshResource(&desc) );
+	return shared_ptr<MeshResource>( new MeshResource(&desc) );
 }
 
-shared_ptr<CShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource( const CShaderResourceDesc& desc )
+shared_ptr<ShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource( const ShaderResourceDesc& desc )
 {
-	return shared_ptr<CShaderResource>( new CGLShaderResource(&desc) );
+	return shared_ptr<ShaderResource>( new CGLShaderResource(&desc) );
 }
 
 
@@ -73,7 +73,7 @@ Result::Name InitializeOpenGLClasses()
 {
 	PrimitiveRendererPtr() = &PrimitiveRenderer_GL();
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
-	GraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
+	GetGraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
 	GetMeshImplFactory().reset( new CGLMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );

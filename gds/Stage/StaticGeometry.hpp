@@ -42,7 +42,7 @@ class CShaderContainer : public IArchiveObjectBase
 {
 public:
 
-	CShaderResourceDesc m_Desc;
+	ShaderResourceDesc m_Desc;
 
 	std::vector<CShaderTechniqueHandle> m_vecTechniqueHandle;
 
@@ -74,7 +74,7 @@ class CStaticGeometryMeshHolder : public IArchiveObjectBase
 {
 public:
 
-	CMeshResourceDesc m_Desc;
+	MeshResourceDesc m_Desc;
 
 	/// bounding volumes of the mesh
 	AABB3 m_AABB;

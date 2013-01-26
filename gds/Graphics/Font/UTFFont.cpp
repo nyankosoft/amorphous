@@ -289,7 +289,7 @@ bool UTFFont::InitFont( const std::string& font_file_path, int font_pt, int reso
 
 	SetFontSize( font_width, font_height );
 
-	CTextureResourceDesc tex;
+	TextureResourceDesc tex;
 	tex.Width  = 1024;
 	tex.Height = 512;
 	tex.Format = TextureFormat::A8R8G8B8;
@@ -307,7 +307,7 @@ bool UTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2
 	if( !m_FontTexture.GetEntry() )
 		return false;
 
-	boost::shared_ptr<CTextureResource> pTexture = m_FontTexture.GetEntry()->GetTextureResource();
+	boost::shared_ptr<TextureResource> pTexture = m_FontTexture.GetEntry()->GetTextureResource();
 	if( !pTexture )
 		return false;
 

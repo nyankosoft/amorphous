@@ -110,7 +110,7 @@ public:
 //	const SFloatRGBAColor& line_color
 //	)
 //{
-//	CTextureResourceDesc desc;
+//	TextureResourceDesc desc;
 //	desc.Width   = width
 //	desc.Height  = height
 //

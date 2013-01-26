@@ -465,7 +465,7 @@ Result::Name SetSphereShapeDesc( MeshHandle& mesh_handle, CSphereShapeDesc& sphe
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_desc,
+CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
 						      //CActorDesc& actor_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
@@ -514,7 +514,7 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( CMeshResourceDesc& mesh_
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBoxEntity( CMeshResourceDesc& mesh_desc,
+CEntityHandle<> CStageMiscUtility::CreateBoxEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -556,7 +556,7 @@ void CreateOBBTreeFrom3DMeshModelArchive( C3DMeshModelArchive& mesh_archive, COB
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( CMeshResourceDesc& mesh_desc,
+CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -604,7 +604,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( CMeshResourceDesc& mesh_de
 }
 */
 
-CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( CMeshResourceDesc& mesh_desc,
+CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -633,7 +633,7 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( CMeshResourceDesc& mesh
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateSphereEntity( CMeshResourceDesc& mesh_desc,
+CEntityHandle<> CStageMiscUtility::CreateSphereEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -679,7 +679,7 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
 	pBoxMeshGenerator->SetDiffuseColor( diffuse_color );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 
 	Vector3 vel = Vector3(0,0,0);
@@ -724,7 +724,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
 	pBoxMeshGenerator->SetDiffuseColor( diffuse_color );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 
 	Vector3 vel = Vector3(0,0,0);
@@ -746,7 +746,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromMesh__";
 
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = mesh_resource_path;
 
 	Vector3 vel = Vector3(0,0,0);
@@ -770,7 +770,7 @@ CEntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = diameter * 0.5f;
 	shared_ptr<SphereMeshGenerator> pSphereMeshGenerator( new SphereMeshGenerator(sphere_desc) );
 	pSphereMeshGenerator->SetDiffuseColor( diffuse_color );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pSphereMeshGenerator;
 
 	Vector3 vel = Vector3(0,0,0);
@@ -788,7 +788,7 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
 //	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__CylinderFromMesh__";
 	string actual_entity_attributes_name = "__CylinderFromMesh__";
 
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = model;
 
 	Vector3 vel = Vector3(0,0,0);
@@ -885,7 +885,7 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char 
 	vector<CShapeDesc *> vecpShapeDesc;
 	vecpShapeDesc.push_back( &trimeshshapedesc );
 
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = mesh_resource_path;
 
 	return CreatePhysicsEntity(
@@ -924,7 +924,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 		actual_entity_attributes_name,
 		true );
 /*
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = mesh_resource_name;
 	CMeshHandle mesh;
 	bool mesh_loaded = mesh.Load( mesh_resource_name );
@@ -1021,7 +1021,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 		return CreateEntityFromBaseEntity( model, name, pose );
 	}
 	
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = model;
 
 	const string shape_name = shape ? shape : "";
@@ -1233,7 +1233,7 @@ void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_pat
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
 	sphere_desc.num_segments = 6;
 	sphere_desc.num_sides    = 12;
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 	desc.MeshObjectHandle.Load( sphere_desc );
 

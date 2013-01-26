@@ -31,9 +31,9 @@ public:
 
 	bool LoadAsync( const std::string& resource_path );
 
-	bool Load( const CTextureResourceDesc& desc );
+	bool Load( const TextureResourceDesc& desc );
 
-//	virtual bool LoadAsync( const CTextureResourceDesc& desc );
+//	virtual bool LoadAsync( const TextureResourceDesc& desc );
 
 	/// Direct access to D3D texture
 	/// - Avoid using this whenever possible

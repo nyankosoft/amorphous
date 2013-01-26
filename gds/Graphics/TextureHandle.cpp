@@ -17,17 +17,17 @@ using namespace std;
 const TextureHandle TextureHandle::ms_NullHandle;
 
 
-bool TextureHandle::Load( const CTextureResourceDesc& desc )
+bool TextureHandle::Load( const TextureResourceDesc& desc )
 {
 	Release();
 
 	if( desc.LoadingMode == CResourceLoadingMode::SYNCHRONOUS )
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadTexture( desc );
+		m_pResourceEntry = GetGraphicsResourceManager().LoadTexture( desc );
 	}
 	else
 	{
-		m_pResourceEntry = GraphicsResourceManager().LoadAsync( desc );
+		m_pResourceEntry = GetGraphicsResourceManager().LoadAsync( desc );
 	}
 
 	if( m_pResourceEntry )
@@ -39,7 +39,7 @@ bool TextureHandle::Load( const CTextureResourceDesc& desc )
 
 bool TextureHandle::Load( const std::string& resource_path )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.ResourcePath = resource_path;
 	return Load( desc );
 }
@@ -47,7 +47,7 @@ bool TextureHandle::Load( const std::string& resource_path )
 
 bool TextureHandle::LoadAsync( const std::string& resource_path )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.ResourcePath = resource_path;
 	desc.LoadingMode  = CResourceLoadingMode::ASYNCHRONOUS;
 	return Load( desc );
@@ -55,7 +55,7 @@ bool TextureHandle::LoadAsync( const std::string& resource_path )
 
 
 /*
-bool TextureHandle::LoadAsync( const CTextureResourceDesc& desc )
+bool TextureHandle::LoadAsync( const TextureResourceDesc& desc )
 {
 
 	return true;
@@ -71,7 +71,7 @@ bool TextureHandle::Create( boost::shared_ptr<CTextureFillingAlgorithm> pTexture
 {
 	Release();
 
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width     = width;
 	desc.Height    = height;
 	desc.Format    = format;
@@ -83,7 +83,7 @@ bool TextureHandle::Create( boost::shared_ptr<CTextureFillingAlgorithm> pTexture
 
 	desc.pLoader = pTextureLoader;
 
-	m_pResourceEntry = GraphicsResourceManager().CreateTexture( desc );
+	m_pResourceEntry = GetGraphicsResourceManager().CreateTexture( desc );
 
 	if( m_pResourceEntry )
 		return true;	// the texture has been successfully loaded

@@ -233,7 +233,7 @@ void DoubleConeScrollEffect::Init()
 	// create double cone mesh
 	// - create with unit radius and height, scale at runtime
 
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	shared_ptr<CDoubleConeMeshGenerator> pMeshGenerator( new CDoubleConeMeshGenerator );
 	pMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 	pMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );

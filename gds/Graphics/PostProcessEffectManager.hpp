@@ -71,7 +71,7 @@ class CPostProcessFilterShader
 //	LPD3DXEFFECT m_pEffect;
 
 	/// filepath of the HLSL effect file for the effect interface above
-	CShaderResourceDesc m_ShaderDesc;
+	ShaderResourceDesc m_ShaderDesc;
 
 	/// PostProcess technique handle
 //	D3DXHANDLE   m_hTPostProcess;
@@ -106,7 +106,7 @@ public:
 
 	inline ~CPostProcessFilterShader() {}//{ Cleanup(); }
 
-	Result::Name Init( const CShaderResourceDesc& shader_desc );
+	Result::Name Init( const ShaderResourceDesc& shader_desc );
 
 	Result::Name Init( const std::string& filename );
 	
@@ -128,7 +128,7 @@ class CFilterShaderContainer
 
 public:
 
-	Result::Name AddShader( const CShaderResourceDesc& shader_desc );
+	Result::Name AddShader( const ShaderResourceDesc& shader_desc );
 
 	Result::Name AddShader( const std::string& name );
 

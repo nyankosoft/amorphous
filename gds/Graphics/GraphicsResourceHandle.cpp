@@ -17,7 +17,7 @@ GraphicsResourceState::Name GraphicsResourceHandle::GetEntryState()
 			return GetEntry()->GetResource()->GetState();
 		else
 		{
-			if( GetEntry()->GetState() == CGraphicsResourceEntry::STATE_RESERVED )
+			if( GetEntry()->GetState() == GraphicsResourceEntry::STATE_RESERVED )
 				return GraphicsResourceState::LOADING_ASYNCHRONOUSLY;
 			else
 				return GraphicsResourceState::RELEASED;

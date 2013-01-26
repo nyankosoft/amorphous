@@ -12,7 +12,7 @@ namespace amorphous
 
 inline TextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = SFloatRGBAColor::White(), uint width = 1, uint height = 1 )
 {
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width     = width;
 	desc.Height    = height;
 	desc.MipLevels = 0;

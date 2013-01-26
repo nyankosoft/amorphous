@@ -108,9 +108,9 @@ public:
 // CD3DTextureResource
 //==================================================================================================
 
-CD3DTextureResource::CD3DTextureResource( const CTextureResourceDesc *pDesc )
+CD3DTextureResource::CD3DTextureResource( const TextureResourceDesc *pDesc )
 :
-CTextureResource(pDesc),
+TextureResource(pDesc),
 m_pTexture(NULL)
 {
 }
@@ -292,7 +292,7 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 }
 
 
-HRESULT CD3DTextureResource::CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool )
+HRESULT CD3DTextureResource::CreateD3DTexture( const TextureResourceDesc& desc, DWORD usage, D3DPOOL pool )
 {
 	HRESULT hr = D3DXCreateTexture( DIRECT3D9.GetDevice(),
 	                                (UINT)desc.Width,
@@ -313,7 +313,7 @@ bool CD3DTextureResource::Create()
 {
 	SAFE_RELEASE( m_pTexture );
 
-	const CTextureResourceDesc& desc = m_TextureDesc;
+	const TextureResourceDesc& desc = m_TextureDesc;
 
 	HRESULT hr = E_FAIL;
 	DWORD usage = 0;
@@ -352,7 +352,7 @@ bool CD3DTextureResource::Create()
 
 bool CD3DTextureResource::CreateFromDesc()
 {
-	const CTextureResourceDesc& desc = m_TextureDesc;
+	const TextureResourceDesc& desc = m_TextureDesc;
 
 	// create an empty texture
 	bool created = Create();
@@ -410,7 +410,7 @@ bool CD3DTextureResource::Lock( uint mip_level )
 	if( !m_pTexture )
 		return false;
 
-	const CTextureResourceDesc& desc = m_TextureDesc;
+	const TextureResourceDesc& desc = m_TextureDesc;
 
 	// Lock a surface and get the pointer to the first texel of the texture
 	D3DLOCKED_RECT locked_rect;
@@ -478,7 +478,7 @@ void CD3DTextureResource::Release()
 //==================================================================================================
 
 
-HRESULT CD3DCubeTextureResource::CreateD3DTexture( const CTextureResourceDesc& desc, DWORD usage, D3DPOOL pool )
+HRESULT CD3DCubeTextureResource::CreateD3DTexture( const TextureResourceDesc& desc, DWORD usage, D3DPOOL pool )
 {
 	SAFE_RELEASE( m_pCubeTexture );
 
@@ -517,9 +517,9 @@ LPDIRECT3DSURFACE9 CD3DCubeTextureResource::GetPrimaryTextureSurface()
 // CD3DShaderResource
 //==================================================================================================
 
-CD3DShaderResource::CD3DShaderResource( const CShaderResourceDesc *pDesc )
+CD3DShaderResource::CD3DShaderResource( const ShaderResourceDesc *pDesc )
 :
-CShaderResource( pDesc )
+ShaderResource( pDesc )
 {
 }
 

@@ -10,10 +10,10 @@ using namespace std;
 
 
 //================================================================================
-// CGraphicsResourceDesc
+// GraphicsResourceDesc
 //================================================================================
 
-void CGraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void GraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	reader.GetChildElementTextContent( "Path", ResourcePath );
 	reader.GetChildElementTextContent( "File", ResourcePath );
@@ -22,10 +22,10 @@ void CGraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 //================================================================================
-// CTextureResourceDesc
+// TextureResourceDesc
 //================================================================================
 
-bool CTextureResourceDesc::IsValid() const
+bool TextureResourceDesc::IsValid() const
 {
 	if( 0 < this->ResourcePath.length() )
 	{
@@ -45,7 +45,7 @@ bool CTextureResourceDesc::IsValid() const
 }
 
 
-bool CTextureResourceDesc::CanBeSharedAsSameTextureResource( const CTextureResourceDesc& desc ) const
+bool TextureResourceDesc::CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const
 {
 	if( 0 < this->ResourcePath.length()
 	 && 0 < desc.ResourcePath.length()
@@ -56,24 +56,24 @@ bool CTextureResourceDesc::CanBeSharedAsSameTextureResource( const CTextureResou
 }
 
 
-void CTextureResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void TextureResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGraphicsResourceDesc::LoadFromXMLNode( reader );
+	GraphicsResourceDesc::LoadFromXMLNode( reader );
 }
 
 
 
 //================================================================================
-// CMeshResourceDesc
+// MeshResourceDesc
 //================================================================================
 
-bool CMeshResourceDesc::IsValid() const
+bool MeshResourceDesc::IsValid() const
 {
 	return ( 0 < ResourcePath.length() ) || pMeshGenerator;
 }
 
 
-int CMeshResourceDesc::CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) const
+int MeshResourceDesc::CanBeUsedAsMeshCache( const MeshResourceDesc& desc ) const
 {
 	if( MeshType        != desc.MeshType
 	 || LoadOptionFlags != desc.LoadOptionFlags )
@@ -124,9 +124,9 @@ int CMeshResourceDesc::CanBeUsedAsMeshCache( const CMeshResourceDesc& desc ) con
 }
 
 
-void CMeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGraphicsResourceDesc::LoadFromXMLNode( reader );
+	GraphicsResourceDesc::LoadFromXMLNode( reader );
 
 	string mesh_type = reader.GetAttributeText( "type" );
 	if( 0 < mesh_type.length() )
@@ -138,7 +138,7 @@ void CMeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 
-bool CShaderResourceDesc::IsValid() const
+bool ShaderResourceDesc::IsValid() const
 {
 	if( ShaderType == CShaderType::NON_PROGRAMMABLE )
 		return true;
@@ -161,7 +161,7 @@ bool CShaderResourceDesc::IsValid() const
 }
 
 
-bool CShaderResourceDesc::CanBeSharedAsSameShaderResource( const CShaderResourceDesc& desc ) const
+bool ShaderResourceDesc::CanBeSharedAsSameShaderResource( const ShaderResourceDesc& desc ) const
 {
 	if( 0 < this->ResourcePath.length()
 	 && 0 < desc.ResourcePath.length()

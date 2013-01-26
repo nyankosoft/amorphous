@@ -49,7 +49,7 @@ void PseudoNoiseEffect::Init( float strength, uint noise_pixel_size )
 
 	m_NoisePixelSize = noise_pixel_size;
 
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Width   = m_NoiseTextureSize;
 	tex_desc.Height  = m_NoiseTextureSize;
 	tex_desc.Format  = TextureFormat::A8R8G8B8;

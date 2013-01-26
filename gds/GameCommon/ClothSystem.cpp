@@ -639,7 +639,7 @@ void CClothSystem::RenderObjectsForDebugging()
 	static MeshHandle m_CapsuleMesh;
 	if( !m_SphereMesh.IsLoaded() )
 	{
-		CMeshResourceDesc mesh_desc;
+		MeshResourceDesc mesh_desc;
 		mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(CSphereDesc()) );
 		mesh_desc.pMeshGenerator->SetDiffuseColor( SFloatRGBAColor( RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), 1.0f ) );
 		m_SphereMesh.Load( mesh_desc );

@@ -21,11 +21,11 @@ CResourceLoadingState::CResourceLoadingState()
 
 bool CResourceLoadingState::IsLoaded()
 {
-	shared_ptr<CGraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
+	shared_ptr<GraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
 	if( !pResourceEntry )
 		return false; // released
 
-	shared_ptr<CGraphicsResource> pResource
+	shared_ptr<GraphicsResource> pResource
 		= pResourceEntry->GetResource();
 
 	if( !pResource
@@ -38,8 +38,8 @@ bool CResourceLoadingState::IsLoaded()
 
 bool CResourceLoadingState::IsReleased()
 {
-	shared_ptr<CGraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
-	if( !pResourceEntry || pResourceEntry->GetState() == CGraphicsResourceEntry::STATE_RELEASED )
+	shared_ptr<GraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
+	if( !pResourceEntry || pResourceEntry->GetState() == GraphicsResourceEntry::STATE_RELEASED )
 		return true; // released
 	else
 		return false;
@@ -54,11 +54,11 @@ bool CTextureLoadingStateHolder::IsLoaded()
 
 bool CMeshLoadingStateHolder::IsLoaded()
 {
-	shared_ptr<CGraphicsResourceEntry> pMeshResourceEntry = m_pResourceEntry.lock();
+	shared_ptr<GraphicsResourceEntry> pMeshResourceEntry = m_pResourceEntry.lock();
 	if( !pMeshResourceEntry )
 		return false; // released
 
-	shared_ptr<CMeshResource> pMeshResource
+	shared_ptr<MeshResource> pMeshResource
 		= pMeshResourceEntry->GetMeshResource();
 
 	if( !pMeshResource
@@ -133,7 +133,7 @@ void CResourceLoadingStateHolder::Add( ShaderHandle& shader_handle )
 }
 
 
-void CResourceLoadingStateHolder::AddFromResourceEntry( shared_ptr<CGraphicsResourceEntry> pEntry )
+void CResourceLoadingStateHolder::AddFromResourceEntry( shared_ptr<GraphicsResourceEntry> pEntry )
 {
 	Add( new CResourceLoadingState( pEntry ) );
 }
