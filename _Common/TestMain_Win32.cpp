@@ -71,7 +71,7 @@ boost::shared_ptr<CInputHandler> g_pInputHandler;
 
 CFontSharedPtr g_pFont;
 
-CCamera g_Camera;
+Camera g_Camera;
 
 float g_FOV = (float)PI / 4.0f;
 
@@ -253,7 +253,7 @@ bool Init()
 
 	InputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pInputHandler.get() );
 
-//	g_pCameraController.reset( new CCameraController( sg_CameraControllerInputHandlerIndex ) );
+//	g_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
 
 	return true;
 }

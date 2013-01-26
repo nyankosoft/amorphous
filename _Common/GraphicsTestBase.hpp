@@ -20,7 +20,7 @@ class CGraphicsTestBase;
 
 
 extern CGraphicsTestBase *g_pGraphicsTest;
-extern CCamera g_Camera;
+extern Camera g_Camera;
 extern std::string g_CmdLine;
 
 inline std::string GetCommonShadersDirectoryPath() { return "../../../Shaders/"; }
@@ -35,7 +35,7 @@ class CGraphicsTestBase
 
 	SFloatRGBAColor m_BackgroundColor;
 
-	boost::shared_ptr<CCameraController> m_pCameraController;
+	boost::shared_ptr<CameraController> m_pCameraController;
 
 protected:
 
@@ -47,7 +47,7 @@ protected:
 
 	void SetBackgroundColor( const SFloatRGBAColor& color ) { m_BackgroundColor = color; }
 
-	const CCamera& GetCurrentCamera() const { return g_Camera; };
+	const Camera& GetCurrentCamera() const { return g_Camera; };
 
 public:
 
@@ -58,7 +58,7 @@ public:
 	m_UseRenderBase(false),
 	m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) )
 	{
-		m_pCameraController.reset( new CCameraController( ms_CameraControllerInputHandlerIndex ) );
+		m_pCameraController.reset( new amorphous::CameraController( ms_CameraControllerInputHandlerIndex ) );
 	}
 
 	virtual ~CGraphicsTestBase() {}
@@ -84,9 +84,9 @@ public:
 
 	void UpdateCameraController( float dt ) { if( m_pCameraController ) m_pCameraController->UpdateCameraPose( dt ); }
 
-	const boost::shared_ptr<CCameraController> GetCameraController() const { return m_pCameraController; }
+	const boost::shared_ptr<CameraController> GetCameraController() const { return m_pCameraController; }
 
-	boost::shared_ptr<CCameraController> CameraController() { return m_pCameraController; }
+	boost::shared_ptr<CameraController> CameraController() { return m_pCameraController; }
 
 	virtual void UpdateCameraPose( const Matrix34& camera_pose ) {}
 
