@@ -53,7 +53,7 @@ void CPseudoAircraftHUD::Release()
 }
 
 
-void CPseudoAircraftHUD::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CPseudoAircraftHUD::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	float scale = GetScreenWidth() / 800.0f;
 

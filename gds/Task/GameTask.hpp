@@ -19,7 +19,7 @@ namespace amorphous
 {
 
 
-class CGameTask : public CGraphicsComponent
+class CGameTask : public GraphicsComponent
 {
 	/// Started in CGameTask::CGameTask()
 	CTimer m_Timer;
@@ -222,7 +222,7 @@ public:
 	static int GetTaskIDFromTaskName( const std::string& task_name );
 
 	virtual void ReleaseGraphicsResources() {}
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 };
 
 

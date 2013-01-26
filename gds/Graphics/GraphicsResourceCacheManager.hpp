@@ -82,7 +82,7 @@ inline CGraphicsResourceFactory& GraphicsResourceFactory()
      but this feature should not be used.
 
 */
-class CGraphicsResourceCacheManager : public CGraphicsComponent
+class CGraphicsResourceCacheManager : public GraphicsComponent
 {
 	std::vector< boost::shared_ptr<CGraphicsResource> > m_vecpResurceCache;
 
@@ -105,7 +105,7 @@ public:
 	/// Returns a cached resource that matches the desc
 	boost::shared_ptr<CGraphicsResource> GetCachedResource( const CGraphicsResourceDesc& desc );
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	/// Release resources currently not used by CGraphicsResourceManager
 	void ReleaseGraphicsResources();

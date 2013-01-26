@@ -62,7 +62,7 @@ void CStaticGeometryFG::ReleaseGraphicsResources()
 }
 
 
-void CStaticGeometryFG::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CStaticGeometryFG::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	LoadFromFile( m_strFilename, true );
 }

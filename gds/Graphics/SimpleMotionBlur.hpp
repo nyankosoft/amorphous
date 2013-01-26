@@ -23,9 +23,9 @@ namespace amorphous
  // render the scene with motion blur
  blur.Render();
  
- NOTE: derived from CGraphicsComponent to retrieve the screen resolution in InitForScreenSize()
+ NOTE: derived from GraphicsComponent to retrieve the screen resolution in InitForScreenSize()
  */
-class SimpleMotionBlur// : public CGraphicsComponent
+class SimpleMotionBlur// : public GraphicsComponent
 {
 	/// used to render the scene
 	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
@@ -79,7 +79,7 @@ public:
 
 //	void ReleaseGraphicsResources() {}
 
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+//	void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 };
 
 } // namespace amorphous

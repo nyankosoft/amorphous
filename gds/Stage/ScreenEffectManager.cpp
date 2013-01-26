@@ -560,9 +560,9 @@ void CScreenEffectManager::ReleaseGraphicsResources()
 }
 
 
-void CScreenEffectManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CScreenEffectManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
-//	m_NoiseEffect.LoadGraphicsResources( const CGraphicsParameters& rParam );
+//	m_NoiseEffect.LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	UpdateScreenSize();
 

@@ -167,7 +167,7 @@ void CBE_PlayerPseudoAircraft::Init()
 //	m_Camera.SetFOV( (float)PI / 8.0f );
 	m_Camera.SetNearClip( near_clip );
 	m_Camera.SetFarClip( far_clip );
-	m_Camera.SetAspectRatio( CGraphicsComponent::GetAspectRatio() );
+	m_Camera.SetAspectRatio( GraphicsComponent::GetAspectRatio() );
 
 	Init3DModel();
 

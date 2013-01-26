@@ -1210,7 +1210,7 @@ void CEntityRenderManager::ReleaseGraphicsResources()
 }
 
 
-void CEntityRenderManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CEntityRenderManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	size_t i, num_base_entities = m_pEntitySet->m_vecpBaseEntity.size();
 	for(i=0; i<num_base_entities; i++)

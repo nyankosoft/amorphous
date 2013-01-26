@@ -78,7 +78,7 @@ public:
 
 	virtual void ReleaseGraphicsResources();
 
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	virtual bool Render( const Camera& rCamera, const unsigned int EffectFlag );
 

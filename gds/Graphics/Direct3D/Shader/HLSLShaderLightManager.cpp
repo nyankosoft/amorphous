@@ -165,7 +165,7 @@ void CHLSLShaderLightManager::CommitChanges()
 }
 
 
-void CHLSLShaderLightManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CHLSLShaderLightManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	SetShaderHandles();
 }

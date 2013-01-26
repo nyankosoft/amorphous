@@ -110,7 +110,7 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	CameraParam param;
 
 	float nearclip = 0.05f, farclip = 500.0f, fov = 3.141592f / 3.0f;
-	float aspectratio = CGraphicsComponent::GetAspectRatio();// 4.0f / 3.0f;
+	float aspectratio = GraphicsComponent::GetAspectRatio();// 4.0f / 3.0f;
 
 	int result = PyArg_ParseTuple( args, "ss|ffff",
 		&camera_entity_name, &camera_controller_name,

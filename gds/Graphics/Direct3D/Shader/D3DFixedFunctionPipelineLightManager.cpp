@@ -67,7 +67,7 @@ void CD3DFixedFunctionPipelineLightManager::CommitChanges()
 }
 
 
-void CD3DFixedFunctionPipelineLightManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CD3DFixedFunctionPipelineLightManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 }
 

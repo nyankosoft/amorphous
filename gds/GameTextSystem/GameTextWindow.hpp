@@ -38,7 +38,7 @@ enum eGameTextWindowInput
 class CGameTextComponent;
 class CGameTextSet;
 
-class CGameTextWindow : public CGraphicsComponent
+class CGameTextWindow : public GraphicsComponent
 {
 //	bool m_bWaitingUserResponse;
 	int m_iCurrentState;
@@ -112,7 +112,7 @@ public:
 	void UpdateScreenSize();
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 };
 

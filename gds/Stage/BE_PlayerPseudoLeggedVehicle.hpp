@@ -92,7 +92,7 @@ public:
 //	void PlayerDead(CCopyEntity* pCopyEnt);
 
 //	void AdaptToNewScreenSize() {}
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+//	void LoadGraphicsResources( const GraphicsParameters& rParam );
 //	void ReleaseGraphicsResources();
 
 

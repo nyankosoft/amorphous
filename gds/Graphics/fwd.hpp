@@ -5,9 +5,9 @@
 namespace amorphous
 {
 
-class CGraphicsParameters;
-class CGraphicsComponent;
-class CGraphicsComponentCollector;
+class GraphicsParameters;
+class GraphicsComponent;
+class GraphicsComponentCollector;
 
 class CAsyncResourceLoader;
 class CGraphicsResource;

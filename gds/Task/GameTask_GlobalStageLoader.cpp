@@ -109,7 +109,7 @@ void CGameTask_GlobalStageLoader::ReleaseGraphicsResources()
 }
 
 
-void CGameTask_GlobalStageLoader::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGameTask_GlobalStageLoader::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 }
 

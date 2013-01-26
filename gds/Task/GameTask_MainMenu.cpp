@@ -523,7 +523,7 @@ void CGameTask_MainMenu::ReleaseGraphicsResources()
 }
 
 
-void CGameTask_MainMenu::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGameTask_MainMenu::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	InitMenu();
 

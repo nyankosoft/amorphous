@@ -655,7 +655,7 @@ void PostProcessEffectManager::ReleaseGraphicsResources()
 }
 
 
-void PostProcessEffectManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void PostProcessEffectManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 }
 

@@ -319,7 +319,7 @@ public:
 	virtual const physics::CActorDesc& GetPhysicsActorDesc();
 
 	virtual void AdaptToNewScreenSize() {}
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();
 
 /*

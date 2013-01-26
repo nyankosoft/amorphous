@@ -218,7 +218,7 @@ void CJL_PhysicsVisualizer::ReleaseGraphicsResources()
 }
 
 
-void CJL_PhysicsVisualizer::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CJL_PhysicsVisualizer::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	m_pUnitCube->Init();
 //	m_pUnitCube->SetUniformColor( 1.0f, 1.0f, 1.0f );

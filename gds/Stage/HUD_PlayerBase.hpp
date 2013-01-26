@@ -17,7 +17,7 @@ class CGameTextSet;
 class CSubDisplay;
 
 
-class HUD_PlayerBase : public CGraphicsComponent
+class HUD_PlayerBase : public GraphicsComponent
 {
 protected:
 

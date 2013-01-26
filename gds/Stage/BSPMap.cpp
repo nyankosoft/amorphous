@@ -118,7 +118,7 @@ void CBSPMap::ReleaseGraphicsResources()
 }
 
 
-void CBSPMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CBSPMap::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	if( m_strFilename.length() == 0 )
 		return;

@@ -92,7 +92,7 @@ public:
 
 	inline void SetPointLightOffset( const int iPointLightOffset );
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	void ReleaseGraphicsResources();
 

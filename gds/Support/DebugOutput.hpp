@@ -84,7 +84,7 @@ public:
 class CDebugItemBase;
 
 
-class CDebugOutput : public CGraphicsComponent
+class CDebugOutput : public GraphicsComponent
 {
 	int m_ItemIndex;
 
@@ -134,7 +134,7 @@ public:
 	void SetTopLeftPos( Vector2& vTopLeftPos );
 
 	virtual void ReleaseGraphicsResources();
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

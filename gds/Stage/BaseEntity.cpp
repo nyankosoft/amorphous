@@ -1303,7 +1303,7 @@ void CBaseEntity::ReleaseGraphicsResources()
 }
 
 
-void CBaseEntity::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CBaseEntity::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	Init3DModel();
 }

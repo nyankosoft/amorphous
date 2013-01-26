@@ -14,7 +14,7 @@ namespace amorphous
 {
 
 
-class CStaticGeometryBase : public CGraphicsComponent
+class CStaticGeometryBase : public GraphicsComponent
 {
 
 public:
@@ -98,7 +98,7 @@ public:
 	virtual physics::CActor *CreateCollisionGeometry( physics::CScene& physics_scene ) { return NULL; }
 
 	virtual void ReleaseGraphicsResources() {}
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 
 
 	enum type

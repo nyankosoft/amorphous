@@ -21,9 +21,9 @@ namespace amorphous
  * manage graphics resources
  * - save memory by sharing the same texture / mesh resources with reference counting.
  * - singleton class
- *   - must be released before the CGraphicsComponentCollector singleton is destroyed.
+ *   - must be released before the GraphicsComponentCollector singleton is destroyed.
 */
-class CGraphicsResourceManager : public CGraphicsComponent
+class CGraphicsResourceManager : public GraphicsComponent
 {
 private:
 
@@ -98,7 +98,7 @@ public:
 
 //	boost::shared_ptr<CGraphicsResourceEntry> CreateAt( const CGraphicsResourceDesc& desc, int dest_index );
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 
 	void AddCache( CGraphicsResourceDesc& desc );

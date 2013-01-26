@@ -63,7 +63,7 @@ void CGraphicsElementManager::ReleaseGraphicsResources()
 }
 
 
-void CGraphicsElementManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGraphicsElementManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	size_t i, num = m_vecpFont.size();
 	for( i=0; i<num; i++ )

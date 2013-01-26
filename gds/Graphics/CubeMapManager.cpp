@@ -287,7 +287,7 @@ void CubeMapManager::SaveCubeTextureToFile( const std::string& output_filename )
 }
 
 
-void CubeMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CubeMapManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	CreateTextures( m_CubeTextureSize, m_TextureFormat );
 }

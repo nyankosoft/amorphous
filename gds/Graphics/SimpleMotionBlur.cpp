@@ -91,8 +91,8 @@ void SimpleMotionBlur::InitForScreenSize()
 
 	// SimpleMotionBlur::Render() uses these variables to
 	// determine rect size
-	m_TextureWidth  = CGraphicsComponent::GetScreenWidth();
-	m_TextureHeight = CGraphicsComponent::GetScreenHeight();
+	m_TextureWidth  = GraphicsComponent::GetScreenWidth();
+	m_TextureHeight = GraphicsComponent::GetScreenHeight();
 }
 
 

@@ -23,7 +23,7 @@ namespace amorphous
 {
 
 
-class CGraphicsElementManagerBase// : public CGraphicsComponent
+class CGraphicsElementManagerBase// : public GraphicsComponent
 {
 public:
 
@@ -31,7 +31,7 @@ public:
 	virtual ~CGraphicsElementManagerBase() {}
 	virtual void Release() {}
 	virtual void ReleaseGraphicsResources() {}
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 /*
 	virtual boost::shared_ptr<CRectElement> CreateRect( const SRect& rect, const SFloatRGBAColor& color, int layer = 0 ) { return NULL; }
 	virtual boost::shared_ptr<CRectElement> CreateFrameRect( const SRect& rect, const SFloatRGBAColor& color, float frame_width, int layer = 0 ) { return NULL; }
@@ -76,8 +76,8 @@ public:
 	  - But isn't this always true because an element cannot be owned by any group the moment it is created?
 
 */
-class CGraphicsElementManager : public CGraphicsElementManagerBase, public CGraphicsComponent
-//class CGraphicsElementManager : public CGraphicsComponent
+class CGraphicsElementManager : public CGraphicsElementManagerBase, public GraphicsComponent
+//class CGraphicsElementManager : public GraphicsComponent
 {
 	enum Params
 	{
@@ -147,7 +147,7 @@ public:
 
 	void ReleaseGraphicsResources();
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	//
 	// functions to create primitives

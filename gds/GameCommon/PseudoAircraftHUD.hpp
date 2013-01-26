@@ -25,7 +25,7 @@ class CPseudoAircraftSimulator;
  * - pitch ladder
  * TODO: flight path indicator
  */
-class CPseudoAircraftHUD : public CGraphicsComponent
+class CPseudoAircraftHUD : public GraphicsComponent
 {
 	TextureFont *m_pFont;
 
@@ -63,7 +63,7 @@ public:
 
 	void SetColor( U32 color ) { m_HUDColor = color; }
 
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();
 
 //	inline void AddTargetInfo( const HUD_TargetInfo& info );

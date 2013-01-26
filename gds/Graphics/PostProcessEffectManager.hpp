@@ -153,7 +153,7 @@ struct CRenderTargetChain
 //  Only the color channel is available
 //======================================================================================
 
-class PostProcessEffectManager : public CGraphicsComponent
+class PostProcessEffectManager : public GraphicsComponent
 {
 	boost::shared_ptr<HDRLightingFilter> m_pHDRLightingFilter;
 
@@ -248,7 +248,7 @@ public:
 
 	void ReleaseGraphicsResources();
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 } // namespace amorphous

@@ -382,7 +382,7 @@ void VarianceShadowMapManager::ReleaseGraphicsResources()
 }
 
 
-void VarianceShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void VarianceShadowMapManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	ShadowMapManager::LoadGraphicsResources( rParam );
 

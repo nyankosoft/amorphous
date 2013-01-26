@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-class CD3DCgManager : public CGraphicsComponent
+class CD3DCgManager : public GraphicsComponent
 {
 public:
 
@@ -27,7 +27,7 @@ public:
 		HRESULT hr = cgD3D9SetDevice( NULL );
 	}
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam )
+	void LoadGraphicsResources( const GraphicsParameters& rParam )
 	{
 		HRESULT hr = cgD3D9SetDevice( DIRECT3D9.GetDevice() );
 	}

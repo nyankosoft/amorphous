@@ -215,7 +215,7 @@ void HUD_PlayerAircraft::ReleaseGraphicsResources()
 }
 
 
-void HUD_PlayerAircraft::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void HUD_PlayerAircraft::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 }
 

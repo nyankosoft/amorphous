@@ -38,7 +38,7 @@ namespace amorphous
  * 9. Call ShadowMapManager::EndScene()
  *
  */
-class ShadowMapManager : public CGraphicsComponent
+class ShadowMapManager : public GraphicsComponent
 {
 protected:
 
@@ -172,7 +172,7 @@ public:
 
 	virtual void ReleaseGraphicsResources() {}
 
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }

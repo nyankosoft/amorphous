@@ -42,7 +42,7 @@ public:
 	// void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
 
 //	void AdaptToNewScreenSize() {}
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );

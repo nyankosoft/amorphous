@@ -26,7 +26,7 @@ class CJL_PhysicsManager;
  *  - displays physics-related information such as velocities,
  *    bounding boxes, contact points, etc.
 */
-class CJL_PhysicsVisualizer : public CGraphicsComponent
+class CJL_PhysicsVisualizer : public GraphicsComponent
 {
 	CJL_PhysicsManager *m_pPhysicsManager;
 
@@ -57,7 +57,7 @@ public:
 
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

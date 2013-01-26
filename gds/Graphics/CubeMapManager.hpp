@@ -34,7 +34,7 @@ public:
 };
 
 
-class CubeMapManager : public CGraphicsComponent
+class CubeMapManager : public GraphicsComponent
 {
 	int m_CubeTextureSize;
 
@@ -87,7 +87,7 @@ public:
 
 	inline void SetCubeMapSceneRenderer( CCubeMapSceneRenderer *pSceneRenderer ) { m_pCubeMapSceneRenderer = pSceneRenderer; }
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 };
 

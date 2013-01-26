@@ -38,7 +38,7 @@ CBE_FixedTurretPod::~CBE_FixedTurretPod()
 
 void CBE_FixedTurretPod::Init()
 {
-	LoadGraphicsResources( CGraphicsParameters() );
+	LoadGraphicsResources( GraphicsParameters() );
 
 	PrintLog( " CBE_FixedTurretPod::Init() - loaded the graphics resources" );
 
@@ -151,7 +151,7 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 }
 
 
-void CBE_FixedTurretPod::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CBE_FixedTurretPod::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	int i;
 	for( i=0; i<NUM_TURRET_MESHES; i++ )

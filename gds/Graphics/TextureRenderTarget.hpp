@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-class CTextureRenderTarget : public CGraphicsComponent
+class CTextureRenderTarget : public GraphicsComponent
 {
 protected:
 
@@ -86,7 +86,7 @@ public:
 
 	void ReleaseGraphicsResources();
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	virtual void OutputImageFile( const std::string& image_file_path ) {}
 

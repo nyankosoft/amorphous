@@ -47,7 +47,7 @@ public:
 
 
 //	void ReleaseGraphicsResources();
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+//	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 } // namespace amorphous
 

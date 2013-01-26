@@ -249,7 +249,7 @@ HRESULT CDirectInputMouse::UpdateInput()
 	float fNewMove_X = 0, fNewMove_Y = 0; 
 	SInputData input;
 //	const float factor = (float)REFERENCE_SCREEN_WIDTH / (float)m_ScreenWidth;
-	const float scale = (float)m_ScreenWidth / (float)CGraphicsComponent::REFERENCE_SCREEN_WIDTH;
+	const float scale = (float)m_ScreenWidth / (float)GraphicsComponent::REFERENCE_SCREEN_WIDTH;
 
 	// m_iPosX & m_iPosY holds scaled positions (positions in reference screen coordinates)
 //	int non_scaled_pos_x = (int)(m_iPosX / factor);

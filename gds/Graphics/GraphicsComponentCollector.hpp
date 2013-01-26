@@ -14,10 +14,10 @@ namespace amorphous
 
 
 //===============================================================================
-// CGraphicsParameters
+// GraphicsParameters
 //===============================================================================
 
-class CGraphicsParameters
+class GraphicsParameters
 {
 public:
 
@@ -27,7 +27,7 @@ public:
 
 public:
 
-	CGraphicsParameters()
+	GraphicsParameters()
 		:
 	ScreenWidth(800),
 	ScreenHeight(600),
@@ -43,10 +43,10 @@ public:
 
 
 //===============================================================================
-// CGraphicsComponent
+// GraphicsComponent
 //===============================================================================
 
-class CGraphicsComponent
+class GraphicsComponent
 {
 	bool m_RegisteredToGraphicsResourceManager;
 
@@ -57,13 +57,13 @@ public:
 		REFERENCE_SCREEN_WIDTH = 1600
 	};
 
-	CGraphicsComponent();
-	virtual ~CGraphicsComponent();
+	GraphicsComponent();
+	virtual ~GraphicsComponent();
 
 	virtual void ReleaseGraphicsResources() = 0;
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam ) = 0;
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam ) = 0;
 
-	static const CGraphicsParameters& GetCurrentGraphicsParams();
+	static const GraphicsParameters& GetCurrentGraphicsParams();
 
 	static int GetScreenWidth() { return GetCurrentGraphicsParams().ScreenWidth; }
 	static int GetScreenHeight() { return GetCurrentGraphicsParams().ScreenHeight; }
@@ -132,40 +132,40 @@ public:
 		return RectLTWH( GetReferenceScreenWidth() - width - right_margin, GetReferenceScreenHeight() - height - bottom_margin, width, height );
 	}
 
-	friend class CGraphicsComponentCollector;
+	friend class GraphicsComponentCollector;
 };
 
 
 
 //===============================================================================
-// CGraphicsComponentCollector
+// GraphicsComponentCollector
 //===============================================================================
 
-class CGraphicsComponentCollector
+class GraphicsComponentCollector
 {
-	std::vector<CGraphicsComponent *> m_vecpGraphicsComponent;
+	std::vector<GraphicsComponent *> m_vecpGraphicsComponent;
 
-	CGraphicsParameters m_GraphicsParam;
+	GraphicsParameters m_GraphicsParam;
 
 public:
 
-	static CSingleton<CGraphicsComponentCollector> m_obj;
+	static CSingleton<GraphicsComponentCollector> m_obj;
 
 //	static CShader* Get() { return m_obj->get(); }
-	static CGraphicsComponentCollector* Get() { return m_obj.get(); }
+	static GraphicsComponentCollector* Get() { return m_obj.get(); }
 
-	CGraphicsComponentCollector();
-	~CGraphicsComponentCollector();
+	GraphicsComponentCollector();
+	~GraphicsComponentCollector();
 
-	void AddComponent( CGraphicsComponent* pComponent );
-	bool RemoveComponent( CGraphicsComponent* pComponent );
+	void AddComponent( GraphicsComponent* pComponent );
+	bool RemoveComponent( GraphicsComponent* pComponent );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
-	void SetGraphicsPargams( const CGraphicsParameters& rParam ) { m_GraphicsParam = rParam; }
+	void SetGraphicsPargams( const GraphicsParameters& rParam ) { m_GraphicsParam = rParam; }
 
-	const CGraphicsParameters& GetGraphicsParams() const { return m_GraphicsParam; }
+	const GraphicsParameters& GetGraphicsParams() const { return m_GraphicsParam; }
 };
 
 

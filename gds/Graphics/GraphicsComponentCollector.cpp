@@ -8,45 +8,45 @@ using namespace std;
 
 
 //=====================================================================================
-// CGraphicsComponent
+// GraphicsComponent
 //=====================================================================================
 
-CGraphicsComponent::CGraphicsComponent()
+GraphicsComponent::GraphicsComponent()
 :
 m_RegisteredToGraphicsResourceManager(false)
 {
-	CGraphicsComponentCollector::Get()->AddComponent( this );
+	GraphicsComponentCollector::Get()->AddComponent( this );
 
 	m_RegisteredToGraphicsResourceManager = true;
 }
 
-CGraphicsComponent::~CGraphicsComponent()
+GraphicsComponent::~GraphicsComponent()
 {
 	if( m_RegisteredToGraphicsResourceManager )
 	{
-		CGraphicsComponentCollector::Get()->RemoveComponent( this );
+		GraphicsComponentCollector::Get()->RemoveComponent( this );
 
 		m_RegisteredToGraphicsResourceManager = false;
 	}
 }
 
 
-const CGraphicsParameters& CGraphicsComponent::GetCurrentGraphicsParams()
+const GraphicsParameters& GraphicsComponent::GetCurrentGraphicsParams()
 {
-	return CGraphicsComponentCollector::Get()->GetGraphicsParams();
+	return GraphicsComponentCollector::Get()->GetGraphicsParams();
 }
 
 
 //=====================================================================================
-// CGraphicsComponentCollector
+// GraphicsComponentCollector
 //=====================================================================================
 
 // define singleton instance
-CSingleton<CGraphicsComponentCollector> CGraphicsComponentCollector::m_obj;
+CSingleton<GraphicsComponentCollector> GraphicsComponentCollector::m_obj;
 
-CGraphicsComponentCollector::CGraphicsComponentCollector()
+GraphicsComponentCollector::GraphicsComponentCollector()
 {
-	CGraphicsParameters params;
+	GraphicsParameters params;
 	params.ScreenWidth  = 800;
 	params.ScreenHeight = 600;
 	params.bWindowed    = true;
@@ -55,10 +55,10 @@ CGraphicsComponentCollector::CGraphicsComponentCollector()
 }
 
 
-CGraphicsComponentCollector::~CGraphicsComponentCollector()
+GraphicsComponentCollector::~GraphicsComponentCollector()
 {
 	// Remove all the graphics components to avoid instanciating the singleton instance
-	// of this class in the dtor of derived classes of CGraphicsComponent
+	// of this class in the dtor of derived classes of GraphicsComponent
 	size_t i, num_components = m_vecpGraphicsComponent.size();
 	for( i=0; i<num_components; i++ )
 	{
@@ -69,13 +69,13 @@ CGraphicsComponentCollector::~CGraphicsComponentCollector()
 }
 
 
-void CGraphicsComponentCollector::AddComponent( CGraphicsComponent* pComponent )
+void GraphicsComponentCollector::AddComponent( GraphicsComponent* pComponent )
 {
 	m_vecpGraphicsComponent.push_back( pComponent );
 }
 
 
-bool CGraphicsComponentCollector::RemoveComponent( CGraphicsComponent* pComponent )
+bool GraphicsComponentCollector::RemoveComponent( GraphicsComponent* pComponent )
 {
 	size_t i, num_components = m_vecpGraphicsComponent.size();
 	for( i=0; i<num_components; i++ )
@@ -91,7 +91,7 @@ bool CGraphicsComponentCollector::RemoveComponent( CGraphicsComponent* pComponen
 }
 
 
-void CGraphicsComponentCollector::ReleaseGraphicsResources()
+void GraphicsComponentCollector::ReleaseGraphicsResources()
 {
 	size_t i, num_components = m_vecpGraphicsComponent.size();
 	for( i=0; i<num_components; i++ )
@@ -101,7 +101,7 @@ void CGraphicsComponentCollector::ReleaseGraphicsResources()
 }
 
 
-void CGraphicsComponentCollector::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void GraphicsComponentCollector::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	m_GraphicsParam = rParam;
 

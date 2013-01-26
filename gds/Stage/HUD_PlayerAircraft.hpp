@@ -150,7 +150,7 @@ public:
 
 	virtual bool LoadGlobalMapTexture( const std::string& texture_filename );
 
-	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();
 
 	virtual void CreateRenderTasks();

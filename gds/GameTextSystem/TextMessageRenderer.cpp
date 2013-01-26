@@ -145,7 +145,7 @@ void CDefaultTextMessageRenderer::ReleaseGraphicsResources()
 }
 
 
-void CDefaultTextMessageRenderer::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CDefaultTextMessageRenderer::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 /*	float screen_width = (float)GetScreenWidth();
 	float factor = (float)(screen_width / 800.0f);

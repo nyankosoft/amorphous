@@ -18,7 +18,7 @@ namespace amorphous
 {
 
 
-class CScreenEffectTargetSceneRenderer : public CGraphicsComponent
+class CScreenEffectTargetSceneRenderer : public GraphicsComponent
 {
 public:
 
@@ -104,7 +104,7 @@ public:
      to the original render target
 
 */
-class CScreenEffectManager : public CGraphicsComponent
+class CScreenEffectManager : public GraphicsComponent
 {
 public:
 
@@ -276,7 +276,7 @@ public:
 	boost::shared_ptr<LensFlare> GetLensFlare() { return m_pLensFlare; }
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void UpdateScreenSize();
 
 //	void SetShaderManager();

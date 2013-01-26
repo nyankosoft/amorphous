@@ -81,7 +81,7 @@ void ShadowMap::RenderShadowReceivers( Camera& camera )
 }
 
 
-void ShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void ShadowMap::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	CreateShadowMapTextures();
 }

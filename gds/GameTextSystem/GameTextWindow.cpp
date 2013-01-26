@@ -208,7 +208,7 @@ void CGameTextWindow::ReleaseGraphicsResources()
 }
 
 
-void CGameTextWindow::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGameTextWindow::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	InitFont( m_strFontName.c_str(), m_fFontWidth, m_fFontHeight );
 

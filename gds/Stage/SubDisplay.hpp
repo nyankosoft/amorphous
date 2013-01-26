@@ -148,7 +148,7 @@ public:
 class CSubMonitorRenderTask;
 
 
-class CSubDisplay// : public CGraphicsComponent
+class CSubDisplay// : public GraphicsComponent
 {
 	C2DRect m_DisplayRect;
 
@@ -202,7 +202,7 @@ public:
 	void CreateRenderTasks();
 
 /* tex render target releases / loads its own resources */
-//	virtual void LoadGraphicsResources( const CGraphicsParameters& rParam );
+//	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 //	virtual void ReleaseGraphicsResources();
 
 	friend class CSubMonitorRenderTask;

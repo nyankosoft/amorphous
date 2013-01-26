@@ -271,7 +271,7 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 			// draw the fullscreen rect
 /*	
 			C2DTexRect rect;
-			rect.SetPositionLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() );
+			rect.SetPositionLTWH( 0, 0, GraphicsComponent::GetScreenWidth(), GraphicsComponent::GetScreenHeight() );
 			rect.SetColor( 0xFFFFFFFF );
 			rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 			rect.Draw(
@@ -279,7 +279,7 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 				ms_apTextureRenderTarget[1].GetRenderTargetTexture() );
 */
 			C2DRect rect;
-			rect.SetPositionLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() );
+			rect.SetPositionLTWH( 0, 0, GraphicsComponent::GetScreenWidth(), GraphicsComponent::GetScreenHeight() );
 			rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
 			// image on the back side - opaque

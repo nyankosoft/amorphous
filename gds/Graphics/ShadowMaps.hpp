@@ -66,7 +66,7 @@ public:
 };
 
 
-class ShadowMap : public CGraphicsComponent
+class ShadowMap : public GraphicsComponent
 {
 protected:
 
@@ -159,7 +159,7 @@ public:
 
 	void ReleaseGraphicsResources() { ReleaseTextures(); }
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 //	void SetLightDirection( const Vector3& vLightDir ) { m_LightCamera.SetOrientation( CreateOrientFromFwdDir( vLightDir ) ); }
 //	void SetLightPosition( const Vector3& vLightPos ) { m_LightCamera.SetPosition( vLightPos ); }

@@ -103,7 +103,7 @@ shared_ptr<CGraphicsResource> CGraphicsResourceCacheManager::GetCachedResource( 
 }
 
 
-void CGraphicsResourceCacheManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGraphicsResourceCacheManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	const size_t num_resources = m_vecpResurceCache.size();
 	for( size_t i=0; i<num_resources; i++ )

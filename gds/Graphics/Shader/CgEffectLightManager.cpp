@@ -146,7 +146,7 @@ void CCgEffectLightManager::CommitChanges()
 }
 
 
-void CCgEffectLightManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CCgEffectLightManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	SetShaderHandles();
 }

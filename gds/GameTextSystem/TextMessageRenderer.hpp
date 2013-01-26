@@ -25,7 +25,7 @@ namespace amorphous
 /**
  Defines the interfaces to render messages.
  */
-class CTextMessageRenderer : public CGraphicsComponent
+class CTextMessageRenderer : public GraphicsComponent
 {
 //	CTextMessageWindow *m_pWindow;
 
@@ -133,7 +133,7 @@ public:
 
 //	void UpdateScreenSize();
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 
@@ -166,7 +166,7 @@ public:
 	void UpdateText( const char *pText ) {}
 
 	void ReleaseGraphicsResources() {}
-	void LoadGraphicsResources( const CGraphicsParameters& rParam ) {}
+	void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 };
 
 } // namespace amorphous

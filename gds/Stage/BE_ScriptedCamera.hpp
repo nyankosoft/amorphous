@@ -206,7 +206,7 @@ public:
 	nearclip(0.05f),
 	farclip(200.0f),
 //	aspect_ratio(4.0f / 3.0f),
-	aspect_ratio( CGraphicsComponent::GetAspectRatio() )
+	aspect_ratio( GraphicsComponent::GetAspectRatio() )
 	{}
 };
 

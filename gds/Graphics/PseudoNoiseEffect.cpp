@@ -32,7 +32,7 @@ void PseudoNoiseEffect::ReleaseGraphicsResources()
 }
 
 
-void PseudoNoiseEffect::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void PseudoNoiseEffect::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	UpdateScreenSize();
 }

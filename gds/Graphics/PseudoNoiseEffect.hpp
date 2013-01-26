@@ -16,7 +16,7 @@ namespace amorphous
 //   - No need to use programmable shader
 // - Use rand function in HLSL
 //   - Saves texture memory
-class PseudoNoiseEffect : public CGraphicsComponent
+class PseudoNoiseEffect : public GraphicsComponent
 {
 	C2DRect m_FullscreenRect;
 
@@ -52,7 +52,7 @@ public:
 
 	void SetNoiseTexture();
 
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 
 	void UpdateScreenSize();

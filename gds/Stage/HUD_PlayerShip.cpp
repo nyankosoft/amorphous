@@ -78,7 +78,7 @@ void HUD_PlayerShip::ReleaseGraphicsResources()
 }
 
 
-void HUD_PlayerShip::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void HUD_PlayerShip::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	LoadTextures();
 	m_StatusFont.Reload();

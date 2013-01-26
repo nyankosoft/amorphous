@@ -115,7 +115,7 @@ public:
 		// the state of the input device when they are plugged, initialized, etc.
 		shared_ptr<CGraphicsElementManager> pElementMgr = m_pEffectMgr->GetGraphicsElementManager();
 
-		SRect rect = CGraphicsComponent::RectAtCenterBottom( 800, 40, 30 );
+		SRect rect = GraphicsComponent::RectAtCenterBottom( 800, 40, 30 );
 		int layer = 10;
 		m_pRect
 			= pElementMgr->CreateRect(

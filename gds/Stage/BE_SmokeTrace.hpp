@@ -62,7 +62,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-//	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+//	void LoadGraphicsResources( const GraphicsParameters& rParam );
 //	void ReleaseGraphicsResources();
 
 

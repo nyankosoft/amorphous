@@ -110,7 +110,7 @@ void CGameApplicationBase::Release()
 	InputHub().RemoveInputHandler( 0, m_pGlobalInputHandler );
 	SafeDelete( m_pGlobalInputHandler );
 
-	// release any singleton class that inherits CGraphicsComponent
+	// release any singleton class that inherits GraphicsComponent
 	GraphicsResourceManager().ReleaseSingleton();
 }
 
@@ -368,7 +368,7 @@ void CGameApplicationBase::UpdateFrame()
 
 //		float scale
 //			= (float)GameWindowManager().GetScreenWidth()
-//			/ (float)CGraphicsComponent::REFERENCE_SCREEN_WIDTH;
+//			/ (float)GraphicsComponent::REFERENCE_SCREEN_WIDTH;
 
 		// MouseCursor() uses non-scaled screen coordinates
 		MouseCursor().UpdateCursorPosition(

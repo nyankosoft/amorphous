@@ -113,12 +113,12 @@ bool CGameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScre
 //	CGameComponent::SetScreenSize( iScreenWidth, iScreenHeight );
 
 	// update parameters for GraphicsComponents
-	CGraphicsParameters params;
+	GraphicsParameters params;
 	params.ScreenWidth  = iScreenWidth;
 	params.ScreenHeight = iScreenHeight;
 	params.bWindowed    = screen_mode == GameWindow::WINDOWED ? true : false;
 
-	CGraphicsComponentCollector::Get()->SetGraphicsPargams( params );
+	GraphicsComponentCollector::Get()->SetGraphicsPargams( params );
 
 	return true;
 }
@@ -135,7 +135,7 @@ void CGameWindowManager_Win32_D3D::ChangeScreenSize( int iNewScreenWidth,
 
 
 	// release all the graphic resources ( textures, vertex buffers, mesh models, and so on )
-	CGraphicsComponentCollector::Get()->ReleaseGraphicsResources();
+	GraphicsComponentCollector::Get()->ReleaseGraphicsResources();
 
 	if( !DIRECT3D9.ResetD3DDevice( m_hWnd, iNewScreenWidth, iNewScreenHeight, bFullScreen ) )
 	{
@@ -150,13 +150,13 @@ void CGameWindowManager_Win32_D3D::ChangeScreenSize( int iNewScreenWidth,
 	m_CurrentScreenMode   = GameWindow::WINDOWED; // TODO: use the new screen mode
 
 
-	CGraphicsParameters param;
+	GraphicsParameters param;
 	param.ScreenWidth  = iNewScreenWidth;
 	param.ScreenHeight = iNewScreenHeight;
 	param.bWindowed = (!bFullScreen);
 
 	// notify all the graphics components to load their resources
-	CGraphicsComponentCollector::Get()->LoadGraphicsResources( param );
+	GraphicsComponentCollector::Get()->LoadGraphicsResources( param );
 
 	// notify changes to all the game components
 //	GAMECOMPONENTCOLLECTOR.AdaptToNewScreenSize();

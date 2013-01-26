@@ -335,7 +335,7 @@ void CDebugOutput::ReleaseGraphicsResources()
 }
 
 
-void CDebugOutput::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CDebugOutput::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	m_pFont->Reload();
 }

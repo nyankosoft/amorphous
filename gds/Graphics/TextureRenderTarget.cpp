@@ -91,7 +91,7 @@ void CTextureRenderTarget::ReleaseGraphicsResources()
 }
 
 
-void CTextureRenderTarget::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CTextureRenderTarget::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	if( m_bScreenSizeRenderTarget )
 	{

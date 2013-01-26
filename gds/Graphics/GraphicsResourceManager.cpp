@@ -411,7 +411,7 @@ shared_ptr<CGraphicsResourceEntry> CGraphicsResourceManager::LoadShaderManager( 
 }
 
 
-void CGraphicsResourceManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGraphicsResourceManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	LOG_FUNCTION_SCOPE();
 

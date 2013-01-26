@@ -51,7 +51,7 @@ public:
  *
  *
  */
-//class CEntityRenderManager : public CGraphicsComponent, public CCubeMapSceneRenderer
+//class CEntityRenderManager : public GraphicsComponent, public CCubeMapSceneRenderer
 class CEntityRenderManager : public CScreenEffectTargetSceneRenderer, public CCubeMapSceneRenderer
 {
 private:
@@ -247,7 +247,7 @@ public:
 	bool IsRenderingMirroredScene() const { return m_IsRenderingMirroredScene; }
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
 	friend class CEntityEnvMapRenderTask;
 	friend class CEntitySceneRenderTask;
