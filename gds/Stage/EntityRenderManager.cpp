@@ -171,7 +171,7 @@ public:
 };
 
 
-class CEntityShadowMapRenderer : public CShadowMapSceneRenderer
+class CEntityShadowMapRenderer : public ShadowMapSceneRenderer
 {
 	CEntityRenderManager *m_pRenderer;
 
@@ -1097,8 +1097,8 @@ bool CEntityRenderManager::EnableSoftShadow( float softness, int shadowmap_size 
 {
 	SafeDelete( m_pShadowManager );
 
-//	m_pShadowManager = new CVarianceShadowMapManager();
-	m_pShadowManager = new CShadowMapManager();
+//	m_pShadowManager = new VarianceShadowMapManager();
+	m_pShadowManager = new ShadowMapManager();
 
 	m_pShadowManager->SetSceneRenderer( m_pShadowMapSceneRenderer );
 
@@ -1120,7 +1120,7 @@ bool CEntityRenderManager::EnableShadowMap( int shadow_map_size )
 {
 	SafeDelete( m_pShadowManager );
 
-	m_pShadowManager = new CShadowMapManager();
+	m_pShadowManager = new ShadowMapManager();
 
 	m_pShadowManager->SetSceneRenderer( m_pShadowMapSceneRenderer );
 

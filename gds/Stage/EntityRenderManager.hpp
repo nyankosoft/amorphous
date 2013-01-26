@@ -18,7 +18,6 @@ namespace amorphous
 {
 
 
-class CShadowMapManager;
 class CScreenEffectManager;
 
 class CEntityEnvMapRenderTask;
@@ -93,7 +92,7 @@ private:
 	// shadow
 	//
 
-	CShadowMapManager *m_pShadowManager;
+	ShadowMapManager *m_pShadowManager;
 
 	boost::shared_ptr<CEntityShadowMapRenderer> m_pShadowMapSceneRenderer;
 
@@ -221,7 +220,7 @@ public:
 	// shadow
 	//
 
-	CShadowMapManager *GetShadowManager() { return m_pShadowManager; }
+	ShadowMapManager *GetShadowManager() { return m_pShadowManager; }
 
 	bool EnableShadowMap( int shadow_map_size = 512 );
 	bool EnableSoftShadow( float softness = 1.0f, int shadowmap_size = 512 );

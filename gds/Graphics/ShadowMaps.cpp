@@ -26,15 +26,15 @@ float g_fShadowMapNearClip = 0.1f;
 float g_fShadowMapFarClip = 100.0f;
 
 
-int CShadowMap::ms_DebugShadowMap = 0;
+int ShadowMap::ms_DebugShadowMap = 0;
 
-CShadowMap::~CShadowMap()
+ShadowMap::~ShadowMap()
 {
 	ReleaseTextures();
 }
 
 
-void CShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_directory_path )
+void ShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_directory_path )
 {
 	string filepath;
 	if( file_or_directory_path.rfind("/") == file_or_directory_path.length() - 1 )
@@ -56,7 +56,7 @@ void CShadowMap::SaveShadowMapTextureToFile( const std::string& file_or_director
 }
 
 
-void CShadowMap::RenderSceneToShadowMap( Camera& camera )
+void ShadowMap::RenderSceneToShadowMap( Camera& camera )
 {
 	if( !m_pSceneRenderer )
 		return;
@@ -70,7 +70,7 @@ void CShadowMap::RenderSceneToShadowMap( Camera& camera )
 }
 
 
-void CShadowMap::RenderShadowReceivers( Camera& camera )
+void ShadowMap::RenderShadowReceivers( Camera& camera )
 {
 	if( !m_pSceneRenderer )
 		return;
@@ -81,7 +81,7 @@ void CShadowMap::RenderShadowReceivers( Camera& camera )
 }
 
 
-void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void ShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
 	CreateShadowMapTextures();
 }
@@ -89,10 +89,10 @@ void CShadowMap::LoadGraphicsResources( const CGraphicsParameters& rParam )
 
 
 //============================================================================
-// CFlatShadowMap
+// FlatShadowMap
 //============================================================================
 
-CFlatShadowMap::CFlatShadowMap()
+FlatShadowMap::FlatShadowMap()
 {
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
@@ -104,7 +104,7 @@ CFlatShadowMap::CFlatShadowMap()
 }
 
 
-CShaderTechniqueHandle& CFlatShadowMap::ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type )
+CShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
@@ -119,7 +119,7 @@ CShaderTechniqueHandle& CFlatShadowMap::ShadowMapTechnique( CVertexBlendType::Na
 }
 
 
-CShaderTechniqueHandle& CFlatShadowMap::DepthTestTechnique( CVertexBlendType::Name vertex_blend_type )
+CShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( CVertexBlendType::Name vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
@@ -134,7 +134,7 @@ CShaderTechniqueHandle& CFlatShadowMap::DepthTestTechnique( CVertexBlendType::Na
 }
 
 
-bool CFlatShadowMap::CreateShadowMapTextures()
+bool FlatShadowMap::CreateShadowMapTextures()
 {
 /*	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -209,7 +209,7 @@ bool CFlatShadowMap::CreateShadowMapTextures()
 }
 
 
-void CFlatShadowMap::UpdateLightPositionAndDirection()
+void FlatShadowMap::UpdateLightPositionAndDirection()
 {
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
@@ -256,7 +256,7 @@ void CFlatShadowMap::UpdateLightPositionAndDirection()
 static float sg_fOrigNearClip = 0;
 static float sg_fOrigFarClip = 0;
 
-void CFlatShadowMap::BeginSceneShadowMap()
+void FlatShadowMap::BeginSceneShadowMap()
 {
 /*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;
@@ -298,7 +298,7 @@ void CFlatShadowMap::BeginSceneShadowMap()
 }
 
 
-void CFlatShadowMap::EndSceneShadowMap()
+void FlatShadowMap::EndSceneShadowMap()
 {
 //	pd3dDev->EndScene();
 
@@ -315,7 +315,7 @@ void CFlatShadowMap::EndSceneShadowMap()
 }
 
 
-void CFlatShadowMap::BeginSceneShadowReceivers()
+void FlatShadowMap::BeginSceneShadowReceivers()
 {
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );
@@ -331,14 +331,14 @@ void CFlatShadowMap::BeginSceneShadowReceivers()
 }
 
 
-void CFlatShadowMap::ReleaseTextures()
+void FlatShadowMap::ReleaseTextures()
 {
 //	SAFE_RELEASE( m_pShadowMap );
 //	SAFE_RELEASE( m_pShadowMapDepthBuffer );
 }
 
 
-void CFlatShadowMap::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
+void FlatShadowMap::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
@@ -347,7 +347,7 @@ void CFlatShadowMap::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
 }
 
 
-std::string CFlatShadowMap::CreateTextureFilename()
+std::string FlatShadowMap::CreateTextureFilename()
 {
 	return fmt_string( "shadowmap_of_directional_light_or_spotlight_pos%s_dir%s.dds",
 						to_string(m_LightCamera.GetPosition()).c_str(),
@@ -356,7 +356,7 @@ std::string CFlatShadowMap::CreateTextureFilename()
 }
 
 
-void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
+void FlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
 {
 //	HRESULT hr = D3DXSaveTextureToFile( filepath.c_str(), D3DXIFF_DDS, m_pShadowMap, NULL );
 	if( m_pShadowmapRenderTarget )
@@ -366,12 +366,12 @@ void CFlatShadowMap::SaveShadowMapTextureToFileInternal( const std::string& file
 
 
 //============================================================================
-// COrthoShadowMap
+// OrthoShadowMap
 //============================================================================
 
-float COrthoShadowMap::ms_fCameraShiftDistance = 50.0f;
+float OrthoShadowMap::ms_fCameraShiftDistance = 50.0f;
 
-COrthoShadowMap::COrthoShadowMap()
+OrthoShadowMap::OrthoShadowMap()
 {
 	m_ShadowMapTechnique.SetTechniqueName( "OrthoShadowMap" );
 	m_DepthTestTechnique.SetTechniqueName( "OrthoSceneShadowMap" );
@@ -380,9 +380,9 @@ COrthoShadowMap::COrthoShadowMap()
 }
 
 
-void COrthoShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
+void OrthoShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
 {
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
 
 	const float light_cam_shift = ms_fCameraShiftDistance;
@@ -394,7 +394,7 @@ void COrthoShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
 }
 
 
-void COrthoShadowMap::UpdateLightPositionAndDirection()
+void OrthoShadowMap::UpdateLightPositionAndDirection()
 {
 	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
@@ -417,7 +417,7 @@ void COrthoShadowMap::UpdateLightPositionAndDirection()
 }
 
 
-void COrthoShadowMap::UpdateShadowMapSettings()
+void OrthoShadowMap::UpdateShadowMapSettings()
 {
 	// orthographic projection
 	Matrix44 ortho_proj = Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 150.0f );
@@ -427,12 +427,12 @@ void COrthoShadowMap::UpdateShadowMapSettings()
 }
 
 
-void COrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
+void OrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
 {
 	float fOrigCamNearClip = m_LightCamera.GetNearClip();
 	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
 
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 	{
 		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
 		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );
@@ -463,9 +463,9 @@ void COrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
 // CSpotLightShadowMap
 //============================================================================
 
-float CSpotlightShadowMap::ms_fCameraShiftDistance = 50.0f;
+float SpotlightShadowMap::ms_fCameraShiftDistance = 50.0f;
 
-CSpotlightShadowMap::CSpotlightShadowMap()
+SpotlightShadowMap::SpotlightShadowMap()
 {
 	m_ShadowMapTechnique.SetTechniqueName( "ShadowMap" );
 	m_DepthTestTechnique.SetTechniqueName( "SceneShadowMap" );
@@ -481,9 +481,9 @@ CSpotlightShadowMap::CSpotlightShadowMap()
 }
 
 
-void CSpotlightShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
+void SpotlightShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
 {
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( "debug/graphics_params.txt", "light_cam_shift_distance", ms_fCameraShiftDistance );
 
 	const float light_cam_shift = ms_fCameraShiftDistance;
@@ -495,14 +495,14 @@ void CSpotlightShadowMap::UpdateDirectionalLight( const DirectionalLight& light 
 }
 
 
-void CSpotlightShadowMap::UpdateSpotlight( const Spotlight& light )
+void SpotlightShadowMap::UpdateSpotlight( const Spotlight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 	m_LightCamera.SetOrientation( CreateOrientFromFwdDir(light.vDirection) );
 }
 
 
-void CSpotlightShadowMap::UpdateShadowMapSettings()
+void SpotlightShadowMap::UpdateShadowMapSettings()
 {
 	sg_fOrigNearClip = m_LightCamera.GetNearClip();
 	sg_fOrigFarClip = m_LightCamera.GetFarClip();
@@ -519,12 +519,12 @@ void CSpotlightShadowMap::UpdateShadowMapSettings()
 }
 
 
-void CSpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
+void SpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 {
 	float fOrigCamNearClip = m_LightCamera.GetNearClip();
 	float fOrigCamFarClip  = m_LightCamera.GetFarClip();
 
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 	{
 		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_nearclip", g_fShadowMapNearClip );
 		UPDATE_PARAM( "debug/graphics_params.txt", "dir_light_cam_farclip", g_fShadowMapFarClip );

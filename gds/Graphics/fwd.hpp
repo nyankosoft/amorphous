@@ -61,7 +61,7 @@ class CTextureRenderTarget;
 
 class SimpleMotionBlur;
 class CubeMapManager;
-class CShadowMapManager;
+class ShadowMapManager;
 
 class PostProcessEffect;
 class PostProcessEffectManager;

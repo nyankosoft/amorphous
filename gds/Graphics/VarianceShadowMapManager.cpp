@@ -14,17 +14,17 @@ using namespace std;
 using namespace boost;
 
 
-class CVSShadowMapPostProcessor : public CShadowMapVisitor
+class VSShadowMapPostProcessor : public ShadowMapVisitor
 {
-	CVarianceShadowMapManager *m_pVSShadowMapManager;
+	VarianceShadowMapManager *m_pVSShadowMapManager;
 public:
 
-	CVSShadowMapPostProcessor( CVarianceShadowMapManager *pMgr ) { m_pVSShadowMapManager = pMgr; }
+	VSShadowMapPostProcessor( VarianceShadowMapManager *pMgr ) { m_pVSShadowMapManager = pMgr; }
 
-//	void Visit( CDirectionalLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
-	void Visit( COrthoShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
-//	void Visit( CPointLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPointLightShadowMap( shadow_map ); }
-//	void Visit( CSpotLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPSpotLightShadowMap( shadow_map ); }
+//	void Visit( DirectionalLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
+	void Visit( OrthoShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessDirectionalLightShadowMap( shadow_map ); }
+//	void Visit( PointLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPointLightShadowMap( shadow_map ); }
+//	void Visit( SpotLightShadowMap& shadow_map ) { m_pVSShadowMapManager->PostProcessPSpotLightShadowMap( shadow_map ); }
 };
 
 
@@ -87,10 +87,10 @@ static void SetBlurParameters( float dx,
 }
 
 
-//std::string CVarianceShadowMapManager::ms_strDefaultVSMShaderFilename = "Shader/VarianceShadowMap.fx";
+//std::string VarianceShadowMapManager::ms_strDefaultVSMShaderFilename = "Shader/VarianceShadowMap.fx";
 
 /*
-CVarianceShadowMapManager::SetShaderTechniqueForShadowCaster()
+VarianceShadowMapManager::SetShaderTechniqueForShadowCaster()
 {
 }
 */
@@ -105,7 +105,7 @@ float sampleWeightsH[15];
 
 
 
-CVarianceShadowMapManager::CVarianceShadowMapManager()
+VarianceShadowMapManager::VarianceShadowMapManager()
 //:
 //m_pHBlurredShadowMap(NULL),
 //m_pBlurredShadowMap(NULL)
@@ -114,21 +114,21 @@ CVarianceShadowMapManager::CVarianceShadowMapManager()
 }
 
 
-CVarianceShadowMapManager::~CVarianceShadowMapManager()
+VarianceShadowMapManager::~VarianceShadowMapManager()
 {
 	ReleaseGraphicsResources();
 }
 
 
 /*
-void CVarianceShadowMapManager::ReleaseTextures()
+void VarianceShadowMapManager::ReleaseTextures()
 {}
 */
 
 
-bool CVarianceShadowMapManager::Init()
+bool VarianceShadowMapManager::Init()
 {
-	bool base_init = CShadowMapManager::Init();
+	bool base_init = ShadowMapManager::Init();
 
 	if( !base_init )
 		return false;
@@ -209,20 +209,20 @@ bool CVarianceShadowMapManager::Init()
 }
 
 
-void CVarianceShadowMapManager::PostProcessShadowMap( CShadowMap& shadow_map )
+void VarianceShadowMapManager::PostProcessShadowMap( ShadowMap& shadow_map )
 {
-	CVSShadowMapPostProcessor post_processor( this );
+	VSShadowMapPostProcessor post_processor( this );
 	shadow_map.Accept( post_processor );
 }
 
 
-void CVarianceShadowMapManager::EndSceneShadowMap()
+void VarianceShadowMapManager::EndSceneShadowMap()
 {
-	CShadowMapManager::EndSceneShadowMap();
+	ShadowMapManager::EndSceneShadowMap();
 }
 
 
-void CVarianceShadowMapManager::UpdateLightPositionAndDirection()
+void VarianceShadowMapManager::UpdateLightPositionAndDirection()
 {
 /*	HRESULT hr;
 	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
@@ -238,8 +238,8 @@ void CVarianceShadowMapManager::UpdateLightPositionAndDirection()
 
 /// input: shadow map
 /// final output: shadow map (horizontally and vertically blurred)
-//void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map )
-void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( COrthoShadowMap& shadow_map )
+//void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( DirectionalLightShadowMap& shadow_map )
+void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadowMap& shadow_map )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;
@@ -346,9 +346,9 @@ void CVarianceShadowMapManager::PostProcessDirectionalLightShadowMap( COrthoShad
 }
 
 
-void CVarianceShadowMapManager::BeginSceneDepthMap()
+void VarianceShadowMapManager::BeginSceneDepthMap()
 {
-	CShadowMapManager::BeginSceneDepthMap();
+	ShadowMapManager::BeginSceneDepthMap();
 /*
 	CShaderParamFloatArray farclip = CShaderParamFloatArray( "g_fFarClip" );
 	farclip.Parameter().resize( 1 );
@@ -359,9 +359,9 @@ void CVarianceShadowMapManager::BeginSceneDepthMap()
 
 
 /*
-void CVarianceShadowMapManager::SetDefault()
+void VarianceShadowMapManager::SetDefault()
 {
-	CShadowMapManager::SetDefault();
+	ShadowMapManager::SetDefault();
 
 	// set default light direction & position
 	Vector3 vLightDir =  Vector3(-0.56568f, -0.70711f, -0.42426f);
@@ -374,17 +374,17 @@ void CVarianceShadowMapManager::SetDefault()
 */
 
 
-void CVarianceShadowMapManager::ReleaseGraphicsResources()
+void VarianceShadowMapManager::ReleaseGraphicsResources()
 {
-	CShadowMapManager::ReleaseGraphicsResources();
+	ShadowMapManager::ReleaseGraphicsResources();
 
 	// release blur shader
 }
 
 
-void CVarianceShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void VarianceShadowMapManager::LoadGraphicsResources( const CGraphicsParameters& rParam )
 {
-	CShadowMapManager::LoadGraphicsResources( rParam );
+	ShadowMapManager::LoadGraphicsResources( rParam );
 
 	Init();
 }

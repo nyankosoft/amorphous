@@ -19,16 +19,16 @@ using namespace boost;
 const char *sg_pShadowMapDebugParamsFile = ".debug/shadowmap.txt";
 
 
-//std::string CShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
+//std::string ShadowMapManager::ms_strDefaultShaderFilename = "Shader/ShadowMap.fx";
 
 
-class CShadowMapLightVisitor : public ConstLightVisitor
+class ShadowMapLightVisitor : public ConstLightVisitor
 {
-	CShadowMap *m_pShadowMap;
+	ShadowMap *m_pShadowMap;
 
 public:
 
-	CShadowMapLightVisitor( CShadowMap *pShadowMap )
+	ShadowMapLightVisitor( ShadowMap *pShadowMap )
 		:
 	m_pShadowMap(pShadowMap)
 	{}
@@ -42,31 +42,31 @@ public:
 };
 
 
-class CShadowMapFactory
+class ShadowMapFactory
 {
 public:
 
-	shared_ptr<CShadowMap> CreateShadowMap( const Light& light )
+	shared_ptr<ShadowMap> CreateShadowMap( const Light& light )
 	{
-		shared_ptr<CShadowMap> pShadowMap;
+		shared_ptr<ShadowMap> pShadowMap;
 
 		switch( light.GetLightType() )
 		{
 		case Light::DIRECTIONAL:
 		case Light::HEMISPHERIC_DIRECTIONAL:
-//			pShadowMap.reset( new CDirectionalLightShadowMap() );
-//			pShadowMap.reset( new CSpotlightShadowMap() );
-			pShadowMap.reset( new COrthoShadowMap() );
+//			pShadowMap.reset( new DirectionalLightShadowMap() );
+//			pShadowMap.reset( new SpotlightShadowMap() );
+			pShadowMap.reset( new OrthoShadowMap() );
 			break;
 
 //		case Light::POINT:
 //		case Light::HEMISPHERIC_POINT:
-//			pShadowMap.reset( new CPointLightShadowMap() );
+//			pShadowMap.reset( new PointLightShadowMap() );
 			break;
 
 		case Light::SPOTLIGHT:
 		case Light::HEMISPHERIC_SPOTLIGHT:
-			pShadowMap.reset( new CSpotlightShadowMap() );
+			pShadowMap.reset( new SpotlightShadowMap() );
 			break;
 
 		default:
@@ -81,10 +81,10 @@ public:
 
 
 //===================================================================
-// CShadowMapManager
+// ShadowMapManager
 //===================================================================
 
-CShadowMapManager::CShadowMapManager()
+ShadowMapManager::ShadowMapManager()
 :
 //m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
 m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
@@ -102,20 +102,20 @@ m_ShadowMapSize( 1024 )
 }
 
 
-CShadowMapManager::~CShadowMapManager()
+ShadowMapManager::~ShadowMapManager()
 {
 	ReleaseGraphicsResources();
 }
 
 
-void CShadowMapManager::SetSceneShadowTextureSize( int texture_width, int texture_height )
+void ShadowMapManager::SetSceneShadowTextureSize( int texture_width, int texture_height )
 {
 	m_iTextureWidth  = texture_width;
 	m_iTextureHeight = texture_height;
 }
 
 
-bool CShadowMapManager::Init()
+bool ShadowMapManager::Init()
 {
 //	m_ShaderManager.Release();
 	m_Shader.Release();
@@ -145,7 +145,7 @@ bool CShadowMapManager::Init()
 }
 
 
-void CShadowMapManager::SetDefault()
+void ShadowMapManager::SetDefault()
 {
 	m_ShadowMapSize = 512;
 
@@ -153,14 +153,14 @@ void CShadowMapManager::SetDefault()
 	m_SceneCamera.SetPosition( Vector3( 0.0f, 1.0f, -5.0f ) );
 	m_SceneCamera.SetOrientation( Matrix33Identity() );
 
-	UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "debug_shadowmap", CShadowMap::ms_DebugShadowMap );
+	UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "debug_shadowmap", ShadowMap::ms_DebugShadowMap );
 
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "shadowmap_size", m_ShadowMapSize );
 }
 
 
-void CShadowMapManager::ReleaseTextures()
+void ShadowMapManager::ReleaseTextures()
 {
 	for( int i=0; i<NUM_MAX_SCENE_SHADOW_TEXTURES; i++ )
 	{
@@ -172,7 +172,7 @@ void CShadowMapManager::ReleaseTextures()
 }
 
 
-void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pSceneRenderer )
+void ShadowMapManager::SetSceneRenderer( shared_ptr<ShadowMapSceneRenderer> pSceneRenderer )
 {
 	m_pSceneRenderer = pSceneRenderer;
 
@@ -189,7 +189,7 @@ void CShadowMapManager::SetSceneRenderer( shared_ptr<CShadowMapSceneRenderer> pS
 /// returns -1 on failure
 /// \param [in] light must be either directional or point light
 /// TODO: support spotlight
-std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::CreateShadowMap( U32 id, const Light& light )
+std::map< int, boost::shared_ptr<ShadowMap> >::iterator ShadowMapManager::CreateShadowMap( U32 id, const Light& light )
 {
 	if( light.GetLightType() != Light::DIRECTIONAL
 	 && light.GetLightType() != Light::HEMISPHERIC_DIRECTIONAL
@@ -199,11 +199,11 @@ std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::Crea
 		return m_mapIDtoShadowMap.end();
 	}
 
-	CShadowMapFactory factory;
+	ShadowMapFactory factory;
 
 	// Create a shadow map object
 	// - shadow map texture is not created in this call.
-	shared_ptr<CShadowMap> pShadowMap = factory.CreateShadowMap( light );
+	shared_ptr<ShadowMap> pShadowMap = factory.CreateShadowMap( light );
 	if( !pShadowMap )
 		return m_mapIDtoShadowMap.end();
 
@@ -229,9 +229,9 @@ std::map< int, boost::shared_ptr<CShadowMap> >::iterator CShadowMapManager::Crea
 }
 
 
-Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, const Light& light )
+Result::Name ShadowMapManager::UpdateLightForShadow( U32 id, const Light& light )
 {
-	map< int, shared_ptr<CShadowMap> >::iterator itrShadowMap
+	map< int, shared_ptr<ShadowMap> >::iterator itrShadowMap
 		= m_mapIDtoShadowMap.find((int)id);
 
 	static uint s_NumMaxShadowMaps = 1;
@@ -251,14 +251,14 @@ Result::Name CShadowMapManager::UpdateLightForShadow( U32 id, const Light& light
 	}
 
 	// update light properties
-	CShadowMapLightVisitor v( itrShadowMap->second.get() );
+	ShadowMapLightVisitor v( itrShadowMap->second.get() );
 	light.Accept( v );
 
 	return Result::SUCCESS;
 }
 
 
-void CShadowMapManager::RemoveShadowForLight( int shadowmap_id )
+void ShadowMapManager::RemoveShadowForLight( int shadowmap_id )
 {
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.find( shadowmap_id );
 
@@ -269,19 +269,19 @@ void CShadowMapManager::RemoveShadowForLight( int shadowmap_id )
 }
 
 
-void CShadowMapManager::UpdateLight( int shadowmap_id, const Light& light )
+void ShadowMapManager::UpdateLight( int shadowmap_id, const Light& light )
 {
 	IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.find( shadowmap_id );
 
 	if( itr == m_mapIDtoShadowMap.end() )
 		return; // not found
 
-	CShadowMapLightVisitor v( itr->second.get() );
+	ShadowMapLightVisitor v( itr->second.get() );
 	light.Accept( v );
 }
 
 
-void CShadowMapManager::RenderShadowCasters( Camera& camera )
+void ShadowMapManager::RenderShadowCasters( Camera& camera )
 {
 	if( m_mapIDtoShadowMap.empty() )
 		return;
@@ -303,14 +303,14 @@ void CShadowMapManager::RenderShadowCasters( Camera& camera )
 		// variance shadow maps are blurred in this call
 		PostProcessShadowMap( *(itr->second.get()) );
 
-		m_pCurrentShadowMap = shared_ptr<CShadowMap>();
+		m_pCurrentShadowMap = shared_ptr<ShadowMap>();
 	}
 
 	EndSceneShadowMap();
 }
 
 
-void CShadowMapManager::RenderShadowReceivers( Camera& camera )
+void ShadowMapManager::RenderShadowReceivers( Camera& camera )
 {
 	if( m_mapIDtoShadowMap.empty() )
 		return;
@@ -333,7 +333,7 @@ void CShadowMapManager::RenderShadowReceivers( Camera& camera )
 	itr->second->RenderShadowReceivers( camera );
 	itr++;
 
-	m_pCurrentShadowMap = shared_ptr<CShadowMap>();
+	m_pCurrentShadowMap = shared_ptr<ShadowMap>();
 
 	m_apShadowTexture[0]->ResetRenderTarget();
 
@@ -364,7 +364,7 @@ void CShadowMapManager::RenderShadowReceivers( Camera& camera )
 }
 
 
-CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type )
+CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type )
 {
 /*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 //	HRESULT hr = pEffect->SetTechnique( "ShadowMap" );
@@ -381,7 +381,7 @@ CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowCaster( CVerte
 }
 
 
-CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type )
+CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type )
 {
 /*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 //	HRESULT hr = pEffect->SetTechnique( "SceneShadowMap" );
@@ -398,7 +398,7 @@ CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForShadowReceiver( CVer
 }
 
 
-CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type )
+CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type )
 {
 	CShaderTechniqueHandle tech;
 	tech.SetTechniqueName( "SceneShadowMap_NonShadowed" );
@@ -407,7 +407,7 @@ CShaderTechniqueHandle CShadowMapManager::ShaderTechniqueForNonShadowedCasters( 
 }
 
 
-bool CShadowMapManager::CreateSceneShadowMapTextures()
+bool ShadowMapManager::CreateSceneShadowMapTextures()
 {
 	for( int i=0; i<2; i++ )
 	{
@@ -445,14 +445,14 @@ bool CShadowMapManager::CreateSceneShadowMapTextures()
 }
 
 
-void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
+void ShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 {
 	if( !m_apShadowTexture[0] )
 		return;
 
 	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 	{
 		static int display_shadowmap_tex = 0;
 		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "display_shadowmap_textures", display_shadowmap_tex );
@@ -544,13 +544,13 @@ void CShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 }
 
 
-void CShadowMapManager::RenderSceneWithShadow()
+void ShadowMapManager::RenderSceneWithShadow()
 {
 	RenderSceneWithShadow( 0, 0, GetScreenWidth() - 1, GetScreenHeight() - 1 );
 }
 
 /*
-void CShadowMapManager::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
+void ShadowMapManager::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
@@ -558,7 +558,7 @@ void CShadowMapManager::RenderShadowMapTexture( int sx, int sy, int ex, int ey )
 }
 */
 
-void CShadowMapManager::RenderSceneShadowMapTexture( int sx, int sy, int ex, int ey )
+void ShadowMapManager::RenderSceneShadowMapTexture( int sx, int sy, int ex, int ey )
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
@@ -566,7 +566,7 @@ void CShadowMapManager::RenderSceneShadowMapTexture( int sx, int sy, int ex, int
 }
 
 
-void CShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey )
+void ShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey )
 {
 	C2DRect rect( sx, sy, ex, ey, 0xFFFFFFFF );
 	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
@@ -575,14 +575,14 @@ void CShadowMapManager::RenderSceneWithoutShadow( int sx, int sy, int ex, int ey
 }
 
 
-TextureHandle CShadowMapManager::GetSceneShadowTexture()
+TextureHandle ShadowMapManager::GetSceneShadowTexture()
 {
 	return m_apShadowTexture[0] ? m_apShadowTexture[0]->GetRenderTargetTexture() : TextureHandle();
 }
 
 
-//void CShadowMapManager::BeginSceneForShadowCaster()
-void CShadowMapManager::BeginSceneShadowMap()
+//void ShadowMapManager::BeginSceneForShadowCaster()
+void ShadowMapManager::BeginSceneShadowMap()
 {
 //	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
 
@@ -592,8 +592,8 @@ void CShadowMapManager::BeginSceneShadowMap()
 }
 
 
-//void CShadowMapManager::EndSceneForShadowCaster()
-void CShadowMapManager::EndSceneShadowMap()
+//void ShadowMapManager::EndSceneForShadowCaster()
+void ShadowMapManager::EndSceneShadowMap()
 {
 /*
 //	ShaderManagerHub.PopViewAndProjectionMatrices();
@@ -611,8 +611,8 @@ void CShadowMapManager::EndSceneShadowMap()
 }
 
 
-//void CShadowMapManager::BeginSceneForShadowReceiver()
-void CShadowMapManager::BeginSceneDepthMap()
+//void ShadowMapManager::BeginSceneForShadowReceiver()
+void ShadowMapManager::BeginSceneDepthMap()
 {
 	Matrix44 view, proj;
 	m_SceneCamera.GetCameraMatrix( view );
@@ -641,7 +641,7 @@ void CShadowMapManager::BeginSceneDepthMap()
 
 	pShaderMgr->SetParam( "g_ShadowMapSize", m_ShadowMapSize );
 
-	if( CShadowMap::ms_DebugShadowMap )
+	if( ShadowMap::ms_DebugShadowMap )
 	{
 		static float dist_tolerance = 0.05f;
 		UPDATE_PARAM( sg_pShadowMapDebugParamsFile, "shadowmap_dist_tolerance", dist_tolerance );
@@ -652,8 +652,8 @@ void CShadowMapManager::BeginSceneDepthMap()
 }
 
 
-//void CShadowMapManager::EndSceneForShadowReceiver()
-void CShadowMapManager::EndSceneDepthMap()
+//void ShadowMapManager::EndSceneForShadowReceiver()
+void ShadowMapManager::EndSceneDepthMap()
 {
 //	pd3dDev->EndScene();
 
@@ -673,7 +673,7 @@ void CShadowMapManager::EndSceneDepthMap()
 }
 
 
-void CShadowMapManager::BeginScene()
+void ShadowMapManager::BeginScene()
 {
 	m_pSceneRenderTarget->SetRenderTarget();
 
@@ -681,7 +681,7 @@ void CShadowMapManager::BeginScene()
 }
 
 
-void CShadowMapManager::EndScene()
+void ShadowMapManager::EndScene()
 {
 //	DIRECT3D9.GetDevice()->EndScene();
 
@@ -689,7 +689,7 @@ void CShadowMapManager::EndScene()
 }
 
 
-void CShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
+void ShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
 {
 	m_pSceneRenderTarget->OutputImageFile( filename.c_str() );
 }

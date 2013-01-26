@@ -17,14 +17,14 @@ namespace amorphous
 {
 
 
-class CShadowMap;
+class ShadowMap;
 //class CDirectionalLightShadowMap;
-class COrthoShadowMap;
+class OrthoShadowMap;
 class CPointLightShadowMap;
-class CSpotlightShadowMap;
+class SpotlightShadowMap;
 
 
-class CShadowMapSceneRenderer
+class ShadowMapSceneRenderer
 {
 public:
 
@@ -38,11 +38,11 @@ public:
 
 class CCubeShadowMapSceneRenderer : public CCubeMapSceneRenderer
 {
-	CShadowMapSceneRenderer *m_pSceneRenderer;
+	ShadowMapSceneRenderer *m_pSceneRenderer;
 
 public:
 
-	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
+	void SetSceneRenderer( ShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
 
 	void RenderSceneToCubeMap( Camera& camera )
 	{
@@ -53,24 +53,24 @@ public:
 };
 
 
-class CShadowMapVisitor
+class ShadowMapVisitor
 {
 public:
 
-	virtual ~CShadowMapVisitor() {}
+	virtual ~ShadowMapVisitor() {}
 
 //	virtual void Visit( CDirectionalLightShadowMap& shadow_map ) {}
-	virtual void Visit( COrthoShadowMap& shadow_map ) {}
-	virtual void Visit( CSpotlightShadowMap& shadow_map ) {}
+	virtual void Visit( OrthoShadowMap& shadow_map ) {}
+	virtual void Visit( SpotlightShadowMap& shadow_map ) {}
 	virtual void Visit( CPointLightShadowMap& shadow_map ) {}
 };
 
 
-class CShadowMap : public CGraphicsComponent
+class ShadowMap : public CGraphicsComponent
 {
 protected:
 
-	CShadowMapSceneRenderer *m_pSceneRenderer;
+	ShadowMapSceneRenderer *m_pSceneRenderer;
 
 	int m_ShadowMapSize;
 
@@ -108,7 +108,7 @@ protected:
 
 public:
 
-	CShadowMap()
+	ShadowMap()
 		:
 	m_pSceneRenderer(NULL),
 	m_ShadowMapSize(1024),
@@ -117,10 +117,10 @@ public:
 	m_UseLightPosInWorldSpace(true)
 	{}
 
-//	CShadowMap( const ShaderHandle& shader );
-//	CShadowMap( int texture_width, int texture_height );
+//	ShadowMap( const ShaderHandle& shader );
+//	ShadowMap( int texture_width, int texture_height );
 
-	virtual ~CShadowMap();
+	virtual ~ShadowMap();
 
 	TextureFormat::Format GetShadowMapTextureFormat() const { return m_ShadowMapTextureFormat; }
 
@@ -128,7 +128,7 @@ public:
 
 	virtual bool CreateShadowMapTextures() = 0;
 
-	virtual void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
+	virtual void SetSceneRenderer( ShadowMapSceneRenderer *pSceneRenderer ) { m_pSceneRenderer = pSceneRenderer; }
 
 	virtual void RenderSceneToShadowMap( Camera& camera );
 
@@ -190,7 +190,7 @@ public:
 
 	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath ) {}
 
-	virtual void Accept( CShadowMapVisitor& v ) {}
+	virtual void Accept( ShadowMapVisitor& v ) {}
 /*
 	void SetCameraDirection( const Vector3& vCamDir ) { m_SceneCamera.SetOrientation( CreateOrientFromFwdDir( vCamDir ) ); }
 	void SetCameraPosition( const Vector3& vCamPos ) { m_SceneCamera.SetPosition( vCamPos ); }
@@ -201,7 +201,7 @@ public:
 
 
 /// Shouldn't this be called "CSingleTextureShadowMap" ?
-class CFlatShadowMap : public CShadowMap
+class FlatShadowMap : public ShadowMap
 {
 protected:
 
@@ -233,9 +233,9 @@ protected:
 
 public:
 
-	CFlatShadowMap();
+	FlatShadowMap();
 
-	virtual ~CFlatShadowMap() {}
+	virtual ~FlatShadowMap() {}
 
 	CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type );
 	CShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type );
@@ -259,7 +259,7 @@ public:
 
 
 /// Use this for directional light?
-class COrthoShadowMap : public CFlatShadowMap
+class OrthoShadowMap : public FlatShadowMap
 {
 	void UpdateShadowMapSettings();
 
@@ -273,15 +273,15 @@ public:
 
 public:
 
-	COrthoShadowMap();
+	OrthoShadowMap();
 
 	void UpdateDirectionalLight( const DirectionalLight& light );
 
-	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
+	void Accept( ShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
 /*
-class CDirectionalLightShadowMap : public CFlatShadowMap
+class CDirectionalLightShadowMap : public FlatShadowMap
 {
 //	boost::weak_ptr<CHemisphericalDirectionalLight> m_DirectionalLight;
 
@@ -291,11 +291,11 @@ public:
 
 	void UpdateDirectionalLight( DirectionalLight& light );
 
-	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
+	void Accept( ShadowMapVisitor& v ) { v.Visit( *this ); }
 };*/
 
 
-class CSpotlightShadowMap : public CFlatShadowMap
+class SpotlightShadowMap : public FlatShadowMap
 {
 	void UpdateShadowMapSettings();
 
@@ -308,14 +308,14 @@ public:
 
 public:
 
-	CSpotlightShadowMap();
+	SpotlightShadowMap();
 
 	/// Called when shadow of directional light is done with spotlight shadow map
 	void UpdateDirectionalLight( const DirectionalLight& light );
 
 	void UpdateSpotlight( const Spotlight& light );
 
-	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
+	void Accept( ShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
 
@@ -324,7 +324,7 @@ public:
  - Calls RenderShadowMapScene() of m_pSceneRenderer 6 times
 
 */
-class CPointLightShadowMap : public CShadowMap
+class CPointLightShadowMap : public ShadowMap
 {
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeShadowMap;
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeShadowMapDepthBuffer;
@@ -345,9 +345,9 @@ public:
 
 	bool CreateShadowMapTextures();
 
-	void SetSceneRenderer( CShadowMapSceneRenderer *pSceneRenderer )
+	void SetSceneRenderer( ShadowMapSceneRenderer *pSceneRenderer )
 	{
-		CShadowMap::SetSceneRenderer( pSceneRenderer );
+		ShadowMap::SetSceneRenderer( pSceneRenderer );
 
 		m_CubeShadowMapSceneRenderer.SetSceneRenderer( pSceneRenderer );
 	}
@@ -370,7 +370,7 @@ public:
 
 	void SaveShadowMapTextureToFileInternal( const std::string& filepath );
 
-	void Accept( CShadowMapVisitor& v ) { v.Visit( *this ); }
+	void Accept( ShadowMapVisitor& v ) { v.Visit( *this ); }
 };
 
 

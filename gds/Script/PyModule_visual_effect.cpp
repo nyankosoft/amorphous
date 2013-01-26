@@ -75,9 +75,9 @@ void (CScreenEffectManager::*SetBlurEffectFWH)( float width, float height, int p
 
 void SetShadowMapCameraShiftDistance( float shift_distance )
 {
-//	CDirectionalLightShadowMap::ms_fCameraShiftDistance = shift_distance;
-	COrthoShadowMap::ms_fCameraShiftDistance     = shift_distance;
-	CSpotlightShadowMap::ms_fCameraShiftDistance = shift_distance;
+//	DirectionalLightShadowMap::ms_fCameraShiftDistance = shift_distance;
+	OrthoShadowMap::ms_fCameraShiftDistance     = shift_distance;
+	SpotlightShadowMap::ms_fCameraShiftDistance = shift_distance;
 }
 
 

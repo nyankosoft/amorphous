@@ -15,7 +15,7 @@ typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;
 
 /**
  */
-class CVarianceShadowMapManager : public CShadowMapManager
+class VarianceShadowMapManager : public ShadowMapManager
 {
 //	LPDIRECT3DTEXTURE9 m_pHBlurredShadowMap;
 
@@ -47,9 +47,9 @@ private:
 
 public:
 
-	CVarianceShadowMapManager();
+	VarianceShadowMapManager();
 
-	~CVarianceShadowMapManager();
+	~VarianceShadowMapManager();
 
 	/// returns true on success
 	bool Init();
@@ -62,14 +62,14 @@ public:
 
 	void BeginSceneDepthMap();
 
-	void PostProcessShadowMap( CShadowMap& shadow_map );
+	void PostProcessShadowMap( ShadowMap& shadow_map );
 
 //	void EndSceneDepthMap();
 
 	void UpdateLightPositionAndDirection();
 
-//	void PostProcessDirectionalLightShadowMap( CDirectionalLightShadowMap& shadow_map );
-	void PostProcessDirectionalLightShadowMap( COrthoShadowMap& shadow_map );
+//	void PostProcessDirectionalLightShadowMap( DirectionalLightShadowMap& shadow_map );
+	void PostProcessDirectionalLightShadowMap( OrthoShadowMap& shadow_map );
 
 	void ReleaseGraphicsResources();
 

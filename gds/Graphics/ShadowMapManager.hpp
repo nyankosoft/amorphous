@@ -21,24 +21,24 @@ namespace amorphous
  * usage notes:
  * steps
  * //1. for 
- * 1. Call CShadowMapManager::BeginSceneShadowMap().
+ * 1. Call ShadowMapManager::BeginSceneShadowMap().
  * 2. render objects that cast shadow to others using the shader technique "ShadowMap".
  *    Set the technique through the effect obtained by
  *    CShader::Get()->GetShaderManager()->GetEffect()
  *    e.g.) CShader::Get()->GetShaderManager()->GetEffect()->SetTechnique( "..." ).
- * 3. Call CShadowMapManager::EndSceneShadowMap().
+ * 3. Call ShadowMapManager::EndSceneShadowMap().
  *
- * 4. Call CShadowMapManager::BeginSceneDepthMap().
+ * 4. Call ShadowMapManager::BeginSceneDepthMap().
  * 5. Render objects that receive shadow from the objects rendered in step 2
  *    using the shader technique "SceneShadowMap".
- * 6. Call CShadowMapManager::EndSceneDepthMap()
+ * 6. Call ShadowMapManager::EndSceneDepthMap()
  *
- * 7. Call CShadowMapManager::BeginScene()
+ * 7. Call ShadowMapManager::BeginScene()
  * 8. Render objects using original shaders
- * 9. Call CShadowMapManager::EndScene()
+ * 9. Call ShadowMapManager::EndScene()
  *
  */
-class CShadowMapManager : public CGraphicsComponent
+class ShadowMapManager : public CGraphicsComponent
 {
 protected:
 
@@ -47,14 +47,14 @@ protected:
 		NUM_MAX_SCENE_SHADOW_TEXTURES = 2,
 	};
 
-	typedef std::map< int, boost::shared_ptr<CShadowMap> > IDtoShadowMap;
+	typedef std::map< int, boost::shared_ptr<ShadowMap> > IDtoShadowMap;
 
 	IDtoShadowMap m_mapIDtoShadowMap;
 
-	boost::shared_ptr<CShadowMapSceneRenderer> m_pSceneRenderer;
+	boost::shared_ptr<ShadowMapSceneRenderer> m_pSceneRenderer;
 
 	// Temporarily stores the shadow map to return shadowmap/depth test technique
-	boost::shared_ptr<CShadowMap> m_pCurrentShadowMap;
+	boost::shared_ptr<ShadowMap> m_pCurrentShadowMap;
 
 	int m_IDCounter;
 
@@ -101,9 +101,9 @@ protected:
 
 public:
 
-	CShadowMapManager();
+	ShadowMapManager();
 
-	~CShadowMapManager();
+	~ShadowMapManager();
 
 	/// returns true on success
 	virtual bool Init();
@@ -111,9 +111,9 @@ public:
 	/// The system sets the size to the screen width and height by default.
 	void SetSceneShadowTextureSize( int texture_width, int texture_height );
 
-	void SetSceneRenderer( boost::shared_ptr<CShadowMapSceneRenderer> pSceneRenderer );
+	void SetSceneRenderer( boost::shared_ptr<ShadowMapSceneRenderer> pSceneRenderer );
 
-	std::map< int, boost::shared_ptr<CShadowMap> >::iterator CreateShadowMap( U32 id, const Light& light );
+	std::map< int, boost::shared_ptr<ShadowMap> >::iterator CreateShadowMap( U32 id, const Light& light );
 
 	Result::Name UpdateLightForShadow( U32 id, const Light& light );
 
@@ -149,7 +149,7 @@ public:
 	/// - See CVarianceShadowMapManager
 	virtual void EndSceneShadowMap();
 
-	virtual void PostProcessShadowMap( CShadowMap& shadow_map ) {}
+	virtual void PostProcessShadowMap( ShadowMap& shadow_map ) {}
 
 //	virtual void UpdateLightPositionAndDirection();
 
