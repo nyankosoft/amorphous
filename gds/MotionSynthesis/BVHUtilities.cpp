@@ -10,7 +10,7 @@ using boost::shared_ptr;
 using namespace msynth;
 
 
-static void CopyBonesFromBVH_r( const CBVHBone& src_bone, msynth::CBone& dest )
+static void CopyBonesFromBVH_r( const BVHBone& src_bone, msynth::CBone& dest )
 {
 	dest.SetOffset( src_bone.GetLocalOffset() );
 
@@ -26,9 +26,9 @@ static void CopyBonesFromBVH_r( const CBVHBone& src_bone, msynth::CBone& dest )
 }
 
 
-void CopySkeletonFromBVH( const CBVHPlayer& src_bvh, msynth::CSkeleton& target )
+void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::CSkeleton& target )
 {
-	const CBVHBone *pBone = src_bvh.GetRootBone();
+	const BVHBone *pBone = src_bvh.GetRootBone();
 	if( !pBone )
 		return;
 
@@ -41,7 +41,7 @@ void CopySkeletonFromBVH( const CBVHPlayer& src_bvh, msynth::CSkeleton& target )
 
 Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::CSkeleton& dest_skeleton )
 {
-	CBVHPlayer bvh_player;
+	BVHPlayer bvh_player;
 	bvh_player.LoadBVHFile( bvh_file_pathname );
 
 	if( !bvh_player.GetRootBone() )

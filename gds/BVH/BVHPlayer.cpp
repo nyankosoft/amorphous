@@ -14,19 +14,19 @@ using namespace std;
 #define BVH_DEFAULT_FRAMETIMME 0.03333333333f
 
 
-CBVHPlayer::CBVHPlayer()
+BVHPlayer::BVHPlayer()
 :
 m_fFrameTime(BVH_DEFAULT_FRAMETIMME)
 {
 }
 
 
-CBVHPlayer::~CBVHPlayer()
+BVHPlayer::~BVHPlayer()
 {
 }
 
 
-void CBVHPlayer::Reset()
+void BVHPlayer::Reset()
 {
 	m_strBVHFilename = "";
 	m_fFrameTime = BVH_DEFAULT_FRAMETIMME;
@@ -38,7 +38,7 @@ void CBVHPlayer::Reset()
 
 #define MAX_LINE_LENGTH 4096
 
-bool CBVHPlayer::LoadBVHFile( const string& filename )
+bool BVHPlayer::LoadBVHFile( const string& filename )
 {
 	//  check the file extention
 	if( strncmp(filename.c_str() + strlen(filename.c_str()) - 4, ".bvh", 4) != 0 )
@@ -66,7 +66,7 @@ bool CBVHPlayer::LoadBVHFile( const string& filename )
 }
 
 
-void CBVHPlayer::LoadSkeleton( FILE *fp )
+void BVHPlayer::LoadSkeleton( FILE *fp )
 {
 	char acLine[MAX_LINE_LENGTH];
 	fgets(acLine, MAX_LINE_LENGTH - 1, fp);		// "HIERARCHY"
@@ -83,7 +83,7 @@ void CBVHPlayer::LoadSkeleton( FILE *fp )
 }
 
 
-void CBVHPlayer::LoadFrameData( FILE *fp )
+void BVHPlayer::LoadFrameData( FILE *fp )
 {
 	char acLine[MAX_LINE_LENGTH];
 	char acSlag[256], acSlag2[256];
@@ -188,7 +188,7 @@ void CBVHPlayer::LoadFrameData( FILE *fp )
 }
 
 
-bool CBVHPlayer::SetWorldTransformation( float fTime )
+bool BVHPlayer::SetWorldTransformation( float fTime )
 {
 	if( m_vecFrame.size() == 0 )
 		return false;
@@ -236,7 +236,7 @@ bool CBVHPlayer::SetWorldTransformation( float fTime )
 }
 
 
-bool CBVHPlayer::Render()
+bool BVHPlayer::Render()
 {
 /*
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -267,7 +267,7 @@ bool CBVHPlayer::Render()
 
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
-//	CBVHBone::ms_pUnitCube = NULL;
+//	BVHBone::ms_pUnitCube = NULL;
 
 	m_RootBone.SetSkeletonColor( 0xFFFFFFFF );
 	m_RootBone.Draw_r();
@@ -276,7 +276,7 @@ bool CBVHPlayer::Render()
 }
 
 
-bool CBVHPlayer::Render(float fTime)
+bool BVHPlayer::Render(float fTime)
 {
 	SetWorldTransformation( fTime );
 
@@ -284,7 +284,7 @@ bool CBVHPlayer::Render(float fTime)
 }
 
 
-void CBVHPlayer::GetGlobalPositionsAtFrame( int iFrame, vector<Vector3>& rvecDestGlobalPositions )
+void BVHPlayer::GetGlobalPositionsAtFrame( int iFrame, vector<Vector3>& rvecDestGlobalPositions )
 {
 	if( iFrame < 0 || (int)m_vecFrame.size() <= iFrame )
 		return;
@@ -298,7 +298,7 @@ void CBVHPlayer::GetGlobalPositionsAtFrame( int iFrame, vector<Vector3>& rvecDes
 
 // returns the matrix which transforms a vertex into the local coodinate
 // whose origin is the center of the body
-Matrix34 CBVHPlayer::GetBodyCenterTransformationMatrixAt( int iFrame )
+Matrix34 BVHPlayer::GetBodyCenterTransformationMatrixAt( int iFrame )
 {
 	const SBVHFrameData& rFrame = this->m_vecFrame[iFrame];
 
@@ -324,14 +324,14 @@ Matrix34 CBVHPlayer::GetBodyCenterTransformationMatrixAt( int iFrame )
 }
 
 
-Vector3 CBVHPlayer::GetBodyCenterPosition( int iFrame )
+Vector3 BVHPlayer::GetBodyCenterPosition( int iFrame )
 {
 	SBVHFrameData& rFrame = this->m_vecFrame[iFrame];
 	return Vector3( rFrame.GetValue(0), rFrame.GetValue(1), rFrame.GetValue(2) );
 }
 
 
-void CBVHPlayer::CopyFramesTo( int iStartFrame, int iEndFrame, CBVHPlayer* pDestBVHPlayer )
+void BVHPlayer::CopyFramesTo( int iStartFrame, int iEndFrame, BVHPlayer* pDestBVHPlayer )
 {
 	if( iStartFrame < 0 ) iStartFrame = 0;
 	if( iEndFrame < 0 ) iEndFrame = 0;
@@ -348,7 +348,7 @@ void CBVHPlayer::CopyFramesTo( int iStartFrame, int iEndFrame, CBVHPlayer* pDest
 
 // translate the player's position to make a motion between 'iStartFrame' and 'iEndFrame' start from
 // the origin of the world coordinate
-void CBVHPlayer::ClearStartPositionOffset( int iStartFrame, int iEndFrame )
+void BVHPlayer::ClearStartPositionOffset( int iStartFrame, int iEndFrame )
 {
 	if( iStartFrame < 0 || (int)m_vecFrame.size() <= iStartFrame ||
 		  iEndFrame < 0 || (int)m_vecFrame.size() <= iEndFrame )
@@ -379,13 +379,13 @@ void CBVHPlayer::ClearStartPositionOffset( int iStartFrame, int iEndFrame )
 }
 
 
-void CBVHPlayer::CopySkeletonTo(CBVHPlayer* pDestBVHPlayer)
+void BVHPlayer::CopySkeletonTo(BVHPlayer* pDestBVHPlayer)
 {
 	pDestBVHPlayer->m_RootBone = this->m_RootBone;
 }
 
 
-void CBVHPlayer::DeleteFrames( int iStartFrame, int iEndFrame )
+void BVHPlayer::DeleteFrames( int iStartFrame, int iEndFrame )
 {
 	if( iStartFrame < 0 ) iStartFrame = 0;
 	if( iEndFrame < 0 ) iEndFrame = 0;
@@ -399,7 +399,7 @@ void CBVHPlayer::DeleteFrames( int iStartFrame, int iEndFrame )
 
 
 // move the player's body to the specified place at the specified frame
-void CBVHPlayer::MoveOffset( int iFrame, Vector3 vOffset,
+void BVHPlayer::MoveOffset( int iFrame, Vector3 vOffset,
 		float fRotAngleZ, float fRotAngleX, float fRotAngleY )
 {
 	if(iFrame < 0 || GetNumTotalFrames() <= iFrame )
@@ -418,7 +418,7 @@ void CBVHPlayer::MoveOffset( int iFrame, Vector3 vOffset,
 
 
 
-void CBVHPlayer::GetLocalTransforms( Matrix34* paDestTransform ) const
+void BVHPlayer::GetLocalTransforms( Matrix34* paDestTransform ) const
 {
 	int index = 0;
 
@@ -426,7 +426,7 @@ void CBVHPlayer::GetLocalTransforms( Matrix34* paDestTransform ) const
 }
 
 
-void CBVHPlayer::Scale( float factor )
+void BVHPlayer::Scale( float factor )
 {
 	// scale frame data
 	vector<int> pos_channels_index;
@@ -460,7 +460,7 @@ void CBVHPlayer::Scale( float factor )
 
 
 /*
-void CBVHPlayer::SetBoneOffsetMatricesForXMesh( char* pcFilename )
+void BVHPlayer::SetBoneOffsetMatricesForXMesh( char* pcFilename )
 {
 	FILE* fp = fopen( pcFilename, "r" ); // only the text .x file is supported
 

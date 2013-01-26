@@ -52,7 +52,7 @@ inline Transform TCBSplineMultiply( const Transform& p1, const Transform& p2, co
 }
 
 
-CTransformNode::CTransformNode( CBVHBone& bvh_bone )
+CTransformNode::CTransformNode( BVHBone& bvh_bone )
 :
 m_Rotation(Quaternion(0,0,0,0)),
 m_vTranslation(Vector3(0,0,0))
@@ -126,7 +126,7 @@ void CTransformNode::SetInterpolatedTransform_r( float frac,
 
 
 
-void CTransformNode::CopyFrame_r( CBVHBone& src_bone )
+void CTransformNode::CopyFrame_r( BVHBone& src_bone )
 {
 	const Matrix34& src_local_trans = src_bone.GetTransformationMatrix();
 

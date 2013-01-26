@@ -275,7 +275,7 @@ protected:
 	/// called once for every bvh file
 	void CreateMotionPrimitiveDescGroup( CXMLNodeReader& bvh_file_node_reader );
 
-//	void CreateMotionPrimitive( const CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, CBVHPlayer& bvh_player );
+//	void CreateMotionPrimitive( const CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, BVHPlayer& bvh_player );
 
 	void CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry );
 

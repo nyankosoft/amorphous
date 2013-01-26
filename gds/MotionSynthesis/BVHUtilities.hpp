@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-void CopySkeletonFromBVH( const CBVHPlayer& src_bvh, msynth::CSkeleton& target );
+void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::CSkeleton& target );
 
 Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::CSkeleton& dest_skeleton );
 

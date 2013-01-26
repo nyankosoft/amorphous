@@ -19,7 +19,7 @@ namespace amorphous
 
 class CPVC_JointHub;
 
-class CBVHRenderer
+class BVHRenderer
 {
 	SFloatRGBAColor m_SkeletonColor;	// shared by all the bones
 
@@ -29,9 +29,9 @@ class CBVHRenderer
 
 public:
 
-	CBVHRenderer();
+	BVHRenderer();
 
-	~CBVHRenderer();
+	~BVHRenderer();
 
 	void Draw_r( Vector3* pvPrevPosition = NULL, Matrix34* pParentMatrix = NULL );
 

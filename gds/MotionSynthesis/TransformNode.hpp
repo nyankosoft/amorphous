@@ -42,7 +42,7 @@ public:
 		m_Rotation.FromRotationMatrix( Matrix33Identity() );
 	}
 
-	CTransformNode( CBVHBone& bvh_bone );
+	CTransformNode( BVHBone& bvh_bone );
 
 	~CTransformNode() {}
 
@@ -50,7 +50,7 @@ public:
 
 	void SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1, const CTransformNode& node2, const CTransformNode& node3 );
 
-	void CopyFrame_r( CBVHBone& src_bone );
+	void CopyFrame_r( BVHBone& src_bone );
 
 	void Scale_r( float factor );
 

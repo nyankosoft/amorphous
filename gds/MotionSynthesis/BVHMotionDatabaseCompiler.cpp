@@ -34,9 +34,9 @@ static void AlignLastKeyframeBVH( std::vector<CKeyframe>& vecKeyframe )
 }
 
 
-bool CBVHMotionDatabaseCompiler::IsValidMotionFile( const std::string& src_filepath )
+bool BVHMotionDatabaseCompiler::IsValidMotionFile( const std::string& src_filepath )
 {
-	CBVHPlayer bvh_player;
+	BVHPlayer bvh_player;
 	bool success = bvh_player.LoadBVHFile( src_filepath );
 
 	return success;
@@ -44,9 +44,9 @@ bool CBVHMotionDatabaseCompiler::IsValidMotionFile( const std::string& src_filep
 
 
 /// output: a new motion primitive
-void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDesc& desc,
+void BVHMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDesc& desc,
 												        const CMotionPrimitiveDescGroup& desc_group,
-												        CBVHPlayer& bvh_player )
+												        BVHPlayer& bvh_player )
 {
 	vector<CKeyframe> vecKeyframe;
 	vecKeyframe.reserve( 64 );
@@ -81,7 +81,7 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDesc& de
 
 		// extract world transforms
 
-		CBVHBone *pRootBone = bvh_player.GetRootBone();
+		BVHBone *pRootBone = bvh_player.GetRootBone();
 
 		// create keyframe from frametime and transformation hierarchy
 		vecKeyframe.push_back( CKeyframe( (float)i * time_per_frame, CTransformNode( *pRootBone ) ) );
@@ -131,9 +131,9 @@ void CBVHMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDesc& de
 }
 
 
-void CBVHMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group )
+void BVHMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group )
 {
-	CBVHPlayer bvh_player;
+	BVHPlayer bvh_player;
 	bool loaded = bvh_player.LoadBVHFile( desc_group.m_Filename );
 	if( !loaded )
 	{

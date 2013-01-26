@@ -14,12 +14,12 @@ namespace amorphous
 using namespace std;
 
 
-SFloatRGBAColor CBVHBone::ms_dwSkeletonColor;
-//MeshHandle CBVHBone::ms_TestCube;
-//CUnitCube *CBVHBone::ms_pUnitCube = NULL;
+SFloatRGBAColor BVHBone::ms_dwSkeletonColor;
+//MeshHandle BVHBone::ms_TestCube;
+//CUnitCube *BVHBone::ms_pUnitCube = NULL;
 
 
-CBVHBone::CBVHBone()
+BVHBone::BVHBone()
 :
 m_vOffset( Vector3(0,0,0) ),
 m_iNumChannels(0),
@@ -30,12 +30,12 @@ m_qLocalRot( Matrix33Identity() )
 }
 
 
-CBVHBone::~CBVHBone()
+BVHBone::~BVHBone()
 {
 }
 
 
-void CBVHBone::Reset()
+void BVHBone::Reset()
 {
 	m_strName = "";
 	m_vOffset = Vector3(0,0,0);
@@ -46,7 +46,7 @@ void CBVHBone::Reset()
 }
 
 
-void CBVHBone::LoadFromFile( char* pcTypeAndName, FILE* fp )
+void BVHBone::LoadFromFile( char* pcTypeAndName, FILE* fp )
 {
 	char acNextTypeAndName[512];
 	char acOffset[512], acStr[64], acName[256];
@@ -119,7 +119,7 @@ void CBVHBone::LoadFromFile( char* pcTypeAndName, FILE* fp )
 				if( !strcmp(acStr,"JOINT") || strstr(acNextTypeAndName, "End Site") )	// acNextTypeAndName
 				{
 					// create a new child bone
-					CBVHBone new_childbone;
+					BVHBone new_childbone;
 					new_childbone.LoadFromFile( acNextTypeAndName, fp );
 					m_vecChild.push_back( new_childbone );
 				}
@@ -130,7 +130,7 @@ void CBVHBone::LoadFromFile( char* pcTypeAndName, FILE* fp )
 }
 
 
-void CBVHBone::SetChannels( char* pcChannel )
+void BVHBone::SetChannels( char* pcChannel )
 {
 	char acStr[64];
 	int iNumChannels;
@@ -154,7 +154,7 @@ void CBVHBone::SetChannels( char* pcChannel )
 }
 
 
-void CBVHBone::GetLocalTransformMatrices_r( vector<Matrix34>* pvecLocalTransform, Vector3 vParentBoneGlobalOffset )
+void BVHBone::GetLocalTransformMatrices_r( vector<Matrix34>* pvecLocalTransform, Vector3 vParentBoneGlobalOffset )
 {
 	Matrix34 local_transform( Matrix34Identity() );
 
@@ -171,7 +171,7 @@ void CBVHBone::GetLocalTransformMatrices_r( vector<Matrix34>* pvecLocalTransform
 }
 
 
-void CBVHBone::GetLocalTransforms_r( Matrix34* paDestTransforms, int& rIndex ) const
+void BVHBone::GetLocalTransforms_r( Matrix34* paDestTransforms, int& rIndex ) const
 {
 //	if( m_vecChild.size() == 0 )
 //		return;
@@ -185,7 +185,7 @@ void CBVHBone::GetLocalTransforms_r( Matrix34* paDestTransforms, int& rIndex ) c
 }
 
 
-void CBVHBone::Scale_r( float factor )
+void BVHBone::Scale_r( float factor )
 {
 	m_vOffset *= factor;
 
@@ -196,7 +196,7 @@ void CBVHBone::Scale_r( float factor )
 }
 
 
-void CBVHBone::SetMatrixFromBVHData_r( Matrix34* pParentMatrix, float* pafFrameData, int& riCount)
+void BVHBone::SetMatrixFromBVHData_r( Matrix34* pParentMatrix, float* pafFrameData, int& riCount)
 {
 	Matrix33 matRotX, matRotY, matRotZ;
 	Vector3 vTranslation = Vector3(0,0,0);
@@ -258,7 +258,7 @@ void CBVHBone::SetMatrixFromBVHData_r( Matrix34* pParentMatrix, float* pafFrameD
 }
 
 
-void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
+void BVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 {
 //	COLORVERTEX avBoneVertex[2];
 	Vector3 vWorldPosition;
@@ -318,7 +318,7 @@ void CBVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 }
 
 
-void CBVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransform )
+void BVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransform )
 {
 
 //	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
@@ -371,7 +371,7 @@ void CBVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransfor
 }
 
 
-void CBVHBone::GetGlobalPositions_r( vector<Vector3>& rvecDestGlobalPositions,
+void BVHBone::GetGlobalPositions_r( vector<Vector3>& rvecDestGlobalPositions,
 									 Matrix34* pParentMatrix ) const
 {
 	Vector3 vWorldPosition;
@@ -404,7 +404,7 @@ void CBVHBone::GetGlobalPositions_r( vector<Vector3>& rvecDestGlobalPositions,
 }
 
 
-void CBVHBone::GetChannelType_r( vector<int>* pvecChannelType ) const
+void BVHBone::GetChannelType_r( vector<int>* pvecChannelType ) const
 {
 	if( this->m_iNumChannels == 0 )
 		return;
@@ -434,7 +434,7 @@ void CBVHBone::GetChannelType_r( vector<int>* pvecChannelType ) const
 }
 
 
-int CBVHBone::GetNumBones_r() const
+int BVHBone::GetNumBones_r() const
 {
 	int i = 0;
 
@@ -445,7 +445,7 @@ int CBVHBone::GetNumBones_r() const
 }
 
 
-void CBVHBone::SetPointersToLocalTransformMatrix_r( vector<Matrix34 *> *pvecpLocalTransform )
+void BVHBone::SetPointersToLocalTransformMatrix_r( vector<Matrix34 *> *pvecpLocalTransform )
 {
 	pvecpLocalTransform->push_back( &m_matLocalPose );
 
@@ -456,7 +456,7 @@ void CBVHBone::SetPointersToLocalTransformMatrix_r( vector<Matrix34 *> *pvecpLoc
 }
 
 
-void CBVHBone::SetPointersToGlobalTransformMatrix_r( vector<Matrix34 *> *pvecpGlobalTransform )
+void BVHBone::SetPointersToGlobalTransformMatrix_r( vector<Matrix34 *> *pvecpGlobalTransform )
 {
 	pvecpGlobalTransform->push_back( &m_matWorldPose );
 

@@ -1,7 +1,7 @@
 namespace amorphous
 {
 
-class CBVHBone;
-class CBVHPlayer;
+class BVHBone;
+class BVHPlayer;
 
 } // namespace amorphous

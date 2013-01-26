@@ -32,7 +32,7 @@ enum eChannelType
 
 class CPVC_JointHub;
 
-class CBVHBone
+class BVHBone
 {
 	std::string m_strName;
 
@@ -41,7 +41,7 @@ class CBVHBone
 	int m_iNumChannels;
 	//int channel[6];	// how to express?
 
-	std::vector<CBVHBone> m_vecChild;
+	std::vector<BVHBone> m_vecChild;
 
 	Matrix34 m_matLocalPose;
 	Matrix34 m_matWorldPose;
@@ -56,9 +56,9 @@ class CBVHBone
 
 public:
 
-	CBVHBone();
+	BVHBone();
 
-	~CBVHBone();
+	~BVHBone();
 
 	void Reset();
 
@@ -70,9 +70,9 @@ public:
 
 	inline int GetNumChildren() const { return (int)m_vecChild.size(); }
 
-	inline CBVHBone *GetChild( int i ) { return &m_vecChild[i]; }
+	inline BVHBone *GetChild( int i ) { return &m_vecChild[i]; }
 
-	inline const CBVHBone *GetChild( int i ) const { return &m_vecChild[i]; }
+	inline const BVHBone *GetChild( int i ) const { return &m_vecChild[i]; }
 
 	inline Vector3 GetLocalOffset() const { return m_vOffset; }
 
@@ -110,7 +110,7 @@ public:
 
 	friend class CPVC_JointHub;
 
-	friend class CBVHPlayer;
+	friend class BVHPlayer;
 
 };
 

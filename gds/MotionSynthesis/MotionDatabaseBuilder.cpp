@@ -59,12 +59,12 @@ shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::st
 
 	if( ext == "bvh" )
 	{
-		return new CBVHMotionDatabaseCompiler;
+		return new BVHMotionDatabaseCompiler;
 	}
 	else if( ext == "lws" )
 	{
 		return shared_ptr<CMotionDatabaseCompiler>();
-//		return new CBVHMotionDatabaseCompiler;
+//		return new BVHMotionDatabaseCompiler;
 	}
 	else
 		return shared_ptr<CMotionDatabaseCompiler>();
