@@ -3,6 +3,7 @@
 
 
 #include "gds/Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "gds/Support/FixedVector.hpp"
 #include "fwd.hpp"
 #include "Skeleton.hpp"
 #include "Keyframe.hpp"
@@ -131,7 +132,7 @@ public:
 
 	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1 );
 
-	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3 );
+	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3, float& frac, fixed_vector<Vector3,4>& root_position_offsets );
 
 	Result::Name GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
 

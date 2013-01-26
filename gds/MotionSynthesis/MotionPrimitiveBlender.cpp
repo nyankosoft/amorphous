@@ -430,45 +430,50 @@ void CMotionPrimitiveBlender::Update( float dt )
 		if( pCurrentMotion->IsLoopedMotion() )
 		{
 			// assumes no other motion is currently in the queue
-			AddMotionPrimitive( 0.0f, pCurrentMotion, 0 );
-		}
+//			AddMotionPrimitive( 0.0f, pCurrentMotion, 0 );
 
-		// Return the current motion to the stock of interpolation motions
-		// if it is an interpolation motion.
-		if( IsInterpolationMotion(pCurrentMotion) )
-			m_vecpInterpolationMotion.push_back( pCurrentMotion );
-
-		// Pop the current motion here because the motions in the queue may be cleared in the callback function calls below
-//		m_MotionPrimitiveQueue.pop_front();
-
-		if( m_pCallback )
-		{
-			if( 1 < m_MotionPrimitiveQueue.size() )
-			{
-				list< shared_ptr<CMotionPrimitive> >::iterator first = m_MotionPrimitiveQueue.begin();
-				first++;
-				shared_ptr<CMotionPrimitive> pNextMotion = *first;
-				m_pCallback->OnMotionPrimitiveChanged( pCurrentMotion, pNextMotion ); // 2nd argument - hand the element 2nd from the front (= next motion primitive) in the queue
-			}
-			else
-				m_pCallback->OnMotionPrimitiveFinished( pCurrentMotion ); // pCurrentMotion is the only primitive left in the queue
-		}
-
-		// The motions in the queue may have been changed in the callback function calls above.
-		m_MotionPrimitiveQueue.pop_front();
-		if( 0 < m_MotionPrimitiveQueue.size() )
-		{
-			shared_ptr<CMotionPrimitive> pPrevMotion = pCurrentMotion;
-			pCurrentMotion = m_MotionPrimitiveQueue.front();
-
-			LOG_PRINT( fmt_string(" new motion: %s", pCurrentMotion->GetName().c_str()) );
-
-			current_motion_total_time = pCurrentMotion->GetTotalTime();
+			// Keep playing the current motion
+			LOG_PRINT( fmt_string(" looping motion: %s %f", pCurrentMotion->GetName().c_str()), m_fCurrentTime );
 		}
 		else
 		{
-			m_fCurrentTime = 0;
-			return;
+			// Return the current motion to the stock of interpolation motions
+			// if it is an interpolation motion.
+			if( IsInterpolationMotion(pCurrentMotion) )
+				m_vecpInterpolationMotion.push_back( pCurrentMotion );
+
+			// Pop the current motion here because the motions in the queue may be cleared in the callback function calls below
+//			m_MotionPrimitiveQueue.pop_front();
+
+			if( m_pCallback )
+			{
+				if( 1 < m_MotionPrimitiveQueue.size() )
+				{
+					list< shared_ptr<CMotionPrimitive> >::iterator first = m_MotionPrimitiveQueue.begin();
+					first++;
+					shared_ptr<CMotionPrimitive> pNextMotion = *first;
+					m_pCallback->OnMotionPrimitiveChanged( pCurrentMotion, pNextMotion ); // 2nd argument - hand the element 2nd from the front (= next motion primitive) in the queue
+				}
+				else
+					m_pCallback->OnMotionPrimitiveFinished( pCurrentMotion ); // pCurrentMotion is the only primitive left in the queue
+			}
+
+			// The motions in the queue may have been changed in the callback function calls above.
+			m_MotionPrimitiveQueue.pop_front();
+			if( 0 < m_MotionPrimitiveQueue.size() )
+			{
+				shared_ptr<CMotionPrimitive> pPrevMotion = pCurrentMotion;
+				pCurrentMotion = m_MotionPrimitiveQueue.front();
+
+				LOG_PRINT( fmt_string(" new motion: %s", pCurrentMotion->GetName().c_str()) );
+
+				current_motion_total_time = pCurrentMotion->GetTotalTime();
+			}
+			else
+			{
+				m_fCurrentTime = 0;
+				return;
+			}
 		}
 	}
 
