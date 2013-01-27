@@ -88,7 +88,7 @@ ShadowMapManager::ShadowMapManager()
 :
 //m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
 m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
-m_pSceneRenderTarget( CTextureRenderTarget::Create() ),
+m_pSceneRenderTarget( TextureRenderTarget::Create() ),
 m_DisplayShadowMapTexturesForDebugging(false),
 m_IDCounter(0),
 m_ShadowMapSize( 1024 )
@@ -411,7 +411,7 @@ bool ShadowMapManager::CreateSceneShadowMapTextures()
 {
 	for( int i=0; i<2; i++ )
 	{
-		m_apShadowTexture[i] = CTextureRenderTarget::Create();
+		m_apShadowTexture[i] = TextureRenderTarget::Create();
 		m_apShadowTexture[i]->Init( m_iTextureWidth, m_iTextureHeight );
 	}
 

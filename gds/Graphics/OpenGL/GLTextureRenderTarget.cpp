@@ -21,7 +21,7 @@ CGLTextureRenderTarget::CGLTextureRenderTarget()
 
 CGLTextureRenderTarget::CGLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 :
-CTextureRenderTarget( texture_width, texture_height, texture_format )
+TextureRenderTarget( texture_width, texture_height, texture_format )
 {
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
@@ -35,7 +35,7 @@ CTextureRenderTarget( texture_width, texture_height, texture_format )
 
 CGLTextureRenderTarget::CGLTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
-CTextureRenderTarget(texture_desc)
+TextureRenderTarget(texture_desc)
 {
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;

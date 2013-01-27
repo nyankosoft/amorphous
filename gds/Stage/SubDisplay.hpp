@@ -152,7 +152,7 @@ class CSubDisplay// : public GraphicsComponent
 {
 	C2DRect m_DisplayRect;
 
-	boost::shared_ptr<CTextureRenderTarget> m_pTextureRenderTarget;
+	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 	Vector3 m_vTargetPosition;
 

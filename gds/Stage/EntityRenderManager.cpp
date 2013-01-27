@@ -56,7 +56,7 @@ class CPlanarReflectionGroup
 
 	std::vector< CEntityHandle<> > m_Entities;
 
-	boost::shared_ptr<CTextureRenderTarget> m_pReflectionRenderTarget;
+	boost::shared_ptr<TextureRenderTarget> m_pReflectionRenderTarget;
 
 	bool m_TextureUpdated;
 
@@ -89,7 +89,7 @@ public:
 
 	void Init()
 	{
-		m_pReflectionRenderTarget = CTextureRenderTarget::Create();
+		m_pReflectionRenderTarget = TextureRenderTarget::Create();
 		bool res = m_pReflectionRenderTarget->InitScreenSizeRenderTarget();
 	}
 
@@ -801,7 +801,7 @@ Result::Name CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, 
 
 /*	if( !m_pMirroredScene )
 	{
-		m_pMirroredScene = CTextureRenderTarget::Create();
+		m_pMirroredScene = TextureRenderTarget::Create();
 		bool initialized = m_pMirroredScene->InitScreenSizeRenderTarget();
 		if( !initialized )
 			LOG_PRINT_WARNING( " Failed to create a render target for mirrored scene." );

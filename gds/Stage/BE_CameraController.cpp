@@ -26,7 +26,7 @@ static const U32 gs_FadeoutTimeMS = 500;
 static const int gs_InputHandlerIndex = 1;
 
 
-shared_ptr<CTextureRenderTarget> CBE_CameraController::ms_apTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
+shared_ptr<TextureRenderTarget> CBE_CameraController::ms_apTextureRenderTarget[NUM_MAX_ACTIVE_CAMERAS];
 
 bool CBE_CameraController::ms_TextureRenderTargetsInitialized = false;
 
@@ -67,7 +67,7 @@ void CBE_CameraController::Init()
 	{
 		for( int i=0; i<NUM_MAX_ACTIVE_CAMERAS; i++ )
 		{
-			ms_apTextureRenderTarget[i] = CTextureRenderTarget::Create();
+			ms_apTextureRenderTarget[i] = TextureRenderTarget::Create();
 
 			bool res = ms_apTextureRenderTarget[i]->InitScreenSizeRenderTarget();
 			if( res )

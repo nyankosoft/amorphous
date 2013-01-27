@@ -197,7 +197,7 @@ bool FlatShadowMap::CreateShadowMapTextures()
 //	D3DXMatrixPerspectiveFovLH( &m_mShadowProj, g_fLightFov, 1, 0.01f, 100.0f);
 
 	uint option_flags = 0;
-	m_pShadowmapRenderTarget = CTextureRenderTarget::Create();
+	m_pShadowmapRenderTarget = TextureRenderTarget::Create();
 	m_pShadowmapRenderTarget->Init(
 		m_ShadowMapSize,
 		m_ShadowMapSize,

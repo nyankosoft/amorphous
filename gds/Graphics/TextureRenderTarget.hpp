@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-class CTextureRenderTarget : public GraphicsComponent
+class TextureRenderTarget : public GraphicsComponent
 {
 protected:
 
@@ -37,17 +37,17 @@ protected:
 
 public:
 
-	CTextureRenderTarget();
+	TextureRenderTarget();
 
-	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
+	TextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
 
-	CTextureRenderTarget( const TextureResourceDesc& texture_desc );
+	TextureRenderTarget( const TextureResourceDesc& texture_desc );
 
-	virtual ~CTextureRenderTarget();
+	virtual ~TextureRenderTarget();
 
-//	CTextureRenderTarget( TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
+//	TextureRenderTarget( TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
 
-//	CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
+//	TextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = A8R8G8B8, uint option_flags = 0 );
 
 	/// Returns true on success
 	bool Init(
@@ -90,11 +90,11 @@ public:
 
 	virtual void OutputImageFile( const std::string& image_file_path ) {}
 
-	static boost::shared_ptr<CTextureRenderTarget> (*ms_pCreateTextureRenderTarget)(void);
+	static boost::shared_ptr<TextureRenderTarget> (*ms_pCreateTextureRenderTarget)(void);
 
-	static void SetInstanceCreationFunction( boost::shared_ptr<CTextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateTextureRenderTarget = CreateTextureRenderTarget; }
+	static void SetInstanceCreationFunction( boost::shared_ptr<TextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateTextureRenderTarget = CreateTextureRenderTarget; }
 
-	static boost::shared_ptr<CTextureRenderTarget> Create();
+	static boost::shared_ptr<TextureRenderTarget> Create();
 };
 
 

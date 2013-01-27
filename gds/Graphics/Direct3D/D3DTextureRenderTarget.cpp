@@ -25,7 +25,7 @@ CD3DTextureRenderTarget::CD3DTextureRenderTarget()
 
 CD3DTextureRenderTarget::CD3DTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 :
-CTextureRenderTarget( texture_width, texture_height, texture_format, option_flags )
+TextureRenderTarget( texture_width, texture_height, texture_format, option_flags )
 {
 //	m_pRenderTargetTexture      = NULL;
 	m_pRenderTargetSurface      = NULL;
@@ -43,7 +43,7 @@ CTextureRenderTarget( texture_width, texture_height, texture_format, option_flag
 
 CD3DTextureRenderTarget::CD3DTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
-CTextureRenderTarget(texture_desc)
+TextureRenderTarget(texture_desc)
 {
 //	m_pRenderTargetTexture      = NULL;
 	m_pRenderTargetSurface      = NULL;

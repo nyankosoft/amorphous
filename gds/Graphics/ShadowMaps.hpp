@@ -89,7 +89,7 @@ protected:
 
 	/// Stores the shader necessasry for shadowmap.
 	/// The shader supposed to contain 2 techniques
-//	CTextureRenderTarget m_SceneRenderTarget;
+//	TextureRenderTarget m_SceneRenderTarget;
 //	static std::string ms_strDefaultShaderFilename;
 //	std::string m_ShadowMapShaderFilename;
 
@@ -217,7 +217,7 @@ protected:
 
 //	LPDIRECT3DSURFACE9 m_pShadowMapDepthBuffer; ///< Depth-stencil buffer for rendering to shadow map
 
-	boost::shared_ptr<CTextureRenderTarget> m_pShadowmapRenderTarget;
+	boost::shared_ptr<TextureRenderTarget> m_pShadowmapRenderTarget;
 
 	MeshHandle m_ShadowCasterBoundingBox;
 

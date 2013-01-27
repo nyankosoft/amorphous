@@ -60,12 +60,12 @@ void SimpleMotionBlur::Init( int texture_width, int texture_height )
 {
 	ReleaseTextures();
 
-	m_pSceneRenderTarget = CTextureRenderTarget::Create();
+	m_pSceneRenderTarget = TextureRenderTarget::Create();
 	m_pSceneRenderTarget->Init( texture_width, texture_height );
 
 	for( int i=0; i<2; i++ )
 	{
-		m_apTexRenderTarget[i] = CTextureRenderTarget::Create();
+		m_apTexRenderTarget[i] = TextureRenderTarget::Create();
 		m_apTexRenderTarget[i]->Init( texture_width, texture_height );
 	}
 
@@ -78,12 +78,12 @@ void SimpleMotionBlur::InitForScreenSize()
 {
 	ReleaseTextures();
 
-	m_pSceneRenderTarget = CTextureRenderTarget::Create();
+	m_pSceneRenderTarget = TextureRenderTarget::Create();
 	m_pSceneRenderTarget->InitScreenSizeRenderTarget();
 
 	for( int i=0; i<2; i++ )
 	{
-		m_apTexRenderTarget[i] = CTextureRenderTarget::Create();
+		m_apTexRenderTarget[i] = TextureRenderTarget::Create();
 		m_apTexRenderTarget[i]->InitScreenSizeRenderTarget();
 	}
 
@@ -172,8 +172,8 @@ void SimpleMotionBlur::Render()
 	C2DRect rect( -0.5f, -0.5f, (float)m_TextureWidth - 0.5f, (float)m_TextureHeight - 0.5f );
 	rect.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
 
-	boost::shared_ptr<CTextureRenderTarget>& pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
-	boost::shared_ptr<CTextureRenderTarget>& pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
+	boost::shared_ptr<TextureRenderTarget>& pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
+	boost::shared_ptr<TextureRenderTarget>& pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
 
 	if( !pDestRenderTarget
 	 || !pPrevRenderTarget )

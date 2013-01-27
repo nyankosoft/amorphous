@@ -158,7 +158,7 @@ private:
 
 	boost::shared_ptr<LensFlare> m_pLensFlare;
 
-//	CTextureRenderTarget m_TexRenderTarget;
+//	TextureRenderTarget m_TexRenderTarget;
 
 	// 0 if no texture is set as a render target
 	// non zero if a texture is set as a render target

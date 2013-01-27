@@ -7,10 +7,10 @@ namespace amorphous
 //#include "Support/BMPImageExporter.hpp"
 
 
-boost::shared_ptr<CTextureRenderTarget> (*CTextureRenderTarget::ms_pCreateTextureRenderTarget)(void);
+boost::shared_ptr<TextureRenderTarget> (*TextureRenderTarget::ms_pCreateTextureRenderTarget)(void);
 
 
-CTextureRenderTarget::CTextureRenderTarget()
+TextureRenderTarget::TextureRenderTarget()
 :
 m_BackgroundColor( SFloatRGBAColor( 0.449f, 0.398f, 0.738f, 1.0f ) ),
 m_bScreenSizeRenderTarget( false )
@@ -26,7 +26,7 @@ m_bScreenSizeRenderTarget( false )
 }
 
 
-CTextureRenderTarget::CTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+TextureRenderTarget::TextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 :
 m_BackgroundColor( SFloatRGBAColor( 0.449f, 0.398f, 0.738f, 1.0f ) ),
 m_bScreenSizeRenderTarget( false )
@@ -42,7 +42,7 @@ m_bScreenSizeRenderTarget( false )
 }
 
 
-CTextureRenderTarget::CTextureRenderTarget( const TextureResourceDesc& texture_desc )
+TextureRenderTarget::TextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 m_TextureDesc(texture_desc),
 m_BackgroundColor( SFloatRGBAColor( 0.449f, 0.398f, 0.738f, 1.0f ) ),
@@ -52,13 +52,13 @@ m_bScreenSizeRenderTarget( false )
 }
 
 
-CTextureRenderTarget::~CTextureRenderTarget()
+TextureRenderTarget::~TextureRenderTarget()
 {
 	ReleaseGraphicsResources();
 }
 
 
-bool CTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+bool TextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 {
 	m_TextureDesc.Width  = texture_width;
 	m_TextureDesc.Height = texture_height;
@@ -69,7 +69,7 @@ bool CTextureRenderTarget::Init( int texture_width, int texture_height, TextureF
 }
 
 
-bool CTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
+bool TextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
 {
 	m_TextureDesc = texture_desc;
 
@@ -77,7 +77,7 @@ bool CTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
 }
 
 
-bool CTextureRenderTarget::InitScreenSizeRenderTarget()
+bool TextureRenderTarget::InitScreenSizeRenderTarget()
 {
 	m_bScreenSizeRenderTarget = true;
 
@@ -85,13 +85,13 @@ bool CTextureRenderTarget::InitScreenSizeRenderTarget()
 }
 
 
-void CTextureRenderTarget::ReleaseGraphicsResources()
+void TextureRenderTarget::ReleaseGraphicsResources()
 {
 	ReleaseTextures();
 }
 
 
-void CTextureRenderTarget::LoadGraphicsResources( const GraphicsParameters& rParam )
+void TextureRenderTarget::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	if( m_bScreenSizeRenderTarget )
 	{
@@ -104,12 +104,12 @@ void CTextureRenderTarget::LoadGraphicsResources( const GraphicsParameters& rPar
 }
 
 
-boost::shared_ptr<CTextureRenderTarget> CTextureRenderTarget::Create()
+boost::shared_ptr<TextureRenderTarget> TextureRenderTarget::Create()
 {
 	if( ms_pCreateTextureRenderTarget )
 		return (*ms_pCreateTextureRenderTarget)();
 	else
-		return boost::shared_ptr<CTextureRenderTarget>();
+		return boost::shared_ptr<TextureRenderTarget>();
 }
 
 

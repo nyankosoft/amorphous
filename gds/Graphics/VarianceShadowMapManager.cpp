@@ -172,14 +172,14 @@ bool VarianceShadowMapManager::Init()
 
 	bool initialized = false;
 
-	m_pHBlurredShadowMap = CTextureRenderTarget::Create();
+	m_pHBlurredShadowMap = TextureRenderTarget::Create();
 
 	initialized = m_pHBlurredShadowMap->Init( desc );
 
 	if( !initialized )
 		return false;
 
-	m_pBlurredShadowMap  = CTextureRenderTarget::Create();
+	m_pBlurredShadowMap  = TextureRenderTarget::Create();
 
 	initialized = m_pBlurredShadowMap->Init( desc );
 

@@ -72,7 +72,7 @@ protected:
 	/// Holds textures(s) with the original screen size.
 	/// Shadows of the scene are rendered to this texture, then overlayed
 	/// to the original, non-shadowed scene.
-	boost::shared_ptr<CTextureRenderTarget> m_apShadowTexture[NUM_MAX_SCENE_SHADOW_TEXTURES];
+	boost::shared_ptr<TextureRenderTarget> m_apShadowTexture[NUM_MAX_SCENE_SHADOW_TEXTURES];
 
 	Camera m_SceneCamera;
 
@@ -81,7 +81,7 @@ protected:
 	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to calculate  
 	ShaderHandle m_Shader;
 
-	boost::shared_ptr<CTextureRenderTarget> m_pSceneRenderTarget;
+	boost::shared_ptr<TextureRenderTarget> m_pSceneRenderTarget;
 
 //	static std::string ms_strDefaultShaderFilename;
 
@@ -186,7 +186,7 @@ public:
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-//	boost::shared_ptr<CTextureRenderTarget> GetSceneShadowTexture() { return m_apShadowTexture[0]; }
+//	boost::shared_ptr<TextureRenderTarget> GetSceneShadowTexture() { return m_apShadowTexture[0]; }
 
 	TextureHandle GetSceneShadowTexture();
 

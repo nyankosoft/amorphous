@@ -202,7 +202,7 @@ CSubDisplay::CSubDisplay()
 :
 m_vTargetPosition(Vector3(0,0,0)),
 m_fTargetRadius(0),
-m_pTextureRenderTarget( CTextureRenderTarget::Create() )
+m_pTextureRenderTarget( TextureRenderTarget::Create() )
 {
 	uint uw=0,uh=0;
 	GraphicsDevice().GetViewportSize(uw,uh);

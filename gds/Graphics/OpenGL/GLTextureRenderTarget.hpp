@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CGLTextureRenderTarget : public CTextureRenderTarget
+class CGLTextureRenderTarget : public TextureRenderTarget
 {
 private:
 
@@ -72,7 +72,7 @@ public:
 
 	void OutputImageFile( const std::string& image_file_path );
 
-	static boost::shared_ptr<CTextureRenderTarget> Create() { boost::shared_ptr<CGLTextureRenderTarget> p( new CGLTextureRenderTarget ); return p; }
+	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<CGLTextureRenderTarget> p( new CGLTextureRenderTarget ); return p; }
 };
 
 } // namespace amorphous

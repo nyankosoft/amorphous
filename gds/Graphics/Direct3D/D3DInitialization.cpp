@@ -77,7 +77,7 @@ Result::Name InitializeDirect3DClasses()
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_D3D );
 	GetMeshImplFactory().reset( new CD3DMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
-	CTextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
+	TextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
 
 	// For Direct3D, Use ARGB32 as the default vertex diffuse color format to support

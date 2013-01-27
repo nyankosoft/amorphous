@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CD3DTextureRenderTarget : public CTextureRenderTarget
+class CD3DTextureRenderTarget : public TextureRenderTarget
 {
 private:
 
@@ -71,7 +71,7 @@ public:
 
 	void OutputImageFile( const std::string& image_file_path );
 
-	static boost::shared_ptr<CTextureRenderTarget> Create() { boost::shared_ptr<CD3DTextureRenderTarget> p( new CD3DTextureRenderTarget ); return p; }
+	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<CD3DTextureRenderTarget> p( new CD3DTextureRenderTarget ); return p; }
 
 //	void SetInstanceCreationFunction();
 };

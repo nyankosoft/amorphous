@@ -57,7 +57,7 @@ class Camera;
 class CShaderManager;
 class CShaderLightManager;
 
-class CTextureRenderTarget;
+class TextureRenderTarget;
 
 class SimpleMotionBlur;
 class CubeMapManager;
