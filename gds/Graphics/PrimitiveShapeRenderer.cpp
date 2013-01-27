@@ -38,7 +38,7 @@ static void InitRectMesh( CustomMesh& mesh, const SFloatRGBAColor& vertex_diffus
 	indices[4] = 3;
 	indices[5] = 2;
 
-	mesh.SetIndices<unsigned int>( indices );
+	mesh.SetIndices( indices );
 
 	vector<CMMA_TriangleSet> triangle_sets;
 	triangle_sets.resize( 1 );
