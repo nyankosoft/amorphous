@@ -1854,6 +1854,9 @@
     <ClInclude Include="..\..\gds\3DMath\HelixPolygonModelMaker.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\fwd.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\gds\Graphics\FloatRGBAColor.inl">

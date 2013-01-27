@@ -346,6 +346,7 @@
     <ClInclude Include="..\..\gds\Graphics\FloatRGBAColor.hpp" />
     <ClInclude Include="..\..\gds\Graphics\FloatRGBColor.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Font\FontFactory.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\fwd.hpp" />
     <ClInclude Include="..\..\gds\Graphics\General2DVertex.hpp" />
     <ClInclude Include="..\..\gds\Graphics\General3DVertex.hpp" />
     <ClInclude Include="..\..\gds\Graphics\GraphicsComponentCollector.hpp" />
