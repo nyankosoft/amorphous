@@ -2,7 +2,7 @@
 #define  __progress_display_HPP__
 
 
-namespace morph
+namespace amorphous
 {
 
 
@@ -42,7 +42,7 @@ public:
 };
 
 
-} // morph
+} // amorphous
 
 
 
