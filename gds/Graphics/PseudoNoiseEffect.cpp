@@ -42,7 +42,7 @@ void PseudoNoiseEffect::Init( float strength, uint noise_pixel_size )
 {
 	UpdateScreenSize();
 
-	shared_ptr<CUniformSingleColorNoiseTextureGenerator> pTexGenerator( new CUniformSingleColorNoiseTextureGenerator );
+	shared_ptr<UniformSingleColorNoiseTextureGenerator> pTexGenerator( new UniformSingleColorNoiseTextureGenerator );
 	pTexGenerator->m_fDensity = strength;
 	pTexGenerator->m_fMin     = 0.0f;
 	pTexGenerator->m_fMax     = strength;

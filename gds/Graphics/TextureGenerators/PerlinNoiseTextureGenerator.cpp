@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-void CPerlinNoiseTextureGenerator::FillTexture( CLockedTexture& texture )
+void PerlinNoiseTextureGenerator::FillTexture( LockedTexture& texture )
 {
 	int w = texture.GetWidth();
 	int h = texture.GetHeight();
@@ -30,7 +30,7 @@ void CPerlinNoiseTextureGenerator::FillTexture( CLockedTexture& texture )
 }
 
 
-void CPerlinNoiseNormalMapGenerator::FillTexture( CLockedTexture& texture )
+void PerlinNoiseNormalMapGenerator::FillTexture( LockedTexture& texture )
 {
 	int w = texture.GetWidth();
 	int h = texture.GetHeight();

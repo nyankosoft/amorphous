@@ -217,7 +217,7 @@ void TextureResource::UpdateDescForCachedResource( const GraphicsResourceDesc& d
 }
 
 
-bool TextureResource::GetLockedTexture( shared_ptr<CLockedTexture>& pLockedTexture )
+bool TextureResource::GetLockedTexture( shared_ptr<LockedTexture>& pLockedTexture )
 {
 	// TODO: increment the ref count when the async loading process is started
 //	m_iRefCount++;

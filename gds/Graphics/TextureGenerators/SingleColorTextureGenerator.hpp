@@ -9,19 +9,19 @@ namespace amorphous
 {
 
 
-class CSingleColorTextureGenerator : public CTextureFillingAlgorithm
+class SingleColorTextureGenerator : public TextureFillingAlgorithm
 {
 	SFloatRGBAColor m_Color;
 
 public:
 
-	CSingleColorTextureGenerator( const SFloatRGBAColor& color = SFloatRGBAColor::White() )
+	SingleColorTextureGenerator( const SFloatRGBAColor& color = SFloatRGBAColor::White() )
 		:
 	m_Color(color)
 	{
 	}
 
-	void FillTexture( CLockedTexture& texture )
+	void FillTexture( LockedTexture& texture )
 	{
 		texture.Clear( m_Color );
 	}

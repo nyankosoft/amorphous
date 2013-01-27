@@ -5,7 +5,7 @@ namespace amorphous
 {
 
 
-void CUniformSingleColorNoiseTextureGenerator::FillTexture( CLockedTexture& texture )
+void UniformSingleColorNoiseTextureGenerator::FillTexture( LockedTexture& texture )
 {
 	float density = m_fDensity;
 	float min_val = m_fMin;
@@ -32,7 +32,7 @@ void CUniformSingleColorNoiseTextureGenerator::FillTexture( CLockedTexture& text
 }
 
 
-void CStripeTextureGenerator::FillTexture( CLockedTexture& texture )
+void StripeTextureGenerator::FillTexture( LockedTexture& texture )
 {
 	const int w = texture.GetWidth();//dest_bitmap_buffer.size_x();
 	const int h = w;// Assumes that the textute is square. dest_bitmap_buffer.size_y();

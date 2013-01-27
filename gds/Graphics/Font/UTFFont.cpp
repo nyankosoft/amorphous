@@ -67,7 +67,7 @@ public:
 
 class texture_render_target_of_freetype_bitmap
 {
-	CLockedTexture* m_pLockedTex;
+	LockedTexture* m_pLockedTex;
 
 	void SetGrayscalePixel( int x, int y, U8 pixel )
 	{
@@ -122,7 +122,7 @@ static void RenderTextToBufferAndSetUpRects(
 						const std::vector<U32> &utf8_code_points,
 						int char_height,
 //						C2DArray<U8>& dest_bitmap_buffer,
-						CLockedTexture& dest_texture,
+						LockedTexture& dest_texture,
 //						vector<UTFFont::CharRect>& char_rects,
 						C2DRectSet& text_boxes,
 						int start_index,
@@ -198,7 +198,7 @@ static void RenderTextToBufferAndSetUpRects(
 
 
 		// now, draw to our target surface
-		DrawBitmap<CLockedTexture>( &slot->bitmap, pen_x + slot->bitmap_left, pen_y - slot->bitmap_top, dest_texture );
+		DrawBitmap<LockedTexture>( &slot->bitmap, pen_x + slot->bitmap_left, pen_y - slot->bitmap_top, dest_texture );
 
 		// increment pen position
 		pen_x += slot->bitmap_left + slot->bitmap.width;//slot->advance.x >> 6;
@@ -315,7 +315,7 @@ bool UTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2
 	if( !locked )
 		return false;
 
-	boost::shared_ptr<CLockedTexture> pLockedTexture;
+	boost::shared_ptr<LockedTexture> pLockedTexture;
 	pTexture->GetLockedTexture( pLockedTexture );
 	if( !pLockedTexture )
 		return false;

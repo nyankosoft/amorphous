@@ -162,7 +162,7 @@ bool CScreenEffectManager::Init()
 	m_vecExtraTexEffect.resize( 1 );
 	m_vecExtraTexEffect[0].Rect.SetTextureUV( TEXCOORD2(0.0f, 0.0f), TEXCOORD2(32.0f, 32.0f) );
 //	m_vecExtraTexEffect[0].SetTextureFilename( "Texture\\stripe.dds" );
-	shared_ptr<CStripeTextureGenerator> pTexLoader( new CStripeTextureGenerator );
+	shared_ptr<StripeTextureGenerator> pTexLoader( new StripeTextureGenerator );
 	pTexLoader->m_Color0.SetRGBA( 0.0f, 0.0f, 0.0f, 0.0f );
 	pTexLoader->m_Color1.SetRGBA( 0.0f, 0.0f, 0.0f, 0.5f );
 	pTexLoader->m_StripeWidth = 4;

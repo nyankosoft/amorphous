@@ -14,7 +14,7 @@ class CD3DTextureResource : public TextureResource
 {
 	LPDIRECT3DTEXTURE9 m_pTexture;
 
-//	boost::shared_ptr<CLockedTexture> m_pLockedTexture;
+//	boost::shared_ptr<LockedTexture> m_pLockedTexture;
 
 protected:
 

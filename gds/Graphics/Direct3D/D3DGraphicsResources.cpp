@@ -48,7 +48,7 @@ static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( CImageArchive::Image
 // CD3DLockedTexture
 //==================================================================================================
 
-class CD3DLockedTexture : public CLockedTexture
+class CD3DLockedTexture : public LockedTexture
 {
 	void *m_pBits;
 

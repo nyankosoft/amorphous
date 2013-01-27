@@ -17,7 +17,7 @@ inline TextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = SF
 	desc.Height    = height;
 	desc.MipLevels = 0;
 	desc.Format    = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSingleColorTextureGenerator( color ) );
+	desc.pLoader.reset( new SingleColorTextureGenerator( color ) );
 
 	TextureHandle tex;
 	bool loaded = tex.Load( desc );

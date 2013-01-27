@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CPerlinNoiseTextureGenerator : public CTextureFillingAlgorithm
+class PerlinNoiseTextureGenerator : public TextureFillingAlgorithm
 {
 public:
 
@@ -18,29 +18,29 @@ public:
 
 public:
 
-	inline CPerlinNoiseTextureGenerator( const CPerlinNoiseParams& pn_params )
+	inline PerlinNoiseTextureGenerator( const CPerlinNoiseParams& pn_params )
 		:
 	m_Params(pn_params)
 	{}
 
-	virtual ~CPerlinNoiseTextureGenerator() {}
+	virtual ~PerlinNoiseTextureGenerator() {}
 
-	virtual void FillTexture( CLockedTexture& texture );
+	virtual void FillTexture( LockedTexture& texture );
 };
 
 
-class CPerlinNoiseNormalMapGenerator : public CPerlinNoiseTextureGenerator
+class PerlinNoiseNormalMapGenerator : public PerlinNoiseTextureGenerator
 {
 public:
 
-	inline CPerlinNoiseNormalMapGenerator( const CPerlinNoiseParams& pn_params )
+	inline PerlinNoiseNormalMapGenerator( const CPerlinNoiseParams& pn_params )
 		:
-	CPerlinNoiseTextureGenerator(pn_params)
+	PerlinNoiseTextureGenerator(pn_params)
 	{}
 
-	virtual ~CPerlinNoiseNormalMapGenerator() {}
+	virtual ~PerlinNoiseNormalMapGenerator() {}
 
-	void FillTexture( CLockedTexture& texture );
+	void FillTexture( LockedTexture& texture );
 };
 
 

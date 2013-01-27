@@ -220,7 +220,7 @@ bool CBE_Skybox::GetFogColor( SFloatRGBAColor& dest )
 	if( !pTexResource->Lock() )
 		return false;
 
-	boost::shared_ptr<CLockedTexture> pLockedTex;
+	boost::shared_ptr<LockedTexture> pLockedTex;
 	pTexResource->GetLockedTexture( pLockedTex );
 	if( pLockedTex )
 	{

@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CGradationTextureGenerator : public CTextureFillingAlgorithm
+class GradationTextureGenerator : public TextureFillingAlgorithm
 {
 public:
 
@@ -19,9 +19,9 @@ public:
 
 public:
 
-	CGradationTextureGenerator() {}
+	GradationTextureGenerator() {}
 
-	virtual ~CGradationTextureGenerator() {}
+	virtual ~GradationTextureGenerator() {}
 
 	void SetColors( linear_interpolation_table<SFloatRGBAColor>& colors )
 	{
@@ -30,26 +30,26 @@ public:
 };
 
 
-class CHorizontalGradationTextureGenerator : public CGradationTextureGenerator
+class HorizontalGradationTextureGenerator : public GradationTextureGenerator
 {
 public:
 
-	CHorizontalGradationTextureGenerator() {}
+	HorizontalGradationTextureGenerator() {}
 
-	CHorizontalGradationTextureGenerator( const SFloatRGBAColor& top, const SFloatRGBAColor& bottom )
+	HorizontalGradationTextureGenerator( const SFloatRGBAColor& top, const SFloatRGBAColor& bottom )
 	{
 		m_Colors.set( 0.0f, top );
 		m_Colors.set( 1.0f, bottom );
 	}
 
-	CHorizontalGradationTextureGenerator( const SFloatRGBAColor& top, const SFloatRGBAColor& mid, const SFloatRGBAColor& bottom )
+	HorizontalGradationTextureGenerator( const SFloatRGBAColor& top, const SFloatRGBAColor& mid, const SFloatRGBAColor& bottom )
 	{
 		m_Colors.set( 0.0f, top );
 		m_Colors.set( 0.5f, mid );
 		m_Colors.set( 1.0f, bottom );
 	}
 
-	void FillTexture( CLockedTexture& texture )
+	void FillTexture( LockedTexture& texture )
 	{
 		const int w = texture.GetWidth();
 		const int h = texture.GetHeight();
@@ -66,26 +66,26 @@ public:
 };
 
 
-class CVerticalGradationTextureGenerator : public CGradationTextureGenerator
+class VerticalGradationTextureGenerator : public GradationTextureGenerator
 {
 public:
 
-	CVerticalGradationTextureGenerator() {}
+	VerticalGradationTextureGenerator() {}
 
-	CVerticalGradationTextureGenerator( const SFloatRGBAColor& left, const SFloatRGBAColor& right )
+	VerticalGradationTextureGenerator( const SFloatRGBAColor& left, const SFloatRGBAColor& right )
 	{
 		m_Colors.set( 0.0f, left );
 		m_Colors.set( 1.0f, right );
 	}
 
-	CVerticalGradationTextureGenerator( const SFloatRGBAColor& left, const SFloatRGBAColor& mid, const SFloatRGBAColor& right )
+	VerticalGradationTextureGenerator( const SFloatRGBAColor& left, const SFloatRGBAColor& mid, const SFloatRGBAColor& right )
 	{
 		m_Colors.set( 0.0f, left );
 		m_Colors.set( 0.5f, mid );
 		m_Colors.set( 1.0f, right );
 	}
 
-	void FillTexture( CLockedTexture& texture )
+	void FillTexture( LockedTexture& texture )
 	{
 		const int w = texture.GetWidth();
 		const int h = texture.GetHeight();
@@ -102,7 +102,7 @@ public:
 };
 
 
-inline TextureHandle CreateTextureFromGenerator( uint width, uint height, TextureFormat::Format format, boost::shared_ptr<CTextureFillingAlgorithm> pTextureGenerator )
+inline TextureHandle CreateTextureFromGenerator( uint width, uint height, TextureFormat::Format format, boost::shared_ptr<TextureFillingAlgorithm> pTextureGenerator )
 {
 	TextureResourceDesc desc;
 	desc.Width  = (int)width;
@@ -121,28 +121,28 @@ inline TextureHandle CreateTextureFromGenerator( uint width, uint height, Textur
 
 inline TextureHandle CreateHorizontalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& top_color, const SFloatRGBAColor& bottom_color )
 {
-	boost::shared_ptr<CHorizontalGradationTextureGenerator> pGenerator( new CHorizontalGradationTextureGenerator(top_color,bottom_color) );
+	boost::shared_ptr<HorizontalGradationTextureGenerator> pGenerator( new HorizontalGradationTextureGenerator(top_color,bottom_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 
 
 inline TextureHandle CreateHorizontalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& top_color, const SFloatRGBAColor& mid_color, const SFloatRGBAColor& bottom_color )
 {
-	boost::shared_ptr<CHorizontalGradationTextureGenerator> pGenerator( new CHorizontalGradationTextureGenerator(top_color,mid_color,bottom_color) );
+	boost::shared_ptr<HorizontalGradationTextureGenerator> pGenerator( new HorizontalGradationTextureGenerator(top_color,mid_color,bottom_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 
 
 inline TextureHandle CreateVerticalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& left_color, const SFloatRGBAColor& right_color )
 {
-	boost::shared_ptr<CVerticalGradationTextureGenerator> pGenerator( new CVerticalGradationTextureGenerator(left_color,right_color) );
+	boost::shared_ptr<VerticalGradationTextureGenerator> pGenerator( new VerticalGradationTextureGenerator(left_color,right_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 
 
 inline TextureHandle CreateVerticalGradationTexture( uint width, uint height, TextureFormat::Format format, const SFloatRGBAColor& left_color, const SFloatRGBAColor& mid_color, const SFloatRGBAColor& right_color )
 {
-	boost::shared_ptr<CVerticalGradationTextureGenerator> pGenerator( new CVerticalGradationTextureGenerator(left_color,mid_color,right_color) );
+	boost::shared_ptr<VerticalGradationTextureGenerator> pGenerator( new VerticalGradationTextureGenerator(left_color,mid_color,right_color) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 

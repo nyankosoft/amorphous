@@ -10,11 +10,11 @@ namespace amorphous
 {
 
 
-class CLockedTexture
+class LockedTexture
 {
 public:
 
-	virtual ~CLockedTexture() {}
+	virtual ~LockedTexture() {}
 
 	virtual int GetWidth() = 0;
 
@@ -43,14 +43,14 @@ public:
 /// Used to fill the texture content when
 /// - A texture resource is created.
 /// - A texture resource is released and recreated after the graphics device is lost
-class CTextureFillingAlgorithm
+class TextureFillingAlgorithm
 {
 public:
 
-	virtual ~CTextureFillingAlgorithm() {}
+	virtual ~TextureFillingAlgorithm() {}
 
 	/// called by the system after the texture resource is created
-	virtual void FillTexture( CLockedTexture& texture ) = 0;
+	virtual void FillTexture( LockedTexture& texture ) = 0;
 };
 
 

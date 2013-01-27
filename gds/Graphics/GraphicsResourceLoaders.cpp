@@ -279,7 +279,7 @@ bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 	if( !pTexture )
 		return false;
 
-	shared_ptr<CLockedTexture> pLockedTexture;
+	shared_ptr<LockedTexture> pLockedTexture;
 	bool retrieved = pTexture->GetLockedTexture( pLockedTexture );
 	if( retrieved && pLockedTexture )
 	{
@@ -319,7 +319,7 @@ void CDiskTextureLoader::FillResourceDesc()
 }
 
 
-void CDiskTextureLoader::FillTexture( CLockedTexture& texture )
+void CDiskTextureLoader::FillTexture( LockedTexture& texture )
 {
 	if( m_vecpImage.empty()
 	 || (int)m_vecpImage.size() <= m_CurrentMipLevel

@@ -19,7 +19,7 @@ using namespace serialization;
 using namespace std;
 
 
-class CGLLockedTexture : public CLockedTexture
+class CGLLockedTexture : public LockedTexture
 {
 	boost::shared_ptr<CBitmapImage> m_pImage;
 
@@ -367,7 +367,7 @@ bool CGLTextureResource::CreateFromDesc()
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		boost::shared_ptr<CTextureFillingAlgorithm> pLoader = desc.pLoader;
+		boost::shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
 		if( pLoader )
 		{
 			// Let the user-defined routine to fill the texture

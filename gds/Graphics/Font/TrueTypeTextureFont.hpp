@@ -60,7 +60,7 @@ public:
 };
 
 
-class CFontTextureLoader : public CTextureFillingAlgorithm
+class CFontTextureLoader : public TextureFillingAlgorithm
 {
 	TrueTypeTextureFont *m_pFont;
 
@@ -71,7 +71,7 @@ public:
 	m_pFont(pFont)
 	{}
 
-	void FillTexture( CLockedTexture& texture );
+	void FillTexture( LockedTexture& texture );
 };
 
 

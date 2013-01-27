@@ -10,16 +10,16 @@ namespace amorphous
 {
 
 
-class CBuiltinImageTextureLoader : public CTextureFillingAlgorithm
+class BuiltinImageTextureLoader : public TextureFillingAlgorithm
 {
 	const CBuiltinImage& m_BuiltinImage;
 
 public:
-	CBuiltinImageTextureLoader( const CBuiltinImage& img ) : m_BuiltinImage(img) {}
+	BuiltinImageTextureLoader( const CBuiltinImage& img ) : m_BuiltinImage(img) {}
 
-	~CBuiltinImageTextureLoader(){}
+	~BuiltinImageTextureLoader(){}
 
-	void FillTexture( CLockedTexture& texture )
+	void FillTexture( LockedTexture& texture )
 	{
 		if( !m_BuiltinImage.IsValid() )
 			return;
@@ -61,7 +61,7 @@ TextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image 
 	desc.Height    = builtin_image.height;
 	desc.Format    = TextureFormat::A8R8G8B8;
 	desc.MipLevels = 0;
-	desc.pLoader.reset( new CBuiltinImageTextureLoader( builtin_image ) );
+	desc.pLoader.reset( new BuiltinImageTextureLoader( builtin_image ) );
 
 	TextureHandle texture;
 	bool loaded = texture.Load( desc );

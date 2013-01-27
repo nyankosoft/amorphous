@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CGrayscaleImageLoader : public CTextureFillingAlgorithm
+class CGrayscaleImageLoader : public TextureFillingAlgorithm
 {
 	const int m_Width;
 	const int m_Height;
@@ -30,7 +30,7 @@ public:
 	m_Levels(levels)
 	{}
 
-	void FillTexture( CLockedTexture& texture )
+	void FillTexture( LockedTexture& texture )
 	{
 		// Clear the texture with transparent white
 		texture.Clear( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.0f ) );

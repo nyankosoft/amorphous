@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CUniformNoiseTextureGenerator : public CTextureFillingAlgorithm
+class UniformNoiseTextureGenerator : public TextureFillingAlgorithm
 {
 public:
 
@@ -21,43 +21,43 @@ public:
 
 public:
 
-	inline CUniformNoiseTextureGenerator()
+	inline UniformNoiseTextureGenerator()
 		:
 	m_fDensity(0),
 	m_fMin(0),
 	m_fMax(0)
 	{}
 
-	virtual ~CUniformNoiseTextureGenerator() {}
+	virtual ~UniformNoiseTextureGenerator() {}
 };
 
 
 
-class CUniformSingleColorNoiseTextureGenerator : public CUniformNoiseTextureGenerator
+class UniformSingleColorNoiseTextureGenerator : public UniformNoiseTextureGenerator
 {
 public:
 
 	SFloatRGBAColor m_Color;
 
-	CUniformSingleColorNoiseTextureGenerator()
+	UniformSingleColorNoiseTextureGenerator()
 		:
 	m_Color( SFloatRGBAColor::Black() )
 	{}
 
-	~CUniformSingleColorNoiseTextureGenerator() {}
+	~UniformSingleColorNoiseTextureGenerator() {}
 
-	void FillTexture( CLockedTexture& texture );
+	void FillTexture( LockedTexture& texture );
 };
 
 
 /**
 - No separate width for color 0 and 1
   - rationale: easier to keep the texture size to 2^n
-- Calculates the texture size from CStripeTextureGenerator::m_Width
+- Calculates the texture size from StripeTextureGenerator::m_Width
   - texture width/height: m_Width*2
   - m_Width should be 2^n
 */
-class CStripeTextureGenerator : public CTextureFillingAlgorithm
+class StripeTextureGenerator : public TextureFillingAlgorithm
 {
 public:
 /*	enum Directions
@@ -71,14 +71,14 @@ public:
 	SFloatRGBAColor m_Color1;
 	uint m_StripeWidth;
 
-	CStripeTextureGenerator()
+	StripeTextureGenerator()
 		:
 	m_Color0( SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) ),
 	m_Color1( SFloatRGBAColor(0.0f,0.0f,0.0f,0.0f) ),
 	m_StripeWidth(4)
 	{}
 
-	void FillTexture( CLockedTexture& texture );
+	void FillTexture( LockedTexture& texture );
 };
 
 } // namespace amorphous

@@ -8,7 +8,7 @@
 namespace amorphous
 {
 
-class CGridTextureGenerator : public CTextureFillingAlgorithm
+class GridTextureGenerator : public TextureFillingAlgorithm
 {
 public:
 
@@ -24,7 +24,7 @@ public:
 
 public:
 
-	CGridTextureGenerator()
+	GridTextureGenerator()
 		:
 	m_BaseColor( SFloatRGBAColor::White() ),
 	m_LineColor( SFloatRGBAColor::Black() ),
@@ -34,7 +34,7 @@ public:
 	m_DoubleLineWidthAtTextureBorders( false )
 	{}
 
-	void DrawHorizontalLine( int y, CLockedTexture& texture )
+	void DrawHorizontalLine( int y, LockedTexture& texture )
 	{
 		const SFloatRGBAColor line_color = m_LineColor;
 		const int w = texture.GetWidth();
@@ -43,7 +43,7 @@ public:
 
 	}
 
-	void DrawVerticalLine( int x, CLockedTexture& texture )
+	void DrawVerticalLine( int x, LockedTexture& texture )
 	{
 		const SFloatRGBAColor line_color = m_LineColor;
 		const int h = texture.GetHeight();
@@ -52,7 +52,7 @@ public:
 
 	}
 
-	void FillTexture( CLockedTexture& texture )
+	void FillTexture( LockedTexture& texture )
 	{
 		const SFloatRGBAColor base_color = m_BaseColor;
 		const SFloatRGBAColor line_color = m_LineColor;
@@ -114,7 +114,7 @@ public:
 //	desc.Width   = width
 //	desc.Height  = height
 //
-//	boost::shared_ptr<CGridTextureGenerator> pGenerator( new CGridTextureGenerator );
+//	boost::shared_ptr<GridTextureGenerator> pGenerator( new GridTextureGenerator );
 //	pGenerator->m_BaseColor    = base_color;
 //	pGenerator->m_LineColor    = line_color;
 //	pGenerator->m_LineWidth    = line_width;

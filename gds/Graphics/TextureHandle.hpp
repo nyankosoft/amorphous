@@ -67,7 +67,7 @@ public:
 	///   - The resources are shared if GraphicsResourceHandle::filenames are the same
 	///     just like texture resources loaded from file
 	/// \param mip_levels number of mip levels. set 0 to create a complete mipmap chain (0 by default).
-	bool Create( boost::shared_ptr<CTextureFillingAlgorithm> pTextureLoader, const std::string& resource_name, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
+	bool Create( boost::shared_ptr<TextureFillingAlgorithm> pTextureLoader, const std::string& resource_name, int width, int height, TextureFormat::Format format, int mip_levels = 0 );
 
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 

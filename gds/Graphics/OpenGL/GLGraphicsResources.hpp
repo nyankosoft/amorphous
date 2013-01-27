@@ -23,7 +23,7 @@ class CGLTextureResource : public TextureResource
 {
 	GLuint m_TextureID;
 
-//	boost::shared_ptr<CLockedTexture> m_pLockedTexture;
+//	boost::shared_ptr<LockedTexture> m_pLockedTexture;
 
 //	boost::shared_ptr< C2DArray<SFloatRGBAColor> > m_pLockedTextureImageBuffer;
 
@@ -91,7 +91,7 @@ public:
 	/// Returns true on success
 	/// - Succeeds only between a pair of Lock() and Unlock() calls
 	/// - Returns an object that provides access to the locked texture surface
-//	bool GetLockedTexture( boost::shared_ptr<CLockedTexture>& pLockedTexture );
+//	bool GetLockedTexture( boost::shared_ptr<LockedTexture>& pLockedTexture );
 
 	friend class GraphicsResourceManager;
 };

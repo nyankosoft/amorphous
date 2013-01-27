@@ -140,7 +140,7 @@ public:
 
 	uint UsageFlags;
 
-	boost::shared_ptr<CTextureFillingAlgorithm> pLoader;
+	boost::shared_ptr<TextureFillingAlgorithm> pLoader;
 
 public:
 

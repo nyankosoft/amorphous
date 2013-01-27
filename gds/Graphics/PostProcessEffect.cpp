@@ -1433,7 +1433,7 @@ m_StarEffectEnabled(false)
 	desc.Width  = 16;
 	desc.Height = 16;
 	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSingleColorTextureGenerator( SFloatRGBAColor::Black() ) );
+	desc.pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor::Black() ) );
 	m_BlancTextureForDisabledStarEffect.Load( desc );
 }
 

@@ -148,7 +148,7 @@ public:
 
 	/// called by the system
 	/// - called inside CopyTo()
-	void FillTexture( CLockedTexture& texture );
+	void FillTexture( LockedTexture& texture );
 
 	void OnResourceLoadedOnGraphicsMemory();
 

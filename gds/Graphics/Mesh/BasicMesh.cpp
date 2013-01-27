@@ -22,7 +22,7 @@ void SetSingleColorTextureDesc( TextureResourceDesc& desc,
 	desc.Width  = tex_width;
 	desc.Height = tex_height;
 	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new CSingleColorTextureGenerator(SFloatRGBAColor::White()) );
+	desc.pLoader.reset( new SingleColorTextureGenerator(SFloatRGBAColor::White()) );
 }
 
 
@@ -144,7 +144,7 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 			{
 				TextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
 
-				current_desc.pLoader.reset( new CSingleColorTextureGenerator( texture_archive.vecfTexelData(0,0) ) );
+				current_desc.pLoader.reset( new SingleColorTextureGenerator( texture_archive.vecfTexelData(0,0) ) );
 
 				current_desc.Width  = texture_archive.vecfTexelData.size_x();
 				current_desc.Height = texture_archive.vecfTexelData.size_y();
