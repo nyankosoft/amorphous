@@ -56,7 +56,7 @@ static inline bool have_shared_point( const IndexedPolygon& polygon0, const Inde
 }
 
 
-bool CShapeDetector::IsAABox( const General3DMesh& src_mesh, AABB3& aabb )
+bool ShapeDetector::IsAABox( const General3DMesh& src_mesh, AABB3& aabb )
 {
 	float aa_plane_dists[6] = {0,0,0,0,0,0};
 	int aa_plane_found[6];
@@ -114,7 +114,7 @@ bool CShapeDetector::IsAABox( const General3DMesh& src_mesh, AABB3& aabb )
 }
 
 
-bool CShapeDetector::IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose )
+bool ShapeDetector::IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose )
 {
 	// collect normals
 	// If the mesh
@@ -205,7 +205,7 @@ bool CShapeDetector::IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matri
 }
 
 
-bool CShapeDetector::IsConvex( const General3DMesh& src_mesh )
+bool ShapeDetector::IsConvex( const General3DMesh& src_mesh )
 {
 	bool is_not_sphere = false;
 
@@ -249,7 +249,7 @@ bool CShapeDetector::IsConvex( const General3DMesh& src_mesh )
 }
 
 
-bool CShapeDetector::IsSphere( const General3DMesh& src_mesh, Sphere& sphere )
+bool ShapeDetector::IsSphere( const General3DMesh& src_mesh, Sphere& sphere )
 {
 	if( !src_mesh.GetVertexBuffer() )
 		return false;
@@ -291,7 +291,7 @@ bool CShapeDetector::IsSphere( const General3DMesh& src_mesh, Sphere& sphere )
   - capsules that are unevenly scaled along 1 or 2 axis.
   - capsules that have redudant vertices on sides, or the cylinder part of the capsule.
 */
-bool CShapeDetector::IsCapsule( const General3DMesh& src_mesh, Capsule& capsule )
+bool ShapeDetector::IsCapsule( const General3DMesh& src_mesh, Capsule& capsule )
 {
 	if( !src_mesh.GetVertexBuffer() )
 		return false;
@@ -383,13 +383,13 @@ bool CShapeDetector::IsCapsule( const General3DMesh& src_mesh, Capsule& capsule 
 }
 
 /*
-bool CShapeDetector::IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
+bool ShapeDetector::IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
 {
 	return false;
 }
 */
 
-bool CShapeDetector::DetectShape( const General3DMesh& src_mesh, CShapeDetectionResults& results )
+bool ShapeDetector::DetectShape( const General3DMesh& src_mesh, ShapeDetectionResults& results )
 {
 	AABB3 aabb;
 	CBoxDesc box_desc;

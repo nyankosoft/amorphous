@@ -1062,7 +1062,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 			LOG_PRINT_ERROR( " Shape desc file is not supported yet." );
 			return CEntityHandle<>();
 
-//			CShapeContainerGroup scg;
+//			ShapeContainerGroup scg;
 //			bool loaded = scg.LoadArchiveFromFile( shape_desc_file );
 			// Load shape(s) from the shape desc file
 		}
@@ -1076,8 +1076,8 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 				return CEntityHandle<>();
 			CMeshArchiveToGeneral3DMeshConverer converter;
 			Result::Name res = converter.Convert( ma, *pMesh );
-			CShapeDetector shape_detector;
-			CShapeDetectionResults results;
+			ShapeDetector shape_detector;
+			ShapeDetectionResults results;
 			bool shape_detected = shape_detector.DetectShape( *pMesh, results );
 			if( !shape_detected )
 				return CEntityHandle<>();

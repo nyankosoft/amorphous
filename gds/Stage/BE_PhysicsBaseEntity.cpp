@@ -48,7 +48,7 @@ void CBE_PhysicsBaseEntity::ExtractShapeFromMesh( CCopyEntity *pCopyEnt )
 	if( m_MeshProperty.m_MeshDesc.ResourcePath.length() == 0 )
 		return;
 
-	CShapeDetector detector;
+	ShapeDetector detector;
 }
 */
 
@@ -61,7 +61,7 @@ void CBE_PhysicsBaseEntity::Init()
 		lfs::change_ext( pathname, "sd" );
 		if( lfs::path_exists( pathname ) )
 		{
-			CShapeContainerSet containers;
+			ShapeContainerSet containers;
 			bool loaded = containers.LoadFromFile( pathname );
 			if( !loaded )
 				return;

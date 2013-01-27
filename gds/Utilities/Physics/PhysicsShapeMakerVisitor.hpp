@@ -15,7 +15,7 @@ namespace amorphous
 {
 
 
-class CPhysicsShapeMakerVisitor : public CShapeContainerVisitor
+class CPhysicsShapeMakerVisitor : public ShapeContainerVisitor
 {
 public:
 	std::vector<physics::CShapeDesc *>& m_pShapeDescs;
@@ -25,7 +25,7 @@ public:
 	m_pShapeDescs(pShapeDescs)
 	{}
 
-	void VisitAABB3Container( CAABB3Container& aabb3_container )
+	void VisitAABB3Container( AABB3Container& aabb3_container )
 	{
 		using namespace physics;
 
@@ -37,7 +37,7 @@ public:
 		m_pShapeDescs.push_back( pBox );
 	}
 
-	void VisitOBB3Container( COBB3Container& obb3_container )
+	void VisitOBB3Container( OBB3Container& obb3_container )
 	{
 		using namespace physics;
 
@@ -48,7 +48,7 @@ public:
 		m_pShapeDescs.push_back( pBox );
 	}
 
-	void VisitSphereContainer( CSphereContainer& sphere_container )
+	void VisitSphereContainer( SphereContainer& sphere_container )
 	{
 		using namespace physics;
 
@@ -60,7 +60,7 @@ public:
 		m_pShapeDescs.push_back( pSphere );
 	}
 
-	void VisitCapsuleContainer( CCapsuleContainer& capsule_container )
+	void VisitCapsuleContainer( CapsuleContainer& capsule_container )
 	{
 		using namespace physics;
 
@@ -73,7 +73,7 @@ public:
 		m_pShapeDescs.push_back( pCap );
 	}
 
-	void VisitConvexContainer( CConvexContainer& convex_container )
+	void VisitConvexContainer( ConvexContainer& convex_container )
 	{ 
 		LOG_PRINT_ERROR( " Not implemented yet." );
 //		m_pShapeDescs.push_back( pConvex );

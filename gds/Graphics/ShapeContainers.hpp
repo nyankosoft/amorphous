@@ -15,33 +15,33 @@ namespace amorphous
 using namespace serialization;
 
 
-class CAABB3Container;
-class COBB3Container;
-class CSphereContainer;
-class CCapsuleContainer;
-class CConvexContainer;
+class AABB3Container;
+class OBB3Container;
+class SphereContainer;
+class CapsuleContainer;
+class ConvexContainer;
 
 
-class CShapeContainerVisitor
+class ShapeContainerVisitor
 {
 public:
 
-	virtual ~CShapeContainerVisitor() {}
-	virtual void VisitAABB3Container( CAABB3Container& aabb3_container ) {}
-	virtual void VisitOBB3Container( COBB3Container& obb3_container ) {}
-	virtual void VisitSphereContainer( CSphereContainer& sphere_container ) {}
-	virtual void VisitCapsuleContainer( CCapsuleContainer& capsule_container ) {}
-	virtual void VisitConvexContainer( CConvexContainer& convex_container ) {}
+	virtual ~ShapeContainerVisitor() {}
+	virtual void VisitAABB3Container( AABB3Container& aabb3_container ) {}
+	virtual void VisitOBB3Container( OBB3Container& obb3_container ) {}
+	virtual void VisitSphereContainer( SphereContainer& sphere_container ) {}
+	virtual void VisitCapsuleContainer( CapsuleContainer& capsule_container ) {}
+	virtual void VisitConvexContainer( ConvexContainer& convex_container ) {}
 };
 
 
-class CShapeContainer : public IArchiveObjectBase
+class ShapeContainer : public IArchiveObjectBase
 {
 public:
-	CShapeContainer() {}
-	virtual ~CShapeContainer() {}
+	ShapeContainer() {}
+	virtual ~ShapeContainer() {}
 
-	virtual void Accept( CShapeContainerVisitor& visitor ) {}
+	virtual void Accept( ShapeContainerVisitor& visitor ) {}
 
 	enum ContainerArchiveID
 	{
@@ -54,12 +54,12 @@ public:
 	};
 };
 
-class CAABB3Container : public CShapeContainer
+class AABB3Container : public ShapeContainer
 {
 public:
 	AABB3 aabb;
 
-	CAABB3Container( const AABB3& _aabb = AABB3() )
+	AABB3Container( const AABB3& _aabb = AABB3() )
 		:
 	aabb(_aabb)
 	{}
@@ -68,15 +68,15 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return AABB3_CONTAINER; }
 
-	void Accept( CShapeContainerVisitor& visitor ) { visitor.VisitAABB3Container( *this ); }
+	void Accept( ShapeContainerVisitor& visitor ) { visitor.VisitAABB3Container( *this ); }
 };
 
-class COBB3Container : public CShapeContainer
+class OBB3Container : public ShapeContainer
 {
 public:
 	OBB3 obb;
 
-	COBB3Container( const OBB3& _obb = OBB3() )
+	OBB3Container( const OBB3& _obb = OBB3() )
 		:
 	obb(_obb)
 	{}
@@ -85,15 +85,15 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return OBB3_CONTAINER; }
 
-	void Accept( CShapeContainerVisitor& visitor ) { visitor.VisitOBB3Container( *this ); }
+	void Accept( ShapeContainerVisitor& visitor ) { visitor.VisitOBB3Container( *this ); }
 };
 
-class CSphereContainer : public CShapeContainer
+class SphereContainer : public ShapeContainer
 {
 public:
 	Sphere sphere;
 
-	CSphereContainer( const Sphere& _sphere = Sphere() )
+	SphereContainer( const Sphere& _sphere = Sphere() )
 		:
 	sphere(_sphere)
 	{}
@@ -102,15 +102,15 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return SPHERE_CONTAINER; }
 
-	void Accept( CShapeContainerVisitor& visitor ) { visitor.VisitSphereContainer( *this ); }
+	void Accept( ShapeContainerVisitor& visitor ) { visitor.VisitSphereContainer( *this ); }
 };
 
-class CCapsuleContainer : public CShapeContainer
+class CapsuleContainer : public ShapeContainer
 {
 public:
 	Capsule capsule;
 
-	CCapsuleContainer( const Capsule& cap = Capsule() )
+	CapsuleContainer( const Capsule& cap = Capsule() )
 		:
 	capsule(cap)
 	{}
@@ -119,11 +119,11 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return CAPSULE_CONTAINER; }
 
-	void Accept( CShapeContainerVisitor& visitor ) { visitor.VisitCapsuleContainer( *this ); }
+	void Accept( ShapeContainerVisitor& visitor ) { visitor.VisitCapsuleContainer( *this ); }
 };
 
 
-class CConvexContainer : public CShapeContainer
+class ConvexContainer : public ShapeContainer
 {
 public:
 	std::vector<Vector3> points;
@@ -133,22 +133,22 @@ public:
 
 	unsigned int GetArchiveObjectID() const { return CONVEX_CONTAINER; }
 
-	void Accept( CShapeContainerVisitor& visitor ) { visitor.VisitConvexContainer( *this ); }
+	void Accept( ShapeContainerVisitor& visitor ) { visitor.VisitConvexContainer( *this ); }
 };
 
 
-class CShapeContainerFactory : public IArchiveObjectFactory
+class ShapeContainerFactory : public IArchiveObjectFactory
 {
 public:
 	IArchiveObjectBase *CreateObject(const unsigned int id)
 	{
 		switch( id )
 		{
-		case CShapeContainer::AABB3_CONTAINER:   return new CAABB3Container;
-		case CShapeContainer::OBB3_CONTAINER:    return new COBB3Container;
-		case CShapeContainer::SPHERE_CONTAINER:  return new CSphereContainer;
-		case CShapeContainer::CAPSULE_CONTAINER: return new CCapsuleContainer;
-		case CShapeContainer::CONVEX_CONTAINER:  return new CConvexContainer;
+		case ShapeContainer::AABB3_CONTAINER:   return new AABB3Container;
+		case ShapeContainer::OBB3_CONTAINER:    return new OBB3Container;
+		case ShapeContainer::SPHERE_CONTAINER:  return new SphereContainer;
+		case ShapeContainer::CAPSULE_CONTAINER: return new CapsuleContainer;
+		case ShapeContainer::CONVEX_CONTAINER:  return new ConvexContainer;
 		default:
 			return NULL;
 		}
@@ -156,18 +156,18 @@ public:
 };
 
 
-class CShapeContainerSet : public IArchiveObjectBase
+class ShapeContainerSet : public IArchiveObjectBase
 {
 public:
 
-	std::vector<CShapeContainer *> m_pShapes;
+	std::vector<ShapeContainer *> m_pShapes;
 
-	CShapeContainerSet() {}
-	~CShapeContainerSet() { SafeDeleteVector(m_pShapes); }
+	ShapeContainerSet() {}
+	~ShapeContainerSet() { SafeDeleteVector(m_pShapes); }
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CShapeContainerFactory factory;
+		ShapeContainerFactory factory;
 		ar.Polymorphic( m_pShapes, factory );
 	}
 };

@@ -17,33 +17,33 @@ using std::vector;
 using namespace boost;
 
 
-void CreatePhysicsShapes( CShapeContainerSet& shape_set )
+void CreatePhysicsShapes( ShapeContainerSet& shape_set )
 {
 }
 
 
-void CShapesExtractor::AddShapeContainer( General3DMesh& connected_mesh,
-											  const CShapeDetectionResults& results,
-											  CShapeContainerSet& shape_set )
+void ShapesExtractor::AddShapeContainer( General3DMesh& connected_mesh,
+											  const ShapeDetectionResults& results,
+											  ShapeContainerSet& shape_set )
 {
 	AABB3 aabb;
 
 	switch( results.shape )
 	{
 	case MeshShape::AXIS_ALIGNED_BOX:
-		shape_set.m_pShapes.push_back( new CAABB3Container( results.aabb ) );
+		shape_set.m_pShapes.push_back( new AABB3Container( results.aabb ) );
 		break;
 
 	case MeshShape::ORIENTED_BOX:
-		shape_set.m_pShapes.push_back( new COBB3Container( OBB3( results.pose, results.radii ) ) );
+		shape_set.m_pShapes.push_back( new OBB3Container( OBB3( results.pose, results.radii ) ) );
 		break;
 
 	case MeshShape::CAPSULE:
-		shape_set.m_pShapes.push_back( new CCapsuleContainer( results.capsule ) );
+		shape_set.m_pShapes.push_back( new CapsuleContainer( results.capsule ) );
 		break;
 
 	case MeshShape::SPHERE:
-		shape_set.m_pShapes.push_back( new CSphereContainer( Sphere( results.pose.vPosition, results.radii[0] ) ) );
+		shape_set.m_pShapes.push_back( new SphereContainer( Sphere( results.pose.vPosition, results.radii[0] ) ) );
 		break;
 
 	case MeshShape::CONVEX:
@@ -58,7 +58,7 @@ void CShapesExtractor::AddShapeContainer( General3DMesh& connected_mesh,
 }
 
 
-Result::Name CShapesExtractor::ExtractShapes( const shared_ptr<General3DMesh> pSrcMesh, CShapeContainerSet& shape_set )
+Result::Name ShapesExtractor::ExtractShapes( const shared_ptr<General3DMesh> pSrcMesh, ShapeContainerSet& shape_set )
 {
 	if( !pSrcMesh )
 		return Result::INVALID_ARGS;
@@ -85,15 +85,15 @@ Result::Name CShapesExtractor::ExtractShapes( const shared_ptr<General3DMesh> pS
 	LOG_PRINT( fmt_string(" Found %d connected meshes.", (int)pConnectedMeshes.size() ) );
 
 	// For each connected sets, detect a shape
-//	CShapeContainerSet shape_set;
+//	ShapeContainerSet shape_set;
 	const int num_connected_meshes = (int)pConnectedMeshes.size();
 	for( int i=0; i<num_connected_meshes; i++ )
 	{
 		if( !pConnectedMeshes[i] )
 			continue;
 
-		CShapeDetector shape_detector;
-		CShapeDetectionResults results;
+		ShapeDetector shape_detector;
+		ShapeDetectionResults results;
 		bool detected = shape_detector.DetectShape( *(pConnectedMeshes[i]), results );
 
 		if( !detected )
@@ -106,9 +106,9 @@ Result::Name CShapesExtractor::ExtractShapes( const shared_ptr<General3DMesh> pS
 }
 
 
-Result::Name CShapesExtractor::ExtractShapesAndSaveToFile( const shared_ptr<General3DMesh> pSrcMesh, const std::string& output_filepath )
+Result::Name ShapesExtractor::ExtractShapesAndSaveToFile( const shared_ptr<General3DMesh> pSrcMesh, const std::string& output_filepath )
 {
-	CShapeContainerSet shape_set;
+	ShapeContainerSet shape_set;
 	Result::Name res = ExtractShapes( pSrcMesh, shape_set );
 
 	bool saved = shape_set.SaveToFile( output_filepath );

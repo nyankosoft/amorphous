@@ -30,7 +30,7 @@ public:
 };
 
 
-class CShapeDetectionResults
+class ShapeDetectionResults
 {
 public:
 	MeshShape::Name shape;
@@ -43,7 +43,7 @@ public:
 
 	Capsule capsule; ///< Stores the detected capsule
 
-	CShapeDetectionResults()
+	ShapeDetectionResults()
 		:
 	radii(Vector3(0,0,0))
 	{}
@@ -73,7 +73,7 @@ inline IArchive& operator & ( IArchive& ar, Capsule& cap )
 }
 */
 
-class CShapeDetector
+class ShapeDetector
 {
 public:
 	bool IsAABox( const General3DMesh& src_mesh, AABB3& aabb );
@@ -89,7 +89,7 @@ public:
 //	bool IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
 
 	/// How to represent the detection results?
-	bool DetectShape( const General3DMesh& src_mesh, CShapeDetectionResults& results );
+	bool DetectShape( const General3DMesh& src_mesh, ShapeDetectionResults& results );
 };
 
 
