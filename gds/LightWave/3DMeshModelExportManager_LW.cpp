@@ -1,7 +1,5 @@
 #include "3DMeshModelExportManager_LW.hpp"
 #include "3DMeshModelBuilder_LW.hpp"
-using namespace MeshModel;
-
 #include "LWO2_Common.hpp"
 #include "LWO2_Object.hpp"
 #include "gds/Support/memory_helpers.hpp"
@@ -290,9 +288,9 @@ vector< vector<string> > C3DMeshModelExportManager_LW::GetOriginalTextureFilepat
 }
 
 
-const morph::progress_display& C3DMeshModelExportManager_LW::GetSourceObjectLoadingProgress() const
+const progress_display& C3DMeshModelExportManager_LW::GetSourceObjectLoadingProgress() const
 {
-	static morph::progress_display invalid_progress(0);
+	static progress_display invalid_progress(0);
 	if( m_pObject )
 		return m_pObject->GetProgressDisplay();
 	else

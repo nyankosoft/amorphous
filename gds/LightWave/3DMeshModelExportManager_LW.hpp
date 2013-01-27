@@ -13,17 +13,7 @@
 namespace amorphous
 {
 
-
-namespace morph
-{
 class progress_display;
-};
-
-
-namespace MeshModel
-{
-
-
 class C3DMeshModelBuilder;
 
 /**
@@ -71,11 +61,9 @@ public:
 
 	std::vector< std::vector<std::string> > GetOriginalTextureFilepaths( uint model_index );
 
-	const morph::progress_display& GetSourceObjectLoadingProgress() const;
+	const progress_display& GetSourceObjectLoadingProgress() const;
 };
 
-
-}	/*  MeshModel  */
 
 } // amorphous
 

@@ -1,11 +1,11 @@
 #include "MassSpringExporter_LW.hpp"
 #include "gds/LightWave/3DMeshModelBuilder_LW.hpp"
 #include "gds/PhysicsSim/MassSpringSim.hpp"
+//#include "assert.h"
 
 
 namespace amorphous
 {
-//#include "assert.h"
 
 using namespace std;
 

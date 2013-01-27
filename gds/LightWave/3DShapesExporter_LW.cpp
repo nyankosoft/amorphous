@@ -75,11 +75,11 @@ bool C3DShapesExporter_LW::ExtractShapes( boost::shared_ptr<CLWO2_Object> pObjec
 		shared_ptr<C3DMeshModelBuilder_LW> pLoader( new C3DMeshModelBuilder_LW( pObject ) );
 		pLoader->BuildMeshModel( layer_set );
 
-		shared_ptr<CGeneral3DMesh> pSrcMesh = pLoader->GetGeneral3DMeshSharedPtr();
+		shared_ptr<General3DMesh> pSrcMesh = pLoader->GetGeneral3DMeshSharedPtr();
 		if( !pSrcMesh )
 			return false;
 
-		CShapesExtractor shapes_extractor;
+		ShapesExtractor shapes_extractor;
 		Result::Name extract_result = shapes_extractor.ExtractShapesAndSaveToFile( pSrcMesh, output_filepaths[i] );
 		if( extract_result != Result::SUCCESS )
 			res = extract_result;

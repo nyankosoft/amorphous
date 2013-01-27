@@ -11,7 +11,7 @@
 
 namespace amorphous
 {
-using namespace GameLib1::Serialization;
+using namespace serialization;
 
 
 class CMS_Sphere : public IArchiveObjectBase

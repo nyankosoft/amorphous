@@ -11,7 +11,6 @@
 
 namespace amorphous
 {
-using namespace MeshModel;
 
 using std::string;
 using std::vector;
@@ -27,7 +26,7 @@ static const unsigned int gs_DefaultVertexFlags_LW
 | CMMA_VertexSet::VF_DIFFUSE_COLOR;
 
 
-int MeshModel::GetGroupNumber( const std::vector<std::string>& words )
+int GetGroupNumber( const std::vector<std::string>& words )
 {
 	int group_number = -1;
 	for( size_t i=0; i<words.size(); i++ )
@@ -51,9 +50,9 @@ C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW()
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
 m_UseBoneStartAsBoneLocalOrigin(false)
 {
-	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+	m_pMesh = shared_ptr<General3DMesh>( new General3DMesh() );
 
-//	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
+//	IndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
 
 
@@ -63,9 +62,9 @@ m_pSrcObject(pSrcObject),
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
 m_UseBoneStartAsBoneLocalOrigin(false)
 {
-	m_pMesh = shared_ptr<CGeneral3DMesh>( new CGeneral3DMesh() );
+	m_pMesh = shared_ptr<General3DMesh>( new General3DMesh() );
 
-//	CIndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
+//	IndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
 
 
@@ -161,7 +160,7 @@ int GetAnyPolygonGroup( const CLWO2_Layer& rLayer, int polygon_index )
 }
 
 
-void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryFilter& filter )
+void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFilter& filter )
 {
 	if( !m_pSrcObject )
 	{
@@ -183,7 +182,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 	const int iNumVertices = (int)rvecVertex.size();
 
 	// create a temporary buffer to hold vertices
-	vector<CGeneral3DVertex> TempVertexBuffer;
+	vector<General3DVertex> TempVertexBuffer;
 	TempVertexBuffer.resize( iNumVertices );
 
 	// set default vertex color
@@ -229,12 +228,13 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 	const int iNumPolygons = (int)rvecPolygon.size();
 	int iNumPolVerts;
 
-	vector<CIndexedPolygon>& polygon_buffer = m_pMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = m_pMesh->GetPolygonBuffer();
 	for( i=0; i<iNumPolygons; i++ )
 	{
 		CLWO2_Face& rPolygon = rvecPolygon[i];
 
 		const int surface_index = rPolygon.GetSurfaceIndex();
+
 
 		CLWO2_Surface *pSurf = m_pSrcObject->FindSurfaceFromTAG( surface_index );
 
@@ -265,7 +265,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 		vector<UINT4>& rvecIndex = rPolygon.GetVertexIndex();
 		iNumPolVerts = (int)rvecIndex.size();
 
-		polygon_buffer.push_back( CIndexedPolygon( m_pMesh->GetVertexBuffer() ) );
+		polygon_buffer.push_back( IndexedPolygon( m_pMesh->GetVertexBuffer() ) );
 		polygon_buffer.back().m_MaterialIndex = iMatIndex;
 
 		m_PolygonGroupIndices.push_back( GetAnyPolygonGroup( rLayer, i ) );
@@ -325,18 +325,18 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const CGeometryF
 		}
 	}
 */
-	std::vector<CGeneral3DVertex>& vertex_buffer = *m_pMesh->GetVertexBuffer().get();
+	std::vector<General3DVertex>& vertex_buffer = *m_pMesh->GetVertexBuffer().get();
 
 //	m_vecVertexBuffer.reserve( m_vecVertexBuffer.size() + iNumVertices );
-//	m_vecVertexBuffer.insert( m_vecVertexBuffer.end(), iNumVertices, CGeneral3DVertex() );
+//	m_vecVertexBuffer.insert( m_vecVertexBuffer.end(), iNumVertices, General3DVertex() );
 	if( vertex_buffer.size() == 0 )
 	{
-		vertex_buffer.resize( iNumVertices, CGeneral3DVertex() );
+		vertex_buffer.resize( iNumVertices, General3DVertex() );
 	}
 	else
 	{
 		vertex_buffer.reserve( vertex_buffer.size() + iNumVertices );
-		vertex_buffer.insert( vertex_buffer.end(), iNumVertices, CGeneral3DVertex() );
+		vertex_buffer.insert( vertex_buffer.end(), iNumVertices, General3DVertex() );
 	}
 
 	// copy collected vertices & polygons to the buffers
@@ -369,7 +369,7 @@ void C3DMeshModelBuilder_LW::BreakPolygonsIntoSubsetsByPolygonGroups()
 	vector<int> already_appeared_group_indices;
 	const vector<CMMA_Material>& materials = GetMaterialBuffer();
 	const int num_materials = (int)materials.size();
-	std::vector<CIndexedPolygon>& polygons = m_pMesh->GetPolygonBuffer();
+	std::vector<IndexedPolygon>& polygons = m_pMesh->GetPolygonBuffer();
 	const int num_polygons = (int)polygons.size();
 	vector<CMMA_Material> new_materials;
 
@@ -730,7 +730,7 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 }
 
 
-void C3DMeshModelBuilder_LW::SetVertexWeights( vector<CGeneral3DVertex>& rDestVertexBuffer,
+void C3DMeshModelBuilder_LW::SetVertexWeights( vector<General3DVertex>& rDestVertexBuffer,
 											   CLWO2_Layer& rLayer )
 {
 	vector<CLWO2_WeightMap>& rWeightMap = rLayer.GetVertexWeightMap();
@@ -768,9 +768,9 @@ void C3DMeshModelBuilder_LW::SetVertexWeights( vector<CGeneral3DVertex>& rDestVe
 		{
 			rWeightMap[i].GetWeightMap( j, pnt_index, fWeight );
 
-			CGeneral3DVertex& dest_vertex = rDestVertexBuffer[ pnt_index ];
+			General3DVertex& dest_vertex = rDestVertexBuffer[ pnt_index ];
 
-			if( dest_vertex.m_fMatrixWeight.size() == CGeneral3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX )
+			if( dest_vertex.m_fMatrixWeight.size() == General3DVertex::NUM_MAX_BLEND_MATRICES_PER_VERTEX )
 				continue;
 
 			dest_vertex.m_fMatrixWeight.push_back( fWeight );
@@ -858,7 +858,7 @@ bool has_string( const std::vector<std::string>& string_buffer, const std::strin
 
 
 /// loads 3d mesh model from geometry filter
-bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const CGeometryFilter& geometry_filter )
+bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const GeometryFilter& geometry_filter )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -920,7 +920,7 @@ bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object>
 }
 
 
-bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter )
+bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, const GeometryFilter& geometry_filter )
 {
 	shared_ptr<CLWO2_Object> pObject;
 

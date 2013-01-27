@@ -12,10 +12,6 @@ namespace amorphous
 {
 
 
-namespace MeshModel
-{
-
-
 struct SLayerSet
 {
 	std::string strOutputFilename;
@@ -94,9 +90,9 @@ private:
 	/// all the bone transforms are not supposed to have rotations
 	void BuildBoneTransformsNROT_r(const Vector3& vParentOffset, CMMA_Bone& rDestBone );
 
-	void SetVertexWeights( std::vector<CGeneral3DVertex>& rDestVertexBuffer, CLWO2_Layer& rLayer );
+	void SetVertexWeights( std::vector<General3DVertex>& rDestVertexBuffer, CLWO2_Layer& rLayer );
 
-	void ProcessLayer( CLWO2_Layer& rLayer, const CGeometryFilter& filter = CGeometryFilter() );
+	void ProcessLayer( CLWO2_Layer& rLayer, const GeometryFilter& filter = GeometryFilter() );
 
 	/// create mesh materials from the surfaces of the LightWave object
 	/// - surface texture:    stored in CMMA_Material.vecTexture[0]
@@ -141,9 +137,9 @@ public:
 
 	std::vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
 
-	bool LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const CGeometryFilter& geometry_filter );
+	bool LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const GeometryFilter& geometry_filter );
 
-	virtual bool LoadFromFile( const std::string& model_filepath, const CGeometryFilter& geometry_filter );
+	virtual bool LoadFromFile( const std::string& model_filepath, const GeometryFilter& geometry_filter );
 
 	virtual std::string GetBasePath();
 };
@@ -152,8 +148,6 @@ public:
 /// \param words [in] layer name separated by spaces or tabs
 int GetGroupNumber( const std::vector<std::string>& words );
 
-
-}
 
 } // amorphous
 
