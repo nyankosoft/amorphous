@@ -172,7 +172,7 @@ public:
 
 	void RenderEntity( CCopyEntity& entity )
 	{
-//		CShaderManager *pShaderMgr = m_DepthRenderShader.GetShaderManager();
+//		ShaderManager *pShaderMgr = m_DepthRenderShader.GetShaderManager();
 //		if( !pShaderMgr )
 //			return;
 //

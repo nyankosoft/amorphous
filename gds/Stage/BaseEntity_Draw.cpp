@@ -76,7 +76,7 @@ Skeletal meshes and transforms
 static Vector3 s_OrigViewTrans;
 static Vector3 s_OrigWorldPos;
 
-static void SetOffsetWorldTransform( CShaderManager& rShaderManager, Vector3& vWorldCameraPos )
+static void SetOffsetWorldTransform( ShaderManager& rShaderManager, Vector3& vWorldCameraPos )
 {
 	Matrix44 matWorld, matView;
 	rShaderManager.GetWorldTransform( matWorld );
@@ -101,7 +101,7 @@ static void SetOffsetWorldTransform( CShaderManager& rShaderManager, Vector3& vW
 }
 
 
-static void RestoreOffsetWorldTransform( CShaderManager& rShaderManager )
+static void RestoreOffsetWorldTransform( ShaderManager& rShaderManager )
 {
 	Matrix44 matWorld, matView;
 	rShaderManager.GetWorldTransform( matWorld );
@@ -140,12 +140,12 @@ public:
 
 	void SetCameraPosition( Vector3 vCameraPos ) { m_vCameraPosition = vCameraPos; }
 
-	void UpdateShaderParams( CShaderManager& rShaderMgr );
-	void ResetShaderParams( CShaderManager& rShaderMgr );
+	void UpdateShaderParams( ShaderManager& rShaderMgr );
+	void ResetShaderParams( ShaderManager& rShaderMgr );
 };
 
 
-void COffsetWorldTransformLoader::UpdateShaderParams( CShaderManager& rShaderMgr )
+void COffsetWorldTransformLoader::UpdateShaderParams( ShaderManager& rShaderMgr )
 {
 	if( !m_bActive )
 		return;
@@ -154,7 +154,7 @@ void COffsetWorldTransformLoader::UpdateShaderParams( CShaderManager& rShaderMgr
 }
 
 
-void COffsetWorldTransformLoader::ResetShaderParams( CShaderManager& rShaderMgr )
+void COffsetWorldTransformLoader::ResetShaderParams( ShaderManager& rShaderMgr )
 {
 	if( !m_bActive )
 		return;
@@ -455,7 +455,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 		return;
 
 	ShaderHandle shader = pShadowMgr->GetShader();
-	CShaderManager *pShaderMgr = shader.GetShaderManager();
+	ShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
@@ -524,7 +524,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 		return;
 
 	ShaderHandle shader = pShadowMgr->GetShader();
-	CShaderManager *pShaderMgr = shader.GetShaderManager();
+	ShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
@@ -587,7 +587,7 @@ void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context 
 
 	rc.SetShaderTechnique( CRenderContext::ROT_3D_MODEL );
 
-	CShaderManager& shader_mgr = rc.GetShaderManager( CRenderContext::ROT_3D_MODEL );
+	ShaderManager& shader_mgr = rc.GetShaderManager( CRenderContext::ROT_3D_MODEL );
 
 	shader_mgr.SetWorldTransform( entity.GetWorldPose() );
 
@@ -598,7 +598,7 @@ void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context 
 
 
 /// Update light-related shader variables
-void SetLightsToShader( CCopyEntity& entity, CShaderManager& rShaderMgr )
+void SetLightsToShader( CCopyEntity& entity, ShaderManager& rShaderMgr )
 {
 	shared_ptr<CShaderLightManager> pShaderLightMgr = rShaderMgr.GetShaderLightManager();
 

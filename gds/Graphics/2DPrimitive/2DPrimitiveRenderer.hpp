@@ -24,9 +24,9 @@ public:
 
 	virtual void Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
 
-	virtual void Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
+	virtual void Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
 
-	virtual void RenderRect( CShaderManager& rShaderManager, const C2DRect& rect ) = 0;
+	virtual void RenderRect( ShaderManager& rShaderManager, const C2DRect& rect ) = 0;
 
 	/// \brief Set this to true to profile the function calls.
 	/// This is not declared static because the class is used as a singleton.

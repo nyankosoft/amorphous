@@ -38,7 +38,7 @@ public:
 
 	void SetLightEntityManager(CLightEntityManager *pLightEntityManager) { m_pLightEntityManager = pLightEntityManager; }
 
-	void SetDynamicLights( CBSPMap *pMap, CShaderManager& shader_mgr );
+	void SetDynamicLights( CBSPMap *pMap, ShaderManager& shader_mgr );
 
 	void SetDynamicLight( CLightEntity& rLight, CSG_Polygon& rPolygon, CBSPMap *pMap );
 

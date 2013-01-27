@@ -856,7 +856,7 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 {
 	PROFILE_FUNCTION();
 
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 		UpdateVertices( pCopyEnt );
 	else

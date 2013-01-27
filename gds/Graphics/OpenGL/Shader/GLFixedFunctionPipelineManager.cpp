@@ -16,7 +16,7 @@ m_matView(Matrix44Identity()),
 m_matProjection(Matrix44Identity())
 {
 	// register the instance to the shader manager hub
-//	ShaderManagerHub.RegisterShaderManager( this );
+//	GetShaderManagerHub().RegisterShaderManager( this );
 
 	m_pFFPLightManager.reset( new CGLFixedPipelineLightManager );
 }
@@ -25,7 +25,7 @@ m_matProjection(Matrix44Identity())
 CGLFixedFunctionPipelineManager::~CGLFixedFunctionPipelineManager()
 {
 	// release from the list in shader manager hub
-//	ShaderManagerHub.ReleaseShaderManager( this );
+//	GetShaderManagerHub().ReleaseShaderManager( this );
 
 	Release();
 }

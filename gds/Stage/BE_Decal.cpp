@@ -202,8 +202,8 @@ void CBE_Decal::SweepRender()
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 

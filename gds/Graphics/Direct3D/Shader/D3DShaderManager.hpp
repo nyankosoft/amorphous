@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CD3DShaderManager : public CShaderManager
+class CD3DShaderManager : public ShaderManager
 {
 public:
 

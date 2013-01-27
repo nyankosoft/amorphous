@@ -673,7 +673,7 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 	{
 		const int tex_index = 3;
 
-		CShaderManager *pShader
+		ShaderManager *pShader
 			= pFilterShader->GetShader().GetShaderManager();
 
 		if( !pShader )

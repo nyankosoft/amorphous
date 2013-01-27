@@ -395,7 +395,7 @@ void CGLBasicMeshImpl::BuildVBOs_ARB( C3DMeshModelArchive& archive )
 
 /// renders subsets of the mesh
 /// - use different shader techniques for each material
-void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
+void CGLBasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 		                     const std::vector<int>& vecMaterialIndex,
 							 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
 {
@@ -443,7 +443,7 @@ void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
 }
 
 
-void CGLBasicMeshImpl::Render( CShaderManager& rShaderMgr )
+void CGLBasicMeshImpl::Render( ShaderManager& rShaderMgr )
 {
 	rShaderMgr.Begin();
 
@@ -451,7 +451,7 @@ void CGLBasicMeshImpl::Render( CShaderManager& rShaderMgr )
 }
 
 
-void CGLBasicMeshImpl::RenderSubset( CShaderManager& rShaderMgr, int material_index )
+void CGLBasicMeshImpl::RenderSubset( ShaderManager& rShaderMgr, int material_index )
 {
 }
 
@@ -560,7 +560,7 @@ void CGLBasicMeshImpl::BindBuffers_ARB()
 
 /// renders subsets of the mesh with the current shader technique
 /// - the same shader technique is used to render all the materials
-void CGLBasicMeshImpl::RenderSubsets( CShaderManager& rShaderMgr,
+void CGLBasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */)
 {
 }

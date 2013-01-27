@@ -13,7 +13,7 @@ namespace amorphous
 #pragma comment( lib, "cg.lib" )
 
 
-class CCgEffectBase : public CShaderManager
+class CCgEffectBase : public ShaderManager
 {
 	enum ShaderConstParams
 	{

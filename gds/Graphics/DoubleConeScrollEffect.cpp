@@ -302,7 +302,7 @@ void DoubleConeScrollEffect::Render()
 		matTilt * matScaling
 		);
 
-	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 	shader_mgr.SetWorldTransform( world_transform );
 //	shader_mgr.SetWorldTransform( Matrix34( Vector3(0,0,0), matScaling ) ); // Use this to see the geometry from outside
 //	shader_mgr.SetWorldTransform( Matrix34Identity() );

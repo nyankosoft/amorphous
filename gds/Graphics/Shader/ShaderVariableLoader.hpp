@@ -38,7 +38,7 @@ public:
 	m_Parameter(shader_parameter)
 	{}
 
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
 		rShaderMgr.SetParam( m_Parameter );
 	}

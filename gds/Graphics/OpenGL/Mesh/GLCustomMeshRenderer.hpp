@@ -19,11 +19,11 @@ public:
 
 	void RenderZSortedMesh( CustomMesh& mesh ) { RenderMesh( mesh ); }
 
-	void RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr );
+	void RenderMesh( CustomMesh& mesh, ShaderManager& shader_mgr );
 
-	void RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index );
+	void RenderSubset( CustomMesh& mesh, ShaderManager& shader_mgr, int subset_index );
 
-	void RenderZSortedMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr ); }
+	void RenderZSortedMesh( CustomMesh& mesh, ShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr ); }
 
 	static CGLCustomMeshRenderer ms_Instance;
 };

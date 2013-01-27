@@ -152,7 +152,7 @@ void LensFlare::Render()
 */
 
 
-void LensFlare::Render( CShaderManager& rShaderManager, int texture_stage )
+void LensFlare::Render( ShaderManager& rShaderManager, int texture_stage )
 {
 	Render();
 }

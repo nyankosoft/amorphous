@@ -242,7 +242,7 @@ void RenderFullScreenQuad( LPD3DXEFFECT pEffect, float fLeftU, float fTopV, floa
 }
 
 
-void RenderFullScreenQuad( CShaderManager& shader_mgr, const CoordRect& c )
+void RenderFullScreenQuad( ShaderManager& shader_mgr, const CoordRect& c )
 {
 	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
 	if( pEffect )
@@ -250,7 +250,7 @@ void RenderFullScreenQuad( CShaderManager& shader_mgr, const CoordRect& c )
 }
 
 
-void RenderFullScreenQuad( CShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
+void RenderFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
 {
 	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
 	if( pEffect )
@@ -483,7 +483,7 @@ HRESULT GetTextureCoords( TextureHandle& tex_src, RECT* pRectSrc,
 }
 
 
-CShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
+ShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
 {
 	boost::shared_ptr<CPostProcessFilterShader> pFilterShader = filter.GetFilterShader();
 	if( !pFilterShader )
@@ -495,7 +495,7 @@ CShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
 
 LPD3DXEFFECT GetD3DXEffect(PostProcessEffectFilter& filter)
 {
-	CShaderManager *pShaderMgr = GetShaderManager(filter);
+	ShaderManager *pShaderMgr = GetShaderManager(filter);
 	if( !pShaderMgr )
 		return NULL;
 
@@ -544,11 +544,11 @@ void DownScale4x4Filter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
-	CShaderManager *pShaderMgr = GetShaderManager(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 
@@ -646,11 +646,11 @@ void DownScale2x2Filter::Render()
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = m_pFilterShader->GetShader()->GetEffect();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
-	CShaderManager *pShaderMgr = GetShaderManager(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 
@@ -731,11 +731,11 @@ void HDRBrightPassFilter::Render()
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = m_pFilterShader->GetShader()->GetEffect();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
-	CShaderManager *pShaderMgr = GetShaderManager(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 
@@ -813,11 +813,11 @@ void GaussianBlurFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
-	CShaderManager *pShaderMgr = GetShaderManager(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 
@@ -914,11 +914,11 @@ void BloomFilter::Render()
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	HRESULT hr;
-	CShaderManager *pShaderMgr = GetShaderManager(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	GetSampleOffsets();
 
@@ -1717,7 +1717,7 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, CFilterSh
 	shared_ptr<CPostProcessFilterShader> pShader = filter_shader_container.GetFilterShader( "HDRPostProcessor" );
 	if( pShader && pShader->GetShader().GetShaderManager() )
 	{
-		CShaderManager *pShaderMgr = pShader->GetShader().GetShaderManager();
+		ShaderManager *pShaderMgr = pShader->GetShader().GetShaderManager();
 		CShaderParameter< vector<float> > bloom_scale( "g_fBloomScale" ), star_scale( "g_fStarScale" );
 		bloom_scale.Parameter().resize(1);
 		star_scale.Parameter().resize(1);

@@ -480,7 +480,7 @@ void ShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 			screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 			screen_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture() );
 
-//			CShaderManager *pShaderMgr = 
+//			ShaderManager *pShaderMgr = 
 //			PrimitiveRenderer().RenderRect( *pShaderMgr, scree_rect );
 			C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
 			tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
@@ -584,7 +584,7 @@ TextureHandle ShadowMapManager::GetSceneShadowTexture()
 //void ShadowMapManager::BeginSceneForShadowCaster()
 void ShadowMapManager::BeginSceneShadowMap()
 {
-//	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( m_LightCamera );
 
 	// save the current settings
 //	hr = pd3dDev->GetRenderTarget( 0, &m_pOriginalSurface );
@@ -596,7 +596,7 @@ void ShadowMapManager::BeginSceneShadowMap()
 void ShadowMapManager::EndSceneShadowMap()
 {
 /*
-//	ShaderManagerHub.PopViewAndProjectionMatrices();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	// restore the original render tareget
 
@@ -618,13 +618,13 @@ void ShadowMapManager::BeginSceneDepthMap()
 	m_SceneCamera.GetCameraMatrix( view );
 	m_SceneCamera.GetProjectionMatrix( proj );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
 	pShaderMgr->SetWorldViewProjectionTransform( Matrix44Identity(), view, proj );
 
-//	ShaderManagerHub.PushViewAndProjectionMatrices( m_SceneCamera );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( m_SceneCamera );
 
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );
@@ -657,7 +657,7 @@ void ShadowMapManager::EndSceneDepthMap()
 {
 //	pd3dDev->EndScene();
 
-//	ShaderManagerHub.PopViewAndProjectionMatrices();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	// restore the original render tareget
 /*

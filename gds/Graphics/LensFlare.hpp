@@ -109,7 +109,7 @@ public:
 	/// NOT IMPLEMENTED.
 	/// this method assumes that you have set a valid shader technique that renders
 	/// transformed & lit vertices, and uses a texture sampler accessed by 'pTexHandle'
-	void Render( CShaderManager& rShaderManager, int texture_stage = 0 );
+	void Render( ShaderManager& rShaderManager, int texture_stage = 0 );
 
 	void Render();
 

@@ -45,7 +45,7 @@ void CJL_PhysicsVisualizer::RenderVisualInfo()
 {
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
-	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 	// render visual debug info
@@ -152,7 +152,7 @@ void CJL_PhysicsVisualizer::DisplayActorInfo()
 	Vector3 avLineSegment[2];
 	Vector3 vPos, vVel;
 
-	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 
 	TCPreAllocDynamicLinkList<CJL_PhysicsActor>::LinkListIterator itrActor;
 

@@ -645,7 +645,7 @@ void CClothSystem::RenderObjectsForDebugging()
 		m_SphereMesh.Load( mesh_desc );
 	}*/
 
-	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	for( int i=0; i<2; i++ )

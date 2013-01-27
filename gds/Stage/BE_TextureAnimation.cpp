@@ -198,8 +198,8 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 
 
 	// use the texture color only
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	shader_mgr.SetWorldTransform( world_pose );
 

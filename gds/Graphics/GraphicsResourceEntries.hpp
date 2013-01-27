@@ -26,7 +26,7 @@ using namespace serialization;
    - derived classes are,
      - CTextureEntry: texture resource
 	 - MeshResource: mesh (3D model) resource
-	 - CShaderManagerEntry: shader resource
+	 - ShaderManagerEntry: shader resource
    - each derived class has derived class instance of resource desc as one of their member variables
 
 */

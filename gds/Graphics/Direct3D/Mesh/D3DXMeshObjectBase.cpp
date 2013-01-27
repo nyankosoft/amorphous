@@ -682,7 +682,7 @@ void CD3DXMeshObjectBase::UpdateVisibility( const Camera& cam )
 }
 
 /*
-void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 										 const std::vector<int>& vecMaterialIndex )
 {
 	PROFILE_FUNCTION();
@@ -692,7 +692,7 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 }
 */
 
-void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 		                        const int *paMaterialIndex /* some option to specify handles for texture */,
 								int num_indices )
 {
@@ -704,13 +704,13 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 }
 
 /*
-void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 										 const std::vector<int>& vecMaterialIndex,
 										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
 {}
 */
 
-void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
+void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 										 const int *paMaterialIndex,
 										 CShaderTechniqueHandle *paShaderTechnique,
 										 int num_indices )
@@ -780,7 +780,7 @@ void CD3DXMeshObjectBase::RenderSubsets( CShaderManager& rShaderMgr,
 }
 
 void CD3DXMeshObjectBase::RenderSubsetsCg( LPD3DXBASEMESH pMesh,
-										   CShaderManager& rShaderMgr,
+										   ShaderManager& rShaderMgr,
 										   const int *paMaterialIndex,
 										   CShaderTechniqueHandle *paShaderTechnique,
 										   int num_indices )

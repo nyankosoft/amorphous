@@ -76,7 +76,7 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 	// Commented out: don't change the "CullingMode::CLOCKWISE" mode when rendering the scene for a planar reflection texture.
 //	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
-	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
+	ShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 
 	const Vector3 vCamPos = vCamPose.vPosition;
 

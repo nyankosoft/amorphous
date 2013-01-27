@@ -73,7 +73,7 @@ void CPrimitiveShapeRenderer::RenderSphere( const Sphere& sphere, const SFloatRG
 
 void CPrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
-	CShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
 
 	Vector3 s( vEdgeLengths );
 	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(s.x,s.y,s.z) );
@@ -109,7 +109,7 @@ Result::Name CPrimitiveShapeRenderer::RenderPlane(
 	TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right,
-	CShaderManager& shader_mgr
+	ShaderManager& shader_mgr
 	)
 {
 	if( ms_RectMesh.GetNumVertices() == 0 )
@@ -159,8 +159,8 @@ void CPrimitiveShapeRenderer::RenderPlane(
 	const TEXCOORD2& bottom_right
 	)
 {
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 	shader_mgr.SetWorldTransform( pose );
 
@@ -235,8 +235,8 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
 		texture_to_set = default_texture;
 	}
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
@@ -255,7 +255,7 @@ void CPrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float wi
 
 void CPrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color )
 {
-	CShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
 
 	Vector3 r( vEdgeLengths * 0.5f );
 	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(r.x,r.y,r.z) );

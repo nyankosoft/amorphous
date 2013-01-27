@@ -45,7 +45,7 @@ bool ShaderHandle::Load( const std::string& resource_path )
 }
 
 
-CShaderManager *ShaderHandle::GetShaderManager()
+ShaderManager *ShaderHandle::GetShaderManager()
 {
 	if( GetEntry()
 	 && GetEntry()->GetShaderResource() )

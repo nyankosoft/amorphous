@@ -254,11 +254,11 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 //	pd3dDev->SetVertexShader( NULL );
 //	pd3dDev->SetPixelShader( NULL );
 
-	CShaderManager *pShaderMgr = m_BlurShader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_BlurShader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& rShaderMgr = *pShaderMgr;
+	ShaderManager& rShaderMgr = *pShaderMgr;
 
 	// horizontally blur the shadowmap
 

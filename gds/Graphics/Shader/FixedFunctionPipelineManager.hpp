@@ -9,17 +9,17 @@ namespace amorphous
 {
 
 
-class CShaderManager;
+class ShaderManager;
 
 
 /// Called by the system
-extern void InitFixedFunctionPipelineManager( CShaderManager *pFFPMgr );
-extern CShaderManager& FixedFunctionPipelineManager();
+extern void InitFixedFunctionPipelineManager( ShaderManager *pFFPMgr );
+extern ShaderManager& FixedFunctionPipelineManager();
 
 
 class CFixedFunctionPipelineManagerHolder
 {
-	CShaderManager *m_pFFPMgr;
+	ShaderManager *m_pFFPMgr;
 
 	/// singleton
 	static CSingleton<CFixedFunctionPipelineManagerHolder> m_obj;
@@ -34,15 +34,15 @@ public:
 	static CFixedFunctionPipelineManagerHolder* Get() { return m_obj.get(); }
 
 	/// Should be called only by the function/class that initializes graphics library.
-	void Init( CShaderManager *pFFPMgr ) { m_pFFPMgr = pFFPMgr; }
+	void Init( ShaderManager *pFFPMgr ) { m_pFFPMgr = pFFPMgr; }
 
-	CShaderManager *GetFFPMgr() { return m_pFFPMgr; }
+	ShaderManager *GetFFPMgr() { return m_pFFPMgr; }
 
 //	friend class ???;
 };
 
 
-inline CShaderManager& FixedFunctionPipelineManager()
+inline ShaderManager& FixedFunctionPipelineManager()
 {
 	return *(CFixedFunctionPipelineManagerHolder::Get()->GetFFPMgr());
 }

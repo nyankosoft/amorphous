@@ -227,11 +227,11 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 		Matrix34 mesh_world_transform = GetMeshContainerWorldTransform( (int)i );
 
 		// Use the shaders stored in the mesh container
-		CShaderManager *pShaderMgr = m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
+		ShaderManager *pShaderMgr = m_vecpMeshContainer[i]->m_ShaderHandle.GetShaderManager();
 //		if( pShaderMgr )
 //			pMesh->Render( *pShaderMgr );
 
-		CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+		ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 		shader_mgr.SetWorldTransform( mesh_world_transform );
 

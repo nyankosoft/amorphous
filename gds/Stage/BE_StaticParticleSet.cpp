@@ -266,10 +266,10 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 	// don't wirte to z-buffer so that smoke should be painted on one another
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 	{
-		CShaderManager& shader_mgr = *pShaderManager;
+		ShaderManager& shader_mgr = *pShaderManager;
 
 		shader_mgr.SetParam( "WorldRot", matWorld );
 

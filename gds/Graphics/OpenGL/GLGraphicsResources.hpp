@@ -106,9 +106,9 @@ protected:
 	/// - Called only from this class and CMeshObjectManager
 //	virtual void Release();
 
-	CShaderManager *CreateShaderManager();
+	ShaderManager *CreateShaderManager();
 
-	CShaderManager *CreateFixedFunctionPipelineManager();
+	ShaderManager *CreateFixedFunctionPipelineManager();
 
 public:
 

@@ -80,7 +80,7 @@ public:
 		}
 	}
 
-	friend class CShaderManager;
+	friend class ShaderManager;
 };
 
 

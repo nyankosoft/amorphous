@@ -138,7 +138,7 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 //	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 //	GraphicsDevice().SetDestBlendMode(  AlphaBlend::InvSrcAlpha );
 
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 	{
 		pShaderManager->SetWorldTransform( matWorld );

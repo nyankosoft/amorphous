@@ -187,17 +187,17 @@ void CSubsetRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 
 void CMeshContainerRenderMethod::RenderMeshOrMeshSubsets( BasicMesh &mesh,
 	                                                      const vector<int>& subset_indices,
-//														  CShaderManager& shader_mgr,
+//														  ShaderManager& shader_mgr,
 														  CSubsetRenderMethod& render_method,
 														  const Matrix34& world_transform )
 {
 	// Render with a single shader & a single technique 
-//	CShaderManager *pShaderMgr = m_vecMeshRenderMethod[lod_index].m_Shader.GetShaderManager();
-	CShaderManager *pShaderMgr = render_method.m_Shader.GetShaderManager();
+//	ShaderManager *pShaderMgr = m_vecMeshRenderMethod[lod_index].m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = render_method.m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = (*pShaderMgr);
+	ShaderManager& shader_mgr = (*pShaderMgr);
 
 	shader_mgr.SetWorldTransform( world_transform );
 
@@ -301,7 +301,7 @@ void CMeshContainerRenderMethod::RenderMesh( BasicMesh &mesh, const Matrix34& wo
 
 			CSubsetRenderMethod& subset_render_method = (*itr).second;
 
-			CShaderManager *pShaderMgr = subset_render_method.m_Shader.GetShaderManager();
+			ShaderManager *pShaderMgr = subset_render_method.m_Shader.GetShaderManager();
 			if( !pShaderMgr )
 				continue;
 

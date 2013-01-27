@@ -436,7 +436,7 @@ CGLShaderResource::~CGLShaderResource()
 }
 
 
-CShaderManager *CGLShaderResource::CreateShaderManager()
+ShaderManager *CGLShaderResource::CreateShaderManager()
 {
 	switch( m_ShaderDesc.ShaderType )
 	{
@@ -463,7 +463,7 @@ CShaderManager *CGLShaderResource::CreateShaderManager()
 }
 
 
-CShaderManager *CGLShaderResource::CreateFixedFunctionPipelineManager()
+ShaderManager *CGLShaderResource::CreateFixedFunctionPipelineManager()
 {
 	return new CGLFixedFunctionPipelineManager;
 }

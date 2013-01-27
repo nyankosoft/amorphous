@@ -61,11 +61,11 @@ public:
 	virtual Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
 
 	// Should support programmable shader for drawing lines?
-//	virtual Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const SFloatRGBAColor& color, CShaderManager& shader_mgr ) = 0;
+//	virtual Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const SFloatRGBAColor& color, ShaderManager& shader_mgr ) = 0;
 
 	virtual Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors ) = 0;
 
-//	virtual Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors, CShaderManager& shader_mgr ) = 0;*/
+//	virtual Result::Name DrawLines( PrimitiveType::Name mode, const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors, ShaderManager& shader_mgr ) = 0;*/
 };
 
 /*

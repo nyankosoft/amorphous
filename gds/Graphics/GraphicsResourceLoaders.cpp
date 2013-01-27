@@ -588,7 +588,7 @@ bool CShaderLoader::LoadToGraphicsMemoryByRenderThread()
 
 	return res;
 
-/*	CShaderManager *pShader = pShaderResource->GetShaderManager();
+/*	ShaderManager *pShader = pShaderResource->GetShaderManager();
 	if( pShader )
 		return pShader->LoadShaderFromText( m_ShaderTextBuffer );
 	else

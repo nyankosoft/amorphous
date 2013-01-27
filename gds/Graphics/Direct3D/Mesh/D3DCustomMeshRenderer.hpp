@@ -22,7 +22,7 @@ public:
 
 	void RenderMesh(
 		CustomMesh& mesh,
-		CShaderManager& shader_mgr,
+		ShaderManager& shader_mgr,
 		const std::vector<int> subsets_to_render,
 		bool use_zsorted_indices
 		);
@@ -41,11 +41,11 @@ public:
 
 	void RenderZSortedMesh( CustomMesh& mesh ) { RenderMesh( mesh, GetAllSubsetIndices(mesh), true ); }
 
-	void RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), false ); }
+	void RenderMesh( CustomMesh& mesh, ShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), false ); }
 
-	void RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index );
+	void RenderSubset( CustomMesh& mesh, ShaderManager& shader_mgr, int subset_index );
 
-	void RenderZSortedMesh( CustomMesh& mesh, CShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), true ); }
+	void RenderZSortedMesh( CustomMesh& mesh, ShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr, GetAllSubsetIndices(mesh), true ); }
 
 	static CD3DCustomMeshRenderer ms_Instance;
 };

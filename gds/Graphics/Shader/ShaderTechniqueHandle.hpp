@@ -55,7 +55,7 @@ public:
 
 	inline const CShaderTechniqueHandle& operator=( const CShaderTechniqueHandle& handle );
 
-	friend class CShaderManager;
+	friend class ShaderManager;
 };
 
 //============================= inline implementations =============================

@@ -7,21 +7,21 @@ namespace amorphous
 using namespace std;
 
 
-CSingleton<CShaderManagerHub> CShaderManagerHub::m_obj;
+CSingleton<ShaderManagerHub> ShaderManagerHub::m_obj;
 
 
-CShaderManagerHub::CShaderManagerHub()
+ShaderManagerHub::ShaderManagerHub()
 {
 }
 
 
-void CShaderManagerHub::RegisterShaderManager( CShaderManager* pShaderMgr )
+void ShaderManagerHub::RegisterShaderManager( ShaderManager* pShaderMgr )
 {
 	m_vecpShaderManager.push_back( pShaderMgr );
 }
 
 
-bool CShaderManagerHub::ReleaseShaderManager( CShaderManager* pShaderMgr )
+bool ShaderManagerHub::ReleaseShaderManager( ShaderManager* pShaderMgr )
 {
 	size_t i, num_shader_mgrs = m_vecpShaderManager.size();
 	for( i=0; i<num_shader_mgrs; i++ )

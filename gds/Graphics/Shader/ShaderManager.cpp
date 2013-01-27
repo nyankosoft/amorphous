@@ -10,19 +10,19 @@ namespace amorphous
 using namespace std;
 
 
-CShaderManager::CShaderManager()
+ShaderManager::ShaderManager()
 {
 	// register the instance to the shader manager hub
-	ShaderManagerHub.RegisterShaderManager( this );
+	GetShaderManagerHub().RegisterShaderManager( this );
 
 	m_RegisteredToHub = true;
 }
 
 
-CShaderManager::~CShaderManager()
+ShaderManager::~ShaderManager()
 {
 	// release from the list in shader manager hub
-	ShaderManagerHub.ReleaseShaderManager( this );
+	GetShaderManagerHub().ReleaseShaderManager( this );
 
 	m_RegisteredToHub = false;
 }

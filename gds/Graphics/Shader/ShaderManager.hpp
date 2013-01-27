@@ -18,7 +18,7 @@ namespace amorphous
 {
 
 
-class CShaderManager
+class ShaderManager
 {
 /*
 	enum eShaderConstParam
@@ -74,9 +74,9 @@ protected:
 
 public:
 
-	CShaderManager();
+	ShaderManager();
 
-	virtual ~CShaderManager();
+	virtual ~ShaderManager();
 
 	virtual bool LoadShaderFromFile( const std::string& filename ) { return false; }
 
@@ -189,13 +189,13 @@ public:
 
 	virtual boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return boost::shared_ptr<CShaderLightManager>(); }
 
-	friend class CShaderManagerHub;
+	friend class ShaderManagerHub;
 };
 
 
 //============================ inline implementations ============================
 
-inline void CShaderManager::SetParam( const char *parameter_name, const std::vector<float>& float_param )
+inline void ShaderManager::SetParam( const char *parameter_name, const std::vector<float>& float_param )
 {
 	if( float_param.empty() )
 		return;
@@ -204,7 +204,7 @@ inline void CShaderManager::SetParam( const char *parameter_name, const std::vec
 }
 
 
-inline Matrix44 CShaderManager::GetWorldTransform() const
+inline Matrix44 ShaderManager::GetWorldTransform() const
 {
 	Matrix44 world;
 	GetWorldTransform( world );
@@ -212,7 +212,7 @@ inline Matrix44 CShaderManager::GetWorldTransform() const
 }
 
 
-inline Matrix44 CShaderManager::GetViewTransform() const
+inline Matrix44 ShaderManager::GetViewTransform() const
 {
 	Matrix44 view;
 	GetViewTransform( view );
@@ -220,7 +220,7 @@ inline Matrix44 CShaderManager::GetViewTransform() const
 }
 
 /*
-inline Matrix44 CShaderManager::GetProjectionTransform() const
+inline Matrix44 ShaderManager::GetProjectionTransform() const
 {
 	Matrix44 proj;
 	GetProjectionTransform( proj );

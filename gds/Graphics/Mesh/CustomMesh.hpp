@@ -166,11 +166,11 @@ public:
 
 	void Render();
 
-	void Render( CShaderManager& rShaderMgr );
+	void Render( ShaderManager& rShaderMgr );
 
-	void RenderZSorted( CShaderManager& rShaderMgr );
+	void RenderZSorted( ShaderManager& rShaderMgr );
 
-	void RenderSubset( CShaderManager& rShaderMgr, int material_index );
+	void RenderSubset( ShaderManager& rShaderMgr, int material_index );
 
 	static void SetDefaultVertexDiffuseColorFormat( VertexColorFormat vcf ) { ms_DefaultVertexDiffuseColorFormat = vcf; }
 };

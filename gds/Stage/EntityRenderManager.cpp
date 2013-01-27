@@ -156,7 +156,7 @@ public:
 		m_pCubeTexture = pCubeTexture;
 	}*/
 
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
 //		rShaderMgr.SetCubeTexture( m_CubeTexIndex, m_pCubeTexture );
 		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
@@ -243,7 +243,7 @@ public:
 
 	virtual void Render()
 	{
-		ShaderManagerHub.PushViewAndProjectionMatrices( *m_pCamera );
+		GetShaderManagerHub().PushViewAndProjectionMatrices( *m_pCamera );
 
 		// - creates shadow map
 		// - creates scene depth map
@@ -251,7 +251,7 @@ public:
 		// each of the three has BeginScene() and EndScene() pair inside
 		m_pRenderManager->RenderSceneWithShadows( *m_pCamera/*, m_pScreenEffectManager*/ );
 
-		ShaderManagerHub.PopViewAndProjectionMatrices();
+		GetShaderManagerHub().PopViewAndProjectionMatrices();
 	}
 };
 
@@ -880,7 +880,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarR
 	Matrix44 mirror = Matrix44Mirror( group.m_Plane );
 
 	Matrix44 view = rCam.GetCameraMatrix();
-	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, rCam.GetProjectionMatrix() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( view * mirror, rCam.GetProjectionMatrix() );
 
 	GraphicsDevice().SetClipPlane( 0, group.m_Plane );
 
@@ -900,7 +900,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarR
 
 //	PERIODICAL( 500, group.m_pReflectionRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( ".debug/mirrored_scene.bmp" ) );
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	// Render the entities that belong to this planar reflection group
 	// This is a draft version.
@@ -992,7 +992,7 @@ void CEntityRenderManager::RenderMirroredScene()
 //		Plane reflection_plane( Vector3(0,1,0), 0 );
 		Matrix44 mirror = Matrix44Mirror( reflection_plane );
 
-		ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, proj );
+		GetShaderManagerHub().PushViewAndProjectionMatrices( view * mirror, proj );
 
 		m_pMirroredScene->SetRenderTarget();
 
@@ -1008,7 +1008,7 @@ void CEntityRenderManager::RenderMirroredScene()
 //		HRESULT hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, 0 );
 		GraphicsDevice().DisableClipPlane( i );
 
-		ShaderManagerHub.PopViewAndProjectionMatrices();
+		GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 		m_pMirroredScene->ResetRenderTarget();
 	}*/
@@ -1388,7 +1388,7 @@ void CEntityRenderManager::Render( Camera& rCam )
 	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
 
 	/// set view and projection matrices to all shader managers
-	ShaderManagerHub.PushViewAndProjectionMatrices( rCam );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( rCam );
 
 	// clear dest buffer
 //	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
@@ -1452,7 +1452,7 @@ void CEntityRenderManager::Render( Camera& rCam )
 		RenderScene( rCam );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	static int s_SaveSceneTextureOfShadowMapToFile = 0;
 	if( s_SaveSceneTextureOfShadowMapToFile )

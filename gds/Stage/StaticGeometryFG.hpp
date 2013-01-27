@@ -37,7 +37,7 @@ class CStaticGeometryFG : public CStaticGeometryBase
 	/// - skybox is now loaded as separate entity
 	boost::shared_ptr<BasicMesh> m_pSkyboxMesh;
 
-	CShaderManager *m_pShaderManager;
+	ShaderManager *m_pShaderManager;
 
 	TextureHandle m_FadeTex;
 

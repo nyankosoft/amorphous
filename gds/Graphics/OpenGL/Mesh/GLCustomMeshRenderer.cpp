@@ -121,7 +121,7 @@ void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
 }
 
 
-void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, CShaderManager& shader_mgr )
+void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, ShaderManager& shader_mgr )
 {
 //	LOG_PRINT_ERROR( " Not implemented." );
 
@@ -131,7 +131,7 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, CShaderManager& shader
 }
 
 
-void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
+void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, ShaderManager& shader_mgr, int subset_index )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }

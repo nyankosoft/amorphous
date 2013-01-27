@@ -295,7 +295,7 @@ void CustomMesh::Render()
 }
 
 
-void CustomMesh::Render( CShaderManager& rShaderMgr )
+void CustomMesh::Render( ShaderManager& rShaderMgr )
 {
 	GetCustomMeshRenderer().RenderMesh( *this, rShaderMgr );
 }
@@ -307,7 +307,7 @@ static bool rear_to_front( const std::pair<float,int>& lhs, const std::pair<floa
 }
 
 
-void CustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
+void CustomMesh::RenderZSorted( ShaderManager& rShaderMgr )
 {
 	if( GetNumVertices() == 0
 	 || GetNumIndices() == 0 )
@@ -376,7 +376,7 @@ void CustomMesh::RenderZSorted( CShaderManager& rShaderMgr )
 }
 
 
-void CustomMesh::RenderSubset( CShaderManager& rShaderMgr, int material_index )
+void CustomMesh::RenderSubset( ShaderManager& rShaderMgr, int material_index )
 {
 	GetCustomMeshRenderer().RenderSubset( *this, rShaderMgr, material_index );
 }

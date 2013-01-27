@@ -301,7 +301,7 @@ public:
 
 class ShaderResource : public GraphicsResource
 {
-	CShaderManager *m_pShaderManager;
+	ShaderManager *m_pShaderManager;
 
 protected:
 
@@ -317,9 +317,9 @@ protected:
 
 	virtual bool CreateFromDesc();
 
-	virtual CShaderManager *CreateShaderManager() { return NULL; }
+	virtual ShaderManager *CreateShaderManager() { return NULL; }
 
-	virtual CShaderManager *CreateFixedFunctionPipelineManager() = 0;
+	virtual ShaderManager *CreateFixedFunctionPipelineManager() = 0;
 
 public:
 
@@ -335,7 +335,7 @@ public:
 
 	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
-	inline CShaderManager *GetShaderManager() { return m_pShaderManager; }
+	inline ShaderManager *GetShaderManager() { return m_pShaderManager; }
 
 	const GraphicsResourceDesc& GetDesc() const { return m_ShaderDesc; }
 

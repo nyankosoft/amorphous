@@ -281,8 +281,8 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 		vs_desc.ShaderType = CShaderType::PIXEL_SHADER;
 		fs_loaded = m_FragmentShader.Load( fs_desc );
 
-//		m_pVertexShader   = dynamic_pointer_cast<CGLVertexShader,CShaderManager>( m_VertexShader.GetShaderManager() );
-//		m_pFragmentShader = dynamic_pointer_cast<CGLFragmentShader,CShaderManager>( m_FragmentShader.GetShaderManager() );
+//		m_pVertexShader   = dynamic_pointer_cast<CGLVertexShader,ShaderManager>( m_VertexShader.GetShaderManager() );
+//		m_pFragmentShader = dynamic_pointer_cast<CGLFragmentShader,ShaderManager>( m_FragmentShader.GetShaderManager() );
 		m_pVertexShader   = dynamic_cast<CGLVertexShader *>( m_VertexShader.GetShaderManager() );
 		m_pFragmentShader = dynamic_cast<CGLFragmentShader *>( m_FragmentShader.GetShaderManager() );
 

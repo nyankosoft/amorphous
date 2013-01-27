@@ -95,7 +95,7 @@ bool CShaderContainer::Load()
 
 void CShaderContainer::SetParams()
 {
-	CShaderManager *pMgr = m_ShaderHandle.GetShaderManager();
+	ShaderManager *pMgr = m_ShaderHandle.GetShaderManager();
 	if( !pMgr )
 		return;
 
@@ -472,7 +472,7 @@ bool CStaticGeometry::Render( const Camera& rCam, const unsigned int EffectFlag 
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
 //		m_Archive.m_vecShaderContainer[i].m_pShaderManager->SetWorldTransform( matWorld );
-		CShaderManager *pShaderMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		ShaderManager *pShaderMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pShaderMgr )
 			pShaderMgr->SetWorldTransform( Matrix44Identity() );
 	}
@@ -516,7 +516,7 @@ bool CStaticGeometry::Render( const Camera& rCam, const unsigned int EffectFlag 
 				if( !shader_container.m_ShaderHandle.IsLoaded() )
 					continue;
 
-				CShaderManager &shader_mgr = *shader_container.m_ShaderHandle.GetShaderManager();// *(shader_container.m_pShaderManager.get());
+				ShaderManager &shader_mgr = *shader_container.m_ShaderHandle.GetShaderManager();// *(shader_container.m_pShaderManager.get());
 
 				shader_mgr.SetTechnique( shader_container.m_vecTechniqueHandle[subset.ShaderTechniqueIndex] );
 
@@ -716,7 +716,7 @@ void CStaticGeometry::SetAmbientColor( const SFloatRGBAColor& ambient_color )
 	// set ambient color to all the shaders
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
-		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
 			CShaderParameter< vector<float> > param( "g_AmbientColor" );
@@ -732,7 +732,7 @@ void CStaticGeometry::SetFogColor( const SFloatRGBAColor& color )
 {
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
-		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
 			CShaderParameter< vector<float> > param( "g_vTerrainFadeColor" );
@@ -748,7 +748,7 @@ void CStaticGeometry::SetFogStartDist( float dist )
 {
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
-		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
 			CShaderParameter< vector<float> > param( "g_fFogStart" );
@@ -765,7 +765,7 @@ void CStaticGeometry::SetFogEndDist( float dist )
 {
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )
 	{
-		CShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
+		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
 			CShaderParameter< vector<float> > param( "g_fFarClip" );

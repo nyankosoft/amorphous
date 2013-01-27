@@ -19,7 +19,7 @@ namespace amorphous
 // Use glCreateShaderObjectARB, glShaderSourceARB, glCompileShaderARB, etc.
 //==============================================================================
 
-class CGLShader : public CShaderManager
+class CGLShader : public ShaderManager
 {
 protected:
 
@@ -76,7 +76,7 @@ public:
 };
 
 
-class CGLProgram : public CShaderManager
+class CGLProgram : public ShaderManager
 {
 	GLhandleARB m_Program;
 
@@ -176,7 +176,7 @@ public:
 */
 	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
 
-	friend class CShaderManagerHub;
+	friend class ShaderManagerHub;
 };
 
 

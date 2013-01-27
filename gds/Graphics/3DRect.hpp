@@ -86,7 +86,7 @@ public:
 
 	void Draw();
 
-	void Draw( CShaderManager& shader_mgr );
+	void Draw( ShaderManager& shader_mgr );
 };
 
 

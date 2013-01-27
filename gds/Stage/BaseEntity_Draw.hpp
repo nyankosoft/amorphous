@@ -14,7 +14,7 @@ namespace amorphous
 {
 
 
-extern void SetLightsToShader( CCopyEntity& entity,  CShaderManager& rShaderMgr );
+extern void SetLightsToShader( CCopyEntity& entity,  ShaderManager& rShaderMgr );
 
 extern void InitMeshRenderMethod( CCopyEntity &entity,
 								  boost::shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader = boost::shared_ptr<CBlendTransformsLoader>() );
@@ -41,7 +41,7 @@ public:
 //	void SetEntity( boost::shared_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
 	void SetEntity( boost::weak_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
 
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
 		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 		if( pEntity )

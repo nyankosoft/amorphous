@@ -25,7 +25,7 @@ namespace amorphous
 
 
 */
-class CGLFixedFunctionPipelineManager : public CShaderManager
+class CGLFixedFunctionPipelineManager : public ShaderManager
 {
 	Matrix44 m_matWorld;
 	Matrix44 m_matView;

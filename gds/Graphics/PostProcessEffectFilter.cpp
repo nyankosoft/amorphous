@@ -231,7 +231,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	if( res != Result::SUCCESS )
 		return;
 
-	CShaderManager *pShaderMgr = m_pFilterShader->GetShader().GetShaderManager();
+	ShaderManager *pShaderMgr = m_pFilterShader->GetShader().GetShaderManager();
 	if( !pShaderMgr )
 		return;
 

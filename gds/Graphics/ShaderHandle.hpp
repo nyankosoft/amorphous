@@ -29,7 +29,7 @@ public:
 
 	static const ShaderHandle& Null() { return ms_NullHandle; }
 
-	CShaderManager *GetShaderManager();
+	ShaderManager *GetShaderManager();
 
 //	inline const ShaderHandle &operator=( const ShaderHandle& handle );
 };

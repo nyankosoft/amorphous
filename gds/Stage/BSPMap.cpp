@@ -796,7 +796,7 @@ bool CBSPMap::Render( const Camera &rCam, const unsigned int EffectFlag )
 	const Matrix44 view = rCam.GetCameraMatrix();
 	const Matrix44 proj = rCam.GetProjectionMatrix();
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	LPD3DXEFFECT pEffect = NULL;
 	UINT pass, cPasses;
 
@@ -875,7 +875,7 @@ bool CBSPMap::Render( const Camera &rCam, const unsigned int EffectFlag )
 
 		if( LockVertexBuffer() )
 		{
-			CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+			ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 			m_pDynamicLightManager->SetDynamicLights( this, shader_mgr );
 			UnlockVertexBuffer();
 		}
@@ -1145,7 +1145,7 @@ void CBSPMap::DrawTextureSortedPolygons_Shader()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
@@ -1229,7 +1229,7 @@ void CBSPMap::DrawTextureSortedPolygons_Shader_TS()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
@@ -1399,7 +1399,7 @@ void CBSPMap::RenderSkybox( const Camera& rCamera )
 
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return;
 

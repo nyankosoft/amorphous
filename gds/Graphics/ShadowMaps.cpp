@@ -211,11 +211,11 @@ bool FlatShadowMap::CreateShadowMapTextures()
 
 void FlatShadowMap::UpdateLightPositionAndDirection()
 {
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	Vector3 vWorldLightPos = m_LightCamera.GetPosition();
 	Vector3 vWorldLightDir = m_LightCamera.GetFrontDirection();
@@ -302,7 +302,7 @@ void FlatShadowMap::EndSceneShadowMap()
 {
 //	pd3dDev->EndScene();
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	if( m_pShadowmapRenderTarget )
 		m_pShadowmapRenderTarget->ResetRenderTarget();
@@ -396,11 +396,11 @@ void OrthoShadowMap::UpdateDirectionalLight( const DirectionalLight& light )
 
 void OrthoShadowMap::UpdateLightPositionAndDirection()
 {
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	Vector3 vWorldLightPos = m_LightCamera.GetPosition();
 	Vector3 vWorldLightDir = m_LightCamera.GetFrontDirection();
@@ -421,7 +421,7 @@ void OrthoShadowMap::UpdateShadowMapSettings()
 {
 	// orthographic projection
 	Matrix44 ortho_proj = Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 150.0f );
-	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera.GetCameraMatrix(), ortho_proj );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( m_LightCamera.GetCameraMatrix(), ortho_proj );
 
 	UpdateLightPositionAndDirection();
 }
@@ -510,7 +510,7 @@ void SpotlightShadowMap::UpdateShadowMapSettings()
 	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
 
 	// perspective projection
-	ShaderManagerHub.PushViewAndProjectionMatrices( m_LightCamera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( m_LightCamera );
 
 //	SetWorldToLightSpaceTransformMatrix();
 

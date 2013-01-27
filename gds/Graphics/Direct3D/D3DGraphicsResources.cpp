@@ -529,7 +529,7 @@ CD3DShaderResource::~CD3DShaderResource()
 }
 
 
-CShaderManager *CD3DShaderResource::CreateShaderManager()
+ShaderManager *CD3DShaderResource::CreateShaderManager()
 {
 	const string& resource_path = m_ShaderDesc.ResourcePath;
 	if( 3 < resource_path.length() )
@@ -546,7 +546,7 @@ CShaderManager *CD3DShaderResource::CreateShaderManager()
 }
 
 
-CShaderManager *CD3DShaderResource::CreateFixedFunctionPipelineManager()
+ShaderManager *CD3DShaderResource::CreateFixedFunctionPipelineManager()
 {
 	return new CD3DFixedFunctionPipelineManager;
 }

@@ -127,7 +127,7 @@ void CItemEntity::RenderAs( CRenderContext& rc )
 
 	rc.SetShaderTechnique( model_type );
 
-	CShaderManager& shader_mgr = rc.GetShaderManager( model_type );
+	ShaderManager& shader_mgr = rc.GetShaderManager( model_type );
 
 	shader_mgr.SetWorldTransform( this->GetWorldPose() );
 

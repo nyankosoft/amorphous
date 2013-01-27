@@ -12,36 +12,32 @@ namespace amorphous
 {
 
 
-#define ShaderManagerHub ( (*CShaderManagerHub::Get()) )
-
-
-
 /**
  * set view and projection transforms for all the shader managers
  *
  */
-class CShaderManagerHub
+class ShaderManagerHub
 {
-	std::vector<CShaderManager *> m_vecpShaderManager;
+	std::vector<ShaderManager *> m_vecpShaderManager;
 
 	std::vector<Matrix44> m_vecViewMatrix;
 	std::vector<Matrix44> m_vecProjMatrix;
 
 private:
 
-	void RegisterShaderManager( CShaderManager* pShaderMgr );
+	void RegisterShaderManager( ShaderManager* pShaderMgr );
 
-	bool ReleaseShaderManager( CShaderManager* pShaderMgr );
+	bool ReleaseShaderManager( ShaderManager* pShaderMgr );
 
 protected:
 
-	static CSingleton<CShaderManagerHub> m_obj;
+	static CSingleton<ShaderManagerHub> m_obj;
 
 public:
 
-	static CShaderManagerHub* Get() { return m_obj.get(); }
+	static ShaderManagerHub* Get() { return m_obj.get(); }
 
-	CShaderManagerHub();
+	ShaderManagerHub();
 
 	inline void PushViewAndProjectionMatrices( const Matrix44& view, const Matrix44& proj );
 
@@ -53,11 +49,11 @@ public:
 
 	inline void PopViewAndProjectionMatrices_NoRestore();
 
-	friend class CShaderManager;
+	friend class ShaderManager;
 };
 
 
-inline void CShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& view, const Matrix44& proj )
+inline void ShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& view, const Matrix44& proj )
 {
 	// push to the stack
 	m_vecViewMatrix.push_back( view );
@@ -75,13 +71,13 @@ inline void CShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& vi
 }
 
 
-inline void CShaderManagerHub::PushViewAndProjectionMatrices( const Camera& camera )
+inline void ShaderManagerHub::PushViewAndProjectionMatrices( const Camera& camera )
 {
 	PushViewAndProjectionMatrices( camera.GetCameraMatrix(), camera.GetProjectionMatrix() );
 }
 
 
-inline void CShaderManagerHub::PopViewAndProjectionMatrices()
+inline void ShaderManagerHub::PopViewAndProjectionMatrices()
 {
 	if( m_vecViewMatrix.size() == 0 )
 		return; // stack is empty
@@ -111,13 +107,19 @@ inline void CShaderManagerHub::PopViewAndProjectionMatrices()
 }
 
 
-inline void CShaderManagerHub::PopViewAndProjectionMatrices_NoRestore()
+inline void ShaderManagerHub::PopViewAndProjectionMatrices_NoRestore()
 {
 	if( m_vecViewMatrix.size() == 0 )
 		return; // stack is empty
 
 	m_vecViewMatrix.pop_back();
 	m_vecProjMatrix.pop_back();
+}
+
+
+inline ShaderManagerHub& GetShaderManagerHub()
+{
+	return (*ShaderManagerHub::Get());
 }
 
 

@@ -19,7 +19,7 @@ public:
 
 	CBlendTransformsLoader() {}
 
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
 		// Set the vertex blend transforms to the shader
 		rShaderMgr.SetVertexBlendTransforms( m_BlendTransforms );
@@ -37,7 +37,7 @@ public:
 
 	CBlendMatricesLoader() {}
 
-	void UpdateShaderParams( CShaderManager& rShaderMgr )
+	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
 		char acParam[32];
 		const int num_matrices = (int)m_BlendMatrices.size();

@@ -41,9 +41,9 @@ public:
 
 	void Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
-	void Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+	void Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
-	void RenderRect( CShaderManager& rShaderManager, const C2DRect& rect );
+	void RenderRect( ShaderManager& rShaderManager, const C2DRect& rect );
 };
 
 

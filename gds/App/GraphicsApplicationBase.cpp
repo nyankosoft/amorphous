@@ -96,9 +96,9 @@ void CGraphicsApplicationBase::RenderBase()
 	// Set the camera and projection tansforms to
 	// 1. fixed function pipeline
 	// 2. currently loaded shaders
-	ShaderManagerHub.PushViewAndProjectionMatrices( m_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( m_Camera );
 
-	// Commented out: done by CShaderManagerHub::PushViewAndProjectionMatrices()
+	// Commented out: done by ShaderManagerHub::PushViewAndProjectionMatrices()
 //	FixedFunctionPipelineManager().SetViewTransform( m_Camera.GetCameraMatrix() );
 //	FixedFunctionPipelineManager().SetProjectionTransform( m_Camera.GetProjectionMatrix() );
 
@@ -149,7 +149,7 @@ void CGraphicsApplicationBase::RenderBase()
 		pd3dDevice->Present( NULL, NULL, NULL, NULL );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+	GetShaderManagerHub().PopViewAndProjectionMatrices();
 }
 
 

@@ -176,7 +176,7 @@ void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const std::vector<int
 
 
 void CD3DCustomMeshRenderer::RenderMesh(
-	CustomMesh& mesh, CShaderManager& shader_mgr,
+	CustomMesh& mesh, ShaderManager& shader_mgr,
 	const std::vector<int> subsets_to_render,
 	bool use_zsorted_indices )
 {
@@ -235,7 +235,7 @@ void CD3DCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
 }
 
 
-void CD3DCustomMeshRenderer::RenderSubset( CustomMesh& mesh, CShaderManager& shader_mgr, int subset_index )
+void CD3DCustomMeshRenderer::RenderSubset( CustomMesh& mesh, ShaderManager& shader_mgr, int subset_index )
 {
 	vector<int> single_subset;
 	single_subset.resize( 1 );

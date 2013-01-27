@@ -69,15 +69,15 @@ public:
 	/// render object by using the fixed function pipeline
 	void Render();
 
-	virtual void Render( CShaderManager& rShaderMgr );
+	virtual void Render( ShaderManager& rShaderMgr );
 
-	virtual void RenderSubset( CShaderManager& rShaderMgr, int material_index );
+	virtual void RenderSubset( ShaderManager& rShaderMgr, int material_index );
 
-	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex,
 								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
 
-	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
 };
 

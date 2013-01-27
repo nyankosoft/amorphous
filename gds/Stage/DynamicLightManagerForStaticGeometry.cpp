@@ -134,7 +134,7 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLigh
 }
 
 
-void CDynamicLightManagerForStaticGeometry::SetDynamicLights( CBSPMap *pMap, CShaderManager& shader_mgr )
+void CDynamicLightManagerForStaticGeometry::SetDynamicLights( CBSPMap *pMap, ShaderManager& shader_mgr )
 {
 	int i, j;
 	int iNumCurrentDynamicLights;// = m_pLightEntityManager->GetNumDynamicLights();

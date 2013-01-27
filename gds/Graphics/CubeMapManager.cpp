@@ -239,15 +239,15 @@ void CubeMapManager::RenderToCubeMap()
 			// Begin the scene
 			if( true /*SUCCEEDED( pd3dDevice->BeginScene() )*/ )
 			{
-				ShaderManagerHub.PushViewAndProjectionMatrices( m_Camera );
+				GetShaderManagerHub().PushViewAndProjectionMatrices( m_Camera );
 
 				m_pCubeMapSceneRenderer->RenderSceneToCubeMap( m_Camera );
 //				RenderScene( pd3dDevice, &mView, &mProj, &g_pTech[nCube], false, fTime );
 
 				if( nFace == 5 )
-                    ShaderManagerHub.PopViewAndProjectionMatrices();
+                    GetShaderManagerHub().PopViewAndProjectionMatrices();
 				else
-                    ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+                    GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 
 				// End the scene.
 				// pd3dDevice->EndScene();

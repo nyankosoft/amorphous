@@ -102,7 +102,7 @@ void CBE_FixedTurretPod::Draw(CCopyEntity* pCopyEnt)
 */
 //	shader_tech_id = m_MeshProperty.m_ShaderTechniqueID;
 
-/*	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+/*	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 	{
 		if( m_MeshProperty.m_SpecTex.GetTexture() )

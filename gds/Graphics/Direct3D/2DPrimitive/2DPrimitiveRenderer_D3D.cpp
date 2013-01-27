@@ -182,7 +182,7 @@ void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_verti
 }
 
 
-void C2DPrimitiveRenderer_D3D::Render( CShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+void C2DPrimitiveRenderer_D3D::Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
@@ -222,7 +222,7 @@ void C2DPrimitiveRenderer_D3D::Render( CShaderManager& rShaderManager, CGeneral2
 }
 
 
-void C2DPrimitiveRenderer_D3D::RenderRect( CShaderManager& rShaderManager, const C2DRect& rect )
+void C2DPrimitiveRenderer_D3D::RenderRect( ShaderManager& rShaderManager, const C2DRect& rect )
 {
 	CGeneral2DVertex verts[4];
 	for( int i=0; i<4; i++ )

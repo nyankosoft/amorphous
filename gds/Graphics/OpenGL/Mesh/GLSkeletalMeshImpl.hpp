@@ -35,13 +35,13 @@ public:
 	/// render object by using the fixed function pipeline
 //	void Render();
 
-//	virtual void Render( CShaderManager& rShaderMgr );
+//	virtual void Render( ShaderManager& rShaderMgr );
 
-//	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+//	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex,
 //								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
 
-//	virtual void RenderSubsets( CShaderManager& rShaderMgr,
+//	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
 
 //	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }

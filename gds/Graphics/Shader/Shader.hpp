@@ -10,12 +10,12 @@
 namespace amorphous
 {
 
-class CShaderManager;
+class ShaderManager;
 
 
 class CShader
 {
-	CShaderManager *m_pCurrentShaderManager;
+	ShaderManager *m_pCurrentShaderManager;
 
 
 	static CSingleton<CShader> m_obj;	///< singleton instance
@@ -27,12 +27,12 @@ public:
 
 	CShader() { m_pCurrentShaderManager = NULL; }
 
-	inline void SetShaderManager( CShaderManager *pShaderManager ) { m_pCurrentShaderManager = pShaderManager; }
+	inline void SetShaderManager( ShaderManager *pShaderManager ) { m_pCurrentShaderManager = pShaderManager; }
 
-	inline CShaderManager *GetCurrentShaderManager() { return m_pCurrentShaderManager; }
+	inline ShaderManager *GetCurrentShaderManager() { return m_pCurrentShaderManager; }
 
-//	void PushShaderManager( CShaderManager *pShaderManager ) { m_vecpShaderManager.push(  pShaderManager ); }
-//	CShaderManager *PopShaderManager() { if( 0 < m_vecpShaderManager.size() ) return m_pShaderManager.pop(); else return NULLL}
+//	void PushShaderManager( ShaderManager *pShaderManager ) { m_vecpShaderManager.push(  pShaderManager ); }
+//	ShaderManager *PopShaderManager() { if( 0 < m_vecpShaderManager.size() ) return m_pShaderManager.pop(); else return NULLL}
 };
 
 } // namespace amorphous

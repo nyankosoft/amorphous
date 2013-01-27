@@ -460,7 +460,7 @@ int CStaticGeometryFG::ClipTrace(STrace& tr)
 bool CStaticGeometryFG::LoadShaderFromFile( const char *pFilename )
 {
 	SafeDelete( m_pShaderManager );
-	m_pShaderManager = new CShaderManager();
+	m_pShaderManager = new ShaderManager();
 
 	bool result = m_pShaderManager->LoadShaderFromFile( pFilename );
 

@@ -130,7 +130,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 		pMeshObject->Material(0).Texture[0] = m_SkyboxTexture;
 	}
 
-	CShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
+	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 //	 && pShaderManager->IsValid() ) // check if pEffect is present?
 	{

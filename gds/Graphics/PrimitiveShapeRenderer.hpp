@@ -30,7 +30,7 @@ private:
 		TextureHandle& texture,
 		const TEXCOORD2& top_left,
 		const TEXCOORD2& bottom_right,
-		CShaderManager& shader_mgr
+		ShaderManager& shader_mgr
 		);
 
 public:
