@@ -3,16 +3,11 @@
 
 #include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "gds/Graphics/MeshObjectHandle.hpp"
+#include "gds/PhysicsSim/MassSpringSim.hpp"
 
 
 namespace amorphous
 {
-//#include "gds/Graphics/MeshModel/MeshBone.hpp"
-using namespace MeshModel;
-
-
-#include "gds/PhysicsSim/MassSpringSim.hpp"
-
 
 
 class CMSPointToMeshVertexMap : public IArchiveObjectBase
@@ -80,9 +75,9 @@ class CCompositeMesh
 {
 	std::string m_strFilename;
 
-	boost::shared_ptr<CSkeletalMesh> m_pMesh;
+	boost::shared_ptr<SkeletalMesh> m_pMesh;
 
-	boost::shared_ptr<CSkeletalMesh> m_pShadowVolumeMesh;
+	boost::shared_ptr<SkeletalMesh> m_pShadowVolumeMesh;
 
 	CMS_MassSpringSim m_MassSpringSim;
 
