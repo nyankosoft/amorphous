@@ -112,7 +112,7 @@ void CGLGraphicsDevice::Release()
 }
 
 
-void CGLGraphicsDevice::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer )
+void CGLGraphicsDevice::GetAdapterModesForDefaultAdapter( std::vector<AdapterMode>& dest_buffer )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 /*	if( m_vecAdapterMode.size() == 0 )
@@ -122,7 +122,7 @@ void CGLGraphicsDevice::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMo
 }
 
 
-bool CGLGraphicsDevice::IsCurrentDisplayMode( const CDisplayMode& display_mode ) const
+bool CGLGraphicsDevice::IsCurrentDisplayMode( const DisplayMode& display_mode ) const
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 

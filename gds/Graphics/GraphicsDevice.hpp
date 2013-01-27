@@ -20,7 +20,7 @@ class CTextureStage;
 class CTextureTransformParams;
 
 
-class CDisplayMode
+class DisplayMode
 {
 public:
 	uint Width;
@@ -37,7 +37,7 @@ public:
 
 public:
 
-	CDisplayMode( uint w=0, uint h=0, uint r=0, TextureFormat::Format fmt = TextureFormat::X8R8G8B8 )
+	DisplayMode( uint w=0, uint h=0, uint r=0, TextureFormat::Format fmt = TextureFormat::X8R8G8B8 )
 		:
 	Width(w),
 	Height(h),
@@ -47,17 +47,17 @@ public:
 	{}
 };
 
-class CAdapterMode
+class AdapterMode
 {
 public:
 
 	TextureFormat::Format Format;
 
-	std::vector<CDisplayMode> vecDisplayMode;
+	std::vector<DisplayMode> vecDisplayMode;
 
 public:
 
-	CAdapterMode( TextureFormat::Format fmt = TextureFormat::X8R8G8B8 )
+	AdapterMode( TextureFormat::Format fmt = TextureFormat::X8R8G8B8 )
 		:
 	Format(fmt)
 	{}
@@ -199,7 +199,7 @@ public:
 
 protected:
 
-//	std::vector<CAdapterMode> m_vecAdapterMode;
+//	std::vector<AdapterMode> m_vecAdapterMode;
 
 	State m_State;
 
@@ -230,9 +230,9 @@ public:
 
 
 	/// experimental: Could this be a platform-independent way to retrieve resolutions?
-	virtual void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer ) = 0;
+	virtual void GetAdapterModesForDefaultAdapter( std::vector<AdapterMode>& dest_buffer ) = 0;
 
-	virtual bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const = 0;
+	virtual bool IsCurrentDisplayMode( const DisplayMode& display_mode ) const = 0;
 	
 //	virtual void SetWorldTransform();
 //	virtual void SetViewTransform();

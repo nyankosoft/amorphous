@@ -34,7 +34,7 @@ private:
 
 	D3DFORMAT m_AdapterFormat; ///< the surface format of the display mode
 
-	std::vector<CAdapterMode> m_vecAdapterMode;
+	std::vector<AdapterMode> m_vecAdapterMode;
 
 	D3DZBUFFERTYPE m_CurrentDepthBufferType;
 
@@ -81,9 +81,9 @@ public:
 	D3DFORMAT GetAdapterFormat() { return m_AdapterFormat; }
 
 	/// experimental: Could this be a platform-independent way to retrieve resolutions?
-	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
+	void GetAdapterModesForDefaultAdapter( std::vector<AdapterMode>& dest_buffer );
 
-	bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const;
+	bool IsCurrentDisplayMode( const DisplayMode& display_mode ) const;
 
 	Result::Name SetTexture( int stage, const TextureHandle& texture );
 

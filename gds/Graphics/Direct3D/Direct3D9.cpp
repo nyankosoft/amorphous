@@ -300,7 +300,7 @@ void CDirect3D9::Release()
 }
 
 
-void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer )
+void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<AdapterMode>& dest_buffer )
 {
 	if( !m_pD3D || !m_pD3DDevice )
 		LOG_PRINT_ERROR( "Not initialized yet." );
@@ -312,7 +312,7 @@ void CDirect3D9::GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& de
 }
 
 
-bool CDirect3D9::IsCurrentDisplayMode( const CDisplayMode& display_mode ) const
+bool CDirect3D9::IsCurrentDisplayMode( const DisplayMode& display_mode ) const
 {
 	const D3DPRESENT_PARAMETERS& present_params = m_CurrentPresentParameters;
 	if( display_mode.Width       == present_params.BackBufferWidth
@@ -344,8 +344,8 @@ void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 
 	for(int i=0; i<numof(allowable_formats); i++)
 	{
-		m_vecAdapterMode.push_back( CAdapterMode(FromD3DSurfaceFormat(allowable_formats[i])) );
-		CAdapterMode& adapter_mode = m_vecAdapterMode.back();
+		m_vecAdapterMode.push_back( AdapterMode(FromD3DSurfaceFormat(allowable_formats[i])) );
+		AdapterMode& adapter_mode = m_vecAdapterMode.back();
 
 		uint num_adapter_modes = m_pD3D->GetAdapterModeCount( D3DADAPTER_DEFAULT, allowable_formats[i] );
 
@@ -355,7 +355,7 @@ void CDirect3D9::EnumAdapterModesForDefaultAdapter()
 			m_pD3D->EnumAdapterModes( D3DADAPTER_DEFAULT, allowable_formats[i], j, &mode );
 
 			// add to the list
-			adapter_mode.vecDisplayMode.push_back( CDisplayMode(
+			adapter_mode.vecDisplayMode.push_back( DisplayMode(
 			mode.Width,
 			mode.Height,
 			mode.RefreshRate,

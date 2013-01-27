@@ -39,7 +39,7 @@ class CGLGraphicsDevice : public CGraphicsDevice
 {
 private:
 
-//	std::vector<CAdapterMode> m_vecAdapterMode;
+//	std::vector<AdapterMode> m_vecAdapterMode;
 
 	GLenum m_SourceBlend;
 	GLenum m_DestBlend;
@@ -71,9 +71,9 @@ public:
 
 	void Release();
 
-	void GetAdapterModesForDefaultAdapter( std::vector<CAdapterMode>& dest_buffer );
+	void GetAdapterModesForDefaultAdapter( std::vector<AdapterMode>& dest_buffer );
 
-	bool IsCurrentDisplayMode( const CDisplayMode& display_mode ) const;
+	bool IsCurrentDisplayMode( const DisplayMode& display_mode ) const;
 
 	Result::Name SetTexture( int stage, const TextureHandle& texture );
 
