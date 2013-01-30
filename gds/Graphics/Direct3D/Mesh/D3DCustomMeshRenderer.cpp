@@ -3,6 +3,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
@@ -95,13 +96,23 @@ void CD3DCustomMeshRenderer::DrawPrimitives( const CustomMesh& mesh, int subset_
 
 	HRESULT hr = SetD3DFVF( mesh );
 
+	D3DFORMAT index_format = D3DFMT_INDEX16;
+	switch( mesh.GetIndexSize() )
+	{
+	case 2: index_format = D3DFMT_INDEX16; break;
+	case 4: index_format = D3DFMT_INDEX32; break;
+	default:
+		LOG_PRINT_ERROR( "An unsupported index size: " + to_string(mesh.GetIndexSize()) );
+		break;
+	}
+
 	hr = DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP(
 		D3DPT_TRIANGLELIST,
 		ts.m_iMinIndex,
 		ts.m_iNumVertexBlocksToCover,
 		ts.m_iNumTriangles,
 		pI,
-		D3DFMT_INDEX16,
+		index_format,
 		pV,
 		mesh.GetVertexSize()
 		);

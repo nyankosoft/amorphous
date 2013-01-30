@@ -18,6 +18,7 @@ CustomMesh::CustomMesh()
 :
 m_VertexFlags(0),
 m_VertexSize(0),
+m_IndexSize(2),
 m_NumUpdatedVertices(0),
 m_NumUpdatedIndices(0)
 {
@@ -264,9 +265,15 @@ bool CustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::strin
 //	InitVertexBuffer( num_vertices, VFF::POSITION|VFF::NORMAL );
 
 	const int num_indices = (int)archive.GetVertexIndex().size();
-	InitIndexBuffer( num_indices, sizeof(U16) );
+	if( num_indices < 0xFFFF )
+		m_IndexSize = sizeof(U16);
+	else
+		m_IndexSize = sizeof(U32);
 
-	SetIndices( archive.GetVertexIndex() );
+//	InitIndexBuffer( num_indices, m_IndexSize );
+
+//	SetIndices( archive.GetVertexIndex() );
+	SetIndices( archive.GetVertexIndex(), m_IndexSize );
 
 	LoadMaterialsFromArchive( archive, option_flags );
 

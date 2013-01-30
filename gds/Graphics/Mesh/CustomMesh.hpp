@@ -28,8 +28,6 @@ public:
 
 private:
 
-	typedef U16 dest_index_type;
-
 	static VertexColorFormat ms_DefaultVertexDiffuseColorFormat;
 
 	std::vector<CMMA_TriangleSet> m_TriangleSets;
@@ -38,6 +36,7 @@ public:
 
 	U32 m_VertexFlags;
 	uint m_VertexSize;
+	uint m_IndexSize; ///< the index size in bytes (2 or 4). Default: 2 (U16)
 	std::vector<uchar> m_VertexBuffer;
 	std::vector<uchar> m_IndexBuffer;
 	int m_ElementOffsets[VEE::NUM_VERTEX_ELEMENTS];
@@ -52,6 +51,9 @@ public:
 	inline void SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag );
 
 	inline void SetVec3Element( uint vertex_index, const Vector3& src, VEE::ElementName element, U32 flag );
+
+	template<typename src_index_type, typename dest_index_type>
+	inline void SetIndices( const std::vector<src_index_type>& src, uint dest_index_size );
 
 public:
 
@@ -116,7 +118,7 @@ public:
 
 	void InitVertexBuffer( int num_vertices, U32 vertex_format_flags );
 
-	void InitIndexBuffer( int num_indices, uint index_size = sizeof(U16) ) { m_IndexBuffer.resize( num_indices * index_size ); }
+	inline void InitIndexBuffer( int num_indices, uint index_size = sizeof(U16) );
 
 	uchar *GetVertexBufferPtr() { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : NULL; }
 
@@ -136,12 +138,13 @@ public:
 
 	void GetVertexIndices( std::vector<unsigned int>& dest );
 
-	uint GetIndexSize() const { return sizeof(dest_index_type); }
+	uint GetIndexSize() const { return m_IndexSize; }
 
 	/// Returns the i-th vertex index
 	U16 GetIndex( int i ) const
 	{
 		U16 dest = 0;
+		const unsigned int index_size = m_IndexSize;
 		memcpy( &dest, &(m_IndexBuffer[0]) + sizeof(U16) * i, sizeof(U16) );
 		return dest;
 	}
@@ -151,7 +154,7 @@ public:
 	void SetTriangleSets( const std::vector<CMMA_TriangleSet>& triangle_sets ) { m_TriangleSets = triangle_sets; }
 
 	template<typename src_index_type>
-	inline void SetIndices( const std::vector<src_index_type>& src );
+	inline void SetIndices( const std::vector<src_index_type>& src, uint dest_index_size = sizeof(U16) );
 
 	inline void CopyVertexTo( uint src_vertex_index, CustomMesh& dest, uint dest_vertex_index ) const;
 
@@ -338,16 +341,37 @@ inline void CustomMesh::GetPositions( std::vector<Vector3>& dest ) const
 }
 
 
-template<typename src_index_type>
-inline void CustomMesh::SetIndices( const std::vector<src_index_type>& src )//, uint dest_index_size )
+void CustomMesh::InitIndexBuffer( int num_indices, uint index_size )
 {
-	const size_t dest_index_size = sizeof(dest_index_type);
+	m_IndexSize = index_size;
+	m_IndexBuffer.resize( num_indices * index_size );
+}
+
+
+template<typename src_index_type,typename dest_index_type>
+inline void CustomMesh::SetIndices( const std::vector<src_index_type>& src, uint dest_index_size )
+{
 	const size_t num_indices = src.size();
-	m_IndexBuffer.resize( dest_index_size * num_indices );
+
+	InitIndexBuffer( (int)num_indices, dest_index_size );
+
 	for( size_t i=0; i<num_indices; i++ )
 	{
 		dest_index_type dest_index = (dest_index_type)src[i];
 		memcpy( &(m_IndexBuffer[0]) + i * dest_index_size, &dest_index, dest_index_size );
+	}
+}
+
+
+template<typename src_index_type>
+inline void CustomMesh::SetIndices( const std::vector<src_index_type>& src, uint dest_index_size )
+{
+	switch( m_IndexSize )
+	{
+	case 2: SetIndices<src_index_type,U16>( src, dest_index_size ); break;
+	case 4: SetIndices<src_index_type,U32>( src, dest_index_size ); break;
+	default:
+		break;
 	}
 }
 
