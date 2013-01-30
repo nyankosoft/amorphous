@@ -21,6 +21,7 @@
 
 using namespace std;
 using namespace boost::filesystem;
+using namespace amorphous;
 
 
 /// task to compiler mesh model from LWO2 (LightWave object) file
@@ -134,7 +135,7 @@ int main( int argc, char *argv[] )
 			return 0;
 	}
 
-	const morph::progress_display& loading_progress = mesh_compiler.m_Exporter.GetSourceObjectLoadingProgress();
+	const progress_display& loading_progress = mesh_compiler.m_Exporter.GetSourceObjectLoadingProgress();
 	boost::progress_display progress_bar( loading_progress.get_total_units() );
 	int last_units = 0;//pLoadingProgress->get_num_current_units();
 	int added = 0;
