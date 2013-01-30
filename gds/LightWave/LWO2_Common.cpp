@@ -19,7 +19,7 @@ UINT4 ReadVLIndex(FILE* fp, int *pIndexSize)
 	{
 		*pIndexSize = 4;
 		uiRead = (UINT4)wRead;  //As this will be the higher 2 bytes,
-		uiRead = uiRead << 0xFFFF;  //let's shift these 2 bytes to the left by 2 bytes
+		uiRead = uiRead << 16;  //let's shift these 2 bytes to the left by 2 bytes
 		wRead2 = ReadBE2BytesIntoLE(fp);  //this will be the lower 2 bytes
 		uiRead = uiRead | (UINT4)wRead2;
 		uiRead = uiRead & 0x00FFFFFF;  //Mask out the first byte
