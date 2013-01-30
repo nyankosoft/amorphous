@@ -183,6 +183,8 @@ public:
 
 	void AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations );
 
+	const std::vector< boost::shared_ptr<CGameItem> >& GetOwnedItems() const { return m_pProperty; }
+
 	bool IsCameraDependentMotionControlEnabled() const { return m_CameraDependentMotionControl; }
 
 	std::vector< boost::shared_ptr<CCharacterMotionNodeAlgorithm> >& MotionNodeAlgorithms() { return m_pMotionNodes; }
@@ -190,8 +192,6 @@ public:
 	void SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm );
 
 	static int ms_DefaultInputHandlerIndex;
-
-	friend class CArmedCharacterOperations;
 };
 
 
