@@ -10,12 +10,14 @@
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "gds/Input/fwd.hpp"
 
+using namespace amorphous;
+
 
 class CMeshViewer : public CGraphicsApplicationBase
 {
-	std::vector<CMeshObjectHandle> m_vecMesh;
+	std::vector<MeshHandle> m_vecMesh;
 
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
 	std::vector<std::string> m_vecMeshFilepath;
 
@@ -24,9 +26,9 @@ class CMeshViewer : public CGraphicsApplicationBase
 	CShaderTechniqueHandle m_MeshTechnique;
 	CShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	std::vector<CShaderHandle> m_Shaders;
+	std::vector<ShaderHandle> m_Shaders;
 
 	std::vector<CShaderTechniqueHandle> m_Techniques;
 
@@ -37,7 +39,7 @@ class CMeshViewer : public CGraphicsApplicationBase
 	/// default: -1 (do not use normal map textures)
 	int m_NormalMapTextureIndex;
 
-	std::vector<CShaderHandle> m_SingleDiffuseColorShaders;
+	std::vector<ShaderHandle> m_SingleDiffuseColorShaders;
 
 	std::vector<CShaderTechniqueHandle> m_SingleDiffuseColorShaderTechniques;
 
@@ -84,11 +86,11 @@ protected:
 
 	void LoadShaders();
 
-	void SetLights( CShaderManager& shader_mgr );
+	void SetLights( ShaderManager& shader_mgr );
 
-	void LoadBlankTextures( CBasicMesh& mesh );
+	void LoadBlankTextures( BasicMesh& mesh );
 
-	void RenderSubsetsInformation( CBasicMesh& mesh );
+	void RenderSubsetsInformation( BasicMesh& mesh );
 
 public:
 

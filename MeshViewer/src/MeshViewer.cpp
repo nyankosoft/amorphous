@@ -4,7 +4,8 @@
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
+#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
 #include "gds/Graphics/Direct3D/Direct3D9.hpp"
@@ -28,7 +29,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CApplicationBase *CreateApplicationInstance() { return new CMeshViewer; }
+CApplicationBase *amorphous::CreateApplicationInstance() { return new CMeshViewer; }
 
 
 
@@ -85,7 +86,7 @@ void CMeshViewer::RefreshFileList( const std::string& directory_path )
 }
 
 
-void CMeshViewer::SetLights( CShaderManager& shader_mgr )
+void CMeshViewer::SetLights( ShaderManager& shader_mgr )
 {
 	// change lighting render state
 	// - Needed when fixed function pipeline is used
@@ -105,8 +106,8 @@ void CMeshViewer::SetLights( CShaderManager& shader_mgr )
 		return;
 	}
 
-//	CDirectionalLight dir_light;
-	CHemisphericDirectionalLight dir_light;
+//	DirectionalLight dir_light;
+	HemisphericDirectionalLight dir_light;
 	dir_light.vDirection = Vec3GetNormalized( Vector3( 1,-3,2 ) );
 	dir_light.fIntensity = 1.0f;
 //	dir_light.DiffuseColor = SFloatRGBColor::White();
@@ -121,7 +122,7 @@ void CMeshViewer::SetLights( CShaderManager& shader_mgr )
 }
 
 
-void CMeshViewer::LoadBlankTextures( CBasicMesh& mesh )
+void CMeshViewer::LoadBlankTextures( BasicMesh& mesh )
 {
 	int num_subsets = mesh.GetNumMaterials();
 	for( int i=0; i<num_subsets; i++ )
@@ -134,17 +135,17 @@ void CMeshViewer::LoadBlankTextures( CBasicMesh& mesh )
 			mat.TextureDesc[0].Width  = 1;
 			mat.TextureDesc[0].Height = 1;
 			mat.TextureDesc[0].Format = TextureFormat::A8R8G8B8;
-			mat.TextureDesc[0].pLoader.reset( new CSingleColorTextureFilling(SFloatRGBAColor::White()) );
+			mat.TextureDesc[0].pLoader.reset( new SingleColorTextureGenerator(SFloatRGBAColor::White()) );
 			mat.Texture[0].Load( mat.TextureDesc[0] );
 		}
 	}
 }
 
 
-void CMeshViewer::RenderSubsetsInformation( CBasicMesh& mesh )
+void CMeshViewer::RenderSubsetsInformation( BasicMesh& mesh )
 {
-	const int screen_width  = CGraphicsComponent::GetScreenWidth();
-	const int screen_height = CGraphicsComponent::GetScreenWidth();
+	const int screen_width  = GraphicsComponent::GetScreenWidth();
+	const int screen_height = GraphicsComponent::GetScreenWidth();
 	SRect screen_rect = RectLTWH( 0, 0, screen_width, screen_height );
 	screen_rect.Inflate( -16, -16 );
 
@@ -183,7 +184,7 @@ void CMeshViewer::RenderSubsetsInformation( CBasicMesh& mesh )
 
 			rect.Draw( mat.Texture[j] );
 
-			const CTextureResourceDesc& desc = mat.TextureDesc[j];
+			const TextureResourceDesc& desc = mat.TextureDesc[j];
 			if( !m_pFont )
 				continue;
 
@@ -216,14 +217,14 @@ void CMeshViewer::LoadShaders()
 
 	shader_descs[1].NormalMapTextureIndex = m_NormalMapTextureIndex;
 
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 
 //	m_Shaders.resize( shader_descs.size() );
 //	m_Techniques.resize( shader_descs.size() );
 	for( size_t i=0; i<shader_descs.size(); i++ )
 	{
 		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_descs[i]) );
-		CShaderHandle shader;
+		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
 		if( loaded )
@@ -245,7 +246,7 @@ void CMeshViewer::LoadShaders()
 	for( size_t i=0; i<numof(shader_ids); i++ )
 	{
 		shader_desc.pShaderGenerator.reset( new CMiscEmbeddedShaderGenerator(shader_ids[i]) );
-		CShaderHandle shader;
+		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
 		if( loaded )
@@ -257,16 +258,16 @@ void CMeshViewer::LoadShaders()
 	}
 
 	// added shader manager that uses fixed function pipeline as a fallback
-	CShaderResourceDesc default_desc;
+	ShaderResourceDesc default_desc;
 	default_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
-	m_Shaders.push_back( CShaderHandle() );
+	m_Shaders.push_back( ShaderHandle() );
 	m_Shaders.back().Load( default_desc );
 	m_Techniques.push_back( CShaderTechniqueHandle() );
 	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
 
-	CShaderResourceDesc vegetation_shader_desc;
+	ShaderResourceDesc vegetation_shader_desc;
 	vegetation_shader_desc.ResourcePath = "shaders/vegetation.fx";
-	m_Shaders.push_back( CShaderHandle() );
+	m_Shaders.push_back( ShaderHandle() );
 	m_Shaders.back().Load( vegetation_shader_desc );
 	m_Techniques.push_back( CShaderTechniqueHandle() );
 	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
@@ -299,13 +300,13 @@ void CMeshViewer::RenderMeshes()
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
 	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
-//	CShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
-	CShaderManager *pShaderManager
+//	ShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
+	ShaderManager *pShaderManager
 		= m_UseSingleDiffuseColorShader ?
 		m_SingleDiffuseColorShaders[ m_CurrentSDCShaderIndex ].GetShaderManager() :
 		m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	shader_mgr.SetParam( "g_vEyePos", GetCameraController()->GetPosition() );
 
@@ -317,7 +318,7 @@ void CMeshViewer::RenderMeshes()
 	else
 		shader_mgr.SetTechnique( m_Techniques[m_CurrentShaderIndex] );
 
-	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if(	!pMesh )
 		return;
 
@@ -363,7 +364,7 @@ void CMeshViewer::RenderMeshes()
 	}
 	else
 	{
-		CShaderManager& mesh_shader
+		ShaderManager& mesh_shader
 			= ( m_CurrentShaderIndex == (int)m_Shaders.size() - 1 ) ? FixedFunctionPipelineManager() : shader_mgr;
 		
 		if( m_RenderZSorted )
@@ -419,7 +420,7 @@ void CMeshViewer::Render()
 	rect.SetColor( SFloatRGBAColor(0,0,0,0.6f) );
 	rect.Draw();
 
-	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 	{
 		int num_subsets   = pMesh->GetNumMaterials();
@@ -432,8 +433,8 @@ void CMeshViewer::Render()
 			whd.x, whd.y, whd.z );
 
 		// Display the number of bones if it's a skeletal mesh
-		shared_ptr<CSkeletalMesh> pSkeletalMesh
-			= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>(pMesh);
+		shared_ptr<SkeletalMesh> pSkeletalMesh
+			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( pSkeletalMesh )
 			text += fmt_string( " | %d bones", pSkeletalMesh->GetNumBones() );
 
@@ -457,7 +458,7 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 	LOG_PRINT( " Opening a mesh file: " + mesh_filepath );
 
 //	bool loaded = m_Mesh.Load( mesh_filepath );
-	CMeshResourceDesc desc;
+	MeshResourceDesc desc;
 	desc.ResourcePath = mesh_filepath;
 	desc.LoadOptionFlags |= MeshLoadOption::CUSTOM_MESH;
 //	desc.MeshType = CMeshType::SKELETAL;
@@ -534,7 +535,7 @@ int CMeshViewer::Init()
 		bool loaded = LoadModel( mesh_filepath );
 	}
 /*
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
 	// set the world matrix to the identity
 	pShaderManager->SetWorldTransform( Matrix44Identity() );
