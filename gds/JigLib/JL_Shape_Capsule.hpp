@@ -32,7 +32,7 @@ public:
 
 
 	void SetSize( Scalar fRaduis, Scalar fLength );
-//	bool SepAxisTest( Scalar& depth, Vector3& rvAxis, CTriangle& rTriangle );	// returns true if intersecting on the given axis
+//	bool SepAxisTest( Scalar& depth, Vector3& rvAxis, Triangle& rTriangle );	// returns true if intersecting on the given axis
 //	bool SepAxisTest( Scalar& depth, Vector3& rvAxis, CJL_Shape_Capsule& rBox );	// returns true if intersecting on the given axis
 
 	// axis must be in world space

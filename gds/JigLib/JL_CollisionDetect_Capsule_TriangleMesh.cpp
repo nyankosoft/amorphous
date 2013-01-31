@@ -44,7 +44,7 @@ void JL_CollisionDetect_Capsule_TriangleMesh( CJL_Shape_Capsule& rCapsule, CTria
 			break;
 
 		CIndexedTriangle& rTriangle	= rTriMesh.GetTriangle( s_veciIndexList[i] );		// get indexed triangle
-		CTriangle triangle( rTriMesh.GetVertex( rTriangle.GetIndex(0) ),
+		Triangle triangle( rTriMesh.GetVertex( rTriangle.GetIndex(0) ),
 			                rTriMesh.GetVertex( rTriangle.GetIndex(1) ),
 							rTriMesh.GetVertex( rTriangle.GetIndex(2) ),
 							rTriangle.GetNormal() );

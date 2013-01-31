@@ -53,7 +53,7 @@ void CTriangleMesh::ClipTrace( STrace& tr )
 	for( i=0; i<iNumTris; i++ )
 	{
 		CIndexedTriangle& tri = GetTriangle( s_veciTriList[i] );
-		CTriangle triangle( GetVertex( tri.GetIndex(0) ),
+		Triangle triangle( GetVertex( tri.GetIndex(0) ),
 			                GetVertex( tri.GetIndex(1) ),
 							GetVertex( tri.GetIndex(2) ),
 							tri.m_vNormal );
@@ -106,7 +106,7 @@ void CTriangleMesh::ClipLineSegment( CJL_LineSegment& segment )
 	for( i=0; i<iNumTris; i++ )
 	{
 		CIndexedTriangle& tri = GetTriangle( s_veciTriList[i] );
-		CTriangle triangle( GetVertex( tri.GetIndex(0) ),
+		Triangle triangle( GetVertex( tri.GetIndex(0) ),
 			                GetVertex( tri.GetIndex(1) ),
 							GetVertex( tri.GetIndex(2) ),
 							tri.m_vNormal );

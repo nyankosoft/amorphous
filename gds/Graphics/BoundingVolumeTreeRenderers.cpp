@@ -79,7 +79,7 @@ static void RenderOBBNode( const OBBNODE *pOBBNode, int draw_level, int level )
 }
 
 
-void RenderOBBTree( const COBBTree& obb_tree, int draw_level )
+void RenderOBBTree( const OBBTree& obb_tree, int draw_level )
 {
 	RenderOBBNode( obb_tree.GetTopNode(), draw_level, 0 );
 }

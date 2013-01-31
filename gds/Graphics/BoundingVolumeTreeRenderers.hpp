@@ -5,10 +5,10 @@
 namespace amorphous
 {
 
-class COBBTree;
+class OBBTree;
 
 
-void RenderOBBTree( const COBBTree& obb_tree, int draw_level );
+void RenderOBBTree( const OBBTree& obb_tree, int draw_level );
 
 } // namespace amorphous
 

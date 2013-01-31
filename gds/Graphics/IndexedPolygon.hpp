@@ -96,7 +96,7 @@ public:
 
 	inline void Flip();
 
-	/// Added to use IndexedPolygon with CAABTree
+	/// Added to use IndexedPolygon with AABTree
 	/// - Not added for actual use
 	/// - m_pVertexBuffer would have to be separately serialized and restored
 	void Serialize( IArchive& ar, const unsigned int version );
@@ -398,7 +398,7 @@ inline bool IndexedPolygon::ClipLineSegment( const CLineSegment& line_segment, C
 	for( size_t i=0; i<num_triangles; i++)
 	{
 
-		CTriangle triangle(
+		Triangle triangle(
 			GetVertex(0).m_vPosition,
 			GetVertex(i+1).m_vPosition,
 			GetVertex(i+2).m_vPosition,

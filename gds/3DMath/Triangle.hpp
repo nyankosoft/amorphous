@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CTriangle
+class Triangle
 {
 	Vector3 m_avVertex[3];
 	Vector3 m_vNormal;	// plane normal (the direction of the surface of this triangle)
@@ -17,9 +17,9 @@ class CTriangle
 
 public:
 
-	CTriangle();
+	Triangle();
 
-	CTriangle( const Vector3& v0, const Vector3& v1, const Vector3& v2, const Vector3& vNormal )
+	Triangle( const Vector3& v0, const Vector3& v1, const Vector3& v2, const Vector3& vNormal )
 		:
 	m_vNormal(vNormal)
 	{
@@ -64,7 +64,7 @@ public:
 // ================================ inline implementations ================================ 
 
 
-inline void CTriangle::GetSpan( float& rfMin, float& rfMax, Vector3 vAxis ) const
+inline void Triangle::GetSpan( float& rfMin, float& rfMax, Vector3 vAxis ) const
 {
 	Scalar d0, d1, d2;
 	d0 = Vec3Dot( m_avVertex[0], vAxis );
@@ -75,7 +75,7 @@ inline void CTriangle::GetSpan( float& rfMin, float& rfMax, Vector3 vAxis ) cons
 }
 
 
-inline bool CTriangle::RayIntersect( const Vector3& vStart, Vector3& vGoal )
+inline bool Triangle::RayIntersect( const Vector3& vStart, Vector3& vGoal )
 {
 	float d0, d1;
 	d0 = Vec3Dot( m_vNormal, vStart ) - m_fDist;

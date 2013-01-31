@@ -43,16 +43,16 @@ struct OBBNODE{
 	OBBNODE(){ pOBBNodeL = NULL; pOBBNodeR = NULL; }
 };
 
-class COBBTree
+class OBBTree
 {
 public:
-	COBBTree();
-	~COBBTree();
+	OBBTree();
+	~OBBTree();
 //	bool Create( LPD3DXMESH pMesh, int Level );
 	bool Create( const std::vector<Vector3>& vertices, const std::vector<unsigned int>& triangle_indices, int Level );
 	void Create( FACES &Face, int Level, OBBNODE *pOBBNode );
-	bool CheckCollision( COBBTree &OBBTreeA, Matrix34 &TransMatA,
-						 COBBTree &OBBTreeB, Matrix34 &TransMatB );
+	bool CheckCollision( OBBTree &OBBTreeA, Matrix34 &TransMatA,
+						 OBBTree &OBBTreeB, Matrix34 &TransMatB );
 	void GetLeafOBBs( std::vector<OBBDATA>& obbs );
 	void DumpToTextFile( const std::string& filepath );
 	const OBBNODE *GetTopNode() const { return pOBBTopNode; }

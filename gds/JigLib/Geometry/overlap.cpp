@@ -21,7 +21,7 @@ using namespace JigLib;
 // See Real-Time Rendering p581
 //====================================================================
 bool JigLib::SegmentTriangleOverlap( Scalar* tS, Scalar* tT0, Scalar* tT1, 
-									 const tSegment& seg, const CTriangle& triangle)
+									 const tSegment& seg, const Triangle& triangle)
 {
 	/// the parameters - if hit then they get copied into the args
 	Scalar u, v, t;
@@ -58,7 +58,7 @@ bool JigLib::SegmentTriangleOverlap( Scalar* tS, Scalar* tT0, Scalar* tT1,
 //====================================================================
 bool JigLib::SweptSphereTriangleOverlap(Vector3& pt, Vector3& N, Scalar& depth,
 																				const tSphere& oldSphere, const tSphere& newSphere, 
-																				const CTriangle& triangle,
+																				const Triangle& triangle,
 																				Scalar* oldCentreDistToPlane, Scalar* newCentreDistToPlane, 
 																				tEdgesToTest edgesToTest,
 																				tCornersToTest cornersToTest)

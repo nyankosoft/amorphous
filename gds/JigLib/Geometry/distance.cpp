@@ -1853,7 +1853,7 @@ Scalar JigLib::SegmentBoxDistanceSq(Scalar * pfLParam,
 // PointTriangleDistanceSq
 //==============================================================
 Scalar JigLib::PointTriangleDistanceSq(Scalar * pfSParam, Scalar * pfTParam, 
-                                        const Vector3 & rkPoint, const CTriangle & rkTri)
+                                        const Vector3 & rkPoint, const Triangle & rkTri)
 {
   Vector3 kDiff = rkTri.GetOrigin() - rkPoint;
 //  Scalar fA00 = rkTri.GetEdge0().GetLengthSq();
@@ -2089,7 +2089,7 @@ Scalar JigLib::PointTriangleDistanceSq(Scalar * pfSParam, Scalar * pfTParam,
 //====================================================================
 // SegmentTriangleDistanceSq
 //====================================================================
-Scalar JigLib::SegmentTriangleDistanceSq(Scalar* segT, Scalar* triT0, Scalar* triT1, const tSegment& seg, const CTriangle& triangle)
+Scalar JigLib::SegmentTriangleDistanceSq(Scalar* segT, Scalar* triT0, Scalar* triT1, const tSegment& seg, const Triangle& triangle)
 {
   // compare segment to all three edges of the triangle
 //  Scalar distSq = std::numeric_limits<Scalar>::m.x ;

@@ -8,17 +8,17 @@ namespace amorphous
 {
 
 
-COBBTree::COBBTree()
+OBBTree::OBBTree()
 {
 	pOBBTopNode = new OBBNODE;
 }
 
-COBBTree::~COBBTree()
+OBBTree::~OBBTree()
 {
 	ReleaseNodes( pOBBTopNode );
 }
 
-void COBBTree::ReleaseNodes( OBBNODE *pOBBNode )
+void OBBTree::ReleaseNodes( OBBNODE *pOBBNode )
 {
 	if( pOBBNode->pOBBNodeL ) ReleaseNodes( pOBBNode->pOBBNodeL );
 	if( pOBBNode->pOBBNodeR ) ReleaseNodes( pOBBNode->pOBBNodeR );
@@ -27,7 +27,7 @@ void COBBTree::ReleaseNodes( OBBNODE *pOBBNode )
 	pOBBNode = NULL;
 }
 /*
-bool COBBTree::Create( LPD3DXMESH pMesh, int Level )
+bool OBBTree::Create( LPD3DXMESH pMesh, int Level )
 {
 	// Get vertices
 	int VertexNum = pMesh->GetNumVertices();
@@ -91,7 +91,7 @@ bool COBBTree::Create( LPD3DXMESH pMesh, int Level )
 	return true;
 }
 */
-bool COBBTree::Create( const std::vector<Vector3>& vertices, const std::vector<unsigned int>& triangle_indices, int Level )
+bool OBBTree::Create( const std::vector<Vector3>& vertices, const std::vector<unsigned int>& triangle_indices, int Level )
 {
 	FACES Faces;
 
@@ -116,7 +116,7 @@ bool COBBTree::Create( const std::vector<Vector3>& vertices, const std::vector<u
 	return true;
 }
 
-void COBBTree::Create( FACES &Faces, int Level, OBBNODE *pOBBNode )
+void OBBTree::Create( FACES &Faces, int Level, OBBNODE *pOBBNode )
 {
 	CreateOBB( Faces, pOBBNode->OBBData );
 
@@ -150,7 +150,7 @@ void COBBTree::Create( FACES &Faces, int Level, OBBNODE *pOBBNode )
 }
 
 // Create an OBB which contains the given polygons
-void COBBTree::CreateOBB( std::vector < FACE > &Face, OBBDATA &OBBData )
+void OBBTree::CreateOBB( std::vector < FACE > &Face, OBBDATA &OBBData )
 {
 	std::vector < Vector3 > Vertex;
 	for( int j = 0; j < (int)Face.size(); ++j ){
@@ -246,7 +246,7 @@ void COBBTree::CreateOBB( std::vector < FACE > &Face, OBBDATA &OBBData )
 	OBBData.Matrix.vPosition.z = -Vec3Dot( OBBData.Axis[2], G );
 }
 
-bool COBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
+bool OBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 {
 	// Transform to the space where 3 axes of BoxA become xyz axes
 	Vector3 Axis[3];
@@ -305,7 +305,7 @@ bool COBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 	return true;
 }
 
-bool COBBTree::CheckCollision( OBBNODE *pNodeA, OBBNODE *pNodeB, Matrix34 &TransMat, Matrix33 &RotMat )
+bool OBBTree::CheckCollision( OBBNODE *pNodeA, OBBNODE *pNodeB, Matrix34 &TransMat, Matrix33 &RotMat )
 {
 	// Transform the BoxB to the space viewed from BoxA
 	OBBDATA OBBDataB = pNodeB->OBBData;
@@ -341,14 +341,14 @@ EXIT:
 	return Result;
 }
 
-bool COBBTree::CheckCollision( COBBTree &OBBTreeA, Matrix34 &TransMatA,
-					 COBBTree &OBBTreeB, Matrix34 &TransMatB )
+bool OBBTree::CheckCollision( OBBTree &OBBTreeA, Matrix34 &TransMatA,
+					 OBBTree &OBBTreeB, Matrix34 &TransMatB )
 {
 	Matrix34 TransMat = TransMatA.GetInverseROT() * TransMatB;
 	return CheckCollision( OBBTreeA.pOBBTopNode, OBBTreeB.pOBBTopNode, TransMat, TransMat.matOrient );
 }
 
-void COBBTree::GetLeafOBBs( const OBBNODE *pNode, std::vector<OBBDATA>& obbs )
+void OBBTree::GetLeafOBBs( const OBBNODE *pNode, std::vector<OBBDATA>& obbs )
 {
 	if( pNode->pOBBNodeL == NULL
 	 || pNode->pOBBNodeR == NULL )
@@ -362,7 +362,7 @@ void COBBTree::GetLeafOBBs( const OBBNODE *pNode, std::vector<OBBDATA>& obbs )
 
 static inline void indent( FILE *fp, int num_spaces ) { for( int i=0; i<num_spaces; i++ ) fprintf( fp, " " ); }
 
-void COBBTree::DumpToTextFile( FILE *fp, OBBNODE *pNode, int depth )
+void OBBTree::DumpToTextFile( FILE *fp, OBBNODE *pNode, int depth )
 {
 	const OBBDATA& obb = pNode->OBBData;
 
@@ -378,7 +378,7 @@ void COBBTree::DumpToTextFile( FILE *fp, OBBNODE *pNode, int depth )
 	if( pNode->pOBBNodeR ) DumpToTextFile( fp, pNode->pOBBNodeR, depth + 1 );
 }
 
-void COBBTree::GetLeafOBBs( std::vector<OBBDATA>& obbs )
+void OBBTree::GetLeafOBBs( std::vector<OBBDATA>& obbs )
 {
 	if( !pOBBTopNode )
 		return;
@@ -386,7 +386,7 @@ void COBBTree::GetLeafOBBs( std::vector<OBBDATA>& obbs )
 	GetLeafOBBs( pOBBTopNode, obbs );
 }
 
-void COBBTree::DumpToTextFile( const std::string& filepath )
+void OBBTree::DumpToTextFile( const std::string& filepath )
 {
 	if( !pOBBTopNode )
 		return;
@@ -405,7 +405,7 @@ void COBBTree::DumpToTextFile( const std::string& filepath )
 #include <stdio.h>
 #include <math.h>
 
-void COBBTree::Rotate( float a[3][3], float s, float tau, int i, int j, int k, int l )
+void OBBTree::Rotate( float a[3][3], float s, float tau, int i, int j, int k, int l )
 {
 	float h, g;
 	g = a[i][j];
@@ -414,7 +414,7 @@ void COBBTree::Rotate( float a[3][3], float s, float tau, int i, int j, int k, i
 	a[k][l] = h + s * ( g - h *tau );
 }
 
-bool COBBTree::Jacobi( float a[3][3], float v[3][3], float d[3] )
+bool OBBTree::Jacobi( float a[3][3], float v[3][3], float d[3] )
 {
 	int n = 3;
 	int i, j, iq, ip;

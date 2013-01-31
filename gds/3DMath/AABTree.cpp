@@ -9,7 +9,7 @@ namespace amorphous
 using namespace std;
 
 
-int CAABNode::ms_DefaultReserveSize = 1024;
+int AABNode::ms_DefaultReserveSize = 1024;
 
 
 static inline void print_tabs( FILE *fp, int depth )
@@ -26,9 +26,9 @@ static inline void print_spaces( FILE *fp, int depth )
 }
 
 
-void  WriteNodeToFile_r( int node_index, vector<CAABNode>& nodes, int depth, FILE *fp )
+void  WriteNodeToFile_r( int node_index, vector<AABNode>& nodes, int depth, FILE *fp )
 {
-	const CAABNode& node = nodes[node_index];
+	const AABNode& node = nodes[node_index];
 
 	print_spaces(fp,depth*2);
 	fprintf( fp, "[%d]----------------------\n", node_index );

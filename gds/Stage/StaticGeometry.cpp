@@ -317,7 +317,7 @@ void CStaticGeometry::UpdateResources( const Camera& rCam )
 
 	while( 0 < m_vecNodesToCheckRU.size() )
 	{
-		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheckRU.back() );
+		const AABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheckRU.back() );
 		m_vecNodesToCheckRU.pop_back();
 
 		const float node_radius = node.aabb.CreateBoundingSphere().radius;
@@ -339,7 +339,7 @@ void CStaticGeometry::UpdateResources( const Camera& rCam )
 		{
 			for( int i=0; i<2; i++ )
 			{
-				const CAABNode& child_node = mesh_subset_tree.GetNode( node.child[i] );
+				const AABNode& child_node = mesh_subset_tree.GetNode( node.child[i] );
 
 				if( cam_sphere.IntersectsWith( child_node.aabb.CreateBoundingSphere() ) )
 					m_vecNodesToCheckRU.push_back( node.child[i] );
@@ -386,7 +386,7 @@ void IsReadyToDisplay()
 
 	while( 0 < m_vecNodesToCheck.size() )
 	{
-		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
+		const AABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
 		m_vecNodesToCheck.pop_back();
 
 		float dist = Vec3Length( vMeshCenterPos - rCam.GetPosition() );
@@ -495,7 +495,7 @@ bool CStaticGeometry::Render( const Camera& rCam, const unsigned int EffectFlag 
 
 	while( 0 < m_vecNodesToCheck.size() )
 	{
-		const CAABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
+		const AABNode& node = mesh_subset_tree.GetNode( m_vecNodesToCheck.back() );
 		m_vecNodesToCheck.pop_back();
 
 		if( true )

@@ -543,7 +543,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( MeshResourceDesc& mesh_desc,
 }
 
 /*
-void CreateOBBTreeFrom3DMeshModelArchive( C3DMeshModelArchive& mesh_archive, COBBTree& tree, int level )
+void CreateOBBTreeFrom3DMeshModelArchive( C3DMeshModelArchive& mesh_archive, OBBTree& tree, int level )
 {
 	bool created = tree.Create(
 		mesh_archive.GetVertexSet().vecPosition,
@@ -570,7 +570,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_des
 //	if( !loaded )
 //		return CEntityHandle<>();
 
-//	COBBTree obb_tree;
+//	OBBTree obb_tree;
 	C3DMeshModelArchive mesh_archive;
 	bool mesh_archive_loaded = mesh_archive.LoadFromFile( mesh_desc.ResourcePath );
 	if( !mesh_archive_loaded )

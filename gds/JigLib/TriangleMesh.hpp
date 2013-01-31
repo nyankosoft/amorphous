@@ -54,7 +54,7 @@ public:
 	inline CIndexedTriangle& GetTriangle( int i ) { return  m_Tree.GetGeometryBuffer()[i]; }
 
 	// returns a general geometry triangle that corresponds to the i-th indexed triangle
-//	inline void GetGeneralTriangle( CTriangle& dest_triangle, int i );
+//	inline void GetGeneralTriangle( Triangle& dest_triangle, int i );
 
 	// 08:32 2007/09/28 most of the routines were moved to CBSPTreeForTriangleMesh
 	bool CreateMesh( std::vector<Vector3>& rvecVertex, std::vector<int>& rveciIndex, std::vector<short>& rvecsMatIndex );
@@ -95,7 +95,7 @@ struct STriangleMeshHeader
 //===============================================================================================
 
 
-// inline void CTriangleMesh::GetGeneralTriangle( CTriangle& dest_triangle, int i ) {}
+// inline void CTriangleMesh::GetGeneralTriangle( Triangle& dest_triangle, int i ) {}
 
 
 inline int CTriangleMesh::GetIntersectingTriangles( std::vector<int>& rveciTriList, AABB3& raabb )

@@ -89,7 +89,7 @@ void CJL_Shape_Box::UpdateWorldProperties()
 
 // returns true if the box and the triangle are overlapping
 // also returns penetration depth along the specified axis
-bool CJL_Shape_Box::SepAxisTest( Scalar& depth, Vector3& rvAxis, CTriangle& rTriangle, float fCollTolerance )
+bool CJL_Shape_Box::SepAxisTest( Scalar& depth, Vector3& rvAxis, Triangle& rTriangle, float fCollTolerance )
 {
 //	Scalar fColTolerance = 0.005f;
 //	Scalar fColTolerance = 0.000f;

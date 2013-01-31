@@ -19,7 +19,7 @@ using namespace serialization;
 
 
 //===============================================================================
-// CAABTree
+// AABTree
 //   - creates a mesh object that holds geometries specified as template class
 //   - the template class TGeometry needs to implement the following functions
 //   - TGeometry must also be serializable. i.e.) must be derived from IArchiveObjectBase
@@ -47,9 +47,9 @@ public:
  - each non-leaf node holds an axis-aligned plane, which is represented by 'iAxis' & 'fDist'.
  - 'iAxis' represents the plane normal along the corresponding axis
  - Holds indices to geometries
-   - Instances of geometries are stored in CAABTree instance that owns nodes
+   - Instances of geometries are stored in AABTree instance that owns nodes
 */
-class CAABNode : public IArchiveObjectBase
+class AABNode : public IArchiveObjectBase
 {
 public:
 
@@ -86,7 +86,7 @@ public:
 
 public:
 
-	CAABNode() : iCellIndex(-1), iAxis(0), fDist(0), depth(0) { child[0] = child[1] = LEAF; }
+	AABNode() : iCellIndex(-1), iAxis(0), fDist(0), depth(0) { child[0] = child[1] = LEAF; }
 
 	inline bool IsLeaf() const { return ( (child[0] == LEAF) && (child[1] == LEAF) ); }
 
@@ -98,7 +98,7 @@ public:
 };
 
 
-inline void CAABNode::Serialize( IArchive& ar, const unsigned int version )
+inline void AABNode::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & iAxis;
 	ar & fDist;
@@ -111,19 +111,19 @@ inline void CAABNode::Serialize( IArchive& ar, const unsigned int version )
 
 
 //===============================================================================
-// CAABTree
+// AABTree
 //===============================================================================
 
-extern void  WriteNodeToFile_r( int node_index, std::vector<CAABNode>& nodes, int depth, FILE *fp );
+extern void  WriteNodeToFile_r( int node_index, std::vector<AABNode>& nodes, int depth, FILE *fp );
 
 template<class TGeometry>
-class CAABTree : public IArchiveObjectBase
+class AABTree : public IArchiveObjectBase
 {
 protected:
 
 	std::vector<TGeometry> m_vecGeometry;
 
-	std::vector<CAABNode> m_vecNode;
+	std::vector<AABNode> m_vecNode;
 
 	int m_TreeDepth;
 
@@ -172,9 +172,9 @@ public:
 		COND_OR,  ///< i.e. strict recursion stopper
 	};
 
-	inline CAABTree();
+	inline AABTree();
 
-	inline virtual ~CAABTree();
+	inline virtual ~AABTree();
 
 	inline void Release();
 
@@ -199,11 +199,11 @@ public:
 	// creates the tree from 'm_vecGeometry'
 	virtual void Build() = 0;
 
-	const CAABNode& GetNode( int index ) const { return m_vecNode[index]; }
+	const AABNode& GetNode( int index ) const { return m_vecNode[index]; }
 
 	int GetNumNodes() const { return (int)m_vecNode.size(); }
 
-	std::vector<CAABNode>& GetNodeBuffer() { return m_vecNode; }
+	std::vector<AABNode>& GetNodeBuffer() { return m_vecNode; }
 
 	int GetTreeDepth() const { return m_TreeDepth; }
 
@@ -258,7 +258,7 @@ public:
 
 	/// split a leaf node in half
 	/// - precondition: the argument node must be a leaf
-	inline void Subdivide( CAABNode& node, int axis )
+	inline void Subdivide( AABNode& node, int axis )
 	{
 		node.iAxis = axis;
 		float fMidDist = node.aabb.GetCenterPosition()[axis];
@@ -266,7 +266,7 @@ public:
 
 		int child0 = node.child[0] = (int)m_vecNode.size();
 		int child1 = node.child[1] = (int)m_vecNode.size() + 1;
-		m_vecNode.insert( m_vecNode.end(), 2, CAABNode() );
+		m_vecNode.insert( m_vecNode.end(), 2, AABNode() );
 
 		m_vecNode[child0].aabb = node.aabb;
 		m_vecNode[child0].aabb.vMin[axis] = fMidDist;
@@ -310,7 +310,7 @@ public:
    - See m_TestCounter and how it is used
 */
 template<class TGeometry>
-class CLeafyAABTree : public CAABTree<TGeometry>
+class CLeafyAABTree : public AABTree<TGeometry>
 {
 	int m_TestCounter;
 
@@ -323,11 +323,11 @@ public:
 
 	virtual ~CLeafyAABTree() {}
 
-	TreeType GetTreeType() const { return CAABTree::LEAFY; }
+	TreeType GetTreeType() const { return AABTree::LEAFY; }
 
-	void Build( const AABB3& rBoundingBox, const int depth ) { CAABTree::Build( rBoundingBox, depth ); }
+	void Build( const AABB3& rBoundingBox, const int depth ) { AABTree::Build( rBoundingBox, depth ); }
 
-	void Build( const std::vector<TGeometry>& vecGeometry ) { CAABTree::Build( vecGeometry ); }
+	void Build( const std::vector<TGeometry>& vecGeometry ) { AABTree::Build( vecGeometry ); }
 
 	/// \param [in] vecGeometry copied and stored
 	inline void Build();
@@ -343,7 +343,7 @@ public:
 
 
 template<class TGeometry>
-class CNonLeafyAABTree : public CAABTree<TGeometry>
+class CNonLeafyAABTree : public AABTree<TGeometry>
 {
 public:
 
@@ -351,15 +351,15 @@ public:
 
 	virtual ~CNonLeafyAABTree() {}
 
-	TreeType GetTreeType() const { return CAABTree::NON_LEAFY; }
+	TreeType GetTreeType() const { return AABTree::NON_LEAFY; }
 
 	/// update the link of the geometry[index]
 	inline void UpdateGeometry( int index );
 
-	void Build( const AABB3& rBoundingBox, const int depth ) { CAABTree::Build( rBoundingBox, depth ); }
+	void Build( const AABB3& rBoundingBox, const int depth ) { AABTree::Build( rBoundingBox, depth ); }
 
-	/// Cannot call CAABTree::Build() from an instance of CNonLeafyAABTree. Why?
-	void Build( const std::vector<TGeometry>& vecGeometry ) { CAABTree::Build( vecGeometry ); }
+	/// Cannot call AABTree::Build() from an instance of CNonLeafyAABTree. Why?
+	void Build( const std::vector<TGeometry>& vecGeometry ) { AABTree::Build( vecGeometry ); }
 
 	/// \param [in] vecGeometry copied and stored
 	inline void Build();

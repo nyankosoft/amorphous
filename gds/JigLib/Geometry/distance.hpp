@@ -46,7 +46,7 @@ namespace JigLib
   /// Overlap tests - todo move these into overlap.hpp
   /// Indicates if a line intersects a triangle - if so the segment and triangle intersection
   /// parameters are optionally returned
-  bool SegmentTriangleOverlap(Scalar* tS, Scalar* tT0, Scalar* tT1, const tSegment& seg, const CTriangle& triangle);
+  bool SegmentTriangleOverlap(Scalar* tS, Scalar* tT0, Scalar* tT1, const tSegment& seg, const Triangle& triangle);
 
   /// Point to point
   Scalar PointPointDistanceSq(const Vector3 & pt1, const Vector3 & pt2);
@@ -63,10 +63,10 @@ namespace JigLib
 //  Scalar PointRectangleDistanceSq(Scalar * t0, Scalar * t1, const Vector3 & pt, const tRectangle & rect);
 
   /// Point to triangle. Optionally returns the t values on the triangle
-  Scalar PointTriangleDistanceSq(Scalar * t0, Scalar * t1, const Vector3 & pt, const CTriangle & triangle);
+  Scalar PointTriangleDistanceSq(Scalar * t0, Scalar * t1, const Vector3 & pt, const Triangle & triangle);
 
   /// Segment to triangle. Optionally returns the segment and triangle t values of the closest point
-  Scalar SegmentTriangleDistanceSq(Scalar* segT, Scalar* triT0, Scalar* triT1, const tSegment& seg, const CTriangle& triangle);
+  Scalar SegmentTriangleDistanceSq(Scalar* segT, Scalar* triT0, Scalar* triT1, const tSegment& seg, const Triangle& triangle);
 
   /// Segment to segment. Optionally returns the two segment t-values that give the closest
   /// points

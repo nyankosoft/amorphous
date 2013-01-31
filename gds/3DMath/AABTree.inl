@@ -8,7 +8,7 @@ namespace amorphous
 //============================ inline implementations ============================
 
 template<class TGeometry>
-inline CAABTree<TGeometry>::CAABTree()
+inline AABTree<TGeometry>::AABTree()
 :
 m_TreeDepth(0),
 m_vWorldPos(Vector3(0,0,0)),
@@ -21,20 +21,20 @@ m_RecursionStopCond(COND_OR)
 
 
 template<class TGeometry>
-inline CAABTree<TGeometry>::~CAABTree()
+inline AABTree<TGeometry>::~AABTree()
 {
 }
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::Release()
+inline void AABTree<TGeometry>::Release()
 {
 	m_vecGeometry.resize( 0 );
 	m_vecNode.resize( 0 );
 }
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::SetRecursionStopCondition( const std::string& cond )
+inline void AABTree<TGeometry>::SetRecursionStopCondition( const std::string& cond )
 {
 	if( cond == "||" || cond == "or" )			m_RecursionStopCond = COND_OR;
 	else if( cond == "&&" || cond == "and" )	m_RecursionStopCond = COND_AND;
@@ -42,7 +42,7 @@ inline void CAABTree<TGeometry>::SetRecursionStopCondition( const std::string& c
 }
 
 template<class TGeometry>
-inline bool CAABTree<TGeometry>::ShouldStopRecursion( int depth,
+inline bool AABTree<TGeometry>::ShouldStopRecursion( int depth,
 										   float sub_space_volume,
 										   int num_triangles_in_cell )
 {
@@ -64,12 +64,12 @@ inline bool CAABTree<TGeometry>::ShouldStopRecursion( int depth,
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::BuildLA_r( int index, int depth )
+inline void AABTree<TGeometry>::BuildLA_r( int index, int depth )
 {
 	if( m_TreeDepth <= depth )
 		return;
 
-	CAABNode& rNode = m_vecNode[index];
+	AABNode& rNode = m_vecNode[index];
 
 	Vector3 vExtents = rNode.aabb.GetExtents();
 	if( vExtents[1] < vExtents[0] )
@@ -89,7 +89,7 @@ inline void CAABTree<TGeometry>::BuildLA_r( int index, int depth )
 
 	rNode.fDist = rNode.aabb.GetCenterPosition()[rNode.iAxis];
 
-	CAABNode child_node[2];
+	AABNode child_node[2];
 	child_node[0] = child_node[1] = rNode;
 
 	child_node[0].aabb.vMax[rNode.iAxis] = rNode.fDist;
@@ -111,14 +111,14 @@ inline void CAABTree<TGeometry>::BuildLA_r( int index, int depth )
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::Build( const AABB3& rBoundingBox, const int depth )
+inline void AABTree<TGeometry>::Build( const AABB3& rBoundingBox, const int depth )
 {
 	m_vecNode.clear();
 	m_vecNode.reserve( (size_t)pow( 2.0, (double)depth ) );
 
 	m_TreeDepth = depth;
 
-	CAABNode root_node;
+	AABNode root_node;
 	root_node.aabb = rBoundingBox;
 
 	// set the seed of the tree
@@ -130,7 +130,7 @@ inline void CAABTree<TGeometry>::Build( const AABB3& rBoundingBox, const int dep
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::ResetRegisteredGeometries()
+inline void AABTree<TGeometry>::ResetRegisteredGeometries()
 {
 	const size_t num_nodes = m_vecNode.size();
 	for( size_t i=0; i<num_nodes; i++ )
@@ -141,7 +141,7 @@ inline void CAABTree<TGeometry>::ResetRegisteredGeometries()
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::UpdateRegisteredGeometries()
+inline void AABTree<TGeometry>::UpdateRegisteredGeometries()
 {
 	ResetRegisteredGeometries();
 
@@ -164,7 +164,7 @@ inline void CLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, s
 
 	while( !m_vecNodeToCheck.empty() )
 	{
-		CAABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
+		AABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
 		m_vecNodeToCheck.pop_back();
 
 		if( rNode.IsLeaf() )
@@ -207,7 +207,7 @@ inline void CLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, s
 
 /// for leafy and non-leafy
 template<class TGeometry>
-inline void CAABTree<TGeometry>::GetPossiblyIntersectingAABBs( const Vector3& vPos, std::vector<int>& rvecDestIndex )
+inline void AABTree<TGeometry>::GetPossiblyIntersectingAABBs( const Vector3& vPos, std::vector<int>& rvecDestIndex )
 {
 	int index = 0;
 
@@ -217,7 +217,7 @@ inline void CAABTree<TGeometry>::GetPossiblyIntersectingAABBs( const Vector3& vP
 
 	while(1)
 	{
-		const CAABNode& rNode = m_vecNode[index];
+		const AABNode& rNode = m_vecNode[index];
 
 		// get the indices to AABBs in this subspace
 		num = rNode.veciGeometryIndex.size();
@@ -242,7 +242,7 @@ inline void CAABTree<TGeometry>::GetPossiblyIntersectingAABBs( const Vector3& vP
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int version )
+inline void AABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecGeometry;
 
@@ -261,7 +261,7 @@ inline void CAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int ver
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::AddGeometry( const TGeometry& geom )
+inline void AABTree<TGeometry>::AddGeometry( const TGeometry& geom )
 {
 	size_t geom_index = m_vecGeometry.size();
 	m_vecGeometry.push_back( geom );
@@ -291,7 +291,7 @@ inline int GetSplitPlaneAxis( const AABB3& aabb )
 
 
 template<class TGeometry>
-inline void CAABTree<TGeometry>::InitRootNode()
+inline void AABTree<TGeometry>::InitRootNode()
 {
 	// release any previous tree nodes
 	m_vecNode.resize( 0 );
@@ -313,7 +313,7 @@ inline void CAABTree<TGeometry>::InitRootNode()
 	m_vecNode.reserve(2048);
 
 	// set up the root node
-	m_vecNode.push_back( CAABNode() );
+	m_vecNode.push_back( AABNode() );
 
 	// set plane for the root node
 	m_vecNode[0].aabb = root_aabb;
@@ -361,7 +361,7 @@ inline void CLeafyAABTree<TGeometry>::Build()
 			(int)m_vecNode[iNodeIndex].veciGeometryIndex.size() ) )
 		{
 			// need to split
-			CAABNode& current_node = m_vecNode[iNodeIndex];
+			AABNode& current_node = m_vecNode[iNodeIndex];
 
 			int iAxis = m_vecNode[iNodeIndex].iAxis;
 			float fMidDist = ( m_vecNode[iNodeIndex].aabb.vMax[iAxis] + m_vecNode[iNodeIndex].aabb.vMin[iAxis] ) / 2.0f;
@@ -371,7 +371,7 @@ inline void CLeafyAABTree<TGeometry>::Build()
 				veciNodeToProcess.push_back( (int)m_vecNode.size() );	// add to the stack
 
 				// add a new node
-				m_vecNode.push_back( CAABNode() );
+				m_vecNode.push_back( AABNode() );
 
 				// axis of the plane (will not be used when this turns out to be a leaf node)
 //				m_vecNode.back().iAxis = (iAxis + 1) % 3;
@@ -407,7 +407,7 @@ inline void CLeafyAABTree<TGeometry>::Build()
 		}
 		else
 		{
-			const CAABNode& current_node = m_vecNode[iNodeIndex];
+			const AABNode& current_node = m_vecNode[iNodeIndex];
 //			PERIODICAL( 256, RecordLeafNode( current_node ) );
 ///			RecordNode( current_node, "created a leaf node" );
 
@@ -420,7 +420,7 @@ inline void CLeafyAABTree<TGeometry>::Build()
 template<class TGeometry>
 inline void CLeafyAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int version )
 {
-	CAABTree::Serialize( ar, version );
+	AABTree::Serialize( ar, version );
 
 	ar & m_TestCounter;
 
@@ -460,7 +460,7 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 			(int)m_vecNode[iNodeIndex].veciGeometryIndex.size() ) )
 		{
 			// need to split
-			CAABNode& current_node = m_vecNode[iNodeIndex];
+			AABNode& current_node = m_vecNode[iNodeIndex];
 
 			int iAxis = m_vecNode[iNodeIndex].iAxis;
 			float fMidDist = m_vecNode[iNodeIndex].aabb.GetCenterPosition()[iAxis];
@@ -470,8 +470,8 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 				veciNodeToProcess.push_back( (int)m_vecNode.size() );	// add to the stack
 
 				// add a new node
-				m_vecNode.push_back( CAABNode() );
-				CAABNode& new_node = m_vecNode.back();
+				m_vecNode.push_back( AABNode() );
+				AABNode& new_node = m_vecNode.back();
 
 				new_node.veciGeometryIndex.reserve( m_vecNode[iNodeIndex].veciGeometryIndex.size() / 2 );
 
@@ -527,7 +527,7 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 		}
 /*		else
 		{
-			const CAABNode& current_node = m_vecNode[iNodeIndex];
+			const AABNode& current_node = m_vecNode[iNodeIndex];
 //			PERIODICAL( 256, RecordLeafNode( current_node ) );
 ///			RecordNode( current_node, "created a leaf node" );
 
@@ -551,7 +551,7 @@ inline void CNonLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb
 
 	while( !m_vecNodeToCheck.empty() )
 	{
-		CAABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
+		AABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
 		m_vecNodeToCheck.pop_back();
 
 		// check intersection with geometries in this cell

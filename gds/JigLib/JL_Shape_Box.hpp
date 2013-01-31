@@ -44,7 +44,7 @@ public:
 //	inline Matrix33& GetCombinedOrient() { return m_WorldPose.matOrient; }
 
 	void SetSize( Scalar fWidth_X, Scalar fHeight_Y, Scalar fDepth_Z );	// full length along each axis
-	bool SepAxisTest( Scalar& depth, Vector3& rvAxis, CTriangle& rTriangle, float fCollTolerance );	// returns true if intersecting on the given axis
+	bool SepAxisTest( Scalar& depth, Vector3& rvAxis, Triangle& rTriangle, float fCollTolerance );	// returns true if intersecting on the given axis
 	bool SepAxisTest( Scalar& depth, Vector3& rvAxis, CJL_Shape_Box& rBox, float fCollTolerance );	// returns true if intersecting on the given axis
 
 	// axis must be in world space
