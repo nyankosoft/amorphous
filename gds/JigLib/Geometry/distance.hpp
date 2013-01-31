@@ -28,13 +28,13 @@
 #include "../utils/include/fixedvector.hpp"
 */
 
+#include "3DMath/fwd.hpp"
 #include "line.hpp"
 
 
 namespace amorphous
 {
 
-class CTriangle;
 class tBox;
 
 
