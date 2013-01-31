@@ -28,7 +28,7 @@ bool CBumpmapTextureMaker2_LWO2::LoadShader( const string& shader_filename )
 		return false;
 	}
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
 	m_aShaderTechnique[BTM_RENDERMODE_NORMALMAP].SetTechniqueName( "NormalMap" );
 	m_aShaderTechnique[BTM_RENDERMODE_FLAT_TEXTURED_SURFACE].SetTechniqueName( "FlatTexSurface" );
@@ -197,7 +197,7 @@ void CBumpmapTextureMaker2_LWO2::SetViewWidth( float fViewVolumeWidth )
 //	Matrix44 proj;
 //	proj.SetRowMajorMatrix44( (Scalar *)&matProj );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( pShaderManager )
 		pShaderManager->SetProjectionTransform( proj );
 
@@ -215,7 +215,7 @@ void CBumpmapTextureMaker2_LWO2::UpdateDirectionalLight()
 
 	m_DirLight.m_vDir = matRotY * matRotX * Vector3(0,0,1);
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
 	if( pShaderManager )
 	{
@@ -269,13 +269,13 @@ void CBumpmapTextureMaker2_LWO2::RenderPreview()
 
 void CBumpmapTextureMaker2_LWO2::RenderTexture()
 {
-	shared_ptr<CBasicMesh> pMesh = m_3DModel.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_3DModel.GetMesh();
 	if( !pMesh )
 		return;
 
 	HRESULT hr;
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	LPD3DXEFFECT pEffect;
 	if( !pShaderManager || !( pEffect = pShaderManager->GetEffect() ) )
 	{
@@ -341,11 +341,11 @@ void CBumpmapTextureMaker2_LWO2::SetRenderMode( unsigned int render_mode )
 
 void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 {
-	shared_ptr<CTextureRenderTarget> pTextureRenderTarget = CTextureRenderTarget::Create();
+	shared_ptr<TextureRenderTarget> pTextureRenderTarget = TextureRenderTarget::Create();
 	if( !pTextureRenderTarget )
 		return;
 
-	CTextureRenderTarget& tex_render_target = *pTextureRenderTarget;
+	TextureRenderTarget& tex_render_target = *pTextureRenderTarget;
 
 	tex_render_target.Init( width, height );
 
@@ -399,7 +399,7 @@ void CBumpmapTextureMaker2_LWO2::SaveImages( int width, int height )
 
 		tex_render_target.CopyRenderTarget();
 
-		CTextureHandle tex = tex_render_target.GetRenderTargetTexture();
+		TextureHandle tex = tex_render_target.GetRenderTargetTexture();
 		tex.SaveTextureToImageFile( strTexFilename[i] );
 	}
 

@@ -12,16 +12,12 @@
 #include "gds/Support/Log/DefaultLog.hpp"
 #include "gds/Support/MiscAux.hpp"
 #include "gds/Support/SafeDelete.hpp"
+//#include <vld.h>
 
 #include "BumpmapTextureMaker2_LWO2.h"
 
 using namespace std;
-
-
-//#include <vld.h>
-
-// draft
-extern void SetCurrentThreadAsRenderThread();
+using namespace amorphous;
 
 
 #define	WINDOW_WIDTH	(800)
@@ -295,7 +291,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	SafeDelete( g_pBumpTexMaker );
 
 	// release any singleton class that inherits CGraphicsComponent
-	CGraphicsResourceManager::ReleaseSingleton();
+	GraphicsResourceManager::ReleaseSingleton();
 
     // Clean up everything before finishing
 	DIRECT3D9.Release();

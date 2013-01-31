@@ -10,6 +10,8 @@
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
 
+using namespace amorphous;
+
 
 enum eBumpmapTextureMaker_RenderMode
 {
@@ -23,13 +25,13 @@ enum eBumpmapTextureMaker_RenderMode
 
 class CBumpmapTextureMaker2_LWO2
 {
-	CMeshObjectHandle m_3DModel;
+	MeshHandle m_3DModel;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
 //	LPDIRECT3DTEXTURE9 m_pDefaultTexture;
 
-	CTextureHandle m_PreviewTexture;
+	TextureHandle m_PreviewTexture;
 
 	std::string m_PreviewTextureFilepath;
 
