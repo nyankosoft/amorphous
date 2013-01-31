@@ -1857,6 +1857,9 @@
     <ClInclude Include="..\..\gds\Graphics\fwd.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\3DMath\fwd.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\gds\Graphics\FloatRGBAColor.inl">
