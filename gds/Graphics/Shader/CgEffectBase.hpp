@@ -176,7 +176,7 @@ public:
 	// Sets a column-major 4x4 matrix
 	void SetParam( const char *parameter_name, const Matrix44& mat44_param );
 
-	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const Matrix44& matWorld );
 

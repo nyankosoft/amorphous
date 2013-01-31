@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CD3DFixedFunctionPipelineLightManager : public CShaderLightManager
+class CD3DFixedFunctionPipelineLightManager : public ShaderLightManager
 {
 //	static const int m_iNumMaxLights = 6;	error
 
@@ -68,7 +68,7 @@ public:
 //	void ClearLights() { m_LightCache.Clear(); }
 	void ClearLights() { m_NumLights = 0; }
 
-	friend class CShaderLightManager;
+	friend class ShaderLightManager;
 
 private:
 

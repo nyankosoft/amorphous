@@ -116,7 +116,7 @@ void CD3DFixedFunctionPipelineManager::SetParam( CShaderParameter< std::vector<f
 }
 
 
-boost::shared_ptr<CShaderLightManager> CD3DFixedFunctionPipelineManager::GetShaderLightManager()
+boost::shared_ptr<ShaderLightManager> CD3DFixedFunctionPipelineManager::GetShaderLightManager()
 {
 	return m_pFFPLightManager;
 }

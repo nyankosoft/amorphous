@@ -174,7 +174,7 @@ public:
 
 //	void SetTextureParam()
 */
-	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	friend class ShaderManagerHub;
 };

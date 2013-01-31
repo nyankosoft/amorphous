@@ -413,7 +413,7 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const Matrix44& m
 }
 
 
-boost::shared_ptr<CShaderLightManager> CHLSLShaderManager::GetShaderLightManager()
+boost::shared_ptr<ShaderLightManager> CHLSLShaderManager::GetShaderLightManager()
 {
 	return m_pHLSLShaderLightManager;
 }

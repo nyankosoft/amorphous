@@ -35,12 +35,12 @@ public:
 };
 
 
-class CShaderLightManager
+class ShaderLightManager
 {
 public:
 
-	CShaderLightManager() {}
-	virtual ~CShaderLightManager() {}
+	ShaderLightManager() {}
+	virtual ~ShaderLightManager() {}
 
 	virtual void SetAmbientLight( const AmbientLight& light ) {}
 	virtual void SetDirectionalLight( const DirectionalLight& light ) {}
@@ -61,11 +61,11 @@ public:
 
 class CShaderLightParamsWriter : public LightVisitor
 {
-	CShaderLightManager *m_pShaderLightManager;
+	ShaderLightManager *m_pShaderLightManager;
 
 public:
 
-	CShaderLightParamsWriter( CShaderLightManager *pMgr )
+	CShaderLightParamsWriter( ShaderLightManager *pMgr )
 	:
 	m_pShaderLightManager(pMgr)
 	{}

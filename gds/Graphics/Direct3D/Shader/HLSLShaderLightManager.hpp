@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CHLSLShaderLightManager : public CShaderLightManager
+class CHLSLShaderLightManager : public ShaderLightManager
 {
 //	static const int m_iNumMaxLights = 6;	error
 
@@ -102,7 +102,7 @@ public:
 
 	void ClearLights() { m_LightCache.Clear(); }
 
-	friend class CShaderLightManager;
+	friend class ShaderLightManager;
 
 private:
 

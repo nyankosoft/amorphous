@@ -51,7 +51,7 @@ public:
 
 	void Reload();
 
-	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const Matrix44& matWorld );
 
@@ -85,7 +85,7 @@ public:
 
 //	void SetTextureParam()
 
-//	boost::shared_ptr<CShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
+//	boost::shared_ptr<ShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
 
 	friend CGLFixedFunctionPipelineManager& GLFixedFunctionPipelineManager();
 	friend class CGLShaderResource;

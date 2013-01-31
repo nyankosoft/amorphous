@@ -53,7 +53,7 @@ public:
 
 //	void SetTextureParam()
 
-//	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+//	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 //	void InitBlendTransformVariables( const std::string& variable_name );
 //	void InitBlendTransformVariables();

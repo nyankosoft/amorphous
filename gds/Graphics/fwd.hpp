@@ -55,7 +55,7 @@ class UTFFont;
 class CSimpleBitmapFontData;
 class Camera;
 class ShaderManager;
-class CShaderLightManager;
+class ShaderLightManager;
 
 class TextureRenderTarget;
 

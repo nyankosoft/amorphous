@@ -68,7 +68,7 @@ public:
 
 //	void SetTextureParam()
 
-//	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+//	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 //	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 };

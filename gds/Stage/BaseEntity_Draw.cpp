@@ -600,7 +600,7 @@ void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context 
 /// Update light-related shader variables
 void SetLightsToShader( CCopyEntity& entity, ShaderManager& rShaderMgr )
 {
-	shared_ptr<CShaderLightManager> pShaderLightMgr = rShaderMgr.GetShaderLightManager();
+	shared_ptr<ShaderLightManager> pShaderLightMgr = rShaderMgr.GetShaderLightManager();
 
 	int i, num_current_lights = entity.GetNumLights();
 	CLightEntity *pLightEntity = NULL;

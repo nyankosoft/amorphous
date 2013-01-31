@@ -416,7 +416,7 @@ void CGLProgram::End()
 }
 
 
-boost::shared_ptr<CShaderLightManager> CGLProgram::GetShaderLightManager()
+boost::shared_ptr<ShaderLightManager> CGLProgram::GetShaderLightManager()
 {
 	return m_pLightManager;
 }

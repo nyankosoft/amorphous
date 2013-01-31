@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-class CGLFixedPipelineLightManager : public CShaderLightManager
+class CGLFixedPipelineLightManager : public ShaderLightManager
 {
 protected:
 

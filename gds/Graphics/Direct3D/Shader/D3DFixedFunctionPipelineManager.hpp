@@ -100,7 +100,7 @@ public:
 
 //	void SetTextureParam()
 
-	boost::shared_ptr<CShaderLightManager> GetShaderLightManager();
+	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
 

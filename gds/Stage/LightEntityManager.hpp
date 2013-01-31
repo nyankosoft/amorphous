@@ -47,7 +47,7 @@ private:
 
 	CEntitySet *m_pEntitySet;
 
-	CShaderLightManager *m_pShaderLightManager;
+	ShaderLightManager *m_pShaderLightManager;
 
 	LPD3DXEFFECT m_pEffect;
 
