@@ -404,12 +404,12 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 }
 
 
-void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, CShaderTechniqueHandle& shader_tech )
+void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech )
 {
 	vector<int> single_index;
 	single_index.push_back( material_index );
 
-	C2DArray<CShaderTechniqueHandle> shader_tech_table;
+	C2DArray<ShaderTechniqueHandle> shader_tech_table;
 	shader_tech_table.resize( material_index + 1, 1 );
 	shader_tech_table( material_index, 0 ) = shader_tech;
 
@@ -424,7 +424,7 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 								  BasicMesh *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
-							      C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
+							      C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
 {
 	PROFILE_FUNCTION();
@@ -530,7 +530,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 
 	pShaderMgr->SetWorldTransform( pCopyEnt->GetWorldPose() );
 
-	CShaderTechniqueHandle tech;
+	ShaderTechniqueHandle tech;
 	const U32 entity_flags = pCopyEnt->GetEntityFlags();
 	if( entity_flags & BETYPE_SHADOW_RECEIVER )
 		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( CVertexBlendType::NONE );
@@ -777,7 +777,7 @@ bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int sub
 // - If the mesh of the entity is skeletal, a blend transforms loader is set.
 void CreateMeshRenderMethod( CEntityHandle<>& entity, 
 							 ShaderHandle& shader,
-							 CShaderTechniqueHandle& tech )
+							 ShaderTechniqueHandle& tech )
 {
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
 
@@ -803,7 +803,7 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 // - Creates a shader
 void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
                                       ShaderHandle& shader,
-                                      CShaderTechniqueHandle& tech )
+                                      ShaderTechniqueHandle& tech )
 {
 	if( shader.IsLoaded()
 	 && tech.GetTechniqueName()

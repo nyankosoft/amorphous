@@ -456,9 +456,9 @@ bool CHLSLShaderManager::RegisterTechnique( const unsigned int id, const char *p
 
 /// called if SetTechnique() is called with an unregistered technique handle
 /// Through the checks in SetTechnique(), the value of tech_index is known to be
-/// either CShaderTechniqueHandle::UNINITIALIZED
-/// or CShaderTechniqueHandle::INVALID_INDEX
-HRESULT CHLSLShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
+/// either ShaderTechniqueHandle::UNINITIALIZED
+/// or ShaderTechniqueHandle::INVALID_INDEX
+HRESULT CHLSLShaderManager::SetNewTechnique( ShaderTechniqueHandle& tech_handle )
 {
 //	const int tech_index = tech_handle.GetTechniqueIndex();
 
@@ -517,7 +517,7 @@ HRESULT CHLSLShaderManager::SetNewTechnique( CShaderTechniqueHandle& tech_handle
 			}
 		}
 	}
-	else //( tech_index == CShaderTechniqueHandle::INVALID_INDEX )
+	else //( tech_index == ShaderTechniqueHandle::INVALID_INDEX )
 	{
 		return E_FAIL;
 	}

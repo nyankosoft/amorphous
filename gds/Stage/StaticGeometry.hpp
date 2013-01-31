@@ -44,7 +44,7 @@ public:
 
 	ShaderResourceDesc m_Desc;
 
-	std::vector<CShaderTechniqueHandle> m_vecTechniqueHandle;
+	std::vector<ShaderTechniqueHandle> m_vecTechniqueHandle;
 
 	/// used during runtime
 	/// - Not serialized.

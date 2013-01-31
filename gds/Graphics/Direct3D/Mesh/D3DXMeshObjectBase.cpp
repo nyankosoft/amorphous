@@ -687,7 +687,7 @@ void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 {
 	PROFILE_FUNCTION();
 
-	vector<CShaderTechniqueHandle> empty_shader_technique_array;
+	vector<ShaderTechniqueHandle> empty_shader_technique_array;
 	RenderSubsets( rShaderMgr, vecMaterialIndex, empty_shader_technique_array );
 }
 */
@@ -698,7 +698,7 @@ void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 {
 	PROFILE_FUNCTION();
 
-//	vector<CShaderTechniqueHandle> empty_shader_technique_array;
+//	vector<ShaderTechniqueHandle> empty_shader_technique_array;
 //	RenderSubsets( rShaderMgr, vecMaterialIndex, empty_shader_technique_array );
 	RenderSubsets( rShaderMgr, paMaterialIndex, NULL, num_indices );
 }
@@ -706,13 +706,13 @@ void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 /*
 void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 										 const std::vector<int>& vecMaterialIndex,
-										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+										 std::vector<ShaderTechniqueHandle>& vecShaderTechnique )
 {}
 */
 
 void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 										 const int *paMaterialIndex,
-										 CShaderTechniqueHandle *paShaderTechnique,
+										 ShaderTechniqueHandle *paShaderTechnique,
 										 int num_indices )
 										 // Also need CMeshMaterial *pMaterials = NULL?
 										 // rationale: render the same model with different materials
@@ -782,7 +782,7 @@ void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 void CD3DXMeshObjectBase::RenderSubsetsCg( LPD3DXBASEMESH pMesh,
 										   ShaderManager& rShaderMgr,
 										   const int *paMaterialIndex,
-										   CShaderTechniqueHandle *paShaderTechnique,
+										   ShaderTechniqueHandle *paShaderTechnique,
 										   int num_indices )
 										   // Also need CMeshMaterial *pMaterials = NULL?
 										   // rationale: render the same model with different materials

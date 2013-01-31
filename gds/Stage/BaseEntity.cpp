@@ -1258,7 +1258,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 		{
 			LOG_PRINT_VERBOSE( fmt_string("setting a shader technique: %s %s", m_strName.c_str(), str.c_str()) );
 
-			C2DArray<CShaderTechniqueHandle>& rShaderTechTable = m_MeshProperty.m_ShaderTechnique;
+			C2DArray<ShaderTechniqueHandle>& rShaderTechTable = m_MeshProperty.m_ShaderTechnique;
 			if( strCurrentLine[ strlen("SHADERTECH") ] != '.' )
 			{
 				// single material, no shader LOD

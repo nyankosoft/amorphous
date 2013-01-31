@@ -218,7 +218,7 @@ bool MeshImpl::LoadFromFile( const std::string& filename, U32 option_flags )
 }
 
 
-void MeshImpl::Render( ShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+void MeshImpl::Render( ShaderManager& rShaderMgr, std::vector<ShaderTechniqueHandle>& vecShaderTechnique )
 {
 	const int num_shader_techniques = (int)vecShaderTechnique.size();
 	const int num_loops

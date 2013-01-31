@@ -69,7 +69,7 @@ inline Result::Name CD3DCgEffect::SetTechnique( const unsigned int id )
 }
 
 
-inline Result::Name CD3DCgEffect::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CD3DCgEffect::SetTechnique( ShaderTechniqueHandle& tech_handle )
 {
 	const int tech_index = GetTechniqueIndex( tech_handle );
 

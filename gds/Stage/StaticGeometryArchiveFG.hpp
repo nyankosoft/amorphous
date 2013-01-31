@@ -56,7 +56,7 @@ public:
 	int m_StartIndex;
 	int m_EndIndex; ///< index of the last mesh (inclusive)
 
-	std::vector<CShaderTechniqueHandle> m_vecShaderTechnique;
+	std::vector<ShaderTechniqueHandle> m_vecShaderTechnique;
 
 	/// depth shift value = near-clip dist * m_fDepthShiftFactor
 	/// higher shift value increases the likelihood that polygons

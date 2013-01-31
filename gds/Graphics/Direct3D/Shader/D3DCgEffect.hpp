@@ -60,7 +60,7 @@ public:
 
 //	inline Result::Name SetTechnique( const unsigned int id );
 
-//	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
+//	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 

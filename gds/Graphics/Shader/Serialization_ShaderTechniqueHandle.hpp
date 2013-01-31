@@ -13,7 +13,7 @@ namespace serialization
 {
 
 
-inline IArchive& operator & ( IArchive& ar, CShaderTechniqueHandle& rShaderTechniqueHandle )
+inline IArchive& operator & ( IArchive& ar, ShaderTechniqueHandle& rShaderTechniqueHandle )
 {
 	std::string strTemp;
 	if( ar.GetMode() == IArchive::MODE_INPUT )

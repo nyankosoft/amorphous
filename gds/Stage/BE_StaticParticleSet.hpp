@@ -32,7 +32,7 @@ private:
 
     LPDIRECT3DVERTEXDECLARATION9 m_pParticleVertexDeclaration;
 */
-	CShaderTechniqueHandle m_aShaderTechHandle[2];
+	ShaderTechniqueHandle m_aShaderTechHandle[2];
 
 	void InitStaticParticleSetMesh();
 

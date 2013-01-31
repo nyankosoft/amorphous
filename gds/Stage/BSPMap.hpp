@@ -128,7 +128,7 @@ private:
 	LPDIRECT3DTEXTURE9 m_pLightmap_PL;	// lightmap texture for point light
 	LPDIRECT3DTEXTURE9 m_pNormalmap_PL;	// normal map texture for point light
 
-	CShaderTechniqueHandle m_aShaderTechHandle[NUM_SHADER_TECHNIQUE_TYPES];
+	ShaderTechniqueHandle m_aShaderTechHandle[NUM_SHADER_TECHNIQUE_TYPES];
 
 	ShaderHandle m_Shader;
 

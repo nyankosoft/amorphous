@@ -53,15 +53,15 @@ private:
 
 protected:
 
-	int GetTechniqueIndex( CShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex(); }
+	int GetTechniqueIndex( ShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex(); }
 
-	void SetInvalidTechnique( CShaderTechniqueHandle& tech_handle ) { tech_handle.SetTechniqueIndex( CShaderTechniqueHandle::INVALID_INDEX ); }
+	void SetInvalidTechnique( ShaderTechniqueHandle& tech_handle ) { tech_handle.SetTechniqueIndex( ShaderTechniqueHandle::INVALID_INDEX ); }
 
-	void SetTechniqueIndex( CShaderTechniqueHandle& tech_handle, int index ) { return tech_handle.SetTechniqueIndex( index ); }
+	void SetTechniqueIndex( ShaderTechniqueHandle& tech_handle, int index ) { return tech_handle.SetTechniqueIndex( index ); }
 
-	bool IsUninitializedTechnique( CShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == CShaderTechniqueHandle::UNINITIALIZED; }
+	bool IsUninitializedTechnique( ShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == ShaderTechniqueHandle::UNINITIALIZED; }
 
-	bool IsInvalidTechnique( CShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == CShaderTechniqueHandle::INVALID_INDEX; }
+	bool IsInvalidTechnique( ShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == ShaderTechniqueHandle::INVALID_INDEX; }
 
 	template<typename T>
 	T GetParameterValue( CShaderParameter<T> param ) { return param.m_Parameter; }
@@ -137,7 +137,7 @@ public:
 
 	virtual Result::Name SetTechnique( const unsigned int id ) { return Result::UNKNOWN_ERROR; }
 
-	virtual Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
+	virtual Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
 
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 

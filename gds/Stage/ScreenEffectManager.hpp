@@ -181,7 +181,7 @@ private:
 
 	CScreenEffectTargetSceneRenderer *m_pTargetSceneRenderer;
 
-	CShaderTechniqueHandle m_DefaultShaderTechnique;
+	ShaderTechniqueHandle m_DefaultShaderTechnique;
 
 	bool m_bPostProcessEffectEnabled; ///< used to temporarily hold whether post process is enabled during one CreateRenderTask() & Render() turn
 

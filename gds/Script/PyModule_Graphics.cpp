@@ -106,8 +106,8 @@ BOOST_PYTHON_MODULE(gfx)
 		.def( "Load", LoadShaderFromResourcePath,       ( python::arg("resource_path") ) )
 	;
 
-	class_<CShaderTechniqueHandle>("ShaderTechniqueHandle")
-		.def( "SetTechniqueName", &CShaderTechniqueHandle::SetTechniqueName, ( python::arg("name") ) )
+	class_<ShaderTechniqueHandle>("ShaderTechniqueHandle")
+		.def( "SetTechniqueName", &ShaderTechniqueHandle::SetTechniqueName, ( python::arg("name") ) )
 	;
 
 //	class_< CGraphicsElementWrap, boost::shared_ptr<CGraphicsElement> >( "GraphicsElement" )

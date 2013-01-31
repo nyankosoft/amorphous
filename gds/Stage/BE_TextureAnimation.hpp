@@ -46,7 +46,7 @@ private:
 	CRectSetMesh m_FrontRectMesh;
 	CRectSetMesh m_RearRectMesh;
 
-	CShaderTechniqueHandle m_aShaderTechHandle[2];
+	ShaderTechniqueHandle m_aShaderTechHandle[2];
 
 public:
 

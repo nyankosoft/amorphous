@@ -77,7 +77,7 @@ public:
 //	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
 
 	inline Result::Name SetTechnique( const unsigned int id );
-	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
+	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 
 	void SetParam( CShaderParameter< std::vector<float> >& float_param );
 
@@ -228,7 +228,7 @@ inline Result::Name CGLFixedFunctionPipelineManager::SetTechnique( const unsigne
 }
 
 
-inline Result::Name CGLFixedFunctionPipelineManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CGLFixedFunctionPipelineManager::SetTechnique( ShaderTechniqueHandle& tech_handle )
 {
 /*	const int tech_index = tech_handle.GetTequniqueIndex();
 

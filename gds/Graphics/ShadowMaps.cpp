@@ -104,7 +104,7 @@ FlatShadowMap::FlatShadowMap()
 }
 
 
-CShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
@@ -119,7 +119,7 @@ CShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( CVertexBlendType::Nam
 }
 
 
-CShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( CVertexBlendType::Name vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{

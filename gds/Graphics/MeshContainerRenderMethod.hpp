@@ -37,7 +37,7 @@ public:
 	ShaderResourceDesc m_ShaderDesc;
 
 	ShaderHandle m_Shader;
-	CShaderTechniqueHandle m_Technique;
+	ShaderTechniqueHandle m_Technique;
 
 	/// Need to be set at runtime
 	std::vector< boost::shared_ptr<CShaderParamsLoader> > m_vecpShaderParamsLoader;

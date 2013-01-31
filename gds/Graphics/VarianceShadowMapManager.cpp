@@ -262,7 +262,7 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 
 	// horizontally blur the shadowmap
 
-	CShaderTechniqueHandle blur_h;
+	ShaderTechniqueHandle blur_h;
 	blur_h.SetTechniqueName( "GaussianBlurH" );
 	rShaderMgr.SetTechnique( blur_h );
 
@@ -308,7 +308,7 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 
 	hr = pd3dDev->SetRenderTarget( 0, pSurf );
 
-	CShaderTechniqueHandle blur_v;
+	ShaderTechniqueHandle blur_v;
 	blur_v.SetTechniqueName( "GaussianBlurV" );
 	rShaderMgr.SetTechnique( blur_v );
 

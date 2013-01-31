@@ -106,7 +106,7 @@ private:
 	template<typename T>
 	inline int RegisterCgParam( CShaderParameter<T>& param );
 
-	Result::Name SetNewTechnique( CShaderTechniqueHandle& tech_handle );
+	Result::Name SetNewTechnique( ShaderTechniqueHandle& tech_handle );
 
 	void UpdateVacantTechniqueIndex();
 
@@ -132,7 +132,7 @@ public:
 
 	inline Result::Name SetTechnique( const unsigned int id );
 
-	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
+	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 
 	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 
@@ -249,7 +249,7 @@ inline Result::Name CCgEffectBase::SetTechnique( const unsigned int id )
 }
 
 
-inline Result::Name CCgEffectBase::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CCgEffectBase::SetTechnique( ShaderTechniqueHandle& tech_handle )
 {
 	const int tech_index = GetTechniqueIndex( tech_handle );
 

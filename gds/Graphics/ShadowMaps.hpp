@@ -176,8 +176,8 @@ public:
 	virtual void UpdateSpotlight( const Spotlight& light ) {}
 //	virtual void UpdateLight( const CSpotLight& light ) {}
 
-	virtual CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
-	virtual CShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
+	virtual ShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
+	virtual ShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE ) = 0;
 
 	virtual LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return NULL; }
 
@@ -205,10 +205,10 @@ class FlatShadowMap : public ShadowMap
 {
 protected:
 
-	CShaderTechniqueHandle m_ShadowMapTechnique;
-	CShaderTechniqueHandle m_DepthTestTechnique;
-	CShaderTechniqueHandle m_VertexBlendShadowMapTechnique;
-	CShaderTechniqueHandle m_VertexBlendDepthTestTechnique;
+	ShaderTechniqueHandle m_ShadowMapTechnique;
+	ShaderTechniqueHandle m_DepthTestTechnique;
+	ShaderTechniqueHandle m_VertexBlendShadowMapTechnique;
+	ShaderTechniqueHandle m_VertexBlendDepthTestTechnique;
 
 	/// Texture to which the shadow map is rendered.
 	/// Geometries that cast shadows to others (=shadow casters)
@@ -237,8 +237,8 @@ public:
 
 	virtual ~FlatShadowMap() {}
 
-	CShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type );
-	CShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type );
+	ShaderTechniqueHandle& ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type );
+	ShaderTechniqueHandle& DepthTestTechnique( CVertexBlendType::Name vertex_blend_type );
 
 	virtual bool CreateShadowMapTextures();
 

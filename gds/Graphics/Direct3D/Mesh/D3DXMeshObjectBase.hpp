@@ -165,17 +165,17 @@ public:
 	/// - use different shader techniques for each material
 //	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex,
-//								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+//								std::vector<ShaderTechniqueHandle>& vecShaderTechnique );
 
 	void RenderSubsets( ShaderManager& rShaderMgr,
 		                const int *paMaterialIndex,
-						CShaderTechniqueHandle *paShaderTechnique,
+						ShaderTechniqueHandle *paShaderTechnique,
 						int num_indices );
 
 	void RenderSubsetsCg( LPD3DXBASEMESH pMesh,
 		                  ShaderManager& rShaderMgr,
 		                  const int *paMaterialIndex,
-						  CShaderTechniqueHandle *paShaderTechnique,
+						  ShaderTechniqueHandle *paShaderTechnique,
 						  int num_indices );
 
 	/// renders subsets of the mesh with the current shader technique
@@ -197,7 +197,7 @@ public:
 	/// \param vecShaderTechnique shader techniques for each material
 	/// - What to do if the single shader technique is applied for all materials
 	///   - shader_mgr.SetShaderTechnique() and call CD3DXMeshObjectBase::Render( shader_mgr )
-	inline void Render( ShaderManager& rShaderMgr, std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+	inline void Render( ShaderManager& rShaderMgr, std::vector<ShaderTechniqueHandle>& vecShaderTechnique );
 
 	/// render object by using the fixed function pipeline
 	void Render();
@@ -264,7 +264,7 @@ inline void CD3DXMeshObjectBase::Render( ShaderManager& rShaderMgr )
 
 
 inline void CD3DXMeshObjectBase::Render( ShaderManager& rShaderMgr,
-										 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+										 std::vector<ShaderTechniqueHandle>& vecShaderTechnique )
 {
 	MeshImpl::RenderSubsets( rShaderMgr, m_vecFullMaterialIndices, vecShaderTechnique );
 }

@@ -889,7 +889,7 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	if( pShaderManager )
 	{
 		// render particle via programmable shader
-		CShaderTechniqueHandle tech;
+		ShaderTechniqueHandle tech;
 		tech.SetTechniqueName( "Particle" );
 		pShaderManager->SetTechnique( tech );
 		pShaderManager->SetWorldTransform( Matrix44Identity() );

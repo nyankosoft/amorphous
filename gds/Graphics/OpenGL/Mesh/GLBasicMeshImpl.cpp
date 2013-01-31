@@ -397,7 +397,7 @@ void CGLBasicMeshImpl::BuildVBOs_ARB( C3DMeshModelArchive& archive )
 /// - use different shader techniques for each material
 void CGLBasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 		                     const std::vector<int>& vecMaterialIndex,
-							 std::vector<CShaderTechniqueHandle>& vecShaderTechnique )
+							 std::vector<ShaderTechniqueHandle>& vecShaderTechnique )
 {
 	if( !glDrawRangeElements )
 		return;
@@ -524,7 +524,7 @@ void CGLBasicMeshImpl::Render()
 	}
 	else if( 1 < m_vecTriangleSet.size() )
 	{
-		vector<CShaderTechniqueHandle> shader_techniques( m_vecTriangleSet.size() );
+		vector<ShaderTechniqueHandle> shader_techniques( m_vecTriangleSet.size() );
 		RenderSubsets( FixedFunctionPipelineManager(), m_vecFullMaterialIndices, shader_techniques );
 	}
 

@@ -36,7 +36,7 @@ public:
 
 //	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex,
-//								std::vector<CShaderTechniqueHandle>& vecShaderTechnique );
+//								std::vector<ShaderTechniqueHandle>& vecShaderTechnique );
 
 //	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);

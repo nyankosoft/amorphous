@@ -364,7 +364,7 @@ void ShadowMapManager::RenderShadowReceivers( Camera& camera )
 }
 
 
-CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type )
 {
 /*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 //	HRESULT hr = pEffect->SetTechnique( "ShadowMap" );
@@ -373,7 +373,7 @@ CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertex
 //	if( m_pCurrentShadowMap )
 //		m_Shader.GetShaderManager()->SetTechnique( m_pCurrentShadowMap->ShadowMapTechnique() );
 
-	static CShaderTechniqueHandle s_Null;
+	static ShaderTechniqueHandle s_Null;
 	if( m_pCurrentShadowMap )
 		return m_pCurrentShadowMap->ShadowMapTechnique( vertex_blend_type );
 	else
@@ -381,7 +381,7 @@ CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertex
 }
 
 
-CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type )
 {
 /*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 //	HRESULT hr = pEffect->SetTechnique( "SceneShadowMap" );
@@ -390,7 +390,7 @@ CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVert
 //	if( m_pCurrentShadowMap )
 //		m_Shader.GetShaderManager()->SetTechnique( m_pCurrentShadowMap->DepthTestTechnique() );
 
-	static CShaderTechniqueHandle s_Null;
+	static ShaderTechniqueHandle s_Null;
 	if( m_pCurrentShadowMap )
 		return m_pCurrentShadowMap->DepthTestTechnique( vertex_blend_type );
 	else
@@ -398,9 +398,9 @@ CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVert
 }
 
 
-CShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type )
 {
-	CShaderTechniqueHandle tech;
+	ShaderTechniqueHandle tech;
 	tech.SetTechniqueName( "SceneShadowMap_NonShadowed" );
 
 	return tech;

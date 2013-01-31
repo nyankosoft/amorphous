@@ -43,7 +43,7 @@ public:
 	/// table of shader techniques
 	/// - row:    corresponds to mesh materials
 	/// - column: corresponds to resolution (intended to be shader version of LOD)
-	C2DArray<CShaderTechniqueHandle> m_ShaderTechnique;
+	C2DArray<ShaderTechniqueHandle> m_ShaderTechnique;
 
 	ShaderResourceDesc m_ShaderDesc;
 
@@ -100,7 +100,7 @@ class CMeshContainerNode : public IArchiveObjectBase
 
 	std::vector< boost::shared_ptr<CMeshContainerNode> > m_vecpChild;
 
-	std::vector<CShaderTechniqueHandle> m_vecShaderTechniqueBuffer;
+	std::vector<ShaderTechniqueHandle> m_vecShaderTechniqueBuffer;
 
 private:
 

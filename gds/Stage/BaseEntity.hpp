@@ -117,7 +117,7 @@ protected:
 
 	/// used as a temporary array to hold shader techniques for mesh materials
 	/// - See CBaseEntity::DrawMeshObject()
-	std::vector<CShaderTechniqueHandle> m_vecShaderTechniqueHolder;
+	std::vector<ShaderTechniqueHandle> m_vecShaderTechniqueHolder;
 
 	/// ENTITY_GROUP_MIN is set by default
 	CEntityGroupHandle m_EntityGroup;
@@ -156,12 +156,12 @@ protected:
 	void DrawMeshObject( const Matrix34& world_pose,
 						 BasicMesh *pMeshObject,
 						 const std::vector<int>& vecTargetMaterialIndex,
-						 C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
+						 C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
 						 int ShaderLOD = 0 );
 
 //	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 //		                   SkeletalMesh *pSkeletalMesh,
-//		                   C2DArray<CShaderTechniqueHandle>& rShaderTechHandleTable,
+//		                   C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
 //						   int ShaderLOD = 0 );
 
 	/// \retval 0 shader for highest resolution mesh
@@ -199,7 +199,7 @@ public:
 	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD );
 
 	// made public since alpha entity needs to call this
-	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, CShaderTechniqueHandle& shader_tech );
+	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech );
 
 	/// draws a mesh object.
 	/// For entities that have a single mesh object as their 3D model
@@ -308,7 +308,7 @@ public:
 
 	void InitEntityGraphics( CCopyEntity &entity,
                              ShaderHandle& shader = ShaderHandle(),
-                             CShaderTechniqueHandle& tech = CShaderTechniqueHandle() );
+                             ShaderTechniqueHandle& tech = ShaderTechniqueHandle() );
 
 	virtual void UpdateBaseEntity( float frametime )
 	{

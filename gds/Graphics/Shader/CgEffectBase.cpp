@@ -406,9 +406,9 @@ bool CCgEffectBase::RegisterTechnique( const unsigned int id, const char *pcTech
 
 /// called if SetTechnique() is called with an unregistered technique handle
 /// Through the checks in SetTechnique(), the value of tech_index is known to be
-/// either CShaderTechniqueHandle::UNINITIALIZED
-/// or CShaderTechniqueHandle::INVALID_INDEX
-Result::Name CCgEffectBase::SetNewTechnique( CShaderTechniqueHandle& tech_handle )
+/// either ShaderTechniqueHandle::UNINITIALIZED
+/// or ShaderTechniqueHandle::INVALID_INDEX
+Result::Name CCgEffectBase::SetNewTechnique( ShaderTechniqueHandle& tech_handle )
 {
 //	const int tech_index = tech_handle.GetTechniqueIndex();
 
@@ -466,7 +466,7 @@ Result::Name CCgEffectBase::SetNewTechnique( CShaderTechniqueHandle& tech_handle
 			return Result::UNKNOWN_ERROR;
 		}
 	}
-	else //( tech_index == CShaderTechniqueHandle::INVALID_INDEX )
+	else //( tech_index == ShaderTechniqueHandle::INVALID_INDEX )
 	{
 		return Result::UNKNOWN_ERROR;
 	}

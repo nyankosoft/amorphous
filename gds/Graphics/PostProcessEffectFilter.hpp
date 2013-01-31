@@ -174,7 +174,7 @@ protected:
 	/// default: 0
 	int m_ExtraTexelBorderWidth;
 
-	CShaderTechniqueHandle m_Technique;
+	ShaderTechniqueHandle m_Technique;
 
 	float m_fScalingFactor;
 

@@ -184,7 +184,7 @@ class CHLSLShaderManager : public CD3DShaderManager
 
 private:
 
-	HRESULT SetNewTechnique( CShaderTechniqueHandle& tech_handle );
+	HRESULT SetNewTechnique( ShaderTechniqueHandle& tech_handle );
 
 	void UpdateVacantTechniqueIndex();
 
@@ -237,7 +237,7 @@ public:
 
 	inline Result::Name SetTechnique( const unsigned int id );
 
-	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
+	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 
 	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 
@@ -512,7 +512,7 @@ inline Result::Name CHLSLShaderManager::SetTechnique( const unsigned int id )
 }
 
 
-inline Result::Name CHLSLShaderManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CHLSLShaderManager::SetTechnique( ShaderTechniqueHandle& tech_handle )
 {
 	const int tech_index = GetTechniqueIndex( tech_handle );
 

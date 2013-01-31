@@ -92,7 +92,7 @@ public:
 //	inline void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture );
 
 //	inline Result::Name SetTechnique( const unsigned int id );
-//	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
+//	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 
 	void SetParam( CShaderParameter< std::vector<float> >& float_param );
 
@@ -230,7 +230,7 @@ inline Result::Name CD3DFixedFunctionPipelineManager::SetTechnique( const unsign
 }
 
 
-inline Result::Name CD3DFixedFunctionPipelineManager::SetTechnique( CShaderTechniqueHandle& tech_handle )
+inline Result::Name CD3DFixedFunctionPipelineManager::SetTechnique( ShaderTechniqueHandle& tech_handle )
 {
 	return Result::UNKNOWN_ERROR;
 }

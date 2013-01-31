@@ -162,7 +162,7 @@ public:
 
 	virtual Result::Name SetTechnique( const unsigned int id ) { return Result::UNKNOWN_ERROR; }
 
-	virtual Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
+	virtual Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
 
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 

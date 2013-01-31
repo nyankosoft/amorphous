@@ -14,10 +14,10 @@ namespace amorphous
     even if the shaders have techniques with the same name.
     - One shader technique handle for one shader
 
-  - Use CShaderTechniqueHandle as member variables, not as a local variable,
+  - Use ShaderTechniqueHandle as member variables, not as a local variable,
     otherwise caching mechanism does not work.
 */
-class CShaderTechniqueHandle
+class ShaderTechniqueHandle
 {
 	/// avoid dynamic allocation when the name is short
 	enum eParams { CACHE_SIZE = 24 };
@@ -40,20 +40,20 @@ private:
 
 public:
 
-	CShaderTechniqueHandle() : m_pcName(NULL), m_Index(UNINITIALIZED)
+	ShaderTechniqueHandle() : m_pcName(NULL), m_Index(UNINITIALIZED)
 	{
 		memset( m_acName, '\0', sizeof(m_acName) );
 	}
 
-	inline CShaderTechniqueHandle( const CShaderTechniqueHandle& handle );
+	inline ShaderTechniqueHandle( const ShaderTechniqueHandle& handle );
 
-	~CShaderTechniqueHandle() { if( m_pcName ) delete [] m_pcName; }
+	~ShaderTechniqueHandle() { if( m_pcName ) delete [] m_pcName; }
 
 	inline const char *GetTechniqueName() const;
 
 	inline void SetTechniqueName( const char *pcName );
 
-	inline const CShaderTechniqueHandle& operator=( const CShaderTechniqueHandle& handle );
+	inline const ShaderTechniqueHandle& operator=( const ShaderTechniqueHandle& handle );
 
 	friend class ShaderManager;
 };
@@ -61,7 +61,7 @@ public:
 //============================= inline implementations =============================
 
 
-inline CShaderTechniqueHandle::CShaderTechniqueHandle( const CShaderTechniqueHandle& handle )
+inline ShaderTechniqueHandle::ShaderTechniqueHandle( const ShaderTechniqueHandle& handle )
 {
 	m_pcName = NULL;
 	m_Index = UNINITIALIZED;
@@ -71,7 +71,7 @@ inline CShaderTechniqueHandle::CShaderTechniqueHandle( const CShaderTechniqueHan
 }
 
 
-inline const char *CShaderTechniqueHandle::GetTechniqueName() const
+inline const char *ShaderTechniqueHandle::GetTechniqueName() const
 {
 	if( m_pcName )
 		return m_pcName;
@@ -80,7 +80,7 @@ inline const char *CShaderTechniqueHandle::GetTechniqueName() const
 }
 
 
-inline void CShaderTechniqueHandle::SetTechniqueName( const char *pcName )
+inline void ShaderTechniqueHandle::SetTechniqueName( const char *pcName )
 {
 	// clear the current technique name
 	if( m_pcName )
@@ -114,7 +114,7 @@ inline void CShaderTechniqueHandle::SetTechniqueName( const char *pcName )
 }
 
 
-inline const CShaderTechniqueHandle& CShaderTechniqueHandle::operator=( const CShaderTechniqueHandle& handle )
+inline const ShaderTechniqueHandle& ShaderTechniqueHandle::operator=( const ShaderTechniqueHandle& handle )
 {
 	m_Index = handle.m_Index;
 

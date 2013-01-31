@@ -686,7 +686,7 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 		s_tex.Load( "debug/test_images/Meerkat_256.jpg" );
 		pShader->SetTexture( tex_index, s_tex );
 */
-		CShaderTechniqueHandle t;
+		ShaderTechniqueHandle t;
 		t.SetTechniqueName( "AdaptedLuminanceDisplay" );
 		pShader->SetTechnique( t );
 		pShader->GetEffect()->CommitChanges();

@@ -47,7 +47,7 @@ public:
 //	inline void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture );
 
 //	inline Result::Name SetTechnique( const unsigned int id );
-//	inline Result::Name SetTechnique( CShaderTechniqueHandle& tech_handle );
+//	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 //	GLXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
 

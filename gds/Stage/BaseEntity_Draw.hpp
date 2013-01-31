@@ -21,7 +21,7 @@ extern void InitMeshRenderMethod( CCopyEntity &entity,
 
 extern void CreateMeshRenderMethod( CEntityHandle<>& entity, 
 							        ShaderHandle& shader,
-							        CShaderTechniqueHandle& tech );
+							        ShaderTechniqueHandle& tech );
 
 extern void UpdateEntityForRendering( CCopyEntity& entity );
 
