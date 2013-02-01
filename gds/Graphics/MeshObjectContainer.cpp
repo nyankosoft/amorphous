@@ -164,9 +164,9 @@ void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 		else
 		{
 			// try to load generic shader attributes
-			CGenericShaderDesc desc;
+			GenericShaderDesc desc;
 //			LoadFromXMLNode( shader_node, desc );
-			m_ShaderDesc.pShaderGenerator.reset( new CGenericShaderGenerator(desc) );
+			m_ShaderDesc.pShaderGenerator.reset( new GenericShaderGenerator(desc) );
 		}
 		shader_node.GetAttributeValue("path",     m_ShaderDesc.ResourcePath );
 

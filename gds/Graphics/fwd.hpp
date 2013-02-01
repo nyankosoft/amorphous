@@ -32,7 +32,7 @@ class MeshGenerator;
 class BoxMeshGenerator;
 class CResourceLoadingStateHolder;
 class ShaderGenerator;
-class CGenericShaderDesc;
+class GenericShaderDesc;
 
 class Light;
 class AmbientLight;

@@ -347,9 +347,9 @@ bool CEntityRenderManager::LoadFallbackShader()
 //	}
 
 	ShaderResourceDesc desc;
-	CGenericShaderDesc shader_desc;
+	GenericShaderDesc shader_desc;
 	shader_desc.Specular = CSpecularSource::UNIFORM;
-	desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_desc) );
+	desc.pShaderGenerator.reset( new GenericShaderGenerator(shader_desc) );
 	bool loaded = m_FallbackShader.Load( desc );
 
 	if( !loaded )

@@ -5,7 +5,7 @@
 namespace amorphous
 {
 
-class CLightingTechnique
+class ShaderLightingTechnique
 {
 public:
 	enum Name
@@ -17,7 +17,7 @@ public:
 };
 
 
-class CShaderLightingType
+class ShaderLightingType
 {
 public:
 	enum Name
@@ -106,12 +106,12 @@ public:
 };
 
 
-class CGenericShaderDesc
+class GenericShaderDesc
 {
 public:
 
-	CLightingTechnique::Name LightingTechnique;
-	CShaderLightingType::Name ShaderLightingType; // per-vertex / per-pixel
+	ShaderLightingTechnique::Name LightingTechnique;
+	ShaderLightingType::Name LightingType; // per-vertex / per-pixel
 	CSpecularSource::Name Specular;
 	CVertexBlendType::Name VertexBlendType;
 	CAlphaBlendType::Name AlphaBlend;
@@ -124,10 +124,10 @@ public:
 
 public:
 
-	CGenericShaderDesc()
+	GenericShaderDesc()
 		:
-	LightingTechnique(CLightingTechnique::HEMISPHERIC),
-	ShaderLightingType(CShaderLightingType::PER_PIXEL),
+	LightingTechnique(ShaderLightingTechnique::HEMISPHERIC),
+	LightingType(ShaderLightingType::PER_PIXEL),
 	Specular(CSpecularSource::NONE),
 	VertexBlendType(CVertexBlendType::NONE),
 	AlphaBlend(CAlphaBlendType::NONE),
@@ -139,10 +139,10 @@ public:
 	NumSpotLights(-1)
 	{}
 
-	bool operator==( const CGenericShaderDesc& rhs ) const
+	bool operator==( const GenericShaderDesc& rhs ) const
 	{
 		if( LightingTechnique    == rhs.LightingTechnique
-		 && ShaderLightingType   == rhs.ShaderLightingType
+		 && LightingType         == rhs.LightingType
 		 && Specular             == rhs.Specular
 		 && VertexBlendType      == rhs.VertexBlendType
 		 && AlphaBlend           == rhs.AlphaBlend

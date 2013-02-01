@@ -487,10 +487,10 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 
 	//>>> experiment
 	ShaderResourceDesc shader_desc;
-	CGenericShaderDesc gen_shader_desc;
+	GenericShaderDesc gen_shader_desc;
 	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 
 	loaded = m_MeshProperty.m_ShaderHandle.Load( shader_desc ); // Blend transform variables are initilized in this call.
 	m_MeshProperty.m_ShaderTechnique.resize( 1, 1 );

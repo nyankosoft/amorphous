@@ -751,7 +751,7 @@ static const char *GetAlphaBlendTypeMacro( CAlphaBlendType::Name alpha_blend )
 }
 
 
-void LoadShader_HSPerVeretxLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	// per-vetex without specular reflection
 	// Just select the shader for multi lights
@@ -762,7 +762,7 @@ void LoadShader_HSPerVeretxLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffe
 }
 
 
-void LoadShader_HSPerVeretxLighting_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 /*	switch( desc.num_directional_lights )
 	{
@@ -788,7 +788,7 @@ void LoadShader_HSPerVeretxLighting_Specular( CGenericShaderDesc& desc, CEmbedde
 }
 
 
-void LoadShader_HSPerVeretxLighting_QVertexBlend( CGenericShaderDesc& desc,
+void LoadShader_HSPerVeretxLighting_QVertexBlend( GenericShaderDesc& desc,
 												  CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend;
@@ -804,7 +804,7 @@ void LoadShader_HSPerVeretxLighting_QVertexBlend( CGenericShaderDesc& desc,
 }
 
 
-void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 }
 
@@ -852,18 +852,18 @@ static const char *GetEnvMapOptionMacro( CEnvMapOption::Name envmap_option )
 	}
 }
 
-static const char *GetPlanarReflectionOptionMacro( CPlanarReflectionOption::Name pr_option )
+static const char *GetPlanarReflectionOptionMacro( PlanarReflectionOption::Name pr_option )
 {
 	switch( pr_option )
 	{
-	case CPlanarReflectionOption::NONE:         return "#define PLANAR_REFLECTION__NONE\n";
-	case CPlanarReflectionOption::FLAT:         return "#define PLANAR_REFLECTION__FLAT\n";
-	case CPlanarReflectionOption::PERTURBED:    return "#define PLANAR_REFLECTION__PERTURBED\n";
+	case PlanarReflectionOption::NONE:         return "#define PLANAR_REFLECTION__NONE\n";
+	case PlanarReflectionOption::FLAT:         return "#define PLANAR_REFLECTION__FLAT\n";
+	case PlanarReflectionOption::PERTURBED:    return "#define PLANAR_REFLECTION__PERTURBED\n";
 	default: return "#define PLANAR_REFLECTION__NONE\n";
 	}
 }
 
-void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
 	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
@@ -879,7 +879,7 @@ void LoadShader_HSPerPixelLighting_Specular( CGenericShaderDesc& desc, CEmbedded
 }
 
 
-void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs;
 	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs;
@@ -892,13 +892,13 @@ void LoadShader_HSPerPixelLighting( CGenericShaderDesc& desc, CEmbeddedHLSLEffec
 }
 
 
-void LoadShader_HSPerPixelLighting_QVertexBlend( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting_QVertexBlend( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
-void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular;
 	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
@@ -910,7 +910,7 @@ void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( CGenericShaderDesc& de
 }
 
 /*
-void LoadPerVeretxLightingShader( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadPerVeretxLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
 	switch( desc. )
 	{
@@ -920,11 +920,11 @@ void LoadPerVeretxLightingShader( CGenericShaderDesc& desc, CEmbeddedHLSLEffectD
 }
 */
 
-void LoadHSLightingShader( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
 {
-	switch( desc.ShaderLightingType )
+	switch( desc.LightingType )
 	{
-	case CShaderLightingType::PER_VERTEX:
+	case ShaderLightingType::PER_VERTEX:
 		if( desc.VertexBlendType == CVertexBlendType::NONE )
 		{
 			if( desc.Specular == CSpecularSource::NONE )
@@ -942,7 +942,7 @@ void LoadHSLightingShader( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& de
 		}
 		break;
 
-	case CShaderLightingType::PER_PIXEL:
+	case ShaderLightingType::PER_PIXEL:
 		if( desc.VertexBlendType == CVertexBlendType::NONE )
 		{
 			if( desc.Specular == CSpecularSource::NONE )
@@ -966,7 +966,7 @@ void LoadHSLightingShader( CGenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& de
 }
 
 
-Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std::string& hlsl_effect )
+Result::Name CEmbeddedGenericHLSL::GenerateShader( GenericShaderDesc& desc, std::string& hlsl_effect )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -1044,7 +1044,7 @@ Result::Name CEmbeddedGenericHLSL::GenerateShader( CGenericShaderDesc& desc, std
 }
 
 /*
-ShaderHandle GetGenericShader( CGenericShaderDesc& desc )
+ShaderHandle GetGenericShader( GenericShaderDesc& desc )
 {
 	ShaderHandle handle
 	bool res = Get( desc, handle );

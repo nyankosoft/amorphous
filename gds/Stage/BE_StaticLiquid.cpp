@@ -78,11 +78,11 @@ void CBE_StaticLiquid::Init()
 
 	CSubsetRenderMethod& render_method = m_MeshProperty.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 
-	CGenericShaderDesc shader_desc;
+	GenericShaderDesc shader_desc;
 	shader_desc.PlanarReflection = CPlanarReflectionOption::PERTURBED;
 
 	ShaderResourceDesc& desc = render_method.m_ShaderDesc;
-	desc.pShaderGenerator.reset( new CGenericShaderGenerator( shader_desc ) );
+	desc.pShaderGenerator.reset( new GenericShaderGenerator( shader_desc ) );
 
 //	bool shader_loaded = shader.Load( desc );
 

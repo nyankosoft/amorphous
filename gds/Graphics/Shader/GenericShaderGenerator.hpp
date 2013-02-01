@@ -12,18 +12,18 @@ namespace amorphous
 {
 
 
-class CGenericShaderGenerator : public ShaderGenerator
+class GenericShaderGenerator : public ShaderGenerator
 {
-	CGenericShaderDesc m_Desc;
+	GenericShaderDesc m_Desc;
 
 public:
 
-	CGenericShaderGenerator( const CGenericShaderDesc& desc )
+	GenericShaderGenerator( const GenericShaderDesc& desc )
 		:
 	m_Desc(desc)
 	{}
 
-//	~CGenericShaderGenerator() {}
+//	~GenericShaderGenerator() {}
 
 	void GetShader( std::string& shader )
 	{
@@ -34,7 +34,7 @@ public:
 
 	bool IsSharableWith( const ShaderGenerator& other ) const
 	{
-		const CGenericShaderGenerator *pOther = dynamic_cast<const CGenericShaderGenerator *>(&other);
+		const GenericShaderGenerator *pOther = dynamic_cast<const GenericShaderGenerator *>(&other);
 		if( pOther
 		 && pOther->m_Desc == m_Desc )
 		{
@@ -44,7 +44,7 @@ public:
 			return false;
 	}
 
-	const CGenericShaderDesc& GetGenericShaderDesc() const { return m_Desc; }
+	const GenericShaderDesc& GetGenericShaderDesc() const { return m_Desc; }
 };
 
 

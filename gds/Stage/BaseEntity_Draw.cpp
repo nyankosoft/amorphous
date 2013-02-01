@@ -733,7 +733,7 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int s
 }
 
 
-bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int subset_index, CGenericShaderDesc& shader_desc )
+bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int subset_index, GenericShaderDesc& shader_desc )
 {
 	if( mesh.GetMaterial(subset_index).m_Mat.fReflection < 0.001f )
 		return false;
@@ -845,7 +845,7 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 	BasicMesh& mesh = *pMesh;
 	const int num_mesh_materials = mesh.GetNumMaterials();
 
-	std::vector<CGenericShaderDesc> shader_descs;
+	std::vector<GenericShaderDesc> shader_descs;
 	shader_descs.resize( num_mesh_materials );
 
 	std::vector<int> mirror_subsets_indices;
@@ -877,7 +877,7 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 				shader_descs[i].Specular = CSpecularSource::NONE;
 		}
 
-		vector< pair< CGenericShaderDesc, vector<unsigned int> > > grouped_descs;
+		vector< pair< GenericShaderDesc, vector<unsigned int> > > grouped_descs;
 		group_elements( shader_descs, grouped_descs );
 
 		// Do a NULL check just in case
@@ -891,7 +891,7 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 			CSubsetRenderMethod& render_method = entity.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 
 			render_method.m_Technique.SetTechniqueName( "Default" );
-			render_method.m_ShaderDesc.pShaderGenerator.reset( new CGenericShaderGenerator( grouped_descs[0].first ) );
+			render_method.m_ShaderDesc.pShaderGenerator.reset( new GenericShaderGenerator( grouped_descs[0].first ) );
 
 //			shader_loaded = render_method.Load();
 			shader_loaded = render_method.m_Shader.Load( render_method.m_ShaderDesc );
