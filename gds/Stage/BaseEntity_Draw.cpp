@@ -120,7 +120,7 @@ static void RestoreOffsetWorldTransform( ShaderManager& rShaderManager )
 }
 
 
-class COffsetWorldTransformLoader : public CShaderParamsLoader
+class COffsetWorldTransformLoader : public ShaderParamsLoader
 {
 	Vector3 m_vCameraPosition;
 
@@ -294,7 +294,7 @@ void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 //		shared_ptr<SkeletalMesh> pSkeletalMesh
 //			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
-		shared_ptr<CBlendTransformsLoader> pBlendMatricesLoader( new CBlendTransformsLoader );//(pSkeletalMesh) );
+		shared_ptr<BlendTransformsLoader> pBlendMatricesLoader( new BlendTransformsLoader );//(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
 	}
 
@@ -309,7 +309,7 @@ static void InitShadowCasterReceiverSettings( shared_ptr<SkeletalMesh> pSkeletal
 /*	if( !pSkeletalMesh )
 		return;
 
-	shared_ptr<CBlendTransformsLoader> pLoader( new CBlendTransformsLoader );
+	shared_ptr<BlendTransformsLoader> pLoader( new BlendTransformsLoader );
 	pLoader->SetSkeletalMesh( pSkeletalMesh );
 	mesh_property.m_pSkeletalShadowCasterRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLoader );
 	mesh_property.m_pSkeletalShadowReceiverRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pLoader );
@@ -630,9 +630,9 @@ void SetLightsToShader( CCopyEntity& entity, ShaderManager& rShaderMgr )
 // sets the following shader params loaders to the render method of an entity
 // - CEntityShaderLightParamsLoader
 //   - Set if the BETYPE_LIGHTING flag is on
-// - CBlendTransformsLoader
+// - BlendTransformsLoader
 //   - Set if pEntity->m_MeshHandle is a skeletal mesh
-void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader )
+void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<BlendTransformsLoader> pBlendTransformsLoader )
 {
 	if( !entity.m_pMeshRenderMethod )
 	{
@@ -660,7 +660,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<CBlendTransformsLoade
 //			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 		if( !pBlendTransformsLoader )
-			pBlendTransformsLoader.reset( new CBlendTransformsLoader() );
+			pBlendTransformsLoader.reset( new BlendTransformsLoader() );
 
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
 	}*/

@@ -262,7 +262,7 @@ public:
 
 	virtual void SetReferenceAlphaValue( float ref_alpha ) = 0;
 
-	virtual Result::Name SetFogParams( const CFogParams& fog_params ) = 0;
+	virtual Result::Name SetFogParams( const FogParams& fog_params ) = 0;
 
 	virtual CullingMode::Name GetCullingMode() { return m_CullMode; }
 

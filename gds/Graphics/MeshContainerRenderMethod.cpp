@@ -325,7 +325,7 @@ void CMeshContainerRenderMethod::RenderMesh( BasicMesh &mesh, const Matrix34& wo
 }
 
 
-void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
+void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader )
 {
 	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
 	{
@@ -350,11 +350,11 @@ void CMeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( bo
 }
 
 
-void CMeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader )
+void CMeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader )
 {
 	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
 	{
-		vector< shared_ptr<CShaderParamsLoader> >::iterator itrParamsLoader
+		vector< shared_ptr<ShaderParamsLoader> >::iterator itrParamsLoader
 			= m_RenderMethodsAndSubsetIndices[i].first.m_vecpShaderParamsLoader.begin();
 		while( itrParamsLoader != m_RenderMethodsAndSubsetIndices[i].first.m_vecpShaderParamsLoader.end() )
 		{
@@ -375,7 +375,7 @@ void CMeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethod
 			 itr != m_vecSubsetNameToRenderMethod[i].end();
 			 itr++ )
 		{
-			vector< shared_ptr<CShaderParamsLoader> >::iterator itrParamsLoader
+			vector< shared_ptr<ShaderParamsLoader> >::iterator itrParamsLoader
 				= itr->second.m_vecpShaderParamsLoader.begin();
 			while( itrParamsLoader != itr->second.m_vecpShaderParamsLoader.end() )
 			{
@@ -419,7 +419,7 @@ void CMeshContainerRenderMethod::BreakMeshRenderMethodsToSubsetRenderMethods( co
 
 void CMeshContainerRenderMethod::RenderMeshContainer( CMeshObjectContainer& mesh_container,
 													 const Matrix34& world_transform )
-													 //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter )
+													 //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
 {
 	RenderMesh( mesh_container.m_MeshObjectHandle, world_transform );
 }
@@ -521,7 +521,7 @@ CMeshContainerNodeRenderMethod::CMeshContainerNodeRenderMethod()
 
 
 void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode& node )//,
-															  //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter )
+															  //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
 {
 	const int num_mesh_containers = node.GetNumMeshContainers();
 	for( int i=0; i<num_mesh_containers; i++ )

@@ -11,13 +11,13 @@ namespace amorphous
 {
 
 
-class CBlendTransformsLoader : public CShaderParamsLoader
+class BlendTransformsLoader : public ShaderParamsLoader
 {
 	std::vector<Transform> m_BlendTransforms;
 
 public:
 
-	CBlendTransformsLoader() {}
+	BlendTransformsLoader() {}
 
 	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
@@ -29,7 +29,7 @@ public:
 };
 
 
-class CBlendMatricesLoader : public CShaderParamsLoader
+class CBlendMatricesLoader : public ShaderParamsLoader
 {
 	std::vector<Matrix44> m_BlendMatrices;
 

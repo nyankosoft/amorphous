@@ -35,7 +35,7 @@ public:
 };
 
 
-class CPostProcessEffectFilterShaderGenerator : public CShaderGenerator
+class CPostProcessEffectFilterShaderGenerator : public ShaderGenerator
 {
 	void GetCombinedShader( std::string& shader );
 

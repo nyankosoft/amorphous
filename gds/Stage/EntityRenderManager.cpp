@@ -129,7 +129,7 @@ std::vector<CPlanarReflectionGroup> s_PlanarReflectionGroups;
 
 
 
-class CCubeTextureParamsLoader : public CShaderParamsLoader
+class CCubeTextureParamsLoader : public ShaderParamsLoader
 {
 	int m_CubeTexIndex;
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
@@ -1344,7 +1344,7 @@ void CEntityRenderManager::CreateRenderTasks( bool create_scene_render_task )
 
 void CEntityRenderManager::UpdateFogParams( const Camera& rCam )
 {
-	CFogParams fog_params;
+	FogParams fog_params;
 
 	float far_clip_margin = 10.0f;
 	fog_params.End = rCam.GetFarClip() - far_clip_margin;

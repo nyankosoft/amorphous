@@ -1,5 +1,5 @@
-#ifndef  __CSimpleBitmapFontData_HPP__
-#define  __CSimpleBitmapFontData_HPP__
+#ifndef  __SimpleBitmapFontData_HPP__
+#define  __SimpleBitmapFontData_HPP__
 
 
 #include <stdlib.h>
@@ -11,13 +11,13 @@ namespace amorphous
 
 /// Stores a fixed pitch, 16-level grayscale font.
 /// - Used to store hardcoded font
-class CSimpleBitmapFontData
+class SimpleBitmapFontData
 {
 public:
 
-//	CSimpleBitmapFontData() {}
+//	SimpleBitmapFontData() {}
 
-	CSimpleBitmapFontData( const char *pName = "", int width = 256, int height = 256, int start_row = 64, int end_row = 255, const char **papTexelRow = NULL )//const char *paTexel = "" )
+	SimpleBitmapFontData( const char *pName = "", int width = 256, int height = 256, int start_row = 64, int end_row = 255, const char **papTexelRow = NULL )//const char *paTexel = "" )
 		:
 	m_pName(pName),
 	m_Width(width),
@@ -30,7 +30,7 @@ public:
 //		m_vecpTexelRow.resize( end_row - start_row + 1 );
 	}
 
-	~CSimpleBitmapFontData() {}
+	~SimpleBitmapFontData() {}
 
 	const char *m_pName;
 	const int m_Width;
@@ -47,4 +47,4 @@ public:
 
 
 
-#endif // __CSimpleBitmapFontData_HPP__
+#endif // __SimpleBitmapFontData_HPP__

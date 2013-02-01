@@ -8,7 +8,7 @@
 namespace amorphous
 {
 
-extern CSimpleBitmapFontData g_BitstreamVeraSansMono_Bold_256;
+extern SimpleBitmapFontData g_BitstreamVeraSansMono_Bold_256;
 
 } // namespace amorphous
 

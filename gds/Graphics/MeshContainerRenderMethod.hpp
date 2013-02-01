@@ -15,11 +15,11 @@ namespace amorphous
 {
 
 
-class CShaderParamsLoader
+class ShaderParamsLoader
 {
 public:
 
-	virtual ~CShaderParamsLoader() {}
+	virtual ~ShaderParamsLoader() {}
 
 	virtual void UpdateShaderParams( ShaderManager& rShaderMgr ) = 0;
 
@@ -40,7 +40,7 @@ public:
 	ShaderTechniqueHandle m_Technique;
 
 	/// Need to be set at runtime
-	std::vector< boost::shared_ptr<CShaderParamsLoader> > m_vecpShaderParamsLoader;
+	std::vector< boost::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
 
 public:
 
@@ -133,7 +133,7 @@ public:
 
 	void RenderMeshContainer( CMeshObjectContainer& mesh_container,
 		                      const Matrix34& world_transform );
-							  //std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter );
+							  //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
 //	std::vector<CSubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
 
@@ -149,9 +149,9 @@ public:
 
 	std::vector< std::map<std::string,CSubsetRenderMethod> >& SubsetRenderMethodMaps() { return m_vecSubsetNameToRenderMethod; }
 
-	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
+	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
 
-	void RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<CShaderParamsLoader> pShaderParamsLoader );
+	void RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
 
 	/// Creates a copy or copies of render methods at each LoD for subsets whose names are specified by the argument.
 	void BreakMeshRenderMethodsToSubsetRenderMethods( const std::vector<std::string>& vecName );
@@ -185,7 +185,7 @@ public:
 
 //	void RenderMeshContainer( CMeshObjectContainer& mesh_container, int index );
 
-	void RenderMeshContainerNode( CMeshContainerNode& node );//, std::vector< boost::shared_ptr<CShaderParamsLoader> >& vecpShaderParamsWriter );
+	void RenderMeshContainerNode( CMeshContainerNode& node );//, std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
 	//
 	// child nodes

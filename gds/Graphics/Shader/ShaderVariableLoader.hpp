@@ -13,7 +13,7 @@ namespace amorphous
 
 
 template<typename T>
-class CShaderVariableLoader : public CShaderParamsLoader
+class CShaderVariableLoader : public ShaderParamsLoader
 {
 	CShaderParameter<T> m_Parameter;
 

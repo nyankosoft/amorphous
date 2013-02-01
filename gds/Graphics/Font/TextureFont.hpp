@@ -106,9 +106,9 @@ public:
 		           int font_width, int font_height,
 		           int num_tex_divisions_x = 16, int num_tex_divisions_y = 8 );
 
-	bool InitFont( const CSimpleBitmapFontData& bitmap );
+	bool InitFont( const SimpleBitmapFontData& bitmap );
 
-	bool InitFont( const CSimpleBitmapFontData *pBitmap ) { return pBitmap ? InitFont(*pBitmap) : false; }
+	bool InitFont( const SimpleBitmapFontData *pBitmap ) { return pBitmap ? InitFont(*pBitmap) : false; }
 
 	virtual void SetFontSize(int FontWidth, int FontHeight);
 

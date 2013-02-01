@@ -50,7 +50,7 @@ void SetShaderToEntity( CEntityHandle<>& entity, ShaderHandle& shader, ShaderTec
 
 	if( pEntity->GetEntityFlags() & BETYPE_LIGHTING )
 	{
-		vector< shared_ptr<CShaderParamsLoader> >& params_loaders =
+		vector< shared_ptr<ShaderParamsLoader> >& params_loaders =
 			render_method.m_vecpShaderParamsLoader;
 
 		int params_loader_index = -1;
@@ -68,9 +68,9 @@ void SetShaderToEntity( CEntityHandle<>& entity, ShaderHandle& shader, ShaderTec
 //		if( params_loaders.empty() )
 		{
 			// Params loader for lighting was not found - add to the list of params loaders
-			params_loaders.push_back( shared_ptr<CShaderParamsLoader>() );
+			params_loaders.push_back( shared_ptr<ShaderParamsLoader>() );
 			params_loaders.back()
-				= shared_ptr<CShaderParamsLoader>( new CEntityShaderLightParamsLoader(pEntity) );
+				= shared_ptr<ShaderParamsLoader>( new CEntityShaderLightParamsLoader(pEntity) );
 //			params_loader_index = (int)params_loaders.size() - 1;
 		}
 	}

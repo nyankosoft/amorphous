@@ -31,7 +31,7 @@ class TextureFillingAlgorithm;
 class MeshGenerator;
 class BoxMeshGenerator;
 class CResourceLoadingStateHolder;
-class CShaderGenerator;
+class ShaderGenerator;
 class CGenericShaderDesc;
 
 class Light;
@@ -48,11 +48,10 @@ class C2DFrameRect;
 class C2DTriangle;
 class C2DRegularPolygon;
 class FontBase;
-class CFont;
 class TextureFont;
 class TrueTypeTextureFont;
 class UTFFont;
-class CSimpleBitmapFontData;
+class SimpleBitmapFontData;
 class Camera;
 class ShaderManager;
 class ShaderLightManager;
@@ -73,7 +72,7 @@ class CUnitSphere;
 class General3DVertex;
 
 class LensFlare;
-class CFogParams;
+class FogParams;
 
 class TEXCOORD2;
 
@@ -96,8 +95,8 @@ class CMeshObjectContainer;
 class CMeshContainerNode;
 class CMeshContainerRenderMethod;
 class CMeshContainerNodeRenderMethod;
-class CShaderParamsLoader;
-class CBlendTransformsLoader;
+class ShaderParamsLoader;
+class BlendTransformsLoader;
 
 
 class BasicMesh;
@@ -192,7 +191,6 @@ public:
 
 namespace amorphous
 {
-typedef boost::shared_ptr<FontBase> CFontSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
 typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
 typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;

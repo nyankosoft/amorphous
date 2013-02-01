@@ -282,7 +282,7 @@ public:
 
 	CShaderType::Name ShaderType;
 
-	boost::shared_ptr<CShaderGenerator> pShaderGenerator;
+	boost::shared_ptr<ShaderGenerator> pShaderGenerator;
 
 	ShaderResourceDesc()
 		:

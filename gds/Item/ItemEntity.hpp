@@ -42,7 +42,7 @@ class CItemEntity : public CCopyEntity
 	/// Variables used by the item which has a skeletal mesh
 
 	/// Set to m_pMeshBonesUpdateCallback
-	boost::shared_ptr<CBlendTransformsLoader> m_pBlendTransformsLoader;
+	boost::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
 
 	/// Set to CCopyEntity::m_pGraphicsUpdate
 	boost::shared_ptr<CMeshBonesUpdateCallback> m_pMeshBonesUpdateCallback;

@@ -60,13 +60,13 @@ public:
 };
 
 
-class CFontTextureLoader : public TextureFillingAlgorithm
+class FontTextureLoader : public TextureFillingAlgorithm
 {
 	TrueTypeTextureFont *m_pFont;
 
 public:
 
-	CFontTextureLoader( TrueTypeTextureFont *pFont )
+	FontTextureLoader( TrueTypeTextureFont *pFont )
 		:
 	m_pFont(pFont)
 	{}
@@ -89,7 +89,7 @@ private:
 
 	std::string m_FontFilepath;
 
-	boost::shared_ptr<CFontTextureLoader> m_pTextureLoader;
+	boost::shared_ptr<FontTextureLoader> m_pTextureLoader;
 
 	static std::string ms_TextureArchiveDestDirectoryPath;
 
@@ -140,7 +140,7 @@ public:
 
 	static const char *GetTextureFontArchiveExtension() { return "tfd"; }
 
-	friend class CFontTextureLoader;
+	friend class FontTextureLoader;
 };
 
 } // namespace amorphous

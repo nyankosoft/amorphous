@@ -109,7 +109,7 @@ void UTFFont::InitUTFFontInternal()
 
 //	m_BaseHeight = 64;
 
-//	m_pTextureLoader = shared_ptr<CFontTextureLoader>( new CFontTextureLoader(this) );
+//	m_pTextureLoader = shared_ptr<FontTextureLoader>( new FontTextureLoader(this) );
 
 	m_pFreeTypeLibrary.reset( new CFreeTypeLibrary );
 

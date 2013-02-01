@@ -20,7 +20,7 @@ private:
 
 	std::string m_FontFilepath;
 
-//	boost::shared_ptr<CFontTextureLoader> m_pTextureLoader;
+//	boost::shared_ptr<FontTextureLoader> m_pTextureLoader;
 
 	boost::shared_ptr<CFreeTypeLibrary> m_pFreeTypeLibrary;
 
@@ -72,7 +72,7 @@ public:
 
 	virtual int GetFontType() const { return FONTTYPE_UTF; }
 
-	friend class CFontTextureLoader;
+	friend class FontTextureLoader;
 };
 
 } // namespace amorphous

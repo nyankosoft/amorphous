@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CGrayscaleImageLoader : public TextureFillingAlgorithm
+class GrayscaleImageLoader : public TextureFillingAlgorithm
 {
 	const int m_Width;
 	const int m_Height;
@@ -20,7 +20,7 @@ class CGrayscaleImageLoader : public TextureFillingAlgorithm
 
 public:
 
-	CGrayscaleImageLoader( int width, int height, int start_row, int end_row, const char **papTexelRow, int levels = 16 )
+	GrayscaleImageLoader( int width, int height, int start_row, int end_row, const char **papTexelRow, int levels = 16 )
 		:
 	m_Width(width),
 	m_Height(height),

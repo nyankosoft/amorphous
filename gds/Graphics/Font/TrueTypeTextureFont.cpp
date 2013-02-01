@@ -35,7 +35,7 @@ void DrawRect( C2DArray<U8>& dest_buffer, const SRect& rect, U8 color )
 }
 
 
-void CFontTextureLoader::FillTexture( LockedTexture& texture )
+void FontTextureLoader::FillTexture( LockedTexture& texture )
 {
 	C2DArray<U8> dest_bitmap_buffer;
 	m_pFont->CreateFontTextureFromTrueTypeFont( dest_bitmap_buffer );
@@ -116,7 +116,7 @@ void TrueTypeTextureFont::InitTrueTypeFontInternal()
 
 	m_BaseHeight = 64;
 
-	m_pTextureLoader.reset( new CFontTextureLoader(this) );
+	m_pTextureLoader.reset( new FontTextureLoader(this) );
 }
 
 

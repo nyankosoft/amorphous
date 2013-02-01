@@ -105,7 +105,7 @@ void CItemEntity::UpdateGraphicsUpdateCallbacks()
 	if( pSkeletalMesh )
 	{
 		if( !m_pBlendTransformsLoader )
-			m_pBlendTransformsLoader.reset( new CBlendTransformsLoader );
+			m_pBlendTransformsLoader.reset( new BlendTransformsLoader );
 
 		m_pMeshBonesUpdateCallback.reset( new CMeshBonesUpdateCallback );
 		m_pMeshBonesUpdateCallback->SetBlendTransformsLoader( m_pBlendTransformsLoader );

@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CGenericShaderGenerator : public CShaderGenerator
+class CGenericShaderGenerator : public ShaderGenerator
 {
 	CGenericShaderDesc m_Desc;
 
@@ -30,9 +30,9 @@ public:
 		Result::Name res = CEmbeddedGenericHLSL::GenerateShader( m_Desc, shader );
 	}
 
-//	void Accept( CShaderGeneratorVisitor& visitor ) { visitor.Visit( *this ); }
+//	void Accept( ShaderGeneratorVisitor& visitor ) { visitor.Visit( *this ); }
 
-	bool IsSharableWith( const CShaderGenerator& other ) const
+	bool IsSharableWith( const ShaderGenerator& other ) const
 	{
 		const CGenericShaderGenerator *pOther = dynamic_cast<const CGenericShaderGenerator *>(&other);
 		if( pOther

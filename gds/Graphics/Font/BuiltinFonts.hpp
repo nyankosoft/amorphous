@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-inline const CSimpleBitmapFontData *GetBuiltinFontData( const std::string& builtin_font_name )
+inline const SimpleBitmapFontData *GetBuiltinFontData( const std::string& builtin_font_name )
 {
 	if( builtin_font_name == "BitstreamVeraSansMono-Bold-256" )
 	{
@@ -23,7 +23,7 @@ inline const CSimpleBitmapFontData *GetBuiltinFontData( const std::string& built
 }
 
 
-inline const CSimpleBitmapFontData *GetDefaultBuitinFontData()
+inline const SimpleBitmapFontData *GetDefaultBuitinFontData()
 {
 	return GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" );
 }

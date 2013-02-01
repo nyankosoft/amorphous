@@ -19,13 +19,13 @@ class CMeshBonesUpdateCallback : public CGraphicsResourcesUpdateCallback
 
 	MeshHandle m_TargetSkeletalMesh;
 
-	boost::shared_ptr<CBlendTransformsLoader> m_pBlendTransformsLoader;
+	boost::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
 
 public:
 
 	CMeshBonesUpdateCallback() {}
 
-	CMeshBonesUpdateCallback( boost::shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader )
+	CMeshBonesUpdateCallback( boost::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader )
 		:
 	m_pBlendTransformsLoader(pBlendTransformsLoader)
 	{}
@@ -45,7 +45,7 @@ public:
 		return Result::SUCCESS;
 	}
 
-	void SetBlendTransformsLoader( boost::shared_ptr<CBlendTransformsLoader> pBlendTransformsLoader ) { m_pBlendTransformsLoader = pBlendTransformsLoader; }
+	void SetBlendTransformsLoader( boost::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader ) { m_pBlendTransformsLoader = pBlendTransformsLoader; }
 
 	/// Update the blend transforms stored in the blend transforms loader.
 	void UpdateGraphics()

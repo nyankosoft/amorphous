@@ -344,7 +344,7 @@ static inline int ToGLFogMode( FogMode::Name fog_mode )
 }
 
 
-Result::Name CGLGraphicsDevice::SetFogParams( const CFogParams& fog_params )
+Result::Name CGLGraphicsDevice::SetFogParams( const FogParams& fog_params )
 {
 	glFogi(GL_FOG_MODE, ToGLFogMode(fog_params.Mode) );		// Fog Mode
 

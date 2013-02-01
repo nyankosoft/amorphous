@@ -29,7 +29,7 @@ public:
 };
 
 
-class CFogParams
+class FogParams
 {
 public:
 
@@ -43,7 +43,7 @@ public:
 
 public:
 
-	CFogParams()
+	FogParams()
 		:
 	Mode( FogMode::LINEAR ),
 	Color( SFloatRGBAColor::White() ),
@@ -52,7 +52,7 @@ public:
 	Density(1.0f)
 	{}
 
-	virtual ~CFogParams() {}
+	virtual ~FogParams() {}
 
 };
 

@@ -610,7 +610,7 @@ static inline D3DFOGMODE ToD3DFogMode( FogMode::Name fog_mode )
 }
 
 
-Result::Name CDirect3D9::SetFogParams( const CFogParams& fog_params )
+Result::Name CDirect3D9::SetFogParams( const FogParams& fog_params )
 {
 	HRESULT hr = S_OK;
 

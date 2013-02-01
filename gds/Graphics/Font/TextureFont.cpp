@@ -145,12 +145,12 @@ bool TextureFont::InitCharacterRects()
 }
 
 
-bool TextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
+bool TextureFont::InitFont( const SimpleBitmapFontData& bitmap )
 {
 	TextureResourceDesc desc;
 
 	const int grayscale_levels = 16;
-	desc.pLoader.reset( new CGrayscaleImageLoader(
+	desc.pLoader.reset( new GrayscaleImageLoader(
 		bitmap.m_Width,
 		bitmap.m_Height, 
 		bitmap.m_StartRow, 
@@ -158,7 +158,7 @@ bool TextureFont::InitFont( const CSimpleBitmapFontData& bitmap )
 		bitmap.m_papTexelRow,
 		grayscale_levels ) );
 
-	string resource_name = "<CSimpleBitmapFontData name='" + string(bitmap.m_pName) + "'>";
+	string resource_name = "<SimpleBitmapFontData name='" + string(bitmap.m_pName) + "'>";
 
 	desc.ResourcePath = resource_name;
 	desc.Width  = bitmap.m_Width;

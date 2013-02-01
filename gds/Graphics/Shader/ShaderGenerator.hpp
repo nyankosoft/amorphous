@@ -9,14 +9,14 @@ namespace amorphous
 {
 
 
-class CShaderGenerator
+class ShaderGenerator
 {
 
 public:
 
-	CShaderGenerator() {}
+	ShaderGenerator() {}
 
-	virtual ~CShaderGenerator() {}
+	virtual ~ShaderGenerator() {}
 
 	/// HLSL effect file
 	virtual void GetShader( std::string& shader ) {};
@@ -27,7 +27,7 @@ public:
 	/// pixel(fragment) shader
 	virtual void GetPixelShader( std::string& shader ) {};
 
-	virtual bool IsSharableWith( const CShaderGenerator& other ) const { return false; }
+	virtual bool IsSharableWith( const ShaderGenerator& other ) const { return false; }
 };
 
 

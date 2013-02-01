@@ -25,7 +25,7 @@ using namespace serialization;
 class CBSPTree;
 class CMeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
-class CBlendTransformsLoader;
+class BlendTransformsLoader;
 class CRenderContext;
 class CCoreBaseEntitiesLoader;
 
@@ -46,10 +46,10 @@ public:
 
 	boost::shared_ptr<CMeshContainerRenderMethod> m_pMeshRenderMethod;
 
-	std::vector< boost::shared_ptr<CShaderParamsLoader> > m_vecpShaderParamsLoader;
+	std::vector< boost::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
 
 //	boost::shared_ptr<CBlendMatricesLoader> m_pBlendMatricesLoader;
-	boost::shared_ptr<CBlendTransformsLoader> m_pBlendTransformsLoader;
+	boost::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
 
 	boost::shared_ptr<CEntityShaderLightParamsLoader> m_pShaderLightParamsLoader;
 

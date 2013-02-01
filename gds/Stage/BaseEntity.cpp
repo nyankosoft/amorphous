@@ -360,11 +360,11 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 		{
 			// copy light info from parent entity?
 
-/*			vector< shared_ptr<CShaderParamsLoader> >& vecpShaderParamsLoader
+/*			vector< shared_ptr<ShaderParamsLoader> >& vecpShaderParamsLoader
 				= p.second.vecpShaderParamsLoader;
 
 			shared_ptr<CEntityShaderLightParamsLoader> pLightParamsLoader
-				= dynamic_pointer_cast<CEntityShaderLightParamsLoader,CShaderParamsLoader>(vecpShaderParamsLoader[i]);
+				= dynamic_pointer_cast<CEntityShaderLightParamsLoader,ShaderParamsLoader>(vecpShaderParamsLoader[i]);
 
 			if( pLightParamsLoader )
 				pLightParamsLoader->SetEntity( pCopyEnt->Self() );
