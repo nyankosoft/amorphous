@@ -14,7 +14,7 @@ namespace amorphous
 
 
 // draft
-class CResourceLoadingStateSet
+class ResourceLoadingStateSet
 {
 public:
 	enum Name
@@ -27,7 +27,7 @@ public:
 };
 
 
-class CResourceLoadingState
+class ResourceLoadingState
 {
 //	U32 m_ID;
 
@@ -37,14 +37,14 @@ protected:
 
 public:
 
-	CResourceLoadingState();
+	ResourceLoadingState();
 
-	CResourceLoadingState( boost::shared_ptr<GraphicsResourceEntry> pEntry )
+	ResourceLoadingState( boost::shared_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_pResourceEntry( pEntry )
 	{}
 
-	virtual ~CResourceLoadingState() {}
+	virtual ~ResourceLoadingState() {}
 
 	virtual bool IsLoaded();
 
@@ -53,55 +53,55 @@ public:
 };
 
 
-class CTextureLoadingStateHolder : public CResourceLoadingState
+class TextureLoadingStateHolder : public ResourceLoadingState
 {
 public:
 
-	CTextureLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pTextureResourceEntry )
+	TextureLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pTextureResourceEntry )
 		:
-	CResourceLoadingState(pTextureResourceEntry)
+	ResourceLoadingState(pTextureResourceEntry)
 	{}
 
 	bool IsLoaded();
 };
 
 
-class CMeshLoadingStateHolder : public CResourceLoadingState
+class MeshLoadingStateHolder : public ResourceLoadingState
 {
 public:
 
-	CMeshLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pMeshResourceEntry )
+	MeshLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pMeshResourceEntry )
 		:
-	CResourceLoadingState(pMeshResourceEntry)
+	ResourceLoadingState(pMeshResourceEntry)
 	{}
 
 	bool IsLoaded();
 };
 
 
-class CShaderLoadingStateHolder : public CResourceLoadingState
+class ShaderLoadingStateHolder : public ResourceLoadingState
 {
 	boost::weak_ptr<GraphicsResourceEntry> m_pShaderResourceEntry;
 
 public:
 
-	CShaderLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pShaderResourceEntry )
+	ShaderLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pShaderResourceEntry )
 		:
-	CResourceLoadingState(pShaderResourceEntry)
+	ResourceLoadingState(pShaderResourceEntry)
 	{}
 
 	bool IsLoaded();
 };
 
 
-class CResourceLoadingStateHolder
+class ResourceLoadingStateHolder
 {
-	std::list< boost::shared_ptr<CResourceLoadingState> > m_lstpResourceLoadingState;
+	std::list< boost::shared_ptr<ResourceLoadingState> > m_lstpResourceLoadingState;
 
 public:
 
 	/// \param pLoadingState owned reference of a loading state object
-	void Add( CResourceLoadingState *pLoadingState );
+	void Add( ResourceLoadingState *pLoadingState );
 
 	void Add( TextureHandle& texture_handle );
 	void Add( MeshHandle& mesh_handle );

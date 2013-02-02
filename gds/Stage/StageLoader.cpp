@@ -12,7 +12,7 @@ using namespace std;
 
 // draft 
 extern void CreateResourceLoadingStateHolderForCurrentThread();
-extern CResourceLoadingStateSet::Name GetGraphicsResourceLoadingState();
+extern ResourceLoadingStateSet::Name GetGraphicsResourceLoadingState();
 
 
 inline static void sleep_milliseonds( int64_t ms )
@@ -144,7 +144,7 @@ void CASyncStageLoaderThread::operator()()
 		return;
 	}
 
-	while( GetGraphicsResourceLoadingState() == CResourceLoadingStateSet::NOT_READY )
+	while( GetGraphicsResourceLoadingState() == ResourceLoadingStateSet::NOT_READY )
 	{
 		sleep_milliseonds( 10 );
 	}

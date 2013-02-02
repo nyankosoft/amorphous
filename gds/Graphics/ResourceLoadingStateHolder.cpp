@@ -13,13 +13,13 @@ using std::list;
 using boost::shared_ptr;
 
 
-CResourceLoadingState::CResourceLoadingState()
+ResourceLoadingState::ResourceLoadingState()
 {
 //	m_ID = ???
 }
 
 
-bool CResourceLoadingState::IsLoaded()
+bool ResourceLoadingState::IsLoaded()
 {
 	shared_ptr<GraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
 	if( !pResourceEntry )
@@ -36,7 +36,7 @@ bool CResourceLoadingState::IsLoaded()
 }
 
 
-bool CResourceLoadingState::IsReleased()
+bool ResourceLoadingState::IsReleased()
 {
 	shared_ptr<GraphicsResourceEntry> pResourceEntry = m_pResourceEntry.lock();
 	if( !pResourceEntry || pResourceEntry->GetState() == GraphicsResourceEntry::STATE_RELEASED )
@@ -46,13 +46,13 @@ bool CResourceLoadingState::IsReleased()
 }
 
 
-bool CTextureLoadingStateHolder::IsLoaded()
+bool TextureLoadingStateHolder::IsLoaded()
 {
-	return CResourceLoadingState::IsLoaded();
+	return ResourceLoadingState::IsLoaded();
 }
 
 
-bool CMeshLoadingStateHolder::IsLoaded()
+bool MeshLoadingStateHolder::IsLoaded()
 {
 	shared_ptr<GraphicsResourceEntry> pMeshResourceEntry = m_pResourceEntry.lock();
 	if( !pMeshResourceEntry )
@@ -93,56 +93,56 @@ bool CMeshLoadingStateHolder::IsLoaded()
 }
 
 
-bool CShaderLoadingStateHolder::IsLoaded()
+bool ShaderLoadingStateHolder::IsLoaded()
 {
-	return CResourceLoadingState::IsLoaded();
+	return ResourceLoadingState::IsLoaded();
 }
 
 
 //============================================================================
-// CResourceLoadingStateHolder
+// ResourceLoadingStateHolder
 //============================================================================
 
-void CResourceLoadingStateHolder::Add( CResourceLoadingState *pLoadingState )
+void ResourceLoadingStateHolder::Add( ResourceLoadingState *pLoadingState )
 {
-	shared_ptr<CResourceLoadingState> p
-		= shared_ptr<CResourceLoadingState>( pLoadingState );
+	shared_ptr<ResourceLoadingState> p
+		= shared_ptr<ResourceLoadingState>( pLoadingState );
 
 	m_lstpResourceLoadingState.push_back( p );
 }
 
 
-void CResourceLoadingStateHolder::Add( TextureHandle& texture_handle )
+void ResourceLoadingStateHolder::Add( TextureHandle& texture_handle )
 {
-	CTextureLoadingStateHolder *p = new CTextureLoadingStateHolder( texture_handle.GetEntry() );
+	TextureLoadingStateHolder *p = new TextureLoadingStateHolder( texture_handle.GetEntry() );
 	Add( p );
 }
 
 
-void CResourceLoadingStateHolder::Add( MeshHandle& mesh_handle )
+void ResourceLoadingStateHolder::Add( MeshHandle& mesh_handle )
 {
-	CMeshLoadingStateHolder *p = new CMeshLoadingStateHolder( mesh_handle.GetEntry() );
+	MeshLoadingStateHolder *p = new MeshLoadingStateHolder( mesh_handle.GetEntry() );
 	Add( p );
 }
 
 
-void CResourceLoadingStateHolder::Add( ShaderHandle& shader_handle )
+void ResourceLoadingStateHolder::Add( ShaderHandle& shader_handle )
 {
-	CShaderLoadingStateHolder *p = new CShaderLoadingStateHolder( shader_handle.GetEntry() );
+	ShaderLoadingStateHolder *p = new ShaderLoadingStateHolder( shader_handle.GetEntry() );
 	Add( p );
 }
 
 
-void CResourceLoadingStateHolder::AddFromResourceEntry( shared_ptr<GraphicsResourceEntry> pEntry )
+void ResourceLoadingStateHolder::AddFromResourceEntry( shared_ptr<GraphicsResourceEntry> pEntry )
 {
-	Add( new CResourceLoadingState( pEntry ) );
+	Add( new ResourceLoadingState( pEntry ) );
 }
 
 /*
 /// Remove released resources from the list
-bool CResourceLoadingStateHolder::Update()
+bool ResourceLoadingStateHolder::Update()
 {
-	list< shared_ptr<CResourceLoadingState> >::iterator itr;
+	list< shared_ptr<ResourceLoadingState> >::iterator itr;
 		itr = m_lstpResourceLoadingState.begin();
 
 	for( ; itr != m_lstpResourceLoadingState.end(); )
@@ -152,11 +152,11 @@ bool CResourceLoadingStateHolder::Update()
 }
 */
 
-bool CResourceLoadingStateHolder::AreAllResourceLoaded()
+bool ResourceLoadingStateHolder::AreAllResourceLoaded()
 {
 //	Update();
 
-	list< shared_ptr<CResourceLoadingState> >::iterator itr;
+	list< shared_ptr<ResourceLoadingState> >::iterator itr;
 		itr = m_lstpResourceLoadingState.begin();
 
 	for( ; itr != m_lstpResourceLoadingState.end(); /* Don't increment itr since we do it through erase() call or return from the function. */ )

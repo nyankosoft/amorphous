@@ -30,7 +30,7 @@ class LockedTexture;
 class TextureFillingAlgorithm;
 class MeshGenerator;
 class BoxMeshGenerator;
-class CResourceLoadingStateHolder;
+class ResourceLoadingStateHolder;
 class ShaderGenerator;
 class GenericShaderDesc;
 

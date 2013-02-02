@@ -30,39 +30,39 @@ void SetCurrentThreadAsRenderThread()
 	sg_RenderThreadID = boost::this_thread::get_id();
 }
 
-static std::map< boost::thread::id, boost::shared_ptr<CResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
+static std::map< boost::thread::id, boost::shared_ptr<ResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
 void CreateResourceLoadingStateHolderForCurrentThread()
 {
-	boost::shared_ptr<CResourceLoadingStateHolder> p( new CResourceLoadingStateHolder );
+	boost::shared_ptr<ResourceLoadingStateHolder> p( new ResourceLoadingStateHolder );
 	sg_ThreadIDToLoadingStateHolder[boost::this_thread::get_id()] = p;
 }
 
 
-boost::shared_ptr<CResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
+boost::shared_ptr<ResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
 {
-	std::map<thread::id, shared_ptr<CResourceLoadingStateHolder> >::iterator itr
+	std::map<thread::id, shared_ptr<ResourceLoadingStateHolder> >::iterator itr
 		= sg_ThreadIDToLoadingStateHolder.find( this_thread::get_id() );
 
 	if( itr == sg_ThreadIDToLoadingStateHolder.end() )
-		return shared_ptr<CResourceLoadingStateHolder>();
+		return shared_ptr<ResourceLoadingStateHolder>();
 	else
 		return itr->second;
 
 }
 
 
-CResourceLoadingStateSet::Name GetGraphicsResourceLoadingState()
+ResourceLoadingStateSet::Name GetGraphicsResourceLoadingState()
 {
-	boost::shared_ptr<CResourceLoadingStateHolder> pHolder
+	boost::shared_ptr<ResourceLoadingStateHolder> pHolder
 		= GetResourceLoadingStateHolderForCurrentThread();
 
 	if( !pHolder )
-		return CResourceLoadingStateSet::NO_RESOURCE_LOADING_STATE_HOLDER;
+		return ResourceLoadingStateSet::NO_RESOURCE_LOADING_STATE_HOLDER;
 
 	if( pHolder->AreAllResourceLoaded() )
-		return CResourceLoadingStateSet::ALL_LOADED;
+		return ResourceLoadingStateSet::ALL_LOADED;
 	else
-		return CResourceLoadingStateSet::NOT_READY;
+		return ResourceLoadingStateSet::NOT_READY;
 }
 
 
@@ -284,7 +284,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadAsync( const Grap
 		// register to the loading state holder
 		if( desc.RegisterToLoadingStateHolder )
 		{
-			shared_ptr<CResourceLoadingStateHolder> pHolder
+			shared_ptr<ResourceLoadingStateHolder> pHolder
 				= GetResourceLoadingStateHolderForCurrentThread();
 
 			if( pHolder )
