@@ -35,7 +35,7 @@ class CBumpmapTextureMaker2_LWO2
 
 	std::string m_PreviewTextureFilepath;
 
-	CShaderTechniqueHandle m_aShaderTechnique[BTM_NUM_RENDERMODES];
+	ShaderTechniqueHandle m_aShaderTechnique[BTM_NUM_RENDERMODES];
 
 	int m_TechniqueID;
 	
