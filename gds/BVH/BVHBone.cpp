@@ -362,7 +362,7 @@ void BVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransform
 	FixedFunctionPipelineManager().SetWorldTransform( matTrans );
 //	ms_pTestCube->Draw();
 //	ms_pUnitCube->Draw();
-	CPrimitiveShapeRenderer renderer;
+	PrimitiveShapeRenderer renderer;
 	renderer.RenderBox( Vector3(1,1,1), Matrix34Identity() );
 
 	// reset the world transformation matrix

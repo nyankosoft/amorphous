@@ -283,7 +283,7 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 
 //	screen_rect.Draw( m_pShadowMap ); // test with fixed-function shader. Remeber floating point buffer does not work with this
 
-	PrimitiveRenderer().RenderRect( rShaderMgr, screen_rect );
+	Get2DPrimitiveRenderer().RenderRect( rShaderMgr, screen_rect );
 
 /*	UINT passes;
 	pEffect->Begin(&passes,0);
@@ -320,7 +320,7 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 
 //	screen_rect.Draw( m_pHBlurredShadowMap->GetRenderTargetTexture() ); // test with fixed-function shader
 
-	PrimitiveRenderer().RenderRect( rShaderMgr, screen_rect );
+	Get2DPrimitiveRenderer().RenderRect( rShaderMgr, screen_rect );
 /*
 	pEffect->Begin(&passes,0);
 	for( UINT i=0; i<passes; i++ )

@@ -26,7 +26,7 @@ protected:
 
 	AABB2 m_AABB;
 
-	std::vector<CGeneral2DVertex> m_vecRectVertex;
+	std::vector<General2DVertex> m_vecRectVertex;
 
 	/// local vertex positions
 	/// - x: [ -m_CornerRadius, m_CornerRadius ]
@@ -227,7 +227,7 @@ inline void C2DRoundRect::draw()
 
 //	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
-	PrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_FAN );
+	Get2DPrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_FAN );
 }
 
 
@@ -315,7 +315,7 @@ inline void C2DRoundRect::ResizeBuffer()
 		return;
 
 	// buffer for FVF vertices
-	CGeneral2DVertex vert;
+	General2DVertex vert;
 	vert.m_DiffuseColor.SetToBlack(); // opaque by default
 	vert.m_fRHW              = 1.0f;
 	vert.m_TextureCoord[0].u = 0.0f;
@@ -545,7 +545,7 @@ inline void C2DRoundFrameRect::draw()
 
 //	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
-	PrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_STRIP );
+	Get2DPrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_STRIP );
 }
 
 

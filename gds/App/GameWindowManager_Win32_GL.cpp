@@ -263,7 +263,7 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 	GraphicsComponentCollector::Get()->SetGraphicsPargams( params );
 
 	// init 2d primitive renderer
-	PrimitiveRenderer().Init();
+	Get2DPrimitiveRenderer().Init();
 
 	return TRUE;									// Success
 }

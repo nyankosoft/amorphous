@@ -71,7 +71,7 @@ shared_ptr<ShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource(
 
 Result::Name InitializeOpenGLClasses()
 {
-	PrimitiveRendererPtr() = &PrimitiveRenderer_GL();
+	Ref2DPrimitiveRendererPtr() = &PrimitiveRenderer_GL();
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
 	GetGraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );

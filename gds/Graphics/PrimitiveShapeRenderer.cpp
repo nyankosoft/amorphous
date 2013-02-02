@@ -53,12 +53,12 @@ static void InitRectMesh( CustomMesh& mesh, const SFloatRGBAColor& vertex_diffus
 
 
 
-CustomMesh CPrimitiveShapeRenderer::ms_BoxMesh;
+CustomMesh PrimitiveShapeRenderer::ms_BoxMesh;
 
-CustomMesh CPrimitiveShapeRenderer::ms_RectMesh;
+CustomMesh PrimitiveShapeRenderer::ms_RectMesh;
 
 
-CPrimitiveShapeRenderer::CPrimitiveShapeRenderer()
+PrimitiveShapeRenderer::PrimitiveShapeRenderer()
 {
 //	ShaderResourceDesc desc;
 //	desc = non_programmable;
@@ -66,12 +66,12 @@ CPrimitiveShapeRenderer::CPrimitiveShapeRenderer()
 //	m_Shader.Load( desc );
 }
 
-void CPrimitiveShapeRenderer::RenderSphere( const Sphere& sphere, const SFloatRGBAColor& color )
+void PrimitiveShapeRenderer::RenderSphere( const Sphere& sphere, const SFloatRGBAColor& color )
 {
 }
 
 
-void CPrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& color )
+void PrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
 	ShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
 
@@ -92,17 +92,17 @@ void CPrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matr
 }
 
 
-void CPrimitiveShapeRenderer::RenderCapsule( float radius, float height, const Matrix34& world_pose, const SFloatRGBAColor& color )
+void PrimitiveShapeRenderer::RenderCapsule( float radius, float height, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
 }
 
 
-void CPrimitiveShapeRenderer::RenderCylinder( float radius, float height, const Matrix34& world_pose, const SFloatRGBAColor& color )
+void PrimitiveShapeRenderer::RenderCylinder( float radius, float height, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
 }
 
 
-Result::Name CPrimitiveShapeRenderer::RenderPlane(
+Result::Name PrimitiveShapeRenderer::RenderPlane(
 	const Vector3 *positions,
 	const Vector3& normal,
 	const SFloatRGBAColor& color,
@@ -149,7 +149,7 @@ Result::Name CPrimitiveShapeRenderer::RenderPlane(
 }
 
 
-void CPrimitiveShapeRenderer::RenderPlane(
+void PrimitiveShapeRenderer::RenderPlane(
 	const Matrix34& pose,
 	float width,
 	float height,
@@ -181,7 +181,7 @@ void CPrimitiveShapeRenderer::RenderPlane(
 }
 
 
-void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
+void PrimitiveShapeRenderer::RenderAxisAlignedPlane(
 	uint axis,
 	const Vector3& vCenter,
 	float span_0,
@@ -247,13 +247,13 @@ void CPrimitiveShapeRenderer::RenderAxisAlignedPlane(
 }
 
 
-void CPrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, TextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
+void PrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, TextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
 {
 	RenderAxisAlignedPlane( 1, vCenter, width, depth, color, texture, top_left, bottom_right );
 }
 
 
-void CPrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color )
+void PrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color )
 {
 	ShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
 

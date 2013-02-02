@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CPrimitiveRenderer_GL : public CPrimitiveRenderer
+class CPrimitiveRenderer_GL : public PrimitiveRenderer
 {
 public:
 	CPrimitiveRenderer_GL(){}

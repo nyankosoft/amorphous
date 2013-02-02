@@ -695,7 +695,7 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 		rect.SetColor( SFloatRGBAColor::White() );
 		rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
-		PrimitiveRenderer().RenderRect( *pShader, rect );
+		Get2DPrimitiveRenderer().RenderRect( *pShader, rect );
 //		rect.Draw( s_tex );
 	}
 }

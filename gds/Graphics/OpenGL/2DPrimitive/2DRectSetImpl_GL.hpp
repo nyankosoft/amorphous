@@ -21,7 +21,7 @@ namespace amorphous
 
 class C2DRectSetImpl_GL : public C2DRectSetImpl
 {
-	std::vector<CGeneral2DVertex> m_vecRectVertex;
+	std::vector<General2DVertex> m_vecRectVertex;
 
 public:
 
@@ -235,7 +235,7 @@ inline void C2DRectSetImpl_GL::SetNumRects( int num_rects )
 	v.vPosition.z = 0.0f;
 //	v.color = 0xFF000000;
 */
-	m_vecRectVertex.resize( num_vertices, CGeneral2DVertex() );
+	m_vecRectVertex.resize( num_vertices, General2DVertex() );
 }
 
 
@@ -249,7 +249,7 @@ inline void C2DRectSetImpl_GL::AddRects( int num_rects )
 //	v.color = 0xFF000000;
 */
 	for( int i=0; i<num_vertices; i++ )
-		m_vecRectVertex.push_back( CGeneral2DVertex() );
+		m_vecRectVertex.push_back( General2DVertex() );
 }
 
 
@@ -265,7 +265,7 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects )
 
 inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const TextureHandle& texture )
 {
-	PROFILE_FUNCTION_IF( PrimitiveRenderer().m_Profile );
+	PROFILE_FUNCTION_IF( Get2DPrimitiveRenderer().m_Profile );
 
 	GraphicsDevice().SetTexture( 0, texture );
 
@@ -276,7 +276,7 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const 
 
 inline void C2DRectSetImpl_GL::draw( int start_rect_index, int num_rects )
 {
-	PROFILE_FUNCTION_IF( PrimitiveRenderer().m_Profile );
+	PROFILE_FUNCTION_IF( Get2DPrimitiveRenderer().m_Profile );
 
 	if( m_vecRectVertex.size() == 0
 	 || (int)m_vecRectVertex.size() < (start_rect_index + num_rects)*4 )

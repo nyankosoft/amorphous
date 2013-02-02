@@ -98,7 +98,7 @@ bool CGameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScre
 		return false;
 
 	// init 2d primitive renderer
-	PrimitiveRenderer().Init();
+	Get2DPrimitiveRenderer().Init();
 
 	// show the window
     ShowWindow( m_hWnd, SW_SHOWDEFAULT );

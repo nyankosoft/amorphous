@@ -12,7 +12,7 @@ namespace amorphous
 
 class C2DFrameRect : public C2DPrimitive
 {
-	CGeneral2DVertex m_avRectVertex[10];
+	General2DVertex m_avRectVertex[10];
 
 	/// width of the rect border in pixels
 	int m_BorderWidth;
@@ -141,7 +141,7 @@ inline void C2DFrameRect::draw()
 //	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 8, m_avRectVertex, sizeof(TLVERTEX) );
 
-	PrimitiveRenderer().Render( m_avRectVertex, 10, PrimitiveType::TRIANGLE_STRIP );
+	Get2DPrimitiveRenderer().Render( m_avRectVertex, 10, PrimitiveType::TRIANGLE_STRIP );
 }
 
 /*
@@ -163,7 +163,7 @@ inline void C2DFrameRect::SetPosition( const Vector2& rvMin, const Vector2& rvMa
 	float bw = (float)m_BorderWidth;
 	float z = m_avRectVertex[0].m_vPosition.z;
 
-	CGeneral2DVertex* pVert = m_avRectVertex;
+	General2DVertex* pVert = m_avRectVertex;
 
 	// top-left corner
 	pVert[0].m_vPosition = Vector3( rvMin.x, rvMin.y, z ) + Vector3( bw, bw, 0); // inner
@@ -207,7 +207,7 @@ inline void C2DFrameRect::SetVertexPosition( int vert_index, const Vector2& rvPo
 	const float bw = (float)m_BorderWidth;
 	const float z = m_avRectVertex[0].m_vPosition.z;
 
-	CGeneral2DVertex* pVert = m_avRectVertex;
+	General2DVertex* pVert = m_avRectVertex;
 
 	const float x = rvPosition.x;
 	const float y = rvPosition.y;
@@ -284,7 +284,7 @@ void C2DFrameRect::SetBorderWidth( int border_width )
 {
 	m_BorderWidth = border_width;
 
-	CGeneral2DVertex* pVert = m_avRectVertex;
+	General2DVertex* pVert = m_avRectVertex;
 	SetPosition(
 		Vector2( pVert[1].m_vPosition.x, pVert[1].m_vPosition.y ),
 		Vector2( pVert[5].m_vPosition.x, pVert[5].m_vPosition.y ) );

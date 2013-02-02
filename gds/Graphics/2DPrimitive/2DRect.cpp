@@ -66,7 +66,7 @@ void C2DRect::SetTextureUV( const TEXCOORD2& rvMin, const TEXCOORD2& rvMax/*, in
 {
 	int index = 0;
 
-	CGeneral2DVertex* paVertex= m_avRectVertex;
+	General2DVertex* paVertex= m_avRectVertex;
 
 	paVertex[0].m_TextureCoord[index].u = rvMin.u;		// top-left corner of the rectangle
 	paVertex[0].m_TextureCoord[index].v = rvMin.v;

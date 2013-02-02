@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CPrimitiveRenderer_D3D : public CPrimitiveRenderer
+class CPrimitiveRenderer_D3D : public PrimitiveRenderer
 {
 	std::vector<COLORVERTEX> m_ColorVertices;
 

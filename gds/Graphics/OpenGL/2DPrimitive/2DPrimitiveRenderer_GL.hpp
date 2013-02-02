@@ -24,11 +24,11 @@ public:
 	/// Use this to render with a primitive type only available in OpenGL
 	/// - Should be used only by the system
 	/// - See C2DRectSetImpl_GL::draw()
-	void RenderGL( CGeneral2DVertex *paVertex, int num_vertices, GLenum primitive_type );
+	void RenderGL( General2DVertex *paVertex, int num_vertices, GLenum primitive_type );
 
-	void Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+	void Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
-	void Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+	void Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
 	void RenderRect( ShaderManager& rShaderManager, const C2DRect& rect );
 };

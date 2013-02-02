@@ -22,9 +22,9 @@ public:
 
 	virtual void Release() {}
 
-	virtual void Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
+	virtual void Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
 
-	virtual void Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
+	virtual void Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
 
 	virtual void RenderRect( ShaderManager& rShaderManager, const C2DRect& rect ) = 0;
 
@@ -42,7 +42,7 @@ inline C2DPrimitiveRenderer& PrimitiveRenderer()
 }
 */
 
-inline C2DPrimitiveRenderer*& PrimitiveRendererPtr()
+inline C2DPrimitiveRenderer*& Ref2DPrimitiveRendererPtr()
 {
 	static C2DPrimitiveRenderer *s_pRenderer = NULL;
 	return s_pRenderer;
@@ -50,7 +50,7 @@ inline C2DPrimitiveRenderer*& PrimitiveRendererPtr()
 
 
 /// 2D primitive renderer must be initialized before calling this.
-inline C2DPrimitiveRenderer& PrimitiveRenderer() { return *PrimitiveRendererPtr(); }
+inline C2DPrimitiveRenderer& Get2DPrimitiveRenderer() { return *Ref2DPrimitiveRendererPtr(); }
 
 
 } // namespace amorphous

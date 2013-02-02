@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-class CPrimitiveShapeRenderer
+class PrimitiveShapeRenderer
 {
 	ShaderHandle m_Shader; ///< default: fixed function pipeline manager
 
@@ -35,7 +35,7 @@ private:
 
 public:
 
-	CPrimitiveShapeRenderer();
+	PrimitiveShapeRenderer();
 
 	void RenderSphere( const Sphere& sphere, const SFloatRGBAColor& color = SFloatRGBAColor::White() );
 

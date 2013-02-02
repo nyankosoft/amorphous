@@ -13,22 +13,22 @@ namespace amorphous
 
 
 /*
-class CPrimitiveRendererImpl
+class PrimitiveRendererImpl
 {
 public:
-	CPrimitiveRenderer();
-	virtual ~CPrimitiveRenderer();
+	PrimitiveRenderer();
+	virtual ~PrimitiveRenderer();
 };
 */
 
-class CPrimitiveRenderer
+class PrimitiveRenderer
 {
-//	CPrimitiveRendererImpl *m_pImpl;
+//	PrimitiveRendererImpl *m_pImpl;
 
 public:
 
-	CPrimitiveRenderer() {}
-	virtual ~CPrimitiveRenderer() {}
+	PrimitiveRenderer() {}
+	virtual ~PrimitiveRenderer() {}
 
 	/**
 	NOTE: The caller is responsible for setting the appropriate transforms
@@ -80,18 +80,18 @@ public:
 };*/
 
 
-extern CPrimitiveRenderer& GetPrimitiveRenderer();
+extern PrimitiveRenderer& GetPrimitiveRenderer();
 
 
-inline CPrimitiveRenderer*& RefPrimitiveRendererPtr()
+inline PrimitiveRenderer*& RefPrimitiveRendererPtr()
 {
-	static CPrimitiveRenderer *s_pRenderer = NULL;
+	static PrimitiveRenderer *s_pRenderer = NULL;
 	return s_pRenderer;
 }
 
 
 /// primitive renderer must be initialized before calling this.
-inline CPrimitiveRenderer& GetPrimitiveRenderer() { return *RefPrimitiveRendererPtr(); }
+inline PrimitiveRenderer& GetPrimitiveRenderer() { return *RefPrimitiveRendererPtr(); }
 
 
 } // namespace amorphous

@@ -123,7 +123,7 @@ void C2DRoundRect::SetTextureCoords( const TEXCOORD2& rvMin, const TEXCOORD2& rv
 	for(int i=0; i<num_vertices; i++)
 	{
 		Vector2 vLocalPos = m_vecLocalVertexPosition[i];
-		CGeneral2DVertex& v = m_vecRectVertex[i];
+		General2DVertex& v = m_vecRectVertex[i];
 		TEXCOORD2& tex = v.m_TextureCoord[0];
 
 		tex.u = ( vLocalPos.x + outer_radius ) / outer_diameter;
@@ -236,8 +236,8 @@ void C2DRoundFrameRect::Set2DCircularBorderTextureCoords( float margin )
 		int seg_offset = i * num_segments_per_corner;
 		for( j=0; j<=num_segments_per_corner; j++ )
 		{
-			CGeneral2DVertex& v_inner = m_vecRectVertex[vert_index];
-			CGeneral2DVertex& v_outer = m_vecRectVertex[vert_index+1];
+			General2DVertex& v_inner = m_vecRectVertex[vert_index];
+			General2DVertex& v_outer = m_vecRectVertex[vert_index+1];
 			vert_index += 2;
 			float angle = ( 2.0f * (float)PI ) * ( seg_offset + j ) / (float)num_total_segments - (float)PI;
 			angle *= -1;

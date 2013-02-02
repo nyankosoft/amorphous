@@ -52,17 +52,17 @@ static void DrawOBB( const OBBDATA& OBBData )
 	DIRECT3D9.GetDevice()->DrawIndexedPrimitiveUP( D3DPT_LINELIST, 0, 8, 12, Index, D3DFMT_INDEX16, Vertex, sizeof( VERTEX_XYZ_COLOR ) );
 //	DIRECT3D9.GetDevice()->SetRenderState( D3DRS_LIGHTING, TRUE );
 */
-	// >>> Render the wireframe box via CPrimitiveShapeRenderer
+	// >>> Render the wireframe box via PrimitiveShapeRenderer
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, false );
 	Matrix34 pose;
 	pose.vPosition = OBBData.Center;
 	for( int i=0; i<3; i++ )
 		pose.matOrient.SetColumn( i, OBBData.Axis[i] );
 	const Vector3 edges = Vector3( OBBData.Length[0], OBBData.Length[1], OBBData.Length[2] );
-	CPrimitiveShapeRenderer shape_renderer;
+	PrimitiveShapeRenderer shape_renderer;
 	shape_renderer.RenderWireframeBox( edges, pose, SFloatRGBAColor::White() );
 //	shape_renderer.RenderWireframeBox( Vector3(1,1,1), Matrix34Identity(), SFloatRGBAColor::Yellow() );
-	// <<< Render the wireframe box via CPrimitiveShapeRenderer
+	// <<< Render the wireframe box via PrimitiveShapeRenderer
 }
 
 

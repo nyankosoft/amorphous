@@ -17,7 +17,7 @@ namespace amorphous
  */
 class C2DRect : public C2DPrimitive
 {
-	CGeneral2DVertex m_avRectVertex[4];
+	General2DVertex m_avRectVertex[4];
 
 public:
 
@@ -57,7 +57,7 @@ public:
 	inline virtual Vector2 GetPosition2D( int vert_index ) const;
 
 	/// Added to let 2DPrimitiveRender access individual vertices and render them with shader
-	const CGeneral2DVertex& GetVertex( int vert_index ) const { return m_avRectVertex[vert_index]; }
+	const General2DVertex& GetVertex( int vert_index ) const { return m_avRectVertex[vert_index]; }
 
 	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
 
@@ -169,13 +169,13 @@ inline void C2DRect::draw()
 //	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
 
-	PrimitiveRenderer().Render( m_avRectVertex, 4, PrimitiveType::TRIANGLE_FAN );
+	Get2DPrimitiveRenderer().Render( m_avRectVertex, 4, PrimitiveType::TRIANGLE_FAN );
 }
 
 
 inline void C2DRect::SetPosition( const Vector2& vMin, const Vector2& vMax )
 {
-	CGeneral2DVertex* pVert = m_avRectVertex;
+	General2DVertex* pVert = m_avRectVertex;
 
 	pVert[0].m_vPosition.x = vMin.x;		// top-left corner of the rectangle
 	pVert[0].m_vPosition.y = vMin.y;

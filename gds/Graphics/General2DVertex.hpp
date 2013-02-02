@@ -11,7 +11,7 @@ namespace amorphous
 
 
 //=========================================================================================
-// CGeneral2DVertex
+// General2DVertex
 //=========================================================================================
 
 
@@ -36,7 +36,7 @@ public:
 };
 
 
-class CGeneral2DVertex
+class General2DVertex
 {
 public:
 
@@ -58,18 +58,18 @@ public:
 
 public:
 
-	inline CGeneral2DVertex();
+	inline General2DVertex();
 
 	/// TODO: support vertices with blend weights
-	inline CGeneral2DVertex operator+( const CGeneral2DVertex& v ) const;
-	inline CGeneral2DVertex operator-( const CGeneral2DVertex& v ) const;
+	inline General2DVertex operator+( const General2DVertex& v ) const;
+	inline General2DVertex operator-( const General2DVertex& v ) const;
 
-	inline CGeneral2DVertex operator*( float f ) const;
-	inline CGeneral2DVertex operator/( float f ) const;
+	inline General2DVertex operator*( float f ) const;
+	inline General2DVertex operator/( float f ) const;
 };
 
 
-inline CGeneral2DVertex::CGeneral2DVertex()
+inline General2DVertex::General2DVertex()
 :
 m_vPosition(Vector3(0,0,0)),
 m_fRHW(1.0f),
@@ -80,9 +80,9 @@ m_DiffuseColor( SFloatRGBAColor(1.0f, 1.0f, 1.0f, 1.0f) )
 }
 
 
-inline CGeneral2DVertex CGeneral2DVertex::operator+( const CGeneral2DVertex& v ) const
+inline General2DVertex General2DVertex::operator+( const General2DVertex& v ) const
 {
-	CGeneral2DVertex out;
+	General2DVertex out;
 
 	out.m_vPosition	= m_vPosition	+ v.m_vPosition;
 
@@ -100,9 +100,9 @@ inline CGeneral2DVertex CGeneral2DVertex::operator+( const CGeneral2DVertex& v )
 }
 
 
-inline CGeneral2DVertex CGeneral2DVertex::operator-( const CGeneral2DVertex& v ) const
+inline General2DVertex General2DVertex::operator-( const General2DVertex& v ) const
 {
-	CGeneral2DVertex out;
+	General2DVertex out;
 
 	out.m_vPosition	= m_vPosition	- v.m_vPosition;
 
@@ -120,9 +120,9 @@ inline CGeneral2DVertex CGeneral2DVertex::operator-( const CGeneral2DVertex& v )
 }
 
 
-inline CGeneral2DVertex CGeneral2DVertex::operator*( float f ) const
+inline General2DVertex General2DVertex::operator*( float f ) const
 {
-	CGeneral2DVertex out;
+	General2DVertex out;
 
 	out.m_vPosition	= m_vPosition	* f;
 
@@ -140,9 +140,9 @@ inline CGeneral2DVertex CGeneral2DVertex::operator*( float f ) const
 }
 
 
-inline CGeneral2DVertex CGeneral2DVertex::operator/( float f ) const
+inline General2DVertex General2DVertex::operator/( float f ) const
 {
-	CGeneral2DVertex out;
+	General2DVertex out;
 
 	out.m_vPosition	= m_vPosition	/ f;
 

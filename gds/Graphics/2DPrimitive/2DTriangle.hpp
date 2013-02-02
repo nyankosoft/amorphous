@@ -12,7 +12,7 @@ namespace amorphous
 
 class C2DTriangle : public C2DPrimitive
 {
-	CGeneral2DVertex m_avVertex[3];
+	General2DVertex m_avVertex[3];
 
 public:
 
@@ -127,7 +127,7 @@ inline void C2DTriangle::SetDefault()
 		m_avVertex[i].m_vPosition = Vector3(0,0,0);
 		m_avVertex[i].m_fRHW = 1.0f;
 		m_avVertex[i].m_DiffuseColor.SetToBlack(); // opaque by default
-		for( int j=0; j<CGeneral2DVertex::NUM_MAX_TEXTURECOORD_SETS; j++ )
+		for( int j=0; j<General2DVertex::NUM_MAX_TEXTURECOORD_SETS; j++ )
 			m_avVertex[i].m_TextureCoord[j] = TEXCOORD2(0,0);
 	}
 
@@ -147,7 +147,7 @@ inline void C2DTriangle::draw()
 {
 //	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 1, m_avVertex, sizeof(TLVERTEX) );
-	PrimitiveRenderer().Render( m_avVertex, 3, PrimitiveType::TRIANGLE_FAN );
+	Get2DPrimitiveRenderer().Render( m_avVertex, 3, PrimitiveType::TRIANGLE_FAN );
 }
 
 

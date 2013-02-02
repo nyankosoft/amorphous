@@ -33,13 +33,13 @@ void C2DPrimitiveRenderer_GL::Release()
 }
 
 
-void C2DPrimitiveRenderer_GL::Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+void C2DPrimitiveRenderer_GL::Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	RenderGL( paVertex, num_vertices, ToGLPrimitiveType( primitive_type ) );
 }
 
 
-void C2DPrimitiveRenderer_GL::Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+void C2DPrimitiveRenderer_GL::Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 }
 
@@ -49,7 +49,7 @@ void C2DPrimitiveRenderer_GL::RenderRect( ShaderManager& rShaderManager, const C
 }
 
 
-void C2DPrimitiveRenderer_GL::RenderGL( CGeneral2DVertex *paVertex, int num_vertices, GLenum primitive_type )
+void C2DPrimitiveRenderer_GL::RenderGL( General2DVertex *paVertex, int num_vertices, GLenum primitive_type )
 {
 	PROFILE_FUNCTION_IF( m_Profile );
 

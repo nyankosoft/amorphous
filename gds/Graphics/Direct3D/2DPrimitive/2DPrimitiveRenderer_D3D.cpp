@@ -103,7 +103,7 @@ int GetNumPrimitivesToDraw( PrimitiveType::Name pt, int num_vertices )
 }
 
 
-inline void C2DPrimitiveRenderer_D3D::CopyVertices( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+inline void C2DPrimitiveRenderer_D3D::CopyVertices( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	if( (int)m_vecTLVertex.size() < num_vertices )
 		m_vecTLVertex.resize( num_vertices );
@@ -119,7 +119,7 @@ inline void C2DPrimitiveRenderer_D3D::CopyVertices( CGeneral2DVertex *paVertex, 
 }
 
 
-void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+void C2DPrimitiveRenderer_D3D::Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	if( !paVertex )
 		return;
@@ -144,7 +144,7 @@ void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_verti
 
 		hr = pd3dDev->SetVertexDeclaration( m_pVertexDecleration );
 
-		hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_vertices - 2, paVertex, sizeof(CGeneral2DVertex) );
+		hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_vertices - 2, paVertex, sizeof(General2DVertex) );
 
 		return;
 	}
@@ -182,7 +182,7 @@ void C2DPrimitiveRenderer_D3D::Render( CGeneral2DVertex *paVertex, int num_verti
 }
 
 
-void C2DPrimitiveRenderer_D3D::Render( ShaderManager& rShaderManager, CGeneral2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+void C2DPrimitiveRenderer_D3D::Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
@@ -224,7 +224,7 @@ void C2DPrimitiveRenderer_D3D::Render( ShaderManager& rShaderManager, CGeneral2D
 
 void C2DPrimitiveRenderer_D3D::RenderRect( ShaderManager& rShaderManager, const C2DRect& rect )
 {
-	CGeneral2DVertex verts[4];
+	General2DVertex verts[4];
 	for( int i=0; i<4; i++ )
 		verts[i] = rect.GetVertex( i );
 
