@@ -44,7 +44,7 @@ class CLightmapTexture
 	C2DArray<char> m_vecTexelState_LightDirMap;
 
 	/// holds rectangular lightmap images in the tree
-	CRectTree m_LightmapTree;
+	RectTree m_LightmapTree;
 
 	/// keyname in the database
 	std::string m_KeyName;

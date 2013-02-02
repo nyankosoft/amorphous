@@ -1,7 +1,5 @@
-
 #ifndef  __RECTTREE_H__
 #define  __RECTTREE_H__
-
 
 
 #include "Rect.hpp"
@@ -13,26 +11,26 @@ namespace amorphous
 
 // packs rectangular images to one larger rectangle
 
-class CRectTree;
+class RectTree;
 
 
 
-class CRectNode
+class RectNode
 {
-	CRectNode *m_pChild[2];
+	RectNode *m_pChild[2];
 	SRect m_Rectangle;
 	int m_iIndex;
 	
 public:
 
-	CRectNode();
-	~CRectNode();
+	RectNode();
+	~RectNode();
 
-//	CRectNode operator=(CRectNode node);
+//	RectNode operator=(RectNode node);
 
-	CRectNode *Insert( const SRect& rect );
+	RectNode *Insert( const SRect& rect );
 
-	CRectNode *GetNode( const int index );
+	RectNode *GetNode( const int index );
 
 	bool IsLeaf() const;
 
@@ -41,21 +39,21 @@ public:
 		INVALID_INDEX = -1,
 	};
 
-	friend class CRectTree;
+	friend class RectTree;
 };
 
 
-class CRectTree
+class RectTree
 {
-	CRectNode *m_pRootNode;
+	RectNode *m_pRootNode;
 
 public:
 
-	CRectTree();
+	RectTree();
 
-	CRectTree( const SRect& rect );
+	RectTree( const SRect& rect );
 
-	~CRectTree();
+	~RectTree();
 
 	void SetRectangle( const SRect& rect );
 
@@ -68,9 +66,9 @@ public:
 //=============================== inline implementations ===============================
 
 
-inline SRect *CRectTree::GetRectangle( const int index )
+inline SRect *RectTree::GetRectangle( const int index )
 {
-	CRectNode *pNode = m_pRootNode->GetNode( index );
+	RectNode *pNode = m_pRootNode->GetNode( index );
 
 	if( pNode )
 		return &(pNode->m_Rectangle);

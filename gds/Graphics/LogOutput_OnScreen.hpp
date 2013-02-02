@@ -18,7 +18,7 @@ namespace amorphous
  * displays log texts on screen using D3D
  *
  */
-class CLogOutput_ScrolledTextBuffer : public CLogOutputBase
+class LogOutput_ScrolledTextBuffer : public CLogOutputBase
 {
 protected:
 
@@ -38,12 +38,12 @@ private:
 
 public:
 
-	CLogOutput_ScrolledTextBuffer( const std::string& font_name, int font_width, int font_height,
+	LogOutput_ScrolledTextBuffer( const std::string& font_name, int font_width, int font_height,
                          int num_rows = 16, int num_chars = 64 );
 
-	CLogOutput_ScrolledTextBuffer( int num_rows = 16, int num_chars = 64 );	///< use this with a borrowed font
+	LogOutput_ScrolledTextBuffer( int num_rows = 16, int num_chars = 64 );	///< use this with a borrowed font
 
-	~CLogOutput_ScrolledTextBuffer();
+	~LogOutput_ScrolledTextBuffer();
 
 	virtual void Print( const CLogMessage& msg );
 
@@ -57,7 +57,7 @@ public:
 
 //------------------------- inline implementations -------------------------
 
-inline const char *CLogOutput_ScrolledTextBuffer::GetText( int row )
+inline const char *LogOutput_ScrolledTextBuffer::GetText( int row )
 {
 	if( row < 0 || m_NumRows <= row )
 		return "";
@@ -68,7 +68,7 @@ inline const char *CLogOutput_ScrolledTextBuffer::GetText( int row )
 }
 
 
-inline U32 CLogOutput_ScrolledTextBuffer::GetTextColor( int row )
+inline U32 LogOutput_ScrolledTextBuffer::GetTextColor( int row )
 {
 	if( row < 0 || m_NumRows <= row )
 		return 0xFFFFFFFF;

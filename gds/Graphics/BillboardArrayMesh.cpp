@@ -10,7 +10,7 @@ namespace amorphous
 using namespace std;
 
 
-void CBillboardArrayMesh::CreateVertexElemenets( CMMA_VertexSet& rVertexSet )
+void BillboardArrayMesh::CreateVertexElemenets( CMMA_VertexSet& rVertexSet )
 {
 	unsigned int billboard_vertex_flag =
 		CMMA_VertexSet::VF_POSITION|
@@ -30,7 +30,7 @@ void CBillboardArrayMesh::CreateVertexElemenets( CMMA_VertexSet& rVertexSet )
 }
 
 
-void CBillboardArrayMesh::LoadVertices( void*& pVBData,
+void BillboardArrayMesh::LoadVertices( void*& pVBData,
 								        C3DMeshModelArchive& archive )
 {
 	CMMA_VertexSet& rVertexSet = archive.GetVertexSet();
@@ -66,7 +66,7 @@ void CBillboardArrayMesh::LoadVertices( void*& pVBData,
 	}
 }
 
-bool CBillboardArrayMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const string& filename, U32 option_flags )
+bool BillboardArrayMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const string& filename, U32 option_flags )
 {
 	bool loaded = CD3DXMeshObject::LoadFromArchive( rArchive, filename, option_flags );
 	return loaded;
@@ -108,13 +108,13 @@ bool CBillboardArrayMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const 
 }
 
 
-inline void CBillboardArrayMeshGenerator::SetTexCoord( int rect_index, int vert_index, const TEXCOORD2& tex )
+inline void BillboardArrayMeshGenerator::SetTexCoord( int rect_index, int vert_index, const TEXCOORD2& tex )
 {
 	m_MeshArchive.GetVertexSet().vecTex[0][ rect_index * 4 + vert_index ] = tex;
 }
 
 
-void CBillboardArrayMeshGenerator::SetTextureCoordinates( int num_particles, int num_tex_edge_divisions )
+void BillboardArrayMeshGenerator::SetTextureCoordinates( int num_particles, int num_tex_edge_divisions )
 {
 	int i;
 	int num_tex_segs = num_tex_edge_divisions;
@@ -138,7 +138,7 @@ void CBillboardArrayMeshGenerator::SetTextureCoordinates( int num_particles, int
 }
 
 
-void CBillboardArrayMeshGenerator::SetVertices( int num_particles )
+void BillboardArrayMeshGenerator::SetVertices( int num_particles )
 {
 	CMMA_VertexSet& rVertSet = m_MeshArchive.GetVertexSet();
 
@@ -170,7 +170,7 @@ void CBillboardArrayMeshGenerator::SetVertices( int num_particles )
 }
 
 
-void CBillboardArrayMeshGenerator::SetIndices( int num_particles )
+void BillboardArrayMeshGenerator::SetIndices( int num_particles )
 {
 	vector<unsigned int>& rvecVertIndex = m_MeshArchive.GetVertexIndex();
 
@@ -193,7 +193,7 @@ void CBillboardArrayMeshGenerator::SetIndices( int num_particles )
 }
 
 
-bool CBillboardArrayMeshGenerator::Generate( int num_particles, float particle_radius, int num_tex_edge_divisions )
+bool BillboardArrayMeshGenerator::Generate( int num_particles, float particle_radius, int num_tex_edge_divisions )
 {
 	m_fParticleRadius = particle_radius;
 
@@ -240,7 +240,7 @@ bool CBillboardArrayMeshGenerator::Generate( int num_particles, float particle_r
 	return true;
 }
 
-bool CBillboardArrayMeshGenerator::GenerateForMultipleParticleGroups( int num_particles_per_group,
+bool BillboardArrayMeshGenerator::GenerateForMultipleParticleGroups( int num_particles_per_group,
 		                                                              int num_particle_groups,
 		                                                              float particle_radius,
 											                          int num_tex_edge_divisions )

@@ -1,6 +1,4 @@
-
 #include "Support/memory_helpers.hpp"
-
 #include "RectTree.hpp"
 
 
@@ -8,37 +6,37 @@ namespace amorphous
 {
 
 //==================================================================================
-// CRectTree
+// RectTree
 //==================================================================================
 
-CRectTree::CRectTree()
+RectTree::RectTree()
 {
 	m_pRootNode = NULL;
 }
 
 
-CRectTree::CRectTree( const SRect& rect )
+RectTree::RectTree( const SRect& rect )
 {
 	SetRectangle( rect );
 }
 
 
-void CRectTree::SetRectangle( const SRect& rect )
+void RectTree::SetRectangle( const SRect& rect )
 {
 	SafeDelete( m_pRootNode );
-	m_pRootNode = new CRectNode;
+	m_pRootNode = new RectNode;
 	m_pRootNode->m_Rectangle = rect;
 }
 
 
-CRectTree::~CRectTree()
+RectTree::~RectTree()
 {
 	SafeDelete( m_pRootNode );
 }
 
-int CRectTree::Insert( const SRect& rect, const int index )
+int RectTree::Insert( const SRect& rect, const int index )
 {
-	CRectNode *pNode = m_pRootNode->Insert( rect );
+	RectNode *pNode = m_pRootNode->Insert( rect );
 
 	if( pNode != NULL )
 	{
@@ -46,17 +44,17 @@ int CRectTree::Insert( const SRect& rect, const int index )
 		return 0;
 	}
 	else
-		return CRectNode::INVALID_INDEX;	// couldn't find any place to put the rectangle
+		return RectNode::INVALID_INDEX;	// couldn't find any place to put the rectangle
 }
 
 
 
 
 //==================================================================================
-// CRectNode
+// RectNode
 //==================================================================================
 
-CRectNode::CRectNode()
+RectNode::RectNode()
 {
 	m_pChild[0] = m_pChild[1] = NULL;
 
@@ -64,13 +62,13 @@ CRectNode::CRectNode()
 }
 
 
-CRectNode::~CRectNode()
+RectNode::~RectNode()
 {
 	SafeDelete( m_pChild[0] );
 	SafeDelete( m_pChild[1] );
 }
 
-bool CRectNode::IsLeaf() const
+bool RectNode::IsLeaf() const
 {
 	if( m_pChild[0] == NULL && m_pChild[1] == NULL )
 		return true;
@@ -78,9 +76,9 @@ bool CRectNode::IsLeaf() const
 		return false;
 }
 
-CRectNode *CRectNode::Insert( const SRect& rect )
+RectNode *RectNode::Insert( const SRect& rect )
 {
-	CRectNode *pNewNode = NULL;
+	RectNode *pNewNode = NULL;
 
 	if( !IsLeaf() )
 	{
@@ -111,8 +109,8 @@ CRectNode *CRectNode::Insert( const SRect& rect )
 			return this;
 
 		// otherwise gotta split this node and create some kids
-		m_pChild[0] = new CRectNode;
-		m_pChild[1] = new CRectNode;
+		m_pChild[0] = new RectNode;
+		m_pChild[1] = new RectNode;
 
 		// decide which way to split
 
@@ -141,11 +139,11 @@ CRectNode *CRectNode::Insert( const SRect& rect )
 }
 
 
-CRectNode *CRectNode::GetNode( const int index )
+RectNode *RectNode::GetNode( const int index )
 {
 	if( !IsLeaf() )
 	{
-		CRectNode *pNode = m_pChild[0]->GetNode( index );
+		RectNode *pNode = m_pChild[0]->GetNode( index );
 
 		if( pNode )
 			return pNode;	// found the rectangle in the first sub-tree

@@ -555,10 +555,10 @@ void SpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 
 
 //============================================================================
-// CPointLightShadowMap
+// PointLightShadowMap
 //============================================================================
 
-CPointLightShadowMap::CPointLightShadowMap()
+PointLightShadowMap::PointLightShadowMap()
 {
 	m_pCubeShadowMapManager = new CubeMapManager();
 	m_pCubeShadowMapManager->SetCubeMapSceneRenderer( &m_CubeShadowMapSceneRenderer );
@@ -567,13 +567,13 @@ CPointLightShadowMap::CPointLightShadowMap()
 }
 
 
-CPointLightShadowMap::~CPointLightShadowMap()
+PointLightShadowMap::~PointLightShadowMap()
 {
 	SafeDelete( m_pCubeShadowMapManager );
 }
 
 
-bool CPointLightShadowMap::CreateShadowMapTextures()
+bool PointLightShadowMap::CreateShadowMapTextures()
 {
 	TextureFormat::Format fmt = TextureFormat::R16F;
 
@@ -583,7 +583,7 @@ bool CPointLightShadowMap::CreateShadowMapTextures()
 }
 
 
-void CPointLightShadowMap::RenderSceneToShadowMap()
+void PointLightShadowMap::RenderSceneToShadowMap()
 {
 	m_pCubeShadowMapManager->RenderToCubeMap();
 
@@ -592,29 +592,29 @@ void CPointLightShadowMap::RenderSceneToShadowMap()
 }
 
 
-void CPointLightShadowMap::BeginSceneShadowMap()
+void PointLightShadowMap::BeginSceneShadowMap()
 {
 }
 
 
-void CPointLightShadowMap::EndSceneShadowMap()
+void PointLightShadowMap::EndSceneShadowMap()
 {
 }
 
 
-void CPointLightShadowMap::UpdatePointLight( const PointLight& light )
+void PointLightShadowMap::UpdatePointLight( const PointLight& light )
 {
 	m_LightCamera.SetPosition( light.vPosition );
 }
 
 
-std::string CPointLightShadowMap::CreateTextureFilename()
+std::string PointLightShadowMap::CreateTextureFilename()
 {
 	return fmt_string( "shadowmap_of_pointlight_pos%s.dds", to_string(m_LightCamera.GetPosition()).c_str() );
 }
 
 
-void CPointLightShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
+void PointLightShadowMap::SaveShadowMapTextureToFileInternal( const std::string& filepath )
 {
 	m_pCubeShadowMapManager->SaveCubeTextureToFile( filepath );
 }

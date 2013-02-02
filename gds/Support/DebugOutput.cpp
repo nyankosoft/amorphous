@@ -22,11 +22,11 @@ namespace amorphous
 using namespace std;
 
 
-CDebugItem_Log::CDebugItem_Log( CLogOutput_ScrolledTextBuffer* pLogOutput )
+CDebugItem_Log::CDebugItem_Log( LogOutput_ScrolledTextBuffer* pLogOutput )
 :
 m_pLogOutput(pLogOutput)
 {
-//	m_pLogOutput = new CLogOutput_ScrolledTextBuffer()// "Texture/...", w, h, rows, chars );
+//	m_pLogOutput = new LogOutput_ScrolledTextBuffer()// "Texture/...", w, h, rows, chars );
 }
 
 

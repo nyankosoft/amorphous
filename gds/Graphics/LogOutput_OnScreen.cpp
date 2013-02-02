@@ -14,10 +14,10 @@ using namespace std;
 
 
 //=================================================================================
-// CLogOutput_ScrolledTextBuffer
+// LogOutput_ScrolledTextBuffer
 //=================================================================================
 
-CLogOutput_ScrolledTextBuffer::CLogOutput_ScrolledTextBuffer( const string& font_name,
+LogOutput_ScrolledTextBuffer::LogOutput_ScrolledTextBuffer( const string& font_name,
 										  int font_width, int font_height,
                                           int num_rows, int num_chars )
 :
@@ -30,7 +30,7 @@ m_NumOutputLines(0)
 }
 
 
-CLogOutput_ScrolledTextBuffer::CLogOutput_ScrolledTextBuffer( int num_rows, int num_chars )
+LogOutput_ScrolledTextBuffer::LogOutput_ScrolledTextBuffer( int num_rows, int num_chars )
 :
 m_NumRows(num_rows),
 m_EndRowIndex(0),
@@ -40,12 +40,12 @@ m_NumOutputLines(0)
 }
 
 
-CLogOutput_ScrolledTextBuffer::~CLogOutput_ScrolledTextBuffer()
+LogOutput_ScrolledTextBuffer::~LogOutput_ScrolledTextBuffer()
 {
 }
 
 
-void CLogOutput_ScrolledTextBuffer::Init( int num_rows )
+void LogOutput_ScrolledTextBuffer::Init( int num_rows )
 {
 	m_TextBuffer.resize( num_rows );
 	m_TextColor.resize( num_rows );
@@ -64,7 +64,7 @@ static const DWORD s_LogTextColor[5] =
 };
 
 
-void CLogOutput_ScrolledTextBuffer::Print( const CLogMessage& msg )
+void LogOutput_ScrolledTextBuffer::Print( const CLogMessage& msg )
 {
 	m_TextBuffer[m_EndRowIndex] = fmt_string( "[%s] %s", msg.m_Time.c_str(), msg.m_Text.c_str() );
 
@@ -81,7 +81,7 @@ void CLogOutput_ScrolledTextBuffer::Print( const CLogMessage& msg )
 }
 
 
-int CLogOutput_ScrolledTextBuffer::GetNumCurrentRows()
+int LogOutput_ScrolledTextBuffer::GetNumCurrentRows()
 {
 	if( m_NumOutputLines < m_NumRows )
 		return m_NumOutputLines;

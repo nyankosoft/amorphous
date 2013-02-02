@@ -164,19 +164,19 @@ public:
 };
 
 
-class CLogOutput_ScrolledTextBuffer;
+class LogOutput_ScrolledTextBuffer;
 
 
 class CDebugItem_Log : public CDebugItemBase
 {
 	/// borrowed reference
-	CLogOutput_ScrolledTextBuffer *m_pLogOutput;
+	LogOutput_ScrolledTextBuffer *m_pLogOutput;
 
 public:
 
 //	CDebugItem_Log() {}
 
-	CDebugItem_Log( CLogOutput_ScrolledTextBuffer* pLogOutput );
+	CDebugItem_Log( LogOutput_ScrolledTextBuffer* pLogOutput );
 
 	virtual void Render();
 };

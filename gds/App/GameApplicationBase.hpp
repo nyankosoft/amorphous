@@ -12,7 +12,7 @@ namespace amorphous
 
 class CGlobalInputHandler;
 class CGameApplicationBase;
-class CLogOutput_ScrolledTextBuffer;
+class LogOutput_ScrolledTextBuffer;
 
 
 // input devices
@@ -44,7 +44,7 @@ protected:
 
 	CGameTaskManager *m_pTaskManager;
 
-	CLogOutput_ScrolledTextBuffer *m_pOnScreenLog;
+	LogOutput_ScrolledTextBuffer *m_pOnScreenLog;
 
 	static int ms_DefaultSleepTimeMS;
 

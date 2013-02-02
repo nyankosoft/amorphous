@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-class CBillboardArrayMesh : public CD3DXMeshObject
+class BillboardArrayMesh : public CD3DXMeshObject
 {
 protected:
 
@@ -21,9 +21,9 @@ protected:
 
 public:
 
-	CBillboardArrayMesh() {}
+	BillboardArrayMesh() {}
 
-	~CBillboardArrayMesh() {}
+	~BillboardArrayMesh() {}
 
 //	virtual HRESULT LoadFromFile( const std::string& filename );
 
@@ -33,7 +33,7 @@ public:
 };
 
 
-class CBillboardArrayMeshGenerator
+class BillboardArrayMeshGenerator
 {
 	C3DMeshModelArchive m_MeshArchive;
 
@@ -49,8 +49,8 @@ class CBillboardArrayMeshGenerator
 
 public:
 
-	CBillboardArrayMeshGenerator() {}
-	~CBillboardArrayMeshGenerator() {}
+	BillboardArrayMeshGenerator() {}
+	~BillboardArrayMeshGenerator() {}
 
 	bool Generate( int num_particles, float particle_radius, int num_tex_edge_divisions );
 
@@ -65,7 +65,7 @@ public:
 };
 
 
-inline float CBillboardArrayMeshGenerator::GetRandRadius()
+inline float BillboardArrayMeshGenerator::GetRandRadius()
 {
 	float r = m_fParticleRadius;
 	return r * RangedRand( 0.9f, 1.1f );

@@ -18,9 +18,9 @@ namespace amorphous
 
 
 class ShadowMap;
-//class CDirectionalLightShadowMap;
+//class DirectionalLightShadowMap;
 class OrthoShadowMap;
-class CPointLightShadowMap;
+class PointLightShadowMap;
 class SpotlightShadowMap;
 
 
@@ -59,10 +59,10 @@ public:
 
 	virtual ~ShadowMapVisitor() {}
 
-//	virtual void Visit( CDirectionalLightShadowMap& shadow_map ) {}
+//	virtual void Visit( DirectionalLightShadowMap& shadow_map ) {}
 	virtual void Visit( OrthoShadowMap& shadow_map ) {}
 	virtual void Visit( SpotlightShadowMap& shadow_map ) {}
-	virtual void Visit( CPointLightShadowMap& shadow_map ) {}
+	virtual void Visit( PointLightShadowMap& shadow_map ) {}
 };
 
 
@@ -81,7 +81,7 @@ protected:
 	ShaderHandle m_Shader;
 
 	/// borrowed reference of scene camera
-	/// - Used by CDirectionalLightShadowMap
+	/// - Used by DirectionalLightShadowMap
 	Camera *m_pSceneCamera;
 
 	bool m_DisplayShadowMapTexturesForDebugging;
@@ -281,13 +281,13 @@ public:
 };
 
 /*
-class CDirectionalLightShadowMap : public FlatShadowMap
+class DirectionalLightShadowMap : public FlatShadowMap
 {
 //	boost::weak_ptr<CHemisphericalDirectionalLight> m_DirectionalLight;
 
 public:
 
-	CDirectionalLightShadowMap();
+	DirectionalLightShadowMap();
 
 	void UpdateDirectionalLight( DirectionalLight& light );
 
@@ -324,7 +324,7 @@ public:
  - Calls RenderShadowMapScene() of m_pSceneRenderer 6 times
 
 */
-class CPointLightShadowMap : public ShadowMap
+class PointLightShadowMap : public ShadowMap
 {
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeShadowMap;
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeShadowMapDepthBuffer;
@@ -339,9 +339,9 @@ class CPointLightShadowMap : public ShadowMap
 
 public:
 
-	CPointLightShadowMap();
+	PointLightShadowMap();
 
-	~CPointLightShadowMap();
+	~PointLightShadowMap();
 
 	bool CreateShadowMapTextures();
 
