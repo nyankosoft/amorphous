@@ -28,7 +28,7 @@ using namespace boost;
 extern void RegisterPythonModule_stage_util();
 
 
-//inline GlobalGraphicsElementManagerList( const std::string& name, boost::shared_ptr<CGraphicsElementManager> pMgr )
+//inline GlobalGraphicsElementManagerList( const std::string& name, boost::shared_ptr<GraphicsElementManager> pMgr )
 typedef std::map< boost::thread::id, boost::weak_ptr<CStage> > thread_id_to_stage_map;
 
 inline thread_id_to_stage_map& ThreadIDToStageMap()

@@ -31,7 +31,7 @@ public:
 
 boost::shared_ptr<MouseInputDevice> CGameTask::ms_pMouse;
 
-CAnimatedGraphicsManager *CGameTask::ms_pAnimatedGraphicsManager = NULL;
+GraphicsElementAnimationManager *CGameTask::ms_pAnimatedGraphicsManager = NULL;
 
 std::map<std::string,int> CGameTask::ms_TaskNameStringToTaskID;
 
@@ -369,7 +369,7 @@ void CGameTask::InitAnimatedGraphicsManager()
 {
 	SafeDelete( ms_pAnimatedGraphicsManager );
 
-	ms_pAnimatedGraphicsManager = new CAnimatedGraphicsManager();
+	ms_pAnimatedGraphicsManager = new GraphicsElementAnimationManager();
 
 	ms_pAnimatedGraphicsManager->GetGraphicsElementManager()->LoadFont(
 		0,

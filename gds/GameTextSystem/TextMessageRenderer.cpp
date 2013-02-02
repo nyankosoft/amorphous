@@ -18,7 +18,7 @@ using namespace boost;
 // CTextMessageRenderer
 //========================================================================================
 
-CTextMessageRenderer::CTextMessageRenderer( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr )
+CTextMessageRenderer::CTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr )
 :
 m_pEffectManager(pEffectMgr)
 {
@@ -42,7 +42,7 @@ void CTextMessageRenderer::Update( float dt )
 // CDefaultTextMessageRenderer
 //========================================================================================
 
-CDefaultTextMessageRenderer::CDefaultTextMessageRenderer( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr,
+CDefaultTextMessageRenderer::CDefaultTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr,
 														  int top_layer,
 														  int bottom_layer )
 :
@@ -57,7 +57,7 @@ CTextMessageRenderer(pEffectMgr)
 	// set graphics components in 800x600 resolution
 //	m_BaseFontSize = SPoint( 12, 24 );
 
-	shared_ptr<CGraphicsElementManager> pGraphicsMgr = m_pEffectManager->GetGraphicsElementManager();
+	shared_ptr<GraphicsElementManager> pGraphicsMgr = m_pEffectManager->GetGraphicsElementManager();
 
 	int offset = 20;
 	m_aFontID[FONT_TEXT]    = offset;
@@ -135,7 +135,7 @@ void CDefaultTextMessageRenderer::OnTextMessageCleared()
 	// no message to display - hide rect for text message
 	m_pEffectManager->SetTimeOffset();
 	m_BGRectFade = m_pEffectManager->ChangeAlphaTo( m_pWindowBGRect,
-		0.5, 1.0, 0, 0.0f, CGraphicsElementEffect::TRANS_LINEAR );
+		0.5, 1.0, 0, 0.0f, GraphicsElementAnimation::TRANS_LINEAR );
 }
 
 

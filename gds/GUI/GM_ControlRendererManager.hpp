@@ -37,10 +37,10 @@ protected:
 //	std::vector<CGM_ControlRenderer *> m_vecpControlRenderer;
 
 	/// borrowed reference
-	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
+	boost::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
 
 	/// owned / borrowed reference
-	CAnimatedGraphicsManagerSharedPtr m_pGraphicsEffectManager;
+	GraphicsElementAnimationManagerSharedPtr m_pGraphicsEffectManager;
 
 protected:
 
@@ -50,7 +50,7 @@ public:
 
 	CGM_ControlRendererManager();
 
-	CGM_ControlRendererManager( CAnimatedGraphicsManagerSharedPtr pGraphicsEffectManager );
+	CGM_ControlRendererManager( GraphicsElementAnimationManagerSharedPtr pGraphicsEffectManager );
 
 	virtual ~CGM_ControlRendererManager();
 
@@ -77,9 +77,9 @@ public:
 //	virtual void ChangeScale( float factor ) {}
 
 
-	boost::shared_ptr<CGraphicsElementManager> GetGraphicsElementManager() { return m_pGraphicsElementManager; }
+	boost::shared_ptr<GraphicsElementManager> GetGraphicsElementManager() { return m_pGraphicsElementManager; }
 
-	CAnimatedGraphicsManagerBase *GetGraphicsEffectManager() { return m_pGraphicsEffectManager.get(); }
+	GraphicsElementAnimationManagerBase *GetGraphicsEffectManager() { return m_pGraphicsEffectManager.get(); }
 
 //	void UpdateGraphicsLayers();
 

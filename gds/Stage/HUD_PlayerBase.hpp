@@ -21,13 +21,13 @@ class HUD_PlayerBase : public GraphicsComponent
 {
 protected:
 
-	boost::shared_ptr<CAnimatedGraphicsManager> m_pGraphicsEffectManager;
+	boost::shared_ptr<GraphicsElementAnimationManager> m_pGraphicsEffectManager;
 
 	/// show / hide the HUD
 	bool m_bShow;
 
 	/// deprecated
-	/// - Use text elements (CTextElement) instead.
+	/// - Use text elements (TextElement) instead.
 	HUD_TimerDisplay m_TimerDisplay;
 
 public:
@@ -50,7 +50,7 @@ public:
 	inline void Render();
 
 	/// Derived classes implement this to render HUD components
-	/// - Deprecated. All the components should be rendered as graphics elements with CGraphicsElementManager
+	/// - Deprecated. All the components should be rendered as graphics elements with GraphicsElementManager
 	/// - Called after all the graphics elements are rendered
 	virtual void RenderImpl() {};
 
@@ -74,7 +74,7 @@ public:
 	virtual bool OpenTextWindow( CGameTextSet *pTextSet ) { return false; }
 	virtual CGameTextSet *GetCurrentTextSetInTextWindow() { return NULL; }
 
-	void SetGraphicsEffectManager( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr ) { m_pGraphicsEffectManager = pEffectMgr; }
+	void SetGraphicsEffectManager( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr ) { m_pGraphicsEffectManager = pEffectMgr; }
 
 	virtual void CreateRenderTasks() {}
 };

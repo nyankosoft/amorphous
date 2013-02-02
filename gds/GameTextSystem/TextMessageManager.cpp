@@ -183,7 +183,7 @@ m_bLoadingTextMessage(false)
 {
 	m_pWindow = new CTextMessageWindow( this );
 
-	SetRenderer( new CNullTextMessageRenderer(shared_ptr<CAnimatedGraphicsManager>(),0,0) );
+	SetRenderer( new CNullTextMessageRenderer(shared_ptr<GraphicsElementAnimationManager>(),0,0) );
 
 	m_vecTextMessageSet.reserve( NUM_DEFAULT_TEXT_MESSAGE_SETS );
 

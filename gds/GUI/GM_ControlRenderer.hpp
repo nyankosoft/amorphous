@@ -78,9 +78,9 @@ public:
 
 protected:
 
-	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
+	boost::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
 
-	CAnimatedGraphicsManagerBase *m_pGraphicsEffectManager;
+	GraphicsElementAnimationManagerBase *m_pGraphicsEffectManager;
 
 //	CGM_DialogRenderer *m_pDialogRenderer;
 
@@ -96,17 +96,17 @@ protected:
 	///                      besides, vector style is easier since it allows the hierarchically defined renderer
 	///                      classes to set elements incrementally in their hierarchy of Init() calls
 	/// - borrowed reference
-	std::vector<boost::shared_ptr<CGraphicsElement> > m_vecpElementToRegisterToParentDialog;
-//	boost::shared_ptr<CGraphicsElement> m_pElementGroupToRegisterToParentDialog;
+	std::vector<boost::shared_ptr<GraphicsElement> > m_vecpElementToRegisterToParentDialog;
+//	boost::shared_ptr<GraphicsElement> m_pElementGroupToRegisterToParentDialog;
 
-	std::vector<boost::shared_ptr<CGraphicsElement> > m_vecpGraphicsElementForPredefinedEffect;
+	std::vector<boost::shared_ptr<GraphicsElement> > m_vecpGraphicsElementForPredefinedEffect;
 
 	/// target control
 	/// - borrowed reference
 	CGM_ControlBase *m_pControl;
 
 	/// used by the renderer of dialog
-	boost::shared_ptr<CGraphicsElementGroup> m_pGroupElement;
+	boost::shared_ptr<GraphicsElementGroup> m_pGroupElement;
 
 //	std::vector<CElementEffectDesc *> m_vecpEffectDesc[NUM_EFFECTTRIGGEREVENTS];
 
@@ -114,16 +114,16 @@ protected:
 	{
 	public:
 		int layer_index;
-		boost::shared_ptr<CGraphicsElement> pElement;
+		boost::shared_ptr<GraphicsElement> pElement;
 
 		CLocalLayerInfo() : layer_index(0) {}
-		CLocalLayerInfo( int index, boost::shared_ptr<CGraphicsElement> pElem) : layer_index(index), pElement(pElem) {}
+		CLocalLayerInfo( int index, boost::shared_ptr<GraphicsElement> pElem) : layer_index(index), pElement(pElem) {}
 	};
 
 	std::vector<CLocalLayerInfo> m_vecLocalLayerInfo;
 
 	/// owned reference of graphics elements added by AddGraphicsElement()
-	std::vector<boost::shared_ptr<CGraphicsElement> > m_vecpExtraGraphicsElement;
+	std::vector<boost::shared_ptr<GraphicsElement> > m_vecpExtraGraphicsElement;
 
 protected:
 
@@ -143,18 +143,18 @@ protected:
 
 	/// register a graphics element to the owner dialog
 	/// - 
-	void RegisterGraphicsElementToParentDialog( boost::shared_ptr<CGraphicsElement> pElement ) { m_vecpElementToRegisterToParentDialog.push_back( pElement ); }
+	void RegisterGraphicsElementToParentDialog( boost::shared_ptr<GraphicsElement> pElement ) { m_vecpElementToRegisterToParentDialog.push_back( pElement ); }
 
 	/// sets the local rendering order (0: rendered on top).
 	/// - Layer indices are not immediately calculated when this function is called.
 	///   they are calculated at the first rendering call
 	/// - Use this instead of RegisterGraphicsElement() if you do not want to register the element to owner dialog
-	void SetLocalLayerOffset( int local_layer_index, boost::shared_ptr<CGraphicsElement> pElement );
+	void SetLocalLayerOffset( int local_layer_index, boost::shared_ptr<GraphicsElement> pElement );
 
 	/// equivalent to calling the following 2 functions
 	/// - RegisterGraphicsElementToParentDialog()
 	/// - SetLocalLayerOffset()
-	void RegisterGraphicsElement( int local_layer_index, boost::shared_ptr<CGraphicsElement> pElement );
+	void RegisterGraphicsElement( int local_layer_index, boost::shared_ptr<GraphicsElement> pElement );
 
 	/// called when m_pGroupElement is created
 	/// - used by the renderer of dialog to set all of its controls transparent
@@ -249,7 +249,7 @@ public:
 	virtual void OnMouseOverControlChanged( CGM_Control& control_under_mouse ) {}
 
 
-	virtual void GetGraphicsElements( std::vector<boost::shared_ptr<CGraphicsElement> >& rvecpDestElement );
+	virtual void GetGraphicsElements( std::vector<boost::shared_ptr<GraphicsElement> >& rvecpDestElement );
 
 	CGM_ControlBase *GetBaseControl() { return m_pControl; }
 
@@ -275,7 +275,7 @@ public:
 	/// \param pElement owned reference of a graphics element
 	/// The added element is registered to owner dialog.
 	/// - moved or faded together with the dialog
-	void AddGraphicsElement( int local_layer_index, boost::shared_ptr<CGraphicsElement> pElement );
+	void AddGraphicsElement( int local_layer_index, boost::shared_ptr<GraphicsElement> pElement );
 
 	virtual void ChangeScale( float scale );
 };

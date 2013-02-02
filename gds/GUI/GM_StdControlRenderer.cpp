@@ -18,27 +18,27 @@ using std::vector;
 using boost::shared_ptr;
 
 /*
-class CGraphicsElementHandle
+class GraphicsElementHandle
 {
 public:
 };
 
 
-class CRectElementHandle
+class RectElementHandle
 {
-	boost::shared_ptr<CFillRectElement> m_pRect;
+	boost::shared_ptr<FillRectElement> m_pRect;
 
 public:
 };
 
 
-class CTextElementHandle
+class TextElementHandle
 {
-	boost::shared_ptr<CTextElement> m_pText;
+	boost::shared_ptr<TextElement> m_pText;
 
 public:
 
-	boost::shared_ptr<CTextElement> operator ->() { return m_pText; };
+	boost::shared_ptr<TextElement> operator ->() { return m_pText; };
 };
 */
 
@@ -227,7 +227,7 @@ void CGM_StdStaticRenderer::Init( CGM_Static& static_control )
 
 //	m_pText = m_pGraphicsElementManager->CreateText( 0, static_control.GetText(), x, y, normal_color, w, h );
 	m_pText = m_pGraphicsElementManager->CreateText( 0, static_control.GetText(), static_control.GetLocalRect(),
-		CTextElement::TAL_CENTER, CTextElement::TAL_CENTER, normal_color, w, h );
+		TextElement::TAL_CENTER, TextElement::TAL_CENTER, normal_color, w, h );
 
 	// render the text on top
 	RegisterGraphicsElement( 0, m_pText );
@@ -271,7 +271,7 @@ void CGM_StdCheckBoxRenderer::Init( CGM_CheckBox& checkbox )
 
 	m_pText->SetText( ( checkbox.IsChecked() ? " [x] " : " [ ] " ) + m_BaseTitle );
 
-	m_pText->SetTextAlignment( CTextElement::TAL_LEFT, CTextElement::TAL_CENTER );
+	m_pText->SetTextAlignment( TextElement::TAL_LEFT, TextElement::TAL_CENTER );
 }
 
 
@@ -294,7 +294,7 @@ void CGM_StdRadioButtonRenderer::Init( CGM_RadioButton& radiobutton )
 
 	m_pText->SetText( ( radiobutton.IsChecked() ? " (x) " : " ( ) " ) + m_BaseTitle );
 
-	m_pText->SetTextAlignment( CTextElement::TAL_LEFT, CTextElement::TAL_CENTER );
+	m_pText->SetTextAlignment( TextElement::TAL_LEFT, TextElement::TAL_CENTER );
 }
 
 
@@ -361,7 +361,7 @@ void CGM_StdListBoxRenderer::Init( CGM_ListBox& listbox )
 }
 
 /*
-void CGM_StdListBoxRenderer::SetColorToTextElement( CTextElement& rTextElement, int state )
+void CGM_StdListBoxRenderer::SetColorToTextElement( TextElement& rTextElement, int state )
 {
 }
 */
@@ -460,7 +460,7 @@ CGM_StdScrollBarRenderer::CGM_StdScrollBarRenderer()
 
 void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 {
-	shared_ptr<CGraphicsElementManager> pElementMgr = m_pGraphicsElementManager;
+	shared_ptr<GraphicsElementManager> pElementMgr = m_pGraphicsElementManager;
 
 	const SFloatRGBAColor& normal_color = m_aColor[CGM_Control::STATE_NORMAL];
 	const SFloatRGBAColor& bg_color     = SFloatRGBAColor(0.0f,0.0f,0.0f,0.6f);
@@ -516,7 +516,7 @@ void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 	// - rendered on top of other elements
 	// - create a subgroup
 	// - local origin: top-left corner of the rect in local coord of the owner dialog (owner dialog coord)
-	boost::shared_ptr<CGraphicsElement> apElement[] = { /*m_apFrameRect[RE_THUMB],*/ m_apRect[RE_THUMB] };
+	boost::shared_ptr<GraphicsElement> apElement[] = { /*m_apFrameRect[RE_THUMB],*/ m_apRect[RE_THUMB] };
 	SRect thumb_rect_in_owner_dlg_coord = scrollbar.GetLocalThumbButtonRectInOwnerDialogCoord();
 	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), thumb_rect_in_owner_dlg_coord.GetTopLeftCorner() );
 
@@ -566,7 +566,7 @@ void CGM_StdSliderRenderer::Init( CGM_Slider& slider )
 	const SPoint btn_local_topleft = slider.GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
 
 	// subgroup for slider button
-	vector<boost::shared_ptr<CGraphicsElement> > vecpButtonElement;
+	vector<boost::shared_ptr<GraphicsElement> > vecpButtonElement;
 	vecpButtonElement.push_back( m_pSliderButtonRect );
 //	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
 	vecpButtonElement.push_back( m_pSliderButtonDot );
@@ -716,13 +716,13 @@ void CGM_StdCaptionRenderer::InitCaptionRenderer()
 
 	SRect caption_rect = m_pGraphicsElementManager->RectAtCenterBottom( 960, 60, 90 );
 
-	shared_ptr<CFillRectElement> pRect = m_pGraphicsElementManager->CreateFillRect(      caption_rect, bg_color );
+	shared_ptr<FillRectElement> pRect = m_pGraphicsElementManager->CreateFillRect(      caption_rect, bg_color );
 
 	m_pCaptionText = m_pGraphicsElementManager->CreateText(
 		font_id, // font id
 		"",// text - set this null. update the text in OnFocusedControlChanged()
 		caption_rect,
-		CTextElement::TAL_LEFT, CTextElement::TAL_CENTER,
+		TextElement::TAL_LEFT, TextElement::TAL_CENTER,
 		SFloatRGBAColor(0.9f,0.9f,0.9f,1.0f), w, h );
 
 	// render the text on top

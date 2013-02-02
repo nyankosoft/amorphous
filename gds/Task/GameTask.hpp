@@ -68,14 +68,14 @@ class CGameTask : public GraphicsComponent
 	/// - If true, the system simply calls MouseCursor.Draw() at the end of the renderering
 	bool m_bShowMouseCursor;
 
-	boost::shared_ptr<CGraphicsElementGroup> m_pMouseCursorElement;
+	boost::shared_ptr<GraphicsElementGroup> m_pMouseCursorElement;
 
 	bool m_bIsAppExitRequested;
 
 	static boost::shared_ptr<MouseInputDevice> ms_pMouse;
 
 	/// shared by all the game tasks
-	static CAnimatedGraphicsManager *ms_pAnimatedGraphicsManager;
+	static GraphicsElementAnimationManager *ms_pAnimatedGraphicsManager;
 
 	/// holds mappings from task name string to task id
 	/// used to change tasks from script
@@ -207,14 +207,14 @@ public:
 	void GetCurrentMousePosition( int& x, int& y );
 	void DrawMouseCursor();
 
-	void SetGraphicsElementGroupForMouseCursor( boost::shared_ptr<CGraphicsElementGroup> pElementGroup ) { m_pMouseCursorElement = pElementGroup; }
+	void SetGraphicsElementGroupForMouseCursor( boost::shared_ptr<GraphicsElementGroup> pElementGroup ) { m_pMouseCursorElement = pElementGroup; }
 
 	// Static member functions
 
 	static void SetMouseInputDevice( boost::shared_ptr<MouseInputDevice> pMouse ) { ms_pMouse = pMouse; }
 
 	static void InitAnimatedGraphicsManager();
-	static CAnimatedGraphicsManager *GetAnimatedGraphicsManager() { return ms_pAnimatedGraphicsManager; }
+	static GraphicsElementAnimationManager *GetAnimatedGraphicsManager() { return ms_pAnimatedGraphicsManager; }
 	static void SetAnimatedGraphicsManagerForScript();
 	static void RemoveAnimatedGraphicsManagerForScript();
 	static void ReleaseAnimatedGraphicsManager();

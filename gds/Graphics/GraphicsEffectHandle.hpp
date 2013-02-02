@@ -12,29 +12,29 @@ namespace amorphous
 {
 
 
-class CGraphicsEffectHandle
+class GraphicsElementAnimationHandle
 {
-	CAnimatedGraphicsManager *m_pManager;
+	GraphicsElementAnimationManager *m_pManager;
 
 	int m_EffectIndex;
 
 	int m_EffectID;
 
-	static const CGraphicsEffectHandle ms_NullHandle; /// definition in GraphicsEffectManager.cpp
+	static const GraphicsElementAnimationHandle ms_NullHandle; /// definition in GraphicsEffectManager.cpp
 
-	CGraphicsEffectHandle( CAnimatedGraphicsManager *pMgr, int index, int id )
+	GraphicsElementAnimationHandle( GraphicsElementAnimationManager *pMgr, int index, int id )
 		:
 	m_pManager(pMgr), m_EffectIndex(index), m_EffectID(id)
 	{}
 
 public:
 
-	CGraphicsEffectHandle()
+	GraphicsElementAnimationHandle()
 		:
 	m_pManager(NULL), m_EffectIndex(-1), m_EffectID(-1)
 	{}
 
-	static const CGraphicsEffectHandle Null() { return ms_NullHandle; }
+	static const GraphicsElementAnimationHandle Null() { return ms_NullHandle; }
 
 	/// valid for non-linear translation effects
 	void SetDestPosition( const Vector2& vDestPos );
@@ -45,31 +45,31 @@ public:
 	/// valid effect: non-linear tex coord change effect to a polygon element
 	void ChangeDestVertexTexCoord( int vertex, const TEXCOORD2& tex_coord );
 
-	bool operator==( const CGraphicsEffectHandle& rhs )
+	bool operator==( const GraphicsElementAnimationHandle& rhs )
 	{
 		return m_pManager    == rhs.m_pManager
 			&& m_EffectIndex == rhs.m_EffectIndex
 			&& m_EffectID    == rhs.m_EffectID;
 	}
 
-	bool operator!=( const CGraphicsEffectHandle& rhs ) { return !(*this==rhs); }
+	bool operator!=( const GraphicsElementAnimationHandle& rhs ) { return !(*this==rhs); }
 
-	friend class CAnimatedGraphicsManager;
+	friend class GraphicsElementAnimationManager;
 };
 
 
 /*
-class CLinearGraphicsEffectHandle : public CGraphicsEffectHandle
+class CLinearGraphicsEffectHandle : public GraphicsElementAnimationHandle
 {
 
 public:
 };
 
 
-class CNonLinearGraphicsEffectHandle : public CGraphicsEffectHandle
+class CNonLinearGraphicsEffectHandle : public GraphicsElementAnimationHandle
 {
 	/// Must be cheked by m_pManager->IsAlive(  )
-	CGraphicsElementNonLinearEffect *m_pEffect;
+	GraphicsElementNonLinearEffect *m_pEffect;
 
 public:
 
@@ -84,7 +84,7 @@ public:
 	// effects are automatically released when it's over and the caller cannot check if its still alive
 	// from the raw pointer
 	// Update() must not be called when this is called.
-//	CGraphicsElementNonLinearEffect *operator->() { if( m_pManager->IsAlive( *this ) return m_pEffect; else return NULL; }
+//	GraphicsElementNonLinearEffect *operator->() { if( m_pManager->IsAlive( *this ) return m_pEffect; else return NULL; }
 
 };
 

@@ -96,9 +96,9 @@ void HUD_PlayerAircraft::Init()
 	const string filename = "./Texture/hud_icon.dds";
 	m_TexCache.Load( filename );
 
-	m_pGraphicsEffectManager = shared_ptr<CAnimatedGraphicsManager>( new CAnimatedGraphicsManager() );
+	m_pGraphicsEffectManager = shared_ptr<GraphicsElementAnimationManager>( new GraphicsElementAnimationManager() );
 
-	shared_ptr<CGraphicsElementManager> pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
+	shared_ptr<GraphicsElementManager> pElementMgr = m_pGraphicsEffectManager->GetGraphicsElementManager();
 
 	pElementMgr->LoadTexture( TEX_RADAR_ICON, "./Texture/hud_icon.dds" );
 
@@ -131,16 +131,16 @@ void HUD_PlayerAircraft::Init()
 	pElementMgr->CreateFrameRect( m_LocalRadarRect, m_aHUDColor[COLOR_FRAME], 4.5f, local_radar_layer );
 
 	m_pGlobalRadarBG = pElementMgr->CreateFillRect(      local_globalradar_rect, m_aHUDColor[COLOR_BG],          global_radar_layer + 5 );
-	shared_ptr<CFrameRectElement> pFrame = pElementMgr->CreateFrameRect( local_globalradar_rect, m_aHUDColor[COLOR_FRAME], 4.5f, global_radar_layer );
+	shared_ptr<FrameRectElement> pFrame = pElementMgr->CreateFrameRect( local_globalradar_rect, m_aHUDColor[COLOR_FRAME], 4.5f, global_radar_layer );
 	m_pGlobalRadarBG->SetTextureCoord( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
 	// inner frame rect that represents the area of operation
 	SRect inner_frame_rect = local_globalradar_rect;
 	inner_frame_rect.Inflate( -85, -85 );
-	shared_ptr<CFrameRectElement> pInnerFrame = pElementMgr->CreateFrameRect( inner_frame_rect, SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.32f ), 4.0f, global_radar_layer );
+	shared_ptr<FrameRectElement> pInnerFrame = pElementMgr->CreateFrameRect( inner_frame_rect, SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.32f ), 4.0f, global_radar_layer );
 	pInnerFrame->SetDestAlphaBlendMode( AlphaBlend::One );
 
-	boost::shared_ptr<CGraphicsElement> apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
+	boost::shared_ptr<GraphicsElement> apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
 	m_pGlobalRadar = pElementMgr->CreateGroup( apElement, numof(apElement), m_GlobalRadarRect.GetTopLeftCorner() );
 	m_pGlobalRadar->SetLocalTopLeftPos( m_GlobalRadarRect.GetTopLeftCorner() );
 
@@ -152,7 +152,7 @@ void HUD_PlayerAircraft::Init()
 
 	// text for time display
 	m_pTimeText = pElementMgr->CreateText( 0, "", RectAtRightTop( 200, 50, 50, 32 ),
-		CTextElement::TAL_TOP, CTextElement::TAL_CENTER,
+		TextElement::TAL_TOP, TextElement::TAL_CENTER,
 		m_aHUDColor[COLOR_NORMAL], 30, 40, base_layer );
 
 	m_pTimeText->SetDestAlphaBlendMode( AlphaBlend::One );
@@ -267,12 +267,12 @@ void HUD_PlayerAircraft::Update( float  dt )
 
 		if( m_TimerDisplay.m_TimeMS < gs_TimerDisplayBlinkThreasholdMS )
 		{
-			if( m_TimeTextBlinkEffect == CGraphicsEffectHandle::Null() )
+			if( m_TimeTextBlinkEffect == GraphicsElementAnimationHandle::Null() )
 				m_TimeTextBlinkEffect = m_pGraphicsEffectManager->BlinkAlpha( m_pTimeText, 0.5, 0 );
 		}
 		else
 		{
-			if( m_TimeTextBlinkEffect != CGraphicsEffectHandle::Null() )
+			if( m_TimeTextBlinkEffect != GraphicsElementAnimationHandle::Null() )
 				m_pGraphicsEffectManager->CancelEffect( m_TimeTextBlinkEffect );
 		}
 	}

@@ -19,19 +19,19 @@ namespace amorphous
 
 class CStdInputDeviceStateCallback : public CInputDeviceStateCallback
 {
-	CAnimatedGraphicsManager *m_pEffectMgr;
+	GraphicsElementAnimationManager *m_pEffectMgr;
 
-	boost::shared_ptr<CCombinedRectElement> m_pRect;
-	boost::shared_ptr<CTextElement> m_pText;
+	boost::shared_ptr<CombinedRectElement> m_pRect;
+	boost::shared_ptr<TextElement> m_pText;
 
-	CGraphicsEffectHandle m_TextFadein;
-	CGraphicsEffectHandle m_RectFadein;
-	CGraphicsEffectHandle m_TextFadeout;
-	CGraphicsEffectHandle m_RectFadeout;
+	GraphicsElementAnimationHandle m_TextFadein;
+	GraphicsElementAnimationHandle m_RectFadein;
+	GraphicsElementAnimationHandle m_TextFadeout;
+	GraphicsElementAnimationHandle m_RectFadeout;
 
 public:
 
-	CStdInputDeviceStateCallback(CAnimatedGraphicsManager *pMgr)
+	CStdInputDeviceStateCallback(GraphicsElementAnimationManager *pMgr)
 		:
 	m_pEffectMgr(pMgr)
 	{
@@ -44,9 +44,9 @@ public:
 		if( !m_pEffectMgr )
 			return;
 
-		shared_ptr<CGraphicsElementManager> pElementMgr = m_pEffectMgr->GetGraphicsElementManager();
+		shared_ptr<GraphicsElementManager> pElementMgr = m_pEffectMgr->GetGraphicsElementManager();
 
-		shared_ptr<CGraphicsElement> pElems[] = { m_pRect, m_pText };
+		shared_ptr<GraphicsElement> pElems[] = { m_pRect, m_pText };
 		pElementMgr->RemoveElement( pElems[0] );
 		pElementMgr->RemoveElement( pElems[1] );
 	}
@@ -113,7 +113,7 @@ public:
 
 		// create graphics elements for the notification bar that tells
 		// the state of the input device when they are plugged, initialized, etc.
-		shared_ptr<CGraphicsElementManager> pElementMgr = m_pEffectMgr->GetGraphicsElementManager();
+		shared_ptr<GraphicsElementManager> pElementMgr = m_pEffectMgr->GetGraphicsElementManager();
 
 		SRect rect = GraphicsComponent::RectAtCenterBottom( 800, 40, 30 );
 		int layer = 10;
@@ -131,8 +131,8 @@ public:
 			= pElementMgr->CreateText( font_id,
 			"Display input device state here.",
 			rect,
-			CTextElement::TAL_CENTER,
-			CTextElement::TAL_CENTER,
+			TextElement::TAL_CENTER,
+			TextElement::TAL_CENTER,
 			SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.9f ),
 			0, 0, // font width & height - set to 0 to use the default font size
 			layer - 3

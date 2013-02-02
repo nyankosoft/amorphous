@@ -13,13 +13,13 @@ extern PyMethodDef g_PyModuleGraphicsElementMethod[];
 extern PyMethodDef g_PyModuleAnimatedGraphicsMethod[];
 
 
-class CGraphicsElementManager;
-class CAnimatedGraphicsManager;
+class GraphicsElementManager;
+class GraphicsElementAnimationManager;
 
-void SetGraphicsElementManagerForScript( CGraphicsElementManager *pManager );
+void SetGraphicsElementManagerForScript( GraphicsElementManager *pManager );
 void RemoveGraphicsElementManagerForScript();
 
-void SetAnimatedGraphicsManagerForScript( CAnimatedGraphicsManager *pManager );
+void SetAnimatedGraphicsManagerForScript( GraphicsElementAnimationManager *pManager );
 void RemoveAnimatedGraphicsManagerForScript();
 
 } // namespace amorphous

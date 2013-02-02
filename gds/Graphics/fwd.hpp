@@ -107,47 +107,41 @@ class MeshImpl;
 class CustomMesh;
 
 
-class CGraphicsElement;
-class CRectElement;
-class CFillRectElement;
-class CFrameRectElement;
-class CCombinedRectElement;
-class CRoundRectElement;
-class CRoundFillRectElement;
-class CRoundFrameRectElement;
-class CCombinedRectElement;
-class CTriangleElement;
-class CFillTriangleElement;
-class CFrameTriangleElement;
-class CCombinedTriangleElement;
-class CPolygonElement;
-class CFillPolygonElement;
-class CFramePolygonElement;
-class CTextElement;
-class CGraphicsElementGroup;
-class CPrimitiveElement;
-class CGraphicsElementManager;	
-class CGraphicsElementManagerCallback;
+class GraphicsElement;
+class RectElement;
+class FillRectElement;
+class FrameRectElement;
+class CombinedRectElement;
+class RoundRectElement;
+class RoundFillRectElement;
+class RoundFrameRectElement;
+class CombinedRectElement;
+class TriangleElement;
+class FillTriangleElement;
+class FrameTriangleElement;
+class CombinedTriangleElement;
+class PolygonElement;
+class FillPolygonElement;
+class FramePolygonElement;
+class TextElement;
+class GraphicsElementGroup;
+class PrimitiveElement;
+class GraphicsElementManager;	
+class GraphicsElementManagerCallback;
 
-class CGraphicsElementEffect;
-class CGraphicsElementLinearEffect;
-class CGraphicsElementNonLinearEffect;
-class CE_ColorShift;
-class CE_AlphaChange;
-class CE_TranslateCD;
-class CE_Translate;
-class CE_Rotate;
-class CE_Scale;
-class CE_ScaleCD;
-class CE_SizeChange;
-class CAnimatedGraphicsManagerBase;
-class CAnimatedGraphicsManager;
-class CGraphiceEffectManagerCallback;
-
-
-class CElementEffectDesc;
-class CED_ChangeColor;
-class CED_Translate;
+class GraphicsElementAnimation;
+class GraphicsElementLinearAnimation;
+class GraphicsElementNonLinearAnimation;
+class ColorShiftAnimation;
+class AlphaShiftAnimation;
+class NonLinearTranslationAnimation;
+class TranslationAnimation;
+class RotationAnimation;
+class ScalingAnimation;
+class NonLinearScalingAnimation;
+class SizeChangeAnimation;
+class GraphicsElementAnimationManagerBase;
+class GraphicsElementAnimationManager;
 
 
 // D3D Implementation
@@ -191,9 +185,9 @@ public:
 
 namespace amorphous
 {
-typedef boost::shared_ptr<CGraphicsElementManager> CGraphicsElementManagerSharedPtr;
-typedef boost::shared_ptr<CGraphicsElementManagerCallback> CGraphicsElementManagerCallbackSharedPtr;
-typedef boost::shared_ptr<CAnimatedGraphicsManagerBase> CAnimatedGraphicsManagerSharedPtr;
+typedef boost::shared_ptr<GraphicsElementManager> GraphicsElementManagerSharedPtr;
+typedef boost::shared_ptr<GraphicsElementManagerCallback> GraphicsElementManagerCallbackSharedPtr;
+typedef boost::shared_ptr<GraphicsElementAnimationManagerBase> GraphicsElementAnimationManagerSharedPtr;
 } // namespace amorphous
 
 

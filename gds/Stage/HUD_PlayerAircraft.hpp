@@ -68,19 +68,19 @@ private:
 	};
 
 
-	boost::shared_ptr<CTextElement> m_pTimeText;
+	boost::shared_ptr<TextElement> m_pTimeText;
 
-	CGraphicsEffectHandle m_TimeTextBlinkEffect;
+	GraphicsElementAnimationHandle m_TimeTextBlinkEffect;
 
-	boost::shared_ptr<CFrameRectElement> m_apContainer[NUM_MAX_CONTAINER_RECTS];
+	boost::shared_ptr<FrameRectElement> m_apContainer[NUM_MAX_CONTAINER_RECTS];
 
-	boost::shared_ptr<CGraphicsElementGroup> m_pGlobalRadar;
+	boost::shared_ptr<GraphicsElementGroup> m_pGlobalRadar;
 
-	boost::shared_ptr<CFillRectElement> m_pGlobalRadarBG;
+	boost::shared_ptr<FillRectElement> m_pGlobalRadarBG;
 
-	boost::shared_ptr<CFillRectElement> m_apIconOnGlobalRadar[NUM_MAX_ICONS_ON_GLOBAL_RADAR];
+	boost::shared_ptr<FillRectElement> m_apIconOnGlobalRadar[NUM_MAX_ICONS_ON_GLOBAL_RADAR];
 
-	boost::shared_ptr<CFillRectElement> m_apIconOnLocalRadar[NUM_MAX_ICONS_ON_LOCAL_RADAR];
+	boost::shared_ptr<FillRectElement> m_apIconOnLocalRadar[NUM_MAX_ICONS_ON_LOCAL_RADAR];
 
 	int m_NumLastRenderedLocalRadarIcons;
 

@@ -31,11 +31,11 @@ class CTextMessageRenderer : public GraphicsComponent
 
 protected:
 
-	boost::shared_ptr<CAnimatedGraphicsManager> m_pEffectManager;
+	boost::shared_ptr<GraphicsElementAnimationManager> m_pEffectManager;
 
 public:
 
-	CTextMessageRenderer( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr = boost::shared_ptr<CAnimatedGraphicsManager>() );
+	CTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr = boost::shared_ptr<GraphicsElementAnimationManager>() );
 
 	virtual ~CTextMessageRenderer();
 
@@ -80,18 +80,18 @@ class CDefaultTextMessageRenderer : public CTextMessageRenderer
 	/// background rectangle of window
 	C2DRect m_WindowRect;
 
-	boost::shared_ptr<CFillRectElement> m_pWindowBGRect;
+	boost::shared_ptr<FillRectElement> m_pWindowBGRect;
 
-	boost::shared_ptr<CTextElement> m_pText;
+	boost::shared_ptr<TextElement> m_pText;
 
-	boost::shared_ptr<CTextElement> m_pSpeaker;
+	boost::shared_ptr<TextElement> m_pSpeaker;
 
 	/// texture for window rectangle
 	TextureHandle m_WindowTexture;
 
 	C2DRect m_TexturedIcon;
 
-	CGraphicsEffectHandle m_BGRectFade;
+	GraphicsElementAnimationHandle m_BGRectFade;
 
 	float m_fBGRectAlpha;
 
@@ -113,7 +113,7 @@ class CDefaultTextMessageRenderer : public CTextMessageRenderer
 
 public:
 
-	CDefaultTextMessageRenderer( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr,
+	CDefaultTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr,
 		int top_layer,
 		int bottom_layer );
 
@@ -151,7 +151,7 @@ class CNullTextMessageRenderer : public CTextMessageRenderer
 
 public:
 
-	CNullTextMessageRenderer( boost::shared_ptr<CAnimatedGraphicsManager> pEffectMgr,
+	CNullTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr,
 		int top_layer,
 		int bottom_layer ) {}
 

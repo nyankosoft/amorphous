@@ -14,13 +14,13 @@ using namespace std;
 
 CGM_ControlRendererManager::CGM_ControlRendererManager()
 {
-	m_pGraphicsEffectManager = CAnimatedGraphicsManagerSharedPtr( new CAnimatedGraphicsManager );
+	m_pGraphicsEffectManager = GraphicsElementAnimationManagerSharedPtr( new GraphicsElementAnimationManager );
 
 	m_pGraphicsElementManager = m_pGraphicsEffectManager->GetGraphicsElementManager();
 }
 
 
-CGM_ControlRendererManager::CGM_ControlRendererManager( CAnimatedGraphicsManagerSharedPtr pGraphicsEffectManager )
+CGM_ControlRendererManager::CGM_ControlRendererManager( GraphicsElementAnimationManagerSharedPtr pGraphicsEffectManager )
 {
 	m_pGraphicsEffectManager = pGraphicsEffectManager;
 

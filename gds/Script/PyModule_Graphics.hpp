@@ -15,19 +15,19 @@ namespace amorphous
 
 
 // global variable externs
-extern boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int );
-extern boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int );
-extern bool (CGraphicsElementManager::*LoadTextureWithID)( int, const std::string& );
-extern int (CGraphicsElementManager::*LoadTextureWithoutID)( const std::string& );
-extern bool (CGraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float );
-extern int (CGraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float );
+extern boost::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int );
+extern boost::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int );
+extern bool (GraphicsElementManager::*LoadTextureWithID)( int, const std::string& );
+extern int (GraphicsElementManager::*LoadTextureWithoutID)( const std::string& );
+extern bool (GraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float );
+extern int (GraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float );
 
 // global function externs
 extern void RegisterPythonModule_gfx();
 
 
-//inline GlobalGraphicsElementManagerList( const std::string& name, boost::shared_ptr<CGraphicsElementManager> pMgr )
-typedef std::map< std::string, boost::weak_ptr<CGraphicsElementManager> > name_to_gfxelementmgr;
+//inline GlobalGraphicsElementManagerList( const std::string& name, boost::shared_ptr<GraphicsElementManager> pMgr )
+typedef std::map< std::string, boost::weak_ptr<GraphicsElementManager> > name_to_gfxelementmgr;
 
 
 inline name_to_gfxelementmgr& GlobalGraphicsElementManagerMap()
@@ -38,14 +38,14 @@ inline name_to_gfxelementmgr& GlobalGraphicsElementManagerMap()
 }
 
 
-inline boost::shared_ptr<CGraphicsElementManager> GetGraphicsElementManager( const char *name )
+inline boost::shared_ptr<GraphicsElementManager> GetGraphicsElementManager( const char *name )
 {
 	name_to_gfxelementmgr::iterator itr = GlobalGraphicsElementManagerMap().find( name );
 
 	if( itr != GlobalGraphicsElementManagerMap().end() )
 		return itr->second.lock();
 	else
-		return boost::shared_ptr<CGraphicsElementManager>();
+		return boost::shared_ptr<GraphicsElementManager>();
 }
 
 

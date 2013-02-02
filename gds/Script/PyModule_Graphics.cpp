@@ -16,22 +16,22 @@ bool (TextureHandle::*LoadTextureFromResourcePath)( const std::string& ) = &Text
 bool (MeshHandle::*LoadMeshFromResourcePath)( const std::string& ) = &MeshHandle::Load;
 bool (ShaderHandle::*LoadShaderFromResourcePath)( const std::string& ) = &ShaderHandle::Load;
 
-boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
-boost::shared_ptr<CTextElement> (CGraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &CGraphicsElementManager::CreateText;
-bool (CGraphicsElementManager::*LoadTextureWithID)( int, const std::string& ) = &CGraphicsElementManager::LoadTexture;
-int (CGraphicsElementManager::*LoadTextureWithoutID)( const std::string& ) = &CGraphicsElementManager::LoadTexture;
-bool (CGraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
-int (CGraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float ) = &CGraphicsElementManager::LoadFont;
+boost::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &GraphicsElementManager::CreateText;
+boost::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &GraphicsElementManager::CreateText;
+bool (GraphicsElementManager::*LoadTextureWithID)( int, const std::string& ) = &GraphicsElementManager::LoadTexture;
+int (GraphicsElementManager::*LoadTextureWithoutID)( const std::string& ) = &GraphicsElementManager::LoadTexture;
+bool (GraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float ) = &GraphicsElementManager::LoadFont;
+int (GraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float ) = &GraphicsElementManager::LoadFont;
 
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) = &CAnimatedGraphicsManager::ChangeColor;
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColor_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode )    = &CAnimatedGraphicsManager::ChangeColor;
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGBA)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) = &CAnimatedGraphicsManager::ChangeColorTo;
-CGraphicsEffectHandle (CAnimatedGraphicsManager::*ChangeColorTo_RGB)( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode )   = &CAnimatedGraphicsManager::ChangeColorTo;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColor_RGBA)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) = &GraphicsElementAnimationManager::ChangeColor;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColor_RGB)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode )    = &GraphicsElementAnimationManager::ChangeColor;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColorTo_RGBA)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) = &GraphicsElementAnimationManager::ChangeColorTo;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColorTo_RGB)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode )   = &GraphicsElementAnimationManager::ChangeColorTo;
 
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(gem_member_overloads, CreateText, 1, 3)
 
 
-class CGraphicsElementWrap : CGraphicsElement, boost::python::wrapper<CGraphicsElement>
+class GraphicsElementWrap : GraphicsElement, boost::python::wrapper<GraphicsElement>
 {
 public:
 	int GetElementType() const
@@ -110,56 +110,56 @@ BOOST_PYTHON_MODULE(gfx)
 		.def( "SetTechniqueName", &ShaderTechniqueHandle::SetTechniqueName, ( python::arg("name") ) )
 	;
 
-//	class_< CGraphicsElementWrap, boost::shared_ptr<CGraphicsElement> >( "GraphicsElement" )
-//	class_< CGraphicsElementWrap, boost::noncopyable >( "GraphicsElement" )
-//		.def( "GetElementType",  pure_virtual(&CGraphicsElement::GetElementType) )
-//		.def( "GetColor",       &CGraphicsElement::GetColor )
-//		.def( "SetColor",       &CGraphicsElement::SetColor )
-//		.def( "GetAlpha",       &CGraphicsElement::GetAlpha )
-//		.def( "SetAlpha",       &CGraphicsElement::SetAlpha )
+//	class_< GraphicsElementWrap, boost::shared_ptr<GraphicsElement> >( "GraphicsElement" )
+//	class_< GraphicsElementWrap, boost::noncopyable >( "GraphicsElement" )
+//		.def( "GetElementType",  pure_virtual(&GraphicsElement::GetElementType) )
+//		.def( "GetColor",       &GraphicsElement::GetColor )
+//		.def( "SetColor",       &GraphicsElement::SetColor )
+//		.def( "GetAlpha",       &GraphicsElement::GetAlpha )
+//		.def( "SetAlpha",       &GraphicsElement::SetAlpha )
 	;
 
-	class_< CCombinedRectElement, boost::shared_ptr<CCombinedRectElement> >("CombinedRectElement")
-		.def( "FillRectElement",  &CCombinedRectElement::FillRectElement )
-		.def( "FrameRectElement", &CCombinedRectElement::FrameRectElement )
+	class_< CombinedRectElement, boost::shared_ptr<CombinedRectElement> >("CombinedRectElement")
+		.def( "FillRectElement",  &CombinedRectElement::FillRectElement )
+		.def( "FrameRectElement", &CombinedRectElement::FrameRectElement )
 	;
 
-	class_< CCombinedRoundRectElement, boost::shared_ptr<CCombinedRoundRectElement> >("CombinedRoundRectElement")
-		.def( "RoundFillRectElement",  &CCombinedRoundRectElement::RoundFillRectElement )
-		.def( "RoundFrameRectElement", &CCombinedRoundRectElement::RoundFrameRectElement )
+	class_< CombinedRoundRectElement, boost::shared_ptr<CombinedRoundRectElement> >("CombinedRoundRectElement")
+		.def( "RoundFillRectElement",  &CombinedRoundRectElement::RoundFillRectElement )
+		.def( "RoundFrameRectElement", &CombinedRoundRectElement::RoundFrameRectElement )
 	;
 
-	class_< CCombinedTriangleElement, boost::shared_ptr<CCombinedTriangleElement> >("CombinedTriangleElement")
-		.def( "FillTriangleElement",  &CCombinedTriangleElement::FillTriangleElement )
-		.def( "FrameTriangleElement", &CCombinedTriangleElement::FrameTriangleElement )
+	class_< CombinedTriangleElement, boost::shared_ptr<CombinedTriangleElement> >("CombinedTriangleElement")
+		.def( "FillTriangleElement",  &CombinedTriangleElement::FillTriangleElement )
+		.def( "FrameTriangleElement", &CombinedTriangleElement::FrameTriangleElement )
 	;
 
-	class_< CTextElement, boost::shared_ptr<CTextElement> >("TextElement")
-		.def( "GetText",   &CTextElement::GetTextCopy )
-		.def( "SetText",   &CTextElement::SetText )
-		.def( "SetFontID", &CTextElement::SetFontID )
+	class_< TextElement, boost::shared_ptr<TextElement> >("TextElement")
+		.def( "GetText",   &TextElement::GetTextCopy )
+		.def( "SetText",   &TextElement::SetText )
+		.def( "SetFontID", &TextElement::SetFontID )
 	;
 
-	class_< CGraphicsElementManager, boost::shared_ptr<CGraphicsElementManager> >("GraphicsElementManager")
-//	class_< CGraphicsElementManager >("GraphicsElementManager")
-		.def( "CreateRect",             &CGraphicsElementManager::CreateRect,      ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width")=4, python::arg("layer") = 0 ) )
-		.def( "CreateFillRect",         &CGraphicsElementManager::CreateFillRect,  ( python::arg("rect"), python::arg("fill_color_0"), python::arg("layer") = 0 ) )
-		.def( "CreateFrameRect",        &CGraphicsElementManager::CreateFrameRect, ( python::arg("rect"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
+	class_< GraphicsElementManager, boost::shared_ptr<GraphicsElementManager> >("GraphicsElementManager")
+//	class_< GraphicsElementManager >("GraphicsElementManager")
+		.def( "CreateRect",             &GraphicsElementManager::CreateRect,      ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width")=4, python::arg("layer") = 0 ) )
+		.def( "CreateFillRect",         &GraphicsElementManager::CreateFillRect,  ( python::arg("rect"), python::arg("fill_color_0"), python::arg("layer") = 0 ) )
+		.def( "CreateFrameRect",        &GraphicsElementManager::CreateFrameRect, ( python::arg("rect"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
 
-		.def( "CreateRoundRect",        &CGraphicsElementManager::CreateRoundRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("corner_radius"), python::arg("frame_width"), python::arg("layer") = 0 ) )
-		.def( "CreateRoundFillRect",    &CGraphicsElementManager::CreateRoundFillRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("corner_radius"), python::arg("layer") = 0 ) )
-		.def( "CreateRoundFrameRect",   &CGraphicsElementManager::CreateRoundFrameRect, ( python::arg("rect"), python::arg("frame_color_0"), python::arg("corner_radius"), python::arg("frame_width"), python::arg("layer") = 0 ) )
+		.def( "CreateRoundRect",        &GraphicsElementManager::CreateRoundRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("corner_radius"), python::arg("frame_width"), python::arg("layer") = 0 ) )
+		.def( "CreateRoundFillRect",    &GraphicsElementManager::CreateRoundFillRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("corner_radius"), python::arg("layer") = 0 ) )
+		.def( "CreateRoundFrameRect",   &GraphicsElementManager::CreateRoundFrameRect, ( python::arg("rect"), python::arg("frame_color_0"), python::arg("corner_radius"), python::arg("frame_width"), python::arg("layer") = 0 ) )
 
-//		.def( "CreateTriangle",         &CGraphicsElementManager::CreateTriangle, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
-//		.def( "CreateFillTriangle",     &CGraphicsElementManager::CreateFillTriangle, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("layer") = 0 ) )
-//		.def( "CreateFrameTriangle",    &CGraphicsElementManager::CreateFrameTriangle, ( python::arg("rect"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
+//		.def( "CreateTriangle",         &GraphicsElementManager::CreateTriangle, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
+//		.def( "CreateFillTriangle",     &GraphicsElementManager::CreateFillTriangle, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("layer") = 0 ) )
+//		.def( "CreateFrameTriangle",    &GraphicsElementManager::CreateFrameTriangle, ( python::arg("rect"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
 
-//		.def( "CreateText",             &CGraphicsElementManager::CreateTLAlignedText, ( python::arg("font_id"), python::arg("text"), python::arg("x") = 0, python::arg("y") = 0, python::arg("color") = SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f), python::arg("font_width") = 16, python::arg("font_height") = 32, python::arg("layer") = 0 ) )
-//		.def( "CreateText",             &CGraphicsElementManager::CreateTextInRect,    ( python::arg("font_id"), python::arg("text"), python::arg("rect"), python::arg("align_h"), python::arg("align_v"), python::arg("color"), python::arg("font_width"), python::arg("font_height"), python::arg("layer") = 0 ) )
+//		.def( "CreateText",             &GraphicsElementManager::CreateTLAlignedText, ( python::arg("font_id"), python::arg("text"), python::arg("x") = 0, python::arg("y") = 0, python::arg("color") = SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f), python::arg("font_width") = 16, python::arg("font_height") = 32, python::arg("layer") = 0 ) )
+//		.def( "CreateText",             &GraphicsElementManager::CreateTextInRect,    ( python::arg("font_id"), python::arg("text"), python::arg("rect"), python::arg("align_h"), python::arg("align_v"), python::arg("color"), python::arg("font_width"), python::arg("font_height"), python::arg("layer") = 0 ) )
 		.def( "CreateText",             CreateTextWithTLPos, ( python::arg("font_id"), python::arg("text"), python::arg("x") = 0, python::arg("y") = 0, python::arg("color") = SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f), python::arg("font_width") = 0, python::arg("font_height") = 0, python::arg("layer") = 0 ) )
 		.def( "CreateText",             CreateTextInBox,     ( python::arg("font_id"), python::arg("text"), python::arg("rect"), python::arg("align_h"), python::arg("align_v"), python::arg("color"), python::arg("font_width") = 0, python::arg("font_height") = 0, python::arg("layer") = 0 ) )
 
-//		.def("CreateGroup",             &CGraphicsElementManager::CreateRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
+//		.def("CreateGroup",             &GraphicsElementManager::CreateRect, ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width"), python::arg("layer") = 0 ) )
 
 		.def("LoadTexture",             LoadTextureWithID,    ( python::arg("texture_id"), python::arg("texture_path") ) )
 		.def("LoadTexture",             LoadTextureWithoutID, (                            python::arg("texture_path") ) )
@@ -168,35 +168,35 @@ BOOST_PYTHON_MODULE(gfx)
 		.def("LoadFont",                LoadFontWithoutID, (                         python::arg("font_name"), python::arg("width") = 16, python::arg("height") = 32, python::arg("bold") = 0.0f, python::arg("italic") = 0.0f, python::arg("shadow") = 0.0f ) )
 	;
 
-	enum_<CTextElement::eTextAlignment>("TextAlignment")
-		.value( "Left",   CTextElement::TAL_LEFT )
-		.value( "Top",    CTextElement::TAL_TOP )
-		.value( "Center", CTextElement::TAL_CENTER )
-		.value( "Right",  CTextElement::TAL_RIGHT )
-		.value( "Bottom", CTextElement::TAL_BOTTOM )
+	enum_<TextElement::eTextAlignment>("TextAlignment")
+		.value( "Left",   TextElement::TAL_LEFT )
+		.value( "Top",    TextElement::TAL_TOP )
+		.value( "Center", TextElement::TAL_CENTER )
+		.value( "Right",  TextElement::TAL_RIGHT )
+		.value( "Bottom", TextElement::TAL_BOTTOM )
 	;
 
 	def( "GetGraphicsElementManager", GetGraphicsElementManager );
 
 
-//	class_<CGraphicsEffectHandle>("GraphicsEffectHandle")
+//	class_<GraphicsElementAnimationHandle>("GraphicsEffectHandle")
 //		.def( ""
 
 //	def( "GetGraphicsEffectManager", GetGraphicsEffectManager );
 
-	class_< CAnimatedGraphicsManager, boost::shared_ptr<CAnimatedGraphicsManager> >("GraphicsEffectManager")
-		.def( "ChangeAlpha",           &CAnimatedGraphicsManager::ChangeAlpha,           (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_alpha"), py::arg("end_alpha"), py::arg("trans_mode") ) )
-		.def( "ChangeAlphaTo",         &CAnimatedGraphicsManager::ChangeAlphaTo,         (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_alpha"), py::arg("trans_mode") ) )
+	class_< GraphicsElementAnimationManager, boost::shared_ptr<GraphicsElementAnimationManager> >("GraphicsEffectManager")
+		.def( "ChangeAlpha",           &GraphicsElementAnimationManager::ChangeAlpha,           (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_alpha"), py::arg("end_alpha"), py::arg("trans_mode") ) )
+		.def( "ChangeAlphaTo",         &GraphicsElementAnimationManager::ChangeAlphaTo,         (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_alpha"), py::arg("trans_mode") ) )
 		.def( "ChangeColor",           ChangeColor_RGBA,                                 (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_color"), py::arg("end_color"), py::arg("trans_mode") ) )
 		.def( "ChangeColorTo",         ChangeColorTo_RGBA,                               (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_color"), py::arg("trans_mode") ) )
 		.def( "ChangeColor",           ChangeColor_RGB,                                  (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_color"), py::arg("end_color"), py::arg("trans_mode") ) )
 		.def( "ChangeColorTo",         ChangeColorTo_RGB,                                (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_color"), py::arg("trans_mode") ) )
-		.def( "TranslateNonLinear",    &CAnimatedGraphicsManager::TranslateNonLinear,    (  py::arg("target"), py::arg("start_time"), py::arg("dest_pos"), py::arg("init_vel"), py::arg("smooth_time"), py::arg("coord_type"), py::arg("flags") ) )
-		.def( "BlinkAlpha",            &CAnimatedGraphicsManager::BlinkAlpha,            (  py::arg("target"), py::arg("interval"), py::arg("color_index") ) )
-		.def( "ChangeAlphaInSineWave", &CAnimatedGraphicsManager::ChangeAlphaInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("alpha0"), py::arg("alpha1"), py::arg("num_periods") ) )
-		.def( "ChangeColorInSineWave", &CAnimatedGraphicsManager::ChangeColorInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("color0"), py::arg("color1"), py::arg("num_periods") ) )
-/*		.def( "DrawText",              &CAnimatedGraphicsManager::DrawText,              (  boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) )
-		.def( "CancelEffect",          &CAnimatedGraphicsManager::CancelEffect,          (  py::arg("effect_handle") ) )
+		.def( "TranslateNonLinear",    &GraphicsElementAnimationManager::TranslateNonLinear,    (  py::arg("target"), py::arg("start_time"), py::arg("dest_pos"), py::arg("init_vel"), py::arg("smooth_time"), py::arg("coord_type"), py::arg("flags") ) )
+		.def( "BlinkAlpha",            &GraphicsElementAnimationManager::BlinkAlpha,            (  py::arg("target"), py::arg("interval"), py::arg("color_index") ) )
+		.def( "ChangeAlphaInSineWave", &GraphicsElementAnimationManager::ChangeAlphaInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("alpha0"), py::arg("alpha1"), py::arg("num_periods") ) )
+		.def( "ChangeColorInSineWave", &GraphicsElementAnimationManager::ChangeColorInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("color0"), py::arg("color1"), py::arg("num_periods") ) )
+/*		.def( "DrawText",              &GraphicsElementAnimationManager::DrawText,              (  boost::shared_ptr<TextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) )
+		.def( "CancelEffect",          &GraphicsElementAnimationManager::CancelEffect,          (  py::arg("effect_handle") ) )
 */
 	;
 

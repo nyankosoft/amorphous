@@ -21,11 +21,11 @@ using namespace boost;
 // in-file static variables
 //------------------------------------------------------------------------
 
-static CGraphicsElementManager gs_NullGraphicsElementManager;
+static GraphicsElementManager gs_NullGraphicsElementManager;
 
-static CGraphicsElementManager *gs_pGraphicsElementManager = &gs_NullGraphicsElementManager;
+static GraphicsElementManager *gs_pGraphicsElementManager = &gs_NullGraphicsElementManager;
 
-static CGraphicsElementManager& GraphicsElementManager()
+static GraphicsElementManager& GetGraphicsElementManager()
 {
 	if( gs_pGraphicsElementManager == &gs_NullGraphicsElementManager )
 		g_Log.Print( WL_WARNING, "using NullGraphicsElementManager" );
@@ -34,17 +34,17 @@ static CGraphicsElementManager& GraphicsElementManager()
 }
 
 
-static CAnimatedGraphicsManagerBase gs_NullAnimGraphicsManager;
+static GraphicsElementAnimationManagerBase gs_NullAnimGraphicsManager;
 
-static CAnimatedGraphicsManagerBase *gs_pAnimGraphicsManager = &gs_NullAnimGraphicsManager;
+static GraphicsElementAnimationManagerBase *gs_pAnimGraphicsManager = &gs_NullAnimGraphicsManager;
 
-static CAnimatedGraphicsManagerBase& AnimatedGraphicsManager() { return *gs_pAnimGraphicsManager; }
+static GraphicsElementAnimationManagerBase& AnimatedGraphicsManager() { return *gs_pAnimGraphicsManager; }
 
 
 // holds pointers of graphics elements created from script
-static vector<boost::shared_ptr<CGraphicsElement> > gs_vecpGraphicsElement;
+static vector<boost::shared_ptr<GraphicsElement> > gs_vecpGraphicsElement;
 
-static int RegisterGraphicsElement( boost::shared_ptr<CGraphicsElement> pElement )
+static int RegisterGraphicsElement( boost::shared_ptr<GraphicsElement> pElement )
 {
 	int id = (int)gs_vecpGraphicsElement.size();
 
@@ -53,10 +53,10 @@ static int RegisterGraphicsElement( boost::shared_ptr<CGraphicsElement> pElement
 	return id;
 }
 
-static boost::shared_ptr<CGraphicsElement> GetGraphicsElement( int id )
+static boost::shared_ptr<GraphicsElement> GetGraphicsElement( int id )
 {
 	if( id < 0 || (int)gs_vecpGraphicsElement.size() <= id )
-		return shared_ptr<CGraphicsElement>();
+		return shared_ptr<GraphicsElement>();
 
 	return gs_vecpGraphicsElement[id];
 }
@@ -66,7 +66,7 @@ static boost::shared_ptr<CGraphicsElement> GetGraphicsElement( int id )
 // global functions
 //------------------------------------------------------------------------
 
-void SetGraphicsElementManagerForScript( CGraphicsElementManager *pManager )
+void SetGraphicsElementManagerForScript( GraphicsElementManager *pManager )
 {
 	gs_pGraphicsElementManager = pManager;
 }
@@ -79,7 +79,7 @@ void RemoveGraphicsElementManagerForScript()
 /**
  * sets AnimatedGraphicsManager & GraphicsElementManager used by python script
  */
-void SetAnimatedGraphicsManagerForScript( CAnimatedGraphicsManager *pManager )
+void SetAnimatedGraphicsManagerForScript( GraphicsElementAnimationManager *pManager )
 {
 	gs_pAnimGraphicsManager = pManager;
 	SetGraphicsElementManagerForScript( pManager->GetGraphicsElementManager().get() );
@@ -138,7 +138,7 @@ PyObject* CreateRect( PyObject* self, PyObject* args )
 
 	int layer_index = (int)z;
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateFillRect( SRect( l,t,r,b ), color, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateFillRect( SRect( l,t,r,b ), color, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -163,7 +163,7 @@ PyObject* CreateRectC32( PyObject* self, PyObject* args )
 	// - then, fix scripts
 	int layer_index = (int)z;
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateFillRect( SRect( l,t,r,b ), color, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateFillRect( SRect( l,t,r,b ), color, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -185,7 +185,7 @@ PyObject* CreateFrameRect( PyObject* self, PyObject* args )
 
 	int layer_index = (int)z;
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateFrameRect( SRect( l,t,r,b ), color, border_width, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateFrameRect( SRect( l,t,r,b ), color, border_width, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -206,7 +206,7 @@ PyObject* CreateFrameRectC32( PyObject* self, PyObject* args )
 
 	int layer_index = (int)z;
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateFrameRect( SRect( l,t,r,b ), color, border_width, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateFrameRect( SRect( l,t,r,b ), color, border_width, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -225,7 +225,7 @@ PyObject* CreateRoundRect( PyObject* self, PyObject* args )
 		&color.red, &color.green, &color.blue, &color.alpha,
 		&corner_radius, &layer_index );
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateRoundFillRect( SRect( l,t,r,b ), color, corner_radius, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateRoundFillRect( SRect( l,t,r,b ), color, corner_radius, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -244,7 +244,7 @@ PyObject* CreateRoundRectC32( PyObject* self, PyObject* args )
 	SFloatRGBAColor color;
 	color.SetARGB32( col );
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateRoundFillRect( SRect( l,t,r,b ),
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateRoundFillRect( SRect( l,t,r,b ),
 		color, corner_radius, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
@@ -265,7 +265,7 @@ PyObject* CreateRoundFrameRect( PyObject* self, PyObject* args )
 		&color.red, &color.green, &color.blue, &color.alpha,
 		&corner_radius, &border_width, &layer_index );
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateRoundFrameRect( SRect( l,t,r,b ),
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateRoundFrameRect( SRect( l,t,r,b ),
 		color, corner_radius, border_width, layer_index );
 
 	int resource_id = RegisterGraphicsElement( pElement );
@@ -289,7 +289,7 @@ PyObject* CreateRoundFrameRectC32( PyObject* self, PyObject* args )
 	SFloatRGBAColor color;
 	color.SetARGB32( col );
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateRoundFrameRect( SRect( l,t,r,b ), color, corner_radius, border_width, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateRoundFrameRect( SRect( l,t,r,b ), color, corner_radius, border_width, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -310,7 +310,7 @@ PyObject* CreateText( PyObject* self, PyObject* args )
 
 	int layer_index = 0;
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateText( font_id, text_buffer, x, y, color, (int)font_w, (int)font_h, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateText( font_id, text_buffer, x, y, color, (int)font_w, (int)font_h, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -332,7 +332,7 @@ PyObject* CreateTextC32( PyObject* self, PyObject* args )
 
 	int layer_index = 0;
 
-	boost::shared_ptr<CGraphicsElement> pElement = GraphicsElementManager().CreateText( font_id, text_buffer, x, y, color, (int)font_w, (int)font_h, layer_index );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElementManager().CreateText( font_id, text_buffer, x, y, color, (int)font_w, (int)font_h, layer_index );
 	int resource_id = RegisterGraphicsElement( pElement );
 
 	PyObject *obj = Py_BuildValue( "i", resource_id );
@@ -371,7 +371,7 @@ PyObject* SetTexture( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "ii", &tex_id, &element_id );
 
-	boost::shared_ptr<CGraphicsElement> pElement = GetGraphicsElement( element_id );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElement( element_id );
 
 	bool res;
 	if( pElement && 0 <= tex_id )
@@ -394,7 +394,7 @@ PyObject* SetTextureCoord( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "iffff", &element_id, &tex_min.u, &tex_min.v, &tex_max.u, &tex_max.v );
 
-	boost::shared_ptr<CGraphicsElement> pElement = GetGraphicsElement( element_id );
+	boost::shared_ptr<GraphicsElement> pElement = GetGraphicsElement( element_id );
 
 	bool res;
 	if( pElement )

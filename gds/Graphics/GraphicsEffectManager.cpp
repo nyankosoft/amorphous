@@ -25,39 +25,39 @@ using namespace boost;
 - Multi-thread issues
   - The following functions must be called by a single thread
     - AnimatedGraphicsManager::UpdateEffects()
-	- CGraphicsEffectHandle::Set*()
+	- GraphicsElementAnimationHandle::Set*()
     - 
 */
 
 
-const CGraphicsEffectHandle CGraphicsEffectHandle::ms_NullHandle;
+const GraphicsElementAnimationHandle GraphicsElementAnimationHandle::ms_NullHandle;
 
 
-void CGraphicsEffectHandle::SetDestPosition( const Vector2& vDestPos )
+void GraphicsElementAnimationHandle::SetDestPosition( const Vector2& vDestPos )
 {
-	CGraphicsElementEffect *pEffect = m_pManager->GetEffect(*this);
+	GraphicsElementAnimation *pEffect = m_pManager->GetEffect(*this);
 	if( pEffect )
 		pEffect->SetDestPosition( vDestPos );
 }
 
 
-void CGraphicsEffectHandle::SetDestColor( const SFloatRGBAColor& dest_color )
+void GraphicsElementAnimationHandle::SetDestColor( const SFloatRGBAColor& dest_color )
 {
-//	CGraphicsElementEffect *pEffect = m_pManager->GetEffect(*this);
+//	GraphicsElementAnimation *pEffect = m_pManager->GetEffect(*this);
 //	if( pEffect )
 //		pEffect->ChangeDestColor( dest_color );
 }
 
 
-void CGraphicsEffectHandle::ChangeDestVertexTexCoord( int vertex, const TEXCOORD2& tex_coord )
+void GraphicsElementAnimationHandle::ChangeDestVertexTexCoord( int vertex, const TEXCOORD2& tex_coord )
 {
-//	CGraphicsElementEffect *pEffect = m_pManager->GetEffect(*this);
+//	GraphicsElementAnimation *pEffect = m_pManager->GetEffect(*this);
 //	if( pEffect )
 //		pEffect->ChangeDestVertexTexCoord( vertex, tex_coord );
 }
 
 
-void CE_ColorShift::Update( double current_time, double dt )
+void ColorShiftAnimation::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -89,7 +89,7 @@ void CE_ColorShift::Update( double current_time, double dt )
 }
 
 
-void CE_AlphaChange::Update( double current_time, double dt )
+void AlphaShiftAnimation::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -107,7 +107,7 @@ void CE_AlphaChange::Update( double current_time, double dt )
 }
 
 
-void CE_Translate::Update( double current_time, double dt )
+void TranslationAnimation::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -127,7 +127,7 @@ void CE_Translate::Update( double current_time, double dt )
 }
 
 
-void CE_SizeChange::Update( double current_time, double dt )
+void SizeChangeAnimation::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -210,10 +210,10 @@ void CE_NonLinearVertexColorShift::SetDestColor( const SFloatRGBAColor& dest_col
 
 
 //==========================================================================
-// CE_TranslateNonLinear
+// NonLinearTranslationAnimation
 //==========================================================================
 
-void CE_TranslateNonLinear::Update( double current_time, double dt )
+void NonLinearTranslationAnimation::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -235,13 +235,13 @@ void CE_TranslateNonLinear::Update( double current_time, double dt )
 }
 
 
-bool CE_TranslateNonLinear::IsOver( double current_time ) const
+bool NonLinearTranslationAnimation::IsOver( double current_time ) const
 {
 	return Vec2LengthSq( m_Pos.target - m_Pos.current ) < 0.1f;
 }
 
 
-void CE_SizeChangeCD::Update( double current_time, double dt )
+void SizeChangeAnimationCD::Update( double current_time, double dt )
 {
 	if( current_time < m_fStartTime )
 		return;
@@ -258,7 +258,7 @@ void CE_SizeChangeCD::Update( double current_time, double dt )
 }
 
 
-bool CE_SizeChangeCD::IsOver( double current_time ) const
+bool SizeChangeAnimationCD::IsOver( double current_time ) const
 {
 	return ( Vec2LengthSq( m_vMin.target - m_vMin.current ) < 0.1f
 		&& Vec2LengthSq( m_vMax.target - m_vMax.current ) < 0.1f );
@@ -294,30 +294,30 @@ void CE_SineWaveColorChange::Update( double current_time, double dt )
 }
 
 
-class CGraphiceEffectManagerCallback : public CGraphicsElementManagerCallback
+class GraphicsElementAnimationCallback : public GraphicsElementManagerCallback
 {
 	/// borrowed reference
-	CAnimatedGraphicsManager *m_pEffectMgr;
+	GraphicsElementAnimationManager *m_pEffectMgr;
 
 public:
 
-	CGraphiceEffectManagerCallback( CAnimatedGraphicsManager *pEffectMgr ) : m_pEffectMgr(pEffectMgr) {}
-	virtual ~CGraphiceEffectManagerCallback() {}
+	GraphicsElementAnimationCallback( GraphicsElementAnimationManager *pEffectMgr ) : m_pEffectMgr(pEffectMgr) {}
+	virtual ~GraphicsElementAnimationCallback() {}
 
-//	virtual void OnCreated( boost::shared_ptr<CGraphicsElement> pElement ) {}
+//	virtual void OnCreated( boost::shared_ptr<GraphicsElement> pElement ) {}
 
 	/// delete graphics effects which are currently being apllied to the deleted element
-	virtual void OnDestroyed( boost::shared_ptr<CGraphicsElement> pElement );
+	virtual void OnDestroyed( boost::shared_ptr<GraphicsElement> pElement );
 
 };
 
 
-void CGraphiceEffectManagerCallback::OnDestroyed( boost::shared_ptr<CGraphicsElement> pElement )
+void GraphicsElementAnimationCallback::OnDestroyed( boost::shared_ptr<GraphicsElement> pElement )
 {
 	if( m_pEffectMgr->m_vecpEffect.size() == 0 )
 		return;
 
-	vector<CGraphicsElementEffect *>::iterator itr = m_pEffectMgr->m_vecpEffect.begin();
+	vector<GraphicsElementAnimation *>::iterator itr = m_pEffectMgr->m_vecpEffect.begin();
 
 	while( itr != m_pEffectMgr->m_vecpEffect.end() )
 	{
@@ -333,16 +333,16 @@ void CGraphiceEffectManagerCallback::OnDestroyed( boost::shared_ptr<CGraphicsEle
 }
 
 
-boost::shared_ptr<CGraphicsElement> CGraphicsElementEffect::GetElement()
+boost::shared_ptr<GraphicsElement> GraphicsElementAnimation::GetElement()
 {
 	return m_pTargetElement;
 //	return m_pManager->GetGraphicsElementManager()->GetElement(m_TargetElementID);
 }
 
 
-CE_TextDraw::CE_TextDraw( boost::shared_ptr<CTextElement> pTargetElement, double start_time )
+CE_TextDraw::CE_TextDraw( boost::shared_ptr<TextElement> pTargetElement, double start_time )
 :
-CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
+GraphicsElementLinearAnimation( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
 {
 	m_pTextElement = pTargetElement;
 
@@ -364,30 +364,30 @@ CGraphicsElementLinearEffect( pTargetElement, start_time, 0.0f ), m_CharsPerSec(
 
 
 //=====================================================================
-// CAnimatedGraphicsManager
+// GraphicsElementAnimationManager
 //=====================================================================
 
-//CAnimatedGraphicsManager::CAnimatedGraphicsManager( CGraphicsElementManager *pElementManager )
+//GraphicsElementAnimationManager::GraphicsElementAnimationManager( GraphicsElementManager *pElementManager )
 //:
 //m_pGraphicsElementManager(pElementManager)
-CAnimatedGraphicsManager::CAnimatedGraphicsManager()
+GraphicsElementAnimationManager::GraphicsElementAnimationManager()
 {
 	m_pTimer = new CTimer();
 	m_pTimer->Start();
 
 	SetTimeOffset();
 
-	m_pGraphicsElementManager.reset( new CGraphicsElementManager() );
+	m_pGraphicsElementManager.reset( new GraphicsElementManager() );
 
 	// register callback that releases the effect when its target element gets released
-	CGraphicsElementManagerCallbackSharedPtr pCallback
-		= CGraphicsElementManagerCallbackSharedPtr( new CGraphiceEffectManagerCallback( this ) );
+	GraphicsElementManagerCallbackSharedPtr pCallback
+		= GraphicsElementManagerCallbackSharedPtr( new GraphicsElementAnimationCallback( this ) );
 
 	m_pGraphicsElementManager->SetCallback( pCallback );
 
 	m_NextGraphicsEffectID = 0;
 
-	// for vector<CGraphicsElementEffect *>
+	// for vector<GraphicsElementAnimation *>
 	m_vecpEffect.resize( 32, NULL );
 	int num_effects = (int)m_vecpEffect.size();
 	for( int i=num_effects-1; 0<=i; i-- )
@@ -397,10 +397,10 @@ CAnimatedGraphicsManager::CAnimatedGraphicsManager()
 }
 
 
-void CAnimatedGraphicsManager::Release()
+void GraphicsElementAnimationManager::Release()
 {
 //	SafeDeleteVector( m_vecpEffect );
-	vector<CGraphicsElementEffect *>::iterator itr;
+	vector<GraphicsElementAnimation *>::iterator itr;
 	for( itr = m_vecpEffect.begin();
 		 itr != m_vecpEffect.end();
 		 itr++ )
@@ -415,7 +415,7 @@ void CAnimatedGraphicsManager::Release()
 }
 
 
-void CAnimatedGraphicsManager::SetTimeOffset( double time )
+void GraphicsElementAnimationManager::SetTimeOffset( double time )
 {
 	if( time < 0 )
 		m_fTimeOffset = m_pTimer->GetTime();
@@ -424,12 +424,12 @@ void CAnimatedGraphicsManager::SetTimeOffset( double time )
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlpha( boost::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time,  double end_time,
 											int color_index, float start_alpha, float end_alpha,
 											int trans_mode )
 {
-	CE_AlphaChange *p = new CE_AlphaChange( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
+	AlphaShiftAnimation *p = new AlphaShiftAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 	p->m_ColorIndex = color_index;
 	p->m_fStartAlpha = start_alpha;
 	p->m_fEndAlpha   = end_alpha;
@@ -438,7 +438,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlpha( boost::shared_ptr<C
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlphaTo( boost::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, float end_alpha,
 											  int trans_mode )
@@ -451,32 +451,32 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaTo( boost::shared_ptr
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( boost::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											int color_index,
 											const SFloatRGBAColor& start_color,
 											const SFloatRGBAColor& end_color,
 											int trans_mode )
 {
-	CE_ColorShift *p = new CE_ColorShift( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
+	ColorShiftAnimation *p = new ColorShiftAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 	p->m_ColorIndex = color_index;
 	p->m_StartColor = start_color;
 	p->m_EndColor   = end_color;
 
-	p->SetTargetChannels( CE_ColorShift::COMPONENTS_RGBA );
+	p->SetTargetChannels( ColorShiftAnimation::COMPONENTS_RGBA );
 
 	return AddGraphicsEffect( p );
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( boost::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											int color_index,
 											const SFloatRGBColor& start_color,
 											const SFloatRGBColor& end_color,
 											int trans_mode )
 {
-	CE_ColorShift *p = new CE_ColorShift( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
+	ColorShiftAnimation *p = new ColorShiftAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 
 	p->m_ColorIndex = color_index;
 
@@ -489,13 +489,13 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColor( boost::shared_ptr<C
 	p->m_EndColor.blue  = end_color.blue;
 
 	// do not change alpha component
-	p->SetTargetChannels( CE_ColorShift::COMPONENTS_RGB );
+	p->SetTargetChannels( ColorShiftAnimation::COMPONENTS_RGB );
 
 	return AddGraphicsEffect( p );
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( boost::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, const SFloatRGBAColor& end_color,
 											  int trans_mode )
@@ -508,7 +508,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( boost::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, const SFloatRGBColor& end_color,
 											  int trans_mode )
@@ -521,7 +521,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( boost::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, U32 end_color,
 											  int trans_mode )
@@ -535,7 +535,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorTo( boost::shared_ptr
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateNonLinear( boost::shared_ptr<GraphicsElement> pTargetElement,
 											 double start_time,
 											 Vector2 vDestPos,
 											 Vector2 vInitVel,
@@ -547,16 +547,16 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( boost::share
 
 	switch( coord_type )
 	{
-	case CGraphicsElementEffect::COORD_CENTER:
+	case GraphicsElementAnimation::COORD_CENTER:
 //		dest_x = dest_x - element.GetWidth() * 0.5f;
 //		dest_y = dest_y - element.GetHeight() * 0.5f;
 		break;
-	case CGraphicsElementEffect::COORD_TOPLEFT:
+	case GraphicsElementAnimation::COORD_TOPLEFT:
 	default:
 		break;
 	}
 
-	CE_TranslateNonLinear *p = new CE_TranslateNonLinear( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + start_time + 1000.0 );
+	NonLinearTranslationAnimation *p = new NonLinearTranslationAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + start_time + 1000.0 );
 	p->m_Pos.current = pTargetElement->GetTopLeftPos();
 	p->m_Pos.target  = vDestPos;
 	p->m_Pos.vel     = vInitVel;
@@ -567,7 +567,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateNonLinear( boost::share
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( boost::shared_ptr<CGraphicsElement> pTargetElement, double interval, int color_index )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::BlinkAlpha( boost::shared_ptr<GraphicsElement> pTargetElement, double interval, int color_index )
 {
 	CE_AlphaBlink *pEffect = new CE_AlphaBlink( pTargetElement );
 	pEffect->m_afAlpha[0] = pTargetElement->GetColor(0).alpha;
@@ -575,13 +575,13 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::BlinkAlpha( boost::shared_ptr<CG
 	pEffect->m_afDuration[0] = interval;
 	pEffect->m_afDuration[1] = interval;
 	pEffect->m_ColorIndex = color_index;
-	pEffect->SetFlags( CGraphicsElementEffectFlag::DONT_RELEASE );
+	pEffect->SetFlags( GraphicsElementAnimationFlag::DONT_RELEASE );
 
 	return AddGraphicsEffect( pEffect );
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaInSineWave( shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, float alpha0, float alpha1, int num_periods )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlphaInSineWave( shared_ptr<GraphicsElement> pTargetElement, double start_time, double period, int color_index, float alpha0, float alpha1, int num_periods )
 {
 	CE_SineWaveAlphaChange *pEffect = new CE_SineWaveAlphaChange( pTargetElement );
 	pEffect->m_afAlpha[0] = alpha0;
@@ -594,7 +594,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeAlphaInSineWave( shared_pt
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorInSineWave( shared_ptr<CGraphicsElement> pTargetElement, double start_time, double period, int color_index, const SFloatRGBAColor& color0, const SFloatRGBAColor& color1, int num_periods )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorInSineWave( shared_ptr<GraphicsElement> pTargetElement, double start_time, double period, int color_index, const SFloatRGBAColor& color0, const SFloatRGBAColor& color1, int num_periods )
 {
 	CE_SineWaveColorChange *pEffect = new CE_SineWaveColorChange( pTargetElement );
 	pEffect->m_aColor[0]  = color0;
@@ -607,7 +607,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeColorInSineWave( shared_pt
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateTo( boost::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											Vector2 vDestPos,
 											int coord_type, int trans_mode )
@@ -619,16 +619,16 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( boost::shared_ptr<C
 
 	switch( coord_type )
 	{
-	case CGraphicsElementEffect::COORD_CENTER:
+	case GraphicsElementAnimation::COORD_CENTER:
 //		dest_x = dest_x - element.GetWidth() * 0.5f;
 //		dest_y = dest_y - element.GetHeight() * 0.5f;
 		break;
-	case CGraphicsElementEffect::COORD_TOPLEFT:
+	case GraphicsElementAnimation::COORD_TOPLEFT:
 	default:
 		break;
 	}
 
-	CE_Translate *p = new CE_Translate( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
+	TranslationAnimation *p = new TranslationAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 	p->m_vStart = pTargetElement->GetTopLeftPos();
 	p->m_vEnd   = vDestPos;
 
@@ -636,11 +636,11 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::TranslateTo( boost::shared_ptr<C
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeSize( boost::shared_ptr<CGraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeSize( boost::shared_ptr<GraphicsElement> pTargetElement,
 										  double start_time, double end_time,
 											 Vector2 vDestMin, Vector2 vDestMax )
 {
-	CE_SizeChange *p = new CE_SizeChange( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
+	SizeChangeAnimation *p = new SizeChangeAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 	p->m_Start = pTargetElement->GetAABB();
 	p->m_End   = AABB2( vDestMin, vDestMax );
 
@@ -648,9 +648,9 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeSize( boost::shared_ptr<CG
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ScaleTo( boost::shared_ptr<CGraphicsElement> pTargetElement, double start_time, double end_time, float end_scale )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ScaleTo( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, float end_scale )
 {
-	CE_Scale *p = new CE_Scale( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
+	ScalingAnimation *p = new ScalingAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 //	p->m_vStart = pTargetElement->GetTopLeftPos();
 //	p->m_vEnd   = vDestPos;
 
@@ -658,22 +658,22 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ScaleTo( boost::shared_ptr<CGrap
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::SetPosition( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, const Vector2& vPos )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetPosition( boost::shared_ptr<GraphicsElement> pTargetElement, double time, const Vector2& vPos )
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
-	return CGraphicsEffectHandle::Null();
+	return GraphicsElementAnimationHandle::Null();
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( boost::shared_ptr<CGraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetColor( boost::shared_ptr<GraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color )
 {
 	if( !pTargetElement )
-		return CGraphicsEffectHandle::Null();
+		return GraphicsElementAnimationHandle::Null();
 
 	double time_offset = m_fTimeOffset;
 	time = time_offset + time;
 
-	CE_ColorShift *p = new CE_ColorShift( pTargetElement, time, time );
+	ColorShiftAnimation *p = new ColorShiftAnimation( pTargetElement, time, time );
 	p->m_ColorIndex = color_index;
 	p->m_StartColor = color;
 	p->m_EndColor   = color;
@@ -682,10 +682,10 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::SetColor( boost::shared_ptr<CGra
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( boost::shared_ptr<CTextElement> pTargetTextElement, double start_time, int num_chars_per_sec )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::DrawText( boost::shared_ptr<TextElement> pTargetTextElement, double start_time, int num_chars_per_sec )
 {
-	if( !pTargetTextElement )//|| pTargetTextElement->GetType() != CGraphicsElement::TEXT )
-		return CGraphicsEffectHandle::Null();
+	if( !pTargetTextElement )//|| pTargetTextElement->GetType() != GraphicsElement::TEXT )
+		return GraphicsElementAnimationHandle::Null();
 
 	CE_TextDraw *p = new CE_TextDraw( pTargetTextElement, m_fTimeOffset + start_time );
 
@@ -697,7 +697,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::DrawText( boost::shared_ptr<CTex
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeVertexColorNonLinear( boost::shared_ptr<CPolygonElement> pTargetPolygonElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeVertexColorNonLinear( boost::shared_ptr<PolygonElement> pTargetPolygonElement,
 																		    double start_time,
 																			int color_index,
 																			int vertex,
@@ -705,7 +705,7 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeVertexColorNonLinear( boos
 																			const SFloatRGBAColor& color_change_velocity )
 {
 	if( !pTargetPolygonElement )
-		return CGraphicsEffectHandle::Null();
+		return GraphicsElementAnimationHandle::Null();
 
 	CE_NonLinearVertexColorShift *p = new CE_NonLinearVertexColorShift( pTargetPolygonElement,  m_fTimeOffset + start_time );
 	p->m_ColorIndex  = color_index;
@@ -717,13 +717,13 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::ChangeVertexColorNonLinear( boos
 }
 
 
-CGraphicsEffectHandle CAnimatedGraphicsManager::AddGraphicsEffect( CGraphicsElementEffect* pEffect )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::AddGraphicsEffect( GraphicsElementAnimation* pEffect )
 {
 	pEffect->SetAnimatedGraphicsManager( this );
 
-//	m_vecpEffect.push_back( p ); // for list<CGraphicsElementEffect *>
+//	m_vecpEffect.push_back( p ); // for list<GraphicsElementAnimation *>
 
-	// for vector<CGraphicsElementEffect *>
+	// for vector<GraphicsElementAnimation *>
 
 	int index = GetVacantSlotIndex();
 
@@ -733,18 +733,18 @@ CGraphicsEffectHandle CAnimatedGraphicsManager::AddGraphicsEffect( CGraphicsElem
 
 	pEffect->SetEffectID( id );
 
-	// used in CGraphiceEffectManagerCallback::OnDestroyed()
+	// used in GraphicsElementAnimationCallback::OnDestroyed()
 	pEffect->SetIndex( index );
 
-	return CGraphicsEffectHandle( this, index, id );
+	return GraphicsElementAnimationHandle( this, index, id );
 }
 
 
-void CAnimatedGraphicsManager::UpdateEffects( double dt )
+void GraphicsElementAnimationManager::UpdateEffects( double dt )
 {
 	const double current_time = m_pTimer->GetTime();
 
-	vector<CGraphicsElementEffect *>::iterator itr;
+	vector<GraphicsElementAnimation *>::iterator itr;
 	for( itr = m_vecpEffect.begin();
 		 itr != m_vecpEffect.end();
 		 itr++ )
@@ -761,7 +761,7 @@ void CAnimatedGraphicsManager::UpdateEffects( double dt )
 	{
 		if( m_vecpEffect[i]
 		 && m_vecpEffect[i]->IsOver( current_time )
-		 && !(m_vecpEffect[i]->GetFlags() & CGraphicsElementEffectFlag::DONT_RELEASE) )
+		 && !(m_vecpEffect[i]->GetFlags() & GraphicsElementAnimationFlag::DONT_RELEASE) )
 		{
 			SafeDelete( m_vecpEffect[i] );
 			m_vecVacantSlotIndex.push_back( (int)i );
@@ -770,12 +770,12 @@ void CAnimatedGraphicsManager::UpdateEffects( double dt )
 }
 
 
-bool CAnimatedGraphicsManager::CancelEffect( CGraphicsEffectHandle& effect_handle )
+bool GraphicsElementAnimationManager::CancelEffect( GraphicsElementAnimationHandle& effect_handle )
 {
 	if( GetEffect(effect_handle) )
 	{
 		RemoveEffect( effect_handle.m_EffectIndex );
-		effect_handle = CGraphicsEffectHandle();
+		effect_handle = GraphicsElementAnimationHandle();
 		return true;
 	}
 	else
@@ -783,7 +783,7 @@ bool CAnimatedGraphicsManager::CancelEffect( CGraphicsEffectHandle& effect_handl
 }
 
 
-CGraphicsElementEffect *CAnimatedGraphicsManager::GetEffect( CGraphicsEffectHandle& effect_handle )
+GraphicsElementAnimation *GraphicsElementAnimationManager::GetEffect( GraphicsElementAnimationHandle& effect_handle )
 {
 	int index = effect_handle.m_EffectIndex;
 	if( index < 0 || (int)m_vecpEffect.size() <= index )
@@ -800,9 +800,9 @@ CGraphicsElementEffect *CAnimatedGraphicsManager::GetEffect( CGraphicsEffectHand
 
 
 /*
-void CAnimatedGraphicsManager::UpdateEffects( double dt )
+void GraphicsElementAnimationManager::UpdateEffects( double dt )
 {
-	vector<CGraphicsElementEffect *>::iterator itr;
+	vector<GraphicsElementAnimation *>::iterator itr;
 	for( itr = m_vecpEffect.begin();
 		 itr != m_vecpEffect.end();
 		 itr++ )

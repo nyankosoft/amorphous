@@ -48,7 +48,7 @@ inline void erase_dupulicate_elements( std::vector<T>& vec )
 	}
 }
 
-void CGraphicsElement::Release()
+void GraphicsElement::Release()
 {
 	m_pManager = NULL;
 	m_LocalAABB.Nullify();
@@ -66,7 +66,7 @@ void CGraphicsElement::Release()
 }
 
 
-void CGraphicsElement::UpdateTransform( const Matrix23& parent_transform )
+void GraphicsElement::UpdateTransform( const Matrix23& parent_transform )
 {
 	m_ParentTransform = parent_transform;
 
@@ -86,13 +86,13 @@ void CGraphicsElement::UpdateTransform( const Matrix23& parent_transform )
 }
 
 
-Matrix23 CGraphicsElement::CalculateGlobalTransform()
+Matrix23 GraphicsElement::CalculateGlobalTransform()
 {
 	return m_ParentTransform * m_LocalTransform;
 }
 
 /*
-void CGraphicsElement::SetTopLeftPos( Vector2 vGlobalPos )
+void GraphicsElement::SetTopLeftPos( Vector2 vGlobalPos )
 {
 	// local position of this element = (the inverse of the parent transform) * global position
 	m_ParentTransform.InvTransform( m_vLocalTopLeftPos, vGlobalPos );
@@ -106,7 +106,7 @@ void CGraphicsElement::SetTopLeftPos( Vector2 vGlobalPos )
 		// - It's not really desirable to call SetTopLeftPos() of a grouped element.
 		//   SetLocalTopLeftPos() should be used instead.
 		// - Anyway, need to update the local position as well
-		CGraphicsElementGroup *pOwner = dynamic_cast<CGraphicsElementGroup *>(m_pManager->GetElement(m_GroupID));
+		GraphicsElementGroup *pOwner = dynamic_cast<GraphicsElementGroup *>(m_pManager->GetElement(m_GroupID));
 		if( pOwner )
 			m_vLocalTopLeftPos = vGlobalPos - pOwner->GetLocalOriginInGlobalCoord();
 	}
@@ -114,7 +114,7 @@ void CGraphicsElement::SetTopLeftPos( Vector2 vGlobalPos )
 }
 */
 
-void CGraphicsElement::SetLocalTopLeftPos( Vector2 vLocalPos )
+void GraphicsElement::SetLocalTopLeftPos( Vector2 vLocalPos )
 {
 	m_vLocalTopLeftPos = vLocalPos;
 
@@ -126,7 +126,7 @@ void CGraphicsElement::SetLocalTopLeftPos( Vector2 vLocalPos )
 }
 
 
-void CGraphicsElement::SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLocalMax )
+void GraphicsElement::SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLocalMax )
 {
 	m_LocalAABB.vMin = vLocalMin;
 	m_LocalAABB.vMax = vLocalMax;
@@ -135,7 +135,7 @@ void CGraphicsElement::SetSizeLTRB( const Vector2& vLocalMin, const Vector2& vLo
 }
 
 
-void CGraphicsElement::SetLayer( int layer_index )
+void GraphicsElement::SetLayer( int layer_index )
 {
 	// remove the element from the current layer
 	// and place it to the new layer
@@ -147,10 +147,10 @@ void CGraphicsElement::SetLayer( int layer_index )
 
 
 //==========================================================================================
-// CPrimitiveElement
+// PrimitiveElement
 //==========================================================================================
 
-void CPrimitiveElement::InitPrimitive()
+void PrimitiveElement::InitPrimitive()
 {
 	float z = 0;
 
@@ -162,7 +162,7 @@ void CPrimitiveElement::InitPrimitive()
 }
 
 
-void CPrimitiveElement::DrawPrimitive()
+void PrimitiveElement::DrawPrimitive()
 {
 	if( !m_pManager )
 		return;
@@ -180,7 +180,7 @@ void CPrimitiveElement::DrawPrimitive()
 
 
 /// Use this if the primitive is not rotated ( CalculateGlobalTransform().matOrient == Matrix22Identity() ).
-void CPrimitiveElement::UpdatePositionsInternalForNonRotatedElement( const Vector2& vGlobalTranslation )
+void PrimitiveElement::UpdatePositionsInternalForNonRotatedElement( const Vector2& vGlobalTranslation )
 {
 	m_pPrimitive->SetPosition(
 		( vGlobalTranslation + m_LocalAABB.vMin ) * m_fScale,
@@ -189,9 +189,9 @@ void CPrimitiveElement::UpdatePositionsInternalForNonRotatedElement( const Vecto
 }
 
 
-void CPrimitiveElement::SetTopLeftPosInternal( Vector2 vPos )
+void PrimitiveElement::SetTopLeftPosInternal( Vector2 vPos )
 {
-	// m_LocalAABB has been updated in CGraphicsElement::SetTopLeftPos().
+	// m_LocalAABB has been updated in GraphicsElement::SetTopLeftPos().
 	// - update the vertex positions
 //	m_pPrimitive->SetPosition( m_LocalAABB.vMin * m_fScale, m_LocalAABB.vMax * m_fScale );
 
@@ -199,7 +199,7 @@ void CPrimitiveElement::SetTopLeftPosInternal( Vector2 vPos )
 }
 
 
-void CPrimitiveElement::ChangeScale( float scale )
+void PrimitiveElement::ChangeScale( float scale )
 {
 	m_fScale = scale;
 
@@ -208,13 +208,13 @@ void CPrimitiveElement::ChangeScale( float scale )
 }
 
 
-void CPrimitiveElement::SetFillColor( int color_index, const SFloatRGBAColor& color )
+void PrimitiveElement::SetFillColor( int color_index, const SFloatRGBAColor& color )
 {
 //	m_aFillColor
 }
 
 
-void CPrimitiveElement::SetFrameColor( int color_index, const SFloatRGBAColor& color )
+void PrimitiveElement::SetFrameColor( int color_index, const SFloatRGBAColor& color )
 {
 //	m_aFrameColor
 }
@@ -222,14 +222,14 @@ void CPrimitiveElement::SetFrameColor( int color_index, const SFloatRGBAColor& c
 
 
 //==========================================================================================
-// CRectElement
+// RectElement
 //==========================================================================================
 
-/*CRectElement::CRectElement( C2DRect *pFillRect, C2DFrameRect *pFrameRect )
+/*RectElement::RectElement( C2DRect *pFillRect, C2DFrameRect *pFrameRect )
 :
 m_pFillRect(pFillRect),
 m_pFrameRect(pFrameRect)*/
-CRectElement::CRectElement( const SRect& non_scaled_rect, float fScale )
+RectElement::RectElement( const SRect& non_scaled_rect, float fScale )
 {
 //	m_LocalAABB = AABB2( pPrimitive->GetPosition2D(0), pPrimitive->GetPosition2D(2) );
 //	m_aColor[0] = color0;
@@ -248,12 +248,12 @@ CRectElement::CRectElement( const SRect& non_scaled_rect, float fScale )
 }
 
 
-CRectElement::~CRectElement()
+RectElement::~RectElement()
 {
 }
 
 
-void CRectElement::Draw()
+void RectElement::Draw()
 {
 	PROFILE_FUNCTION();
 
@@ -276,15 +276,15 @@ void CRectElement::Draw()
 }
 
 
-void CRectElement::SetLocalTransform( const Matrix23& local_transform )
+void RectElement::SetLocalTransform( const Matrix23& local_transform )
 {
-	CGraphicsElement::SetLocalTransform( local_transform );
+	GraphicsElement::SetLocalTransform( local_transform );
 
 	UpdatePositionsInternal( m_ParentTransform * local_transform );
 }
 
 
-void CRectElement::UpdatePositionsInternal( const Matrix23& global_transform )
+void RectElement::UpdatePositionsInternal( const Matrix23& global_transform )
 {
 	const float s = m_fScale;
 	Vector2 v;
@@ -318,36 +318,36 @@ void CRectElement::UpdatePositionsInternal( const Matrix23& global_transform )
 }
 
 
-CFillRectElement::CFillRectElement( const SRect& non_scaled_rect, float fScale )
+FillRectElement::FillRectElement( const SRect& non_scaled_rect, float fScale )
 :
-CRectElement(non_scaled_rect,fScale)
+RectElement(non_scaled_rect,fScale)
 {
 	m_pFillRect = new C2DRect();
 	m_pPrimitive = m_pFillRect;
 	InitPrimitive();
 }
 
-CFillRectElement::~CFillRectElement()
+FillRectElement::~FillRectElement()
 {
 	SafeDelete( m_pFillRect );
 }
 
 
-CFrameRectElement::CFrameRectElement( const SRect& non_scaled_rect, float fScale )
+FrameRectElement::FrameRectElement( const SRect& non_scaled_rect, float fScale )
 :
-CRectElement(non_scaled_rect,fScale)
+RectElement(non_scaled_rect,fScale)
 {
 	m_pFrameRect = new C2DFrameRect();
 	m_pPrimitive = m_pFrameRect;
 	InitPrimitive();
 }
 
-CFrameRectElement::~CFrameRectElement()
+FrameRectElement::~FrameRectElement()
 {
 	SafeDelete( m_pFrameRect );
 }
 
-void CFrameRectElement::SetFrameWidth( int width )
+void FrameRectElement::SetFrameWidth( int width )
 {
 	m_OrigBorderWidth = width;
 	m_pFrameRect->SetBorderWidth( (int)(width * m_fScale) );
@@ -356,10 +356,10 @@ void CFrameRectElement::SetFrameWidth( int width )
 
 
 //==========================================================================================
-// CRoundRectElement
+// RoundRectElement
 //==========================================================================================
 
-CRoundRectElement::CRoundRectElement( const SRect& non_scaled_rect, float fScale )
+RoundRectElement::RoundRectElement( const SRect& non_scaled_rect, float fScale )
 {
 	ChangeScale( fScale );
 
@@ -367,13 +367,13 @@ CRoundRectElement::CRoundRectElement( const SRect& non_scaled_rect, float fScale
 }
 
 
-CRoundRectElement::~CRoundRectElement()
+RoundRectElement::~RoundRectElement()
 {
 }
 
 
-/// TODO: support corner color for CRoundFrameRectElement
-void CRoundRectElement::Draw()
+/// TODO: support corner color for RoundFrameRectElement
+void RoundRectElement::Draw()
 {
 	SetBlendedColorToPrimitive();
 	DrawPrimitive();
@@ -381,30 +381,30 @@ void CRoundRectElement::Draw()
 
 
 
-void CRoundRectElement::SetCornerRadius( float radius )
+void RoundRectElement::SetCornerRadius( float radius )
 {
 	m_CornerRadius = (int)radius;
 }
 
 
-CRoundFillRectElement::CRoundFillRectElement( const SRect& non_scaled_rect, float fScale, float corner_radius )
+RoundFillRectElement::RoundFillRectElement( const SRect& non_scaled_rect, float fScale, float corner_radius )
 :
-CRoundRectElement(non_scaled_rect,fScale)
+RoundRectElement(non_scaled_rect,fScale)
 {
 	m_pRoundFillRect  = new C2DRoundRect( non_scaled_rect * fScale, 0xFFFFFFFF, (int)(corner_radius * m_fScale) );
 	m_pPrimitive = m_pRoundFillRect;
 	InitPrimitive();
 }
 
-CRoundFillRectElement::~CRoundFillRectElement()
+RoundFillRectElement::~RoundFillRectElement()
 {
 	SafeDelete( m_pRoundFillRect );
 }
 
 
-CRoundFrameRectElement::CRoundFrameRectElement( const SRect& non_scaled_rect, float fScale, float corner_radius )
+RoundFrameRectElement::RoundFrameRectElement( const SRect& non_scaled_rect, float fScale, float corner_radius )
 :
-CRoundRectElement(non_scaled_rect,fScale)
+RoundRectElement(non_scaled_rect,fScale)
 {
 	m_pRoundFrameRect = new C2DRoundFrameRect( non_scaled_rect * fScale, 0xFFFFFFFF, (int)(corner_radius * m_fScale) );
 	m_pPrimitive = m_pRoundFrameRect;
@@ -412,12 +412,12 @@ CRoundRectElement(non_scaled_rect,fScale)
 //	p2DRoundFrameRect = new C2DRoundFrameRect( rect * m_fScale, color.GetARGB32(), (int)(corner_radius * m_fScale), (int)(border_width * m_fScale) );
 }
 
-CRoundFrameRectElement::~CRoundFrameRectElement()
+RoundFrameRectElement::~RoundFrameRectElement()
 {
 	SafeDelete( m_pRoundFrameRect );
 }
 
-void CRoundFrameRectElement::SetFrameWidth( int width )
+void RoundFrameRectElement::SetFrameWidth( int width )
 {
 	m_OrigBorderWidth = width;
 	m_pRoundFrameRect->SetBorderWidth( (int)(width * m_fScale) );
@@ -426,16 +426,16 @@ void CRoundFrameRectElement::SetFrameWidth( int width )
 
 
 //==========================================================================================
-// CTriangleElement
+// TriangleElement
 //==========================================================================================
 
-CTriangleElement::CTriangleElement( const SRect& non_scaled_rect, float fScale )
+TriangleElement::TriangleElement( const SRect& non_scaled_rect, float fScale )
 {
 	ChangeScale( m_fScale );
 }
 
 
-void CTriangleElement::Draw()
+void TriangleElement::Draw()
 {
 	SetBlendedColorToPrimitive();
 
@@ -443,7 +443,7 @@ void CTriangleElement::Draw()
 }
 
 
-void CTriangleElement::SetVertexPosition( int index, const Vector2& vPos )
+void TriangleElement::SetVertexPosition( int index, const Vector2& vPos )
 {
 	if( m_pPrimitive )
 		m_pPrimitive->SetVertexPosition( index, vPos * m_fScale );
@@ -452,7 +452,7 @@ void CTriangleElement::SetVertexPosition( int index, const Vector2& vPos )
 }
 
 
-void CTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
+void TriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
 {
 //	if( m_pTriangle )
 //		for( int i=0; i<3; i++ ) m_pTriangle->SetVertexPosition( i, global_transform * m_avVertexPosition[i] );
@@ -461,11 +461,11 @@ void CTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform
 }
 
 
-//CTriangleElement::CTriangleElement( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect )
-//CTriangleElement::CTriangleElement( C2DTriangle *pTriangle, C2DFrameTriangle *pFrameTriangle, const SRect& non_scaled_rect )
-CFillTriangleElement::CFillTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale )
+//TriangleElement::TriangleElement( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect )
+//TriangleElement::TriangleElement( C2DTriangle *pTriangle, C2DFrameTriangle *pFrameTriangle, const SRect& non_scaled_rect )
+FillTriangleElement::FillTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale )
 :
-CTriangleElement(non_scaled_rect,fScale)
+TriangleElement(non_scaled_rect,fScale)
 {
 	m_pFillTriangle = new C2DTriangle( dir, non_scaled_rect * fScale );
 
@@ -480,21 +480,21 @@ CTriangleElement(non_scaled_rect,fScale)
 }
 
 
-CFillTriangleElement::~CFillTriangleElement()
+FillTriangleElement::~FillTriangleElement()
 {
 	SafeDelete( m_pFillTriangle );
 }
 
 
-void CFillTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
+void FillTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
 {
 }
 
 
 
-CFrameTriangleElement::CFrameTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale )
+FrameTriangleElement::FrameTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale )
 :
-CTriangleElement(non_scaled_rect,fScale)
+TriangleElement(non_scaled_rect,fScale)
 {
 	m_pFrameTriangle = NULL;//new C2DFrameTriangle( dir, rect * fScale );
 
@@ -509,23 +509,23 @@ CTriangleElement(non_scaled_rect,fScale)
 }
 
 
-CFrameTriangleElement::~CFrameTriangleElement()
+FrameTriangleElement::~FrameTriangleElement()
 {
 	SafeDelete( m_pFrameTriangle );
 }
 
 
-void CFrameTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
+void FrameTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
 {
 }
 
 
 
 //==========================================================================================
-// CPolygonElement
+// PolygonElement
 //==========================================================================================
 
-CFillPolygonElement::CFillPolygonElement( const SFloatRGBAColor& color0, const SRect& non_scaled_rect )
+FillPolygonElement::FillPolygonElement( const SFloatRGBAColor& color0, const SRect& non_scaled_rect )
 {
 	m_pRegularPolygon = new C2DRegularPolygon();//dynamic_cast<C2DRegularPolygon *>(pPrimitive);
 	m_aColor[0] = color0;
@@ -534,7 +534,7 @@ CFillPolygonElement::CFillPolygonElement( const SFloatRGBAColor& color0, const S
 }
 
 
-CFillPolygonElement::CFillPolygonElement( int num_polygon_vertices,
+FillPolygonElement::FillPolygonElement( int num_polygon_vertices,
 										  Vector2 vCenter,
 										  int radius,
 										  CRegularPolygonStyle::Name style,
@@ -550,13 +550,13 @@ CFillPolygonElement::CFillPolygonElement( int num_polygon_vertices,
 }
 
 
-CFillPolygonElement::~CFillPolygonElement()
+FillPolygonElement::~FillPolygonElement()
 {
 	SafeDelete( m_pRegularPolygon );
 }
 
 
-void CFillPolygonElement::Draw()
+void FillPolygonElement::Draw()
 {
 	SetBlendedColorToPrimitive();
 
@@ -564,25 +564,25 @@ void CFillPolygonElement::Draw()
 }
 
 
-void CFillPolygonElement::SetRadius( int vertex, int radius )
+void FillPolygonElement::SetRadius( int vertex, int radius )
 {
 	m_pRegularPolygon->SetRadius( vertex, (int)(radius * m_fScale) );
 }
 
 
-Vector2 CFillPolygonElement::GetVertexPos( int vertex )
+Vector2 FillPolygonElement::GetVertexPos( int vertex )
 {
 	return m_pRegularPolygon->GetVertexPos( vertex ) / m_fScale;
 }
 
 
-void CFillPolygonElement::SetVertexColor( int vertex, int color_index, const SFloatRGBAColor& color )
+void FillPolygonElement::SetVertexColor( int vertex, int color_index, const SFloatRGBAColor& color )
 {
 	m_pRegularPolygon->SetVertexColor( vertex, color );
 }
 
 
-void CCombinedPrimitiveElement::OnRemovalRequested()
+void CombinedPrimitiveElement::OnRemovalRequested()
 {
 	if( m_pFillElement )
 	{
@@ -598,9 +598,9 @@ void CCombinedPrimitiveElement::OnRemovalRequested()
 }
 
 
-void CCombinedPrimitiveElement::Release()
+void CombinedPrimitiveElement::Release()
 {
-	CGraphicsElement::Release();
+	GraphicsElement::Release();
 
 //	OnRemovalRequested();
 
@@ -610,11 +610,11 @@ void CCombinedPrimitiveElement::Release()
 
 
 //==========================================================================================
-// CTextElement
+// TextElement
 //==========================================================================================
 
 /*
-CTextElement::CTextElement( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 )
+TextElement::TextElement( int font_id, const std::string& text, float x, float y, const SFloatRGBAColor& color0 )
 :
 m_FontID(font_id),
 m_Text(text),
@@ -631,9 +631,9 @@ m_vTextPos(Vector2(x,y))
 */
 
 
-void CTextElement::Release()
+void TextElement::Release()
 {
-	CGraphicsElement::Release();
+	GraphicsElement::Release();
 
 	m_FontID = -1;
 	m_Text   = "";
@@ -647,7 +647,7 @@ void CTextElement::Release()
 }
 
 
-void CTextElement::Draw()
+void TextElement::Draw()
 {
 	PROFILE_FUNCTION();
 
@@ -682,7 +682,7 @@ void CTextElement::Draw()
 }
 
 
-void CTextElement::SetTextAlignment( int horizontal_alignment, int vertical_alignment )
+void TextElement::SetTextAlignment( int horizontal_alignment, int vertical_alignment )
 {
 	m_TextAlignH = horizontal_alignment;
 	m_TextAlignV = vertical_alignment;
@@ -691,7 +691,7 @@ void CTextElement::SetTextAlignment( int horizontal_alignment, int vertical_alig
 }
 
 
-void CTextElement::UpdateLocalTextOffset()
+void TextElement::UpdateLocalTextOffset()
 {
 	FontBase *pFont = m_pManager->GetFont( m_FontID );
 	if( !pFont )
@@ -711,13 +711,13 @@ void CTextElement::UpdateLocalTextOffset()
 
 	switch(m_TextAlignH)
 	{
-	case CTextElement::TAL_LEFT:
+	case TextElement::TAL_LEFT:
 		vLocalTextOffset.x = 0;
 		break;
-	case CTextElement::TAL_CENTER:
+	case TextElement::TAL_CENTER:
 		vLocalTextOffset.x = (float)( box_width/2  - (pFont->GetTextWidth(m_Text.c_str())/scale) * font_scale / 2 );
 		break;
-	case CTextElement::TAL_RIGHT:
+	case TextElement::TAL_RIGHT:
 		// --------------- NOT IMPLEMENTED ---------------
 		vLocalTextOffset.x = (float)( box_width  - (pFont->GetTextWidth(m_Text.c_str())/scale) * font_scale );
 		break;
@@ -727,14 +727,14 @@ void CTextElement::UpdateLocalTextOffset()
 
 	switch(m_TextAlignV)
 	{
-	case CTextElement::TAL_TOP:
+	case TextElement::TAL_TOP:
 		vLocalTextOffset.y = 0;	// param.m_TextMargin
 		break;
-	case CTextElement::TAL_CENTER:
+	case TextElement::TAL_CENTER:
 //		param.m_vTextOffset.y = (float)(control_height - font_height) * 0.5f;
 		vLocalTextOffset.y = (float)( box_height/2 - font_height*get_num_rows(m_Text)/2 );
 		break;
-	case CTextElement::TAL_BOTTOM:
+	case TextElement::TAL_BOTTOM:
 		// --------------- NOT IMPLEMENTED ---------------
 		vLocalTextOffset.y = (float)( box_height - font_height*get_num_rows(m_Text) );
 		break;
@@ -746,7 +746,7 @@ void CTextElement::UpdateLocalTextOffset()
 }
 
 
-void CTextElement::UpdateTextAlignment()
+void TextElement::UpdateTextAlignment()
 {
 	UpdateLocalTextOffset();
 
@@ -760,13 +760,13 @@ void CTextElement::UpdateTextAlignment()
 
 
 /// TODO: support rotation
-void CTextElement::UpdatePositionsInternal( const Matrix23& global_transform )
+void TextElement::UpdatePositionsInternal( const Matrix23& global_transform )
 {
 	UpdatePositionsInternalForNonRotatedElement( global_transform.vPosition );
 }
 
 
-void CTextElement::UpdatePositionsInternalForNonRotatedElement( const Vector2& vGlobalTranslation )
+void TextElement::UpdatePositionsInternalForNonRotatedElement( const Vector2& vGlobalTranslation )
 {
 	Vector2 vSpan = m_LocalAABB.vMax - m_LocalAABB.vMin;
 //	m_FontWidth  = (int)( vSpan.x / (float)m_Text.length() ); 
@@ -780,13 +780,13 @@ void CTextElement::UpdatePositionsInternalForNonRotatedElement( const Vector2& v
 
 
 //==================================================================================
-// CGraphicsElementGroup
+// GraphicsElementGroup
 //==================================================================================
 
-inline void CGraphicsElementGroup::RemoveInvalidElements()
+inline void GraphicsElementGroup::RemoveInvalidElements()
 {
 	// remove NULL elements
-	vector< shared_ptr<CGraphicsElement> >::iterator itr = m_vecpElement.begin();
+	vector< shared_ptr<GraphicsElement> >::iterator itr = m_vecpElement.begin();
 	while( itr != m_vecpElement.end() )
 	{
 //		if( (*itr) == NULL )
@@ -801,7 +801,7 @@ inline void CGraphicsElementGroup::RemoveInvalidElements()
 }
 
 /*
-CGraphicsElementGroup::CGraphicsElementGroup( std::vector< shared_ptr<CGraphicsElement> >& rvecpElement )
+GraphicsElementGroup::GraphicsElementGroup( std::vector< shared_ptr<GraphicsElement> >& rvecpElement )
 :
 m_vecpElement(rvecpElement)
 {
@@ -813,7 +813,7 @@ m_vecpElement(rvecpElement)
 	SetLocalOrigin( GetTopLeftPos() );
 
 	// set local top-left potitions for grouped elements
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		(*itr)->m_vLocalTopLeftPos = (*itr)->GetTopLeftPos() - GetTopLeftPos();
@@ -822,7 +822,7 @@ m_vecpElement(rvecpElement)
 */
 
 
-CGraphicsElementGroup::CGraphicsElementGroup( std::vector< shared_ptr<CGraphicsElement> >& rvecpElement, Vector2 vLocalOrigin )
+GraphicsElementGroup::GraphicsElementGroup( std::vector< shared_ptr<GraphicsElement> >& rvecpElement, Vector2 vLocalOrigin )
 :
 //m_vLocalOrigin(vLocalOrigin),
 m_vecpElement(rvecpElement)
@@ -834,7 +834,7 @@ m_vecpElement(rvecpElement)
 	UpdateAABB();
 
 	// set local top-left potitions for grouped elements
-/*	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+/*	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		(*itr)->m_vLocalTopLeftPos = (*itr)->GetTopLeftPos() - m_vLocalOrigin;
@@ -846,12 +846,12 @@ m_vecpElement(rvecpElement)
 }
 
 
-CGraphicsElementGroup::~CGraphicsElementGroup()
+GraphicsElementGroup::~GraphicsElementGroup()
 {
 	// release the elements from the group
 	// - does not release the element itself from the graphics element manager
 	// - they just get 'ungrouped'.
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		(*itr)->m_GroupID = -1;
@@ -859,18 +859,18 @@ CGraphicsElementGroup::~CGraphicsElementGroup()
 }
 
 
-void CGraphicsElementGroup::SetTopLeftPosInternal( Vector2 vGlobalPos )
+void GraphicsElementGroup::SetTopLeftPosInternal( Vector2 vGlobalPos )
 {
 }
 
 
-Vector2 CGraphicsElementGroup::GetLocalOriginInGlobalCoord() const
+Vector2 GraphicsElementGroup::GetLocalOriginInGlobalCoord() const
 {
 	return m_ParentTransform * m_LocalTransform * GetLocalTopLeftPos();
 /*
 	if( 0 <= m_GroupID )
 	{
-		CGraphicsElementGroup *pParentGroup = dynamic_cast<CGraphicsElementGroup *>(m_pManager->GetElement( m_GroupID ));
+		GraphicsElementGroup *pParentGroup = dynamic_cast<GraphicsElementGroup *>(m_pManager->GetElement( m_GroupID ));
 		if( pParentGroup )
 			return pParentGroup->GetLocalOriginInGlobalCoord() + GetLocalTopLeftPos();
 		else
@@ -885,14 +885,14 @@ Vector2 CGraphicsElementGroup::GetLocalOriginInGlobalCoord() const
 }
 
 
-void CGraphicsElementGroup::SetLocalOrigin( Vector2 vLocalOrigin )
+void GraphicsElementGroup::SetLocalOrigin( Vector2 vLocalOrigin )
 {
 //	m_vLocalOrigin = vLocalOrigin;
 	m_vLocalTopLeftPos = vLocalOrigin;
 
 	//UpdateTransform();
 
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 //		(*itr)->UpdateGlobalPositions( GetLocalOriginInGlobalCoord() );
@@ -905,13 +905,13 @@ void CGraphicsElementGroup::SetLocalOrigin( Vector2 vLocalOrigin )
 }
 
 
-void CGraphicsElementGroup::SetLocalTopLeftPos( Vector2 vPos )
+void GraphicsElementGroup::SetLocalTopLeftPos( Vector2 vPos )
 {
 	SetLocalOrigin( vPos );
 }
 
 
-void CGraphicsElementGroup::UpdateTransform( const Matrix23& parent_transform )
+void GraphicsElementGroup::UpdateTransform( const Matrix23& parent_transform )
 {
 	m_ParentTransform = parent_transform;
 
@@ -922,7 +922,7 @@ void CGraphicsElementGroup::UpdateTransform( const Matrix23& parent_transform )
 
 //	UpdatePositionsInternal( global_transform );
 
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		(*itr)->UpdateTransform( global_transform );
@@ -930,28 +930,28 @@ void CGraphicsElementGroup::UpdateTransform( const Matrix23& parent_transform )
 }
 
 
-void CGraphicsElementGroup::ChangeScale( float scale )
+void GraphicsElementGroup::ChangeScale( float scale )
 {
 //	int i, num_elements = m_vecElementID.size();
 //	for( i=0; i<num_elements; i++ )
 
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 		(*itr)->ChangeScale( scale );
 }
 
 
-void CGraphicsElementGroup::ChangeElementScale( float scale )
+void GraphicsElementGroup::ChangeElementScale( float scale )
 {
 }
 
 
-void CGraphicsElementGroup::SetSizeLTRB( const Vector2& vMin, const Vector2& vMax )
+void GraphicsElementGroup::SetSizeLTRB( const Vector2& vMin, const Vector2& vMax )
 {
 	m_LocalAABB.vMin = vMin;
 	m_LocalAABB.vMax = vMax;
 
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin();
 		itr != m_vecpElement.end();
 		itr++ )
@@ -961,11 +961,11 @@ void CGraphicsElementGroup::SetSizeLTRB( const Vector2& vMin, const Vector2& vMa
 }
 
 
-void CGraphicsElementGroup::SetColor( int color_index, const SFloatRGBAColor& color )
+void GraphicsElementGroup::SetColor( int color_index, const SFloatRGBAColor& color )
 {
-	CGraphicsElement::SetColor( color_index, color );
+	GraphicsElement::SetColor( color_index, color );
 
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin();
 		itr != m_vecpElement.end();
 		itr++ )
@@ -975,11 +975,11 @@ void CGraphicsElementGroup::SetColor( int color_index, const SFloatRGBAColor& co
 }
 
 
-void CGraphicsElementGroup::SetAlpha( int color_index, float a )
+void GraphicsElementGroup::SetAlpha( int color_index, float a )
 {
-	CGraphicsElement::SetAlpha( color_index, a );
+	GraphicsElement::SetAlpha( color_index, a );
 
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin();
 		itr != m_vecpElement.end();
 		itr++ )
@@ -989,9 +989,9 @@ void CGraphicsElementGroup::SetAlpha( int color_index, float a )
 }
 
 
-void CGraphicsElementGroup::SetDestAlphaBlendMode( AlphaBlend::Mode mode )
+void GraphicsElementGroup::SetDestAlphaBlendMode( AlphaBlend::Mode mode )
 {
-	vector< shared_ptr<CGraphicsElement> >::iterator itr;
+	vector< shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin();
 		itr != m_vecpElement.end();
 		itr++ )
@@ -1001,10 +1001,10 @@ void CGraphicsElementGroup::SetDestAlphaBlendMode( AlphaBlend::Mode mode )
 }
 
 
-void CGraphicsElementGroup::Draw()
+void GraphicsElementGroup::Draw()
 {
 	// do nothing
-	// - drawing calls are managed by CGraphicsElementManager
+	// - drawing calls are managed by GraphicsElementManager
 	// - CBE_Group is not intended to batch the draw calls
 	//   - rationale: elements in a group might belong to different layers, and in such a case
 	//                rendering order need to be managed the same way as non-grouped elements
