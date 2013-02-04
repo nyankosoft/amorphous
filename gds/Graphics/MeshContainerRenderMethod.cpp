@@ -20,7 +20,7 @@ using namespace boost;
 
 /*
 Defines a method to render the meshes in a mesh container node
-XML sample for MeshContainerNode CGameItem::m_MeshContainerRootNode
+XML sample for MeshContainerNode GameItem::m_MeshContainerRootNode
 
 
 - A simple render method to render a single mesh with a single shader technique

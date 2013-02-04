@@ -17,7 +17,7 @@ using namespace boost;
 
 
 /*
-XML sample for MeshContainerNode CGameItem::m_MeshContainerRootNode
+XML sample for MeshContainerNode GameItem::m_MeshContainerRootNode
 
 <Model>
 	<MeshNode>
