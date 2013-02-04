@@ -12,8 +12,8 @@ namespace amorphous
 extern PyMethodDef g_PyModuleShopMethod[];
 
 
-class CGameItemShop;
-//extern bool AddShop( CGameItemShop* pShop )
+class GameItemShop;
+//extern bool AddShop( GameItemShop* pShop )
 //extern bool ReleaseShop( const std::string& name )
 
 

@@ -80,7 +80,7 @@ void AddLife( float amount )
 
 bool HasItem( const std::string& item_name )
 {
-	shared_ptr<CGameItem> pItem = SinglePlayerInfo().GetItemByName<CGameItem>( item_name.c_str() );
+	shared_ptr<GameItem> pItem = SinglePlayerInfo().GetItemByName<GameItem>( item_name.c_str() );
 
 	return ( pItem ? true : false );
 }
@@ -106,7 +106,7 @@ void MountWeapon( int weapon_slot_index, const std::string& weapon_name )
 		return;
 
 	boost::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
-	if( !pWeapon || !(pWeapon->GetTypeFlag() & CGameItem::TYPE_WEAPON) )
+	if( !pWeapon || !(pWeapon->GetTypeFlag() & GameItem::TYPE_WEAPON) )
 		return;
 
 	SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).MountWeapon( pWeapon.get() );
@@ -125,7 +125,7 @@ void LoadAmmo()
 		return Py_BuildValue( "b", false );
 
 	boost::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
-	if( !pAmmo || !(pAmmo->GetTypeFlag() & CGameItem::TYPE_AMMO) )
+	if( !pAmmo || !(pAmmo->GetTypeFlag() & GameItem::TYPE_AMMO) )
 		return Py_BuildValue( "b", false );
 
 	bool loaded = SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).Load( pAmmo.get() );

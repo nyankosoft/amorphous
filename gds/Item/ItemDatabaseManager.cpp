@@ -52,15 +52,15 @@ bool CItemDatabaseManager::LoadFromFile( const std::string& filename )
 }
 
 
-CGameItem *CItemDatabaseManager::GetItemRawPtr( const std::string& item_name, int quantity )
+GameItem *CItemDatabaseManager::GetItemRawPtr( const std::string& item_name, int quantity )
 {
 	if( !m_pItemDatabase )
 		return NULL;
 
-	CGameItemObjectFactory factory;
+	GameItemObjectFactory factory;
 
 	// copy from the database
-	CGameItem *pItem = NULL;
+	GameItem *pItem = NULL;
 	if( !m_pItemDatabase->GetPolymorphicData( item_name, pItem, factory ) )
 		return NULL;
 

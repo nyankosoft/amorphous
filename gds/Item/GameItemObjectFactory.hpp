@@ -11,18 +11,18 @@ namespace amorphous
 using namespace serialization;
 
 
-class CGameItem;
+class GameItem;
 
 
 //===========================================================================
-// CGameItemObjectFactory
+// GameItemObjectFactory
 //===========================================================================
 
-class CGameItemObjectFactory : public IArchiveObjectFactory
+class GameItemObjectFactory : public IArchiveObjectFactory
 {
 public:
 
-	CGameItem *CreateGameItem( const unsigned int id );
+	GameItem *CreateGameItem( const unsigned int id );
 
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 };

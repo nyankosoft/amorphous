@@ -38,7 +38,7 @@ void CGI_Ammunition::SetData( char* pcAmmoType, float fMuzzleSpeed, float fPower
 
 void CGI_Ammunition::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_strAmmoType;
 
@@ -64,7 +64,7 @@ void CGI_Ammunition::OnOwnerLeftStage()
 
 void CGI_Ammunition::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "AmmoType",              m_strAmmoType );
 	reader.GetChildElementTextContent( "MuzzleSpeed",           m_fMuzzleSpeed );

@@ -59,10 +59,10 @@ inline void CGI_Battery::Update( float dt )
 
 
 //===========================================================================
-// CGI_Binocular
+// Binocular
 //===========================================================================
 
-class CGI_Binocular : public CGameItem
+class Binocular : public GameItem
 {
 	float m_fCurrentZoom;
 	float m_fZoomSpeed;
@@ -75,7 +75,7 @@ class CGI_Binocular : public CGameItem
 
 public:
 
-	CGI_Binocular();
+	Binocular();
 
 	unsigned int GetArchiveObjectID() const { return ID_BINOCULAR; }
 
@@ -94,9 +94,9 @@ public:
 };
 
 
-inline void CGI_Binocular::Serialize( IArchive& ar, const unsigned int version )
+inline void Binocular::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_fMaxZoom;
 
@@ -110,7 +110,7 @@ inline void CGI_Binocular::Serialize( IArchive& ar, const unsigned int version )
 // CGI_NightVision
 //===========================================================================
 
-class CGI_NightVision : public CGameItem 
+class CGI_NightVision : public GameItem 
 {
 	/// indicates if the object is registered as an active item 
 	bool m_bActive;
@@ -142,7 +142,7 @@ public:
 
 inline void CGI_NightVision::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_fMaxBatteryLife;
 	ar & m_fChargeSpeed;
@@ -154,7 +154,7 @@ inline void CGI_NightVision::Serialize( IArchive& ar, const unsigned int version
 // CGI_CamouflageDevice
 //===========================================================================
 
-class CGI_CamouflageDevice : public CGameItem
+class CGI_CamouflageDevice : public GameItem
 {
 	bool m_bEnabled;
 
@@ -177,7 +177,7 @@ public:
 
 inline void CGI_CamouflageDevice::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_bEnabled;
 
@@ -191,7 +191,7 @@ inline void CGI_CamouflageDevice::Serialize( IArchive& ar, const unsigned int ve
 // CGI_Suppressor
 //===========================================================================
 
-class CGI_Suppressor : public CGameItem
+class CGI_Suppressor : public GameItem
 {
 	bool m_bAttached;
 
@@ -211,7 +211,7 @@ public:
 
 inline void CGI_Suppressor::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_fSuppressorPerformance;
 }
@@ -222,7 +222,7 @@ inline void CGI_Suppressor::Serialize( IArchive& ar, const unsigned int version 
 // CGI_Key
 //===========================================================================
 
-class CGI_Key : public CGameItem
+class CGI_Key : public GameItem
 {
 	enum eKeyParam
 	{
@@ -245,7 +245,7 @@ public:
 
 inline void CGI_Key::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	for( int i=0; i<KEY_CODE_LENGTH; i++ )
         ar & m_acKeyCode[i];

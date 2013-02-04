@@ -42,9 +42,9 @@ using namespace boost;
 
 */
 
-// Make these member functions of CGameItem if they are frequently called.
+// Make these member functions of GameItem if they are frequently called.
 
-MeshHandle GetPrimaryMeshHandle( CGameItem& item )
+MeshHandle GetPrimaryMeshHandle( GameItem& item )
 {
 	if( 0 < item.GetMeshContainerRootNode().GetNumMeshContainers()
 	 && item.GetMeshContainerRootNode().GetMeshContainer(0) )
@@ -55,13 +55,13 @@ MeshHandle GetPrimaryMeshHandle( CGameItem& item )
 		return MeshHandle();
 }
 
-boost::shared_ptr<BasicMesh> GetPrimaryMesh( CGameItem& item )
+boost::shared_ptr<BasicMesh> GetPrimaryMesh( GameItem& item )
 {
 	boost::shared_ptr<BasicMesh> pMesh = GetPrimaryMeshHandle(item).GetMesh();
 	return pMesh;
 }
 
-boost::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( CGameItem& item )
+boost::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( GameItem& item )
 {
 	boost::shared_ptr<SkeletalMesh> pSkeletalMesh
 		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( GetPrimaryMesh(item) );
@@ -70,7 +70,7 @@ boost::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( CGameItem& item )
 }
 
 
-CItemEntity::CItemEntity()
+ItemEntity::ItemEntity()
 :
 m_ItemEntityFlags(0)
 {
@@ -78,22 +78,22 @@ m_ItemEntityFlags(0)
 }
 
 
-CItemEntity::CItemEntity( boost::shared_ptr<CGameItem> pItem )
+ItemEntity::ItemEntity( boost::shared_ptr<GameItem> pItem )
 :
 CCopyEntity(CItemModuleEntityTypeID::ITEM_ENTITY),
 m_pItem(pItem),
 m_ItemEntityFlags(0)
 {
-	m_pGraphicsUpdate.reset( new CGraphicsResourcesUpdateDelegate<CGameItem>( m_pItem.get() ) );
+	m_pGraphicsUpdate.reset( new CGraphicsResourcesUpdateDelegate<GameItem>( m_pItem.get() ) );
 }
 
 
-CItemEntity::~CItemEntity()
+ItemEntity::~ItemEntity()
 {
 }
 
 
-void CItemEntity::UpdateGraphicsUpdateCallbacks()
+void ItemEntity::UpdateGraphicsUpdateCallbacks()
 {
 //	if( m_MeshHandle.GetMesh()
 //	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
@@ -116,7 +116,7 @@ void CItemEntity::UpdateGraphicsUpdateCallbacks()
 }
 
 
-void CItemEntity::RenderAs( CRenderContext& rc )
+void ItemEntity::RenderAs( CRenderContext& rc )
 {
 	if( !m_pItem )
 		return;
@@ -142,15 +142,15 @@ void CItemEntity::RenderAs( CRenderContext& rc )
 
 
 /*
-void CItemEntity::InitMeshRenderMethod()
+void ItemEntity::InitMeshRenderMethod()
 {
 	::InitMeshRenderMethod( *this, m_pBlendTransformsLoader );
 }*/
 
 
-void CItemEntity::InitMesh()
+void ItemEntity::InitMesh()
 {
-	if( m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
+	if( m_ItemEntityFlags & ItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
 	{
 		CBE_MeshObjectProperty& mesh_property = this->pBaseEntity->MeshProperty();
 		if( 0 < mesh_property.m_ShaderTechnique.size_x() )
@@ -189,32 +189,32 @@ void CItemEntity::InitMesh()
 
 
 
-void CItemEntity::Init( CCopyEntityDesc& desc )
+void ItemEntity::Init( CCopyEntityDesc& desc )
 {
 	RaiseEntityFlags( pBaseEntity->GetEntityFlag() );
 	this->fRadius = pBaseEntity->GetRadius();
 }
 
 /*
-void CItemEntity::Init( CItemEntityDesc& desc )
+void ItemEntity::Init( ItemEntityDesc& desc )
 {
 }*/
 
 
-void CItemEntity::Update( float dt )
+void ItemEntity::Update( float dt )
 {
 	m_pItem->Update( dt );
 }
 
 /*
-void CItemEntity::UpdatePhysics( float dt )
+void ItemEntity::UpdatePhysics( float dt )
 {
 }
 */
 
-void CItemEntity::Draw()
+void ItemEntity::Draw()
 {
-	if( m_ItemEntityFlags & CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
+	if( m_ItemEntityFlags & ItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
 	{
 		bool single_mesh = true;
 		if( single_mesh
@@ -241,25 +241,25 @@ void CItemEntity::Draw()
 }
 
 
-void CItemEntity::DrawAs( CRenderContext& render_context )
+void ItemEntity::DrawAs( CRenderContext& render_context )
 {
 //	render_context.pRenderMethod->AddSubsetRenderMethod( m_pBlendTransformsLoader );
 }
 
 
-void CItemEntity::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity& other_entity, physics::CShape& other_shape, U32 trigger_flags )
+void ItemEntity::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity& other_entity, physics::CShape& other_shape, U32 trigger_flags )
 {
 	m_pItem->OnPhysicsTrigger( my_shape, other_entity, other_shape, trigger_flags );
 }
 
 
-void CItemEntity::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
+void ItemEntity::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
 {
 	m_pItem->OnPhysicsContact( pair, other_entity );
 }
 
 
-void CItemEntity::HandleMessage( SGameMessage& msg )
+void ItemEntity::HandleMessage( SGameMessage& msg )
 {
 /*	switch( msg.iEffect )
 	{
@@ -271,7 +271,7 @@ void CItemEntity::HandleMessage( SGameMessage& msg )
 }
 
 
-void CItemEntity::TerminateDerived()
+void ItemEntity::TerminateDerived()
 {
 //	shared_ptr<CCopyEntity> pSelf = this->Self().lock();
 //	m_pPool->release( pSelf ); // pSelf is CCopyEntity type pointer!!!
@@ -280,7 +280,7 @@ void CItemEntity::TerminateDerived()
 
 /// Place an item in the stage
 /// \return handle to the item entity that contains the item given as the argument
-CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGameItem> pItem,
+CEntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameItem> pItem,
 															    CBaseEntityHandle& attributes_base_entity_handle,
 																physics::CActorDesc& actor_desc,
 																bool create_physics_actor )
@@ -289,9 +289,9 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 //                                                              const Vector3& vAngularVelocity )
 
 {
-	shared_ptr<CItemEntity> pEntity = shared_ptr<CItemEntity>( new CItemEntity( pItem ) );
+	shared_ptr<ItemEntity> pEntity = shared_ptr<ItemEntity>( new ItemEntity( pItem ) );
 
-	CEntityHandle<CItemEntity> entity_handle;
+	CEntityHandle<ItemEntity> entity_handle;
 
 	CBaseEntityHandle *pAttribBaseEntityHandle;
 	if( 0 < strlen(attributes_base_entity_handle.GetBaseEntityName()) )
@@ -304,7 +304,7 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 	pEntity->SetAngularVelocity( actor_desc.BodyDesc.AngularVelocity );// vAngularVelocity );
 
 	physics::CActorDesc *pActorDesc = create_physics_actor ?  &actor_desc : NULL;
-	entity_handle = m_pStage->CreateEntity<CItemEntity>( pEntity, *pAttribBaseEntityHandle, pActorDesc );
+	entity_handle = m_pStage->CreateEntity<ItemEntity>( pEntity, *pAttribBaseEntityHandle, pActorDesc );
 
 	pItem->SetItemEntity( entity_handle );
 
@@ -315,12 +315,12 @@ CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGame
 		return entity_handle;
 	}
 	else
-		return shared_ptr<CItemEntity>();
+		return shared_ptr<ItemEntity>();
 */
 }
 
 
-CEntityHandle<CItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<CGameItem> pItem,
+CEntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameItem> pItem,
 															    CBaseEntityHandle& attributes_base_entity_handle,
 													            const Matrix34& pose,
                                                                 const Vector3& vLinearVelocity,

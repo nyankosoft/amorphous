@@ -16,10 +16,10 @@ namespace amorphous
 
 /**
  ammunition data
- - firearms cartridges are created as instances of CCartridge class, a derived class of CGI_Ammunition
+ - firearms cartridges are created as instances of Cartridge class, a derived class of CGI_Ammunition
  - missiles
 */
-class CGI_Ammunition : public CGameItem
+class CGI_Ammunition : public GameItem
 {
 protected:
 
@@ -34,7 +34,7 @@ protected:
 	CBaseEntityHandle m_MuzzleFlashBaseEntity;
 
 	///< the number of this cartridge item currently loaded in chambers and magazines.
-	///< - m_NumLoaded <= CGameItem::m_iCurrentQuantity
+	///< - m_NumLoaded <= GameItem::m_iCurrentQuantity
 	int m_NumLoaded;
 
 public:

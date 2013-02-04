@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CGI_GravityGun : public CGI_Weapon
+class GravityGun : public CGI_Weapon
 {
 
 	CEntityHandle<> m_Target;	/// item the gravity gun is currently holding
@@ -34,9 +34,9 @@ private:
 
 public:
 
-	inline CGI_GravityGun();
+	inline GravityGun();
 
-	~CGI_GravityGun() {}
+	~GravityGun() {}
 
 //	void Update( CWeaponSystem& rWeaponSystem );
 //	void ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWeaponSystem );
@@ -57,7 +57,7 @@ public:
 //----------------------------- inline implementations -----------------------------
 
 
-inline CGI_GravityGun::CGI_GravityGun()
+inline GravityGun::GravityGun()
 {
 	m_iHoldingTargetToggle = 0;
 
@@ -71,7 +71,7 @@ inline CGI_GravityGun::CGI_GravityGun()
 }
 
 
-inline void CGI_GravityGun::Serialize( IArchive& ar, const unsigned int version )
+inline void GravityGun::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Weapon::Serialize( ar, version );
 

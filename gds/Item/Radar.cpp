@@ -15,7 +15,7 @@ using std::map;
 using namespace boost;
 
 
-CRadar::CRadar()
+Radar::Radar()
 :
 m_fEffectiveRangeRadius( 500000.0f ),
 m_fSensoringFrequency( 5 ),
@@ -26,7 +26,7 @@ m_fNextTargetUpdateTime(0)
 }
 
 
-void CRadar::Update( float dt )
+void Radar::Update( float dt )
 {
 	boost::shared_ptr<CStage> pStage = m_pStage.lock();
 
@@ -63,7 +63,7 @@ void CRadar::Update( float dt )
 
 
 /// list of entities that are in the radar range
-void CRadar::UpdateEntitiesList()
+void Radar::UpdateEntitiesList()
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
@@ -97,7 +97,7 @@ void CRadar::UpdateEntitiesList()
 }
 
 
-void CRadar::UpdateTargetInfo()
+void Radar::UpdateTargetInfo()
 {
 	// clear all the previous target info
 	m_RadarInfo.ClearTargetInfo();
@@ -190,7 +190,7 @@ void CRadar::UpdateTargetInfo()
 }
 
 /*
-void CRadar::UpdateRadarInfo( CCopyEntity* pCopyEnt )
+void Radar::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 {
 
 	m_State = STATE_NORMAL;
@@ -210,9 +210,9 @@ void CRadar::UpdateRadarInfo( CCopyEntity* pCopyEnt )
 }*/
 
 
-void CRadar::Serialize( IArchive& ar, const unsigned int version )
+void Radar::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_fEffectiveRangeRadius;
 	ar & m_fSensoringFrequency;
@@ -229,9 +229,9 @@ void CRadar::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CRadar::LoadFromXMLNode( CXMLNodeReader& reader )
+void Radar::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "EffectiveRangeRadius",      m_fEffectiveRangeRadius );
 	reader.GetChildElementTextContent( "SensoringFrequency",        m_fSensoringFrequency );

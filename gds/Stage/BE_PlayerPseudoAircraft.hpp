@@ -119,9 +119,9 @@ private:
 
 	HUD_PlayerAircraft *m_pPlayerAircraftHUD;
 
-	boost::shared_ptr<CRadar> m_pShortRangeRadar;
+	boost::shared_ptr<Radar> m_pShortRangeRadar;
 
-	boost::shared_ptr<CRadar> m_pLongRangeRadar;
+	boost::shared_ptr<Radar> m_pLongRangeRadar;
 
 	enum TextMessageType
 	{
@@ -238,11 +238,11 @@ public:
 
 	void SetSubDisplayType( CSubDisplayType::Name type );
 
-//	const CRadarInfo& GetRadarInfo() const { return m_RadarInfo; }
+//	const RadarInfo& GetRadarInfo() const { return m_RadarInfo; }
 
-	boost::shared_ptr<CRadar> ShortRangeRadar() { return m_pShortRangeRadar; }
+	boost::shared_ptr<Radar> ShortRangeRadar() { return m_pShortRangeRadar; }
 
-	boost::shared_ptr<CRadar> LongRangeRadar() { return m_pLongRangeRadar; }
+	boost::shared_ptr<Radar> LongRangeRadar() { return m_pLongRangeRadar; }
 
 	void SetAircraftState( int aircraft_state ) { m_State = aircraft_state; }
 	int GetAircraftState() const { return m_State; }

@@ -22,7 +22,7 @@ namespace amorphous
 
 
 // forward declerations
-class CGameItem;
+class GameItem;
 class CWeaponSystem;
 
 class CGI_Aircraft;
@@ -75,16 +75,16 @@ private:
 	int m_TaskID;
 
 	/// a list of items the player is carrying
-	std::vector< boost::shared_ptr<CGameItem> > m_vecpItem;
+	std::vector< boost::shared_ptr<GameItem> > m_vecpItem;
 
 	/// lists of items sorted by categories
-	std::vector< boost::shared_ptr<CGameItem> > m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
+	std::vector< boost::shared_ptr<GameItem> > m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
 
 	/// borrowed ref?
-	std::vector<CGameItem *> m_vecpActiveItem;
+	std::vector<GameItem *> m_vecpActiveItem;
 
 	/// borrowed ref?
-	CGameItem *m_pFocusedItem;
+	GameItem *m_pFocusedItem;
 
 	int m_Money;
 
@@ -101,7 +101,7 @@ private:
 
 private:
 
-	void AddItemToCategoryList( boost::shared_ptr<CGameItem> pItem );
+	void AddItemToCategoryList( boost::shared_ptr<GameItem> pItem );
 
 protected:
 
@@ -148,32 +148,32 @@ public:
 	/// 1. call SupplyItem( pItem->Name )
 	/// 2. delete pItem
 	/// \return actual supplied quantity
-	int SupplyItem( CGameItem* pItem );
+	int SupplyItem( GameItem* pItem );
 
 	/// Add an owned reference of an item to the item list
 	/// - The argument pItem is not stored to the item array of the player.
 	/// - A copy of the item is drawn from game item database and stored in the item array
 	///   of the player.
-	int SupplyItem( boost::shared_ptr<CGameItem> pItem );
+	int SupplyItem( boost::shared_ptr<GameItem> pItem );
 
-	const std::vector<boost::shared_ptr<CGameItem>>& GetItemList() { return m_vecpItem; }
+	const std::vector<boost::shared_ptr<GameItem>>& GetItemList() { return m_vecpItem; }
 
 	template<class CItemType>
 	inline boost::shared_ptr<CItemType> GetItemByName( const char *pcItemName );
 
-	inline std::vector<boost::shared_ptr<CGameItem>>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
+	inline std::vector<boost::shared_ptr<GameItem>>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
 
-	inline void AddActiveItem( CGameItem *pItem );
-	inline void ReleaseActiveItem( CGameItem *pItem );
+	inline void AddActiveItem( GameItem *pItem );
+	inline void ReleaseActiveItem( GameItem *pItem );
 
 
 	/// select an item to operate
-	inline void SetItemFocus( CGameItem *pItem ) { m_pFocusedItem = pItem; }
+	inline void SetItemFocus( GameItem *pItem ) { m_pFocusedItem = pItem; }
 
 	/// release focus from the item currently in operation
 	inline void ReleaseItemFocus() { m_pFocusedItem = NULL; }
 
-	inline CGameItem *GetFocusedItem() { return m_pFocusedItem; }  
+	inline GameItem *GetFocusedItem() { return m_pFocusedItem; }  
 
 	inline bool HasKeycode( const char *pcKeyCode) { return false; }
 
@@ -213,7 +213,7 @@ inline boost::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char
 	for( i=0; i<num_items; i++ )
 	{
 		if( m_vecpItem[i]->GetName() == pcItemName )
-			return boost::dynamic_pointer_cast<CItemType,CGameItem>(m_vecpItem[i]);
+			return boost::dynamic_pointer_cast<CItemType,GameItem>(m_vecpItem[i]);
 	}
 
 	LOG_PRINT( "Cannot find the item: " + std::string(pcItemName) );
@@ -222,7 +222,7 @@ inline boost::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char
 }
 
 
-inline void CSinglePlayerInfo::AddActiveItem( CGameItem *pItem )
+inline void CSinglePlayerInfo::AddActiveItem( GameItem *pItem )
 {
 	size_t i, num = m_vecpActiveItem.size();
 	for( i=0; i<num; i++ )
@@ -235,7 +235,7 @@ inline void CSinglePlayerInfo::AddActiveItem( CGameItem *pItem )
 }
 
 
-inline void CSinglePlayerInfo::ReleaseActiveItem( CGameItem *pItem )
+inline void CSinglePlayerInfo::ReleaseActiveItem( GameItem *pItem )
 {
 	size_t i=0, num = m_vecpActiveItem.size();
 	for( i=0; i<num; i++ )

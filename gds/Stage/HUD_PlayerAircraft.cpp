@@ -371,11 +371,11 @@ void HUD_PlayerAircraft::RenderImpl()
 
 	float scale = GetScreenWidth() / 800.0f;
 
-	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
+	shared_ptr<Radar> pShortRangeRadar = plane->ShortRangeRadar();
 	if( !pShortRangeRadar )
 		return;
 
-	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
+	const RadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
 	// a triangle that indicates the position of the currently focused target
 	Vector2 focus_indicator[3]
@@ -464,8 +464,8 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 	if( !pCamera )
 		return;
 
-//	const CRadarInfo& radar_info = plane->GetRadarInfo();
-	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
+//	const RadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<Radar> pShortRangeRadar = plane->ShortRangeRadar();
 	if( !pShortRangeRadar )
 		return;
 
@@ -480,7 +480,7 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 	Matrix44 proj_view = proj * view;
 //	matCameraProj = matCamera * matProj;
 
-	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
+	const RadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
 	// render containers on targets
 	Vector3 pos;
@@ -591,12 +591,12 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 	Matrix22 matPlayerOrient = Matrix22Rotation( heading );
 
 	// display targets on radar
-//	const CRadarInfo& radar_info = plane->GetRadarInfo();
-	shared_ptr<CRadar> pShortRangeRadar = plane->ShortRangeRadar();
+//	const RadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<Radar> pShortRangeRadar = plane->ShortRangeRadar();
 	if( !pShortRangeRadar )
 		return;
 
-	const CRadarInfo& radar_info = pShortRangeRadar->RadarInfo();
+	const RadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
 	const vector<HUD_TargetInfo>& vecTargetInfo = radar_info.GetAllTargetInfo();
 
@@ -713,12 +713,12 @@ void HUD_PlayerAircraft::RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane )
 	float heading = (float)acos(dp) * ( 0 < vFwdDir.x ? 1.0f : -1.0f );
 
 	// display targets on radar
-//	const CRadarInfo& radar_info = plane->GetRadarInfo();
-	shared_ptr<CRadar> pLongRangeRadar = plane->LongRangeRadar();
+//	const RadarInfo& radar_info = plane->GetRadarInfo();
+	shared_ptr<Radar> pLongRangeRadar = plane->LongRangeRadar();
 	if( !pLongRangeRadar )
 		return;
 
-	const CRadarInfo& radar_info = pLongRangeRadar->RadarInfo();
+	const RadarInfo& radar_info = pLongRangeRadar->RadarInfo();
 
 	const vector<HUD_TargetInfo>& vecTargetInfo = radar_info.GetAllTargetInfo();
 

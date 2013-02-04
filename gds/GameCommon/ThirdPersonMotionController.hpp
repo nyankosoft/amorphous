@@ -11,12 +11,12 @@ namespace amorphous
 {
 
 
-class CSkeletalCharacter;
+class SkeletalCharacter;
 
 
 class CThirdPersonMotionController
 {
-	boost::shared_ptr<CSkeletalCharacter> m_pCharacter;
+	boost::shared_ptr<SkeletalCharacter> m_pCharacter;
 
 	Matrix34 m_CameraPose;
 
@@ -29,7 +29,7 @@ public:
 	CThirdPersonMotionController();
 	~CThirdPersonMotionController(){}
 
-	void SetSkeletalCharacter( boost::shared_ptr<CSkeletalCharacter> pCharacter ) { m_pCharacter = pCharacter; }
+	void SetSkeletalCharacter( boost::shared_ptr<SkeletalCharacter> pCharacter ) { m_pCharacter = pCharacter; }
 
 	void Update();
 

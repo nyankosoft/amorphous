@@ -13,23 +13,23 @@ namespace amorphous
 
 class CItemStatusDebugDisplay : public CDebugItem_ResourceManager
 {
-	boost::weak_ptr<CGameItem> m_pItem;
+	boost::weak_ptr<GameItem> m_pItem;
 
 public:
 
 	CItemStatusDebugDisplay(){}
 
-	CItemStatusDebugDisplay( boost::weak_ptr<CGameItem> pItem ) : m_pItem(pItem) {}
+	CItemStatusDebugDisplay( boost::weak_ptr<GameItem> pItem ) : m_pItem(pItem) {}
 
 	~CItemStatusDebugDisplay(){}
 
-	void SetItem( boost::weak_ptr<CGameItem> pItem ) { m_pItem = pItem; }
+	void SetItem( boost::weak_ptr<GameItem> pItem ) { m_pItem = pItem; }
 
 	void GetTextInfo()
 	{
 		m_TextBuffer.resize( 0 );
 
-		boost::shared_ptr<CGameItem> pItem = m_pItem.lock();
+		boost::shared_ptr<GameItem> pItem = m_pItem.lock();
 
 		if( pItem )
 		{

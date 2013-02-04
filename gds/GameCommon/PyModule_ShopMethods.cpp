@@ -20,11 +20,11 @@ PyObject* AddItem( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	shared_ptr<CGameItemShop> pShop = GameItemShopList().GetShop( shop_name );
+	shared_ptr<GameItemShop> pShop = GetGameItemShopList().GetShop( shop_name );
 
 	if( pShop )
 	{
-		shared_ptr<CGameItem> pItem = ItemDatabaseManager().GetItem<CGameItem>( item_name, 1 );
+		shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( item_name, 1 );
 
 		if( pItem )
 			pShop->AddItem( pItem );

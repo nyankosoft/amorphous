@@ -8,7 +8,7 @@ namespace amorphous
 using namespace std;
 
 
-void CCartridge::Serialize( IArchive& ar, const unsigned int version )
+void Cartridge::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Ammunition::Serialize( ar, version );
 
@@ -18,7 +18,7 @@ void CCartridge::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CCartridge::LoadFromXMLNode( CXMLNodeReader& reader )
+void Cartridge::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGI_Ammunition::LoadFromXMLNode( reader );
 

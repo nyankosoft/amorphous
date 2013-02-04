@@ -79,7 +79,7 @@ public:
 */
 
 
-CGI_MissileLauncher::CGI_MissileLauncher()
+MissileLauncher::MissileLauncher()
 {
 	m_TypeFlag |= (TYPE_WEAPON);
 
@@ -114,7 +114,7 @@ CGI_MissileLauncher::CGI_MissileLauncher()
 }
 
 
-void CGI_MissileLauncher::InitStates()
+void MissileLauncher::InitStates()
 {
 	// initialize states
 	m_CurrentReleasePoseIndex = 0;
@@ -131,7 +131,7 @@ void CGI_MissileLauncher::InitStates()
 }
 
 
-void CGI_MissileLauncher::Serialize( IArchive& ar, const unsigned int version )
+void MissileLauncher::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Weapon::Serialize( ar, version );
 
@@ -156,7 +156,7 @@ void CGI_MissileLauncher::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CGI_MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
+void MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	InitStates();
 
@@ -191,7 +191,7 @@ void CGI_MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 
-void CGI_MissileLauncher::SetNumMaxSimultaneousTargets( int num_targets )
+void MissileLauncher::SetNumMaxSimultaneousTargets( int num_targets )
 {
 	m_NumMaxSimulTargets = num_targets;
 
@@ -201,7 +201,7 @@ void CGI_MissileLauncher::SetNumMaxSimultaneousTargets( int num_targets )
 }
 
 
-void CGI_MissileLauncher::SetLocalReleasePose( int index, const Matrix34& pose )
+void MissileLauncher::SetLocalReleasePose( int index, const Matrix34& pose )
 {
 //	if( index < 0 || m_ReleaseLocalPose.size() <= index )
 //		return;
@@ -216,7 +216,7 @@ void CGI_MissileLauncher::SetLocalReleasePose( int index, const Matrix34& pose )
     - smoke trace creates too many false positives when missile is launched
 
 */
-void CGI_MissileLauncher::UpdateTargets()
+void MissileLauncher::UpdateTargets()
 {
 	CStageSharedPtr pStage = m_pStage.lock();
 	if( !pStage )
@@ -297,7 +297,7 @@ void CGI_MissileLauncher::UpdateTargets()
 }
 
 
-bool CGI_MissileLauncher::SetPrimaryTarget( CEntityHandle<>& target_entity )
+bool MissileLauncher::SetPrimaryTarget( CEntityHandle<>& target_entity )
 {
 	if( !target_entity.Get() )
 		return false;
@@ -308,7 +308,7 @@ bool CGI_MissileLauncher::SetPrimaryTarget( CEntityHandle<>& target_entity )
 }
 
 
-void CGI_MissileLauncher::UpdateWorldProperties( const Matrix34& rShooterWorldPose,
+void MissileLauncher::UpdateWorldProperties( const Matrix34& rShooterWorldPose,
 									    const Vector3& rvShooterVelocity,
 										const Vector3& rvShooterAngVelocity )
 {
@@ -336,7 +336,7 @@ void CGI_MissileLauncher::UpdateWorldProperties( const Matrix34& rShooterWorldPo
 static bool SafetyOff() { return true; }
 
 
-void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
+void MissileLauncher::UpdateAmmunitions( CStage *pStage )
 {
 	// update ammunitions poses and load them if necessary
 	// - note that these routines are executed whether the launcher is selected or not
@@ -397,7 +397,7 @@ void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
 
 			pMissile = pStage->CreateEntity( missile_entity );
 
-			ONCE( g_Log.Print( "CGI_MissileLauncher::Update() - loaded a missile" ) );
+			ONCE( g_Log.Print( "MissileLauncher::Update() - loaded a missile" ) );
 
 			if( pMissile )
 			{
@@ -409,7 +409,7 @@ void CGI_MissileLauncher::UpdateAmmunitions( CStage *pStage )
 
 
 /// standard update - fire if both triggers are pulled
-void CGI_MissileLauncher::Update( float dt )
+void MissileLauncher::Update( float dt )
 {
 	if( IsWeaponSelected() )
 	{
@@ -440,20 +440,20 @@ void CGI_MissileLauncher::Update( float dt )
 		UpdateAmmunitions( pStage.get() );
 	}
 	else
-		ONCE( g_Log.Print( "CGI_MissileLauncher::Update() - invalid launcher type" ) );
+		ONCE( g_Log.Print( "MissileLauncher::Update() - invalid launcher type" ) );
 
 }
 
 
 /// releases the ammo to fire a missile / drop a bomb
 /// \attention does not release any memory.
-bool CGI_MissileLauncher::ReleaseAmmo()
+bool MissileLauncher::ReleaseAmmo()
 {
 	CStageSharedPtr pStage = m_pStage.lock();
 	if( !pStage )
 		return false;
 
-	ONCE( g_Log.Print( "CGI_MissileLauncher::ReleaseAmmo() - releasing the ammo" ) );
+	ONCE( g_Log.Print( "MissileLauncher::ReleaseAmmo() - releasing the ammo" ) );
 
 	const size_t num_release_positions = m_vecMissileHolder.size();
 	for( size_t i=0; i<num_release_positions; i++ )
@@ -489,7 +489,7 @@ bool CGI_MissileLauncher::ReleaseAmmo()
 }
 
 
-bool CGI_MissileLauncher::HandleInput( int input_code, int input_type, float fParam )
+bool MissileLauncher::HandleInput( int input_code, int input_type, float fParam )
 {
 	switch( input_code )
 	{
@@ -540,7 +540,7 @@ bool CGI_MissileLauncher::HandleInput( int input_code, int input_type, float fPa
 }
 
 
-inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntity )
+inline void MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntity )
 {
 	if( m_FireTargetIndex < m_vecCurrentTarget.size()
 	 && IsValidEntity(m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr()) )
@@ -555,7 +555,7 @@ inline void CGI_MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntit
 }
 
 
-void CGI_MissileLauncher::ApplyForceFeedback()
+void MissileLauncher::ApplyForceFeedback()
 {
 	m_pFFEffect->Start( 1, 0 );
 
@@ -566,7 +566,7 @@ void CGI_MissileLauncher::ApplyForceFeedback()
 }
 
 
-void CGI_MissileLauncher::Fire()
+void MissileLauncher::Fire()
 {
 	CStageSharedPtr pStage = m_pStage.lock();
 	if( !pStage )
@@ -701,7 +701,7 @@ void CGI_MissileLauncher::Fire()
 }
 
 
-bool CGI_MissileLauncher::IsLockingOn( CCopyEntity *pEntity )
+bool MissileLauncher::IsLockingOn( CCopyEntity *pEntity )
 {
 	size_t i, num_current_targets = m_vecCurrentTarget.size();
 	for( i=0; i<num_current_targets; i++ )
@@ -713,7 +713,7 @@ bool CGI_MissileLauncher::IsLockingOn( CCopyEntity *pEntity )
 }
 
 
-bool CGI_MissileLauncher::IsLockingOn( U32 entity_id )
+bool MissileLauncher::IsLockingOn( U32 entity_id )
 {
 	size_t i, num_current_targets = m_vecCurrentTarget.size();
 	for( i=0; i<num_current_targets; i++ )
@@ -728,7 +728,7 @@ bool CGI_MissileLauncher::IsLockingOn( U32 entity_id )
 }
 
 
-void CGI_MissileLauncher::Disarm()
+void MissileLauncher::Disarm()
 {
 	size_t i, num_release_positions = m_vecMissileHolder.size();
 	for( i=0; i<num_release_positions; i++ )

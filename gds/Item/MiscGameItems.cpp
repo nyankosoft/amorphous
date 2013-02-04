@@ -16,10 +16,10 @@ using namespace boost;
 
 
 //===========================================================================
-// CGI_Binocular
+// Binocular
 //===========================================================================
 
-CGI_Binocular::CGI_Binocular()
+Binocular::Binocular()
 :
 m_fCurrentZoom(1.0f),
 m_fTargetZoom(1.0f),
@@ -32,14 +32,14 @@ m_fFocusDelay(0.0f)
 }
 
 
-void CGI_Binocular::OnSelected()
+void Binocular::OnSelected()
 {
 	SinglePlayerInfo().AddActiveItem( this );
 	SinglePlayerInfo().SetItemFocus( this );
 }
 
 
-bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam )
+bool Binocular::HandleInput( int input_code, int input_type, float fParam )
 {
 	switch( input_code )
 	{
@@ -76,7 +76,7 @@ bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam )
 }
 
 
-void CGI_Binocular::Update( float dt )
+void Binocular::Update( float dt )
 {
  	Camera *pCamera = SinglePlayerInfo().GetCurrentPlayerBaseEntity()->GetCamera();
 	if( !pCamera )
@@ -119,7 +119,7 @@ void CGI_Binocular::Update( float dt )
 }
 
 
-void CGI_Binocular::GetStatus( std::string& dest_buffer )
+void Binocular::GetStatus( std::string& dest_buffer )
 {
 	char acStatus[32];
 	sprintf( acStatus, "ZOOM: X%.2f", m_fCurrentZoom );
@@ -127,10 +127,10 @@ void CGI_Binocular::GetStatus( std::string& dest_buffer )
 }
 
 
-//void CGI_Binocular::OnSelected() {}
-//bool CGI_Binocular::HandleInput( int input_code, int input_type, float fParam ) { return false; }
-//void CGI_Binocular::Update( float dt ) {}
-//void CGI_Binocular::RenderStatus( int index, FontBase *pFont ) {}
+//void Binocular::OnSelected() {}
+//bool Binocular::HandleInput( int input_code, int input_type, float fParam ) { return false; }
+//void Binocular::Update( float dt ) {}
+//void Binocular::RenderStatus( int index, FontBase *pFont ) {}
 
 
 

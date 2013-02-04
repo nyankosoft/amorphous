@@ -149,7 +149,7 @@ PyObject* MountWeapon( PyObject* self, PyObject* args )
 		return Py_BuildValue( "b", false );
 
 	boost::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
-	if( !pWeapon || !(pWeapon->GetTypeFlag() & CGameItem::TYPE_WEAPON) )
+	if( !pWeapon || !(pWeapon->GetTypeFlag() & GameItem::TYPE_WEAPON) )
 		return Py_BuildValue( "b", false );
 
 	SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).MountWeapon( pWeapon.get() );
@@ -170,7 +170,7 @@ PyObject* LoadAmmo( PyObject* self, PyObject* args )
 		return Py_BuildValue( "b", false );
 
 	boost::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
-	if( !pAmmo || !(pAmmo->GetTypeFlag() & CGameItem::TYPE_AMMO) )
+	if( !pAmmo || !(pAmmo->GetTypeFlag() & GameItem::TYPE_AMMO) )
 		return Py_BuildValue( "b", false );
 
 	bool loaded = SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot(weapon_slot_index).Load( pAmmo.get() );
@@ -214,7 +214,7 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 
 	CItemStageUtility item_stg_util( pStage->GetWeakPtr().lock() );
 
-//	boost::shared_ptr<CGameItem> pItem = SinglePlayerInfo().GetItemByName<CGameItem>(item_name);
+//	boost::shared_ptr<GameItem> pItem = SinglePlayerInfo().GetItemByName<GameItem>(item_name);
 //	if( !pItem )
 //		return Py_None;
 
@@ -228,14 +228,14 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 	actor_desc.WorldPose.vPosition = pos;
 	actor_desc.WorldPose.matOrient = matOrient;
 
-	CEntityHandle<CItemEntity> entity = item_stg_util.CreateItemEntity( pVehicle, base_entity_handle, actor_desc );
+	CEntityHandle<ItemEntity> entity = item_stg_util.CreateItemEntity( pVehicle, base_entity_handle, actor_desc );
 
-	boost::shared_ptr<CItemEntity> pEntity = entity.Get();
+	boost::shared_ptr<ItemEntity> pEntity = entity.Get();
 	if( pEntity )
 	{
 		pEntity->SetName( entity_name );
 		pEntity->GroupIndex = pBaseEntity->GetEntityGroupID();
-		pEntity->SetItemEntityFlags( CItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING );
+		pEntity->SetItemEntityFlags( ItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING );
 		pEntity->InitMesh();
 	}
 	else

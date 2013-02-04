@@ -24,7 +24,7 @@ struct SWeaponSlot;
 /**
  game item that represents firearm
 */
-class CGI_Weapon : public CGameItem
+class CGI_Weapon : public GameItem
 {
 protected:
 

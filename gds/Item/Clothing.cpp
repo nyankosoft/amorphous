@@ -19,33 +19,33 @@ namespace amorphous
 using namespace std;
 
 
-CClothing::CClothing()
+Clothing::Clothing()
 :
 m_ApplyClothSimulation(false),
 m_fProjectionMatrixOffset(0)
 {
 }
 
-void CClothing::Update( float dt )
+void Clothing::Update( float dt )
 {
 }
 
 
-bool CClothing::HandleInput( int input_code, int input_type, float fParam )
+bool Clothing::HandleInput( int input_code, int input_type, float fParam )
 {
 	return false;
 }
 
 
-void CClothing::Serialize( IArchive& ar, const unsigned int version )
+void Clothing::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 }
 
 
-void CClothing::LoadFromXMLNode( CXMLNodeReader& reader )
+void Clothing::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetAttributeValue( "cloth_simulation", m_ApplyClothSimulation );
 }

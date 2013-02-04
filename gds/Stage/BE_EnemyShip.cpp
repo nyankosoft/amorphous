@@ -267,7 +267,7 @@ void CBE_EnemyShip::AddExtraData()
 
 	ex.m_bInUse = true;
 /*
-	CGameItem *pItem = CItemDatabaseManager::Get()->GetItem( m_strShipItemName.c_str(), 1 );
+	GameItem *pItem = CItemDatabaseManager::Get()->GetItem( m_strShipItemName.c_str(), 1 );
 
 	if( !pItem )
 	{
@@ -275,7 +275,7 @@ void CBE_EnemyShip::AddExtraData()
 		return;
 	}
 
-	if( pItem->GetArchiveObjectID() != CGameItem::ID_AIRCRAFT )
+	if( pItem->GetArchiveObjectID() != GameItem::ID_AIRCRAFT )
 	{
 		g_Log.Print( WL_ERROR, "CBE_EnemyShip::AddExtraData() - the item '%s' is not an aircraft", m_strShipItemName.c_str() );
 		return;

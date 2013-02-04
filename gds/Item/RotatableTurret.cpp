@@ -73,7 +73,7 @@ void CRotatableTurret::UpdateAimInfo()
 
 bool CRotatableTurret::LoadMeshObject()
 {
-	bool base = CGameItem::LoadMeshObject();
+	bool base = GameItem::LoadMeshObject();
 	bool weapon = false;
 	if( m_pWeapon )
 		weapon = m_pWeapon->LoadMeshObject();
@@ -172,7 +172,7 @@ void CRotatableTurret::Render()
 
 void CRotatableTurret::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_MountLocalPose;
 	ar & m_GunLocalPose;
@@ -189,7 +189,7 @@ void CRotatableTurret::Serialize( IArchive& ar, const unsigned int version )
 
 void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	string ammo_name, ammo_quantity;
 

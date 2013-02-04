@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CGI_LaserGun : public CGI_Weapon
+class LaserGun : public CGI_Weapon
 {
 	float m_fMaxRange;
 	float m_fRadius;
@@ -21,9 +21,9 @@ class CGI_LaserGun : public CGI_Weapon
 
 public:
 
-	CGI_LaserGun();
+	LaserGun();
 
-	~CGI_LaserGun();
+	~LaserGun();
 
 //	void Update( CWeaponSystem& rWeaponSystem );
 //	void ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWeaponSystem );

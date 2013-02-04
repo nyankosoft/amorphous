@@ -19,7 +19,7 @@ class CCustomer
 public:
 
 	/// \return actual added quantity
-	virtual int AddItem( boost::shared_ptr<CGameItem> pItem ) = 0;
+	virtual int AddItem( boost::shared_ptr<GameItem> pItem ) = 0;
 
 	virtual bool Pay( int amount ) = 0;
 
@@ -27,9 +27,9 @@ public:
 };
 
 
-class CGameItemShop
+class GameItemShop
 {
-	std::vector< boost::shared_ptr<CGameItem> > m_vecpItem;
+	std::vector< boost::shared_ptr<GameItem> > m_vecpItem;
 
 public:
 
@@ -37,11 +37,11 @@ public:
 
 public:
 
-	CGameItemShop();
+	GameItemShop();
 
-	CGameItemShop( const std::string& name );
+	GameItemShop( const std::string& name );
 
-	virtual ~CGameItemShop();
+	virtual ~GameItemShop();
 
 	void Release()
 	{
@@ -51,7 +51,7 @@ public:
 
 //	int LoadItems( const std::vector<std::string>& m_vecItemName );
 
-	bool AddItem( boost::shared_ptr<CGameItem> pItem );
+	bool AddItem( boost::shared_ptr<GameItem> pItem );
 
 	int AddItem( const std::string& item_name, int quantity );
 
@@ -59,7 +59,7 @@ public:
 
 	bool PurchaseItem( CCustomer& customer, int index, int quantity = 1 );
 
-	const boost::shared_ptr<CGameItem> GetItem( int index );
+	const boost::shared_ptr<GameItem> GetItem( int index );
 
 	size_t GetNumItems() const { return m_vecpItem.size(); }
 
@@ -84,40 +84,40 @@ public:
 /**
  * singleton class
  */
-class CGameItemShopList
+class GameItemShopList
 {
-	static CSingleton<CGameItemShopList> m_obj;
+	static CSingleton<GameItemShopList> m_obj;
 
-	std::vector< boost::shared_ptr<CGameItemShop> > m_vecpShopList;
+	std::vector< boost::shared_ptr<GameItemShop> > m_vecpShopList;
 
 public:
 
-	static CGameItemShopList* Get() { return m_obj.get(); }
+	static GameItemShopList* Get() { return m_obj.get(); }
 
-	CGameItemShopList() {}
+	GameItemShopList() {}
 
-	~CGameItemShopList() { Release(); }
+	~GameItemShopList() { Release(); }
 
 	void Release() {}
 
 	/// registers a shop to the list.
 	/// - called by CreateGameItemShop()
-	bool AddShop( boost::shared_ptr<CGameItemShop> pShop );
+	bool AddShop( boost::shared_ptr<GameItemShop> pShop );
 
-	/// - called by dtor of CGameItemShop
+	/// - called by dtor of GameItemShop
 	bool RemoveShop( const std::string& name );
 
-	boost::shared_ptr<CGameItemShop> GetShop( const std::string& name );
+	boost::shared_ptr<GameItemShop> GetShop( const std::string& name );
 };
 
 
-inline CGameItemShopList& GameItemShopList()
+inline GameItemShopList& GetGameItemShopList()
 {
-	return *(CGameItemShopList::Get());
+	return *(GameItemShopList::Get());
 }
 
 
-extern boost::shared_ptr<CGameItemShop> CreateGameItemShop( const std::string& shop_name );
+extern boost::shared_ptr<GameItemShop> CreateGameItemShop( const std::string& shop_name );
 
 
 } // namespace amorphous

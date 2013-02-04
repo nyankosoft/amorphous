@@ -208,9 +208,9 @@ void CGI_Aircraft::InitWeaponSystem()
 
 	// slot 1: standard missile launcher
 	CGI_Weapon* pWeapon = m_WeaponSystem.GetWeaponSlot(1).pWeapon;
-	if( pWeapon && pWeapon->GetArchiveObjectID() == CGameItem::ID_MISSILELAUNCHER )
+	if( pWeapon && pWeapon->GetArchiveObjectID() == GameItem::ID_MISSILELAUNCHER )
 	{
-		CGI_MissileLauncher* pMissileLauncher = (CGI_MissileLauncher *)(m_WeaponSystem.GetWeaponSlot(1).pWeapon);
+		MissileLauncher* pMissileLauncher = (MissileLauncher *)(m_WeaponSystem.GetWeaponSlot(1).pWeapon);
 
 		pMissileLauncher->SetNumReleasePositions( 2 );
 		int i;//, num_weapons = ;
@@ -228,7 +228,7 @@ void CGI_Aircraft::InitWeaponSystem()
 	{
 		switch()
 		{
-		case CGameItem::WEAPON:
+		case GameItem::WEAPON:
 			missile_launcher = ()(m_WeaponSystem.GetWeaponSlot(i).pWeapon);
 			for( i=0; i<2; i++ )
 			{
@@ -438,8 +438,8 @@ void CGI_Aircraft::UpdateTargetMeshTransforms()
 //		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
 
 
-	CEntityHandle<CItemEntity> item_entity = GetItemEntity();
-	shared_ptr<CItemEntity> pEntity = item_entity.Get();
+	CEntityHandle<ItemEntity> item_entity = GetItemEntity();
+	shared_ptr<ItemEntity> pEntity = item_entity.Get();
 	if( !pEntity )
 		return;
 
@@ -470,7 +470,7 @@ void CGI_Aircraft::RetractGears()
 
 void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
     ar & m_CockpitLocalPose;
 
@@ -527,7 +527,7 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 
 void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "Armor",           m_fArmor );
 	reader.GetChildElementTextContent( "RCS",             m_fRCS );

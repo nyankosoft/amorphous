@@ -10,26 +10,26 @@ namespace amorphous
 {
 using namespace serialization;
 
-class CGameItem;
+class GameItem;
 
 
-class CGameItemInfo : public IArchiveObjectBase
+class GameItemInfo : public IArchiveObjectBase
 {
 public:
 
 	std::string strItemName;
 	std::string strFilename;
 
-	CGameItem *pItem;
+	GameItem *pItem;
 
 	/// indicates if the item has been loaded on the memory
 //	bool bIsLoaded;
 
-	CGameItemInfo() { pItem = NULL; /*bIsLoaded = false;*/ }
+	GameItemInfo() { pItem = NULL; /*bIsLoaded = false;*/ }
 
-//	~CGameItemInfo() { ReleaseItem(); }
+//	~GameItemInfo() { ReleaseItem(); }
 
-	CGameItem *GetItem( const int quantity );
+	GameItem *GetItem( const int quantity );
 
 	/// release the item if it is currently loaded
 	/// must be called explicitly by the owner before destroying the object
@@ -39,15 +39,15 @@ public:
 };
 
 
-class CGameItemDatabase : public IArchiveObjectBase
+class GameItemDatabase : public IArchiveObjectBase
 {
-	std::vector<CGameItemInfo> m_vecGameItemInfo;
+	std::vector<GameItemInfo> m_vecGameItemInfo;
 
 public:
 
-	CGameItemDatabase() {}
+	GameItemDatabase() {}
 
-	~CGameItemDatabase();
+	~GameItemDatabase();
 
 	void AddItemInfo( const std::string& strFilename, const std::string& strItemName );
 
@@ -59,11 +59,11 @@ public:
 
 	/// returns item(s) with the specified name
 	/// returns NULL if the specified item is not found
-	CGameItem *GetItem( const char *pItemName, int quantity );
+	GameItem *GetItem( const char *pItemName, int quantity );
 
 	/// save an item object as a binary file.
 	/// not used during runtime
-	void SaveItem( const char *pFilename, CGameItem *pItem );
+	void SaveItem( const char *pFilename, GameItem *pItem );
 
 	void SortItemsInAlphabeticalOrder();
 };

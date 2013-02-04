@@ -11,28 +11,28 @@ namespace amorphous
 {
 
 
-class CCartridge;
+class Cartridge;
 
 
-class CMagazine : public CGameItem
+class Magazine : public GameItem
 {
 	Caliber::Name m_Caliber;
 	uint m_Capacity;
 
-	std::stack< boost::shared_ptr<CCartridge> > m_pLoadedCartridges;
+	std::stack< boost::shared_ptr<Cartridge> > m_pLoadedCartridges;
 
 	bool m_IsInserted; ///< true if the magazine is currently in the gun
 
 public:
 
-	CMagazine()
+	Magazine()
 		:
 	m_Caliber(Caliber::OTHER),
 	m_Capacity(0),
 	m_IsInserted(false)
 	{}
 
-	~CMagazine() {}
+	~Magazine() {}
 
 	Caliber::Name GetCaliber() const { return m_Caliber; }
 
@@ -42,14 +42,14 @@ public:
 
 	bool IsEmpty() const { return m_pLoadedCartridges.empty(); }
 
-	int LoadCartridges( boost::shared_ptr<CCartridge>& pCartridge, uint num_max_rounds_to_load );
+	int LoadCartridges( boost::shared_ptr<Cartridge>& pCartridge, uint num_max_rounds_to_load );
 
-	boost::shared_ptr<CCartridge> TakeNextCartridge()
+	boost::shared_ptr<Cartridge> TakeNextCartridge()
 	{
 		if( IsEmpty() )
-			return boost::shared_ptr<CCartridge>();
+			return boost::shared_ptr<Cartridge>();
 
-		boost::shared_ptr<CCartridge> pNextCartridge = m_pLoadedCartridges.top();
+		boost::shared_ptr<Cartridge> pNextCartridge = m_pLoadedCartridges.top();
 		m_pLoadedCartridges.pop();
 		return pNextCartridge;
 	}

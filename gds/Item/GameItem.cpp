@@ -20,10 +20,10 @@ void ItemDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 //=======================================================================
-// CGameItem
+// GameItem
 //=======================================================================
 
-CGameItem::CGameItem()
+GameItem::GameItem()
 :
 m_iCurrentQuantity(0),
 m_iMaxQuantity(1),
@@ -38,12 +38,12 @@ m_TypeFlag(0)
 }
 
 
-CGameItem::~CGameItem()
+GameItem::~GameItem()
 {
 }
 
 
-void CGameItem::Serialize( IArchive& ar, const unsigned int version )
+void GameItem::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_strName;
 	ar & m_MeshContainerRootNode;
@@ -56,7 +56,7 @@ void CGameItem::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-bool CGameItem::LoadMeshObject()
+bool GameItem::LoadMeshObject()
 {
 //	return m_MeshObjectContainer.m_MeshObjectHandle.Load( m_MeshObjectContainer.m_MeshDesc );
 
@@ -67,16 +67,16 @@ bool CGameItem::LoadMeshObject()
 }
 
 
-void CGameItem::Render()
+void GameItem::Render()
 {
-	boost::shared_ptr<CItemEntity> pItemEntity = GetItemEntity().Get();
+	boost::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
 
 	m_MeshContainerRootNode.UpdateWorldTransforms( pItemEntity ? pItemEntity->GetWorldPose() : Matrix34Identity() );
 	m_MeshContainerRootNode.Render();
 }
 
 
-void CGameItem::GetStatusForDebugging( std::string& dest_buffer ) const
+void GameItem::GetStatusForDebugging( std::string& dest_buffer ) const
 {
 	dest_buffer += fmt_string( "name: %s\n", GetName().c_str() );
 }
@@ -88,7 +88,7 @@ void CGameItem::GetStatusForDebugging( std::string& dest_buffer ) const
 - model node (detailed version)
 (See Graphics/MeshObjectContainer.cpp)
 */
-void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
+void GameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	reader.GetChildElementTextContent( "Name",        m_strName );
 	reader.GetChildElementTextContent( "Price",       m_Price );
@@ -115,7 +115,7 @@ void CGameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 
-void CGameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
+void GameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 {
 	if( MeshContainerRootNode().GetNumMeshContainers() == 0 )
 		return; // has no mesh
@@ -131,7 +131,7 @@ void CGameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 	if( pBasicMesh->GetMeshType() != CMeshType::SKELETAL )
 		return;
 
-	boost::shared_ptr<CItemEntity> pItemEntity = GetItemEntity().Get();
+	boost::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
 	if( !pItemEntity )
 		return;
 

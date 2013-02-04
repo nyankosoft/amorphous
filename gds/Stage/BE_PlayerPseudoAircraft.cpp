@@ -204,8 +204,8 @@ void CBE_PlayerPseudoAircraft::Init()
 		}
 	}
 
-	m_pShortRangeRadar = ItemDatabaseManager().GetItem<CRadar>( "ShortRangeRadar", 1 );
-	m_pLongRangeRadar  = ItemDatabaseManager().GetItem<CRadar>( "LongRangeRadar", 1 );
+	m_pShortRangeRadar = ItemDatabaseManager().GetItem<Radar>( "ShortRangeRadar", 1 );
+	m_pLongRangeRadar  = ItemDatabaseManager().GetItem<Radar>( "LongRangeRadar", 1 );
 	if( m_pShortRangeRadar )
 		m_pShortRangeRadar->SetStageWeakPtr( m_pStage->GetWeakPtr() );
 	if( m_pLongRangeRadar )
@@ -632,10 +632,10 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 		if( !pWeapon )
 			continue;
 
-		if( pWeapon->GetArchiveObjectID() != CGameItem::ID_MISSILELAUNCHER )
+		if( pWeapon->GetArchiveObjectID() != GameItem::ID_MISSILELAUNCHER )
 			continue;
 
-		CGI_MissileLauncher *pLauncher = dynamic_cast<CGI_MissileLauncher *>(pWeapon); // should always succeed
+		MissileLauncher *pLauncher = dynamic_cast<MissileLauncher *>(pWeapon); // should always succeed
 
 		// set primary target to lock-on
 		pLauncher->SetPrimaryTarget( m_FocusedTarget );
@@ -680,9 +680,9 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 */
 	// get missile laucnher on the current aircraft
 	CGI_Weapon *pPrimaryWeapon = m_pAircraft->WeaponSystem().GetPrimaryWeapon();
-	CGI_MissileLauncher* pLauncher = NULL;
-	if( pPrimaryWeapon && pPrimaryWeapon->GetArchiveObjectID() == CGameItem::ID_MISSILELAUNCHER )
-		pLauncher = dynamic_cast<CGI_MissileLauncher *>(pPrimaryWeapon); // should always succeed
+	MissileLauncher* pLauncher = NULL;
+	if( pPrimaryWeapon && pPrimaryWeapon->GetArchiveObjectID() == GameItem::ID_MISSILELAUNCHER )
+		pLauncher = dynamic_cast<MissileLauncher *>(pPrimaryWeapon); // should always succeed
 
 	// set primary target to lock-on
 	shared_ptr<CCopyEntity> pFocusedTarget = m_FocusedTarget.Get();

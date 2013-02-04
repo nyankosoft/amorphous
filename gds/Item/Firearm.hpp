@@ -11,19 +11,19 @@ namespace amorphous
 class CWeaponSystem;
 struct SWeaponSlot;
 class CGI_Ammunition;
-class CCartridge;
-class CMagazine;
+class Cartridge;
+class Magazine;
 
 
 //======================================================================================
-// CFirearm
+// Firearm
 //======================================================================================
 
 
 /**
  game item that represents firearm
 */
-class CFirearm : public CGI_Weapon
+class Firearm : public CGI_Weapon
 {
 public:
 
@@ -43,9 +43,9 @@ protected:
 
 	int m_StandardMagazineCapacity;
 
-	boost::shared_ptr<CCartridge> m_pChamberedCartridge;
+	boost::shared_ptr<Cartridge> m_pChamberedCartridge;
 
-	boost::shared_ptr<CMagazine> m_pMagazine;
+	boost::shared_ptr<Magazine> m_pMagazine;
 
 	std::vector<std::string> m_ComplientMagazineNames;
 
@@ -132,9 +132,9 @@ public:
 */
 public:
 
-	CFirearm();
+	Firearm();
 
-	virtual ~CFirearm() {}
+	virtual ~Firearm() {}
 
 	virtual void Update( float dt );
 
@@ -172,11 +172,11 @@ public:
 	/// since those loaded missiles are held as entity pointers
 	virtual void Disarm() {}
 
-	void ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine );
+	void ChangeMagazine( boost::shared_ptr<Magazine> pNewMagazine );
 
-	boost::shared_ptr<CMagazine> DropMagazine() { boost::shared_ptr<CMagazine> pMag = m_pMagazine; m_pMagazine.reset(); return pMag; }
+	boost::shared_ptr<Magazine> DropMagazine() { boost::shared_ptr<Magazine> pMag = m_pMagazine; m_pMagazine.reset(); return pMag; }
 
-	const boost::shared_ptr<CMagazine> GetMagazine() const { return m_pMagazine; }
+	const boost::shared_ptr<Magazine> GetMagazine() const { return m_pMagazine; }
 
 	bool IsSlideOpen() const;
 
@@ -186,7 +186,7 @@ public:
 
 	void DisengageSlideStop();
 
-	bool IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazine ) const;
+	bool IsMagazineCompliant( const boost::shared_ptr<Magazine>& pMagazine ) const;
 
 	FirearmState GetFirearmState() const { return m_FirearmState; }
 
@@ -228,7 +228,7 @@ inline Vector3 CJL_PhysicsActor::GetPointVelocity( const Vector3 & vWorldPoint )
 */
 
 /*
-inline void CFirearm::ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWeaponSystem )
+inline void Firearm::ImmediateTriggerAction( int iTrigger, CWeaponSystem& rWeaponSystem )
 {
 	if( iTrigger == 0 )
 	{

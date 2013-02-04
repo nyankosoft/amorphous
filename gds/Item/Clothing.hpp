@@ -11,7 +11,7 @@ class CClothSystem;
 
 
 //======================================================================================
-// CClothing
+// Clothing
 //======================================================================================
 
 
@@ -28,7 +28,7 @@ class CClothSystem;
 	   - Small accessaries that can be represented as rigid bodies
 	     - hat, shoes, etc.
 */
-class CClothing : public CGameItem
+class Clothing : public GameItem
 {
 protected:
 
@@ -44,9 +44,9 @@ protected:
 
 public:
 
-	CClothing();
+	Clothing();
 
-	virtual ~CClothing() {}
+	virtual ~Clothing() {}
 
 	virtual void Update( float dt );
 

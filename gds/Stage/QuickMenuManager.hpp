@@ -21,7 +21,6 @@ namespace amorphous
 
 
 class FontBase;
-class CGameItem;
 
 //===============================================================================
 // CQM_Menu
@@ -83,7 +82,7 @@ public:
 
 	inline int GetCurrentItemIndex() const { return m_iCurrentItem; }
 
-	inline boost::shared_ptr<CGameItem> GetCurrentItem();
+	inline boost::shared_ptr<GameItem> GetCurrentItem();
 
 	inline void CursorUp();
 
@@ -210,7 +209,7 @@ inline void CQM_Menu::GetItemInfo( int item_index, char* pItemName, int& quantit
 	}
 	else
 	{
-		boost::shared_ptr<CGameItem> pItem = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] )[item_index];
+		boost::shared_ptr<GameItem> pItem = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] )[item_index];
 
 		assert( strlen(pItem->GetName().c_str()) <= 32 );
 
@@ -220,27 +219,27 @@ inline void CQM_Menu::GetItemInfo( int item_index, char* pItemName, int& quantit
 }
 
 
-inline boost::shared_ptr<CGameItem> CQM_Menu::GetCurrentItem()
+inline boost::shared_ptr<GameItem> CQM_Menu::GetCurrentItem()
 {
 	if( m_MenuType == QMENU_SUBMENU )
 	{
-		return boost::shared_ptr<CGameItem>();
+		return boost::shared_ptr<GameItem>();
 	}
 	else if( GetMenuType() == QMENU_WEAPON )
 	{
-		return boost::shared_ptr<CGameItem>();
+		return boost::shared_ptr<GameItem>();
 //		SinglePlayerInfo().GetWeaponSystem()->GetWeaponSlot( m_iCurrentItem ).pWeapon;
 	}
 	else
 	{
-		std::vector< boost::shared_ptr<CGameItem> >& rvecpItemList = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
+		std::vector< boost::shared_ptr<GameItem> >& rvecpItemList = SinglePlayerInfo().GetCategoryItemList( g_QMenuToItemCategoryMap[m_MenuType] );
 		if( m_iCurrentItem < (int)rvecpItemList.size() )	// check if the item index is valid
 			return rvecpItemList[m_iCurrentItem];
 		else
-			return boost::shared_ptr<CGameItem>();
+			return boost::shared_ptr<GameItem>();
 	}
 
-	return boost::shared_ptr<CGameItem>();
+	return boost::shared_ptr<GameItem>();
 }
 
 

@@ -18,12 +18,12 @@ using namespace physics;
 
 
 /*
-CGI_GravityGun::~CGI_GravityGun()
+GravityGun::~GravityGun()
 {
 }*/
 
 
-void CGI_GravityGun::Update( float dt )
+void GravityGun::Update( float dt )
 {
 	if( !IsWeaponSelected() )
 		return;
@@ -136,7 +136,7 @@ void CGI_GravityGun::Update( float dt )
 
 /*
 // standard update - fire if both triggers are pulled
-void CGI_GravityGun::Update( float dt )
+void GravityGun::Update( float dt )
 {
 	if( m_aTriggerState[0] == 1 && m_aTriggerState[1] == 1 )
 	{
@@ -148,7 +148,7 @@ void CGI_GravityGun::Update( float dt )
 }*/
 
 
-void CGI_GravityGun::ReleaseObject()
+void GravityGun::ReleaseObject()
 {
 //	if( m_pTarget && m_pTarget->pPhysicsActor )
 //		m_pTarget->pPhysicsActor->SetAllowFreezing( true );
@@ -157,7 +157,7 @@ void CGI_GravityGun::ReleaseObject()
 }
 
 
-bool CGI_GravityGun::GraspObjectInAimDirection()
+bool GravityGun::GraspObjectInAimDirection()
 {
 	Vector3 vMuzzleEndPos = m_MuzzleEndLocalPose.vPosition;
 	Vector3 vGoal = vMuzzleEndPos + m_MuzzleEndLocalPose.matOrient.GetColumn(2) * m_fMaxRange;
@@ -199,7 +199,7 @@ bool CGI_GravityGun::GraspObjectInAimDirection()
 }
 
 
-bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
+bool GravityGun::HandleInput( int input_code, int input_type, float fParam )
 {
 	Vector3 vOwnerMuzzlePos = m_MuzzleEndWorldPose.vPosition;
 
@@ -278,7 +278,7 @@ bool CGI_GravityGun::HandleInput( int input_code, int input_type, float fParam )
 }
 
 
-void CGI_GravityGun::LoadFromXMLNode( CXMLNodeReader& reader )
+void GravityGun::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 

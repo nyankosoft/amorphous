@@ -40,7 +40,7 @@ public:
   CGI_Aircraft
 
 */
-class CGI_Aircraft : public CGameItem
+class CGI_Aircraft : public GameItem
 {
 	Matrix34 m_CockpitLocalPose;
 

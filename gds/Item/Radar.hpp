@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CRadar;
+class Radar;
 
 
 class HUD_TargetInfo
@@ -49,7 +49,7 @@ public:
 };
 
 
-class CRadarInfo
+class RadarInfo
 {
 	std::vector<HUD_TargetInfo> m_vecTargetInfo;
 
@@ -59,8 +59,8 @@ class CRadarInfo
 
 public:
 
-	CRadarInfo() : m_FocusedTargetIndex(-1) {}
-	~CRadarInfo() {}
+	RadarInfo() : m_FocusedTargetIndex(-1) {}
+	~RadarInfo() {}
 
 	const std::vector<HUD_TargetInfo>& GetAllTargetInfo() const { return m_vecTargetInfo; }
 
@@ -82,12 +82,12 @@ public:
 //	void Update( float frametime );
 
 	friend class CBE_PlayerPseudoAircraft;
-	friend class CRadar;
+	friend class Radar;
 	friend class HUD_PlayerAircraft;
 };
 
 
-inline void CRadarInfo::ClearTargetInfo()
+inline void RadarInfo::ClearTargetInfo()
 {
 	m_vecTargetInfo.resize(0);
 //	m_vecLocalTargetIndex.resize(0);
@@ -96,7 +96,7 @@ inline void CRadarInfo::ClearTargetInfo()
 }
 
 
-inline bool CRadarInfo::SetFocusedTargetIndex( int index )
+inline bool RadarInfo::SetFocusedTargetIndex( int index )
 {
 	if( index < 0 || (int)m_vecTargetInfo.size() <= index )
 		return false;
@@ -109,7 +109,7 @@ inline bool CRadarInfo::SetFocusedTargetIndex( int index )
 
 
 
-class CRadar : public CGameItem
+class Radar : public GameItem
 {
 protected:
 
@@ -132,7 +132,7 @@ protected:
 
 	double m_fNextTargetUpdateTime;
 
-	CRadarInfo m_RadarInfo;
+	RadarInfo m_RadarInfo;
 
 	Matrix34 m_RadarWorldPose;
 
@@ -163,9 +163,9 @@ protected:
 
 public:
 
-	CRadar();
+	Radar();
 
-	virtual ~CRadar() {}
+	virtual ~Radar() {}
 
 	virtual void Update( float dt );
 
@@ -181,7 +181,7 @@ public:
 	/// - The focused target is stored with the FOCUSED flag when it is converted to target info
 //	void SetFocusedTarget( CEntityHandle<> focused_target ) { m_FocusedTarget = focused_target; }
 
-	CRadarInfo& RadarInfo() { return m_RadarInfo; }
+	RadarInfo& RadarInfo() { return m_RadarInfo; }
 
 	void SetEffectiveRangeRadius( float radius ) { m_fEffectiveRangeRadius = radius; }
 

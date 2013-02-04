@@ -166,7 +166,7 @@ bool CQuickMenuManager::SelectCurrentItem()
 	else
 	{
 		// select the current item
-		shared_ptr<CGameItem> pItem = m_aQuickMenu[m_iCurrentMenu].GetCurrentItem();
+		shared_ptr<GameItem> pItem = m_aQuickMenu[m_iCurrentMenu].GetCurrentItem();
 		if( pItem )
 		{
 			pItem->OnSelected();

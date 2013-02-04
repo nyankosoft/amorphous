@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CCartridge : public CGI_Ammunition
+class Cartridge : public CGI_Ammunition
 {
 public:
 
@@ -20,7 +20,7 @@ public:
 
 public:
 
-	CCartridge()
+	Cartridge()
 		:
 	m_Caliber(Caliber::OTHER),
 	m_NumPellets(1)

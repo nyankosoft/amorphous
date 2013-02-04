@@ -16,31 +16,31 @@ namespace amorphous
 using namespace msynth;
 
 
-class CSkeletalCharacter;
+class SkeletalCharacter;
 class CCharacterMotionNodeAlgorithm;
-class CClothing;
+class Clothing;
 class CClothSystem;
 
 
-class CSkeletalCharacterOperations// : public IArchiveObjectBase
+class SkeletalCharacterOperations// : public IArchiveObjectBase
 {
-	boost::weak_ptr<CSkeletalCharacter> m_pSkeletalCharacter;
+	boost::weak_ptr<SkeletalCharacter> m_pSkeletalCharacter;
 
 protected:
 
-	boost::weak_ptr<CSkeletalCharacter> GetSkeletalCharacter() { return m_pSkeletalCharacter; }
+	boost::weak_ptr<SkeletalCharacter> GetSkeletalCharacter() { return m_pSkeletalCharacter; }
 
 public:
 
-	CSkeletalCharacterOperations() {}
+	SkeletalCharacterOperations() {}
 
-	virtual ~CSkeletalCharacterOperations() {}
+	virtual ~SkeletalCharacterOperations() {}
 
 	virtual void Update( float dt ) {}
 
 	virtual bool HandleInput( const SInputData& input_data, int action_code ) { return false; }
 
-	friend class CSkeletalCharacter;
+	friend class SkeletalCharacter;
 };
 
 
@@ -60,7 +60,7 @@ public:
 
 
 */
-class CSkeletalCharacter : public CGameItem
+class SkeletalCharacter : public GameItem
 {
 	boost::shared_ptr<msynth::CMotionFSMManager> m_pMotionFSMManager;
 
@@ -100,22 +100,22 @@ class CSkeletalCharacter : public CGameItem
 
 	CActionCodeToGICodesMap m_ACtoGICs;
 
-	std::vector< boost::shared_ptr<CClothing> > m_pClothes;
+	std::vector< boost::shared_ptr<Clothing> > m_pClothes;
 
 	boost::shared_ptr<CClothSystem> m_pClothSystem;
 
 	/// The hierarchical transforms of the character's current pose updated in the last call of UpdateGraphics()
 	CKeyframe m_CurrentInterpolatedKeyframe;
 
-	std::vector< boost::shared_ptr<CGameItem> > m_pProperty;
+	std::vector< boost::shared_ptr<GameItem> > m_pProperty;
 
-	std::vector< boost::shared_ptr<CSkeletalCharacterOperations> > m_pOperations;
+	std::vector< boost::shared_ptr<SkeletalCharacterOperations> > m_pOperations;
 
 	bool m_CameraDependentMotionControl;
 	
 	Vector3 m_vDesiredHorizontalDirection;
 
-//	GraphicsResourcesUpdateDelegate<CSkeletalCharacter> m_GraphicsUpdate;
+//	GraphicsResourcesUpdateDelegate<SkeletalCharacter> m_GraphicsUpdate;
 
 private:
 
@@ -131,9 +131,9 @@ private:
 
 public:
 
-	CSkeletalCharacter();
+	SkeletalCharacter();
 
-	~CSkeletalCharacter() {}
+	~SkeletalCharacter() {}
 
 	Result::Name InitMotionFSMs( const std::string& motion_fsm_file );
 
@@ -177,13 +177,13 @@ public:
 
 	CInputState::Name GetActionInputState( int action_code, CKeyBind::ActionType action_type = CKeyBind::ACTION_TYPE_PRIMARY );
 
-	void AddItem( boost::shared_ptr<CGameItem> pItem ) { m_pProperty.push_back( pItem ); }
+	void AddItem( boost::shared_ptr<GameItem> pItem ) { m_pProperty.push_back( pItem ); }
 
-	void AddItems( std::vector< boost::shared_ptr<CGameItem> >& pItems ) { if( pItems.empty() ) return; m_pProperty.insert( m_pProperty.end(), pItems.begin(), pItems.end() ); }
+	void AddItems( std::vector< boost::shared_ptr<GameItem> >& pItems ) { if( pItems.empty() ) return; m_pProperty.insert( m_pProperty.end(), pItems.begin(), pItems.end() ); }
 
-	void AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations );
+	void AddOperationsAlgorithm( boost::shared_ptr<SkeletalCharacterOperations> pOperations );
 
-	const std::vector< boost::shared_ptr<CGameItem> >& GetOwnedItems() const { return m_pProperty; }
+	const std::vector< boost::shared_ptr<GameItem> >& GetOwnedItems() const { return m_pProperty; }
 
 	bool IsCameraDependentMotionControlEnabled() const { return m_CameraDependentMotionControl; }
 
@@ -214,7 +214,7 @@ class CCharacterMotionNodeAlgorithm : public CMotionNodeAlgorithm
 {
 protected:
 
-	CSkeletalCharacter *m_pCharacter;
+	SkeletalCharacter *m_pCharacter;
 
 //	boost::shared_ptr<CKeyBind> m_pKeybind;
 
@@ -232,7 +232,7 @@ public:
 
 	virtual ~CCharacterMotionNodeAlgorithm() {}
 
-	void SetSkeletalCharacter( CSkeletalCharacter *pCharacter ) { m_pCharacter = pCharacter; }
+	void SetSkeletalCharacter( SkeletalCharacter *pCharacter ) { m_pCharacter = pCharacter; }
 
 	const boost::shared_ptr<CKeyBind> GetKeyBind() const { return m_pCharacter ? m_pCharacter->GetKeyBind() : boost::shared_ptr<CKeyBind>(); }
 
@@ -296,7 +296,7 @@ public:
 
 class CJumpMotionNode : public CCharacterMotionNodeAlgorithm
 {
-	boost::shared_ptr<CItemEntity> GetCharacterEntity();
+	boost::shared_ptr<ItemEntity> GetCharacterEntity();
 
 public:
 

@@ -58,7 +58,7 @@ public:
  * The entity that represents the missile fired from the missile launcher
  * is given the target through a message
  */
-class CGI_MissileLauncher : public CGI_Weapon
+class MissileLauncher : public CGI_Weapon
 {
 protected:
 
@@ -115,9 +115,9 @@ protected:
 
 public:
 
-	CGI_MissileLauncher();
+	MissileLauncher();
 
-	virtual ~CGI_MissileLauncher() {}
+	virtual ~MissileLauncher() {}
 
 	virtual void Update( float dt );
 

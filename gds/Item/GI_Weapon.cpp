@@ -62,7 +62,7 @@ CGI_Weapon::CGI_Weapon()
 
 void CGI_Weapon::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_strAmmoType;
 
@@ -99,7 +99,7 @@ void CGI_Weapon::Serialize( IArchive& ar, const unsigned int version )
 
 void CGI_Weapon::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "AmmoType",           m_strAmmoType );
 	reader.GetChildElementTextContent( "FireInterval",       m_fFireInterval );

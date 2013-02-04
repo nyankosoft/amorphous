@@ -24,35 +24,35 @@ namespace amorphous
 using namespace item;
 
 
-CGameItem *CGameItemObjectFactory::CreateGameItem( const unsigned int id )
+GameItem *GameItemObjectFactory::CreateGameItem( const unsigned int id )
 {
 	switch( id )
 	{
-	case CGameItem::ID_GRAVITY_GUN:		   return new CGI_GravityGun;
-	case CGameItem::ID_BINOCULAR:		   return new CGI_Binocular;
-	case CGameItem::ID_NIGHT_VISION:	   return new CGI_NightVision;
-	case CGameItem::ID_AMMUNITION:		   return new CGI_Ammunition;
-	case CGameItem::ID_WEAPON:             return new CGI_Weapon;
-	case CGameItem::ID_KEY:				   return new CGI_Key;
-	case CGameItem::ID_SUPPRESSOR:		   return new CGI_Suppressor;
-	case CGameItem::ID_CAMFLOUGE_DEVICE:   return new CGI_CamouflageDevice;
-	case CGameItem::ID_AIRCRAFT:		   return new CGI_Aircraft;
-	case CGameItem::ID_MISSILELAUNCHER:	   return new CGI_MissileLauncher;
-	case CGameItem::ID_RADAR:			   return new CRadar;
-	case CGameItem::ID_ROTATABLE_TURRET:   return new CRotatableTurret;
-	case CGameItem::ID_LAND_VEHICLE:	   return new CLandVehicle;
-	case CGameItem::ID_ARMED_VEHICLE:	   return new CArmedVehicle;
-	case CGameItem::ID_CARTRIDGE:          return new CCartridge;
-	case CGameItem::ID_MAGAZINE:           return new CMagazine;
-	case CGameItem::ID_FIREARM:            return new CFirearm;
-	case CGameItem::ID_CLOTHING:           return new CClothing;
-	case CGameItem::ID_SKELETAL_CHARACTER: return new CSkeletalCharacter;
-//	case CGameItem::ID_:				return new CGI_;
+	case GameItem::ID_GRAVITY_GUN:		  return new GravityGun;
+	case GameItem::ID_BINOCULAR:		  return new Binocular;
+	case GameItem::ID_NIGHT_VISION:	      return new CGI_NightVision;
+	case GameItem::ID_AMMUNITION:		  return new CGI_Ammunition;
+	case GameItem::ID_WEAPON:             return new CGI_Weapon;
+	case GameItem::ID_KEY:				  return new CGI_Key;
+	case GameItem::ID_SUPPRESSOR:		  return new CGI_Suppressor;
+	case GameItem::ID_CAMFLOUGE_DEVICE:   return new CGI_CamouflageDevice;
+	case GameItem::ID_AIRCRAFT:		      return new CGI_Aircraft;
+	case GameItem::ID_MISSILELAUNCHER:	  return new MissileLauncher;
+	case GameItem::ID_RADAR:			  return new Radar;
+	case GameItem::ID_ROTATABLE_TURRET:   return new CRotatableTurret;
+	case GameItem::ID_LAND_VEHICLE:	      return new LandVehicle;
+	case GameItem::ID_ARMED_VEHICLE:	  return new ArmedVehicle;
+	case GameItem::ID_CARTRIDGE:          return new Cartridge;
+	case GameItem::ID_MAGAZINE:           return new Magazine;
+	case GameItem::ID_FIREARM:            return new Firearm;
+	case GameItem::ID_CLOTHING:           return new Clothing;
+	case GameItem::ID_SKELETAL_CHARACTER: return new SkeletalCharacter;
+//	case GameItem::ID_:				return new CGI_;
 	default:	return NULL;
 	}
 }
 
-IArchiveObjectBase *CGameItemObjectFactory::CreateObject( const unsigned int id )
+IArchiveObjectBase *GameItemObjectFactory::CreateObject( const unsigned int id )
 {
 	return CreateGameItem( id );
 }

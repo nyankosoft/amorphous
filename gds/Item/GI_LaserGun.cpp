@@ -17,7 +17,7 @@ using namespace std;
 using namespace physics;
 
 
-CGI_LaserGun::CGI_LaserGun()
+LaserGun::LaserGun()
 {
 	m_fMaxRange = 20.0f;
 	m_fRadius = 3.0f;
@@ -26,12 +26,12 @@ CGI_LaserGun::CGI_LaserGun()
 }
 
 
-CGI_LaserGun::~CGI_LaserGun()
+LaserGun::~LaserGun()
 {
 }
 
 
-void CGI_LaserGun::Update( float dt )
+void LaserGun::Update( float dt )
 {
 //	if( !IsWeaponSelected() )
 //		return;
@@ -111,7 +111,7 @@ void CGI_LaserGun::Update( float dt )
 }
 
 
-bool CGI_LaserGun::HandleInput( int input_code, int input_type, float fParam )
+bool LaserGun::HandleInput( int input_code, int input_type, float fParam )
 {
 	Vector3 vOwnerMuzzlePos = m_MuzzleEndWorldPose.vPosition;
 
@@ -155,7 +155,7 @@ bool CGI_LaserGun::HandleInput( int input_code, int input_type, float fParam )
 }
 
 
-void CGI_LaserGun::Serialize( IArchive& ar, const unsigned int version )
+void LaserGun::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Weapon::Serialize( ar, version );
 
@@ -166,7 +166,7 @@ void CGI_LaserGun::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CGI_LaserGun::LoadFromXMLNode( CXMLNodeReader& reader )
+void LaserGun::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 

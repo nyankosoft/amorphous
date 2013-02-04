@@ -27,7 +27,7 @@ private:
 
 	/// \return the owned reference of an item object
 	/// \return NULL if the item with the specified name was not found
-	CGameItem *GetItemRawPtr( const std::string& item_name, int quantity );
+	GameItem *GetItemRawPtr( const std::string& item_name, int quantity );
 
 public:
 
@@ -55,17 +55,17 @@ public:
 template<class T>
 inline boost::shared_ptr<T> CItemDatabaseManager::GetItem( const std::string& item_name, int quantity )
 {
-	CGameItem *pRawOwnedPtr = GetItemRawPtr( item_name, quantity );
+	GameItem *pRawOwnedPtr = GetItemRawPtr( item_name, quantity );
 	if( !pRawOwnedPtr )
 		return  boost::shared_ptr<T>();
 
-	boost::shared_ptr<CGameItem> pBasePtr = boost::shared_ptr<CGameItem>( pRawOwnedPtr );
+	boost::shared_ptr<GameItem> pBasePtr = boost::shared_ptr<GameItem>( pRawOwnedPtr );
 
 	pBasePtr->SetWeakPtr( pBasePtr );
 
 	pBasePtr->OnLoadedFromDatabase();
 
-	return boost::dynamic_pointer_cast<T,CGameItem>(pBasePtr);
+	return boost::dynamic_pointer_cast<T,GameItem>(pBasePtr);
 }
 
 

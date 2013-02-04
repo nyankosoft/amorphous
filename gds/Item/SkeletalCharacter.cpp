@@ -65,7 +65,7 @@ void DisplayCharacterPosition( const Vector3& world_position )
 }
 
 
-inline boost::shared_ptr<SkeletalMesh> CSkeletalCharacter::GetCharacterSkeletalMesh()
+inline boost::shared_ptr<SkeletalMesh> SkeletalCharacter::GetCharacterSkeletalMesh()
 {
 	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
 		return shared_ptr<SkeletalMesh>();
@@ -83,9 +83,9 @@ inline boost::shared_ptr<SkeletalMesh> CSkeletalCharacter::GetCharacterSkeletalM
 	return pSkeletalMesh;
 }
 
-int CSkeletalCharacter::ms_DefaultInputHandlerIndex = 2;
+int SkeletalCharacter::ms_DefaultInputHandlerIndex = 2;
 
-CSkeletalCharacter::CSkeletalCharacter()
+SkeletalCharacter::SkeletalCharacter()
 :
 m_fFwdSpeed(0.0f),
 m_fTurnSpeed(0.0f),
@@ -128,7 +128,7 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 }
 
 
-Result::Name CSkeletalCharacter::InitClothSystem()
+Result::Name SkeletalCharacter::InitClothSystem()
 {
 	if( !m_pSkeletonSrcMotion )
 		return Result::UNKNOWN_ERROR;
@@ -158,7 +158,7 @@ Result::Name CSkeletalCharacter::InitClothSystem()
 	res = m_pClothSystem->AddCollisionSphere( "r-hand",    Sphere(Vector3(0,0,0),0.1f) );
 	res = m_pClothSystem->AddCollisionSphere( "l-hand",    Sphere(Vector3(0,0,0),0.1f) );
 /*
-	shared_ptr<CClothing> pClothes = ItemDatabaseManager().GetItem<CClothing>( "vest", 1 );
+	shared_ptr<Clothing> pClothes = ItemDatabaseManager().GetItem<CClothing>( "vest", 1 );
 	if( pClothes )
 	{
 //		m_pClothSystem->AddClothesMesh( pClothes->GetClothesMesh() );
@@ -181,12 +181,12 @@ Result::Name CSkeletalCharacter::InitClothSystem()
 }
 
 
-void CSkeletalCharacter::InitInputHandler( int input_handler_index )
+void SkeletalCharacter::InitInputHandler( int input_handler_index )
 {
 	if( m_pInputHandler )
 		InputHub().RemoveInputHandler( m_pInputHandler.get() );
 
-	m_pInputHandler.reset( new CInputDataDelegate<CSkeletalCharacter>( this ) );
+	m_pInputHandler.reset( new CInputDataDelegate<SkeletalCharacter>( this ) );
 
 	if( InputHub().GetInputHandler(input_handler_index) )
 		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler.get() );
@@ -195,7 +195,7 @@ void CSkeletalCharacter::InitInputHandler( int input_handler_index )
 }
 
 
-Result::Name CSkeletalCharacter::InitMotionFSMs( const std::string& motion_fsm_file )
+Result::Name SkeletalCharacter::InitMotionFSMs( const std::string& motion_fsm_file )
 {
 	m_pMotionFSMManager.reset( new CMotionFSMManager );
 
@@ -240,7 +240,7 @@ Result::Name CSkeletalCharacter::InitMotionFSMs( const std::string& motion_fsm_f
 }
 
 
-void CSkeletalCharacter::OnEntityCreated( CCopyEntity& entity )
+void SkeletalCharacter::OnEntityCreated( CCopyEntity& entity )
 {
 //	shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 //	if( !pEntity )
@@ -281,7 +281,7 @@ static void UpdatePoseStoredInMotionPrimitivePlayer(
 }
 */
 
-void CSkeletalCharacter::Update( float dt )
+void SkeletalCharacter::Update( float dt )
 {
 	shared_ptr<CMotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
 	if( !pFSM )
@@ -374,7 +374,7 @@ void CSkeletalCharacter::Update( float dt )
 }
 
 
-void CSkeletalCharacter::Render()
+void SkeletalCharacter::Render()
 {
 	shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( !pSkeletalMesh )
@@ -421,7 +421,7 @@ void CSkeletalCharacter::Render()
 		if( !m_pClothes[i] )
 			continue;
 
-		CClothing& clothes = *m_pClothes[i];
+		Clothing& clothes = *m_pClothes[i];
 
 /*		if( clothes.HasSkeleton() )
 		{
@@ -443,7 +443,7 @@ void CSkeletalCharacter::Render()
 }
 
 
-void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
+void SkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 {
 	m_pKeyBind = pKeyBind;
 //	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
@@ -475,15 +475,15 @@ void CSkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 }
 
 
-void CSkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<CSkeletalCharacterOperations> pOperations )
+void SkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<SkeletalCharacterOperations> pOperations )
 {
 	m_pOperations.push_back( pOperations );
 	pOperations->m_pSkeletalCharacter
-		= boost::dynamic_pointer_cast<CSkeletalCharacter,CGameItem>( m_pMyself.lock() );
+		= boost::dynamic_pointer_cast<SkeletalCharacter,GameItem>( m_pMyself.lock() );
 }
 
 
-void CSkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm )
+void SkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm )
 {
 	if( !m_pLowerLimbsMotionsFSM )
 		return;
@@ -501,7 +501,7 @@ void CSkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_
 }
 
 
-CInputState::Name CSkeletalCharacter::GetActionInputState( int action_code, CKeyBind::ActionType action_type )
+CInputState::Name SkeletalCharacter::GetActionInputState( int action_code, CKeyBind::ActionType action_type )
 {
 	map< int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[action_type];
 
@@ -523,7 +523,7 @@ CInputState::Name CSkeletalCharacter::GetActionInputState( int action_code, CKey
 }
 
 
-void CSkeletalCharacter::HandleInput( const SInputData& input_data )
+void SkeletalCharacter::HandleInput( const SInputData& input_data )
 {
 	int action_code = m_pKeyBind ? m_pKeyBind->GetActionCode( input_data.iGICode ) : ACTION_NOT_ASSIGNED;
 
@@ -541,7 +541,7 @@ void CSkeletalCharacter::HandleInput( const SInputData& input_data )
 }
 
 
-void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape, U32 trigger_flags )
+void SkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape, U32 trigger_flags )
 {
 	physics::CRay ray;
 
@@ -565,7 +565,7 @@ void CSkeletalCharacter::OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntit
 }
 
 
-void CSkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor )
+void SkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCopyEntity& entity, physics::CActor &actor )
 {
 	Matrix34 new_pose( world_pose );
 
@@ -602,17 +602,17 @@ static inline bool contains_almost_same_plane( const std::vector<SPlane>& planes
 }
 
 /*
-void CSkeletalCharacter::UpdateWhenFeetAreOnGround()
+void SkeletalCharacter::UpdateWhenFeetAreOnGround()
 {
 }
 
 
-void CSkeletalCharacter::UpdateWhenFeetAreOffGround()
+void SkeletalCharacter::UpdateWhenFeetAreOffGround()
 {
 }
 */
 
-void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
+void SkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity )
 {
 	physics::CContactStreamIterator& itr = pair.ContactStreamIterator;
 
@@ -715,7 +715,7 @@ void CSkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnt
 }
 
 
-void CSkeletalCharacter::ClipMotion( CCopyEntity& entity )
+void SkeletalCharacter::ClipMotion( CCopyEntity& entity )
 {
 	//>>> 2. Clip the motion along the wall
 	const Matrix34 current_world_pose( entity.GetWorldPose() );
@@ -748,7 +748,7 @@ void CSkeletalCharacter::ClipMotion( CCopyEntity& entity )
 }
 
 
-void CSkeletalCharacter::UpdateGraphics()
+void SkeletalCharacter::UpdateGraphics()
 {
 	if( !m_pMotionFSMManager )
 		return;
@@ -761,7 +761,7 @@ void CSkeletalCharacter::UpdateGraphics()
 	CKeyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
 	m_pMotionFSMManager->GetCurrentKeyframe( current_keyframe );
 
-	shared_ptr<CItemEntity> pItemEntity = GetItemEntity().Get();
+	shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
 	if( pItemEntity
 	 && pItemEntity->MeshBonesUpdateCallback() )
 	{
@@ -784,7 +784,7 @@ void CSkeletalCharacter::UpdateGraphics()
 }
 
 
-Result::Name CSkeletalCharacter::LoadCharacterMesh( const std::string& skeletal_mesh_pathname )
+Result::Name SkeletalCharacter::LoadCharacterMesh( const std::string& skeletal_mesh_pathname )
 {
 	shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
 	pContainer->m_MeshDesc.ResourcePath = skeletal_mesh_pathname;
@@ -811,7 +811,7 @@ Result::Name CSkeletalCharacter::LoadCharacterMesh( const std::string& skeletal_
 
 /// 1. Set velocity for the entity and the physics actor.
 /// 2. Set m_FeetOnGround to false
-void CSkeletalCharacter::StartVerticalJump( const Vector3& velocity )
+void SkeletalCharacter::StartVerticalJump( const Vector3& velocity )
 {
 	if( !m_FeetOnGround )
 		return; // Can't jump while in the air
@@ -838,7 +838,7 @@ void CSkeletalCharacter::StartVerticalJump( const Vector3& velocity )
 
 
 /// \param turn_speed radians per second
-void CSkeletalCharacter::TurnIfNecessary( float dt, float turn_speed )
+void SkeletalCharacter::TurnIfNecessary( float dt, float turn_speed )
 {
 	if( !IsCameraDependentMotionControlEnabled() )
 		return;
@@ -886,7 +886,7 @@ void CSkeletalCharacter::TurnIfNecessary( float dt, float turn_speed )
 }
 
 
-float CSkeletalCharacter::GetFloorHeight( CCopyEntity& entity, Vector3& impact_normal )
+float SkeletalCharacter::GetFloorHeight( CCopyEntity& entity, Vector3& impact_normal )
 {
 	physics::CScene *pPhysScene = entity.GetStage()->GetPhysicsScene();
 	if( !pPhysScene )
@@ -930,7 +930,7 @@ float CSkeletalCharacter::GetFloorHeight( CCopyEntity& entity, Vector3& impact_n
 }
 
 
-void CSkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
+void SkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 {
 	const float max_step_height = 0.3f;
 
@@ -1239,9 +1239,9 @@ void CRunMotionNode::EnterState()
 }
 
 
-shared_ptr<CItemEntity> CJumpMotionNode::GetCharacterEntity()
+shared_ptr<ItemEntity> CJumpMotionNode::GetCharacterEntity()
 {
-	return m_pCharacter ? (m_pCharacter->GetItemEntity().Get()) : shared_ptr<CItemEntity>();
+	return m_pCharacter ? (m_pCharacter->GetItemEntity().Get()) : shared_ptr<ItemEntity>();
 }
 
 

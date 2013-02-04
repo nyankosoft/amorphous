@@ -41,7 +41,7 @@ CItemDatabaseBuilder::~CItemDatabaseBuilder()
 }
 
 
-void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner, CGameItem* pItem )
+void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner, GameItem* pItem )
 {
 	LOG_PRINT_ERROR( " Removed." );
 /*
@@ -92,7 +92,7 @@ void CItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* 
 }
 
 
-void CItemDatabaseBuilder::LoadGravityGun( CTextFileScanner& scanner, CGI_GravityGun* pGravityGun )
+void CItemDatabaseBuilder::LoadGravityGun( CTextFileScanner& scanner, GravityGun* pGravityGun )
 {
 	LoadGameItemSharedProperty( scanner, pGravityGun );
 
@@ -125,7 +125,7 @@ void CItemDatabaseBuilder::LoadAmmunition( CTextFileScanner& scanner, CGI_Ammuni
 }
 
 
-void CItemDatabaseBuilder::LoadBinocular( CTextFileScanner& scanner, CGI_Binocular* pBinocular )
+void CItemDatabaseBuilder::LoadBinocular( CTextFileScanner& scanner, Binocular* pBinocular )
 {
 	LoadGameItemSharedProperty( scanner, pBinocular );
 
@@ -148,7 +148,7 @@ void CItemDatabaseBuilder::LoadNightVision( CTextFileScanner& scanner, CGI_Night
 }
 
 
-void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, CGI_MissileLauncher* pItem )
+void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, MissileLauncher* pItem )
 {
 	LoadFirearms( scanner, pItem );
 //	LoadGameItemSharedProperty( scanner, pItem );
@@ -338,9 +338,9 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 	if( !scanner.OpenFile( filepath ) )
 		return false;
 
-	CGameItem *pObject = NULL;
+	GameItem *pObject = NULL;
 
-	CGameItemObjectFactory factory;
+	GameItemObjectFactory factory;
 
 	string tag, strClassName, strLine;
 //	unsigned int id;
@@ -375,7 +375,7 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 			if( id == IArchiveObjectBase::INVALID_ID )
 				continue;
 
-			pObject = (CGameItem *)factory.CreateObject( id );
+			pObject = (GameItem *)factory.CreateObject( id );
 
 			if( !pObject )
 				continue;
@@ -398,25 +398,25 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 		// load properties according to the type of item 
 		switch( id )
 		{
-		case CGameItem::ID_AMMUNITION:
+		case GameItem::ID_AMMUNITION:
 			LoadAmmunition( scanner, (CGI_Ammunition *)pObject );
 			break;
-		case CGameItem::ID_WEAPON:
+		case GameItem::ID_WEAPON:
 			LoadFirearms( scanner, (CGI_Weapon *)pObject );
 			break;
-		case CGameItem::ID_GRAVITY_GUN:
-			LoadGravityGun( scanner, (CGI_GravityGun *)pObject );
+		case GameItem::ID_GRAVITY_GUN:
+			LoadGravityGun( scanner, (GravityGun *)pObject );
 			break;
-		case CGameItem::ID_BINOCULAR:
-			LoadBinocular( scanner, (CGI_Binocular *)pObject );
+		case GameItem::ID_BINOCULAR:
+			LoadBinocular( scanner, (Binocular *)pObject );
 			break;
-		case CGameItem::ID_NIGHT_VISION:
+		case GameItem::ID_NIGHT_VISION:
 			LoadNightVision( scanner, (CGI_NightVision *)pObject );
 			break;
-		case CGameItem::ID_MISSILELAUNCHER:
-			LoadMissileLauncher( scanner, (CGI_MissileLauncher *)pObject );
+		case GameItem::ID_MISSILELAUNCHER:
+			LoadMissileLauncher( scanner, (MissileLauncher *)pObject );
 			break;
-		case CGameItem::ID_AIRCRAFT:
+		case GameItem::ID_AIRCRAFT:
 			LoadAircraft( scanner, (CGI_Aircraft *)pObject );
 			break;
 		}
@@ -431,7 +431,7 @@ void CItemDatabaseBuilder::LoadItems( CXMLNodeReader& items_node_reader )
 {
 	vector<CXMLNodeReader> vecItemNodeReader = items_node_reader.GetImmediateChildren( "Item" );
 
-	CGameItemObjectFactory factory;
+	GameItemObjectFactory factory;
 	string classname;
 	for( size_t i=0; i<vecItemNodeReader.size(); i++ )
 	{
@@ -442,7 +442,7 @@ void CItemDatabaseBuilder::LoadItems( CXMLNodeReader& items_node_reader )
 
 		int id = GetItemID( classname );
 
-		CGameItem *pObject = factory.CreateGameItem( id );
+		GameItem *pObject = factory.CreateGameItem( id );
 
 		if( !pObject )
 			continue;
@@ -515,24 +515,24 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string&
 
 int CItemDatabaseBuilder::GetItemID( const string& class_name )
 {
-	if( class_name == "Cartridge" )              return CGameItem::ID_CARTRIDGE;
-	else if( class_name == "Magazine" )          return CGameItem::ID_MAGAZINE;
-	else if( class_name == "Firearm" )           return CGameItem::ID_FIREARM;
-	else if( class_name == "Ammunition" )        return CGameItem::ID_AMMUNITION;
-	else if( class_name == "GravityGun" )        return CGameItem::ID_GRAVITY_GUN;
-	else if( class_name == "Binocular" )         return CGameItem::ID_BINOCULAR;
-	else if( class_name == "NightVision" )       return CGameItem::ID_NIGHT_VISION;
-	else if( class_name == "Key" )               return CGameItem::ID_KEY;
-	else if( class_name == "CamouflageDevice" )  return CGameItem::ID_CAMFLOUGE_DEVICE;
-	else if( class_name == "Suppressor" )        return CGameItem::ID_SUPPRESSOR;
-	else if( class_name == "Aircraft" )          return CGameItem::ID_AIRCRAFT;
-	else if( class_name == "MissileLauncher" )   return CGameItem::ID_MISSILELAUNCHER;
-	else if( class_name == "Radar" )             return CGameItem::ID_RADAR;
-	else if( class_name == "RotatableTurret" )   return CGameItem::ID_ROTATABLE_TURRET;
-	else if( class_name == "LandVehicle" )       return CGameItem::ID_LAND_VEHICLE;
-	else if( class_name == "ArmedVehicle" )      return CGameItem::ID_ARMED_VEHICLE;
-//	else if( class_name == "SkeletalCharacter" ) return CGameItem::ID_SKELETAL_CHARACTER;
-//	else if( class_name == "Clothing" )          return CGameItem::ID_CLOTHING;
+	if( class_name == "Cartridge" )              return GameItem::ID_CARTRIDGE;
+	else if( class_name == "Magazine" )          return GameItem::ID_MAGAZINE;
+	else if( class_name == "Firearm" )           return GameItem::ID_FIREARM;
+	else if( class_name == "Ammunition" )        return GameItem::ID_AMMUNITION;
+	else if( class_name == "GravityGun" )        return GameItem::ID_GRAVITY_GUN;
+	else if( class_name == "Binocular" )         return GameItem::ID_BINOCULAR;
+	else if( class_name == "NightVision" )       return GameItem::ID_NIGHT_VISION;
+	else if( class_name == "Key" )               return GameItem::ID_KEY;
+	else if( class_name == "CamouflageDevice" )  return GameItem::ID_CAMFLOUGE_DEVICE;
+	else if( class_name == "Suppressor" )        return GameItem::ID_SUPPRESSOR;
+	else if( class_name == "Aircraft" )          return GameItem::ID_AIRCRAFT;
+	else if( class_name == "MissileLauncher" )   return GameItem::ID_MISSILELAUNCHER;
+	else if( class_name == "Radar" )             return GameItem::ID_RADAR;
+	else if( class_name == "RotatableTurret" )   return GameItem::ID_ROTATABLE_TURRET;
+	else if( class_name == "LandVehicle" )       return GameItem::ID_LAND_VEHICLE;
+	else if( class_name == "ArmedVehicle" )      return GameItem::ID_ARMED_VEHICLE;
+//	else if( class_name == "SkeletalCharacter" ) return GameItem::ID_SKELETAL_CHARACTER;
+//	else if( class_name == "Clothing" )          return GameItem::ID_CLOTHING;
 
 	else
 	{
@@ -559,7 +559,7 @@ bool CItemDatabaseBuilder::OutputSingleDBFile( const string& strDBFilename )
 {
 	CBinaryDatabase<string> m_ItemDB;
 
-	CGameItemObjectFactory factory;
+	GameItemObjectFactory factory;
 
 	bool db_open = m_ItemDB.Open( strDBFilename.c_str(), CBinaryDatabase<string>::DB_MODE_NEW );
 	if( !db_open )
@@ -571,7 +571,7 @@ bool CItemDatabaseBuilder::OutputSingleDBFile( const string& strDBFilename )
 	size_t i, num_items = m_vecpItem.size();
 	for( i=0; i<num_items; i++ )
 	{
-		CGameItem* pItem = m_vecpItem[i];
+		GameItem* pItem = m_vecpItem[i];
 
 		m_ItemDB.AddPolymorphicData( pItem->GetName(), pItem, factory );
 	}
@@ -644,7 +644,7 @@ bool CItemDatabaseBuilder::OutputSeparateFiles( const string& strDBFilename )
 {	
 //	CBinaryArchive_Output archive( strDatabaseFilename.c_str() );
 
-	CGameItemDatabase database;
+	GameItemDatabase database;
 
 	string strFilename;
 	char acItemBodyFilename[256];
@@ -664,7 +664,7 @@ bool CItemDatabaseBuilder::OutputSeparateFiles( const string& strDBFilename )
 
 		// save the item object into a separate binary file
 		database.SaveItem( strFilename.c_str(), m_vecpItem[i] );
-//		CGameItemSerializer temp_serializer;
+//		GameItemSerializer temp_serializer;
 //		CBinaryArchive_Output archive( strFilename.c_str() );
 //		temp_serializer.pItem = m_vecpItem[i];
 //		archive << temp_serializer;

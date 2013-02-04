@@ -26,10 +26,10 @@ using boost::shared_ptr;
 
 
 //======================================================================================
-// CFirearm
+// Firearm
 //======================================================================================
 
-CFirearm::CFirearm()
+Firearm::Firearm()
 :
 m_PrimaryCaliber( Caliber::OTHER ),
 m_StandardMagazineCapacity( 1 ),
@@ -57,9 +57,9 @@ m_NumTotalFiredRounds(0)
 }
 
 
-void CFirearm::Update( float dt )
+void Firearm::Update( float dt )
 {
-	shared_ptr<CItemEntity> pEntity = GetItemEntity().Get();
+	shared_ptr<ItemEntity> pEntity = GetItemEntity().Get();
 	if( !pEntity )
 		return;
 
@@ -71,13 +71,13 @@ void CFirearm::Update( float dt )
 }
 
 
-bool CFirearm::IsSlideAtItsMostRearwardPosition( float error ) const
+bool Firearm::IsSlideAtItsMostRearwardPosition( float error ) const
 {
 	return ( fabs( (-m_fSlidePosition) - m_fSlideStrokeDistance ) < error );
 }
 
 
-void CFirearm::UpdateFirearmState( CStage& stage )
+void Firearm::UpdateFirearmState( CStage& stage )
 {
 	const float dt = 0.02f;
 
@@ -101,7 +101,7 @@ void CFirearm::UpdateFirearmState( CStage& stage )
 }
 
 
-void CFirearm::UpdateSlideMotionFromRearwardToForward( CStage& stage )
+void Firearm::UpdateSlideMotionFromRearwardToForward( CStage& stage )
 {
 	const float dt = 0.02f;
 
@@ -157,7 +157,7 @@ void CFirearm::UpdateSlideMotionFromRearwardToForward( CStage& stage )
 }
 
 
-void CFirearm::ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine )
+void Firearm::ChangeMagazine( boost::shared_ptr<Magazine> pNewMagazine )
 {
 	if( !pNewMagazine )
 		return;
@@ -174,7 +174,7 @@ void CFirearm::ChangeMagazine( boost::shared_ptr<CMagazine> pNewMagazine )
 }
 
 
-bool CFirearm::IsSlideOpen() const
+bool Firearm::IsSlideOpen() const
 {
 	if( m_FirearmState == FS_SLIDE_OPEN )
 		return true;
@@ -185,7 +185,7 @@ bool CFirearm::IsSlideOpen() const
 
 /// If the firearm is in a hold open state, close the slide.
 /// If the slide is in the forward position, pull the slide
-void CFirearm::FeedNextCartridge()
+void Firearm::FeedNextCartridge()
 {
 //	if( IsSlideOpen() )
 	if( false )
@@ -223,13 +223,13 @@ void CFirearm::FeedNextCartridge()
 }
 
 
-void CFirearm::DisengageSlideStop()
+void Firearm::DisengageSlideStop()
 {
 	m_IsSlideStopEngaged = false;
 }
 
 
-bool CFirearm::IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazine ) const
+bool Firearm::IsMagazineCompliant( const boost::shared_ptr<Magazine>& pMagazine ) const
 {
 	for( size_t i=0; i<m_ComplientMagazineNames.size(); i++ )
 	{
@@ -241,7 +241,7 @@ bool CFirearm::IsMagazineCompliant( const boost::shared_ptr<CMagazine>& pMagazin
 }
 
 
-void CFirearm::PullSlide( float fraction, bool hold_slide )
+void Firearm::PullSlide( float fraction, bool hold_slide )
 {
 	if( IsSlideAtItsMostRearwardPosition() )
 		return; // Cannot pull any further
@@ -266,7 +266,7 @@ void CFirearm::PullSlide( float fraction, bool hold_slide )
 }
 
 
-void CFirearm::ReleaseSlide()
+void Firearm::ReleaseSlide()
 {
 	m_IsSlideHeld = false;
 
@@ -278,7 +278,7 @@ void CFirearm::ReleaseSlide()
 }
 
 /*
-void CFirearm::PushDownSlideRelease()
+void Firearm::PushDownSlideRelease()
 {
 	if( m_FirearmState == FS_SLIDE_FORWARD
 	 || m_FirearmState == FS_SLIDE_MOVING_FORWARD )
@@ -292,12 +292,12 @@ void CFirearm::PushDownSlideRelease()
 }
 */
 
-void CFirearm::Decock()
+void Firearm::Decock()
 {
 }
 
 
-void CFirearm::Serialize( IArchive& ar, const unsigned int version )
+void Firearm::Serialize( IArchive& ar, const unsigned int version )
 {
 	CGI_Weapon::Serialize( ar, version );
 
@@ -338,7 +338,7 @@ void CFirearm::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CFirearm::LoadFromXMLNode( CXMLNodeReader& reader )
+void Firearm::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 
@@ -370,7 +370,7 @@ void CFirearm::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 /*
-void CFirearm::UpdateWorldProperties( const Matrix34& rShooterWorldPose,
+void Firearm::UpdateWorldProperties( const Matrix34& rShooterWorldPose,
 									    const Vector3& rvShooterVelocity,
 										const Vector3& rvShooterAngVelocity )
 {
@@ -386,7 +386,7 @@ void CFirearm::UpdateWorldProperties( const Matrix34& rShooterWorldPose,
 static bool SafetyOff() { return true; }
 
 // standard update - fire if both triggers are pulled
-void CFirearm::Update( float dt )
+void Firearm::Update( float dt )
 {
 	if( !IsWeaponSelected() )
 		return;
@@ -403,7 +403,7 @@ void CFirearm::Update( float dt )
 
 static bool SafetyOff() { return true; }
 
-bool CFirearm::HandleInput( int action_code, int input_type, float fParam )
+bool Firearm::HandleInput( int action_code, int input_type, float fParam )
 {
 	if( action_code == ACTION_NOT_ASSIGNED )
 		return false;
@@ -453,10 +453,10 @@ bool CFirearm::HandleInput( int action_code, int input_type, float fParam )
 }
 
 
-//void CFirearm::GetStatus( std::string& dest_buffer )
-void CFirearm::GetStatusForDebugging( std::string& dest_buffer ) const
+//void Firearm::GetStatus( std::string& dest_buffer )
+void Firearm::GetStatusForDebugging( std::string& dest_buffer ) const
 {
-	CGameItem::GetStatusForDebugging( dest_buffer );
+	GameItem::GetStatusForDebugging( dest_buffer );
 
 	dest_buffer += "chamber: ";
 	if( m_pChamberedCartridge )
@@ -469,7 +469,7 @@ void CFirearm::GetStatusForDebugging( std::string& dest_buffer ) const
 	}
 
 	dest_buffer += "mag: ";
-	const boost::shared_ptr<CMagazine> pMag = GetMagazine();
+	const boost::shared_ptr<Magazine> pMag = GetMagazine();
 	if( pMag )
 	{
 		dest_buffer += fmt_string( "%s [%02u / %02u]\n", pMag->GetName().c_str(), pMag->GetNumLoadedCartridges(), pMag->GetCapacity() );
@@ -487,12 +487,12 @@ void CFirearm::GetStatusForDebugging( std::string& dest_buffer ) const
 }
 
 
-bool CFirearm::IsReadyToFire() const
+bool Firearm::IsReadyToFire() const
 {
 	return ( fabs(m_fSlidePosition) < 0.001f );
 }
 
-void CFirearm::InitFirearmMesh()
+void Firearm::InitFirearmMesh()
 {
 	BasicMesh *pMesh = NULL;
 	if( !pMesh )
@@ -506,14 +506,14 @@ void CFirearm::InitFirearmMesh()
 }
 
 
-void CFirearm::Fire()
+void Firearm::Fire()
 {
 //	CStageSharedPtr pStage = m_pStage.lock();
 
 	if( !IsReadyToFire() )
 		return;
 
-	shared_ptr<CItemEntity> pEntity = GetItemEntity().Get();
+	shared_ptr<ItemEntity> pEntity = GetItemEntity().Get();
 	if( !pEntity )
 		return;
 
@@ -530,7 +530,7 @@ void CFirearm::Fire()
 	if( !m_pChamberedCartridge )
 		return; // no round in the chamber
 
-	CCartridge& cartridge = *m_pChamberedCartridge;
+	Cartridge& cartridge = *m_pChamberedCartridge;
 
 	// TODO: use a large integer for current time
 	double dCurrentTime = pStage->GetElapsedTime();

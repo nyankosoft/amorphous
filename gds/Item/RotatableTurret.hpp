@@ -17,14 +17,14 @@ class CGI_Weapon;
 class CGI_Ammunition;
 
 /*
-class CMagazine : public CGameItem
+class Magazine : public GameItem
 {
 	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
 };
 */
 
 
-class CRotatableTurret : public CGameItem
+class CRotatableTurret : public GameItem
 {
 	// heading rotation (1 DOF)
 	// - Used as a turn table
@@ -86,7 +86,7 @@ class CRotatableTurret : public CGameItem
 	Matrix34 m_MountMeshTransform;
 	Matrix34 m_GunMeshTransform;
 
-	boost::shared_ptr<CGameItem> m_pOwner;
+	boost::shared_ptr<GameItem> m_pOwner;
 
 /*	enum StyleFlags
 	{
@@ -125,7 +125,7 @@ public:
 	void SetMeshTransform( Matrix34& transform );
 //	void SetGunMeshTransform( Matrix34& transform ) { m_GunMeshTransform = transform; }
 
-	void SetOwner( boost::shared_ptr<CGameItem> pOwner ) { m_pOwner = pOwner; }
+	void SetOwner( boost::shared_ptr<GameItem> pOwner ) { m_pOwner = pOwner; }
 };
 
 

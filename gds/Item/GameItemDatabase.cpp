@@ -11,32 +11,32 @@ namespace amorphous
 using namespace std;
 
 
-class CGameItemSerializer : public IArchiveObjectBase
+class GameItemSerializer : public IArchiveObjectBase
 {
 public:
-	CGameItem *pItem;
+	GameItem *pItem;
 //	string strFilename;
 
-	CGameItemSerializer() { pItem = NULL; }
-//	CGameItemSerializer( const char *pFilename ) { pItem = NULL; strFilename = pFilename; }
+	GameItemSerializer() { pItem = NULL; }
+//	GameItemSerializer( const char *pFilename ) { pItem = NULL; strFilename = pFilename; }
 	void Serialize( IArchive& ar, const unsigned int version );
 };
 
 
-void CGameItemSerializer::Serialize( IArchive& ar, const unsigned int version )
+void GameItemSerializer::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItemObjectFactory factory;
+	GameItemObjectFactory factory;
 	ar.Polymorphic( pItem, factory );
 }
 
 
-CGameItem *CGameItemInfo::GetItem( const int quantity )
+GameItem *GameItemInfo::GetItem( const int quantity )
 {
 //	if( !pItem )
 //	{
 		CBinaryArchive_Input archive( strFilename.c_str() );
-//		CGameItemObjectFactory factory;
-		CGameItemSerializer temp_serializer;
+//		GameItemObjectFactory factory;
+		GameItemSerializer temp_serializer;
 		if( !(archive >> temp_serializer) )
 			assert(0);	// failed to load an item file
 
@@ -47,20 +47,20 @@ CGameItem *CGameItemInfo::GetItem( const int quantity )
 
 //	return pItem;
 
-	CGameItem *pTempItem = pItem;
+	GameItem *pTempItem = pItem;
 	pItem = NULL;
 	return pTempItem;
 }
 
 
-void CGameItemInfo::Serialize( IArchive& ar, const unsigned int version )
+void GameItemInfo::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & strItemName;
 	ar & strFilename;
 }
 
 
-CGameItemDatabase::~CGameItemDatabase()
+GameItemDatabase::~GameItemDatabase()
 {
 	// release all the items
 	int i, num_items = m_vecGameItemInfo.size();
@@ -71,9 +71,9 @@ CGameItemDatabase::~CGameItemDatabase()
 }
 
 
-void CGameItemDatabase::AddItemInfo( const string& strFilename, const string& strItemName )
+void GameItemDatabase::AddItemInfo( const string& strFilename, const string& strItemName )
 {
-	CGameItemInfo item_info;
+	GameItemInfo item_info;
 
 	item_info.strFilename = strFilename;
 	item_info.strItemName = strItemName;
@@ -81,19 +81,19 @@ void CGameItemDatabase::AddItemInfo( const string& strFilename, const string& st
 }
 
 
-inline bool ABC_Order( CGameItemInfo& ItemInfo0, CGameItemInfo& ItemInfo1 )
+inline bool ABC_Order( GameItemInfo& ItemInfo0, GameItemInfo& ItemInfo1 )
 {
 	return ItemInfo0.strItemName < ItemInfo1.strItemName;
 }
 
 
-void CGameItemDatabase::SortItemsInAlphabeticalOrder()
+void GameItemDatabase::SortItemsInAlphabeticalOrder()
 {
 	std::sort( m_vecGameItemInfo.begin(), m_vecGameItemInfo.end(), ABC_Order );
 }
 
 
-bool CGameItemDatabase::LoadFromFile( const char *pcFilename )
+bool GameItemDatabase::LoadFromFile( const char *pcFilename )
 {
 	CBinaryArchive_Input archive( pcFilename );
 	
@@ -101,7 +101,7 @@ bool CGameItemDatabase::LoadFromFile( const char *pcFilename )
 }
 
 
-bool CGameItemDatabase::SaveToFile( const char *pcFilename )
+bool GameItemDatabase::SaveToFile( const char *pcFilename )
 {
 	// sort items in the alphabetical order before saving them
 	SortItemsInAlphabeticalOrder();
@@ -112,14 +112,14 @@ bool CGameItemDatabase::SaveToFile( const char *pcFilename )
 }
 
 
-void CGameItemDatabase::Serialize( IArchive& ar, const unsigned int version )
+void GameItemDatabase::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecGameItemInfo;
 }
 
 
 
-CGameItem *CGameItemDatabase::GetItem( const char *pItemName, int quantity )
+GameItem *GameItemDatabase::GetItem( const char *pItemName, int quantity )
 {
 	int size = m_vecGameItemInfo.size();
 	if( size == 0 )
@@ -154,9 +154,9 @@ CGameItem *CGameItemDatabase::GetItem( const char *pItemName, int quantity )
 }
 
 
-void CGameItemDatabase::SaveItem( const char *pFilename, CGameItem *pItem )
+void GameItemDatabase::SaveItem( const char *pFilename, GameItem *pItem )
 {
-	CGameItemSerializer temp_serializer;
+	GameItemSerializer temp_serializer;
 	CBinaryArchive_Output archive( pFilename );
 	temp_serializer.pItem = pItem;
 	archive << temp_serializer;

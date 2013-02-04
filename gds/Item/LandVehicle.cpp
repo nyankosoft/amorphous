@@ -8,7 +8,7 @@
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 
-//CArmedVehicle
+//ArmedVehicle
 #include "Item/Radar.hpp"
 #include "Item/RotatableTurret.hpp"
 #include "Item/ItemDatabaseManager.hpp"
@@ -23,9 +23,9 @@ using boost::shared_ptr;
 using namespace item;
 
 
-inline shared_ptr<CItemEntity> CLandVehicle::GetVehicleEntity()
+inline shared_ptr<ItemEntity> LandVehicle::GetVehicleEntity()
 {
-	shared_ptr<CItemEntity> pEntity = m_Entity.Get();
+	shared_ptr<ItemEntity> pEntity = m_Entity.Get();
 
 	if( !pEntity )
 	{
@@ -38,9 +38,9 @@ inline shared_ptr<CItemEntity> CLandVehicle::GetVehicleEntity()
 }
 
 
-void CLandVehicle::Update( float dt )
+void LandVehicle::Update( float dt )
 {
-	shared_ptr<CItemEntity> pEntity = GetVehicleEntity();
+	shared_ptr<ItemEntity> pEntity = GetVehicleEntity();
 
 	if( !pEntity )
 		return;
@@ -95,9 +95,9 @@ void CLandVehicle::Update( float dt )
 }
 
 
-void CLandVehicle::Render()
+void LandVehicle::Render()
 {
-	shared_ptr<CItemEntity> pEntity = GetVehicleEntity();
+	shared_ptr<ItemEntity> pEntity = GetVehicleEntity();
 
 	Matrix34 world_pose
 		= pEntity ? pEntity->GetWorldPose() : Matrix34Identity();
@@ -107,9 +107,9 @@ void CLandVehicle::Render()
 }
 
 
-void CLandVehicle::Serialize( IArchive& ar, const unsigned int version )
+void LandVehicle::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_fMaxAccel;
 	ar & m_fMaxTurnSpeed;
@@ -119,9 +119,9 @@ void CLandVehicle::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CLandVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
+void LandVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "MaxAccel",         m_fMaxAccel );
 	reader.GetChildElementTextContent( "MaxTurnSpeed",     m_fMaxTurnSpeed );
@@ -132,7 +132,7 @@ void CLandVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 
-void CArmedVehicle::CTurretHolder::Serialize( IArchive& ar, const unsigned int version )
+void ArmedVehicle::CTurretHolder::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & TurretName;
 	ar & pTurret;
@@ -141,11 +141,11 @@ void CArmedVehicle::CTurretHolder::Serialize( IArchive& ar, const unsigned int v
 }
 
 
-void CArmedVehicle::Init()
+void ArmedVehicle::Init()
 {
-	m_pRadar = ItemDatabaseManager().GetItem<CRadar>( m_RadarName, 1 );
+	m_pRadar = ItemDatabaseManager().GetItem<Radar>( m_RadarName, 1 );
 
-	m_pLandVehicleItem = ItemDatabaseManager().GetItem<CLandVehicle>( m_LandVehicleName, 1 );
+	m_pLandVehicleItem = ItemDatabaseManager().GetItem<LandVehicle>( m_LandVehicleName, 1 );
 	m_pLandVehicleItem->SetOwner( m_pMyself.lock() );
 
 	for( size_t i=0; i<m_vecTurret.size(); i++ )
@@ -163,10 +163,10 @@ void CArmedVehicle::Init()
 }
 
 
-bool CArmedVehicle::LoadMeshObject()
+bool ArmedVehicle::LoadMeshObject()
 {
-	// CArmedVehicle has no mesh itself - the mesh is a combination of those of land vehicle and turrets.
-//	CGameItem::LoadMeshObject();
+	// ArmedVehicle has no mesh itself - the mesh is a combination of those of land vehicle and turrets.
+//	GameItem::LoadMeshObject();
 
 	const size_t num_turrets = m_vecTurret.size();
 	for( size_t i=0; i<num_turrets; i++ )
@@ -182,7 +182,7 @@ bool CArmedVehicle::LoadMeshObject()
 }
 
 
-void CArmedVehicle::Update( float dt )
+void ArmedVehicle::Update( float dt )
 {
 	shared_ptr<CCopyEntity> pMyEntity = m_Entity.Get();
 	const size_t num_turrets = m_vecTurret.size();
@@ -205,7 +205,7 @@ void CArmedVehicle::Update( float dt )
 }
 
 
-void CArmedVehicle::Render()
+void ArmedVehicle::Render()
 {
 	const size_t num_turrets = m_vecTurret.size();
 	for( size_t i=0; i<num_turrets; i++ )
@@ -218,7 +218,7 @@ void CArmedVehicle::Render()
 }
 
 
-void CArmedVehicle::UpdateTarget()
+void ArmedVehicle::UpdateTarget()
 {
 	shared_ptr<CCopyEntity> pMyEntity = m_Entity.Get();
 	if( !pMyEntity )
@@ -269,9 +269,9 @@ void CArmedVehicle::UpdateTarget()
 }
 
 
-void CArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
+void ArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & m_RadarName;
 	ar & m_pRadar;
@@ -291,9 +291,9 @@ void CArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
+void ArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "Radar", m_RadarName );
 
@@ -327,7 +327,7 @@ void CArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 
-bool CArmedVehicle::IsTargetGroupIndex( int group )
+bool ArmedVehicle::IsTargetGroupIndex( int group )
 {
 	return true;
 }

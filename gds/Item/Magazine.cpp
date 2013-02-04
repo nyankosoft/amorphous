@@ -9,7 +9,7 @@ namespace amorphous
 using namespace std;
 
 
-int CMagazine::LoadCartridges( boost::shared_ptr<CCartridge>& pCartridge, uint num_max_rounds_to_load )
+int Magazine::LoadCartridges( boost::shared_ptr<Cartridge>& pCartridge, uint num_max_rounds_to_load )
 {
 	if( !pCartridge )
 		return 0;
@@ -29,18 +29,18 @@ int CMagazine::LoadCartridges( boost::shared_ptr<CCartridge>& pCartridge, uint n
 }
 
 
-void CMagazine::Serialize( IArchive& ar, const unsigned int version )
+void Magazine::Serialize( IArchive& ar, const unsigned int version )
 {
-	CGameItem::Serialize( ar, version );
+	GameItem::Serialize( ar, version );
 
 	ar & (uint&)m_Caliber;
 	ar & m_Capacity;
 }
 
 
-void CMagazine::LoadFromXMLNode( CXMLNodeReader& reader )
+void Magazine::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CGameItem::LoadFromXMLNode( reader );
+	GameItem::LoadFromXMLNode( reader );
 
 	m_Caliber = GetCaliberFromName( reader.GetChild( "Caliber" ).GetTextContent().c_str() );
 

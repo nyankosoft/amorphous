@@ -12,16 +12,16 @@ using boost::shared_ptr;
 
 
 //=============================================================================
-// CGameItemShop
+// GameItemShop
 //=============================================================================
 
-CGameItemShop::CGameItemShop()
+GameItemShop::GameItemShop()
 {
 //	GameItemShopList().AddShop( this );
 }
 
 
-CGameItemShop::CGameItemShop( const std::string& name )
+GameItemShop::GameItemShop( const std::string& name )
 :
 m_Name(name)
 {
@@ -29,20 +29,20 @@ m_Name(name)
 }
 
 
-CGameItemShop::~CGameItemShop()
+GameItemShop::~GameItemShop()
 {
 	Release();
-	GameItemShopList().RemoveShop( m_Name );
+	GetGameItemShopList().RemoveShop( m_Name );
 }
 
 /*
-int CGameItemShop::LoadItems( const std::vector<std::string>& m_vecItemName );
+int GameItemShop::LoadItems( const std::vector<std::string>& m_vecItemName );
 {
 	int num_loaded_items = 0;
 	size_t i, num_items = m_vecItemName.size();
 	for( i=0; i<num_items; i++ )
 	{
-		CGameItem *pItem = ItemDatabase.Get( m_vecItemName[i] );
+		GameItem *pItem = ItemDatabase.Get( m_vecItemName[i] );
 
 		if( pItem )
 		{
@@ -55,7 +55,7 @@ int CGameItemShop::LoadItems( const std::vector<std::string>& m_vecItemName );
 }
 */
 
-bool CGameItemShop::AddItem( boost::shared_ptr<CGameItem> pItem )
+bool GameItemShop::AddItem( boost::shared_ptr<GameItem> pItem )
 {
 	if( !pItem )
 		return false;
@@ -66,9 +66,9 @@ bool CGameItemShop::AddItem( boost::shared_ptr<CGameItem> pItem )
 }
 
 
-int CGameItemShop::AddItem( const std::string& item_name, int quantity )
+int GameItemShop::AddItem( const std::string& item_name, int quantity )
 {
-	shared_ptr<CGameItem> pItem = ItemDatabaseManager().GetItem<CGameItem>( item_name, quantity );
+	shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( item_name, quantity );
 	if( !pItem )
 		return 0;
 
@@ -78,7 +78,7 @@ int CGameItemShop::AddItem( const std::string& item_name, int quantity )
 }
 
 
-bool CGameItemShop::PurchaseItem( CCustomer& customer, const std::string& item_name )
+bool GameItemShop::PurchaseItem( CCustomer& customer, const std::string& item_name )
 {
 	size_t i, num = m_vecpItem.size();
 	for( i=0; i<num; i++ )
@@ -90,7 +90,7 @@ bool CGameItemShop::PurchaseItem( CCustomer& customer, const std::string& item_n
 }
 
 
-bool CGameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
+bool GameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
 {
 	if( customer.GetMoneyLeft() < m_vecpItem[index]->GetPrice() )
 		return false;
@@ -99,8 +99,8 @@ bool CGameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
 
 	if( true/*paid*/ )
 	{
-		boost::shared_ptr<CGameItem> pItemCopy
-			= ItemDatabaseManager().GetItem<CGameItem>( m_vecpItem[index]->GetName(), quantity );
+		boost::shared_ptr<GameItem> pItemCopy
+			= ItemDatabaseManager().GetItem<GameItem>( m_vecpItem[index]->GetName(), quantity );
 
 		int num_items_received = customer.AddItem( pItemCopy );
 
@@ -120,10 +120,10 @@ bool CGameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
 }
 
 
-const shared_ptr<CGameItem> CGameItemShop::GetItem( int index )
+const shared_ptr<GameItem> GameItemShop::GetItem( int index )
 {
 	if( index < 0 || (int)m_vecpItem.size() <= index )
-		return boost::shared_ptr<CGameItem>();
+		return boost::shared_ptr<GameItem>();
 
 	return m_vecpItem[index];
 }
@@ -131,18 +131,18 @@ const shared_ptr<CGameItem> CGameItemShop::GetItem( int index )
 
 
 //=============================================================================
-// CGameItemShopList
+// GameItemShopList
 //=============================================================================
 
-CSingleton<CGameItemShopList> CGameItemShopList::m_obj;
+CSingleton<GameItemShopList> GameItemShopList::m_obj;
 
 
-bool CGameItemShopList::AddShop( shared_ptr<CGameItemShop> pShop )
+bool GameItemShopList::AddShop( shared_ptr<GameItemShop> pShop )
 {
 	if( !pShop )
 		return false;
 
-	vector< shared_ptr<CGameItemShop> >::iterator shop;
+	vector< shared_ptr<GameItemShop> >::iterator shop;
 
 	for( shop = m_vecpShopList.begin();
 		 shop != m_vecpShopList.end();
@@ -160,9 +160,9 @@ bool CGameItemShopList::AddShop( shared_ptr<CGameItemShop> pShop )
 }
 
 
-bool CGameItemShopList::RemoveShop( const string& name )
+bool GameItemShopList::RemoveShop( const string& name )
 {
-	vector< shared_ptr<CGameItemShop> >::iterator shop;
+	vector< shared_ptr<GameItemShop> >::iterator shop;
 	for( shop = m_vecpShopList.begin();
 		 shop != m_vecpShopList.end();
 		 shop++ )
@@ -178,9 +178,9 @@ bool CGameItemShopList::RemoveShop( const string& name )
 }
 
 
-shared_ptr<CGameItemShop> CGameItemShopList::GetShop( const string& name )
+shared_ptr<GameItemShop> GameItemShopList::GetShop( const string& name )
 {
-	vector< shared_ptr<CGameItemShop> >::iterator shop;
+	vector< shared_ptr<GameItemShop> >::iterator shop;
 	for( shop = m_vecpShopList.begin();
 		 shop != m_vecpShopList.end();
 		 shop++ )
@@ -189,15 +189,15 @@ shared_ptr<CGameItemShop> CGameItemShopList::GetShop( const string& name )
 			return *shop;
 	}
 
-	return shared_ptr<CGameItemShop>();
+	return shared_ptr<GameItemShop>();
 }
 
 
-shared_ptr<CGameItemShop> CreateGameItemShop( const std::string& shop_name )
+shared_ptr<GameItemShop> CreateGameItemShop( const std::string& shop_name )
 {
-	shared_ptr<CGameItemShop> pShop = shared_ptr<CGameItemShop>( new CGameItemShop(shop_name) );
+	shared_ptr<GameItemShop> pShop = shared_ptr<GameItemShop>( new GameItemShop(shop_name) );
 
-	GameItemShopList().AddShop( pShop );
+	GetGameItemShopList().AddShop( pShop );
 
 	return pShop;
 }

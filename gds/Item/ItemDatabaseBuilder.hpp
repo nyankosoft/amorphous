@@ -12,14 +12,14 @@ namespace amorphous
 {
 
 
-class CGameItem;
+class GameItem;
 class CTextFileScanner;
 class CGI_Weapon;
-class CGI_GravityGun;
+class GravityGun;
 class CGI_Ammunition;
-class CGI_Binocular;
+class Binocular;
 class CGI_NightVision;
-class CGI_MissileLauncher;
+class MissileLauncher;
 class CGI_Aircraft;
 
 class CMeshBoneController_AircraftBase;
@@ -27,7 +27,7 @@ class CMeshBoneController_AircraftBase;
 
 class CItemDatabaseBuilder
 {
-	std::vector<CGameItem *> m_vecpItem;
+	std::vector<GameItem *> m_vecpItem;
 
 	/// stores the path for the item list file and item files
 //	std::string m_strOutputPath;
@@ -35,13 +35,13 @@ class CItemDatabaseBuilder
 	/// path added to the head of the each item file
 //	std::string m_strItemFilePath;
 
-	void LoadGameItemSharedProperty( CTextFileScanner& scanner, CGameItem* pItem );
+	void LoadGameItemSharedProperty( CTextFileScanner& scanner, GameItem* pItem );
 	void LoadFirearms( CTextFileScanner& scanner,	CGI_Weapon* pWeapon );
-	void LoadGravityGun( CTextFileScanner& scanner, CGI_GravityGun* pGravityGun );
+	void LoadGravityGun( CTextFileScanner& scanner, GravityGun* pGravityGun );
 	void LoadAmmunition( CTextFileScanner& scanner, CGI_Ammunition* pAmmo );
-	void LoadBinocular( CTextFileScanner& scanner,	CGI_Binocular* pItem );
+	void LoadBinocular( CTextFileScanner& scanner,	Binocular* pItem );
 	void LoadNightVision( CTextFileScanner& scanner,CGI_NightVision* pItem );
-	void LoadMissileLauncher( CTextFileScanner& scanner, CGI_MissileLauncher* pItem );
+	void LoadMissileLauncher( CTextFileScanner& scanner, MissileLauncher* pItem );
 	void LoadAircraft( CTextFileScanner& scanner,	CGI_Aircraft* pItem );
 //	void LoadKey( CTextFileScanner& scanner, CGI_Key* pItem );
 

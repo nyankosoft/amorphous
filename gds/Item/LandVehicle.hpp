@@ -17,7 +17,7 @@ namespace amorphous
 // from the parent transform.
 
 
-class CRadar;
+class Radar;
 class CRotatableTurret;
 
 
@@ -26,7 +26,7 @@ namespace item
 {
 
 
-class CLandVehicle : public CGameItem
+class LandVehicle : public GameItem
 {
 	// performance
 	float m_fMaxAccel;
@@ -43,15 +43,15 @@ class CLandVehicle : public CGameItem
 	// used for trace test
 	std::vector<CCopyEntity *> m_vecpEntityBuffer;
 
-	boost::shared_ptr<CGameItem> m_pOwner;
+	boost::shared_ptr<GameItem> m_pOwner;
 
 protected:
 
-	inline boost::shared_ptr<CItemEntity> GetVehicleEntity();
+	inline boost::shared_ptr<ItemEntity> GetVehicleEntity();
 
 public:
 
-	CLandVehicle() {}
+	LandVehicle() {}
 
 	virtual void Update( float dt );
 
@@ -65,7 +65,7 @@ public:
 
 	void Release() {}
 
-	void SetOwner( boost::shared_ptr<CGameItem> pOwner ) { m_pOwner = pOwner; }
+	void SetOwner( boost::shared_ptr<GameItem> pOwner ) { m_pOwner = pOwner; }
 };
 
 
@@ -79,15 +79,15 @@ public:
 };
 
 
-class CArmedVehicle : public CGameItem
+class ArmedVehicle : public GameItem
 {
 	std::string m_RadarName;
-	boost::shared_ptr<CRadar> m_pRadar;
+	boost::shared_ptr<Radar> m_pRadar;
 
 //	std::vector< boost::shared_ptr<CWeapon> > m_vecpWeapon;
 
 	std::string m_LandVehicleName;
-	boost::shared_ptr<item::CLandVehicle> m_pLandVehicleItem;
+	boost::shared_ptr<item::LandVehicle> m_pLandVehicleItem;
 
 	// current target
 	CEntityHandle<> m_Target;
@@ -117,8 +117,8 @@ protected:
 
 public:
 
-	CArmedVehicle() {}
-	~CArmedVehicle() {}
+	ArmedVehicle() {}
+	~ArmedVehicle() {}
 
 	void UpdateTarget();
 

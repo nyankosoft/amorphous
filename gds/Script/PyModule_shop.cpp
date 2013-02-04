@@ -12,24 +12,24 @@ using std::string;
 using boost::shared_ptr;
 
 
-bool (CGameItemShop::*AddItemByItemPointer)( shared_ptr<CGameItem> pItem ) = &CGameItemShop::AddItem;
-int (CGameItemShop::*AddItemByNameAndQuantity)( const string& item_name, int quantity ) = &CGameItemShop::AddItem;
+bool (GameItemShop::*AddItemByItemPointer)( shared_ptr<GameItem> pItem ) = &GameItemShop::AddItem;
+int (GameItemShop::*AddItemByNameAndQuantity)( const string& item_name, int quantity ) = &GameItemShop::AddItem;
 
 
-shared_ptr<CGameItemShop> GetGameItemShop( const string& name )
+shared_ptr<GameItemShop> GetGameItemShop( const string& name )
 {
-	return GameItemShopList().GetShop( name );
+	return GetGameItemShopList().GetShop( name );
 }
 
 
-void AddItemToShop( shared_ptr<CGameItemShop> pShop, const string& item_name, int quantity )
+void AddItemToShop( shared_ptr<GameItemShop> pShop, const string& item_name, int quantity )
 {
 	if( !pShop )
 		return;
 
 	pShop->AddItem( item_name, quantity );
 
-//	shared_ptr<CGameItem> pItem = ItemDatabaseManager().GetItem<CGameItem>( item_name, 1 );
+//	shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( item_name, 1 );
 
 //	if( pItem )
 //		pShop->AddItem( pItem );
@@ -45,7 +45,7 @@ BOOST_PYTHON_MODULE(shop)
 	def( "GetGameItemShop",    GetGameItemShop );
 	def( "AddItemToShop",      AddItemToShop, (py::arg("shop"), py::arg("item_name"), py::arg("quantity")) );
 
-	class_< CGameItemShop, shared_ptr<CGameItemShop> >("GameItemShop")
+	class_< GameItemShop, shared_ptr<GameItemShop> >("GameItemShop")
 //		.def( "AddItem", AddItemByItemPointer,     (py::arg("item")) )
 		.def( "AddItem", AddItemByNameAndQuantity, (py::arg("item_name"), py::arg("quantity")) )
 	;

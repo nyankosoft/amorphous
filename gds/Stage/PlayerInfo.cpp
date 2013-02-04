@@ -105,17 +105,17 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 }
 */
 
-void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )
+void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<GameItem> pItem )
 {
 	int category;
 	switch( pItem->GetTypeFlag() )
 	{
-	case CGameItem::TYPE_WEAPON:
+	case GameItem::TYPE_WEAPON:
 		category = CItemCategory::WEAPON;
 		break;
-	case CGameItem::TYPE_AMMO:
+	case GameItem::TYPE_AMMO:
 		{
-			shared_ptr<CGI_Ammunition> pAmmo = dynamic_pointer_cast<CGI_Ammunition,CGameItem>(pItem);
+			shared_ptr<CGI_Ammunition> pAmmo = dynamic_pointer_cast<CGI_Ammunition,GameItem>(pItem);
 			if( !pAmmo )
 				return;
 
@@ -131,13 +131,13 @@ void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )
 			break;
 		}
 
-	case CGameItem::TYPE_SUPPLY:
+	case GameItem::TYPE_SUPPLY:
 		category = CItemCategory::SUPPLY;
 		break;
-	case CGameItem::TYPE_UTILITY:
+	case GameItem::TYPE_UTILITY:
 		category = CItemCategory::UTILITY;
 		break;
-	case CGameItem::TYPE_KEY:
+	case GameItem::TYPE_KEY:
 		category = CItemCategory::KEY;
 		break;
 	default:
@@ -150,7 +150,7 @@ void CSinglePlayerInfo::AddItemToCategoryList( shared_ptr<CGameItem> pItem )
 }
 
 
-int CSinglePlayerInfo::SupplyItem( CGameItem* pItem )
+int CSinglePlayerInfo::SupplyItem( GameItem* pItem )
 {
 	if( !pItem )
 		return false;
@@ -163,7 +163,7 @@ int CSinglePlayerInfo::SupplyItem( CGameItem* pItem )
 }
 
 
-int CSinglePlayerInfo::SupplyItem( boost::shared_ptr<CGameItem> pItem )
+int CSinglePlayerInfo::SupplyItem( boost::shared_ptr<GameItem> pItem )
 {
 	if( !pItem )
 		return false;
@@ -175,7 +175,7 @@ int CSinglePlayerInfo::SupplyItem( boost::shared_ptr<CGameItem> pItem )
 
 
 int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuantity )
-//int CSinglePlayerInfo::SupplyItem( CGameItem*& rpItem )/// \param owned reference
+//int CSinglePlayerInfo::SupplyItem( GameItem*& rpItem )/// \param owned reference
 {
 	size_t i, num_items = m_vecpItem.size();
 	for(i=0; i<num_items; i++)
@@ -191,8 +191,8 @@ int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuan
 	if( i == num_items )
 	{
 		// a new item - needs to be copied from the item database
-		shared_ptr<CGameItem> pItem = ItemDatabaseManager().GetItem<CGameItem>( pcItemName, iSupplyQuantity );
-		if( !pItem /*|| !(pItem->GetTypeFlag() & CGameItem::TYPE_AMMO)*/ )
+		shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( pcItemName, iSupplyQuantity );
+		if( !pItem /*|| !(pItem->GetTypeFlag() & GameItem::TYPE_AMMO)*/ )
 			return 0;	// the item was not found in the database
 
 		// initialize quantity
@@ -227,7 +227,7 @@ int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuan
 */
 	// supply item(s)
 
-	CGameItem& rItem = *(m_vecpItem[i].get());
+	GameItem& rItem = *(m_vecpItem[i].get());
 	if( rItem.GetCurrentQuantity() == rItem.GetMaxQuantity() )
 		return 0;	// already been full - can't have any more
 	else
@@ -248,7 +248,7 @@ int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuan
 }
 
 /*
-CGameItem *CSinglePlayerInfo::GetItemByName( const char *pcItemName )
+GameItem *CSinglePlayerInfo::GetItemByName( const char *pcItemName )
 {
 	size_t i=0, num_items = m_vecpItem.size();
 	for( i=0; i<num_items; i++ )
@@ -317,7 +317,7 @@ void CSinglePlayerInfo::Serialize( IArchive& ar, const unsigned int version )
 		m_pCurrentAircraft.reset();
 	}
 
-	CGameItemObjectFactory factory;
+	GameItemObjectFactory factory;
 
 	ar.Polymorphic( m_vecpItem, factory );
 

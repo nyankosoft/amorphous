@@ -51,11 +51,11 @@ public:
  * base class for items
  *
  */
-class CGameItem : public IArchiveObjectBase
+class GameItem : public IArchiveObjectBase
 {
 private:
 
-	void SetWeakPtr( boost::weak_ptr<CGameItem> pMyself ) { m_pMyself = pMyself; }
+	void SetWeakPtr( boost::weak_ptr<GameItem> pMyself ) { m_pMyself = pMyself; }
 
 protected:
 
@@ -80,14 +80,14 @@ protected:
 
 	CStageWeakPtr m_pStage;
 
-	CEntityHandle<CItemEntity> m_Entity;
+	CEntityHandle<ItemEntity> m_Entity;
 
-	boost::weak_ptr<CGameItem> m_pMyself;
+	boost::weak_ptr<GameItem> m_pMyself;
 
 public:
 
-	CGameItem();
-	virtual ~CGameItem();
+	GameItem();
+	virtual ~GameItem();
 
 	const std::string& GetName() const { return m_strName; }
 
@@ -161,13 +161,13 @@ public:
 
 	void SetStageWeakPtr( CStageWeakPtr pStage ) { m_pStage = pStage; }
 
-	CEntityHandle<CItemEntity> GetItemEntity() { return m_Entity; }
+	CEntityHandle<ItemEntity> GetItemEntity() { return m_Entity; }
 
-	void SetItemEntity( CEntityHandle<CItemEntity>& entity ) { m_Entity = entity; }
+	void SetItemEntity( CEntityHandle<ItemEntity>& entity ) { m_Entity = entity; }
 
 	inline void SetWorldPose( const Matrix34& rSrcWorldPose )
 	{
-		boost::shared_ptr<CItemEntity> pEntity = m_Entity.Get();
+		boost::shared_ptr<ItemEntity> pEntity = m_Entity.Get();
 		if( pEntity )
 			pEntity->SetWorldPose( rSrcWorldPose );
 	}
@@ -176,7 +176,7 @@ public:
 
 	inline void SetLinearVelocity( const Vector3& vLinearVelocity )
 	{
-		boost::shared_ptr<CItemEntity> pEntity = m_Entity.Get();
+		boost::shared_ptr<ItemEntity> pEntity = m_Entity.Get();
 		if( pEntity )
 			pEntity->SetVelocity( vLinearVelocity );
 	}
@@ -230,7 +230,7 @@ public:
 	};
 
 	friend class CItemDatabaseBuilder;
-	friend class CGameItemInfo;
+	friend class GameItemInfo;
 	friend class CItemDatabaseManager;
 	template<class T> friend inline boost::shared_ptr<T> CreateGameItem();
 

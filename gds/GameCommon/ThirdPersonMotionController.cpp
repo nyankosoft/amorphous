@@ -45,7 +45,7 @@ void CThirdPersonMotionController::Update()
 	if( !m_pCharacter )
 		return;
 
-	CSkeletalCharacter& skeletal_character = *m_pCharacter;
+	SkeletalCharacter& skeletal_character = *m_pCharacter;
 
 //	if( !skeletal_character.IsCameraDependentMotionControlEnabled() )
 //		return;
@@ -68,8 +68,8 @@ void CThirdPersonMotionController::Update()
 //	if( 1.0f < vInput.GetLength() )
 //		vInput = vInput / GetLength();
 
-	CEntityHandle<CItemEntity> entity = m_pCharacter->GetItemEntity();
-	shared_ptr<CItemEntity> pEntity = entity.Get();
+	CEntityHandle<ItemEntity> entity = m_pCharacter->GetItemEntity();
+	shared_ptr<ItemEntity> pEntity = entity.Get();
 	if( !pEntity )
 		return;
 

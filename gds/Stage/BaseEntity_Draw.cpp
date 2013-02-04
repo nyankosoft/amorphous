@@ -648,7 +648,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<BlendTransformsLoader
 	}
 
 	// Not used now.
-	// Item entities set this in its own member function CItemEntity::InitMesh().
+	// Item entities set this in its own member function ItemEntity::InitMesh().
 	// Does any entity other than item entty need this?
 	if( pBlendTransformsLoader )
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
