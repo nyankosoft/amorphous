@@ -76,13 +76,17 @@ public:
 
 	void Release();
 
-	const std::string& GetName() { return m_Name; }
+	const std::string& GetName() const { return m_Name; }
 
 	const std::string& GetStageScriptFilename() { return m_StageScriptFilename; }
 
 	void AddNode( const StageNodeDesc& desc );
 
 	StageNode *GetNode_r( const std::string& name );
+
+	int GetNumNextStages() const { return m_NumNextStages; }
+
+	const StageNode *GetNextStage( unsigned int index ) const { return m_apNextStage[index]; }
 
 	void SetState( int state ) { m_StateFlag = state; }
 
@@ -108,9 +112,6 @@ public:
 		for( int i=0; i<m_NumNextStages; i++ )
 			ar & (*m_apNextStage[i]);
 	}
-
-
-	friend class CGameTask_MainMenuFG;
 };
 
 
