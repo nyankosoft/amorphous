@@ -2,10 +2,8 @@
 #define  __EntityGroupHandle_H__
 
 
-#include <string>
-
+#include "fwd.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
 
 
 namespace amorphous
@@ -17,9 +15,6 @@ using namespace serialization;
 #define ENTITY_GROUP_INVALID_ID       -1
 #define ENTITY_GROUP_MIN_ID            0
 #define ENTITY_GROUP_MAX_ID           15
-
-
-class CBaseEntity;
 
 
 /**
