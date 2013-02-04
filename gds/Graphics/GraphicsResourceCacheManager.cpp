@@ -41,6 +41,7 @@ shared_ptr<GraphicsResource> GraphicsResourceFactory::CreateGraphicsResource( co
 	case GraphicsResourceType::Mesh:    return CreateMeshResource( *dynamic_cast<const MeshResourceDesc*>(&desc) );
 	case GraphicsResourceType::Shader:  return CreateShaderResource( *dynamic_cast<const ShaderResourceDesc*>(&desc) );
 	default:
+		LOG_PRINT_ERROR( "An unsupported resource type" );
 		return shared_ptr<GraphicsResource>();
 	}
 }
@@ -66,6 +67,12 @@ void GraphicsResourceCacheManager::AddCache( GraphicsResourceDesc& desc )
 	desc.m_IsCachedResource = true;
 
 	shared_ptr<GraphicsResource> ptr = GraphicsResourceFactory().CreateGraphicsResource( desc );
+
+	if( !ptr )
+	{
+		LOG_PRINT_ERROR( "Failed to add a cached resource." );
+		return;
+	}
 
 //	ptr->IsCachedResource = true;
 
