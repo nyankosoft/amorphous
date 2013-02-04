@@ -17,9 +17,6 @@
 namespace amorphous
 {
 
-
-class CScreenEffectManager;
-
 class CEntityEnvMapRenderTask;
 class CEntitySceneRenderTask;
 class CCubeTextureParamsLoader;
