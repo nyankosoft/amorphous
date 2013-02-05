@@ -348,7 +348,7 @@ void CBE_StaticParticleSet::ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself
 }
 
 
-void CBE_StaticParticleSet::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_StaticParticleSet::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 }
 

@@ -117,12 +117,12 @@ protected:
 	float m_fEffectiveRangeRadius;
 
 	/// Stores entities picked up by the radar
-	std::vector< CEntityHandle<> > m_vecEntityBuffer;
+	std::vector< EntityHandle<> > m_vecEntityBuffer;
 
 	/// temporary buffer to hold raw pointer of entities
 	std::vector<CCopyEntity *> m_vecpEntityBuffer;
 
-//	CEntityHandle<> m_FocusedTarget;
+//	EntityHandle<> m_FocusedTarget;
 
 	double m_fSensoringFrequency;
 
@@ -179,13 +179,13 @@ public:
 
 	/// Sets the focused target
 	/// - The focused target is stored with the FOCUSED flag when it is converted to target info
-//	void SetFocusedTarget( CEntityHandle<> focused_target ) { m_FocusedTarget = focused_target; }
+//	void SetFocusedTarget( EntityHandle<> focused_target ) { m_FocusedTarget = focused_target; }
 
 	RadarInfo& RadarInfo() { return m_RadarInfo; }
 
 	void SetEffectiveRangeRadius( float radius ) { m_fEffectiveRangeRadius = radius; }
 
-	std::vector< CEntityHandle<> >& EntityBuffer() { return m_vecEntityBuffer; }
+	std::vector< EntityHandle<> >& EntityBuffer() { return m_vecEntityBuffer; }
 
 	std::vector<CCopyEntity *>& EntityRawPtrBuffer() { return m_vecpEntityBuffer; }
 

@@ -438,7 +438,7 @@ void CGI_Aircraft::UpdateTargetMeshTransforms()
 //		m_vecpMeshController[i]->UpdateTargetMeshTransforms();
 
 
-	CEntityHandle<ItemEntity> item_entity = GetItemEntity();
+	EntityHandle<ItemEntity> item_entity = GetItemEntity();
 	shared_ptr<ItemEntity> pEntity = item_entity.Get();
 	if( !pEntity )
 		return;

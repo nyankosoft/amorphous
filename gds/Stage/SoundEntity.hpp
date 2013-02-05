@@ -11,10 +11,10 @@ namespace amorphous
 //#include "Support/shared_prealloc_pool.hpp"
 
 
-//class CSoundEntityDesc;
+//class SoundEntityDesc;
 
 
-class CSoundEntity : public CCopyEntity
+class SoundEntity : public CCopyEntity
 {
 	float m_fMaxRadius;
 
@@ -22,13 +22,13 @@ class CSoundEntity : public CCopyEntity
 
 public:
 
-	CSoundEntity();
+	SoundEntity();
 
-	virtual ~CSoundEntity();
+	virtual ~SoundEntity();
 
 //	virtual void Init( CCopyEntityDesc& desc );
 
-//	void Init( CSoundEntityDesc& desc );
+//	void Init( SoundEntityDesc& desc );
 
 	virtual void Update( float dt );
 
@@ -36,7 +36,7 @@ public:
 
 	void Draw();
 
-	virtual void HandleMessage( SGameMessage& msg );
+	virtual void HandleMessage( GameMessage& msg );
 
 	virtual void TerminateDerived();
 

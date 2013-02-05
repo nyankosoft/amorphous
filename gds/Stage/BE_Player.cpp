@@ -296,7 +296,7 @@ void CBE_Player::ToggleHeadLight()
 	}
 	else
 	{	// turn off the light
-		SGameMessage msg;
+		GameMessage msg;
 		msg.effect = GM_TERMINATE;
 		SendGameMessageTo( msg, m_pHeadLightEntity );
 		m_pHeadLightEntity = NULL;
@@ -305,7 +305,7 @@ void CBE_Player::ToggleHeadLight()
 }
 
 
-void CBE_Player::OnDestroyingEnemyEntity( SGameMessage& msg )
+void CBE_Player::OnDestroyingEnemyEntity( GameMessage& msg )
 {
 	shared_ptr<CCopyEntity> pSenderEntity = msg.sender.Get();
 
@@ -323,11 +323,11 @@ void CBE_Player::OnDestroyingEnemyEntity( SGameMessage& msg )
 }
 
 
-void CBE_Player::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Player::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	float& rfLife = pCopyEnt_Self->fLife;
 	float& rfTimeAfterDeath = pCopyEnt_Self->f4;
-	SGameMessage msg;
+	GameMessage msg;
 	int iVariation;
 
 	switch( rGameMessage.effect )
@@ -679,7 +679,7 @@ bool CBE_Player::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 void CBE_Player::Serialize( IArchive& ar, const unsigned int version )
 {
 	CBE_PhysicsBaseEntity::Serialize( ar, version );
-//	CBaseEntity::Serialize( ar, version );
+//	BaseEntity::Serialize( ar, version );
 
 	ar & m_LaserDot;
 	ar & m_HeadLight;

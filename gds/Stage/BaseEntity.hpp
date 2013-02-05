@@ -22,12 +22,10 @@ namespace amorphous
 using namespace serialization;
 
 
-class CBSPTree;
 class CMeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
-class BlendTransformsLoader;
 class CRenderContext;
-class CCoreBaseEntitiesLoader;
+class CoreBaseEntitiesLoader;
 
 
 /**
@@ -101,7 +99,7 @@ public:
 /**
  * base class of base entity
  */
-class CBaseEntity : public IArchiveObjectBase
+class BaseEntity : public IArchiveObjectBase
 {
 protected:
 
@@ -116,11 +114,11 @@ protected:
 	CBE_MeshObjectProperty m_MeshProperty;
 
 	/// used as a temporary array to hold shader techniques for mesh materials
-	/// - See CBaseEntity::DrawMeshObject()
+	/// - See BaseEntity::DrawMeshObject()
 	std::vector<ShaderTechniqueHandle> m_vecShaderTechniqueHolder;
 
 	/// ENTITY_GROUP_MIN is set by default
-	CEntityGroupHandle m_EntityGroup;
+	EntityGroupHandle m_EntityGroup;
 
 	/// when copy entities should be rendered in succession, turn 'm_bSweepRender' to true
 	/// and implement SweepRender() function (e.g. bullet hole decals)
@@ -139,7 +137,7 @@ protected:
 	/// type of the bounding volume
 	char m_BoundingVolumeType;
 
-	CBSPTree *m_pBSPTree;	// for collision check against line segment
+	BSPTree *m_pBSPTree;	// for collision check against line segment
 
 	/// true for non-collidable entities (ex. items)
 	bool m_bNoClip;
@@ -176,9 +174,9 @@ protected:
 
 public:
 
-	CBaseEntity();
+	BaseEntity();
 
-	virtual ~CBaseEntity();
+	virtual ~BaseEntity();
 
 	const char* GetName() const { return m_strName.c_str(); }
 
@@ -212,7 +210,7 @@ public:
 	/// loads a base entity on the memory from the disk
 	/// base entities that use other base entities during runtime should
 	/// pre-load them by calling this function
-	bool LoadBaseEntity( CBaseEntityHandle& base_entity_handle );
+	bool LoadBaseEntity( BaseEntityHandle& base_entity_handle );
 
 	inline void RaiseEntityFlag( const unsigned int flag ) { m_EntityFlag |= flag; }
 	inline unsigned int GetEntityFlag() const { return m_EntityFlag; }
@@ -224,7 +222,7 @@ public:
 	void SetLighting( bool lighting );
 
 	/// returns an id for an arbitrary entity group
-    int GetEntityGroupID( CEntityGroupHandle& entity_group_handle );
+    int GetEntityGroupID( EntityGroupHandle& entity_group_handle );
 
 	/// returns entity group id of m_EntityGroup;
 	/// - retrieves id from entity set if entity group handle is not initialized
@@ -274,7 +272,7 @@ public:
 	virtual void ClipTrace( STrace& rTrace, CCopyEntity* pMyself );
 
 	/// handles the message sent to the entity
-	virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
+	virtual void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
 
 	virtual void OnEntityDestroyed(CCopyEntity* pCopyEnt) {}
 
@@ -337,8 +335,8 @@ public:
 	//
 	// friend class
 	//
-	friend class CEntitySet;
-	friend class CCoreBaseEntitiesLoader;
+	friend class EntityManager;
+	friend class CoreBaseEntitiesLoader;
 
 	enum BaseEntityID
 	{

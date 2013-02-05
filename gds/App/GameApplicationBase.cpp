@@ -53,8 +53,8 @@ void UpdateBaseEntityDatabase()
 		CScopeLog sl( "- Initializing & updating the base entity database" );
 
 		string default_db_filepath = "./System/BaseEntity.bin";
-		BaseEntityManager().UpdateDatabase( "../resources/entity/BaseEntity.txt", default_db_filepath );
-		BaseEntityManager().OpenDatabase( default_db_filepath );
+		GetBaseEntityManager().UpdateDatabase( "../resources/entity/BaseEntity.txt", default_db_filepath );
+		GetBaseEntityManager().OpenDatabase( default_db_filepath );
 		s_bBaseEntityDatabase_Initialized = true;
 	}
 }

@@ -5,9 +5,9 @@
 namespace amorphous
 {
 
-class CBaseEntity;
+class BaseEntity;
 
-class CBaseEntityHandle
+class BaseEntityHandle
 {
 	/// avoid dynamic allocation when the name is short
 	enum { CACHE_SIZE = 24 };
@@ -22,27 +22,27 @@ class CBaseEntityHandle
 	char *m_pcBaseEntityName;
 	
 	/// pointer to the base entity
-	CBaseEntity *m_pBaseEntity;
+	BaseEntity *m_pBaseEntity;
 
 public:
 
-	CBaseEntityHandle() : m_State(STATE_INVALID), m_pcBaseEntityName(NULL), m_pBaseEntity(NULL)
+	BaseEntityHandle() : m_State(STATE_INVALID), m_pcBaseEntityName(NULL), m_pBaseEntity(NULL)
 	{
 		memset( m_acBaseEntityName, '\0', sizeof(m_acBaseEntityName) );
 	}
 
-	CBaseEntityHandle( const char* pcBaseEntityName ) : m_State(STATE_UNINITIALIZED), m_pcBaseEntityName(NULL), m_pBaseEntity(NULL)
+	BaseEntityHandle( const char* pcBaseEntityName ) : m_State(STATE_UNINITIALIZED), m_pcBaseEntityName(NULL), m_pBaseEntity(NULL)
 	{
 		memset( m_acBaseEntityName, '\0', sizeof(m_acBaseEntityName) );
 
 		SetBaseEntityName( pcBaseEntityName );
 	}
 
-	~CBaseEntityHandle() { if( m_pcBaseEntityName ) delete [] m_pcBaseEntityName; }
+	~BaseEntityHandle() { if( m_pcBaseEntityName ) delete [] m_pcBaseEntityName; }
 
-	inline void SetBaseEntityPointer( CBaseEntity *pBaseEntity ) { m_pBaseEntity = pBaseEntity; }
+	inline void SetBaseEntityPointer( BaseEntity *pBaseEntity ) { m_pBaseEntity = pBaseEntity; }
 
-	inline CBaseEntity *GetBaseEntityPointer() { return m_pBaseEntity; }
+	inline BaseEntity *GetBaseEntityPointer() { return m_pBaseEntity; }
 
 	inline const char *GetBaseEntityName() const
 	{
@@ -82,14 +82,14 @@ public:
 
 	int GetState() const { return m_State; }
 
-	CBaseEntityHandle& operator=( const CBaseEntityHandle& handle )
+	BaseEntityHandle& operator=( const BaseEntityHandle& handle )
 	{
 		SetBaseEntityName( handle.GetBaseEntityName() );
 
 		return *this;
 	}
 
-	CBaseEntityHandle( const CBaseEntityHandle& handle )
+	BaseEntityHandle( const BaseEntityHandle& handle )
 		: m_State(STATE_INVALID), m_pcBaseEntityName(NULL), m_pBaseEntity(NULL)
 	{
 		SetBaseEntityName( handle.GetBaseEntityName() );

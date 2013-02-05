@@ -17,7 +17,7 @@ namespace amorphous
 {
 
 
-class CBSPTree
+class BSPTree
 {
 	SNode_f* m_paNode;
 	SPlane* m_paPlane;
@@ -27,9 +27,9 @@ class CBSPTree
 
 public:
 
-	CBSPTree() : m_paNode(NULL), m_paPlane(NULL), m_NumNodes(0), m_NumPlanes(0) {}
-	CBSPTree( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes );
-	~CBSPTree();
+	BSPTree() : m_paNode(NULL), m_paPlane(NULL), m_NumNodes(0), m_NumPlanes(0) {}
+	BSPTree( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes );
+	~BSPTree();
 
 	void Release();
 
@@ -51,17 +51,17 @@ public:
 
 	bool WriteToFile( const char *pcFilename );
 
-	CBSPTree& operator=( const CBSPTree& src );
+	BSPTree& operator=( const BSPTree& src );
 	
 	void CreateBoxBSPTree( float fWidth_X, float fHeight_Y, float fDepth_Z );
 
-	friend class CBSPTreeForAABB;
+	friend class BSPTreeForAABB;
 };
 
 
-class CBSPTreeForAABB
+class BSPTreeForAABB
 {
-	static CBSPTree ms_BSPTree;
+	static BSPTree ms_BSPTree;
 
 public:
 

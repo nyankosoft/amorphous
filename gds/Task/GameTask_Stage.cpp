@@ -56,7 +56,7 @@ void LoadStage( const string& strStageScriptFilename )
 
 	g_pStage.reset();
 
-	CStageLoader stage_loader;
+	StageLoader stage_loader;
 	g_pStage = stage_loader.LoadStage( strStageScriptFilename );
 
 	bool bResult = false;

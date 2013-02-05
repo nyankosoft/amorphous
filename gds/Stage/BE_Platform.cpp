@@ -147,7 +147,7 @@ void CBE_Platform::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other
 		if( !pController )
 			return;
 
-		SGameMessage msg;
+		GameMessage msg;
 		msg.effect = GM_DOOR_TOUCHED;
 		msg.sender = pCopyEnt_Self->Self();
 		msg.pEntity0      = pCopyEnt_Other;
@@ -159,7 +159,7 @@ void CBE_Platform::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other
 }
 
 
-void CBE_Platform::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Platform::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	short& rState = pCopyEnt_Self->s1;
 	float& rfTarget = pCopyEnt_Self->f5;

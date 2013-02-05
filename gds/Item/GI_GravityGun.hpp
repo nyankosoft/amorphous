@@ -13,7 +13,7 @@ namespace amorphous
 class GravityGun : public CGI_Weapon
 {
 
-	CEntityHandle<> m_Target;	/// item the gravity gun is currently holding
+	EntityHandle<> m_Target;	/// item the gravity gun is currently holding
 
 	int m_iHoldingTargetToggle;
 
@@ -85,7 +85,7 @@ inline void GravityGun::Serialize( IArchive& ar, const unsigned int version )
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
 	{
-		m_Target = CEntityHandle<>();
+		m_Target = EntityHandle<>();
 		m_iHoldingTargetToggle = 0;
 	}
 }

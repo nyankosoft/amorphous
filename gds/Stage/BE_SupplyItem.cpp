@@ -63,7 +63,7 @@ void CBE_SupplyItem::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Oth
 {
 	if( pCopyEnt_Other )
 	{
-		SGameMessage msg;
+		GameMessage msg;
 		msg.sender = pCopyEnt_Self->Self();
 
 		// set the kind of item as basic information
@@ -81,7 +81,7 @@ void CBE_SupplyItem::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Oth
 }
 
 
-void CBE_SupplyItem::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_SupplyItem::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.effect )
 	{
@@ -160,7 +160,7 @@ bool CBE_SupplyItem::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_SupplyItem::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_strItemName;
 	ar & m_iEffect;

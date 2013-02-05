@@ -294,7 +294,7 @@ void CBE_Explosive::GrenadeMove(CCopyEntity* pCopyEnt)
 	}
 }
 
-void CBE_Explosive::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Explosive::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.effect )
 	{

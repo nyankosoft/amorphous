@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CStageLoader
+class StageLoader
 {
 public:
 

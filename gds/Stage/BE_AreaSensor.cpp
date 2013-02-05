@@ -56,7 +56,7 @@ void CBE_AreaSensor::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Oth
 	rTimePlayerLeft = iCurrentTime;
 
 	// notify the parent entity that the player has been detected by the sensor
-	SGameMessage message;
+	GameMessage message;
 	message.iEffect = GM_ENTITY_DETECTED_BY_SENSOR;
 	message.pSenderEntity = pCopyEnt_Self;
 //	message.s1 = (short)pCopyEnt_Self->s1;	// set the sensor id
@@ -70,7 +70,7 @@ void CBE_AreaSensor::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Oth
 
 void CBE_AreaSensor::Serialize( IArchive& ar, const unsigned int version )
 {
-///	CBaseEntity::Serialize( ar, version );
+///	BaseEntity::Serialize( ar, version );
 
 }
 

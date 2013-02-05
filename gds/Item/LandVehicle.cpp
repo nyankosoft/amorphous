@@ -239,7 +239,7 @@ void ArmedVehicle::UpdateTarget()
 		}
 	}
 
-	vector< CEntityHandle<> >& vecEntity = m_pRadar->EntityBuffer();
+	vector< EntityHandle<> >& vecEntity = m_pRadar->EntityBuffer();
 	const size_t num_entities = vecEntity.size();
 	for( size_t i=0; i<num_entities; i++ )
 	{
@@ -256,7 +256,7 @@ void ArmedVehicle::UpdateTarget()
 		if( dist_to_target < max_range )
 		{
 			//vecCandidate.push_back( vecEntity[i] );
-			m_Target = CEntityHandle<>( pEntity );
+			m_Target = EntityHandle<>( pEntity );
 		}
 	}
 
@@ -282,7 +282,7 @@ void ArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_vecTurret;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
-		m_Target = CEntityHandle<>();
+		m_Target = EntityHandle<>();
 
 //	if( ar.GetMode() == IArchive::MODE_INPUT )
 //	{

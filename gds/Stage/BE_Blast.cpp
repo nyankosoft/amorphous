@@ -98,7 +98,7 @@ void CBE_Blast::Act(CCopyEntity* pCopyEnt)
 	m_pStage->CheckCollision( tr );
 
 	// check if the candidates are really taking the blast
-	SGameMessage msg;
+	GameMessage msg;
 	msg.sender = pCopyEnt->Self();	// sender is the blast;
 	msg.effect = GM_DAMAGE;
 	msg.s1 = DMG_BLAST;
@@ -209,7 +209,7 @@ bool CBE_Blast::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_Blast::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_fBaseDamage;
 	ar & m_fMaxBlastRadius;

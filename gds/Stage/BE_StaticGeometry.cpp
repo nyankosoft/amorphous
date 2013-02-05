@@ -91,7 +91,7 @@ void CBE_StaticGeometry::ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself )
 }
 
 
-void CBE_StaticGeometry::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_StaticGeometry::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 }
 
@@ -119,7 +119,7 @@ bool CBE_StaticGeometry::LoadSpecificPropertiesFromFile( CTextFileScanner& scann
 
 void CBE_StaticGeometry::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 }
 
 

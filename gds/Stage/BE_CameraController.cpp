@@ -91,8 +91,8 @@ void CBE_CameraController::GetActiveCameraIndices( CCopyEntity* pCopyEnt,
 	{
 		shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[i].Get();
 
-		shared_ptr<CScriptedCameraEntity> pScriptedCamEntity
-			= boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+		shared_ptr<ScriptedCameraEntity> pScriptedCamEntity
+			= boost::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 		if( pScriptedCamEntity->GetPath().IsAvailable( time_in_stage ) )
 			active_cam_indices.push_back( (uint)i );
@@ -115,14 +115,14 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		if( !pCameraEntity )
 			continue;
 
-		if( pCameraEntity->pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_SCRIPTEDCAMERA )
+		if( pCameraEntity->pBaseEntity->GetArchiveObjectID() != BaseEntity::BE_SCRIPTEDCAMERA )
 			continue;
 
 		// update camera
 		pCameraEntity->pBaseEntity->Act( pCameraEntity.get() );
 
-		shared_ptr<CScriptedCameraEntity> pScriptedCamEntity
-			= boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+		shared_ptr<ScriptedCameraEntity> pScriptedCamEntity
+			= boost::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 		if( pScriptedCamEntity->GetPath().IsExpired( time_in_stage ) )
 		{
@@ -148,9 +148,9 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		LOG_PRINT( "- Starting a cut scene" );
 
 		if( pCurrentCameraEntity )
-			m_PrevCameraEntity = CEntityHandle<>( pCurrentCameraEntity->Self() );
+			m_PrevCameraEntity = EntityHandle<>( pCurrentCameraEntity->Self() );
 		else
-			m_PrevCameraEntity = CEntityHandle<>();
+			m_PrevCameraEntity = EntityHandle<>();
 
 		// set the camera controller entity as the camera entity of the stage
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );
@@ -174,7 +174,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 }
 
 
-void CBE_CameraController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_CameraController::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.effect )
 	{
@@ -212,7 +212,7 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 	if( NUM_MAX_ACTIVE_CAMERAS < num_active_cameras )
 		num_active_cameras = NUM_MAX_ACTIVE_CAMERAS;
 
-	shared_ptr<CScriptedCameraEntity> apCameraEntity[NUM_MAX_ACTIVE_CAMERAS];
+	shared_ptr<ScriptedCameraEntity> apCameraEntity[NUM_MAX_ACTIVE_CAMERAS];
 
 	if( num_active_cameras == 1
 	 || 2 <= num_active_cameras && ms_NumAvailableTextureRenderTargets < 2 )
@@ -234,7 +234,7 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 			if( !IsValidEntity(pCameraEntity.get()) )
 				continue;
 
-			apCameraEntity[i] = boost::dynamic_pointer_cast<CScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+			apCameraEntity[i] = boost::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 			ms_apTextureRenderTarget[i]->SetRenderTarget();
 
@@ -358,7 +358,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 	{
 		// set the previous camera entity
 		m_pStage->GetEntitySet()->SetCameraEntity( pPrevCamEntity );
-		m_PrevCameraEntity = CEntityHandle<>();
+		m_PrevCameraEntity = EntityHandle<>();
 	}
 
 	// terminate all the camera entities
@@ -389,7 +389,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 
 bool CBE_CameraController::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
-	CBaseEntity::LoadSpecificPropertiesFromFile( scanner );
+	BaseEntity::LoadSpecificPropertiesFromFile( scanner );
 
 	if( scanner.TryScanBool( "CUTSCENE", "YES/NO", m_bUseCutsceneInputHandler ) )
 		return true;
@@ -400,7 +400,7 @@ bool CBE_CameraController::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 
 void CBE_CameraController::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_bUseCutsceneInputHandler;
 }

@@ -181,7 +181,7 @@ void CGameTask_AsyncStageLoader::AsyncLoadThreadMain()
 
 	if( !m_pStage )
 	{
-		CStageLoader loader;
+		StageLoader loader;
 		m_pStage = loader.CreateStage();
 	}
 

@@ -108,7 +108,7 @@ void CBE_Light::Init()
 
 void CBE_Light::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-//	CLightEntity *pLightEntity = dynamic_cast<CLightEntity *>(pCopyEnt);
+//	LightEntity *pLightEntity = dynamic_cast<LightEntity *>(pCopyEnt);
 
 //	pLightEntity->m_pLightHolder = GetPooledLight( pLightEntity->GetLightType() );
 }
@@ -164,7 +164,7 @@ bool CBE_Light::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_Light::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_TypeFlag;
 

@@ -60,7 +60,7 @@ void CCopyEntity::DisconnectFromParentAndChildren()
 
 				// set null entity handle to the unused entry
 				// - not a required operation. Just to make things clear
-				m_pParent->m_aChild[ m_pParent->iNumChildren-1 ] = CEntityHandle<>();
+				m_pParent->m_aChild[ m_pParent->iNumChildren-1 ] = EntityHandle<>();
 
 				m_pParent->iNumChildren--;
 

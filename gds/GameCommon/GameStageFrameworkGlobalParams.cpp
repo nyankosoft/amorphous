@@ -42,9 +42,9 @@ bool CGameStageFrameworkGlobalParams::LoadFromTextFile( const std::string& filen
 
 void CGameStageFrameworkGlobalParams::UpdateParams()
 {
-	CEntitySet::SetDefaultPhysicsTimestep( m_fDefaultPhysicsSimulationTimestep );
+	EntityManager::SetDefaultPhysicsTimestep( m_fDefaultPhysicsSimulationTimestep );
 
-//	CScreenEffectManager::SetDefaultShBaderFilename( m_DefaultShaderFilename );
+//	ScreenEffectManager::SetDefaultShBaderFilename( m_DefaultShaderFilename );
 
 	CGameApplicationBase::SetDefaultSleepTime( m_DefaultSleepTimeMS );
 

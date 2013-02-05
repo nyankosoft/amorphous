@@ -505,7 +505,7 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 		CCopyEntity& hit_entity = *pCopyEnt_Other;
 
 		// send message to the entity hit by the bullet
-		SGameMessage msg;
+		GameMessage msg;
 
 		msg.effect = GM_DAMAGE;
 		msg.s1 = DMG_BULLET;
@@ -677,7 +677,7 @@ bool CBE_Bullet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_Bullet::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_BillboardTextureFilepath;
 

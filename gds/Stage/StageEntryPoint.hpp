@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CStageEntryPoint
+class StageEntryPoint
 {
 	string m_strName;
 
@@ -20,8 +20,8 @@ class CStageEntryPoint
 	Matrix33 m_matDefaultOrient;
 
 public:
-	CStageEntryPoint();
-	~CStageEntryPoint() {}
+	StageEntryPoint();
+	~StageEntryPoint() {}
 
 	string& GetName() { return m_strName; }
 	void SetName() { }

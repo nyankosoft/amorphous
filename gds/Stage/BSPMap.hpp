@@ -28,7 +28,7 @@ namespace amorphous
 #define NUM_MAX_POLYGONS_PER_TEXTURE 1024
 
 
-class CEntitySet;
+class EntityManager;
 class CTriangleMesh;
 class CDynamicLightManagerForStaticGeometry;
 
@@ -48,7 +48,7 @@ public:
 private:
 
 	/// collision detection
-	CBSPTree m_BSPTree;
+	BSPTree m_BSPTree;
 
 	CBSPTree_CollisionModel m_BSPCollisionModel;
 
@@ -165,7 +165,7 @@ public:
 
 	void WriteToFile( const char *pFilename );
 
-	void MakeEntityTree( CBSPTree& beptree );
+	void MakeEntityTree( BSPTree& beptree );
 
 	/// collision detection
 	int ClipTrace(STrace& tr);
@@ -179,7 +179,7 @@ public:
 
 //	void RenderGlareImage();
 
-	void SetDynamicLightManager( CEntitySet* pEntitySet );
+	void SetDynamicLightManager( EntityManager* pEntitySet );
 
 	inline void GetIntersectingPolygons( Vector3& vCenter, float fRadius, AABB3& aabb,
 		                                 vector<int>& veciLitPolygonIndex )

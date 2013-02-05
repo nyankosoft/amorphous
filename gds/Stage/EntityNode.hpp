@@ -19,7 +19,7 @@ namespace amorphous
  * - the entities are linked to the entity node
  * - used for both rendering and collision detection
  */
-class CEntityNode
+class EntityNode
 {
 	bool leaf;
 	SPlane m_Plane;
@@ -34,14 +34,14 @@ class CEntityNode
 	/// - m_EntityLinkHead.pOwner and m_EntityLinkHead.pPrev is always NULL
 	CLinkNode<CCopyEntity> m_EntityLinkHead;
 
-	CLinkNode<CLightEntity> m_LightEntityLinkHead;
+	CLinkNode<LightEntity> m_LightEntityLinkHead;
 
 	short m_sCellIndex;	// index to the corresponding cell - only valid for complete leaf entity node
 
 	/// bounding-box that represents sub-space of the node
 	AABB3 m_AABB;
 
-	CEntitySet* m_pEntitySet;
+	EntityManager* m_pEntitySet;
 
 	CStage *m_pStage;
 
@@ -52,38 +52,38 @@ public:
 
 	static int ms_NumRenderedEntities;
 
-	CEntityNode();
+	EntityNode();
 
-	void CheckPosition_r(STrace& tr, CEntityNode* paEntTree);
-	void CheckPosition_r(CTrace& tr, CEntityNode* paEntTree);
-	void GetVisibleEntities_r(CViewFrustumTest& vf_test, CEntityNode* paEntTree);
-	void GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntityNode* paEntTree );
-	void ClipTrace_r(STrace& tr, CEntityNode* paEntTree);
+	void CheckPosition_r(STrace& tr, EntityNode* paEntTree);
+	void CheckPosition_r(CTrace& tr, EntityNode* paEntTree);
+	void GetVisibleEntities_r(CViewFrustumTest& vf_test, EntityNode* paEntTree);
+	void GetOverlappingEntities( COverlapTestAABB& overlap_test, EntityNode* paEntTree );
+	void ClipTrace_r(STrace& tr, EntityNode* paEntTree);
 
 	/// Link 'pEntity' to this entity node.
 	/// 'pEntity' is set to the head element of the entity list of this entity node
 	void Link(CCopyEntity* pEntity) { m_EntityLinkHead.InsertNext( &pEntity->m_EntityLink ); }
 
 	/// Render all the entites on this entity tree node.
-	void RenderEntities( CEntityRenderer& entity_renderer, Camera& rCam );
+	void RenderEntities( EntityRenderer& entity_renderer, Camera& rCam );
 
 	/// Recursively render all the entites in this sub-space.
 	void RenderEntitiesWithDownwardTraversal(
-		CEntityNode *pEntityTree,
-		CEntityRenderer& entity_renderer,
+		EntityNode *pEntityTree,
+		EntityRenderer& entity_renderer,
 		Camera& rCam,
 		bool do_camera_frustom_culling
 	);
 
 	/// link a light entity entity management
-	void LinkLightEntity_r(CLightEntity *pLightEntity, CEntityNode* paEntTree);
+	void LinkLightEntity_r(LightEntity *pLightEntity, EntityNode* paEntTree);
 
 	/// checks if the light is reaching the entity
 	/// if it is true, registers the light index to the entity
-	void CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree );
+	void CheckLight_r( CCopyEntity *pEntity, EntityNode* paEntTree );
 
-	friend class CEntityRenderManager;
-	friend class CEntitySet;
+	friend class EntityRenderManager;
+	friend class EntityManager;
 };
 
 } // namespace amorphous

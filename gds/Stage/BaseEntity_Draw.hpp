@@ -19,7 +19,7 @@ extern void SetLightsToShader( CCopyEntity& entity,  ShaderManager& rShaderMgr )
 extern void InitMeshRenderMethod( CCopyEntity &entity,
 								  boost::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader = boost::shared_ptr<BlendTransformsLoader>() );
 
-extern void CreateMeshRenderMethod( CEntityHandle<>& entity, 
+extern void CreateMeshRenderMethod( EntityHandle<>& entity, 
 							        ShaderHandle& shader,
 							        ShaderTechniqueHandle& tech );
 
@@ -29,7 +29,7 @@ extern void UpdateEntityForRendering( CCopyEntity& entity );
 class CEntityShaderLightParamsLoader : public ShaderParamsLoader
 {
 //	boost::shared_ptr<CCopyEntity> m_pEntity;
-	CEntityHandle<> m_Entity;
+	EntityHandle<> m_Entity;
 
 public:
 
@@ -38,8 +38,8 @@ public:
 	m_Entity(pEntity)
 	{}
 
-//	void SetEntity( boost::shared_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
-	void SetEntity( boost::weak_ptr<CCopyEntity> pEntity ) { m_Entity = CEntityHandle<>( pEntity ); }
+//	void SetEntity( boost::shared_ptr<CCopyEntity> pEntity ) { m_Entity = EntityHandle<>( pEntity ); }
+	void SetEntity( boost::weak_ptr<CCopyEntity> pEntity ) { m_Entity = EntityHandle<>( pEntity ); }
 
 	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{

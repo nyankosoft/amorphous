@@ -68,7 +68,7 @@ void CThirdPersonMotionController::Update()
 //	if( 1.0f < vInput.GetLength() )
 //		vInput = vInput / GetLength();
 
-	CEntityHandle<ItemEntity> entity = m_pCharacter->GetItemEntity();
+	EntityHandle<ItemEntity> entity = m_pCharacter->GetItemEntity();
 	shared_ptr<ItemEntity> pEntity = entity.Get();
 	if( !pEntity )
 		return;

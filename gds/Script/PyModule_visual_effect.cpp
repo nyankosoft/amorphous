@@ -44,34 +44,34 @@ lens_flare.AddLensFlareRect( dim=0, scale_factor=1.0, dist_factor=1.0, color=gfx
 */
 
 
-static const int gs_DefaultEffectPriorityIDforScript = CScreenEffectManager::MAX_EFFECT_PRIORITY_ID;
+static const int gs_DefaultEffectPriorityIDforScript = ScreenEffectManager::MAX_EFFECT_PRIORITY_ID;
 
 
 
-inline static shared_ptr<CScreenEffectManager> GetScreenEffectManager()
+inline static shared_ptr<ScreenEffectManager> GetScreenEffectManager()
 {
 
 	shared_ptr<CStage> pStage = stage_util::GetStageForScript();
 	if( pStage )
 		return pStage->GetScreenEffectManager();
 	else
-		return shared_ptr<CScreenEffectManager>();
+		return shared_ptr<ScreenEffectManager>();
 }
 
 
-inline static shared_ptr<CEntityRenderManager> GetEntityRenderManager()
+inline static shared_ptr<EntityRenderManager> GetEntityRenderManager()
 {
 	shared_ptr<CStage> pStage = stage_util::GetStageForScript();
 	if( pStage )
 		return pStage->GetEntitySet()->GetRenderManager();
 	else
-		return shared_ptr<CEntityRenderManager>();
+		return shared_ptr<EntityRenderManager>();
 }
 
 
-void (CScreenEffectManager::*SetBlurEffect)( float fBlurFactor, int priority_id )            = &CScreenEffectManager::SetBlurEffect;
-void (CScreenEffectManager::*SetBlurEffectIWH)( int width, int height, int priority_id )     = &CScreenEffectManager::SetBlurEffect;
-void (CScreenEffectManager::*SetBlurEffectFWH)( float width, float height, int priority_id ) = &CScreenEffectManager::SetBlurEffect;
+void (ScreenEffectManager::*SetBlurEffect)( float fBlurFactor, int priority_id )            = &ScreenEffectManager::SetBlurEffect;
+void (ScreenEffectManager::*SetBlurEffectIWH)( int width, int height, int priority_id )     = &ScreenEffectManager::SetBlurEffect;
+void (ScreenEffectManager::*SetBlurEffectFWH)( float width, float height, int priority_id ) = &ScreenEffectManager::SetBlurEffect;
 
 void SetShadowMapCameraShiftDistance( float shift_distance )
 {
@@ -91,41 +91,41 @@ BOOST_PYTHON_MODULE(visual_effect)
 	def( "GetScreenEffectManager", GetScreenEffectManager );
 	def( "GetEntityRenderManager", GetEntityRenderManager );
 
-	class_<CEntityRenderManager, shared_ptr<CEntityRenderManager> >("EntityRenderManager")
-		.def( "EnableEnvMap",            &CEntityRenderManager::EnableEnvironmentMap )
-		.def( "DisableEnvMap",           &CEntityRenderManager::DisableEnvironmentMap )
-		.def( "AddEnvMapTarget",         &CEntityRenderManager::AddEnvMapTarget )
-		.def( "SaveEnvMapTextureToFile", &CEntityRenderManager::SaveEnvMapTextureToFile )
-		.def( "RemoveEnvMapTarget",      &CEntityRenderManager::RemoveEnvMapTarget )
-		.def( "AddPlanarReflector",      &CEntityRenderManager::AddPlanarReflector )
-		.def( "RemovePlanarReflector",   &CEntityRenderManager::RemovePlanarReflector )
-		.def( "EnableSoftShadow",        &CEntityRenderManager::EnableSoftShadow, ( py::arg("softness")=1.0f, py::arg("shadowmap_size") = 512 ) )
-		.def( "EnableShadowMap",         &CEntityRenderManager::EnableShadowMap )
-		.def( "DisableShadowMap",        &CEntityRenderManager::DisableShadowMap )
+	class_<EntityRenderManager, shared_ptr<EntityRenderManager> >("EntityRenderManager")
+		.def( "EnableEnvMap",            &EntityRenderManager::EnableEnvironmentMap )
+		.def( "DisableEnvMap",           &EntityRenderManager::DisableEnvironmentMap )
+		.def( "AddEnvMapTarget",         &EntityRenderManager::AddEnvMapTarget )
+		.def( "SaveEnvMapTextureToFile", &EntityRenderManager::SaveEnvMapTextureToFile )
+		.def( "RemoveEnvMapTarget",      &EntityRenderManager::RemoveEnvMapTarget )
+		.def( "AddPlanarReflector",      &EntityRenderManager::AddPlanarReflector )
+		.def( "RemovePlanarReflector",   &EntityRenderManager::RemovePlanarReflector )
+		.def( "EnableSoftShadow",        &EntityRenderManager::EnableSoftShadow, ( py::arg("softness")=1.0f, py::arg("shadowmap_size") = 512 ) )
+		.def( "EnableShadowMap",         &EntityRenderManager::EnableShadowMap )
+		.def( "DisableShadowMap",        &EntityRenderManager::DisableShadowMap )
 	;
 
 	static const int pid = gs_DefaultEffectPriorityIDforScript;
 
 	// SetX -> EnableX
 	// ClearX -> DisableX
-	class_<CScreenEffectManager, shared_ptr<CScreenEffectManager> >("ScreenEffectManager")
-		.def( "FadeOutTo",              &CScreenEffectManager::FadeOutTo )
-		.def( "FadeInFrom",             &CScreenEffectManager::FadeInFrom )
-//		.def( "SetFadeEffect",          &CScreenEffectManager::SetFadeEffect )
+	class_<ScreenEffectManager, shared_ptr<ScreenEffectManager> >("ScreenEffectManager")
+		.def( "FadeOutTo",              &ScreenEffectManager::FadeOutTo )
+		.def( "FadeInFrom",             &ScreenEffectManager::FadeInFrom )
+//		.def( "SetFadeEffect",          &ScreenEffectManager::SetFadeEffect )
 
-		.def( "SetGlare",               &CScreenEffectManager::SetGlareLuminanceThreshold,   ( py::arg("threshold"), py::arg("priority_id") = pid ) )
-		.def( "ClearGlare",             &CScreenEffectManager::ClearGlareLuminanceThreshold, ( py::arg("priority_id") = pid ) )
-		.def( "SetMotionBlur",          &CScreenEffectManager::SetMotionBlurWeight,          ( py::arg("motion_blur_weight"), py::arg("priority_id") = pid ) )
-		.def( "ClearMotionBlur",        &CScreenEffectManager::ClearMotionBlur,              ( py::arg("priority_id") = pid ) )
+		.def( "SetGlare",               &ScreenEffectManager::SetGlareLuminanceThreshold,   ( py::arg("threshold"), py::arg("priority_id") = pid ) )
+		.def( "ClearGlare",             &ScreenEffectManager::ClearGlareLuminanceThreshold, ( py::arg("priority_id") = pid ) )
+		.def( "SetMotionBlur",          &ScreenEffectManager::SetMotionBlurWeight,          ( py::arg("motion_blur_weight"), py::arg("priority_id") = pid ) )
+		.def( "ClearMotionBlur",        &ScreenEffectManager::ClearMotionBlur,              ( py::arg("priority_id") = pid ) )
 		.def( "SetBlur",                SetBlurEffect,                                       ( py::arg("blur_factor"), py::arg("priority_id") = pid ) )
 		.def( "SetBlur",                SetBlurEffectIWH,                                    ( py::arg("width"), py::arg("height"), py::arg("priority_id") = pid ) )
 		.def( "SetBlur",                SetBlurEffectFWH,                                    ( py::arg("width"), py::arg("height"), py::arg("priority_id") = pid ) )
-		.def( "ClearBlur",              &CScreenEffectManager::ClearBlurEffect,              ( py::arg("priority_id") = pid ) )
-		.def( "SetMonochrome",          &CScreenEffectManager::SetMonochromeEffect,               ( py::arg("r"), py::arg("g"), py::arg("b"), py::arg("blend_ratio") = 1.0f, py::arg("priority_id") = pid ) )
-		.def( "ClearMonochrome",        &CScreenEffectManager::ClearMonochromeEffect,             ( py::arg("priority_id") = pid ) )
-//		.def( "SetHDRLightingParams",   &CScreenEffectManager::SetHDRLightingParams )
-		.def( "EnableHDRLighting",      &CScreenEffectManager::EnableHDRLighting )
-		.def( "GetLensFlare",           &CScreenEffectManager::GetLensFlare )
+		.def( "ClearBlur",              &ScreenEffectManager::ClearBlurEffect,              ( py::arg("priority_id") = pid ) )
+		.def( "SetMonochrome",          &ScreenEffectManager::SetMonochromeEffect,               ( py::arg("r"), py::arg("g"), py::arg("b"), py::arg("blend_ratio") = 1.0f, py::arg("priority_id") = pid ) )
+		.def( "ClearMonochrome",        &ScreenEffectManager::ClearMonochromeEffect,             ( py::arg("priority_id") = pid ) )
+//		.def( "SetHDRLightingParams",   &ScreenEffectManager::SetHDRLightingParams )
+		.def( "EnableHDRLighting",      &ScreenEffectManager::EnableHDRLighting )
+		.def( "GetLensFlare",           &ScreenEffectManager::GetLensFlare )
 	;
 }
 

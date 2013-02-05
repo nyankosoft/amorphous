@@ -13,29 +13,29 @@ using namespace serialization;
 
 
 /**
- used by CBaseEntityManager to
+ used by BaseEntityManager to
  - serialize base entities
  - load base eitites from database
  - save base eitites to database
 */
-class CBaseEntityFactory : public IArchiveObjectFactory
+class BaseEntityFactory : public IArchiveObjectFactory
 {
 
 public:
 
-	CBaseEntityFactory();
+	BaseEntityFactory();
 
-	virtual ~CBaseEntityFactory();
+	virtual ~BaseEntityFactory();
 
 	void Init();
 
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 
 	/// create a predefined base entity
-	CBaseEntity *CreateBaseEntity( const unsigned int id );
+	BaseEntity *CreateBaseEntity( const unsigned int id );
 
 	/// implemented by user to create instances of user defined base entity
-	virtual CBaseEntity *CreateUserDefinedBaseEntity( const unsigned id ) { return NULL; }
+	virtual BaseEntity *CreateUserDefinedBaseEntity( const unsigned id ) { return NULL; }
 };
 
 
@@ -50,7 +50,7 @@ public:
 
 #include <gsf/Stage/BaseEntityFactory.hpp>
 
-class CUserBaseEntityFactory : public CBaseEntityFactory
+class CUserBaseEntityFactory : public BaseEntityFactory
 {
 public:
 
@@ -59,7 +59,7 @@ public:
 	virtual ~CUserBaseEntityFactory();
 
 	/// implemented by user to create instances of user defined base entity
-	virtual CBaseEntity *CreateUserDefinedBaseEntity( const unsigned id );
+	virtual BaseEntity *CreateUserDefinedBaseEntity( const unsigned id );
 }
 
 
@@ -76,7 +76,7 @@ public:
 #include "UserDefinedBaseEntity02.h"
 
 
-CBaseEntity *CUserBaseEntityFactory::CreateUserDefinedBaseEntity( const unsigned id )
+BaseEntity *CUserBaseEntityFactory::CreateUserDefinedBaseEntity( const unsigned id )
 {
 	switch( id )
 	{

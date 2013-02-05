@@ -90,7 +90,7 @@ class ArmedVehicle : public GameItem
 	boost::shared_ptr<item::LandVehicle> m_pLandVehicleItem;
 
 	// current target
-	CEntityHandle<> m_Target;
+	EntityHandle<> m_Target;
 
 //	std::vector< boost::shared_ptr<CRotatableTurret> > m_vecpTurret;
 

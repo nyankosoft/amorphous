@@ -55,10 +55,10 @@ void CGI_Ammunition::Serialize( IArchive& ar, const unsigned int version )
 void CGI_Ammunition::OnOwnerLeftStage()
 {
 	m_AmmoBaseEntity.SetBaseEntityPointer( NULL );
-	m_AmmoBaseEntity.SetState( CBaseEntityHandle::STATE_UNINITIALIZED );
+	m_AmmoBaseEntity.SetState( BaseEntityHandle::STATE_UNINITIALIZED );
 
 	m_MuzzleFlashBaseEntity.SetBaseEntityPointer( NULL );
-	m_MuzzleFlashBaseEntity.SetState( CBaseEntityHandle::STATE_UNINITIALIZED );
+	m_MuzzleFlashBaseEntity.SetState( BaseEntityHandle::STATE_UNINITIALIZED );
 }
 
 

@@ -255,8 +255,8 @@ void HUD_PlayerAircraft::Update( float  dt )
 	HUD_PlayerBase::Update( dt );
 
 	// update the center position of the HUD
-	CBaseEntity *pBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
-	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
+	BaseEntity *pBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
+	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != BaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
 		return;
 
 	if( m_pTimeText )
@@ -333,9 +333,9 @@ void HUD_PlayerAircraft::RenderImpl()
 {
 	PROFILE_FUNCTION();
 
-	CBaseEntity *pBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
+	BaseEntity *pBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 
-	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
+	if( !pBaseEntity || pBaseEntity->GetArchiveObjectID() != BaseEntity::BE_PLAYERPSEUDOAIRCRAFT )
 		return;
 
 	if( !m_pGraphicsEffectManager )

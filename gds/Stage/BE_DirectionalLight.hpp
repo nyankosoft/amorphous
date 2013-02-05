@@ -31,7 +31,7 @@ public:
 
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
 
-//	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+//	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 //	void CheckEntitiesInLightRange( CCopyEntity* pCopyEnt, short sLightIndex );
 

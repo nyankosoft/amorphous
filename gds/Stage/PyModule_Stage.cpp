@@ -46,7 +46,7 @@ CCopyEntity *CreateNamedEntity( const char *entity_name,
 	if( !gs_pTargetStage )
 		return NULL;
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_name );
 
 	CCopyEntityDesc desc;
@@ -73,7 +73,7 @@ static inline CCopyEntity *CreateNamedEntityHrz( const char *entity_name,
 	if( !gs_pTargetStage )
 		return NULL;
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_name );
 
 	CCopyEntityDesc desc;
@@ -147,7 +147,7 @@ PyObject* CreateStaticEntityFromMesh( PyObject* self, PyObject* args, PyObject *
 		return Py_None;
 
 	CStageMiscUtility util( pStage );
-	CEntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
+	EntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
 
 	return Py_None;
 }
@@ -182,7 +182,7 @@ PyObject* CreateEntity( PyObject* self, PyObject* args, PyObject *keywords )
 		return Py_None;
 
 //	CStageMiscUtility util( pStage );
-//	CEntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
+//	EntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
 
 	return Py_None;
 }
@@ -283,7 +283,7 @@ PyObject* LoadSkybox( PyObject* self, PyObject* args )
 	CCopyEntity* pSkyboxEntity = CreateNamedEntityHrz( "skybox", base_entity_name, Vector3(0,0,0), 0, 0 );
 
 	if( !pSkyboxEntity
-	 || pSkyboxEntity->pBaseEntity->GetArchiveObjectID() != CBaseEntity::BE_SKYBOX )
+	 || pSkyboxEntity->pBaseEntity->GetArchiveObjectID() != BaseEntity::BE_SKYBOX )
 	{
 		return Py_None;
 	}
@@ -493,7 +493,7 @@ PyObject* SetCameraEntity( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "s", &entity_name );
 
-	CEntitySet *pEntitySet = gs_pTargetStage->GetEntitySet();
+	EntityManager *pEntitySet = gs_pTargetStage->GetEntitySet();
 	pEntitySet->SetCameraEntity( pEntitySet->GetEntityByName(entity_name) );
 
 	return Py_None;

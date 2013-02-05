@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-class CBE_AreaSensor : public CBaseEntity
+class CBE_AreaSensor : public BaseEntity
 {
 private:
 
@@ -24,7 +24,7 @@ public:
 	// void Draw(CCopyEntity* pCopyEnt) {} 
 	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	// void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
+	// void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
 
 	virtual unsigned int GetArchiveObjectID() const { return BE_AREASENSOR; }
 

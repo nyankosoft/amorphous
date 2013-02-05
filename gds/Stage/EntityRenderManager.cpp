@@ -54,13 +54,13 @@ class CPlanarReflectionGroup
 {
 	SPlane m_Plane;
 
-	std::vector< CEntityHandle<> > m_Entities;
+	std::vector< EntityHandle<> > m_Entities;
 
 	boost::shared_ptr<TextureRenderTarget> m_pReflectionRenderTarget;
 
 	bool m_TextureUpdated;
 
-	int FindEntity( CEntityHandle<>& entity )
+	int FindEntity( EntityHandle<>& entity )
 	{
 		boost::shared_ptr<CCopyEntity> pEntity = entity.Get();
 		if( !pEntity )
@@ -98,7 +98,7 @@ public:
 		m_pReflectionRenderTarget.reset();
 	}
 
-	void AddEntity( CEntityHandle<>& entity )
+	void AddEntity( EntityHandle<>& entity )
 	{
 		int entity_index = FindEntity( entity );
 		if( entity_index == -1 )
@@ -110,7 +110,7 @@ public:
 		}
 	}
 
-	Result::Name RemoveEntity( CEntityHandle<>& entity )
+	Result::Name RemoveEntity( EntityHandle<>& entity )
 	{
 		int entity_index = FindEntity( entity );
 		if( 0 <= entity_index && entity_index < (int)m_Entities.size() )
@@ -122,7 +122,7 @@ public:
 			return Result::INVALID_ARGS;
 	}
 
-	friend class CEntityRenderManager;
+	friend class EntityRenderManager;
 };
 
 std::vector<CPlanarReflectionGroup> s_PlanarReflectionGroups;
@@ -134,14 +134,14 @@ class CCubeTextureParamsLoader : public ShaderParamsLoader
 	int m_CubeTexIndex;
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
 
-	CEntityHandle<> m_Entity; ///< envmap target
+	EntityHandle<> m_Entity; ///< envmap target
 
-	CEntityRenderManager *m_pEntityRenderManager;
+	EntityRenderManager *m_pEntityRenderManager;
 
 public:
 
 	CCubeTextureParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>(),
-		                      CEntityRenderManager *pEntityRenderMgr = NULL,
+		                      EntityRenderManager *pEntityRenderMgr = NULL,
 							  int cube_tex_index = 0 )
 		:
 	m_Entity(pEntity),
@@ -173,11 +173,11 @@ public:
 
 class CEntityShadowMapRenderer : public ShadowMapSceneRenderer
 {
-	CEntityRenderManager *m_pRenderer;
+	EntityRenderManager *m_pRenderer;
 
 public:
 
-	CEntityShadowMapRenderer(CEntityRenderManager *pRenderer)
+	CEntityShadowMapRenderer(EntityRenderManager *pRenderer)
 		:
 	m_pRenderer(pRenderer)
 	{}
@@ -202,11 +202,11 @@ void CEntityShadowMapRenderer::RenderShadowReceivers( Camera& camera )
 
 class CEntityEnvMapRenderTask : public CRenderTask
 {
-	CEntityRenderManager *m_pRenderManager;
+	EntityRenderManager *m_pRenderManager;
 
 public:
 
-	CEntityEnvMapRenderTask( CEntityRenderManager *pRenderMgr )
+	CEntityEnvMapRenderTask( EntityRenderManager *pRenderMgr )
 		:
 	m_pRenderManager(pRenderMgr)
 	{
@@ -222,17 +222,17 @@ public:
 
 class CEntityShadowMapRenderTask : public CRenderTask
 {
-	CEntityRenderManager *m_pRenderManager;
+	EntityRenderManager *m_pRenderManager;
 
 	Camera *m_pCamera;
 
-//	CScreenEffectManager *m_pScreenEffectManager;
+//	ScreenEffectManager *m_pScreenEffectManager;
 
 public:
 
-	CEntityShadowMapRenderTask( CEntityRenderManager *pRenderMgr,
+	CEntityShadowMapRenderTask( EntityRenderManager *pRenderMgr,
 		Camera *pCam,
-		CScreenEffectManager *pScreenEffectManager)
+		ScreenEffectManager *pScreenEffectManager)
 		:
 	m_pRenderManager(pRenderMgr),
 	m_pCamera(pCam)//,
@@ -259,13 +259,13 @@ public:
 
 class CEntitySceneRenderTask : public CRenderTask
 {
-	CEntityRenderManager *m_pRenderManager;
+	EntityRenderManager *m_pRenderManager;
 
 	Camera *m_pCamera;
 
 public:
 
-	CEntitySceneRenderTask( CEntityRenderManager *pRenderMgr, Camera *pCam )
+	CEntitySceneRenderTask( EntityRenderManager *pRenderMgr, Camera *pCam )
 		:
 	m_pRenderManager(pRenderMgr),
 	m_pCamera(pCam)
@@ -281,10 +281,10 @@ public:
 };
 
 
-string CEntityRenderManager::ms_DefaultFallbackShaderFilename = "Shader\\Default.fx";
+string EntityRenderManager::ms_DefaultFallbackShaderFilename = "Shader\\Default.fx";
 
 
-CEntityRenderManager::CEntityRenderManager( CEntitySet* pEntitySet )
+EntityRenderManager::EntityRenderManager( EntityManager* pEntitySet )
 :
 m_pEntitySet(pEntitySet),
 m_pCubeMapManager(NULL),
@@ -324,7 +324,7 @@ m_CurrentlyRenderedPlanarReflectionSceneID(-1)
 }
 
 
-CEntityRenderManager::~CEntityRenderManager()
+EntityRenderManager::~EntityRenderManager()
 {
 //	ReleaseGraphicsResources();
 
@@ -338,7 +338,7 @@ CEntityRenderManager::~CEntityRenderManager()
 }
 
 
-bool CEntityRenderManager::LoadFallbackShader()
+bool EntityRenderManager::LoadFallbackShader()
 {
 //	m_FallbackShaderFilepath = ms_DefaultFallbackShaderFilename;
 //	if( !m_FallbackShader.Load( m_FallbackShaderFilepath ) )
@@ -361,7 +361,7 @@ bool CEntityRenderManager::LoadFallbackShader()
 }
 
 
-void CEntityRenderManager::UpdateEntityTree( CEntityNode* pRootNode, int num_nodes )
+void EntityRenderManager::UpdateEntityTree( EntityNode* pRootNode, int num_nodes )
 {
 	m_paEntityTree = pRootNode;
 	m_NumEntityNodes = num_nodes;
@@ -371,16 +371,16 @@ void CEntityRenderManager::UpdateEntityTree( CEntityNode* pRootNode, int num_nod
 }
 
 
-void CEntityRenderManager::AddSweepRenderEntity( CBaseEntity* pBaseEntity )
+void EntityRenderManager::AddSweepRenderEntity( BaseEntity* pBaseEntity )
 {
 	m_vecpSweepRenderBaseEntity.push_back( pBaseEntity );
 }
 
 
-void CEntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, Camera& rCam )
+void EntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, Camera& rCam )
 {
-	CEntityNode* pFirstEntNode = m_paEntityTree;
-	CEntityNode* pEntNode = pFirstEntNode + sEntNodeIndex;
+	EntityNode* pFirstEntNode = m_paEntityTree;
+	EntityNode* pEntNode = pFirstEntNode + sEntNodeIndex;
 
 	CStandardEntityRenderer entity_renderer( this );
 	pEntNode->RenderEntities( entity_renderer, rCam );
@@ -395,9 +395,9 @@ void CEntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, Camera& rC
  * put the skybox to the head of the root entity node
  * - assumes that there is only one skybox entity
  */
-void CEntityRenderManager::MoveSkyboxToListHead()
+void EntityRenderManager::MoveSkyboxToListHead()
 {
-	CEntityNode& rRootNode = m_paEntityTree[0];
+	EntityNode& rRootNode = m_paEntityTree[0];
 
 	CCopyEntity *pEntity = NULL, *pPrevEntity;
 	CCopyEntity *pSkyboxEntity = NULL;
@@ -408,7 +408,7 @@ void CEntityRenderManager::MoveSkyboxToListHead()
 	{
 		pEntity = pLinkNode->pOwner;
 
-		if( pEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_SKYBOX )
+		if( pEntity->pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_SKYBOX )
 		{
 			if( pEntity == rRootNode.m_EntityLinkHead.pNext->pOwner )
 				break;	// already placed at the head
@@ -425,7 +425,7 @@ void CEntityRenderManager::MoveSkyboxToListHead()
 }
 
 
-void CEntityRenderManager::RenderZSortTable()
+void EntityRenderManager::RenderZSortTable()
 {
 	int i;
 	CCopyEntity* pEntity;
@@ -467,14 +467,14 @@ void CEntityRenderManager::RenderZSortTable()
 }
 
 
-void CEntityRenderManager::ClearZSortTable()
+void EntityRenderManager::ClearZSortTable()
 {
 	for( int i=0; i<SIZE_ZSORTTABLE; i++ )
 		m_apZSortTable[i] = NULL;
 }
 
 
-void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
+void EntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 {
 	float fZinCameraSpace;
 	int iZSortValue;
@@ -539,13 +539,13 @@ void CEntityRenderManager::SendToZSortTable(CCopyEntity* pCopyEnt)
 }
 
 
-void CEntityRenderManager::RenderScene( Camera& rCam )
+void EntityRenderManager::RenderScene( Camera& rCam )
 {
 	PROFILE_FUNCTION();
 
 	//==================== render the entities ====================
 
-	CEntityNode::ms_NumRenderedEntities = 0;
+	EntityNode::ms_NumRenderedEntities = 0;
 
 	// move the skybox to the head of the list to render it first
 	MoveSkyboxToListHead();
@@ -581,11 +581,11 @@ void CEntityRenderManager::RenderScene( Camera& rCam )
 }
 
 
-void CEntityRenderManager::RenderAllButEnvMapTarget( Camera& rCam, U32 target_entity_id )
+void EntityRenderManager::RenderAllButEnvMapTarget( Camera& rCam, U32 target_entity_id )
 {
 	//==================== render the entities ====================
 
-	CEntityNode::ms_NumRenderedEntities = 0;
+	EntityNode::ms_NumRenderedEntities = 0;
 
 	// render the entity tree by downward traversal
 	CNonEnvMapTargetEntityRenderer non_em_tgt_renderer( target_entity_id );
@@ -608,9 +608,9 @@ void CEntityRenderManager::RenderAllButEnvMapTarget( Camera& rCam, U32 target_en
 }
 
 
-void CEntityRenderManager::RenderShadowCasters( Camera& rCam )
+void EntityRenderManager::RenderShadowCasters( Camera& rCam )
 {
-/*	CEntityNode& rRootNode = m_paEntityTree[0];
+/*	EntityNode& rRootNode = m_paEntityTree[0];
 	if( !m_pShadowManager )
 		return;
 */
@@ -636,7 +636,7 @@ void CEntityRenderManager::RenderShadowCasters( Camera& rCam )
 }
 
 
-void CEntityRenderManager::RenderShadowReceivers( Camera& rCam )
+void EntityRenderManager::RenderShadowReceivers( Camera& rCam )
 {
 	//==================== render the entities ====================
 
@@ -657,7 +657,7 @@ void CEntityRenderManager::RenderShadowReceivers( Camera& rCam )
 }
 
 
-void CEntityRenderManager::SetLightForShadow( const string& light_entity_name )
+void EntityRenderManager::SetLightForShadow( const string& light_entity_name )
 {
 	CCopyEntity *pLightEntity = m_pEntitySet->GetEntityByName( light_entity_name.c_str() );
 	if( pLightEntity )
@@ -667,14 +667,14 @@ void CEntityRenderManager::SetLightForShadow( const string& light_entity_name )
 }
 
 
-void CEntityRenderManager::RenderSceneToCubeMap( Camera& camera )
+void EntityRenderManager::RenderSceneToCubeMap( Camera& camera )
 {
 	RenderAllButEnvMapTarget( camera, m_CurrentEnvMapTargetEntityID );
 }
 
 /*
-void CEntityRenderManager::RenderSceneWithShadowMap( Camera& rCam, 
-													 CScreenEffectManager *pScreenEffectMgr )
+void EntityRenderManager::RenderSceneWithShadowMap( Camera& rCam, 
+													 ScreenEffectManager *pScreenEffectMgr )
 {
 	pScreenEffectMgr->RaiseEffectFlag( ScreenEffect::ShadowMap );
 
@@ -715,7 +715,7 @@ void CEntityRenderManager::RenderSceneWithShadowMap( Camera& rCam,
 }*/
 
 
-void CEntityRenderManager::UpdateEnvironmentMapTargets()
+void EntityRenderManager::UpdateEnvironmentMapTargets()
 {
 	if( m_vecEnvMapTarget.size() == 0 )
 		return;
@@ -740,7 +740,7 @@ void CEntityRenderManager::UpdateEnvironmentMapTargets()
 }
 
 
-void CEntityRenderManager::UpdateEnvironmentMapTextures()
+void EntityRenderManager::UpdateEnvironmentMapTextures()
 {
 	if( m_vecEnvMapTarget.size() == 0 )
 		return;
@@ -767,7 +767,7 @@ void CEntityRenderManager::UpdateEnvironmentMapTextures()
 
 		m_CurrentEnvMapTargetEntityID = m_vecEnvMapTarget[i].m_EntityID;
 
-		// CEntityRenderManager::RenderSceneToCubeMap() is called 6 times in this call
+		// EntityRenderManager::RenderSceneToCubeMap() is called 6 times in this call
 		// to render the scene to cube map texture
 		m_pCubeMapManager->RenderToCubeMap();
 
@@ -776,7 +776,7 @@ void CEntityRenderManager::UpdateEnvironmentMapTextures()
 }
 
 
-Result::Name CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane )
+Result::Name EntityRenderManager::AddPlanarReflector( EntityHandle<>& entity, const SPlane& plane )
 {
 	static uint num_max_planar_reflection_groups = 2;
 
@@ -845,7 +845,7 @@ Result::Name CEntityRenderManager::AddPlanarReflector( CEntityHandle<>& entity, 
 }
 
 
-Result::Name CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group )
+Result::Name EntityRenderManager::RemovePlanarReflector( EntityHandle<>& entity, bool remove_planar_refelection_group )
 {
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
@@ -869,7 +869,7 @@ Result::Name CEntityRenderManager::RemovePlanarReflector( CEntityHandle<>& entit
 }
 
 
-void CEntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group )
+void EntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group )
 {
 	if( !group.m_pReflectionRenderTarget )
 //	if( !m_pMirroredScene )
@@ -917,7 +917,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarR
 }
 
 
-void CEntityRenderManager::UpdatePlanarReflectionTextures( Camera& rCam )
+void EntityRenderManager::UpdatePlanarReflectionTextures( Camera& rCam )
 {
 	// Render all the polygons in the mirrored scene.
 	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
@@ -937,7 +937,7 @@ void CEntityRenderManager::UpdatePlanarReflectionTextures( Camera& rCam )
 }
 
 
-TextureHandle CEntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& entity )
+TextureHandle EntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& entity )
 {
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
@@ -968,18 +968,18 @@ TextureHandle CEntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& ent
 }
 
 
-int CEntityRenderManager::GetCurrentlyRenderedPlanarReflectionSceneID() const
+int EntityRenderManager::GetCurrentlyRenderedPlanarReflectionSceneID() const
 {
 	return m_CurrentlyRenderedPlanarReflectionSceneID;
 }
 
 
-void CEntityRenderManager::RenderPlanarReflectionSurfaces()
+void EntityRenderManager::RenderPlanarReflectionSurfaces()
 {
 }
 
 
-void CEntityRenderManager::RenderMirroredScene()
+void EntityRenderManager::RenderMirroredScene()
 {
 /*	const Matrix44 view = m_pCurrentCamera ? m_pCurrentCamera->GetCameraMatrix()     : Matrix44Identity();
 	const Matrix44 proj = m_pCurrentCamera ? m_pCurrentCamera->GetProjectionMatrix() : Matrix44Identity();
@@ -1015,8 +1015,8 @@ void CEntityRenderManager::RenderMirroredScene()
 }
 
 
-//TextureHandle CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
-LPDIRECT3DCUBETEXTURE9 CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
+//TextureHandle EntityRenderManager::GetEnvMapTexture( U32 entity_id )
+LPDIRECT3DCUBETEXTURE9 EntityRenderManager::GetEnvMapTexture( U32 entity_id )
 {
 	if( m_pCubeMapManager )
 		return m_pCubeMapManager->GetCubeTexture();
@@ -1027,7 +1027,7 @@ LPDIRECT3DCUBETEXTURE9 CEntityRenderManager::GetEnvMapTexture( U32 entity_id )
 }
 
 
-bool CEntityRenderManager::AddEnvMapTarget( CCopyEntity *pEntity )
+bool EntityRenderManager::AddEnvMapTarget( CCopyEntity *pEntity )
 {
 	if( !IsValidEntity(pEntity) )
 		return false;
@@ -1062,14 +1062,14 @@ bool CEntityRenderManager::AddEnvMapTarget( CCopyEntity *pEntity )
 }
 
 
-void CEntityRenderManager::SaveEnvMapTextureToFile( const std::string& output_image_filename )
+void EntityRenderManager::SaveEnvMapTextureToFile( const std::string& output_image_filename )
 {
 	if( m_pCubeMapManager )
 		m_pCubeMapManager->SaveCubeTextureToFile( output_image_filename );
 }
 
 
-bool CEntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
+bool EntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
 {
 	const size_t num_envmap_targets = m_vecEnvMapTarget.size();
 	for( size_t i=0; i<num_envmap_targets; i++ )
@@ -1093,7 +1093,7 @@ bool CEntityRenderManager::RemoveEnvMapTarget( CCopyEntity *pEntity )
 }
 
 
-bool CEntityRenderManager::EnableSoftShadow( float softness, int shadowmap_size )
+bool EntityRenderManager::EnableSoftShadow( float softness, int shadowmap_size )
 {
 	SafeDelete( m_pShadowManager );
 
@@ -1116,7 +1116,7 @@ bool CEntityRenderManager::EnableSoftShadow( float softness, int shadowmap_size 
 }
 
 
-bool CEntityRenderManager::EnableShadowMap( int shadow_map_size )
+bool EntityRenderManager::EnableShadowMap( int shadow_map_size )
 {
 	SafeDelete( m_pShadowManager );
 
@@ -1140,14 +1140,14 @@ bool CEntityRenderManager::EnableShadowMap( int shadow_map_size )
 }
 
 
-void CEntityRenderManager::DisableShadowMap()
+void EntityRenderManager::DisableShadowMap()
 {
 	SafeDelete( m_pShadowManager );
 }
 
 
 /// Find lights near camera and update shadow map settings for the found lights.
-void CEntityRenderManager::UpdateLightsForShadow()
+void EntityRenderManager::UpdateLightsForShadow()
 {
 	Vector3 vCamCenter = Vector3(0,0,0);
 	if( m_pCurrentCamera )
@@ -1181,7 +1181,7 @@ void CEntityRenderManager::UpdateLightsForShadow()
 		if( m_vecpEntityBuffer[i]->GetEntityTypeID() != CCopyEntityTypeID::LIGHT_ENTITY )
 			continue;
 
-		CLightEntity *pLightEntity = dynamic_cast<CLightEntity *>(m_vecpEntityBuffer[i]);
+		LightEntity *pLightEntity = dynamic_cast<LightEntity *>(m_vecpEntityBuffer[i]);
 		if( !pLightEntity )
 			continue;
 
@@ -1197,7 +1197,7 @@ void CEntityRenderManager::UpdateLightsForShadow()
 }
 
 
-void CEntityRenderManager::ReleaseGraphicsResources()	
+void EntityRenderManager::ReleaseGraphicsResources()	
 {
 	size_t i, num_base_entities = m_pEntitySet->m_vecpBaseEntity.size();
 	for(i=0; i<num_base_entities; i++)
@@ -1210,7 +1210,7 @@ void CEntityRenderManager::ReleaseGraphicsResources()
 }
 
 
-void CEntityRenderManager::LoadGraphicsResources( const GraphicsParameters& rParam )
+void EntityRenderManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	size_t i, num_base_entities = m_pEntitySet->m_vecpBaseEntity.size();
 	for(i=0; i<num_base_entities; i++)
@@ -1229,8 +1229,8 @@ void CEntityRenderManager::LoadGraphicsResources( const GraphicsParameters& rPar
  - Render the shadow receiver entities.
  - Render the scene without shadow to render target texture.
 */
-void CEntityRenderManager::RenderSceneWithShadows( Camera& rCam )//, 
-//													 CScreenEffectManager *pScreenEffectMgr )
+void EntityRenderManager::RenderSceneWithShadows( Camera& rCam )//, 
+//													 ScreenEffectManager *pScreenEffectMgr )
 {
 	if( m_bOverrideShadowMapLight )
 	{
@@ -1249,7 +1249,7 @@ void CEntityRenderManager::RenderSceneWithShadows( Camera& rCam )//,
 
 	// render the objects that cast shadows to others
 
-	// CEntityRenderManager::RenderShadowCasters() is called 1 or more times
+	// EntityRenderManager::RenderShadowCasters() is called 1 or more times
 	m_pShadowManager->RenderShadowCasters( rCam );
 /*
 	// render shadow map
@@ -1295,25 +1295,25 @@ void CEntityRenderManager::RenderSceneWithShadows( Camera& rCam )//,
 }
 
 
-void CEntityRenderManager::CreateEnvMapRenderTasks()
+void EntityRenderManager::CreateEnvMapRenderTasks()
 {
 	RenderTaskProcessor.AddRenderTask( new CEntityEnvMapRenderTask( this ) );
 }
 
 
-void CEntityRenderManager::CreateShadowMapRenderTasks( Camera& rCam )
+void EntityRenderManager::CreateShadowMapRenderTasks( Camera& rCam )
 {
 	RenderTaskProcessor.AddRenderTask( new CEntityShadowMapRenderTask( this, &rCam, NULL ) );
 }
 
 
-void CEntityRenderManager::CreateSceneRenderTask( Camera& rCam )
+void EntityRenderManager::CreateSceneRenderTask( Camera& rCam )
 {
 	RenderTaskProcessor.AddRenderTask( new CEntitySceneRenderTask( this, &rCam ) );
 }
 
 
-void CEntityRenderManager::CreateRenderTasks( bool create_scene_render_task )
+void EntityRenderManager::CreateRenderTasks( bool create_scene_render_task )
 {
 	if( 0 < m_vecEnvMapTarget.size() 
 	 && m_bEnableEnvironmentMap
@@ -1342,7 +1342,7 @@ void CEntityRenderManager::CreateRenderTasks( bool create_scene_render_task )
 }
 
 
-void CEntityRenderManager::UpdateFogParams( const Camera& rCam )
+void EntityRenderManager::UpdateFogParams( const Camera& rCam )
 {
 	FogParams fog_params;
 
@@ -1353,7 +1353,7 @@ void CEntityRenderManager::UpdateFogParams( const Camera& rCam )
 
 	if( m_paEntityTree
 	 && m_paEntityTree[0].m_EntityLinkHead.pNext
-	 && m_paEntityTree[0].m_EntityLinkHead.pNext->pOwner->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_SKYBOX )
+	 && m_paEntityTree[0].m_EntityLinkHead.pNext->pOwner->pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_SKYBOX )
 	{
 		// TODO: have the copy entity of skybox
 		CBE_Skybox *pBaseEntity = dynamic_cast<CBE_Skybox *>(m_paEntityTree[0].m_EntityLinkHead.pNext->pOwner->pBaseEntity);
@@ -1369,7 +1369,7 @@ void CEntityRenderManager::UpdateFogParams( const Camera& rCam )
 }
 
 
-void CEntityRenderManager::Render( Camera& rCam )
+void EntityRenderManager::Render( Camera& rCam )
 {
 	PROFILE_FUNCTION();
 

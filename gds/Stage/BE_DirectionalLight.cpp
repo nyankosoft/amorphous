@@ -66,7 +66,7 @@ void CBE_DirectionalLight::Draw( CCopyEntity* pCopyEnt )
 {
 }
 
-void CBE_DirectionalLight::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_DirectionalLight::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.iEffect )
 	{

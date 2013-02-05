@@ -102,7 +102,7 @@ void Binocular::Update( float dt )
 
 	if( pStage.get() )
 	{
-		shared_ptr<CScreenEffectManager> pEffectManager = pStage->GetScreenEffectManager();
+		shared_ptr<ScreenEffectManager> pEffectManager = pStage->GetScreenEffectManager();
 		pEffectManager->SetBlurEffect( m_fFocusDelay );
 	}
 

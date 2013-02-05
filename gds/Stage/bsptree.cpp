@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-CBSPTree::CBSPTree( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes )
+BSPTree::BSPTree( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes )
 {
 	m_paNode = NULL; m_NumNodes = 0;
 	m_paPlane = NULL; m_NumPlanes = 0;
@@ -22,13 +22,13 @@ CBSPTree::CBSPTree( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes,
 }
 
 
-CBSPTree::~CBSPTree()
+BSPTree::~BSPTree()
 {
 	Release();
 }
 
 
-void CBSPTree::Release()
+void BSPTree::Release()
 {
 	SafeDeleteArray( m_paNode );
 	SafeDeleteArray( m_paPlane );
@@ -37,7 +37,7 @@ void CBSPTree::Release()
 }
 
 
-void CBSPTree::Init( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes )
+void BSPTree::Init( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes, int num_planes )
 {
 	Release();
 
@@ -57,7 +57,7 @@ void CBSPTree::Init( const SNode_f *pNodes, int num_nodes, const SPlane* pPlanes
 
 //Check if the 'tr.vEnd' is in a valid position
 //Returns the index of the cell where the 'tr.vEnd' is located
-short CBSPTree::CheckPosition( STrace& tr, short sStartNodeIndex )
+short BSPTree::CheckPosition( STrace& tr, short sStartNodeIndex )
 {
 	short prev_nodeindex = 0;
 	short nodeindex = sStartNodeIndex;
@@ -94,7 +94,7 @@ short CBSPTree::CheckPosition( STrace& tr, short sStartNodeIndex )
 }
 
 //only for point
-short CBSPTree::CheckPosition( Vector3& rvPoint, short sStartNodeIndex )
+short BSPTree::CheckPosition( Vector3& rvPoint, short sStartNodeIndex )
 {
 	short prev_nodeindex = 0;
 	short nodeindex = sStartNodeIndex;
@@ -131,7 +131,7 @@ short CBSPTree::CheckPosition( Vector3& rvPoint, short sStartNodeIndex )
 //This function dynamically shifts the plane of each node, acording to the volume
 //of the AABB of the trace
 
-short CBSPTree::ClipTrace( STrace& tr )
+short BSPTree::ClipTrace( STrace& tr )
 {
 	if( Vec3LengthSq( tr.vGoal - tr.vStart ) < 0.000000001f )
 		return CONTENTS_EMPTY;
@@ -233,7 +233,7 @@ short CBSPTree::ClipTrace( STrace& tr )
 			cNumBackTrack++;
 
 			if( MAX_DIVIDE_NUM <= cNumBackTrack )
-				assert( !"stack overflow - bsptree traversal in CBSPTree::ClipTrace()" );
+				assert( !"stack overflow - bsptree traversal in BSPTree::ClipTrace()" );
 
 		}
 
@@ -302,13 +302,13 @@ short CBSPTree::ClipTrace( STrace& tr )
 }
 
 /*
-short CBSPTree::ClipTrace( STrace& tr )
+short BSPTree::ClipTrace( STrace& tr )
 {
 	ClipTrace_r( 0, 0, 1, tr.vStart, tr.vGoal, tr);
 	return 0;
 }
 */
-bool CBSPTree::ClipTrace_r( short sNodeIndex, float p1f, float p2f,
+bool BSPTree::ClipTrace_r( short sNodeIndex, float p1f, float p2f,
 						   Vector3& vP1, Vector3& vP2, STrace &rTrace)
 {
 	float		t1, t2;
@@ -428,7 +428,7 @@ bool CBSPTree::ClipTrace_r( short sNodeIndex, float p1f, float p2f,
 
 
 // create bsp-tree that represents box volume
-void CBSPTree::CreateBoxBSPTree( float fWidth_X, float fHeight_Y, float fDepth_Z )
+void BSPTree::CreateBoxBSPTree( float fWidth_X, float fHeight_Y, float fDepth_Z )
 {
 	Release();
 	m_paNode  = new SNode_f [6];
@@ -458,7 +458,7 @@ void CBSPTree::CreateBoxBSPTree( float fWidth_X, float fHeight_Y, float fDepth_Z
 }
 
 /*
-void CBSPTree::Transform( D3DXMATRIX& rmatWorld, CBSPTree& rLocalBSPTree )
+void BSPTree::Transform( D3DXMATRIX& rmatWorld, BSPTree& rLocalBSPTree )
 {
 	Vector3 vWorldPos;
 	vWorldPos.x = rmatWorld._41;
@@ -478,7 +478,7 @@ void CBSPTree::Transform( D3DXMATRIX& rmatWorld, CBSPTree& rLocalBSPTree )
 }*/
 
 
-bool CBSPTree::LoadFromFile( const char *pcFilename )
+bool BSPTree::LoadFromFile( const char *pcFilename )
 {
 	FILE *fp = fopen( pcFilename, "rb" );
 
@@ -502,7 +502,7 @@ bool CBSPTree::LoadFromFile( const char *pcFilename )
 }
 
 
-bool CBSPTree::WriteToFile( const char *pcFilename )
+bool BSPTree::WriteToFile( const char *pcFilename )
 {
 	FILE *fp = fopen( pcFilename, "w" );
 
@@ -538,7 +538,7 @@ bool CBSPTree::WriteToFile( const char *pcFilename )
 }
 
 
-CBSPTree& CBSPTree::operator=( const CBSPTree& src )
+BSPTree& BSPTree::operator=( const BSPTree& src )
 {
 	Release();
 	Init( src.m_paNode, src.m_NumNodes, src.m_paPlane, src.m_NumPlanes );
@@ -546,9 +546,9 @@ CBSPTree& CBSPTree::operator=( const CBSPTree& src )
 }
 
 
-// static member variable definition for 'CBSPTreeForAABB'
+// static member variable definition for 'BSPTreeForAABB'
 
-CBSPTree CBSPTreeForAABB::ms_BSPTree;
+BSPTree BSPTreeForAABB::ms_BSPTree;
 
 
 } // namespace amorphous

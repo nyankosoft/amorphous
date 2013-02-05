@@ -84,7 +84,7 @@ void CBE_HomingMissile::Init()
 // notify object lock-on by this missile
 void OnTargetLocked( CCopyEntity* pCopyEnt, CCopyEntity* pTarget )
 {
-	SGameMessage msg( GM_MISSILE_TARGET );
+	GameMessage msg( GM_MISSILE_TARGET );
 	msg.sender = pCopyEnt->Self();
 
 	SendGameMessageTo( msg, pTarget );
@@ -125,7 +125,7 @@ void CBE_HomingMissile::FindTarget( CCopyEntity* pCopyEnt )
 //			if( pTarget->GroupIndex != pCopyEnt->GroupIndex )
 			if( m_pStage->GetEntitySet()->IsCollisionEnabled( pCopyEnt->GroupIndex, pTarget->GroupIndex ) )
 			{
-				pCopyEnt->m_Target = CEntityHandle<>( pTarget->Self() );
+				pCopyEnt->m_Target = EntityHandle<>( pTarget->Self() );
 				OnTargetLocked( pCopyEnt, pTarget );
 				break;
 			}
@@ -178,7 +178,7 @@ void CBE_HomingMissile::Ignite( CCopyEntity* pCopyEnt )
 	// generate a smoke & flame trail entity
 	CCopyEntityDesc trail;
 
-	CBaseEntityHandle *pTrailEntityHandle[2] = { &m_SmokeTrail, &m_FlameTrail };
+	BaseEntityHandle *pTrailEntityHandle[2] = { &m_SmokeTrail, &m_FlameTrail };
 
 	trail.SetWorldPosition( pCopyEnt->GetWorldPosition() );
 
@@ -415,15 +415,15 @@ void CBE_HomingMissile::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 }
 
 
-void CBE_HomingMissile::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_HomingMissile::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.effect )
 	{
 	case GM_SET_TARGET:
 		{
-//			pCopyEnt_Self->m_Target = CEntityHandle<>( ((CCopyEntity *)rGameMessage.pUserData)->Self() );
+//			pCopyEnt_Self->m_Target = EntityHandle<>( ((CCopyEntity *)rGameMessage.pUserData)->Self() );
 			CCopyEntity *pTarget = (CCopyEntity *)rGameMessage.pUserData;
-			pCopyEnt_Self->m_Target = CEntityHandle<>( pTarget->Self() );
+			pCopyEnt_Self->m_Target = EntityHandle<>( pTarget->Self() );
 			break;
 		}
 	}

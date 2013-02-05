@@ -9,12 +9,12 @@ namespace amorphous
 {
 
 
-class CBE_FixedTurretPod : public CBaseEntity
+class CBE_FixedTurretPod : public BaseEntity
 {
 private:
 
 	/// base entity for the gun which is mounted on this pod
-	CBaseEntityHandle m_TurretGun;
+	BaseEntityHandle m_TurretGun;
 
 	Vector3 m_vTurretGunLocalOffset;
 
@@ -39,7 +39,7 @@ public:
 	void Draw(CCopyEntity* pCopyEnt); 
 	// void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	// void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
+	// void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
 
 //	void AdaptToNewScreenSize() {}
 	void LoadGraphicsResources( const GraphicsParameters& rParam );

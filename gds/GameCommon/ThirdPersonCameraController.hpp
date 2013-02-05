@@ -13,7 +13,7 @@ namespace amorphous
 
 class CThirdPersonCameraController
 {
-	CEntityHandle<> m_TargetEntity;
+	EntityHandle<> m_TargetEntity;
 
 	cdv<Vector3> m_CameraPosition;
 
@@ -38,7 +38,7 @@ public:
 
 	void EnableCloseUpCamera( bool enable ) { m_CloseUpCamera = enable; }
 
-	void SetTargetEntity( CEntityHandle<> target ) { m_TargetEntity = target; }
+	void SetTargetEntity( EntityHandle<> target ) { m_TargetEntity = target; }
 
 	void SetTargetVerticalAngle( float target_vertical_angle ) { m_VerticalAngle.target = target_vertical_angle; }
 

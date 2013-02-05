@@ -24,7 +24,7 @@ CDynamicLightManagerForStaticGeometry::~CDynamicLightManagerForStaticGeometry()
 
 
 // set the texture coordinates to static geometry for dynamic lighting
-void CDynamicLightManagerForStaticGeometry::SetDynamicLight( CLightEntity& rLight,
+void CDynamicLightManagerForStaticGeometry::SetDynamicLight( LightEntity& rLight,
 															 CSG_Polygon& rPolygon,
 															 CBSPMap *pMap )
 {
@@ -143,7 +143,7 @@ void CDynamicLightManagerForStaticGeometry::SetDynamicLights( CBSPMap *pMap, Sha
 	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
 	if( !pEffect ) return;
 
-	CLightEntity *pLight;
+	LightEntity *pLight;
 
 	for( pLight = m_pLightEntityManager->GetDynamicLight(), i=0;
 	     pLight != NULL && i < NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME;

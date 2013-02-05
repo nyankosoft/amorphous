@@ -37,10 +37,10 @@ public:
 	m_pStage(pStage)
 	{}
 
-	CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
+	EntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 									const std::string& base_name );
 
-	CEntityHandle<> CreateNamedEntity( const std::string& entity_name,
+	EntityHandle<> CreateNamedEntity( const std::string& entity_name,
 								const std::string& base_name,
 								const Matrix34& pose,
 								const Vector3& vel,
@@ -63,10 +63,10 @@ public:
 	/// \param cutscene_input_handler_index input index of the handler during cutscene.
 	///        Set a navative value to create camera controller not for cutscene.
 	///        default: -1 (Don't create the camera controller for cutscene)
-	CEntityHandle<> CreateCameraController( const std::string& camera_controller_name,
+	EntityHandle<> CreateCameraController( const std::string& camera_controller_name,
 		                                    int cutscene_input_handler_index = -1 );
 
-	CScriptedCameraEntity *CreateScriptedCamera( const std::string& camera_name,
+	ScriptedCameraEntity *CreateScriptedCamera( const std::string& camera_name,
 		                                         const std::string& camera_controller_name,
 												 CameraParam default_camera_param = CameraParam() );
 };
@@ -86,15 +86,15 @@ public:
 	CStageUtility(pStage)
 	{}
 
-	CLightEntityHandle CreateHSPointLightEntity( const std::string& name,
+	LightEntityHandle CreateHSPointLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 );
 
-	CLightEntityHandle CreateHSDirectionalLightEntity( const std::string& name,
+	LightEntityHandle CreateHSDirectionalLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& dir );
 
-	CLightEntityHandle CreateHSSpotlightEntity( const std::string& name,
+	LightEntityHandle CreateHSSpotlightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& pos, const Vector3& dir,
 		float attenu0, float attenu1, float attenu2,
@@ -104,7 +104,7 @@ public:
 
 class CStageMiscUtility : public CStageUtility
 {
-	CEntityHandle<> CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
+	EntityHandle<> CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
@@ -113,7 +113,7 @@ class CStageMiscUtility : public CStageUtility
 								  float mass,
 								  bool static_actor );
 
-	CEntityHandle<> CreateBoxEntity( MeshResourceDesc& mesh_desc,
+	EntityHandle<> CreateBoxEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
@@ -122,7 +122,7 @@ class CStageMiscUtility : public CStageUtility
 								  const std::string& material_name,
 								  bool static_actor );
 
-	CEntityHandle<> CreateCylinderEntity( MeshResourceDesc& mesh_desc,
+	EntityHandle<> CreateCylinderEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -131,7 +131,7 @@ class CStageMiscUtility : public CStageUtility
 							  const std::string& material_name,
 							  bool static_actor );
 
-	CEntityHandle<> CreateSphereEntity( MeshResourceDesc& mesh_desc,
+	EntityHandle<> CreateSphereEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
 								  const Matrix34& pose,
@@ -140,7 +140,7 @@ class CStageMiscUtility : public CStageUtility
 								  const std::string& material_name,
 								  bool static_actor );
 
-	CEntityHandle<> CreateBoxesEntity( MeshResourceDesc& mesh_desc,
+	EntityHandle<> CreateBoxesEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -149,7 +149,7 @@ class CStageMiscUtility : public CStageUtility
 							  const std::string& material_name,
 							  bool static_actor );
 
-	CEntityHandle<> CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
+	EntityHandle<> CreateTriangleMeshEntityFromMesh( const char *mesh_resource_name,
 							const char *collision_mesh_name,
 							const Matrix34& pose,
 							float mass,
@@ -161,7 +161,7 @@ class CStageMiscUtility : public CStageUtility
 	Result::Name SetTriangleMeshShapeDesc( const char *collision_mesh_name,
 		physics::CTriangleMeshShapeDesc& trimeshshapedesc );
 
-	CEntityHandle<> CreateEntityFromBaseEntity( const char *model,
+	EntityHandle<> CreateEntityFromBaseEntity( const char *model,
 		const char *name,
 		const Matrix34& pose );
 
@@ -175,7 +175,7 @@ public:
 	CStageUtility(pStage)
 	{}
 
-	CEntityHandle<> CreateBox( Vector3 edge_lengths,
+	EntityHandle<> CreateBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
 		float mass = 1.0f,
@@ -183,7 +183,7 @@ public:
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
-	CEntityHandle<> CreateBox( Vector3 edge_lengths,
+	EntityHandle<> CreateBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color,
 		const Vector3& pos,
 		const float heading = 0.0f,
@@ -194,21 +194,21 @@ public:
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
-	CEntityHandle<> CreateStaticBox( Vector3 edge_lengths,
+	EntityHandle<> CreateStaticBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
 		const std::string& material_name = "default",
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
-	CEntityHandle<> CreateBoxFromMesh( const char *mesh_resource_name,
+	EntityHandle<> CreateBoxFromMesh( const char *mesh_resource_name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
 							const std::string& material_name = "default",
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
 
-	CEntityHandle<> CreateSphere( float diameter = 1.0f,
+	EntityHandle<> CreateSphere( float diameter = 1.0f,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
 		float mass = 1.0f,
@@ -216,14 +216,14 @@ public:
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 /*
-	CEntityHandle<> CreateStaticBall( float radius,
+	EntityHandle<> CreateStaticBall( float radius,
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor(1,1,1,1),
 		const Matrix34& pose = Matrix34Identity(),
 		const std::string& material_name = "default",
 		const std::string& entity_name = "",
 		const std::string& entity_attributes_name = "" );
 
-	CEntityHandle<> CreateBallFromMesh( const char *mesh_resource_name,
+	EntityHandle<> CreateBallFromMesh( const char *mesh_resource_name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
 							const std::string& material_name = "default",
@@ -232,13 +232,13 @@ public:
 */
 
 
-	CEntityHandle<> CreateCylinderFromMesh( const char *model,
+	EntityHandle<> CreateCylinderFromMesh( const char *model,
 							const char *name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
 							const std::string& material_name = "default" );
 
-	CEntityHandle<> CreateCylinderFromMesh( const char *model,
+	EntityHandle<> CreateCylinderFromMesh( const char *model,
 						const char *name,
 						const Vector3& position = Vector3(0,0,0),
 						float heading = 0.0f,
@@ -247,7 +247,7 @@ public:
 						float mass = 1.0f,
 						const std::string& material_name = "default" );
 
-	CEntityHandle<> CreateStaticCylinderFromMesh( const char *model,
+	EntityHandle<> CreateStaticCylinderFromMesh( const char *model,
 								const char *name,
 								const Matrix34& pose = Matrix34Identity(),
 								float mass = 1.0f,
@@ -263,7 +263,7 @@ public:
 	}
 
 	/// Creates a static triangle mesh actor from a graphics mesh file
-	CEntityHandle<> CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
+	EntityHandle<> CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
 		                    const char *collision_mesh_name,
 							const Matrix34& pose = Matrix34Identity(),
 							const std::string& material_name = "default",
@@ -271,7 +271,7 @@ public:
 							const std::string& entity_attributes_name = "" );
 
 	/// Creates a triangle mesh actor from a graphics mesh file
-	CEntityHandle<> CreateTriangleMeshFromMesh( const char *mesh_resource_path,
+	EntityHandle<> CreateTriangleMeshFromMesh( const char *mesh_resource_path,
 		                    const char *collision_mesh_name,
 							const Matrix34& pose = Matrix34Identity(),
 							float mass = 1.0f,
@@ -279,7 +279,7 @@ public:
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
 
-	CEntityHandle<> CreateEntity(
+	EntityHandle<> CreateEntity(
 		const char *model,
 		const char *name = "",
 		const Vector3& position = Vector3(0,0,0),
@@ -308,11 +308,11 @@ public:
 
 //	void CreateSkysphere( const std::string& texture_resource_path = "BuiltinTexture::ClearSkyGrad" );
 
-	CEntityHandle<> CreateStaticGeometry( const std::string& resource_path );
+	EntityHandle<> CreateStaticGeometry( const std::string& resource_path );
 
-	CEntityHandle<> CreateStaticWater( const std::string& model, const std::string& name, const Vector3& position );
+	EntityHandle<> CreateStaticWater( const std::string& model, const std::string& name, const Vector3& position );
 
-	CEntityHandle<> CreateStaticSmokeSource( const Vector3& pos,
+	EntityHandle<> CreateStaticSmokeSource( const Vector3& pos,
 			const SFloatRGBAColor& color, float diameter, float rise_speed, float thickness, float density,
 			const std::string& entity_attributes_name = "" );
 
@@ -331,9 +331,9 @@ public:
 	CStageUtility(pStage)
 	{}
 
-	Result::Name SetShader( CEntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod = 0 );
+	Result::Name SetShader( EntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod = 0 );
 
-	Result::Name RemoveAllShaders( CEntityHandle<>& entity );
+	Result::Name RemoveAllShaders( EntityHandle<>& entity );
 };
 
 
@@ -355,14 +355,14 @@ public:
 
 	void SetWind( const AABB3& world_aabb, const Vector3 vForce ) {}
 
-	void AddLensFlareElement( CLightEntityHandle directional_light_entity, const std::string& texture_filepath, float size, float dist ) {}
+	void AddLensFlareElement( LightEntityHandle directional_light_entity, const std::string& texture_filepath, float size, float dist ) {}
 };
 */
 
 
-extern void SetFloatShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value );
-extern void SetColorShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value );
-extern void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path );
+extern void SetFloatShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, float value );
+extern void SetColorShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value );
+extern void SetTextureShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, const char *tex_path );
 
 } // namespace amorphous
 

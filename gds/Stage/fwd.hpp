@@ -11,31 +11,31 @@ namespace amorphous
 class CStage;
 class CCopyEntity;
 class CCopyEntityDesc;
-class CLightEntity;
-class CSoundEntity;
-class CAlphaEntity;
-class CScriptedCameraEntity;
-class CEntityFactory;
+class LightEntity;
+class SoundEntity;
+class AlphaEntity;
+class ScriptedCameraEntity;
+class EntityFactory;
 class CCopyEntityDescFileData;
-class CBaseEntity;
-class CBaseEntityFactory;
-class CBaseEntityHandle;
-class CEntityNode;
-class CEntityRenderer;
-class CEntitySet;
-class CEntityRenderManager;
+class BaseEntity;
+class BaseEntityFactory;
+class BaseEntityHandle;
+class EntityNode;
+class EntityRenderer;
+class EntityManager;
+class EntityRenderManager;
 class CStaticGeometryBase;
 class CStaticGeometryArchiveFG;
 class CMeshBonesUpdateCallback;
-class CBSPTree;
+class BSPTree;
 struct STrace;
 class CTrace;
 class CViewFrustumTest;
-class CScreenEffectManager;
+class ScreenEffectManager;
 class CSurfaceMaterial;
 class CSurfaceMaterialManager;
 class CTextMessageManager;
-struct SGameMessage;
+struct GameMessage;
 class CBEC_MotionPath;
 class EntityMotionPathRequest;
 //class CDynamicLightManagerForStaticGeometry;
@@ -43,7 +43,7 @@ class CScriptManager;
 
 typedef boost::shared_ptr<CStage> CStageSharedPtr;
 typedef boost::weak_ptr<CStage> CStageWeakPtr;
-typedef boost::shared_ptr<CBaseEntityFactory> CBaseEntityFactorySharedPtr;
+typedef boost::shared_ptr<BaseEntityFactory> BaseEntityFactorySharedPtr;
 
 } // namespace amorphous
 

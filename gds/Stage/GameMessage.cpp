@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 /*
-void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pEntity )
+void SendGameMessageTo(GameMessage& rGameMessage, CCopyEntity* pEntity )
 {
 	if( !pEntity || !pEntity->inuse )
 		return;

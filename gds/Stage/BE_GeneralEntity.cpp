@@ -197,7 +197,7 @@ void CBE_GeneralEntity::Draw(CCopyEntity* pCopyEnt)
 }
 
 
-void CBE_GeneralEntity::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_GeneralEntity::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.effect )
 	{

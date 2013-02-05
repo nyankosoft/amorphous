@@ -44,7 +44,7 @@ class CRewardItem : public IArchiveObjectBase
 public:
 //	string m_strName;
 
-	CBaseEntityHandle m_ItemEntity;
+	BaseEntityHandle m_ItemEntity;
 
 	float m_fProbability;
 
@@ -72,7 +72,7 @@ protected:
 	int m_iExtraDataIndex;
 	CEnemyState *m_apEnemyState[CEnemyState::NUM_STATES];
 
-	CEntityGroupHandle m_ProjectileEntityGroup;
+	EntityGroupHandle m_ProjectileEntityGroup;
 
 	enum eAttrib
 	{
@@ -85,7 +85,7 @@ protected:
 	float m_fYawSpeed;
 	float m_fPitchSpeed;
 
-	CBaseEntityHandle m_Bullet[NUM_BULLET_TYPES];
+	BaseEntityHandle m_Bullet[NUM_BULLET_TYPES];
 	float m_fBulletPower;
 	float m_fBulletSpeed;
 	float m_fFiringRate;	///, intervals between each shot [sec]
@@ -98,19 +98,19 @@ protected:
 	/// muzzle position in local space
 	Vector3 m_vLocalMuzzlePosition;
 
-	CBaseEntityHandle m_MuzzleFlash;
+	BaseEntityHandle m_MuzzleFlash;
 
 	int m_iRandomSearchManeuver;
 
-	CBaseEntityHandle m_Explosion;
+	BaseEntityHandle m_Explosion;
 
-	CBaseEntityHandle m_Wreck;
+	BaseEntityHandle m_Wreck;
 
 	/// debris that are generated when the entity is destroyed
 	class Fragment : public IArchiveObjectBase
 	{
 	public:
-		CBaseEntityHandle BaseEntity;
+		BaseEntityHandle BaseEntity;
 		Vector3 vOffset;
 		RangedSet<float> InitVelocity;
 
@@ -122,7 +122,7 @@ protected:
 
 	Fragment m_aFragment[NUM_MAX_FRAGMENTS];
 
-//	CBaseEntityHandle	m_aFragment[NUM_MAX_FRAGMENTS];
+//	BaseEntityHandle	m_aFragment[NUM_MAX_FRAGMENTS];
 //	Vector3 m_avFragmentOffset[NUM_MAX_FRAGMENTS];
 	int m_iNumFragments;
 
@@ -155,7 +155,7 @@ public:
 
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
 
-	virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	virtual void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	virtual bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

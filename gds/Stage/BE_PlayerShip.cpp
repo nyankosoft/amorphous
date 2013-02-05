@@ -424,7 +424,7 @@ void CBE_PlayerShip::ToggleHeadLight()
 	}
 	else
 	{	// turn off the light
-		SGameMessage msg;
+		GameMessage msg;
 		msg.effect = GM_TERMINATE;
 		SendGameMessageTo( msg, m_pHeadLightEntity );
 		m_pHeadLightEntity = NULL;
@@ -433,11 +433,11 @@ void CBE_PlayerShip::ToggleHeadLight()
 }*/
 
 /*
-void CBE_PlayerShip::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_PlayerShip::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	float& rfLife = pCopyEnt_Self->fLife;
 	float& rfTimeAfterDeath = pCopyEnt_Self->f4;
-	SGameMessage msg;
+	GameMessage msg;
 	int iVariation;
 
 	switch( rGameMessage.effect )

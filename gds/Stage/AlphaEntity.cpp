@@ -15,7 +15,7 @@ using namespace std;
 using namespace boost;
 
 
-CAlphaEntity::CAlphaEntity()
+AlphaEntity::AlphaEntity()
 {
 	// set material index 0 as the alpha material by default
 	m_AlphaMaterialIndex = 0;
@@ -26,28 +26,28 @@ CAlphaEntity::CAlphaEntity()
 }
 
 
-CAlphaEntity::~CAlphaEntity()
+AlphaEntity::~AlphaEntity()
 {
 }
 
 
 /*
-void CAlphaEntity::Init( CCopyEntityDesc& desc )
+void AlphaEntity::Init( CCopyEntityDesc& desc )
 {
-//	CAlphaEntityDesc *pAircraftDesc
-//		= dynamic_cast<CAlphaEntityDesc *> (&desc);
+//	AlphaEntityDesc *pAircraftDesc
+//		= dynamic_cast<AlphaEntityDesc *> (&desc);
 
 //	if( pAircraftDesc )
 //		Init( *pAircraftDesc );
 }
 
-void CAlphaEntity::Init( CAlphaEntityDesc& desc )
+void AlphaEntity::Init( AlphaEntityDesc& desc )
 {
 	desc.
 }*/
 
 
-void CAlphaEntity::Update( float dt )
+void AlphaEntity::Update( float dt )
 {
 	CCopyEntity *pParent = m_pParent;
 	if( !pParent )
@@ -57,12 +57,12 @@ void CAlphaEntity::Update( float dt )
 }
 
 /*
-void CAlphaEntity::UpdatePhysics( float dt )
+void AlphaEntity::UpdatePhysics( float dt )
 {
 }
 */
 
-void CAlphaEntity::Draw()
+void AlphaEntity::Draw()
 {
 	CCopyEntity *pParent = m_pParent;
 	if( !pParent )
@@ -82,7 +82,7 @@ void CAlphaEntity::Draw()
 }
 
 
-void CAlphaEntity::HandleMessage( SGameMessage& msg )
+void AlphaEntity::HandleMessage( GameMessage& msg )
 {
 /*	switch( msg.iEffect )
 	{
@@ -92,7 +92,7 @@ void CAlphaEntity::HandleMessage( SGameMessage& msg )
 }
 
 
-void CAlphaEntity::TerminateDerived()
+void AlphaEntity::TerminateDerived()
 {
 //	shared_ptr<CCopyEntity> pSelf = this->Self().lock();
 //	m_pPool->release( pSelf ); // pSelf is CCopyEntity type pointer!!!

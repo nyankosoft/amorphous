@@ -14,7 +14,7 @@ int g_iNumDynamicLights = 0;
 
 //Atten = 1/( att0 + att1 * d + att2 * d^2 )
 
-/*inline*/ void CLightEntity::SetLightFrom(CCopyEntity& rEntity, int light_type )
+/*inline*/ void LightEntity::SetLightFrom(CCopyEntity& rEntity, int light_type )
 {
 	ZeroMemory( &m_Light, sizeof(D3DLIGHT9) );
 	m_Light.Type         = D3DLIGHT_POINT;	// currently support point light only
@@ -62,7 +62,7 @@ int g_iNumDynamicLights = 0;
 }
 
 
-void CLightEntity::SetLight( const CHemisphericPointLight& point_light, int light_type )
+void LightEntity::SetLight( const CHemisphericPointLight& point_light, int light_type )
 {
 	ZeroMemory( &m_Light, sizeof(D3DLIGHT9) );
 	m_Light.Type         = D3DLIGHT_POINT;
@@ -103,7 +103,7 @@ void CLightEntity::SetLight( const CHemisphericPointLight& point_light, int ligh
 }
 
 
-void CLightEntity::SetLight( const CHemisphericDirectionalLight& dir_light, int light_type )
+void LightEntity::SetLight( const CHemisphericDirectionalLight& dir_light, int light_type )
 {
 	ZeroMemory( &m_Light, sizeof(D3DLIGHT9) );
 	m_Light.Type         = D3DLIGHT_DIRECTIONAL;
@@ -137,7 +137,7 @@ void CLightEntity::SetLight( const CHemisphericDirectionalLight& dir_light, int 
 }
 
 
-CLightEntityManager::CLightEntityManager()
+LightEntityManager::LightEntityManager()
 {
 	m_pEntitySet = NULL;
 
@@ -154,13 +154,13 @@ CLightEntityManager::CLightEntityManager()
 }
 
 
-CLightEntityManager::~CLightEntityManager()
+LightEntityManager::~LightEntityManager()
 {
 	SafeDelete( m_pShaderLightManager );
 }
 
 
-void CLightEntityManager::Init( CEntitySet* pEntitySet )
+void LightEntityManager::Init( EntityManager* pEntitySet )
 {
 	m_pEntitySet = pEntitySet;
 
@@ -168,7 +168,7 @@ void CLightEntityManager::Init( CEntitySet* pEntitySet )
 }
 
 
-void CLightEntityManager::InitShaderLightManager()
+void LightEntityManager::InitShaderLightManager()
 {
 	SafeDelete( m_pShaderLightManager );
 	m_pShaderLightManager = new CShaderLightManager;
@@ -188,19 +188,19 @@ void CLightEntityManager::InitShaderLightManager()
 }
 
 
-int CLightEntityManager::RegisterLight( CCopyEntity& rLightEntity, int light_type )
+int LightEntityManager::RegisterLight( CCopyEntity& rLightEntity, int light_type )
 {
 
 	if( light_type == CLE_LIGHT_STATIC )
 	{	// add a static light
 //		m_vecStaticLightEntity.push_back( new_light );
-//		CLightEntity& rNewLight = m_vecStaticLightEntity.back();
+//		LightEntity& rNewLight = m_vecStaticLightEntity.back();
 //		rNewLight.SetIndex( m_vecStaticLightEntity.size() - 1 );
 
 		if( CLEM_NUM_MAX_STATIC_LIGHTS <= m_iNumStaticLights )
 			return CE_INVALID_LIGHT_INDEX;
 
-		CLightEntity& rNewLight = m_aStaticLightEntity[m_iNumStaticLights];
+		LightEntity& rNewLight = m_aStaticLightEntity[m_iNumStaticLights];
 		rNewLight.SetLightFrom( rLightEntity, light_type );
 		rNewLight.SetIndex( m_iNumStaticLights );
 		m_iNumStaticLights++;
@@ -249,9 +249,9 @@ int CLightEntityManager::RegisterLight( CCopyEntity& rLightEntity, int light_typ
 		return CE_INVALID_LIGHT_INDEX;
 
 		// couldn't find a vacant slot in the dynamic light array - add a new dynamic light entity
-/*		CLightEntity new_light;
+/*		LightEntity new_light;
 		m_aDynamicLightEntity.push_back( new_light );
-		CLightEntity& rNewLight = m_aDynamicLightEntity.back();
+		LightEntity& rNewLight = m_aDynamicLightEntity.back();
 		rNewLight.SetLightFrom( rLightEntity, light_type );
 
 		rNewLight.SetIndex( CLEM_NUM_MAX_STATIC_LIGHTS + iNumDynamicLights );
@@ -265,7 +265,7 @@ int CLightEntityManager::RegisterLight( CCopyEntity& rLightEntity, int light_typ
 }
 
 
-void CLightEntityManager::GetNewLightEntity( int light_type, int& index, CLightEntity*& pLightEntity )
+void LightEntityManager::GetNewLightEntity( int light_type, int& index, LightEntity*& pLightEntity )
 {
 
 	if( light_type == CLE_LIGHT_STATIC )
@@ -277,7 +277,7 @@ void CLightEntityManager::GetNewLightEntity( int light_type, int& index, CLightE
 			return;
 		}
 
-		CLightEntity& rNewLight = m_aStaticLightEntity[m_iNumStaticLights];
+		LightEntity& rNewLight = m_aStaticLightEntity[m_iNumStaticLights];
 		rNewLight.SetIndex( m_iNumStaticLights );
 
 		m_iNumStaticLights++;
@@ -327,10 +327,10 @@ void CLightEntityManager::GetNewLightEntity( int light_type, int& index, CLightE
 }
 
 
-int CLightEntityManager::RegisterHemisphericPointLight( CHemisphericPointLight& light, int light_type )
+int LightEntityManager::RegisterHemisphericPointLight( CHemisphericPointLight& light, int light_type )
 {
 	int index;
-	CLightEntity* pLightEntity = NULL;
+	LightEntity* pLightEntity = NULL;
 	GetNewLightEntity( light_type, index, pLightEntity );
 
 	if( index == CE_INVALID_LIGHT_INDEX )
@@ -345,10 +345,10 @@ int CLightEntityManager::RegisterHemisphericPointLight( CHemisphericPointLight& 
 	return index;
 }
 
-int CLightEntityManager::RegisterHemisphericDirLight( CHemisphericDirectionalLight& dir_light, int light_type )
+int LightEntityManager::RegisterHemisphericDirLight( CHemisphericDirectionalLight& dir_light, int light_type )
 {
 	int index;
-	CLightEntity* pLightEntity = NULL;
+	LightEntity* pLightEntity = NULL;
 	GetNewLightEntity( light_type, index, pLightEntity );
 
 	if( index == CE_INVALID_LIGHT_INDEX )
@@ -372,12 +372,12 @@ int CLightEntityManager::RegisterHemisphericDirLight( CHemisphericDirectionalLig
 }
 
 
-void CLightEntityManager::UpdateLightPosition( int light_index, Vector3& rvNewPosition )
+void LightEntityManager::UpdateLightPosition( int light_index, Vector3& rvNewPosition )
 {
 	if( light_index < CLEM_NUM_MAX_STATIC_LIGHTS )
 		return;	// don't change the positions of static lights
 
-	CLightEntity& rLightEntity = m_aDynamicLightEntity[light_index - CLEM_NUM_MAX_STATIC_LIGHTS];
+	LightEntity& rLightEntity = m_aDynamicLightEntity[light_index - CLEM_NUM_MAX_STATIC_LIGHTS];
 
 	rLightEntity.SetPosition( rvNewPosition );
 
@@ -387,7 +387,7 @@ void CLightEntityManager::UpdateLightPosition( int light_index, Vector3& rvNewPo
 }
 
 
-void CLightEntityManager::RelinkLightEntities()
+void LightEntityManager::RelinkLightEntities()
 {
 	int i;
 	for( i=0; i<m_iNumStaticLights; i++ )
@@ -402,12 +402,12 @@ void CLightEntityManager::RelinkLightEntities()
 }
 
 
-void CLightEntityManager::ReleaseGraphicsResources()
+void LightEntityManager::ReleaseGraphicsResources()
 {
 }
 
 
-void CLightEntityManager::LoadGraphicsResources()
+void LightEntityManager::LoadGraphicsResources()
 {
 	InitShaderLightManager();
 }

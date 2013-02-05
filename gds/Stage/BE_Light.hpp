@@ -16,7 +16,7 @@ namespace amorphous
 {
 
 
-class CBE_Light : public CBaseEntity
+class CBE_Light : public BaseEntity
 {
 protected:
 
@@ -31,7 +31,7 @@ protected:
 
 	unsigned int m_TypeFlag;
 
-	CLightEntityDesc m_DefaultDesc;
+	LightEntityDesc m_DefaultDesc;
 
 protected:
 
@@ -80,9 +80,9 @@ public:
 
 	void ReleasePooledLight( CLightHolder *pLightHolder );
 
-	const CLightEntityDesc& GetDefaultDesc() const { return m_DefaultDesc; }
+	const LightEntityDesc& GetDefaultDesc() const { return m_DefaultDesc; }
 
-	friend class CCoreBaseEntitiesLoader;
+	friend class CoreBaseEntitiesLoader;
 
 public:
 

@@ -75,7 +75,7 @@ class CRotatableTurret : public GameItem
 
 	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
 
-	CEntityHandle<> m_Target;
+	EntityHandle<> m_Target;
 
 	Vector3 m_vAimDirection;
 
@@ -118,7 +118,7 @@ public:
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
-	void SetTarget( CEntityHandle<> target ) { m_Target = target; }
+	void SetTarget( EntityHandle<> target ) { m_Target = target; }
 
 	void SetParentWorldPose( const Matrix34& pose ) { m_ParentWorldPose = pose; }
 

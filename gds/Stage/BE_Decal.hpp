@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CBE_Decal : public CBaseEntity
+class CBE_Decal : public BaseEntity
 {
 	enum param { NUM_MAX_DECALS = 128 };
 
@@ -47,7 +47,7 @@ public:
 	void Act(CCopyEntity* pCopyEnt);
 	void Draw(CCopyEntity* pCopyEnt);
 	//void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
-	//void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	//void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	void SweepRender();
 

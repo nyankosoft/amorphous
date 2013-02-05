@@ -21,7 +21,7 @@ using namespace boost;
 inline static short& HasExpired(CCopyEntity* pCameraEntity) { return pCameraEntity->s1; };
 
 
-void FocusTargetFrameSet::UpdateFocusTargetEntities( CEntitySet *pEntitySet )
+void FocusTargetFrameSet::UpdateFocusTargetEntities( EntityManager *pEntitySet )
 {
 	size_t i, num_key_frames = m_vecKeyFrame.size();
 	for( i=0; i<num_key_frames; i++ )
@@ -30,13 +30,13 @@ void FocusTargetFrameSet::UpdateFocusTargetEntities( CEntitySet *pEntitySet )
 		{
 			CCopyEntity* pTarget = pEntitySet->GetEntityByName( m_vecKeyFrame[i].val.m_TargetName.c_str() );
 			if( IsValidEntity( pTarget ) )
-				m_vecKeyFrame[i].val.m_Target = CEntityHandle<>( pTarget->Self() );
+				m_vecKeyFrame[i].val.m_Target = EntityHandle<>( pTarget->Self() );
 		}
 	}
 }
 
 
-void CScriptedCameraEntity::Update( float dt )
+void ScriptedCameraEntity::Update( float dt )
 {
 	if( m_Path.IsAvailable( (float)GetStage()->GetElapsedTime() ) )
 	{
@@ -48,7 +48,7 @@ void CScriptedCameraEntity::Update( float dt )
 
 		pBaseEntity->UpdateScriptedMotionPath( this, m_Path );
 
-		PERIODICAL( 100, g_Log.Print( "CScriptedCameraEntity::Update() - updated motion path ... pos: " +
+		PERIODICAL( 100, g_Log.Print( "ScriptedCameraEntity::Update() - updated motion path ... pos: " +
 			to_string(this->GetWorldPosition(), 2) ) );
 
 		m_Camera.SetPose( this->GetWorldPose() );
@@ -68,8 +68,8 @@ void CScriptedCameraEntity::Update( float dt )
 }
 
 
-//void CBE_ScriptedCamera::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
-void CScriptedCameraEntity::HandleMessage( SGameMessage& msg )
+//void CBE_ScriptedCamera::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void ScriptedCameraEntity::HandleMessage( GameMessage& msg )
 {
 	switch( msg.effect )
 	{
@@ -116,14 +116,14 @@ void CScriptedCameraEntity::HandleMessage( SGameMessage& msg )
 	}
 }
 
-void CScriptedCameraEntity::RenderStage()
+void ScriptedCameraEntity::RenderStage()
 {
 	PERIODICAL( 100, LOG_PRINT( "Camera pos: " + to_string(m_Camera.GetPosition(), 2) ) );
 
 	if( 7.5f < GetStage()->GetElapsedTime() )
 		int break_here = 1;
 
-	shared_ptr<CScreenEffectManager> pScreenEffectManager = GetStage()->GetScreenEffectManager();
+	shared_ptr<ScreenEffectManager> pScreenEffectManager = GetStage()->GetScreenEffectManager();
 
 	// save the original settings
 	int orig_effect_flag = pScreenEffectManager->GetEffectFlag();
@@ -163,14 +163,14 @@ void CBE_ScriptedCamera::Serialize( IArchive& ar, const unsigned int version )
 */
 
 
-void CScriptedCameraEntity::CreateRenderTasks()
+void ScriptedCameraEntity::CreateRenderTasks()
 {
 	// add render tasks necessary to render the stage
 	GetStage()->CreateStageRenderTasks( &m_Camera );
 }
 
 
-void CScriptedCameraEntity::UpdateCameraOrientationByFocusTarget( float current_time )
+void ScriptedCameraEntity::UpdateCameraOrientationByFocusTarget( float current_time )
 {
 	CCameraProperty& cam = m_KeyFrames.Camera;
 
@@ -221,7 +221,7 @@ void CScriptedCameraEntity::UpdateCameraOrientationByFocusTarget( float current_
 }
 
 
-void CScriptedCameraEntity::UpdateCameraParams()
+void ScriptedCameraEntity::UpdateCameraParams()
 {
 	float current_time = (float)GetStage()->GetElapsedTime();
 	bool res;
@@ -309,7 +309,7 @@ void CScriptedCameraEntity::UpdateCameraParams()
 }
 
 
-void CScriptedCameraEntity::SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength )
+void ScriptedCameraEntity::SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength )
 {
 	CScreenEffectProperty& effect = m_KeyFrames.Effect;
 	effect.MotionBlurStrength.AddKeyFrame( start_time, motion_blur_strength );
@@ -317,7 +317,7 @@ void CScriptedCameraEntity::SetUniformMotionBlur( float start_time, float end_ti
 }
 
 
-void CScriptedCameraEntity::SetUniformBlur( float start_time, float end_time, float blur_strength )
+void ScriptedCameraEntity::SetUniformBlur( float start_time, float end_time, float blur_strength )
 {
 	CScreenEffectProperty& effect = m_KeyFrames.Effect;
 	const float s = blur_strength;
@@ -326,7 +326,7 @@ void CScriptedCameraEntity::SetUniformBlur( float start_time, float end_time, fl
 }
 
 
-void CScriptedCameraEntity::SetUniformCameraShake( float start_time, float end_time, float camera_shake )
+void ScriptedCameraEntity::SetUniformCameraShake( float start_time, float end_time, float camera_shake )
 {
 	CScreenEffectProperty& effect = m_KeyFrames.Effect;
 	effect.MotionBlurStrength.AddKeyFrame( start_time, camera_shake );
@@ -336,28 +336,28 @@ void CScriptedCameraEntity::SetUniformCameraShake( float start_time, float end_t
 
 
 //===============================================================================================
-// CScriptedCameraEntityHandle
+// ScriptedCameraEntityHandle
 //===============================================================================================
 
-void CScriptedCameraEntityHandle::SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength )
+void ScriptedCameraEntityHandle::SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength )
 {
-	shared_ptr<CScriptedCameraEntity> pCamera = Get();
+	shared_ptr<ScriptedCameraEntity> pCamera = Get();
 	if( pCamera )
 		pCamera->SetUniformMotionBlur( start_time, end_time, motion_blur_strength );
 }
 
 
-void CScriptedCameraEntityHandle::SetUniformBlur( float start_time, float end_time, float blur_strength )
+void ScriptedCameraEntityHandle::SetUniformBlur( float start_time, float end_time, float blur_strength )
 {
-	shared_ptr<CScriptedCameraEntity> pCamera = Get();
+	shared_ptr<ScriptedCameraEntity> pCamera = Get();
 	if( pCamera )
 		pCamera->SetUniformBlur( start_time, end_time, blur_strength );
 }
 
 
-void CScriptedCameraEntityHandle::SetUniformCameraShake( float start_time, float end_time, float camera_shake )
+void ScriptedCameraEntityHandle::SetUniformCameraShake( float start_time, float end_time, float camera_shake )
 {
-	shared_ptr<CScriptedCameraEntity> pCamera = Get();
+	shared_ptr<ScriptedCameraEntity> pCamera = Get();
 	if( pCamera )
 		pCamera->SetUniformCameraShake( start_time, end_time, camera_shake );
 }

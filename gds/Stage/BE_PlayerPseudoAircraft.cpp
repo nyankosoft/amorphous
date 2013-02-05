@@ -231,7 +231,7 @@ void CBE_PlayerPseudoAircraft::CreateNozzleFlames( CCopyEntity* pCopyEnt )
 
 	UpdateNozzleFlamesVisibility();
 
-//	CBaseEntityHandle base_entity;
+//	BaseEntityHandle base_entity;
 //	base_entity.SetBaseEntityName( "nozzle_flame" );
 
 /*
@@ -262,7 +262,7 @@ CInputHandler_PlayerBase *CBE_PlayerPseudoAircraft::CreatePlayerInputHandler()
 //void CBE_PlayerPseudoAircraft::EnableNightVision( bool enable )
 void CBE_PlayerPseudoAircraft::SetVisionMode( int vision_mode )
 {
-	shared_ptr<CScreenEffectManager> pScreenEffectManager = m_pStage->GetScreenEffectManager();
+	shared_ptr<ScreenEffectManager> pScreenEffectManager = m_pStage->GetScreenEffectManager();
 
 	switch( vision_mode )
 	{
@@ -341,7 +341,7 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 		{
 			pCopyEnt->m_MeshHandle = pMeshContainer->m_MeshObjectHandle;
 			CreateMeshRenderMethod(
-				CEntityHandle<>( pCopyEnt->Self() ),
+				EntityHandle<>( pCopyEnt->Self() ),
 //				pMeshContainer->m_ShaderHandle,
 				m_MeshProperty.m_ShaderHandle,
 //				pMeshContainer->m_ShaderTechnique(0,0)
@@ -579,7 +579,7 @@ void CBE_PlayerPseudoAircraft::UpdateFocusCandidateTargets( const vector<CCopyEn
 	{
 		// no candidate entities to focus on
 		m_CurrentTargetFocusIndex = -1;
-		m_FocusedTarget = CEntityHandle<>();
+		m_FocusedTarget = EntityHandle<>();
 		return;
 	}
 	else
@@ -704,7 +704,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 		if( !IsValidEntity( pEntity ) )
 			continue;
 
-		CBaseEntity* pBaseEntity = pEntity->pBaseEntity;
+		BaseEntity* pBaseEntity = pEntity->pBaseEntity;
 
 		unsigned int id = pBaseEntity->GetArchiveObjectID();
 		int tgt_type = 0;
@@ -855,7 +855,7 @@ void CBE_PlayerPseudoAircraft::Act( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_PlayerPseudoAircraft::OnDestroyingEnemyEntity( SGameMessage& msg )
+void CBE_PlayerPseudoAircraft::OnDestroyingEnemyEntity( GameMessage& msg )
 {
 	CBE_Player::OnDestroyingEnemyEntity( msg );
 
@@ -872,10 +872,10 @@ void CBE_PlayerPseudoAircraft::OnDestroyingEnemyEntity( SGameMessage& msg )
 }
 
 
-void CBE_PlayerPseudoAircraft::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_PlayerPseudoAircraft::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	float& rfLife = pCopyEnt_Self->fLife;
-	SGameMessage msg;
+	GameMessage msg;
 	int iVariation;
 
 	switch( rGameMessage.effect )
@@ -1112,7 +1112,7 @@ void CBE_PlayerPseudoAircraft::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 	{
 		SFloatRGBAColor dest_color = SFloatRGBAColor( 0.965f, 0.024f, 0.024f, 1.0f );
 		m_pStage->GetScreenEffectManager()->FadeInFrom( dest_color, 1.0f, AlphaBlend::One );
-		SGameMessage msg( GM_DAMAGE );
+		GameMessage msg( GM_DAMAGE );
 		SetMissionState( MSTATE_CRASHED );
 		m_WorldPoseOnMissionFailed.vPosition = trace.vEnd;
 		m_WorldPoseOnMissionFailed.matOrient = pseudo_simulator.GetWorldPose().matOrient;

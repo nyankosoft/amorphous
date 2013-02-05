@@ -12,17 +12,17 @@ namespace amorphous
 {
 
 
-class CAlphaEntityDesc;
+class AlphaEntityDesc;
 
 
-class CAlphaEntity : public CCopyEntity
+class AlphaEntity : public CCopyEntity
 {
-//	shared_prealloc_pool<CAlphaEntity> *m_pPool;
+//	shared_prealloc_pool<AlphaEntity> *m_pPool;
 
 	int m_AlphaMaterialIndex;
 
 	// Note this vector always stores single element
-	// reason: need to set as an argument of CBaseEntity::DrawMeshObject()
+	// reason: need to set as an argument of BaseEntity::DrawMeshObject()
 //	std::vector<int> m_SingleAlphaMaterialIndex;
 
 	/// taken from the shader technique table of the owner entity
@@ -31,13 +31,13 @@ class CAlphaEntity : public CCopyEntity
 
 public:
 
-	CAlphaEntity();
+	AlphaEntity();
 
-	virtual ~CAlphaEntity();
+	virtual ~AlphaEntity();
 
 //	virtual void Init( CCopyEntityDesc& desc );
 
-//	void Init( CAlphaEntityDesc& desc );
+//	void Init( AlphaEntityDesc& desc );
 
 	virtual void Update( float dt );
 
@@ -45,7 +45,7 @@ public:
 
 	void Draw();
 
-	virtual void HandleMessage( SGameMessage& msg );
+	virtual void HandleMessage( GameMessage& msg );
 
 	virtual void TerminateDerived();
 

@@ -199,7 +199,7 @@ void CBE_Door::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other)
 		if( !pController )
 			return;
 
-		SGameMessage msg;
+		GameMessage msg;
 		msg.effect = GM_DOOR_TOUCHED;
 		msg.sender = pCopyEnt_Self->Self();
 		msg.pEntity0      = pCopyEnt_Other;
@@ -211,7 +211,7 @@ void CBE_Door::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other)
 }
 
 
-void CBE_Door::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Door::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	short& rsDoorState = pCopyEnt_Self->s1;
 

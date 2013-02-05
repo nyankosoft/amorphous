@@ -44,7 +44,7 @@ enum eDamageType
 };
 
 
-struct SGameMessage
+struct GameMessage
 {
 	int effect;
 	std::string effect_name;
@@ -54,11 +54,11 @@ struct SGameMessage
 	Vector3 vParam;
 	char *pcStrParam;
 	CCopyEntity* pEntity0;
-	CEntityHandle<> sender;
+	EntityHandle<> sender;
 
 	void *pUserData;
 
-	inline SGameMessage( int _effect = GM_INVALID )
+	inline GameMessage( int _effect = GM_INVALID )
 		:
 	effect(_effect),
 	s1(0),
@@ -67,14 +67,14 @@ struct SGameMessage
 	vParam(Vector3(0,0,0))
 	{}
 
-	inline ~SGameMessage() {}
+	inline ~GameMessage() {}
 };
 
 
-//extern void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt);
+//extern void SendGameMessageTo(GameMessage& rGameMessage, CCopyEntity* pCopyEnt);
 
 /// \param target [in] recipient of the message
-inline void SendGameMessageTo(SGameMessage& rGameMessage, CEntityHandle<> target )
+inline void SendGameMessageTo(GameMessage& rGameMessage, EntityHandle<> target )
 {
 	boost::shared_ptr<CCopyEntity> pEntity = target.Get();
 
@@ -85,12 +85,12 @@ inline void SendGameMessageTo(SGameMessage& rGameMessage, CEntityHandle<> target
 
 /// This function is deprecated.
 /// \param pTarget [in] recipient of the message
-inline void SendGameMessageTo(SGameMessage& rGameMessage, CCopyEntity* pTarget )
+inline void SendGameMessageTo(GameMessage& rGameMessage, CCopyEntity* pTarget )
 {
 	if( !IsValidEntity(pTarget) )
 		return;
 
-	CEntityHandle<> target( pTarget->Self() );
+	EntityHandle<> target( pTarget->Self() );
 
 	SendGameMessageTo( rGameMessage, target );
 }

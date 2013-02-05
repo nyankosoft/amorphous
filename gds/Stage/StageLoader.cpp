@@ -36,7 +36,7 @@ public:
 };
 
 
-CStageSharedPtr CStageLoader::LoadStage( const std::string& script_name )
+CStageSharedPtr StageLoader::LoadStage( const std::string& script_name )
 {
 	CStageSharedPtr pStage = this->CreateStage();
 
@@ -60,7 +60,7 @@ CStageSharedPtr CStageLoader::LoadStage( const std::string& script_name )
 }
 
 
-CStageSharedPtr CStageLoader::CreateStage()
+CStageSharedPtr StageLoader::CreateStage()
 {
 	CStageSharedPtr pStage( new CStage() );
 	pStage->m_pSelf = CStageWeakPtr( pStage );
@@ -90,7 +90,7 @@ CASyncStageLoader::~CASyncStageLoader()
 
 void CASyncStageLoader::CreateStageInstance()
 {
-	CStageLoader loader;
+	StageLoader loader;
 
 	m_pStage = loader.CreateStage();
 }
@@ -121,7 +121,7 @@ static int sg_NumLoaded = 0;
 
 void CASyncStageLoaderThread::operator()()
 {
-	CStageLoader loader;
+	StageLoader loader;
 
 	// catch any resource loading calls
 	CreateResourceLoadingStateHolderForCurrentThread();

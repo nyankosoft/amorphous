@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CBE_Blast : public CBaseEntity
+class CBE_Blast : public BaseEntity
 {
 	float m_fBaseDamage;
 	float m_fMaxBlastRadius;	///< how large the blast expands. blast is a spherical volume
@@ -41,7 +41,7 @@ public:
 	void Act(CCopyEntity* pCopyEnt);
 	void Draw(CCopyEntity* pCopyEnt);
 	//void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
-	//void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	//void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 
@@ -52,7 +52,7 @@ public:
 	static float& CurrentBlastTime( CCopyEntity *pEntity )   { return pEntity->f2; }
 	static float& CurrentBlastRadius( CCopyEntity *pEntity ) { return pEntity->f3; }
 
-	friend class CCoreBaseEntitiesLoader;
+	friend class CoreBaseEntitiesLoader;
 };
 
 } // namespace amorphous

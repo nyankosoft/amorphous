@@ -76,14 +76,14 @@ m_pStageDebugInputHandler(NULL)
 	m_pTimer = new CTimer();
 	PauseTimer();	// don't start until the initialization is complete
 
-	m_pScreenEffectManager.reset( new CScreenEffectManager );
+	m_pScreenEffectManager.reset( new ScreenEffectManager );
 	m_pScreenEffectManager->Init();
 
-	m_pEntitySet = new CEntitySet( this );
+	m_pEntitySet = new EntityManager( this );
 
 	m_pScreenEffectManager->SetTargetSceneRenderer( m_pEntitySet->GetRenderManager().get() );
 
-	CBSPTreeForAABB::Initialize();
+	BSPTreeForAABB::Initialize();
 
 	// create the script manager so that an application can add custom modules
 	// before calling CStage::Initialize() and running scripts for initialization
@@ -235,7 +235,7 @@ bool CStage::InitPhysicsManager()
 }
 
 
-bool CStage::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
+bool CStage::LoadBaseEntity( BaseEntityHandle& base_entity_handle )
 {
 	return m_pEntitySet->LoadBaseEntity( base_entity_handle );
 }
@@ -579,18 +579,18 @@ Vector3 CStage::GetGravityAccel() const
 }
 
 
-CEntityHandle<> CStage::LoadStaticGeometryFromFile( const std::string filename )
+EntityHandle<> CStage::LoadStaticGeometryFromFile( const std::string filename )
 {
 	SafeDelete( m_pStaticGeometry );
 	m_pStaticGeometry = CreateStaticGeometry( this, filename );
 
 	if( !m_pStaticGeometry )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	// register the static geometry as an entity
 	// - the entity is used to render the static geometry
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( "StaticGeometry" );
 	CCopyEntityDesc desc;
 	desc.strName = filename;
@@ -600,11 +600,11 @@ CEntityHandle<> CStage::LoadStaticGeometryFromFile( const std::string filename )
 	CCopyEntity *pStaticGeometryEntity = CreateEntity( desc );
 
 	if( !pStaticGeometryEntity )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 //	shared_ptr<CStaticGeometryEntity> pEntity( new CStaticGeometryEntity );
 //	pEntity->SetStaticGeometry( m_pStaticGeometry );
-//	CEntityHandle<CStaticGeometryEntity> entity
+//	EntityHandle<CStaticGeometryEntity> entity
 //		= CreateEntity( pEntity, baseentity_handle );
 
 	m_pEntitySet->WriteEntityTreeToFile( "debug/entity_tree - loaded static geometry.txt" );
@@ -614,7 +614,7 @@ CEntityHandle<> CStage::LoadStaticGeometryFromFile( const std::string filename )
 	bool loaded = m_pStaticGeometry->LoadFromFile( filename );
 	this->ResumeTimer();
 
-	return CEntityHandle<>( pStaticGeometryEntity->Self() );
+	return EntityHandle<>( pStaticGeometryEntity->Self() );
 //	return entity;
 }
 
@@ -743,7 +743,7 @@ bool CStage::Initialize( const string& script_archive_filename )
 	if( m_pStaticGeometry )
 	{
 		// make EntityTree from static geometry
-		CBSPTree bsptree;
+		BSPTree bsptree;
 		m_pStaticGeometry->MakeEntityTree( bsptree );
 		m_pEntitySet->MakeEntityTree( &bsptree );
 

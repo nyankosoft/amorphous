@@ -662,7 +662,7 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Enemy::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 //	int i;
 	SBE_EnemyExtraData* ex = GetExtraData( pCopyEnt_Self->iExtraDataIndex );
@@ -695,7 +695,7 @@ void CBE_Enemy::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyE
 		{
 			OnDestroyed(pCopyEnt_Self);
 
-			SGameMessage msg( GM_DESTROYED );
+			GameMessage msg( GM_DESTROYED );
 			msg.sender = pCopyEnt_Self->Self();
 			msg.fParam1 = 100.0f;	// score ?
 			SendGameMessageTo( msg, SinglePlayerInfo().GetCurrentPlayerEntity() );
@@ -853,7 +853,7 @@ bool CBE_Enemy::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_Enemy::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_ProjectileEntityGroup;
 

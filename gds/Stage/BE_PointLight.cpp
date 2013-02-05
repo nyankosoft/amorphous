@@ -352,7 +352,7 @@ void CBE_PointLight::Draw( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_PointLight::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_PointLight::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.effect )
 	{

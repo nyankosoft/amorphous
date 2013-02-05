@@ -100,7 +100,7 @@ private:
 
 	CCopyEntity* m_pNextRawPtr;
 
-	CLinkNode<CCopyEntity> m_EntityLink; ///< next & prev entity in the chain linked to entity tree-node 'CEntityNode'
+	CLinkNode<CCopyEntity> m_EntityLink; ///< next & prev entity in the chain linked to entity tree-node 'EntityNode'
 
 	/// represents various attributes of the entity
 	U32 m_EntityFlags;
@@ -133,7 +133,7 @@ private:
 
 public:
 
-	CBaseEntity* pBaseEntity;
+	BaseEntity* pBaseEntity;
 
 	boost::weak_ptr<CCopyEntity>& Self() { return m_pSelf; }
 
@@ -171,12 +171,12 @@ public:
 
 	float fLife;
 
-	CEntityHandle<> m_aChild[NUM_MAX_CHILDREN_PER_ENTITY];
+	EntityHandle<> m_aChild[NUM_MAX_CHILDREN_PER_ENTITY];
 	int iNumChildren;
 
 	CCopyEntity *m_pParent;
 
-	CEntityHandle<> m_Target;
+	EntityHandle<> m_Target;
 
 	/// general purpose variables
 	/// Be careful since each base entity use these variables differently from others
@@ -192,7 +192,7 @@ public:
 
 	/// holds indices to lights
 	/// directional lights have to be placed before point lights
-	TCFixedVector<CEntityHandle<CLightEntity>,NUM_MAX_LIGHTS_AT_ENTITY> m_vecLight;
+	TCFixedVector<EntityHandle<LightEntity>,NUM_MAX_LIGHTS_AT_ENTITY> m_vecLight;
 
 	std::vector<physics::CActor *> m_vecpPhysicsActor;
 
@@ -224,7 +224,7 @@ public:
 
 	inline bool IsInUse() const { return inuse; }
 
-	CBaseEntity *GetBaseEntity() { return pBaseEntity; }
+	BaseEntity *GetBaseEntity() { return pBaseEntity; }
 
 	CStage *GetStage() { return m_pStage; }
 
@@ -251,7 +251,7 @@ public:
 	/// updates entity - called once every frame
 	inline void Act() { pBaseEntity->Act(this); }
 
-	inline virtual void Unlink();	// Do not call this from 'CEntityNode'
+	inline virtual void Unlink();	// Do not call this from 'EntityNode'
 
 	virtual void LinkDerivedEntity() {}
 
@@ -312,7 +312,7 @@ public:
 	void UpdatePhysics();
 
 	/// Called when the entity is created.
-	/// - Called after CBaseEntity::InitCopyEntity().
+	/// - Called after BaseEntity::InitCopyEntity().
 	virtual void Init( CCopyEntityDesc& desc ) {}
 
 	/// virtual functions for derived class of CCopyEntity
@@ -320,7 +320,7 @@ public:
 	/// - However, if a type of your entities have many individual properties and should become a class of its own,
 	///   - Create a derived class of CCopyEntity
 	///   - Implement the following virtual functions
-	///     - HandleMessage( SGameMessage& msg )
+	///     - HandleMessage( GameMessage& msg )
 	///     - Update( float dt ) or UpdatePhysics( float dt )
 	///   - At runtime, create the entity as a copy entity of CBE_AIEntity
 
@@ -340,7 +340,7 @@ public:
 
 	/// handles a game message
 	/// defualt: do nothing
-	virtual void HandleMessage( SGameMessage& msg ) {}
+	virtual void HandleMessage( GameMessage& msg ) {}
 
 	/// render the entity
 	/// default: let the base entity render the entity
@@ -368,9 +368,9 @@ public:
 	// Lighting
 	inline bool Lighting() { return ( (m_EntityFlags & BETYPE_LIGHTING) != 0 ); }
 	inline int GetNumLights() const { return m_vecLight.size(); }
-	inline CEntityHandle<CLightEntity>& GetLight(int i) { return m_vecLight[i]; }
-	inline void AddLight( CEntityHandle<CLightEntity>& light_entity );
-	inline void InsertLight( int pos, CEntityHandle<CLightEntity>& light_entity );
+	inline EntityHandle<LightEntity>& GetLight(int i) { return m_vecLight[i]; }
+	inline void AddLight( EntityHandle<LightEntity>& light_entity );
+	inline void InsertLight( int pos, EntityHandle<LightEntity>& light_entity );
 	inline void ClearLights() { m_vecLight.resize(0); }
 
 	// Parent/Children
@@ -389,11 +389,11 @@ public:
 
 	inline physics::CActor *GetPrimaryPhysicsActor();
 
-	friend class CBaseEntity;
-	friend class CEntityHandleBase;
-	friend class CEntitySet;
-	friend class CEntityNode;
-	friend class CEntityRenderManager;
+	friend class BaseEntity;
+	friend class EntityHandleBase;
+	friend class EntityManager;
+	friend class EntityNode;
+	friend class EntityRenderManager;
 };
 
 } // namespace amorphous

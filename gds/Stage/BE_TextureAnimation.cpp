@@ -282,7 +282,7 @@ bool CBE_TextureAnimation::LoadSpecificPropertiesFromFile( CTextFileScanner& sca
 
 void CBE_TextureAnimation::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_AnimTextureFilepath;
 	ar & m_fTotalAnimationTime;

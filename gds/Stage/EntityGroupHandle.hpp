@@ -33,23 +33,23 @@ using namespace serialization;
 		NUM_ENTITY_GROUPS
 	 };
 
-   - ENTITY_GROUP_MIN_ID is set as the default id to CBaseEntity::m_EntityGroup
+   - ENTITY_GROUP_MIN_ID is set as the default id to BaseEntity::m_EntityGroup
      - ENTITY_GROUP_MIN_ID is 'half-reserved': User should avoid using ENTITY_GROUP_MIN_ID
 	   as some special group. It should be used as some default/general entity group
      - when an invalid name is set, id wil be set to ENTITY_GROUP_INVALID_ID
 
  - when a copy entity is created, its entity group is determined either one of the following 3 versions
-   - by CBaseEntity::m_EntityGroup
+   - by BaseEntity::m_EntityGroup
      - ENTITY_GROUP_MIN_ID is set as the default id
    - by CCopyEntityDesc::sGroupID
-     - overwrites CBaseEntity::m_EntityGroup
+     - overwrites BaseEntity::m_EntityGroup
 	 - ENTITY_GROUP_INVALID_ID is set as the default id
-   - in CBaseEntity::InitCopyEntity()
+   - in BaseEntity::InitCopyEntity()
      - manually set in InitCopyEntity(). overwrites next 2 settings
 
  - a copy entity with ENTITY_GROUP_INVALID_ID does not collide with any other entity
 */
-class CEntityGroupHandle : public IArchiveObjectBase
+class EntityGroupHandle : public IArchiveObjectBase
 {
 	int m_ID;
 
@@ -59,11 +59,11 @@ private:
 
 public:
 
-	CEntityGroupHandle() : m_ID(ENTITY_GROUP_INVALID_ID) {}
+	EntityGroupHandle() : m_ID(ENTITY_GROUP_INVALID_ID) {}
 
-//	inline CEntityGroupHandle( const CEntityGroupHandle& handle );
+//	inline EntityGroupHandle( const EntityGroupHandle& handle );
 
-	~CEntityGroupHandle() {}
+	~EntityGroupHandle() {}
 
 	inline const std::string& GetGroupName() const { return m_EntityGroupName; }
 
@@ -75,11 +75,11 @@ public:
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CBaseEntity;
+	friend class BaseEntity;
 };
 
 
-inline void CEntityGroupHandle::Serialize( IArchive& ar, const unsigned int version )
+inline void EntityGroupHandle::Serialize( IArchive& ar, const unsigned int version )
 {
 	std::string strTemp;
 	if( ar.GetMode() == IArchive::MODE_INPUT )
@@ -100,7 +100,7 @@ inline void CEntityGroupHandle::Serialize( IArchive& ar, const unsigned int vers
 //============================= inline implementations =============================
 
 /*
-inline CEntityGroupHandle::CEntityGroupHandle( const CEntityGroupHandle& handle )
+inline EntityGroupHandle::EntityGroupHandle( const EntityGroupHandle& handle )
 {
 	m_pcName = NULL;
 	m_Index = UNINITIALIZED;
@@ -109,7 +109,7 @@ inline CEntityGroupHandle::CEntityGroupHandle( const CEntityGroupHandle& handle 
 	SetTechniqueName( handle.GetTechniqueName() );
 }
 
-inline const char *CEntityGroupHandle::GetTechniqueName() const
+inline const char *EntityGroupHandle::GetTechniqueName() const
 {
 	if( m_pcName )
 		return m_pcName;
@@ -118,7 +118,7 @@ inline const char *CEntityGroupHandle::GetTechniqueName() const
 }
 */
 
-inline void CEntityGroupHandle::SetGroupName( const std::string& entity_group_name )
+inline void EntityGroupHandle::SetGroupName( const std::string& entity_group_name )
 {
 	m_EntityGroupName = entity_group_name;
 
@@ -128,7 +128,7 @@ inline void CEntityGroupHandle::SetGroupName( const std::string& entity_group_na
 }
 
 
-inline void CEntityGroupHandle::SetID( int id )
+inline void EntityGroupHandle::SetID( int id )
 {
 	m_ID = id;
 

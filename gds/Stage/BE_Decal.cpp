@@ -249,7 +249,7 @@ bool CBE_Decal::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_Decal::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_DecalTextureFilepath;
 	ar & m_fDecalRadius;

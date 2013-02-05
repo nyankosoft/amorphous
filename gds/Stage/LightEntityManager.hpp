@@ -39,25 +39,25 @@ extern int g_iNumDynamicLights;
  *  - applied to both entities and static geometry
  *  - can be created & destroyed at any time in the stage
  */
-class CLightEntityManager : public CLightEntity
+class LightEntityManager : public LightEntity
 {
 private:
 
-	CEntitySet *m_pEntitySet;
+	EntityManager *m_pEntitySet;
 
 	ShaderLightManager *m_pShaderLightManager;
 
 	LPD3DXEFFECT m_pEffect;
 
 //	vector<CLightEntity> m_vecStaticLightEntity;
-	CLightEntity m_aStaticLightEntity[CLEM_NUM_MAX_STATIC_LIGHTS];
+	LightEntity m_aStaticLightEntity[CLEM_NUM_MAX_STATIC_LIGHTS];
 	int m_iNumStaticLights;
 
 //	vector<CLightEntity> m_vecDynamicLightEntity;
-	CLightEntity m_aDynamicLightEntity[CLEM_NUM_MAX_DYNAMIC_LIGHTS];
+	LightEntity m_aDynamicLightEntity[CLEM_NUM_MAX_DYNAMIC_LIGHTS];
 	int m_iNumDynamicLights;
 
-	CLightEntity m_DynamicLightHead;
+	LightEntity m_DynamicLightHead;
 
 	int m_iNumPrevLights;
 
@@ -68,14 +68,14 @@ private:
 
 	/// find a new light entity
 	/// and returns the index and the pointer to the light entity
-	void GetNewLightEntity( int light_type, int& index, CLightEntity*& pLightEntity );
+	void GetNewLightEntity( int light_type, int& index, LightEntity*& pLightEntity );
 
 public:
 
-	CLightEntityManager();
-	~CLightEntityManager();
+	LightEntityManager();
+	~LightEntityManager();
 
-	void Init( CEntitySet* pEntitySet );
+	void Init( EntityManager* pEntitySet );
 
 	/// add new light in the stage
 	/// Light properties such as position, direction & color are taken from copy entity
@@ -96,11 +96,11 @@ public:
 
 	inline void SetLightsForEntity( CCopyEntity *pEntity );
 
-	inline CLightEntity *GetLightEntity( int light_index );
+	inline LightEntity *GetLightEntity( int light_index );
 
 	int GetNumDynamicLights() { return m_iNumDynamicLights; }
-//	CLightEntity *GetDynamicLight( int iIndex ) { return &m_aDynamicLightEntity[iIndex]; }
-	CLightEntity *GetDynamicLight() { return m_DynamicLightHead.GetNextLight(); }
+//	LightEntity *GetDynamicLight( int iIndex ) { return &m_aDynamicLightEntity[iIndex]; }
+	LightEntity *GetDynamicLight() { return m_DynamicLightHead.GetNextLight(); }
 
 	/// unlink & re-link all the static & dynamic light entities
 	/// to the entity tree. called when the entity tree is re-created
@@ -117,13 +117,13 @@ public:
 // ================================ inline implementations ================================ 
 
 
-inline void CLightEntityManager::EnableLightForEntity()
+inline void LightEntityManager::EnableLightForEntity()
 {
 	GraphicsDevice().Enable( RenderStateType::LIGHTING );
 }
 
 
-inline void CLightEntityManager::DisableLightForEntity()
+inline void LightEntityManager::DisableLightForEntity()
 {
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
@@ -133,7 +133,7 @@ inline void CLightEntityManager::DisableLightForEntity()
 }
 
 
-inline void CLightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
+inline void LightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
 {/*
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
@@ -204,7 +204,7 @@ inline void CLightEntityManager::SetLightsForEntity(CCopyEntity *pEntity)
 }
 
 
-inline void CLightEntityManager::DeleteLight( int light_index, int light_type )
+inline void LightEntityManager::DeleteLight( int light_index, int light_type )
 {/*
 	if( light_type == CLE_LIGHT_DYNAMIC )
 	{
@@ -216,7 +216,7 @@ inline void CLightEntityManager::DeleteLight( int light_index, int light_type )
 }
 
 
-inline CLightEntity *CLightEntityManager::GetLightEntity( int light_index )
+inline LightEntity *LightEntityManager::GetLightEntity( int light_index )
 {/*
 	if( CLEM_NUM_MAX_STATIC_LIGHTS <= light_index )
 	{	// dynamic light
@@ -227,6 +227,7 @@ inline CLightEntity *CLightEntityManager::GetLightEntity( int light_index )
 		return &m_aStaticLightEntity[light_index];
 	}*/
 }
+
 } // amorphous
 
 

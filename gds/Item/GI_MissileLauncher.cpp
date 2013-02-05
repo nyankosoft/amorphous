@@ -118,7 +118,7 @@ void MissileLauncher::InitStates()
 {
 	// initialize states
 	m_CurrentReleasePoseIndex = 0;
-	m_FocusedEntity          = CEntityHandle<>();
+	m_FocusedEntity          = EntityHandle<>();
 	m_vecCurrentTarget.resize( 0 );
 	m_FireTargetIndex         = 0;
 
@@ -241,7 +241,7 @@ void MissileLauncher::UpdateTargets()
 		if( acos(dp) < m_fValidSensorAngle && dist_to_target_sq < range_sq )
             m_vecCurrentTarget.push_back( m_FocusedEntity ); // still locking on it
 		else
-			m_vecCurrentTarget.push_back( CEntityHandle<>() ); // lost it
+			m_vecCurrentTarget.push_back( EntityHandle<>() ); // lost it
 	}
 
 	if( m_NumMaxSimulTargets <= (int)m_vecCurrentTarget.size() )
@@ -297,7 +297,7 @@ void MissileLauncher::UpdateTargets()
 }
 
 
-bool MissileLauncher::SetPrimaryTarget( CEntityHandle<>& target_entity )
+bool MissileLauncher::SetPrimaryTarget( EntityHandle<>& target_entity )
 {
 	if( !target_entity.Get() )
 		return false;
@@ -466,7 +466,7 @@ bool MissileLauncher::ReleaseAmmo()
 			pAmmoEntity->SetVelocity( m_vecMissileHolder[i].vVelocityAtReleasePos );
 
 			// ignite the booster and set the target if it's a missile
-			if( pAmmoEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_HOMINGMISSILE )
+			if( pAmmoEntity->pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_HOMINGMISSILE )
 			{
 				MissileState(pAmmoEntity) = CBE_HomingMissile::MS_WAITING_IGNITION;
 				MissileIgnitionTimer(pAmmoEntity) = 0.0f;
@@ -545,7 +545,7 @@ inline void MissileLauncher::SetTargetForMissile( CCopyEntity *pMissileEntity )
 	if( m_FireTargetIndex < m_vecCurrentTarget.size()
 	 && IsValidEntity(m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr()) )
 	{
-		SGameMessage msg;
+		GameMessage msg;
 		msg.effect = GM_SET_TARGET;
 //		msg.pUserData = m_vecCurrentTarget[i];
         msg.pUserData = m_vecCurrentTarget[m_FireTargetIndex].GetRawPtr();
@@ -663,7 +663,7 @@ void MissileLauncher::Fire()
 		// provide target info
 		SetTargetForMissile( pMissile );
 
-		if( pMissile->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_HOMINGMISSILE )
+		if( pMissile->pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_HOMINGMISSILE )
 		{
 			MissileState(pMissile) = CBE_HomingMissile::MS_IGNITED;
 		}
@@ -680,7 +680,7 @@ void MissileLauncher::Fire()
 	m_FireTargetIndex++;
 
 	// recoil effect
-	SGameMessage msg;
+	GameMessage msg;
 	msg.effect = GM_IMPACT;
 	msg.vParam = - vFireDirection * 0.0f/*m_RecoilForce*/;
 

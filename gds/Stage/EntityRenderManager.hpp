@@ -48,8 +48,8 @@ public:
  *
  *
  */
-//class CEntityRenderManager : public GraphicsComponent, public CCubeMapSceneRenderer
-class CEntityRenderManager : public CScreenEffectTargetSceneRenderer, public CCubeMapSceneRenderer
+//class EntityRenderManager : public GraphicsComponent, public CCubeMapSceneRenderer
+class EntityRenderManager : public CScreenEffectTargetSceneRenderer, public CCubeMapSceneRenderer
 {
 private:
 
@@ -59,10 +59,10 @@ private:
 		NUM_MAX_ENVMAP_TARGETS = 8,
 	};
 
-	CEntitySet *m_pEntitySet;
+	EntityManager *m_pEntitySet;
 
 	int m_NumEntityNodes;
-	CEntityNode* m_paEntityTree;	///< pointer to the first node of a binary tree that holds copy-entities
+	EntityNode* m_paEntityTree;	///< pointer to the first node of a binary tree that holds copy-entities
 
 
 	std::vector<char> m_EntityNodeRendered;
@@ -80,7 +80,7 @@ private:
 	/// used for z-sort
 	float m_fCameraFarClipDist;
 
-	std::vector<CBaseEntity *> m_vecpSweepRenderBaseEntity;
+	std::vector<BaseEntity *> m_vecpSweepRenderBaseEntity;
 
 	std::string m_FallbackShaderFilepath;
 	ShaderHandle m_FallbackShader;
@@ -98,7 +98,7 @@ private:
 	Vector3 m_vOverrideShadowMapPosition;
 	Vector3 m_vOverrideShadowMapDirection;
 
-	std::vector< CEntityHandle<> > m_vecLightForShadow;
+	std::vector< EntityHandle<> > m_vecLightForShadow;
 
 	int m_NumMaxLightsForShadow;
 
@@ -169,20 +169,20 @@ private:
 
 public:
 
-	CEntityRenderManager( CEntitySet* pEntitySet );
+	EntityRenderManager( EntityManager* pEntitySet );
 
 	/// added default dtor to use the class with boost::python
-	CEntityRenderManager() {}
+	EntityRenderManager() {}
 
-	~CEntityRenderManager();
+	~EntityRenderManager();
 
 	bool LoadFallbackShader();
 
 	const ShaderHandle& GetFallbackShader() { return m_FallbackShader; }
 
-    void UpdateEntityTree( CEntityNode* pRootNode, int num_nodes );
+    void UpdateEntityTree( EntityNode* pRootNode, int num_nodes );
 
-	void AddSweepRenderEntity( CBaseEntity* pBaseEntity );
+	void AddSweepRenderEntity( BaseEntity* pBaseEntity );
 
 	/// put an entity that have transparent parts to z-sort list
 	void SendToZSortTable(CCopyEntity* pCopyEnt);
@@ -232,8 +232,8 @@ public:
 
 	void RenderSceneWithShadows( Camera& rCam );
 
-	Result::Name AddPlanarReflector( CEntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
-	Result::Name RemovePlanarReflector( CEntityHandle<>& entity, bool remove_planar_refelection_group );
+	Result::Name AddPlanarReflector( EntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
+	Result::Name RemovePlanarReflector( EntityHandle<>& entity, bool remove_planar_refelection_group );
 	void UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group );
 	void UpdatePlanarReflectionTextures( Camera& rCam );
 	TextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
@@ -254,7 +254,7 @@ public:
 
 // ================================ inline implementations ================================ 
 
-inline void CEntityRenderManager::UpdateCamera( Camera* pCam )
+inline void EntityRenderManager::UpdateCamera( Camera* pCam )
 {
 	m_pCurrentCamera = pCam;
 	pCam->GetPose( m_CameraPose );

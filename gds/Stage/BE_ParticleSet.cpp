@@ -916,7 +916,7 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 
 bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 {
-	CBaseEntity::LoadSpecificPropertiesFromFile( scanner );
+	BaseEntity::LoadSpecificPropertiesFromFile( scanner );
 
 	string smoke_type;
 
@@ -967,7 +967,7 @@ bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner 
 
 void CBE_ParticleSet::Serialize( serialization::IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_ParticleType;
 	ar & m_fParticleRadius;

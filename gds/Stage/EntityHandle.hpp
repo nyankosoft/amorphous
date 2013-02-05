@@ -12,19 +12,19 @@ namespace amorphous
 class CCopyEntity;
 
 
-/// Used to access the private members of CCopyEntity from CEntityHandle
-class CEntityHandleBase
+/// Used to access the private members of CCopyEntity from EntityHandle
+class EntityHandleBase
 {
 public:
 
-	virtual ~CEntityHandleBase() {}
+	virtual ~EntityHandleBase() {}
 
 	inline bool IsEntityInUse( CCopyEntity *pEntity );
 };
 
 
 template<class T = CCopyEntity>
-class CEntityHandle : public CEntityHandleBase
+class EntityHandle : public EntityHandleBase
 {
 	boost::weak_ptr<T> m_pEntity;
 
@@ -35,15 +35,15 @@ class CEntityHandle : public CEntityHandleBase
 
 public:
 
-	CEntityHandle() : m_StockID(-1) {}
+	EntityHandle() : m_StockID(-1) {}
 
 	/// Defined in CopyEntity.inl
-	CEntityHandle( boost::weak_ptr<T> pEntity );
+	EntityHandle( boost::weak_ptr<T> pEntity );
 
 	/// Defined in CopyEntity.inl
-	CEntityHandle( boost::shared_ptr<T> pEntity );
+	EntityHandle( boost::shared_ptr<T> pEntity );
 
-	virtual ~CEntityHandle() {}
+	virtual ~EntityHandle() {}
 
 	/// Defined in CopyEntity.inl
 	inline boost::shared_ptr<T> Get();
@@ -79,7 +79,7 @@ public:
 
 	inline void SetWorldPose( const Matrix34& pose );
 
-//	virtual void OnCopyEntityReceivedMessage( CCopyEntity* pEntity, const SGameMessage& msg );
+//	virtual void OnCopyEntityReceivedMessage( CCopyEntity* pEntity, const GameMessage& msg );
 
 //	virtual void OnCopyEntityHitByAnother( CCopyEntity* pSelf, CCopyEntity* pOther );
 

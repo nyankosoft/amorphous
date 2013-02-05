@@ -24,7 +24,7 @@ void CBEC_AircraftNozzleFlames::CreateNozzleFlames( CCopyEntity* pCopyEnt,
 		                                            CGI_Aircraft* pAircraft,
                                                     CStage* pStage )
 {
-//	CBaseEntityHandle base_entity;
+//	BaseEntityHandle base_entity;
 //	base_entity.SetBaseEntityName( "nozzle_flame" );
 
 	CCopyEntityDesc desc;

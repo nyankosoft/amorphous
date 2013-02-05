@@ -57,7 +57,7 @@ private:
 		NUM_INIT_ENEMY_AIRCRAFTS = 16
 	};
 
-	CBaseEntityHandle m_Missile;
+	BaseEntityHandle m_Missile;
 
 	/// holds extra information for each copy entity
 	std::vector<CBEC_EnemyShipExtraData> m_vecExtraData;
@@ -92,7 +92,7 @@ public:
 	// void Draw(CCopyEntity* pCopyEnt); 
 	// void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

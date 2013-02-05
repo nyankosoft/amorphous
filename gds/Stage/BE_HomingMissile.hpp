@@ -56,9 +56,9 @@ private:
 
 	int m_MissileFlag;
 
-	CBaseEntityHandle m_SmokeTrail;
-	CBaseEntityHandle m_FlameTrail;
-	CBaseEntityHandle m_Light;
+	BaseEntityHandle m_SmokeTrail;
+	BaseEntityHandle m_FlameTrail;
+	BaseEntityHandle m_Light;
 
 
 	void FindTarget(CCopyEntity* pCopyEnt);
@@ -84,7 +84,7 @@ public:
 	// void Draw(CCopyEntity* pCopyEnt); {}
 	// void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

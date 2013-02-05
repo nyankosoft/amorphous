@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-CFadeEffect::CFadeEffect()
+FadeEffect::FadeEffect()
 {
 	in_use = false;
 	m_iType = SCREENEFFECT_FADE_IN;
@@ -17,7 +17,7 @@ CFadeEffect::CFadeEffect()
 }
 
 
-void CFadeEffect::Draw()
+void FadeEffect::Draw()
 {
 	if( !in_use )
 		return;
@@ -36,7 +36,7 @@ void CFadeEffect::Draw()
 }
 
 
-void CFadeEffect::SetFadeEffect(int iType, const SFloatRGBAColor& dest_color, float fTotalTime, AlphaBlend::Mode blend_mode )
+void FadeEffect::SetFadeEffect(int iType, const SFloatRGBAColor& dest_color, float fTotalTime, AlphaBlend::Mode blend_mode )
 {
 	m_iType = iType;
 	m_fMaxAlpha = dest_color.alpha;//(float)( (dest_color & 0xFF000000) >> 24 );
@@ -50,7 +50,7 @@ void CFadeEffect::SetFadeEffect(int iType, const SFloatRGBAColor& dest_color, fl
 }
 
 
-void CFadeEffect::SetScreenSize( int iScreenWidth, int iScreenHeight )
+void FadeEffect::SetScreenSize( int iScreenWidth, int iScreenHeight )
 {
 	m_ScreenRect.SetPosition( Vector2(0,0), Vector2((float)iScreenWidth,(float)iScreenHeight) );
 }

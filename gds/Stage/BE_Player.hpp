@@ -78,7 +78,7 @@ protected:
 	CInputHandler_PlayerBase *m_pInputHandler;
 
 	/// ENTITY_GROUP_MIN is set by default
-	CEntityGroupHandle m_ProjectileEntityGroup;
+	EntityGroupHandle m_ProjectileEntityGroup;
 
 	float m_fBoost;
 
@@ -92,8 +92,8 @@ protected:
 
 	Matrix34 m_PrevCameraPose;
 
-	CBaseEntityHandle m_LaserDot;
-	CBaseEntityHandle m_HeadLight;
+	BaseEntityHandle m_LaserDot;
+	BaseEntityHandle m_HeadLight;
 
 	CCopyEntity *m_pLaserDotEntity;
 	CCopyEntity *m_pHeadLightEntity;
@@ -128,7 +128,7 @@ protected:
 
 	virtual CInputHandler_PlayerBase *CreatePlayerInputHandler() { return NULL; }
 
-	virtual void OnDestroyingEnemyEntity( SGameMessage& msg );
+	virtual void OnDestroyingEnemyEntity( GameMessage& msg );
 
 public:
 
@@ -143,7 +143,7 @@ public:
 
 	virtual void Act(CCopyEntity* pCopyEnt);
 
-	virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	virtual void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	virtual void OnEntityDestroyed(CCopyEntity* pCopyEnt);
 

@@ -203,12 +203,12 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 	if( !pStage )
 		return Py_None;
 
-	CBaseEntityHandle base_entity_handle;
+	BaseEntityHandle base_entity_handle;
 	base_entity_handle.SetBaseEntityName( base_name );
 
 	bool loaded = pStage->GetEntitySet()->LoadBaseEntity( base_entity_handle );
 
-	CBaseEntity *pBaseEntity = pStage->GetEntitySet()->FindBaseEntity( base_name );
+	BaseEntity *pBaseEntity = pStage->GetEntitySet()->FindBaseEntity( base_name );
 	if( !pBaseEntity )
 		return Py_None;
 
@@ -228,7 +228,7 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 	actor_desc.WorldPose.vPosition = pos;
 	actor_desc.WorldPose.matOrient = matOrient;
 
-	CEntityHandle<ItemEntity> entity = item_stg_util.CreateItemEntity( pVehicle, base_entity_handle, actor_desc );
+	EntityHandle<ItemEntity> entity = item_stg_util.CreateItemEntity( pVehicle, base_entity_handle, actor_desc );
 
 	boost::shared_ptr<ItemEntity> pEntity = entity.Get();
 	if( pEntity )

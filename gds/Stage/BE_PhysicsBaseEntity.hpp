@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CBE_PhysicsBaseEntity : public CBaseEntity
+class CBE_PhysicsBaseEntity : public BaseEntity
 {
 protected:
 
@@ -51,7 +51,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CEntitySet;
+	friend class EntityManager;
 };
 
 } // namespace amorphous

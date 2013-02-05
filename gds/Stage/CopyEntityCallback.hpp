@@ -26,7 +26,7 @@ public:
 
 	virtual void OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& other_entity ) {}
 
-//	virtual void OnCopyEntityReceivedMessage( CCopyEntity* pEntity, const SGameMessage& msg );
+//	virtual void OnCopyEntityReceivedMessage( CCopyEntity* pEntity, const GameMessage& msg );
 
 //	virtual void OnCopyEntityHitByAnother( CCopyEntity* pSelf, CCopyEntity* pOther );
 

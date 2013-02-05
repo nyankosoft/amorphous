@@ -31,7 +31,7 @@ class CBEC_Destruction : public IArchiveObjectBase
 	{
 	public:
 
-		CBaseEntityHandle BaseEntity;
+		BaseEntityHandle BaseEntity;
 		Vector3 vLocalPosition;
 		RangedSet<float> InitSpeed;
 
@@ -45,7 +45,7 @@ class CBEC_Destruction : public IArchiveObjectBase
 
 	std::vector<Fragment> m_vecTrail;
 
-	CBaseEntityHandle m_Explosion;
+	BaseEntityHandle m_Explosion;
 
 public:
 

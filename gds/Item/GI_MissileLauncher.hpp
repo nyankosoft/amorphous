@@ -84,10 +84,10 @@ protected:
 
 	int m_CurrentReleasePoseIndex;
 
-	CEntityHandle<> m_FocusedEntity;
+	EntityHandle<> m_FocusedEntity;
 
 	/// list of targets locked on by the missile launcher
-	std::vector< CEntityHandle<> > m_vecCurrentTarget;
+	std::vector< EntityHandle<> > m_vecCurrentTarget;
 
 	int m_FireTargetIndex;
 
@@ -131,7 +131,7 @@ public:
 
 	virtual void Fire();
 
-	std::vector< CEntityHandle<> >& GetCurrentTargetList() { return m_vecCurrentTarget; }
+	std::vector< EntityHandle<> >& GetCurrentTargetList() { return m_vecCurrentTarget; }
 
 	bool IsLockingOn( CCopyEntity *pEntity );
 
@@ -143,7 +143,7 @@ public:
 	/// This is either the entity is not in effective area of the sensor to lock-on,
 	/// or it cannot be targeted by the ammunition of this missile launcher
 	/// (e.g. air-to-air missile on ground target)
-	bool SetPrimaryTarget( CEntityHandle<>& target_entity );
+	bool SetPrimaryTarget( EntityHandle<>& target_entity );
 
 	void SetNumMaxSimultaneousTargets( int num_targets );
 

@@ -10,7 +10,7 @@ namespace amorphous
 
 
 
-class CBE_StaticLiquid : public CBaseEntity
+class CBE_StaticLiquid : public BaseEntity
 {
 public:
 
@@ -34,7 +34,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CCoreBaseEntitiesLoader;
+	friend class CoreBaseEntitiesLoader;
 };
 
 } // namespace amorphous

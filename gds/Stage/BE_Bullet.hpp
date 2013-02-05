@@ -14,7 +14,7 @@ namespace amorphous
 {
 
 
-class CBE_Bullet : public CBaseEntity
+class CBE_Bullet : public BaseEntity
 {
 	std::string m_BillboardTextureFilepath;
 	TextureHandle m_BillboardTexture;
@@ -37,8 +37,8 @@ class CBE_Bullet : public CBaseEntity
 
 //	float m_fMuzzleSpeed;
 
-	CBaseEntityHandle m_Spark;
-	CBaseEntityHandle m_Light;
+	BaseEntityHandle m_Spark;
+	BaseEntityHandle m_Light;
 
 	// For visual debugging
 	std::vector< boost::shared_ptr< std::vector<Vector3> > > m_pTrajectoryPoints;
@@ -74,7 +74,7 @@ public:
 	void InitCopyEntity( CCopyEntity* pCopyEnt );
 	void Act(CCopyEntity* pCopyEnt);
 	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
-	//void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	//void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	/// create decal/spark/smoke entities and make a hit sound
 	/// according to the type of the surface material

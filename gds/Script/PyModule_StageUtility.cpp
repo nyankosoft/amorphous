@@ -11,8 +11,8 @@ using boost::shared_ptr;
 using namespace physics;
 
 
-CEntityHandle<> (CStageMiscUtility::*CreateBox_Pose)  ( Vector3 edge_lengths, SFloatRGBAColor diffuse_color, const Matrix34& pose,                                       float mass, const std::string& material_name, const std::string& entity_name, const std::string& entity_attributes_name ) = &CStageMiscUtility::CreateBox;
-CEntityHandle<> (CStageMiscUtility::*CreateBox_PosHPB)( Vector3 edge_lengths, SFloatRGBAColor diffuse_color, const Vector3& pos, float heading, float pitch, float bank, float mass, const std::string& material_name, const std::string& entity_name, const std::string& entity_attributes_name ) = &CStageMiscUtility::CreateBox;
+EntityHandle<> (CStageMiscUtility::*CreateBox_Pose)  ( Vector3 edge_lengths, SFloatRGBAColor diffuse_color, const Matrix34& pose,                                       float mass, const std::string& material_name, const std::string& entity_name, const std::string& entity_attributes_name ) = &CStageMiscUtility::CreateBox;
+EntityHandle<> (CStageMiscUtility::*CreateBox_PosHPB)( Vector3 edge_lengths, SFloatRGBAColor diffuse_color, const Vector3& pos, float heading, float pitch, float bank, float mass, const std::string& material_name, const std::string& entity_name, const std::string& entity_attributes_name ) = &CStageMiscUtility::CreateBox;
 
 
 namespace stage_util

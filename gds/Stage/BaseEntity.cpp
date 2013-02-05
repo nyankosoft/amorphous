@@ -141,9 +141,9 @@ void CBE_MeshObjectProperty::Release()
 
 
 //===============================================================================
-// CBaseEntity
+// BaseEntity
 //===============================================================================
-CBaseEntity::CBaseEntity()
+BaseEntity::BaseEntity()
 {
 	this->m_bNoClip = false;
 	this->m_bNoClipAgainstMap = false;
@@ -173,7 +173,7 @@ CBaseEntity::CBaseEntity()
 }
 
 
-CBaseEntity::~CBaseEntity()
+BaseEntity::~BaseEntity()
 {
 	m_MeshProperty.Release();
 
@@ -181,7 +181,7 @@ CBaseEntity::~CBaseEntity()
 }
 
 
-void CBaseEntity::SetStagePtr( CStageWeakPtr pStage )
+void BaseEntity::SetStagePtr( CStageWeakPtr pStage )
 {
 	m_pStageWeakPtr = pStage;
 
@@ -193,13 +193,13 @@ void CBaseEntity::SetStagePtr( CStageWeakPtr pStage )
 }
 
 
-bool CBaseEntity::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
+bool BaseEntity::LoadBaseEntity( BaseEntityHandle& base_entity_handle )
 {
 	return m_pStage->LoadBaseEntity( base_entity_handle );
 }
 
 
-void CBaseEntity::SetLighting( bool lighting )
+void BaseEntity::SetLighting( bool lighting )
 {
 	if( lighting )
 		RaiseEntityFlag( BETYPE_LIGHTING );
@@ -208,7 +208,7 @@ void CBaseEntity::SetLighting( bool lighting )
 }
 
 
-int CBaseEntity::GetEntityGroupID( CEntityGroupHandle& entity_group_handle )
+int BaseEntity::GetEntityGroupID( EntityGroupHandle& entity_group_handle )
 {
 	int base_entity_group = entity_group_handle.GetID();
 	if( base_entity_group == ENTITY_GROUP_ID_UNINITIALIZED )
@@ -230,7 +230,7 @@ int CBaseEntity::GetEntityGroupID( CEntityGroupHandle& entity_group_handle )
 }
 
 
-int CBaseEntity::GetEntityGroupID()
+int BaseEntity::GetEntityGroupID()
 {
 	return GetEntityGroupID( m_EntityGroup );
 }
@@ -241,7 +241,7 @@ int CBaseEntity::GetEntityGroupID()
 //inline boost::shared_ptr<T> create_copy( shared_ptr<T> p ) { return ; }
 
 
-void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
+void BaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 {
 	if( pCopyEnt->GetEntityTypeID() == CCopyEntityTypeID::ALPHA_ENTITY )
 		return;
@@ -315,7 +315,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 
 		pContainerRenderMethodCopy->SubsetRenderMethodMaps().resize( 0 );
 
-		CBaseEntityHandle base_entity( "AlphaEntityBase" );
+		BaseEntityHandle base_entity( "AlphaEntityBase" );
 		CCopyEntityDesc desc;
 		desc.TypeID            = CCopyEntityTypeID::ALPHA_ENTITY;
 		desc.pBaseEntityHandle = &base_entity;
@@ -339,7 +339,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 			pContainerRenderMethod->SubsetRenderMethodMaps()[0].erase( itr );
 		}
 
-		CAlphaEntity *pEntity = dynamic_cast<CAlphaEntity *>(m_pStage->CreateEntity( desc ));
+		AlphaEntity *pEntity = dynamic_cast<AlphaEntity *>(m_pStage->CreateEntity( desc ));
 		pEntity->m_MeshHandle = pCopyEnt->m_MeshHandle;
 		pEntity->m_pMeshRenderMethod = pContainerRenderMethodCopy;
 
@@ -376,7 +376,7 @@ void CBaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 }
 
 
-const physics::CActorDesc& CBaseEntity::GetPhysicsActorDesc()
+const physics::CActorDesc& BaseEntity::GetPhysicsActorDesc()
 {
 	static physics::CActorDesc empty_desc;
 	return empty_desc;
@@ -384,7 +384,7 @@ const physics::CActorDesc& CBaseEntity::GetPhysicsActorDesc()
 
 
 // 'rTrace' is given in world coord
-void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
+void BaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 {
 	PROFILE_FUNCTION();
 
@@ -445,7 +445,7 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 			m_pBSPTree->ClipTrace( local_trace );
 		else
 		{
-			CBSPTreeForAABB bsptree_aabb;
+			BSPTreeForAABB bsptree_aabb;
 			bsptree_aabb.ClipTraceToAABB(local_trace, pMyself->local_aabb);
 		}
 
@@ -480,7 +480,7 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 			else
 			{
 				// clip the trace by the bounding box of the entity 'pMyself'
-				CBSPTreeForAABB bspt;
+				BSPTreeForAABB bspt;
 				bspt.ClipTraceToAABB( local_trace, m_aabb );
 			}
 
@@ -506,7 +506,7 @@ void CBaseEntity::ClipTrace( STrace& rTrace, CCopyEntity* pMyself )
 
 
 //free fall of spherical or aabb object
-void CBaseEntity::FreeFall(CCopyEntity* pCopyEnt)
+void BaseEntity::FreeFall(CCopyEntity* pCopyEnt)
 {
 	if( pCopyEnt->sState & CESTATE_ATREST )
 		return;
@@ -564,7 +564,7 @@ void CBaseEntity::FreeFall(CCopyEntity* pCopyEnt)
 
 #define MAX_CLIP_PLANES 5
 
-char CBaseEntity::SlideMove(CCopyEntity* pCopyEnt)
+char BaseEntity::SlideMove(CCopyEntity* pCopyEnt)
 {
 	char cBumpCount,cNumBumps;
 	Vector3 vDir;
@@ -720,7 +720,7 @@ char CBaseEntity::SlideMove(CCopyEntity* pCopyEnt)
 	return blocked;
 }
 
-void CBaseEntity::GroundMove(CCopyEntity* pCopyEnt)
+void BaseEntity::GroundMove(CCopyEntity* pCopyEnt)
 {
 	Vector3 vOrigPos, vOrigVel, vDownDestPos, vDownVel, vGoal;
 	float fDowndistSq, fUpdistSq;
@@ -826,7 +826,7 @@ usedown:
 }
 
 
-void CBaseEntity::ApplyFriction(CCopyEntity* pCopyEnt, float fFriction)
+void BaseEntity::ApplyFriction(CCopyEntity* pCopyEnt, float fFriction)
 {
 	float fSpeed;
 	STrace tr;
@@ -873,13 +873,13 @@ void CBaseEntity::ApplyFriction(CCopyEntity* pCopyEnt, float fFriction)
 }
 
 
-void CBaseEntity::ApplyFriction(float& rfSpeed, float fFriction)
+void BaseEntity::ApplyFriction(float& rfSpeed, float fFriction)
 {
 	ApplyQFriction( rfSpeed, m_pStage->GetFrameTime(), fFriction, 3.125f );
 }
 
 
-void CBaseEntity::Accelerate(CCopyEntity* pCopyEnt,
+void BaseEntity::Accelerate(CCopyEntity* pCopyEnt,
 							 Vector3& vWishdir, float& fWishspeed, float fAccel)
 {
 	float fAddspeed, fAccelspeed, fCurrentspeed;
@@ -900,7 +900,7 @@ void CBaseEntity::Accelerate(CCopyEntity* pCopyEnt,
 }
 
 
-void CBaseEntity::AirAccelerate(CCopyEntity* pCopyEnt,
+void BaseEntity::AirAccelerate(CCopyEntity* pCopyEnt,
 				   Vector3& vWishdir, float& fWishspeed, float fAccel)
 {
 	float fAddspeed, fAccelspeed, fCurrentspeed;
@@ -925,7 +925,7 @@ void CBaseEntity::AirAccelerate(CCopyEntity* pCopyEnt,
 
 
 //only checks if the entity is on or off the ground
-void CBaseEntity::CategorizePosition(CCopyEntity* pCopyEnt)
+void BaseEntity::CategorizePosition(CCopyEntity* pCopyEnt)
 {
 	Vector3 vPoint;
 	STrace tr;
@@ -976,7 +976,7 @@ void CBaseEntity::CategorizePosition(CCopyEntity* pCopyEnt)
 #define GRIDSIZE 0.0004f
 #define INV_GRIDSIZE 2500
 
-void CBaseEntity::NudgePosition(CCopyEntity* pCopyEnt)
+void BaseEntity::NudgePosition(CCopyEntity* pCopyEnt)
 {
 	Vector3 vBase;
 	static char x, y, z;
@@ -1034,7 +1034,7 @@ static void LogTaskError()
 }
 */
 /*
-void CBaseEntity::RequestTaskTransition( const std::string& next_task_title,
+void BaseEntity::RequestTaskTransition( const std::string& next_task_title,
 	                                     float delay_in_sec,
 	                                     float fade_out_time_in_sec,
 								         float fade_in_time_in_sec )
@@ -1054,7 +1054,7 @@ void CBaseEntity::RequestTaskTransition( const std::string& next_task_title,
 }
 
 
-void CBaseEntity::RequestTaskTransitionMS( const std::string& next_task_title,
+void BaseEntity::RequestTaskTransitionMS( const std::string& next_task_title,
 								           int delay_in_ms,
 	                                       int fade_out_time_in_ms,
 								           int fade_in_time_in_ms )
@@ -1074,7 +1074,7 @@ void CBaseEntity::RequestTaskTransitionMS( const std::string& next_task_title,
 }
 */
 
-void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
+void BaseEntity::LoadFromFile( CTextFileScanner& scanner )
 {
 	string str, tag, strFilename;
 	Vector3 vSide;
@@ -1125,7 +1125,7 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "BSPTREE", strFilename ) )
 		{
-			m_pBSPTree = new CBSPTree;
+			m_pBSPTree = new BSPTree;
 			m_pBSPTree->LoadFromFile( strFilename.c_str() );
 
 			// output the bsp-tree to a text file
@@ -1297,19 +1297,19 @@ void CBaseEntity::LoadFromFile( CTextFileScanner& scanner )
 }
 
 
-void CBaseEntity::ReleaseGraphicsResources()
+void BaseEntity::ReleaseGraphicsResources()
 {
 	m_MeshProperty.Release();
 }
 
 
-void CBaseEntity::LoadGraphicsResources( const GraphicsParameters& rParam )
+void BaseEntity::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	Init3DModel();
 }
 
 
-void CBaseEntity::Serialize( IArchive& ar, const unsigned int version )
+void BaseEntity::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_strName;
 

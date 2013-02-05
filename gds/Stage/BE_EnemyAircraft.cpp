@@ -145,7 +145,7 @@ void CBE_EnemyAircraft::Fire( CCopyEntity* pCopyEnt, Vector3 vToTarget )
 			CCopyEntity* pMissileEntity = m_pStage->CreateEntity( missile );
 
 			if( IsValidEntity(pMissileEntity) 
-			 && pMissileEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_HOMINGMISSILE )
+			 && pMissileEntity->pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_HOMINGMISSILE )
 			{
 				((CBE_HomingMissile*)pMissileEntity->pBaseEntity)->Ignite(pMissileEntity);
 			}
@@ -411,7 +411,7 @@ void CBE_EnemyAircraft::Draw(CCopyEntity* pCopyEnt)
 }
 
 
-void CBE_EnemyAircraft::MessageProcedure( SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self )
+void CBE_EnemyAircraft::MessageProcedure( GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self )
 {
 	CBEC_EnemyAircraftExtraData& ex = GetExtraData(pCopyEnt_Self);
 

@@ -9,8 +9,8 @@ namespace amorphous
 {
 
 class CBSPMap;
-class CLightEntity;
-class CLightEntityManager;
+class LightEntity;
+class LightEntityManager;
 class CSG_Polygon;
 
 #define NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME 4	//32
@@ -20,9 +20,9 @@ class CDynamicLightManagerForStaticGeometry
 {
 //	CBSPMap *m_pMap;	// pointer to static geometry manager class
 
-	CLightEntityManager *m_pLightEntityManager;
+	LightEntityManager *m_pLightEntityManager;
 
-	CLightEntity *m_apDynamicLight[NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME];
+	LightEntity *m_apDynamicLight[NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME];
 
 	std::vector<int> m_veciLitPolygonIndex[NUM_MAX_DYNAMIC_LIGHTS_PER_FRAME];
 
@@ -36,11 +36,11 @@ public:
 	CDynamicLightManagerForStaticGeometry();
 	~CDynamicLightManagerForStaticGeometry();
 
-	void SetLightEntityManager(CLightEntityManager *pLightEntityManager) { m_pLightEntityManager = pLightEntityManager; }
+	void SetLightEntityManager(LightEntityManager *pLightEntityManager) { m_pLightEntityManager = pLightEntityManager; }
 
 	void SetDynamicLights( CBSPMap *pMap, ShaderManager& shader_mgr );
 
-	void SetDynamicLight( CLightEntity& rLight, CSG_Polygon& rPolygon, CBSPMap *pMap );
+	void SetDynamicLight( LightEntity& rLight, CSG_Polygon& rPolygon, CBSPMap *pMap );
 
 	void ClearDynamicLightEffectsFromPolygons(CBSPMap *pMap);
 };

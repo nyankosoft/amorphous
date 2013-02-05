@@ -115,10 +115,10 @@ void CBE_StaticLiquid::InitCopyEntity( CCopyEntity* pCopyEnt )
 //	{
 //	}
 
-	shared_ptr<CEntityRenderManager> pEntityRenderManger
+	shared_ptr<EntityRenderManager> pEntityRenderManger
 		= m_pStage->GetEntitySet()->GetRenderManager();
 
-	CEntityHandle<> handle( pCopyEnt->Self() );
+	EntityHandle<> handle( pCopyEnt->Self() );
 	const Plane plane( Vector3(0,1,0), 0 );
 	pEntityRenderManger->AddPlanarReflector( handle, plane );
 }
@@ -137,10 +137,10 @@ void CBE_StaticLiquid::Draw(CCopyEntity* pCopyEnt)
 
 void CBE_StaticLiquid::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 {
-	shared_ptr<CEntityRenderManager> pEntityRenderManger
+	shared_ptr<EntityRenderManager> pEntityRenderManger
 		= m_pStage->GetEntitySet()->GetRenderManager();
 
-	CEntityHandle<> handle( pCopyEnt->Self() );
+	EntityHandle<> handle( pCopyEnt->Self() );
 	pEntityRenderManger->RemovePlanarReflector( handle, true );
 }
 
@@ -153,7 +153,7 @@ bool CBE_StaticLiquid::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner
 
 void CBE_StaticLiquid::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 }
 
 

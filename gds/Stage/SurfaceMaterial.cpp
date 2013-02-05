@@ -60,15 +60,15 @@ void CSurfaceMaterial::LoadReactionEntities( CTextFileScanner& scanner )
 	for( ; !scanner.TryScanLine( "[Entity:End]", str ); scanner.NextLine() )
 	{
 		if( scanner.TryScanLine( "OnBulletHit", str ) )
-			m_vecReactionEntity[REACTION_TO_BULLET_HIT].push_back( CBaseEntityHandle(str.c_str()) );
+			m_vecReactionEntity[REACTION_TO_BULLET_HIT].push_back( BaseEntityHandle(str.c_str()) );
 		else if( scanner.TryScanLine( "OnBulletOut", str ) )
-			m_vecReactionEntity[REACTION_TO_BULLET_OUT].push_back( CBaseEntityHandle(str.c_str()) );
+			m_vecReactionEntity[REACTION_TO_BULLET_OUT].push_back( BaseEntityHandle(str.c_str()) );
 		else if( scanner.TryScanLine( "OnExplosion_S", str ) )
-			m_vecReactionEntity[REACTION_TO_EXPLOSION_S].push_back( CBaseEntityHandle(str.c_str()) );
+			m_vecReactionEntity[REACTION_TO_EXPLOSION_S].push_back( BaseEntityHandle(str.c_str()) );
 		else if( scanner.TryScanLine( "OnExplosion_M", str ) )
-			m_vecReactionEntity[REACTION_TO_EXPLOSION_M].push_back( CBaseEntityHandle(str.c_str()) );
+			m_vecReactionEntity[REACTION_TO_EXPLOSION_M].push_back( BaseEntityHandle(str.c_str()) );
 		else if( scanner.TryScanLine( "OnExplosion_L", str ) )
-			m_vecReactionEntity[REACTION_TO_EXPLOSION_L].push_back( CBaseEntityHandle(str.c_str()) );
+			m_vecReactionEntity[REACTION_TO_EXPLOSION_L].push_back( BaseEntityHandle(str.c_str()) );
 	}
 }
 
@@ -121,13 +121,13 @@ void CSurfaceMaterial::LoadFromTextFile( CTextFileScanner& scanner )
 /*
 		else if( scanner.TryScanLine( "EntityOnHit", str ) )
 		{
-			m_vecReactionEntity[REACTION_TO_BULLET_HIT].push_back( CBaseEntityHandle() );
+			m_vecReactionEntity[REACTION_TO_BULLET_HIT].push_back( BaseEntityHandle() );
 			m_vecReactionEntity[REACTION_TO_BULLET_HIT].back().SetBaseEntityName( str.c_str() );
 		}
 
 		else if( scanner.TryScanLine( "EntityOnOut", str ) )
 		{
-			m_vecReactionEntity[REACTION_TO_BULLET_OUT].push_back( CBaseEntityHandle() );
+			m_vecReactionEntity[REACTION_TO_BULLET_OUT].push_back( BaseEntityHandle() );
 			m_vecReactionEntity[REACTION_TO_BULLET_OUT].back().SetBaseEntityName( str );
 		}
 
@@ -186,7 +186,7 @@ void CSurfaceMaterial::Load( CSurfaceMaterialData& src_material )
 
 		for( j=0; j<src_material.m_vecstrReactionEntityName[i].size(); j++ )
 		{
-			m_vecReactionEntity[i].push_back( CBaseEntityHandle() );
+			m_vecReactionEntity[i].push_back( BaseEntityHandle() );
 			m_vecReactionEntity[i].back().SetBaseEntityName( src_material.m_vecstrReactionEntityName[i][j].c_str() );
 		}
 	}

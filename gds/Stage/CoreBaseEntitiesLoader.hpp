@@ -13,24 +13,24 @@ namespace amorphous
 class CBE_Light;
 
 
-class CCoreBaseEntitiesLoader
+class CoreBaseEntitiesLoader
 {
-	void AddBlast( const char *name, float base_damage, float max_blast_radius, float blast_duration, float impulse, std::vector<CBaseEntity *>& pBaseEntities );
+	void AddBlast( const char *name, float base_damage, float max_blast_radius, float blast_duration, float impulse, std::vector<BaseEntity *>& pBaseEntities );
 
-	void AddExplosion( const char *name, const char *blast_name, float anim_time_offset, std::vector<CBaseEntity *>& pBaseEntities );
+	void AddExplosion( const char *name, const char *blast_name, float anim_time_offset, std::vector<BaseEntity *>& pBaseEntities );
 
-	void AddDefaultLight( CBE_Light *pLight, const char *name, std::vector<CBaseEntity *>& pBaseEntities );
+	void AddDefaultLight( CBE_Light *pLight, const char *name, std::vector<BaseEntity *>& pBaseEntities );
 
-	void AddPhysicsBaseEntity( const char *name, std::vector<CBaseEntity *>& pBaseEntities );
+	void AddPhysicsBaseEntity( const char *name, std::vector<BaseEntity *>& pBaseEntities );
 
 //	void AddPhysicsObjects();
 
 public:
 
-	CCoreBaseEntitiesLoader(){}
-	~CCoreBaseEntitiesLoader(){}
+	CoreBaseEntitiesLoader(){}
+	~CoreBaseEntitiesLoader(){}
 
-	void LoadCoreBaseEntities( std::vector<CBaseEntity *>& pBaseEntities );
+	void LoadCoreBaseEntities( std::vector<BaseEntity *>& pBaseEntities );
 };
 
 

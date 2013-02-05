@@ -21,14 +21,14 @@ private:
 	short m_sGEAttribute;
 	float m_fLifeTime;
 
-//	CBaseEntityHandle m_SmokeTrace;
-	CBaseEntityHandle m_Explosion;
-	CBaseEntityHandle m_Child;
+//	BaseEntityHandle m_SmokeTrace;
+	BaseEntityHandle m_Explosion;
+	BaseEntityHandle m_Child;
 
 	class SmokeTrail : public IArchiveObjectBase
 	{
 	public:
-		CBaseEntityHandle BaseEntity;
+		BaseEntityHandle BaseEntity;
 		Vector3 vLocalPosition;
 
 		virtual void Serialize( IArchive& ar, const unsigned int version )
@@ -52,7 +52,7 @@ public:
 	void Draw(CCopyEntity* pCopyEnt);
 	// void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

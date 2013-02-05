@@ -77,7 +77,7 @@ PyObject* CreateCameraController( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "s|s", &camera_controller_name, &base_entity_name );
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_entity_name );
 
 	CCopyEntityDesc desc;
@@ -119,7 +119,7 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	if( !GetStage() )
 		return Py_None;
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( "ScriptedCamera" );
 
 	CCopyEntityDesc desc;
@@ -146,7 +146,7 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	}
 
 	// set default camera params
-	SGameMessage msg( GM_SET_DEFAULT_CAMERA_PARAM );
+	GameMessage msg( GM_SET_DEFAULT_CAMERA_PARAM );
 	msg.pUserData = &param;
 	SendGameMessageTo( msg, pEntity );
 
@@ -278,7 +278,7 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 	int result = PyArg_ParseTuple( args, "s", &camera_entity_name );
 
 	// set motion path (pos & orientation)
-	SGameMessage msg( GM_SET_MOTION_PATH );
+	GameMessage msg( GM_SET_MOTION_PATH );
 	msg.pUserData = &g_EntityMotionPathRequest;
 
 	g_Log.Print( "EndCameraScript() - sending motion path to camera entity (%d key poses)", (int)g_EntityMotionPathRequest.vecKeyPose.size() );
@@ -288,7 +288,7 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 	// set camera-related effects
 	// camera property: fov, nearclip, farclip, etc.
 	// effect property: blur, glare, etc.
-	msg = SGameMessage( GM_SET_SCRIPTCAMERAKEYFRAMES );
+	msg = GameMessage( GM_SET_SCRIPTCAMERAKEYFRAMES );
 	msg.pUserData = &gs_ScriptCameraKeyFrames;
 
 	g_Log.Print( "EndCameraScript() - sending camera effects to script camera entity" );

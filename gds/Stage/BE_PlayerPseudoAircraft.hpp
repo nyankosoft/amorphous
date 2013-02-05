@@ -36,7 +36,7 @@ class CBEC_ExtraBaseEntity : public IArchiveObjectBase
 {
 public:
 	Matrix34 InitLocalPose;
-	CBaseEntityHandle Handle;
+	BaseEntityHandle Handle;
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -86,18 +86,18 @@ private:
 
 	struct FocusCandidate
 	{
-		CEntityHandle<> entity;
+		EntityHandle<> entity;
 		float score;
 
 		FocusCandidate() : score(0.0f) {}
-		FocusCandidate( CEntityHandle<> _entity, float _score ) : entity(_entity), score(_score) {}
+		FocusCandidate( EntityHandle<> _entity, float _score ) : entity(_entity), score(_score) {}
 	};
 
 	TCFixedVector<FocusCandidate, NUM_MAX_FOCUS_CANDIDATES> m_vecFocusCandidate;
 
 	int m_CurrentTargetFocusIndex;
 
-	CEntityHandle<> m_FocusedTarget;
+	EntityHandle<> m_FocusedTarget;
 
 	int m_State;
 
@@ -176,7 +176,7 @@ private:
 
 	CInputHandler_PlayerBase *CreatePlayerInputHandler();
 
-	void OnDestroyingEnemyEntity( SGameMessage& msg );
+	void OnDestroyingEnemyEntity( GameMessage& msg );
 
 	//	void EnableNightVision( bool enable );
 
@@ -194,7 +194,7 @@ public:
 
 	virtual void Act(CCopyEntity* pCopyEnt);
 
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	virtual void OnEntityDestroyed(CCopyEntity* pCopyEnt);
 

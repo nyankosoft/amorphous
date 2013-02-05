@@ -118,7 +118,7 @@ void CBE_EventTrigger::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_O
 		{
 			pSpawnEvent = (CGE_SpawnEvent *)pEvent;
 			CCopyEntityDesc entity_desc;
-			CBaseEntityHandle entity;
+			BaseEntityHandle entity;
 			entity_desc.pBaseEntityHandle = &entity;
 
 			vector<CEventEntityDesc>& rvecEntity = pSpawnEvent->GetEntity();
@@ -148,7 +148,7 @@ void CBE_EventTrigger::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_O
 
 void CBE_EventTrigger::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 //	ar & 
 //	ar & 

@@ -172,7 +172,7 @@ void CBE_Cloud::ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself )
 }
 
 
-void CBE_Cloud::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Cloud::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 }
 

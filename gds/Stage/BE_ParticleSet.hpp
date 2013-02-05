@@ -163,7 +163,7 @@ struct SBE_ParticleSetExtraData
 class CParticleThreadStarter;
 
 
-class CBE_ParticleSet : public CBaseEntity
+class CBE_ParticleSet : public BaseEntity
 {
 public:
 
@@ -294,7 +294,7 @@ public:
 	virtual void Draw(CCopyEntity* pCopyEnt); 
 	// virtual void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// virtual void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	// virtual void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
+	// virtual void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) {}
 
 	virtual void UpdateBaseEntity( float frametime ) { m_fFrameTimeLeft += frametime; }
 

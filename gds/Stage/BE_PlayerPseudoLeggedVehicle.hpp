@@ -77,7 +77,7 @@ public:
 //	void InitCopyEntity(CCopyEntity* pCopyEnt);
 
 //	void Act(CCopyEntity* pCopyEnt);
-//	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+//	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 //	void Draw(CCopyEntity *pCopyEnt);
 
 	void Move( CCopyEntity *pCopyEnt );

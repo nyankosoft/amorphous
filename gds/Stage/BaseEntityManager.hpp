@@ -18,7 +18,7 @@ using namespace serialization;
 
 
 //===================================================================================
-// CBaseEntityManager (singleton)
+// BaseEntityManager (singleton)
 //===================================================================================
 
 /// manages the binary database of base entities (singleton)
@@ -27,11 +27,11 @@ using namespace serialization;
  * the database file is opened during the first call of LoadBaseEntity()
  * the database is kept open until the application is closed
  */
-class CBaseEntityManager
+class BaseEntityManager
 {
 private:
 
-	CBaseEntityFactorySharedPtr m_pBaseEntityFactory;
+	BaseEntityFactorySharedPtr m_pBaseEntityFactory;
 
 	CBinaryDatabase<std::string> *m_pBaseEntityDatabase;
 
@@ -39,32 +39,32 @@ private:
 
 //	std::string m_strDatabaseFilename;
 
-	CBaseEntity* CreateBaseEntity( const std::string& baseentity_classname );
+	BaseEntity* CreateBaseEntity( const std::string& baseentity_classname );
 
 	bool LoadAllBaseEntitiesFromRootTextFile( const std::string& strRootTextFile,
-											  std::vector<CBaseEntity *>& vecpBaseEntity,
+											  std::vector<BaseEntity *>& vecpBaseEntity,
 											  std::string& db_filepath );
 
 	bool LoadAllBaseEntitiesFromTextFile( const std::string& strDestDBFile,
-		                                  std::vector<CBaseEntity *>& vecpBaseEntity );
+		                                  std::vector<BaseEntity *>& vecpBaseEntity );
 
-	bool OutputDatabaseFile( const std::string& database_filename, std::vector<CBaseEntity *>& vecpBaseEntity );
+	bool OutputDatabaseFile( const std::string& database_filename, std::vector<BaseEntity *>& vecpBaseEntity );
 
 protected:
 
-	static CSingleton<CBaseEntityManager> m_obj;
+	static CSingleton<BaseEntityManager> m_obj;
 
 public:
 
-	static CBaseEntityManager* Get() { return m_obj.get(); }
+	static BaseEntityManager* Get() { return m_obj.get(); }
 
-	CBaseEntityManager();
+	BaseEntityManager();
 
-	~CBaseEntityManager();
+	~BaseEntityManager();
 
-	CBaseEntity *LoadBaseEntity( const std::string& base_entity_name );
+	BaseEntity *LoadBaseEntity( const std::string& base_entity_name );
 
-	void RegisterBaseEntityFactory( CBaseEntityFactorySharedPtr pFactory ) { m_pBaseEntityFactory = pFactory; }
+	void RegisterBaseEntityFactory( BaseEntityFactorySharedPtr pFactory ) { m_pBaseEntityFactory = pFactory; }
 
 	inline void AddBaseEntityClassNameToIDMap( const std::string& base_entity_name, int base_entity_id );
 
@@ -81,7 +81,7 @@ public:
 
 //============================== inline implementations ==============================
 
-inline void CBaseEntityManager::AddBaseEntityClassNameToIDMap( const std::string& base_entity_name,
+inline void BaseEntityManager::AddBaseEntityClassNameToIDMap( const std::string& base_entity_name,
 															   int base_entity_id )
 {
 	m_mapIDtoClassName[base_entity_name] = base_entity_id;
@@ -89,9 +89,9 @@ inline void CBaseEntityManager::AddBaseEntityClassNameToIDMap( const std::string
 
 
 //============================== global function ==============================
-inline CBaseEntityManager& BaseEntityManager()
+inline BaseEntityManager& GetBaseEntityManager()
 {
-	return *(CBaseEntityManager::Get());
+	return *(BaseEntityManager::Get());
 }
 
 } // namespace amorphous

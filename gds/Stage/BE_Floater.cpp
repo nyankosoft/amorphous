@@ -155,7 +155,7 @@ void CBE_Floater::AttackManeuver(CCopyEntity* pCopyEnt, SBE_EnemyExtraData *pExt
 
 
 /*
-void CBE_Floater::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Floater::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	switch( rGameMessage.iEffect )
 	{

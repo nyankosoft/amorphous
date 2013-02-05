@@ -208,7 +208,7 @@ bool CBE_FixedTurretPod::LoadSpecificPropertiesFromFile( CTextFileScanner& scann
 
 void CBE_FixedTurretPod::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_TurretGun;
 	ar & m_vTurretGunLocalOffset;

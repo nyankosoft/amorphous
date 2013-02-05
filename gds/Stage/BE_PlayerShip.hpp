@@ -40,8 +40,8 @@ class CBE_PlayerShip : public CBE_Player
 	float m_afThrust[6];
 	float m_afRotationSpeedGain[2];
 
-//	CBaseEntityHandle m_LaserDot;
-//	CBaseEntityHandle m_HeadLight;
+//	BaseEntityHandle m_LaserDot;
+//	BaseEntityHandle m_HeadLight;
 
 //	CCopyEntity *m_pLaserDotEntity;
 //	CCopyEntity *m_pHeadLightEntity;
@@ -60,7 +60,7 @@ public:
 	void InitCopyEntity(CCopyEntity* pCopyEnt);
 
 //	void Act(CCopyEntity* pCopyEnt);
-//	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+//	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 //	void Draw(CCopyEntity *pCopyEnt);
 
 	void Move( CCopyEntity *pCopyEnt );

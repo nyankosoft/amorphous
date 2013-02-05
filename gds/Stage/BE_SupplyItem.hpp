@@ -10,9 +10,9 @@ namespace amorphous
 {
 
 
-class CBE_SupplyItem : public CBaseEntity
+class CBE_SupplyItem : public BaseEntity
 {
-	/// used for 'iEffect' in SGameMessage structure
+	/// used for 'iEffect' in GameMessage structure
 	int m_iEffect;
 
 	std::string m_strItemName;
@@ -24,7 +24,7 @@ class CBE_SupplyItem : public CBaseEntity
 	/// played when player gets this item
 	CSoundHandle m_Sound;
 
-	CBaseEntityHandle m_PseudoGlare;	// base entity for pseudo glare effect put together with items
+	BaseEntityHandle m_PseudoGlare;	// base entity for pseudo glare effect put together with items
 
 public:
 
@@ -42,7 +42,7 @@ public:
 
 	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

@@ -40,10 +40,10 @@ public:
 
 	boost::weak_ptr<CStage> m_pStage;
 
-	CBaseEntityHandle m_aBaseEntityHandle[NUM_DEFAULT_BASE_ENTITY_HANDLES];
+	BaseEntityHandle m_aBaseEntityHandle[NUM_DEFAULT_BASE_ENTITY_HANDLES];
 
 	/// target light entity
-	CEntityHandle<CLightEntity> m_TargetLightEntity;
+	EntityHandle<LightEntity> m_TargetLightEntity;
 };
 
 
@@ -76,13 +76,13 @@ int init_light_groups()
 }
 
 
-inline static shared_ptr<CLightEntity> GetTargetLightEntity()
+inline static shared_ptr<LightEntity> GetTargetLightEntity()
 {
 	return gs_StageLightAttribute.m_TargetLightEntity.Get();
 }
 
 
-inline static void GetInvalidDesc( CLightEntityDesc& desc )
+inline static void GetInvalidDesc( LightEntityDesc& desc )
 {
 	// set all colors to invalid values
 	desc.aColor[0] = CBE_Light::ms_InvalidColor;
@@ -112,7 +112,7 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
 
 PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( Light::DIRECTIONAL );
+	LightEntityDesc desc( Light::DIRECTIONAL );
 	char *base_name = "";
 	char *light_name = "";
 	int shadow_for_light = 1; // true(1) by default
@@ -123,7 +123,7 @@ PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args
 
 	static char *kw_list[] = { "model", "name", "direction", "diffuse_color", "intensity", "light_group", "shadow_for_light", NULL };
 
-	CBaseEntityHandle basehandle( "__DirectionalLight__" );
+	BaseEntityHandle basehandle( "__DirectionalLight__" );
 	GetInvalidDesc( desc );
 	dir = CBE_Light::ms_vInvalidDirection;
 	desc.WorldPose.matOrient.SetColumn( 0, dir );
@@ -167,7 +167,7 @@ PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args
 
 PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( Light::POINT );
+	LightEntityDesc desc( Light::POINT );
 	char *base_name = "";
 	char *light_name = "";
 	int shadow_for_light = 1;     // true(1) by default
@@ -179,7 +179,7 @@ PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyOb
 
 	static char *kw_list[] = { "model", "name", "position", "diffuse_color", "intensity", "att0", "att1", "att2", "light_group", "shadow_for_light", NULL };
 
-	CBaseEntityHandle basehandle( "__PointLight__" );
+	BaseEntityHandle basehandle( "__PointLight__" );
 
 	GetInvalidDesc( desc );
 
@@ -222,7 +222,7 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args, PyObj
 
 PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
+	LightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
 
 	// alias
 	SFloatRGBAColor& uc = desc.aColor[0];
@@ -236,7 +236,7 @@ PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* ar
 	int result = 0;
 
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 
 	static char *kw_list[] = { "model", "name", "direction", "upper_diffuse_color", "lower_diffuse_color", "intensity", "light_group", "shadow_for_light", NULL };
 
@@ -286,7 +286,7 @@ PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* ar
 
 PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
-	CLightEntityDesc desc( Light::HEMISPHERIC_POINT );
+	LightEntityDesc desc( Light::HEMISPHERIC_POINT );
 
 	// alias
 	Vector3& pos = desc.WorldPose.vPosition;
@@ -304,7 +304,7 @@ PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, Py
 		
 	static char *kw_list[] = { "model", "name", "position", "upper_diffuse_color", "lower_diffuse_color", "att0", "att1", "att2", "intensity", "light_group", "shadow_for_light", NULL };
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	// pos = ???
 	// position must always be specified.
 	// This is true for 'load' mode as well as 'create' mode
@@ -384,7 +384,7 @@ PyObject* SetAttenuationFactors( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "fff", &a[0], &a[1], &a[2] );
 
-	shared_ptr<CLightEntity> pLightEntity = GetTargetLightEntity();
+	shared_ptr<LightEntity> pLightEntity = GetTargetLightEntity();
 	if( pLightEntity )
 	{
 		pLightEntity->SetAttenuationFactors( a[0], a[1], a[2] );
@@ -405,7 +405,7 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 	if( !GetStageForScriptCallback() )
 		return;
 
-	shared_ptr<CLightEntity> pLightEntity = GetTargetLightEntity();
+	shared_ptr<LightEntity> pLightEntity = GetTargetLightEntity();
 	if( pLightEntity )
 	{
 		pLightEntity->SetColor( index, color );
@@ -458,7 +458,7 @@ PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
 	Vector3 pos;
 	int result = PyArg_ParseTuple( args, "fff", &pos.x, &pos.y, &pos.z );
 
-	shared_ptr<CLightEntity> pLightEntity = GetTargetLightEntity();
+	shared_ptr<LightEntity> pLightEntity = GetTargetLightEntity();
 	if( pLightEntity )
 	{
 		pLightEntity->SetPosition( pos );
@@ -478,13 +478,13 @@ PyObject* gsf::py::light::SetTargetLight( PyObject* self, PyObject* args )
 
 	CCopyEntity* pEntityForLight = GetEntityByName( entity_name );
 
-	CLightEntity *pLightEntity = dynamic_cast<CLightEntity *>(pEntityForLight);
+	LightEntity *pLightEntity = dynamic_cast<LightEntity *>(pEntityForLight);
 
 	// TODO: what if the focus target entity is created later
 	if( IsValidEntity(pLightEntity) )
 	{
 		gs_StageLightAttribute.m_TargetLightEntity
-			= CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() );
+			= EntityHandle<LightEntity>( pLightEntity->LightEntitySelf() );
 	}
 
 	Py_INCREF( Py_None );

@@ -207,7 +207,7 @@ public:
 
 	void SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param );
 
-	virtual void SetDynamicLightManager( CEntitySet* pEntitySet ) {}
+	virtual void SetDynamicLightManager( EntityManager* pEntitySet ) {}
 
 	/// used for dynamic lighting
 	virtual void GetIntersectingPolygons( Vector3& vCenter,

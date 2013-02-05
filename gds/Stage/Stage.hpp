@@ -34,7 +34,7 @@ class CStage
 	CStaticGeometryBase *m_pStaticGeometry;
 
 	/// manages entities
-	CEntitySet *m_pEntitySet;
+	EntityManager *m_pEntitySet;
 
 	/// handles physics simulation
 	physics::CScene *m_pPhysicsScene;
@@ -46,7 +46,7 @@ class CStage
 	/// manages scripted events
 	boost::shared_ptr<CScriptManager> m_pScriptManager;
 
-	boost::shared_ptr<CScreenEffectManager> m_pScreenEffectManager;
+	boost::shared_ptr<ScreenEffectManager> m_pScreenEffectManager;
 
 	/// keeps time elapsed in stage
 	/// CGameTask_Stage() pauses the timer when the stage task is left
@@ -59,7 +59,7 @@ class CStage
 
 private:
 
-	/// instantiated by CStageLoader
+	/// instantiated by StageLoader
 	CStage();
 
 	bool InitPhysicsManager();
@@ -79,7 +79,7 @@ public:
 
 	CStageWeakPtr GetWeakPtr() { return m_pSelf; }
 
-	bool LoadBaseEntity( CBaseEntityHandle& base_entity_handle );
+	bool LoadBaseEntity( BaseEntityHandle& base_entity_handle );
 
 	/// returns true on success
 	bool Initialize( const std::string& script_archive_filename );
@@ -112,7 +112,7 @@ public:
 //	inline Camera* GetCurrentCamera() { return m_pEntitySet->GetCurrentCamera(); }
 	inline Camera* GetCurrentCamera() { return m_pCamera; }
 	inline void GetBillboardRotationMatrix( Matrix33& matBillboard ) const;
-	inline boost::shared_ptr<CScreenEffectManager> GetScreenEffectManager() { return m_pScreenEffectManager; }
+	inline boost::shared_ptr<ScreenEffectManager> GetScreenEffectManager() { return m_pScreenEffectManager; }
 
 
 	//
@@ -130,19 +130,19 @@ public:
 	// Entities
 	//
 
-	inline CEntitySet* GetEntitySet() { return m_pEntitySet; }
+	inline EntityManager* GetEntitySet() { return m_pEntitySet; }
 
-	inline CBaseEntity* FindBaseEntity( char* pcBaseEntityName );
+	inline BaseEntity* FindBaseEntity( char* pcBaseEntityName );
 
 	/// create an entity in the stage and return its pointer
 	/// \return pointer to the created entity
 	inline CCopyEntity *CreateEntity( CCopyEntityDesc& rCopyEntityDesc );
 
-	inline CCopyEntity *CreateEntity( CBaseEntityHandle& rBaseEntityHandle, const Vector3& rvPosition,
+	inline CCopyEntity *CreateEntity( BaseEntityHandle& rBaseEntityHandle, const Vector3& rvPosition,
 	                      	          const Vector3& rvVelocity, const Vector3& rvDirection = Vector3(0,0,0));
 
 	template<class T>
-	inline CEntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
+	inline EntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
 
 	/// removes an entity from the stage
 	inline void TerminateEntity( CCopyEntity*& pEntity );
@@ -176,7 +176,7 @@ public:
 
 	CSurfaceMaterial& GetMaterial( int index );
 
-	CEntityHandle<> LoadStaticGeometryFromFile( const std::string filename );
+	EntityHandle<> LoadStaticGeometryFromFile( const std::string filename );
 
 	CStaticGeometryBase *GetStaticGeometry() { return m_pStaticGeometry; }
 
@@ -202,8 +202,8 @@ public:
 
 	boost::shared_ptr<CScriptManager> GetScriptManager() { return m_pScriptManager; }
 
-	friend class CStageLoader;
-	friend class CEntitySet;
+	friend class StageLoader;
+	friend class EntityManager;
 
 
 //	void SaveCurrentState();
@@ -223,7 +223,7 @@ inline void CStage::GetBillboardRotationMatrix( Matrix33& matBillboard ) const
 }
 
 
-inline CBaseEntity* CStage::FindBaseEntity( char* pcBaseEntityName )
+inline BaseEntity* CStage::FindBaseEntity( char* pcBaseEntityName )
 {
 	return m_pEntitySet->FindBaseEntity( pcBaseEntityName );
 }
@@ -236,13 +236,13 @@ inline CCopyEntity *CStage::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 /*
 template<class T>
-inline CEntityHandle<T> CStage::CreateEntity( shared_ptr<CCopyEntity> pEntity )
+inline EntityHandle<T> CStage::CreateEntity( shared_ptr<CCopyEntity> pEntity )
 {
 	return m_pEntitySet->CreateEntity( pEntity );
 }
 */
 
-inline CCopyEntity *CStage::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
+inline CCopyEntity *CStage::CreateEntity( BaseEntityHandle& rBaseEntityHandle,
 								          const Vector3& rvPosition,
 		                                  const Vector3& rvVelocity,
 								          const Vector3& rvDirection )
@@ -252,9 +252,9 @@ inline CCopyEntity *CStage::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
 
 
 template<class T>
-inline CEntityHandle<T> CStage::CreateEntity( boost::shared_ptr<T> pEntity, CBaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc )
+inline EntityHandle<T> CStage::CreateEntity( boost::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc )
 {
-	CEntityHandle<T> entity_handle = m_pEntitySet->CreateEntity( pEntity, rBaseEntityHandle, pPhysActorDesc );
+	EntityHandle<T> entity_handle = m_pEntitySet->CreateEntity( pEntity, rBaseEntityHandle, pPhysActorDesc );
 	return entity_handle;
 }
 

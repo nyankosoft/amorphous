@@ -26,7 +26,7 @@ using std::vector;
 using namespace boost;
 
 
-void SetShaderToEntity( CEntityHandle<>& entity, ShaderHandle& shader, ShaderTechniqueHandle& tech )
+void SetShaderToEntity( EntityHandle<>& entity, ShaderHandle& shader, ShaderTechniqueHandle& tech )
 {
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
 	if( !pEntity )
@@ -82,24 +82,24 @@ BOOST_PYTHON_MODULE(stage)
 	using namespace boost::python;
 	namespace py = boost::python;
 
-	class_< CEntityHandle<> >("EntityHandle")
-		.def( "IsAlive",          &CEntityHandle<>::IsAlive )
-		.def( "GetWorldPosition", &CEntityHandle<>::GetWorldPosition )
-		.def( "GetWorldPose",     &CEntityHandle<>::GetWorldPose )
-		.def( "SetWorldPosition", &CEntityHandle<>::SetWorldPosition )
-		.def( "SetWorldPose",     &CEntityHandle<>::SetWorldPose )
+	class_< EntityHandle<> >("EntityHandle")
+		.def( "IsAlive",          &EntityHandle<>::IsAlive )
+		.def( "GetWorldPosition", &EntityHandle<>::GetWorldPosition )
+		.def( "GetWorldPose",     &EntityHandle<>::GetWorldPose )
+		.def( "SetWorldPosition", &EntityHandle<>::SetWorldPosition )
+		.def( "SetWorldPose",     &EntityHandle<>::SetWorldPose )
 	;
 
-//	class_< CLightEntityHandle >("LightEntityHandle")
-	class_< CLightEntityHandle, bases< CEntityHandle<> > >("LightEntityHandle") /// Compiled on vc8, but is this REALLY okay on any platform?
-		.def( "SetUpperColor",    &CLightEntityHandle::SetUpperColor )
-		.def( "SetLowerColor",    &CLightEntityHandle::SetLowerColor )
+//	class_< LightEntityHandle >("LightEntityHandle")
+	class_< LightEntityHandle, bases< EntityHandle<> > >("LightEntityHandle") /// Compiled on vc8, but is this REALLY okay on any platform?
+		.def( "SetUpperColor",    &LightEntityHandle::SetUpperColor )
+		.def( "SetLowerColor",    &LightEntityHandle::SetLowerColor )
 	;
 
-	class_< CScriptedCameraEntityHandle >("ScriptedCameraEntityHandle")
-		.def( "SetUniformMotionBlur",     &CScriptedCameraEntityHandle::SetUniformMotionBlur )
-		.def( "SetUniformBlur",           &CScriptedCameraEntityHandle::SetUniformBlur )
-		.def( "SetUniformCameraShake",    &CScriptedCameraEntityHandle::SetUniformCameraShake )
+	class_< ScriptedCameraEntityHandle >("ScriptedCameraEntityHandle")
+		.def( "SetUniformMotionBlur",     &ScriptedCameraEntityHandle::SetUniformMotionBlur )
+		.def( "SetUniformBlur",           &ScriptedCameraEntityHandle::SetUniformBlur )
+		.def( "SetUniformCameraShake",    &ScriptedCameraEntityHandle::SetUniformCameraShake )
 	;
 
 //	class_< CStaticGeometryEntityHandle >("StaticGeometryEntityHandle")

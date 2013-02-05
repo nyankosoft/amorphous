@@ -16,14 +16,14 @@ namespace amorphous
 {
 
 
-int CEntityNode::ms_NumRenderedEntities = 0;
+int EntityNode::ms_NumRenderedEntities = 0;
 
 
 //====================================================================================
-// CEntityNode::Method()                           - CCopyEntity : public CCopyEntity
+// EntityNode::Method()                           - CCopyEntity : public CCopyEntity
 //====================================================================================
 
-CEntityNode::CEntityNode()
+EntityNode::EntityNode()
 :
 m_pEntitySet(NULL),
 m_pStage(NULL)
@@ -38,7 +38,7 @@ m_pStage(NULL)
 }
 
 /*
-inline bool CEntityNode::CheckCollisionGroup( int group_index, const vector<int>& vecTargetGroup )
+inline bool EntityNode::CheckCollisionGroup( int group_index, const vector<int>& vecTargetGroup )
 {
 	const size_t num_tgt_groups = vecTargetGroup.size();
 	if( num_tgt_groups == 0 )
@@ -65,7 +65,7 @@ inline bool CEntityNode::CheckCollisionGroup( int group_index, const vector<int>
 }*/
 
 
-inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
+inline bool EntityNode::CheckCollisionGroup( int group0, int group1 )
 {
 	return m_pEntitySet->IsCollisionEnabled( group0, group1 );
 }
@@ -75,7 +75,7 @@ inline bool CEntityNode::CheckCollisionGroup( int group0, int group1 )
 //   Rendering Copy Entities
 //               Draw all the copy entities linked to this node
 //=====================================================================
-void CEntityNode::RenderEntities( CEntityRenderer& entity_renderer, Camera& rCam )
+void EntityNode::RenderEntities( EntityRenderer& entity_renderer, Camera& rCam )
 {
 //	if( 0 <= m_sCellIndex &&		// check if the current entity node is a complete leaf
 //		!m_pStage->IsCurrentlyVisibleCell(m_sCellIndex) )
@@ -100,9 +100,9 @@ void CEntityNode::RenderEntities( CEntityRenderer& entity_renderer, Camera& rCam
 }
 
 
-void CEntityNode::RenderEntitiesWithDownwardTraversal(
-	CEntityNode *pEntityTree,
-	CEntityRenderer& entity_renderer,
+void EntityNode::RenderEntitiesWithDownwardTraversal(
+	EntityNode *pEntityTree,
+	EntityRenderer& entity_renderer,
 	Camera& rCam,
 	bool do_camera_frustom_culling
 	)
@@ -125,7 +125,7 @@ void CEntityNode::RenderEntitiesWithDownwardTraversal(
 }
 
 
-void CEntityNode::CheckPosition_r(STrace& tr, CEntityNode* paEntTree)
+void EntityNode::CheckPosition_r(STrace& tr, EntityNode* paEntTree)
 {
 	float d, fRadius;
 
@@ -189,7 +189,7 @@ void CEntityNode::CheckPosition_r(STrace& tr, CEntityNode* paEntTree)
 	return;
 }
 
-void CEntityNode::CheckPosition_r(CTrace& tr, CEntityNode* paEntTree)
+void EntityNode::CheckPosition_r(CTrace& tr, EntityNode* paEntTree)
 {
 	float d, fRadius;
 
@@ -258,7 +258,7 @@ void CEntityNode::CheckPosition_r(CTrace& tr, CEntityNode* paEntTree)
 }
 
 
-void CEntityNode::GetVisibleEntities_r(CViewFrustumTest& vf_test, CEntityNode* paEntTree)
+void EntityNode::GetVisibleEntities_r(CViewFrustumTest& vf_test, EntityNode* paEntTree)
 {
 
 	// Set the first copy entity on this entity node and cycle through all the copy entities
@@ -297,9 +297,9 @@ void CEntityNode::GetVisibleEntities_r(CViewFrustumTest& vf_test, CEntityNode* p
 }
 
 
-void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
+void EntityNode::ClipTrace_r(STrace& tr, EntityNode* paEntTree)
 {
-//	ProfileBegin( "CEntityNode::ClipTrace_r()" );
+//	ProfileBegin( "EntityNode::ClipTrace_r()" );
 
 	float d, fRadius;
 	Vector3 vEnd;
@@ -314,7 +314,7 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 	{
 		pEntity = pLinkNode->pOwner;
 
-//		ProfileBegin( "CEntityNode::ClipTrace_r() - linked entities loop" );
+//		ProfileBegin( "EntityNode::ClipTrace_r() - linked entities loop" );
 
 		if( pEntity->bvType == BVTYPE_DOT && tr.bvType == BVTYPE_DOT )
 			continue;	//Points never interact
@@ -373,14 +373,14 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 
 //		ProfileEnd( "aabb test in CEntNode::ClipTr_r()" );
 
-//		ProfileEnd( "CEntityNode::ClipTrace_r() - linked entities loop" );
+//		ProfileEnd( "EntityNode::ClipTrace_r() - linked entities loop" );
 	}
 
 
 	//collision handling in this 'EntityNode' has finished
 	//now, we recurse down 'EntityTree', if this 'EntityNode' is not a leaf node
 
-//	ProfileEnd( "CEntityNode::ClipTrace_r()" );
+//	ProfileEnd( "EntityNode::ClipTrace_r()" );
 
 	if( this->leaf ) return;
 
@@ -401,7 +401,7 @@ void CEntityNode::ClipTrace_r(STrace& tr, CEntityNode* paEntTree)
 }
 
 
-void CEntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntityNode* paEntTree )
+void EntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, EntityNode* paEntTree )
 {
 	float d, fRadius;
 	Vector3 vEnd;
@@ -461,7 +461,7 @@ void CEntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, CEntit
 }
 
 
-void CEntityNode::LinkLightEntity_r( CLightEntity *pLightEntity, CEntityNode* paEntTree )
+void EntityNode::LinkLightEntity_r( LightEntity *pLightEntity, EntityNode* paEntTree )
 {
 	float r = pLightEntity->GetRadius();
 
@@ -483,13 +483,13 @@ void CEntityNode::LinkLightEntity_r( CLightEntity *pLightEntity, CEntityNode* pa
 }
 
 
-void CEntityNode::CheckLight_r( CCopyEntity *pEntity, CEntityNode* paEntTree )
+void EntityNode::CheckLight_r( CCopyEntity *pEntity, EntityNode* paEntTree )
 {
 	float fMaxRange, fMaxRangeSq;
 	Vector3 vLightToEntity;
 
-	CLinkNode<CLightEntity> *pLinkNode;
-	CLightEntity* pLightEntity;
+	CLinkNode<LightEntity> *pLinkNode;
+	LightEntity* pLightEntity;
 	for( pLinkNode = m_LightEntityLinkHead.pNext;
 		 pLinkNode;
 		 pLinkNode = pLinkNode->pNext )

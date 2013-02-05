@@ -13,7 +13,7 @@ namespace amorphous
 #define SCREENEFFECT_FADE_IN  1
 
 
-struct CFadeEffect
+struct FadeEffect
 {
 	bool in_use;
 	int m_iType;
@@ -26,8 +26,8 @@ struct CFadeEffect
 
 public:
 
-	CFadeEffect();
-//	~CFadeEffect();
+	FadeEffect();
+//	~FadeEffect();
 
 	void Draw();
 
@@ -41,7 +41,7 @@ public:
 };
 
 
-inline void CFadeEffect::Update( float fFrameTime )
+inline void FadeEffect::Update( float fFrameTime )
 {
 	m_fCurrentTime += fFrameTime;
 

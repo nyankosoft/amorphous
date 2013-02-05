@@ -17,7 +17,7 @@ class LaserGun : public CGI_Weapon
 
 	float m_fPower; ///< damage points per second
 
-	CEntityHandle<> m_LaserEntity;
+	EntityHandle<> m_LaserEntity;
 
 public:
 

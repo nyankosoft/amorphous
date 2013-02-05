@@ -32,16 +32,16 @@ using boost::shared_ptr;
 using namespace physics;
 
 
-float CEntitySet::ms_DefaultPhysTimestep = 1.0f / 100;
+float EntityManager::ms_DefaultPhysTimestep = 1.0f / 100;
 
 
 //====================================================================================
-// CEntitySet::Method()                                                  - CEntitySet
+// EntityManager::Method()                                                  - EntityManager
 //====================================================================================
 
-CEntitySet::CEntitySet( CStage* pStage )
+EntityManager::EntityManager( CStage* pStage )
 :
-m_pEntityFactory( new CEntityFactory() ),
+m_pEntityFactory( new EntityFactory() ),
 m_EntityIDConter(1),
 m_pStage(pStage),
 m_paEntityTree(NULL)
@@ -56,7 +56,7 @@ m_paEntityTree(NULL)
 
 	m_PhysTimestep = ms_DefaultPhysTimestep;
 
-	m_pRenderManager.reset( new CEntityRenderManager( this ) );
+	m_pRenderManager.reset( new EntityRenderManager( this ) );
 
 	// enable collision between all the groups
 	memset( m_EntityCollisionTable, 1, sizeof(char) * NUM_MAX_ENTITY_GROUP_IDS * NUM_MAX_ENTITY_GROUP_IDS );
@@ -79,12 +79,12 @@ m_paEntityTree(NULL)
 	node.sFrontChild = -1;
 	node.sCellIndex = 0;
 	node.sPlaneIndex = -1;
-	CBSPTree tree( &node, 1, &SPlane( Vector3(0,0,0), 0 ), 1 );
+	BSPTree tree( &node, 1, &SPlane( Vector3(0,0,0), 0 ), 1 );
 	MakeEntityTree( &tree );
 
 //	SafeDeleteArray( tree.m_paNode );
 
-/*	m_paEntityTree = new CEntityNode [1];
+/*	m_paEntityTree = new EntityNode [1];
 	m_paEntityTree[0].m_AABB.vMin = Vector3(-100,-100,-100);
 	m_paEntityTree[0].m_AABB.vMax = Vector3( 100, 100, 100);
 	m_paEntityTree[0].leaf = true;
@@ -92,7 +92,7 @@ m_paEntityTree(NULL)
 }
 
 
-CEntitySet::~CEntitySet()
+EntityManager::~EntityManager()
 {
 	// move all the copy-entities from "m_pEntityInUse' to 'm_pEmptyEntity' list
 	ReleaseAllEntities();
@@ -112,7 +112,7 @@ CEntitySet::~CEntitySet()
 }
 
 
-inline void CEntitySet::ReleaseTerminatedEntities()
+inline void EntityManager::ReleaseTerminatedEntities()
 {
 //	CCopyEntity *pEntity = m_pEntityInUse;
 //	CCopyEntity *pPrevEntity = NULL;
@@ -152,15 +152,15 @@ inline void CEntitySet::ReleaseTerminatedEntities()
 }
 
 /*
-void CEntitySet::InitLightEntityManager()
+void EntityManager::InitLightEntityManager()
 {
 	SafeDelete( m_pLightEntityManager );
-	m_pLightEntityManager = new CLightEntityManager;
+	m_pLightEntityManager = new LightEntityManager;
 	m_pLightEntityManager->Init( this );
 }
 */
 
-void CEntitySet::SetEntityFactory( CEntityFactory *pEntityFactory )
+void EntityManager::SetEntityFactory( EntityFactory *pEntityFactory )
 {
 	if( !pEntityFactory )
 		return;
@@ -171,7 +171,7 @@ void CEntitySet::SetEntityFactory( CEntityFactory *pEntityFactory )
 
 
 /// Release all the copy entities in 'm_pEntityInUse'
-void CEntitySet::ReleaseAllEntities()
+void EntityManager::ReleaseAllEntities()
 {
 //	CCopyEntity *pEntity = this->m_pEntityInUse;
 //	CCopyEntity *pNextEntity = NULL;
@@ -199,24 +199,24 @@ void CEntitySet::ReleaseAllEntities()
 
 
 ///		checks if 'tr.vEnd' is in a valid position
-void CEntitySet::CheckPosition(STrace& tr)
+void EntityManager::CheckPosition(STrace& tr)
 {
-	CEntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
+	EntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
 
 	pHeadNode->CheckPosition_r( tr, pHeadNode );
 }
 
-void CEntitySet::CheckPosition(CTrace& tr)
+void EntityManager::CheckPosition(CTrace& tr)
 {
-	CEntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
+	EntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
 	
 	pHeadNode->CheckPosition_r( tr, pHeadNode );
 }
 
 
-void CEntitySet::GetVisibleEntities(CViewFrustumTest& vf_test)
+void EntityManager::GetVisibleEntities(CViewFrustumTest& vf_test)
 {
-	CEntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
+	EntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
 	
 	pHeadNode->GetVisibleEntities_r( vf_test, pHeadNode );
 }
@@ -225,25 +225,25 @@ void CEntitySet::GetVisibleEntities(CViewFrustumTest& vf_test)
  * clips a trace against entities
  * trace is represented by line-segment and AABB
  */
-void CEntitySet::ClipTrace(STrace& tr)
+void EntityManager::ClipTrace(STrace& tr)
 {
 	PROFILE_FUNCTION();
 
-	CEntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
+	EntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
 	
 	pHeadNode->ClipTrace_r( tr, pHeadNode );
 }
 
 
-void CEntitySet::GetOverlappingEntities( COverlapTestAABB& overlap_test )
+void EntityManager::GetOverlappingEntities( COverlapTestAABB& overlap_test )
 {
 	m_paEntityTree->GetOverlappingEntities( overlap_test, m_paEntityTree );
 }
 
 
-void CEntitySet::Link( CCopyEntity* pEntity )
+void EntityManager::Link( CCopyEntity* pEntity )
 {
-	CEntityNode* paEntNode = m_paEntityTree;
+	EntityNode* paEntNode = m_paEntityTree;
 	short sEntNodeIndex = 0;
 	float fRadius, d=0;
 	Vector3 vExtents;
@@ -255,7 +255,7 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 
 	while(1)
 	{
-		CEntityNode& rThisEntityNode = paEntNode[ sEntNodeIndex ];
+		EntityNode& rThisEntityNode = paEntNode[ sEntNodeIndex ];
 
 		// if this is a leaf node, link the entity here.
 		if( rThisEntityNode.leaf )
@@ -309,7 +309,7 @@ void CEntitySet::Link( CCopyEntity* pEntity )
 //
 //==========================================================================
 
-void CEntitySet::Render(Camera& rCam)
+void EntityManager::Render(Camera& rCam)
 {
 	m_pRenderManager->Render( rCam );
 }
@@ -319,11 +319,11 @@ void CEntitySet::Render(Camera& rCam)
 //    Making an Entity Tree
 //==========================================================================
 
-bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
+bool EntityManager::MakeEntityTree(BSPTree* pSrcBSPTree)
 {
 //	Reset();
 
-	vector<CEntityNode> entity_tree;
+	vector<EntityNode> entity_tree;
 
 	// allocate some memory in advance
 	// not doing this may cause error in Release build
@@ -354,7 +354,7 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 
 	// copy the new tree
 	m_NumEntityNodes = (int)entity_tree.size();
-	m_paEntityTree = new CEntityNode [ m_NumEntityNodes ];
+	m_paEntityTree = new EntityNode [ m_NumEntityNodes ];
 	for(int i=0; i<m_NumEntityNodes; i++)
 		m_paEntityTree[i] = entity_tree[i];
 
@@ -383,7 +383,7 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 			// added: 11:34 PM 5/25/2008
 			// Do not re-link an entity if it has already been marked as 'not in use'
 			// - Failure to do this leads to an invalid link in the entity tree node
-			//   - Caused infinite loops in CEntityNode::CheckPosition_r()
+			//   - Caused infinite loops in EntityNode::CheckPosition_r()
 			if( !IsValidEntity( pEntity ) )
 				continue;
 
@@ -410,8 +410,8 @@ bool CEntitySet::MakeEntityTree(CBSPTree* pSrcBSPTree)
 										    1) create a diverging node.
 										    2) create a leaf node as a frontchild.
 */
-short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
-					   vector<CEntityNode>* pDestEntityTree)
+short EntityManager::MakeEntityNode_r(short sNodeIndex, BSPTree* pSrcBSPTree,
+					   vector<EntityNode>* pDestEntityTree)
 {
 //	SNode_f& rThisNode = pSrcBSPTree->m_paNode[ sNodeIndex ];
 	const SNode_f& rThisNode = pSrcBSPTree->GetNode( sNodeIndex );
@@ -423,10 +423,10 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 	if( 0 <= sFrontChild && sBackChild < 0 )	//case (1)
 		return MakeEntityNode_r(sFrontChild, pSrcBSPTree, pDestEntityTree);  //recurse down to front
 
-	CEntityNode newnode;
+	EntityNode newnode;
 	short sThisEntNodeIndex = (short)pDestEntityTree->size();
 	pDestEntityTree->push_back( newnode );
-	CEntityNode& rNewNode = pDestEntityTree->at( sThisEntNodeIndex );
+	EntityNode& rNewNode = pDestEntityTree->at( sThisEntNodeIndex );
 
 //	rNewNode.m_pLightEntity = NULL;
 
@@ -438,7 +438,7 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 
 		//We have to add one leaf node as a front child to this diverging node
 		pDestEntityTree->push_back( newnode );
-		CEntityNode& rFrontLeafNode = pDestEntityTree->back();
+		EntityNode& rFrontLeafNode = pDestEntityTree->back();
 		rFrontLeafNode.sFrontChild = -1;
 		rFrontLeafNode.sBackChild = -1;
 		rFrontLeafNode.sParent = sThisEntNodeIndex;  //Index to 'rNewNode' in pDestEntityTree
@@ -449,7 +449,7 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 		pDestEntityTree->at( sThisEntNodeIndex ).sBackChild
 			= MakeEntityNode_r(sBackChild, pSrcBSPTree, pDestEntityTree);
 		
-		CEntityNode& rNewNode = pDestEntityTree->at( sThisEntNodeIndex );
+		EntityNode& rNewNode = pDestEntityTree->at( sThisEntNodeIndex );
 		rNewNode.m_Plane = pSrcBSPTree->GetPlane( rThisNode );
 		rNewNode.m_AABB.Merge2AABBs( rThisNode.aabb,
 			pDestEntityTree->at( rNewNode.sBackChild ).m_AABB );
@@ -483,7 +483,7 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 		//during the above recursions.
 		//In other words, the variable 'rNewNode' may be no longer valid
 		//due to memory re-allocation, so we have to update the reference variable
-		CEntityNode& rNewNode = pDestEntityTree->at( sThisEntNodeIndex );
+		EntityNode& rNewNode = pDestEntityTree->at( sThisEntNodeIndex );
 		rNewNode.m_Plane = pSrcBSPTree->GetPlane( rThisNode );  //Set 'binary partition plane'
 		pDestEntityTree->at( rNewNode.sFrontChild ).sParent = sThisEntNodeIndex;
 		pDestEntityTree->at( rNewNode.sBackChild ).sParent = sThisEntNodeIndex;
@@ -493,21 +493,21 @@ short CEntitySet::MakeEntityNode_r(short sNodeIndex, CBSPTree* pSrcBSPTree,
 }
 
 
-inline CBaseEntity *CEntitySet::GetBaseEntity( CBaseEntityHandle& rBaseEntityHandle )
+inline BaseEntity *EntityManager::GetBaseEntity( BaseEntityHandle& rBaseEntityHandle )
 {
-	CBaseEntity *pBaseEntity = NULL;
+	BaseEntity *pBaseEntity = NULL;
 	if( rBaseEntityHandle.GetBaseEntityPointer() )
 	{
 		// already loaded
 		pBaseEntity = rBaseEntityHandle.GetBaseEntityPointer();
 	}
-	else if( rBaseEntityHandle.GetState() == CBaseEntityHandle::STATE_INVALID )
+	else if( rBaseEntityHandle.GetState() == BaseEntityHandle::STATE_INVALID )
 	{
 		// invalid base entity handle
 		// - already tried to load the base entity before but it was not found in the database
 		return NULL;
 	}
-	else // i.e. rBaseEntityHandle.GetState() == CBaseEntityHandle::STATE_UNINITIALIZED
+	else // i.e. rBaseEntityHandle.GetState() == BaseEntityHandle::STATE_UNINITIALIZED
 	{
 		// get pointer to the base entity
 		// if the base entity has not been loaded yet, load it
@@ -526,7 +526,7 @@ inline CBaseEntity *CEntitySet::GetBaseEntity( CBaseEntityHandle& rBaseEntityHan
 }
 
 
-void CEntitySet::SetBasicEntityAttributes( CCopyEntity *pEntity, CBaseEntity& rBaseEntity )
+void EntityManager::SetBasicEntityAttributes( CCopyEntity *pEntity, BaseEntity& rBaseEntity )
 {
 	pEntity->bvType        = rBaseEntity.m_BoundingVolumeType;
 	pEntity->bNoClip       = rBaseEntity.m_bNoClip;
@@ -537,9 +537,9 @@ void CEntitySet::SetBasicEntityAttributes( CCopyEntity *pEntity, CBaseEntity& rB
 }
 
 
-void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
+void EntityManager::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 							 CCopyEntity *pParent,
-							 CBaseEntity *pBaseEntity,
+							 BaseEntity *pBaseEntity,
 							 CActorDesc* pPhysActorDesc )
 {
 	CCopyEntity* pNewCopyEnt = pNewCopyEntPtr.get();
@@ -550,7 +550,7 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 	pNewCopyEnt->m_pSelf = pNewCopyEntPtr;
 
 	pNewCopyEnt->pBaseEntity = pBaseEntity;
-	CBaseEntity& rBaseEntity = (*pBaseEntity);
+	BaseEntity& rBaseEntity = (*pBaseEntity);
 
 	pNewCopyEnt->m_pStage = m_pStage;
 
@@ -655,7 +655,7 @@ void CEntitySet::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 }
 
 
-CCopyEntity *CEntitySet::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
+CCopyEntity *EntityManager::CreateEntity( BaseEntityHandle& rBaseEntityHandle,
 									   const Vector3& rvPosition,
 							           const Vector3& rvVelocity,
 									   const Vector3& rvDirection)
@@ -673,20 +673,20 @@ CCopyEntity *CEntitySet::CreateEntity( CBaseEntityHandle& rBaseEntityHandle,
 }
 
 
-CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
+CCopyEntity *EntityManager::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 {
 	if( !rCopyEntityDesc.pBaseEntityHandle )
 		return NULL;
 
-	CBaseEntityHandle& rBaseEntityHandle = *(rCopyEntityDesc.pBaseEntityHandle);
+	BaseEntityHandle& rBaseEntityHandle = *(rCopyEntityDesc.pBaseEntityHandle);
 
 //	PrintLog( "creating a copy entity of " + string(rBaseEntityHandle.GetBaseEntityName()) );
 
-	CBaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
+	BaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
 	if( !pBaseEntity )
 		return NULL;
 
-	CBaseEntity& rBaseEntity = *(pBaseEntity);
+	BaseEntity& rBaseEntity = *(pBaseEntity);
 
 //	LOG_PRINT( "checking the initial position of " + rBaseEntity.GetNameString() );
 
@@ -788,9 +788,9 @@ CCopyEntity *CEntitySet::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 }
 
 
-void CEntitySet::LoadCopyEntityFromDesc_r( CCopyEntityDescFileData& desc, CCopyEntity *pParentEntity )
+void EntityManager::LoadCopyEntityFromDesc_r( CCopyEntityDescFileData& desc, CCopyEntity *pParentEntity )
 {
-	CBaseEntityHandle base_entity_handle;
+	BaseEntityHandle base_entity_handle;
 
 	base_entity_handle.SetBaseEntityName( desc.strBaseEntityName.c_str() );
 
@@ -818,7 +818,7 @@ void CEntitySet::LoadCopyEntityFromDesc_r( CCopyEntityDescFileData& desc, CCopyE
 }
 
 
-bool CEntitySet::LoadCopyEntitiesFromDescFile( char* pcFilename )
+bool EntityManager::LoadCopyEntitiesFromDescFile( char* pcFilename )
 {
 	CCopyEntityDescFileArchive entity_desc_archive;
 
@@ -843,7 +843,7 @@ bool CEntitySet::LoadCopyEntitiesFromDescFile( char* pcFilename )
 }
 
 
-CBaseEntity* CEntitySet::FindBaseEntity( const char* pcBaseEntityName )
+BaseEntity* EntityManager::FindBaseEntity( const char* pcBaseEntityName )
 {
 	size_t i, num_base_entities = m_vecpBaseEntity.size();
 	for(i=0; i<num_base_entities; i++)
@@ -857,35 +857,35 @@ CBaseEntity* CEntitySet::FindBaseEntity( const char* pcBaseEntityName )
 }
 
 
-bool CEntitySet::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
+bool EntityManager::LoadBaseEntity( BaseEntityHandle& base_entity_handle )
 {
 	const string base_entity_name = base_entity_handle.GetBaseEntityName();
 
 	if( base_entity_name.length() == 0 )
 	{
-		base_entity_handle.SetState( CBaseEntityHandle::STATE_INVALID );
+		base_entity_handle.SetState( BaseEntityHandle::STATE_INVALID );
 		return false; // base entity name has to be specified.
 	}
 
 	// find the base entity from the current list
-	CBaseEntity *pBaseEntity = FindBaseEntity( base_entity_name.c_str() );
+	BaseEntity *pBaseEntity = FindBaseEntity( base_entity_name.c_str() );
 
 	if( pBaseEntity )
 	{
 		// already on the list - set the pointer to the handle and return
 		base_entity_handle.SetBaseEntityPointer( pBaseEntity );
-		base_entity_handle.SetState( CBaseEntityHandle::STATE_VALID );
+		base_entity_handle.SetState( BaseEntityHandle::STATE_VALID );
 		return true;
 	}
 
 	// not loaded yet - load the base entity and set the base entity pointer to the handle
-	pBaseEntity = BaseEntityManager().LoadBaseEntity( base_entity_name );
+	pBaseEntity = GetBaseEntityManager().LoadBaseEntity( base_entity_name );
 
 	if( !pBaseEntity )
 	{
 		// the requested base entity was not found in the database
 		// - mark the handle as invalid and return
-		base_entity_handle.SetState( CBaseEntityHandle::STATE_INVALID );
+		base_entity_handle.SetState( BaseEntityHandle::STATE_INVALID );
 		LOG_PRINT_ERROR( "the requested base entity '" + base_entity_name + "' was not found in the database" );
 		return false;
 	}
@@ -907,13 +907,13 @@ bool CEntitySet::LoadBaseEntity( CBaseEntityHandle& base_entity_handle )
 	LOG_PRINT( " - name (confirm): " + pBaseEntity->GetNameString() );
 
 	base_entity_handle.SetBaseEntityPointer( pBaseEntity );
-	base_entity_handle.SetState( CBaseEntityHandle::STATE_VALID );
+	base_entity_handle.SetState( BaseEntityHandle::STATE_VALID );
 
 	return true;
 }
 
 
-void CEntitySet::UpdatePhysics( float frametime )
+void EntityManager::UpdatePhysics( float frametime )
 {
 	PROFILE_FUNCTION();
 
@@ -1003,7 +1003,7 @@ void CEntitySet::UpdatePhysics( float frametime )
 }
 
 
-void CEntitySet::SetCollisionGroup( int group0, int group1, bool collision )
+void EntityManager::SetCollisionGroup( int group0, int group1, bool collision )
 {
 	if( group0 < 0 || NUM_MAX_ENTITY_GROUP_IDS <= group0
 	 || group1 < 0 || NUM_MAX_ENTITY_GROUP_IDS <= group1 )
@@ -1016,7 +1016,7 @@ void CEntitySet::SetCollisionGroup( int group0, int group1, bool collision )
 }
 
 
-void CEntitySet::SetCollisionGroup( int group, bool collision )
+void EntityManager::SetCollisionGroup( int group, bool collision )
 {
 	if( group < 0 || NUM_MAX_ENTITY_GROUP_IDS <= group )
 		return;
@@ -1030,7 +1030,7 @@ void CEntitySet::SetCollisionGroup( int group, bool collision )
 }
 
 
-void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
+void EntityManager::UpdateEntityAfterMoving( CCopyEntity *pEntity )
 {
   {
 	PROFILE_FUNCTION();
@@ -1068,7 +1068,7 @@ void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
  Update all the entities cerrently existing in the stage.
  This function must be called once per frame.
  - Basic steps
-   - 1. Call CBaseEntity::UpdateBaseEntity( dt ) for each base entity
+   - 1. Call BaseEntity::UpdateBaseEntity( dt ) for each base entity
    - 2. Save positions of copy entities
    - 3. Run physics simulator
    - 4. Remove terminated entities from the active list
@@ -1077,13 +1077,13 @@ void CEntitySet::UpdateEntityAfterMoving( CCopyEntity *pEntity )
    TODO: Do 5 & 6 in a single loop to update link for each entity right after is Act().
          Current code does this in separate loops.
  */
-void CEntitySet::UpdateAllEntities( float dt )
+void EntityManager::UpdateAllEntities( float dt )
 {
 	CCopyEntity *pEntity = NULL;
 	CCopyEntity *pPrevEntity = NULL;
 	CCopyEntity *pTouchedEnt = NULL;
 
-	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - updating base entities" ) );
+	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - updating base entities" ) );
 
 	size_t i, num_base_entities = m_vecpBaseEntity.size();
 	for( i=0; i<num_base_entities; i++ )
@@ -1103,12 +1103,12 @@ void CEntitySet::UpdateAllEntities( float dt )
 	// entity position may be modified in this call
 	UpdatePhysics( dt );
 
-	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - updated physics" ) );
+	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - updated physics" ) );
 
 	// remove terminated entities from the active entity list
 	ReleaseTerminatedEntities();
 
-	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - removed terminated entities from the active entity list" ) );
+	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - removed terminated entities from the active entity list" ) );
 
 	// update active entities
 	for( pEntity = this->m_pEntityInUse.get(), pPrevEntity = NULL;
@@ -1153,7 +1153,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 		pEntity->vecpTouchedEntity.clear();
 	}
 
-	ONCE( g_Log.Print( "CEntitySet::UpdateAllEntities() - updated active entities" ) );
+	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - updated active entities" ) );
 
 	// unlink and link the entity in the entity tree if it changed its position
 /*
@@ -1170,7 +1170,7 @@ void CEntitySet::UpdateAllEntities( float dt )
 }
 
 
-void CEntitySet::UpdateGraphics()
+void EntityManager::UpdateGraphics()
 {
 	if( m_pEntityInUse )
 	{
@@ -1184,7 +1184,7 @@ void CEntitySet::UpdateGraphics()
 }
 
 
-void CEntitySet::GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const
+void EntityManager::GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const
 {
 	Camera* pCamera = m_pStage->GetCurrentCamera();
 
@@ -1221,7 +1221,7 @@ flag_string_pair g_EntityFlagStringPair[] =
 };
 
 
-void CEntitySet::WriteEntityTreeToFile( const string& filename )
+void EntityManager::WriteEntityTreeToFile( const string& filename )
 {
 	if( this->m_NumEntityNodes == 0 )
 		return;		// EntityTree is not constructed
@@ -1243,7 +1243,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 	for(i=0; i<m_NumEntityNodes; i++)
 	{
 		//Write an entity node
-		CEntityNode& rEntityNode = m_paEntityTree[i];
+		EntityNode& rEntityNode = m_paEntityTree[i];
 		fprintf(fp, "Node[%d]", i);
 		if (rEntityNode.leaf)
 			fprintf(fp, " (leaf) ====================================================\n");
@@ -1315,7 +1315,7 @@ void CEntitySet::WriteEntityTreeToFile( const string& filename )
 //			bool first_light = true;
 //			for( int i=0; i<(int)entity.m_vecLight.size(); i++ )
 //			{
-//				shared_ptr<CLightEntity> pLight = entity.m_vecLight[i].Get();
+//				shared_ptr<LightEntity> pLight = entity.m_vecLight[i].Get();
 //				if( !pLight )
 //					continue;
 //
@@ -1342,7 +1342,7 @@ static float s_DirLightCheckDist = 100.0f;
 
 static short s_asEntityNodeStack[256];
 
-void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
+void EntityManager::UpdateLightForEntity(CCopyEntity *pEntity)
 {
 	PROFILE_FUNCTION();
 
@@ -1353,8 +1353,8 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 	int iNumStackedNodes = 0;
 //	static short s_asEntityNodeStack[256];
 
-	CEntityNode *pEntityNode = m_paEntityTree;
-	CLightEntity* pLightEntity;
+	EntityNode *pEntityNode = m_paEntityTree;
+	LightEntity* pLightEntity;
 
 	STrace tr;
 	tr.bvType = BVTYPE_DOT;
@@ -1366,7 +1366,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 	Vector3 vLightCenterPos, vLightToEntity, vLightRefPos;
 	float r, d;
 
-	CLinkNode<CLightEntity> *pLinkNode = NULL;
+	CLinkNode<LightEntity> *pLinkNode = NULL;
 	while(1)
 	{
 		for( pLinkNode = pEntityNode->m_LightEntityLinkHead.pNext;
@@ -1384,7 +1384,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 			if( lit )
 			{
 				// register light to the entity
-				pEntity->AddLight( CEntityHandle<CLightEntity>( pLightEntity->LightEntitySelf() ) );
+				pEntity->AddLight( EntityHandle<LightEntity>( pLightEntity->LightEntitySelf() ) );
 			}
 
 //			tr.pTouchedEntity = NULL;
@@ -1402,7 +1402,7 @@ void CEntitySet::UpdateLightForEntity(CCopyEntity *pEntity)
 //			}
 //			else
 //			{
-//				MsgBox( "CEntitySet::UpdateLightForEntity() - invalid light entity" );
+//				MsgBox( "EntityManager::UpdateLightForEntity() - invalid light entity" );
 //				continue;
 //			}
 //

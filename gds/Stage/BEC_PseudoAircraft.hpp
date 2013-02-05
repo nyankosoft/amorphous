@@ -20,7 +20,7 @@ class CBEC_AircraftNozzleFlames
 {
 public:
 
-	CBaseEntityHandle m_NozzleFlame;
+	BaseEntityHandle m_NozzleFlame;
 
 	CBEC_AircraftNozzleFlames();
 

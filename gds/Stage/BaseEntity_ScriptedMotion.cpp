@@ -14,7 +14,7 @@ using namespace std;
 using namespace physics;
 
 
-void CBaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPath& path )
+void BaseEntity::UpdateScriptedMotionPath( CCopyEntity* pCopyEnt, CBEC_MotionPath& path )
 {
 	const float time_in_stage = (float)m_pStage->GetElapsedTime();
 

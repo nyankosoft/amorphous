@@ -90,7 +90,7 @@ void CBE_DoorController::Act(CCopyEntity* pCopyEnt)
 //void CBE_DoorController::Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 
 
-void CBE_DoorController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_DoorController::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 	short& rsDoorState = pCopyEnt_Self->s1;
 	int i, iNumChildren = pCopyEnt_Self->GetNumChildren();
@@ -115,7 +115,7 @@ void CBE_DoorController::MessageProcedure(SGameMessage& rGameMessage, CCopyEntit
 		}
 		else
 		{	// the door is locked - the entity currently tring to open this door has to input valid key code
-			SGameMessage msg;
+			GameMessage msg;
 			msg.effect = GM_KEYCODE_REQUEST;
 			msg.pcStrParam = &m_strKeyCode.at(0);
 //			msg.pcStrParam = m_strKeyCode.begin();
@@ -185,7 +185,7 @@ bool CBE_DoorController::LoadSpecificPropertiesFromFile( CTextFileScanner& scann
 
 void CBE_DoorController::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_strKeyCode;
 	ar & m_OpenSound & m_CloseSound;

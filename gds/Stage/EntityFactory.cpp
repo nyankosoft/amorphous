@@ -14,18 +14,18 @@ namespace amorphous
 using namespace boost;
 
 
-CEntityFactory::CEntityFactory()
+EntityFactory::EntityFactory()
 {
 	Init();
 }
 
 
-CEntityFactory::~CEntityFactory()
+EntityFactory::~EntityFactory()
 {
 }
 
 
-void CEntityFactory::Init()
+void EntityFactory::Init()
 {
 	m_CopyEntityPool.init( DEFAULT_MAX_NUM_ENTITIES );
 	m_AlphaEntityPool.init( DEFAULT_MAX_NUM_ALPHA_ENTITIES );
@@ -35,7 +35,7 @@ void CEntityFactory::Init()
 }
 
 
-shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_id )
+shared_ptr<CCopyEntity> EntityFactory::CreateEntity( unsigned int entity_type_id )
 {
 	switch( entity_type_id )
 	{
@@ -45,7 +45,7 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 		return m_AlphaEntityPool.get_new_object();
 	case CCopyEntityTypeID::LIGHT_ENTITY:
 	{
-		shared_ptr<CLightEntity> pLightEntity = m_LightEntityPool.get_new_object();
+		shared_ptr<LightEntity> pLightEntity = m_LightEntityPool.get_new_object();
 		pLightEntity->m_pLightEntitySelf = pLightEntity;
 		return pLightEntity;
 	}
@@ -59,7 +59,7 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 	// the shared pointer of it
 	// e.g., because they are created before the stage starts and not likely
 	// to impact performance from memory allocation during gameplay
-	// CEntitySet needs to set stock id to -2 after this to mark this entity as non-pooled object
+	// EntityManager needs to set stock id to -2 after this to mark this entity as non-pooled object
 //	case CCopyEntityTypeID::ANOTHER_ENTITY:
 //		return shared_ptr<CCopyEntity>( new CAnotherEntity );
 	default:
@@ -70,7 +70,7 @@ shared_ptr<CCopyEntity> CEntityFactory::CreateEntity( unsigned int entity_type_i
 }
 
 
-void CEntityFactory::ReleaseEntity( shared_ptr<CCopyEntity> pEntity )
+void EntityFactory::ReleaseEntity( shared_ptr<CCopyEntity> pEntity )
 {
 	switch( pEntity->GetEntityTypeID() )
 	{
@@ -79,7 +79,7 @@ void CEntityFactory::ReleaseEntity( shared_ptr<CCopyEntity> pEntity )
 		break;
 	case CCopyEntityTypeID::ALPHA_ENTITY:
 		m_AlphaEntityPool.release<CCopyEntity>( pEntity );
-//		m_AlphaEntityPool.release( dynamic_pointer_cast<CAlphaEntity,CCopyEntity>(pEntity) );
+//		m_AlphaEntityPool.release( dynamic_pointer_cast<AlphaEntity,CCopyEntity>(pEntity) );
 		break;
 //	case CCopyEntityTypeID::LIGHT_ENTITY:
 //		???
@@ -100,7 +100,7 @@ void CEntityFactory::ReleaseEntity( shared_ptr<CCopyEntity> pEntity )
 }
 
 
-void CEntityFactory::ReleaseAllEntities()
+void EntityFactory::ReleaseAllEntities()
 {
 	m_CopyEntityPool.release_all();
 

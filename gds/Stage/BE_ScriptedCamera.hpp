@@ -29,7 +29,7 @@ public:
 
 	std::string m_TargetName;	///< name of the target to focus. used when the target does not exist when a keyframe is created
 
-	CEntityHandle<> m_Target;	///< entity to focus
+	EntityHandle<> m_Target;	///< entity to focus
 
 	Vector3 m_vTargetPos;
 
@@ -195,7 +195,7 @@ public:
 
 	CPPEffectParams pp;
 
-	CEntityHandle<> FocusTarget;
+	EntityHandle<> FocusTarget;
 
 public:
 
@@ -245,7 +245,7 @@ public:
 		return false;
 	}
 
-	void UpdateFocusTargetEntities( CEntitySet *pEntitySet );
+	void UpdateFocusTargetEntities( EntityManager *pEntitySet );
 
 };
 
@@ -355,7 +355,7 @@ public:
 
 
 */
-class CScriptedCameraEntity : public CCopyEntity
+class ScriptedCameraEntity : public CCopyEntity
 {
 	Camera m_Camera;
 
@@ -387,7 +387,7 @@ private:
 
 public:
 
-	CScriptedCameraEntity()
+	ScriptedCameraEntity()
 		:
 	m_InitializedAtCutsceneStart(false),
 	m_Initialized(false)
@@ -404,7 +404,7 @@ public:
 
 	void CreateRenderTasks();
 
-	void HandleMessage( SGameMessage& msg );
+	void HandleMessage( GameMessage& msg );
 
 	void UpdateCameraParams();
 
@@ -418,15 +418,15 @@ public:
 };
 
 
-class CScriptedCameraEntityHandle : public CEntityHandle<CScriptedCameraEntity>
+class ScriptedCameraEntityHandle : public EntityHandle<ScriptedCameraEntity>
 {
 public:
 
-	CScriptedCameraEntityHandle() {}
+	ScriptedCameraEntityHandle() {}
 
-	CScriptedCameraEntityHandle( boost::weak_ptr<CScriptedCameraEntity> pCameraEntity )
+	ScriptedCameraEntityHandle( boost::weak_ptr<ScriptedCameraEntity> pCameraEntity )
 		:
-	CEntityHandle<CScriptedCameraEntity>( pCameraEntity )
+	EntityHandle<ScriptedCameraEntity>( pCameraEntity )
 	{}
 
 	void SetUniformMotionBlur( float start_time, float end_time, float motion_blur_strength );
@@ -435,7 +435,7 @@ public:
 };
 
 
-class CBE_ScriptedCamera : public CBaseEntity
+class CBE_ScriptedCamera : public BaseEntity
 {
 public:
 
@@ -454,7 +454,7 @@ public:
 
 	void CreateRenderTasks(CCopyEntity* pCopyEnt);
 
-    void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) { pCopyEnt_Self->HandleMessage( rGameMessage ); }
+    void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self) { pCopyEnt_Self->HandleMessage( rGameMessage ); }
 
 
 //	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );

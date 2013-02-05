@@ -50,71 +50,71 @@ namespace amorphous
 using namespace std;
 
 
-CBaseEntityFactory::CBaseEntityFactory()
+BaseEntityFactory::BaseEntityFactory()
 {
 }
 
 
-CBaseEntityFactory::~CBaseEntityFactory()
+BaseEntityFactory::~BaseEntityFactory()
 {
 }
 
 
-void CBaseEntityFactory::Init()
+void BaseEntityFactory::Init()
 {
 }
 
 
-CBaseEntity *CBaseEntityFactory::CreateBaseEntity( const unsigned int id )
+BaseEntity *BaseEntityFactory::CreateBaseEntity( const unsigned int id )
 {
-	CBaseEntity *pBaseEntity = CreateUserDefinedBaseEntity( id );
+	BaseEntity *pBaseEntity = CreateUserDefinedBaseEntity( id );
 
 	if( pBaseEntity )
 		return pBaseEntity;
 
 	switch(id)
 	{
-//		case :									return new CBaseEntity;
-		case CBaseEntity::BE_AREASENSOR:		return new CBE_AreaSensor;
-		case CBaseEntity::BE_BLAST:				return new CBE_Blast;
-		case CBaseEntity::BE_BULLET:			return new CBE_Bullet;
-		case CBaseEntity::BE_CLOUD:				return new CBE_Cloud;
-		case CBaseEntity::BE_DECAL:				return new CBE_Decal;
-		case CBaseEntity::BE_DOOR:				return new CBE_Door;
-		case CBaseEntity::BE_DOORCONTROLLER:	return new CBE_DoorController;
-		case CBaseEntity::BE_ENEMY:				return new CBE_Enemy;
-		case CBaseEntity::BE_EVENTTRIGGER:		return new CBE_EventTrigger;
-		case CBaseEntity::BE_EXPLOSIONSMOKE:	return new CBE_ExplosionSmoke;
-		case CBaseEntity::BE_EXPLOSIVE:			return new CBE_Explosive;
-		case CBaseEntity::BE_FIXEDTURRETPOD:	return new CBE_FixedTurretPod;
-		case CBaseEntity::BE_FLOATER:			return new CBE_Floater;
-		case CBaseEntity::BE_GENERALENTITY:		return new CBE_GeneralEntity;
-		case CBaseEntity::BE_HOMINGMISSILE:		return new CBE_HomingMissile;
-		case CBaseEntity::BE_LASERDOT:			return new CBE_LaserDot;
-		case CBaseEntity::BE_MUZZLEFLASH:		return new CBE_MuzzleFlash;
-		case CBaseEntity::BE_PARTICLESET:		return new CBE_ParticleSet;
-		case CBaseEntity::BE_PHYSICSBASEENTITY:	return new CBE_PhysicsBaseEntity;
-		case CBaseEntity::BE_PLATFORM:			return new CBE_Platform;
-		case CBaseEntity::BE_PLAYER:			return new CBE_Player;
-		case CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT:		return new CBE_PlayerPseudoAircraft;
-		case CBaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:	return new CBE_PlayerPseudoLeggedVehicle;
-		case CBaseEntity::BE_PLAYERSHIP:		return new CBE_PlayerShip;
-		case CBaseEntity::BE_POINTLIGHT:		return new CBE_PointLight;
-		case CBaseEntity::BE_SMOKETRACE:		return new CBE_SmokeTrace;
-		case CBaseEntity::BE_SUPPLYITEM:		return new CBE_SupplyItem;
-		case CBaseEntity::BE_TEXTUREANIMATION:	return new CBE_TextureAnimation;
-		case CBaseEntity::BE_TURRET:			return new CBE_Turret;
-		case CBaseEntity::BE_ENEMYAIRCRAFT:		return new CBE_EnemyAircraft;
-		case CBaseEntity::BE_DIRECTIONALLIGHT:	return new CBE_DirectionalLight;
-		case CBaseEntity::BE_STATICPARTICLESET:	return new CBE_StaticParticleSet;
-		case CBaseEntity::BE_NOZZLEEXHAUST:		return new CBE_NozzleExhaust;
-		case CBaseEntity::BE_ENEMYSHIP:			return new CBE_EnemyShip;
-		case CBaseEntity::BE_STATICGEOMETRY:	return new CBE_StaticGeometry;
-		case CBaseEntity::BE_SKYBOX:			return new CBE_Skybox;
-		case CBaseEntity::BE_CAMERACONTROLLER:	return new CBE_CameraController;
-		case CBaseEntity::BE_SCRIPTEDCAMERA:	return new CBE_ScriptedCamera;
-		case CBaseEntity::BE_INDIVIDUALENTITY:	return new CBE_IndividualEntity;
-		case CBaseEntity::BE_STATICLIQUID:		return new CBE_StaticLiquid;
+//		case :									return new BaseEntity;
+		case BaseEntity::BE_AREASENSOR:		return new CBE_AreaSensor;
+		case BaseEntity::BE_BLAST:				return new CBE_Blast;
+		case BaseEntity::BE_BULLET:			return new CBE_Bullet;
+		case BaseEntity::BE_CLOUD:				return new CBE_Cloud;
+		case BaseEntity::BE_DECAL:				return new CBE_Decal;
+		case BaseEntity::BE_DOOR:				return new CBE_Door;
+		case BaseEntity::BE_DOORCONTROLLER:	return new CBE_DoorController;
+		case BaseEntity::BE_ENEMY:				return new CBE_Enemy;
+		case BaseEntity::BE_EVENTTRIGGER:		return new CBE_EventTrigger;
+		case BaseEntity::BE_EXPLOSIONSMOKE:	return new CBE_ExplosionSmoke;
+		case BaseEntity::BE_EXPLOSIVE:			return new CBE_Explosive;
+		case BaseEntity::BE_FIXEDTURRETPOD:	return new CBE_FixedTurretPod;
+		case BaseEntity::BE_FLOATER:			return new CBE_Floater;
+		case BaseEntity::BE_GENERALENTITY:		return new CBE_GeneralEntity;
+		case BaseEntity::BE_HOMINGMISSILE:		return new CBE_HomingMissile;
+		case BaseEntity::BE_LASERDOT:			return new CBE_LaserDot;
+		case BaseEntity::BE_MUZZLEFLASH:		return new CBE_MuzzleFlash;
+		case BaseEntity::BE_PARTICLESET:		return new CBE_ParticleSet;
+		case BaseEntity::BE_PHYSICSBASEENTITY:	return new CBE_PhysicsBaseEntity;
+		case BaseEntity::BE_PLATFORM:			return new CBE_Platform;
+		case BaseEntity::BE_PLAYER:			return new CBE_Player;
+		case BaseEntity::BE_PLAYERPSEUDOAIRCRAFT:		return new CBE_PlayerPseudoAircraft;
+		case BaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:	return new CBE_PlayerPseudoLeggedVehicle;
+		case BaseEntity::BE_PLAYERSHIP:		return new CBE_PlayerShip;
+		case BaseEntity::BE_POINTLIGHT:		return new CBE_PointLight;
+		case BaseEntity::BE_SMOKETRACE:		return new CBE_SmokeTrace;
+		case BaseEntity::BE_SUPPLYITEM:		return new CBE_SupplyItem;
+		case BaseEntity::BE_TEXTUREANIMATION:	return new CBE_TextureAnimation;
+		case BaseEntity::BE_TURRET:			return new CBE_Turret;
+		case BaseEntity::BE_ENEMYAIRCRAFT:		return new CBE_EnemyAircraft;
+		case BaseEntity::BE_DIRECTIONALLIGHT:	return new CBE_DirectionalLight;
+		case BaseEntity::BE_STATICPARTICLESET:	return new CBE_StaticParticleSet;
+		case BaseEntity::BE_NOZZLEEXHAUST:		return new CBE_NozzleExhaust;
+		case BaseEntity::BE_ENEMYSHIP:			return new CBE_EnemyShip;
+		case BaseEntity::BE_STATICGEOMETRY:	return new CBE_StaticGeometry;
+		case BaseEntity::BE_SKYBOX:			return new CBE_Skybox;
+		case BaseEntity::BE_CAMERACONTROLLER:	return new CBE_CameraController;
+		case BaseEntity::BE_SCRIPTEDCAMERA:	return new CBE_ScriptedCamera;
+		case BaseEntity::BE_INDIVIDUALENTITY:	return new CBE_IndividualEntity;
+		case BaseEntity::BE_STATICLIQUID:		return new CBE_StaticLiquid;
 
 		default:
 			LOG_PRINT_ERROR( "invalid base entity id: " + to_string(id) );
@@ -123,7 +123,7 @@ CBaseEntity *CBaseEntityFactory::CreateBaseEntity( const unsigned int id )
 }
 
 
-IArchiveObjectBase *CBaseEntityFactory::CreateObject( const unsigned int id )
+IArchiveObjectBase *BaseEntityFactory::CreateObject( const unsigned int id )
 {
 	return CreateBaseEntity( id );
 }
@@ -134,7 +134,7 @@ IArchiveObjectBase *CBaseEntityFactory::CreateObject( const unsigned int id )
 //=========================== draft ===========================
 #if 0
 
-CBaseEntityManager::RegisterUserDefinedBaseEntityFactory( CBaseEntityFactorySharedPtr pFactory )
+BaseEntityManager::RegisterUserDefinedBaseEntityFactory( BaseEntityFactorySharedPtr pFactory )
 {
 	m_pBaseEntityFactory = pFactory;
 }
@@ -142,7 +142,7 @@ CBaseEntityManager::RegisterUserDefinedBaseEntityFactory( CBaseEntityFactoryShar
 
 void SomeAppInitFunctionInUserApp()
 {
-	BaseEntityManager().RegisterBaseEntityFactory( CBaseEntityFactorySharedPtr( new CUserBaseEntityFactory() );
+	BaseEntityManager().RegisterBaseEntityFactory( BaseEntityFactorySharedPtr( new CUserBaseEntityFactory() );
 }
 
 
@@ -151,10 +151,10 @@ IArchiveObjectBase *CUserBaseEntityFactory::CreateUserDefinedBaseEnitity( const 
 	switch(id)
 	{
 		// create an instance of a user defined base entity
-		case CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT:		return new CBE_PlayerPseudoAircraft;
-		case CBaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:	return new CBE_PlayerPseudoLeggedVehicle;
-		case CBaseEntity::BE_ENEMYAIRCRAFT:				return new CBE_EnemyAircraft;
-		case CBaseEntity::BE_ENEMYSHIP:					return new CBE_EnemyShip;
+		case BaseEntity::BE_PLAYERPSEUDOAIRCRAFT:		return new CBE_PlayerPseudoAircraft;
+		case BaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:	return new CBE_PlayerPseudoLeggedVehicle;
+		case BaseEntity::BE_ENEMYAIRCRAFT:				return new CBE_EnemyAircraft;
+		case BaseEntity::BE_ENEMYSHIP:					return new CBE_EnemyShip;
 
 		// return NULL if the id did not match with any of the user defined base entity
 		default:

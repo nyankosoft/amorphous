@@ -13,7 +13,7 @@ namespace serialization
 {
 
 
-inline IArchive& operator & ( IArchive& ar, CBaseEntityHandle& entity_handle )
+inline IArchive& operator & ( IArchive& ar, BaseEntityHandle& entity_handle )
 {
 	std::string name;
 	if( ar.GetMode() == IArchive::MODE_INPUT )

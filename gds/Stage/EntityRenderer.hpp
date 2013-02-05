@@ -9,11 +9,11 @@ namespace amorphous
 {
 
 
-class CEntityRenderer
+class EntityRenderer
 {
 public:
-	CEntityRenderer() {}
-	virtual ~CEntityRenderer() {}
+	EntityRenderer() {}
+	virtual ~EntityRenderer() {}
 
 	virtual bool ShouldRenderEntity( CCopyEntity& entity ) { return true; }
 

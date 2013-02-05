@@ -91,7 +91,7 @@ m_TypeID(type_id)
 }
 
 
-/// Do not call this from 'CEntityNode'
+/// Do not call this from 'EntityNode'
 inline void CCopyEntity::Unlink()
 {
 	m_EntityLink.Unlink();
@@ -182,14 +182,14 @@ inline void CCopyEntity::GetPointVelocity(Vector3& rvPointVelocity, Vector3& rvP
 // light control
 //========================================================
 
-inline void CCopyEntity::AddLight( CEntityHandle<CLightEntity>& light_entity )
+inline void CCopyEntity::AddLight( EntityHandle<LightEntity>& light_entity )
 {
 	if( GetNumLights() < NUM_MAX_LIGHTS_AT_ENTITY )
 		m_vecLight.push_back( light_entity );
 }
 
 
-inline void CCopyEntity::InsertLight( int pos, CEntityHandle<CLightEntity>& light_entity )
+inline void CCopyEntity::InsertLight( int pos, EntityHandle<LightEntity>& light_entity )
 {
 	if( GetNumLights() < NUM_MAX_LIGHTS_AT_ENTITY )
 		m_vecLight.insert_at( pos, light_entity );
@@ -231,7 +231,7 @@ inline int CCopyEntity::AddChild( boost::weak_ptr<CCopyEntity> pChild )
 	if( iNumChildren == NUM_MAX_CHILDREN_PER_ENTITY )
 		return -1;
 
-	m_aChild[iNumChildren++] = CEntityHandle<>( pChild );
+	m_aChild[iNumChildren++] = EntityHandle<>( pChild );
 	return (iNumChildren - 1);
 }
 
@@ -261,10 +261,10 @@ inline physics::CActor *CCopyEntity::GetPrimaryPhysicsActor()
 
 
 //======================================================================
-// CEntityHandleBase
+// EntityHandleBase
 //======================================================================
 
-inline bool CEntityHandleBase::IsEntityInUse( CCopyEntity *pEntity )
+inline bool EntityHandleBase::IsEntityInUse( CCopyEntity *pEntity )
 {
 	return pEntity->inuse;
 }
@@ -272,14 +272,14 @@ inline bool CEntityHandleBase::IsEntityInUse( CCopyEntity *pEntity )
 
 
 //======================================================================
-// CEntityHandle
+// EntityHandle
 //======================================================================
 
 /// Needs to be defined after the definitions of CCopyEntity
 /// since these guys use the methods of CCopyEntity
 
 template<class T>
-inline CEntityHandle<T>::CEntityHandle( boost::weak_ptr<T> pEntity )
+inline EntityHandle<T>::EntityHandle( boost::weak_ptr<T> pEntity )
 :
 m_pEntity(pEntity),
 m_StockID(-1)
@@ -291,7 +291,7 @@ m_StockID(-1)
 
 
 template<class T>
-inline CEntityHandle<T>::CEntityHandle( boost::shared_ptr<T> pEntity )
+inline EntityHandle<T>::EntityHandle( boost::shared_ptr<T> pEntity )
 :
 m_pEntity(pEntity),
 m_StockID(-1)
@@ -302,7 +302,7 @@ m_StockID(-1)
 
 
 template<class T>
-inline boost::shared_ptr<T> CEntityHandle<T>::Get()
+inline boost::shared_ptr<T> EntityHandle<T>::Get()
 {
 	boost::shared_ptr<T> pEntity = m_pEntity.lock();
 	if( !pEntity )
@@ -355,7 +355,7 @@ inline boost::shared_ptr<T> CEntityHandle<T>::Get()
 
 
 template<class T>
-inline Vector3 CEntityHandle<T>::GetWorldPosition()
+inline Vector3 EntityHandle<T>::GetWorldPosition()
 {
 	boost::shared_ptr<T> pEntity = Get();
 	if( pEntity )
@@ -366,7 +366,7 @@ inline Vector3 CEntityHandle<T>::GetWorldPosition()
 
 
 template<class T>
-inline Matrix34 CEntityHandle<T>::GetWorldPose()
+inline Matrix34 EntityHandle<T>::GetWorldPose()
 {
 	boost::shared_ptr<T> pEntity = Get();
 	if( pEntity )
@@ -377,7 +377,7 @@ inline Matrix34 CEntityHandle<T>::GetWorldPose()
 
 
 template<class T>
-inline void CEntityHandle<T>::SetWorldPosition( const Vector3& vPos )
+inline void EntityHandle<T>::SetWorldPosition( const Vector3& vPos )
 {
 	boost::shared_ptr<T> pEntity = Get();
 	if( pEntity )
@@ -386,7 +386,7 @@ inline void CEntityHandle<T>::SetWorldPosition( const Vector3& vPos )
 
 
 template<class T>
-inline void CEntityHandle<T>::SetWorldPose( const Matrix34& pose )
+inline void EntityHandle<T>::SetWorldPose( const Matrix34& pose )
 {
 	boost::shared_ptr<T> pEntity = Get();
 	if( pEntity )

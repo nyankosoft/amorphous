@@ -52,15 +52,15 @@ namespace amorphous
 template<class CDerivedBaseEntity>
 CDerivedBaseEntity *CreateBaseEntity( int id )
 {
-	CBaseEntityFactory factory;
-	CBaseEntity *pBaseEntity = factory.CreateBaseEntity( id );
+	BaseEntityFactory factory;
+	BaseEntity *pBaseEntity = factory.CreateBaseEntity( id );
 	return dynamic_cast<CDerivedBaseEntity *>( pBaseEntity );
 }
 
 
-void CCoreBaseEntitiesLoader::AddBlast( const char *name, float base_damage, float max_blast_radius, float blast_duration, float impulse, std::vector<CBaseEntity *>& pBaseEntities )
+void CoreBaseEntitiesLoader::AddBlast( const char *name, float base_damage, float max_blast_radius, float blast_duration, float impulse, std::vector<BaseEntity *>& pBaseEntities )
 {
-	CBE_Blast *pBlast = CreateBaseEntity<CBE_Blast>( CBaseEntity::BE_BLAST );
+	CBE_Blast *pBlast = CreateBaseEntity<CBE_Blast>( BaseEntity::BE_BLAST );
 	pBlast->m_strName         = name;
 	pBlast->m_fBaseDamage     = base_damage;
 	pBlast->m_fMaxBlastRadius = max_blast_radius;
@@ -70,9 +70,9 @@ void CCoreBaseEntitiesLoader::AddBlast( const char *name, float base_damage, flo
 }
 
 
-void CCoreBaseEntitiesLoader::AddExplosion( const char *name, const char *blast_name, float anim_time_offset, std::vector<CBaseEntity *>& pBaseEntities )
+void CoreBaseEntitiesLoader::AddExplosion( const char *name, const char *blast_name, float anim_time_offset, std::vector<BaseEntity *>& pBaseEntities )
 {
-	CBE_Explosive *pExplosion = CreateBaseEntity<CBE_Explosive>( CBaseEntity::BE_EXPLOSIVE );
+	CBE_Explosive *pExplosion = CreateBaseEntity<CBE_Explosive>( BaseEntity::BE_EXPLOSIVE );
 	pExplosion->m_strName         = name;
 	pExplosion->m_Blast.SetBaseEntityName( blast_name );
 	pExplosion->m_fExplosionAnimTimeOffset = anim_time_offset;
@@ -80,7 +80,7 @@ void CCoreBaseEntitiesLoader::AddExplosion( const char *name, const char *blast_
 }
 
 
-void CCoreBaseEntitiesLoader::AddDefaultLight( CBE_Light *pLight, const char *name, std::vector<CBaseEntity *>& pBaseEntities )
+void CoreBaseEntitiesLoader::AddDefaultLight( CBE_Light *pLight, const char *name, std::vector<BaseEntity *>& pBaseEntities )
 {
 	pLight->m_strName = name;
 	pLight->m_DefaultDesc.aColor[0] = SFloatRGBAColor( 1.00f, 1.00f, 1.00f, 1.00f );
@@ -92,9 +92,9 @@ void CCoreBaseEntitiesLoader::AddDefaultLight( CBE_Light *pLight, const char *na
 }
 
 
-void CCoreBaseEntitiesLoader::AddPhysicsBaseEntity( const char *name, std::vector<CBaseEntity *>& pBaseEntities )
+void CoreBaseEntitiesLoader::AddPhysicsBaseEntity( const char *name, std::vector<BaseEntity *>& pBaseEntities )
 {
-	CBE_GeneralEntity *pBaseEntity = CreateBaseEntity<CBE_GeneralEntity>( CBaseEntity::BE_GENERALENTITY );
+	CBE_GeneralEntity *pBaseEntity = CreateBaseEntity<CBE_GeneralEntity>( BaseEntity::BE_GENERALENTITY );
 	pBaseEntity->m_strName         = name;
 	// The AABB is overwritten by the dimension of the box mesh specified by the user
 	pBaseEntity->m_aabb.vMin = Vector3(1,1,1) * -0.001f;
@@ -109,45 +109,45 @@ void CCoreBaseEntitiesLoader::AddPhysicsBaseEntity( const char *name, std::vecto
 }
 
 
-void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& pBaseEntities )
+void CoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<BaseEntity *>& pBaseEntities )
 {
 //	CBE_GeneralEntity *pBox  = new CBE_GeneralEntity;
 //	CBE_Explosive *pImEx     = new CBE_Explosive;
 
-	CBE_CameraController *pCutsceneCamController = CreateBaseEntity<CBE_CameraController>( CBaseEntity::BE_CAMERACONTROLLER );
+	CBE_CameraController *pCutsceneCamController = CreateBaseEntity<CBE_CameraController>( BaseEntity::BE_CAMERACONTROLLER );
 	pCutsceneCamController->m_strName = "CutsceneCameraController";
 	pCutsceneCamController->m_bUseCutsceneInputHandler = true;
 	pBaseEntities.push_back( pCutsceneCamController );
 
-	CBE_CameraController *pCamController = CreateBaseEntity<CBE_CameraController>( CBaseEntity::BE_CAMERACONTROLLER );
+	CBE_CameraController *pCamController = CreateBaseEntity<CBE_CameraController>( BaseEntity::BE_CAMERACONTROLLER );
 	pCamController->m_strName = "CameraController";
 	pCamController->m_bUseCutsceneInputHandler = false;
 	pBaseEntities.push_back( pCamController );
 
-	CBE_ScriptedCamera *pCam = CreateBaseEntity<CBE_ScriptedCamera>( CBaseEntity::BE_SCRIPTEDCAMERA );
+	CBE_ScriptedCamera *pCam = CreateBaseEntity<CBE_ScriptedCamera>( BaseEntity::BE_SCRIPTEDCAMERA );
 	pCam->m_strName = "ScriptedCamera";
 	pBaseEntities.push_back( pCam );
 
-	CBE_EventTrigger *pET = CreateBaseEntity<CBE_EventTrigger>( CBaseEntity::BE_EVENTTRIGGER );
+	CBE_EventTrigger *pET = CreateBaseEntity<CBE_EventTrigger>( BaseEntity::BE_EVENTTRIGGER );
 	pET->m_strName = "EventBox";
 	pET->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pET );
 
-	CBE_StaticGeometry *pSG = CreateBaseEntity<CBE_StaticGeometry>( CBaseEntity::BE_STATICGEOMETRY );
+	CBE_StaticGeometry *pSG = CreateBaseEntity<CBE_StaticGeometry>( BaseEntity::BE_STATICGEOMETRY );
 	pSG->m_strName = "StaticGeometry";
 	pBaseEntities.push_back( pSG );
 
-	CBE_Skybox *pSkybox = CreateBaseEntity<CBE_Skybox>( CBaseEntity::BE_SKYBOX );
+	CBE_Skybox *pSkybox = CreateBaseEntity<CBE_Skybox>( BaseEntity::BE_SKYBOX );
 	pSkybox->m_strName = "skybox";
 	pSkybox->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pSkybox );
 
-	CBE_Bullet *pBullet = CreateBaseEntity<CBE_Bullet>( CBaseEntity::BE_BULLET );
+	CBE_Bullet *pBullet = CreateBaseEntity<CBE_Bullet>( BaseEntity::BE_BULLET );
 	pBullet->m_strName = "__DefaultBullet__";
 	pBullet->m_BoundingVolumeType = BVTYPE_DOT;
 	pBaseEntities.push_back( pBullet );
 
-	CBE_IndividualEntity *pAlphaEntityBase = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
+	CBE_IndividualEntity *pAlphaEntityBase = CreateBaseEntity<CBE_IndividualEntity>( BaseEntity::BE_INDIVIDUALENTITY );
 	pAlphaEntityBase->m_strName = "AlphaEntityBase";
 	pAlphaEntityBase->m_BoundingVolumeType = BVTYPE_AABB;
 	pAlphaEntityBase->m_bNoClip = true;
@@ -157,12 +157,12 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 	pAlphaEntityBase->m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SingleHSPL_Specular_CTS" );
 	pBaseEntities.push_back( pAlphaEntityBase );
 
-	CBE_IndividualEntity *pForItemEntity = CreateBaseEntity<CBE_IndividualEntity>( CBaseEntity::BE_INDIVIDUALENTITY );
+	CBE_IndividualEntity *pForItemEntity = CreateBaseEntity<CBE_IndividualEntity>( BaseEntity::BE_INDIVIDUALENTITY );
 	pForItemEntity->m_strName = "__ForItemEntity__";
 	pForItemEntity->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pForItemEntity );
 
-	CBE_StaticLiquid *pStaticLiquid = CreateBaseEntity<CBE_StaticLiquid>( CBaseEntity::BE_STATICLIQUID );
+	CBE_StaticLiquid *pStaticLiquid = CreateBaseEntity<CBE_StaticLiquid>( BaseEntity::BE_STATICLIQUID );
 	pStaticLiquid->m_strName = "__StaticLiquidWater__";
 	pStaticLiquid->m_BoundingVolumeType = BVTYPE_AABB;
 	pBaseEntities.push_back( pStaticLiquid );
@@ -183,10 +183,10 @@ void CCoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<CBaseEntity *>& 
 
 	// Add lights
 
-	CBE_DirectionalLight *pDLight   = CreateBaseEntity<CBE_DirectionalLight>( CBaseEntity::BE_DIRECTIONALLIGHT );
-	CBE_PointLight *pPLight         = CreateBaseEntity<CBE_PointLight>( CBaseEntity::BE_POINTLIGHT );
-	CBE_DirectionalLight *pHSDLight = CreateBaseEntity<CBE_DirectionalLight>( CBaseEntity::BE_DIRECTIONALLIGHT );
-	CBE_PointLight *pHSPLight       = CreateBaseEntity<CBE_PointLight>( CBaseEntity::BE_POINTLIGHT );
+	CBE_DirectionalLight *pDLight   = CreateBaseEntity<CBE_DirectionalLight>( BaseEntity::BE_DIRECTIONALLIGHT );
+	CBE_PointLight *pPLight         = CreateBaseEntity<CBE_PointLight>( BaseEntity::BE_POINTLIGHT );
+	CBE_DirectionalLight *pHSDLight = CreateBaseEntity<CBE_DirectionalLight>( BaseEntity::BE_DIRECTIONALLIGHT );
+	CBE_PointLight *pHSPLight       = CreateBaseEntity<CBE_PointLight>( BaseEntity::BE_POINTLIGHT );
 	AddDefaultLight( pDLight,   "__DirectionalLight__",            pBaseEntities );
 	AddDefaultLight( pPLight,   "__PointLight__",                  pBaseEntities );
 	AddDefaultLight( pHSDLight, "__HemisphericDirectionalLight__", pBaseEntities );

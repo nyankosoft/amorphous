@@ -69,32 +69,32 @@ public:
 };
 
 
-void CLightEntityHandle::SetUpperColor( const SFloatRGBAColor& color )
+void LightEntityHandle::SetUpperColor( const SFloatRGBAColor& color )
 {
-	shared_ptr<CLightEntity> pLight = Get();
+	shared_ptr<LightEntity> pLight = Get();
 	if( pLight )
 		pLight->SetColor( 0, color );
 }
 
 
-void CLightEntityHandle::SetLowerColor( const SFloatRGBAColor& color )
+void LightEntityHandle::SetLowerColor( const SFloatRGBAColor& color )
 {
-	shared_ptr<CLightEntity> pLight = Get();
+	shared_ptr<LightEntity> pLight = Get();
 	if( pLight )
 		pLight->SetColor( 2, color );
 }
 
 
-void CLightEntityHandle::SetAttenuationFactors( float a0, float a1, float a2 )
+void LightEntityHandle::SetAttenuationFactors( float a0, float a1, float a2 )
 {
-	shared_ptr<CLightEntity> pLight = Get();
+	shared_ptr<LightEntity> pLight = Get();
 	if( pLight )
 		pLight->SetAttenuationFactors( a0, a1, a2 );
 }
 
 
 
-CLightEntity::CLightEntity()
+LightEntity::LightEntity()
 :
 m_pLightHolder(NULL),
 m_pLightBaseEntity(NULL)
@@ -112,12 +112,12 @@ m_pLightBaseEntity(NULL)
 }
 
 
-CLightEntity::~CLightEntity()
+LightEntity::~LightEntity()
 {
 }
 
 
-void CLightEntity::Unlink()
+void LightEntity::Unlink()
 {
 	CCopyEntity::Unlink();
 
@@ -125,13 +125,13 @@ void CLightEntity::Unlink()
 }
 
 
-void CLightEntity::LinkDerivedEntity()
+void LightEntity::LinkDerivedEntity()
 {
 	GetStage()->GetEntitySet()->LinkLightEntity( this );
 }
 
 
-void CLightEntity::Init( CCopyEntityDesc& desc )
+void LightEntity::Init( CCopyEntityDesc& desc )
 {
 	// link the entity to the light entity list on the entity node
 //	GetStage()->GetEntitySet()->LinkLightEntity( this );
@@ -147,7 +147,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 
 	m_pLightBaseEntity = pBaseEntity;
 
-	CLightEntityDesc *pLightDesc = dynamic_cast<CLightEntityDesc *>(&desc);
+	LightEntityDesc *pLightDesc = dynamic_cast<LightEntityDesc *>(&desc);
 
 	if( !pLightDesc )
 		return;
@@ -167,7 +167,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 
 		CLightDesc light_desc;
 
-		const CLightEntityDesc& default_desc = pBaseEntity->GetDefaultDesc();
+		const LightEntityDesc& default_desc = pBaseEntity->GetDefaultDesc();
 		light_desc.LightType = pLightDesc->LightType;
 
 		// colors
@@ -235,7 +235,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 
 	// Manually update the world aabb at initialization
 	// - needed because world aabb update is done before calling CopyEntity::Init()
-	//   in CEntitySet::CreateEntity()
+	//   in EntityManager::CreateEntity()
 	this->world_aabb.TransformCoord( this->local_aabb, this->GetWorldPosition() );
 
 	// link to the tree
@@ -246,7 +246,7 @@ void CLightEntity::Init( CCopyEntityDesc& desc )
 
 static float s_DirLightCheckDist = 100.0f;
 
-bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
+bool LightEntity::ReachesEntity( CCopyEntity *pEntity )
 {
 	// check trace from light to entity
 	STrace tr;
@@ -305,14 +305,14 @@ bool CLightEntity::ReachesEntity( CCopyEntity *pEntity )
 }
 
 
-void CLightEntity::AddLightIfReachesEntity( CCopyEntity *pEntity )
+void LightEntity::AddLightIfReachesEntity( CCopyEntity *pEntity )
 {
 	if( ReachesEntity( pEntity ) )
-		pEntity->AddLight( CEntityHandle<CLightEntity>( m_pLightEntitySelf ) );
+		pEntity->AddLight( EntityHandle<LightEntity>( m_pLightEntitySelf ) );
 }
 
 
-void CLightEntity::TerminateDerived()
+void LightEntity::TerminateDerived()
 {
 	m_LightEntityLink.Unlink();
 
@@ -322,37 +322,37 @@ void CLightEntity::TerminateDerived()
 
 
 /*
-void CLightEntity::Init( CCopyEntityDesc& desc )
+void LightEntity::Init( CCopyEntityDesc& desc )
 {
-//	CLightEntityDesc *pAircraftDesc
-//		= dynamic_cast<CLightEntityDesc *> (&desc);
+//	LightEntityDesc *pAircraftDesc
+//		= dynamic_cast<LightEntityDesc *> (&desc);
 
 //	if( pAircraftDesc )
 //		Init( *pAircraftDesc );
 }
 
-void CLightEntity::Init( CLightEntityDesc& desc )
+void LightEntity::Init( LightEntityDesc& desc )
 {
 	desc.
 }*/
 
 /*
-void CLightEntity::Update( float dt )
+void LightEntity::Update( float dt )
 {
 }
 
 
-void CLightEntity::UpdatePhysics( float dt )
+void LightEntity::UpdatePhysics( float dt )
 {
 }
 
 
-void CLightEntity::Draw()
+void LightEntity::Draw()
 {
 }
 
 
-void CLightEntity::HandleMessage( SGameMessage& msg )
+void LightEntity::HandleMessage( GameMessage& msg )
 {
 //	switch( msg.iEffect )
 //	{

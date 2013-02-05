@@ -39,17 +39,17 @@ bool resources_exists( const std::string& resource_path )
 }
 
 
-CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
+EntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 								const std::string& base_name )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
 	if( !pEntity )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	CBE_MeshObjectProperty& mesh_property = pEntity->pBaseEntity->MeshProperty();
 	if( 0 < mesh_property.m_ShaderTechnique.size_x() )
@@ -65,11 +65,11 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 		pEntity->pBaseEntity->InitEntityGraphics( *pEntity );
 	}
 
-	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
+	return pEntity ? EntityHandle<>( pEntity->Self() ) : EntityHandle<>();
 }
 
 
-CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name,
+EntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name,
 								const std::string& base_name,
 								const Matrix34& pose,
 								const Vector3& vel,
@@ -79,9 +79,9 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_name.c_str() );
 
 	CCopyEntityDesc desc;
@@ -101,7 +101,7 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 
 	return CreateNamedEntity( desc, base_name );
 
-//	return pEntity ? CEntityHandle<>( pEntity->Self() ) : CEntityHandle<>();
+//	return pEntity ? EntityHandle<>( pEntity->Self() ) : EntityHandle<>();
 }
 
 
@@ -110,12 +110,12 @@ CEntityHandle<> CStageUtility::CreateNamedEntity( const std::string& entity_name
 // CreateCameraController
 //========================================================================================
 
-CEntityHandle<> CStageCameraUtility::CreateCameraController( const std::string& camera_controller_name,
+EntityHandle<> CStageCameraUtility::CreateCameraController( const std::string& camera_controller_name,
 													         int cutscene_input_handler_index )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	char *base_entity_name = NULL;
 	if( 0 <= cutscene_input_handler_index )
@@ -125,7 +125,7 @@ CEntityHandle<> CStageCameraUtility::CreateCameraController( const std::string& 
 
 //	int result = PyArg_ParseTuple( args, "s|s", &camera_controller_name, &base_entity_name );
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_entity_name );
 
 	CCopyEntityDesc desc;
@@ -138,14 +138,14 @@ CEntityHandle<> CStageCameraUtility::CreateCameraController( const std::string& 
 	if( !pEntity )
 	{
 		LOG_PRINT_WARNING( fmt_string("Failed to create camera controller: '%s'", camera_controller_name.c_str()) );
-		return CEntityHandle<>();
+		return EntityHandle<>();
 	}
 
-	return CEntityHandle<>( pEntity->Self() );
+	return EntityHandle<>( pEntity->Self() );
 }
 
 
-CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::string& camera_name,
+ScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::string& camera_name,
 														          const std::string& camera_controller_name,
 															      CameraParam default_camera_param )
 {
@@ -153,7 +153,7 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 	if( !pStage )
 		return NULL;
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( "ScriptedCamera" );
 
 	CCopyEntityDesc desc;
@@ -180,12 +180,12 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 	}
 
 	// set default camera params
-	SGameMessage msg( GM_SET_DEFAULT_CAMERA_PARAM );
+	GameMessage msg( GM_SET_DEFAULT_CAMERA_PARAM );
 	msg.pUserData = &default_camera_param;
 	SendGameMessageTo( msg, pCameraEntity );
 
-//	return CEntityHandle<CScriptedCameraEntity>( pCameraEntity->??? )
-	return dynamic_cast<CScriptedCameraEntity *>(pCameraEntity);
+//	return EntityHandle<ScriptedCameraEntity>( pCameraEntity->??? )
+	return dynamic_cast<ScriptedCameraEntity *>(pCameraEntity);
 }
 
 
@@ -197,29 +197,29 @@ CScriptedCameraEntity *CStageCameraUtility::CreateScriptedCamera( const std::str
 #include "Stage/LightEntity.hpp"
 #include "3DMath/3DGameMath.hpp"
 
-CLightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
+LightEntityHandle ReturnLightEntityHandle( CCopyEntity *pEntity )
 {
 	if( pEntity )
 	{
-		shared_ptr<CLightEntity> pLightEntity
-			= dynamic_pointer_cast<CLightEntity,CCopyEntity>( pEntity->Self().lock() );
+		shared_ptr<LightEntity> pLightEntity
+			= dynamic_pointer_cast<LightEntity,CCopyEntity>( pEntity->Self().lock() );
 
-		return CLightEntityHandle( pLightEntity );
+		return LightEntityHandle( pLightEntity );
 	}
 	else
-		return CLightEntityHandle();
+		return LightEntityHandle();
 }
 
 
-CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::string& name,
+LightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CLightEntityHandle();
+		return LightEntityHandle();
 
-	CLightEntityDesc desc( Light::HEMISPHERIC_POINT );
+	LightEntityDesc desc( Light::HEMISPHERIC_POINT );
 
 	int group = 0;
 
@@ -236,7 +236,7 @@ CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::stri
 	desc.afAttenuation[1] = attenu1;
 	desc.afAttenuation[2] = attenu2;
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( "__HemisphericPointLight__" );
 	desc.pBaseEntityHandle = &basehandle;
 
@@ -253,15 +253,15 @@ CLightEntityHandle CStageLightUtility::CreateHSPointLightEntity( const std::stri
 }
 
 
-CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std::string& name,
+LightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& dir )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CLightEntityHandle();
+		return LightEntityHandle();
 
-	CLightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
+	LightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
 
 	int group = 0;
 
@@ -274,7 +274,7 @@ CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std
 	desc.fIntensity = intensity;
 	desc.LightGroup = group;
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( "__HemisphericDirectionalLight__" );
 	desc.pBaseEntityHandle = &basehandle;
 
@@ -295,7 +295,7 @@ CLightEntityHandle CStageLightUtility::CreateHSDirectionalLightEntity( const std
 }
 
 
-CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::string& name,
+LightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::string& name,
 		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
 		float intensity, const Vector3& pos, const Vector3& dir,
 		float attenu0, float attenu1, float attenu2,
@@ -303,9 +303,9 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CLightEntityHandle();
+		return LightEntityHandle();
 
-	CLightEntityDesc desc( Light::HEMISPHERIC_SPOTLIGHT );
+	LightEntityDesc desc( Light::HEMISPHERIC_SPOTLIGHT );
 
 	int group = 0;
 
@@ -322,7 +322,7 @@ CLightEntityHandle CStageLightUtility::CreateHSSpotlightEntity( const std::strin
 	desc.afAttenuation[1] = attenu1;
 	desc.afAttenuation[2] = attenu2;
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( "__HemisphericSpotlight__" );
 	desc.pBaseEntityHandle = &basehandle;
 
@@ -465,7 +465,7 @@ Result::Name SetSphereShapeDesc( MeshHandle& mesh_handle, CSphereShapeDesc& sphe
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
+EntityHandle<> CStageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
 						      //CActorDesc& actor_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
@@ -479,11 +479,11 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_d
 	MeshHandle mesh_handle;
 	bool mesh_loaded = mesh_handle.Load( mesh_desc );
 	if( !mesh_loaded )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	// assumes that the box mesh consists of just one material
 	AABB3 aabb;
@@ -501,10 +501,10 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_d
 	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
 	actor_desc.BodyDesc.fMass = mass;
 
-	CEntityHandle<> entity = CreateNamedEntity( entity_name, entity_attributes_name, pose, vel, &actor_desc, mesh_handle );
+	EntityHandle<> entity = CreateNamedEntity( entity_name, entity_attributes_name, pose, vel, &actor_desc, mesh_handle );
 	CCopyEntity *pEntityRawPtr = entity.GetRawPtr();
 	if( !pEntityRawPtr )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	pEntityRawPtr->m_MeshHandle = mesh_handle;
 	pEntityRawPtr->local_aabb = aabb;
@@ -514,7 +514,7 @@ CEntityHandle<> CStageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_d
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBoxEntity( MeshResourceDesc& mesh_desc,
+EntityHandle<> CStageMiscUtility::CreateBoxEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -526,12 +526,12 @@ CEntityHandle<> CStageMiscUtility::CreateBoxEntity( MeshResourceDesc& mesh_desc,
 	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 	if( !loaded )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	CBoxShapeDesc box_desc;
 	Result::Name res = SetBoxShapeDesc( mesh, box_desc );
 	if( res != Result::SUCCESS )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	vector<CShapeDesc *> vecpShapeDesc;
 	vecpShapeDesc.push_back( &box_desc );
@@ -556,7 +556,7 @@ void CreateOBBTreeFrom3DMeshModelArchive( C3DMeshModelArchive& mesh_archive, OBB
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_desc,
+EntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -568,13 +568,13 @@ CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_des
 //	MeshHandle mesh;
 //	bool loaded = mesh.Load( mesh_desc );
 //	if( !loaded )
-//		return CEntityHandle<>();
+//		return EntityHandle<>();
 
 //	OBBTree obb_tree;
 	C3DMeshModelArchive mesh_archive;
 	bool mesh_archive_loaded = mesh_archive.LoadFromFile( mesh_desc.ResourcePath );
 	if( !mesh_archive_loaded )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	int obb_tree_level = 3;
 //	bool created = CreateOBBTreeFrom3DMeshModelArchive( mesh_archive, obb_tree, obb_tree_level );
@@ -582,7 +582,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_des
 	vector<OBB3> obbs;
 //	obb_tree.GetLeafOBBs( obbs );
 	if( obbs.empty() )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	vector<CShapeDesc *> vecpShapeDesc;
 	vecpShapeDesc.reserve( obbs.size() );
@@ -604,7 +604,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxesEntity( MeshResourceDesc& mesh_des
 }
 */
 
-CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( MeshResourceDesc& mesh_desc,
+EntityHandle<> CStageMiscUtility::CreateCylinderEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -616,12 +616,12 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( MeshResourceDesc& mesh_
 	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 	if( !loaded )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	CConvexShapeDesc convex_shape_desc;
 	Result::Name res = SetCylinderConvexShapeDesc( mesh, convex_shape_desc );
 	if( res != Result::SUCCESS )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	vector<CShapeDesc *> vecpShapeDesc;
 	vecpShapeDesc.push_back( &convex_shape_desc );
@@ -633,7 +633,7 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderEntity( MeshResourceDesc& mesh_
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateSphereEntity( MeshResourceDesc& mesh_desc,
+EntityHandle<> CStageMiscUtility::CreateSphereEntity( MeshResourceDesc& mesh_desc,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
@@ -645,12 +645,12 @@ CEntityHandle<> CStageMiscUtility::CreateSphereEntity( MeshResourceDesc& mesh_de
 	MeshHandle mesh;
 	bool loaded = mesh.Load( mesh_desc );
 	if( !loaded )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	CSphereShapeDesc sphere_desc;
 	Result::Name res = SetSphereShapeDesc( mesh, sphere_desc );
 	if( res != Result::SUCCESS )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	vector<CShapeDesc *> vecpShapeDesc;
 	vecpShapeDesc.push_back( &sphere_desc );
@@ -662,7 +662,7 @@ CEntityHandle<> CStageMiscUtility::CreateSphereEntity( MeshResourceDesc& mesh_de
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
+EntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 											  SFloatRGBAColor diffuse_color,
 											  const Matrix34& pose,
 											  const float mass,
@@ -688,7 +688,7 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
+EntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 											  SFloatRGBAColor diffuse_color,
 											  const Vector3& pos,
 											  const float heading,
@@ -712,7 +712,7 @@ CEntityHandle<> CStageMiscUtility::CreateBox( Vector3 edge_lengths,
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
+EntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 		SFloatRGBAColor diffuse_color,
 		const Matrix34& pose,
 		const std::string& material_name,
@@ -733,7 +733,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticBox( Vector3 edge_lengths,
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_path,//const std::string& mesh_resource_path,
+EntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_path,//const std::string& mesh_resource_path,
 					    const Matrix34& pose,
 						const float mass,
 					    const std::string& material_name,
@@ -755,7 +755,7 @@ CEntityHandle<> CStageMiscUtility::CreateBoxFromMesh( const char *mesh_resource_
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
+EntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
 											  SFloatRGBAColor diffuse_color,
 											  const Matrix34& pose,
 											  const float mass,
@@ -779,7 +779,7 @@ CEntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
+EntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
 						const char *name,
 						const Matrix34& pose,
 						float mass,
@@ -797,7 +797,7 @@ CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
+EntityHandle<> CStageMiscUtility::CreateCylinderFromMesh( const char *model,
 						const char *name,
 						const Vector3& position,
 						float heading,
@@ -861,7 +861,7 @@ Result::Name CStageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char *mesh_resource_path,
+EntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char *mesh_resource_path,
 						const char *collision_mesh_name,
 						const Matrix34& pose,
 						float mass,
@@ -900,7 +900,7 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshEntityFromMesh( const char 
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
+EntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char *mesh_resource_path,
 						const char *collision_mesh_name,
 						const Matrix34& pose,
 						const std::string& material_name,
@@ -911,7 +911,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 
 	if( !resources_exists( mesh_resource_path ) )
 	{
-		return CEntityHandle<>();
+		return EntityHandle<>();
 	}
 
 	return CreateTriangleMeshEntityFromMesh(
@@ -929,7 +929,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 	CMeshHandle mesh;
 	bool mesh_loaded = mesh.Load( mesh_resource_name );
 	if( !mesh_loaded )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 */
 /*	CActorDesc actordesc;
 	actordesc.vecpShapeDesc.push_back( &trimeshshapedesc );
@@ -937,12 +937,12 @@ CEntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char 
 
 //	CreatePhysicsEntity( mesh, vecpShapeDesc, 
 
-	return CEntityHandle<>();
+	return EntityHandle<>();
 }
 
 
 /// Creates a triangle mesh actor from a graphics mesh file
-CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_resource_path,
+EntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_resource_path,
 						const char *collision_mesh_name,
 						const Matrix34& pose,
 						float mass,
@@ -962,27 +962,27 @@ CEntityHandle<> CStageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_
 		actual_entity_attributes_name,
 		false );
 
-	return CEntityHandle<>();
+	return EntityHandle<>();
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateEntityFromBaseEntity( 
+EntityHandle<> CStageMiscUtility::CreateEntityFromBaseEntity( 
 	const char *model,
 	const char *name,
 	const Matrix34& pose )
 {
 	boost::shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
 	if( !model
 	 || strlen(model) == 0 )
 	{
-		return CEntityHandle<>();
+		return EntityHandle<>();
 	}
 
 	CCopyEntityDesc entity_desc;
-	CBaseEntityHandle base_entity( model );
+	BaseEntityHandle base_entity( model );
 	entity_desc.pBaseEntityHandle = &base_entity;
 	if( name )
 		entity_desc.strName = name;
@@ -990,13 +990,13 @@ CEntityHandle<> CStageMiscUtility::CreateEntityFromBaseEntity(
 
 	CCopyEntity *pEntity = pStage->CreateEntity( entity_desc );
 	if( pEntity )
-		return CEntityHandle<>( pEntity->Self() );
+		return EntityHandle<>( pEntity->Self() );
 	else
-		return CEntityHandle<>();
+		return EntityHandle<>();
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateEntity(
+EntityHandle<> CStageMiscUtility::CreateEntity(
 		const char *model,
 		const char *name,
 		const Vector3& position,
@@ -1012,7 +1012,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 	if( !model
 	 || strlen(model) == 0 )
 	{
-		return CEntityHandle<>();
+		return EntityHandle<>();
 	}
 
 	if( string(model).rfind(".msh") != string(model).length() - 4 )
@@ -1060,7 +1060,7 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 		if( lfs::file_exists(shape_desc_file) )
 		{
 			LOG_PRINT_ERROR( " Shape desc file is not supported yet." );
-			return CEntityHandle<>();
+			return EntityHandle<>();
 
 //			ShapeContainerGroup scg;
 //			bool loaded = scg.LoadArchiveFromFile( shape_desc_file );
@@ -1073,18 +1073,18 @@ CEntityHandle<> CStageMiscUtility::CreateEntity(
 			bool ma_loaded = ma.LoadFromFile( model );
 			boost::shared_ptr<General3DMesh> pMesh = CreateGeneral3DMesh();
 			if( !pMesh )
-				return CEntityHandle<>();
+				return EntityHandle<>();
 			CMeshArchiveToGeneral3DMeshConverer converter;
 			Result::Name res = converter.Convert( ma, *pMesh );
 			ShapeDetector shape_detector;
 			ShapeDetectionResults results;
 			bool shape_detected = shape_detector.DetectShape( *pMesh, results );
 			if( !shape_detected )
-				return CEntityHandle<>();
+				return EntityHandle<>();
 //			switch( sdr.shape )
 		}
 
-		return CEntityHandle<>();
+		return EntityHandle<>();
 	}
 }
 
@@ -1194,7 +1194,7 @@ void CStageMiscUtility::CreateSkybox( const std::string& mesh_resource_path, con
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return;// CEntityHandle<>();
+		return;// EntityHandle<>();
 
 	if( 0 < mesh_resource_path.length() )
 	{
@@ -1203,7 +1203,7 @@ void CStageMiscUtility::CreateSkybox( const std::string& mesh_resource_path, con
 
 	CCopyEntityDesc desc;
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( "skybox" );//"__DefaultSkybox__" );
 	desc.pBaseEntityHandle = &basehandle;
 
@@ -1223,7 +1223,7 @@ void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_pat
 {
 	CCopyEntityDesc desc;
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( "__DefaultSkysphere__" );
 	desc.pBaseEntityHandle = &basehandle;
 
@@ -1242,25 +1242,25 @@ void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_pat
 */
 
 
-CEntityHandle<> CStageMiscUtility::CreateStaticGeometry( const std::string& resource_path )
+EntityHandle<> CStageMiscUtility::CreateStaticGeometry( const std::string& resource_path )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
-	CEntityHandle<> entity = pStage->LoadStaticGeometryFromFile( resource_path );
+	EntityHandle<> entity = pStage->LoadStaticGeometryFromFile( resource_path );
 
 	return entity;
 }
 
 
-CEntityHandle<> CStageMiscUtility::CreateStaticWater( const string& model, const string& name, const Vector3& position )
+EntityHandle<> CStageMiscUtility::CreateStaticWater( const string& model, const string& name, const Vector3& position )
 {
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( "__StaticLiquidWater__" );
 
 	CCopyEntityDesc desc;
@@ -1270,9 +1270,9 @@ CEntityHandle<> CStageMiscUtility::CreateStaticWater( const string& model, const
 
 	CCopyEntity *pStaticWater = pStage->CreateEntity( desc );
 	if( !pStaticWater )
-		return CEntityHandle<>();
+		return EntityHandle<>();
 
-	CEntityHandle<> entity( pStaticWater->Self() );
+	EntityHandle<> entity( pStaticWater->Self() );
 
 	return entity;
 }
@@ -1280,7 +1280,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticWater( const string& model, const
 
 // Creates a particle generator
 // The particle generator keeps generating smoke particles
-CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
+EntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 			const SFloatRGBAColor& color, float diameter, float rise_speed, float thickness, float density,
 			const std::string& entity_attributes_name )
 {
@@ -1290,7 +1290,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 		entity_attributes_name = "__StaticSmokeSource__";
 //		entity_attributes_name = "__DefaultSmokeTrail__";
 
-	CBaseEntityHandle basehandle;
+	BaseEntityHandle basehandle;
 	basehandle.SetBaseEntityName( entity_attributes_name );
 	desc.pBaseEntityHandle = &basehandle;
 
@@ -1299,9 +1299,9 @@ CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 	CCopyEntity *pEntity = pStage->CreateEntity( desc );
 
 	if( pEntity )
-		return CEntityHandle<>( pEntity->pSelf );
+		return EntityHandle<>( pEntity->pSelf );
 	else*/
-		return CEntityHandle<>();
+		return EntityHandle<>();
 }
 
 } // namespace amorphous
@@ -1318,7 +1318,7 @@ CEntityHandle<> CStageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 namespace amorphous
 {
 
-Result::Name CStageEntityUtility::SetShader( CEntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod )
+Result::Name CStageEntityUtility::SetShader( EntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod )
 {
 	shared_ptr<CCopyEntity> pEntity = entity.Get();
 	if( !pEntity )
@@ -1405,13 +1405,13 @@ static void SetShaderParamToStaticGeometryEntity( CCopyEntity *pEntity,
 
 
 template<typename T>
-static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *parameter_name, T value )
+static void SetShaderParamLoaderToEntity( EntityHandle<>& entity, const char *parameter_name, T value )
 {
 	CCopyEntity *pEntity = entity.GetRawPtr();
 	if( !pEntity )
 		return;
 
-	if( pEntity->pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_STATICGEOMETRY )
+	if( pEntity->pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_STATICGEOMETRY )
 	{
 		SetShaderParamToStaticGeometryEntity( pEntity, parameter_name, value );
 	}
@@ -1464,19 +1464,19 @@ static void SetShaderParamLoaderToEntity( CEntityHandle<>& entity, const char *p
 /**
  Useful if the entity has a single shader, technique, and surface.
 */
-void SetFloatShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, float value )
+void SetFloatShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, float value )
 {
 	SetShaderParamLoaderToEntity( entity, parameter_name, value );
 }
 
 
-void SetColorShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value )
+void SetColorShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, const SFloatRGBAColor& value )
 {
 	SetShaderParamLoaderToEntity( entity, parameter_name, value );
 }
 
 
-void SetTextureShaderParamToEntity( CEntityHandle<> entity, const char *parameter_name, const char *tex_path )
+void SetTextureShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, const char *tex_path )
 {
 //	CShaderParameter<CTextureParam> tex_param( parameter_name );
 //	tex_param.Parameter().m_Desc.ResourcePath = tex_path;

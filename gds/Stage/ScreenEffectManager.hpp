@@ -104,7 +104,7 @@ public:
      to the original render target
 
 */
-class CScreenEffectManager : public GraphicsComponent
+class ScreenEffectManager : public GraphicsComponent
 {
 public:
 
@@ -139,7 +139,7 @@ private:
 	/// holds the active effects
 	unsigned int m_EffectFlag;
 
-	CFadeEffect m_aFadeEffect[NUM_MAX_SIMULTANEOUS_FADES];
+	FadeEffect m_aFadeEffect[NUM_MAX_SIMULTANEOUS_FADES];
 
 	C2DRect m_ScreenColor;
 
@@ -205,9 +205,9 @@ private:
 
 public:
 
-	CScreenEffectManager();
+	ScreenEffectManager();
 
-	~CScreenEffectManager();
+	~ScreenEffectManager();
 
 	Result::Name InitPostProcessEffect();
 
@@ -292,19 +292,19 @@ public:
 
 //========================== inline implementations ==========================
 
-inline void CScreenEffectManager::SetBlurEffect( float fBlurFactor, int priority_id )
+inline void ScreenEffectManager::SetBlurEffect( float fBlurFactor, int priority_id )
 {
 	SetBlurEffect( fBlurFactor, fBlurFactor, priority_id );
 }
 
 
-inline void CScreenEffectManager::SetBlurEffect( int width, int height, int priority_id )
+inline void ScreenEffectManager::SetBlurEffect( int width, int height, int priority_id )
 {
 	SetBlurEffect( (float)width, (float)height, priority_id );
 }
 
 
-inline void CScreenEffectManager::SetBlurEffect( float width, float height, int priority_id )
+inline void ScreenEffectManager::SetBlurEffect( float width, float height, int priority_id )
 {
 //	m_fBlurWidth  = width;
 //	m_fBlurHeight = height;
@@ -317,7 +317,7 @@ inline void CScreenEffectManager::SetBlurEffect( float width, float height, int 
 }
 
 
-inline void CScreenEffectManager::ClearBlurEffect( int priority_id )
+inline void ScreenEffectManager::ClearBlurEffect( int priority_id )
 {
 	m_mapBlurStrength.erase( priority_id );
 
@@ -329,7 +329,7 @@ inline void CScreenEffectManager::ClearBlurEffect( int priority_id )
 //	inline void  { m_fBlurWidth = m_fBlurHeight = 0; ClearEffectFlag( ScreenEffect::PseudoBlur ); }
 
 
-inline void CScreenEffectManager::SetMotionBlurWeight( float motion_blur_weight, int priority_id )
+inline void ScreenEffectManager::SetMotionBlurWeight( float motion_blur_weight, int priority_id )
 {
 	if( m_mapMotionBlurStrength.size() < NUM_MAX_PARAM_SETS_PER_EFFECT )
 	{
@@ -339,7 +339,7 @@ inline void CScreenEffectManager::SetMotionBlurWeight( float motion_blur_weight,
 }
 
 
-inline void CScreenEffectManager::ClearMotionBlur( int priority_id )
+inline void ScreenEffectManager::ClearMotionBlur( int priority_id )
 {
 	m_mapMotionBlurStrength.erase( priority_id );
 
@@ -348,7 +348,7 @@ inline void CScreenEffectManager::ClearMotionBlur( int priority_id )
 }
 
 
-inline void CScreenEffectManager::SetMonochromeEffect( float r, float g, float b, float blend_ratio, int priority_id )
+inline void ScreenEffectManager::SetMonochromeEffect( float r, float g, float b, float blend_ratio, int priority_id )
 {
 	if( m_mapMonochromeColor.size() < NUM_MAX_PARAM_SETS_PER_EFFECT )
 	{
@@ -363,7 +363,7 @@ inline void CScreenEffectManager::SetMonochromeEffect( float r, float g, float b
 }
 
 
-inline void CScreenEffectManager::ClearMonochromeEffect( int priority_id )
+inline void ScreenEffectManager::ClearMonochromeEffect( int priority_id )
 {
 	m_mapMonochromeColor.erase( priority_id );
 
@@ -372,7 +372,7 @@ inline void CScreenEffectManager::ClearMonochromeEffect( int priority_id )
 }
 
 
-inline void CScreenEffectManager::SetGlareLuminanceThreshold( float fLuminance, int priority_id )
+inline void ScreenEffectManager::SetGlareLuminanceThreshold( float fLuminance, int priority_id )
 {
 	if( m_mapGlareLuminanceThreshold.size() < NUM_MAX_PARAM_SETS_PER_EFFECT )
 	{
@@ -382,7 +382,7 @@ inline void CScreenEffectManager::SetGlareLuminanceThreshold( float fLuminance, 
 }
 
 
-inline void CScreenEffectManager::ClearGlareLuminanceThreshold( int priority_id )
+inline void ScreenEffectManager::ClearGlareLuminanceThreshold( int priority_id )
 {
 	m_mapGlareLuminanceThreshold.erase( priority_id );
 

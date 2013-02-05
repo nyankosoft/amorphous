@@ -84,7 +84,7 @@ PyObject* EntityEndPath( PyObject* self, PyObject* args )
 	if( !gs_pTargetStage )
 		return Py_None;
 
-	SGameMessage msg( GM_SET_MOTION_PATH );
+	GameMessage msg( GM_SET_MOTION_PATH );
 	msg.pUserData = &g_EntityMotionPathRequest;
 
 	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
@@ -225,7 +225,7 @@ PyObject* CreateStaticParticleSet( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	CBaseEntityHandle baseentity_handle;
+	BaseEntityHandle baseentity_handle;
 	baseentity_handle.SetBaseEntityName( base_entity_name );
 
 	CCopyEntityDesc desc;
@@ -255,12 +255,12 @@ PyObject* CommitStaticParticleSet( PyObject* self, PyObject* args )
 	}
 
 	char *base_entity_name;
-	CBaseEntity  *pBaseEntity = NULL;
+	BaseEntity  *pBaseEntity = NULL;
 	int result = PyArg_ParseTuple( args, "s", &base_entity_name );
 
 	pBaseEntity = gs_pTargetStage->GetEntitySet()->FindBaseEntity(base_entity_name);
 
-	if( pBaseEntity && pBaseEntity->GetArchiveObjectID() == CBaseEntity::BE_STATICPARTICLESET )
+	if( pBaseEntity && pBaseEntity->GetArchiveObjectID() == BaseEntity::BE_STATICPARTICLESET )
 	{
 		CBE_StaticParticleSet *p = dynamic_cast<CBE_StaticParticleSet *>(pBaseEntity);
 		p->CommitStaticParticles();	// create vertex buffers and copy particles

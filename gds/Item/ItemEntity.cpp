@@ -26,9 +26,9 @@ using namespace boost;
 - Placing an item in the stage
 
 
-0) Create an instance of CStage with the CStageLoader
+0) Create an instance of CStage with the StageLoader
 
-	CStageLoader stg_loader;
+	StageLoader stg_loader;
 	shared_ptr<CStage> pStage = stg_loader.LoadStage( "path/to/scriptfile.bin" );
 
 1) Create an instance of CItemStageUtility
@@ -156,9 +156,9 @@ void ItemEntity::InitMesh()
 		if( 0 < mesh_property.m_ShaderTechnique.size_x() )
 		{
 			// Set shader and shader params loaders to this->m_pMeshRenderMethod
-			// - Shader of CBaseEntity::m_MeshProperty is set to this->m_pMeshRenderMethod.
+			// - Shader of BaseEntity::m_MeshProperty is set to this->m_pMeshRenderMethod.
 			// - Current shader of this->m_pMeshRenderMethod will be overwritten. 
-			CreateMeshRenderMethod( CEntityHandle<>( this->Self() ),
+			CreateMeshRenderMethod( EntityHandle<>( this->Self() ),
 				mesh_property.m_ShaderHandle,
 				mesh_property.m_ShaderTechnique(0,0)
 				);
@@ -259,7 +259,7 @@ void ItemEntity::OnPhysicsContact( physics::CContactPair& pair, CCopyEntity& oth
 }
 
 
-void ItemEntity::HandleMessage( SGameMessage& msg )
+void ItemEntity::HandleMessage( GameMessage& msg )
 {
 /*	switch( msg.iEffect )
 	{
@@ -280,8 +280,8 @@ void ItemEntity::TerminateDerived()
 
 /// Place an item in the stage
 /// \return handle to the item entity that contains the item given as the argument
-CEntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameItem> pItem,
-															    CBaseEntityHandle& attributes_base_entity_handle,
+EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameItem> pItem,
+															    BaseEntityHandle& attributes_base_entity_handle,
 																physics::CActorDesc& actor_desc,
 																bool create_physics_actor )
 //													            const Matrix34& pose,
@@ -291,9 +291,9 @@ CEntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameIt
 {
 	shared_ptr<ItemEntity> pEntity = shared_ptr<ItemEntity>( new ItemEntity( pItem ) );
 
-	CEntityHandle<ItemEntity> entity_handle;
+	EntityHandle<ItemEntity> entity_handle;
 
-	CBaseEntityHandle *pAttribBaseEntityHandle;
+	BaseEntityHandle *pAttribBaseEntityHandle;
 	if( 0 < strlen(attributes_base_entity_handle.GetBaseEntityName()) )
 		pAttribBaseEntityHandle = &attributes_base_entity_handle;
 	else
@@ -320,8 +320,8 @@ CEntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameIt
 }
 
 
-CEntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameItem> pItem,
-															    CBaseEntityHandle& attributes_base_entity_handle,
+EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( shared_ptr<GameItem> pItem,
+															    BaseEntityHandle& attributes_base_entity_handle,
 													            const Matrix34& pose,
                                                                 const Vector3& vLinearVelocity,
                                                                 const Vector3& vAngularVelocity )

@@ -80,7 +80,7 @@ protected:
 
 	CStageWeakPtr m_pStage;
 
-	CEntityHandle<ItemEntity> m_Entity;
+	EntityHandle<ItemEntity> m_Entity;
 
 	boost::weak_ptr<GameItem> m_pMyself;
 
@@ -161,9 +161,9 @@ public:
 
 	void SetStageWeakPtr( CStageWeakPtr pStage ) { m_pStage = pStage; }
 
-	CEntityHandle<ItemEntity> GetItemEntity() { return m_Entity; }
+	EntityHandle<ItemEntity> GetItemEntity() { return m_Entity; }
 
-	void SetItemEntity( CEntityHandle<ItemEntity>& entity ) { m_Entity = entity; }
+	void SetItemEntity( EntityHandle<ItemEntity>& entity ) { m_Entity = entity; }
 
 	inline void SetWorldPose( const Matrix34& rSrcWorldPose )
 	{

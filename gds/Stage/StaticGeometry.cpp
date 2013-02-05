@@ -186,7 +186,7 @@ void BuildLA_r( vector<SNode_f>& vecNode, vector<SPlane>& vecPlane, int index, i
 }
 
 
-void BuildAxisAlignedBSPTree( CBSPTree& rDestBSPTree, const AABB3& rBoundingBox, const int depth )
+void BuildAxisAlignedBSPTree( BSPTree& rDestBSPTree, const AABB3& rBoundingBox, const int depth )
 {
 	LOG_PRINT( " - creating an entity tree" );
 
@@ -224,7 +224,7 @@ void BuildAxisAlignedBSPTree( CBSPTree& rDestBSPTree, const AABB3& rBoundingBox,
 // CStaticGeometryBase
 //================================================================================
 
-void CStaticGeometryBase::MakeEntityTree( CBSPTree& bsptree )
+void CStaticGeometryBase::MakeEntityTree( BSPTree& bsptree )
 {
 	AABB3 aabb = GetAABB();
 	aabb.MergeAABB( AABB3( Vector3( -300000.0f,      0.0f, -300000.0f ),

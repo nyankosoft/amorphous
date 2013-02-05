@@ -653,7 +653,7 @@ void CBSPMap::ClipTraceToInteriorModel_r(STrace& tr, short nodeindex)
 //	SPlane* paPlane = m_paPlane;
 	short sFrontChild, sBackChild;
 	float fDist, fRadius;
-	CBSPTree& bsptree = m_BSPTree;
+	BSPTree& bsptree = m_BSPTree;
 
 	while(1)
 	{
@@ -669,7 +669,7 @@ void CBSPMap::ClipTraceToInteriorModel_r(STrace& tr, short nodeindex)
 			if( 0 < rThisCell.sNumInteriorPolygons &&
 				tr.aabb_swept.IsIntersectingWith(rThisCell.aabb) )
 			{
-//				CBSPTree bsptree;
+//				BSPTree bsptree;
 //				bsptree.m_paNode = paNode + rThisCell.sBSPTreeIndex;
 //				bsptree.m_paPlane = paPlane;
 
@@ -1309,14 +1309,14 @@ void CBSPMap::DrawTextureSortedPolygons_Shader_TS()
 }
 
 
-void CBSPMap::MakeEntityTree( CBSPTree& bsptree )
+void CBSPMap::MakeEntityTree( BSPTree& bsptree )
 {
 	// copy the tree to dest
 	bsptree = m_BSPTree;
 }
 
 
-void CBSPMap::SetDynamicLightManager( CEntitySet* pEntitySet )
+void CBSPMap::SetDynamicLightManager( EntityManager* pEntitySet )
 {
 	SafeDelete( m_pDynamicLightManager );
 //	m_pDynamicLightManager = new CDynamicLightManagerForStaticGeometry;

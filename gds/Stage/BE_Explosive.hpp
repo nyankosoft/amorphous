@@ -36,24 +36,24 @@ protected:
 	int m_ExplosiveTypeFlag;
 
 	/// simple blast that gives uniform damage to entites around the explosive
-	CBaseEntityHandle m_Blast;
+	BaseEntityHandle m_Blast;
 
 	/// shrapnel generated at the explosion (optional)
-	CBaseEntityHandle m_Fragment;
+	BaseEntityHandle m_Fragment;
 
 	/// number of fragments generated at the time of explosion
 	int m_iNumFragments;
 
 	/// animations of explosion
-	CBaseEntityHandle m_aExplosionAnimation[NUM_EXPLOSION_ANIMATIONS];
+	BaseEntityHandle m_aExplosionAnimation[NUM_EXPLOSION_ANIMATIONS];
 
-//	CBaseEntityHandle m_Spark;
-//	CBaseEntityHandle m_ExplosionAnimation;
-//	CBaseEntityHandle m_SmokeAnimation;
+//	BaseEntityHandle m_Spark;
+//	BaseEntityHandle m_ExplosionAnimation;
+//	BaseEntityHandle m_SmokeAnimation;
 
 	float m_fExplosionAnimTimeOffset;
 	float m_fExplosionAnimRange;
-	CBaseEntityHandle m_ExplosionLight;
+	BaseEntityHandle m_ExplosionLight;
 	float m_fTimer;
 
 	float m_fMinimumExplodeImpactSpeed;
@@ -69,7 +69,7 @@ public:
 
 	void Act(CCopyEntity* pCopyEnt);
 	void Draw(CCopyEntity* pCopyEnt);
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
@@ -82,7 +82,7 @@ public:
 	void Explode(CCopyEntity* pCopyEnt);
 	void FlashScreen(CCopyEntity* pCopyEnt);
 
-	friend class CCoreBaseEntitiesLoader;
+	friend class CoreBaseEntitiesLoader;
 };
 } // namespace amorphous
 

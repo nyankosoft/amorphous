@@ -41,7 +41,7 @@ class CCopyEntityDesc
 {
 public:
 
-	CBaseEntityHandle* pBaseEntityHandle;
+	BaseEntityHandle* pBaseEntityHandle;
 
 	/// name to identify the copy entity
 	std::string strName;

@@ -43,7 +43,7 @@ void CSingleStageGameTask::LoadStage( const std::string& script_name )
 		}
 	}
 
-	CStageLoader stage_loader;
+	StageLoader stage_loader;
 	m_pStage = stage_loader.LoadStage( name_of_script_to_load );
 }
 

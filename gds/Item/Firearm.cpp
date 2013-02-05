@@ -646,7 +646,7 @@ void Firearm::Fire()
 	}
 
 	// recoil effect
-	SGameMessage msg;
+	GameMessage msg;
 	msg.effect = GM_IMPACT;
 	msg.vParam = - vFireDirection * 5.0f;
 

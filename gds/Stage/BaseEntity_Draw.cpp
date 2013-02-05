@@ -174,10 +174,10 @@ void InitSkeletalMesh(  )
 }
 
 
-/// Perhaps this should be a member of CCopyEntity, not CBaseEntity
+/// Perhaps this should be a member of CCopyEntity, not BaseEntity
 /// - m_pStage is the only member of the base entity
 /// - CCopyEnttiy has m_pStage
-void CBaseEntity::SetAsEnvMapTarget( CCopyEntity& entity )
+void BaseEntity::SetAsEnvMapTarget( CCopyEntity& entity )
 {
 	if( entity.GetEntityFlags() & BETYPE_ENVMAPTARGET )
 	{
@@ -220,7 +220,7 @@ void UpdateLightInfo( CCopyEntity& entity )
 /// Shader params loaders are shared by entities, and need to be updated every time an entity is rendered.
 void UpdateEntityForRendering( CCopyEntity& entity )
 {
-	CBaseEntity& base_entity = *(entity.pBaseEntity);
+	BaseEntity& base_entity = *(entity.pBaseEntity);
 
 	// light params writer
 	if( entity.GetEntityFlags() & BETYPE_LIGHTING )
@@ -253,7 +253,7 @@ void UpdateEntityForRendering( CCopyEntity& entity )
 }
 
 
-void CBaseEntity::RenderEntity( CCopyEntity& entity )
+void BaseEntity::RenderEntity( CCopyEntity& entity )
 {
 	UpdateEntityForRendering( entity );
 
@@ -277,7 +277,7 @@ void CBaseEntity::RenderEntity( CCopyEntity& entity )
 }
 
 
-void CBaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
+void BaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 {
 /*	if( m_EntityFlag & SHARE_RENDER_METHODS )
 	{
@@ -319,7 +319,7 @@ static void InitShadowCasterReceiverSettings( shared_ptr<SkeletalMesh> pSkeletal
 }
 
 
-void CBaseEntity::Init3DModel()
+void BaseEntity::Init3DModel()
 {
 	m_MeshProperty.Release();
 
@@ -391,7 +391,7 @@ void CBaseEntity::Init3DModel()
 }
 
 
-void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD )
+void BaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD )
 {
 	vector<int> single_index;
 	single_index.push_back( material_index );
@@ -404,7 +404,7 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 }
 
 
-void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech )
+void BaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech )
 {
 	vector<int> single_index;
 	single_index.push_back( material_index );
@@ -421,7 +421,7 @@ void CBaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_ind
 }
 
 
-void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
+void BaseEntity::DrawMeshObject( const Matrix34& world_pose,
 								  BasicMesh *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
 							      C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
@@ -431,14 +431,14 @@ void CBaseEntity::DrawMeshObject( const Matrix34& world_pose,
 }
 
 
-void CBaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
+void BaseEntity::Draw3DModel( CCopyEntity* pCopyEnt )
 {
 	RenderEntity( *pCopyEnt );
 }
 
 
 // How to render meshes that are stored in a mesh node tree and have different world transforms?
-void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
+void BaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
 
@@ -507,7 +507,7 @@ void CBaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 }
 
 
-void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
+void BaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
 
@@ -534,7 +534,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	const U32 entity_flags = pCopyEnt->GetEntityFlags();
 	if( entity_flags & BETYPE_SHADOW_RECEIVER )
 		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( CVertexBlendType::NONE );
-	else // i.e. entity_flags & BETYPE_SHADOW_CASTER. See CEntityNode::RenderShadowReceivers() for details.
+	else // i.e. entity_flags & BETYPE_SHADOW_CASTER. See EntityNode::RenderShadowReceivers() for details.
 		tech = pShadowMgr->ShaderTechniqueForNonShadowedCasters( CVertexBlendType::NONE );
 
 	pShaderMgr->SetTechnique( tech );
@@ -581,7 +581,7 @@ void CBaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 }
 
 
-void CBaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context )
+void BaseEntity::RenderAs( CCopyEntity& entity, CRenderContext& render_context )
 {
 /*	CRenderContext rc;
 
@@ -603,7 +603,7 @@ void SetLightsToShader( CCopyEntity& entity, ShaderManager& rShaderMgr )
 	shared_ptr<ShaderLightManager> pShaderLightMgr = rShaderMgr.GetShaderLightManager();
 
 	int i, num_current_lights = entity.GetNumLights();
-	CLightEntity *pLightEntity = NULL;
+	LightEntity *pLightEntity = NULL;
 
 	// clear any lights currenly stored in the shader light manager
 	pShaderLightMgr->ClearLights();
@@ -612,8 +612,8 @@ void SetLightsToShader( CCopyEntity& entity, ShaderManager& rShaderMgr )
 
 	for( i=0; i<num_current_lights; i++ )
 	{
-		CEntityHandle<CLightEntity>& light_entity = entity.GetLight( i );
-		CLightEntity *pLightEntity = light_entity.GetRawPtr();
+		EntityHandle<LightEntity>& light_entity = entity.GetLight( i );
+		LightEntity *pLightEntity = light_entity.GetRawPtr();
 		if( !pLightEntity )
 			continue;
 
@@ -676,7 +676,7 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int s
 {
 	const AABB3& aabb = mesh.GetAABB(subset_index);
 
-	CEntityRenderManager& entity_render_mgr
+	EntityRenderManager& entity_render_mgr
 		= *(entity.GetStage()->GetEntitySet()->GetRenderManager());
 
 	// >>> TODO: support planes that are not axis-aligned or facing along the negative half-space
@@ -691,7 +691,7 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int s
 	plane.normal[plane_axis] = 1;
 	plane.dist = aabb.vMax[plane_axis];
 
-	Result::Name res = entity_render_mgr.AddPlanarReflector( CEntityHandle<>( entity.Self() ), plane );
+	Result::Name res = entity_render_mgr.AddPlanarReflector( EntityHandle<>( entity.Self() ), plane );
 
 	if( res != Result::SUCCESS )
 		return Result::UNKNOWN_ERROR;
@@ -719,7 +719,7 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int s
 //		= entity.m_pMeshRenderMethod->CreateCopy();
 
 	shared_ptr<CMirroredSceneTextureParam> pTexParam;
-	pTexParam.reset( new CMirroredSceneTextureParam( CEntityHandle<>( entity.Self() ) ) );
+	pTexParam.reset( new CMirroredSceneTextureParam( EntityHandle<>( entity.Self() ) ) );
 	pTexParam->m_fReflection = mesh.GetMaterial(subset_index).m_Mat.fReflection;
 //	pMeshRenderMethodCopy->SetShaderParamsLoaderToAllMeshRenderMethods( pTexParam );
 
@@ -775,7 +775,7 @@ bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int sub
 // Creates a default render method for the entity.
 // - If the lighting is enabled for the entity, a light parameter loader is set
 // - If the mesh of the entity is skeletal, a blend transforms loader is set.
-void CreateMeshRenderMethod( CEntityHandle<>& entity, 
+void CreateMeshRenderMethod( EntityHandle<>& entity, 
 							 ShaderHandle& shader,
 							 ShaderTechniqueHandle& tech )
 {
@@ -801,7 +801,7 @@ void CreateMeshRenderMethod( CEntityHandle<>& entity,
 // - Initialize shader parameter loaders
 // - Create alpha entities
 // - Creates a shader
-void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
+void BaseEntity::InitEntityGraphics( CCopyEntity &entity,
                                       ShaderHandle& shader,
                                       ShaderTechniqueHandle& tech )
 {
@@ -809,7 +809,7 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 	 && tech.GetTechniqueName()
 	 && 0 < strlen(tech.GetTechniqueName()) )
 	{
-		CreateMeshRenderMethod( CEntityHandle<>( entity.Self() ), shader, tech );
+		CreateMeshRenderMethod( EntityHandle<>( entity.Self() ), shader, tech );
 	}
 	else
 	{
@@ -904,7 +904,7 @@ void CBaseEntity::InitEntityGraphics( CCopyEntity &entity,
 }
 
 
-void CBaseEntity::CreateMeshGenerator( CTextFileScanner& scanner )
+void BaseEntity::CreateMeshGenerator( CTextFileScanner& scanner )
 {
 //	if( scanner.GetTagString != "GENERATED_3DMODEL" )
 //		return;

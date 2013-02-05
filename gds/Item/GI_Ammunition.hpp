@@ -30,8 +30,8 @@ protected:
 
 	float m_fRange;
 
-	CBaseEntityHandle m_AmmoBaseEntity;		///< base entity for this ammo
-	CBaseEntityHandle m_MuzzleFlashBaseEntity;
+	BaseEntityHandle m_AmmoBaseEntity;		///< base entity for this ammo
+	BaseEntityHandle m_MuzzleFlashBaseEntity;
 
 	///< the number of this cartridge item currently loaded in chambers and magazines.
 	///< - m_NumLoaded <= GameItem::m_iCurrentQuantity
@@ -51,10 +51,10 @@ public:
 	inline float GetRangeSq() const { return m_fRange*m_fRange; }
 
 	/// return handle to a base entity used as ammunition
-	inline CBaseEntityHandle& GetBaseEntityHandle() { return m_AmmoBaseEntity; }
+	inline BaseEntityHandle& GetBaseEntityHandle() { return m_AmmoBaseEntity; }
 
 	/// return handle to a base entity is used as muzzle flash of this ammo
-	inline CBaseEntityHandle& GetMuzzleFlashHandle() { return m_MuzzleFlashBaseEntity; }
+	inline BaseEntityHandle& GetMuzzleFlashHandle() { return m_MuzzleFlashBaseEntity; }
 
 	void OnOwnerLeftStage();
 

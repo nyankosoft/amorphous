@@ -342,7 +342,7 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 
 void CBE_PhysicsBaseEntity::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_ActorDesc;
 

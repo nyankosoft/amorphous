@@ -192,7 +192,7 @@ bool CBE_LaserDot::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_LaserDot::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_LaserDotTexFilepath;
 }

@@ -83,7 +83,7 @@ private:
 		NUM_INIT_ENEMY_AIRCRAFTS = 16
 	};
 
-	CBaseEntityHandle m_Missile;
+	BaseEntityHandle m_Missile;
 
 	CBEC_AircraftNozzleFlames m_NozzleFlames;
 
@@ -94,7 +94,7 @@ private:
 	std::vector<std::string> m_vecWeaponItemName;
 	std::vector<std::string> m_vecAmmoItemName;
 
-	CEntityGroupHandle m_TargetFilter;
+	EntityGroupHandle m_TargetFilter;
 
 private:
 
@@ -127,7 +127,7 @@ public:
 
 	// void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 	// void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

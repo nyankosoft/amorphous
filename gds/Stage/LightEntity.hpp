@@ -13,18 +13,18 @@ namespace amorphous
 
 
 class CBE_Light;
-class CLightEntity;
+class LightEntity;
 
 
-class CLightEntityHandle : public CEntityHandle<CLightEntity>
+class LightEntityHandle : public EntityHandle<LightEntity>
 {
 public:
 
-	CLightEntityHandle() {}
+	LightEntityHandle() {}
 
-	CLightEntityHandle( boost::weak_ptr<CLightEntity> pLightEntity )
+	LightEntityHandle( boost::weak_ptr<LightEntity> pLightEntity )
 		:
-	CEntityHandle<CLightEntity>( pLightEntity )
+	EntityHandle<LightEntity>( pLightEntity )
 	{}
 
 	// for hemisheric lights
@@ -125,7 +125,7 @@ public:
 };
 
 
-class CLightEntityDesc : public CCopyEntityDesc
+class LightEntityDesc : public CCopyEntityDesc
 {
 public:
 
@@ -155,7 +155,7 @@ public:
 
 public:
 
-	CLightEntityDesc( Light::Type light_type = Light::DIRECTIONAL )
+	LightEntityDesc( Light::Type light_type = Light::DIRECTIONAL )
 		:
 	LightType(light_type),
 	LightGroup(0),
@@ -174,7 +174,7 @@ public:
 };
 
 
-class CLightEntity : public CCopyEntity
+class LightEntity : public CCopyEntity
 {
 	/// Use 1 or 2 to store the light object
 
@@ -186,15 +186,15 @@ class CLightEntity : public CCopyEntity
 
 //	Light::Type m_LightType;
 
-	boost::weak_ptr<CLightEntity> m_pLightEntitySelf;
+	boost::weak_ptr<LightEntity> m_pLightEntitySelf;
 
 	CBE_Light *m_pLightBaseEntity;
 
 	float m_fTimeLeft;
 
-//	CLightEntity *m_pNextLight;
-//	CLightEntity *m_pPrevLight;
-	CLinkNode<CLightEntity> m_LightEntityLink;
+//	LightEntity *m_pNextLight;
+//	LightEntity *m_pPrevLight;
+	CLinkNode<LightEntity> m_LightEntityLink;
 
 //	int m_LightType;
 
@@ -204,11 +204,11 @@ private:
 
 public:
 
-	CLightEntity();
+	LightEntity();
 
-	~CLightEntity();
+	~LightEntity();
 
-	boost::weak_ptr<CLightEntity>& LightEntitySelf() { return  m_pLightEntitySelf; }
+	boost::weak_ptr<LightEntity>& LightEntitySelf() { return  m_pLightEntitySelf; }
 
 	inline void SetPosition( const Vector3& rvPosition );
 
@@ -234,7 +234,7 @@ public:
 
 	void AddLightIfReachesEntity( CCopyEntity *pEntity );
 
-	inline CLightEntity *GetNextLight() { return m_LightEntityLink.pNext->pOwner; }
+	inline LightEntity *GetNextLight() { return m_LightEntityLink.pNext->pOwner; }
 
 	void TerminateDerived();
 
@@ -250,8 +250,8 @@ public:
 //	inline const HemisphericPointLight& GetHemisphericLight() { return m_HemisphericLight; }
 //	inline const HemisphericDirectionalLight& GetHemisphericDirLight() { return m_HemisphericDirLight; }
 
-	friend class CEntityFactory;
-	friend class CEntityNode;
+	friend class EntityFactory;
+	friend class EntityNode;
 	friend class CBE_Light;
 };
 
@@ -259,19 +259,19 @@ public:
 // ================================ inline implementations ================================ 
 
 
-inline void CLightEntity::UnlinkFromLightEntityList()
+inline void LightEntity::UnlinkFromLightEntityList()
 {
 	m_LightEntityLink.Unlink();
 }
 
 /*
-inline void CLightEntity::Invalidate()
+inline void LightEntity::Invalidate()
 {
 	UnlinkFromLightEntityList();
 }
 */
 
-inline void CLightEntity::SetPosition( const Vector3& rvPosition )
+inline void LightEntity::SetPosition( const Vector3& rvPosition )
 {
 //	CCopyEntity::SetPosition( rvPosition );
 	CCopyEntity::SetWorldPosition( rvPosition );
@@ -282,7 +282,7 @@ inline void CLightEntity::SetPosition( const Vector3& rvPosition )
 }
 
 /*
-inline void CLightEntity::SetDiffuseColor( float *pafColor )
+inline void LightEntity::SetDiffuseColor( float *pafColor )
 {
 	m_Light.Diffuse.r = pafColor[0];
 	m_Light.Diffuse.g = pafColor[1];
@@ -294,7 +294,7 @@ inline void CLightEntity::SetDiffuseColor( float *pafColor )
 }
 
 */
-inline void CLightEntity::SetAttenuationFactors( float a0, float a1, float a2 )
+inline void LightEntity::SetAttenuationFactors( float a0, float a1, float a2 )
 {
 	PointLight *pPointLight = dynamic_cast<PointLight *>(GetLightObject());
 	if( pPointLight )
@@ -306,13 +306,13 @@ inline void CLightEntity::SetAttenuationFactors( float a0, float a1, float a2 )
 }
 
 
-inline void CLightEntity::SetColor( int index, const SFloatRGBColor& color )
+inline void LightEntity::SetColor( int index, const SFloatRGBColor& color )
 {
 	SetColor( index, SFloatRGBAColor( color.red, color.green, color.blue, 1.0f ) );
 }
 
 
-inline void CLightEntity::SetColor( int index, const SFloatRGBAColor& color )
+inline void LightEntity::SetColor( int index, const SFloatRGBAColor& color )
 {
 	CLightColorVisitor visitor( index, color );
 	GetLightObject()->Accept( visitor );
@@ -324,12 +324,12 @@ inline void CLightEntity::SetColor( int index, const SFloatRGBAColor& color )
 
 
 /*
-class CLightEntityManager
+class LightEntityManager
 {
 public:
 
-	std::map< uint, boost::shared_ptr<CLightEntity> > m_mapEntityIDtoStaticLight;
-	std::map< uint, boost::shared_ptr<CLightEntity> > m_mapEntityIDtoDynamicLight;
+	std::map< uint, boost::shared_ptr<LightEntity> > m_mapEntityIDtoStaticLight;
+	std::map< uint, boost::shared_ptr<LightEntity> > m_mapEntityIDtoDynamicLight;
 };
 */
 

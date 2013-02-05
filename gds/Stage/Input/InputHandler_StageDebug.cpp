@@ -32,7 +32,7 @@ void CInputHandler_StageDebug::WriteEntityTreeToFile( boost::shared_ptr<CStage> 
 
 	if( 500 < (current_time_ms - m_EntityTreeFileLastOutputTime) )	// don't output more than once in half a second
 	{
-		CEntitySet* pEntSet = pStage->GetEntitySet();
+		EntityManager* pEntSet = pStage->GetEntitySet();
 
 		sprintf( time_str, "%.3f", (double)current_time_ms / 1000.0 );
 

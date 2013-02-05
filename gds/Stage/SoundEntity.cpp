@@ -14,7 +14,7 @@ using namespace boost;
 float sg_fSpeedOfSoundAtSeaLevel = 340.29f;
 
 
-CSoundEntity::CSoundEntity()
+SoundEntity::SoundEntity()
 :
 m_fMaxRadius(100.0f),
 m_fCurrentRadius(0.0f)
@@ -22,12 +22,12 @@ m_fCurrentRadius(0.0f)
 }
 
 
-CSoundEntity::~CSoundEntity()
+SoundEntity::~SoundEntity()
 {
 }
 
 
-void CSoundEntity::Update( float dt )
+void SoundEntity::Update( float dt )
 {
 	m_fCurrentRadius += dt * sg_fSpeedOfSoundAtSeaLevel;
 	clamp( m_fCurrentRadius, 0.0f, m_fMaxRadius );
@@ -61,7 +61,7 @@ void CSoundEntity::Update( float dt )
 
 	GetStage()->CheckCollision( tr );
 
-	SGameMessage msg;
+	GameMessage msg;
 	msg.sender = this->Self();	// sender is the blast;
 	msg.effect = GM_SOUND;
 //	msg.s1 = DMG_BLAST;
@@ -90,7 +90,7 @@ void CSoundEntity::Update( float dt )
 }
 
 
-void CSoundEntity::Draw()
+void SoundEntity::Draw()
 {
 //	CCopyEntity *pParent = m_pParent;
 //	if( !pParent )
@@ -103,12 +103,12 @@ void CSoundEntity::Draw()
 }
 
 
-void CSoundEntity::HandleMessage( SGameMessage& msg )
+void SoundEntity::HandleMessage( GameMessage& msg )
 {
 }
 
 
-void CSoundEntity::TerminateDerived()
+void SoundEntity::TerminateDerived()
 {
 //	shared_ptr<CCopyEntity> pSelf = this->Self().lock();
 //	m_pPool->release( pSelf ); // pSelf is CCopyEntity type pointer!!!

@@ -92,7 +92,7 @@ void Radar::UpdateEntitiesList()
 	m_vecEntityBuffer.resize( num_entities );
 	for( size_t i=0; i<num_entities; i++ )
 	{
-		m_vecEntityBuffer[i] = CEntityHandle<>( m_vecpEntityBuffer[i]->Self() );
+		m_vecEntityBuffer[i] = EntityHandle<>( m_vecpEntityBuffer[i]->Self() );
 	}
 }
 
@@ -120,18 +120,18 @@ void Radar::UpdateTargetInfo()
 		if( !pEntity )
 			continue;
 
-		CBaseEntity* pBaseEntity = pEntity->pBaseEntity;
+		BaseEntity* pBaseEntity = pEntity->pBaseEntity;
 
 		unsigned int id = pBaseEntity->GetArchiveObjectID();
 		int tgt_type = 0;
 
 		switch(id)
 		{
-		case CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
+		case BaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
 			tgt_type = HUD_TargetInfo::PLAYER | HUD_TargetInfo::TGT_AIR;
 			break;
 
-		case CBaseEntity::BE_HOMINGMISSILE:
+		case BaseEntity::BE_HOMINGMISSILE:
 			if( MissileState(pEntity.get()) == CBE_HomingMissile::MS_IGNITED )
 				tgt_type = HUD_TargetInfo::MISSILE;
 			break;

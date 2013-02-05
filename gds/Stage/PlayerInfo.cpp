@@ -92,12 +92,12 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 
 	switch( GetCurrentPlayerBaseEntity()->GetArchiveObjectID() )
 	{
-	case CBaseEntity::BE_PLAYERSHIP:
-	case CBaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:
+	case BaseEntity::BE_PLAYERSHIP:
+	case BaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:
 		m_pInputHandler = new CInputHandler_PlayerShip;
 //		m_pHUD = new HUD_PlayerShip;
 		break;
-	case CBaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
+	case BaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
 		m_pInputHandler = new CInputHandler_PlayerPAC;
 		break;
 	}

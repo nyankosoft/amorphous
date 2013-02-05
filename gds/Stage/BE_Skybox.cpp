@@ -180,7 +180,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 }
 
 /*
-void CBE_Skybox::MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
+void CBE_Skybox::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self)
 {
 }
 */
@@ -241,7 +241,7 @@ bool CBE_Skybox::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner )
 
 void CBE_Skybox::Serialize( IArchive& ar, const unsigned int version )
 {
-	CBaseEntity::Serialize( ar, version );
+	BaseEntity::Serialize( ar, version );
 
 	ar & m_SkyboxTextureFilepath;
 }

@@ -83,8 +83,8 @@ private:
 	CPhysicsMaterial m_PhysicsMaterial;
 
 	/// entities that are created when objects hit the material
-//	TCFixedVector<CBaseEntityHandle, CSM_NUM_MAX_REACTION_ENTITIES> m_vecReactionEntity[NUM_REACTION_TYPES]; ///< causes error. why?
-	std::vector<CBaseEntityHandle> m_vecReactionEntity[NUM_REACTION_TYPES];
+//	TCFixedVector<BaseEntityHandle, CSM_NUM_MAX_REACTION_ENTITIES> m_vecReactionEntity[NUM_REACTION_TYPES]; ///< causes error. why?
+	std::vector<BaseEntityHandle> m_vecReactionEntity[NUM_REACTION_TYPES];
 
 	/// sound that are played when objects hit the material
 	/// sounds are usually chosen randomly
@@ -118,7 +118,7 @@ public:
 
 	inline int GetNumReactionEntities( int ReactionType ) const { return (int)m_vecReactionEntity[ReactionType].size(); }
 
-	inline CBaseEntityHandle& GetReactionEntity( int ReactionType, int index )
+	inline BaseEntityHandle& GetReactionEntity( int ReactionType, int index )
 	{
 		return m_vecReactionEntity[ReactionType][index];
 	}

@@ -109,16 +109,16 @@ public:
 };
 
 
-//string CScreenEffectManager::ms_DefaultShaderFilename = "Shader\\Default.fx";
+//string ScreenEffectManager::ms_DefaultShaderFilename = "Shader\\Default.fx";
 
 
-bool CScreenEffectManager::CExtraTextureEffect::LoadTexture()
+bool ScreenEffectManager::CExtraTextureEffect::LoadTexture()
 {
 	return m_Texture.Load( m_Desc );
 }
 
 
-CScreenEffectManager::CScreenEffectManager()
+ScreenEffectManager::ScreenEffectManager()
 :
 m_EffectFlag(0),
 m_pTargetSceneRenderer(NULL)
@@ -138,13 +138,13 @@ m_pTargetSceneRenderer(NULL)
 }
 
 
-CScreenEffectManager::~CScreenEffectManager()
+ScreenEffectManager::~ScreenEffectManager()
 {
 	ReleaseGraphicsResources();
 }
 
 
-bool CScreenEffectManager::Init()
+bool ScreenEffectManager::Init()
 {
 
 	UpdateScreenSize();
@@ -182,7 +182,7 @@ bool CScreenEffectManager::Init()
 }
 
 
-Result::Name CScreenEffectManager::InitPostProcessEffect()
+Result::Name ScreenEffectManager::InitPostProcessEffect()
 {
 	m_pPPEffectManager.reset( new PostProcessEffectManager );
 	Result::Name res = m_pPPEffectManager->Init( "Shader/PostProcessEffect" );
@@ -191,13 +191,13 @@ Result::Name CScreenEffectManager::InitPostProcessEffect()
 }
 
 
-void CScreenEffectManager::ReleasePostProcessEffect()
+void ScreenEffectManager::ReleasePostProcessEffect()
 {
 	m_pPPEffectManager.reset();
 }
 
 
-Result::Name CScreenEffectManager::InitMotionBlurEffect()
+Result::Name ScreenEffectManager::InitMotionBlurEffect()
 {
 	m_pSimpleMotionBlur.reset( new SimpleMotionBlur );
 
@@ -209,13 +209,13 @@ Result::Name CScreenEffectManager::InitMotionBlurEffect()
 }
 
 
-void CScreenEffectManager::ReleaseMotionBlurEffect()
+void ScreenEffectManager::ReleaseMotionBlurEffect()
 {
 	m_pSimpleMotionBlur.reset();
 }
 
 
-Result::Name CScreenEffectManager::InitNoiseEffect()
+Result::Name ScreenEffectManager::InitNoiseEffect()
 {
 //	m_NoiseEffect.LoadNoiseTextures();
 	m_NoiseEffect.Init( 0.5f, 2 );
@@ -225,14 +225,14 @@ Result::Name CScreenEffectManager::InitNoiseEffect()
 }
 
 
-void CScreenEffectManager::ReleaseNoiseEffect()
+void ScreenEffectManager::ReleaseNoiseEffect()
 {
 //	m_NoiseEffect.Release();
 }
 
 
 /*
-void CScreenEffectManager::BeginRender( const Camera &rCam )
+void ScreenEffectManager::BeginRender( const Camera &rCam )
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
@@ -289,7 +289,7 @@ void CScreenEffectManager::BeginRender( const Camera &rCam )
 }
 */
 
-void CScreenEffectManager::UpdateBlurEffect()
+void ScreenEffectManager::UpdateBlurEffect()
 {
 	if( !m_pPPEffectManager )
 		return;
@@ -370,7 +370,7 @@ T& CalcPostProcessEffectParams( map<int,T>& mapParam )
 }
 */
 
-void CScreenEffectManager::UpdateGlareEffect()
+void ScreenEffectManager::UpdateGlareEffect()
 {
 	if( !m_pPPEffectManager )
 		return;
@@ -410,7 +410,7 @@ void CScreenEffectManager::UpdateGlareEffect()
 }
 
 
-void CScreenEffectManager::UpdateMonochromeColorEffect()
+void ScreenEffectManager::UpdateMonochromeColorEffect()
 {
 	if( !m_pPPEffectManager )
 		return;
@@ -433,7 +433,7 @@ void CScreenEffectManager::UpdateMonochromeColorEffect()
 }
 
 
-void CScreenEffectManager::RenderOverlayEffects()
+void ScreenEffectManager::RenderOverlayEffects()
 {
 //	HRESULT hr;
 //	hr = DIRECT3D9.GetDevice()->SetVertexShader( NULL );
@@ -460,7 +460,7 @@ void CScreenEffectManager::RenderOverlayEffects()
 }
 
 
-void CScreenEffectManager::Update( float frametime )
+void ScreenEffectManager::Update( float frametime )
 {
 	int i;
 	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
@@ -473,7 +473,7 @@ void CScreenEffectManager::Update( float frametime )
 }
 
 
-void CScreenEffectManager::SetFadeEffect( int iType, const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
+void ScreenEffectManager::SetFadeEffect( int iType, const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
 {
 	int i;
 	for( i=0; i<NUM_MAX_SIMULTANEOUS_FADES; i++ )
@@ -488,19 +488,19 @@ void CScreenEffectManager::SetFadeEffect( int iType, const SFloatRGBAColor& colo
 }
 
 
-void CScreenEffectManager::FadeOutTo( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
+void ScreenEffectManager::FadeOutTo( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
 {
 	SetFadeEffect( SCREENEFFECT_FADE_OUT, color, fTime, alpha_blend_mode );
 }
 
 
-void CScreenEffectManager::FadeInFrom( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
+void ScreenEffectManager::FadeInFrom( const SFloatRGBAColor& color, float fTime, AlphaBlend::Mode alpha_blend_mode )
 {
 	SetFadeEffect( SCREENEFFECT_FADE_IN, color, fTime, alpha_blend_mode );
 }
 
 
-void CScreenEffectManager::UpdateMotionBlurParams()
+void ScreenEffectManager::UpdateMotionBlurParams()
 {
 	if( m_pSimpleMotionBlur )
 	{
@@ -511,7 +511,7 @@ void CScreenEffectManager::UpdateMotionBlurParams()
 }
 
 
-void CScreenEffectManager::UpdateScreenSize()
+void ScreenEffectManager::UpdateScreenSize()
 {
 	int width  = GetScreenWidth();
 	int height = GetScreenHeight();
@@ -531,7 +531,7 @@ void CScreenEffectManager::UpdateScreenSize()
 }
 
 
-Result::Name CScreenEffectManager::SetHDRLightingParams( U32 param_flags, const HDRLightingParams& params )
+Result::Name ScreenEffectManager::SetHDRLightingParams( U32 param_flags, const HDRLightingParams& params )
 {
 	if( !m_pPPEffectManager )
 		return Result::UNKNOWN_ERROR;
@@ -542,7 +542,7 @@ Result::Name CScreenEffectManager::SetHDRLightingParams( U32 param_flags, const 
 }
 
 
-Result::Name CScreenEffectManager::EnableHDRLighting( bool enable )
+Result::Name ScreenEffectManager::EnableHDRLighting( bool enable )
 {
 	if( !m_pPPEffectManager )
 		return Result::UNKNOWN_ERROR;
@@ -554,13 +554,13 @@ Result::Name CScreenEffectManager::EnableHDRLighting( bool enable )
 }
 
 
-void CScreenEffectManager::ReleaseGraphicsResources()
+void ScreenEffectManager::ReleaseGraphicsResources()
 {
 //	m_pSimpleMotionBlur - graphics component
 }
 
 
-void CScreenEffectManager::LoadGraphicsResources( const GraphicsParameters& rParam )
+void ScreenEffectManager::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	m_NoiseEffect.LoadGraphicsResources( const GraphicsParameters& rParam );
 
@@ -570,7 +570,7 @@ void CScreenEffectManager::LoadGraphicsResources( const GraphicsParameters& rPar
 }
 
 
-void CScreenEffectManager::BeginRender( const Camera &rCam )
+void ScreenEffectManager::BeginRender( const Camera &rCam )
 {
 //	DoPseudoNightVisionEffectSettings();
 
@@ -636,12 +636,12 @@ void CScreenEffectManager::BeginRender( const Camera &rCam )
 }
 
 
-void CScreenEffectManager::EndRender()
+void ScreenEffectManager::EndRender()
 {
 }
 
 
-void CScreenEffectManager::Render( Camera &rCam )
+void ScreenEffectManager::Render( Camera &rCam )
 {
 	PROFILE_FUNCTION();
 
@@ -670,7 +670,7 @@ void CScreenEffectManager::Render( Camera &rCam )
 }
 
 
-void CScreenEffectManager::RenderPostProcessEffects()
+void ScreenEffectManager::RenderPostProcessEffects()
 {
 	PROFILE_FUNCTION();
 
@@ -707,7 +707,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 //======================================================================
 
 /*
-void CScreenEffectManager::Render( Camera &rCam )
+void ScreenEffectManager::Render( Camera &rCam )
 {
 	if( m_bPseudoMotionBlurEnabled )
 	{
@@ -729,7 +729,7 @@ void CScreenEffectManager::Render( Camera &rCam )
 }
 
 
-void CScreenEffectManager::RenderPostProcessEffects()
+void ScreenEffectManager::RenderPostProcessEffects()
 {
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr;
@@ -769,7 +769,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 
 
 /*
-void CScreenEffectManager::RenderPostProcessEffects()
+void ScreenEffectManager::RenderPostProcessEffects()
 {
 	LPD3DXEFFECT pEffect = m_pShaderManager->GetEffect();
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
@@ -830,7 +830,7 @@ void CScreenEffectManager::RenderPostProcessEffects()
 
 /// add render tasks that are done after the scene is rendered
 /// make sure render tasks for scene are already registered
-void CScreenEffectManager::CreateRenderTasks()
+void ScreenEffectManager::CreateRenderTasks()
 {
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 

@@ -64,7 +64,7 @@ public:
 
 	virtual void WriteToFile( const char *pFilename ) {}
 
-	virtual void MakeEntityTree( CBSPTree& bsptree );
+	virtual void MakeEntityTree( BSPTree& bsptree );
 
 	/// collision detection
 	virtual int ClipTrace(STrace& tr) = 0;
@@ -87,7 +87,7 @@ public:
 
 	virtual void SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param ) {}
 
-	virtual void SetDynamicLightManager( CEntitySet* pEntitySet ) {}
+	virtual void SetDynamicLightManager( EntityManager* pEntitySet ) {}
 
 	/// used for dynamic lighting
 	virtual void GetIntersectingPolygons( Vector3& vCenter,

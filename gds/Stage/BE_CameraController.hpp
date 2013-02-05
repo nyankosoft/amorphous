@@ -22,7 +22,7 @@ class CInputHandler_Cutscene;
 - Camera controller entity is set as the camera entity of the stage when
   at least one of its camera entity has motion path for the time
 */
-class CBE_CameraController : public CBaseEntity
+class CBE_CameraController : public BaseEntity
 {
 private:
 
@@ -34,7 +34,7 @@ private:
 //	Camera m_Camera;
 
 	// TODO: stack is probably better
-	CEntityHandle<> m_PrevCameraEntity;
+	EntityHandle<> m_PrevCameraEntity;
 
 	/// handles input during the cutscene.
 	/// e.g.) skipping the cutscene by start button
@@ -74,7 +74,7 @@ public:
 //	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other) {}
 //	void ClipTrace( STrace& rLocalTrace, CCopyEntity* pMyself );
 
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	virtual void RenderStage( CCopyEntity* pCopyEnt );
 
@@ -90,7 +90,7 @@ public:
 //	virtual Camera *GetCamera() { return &m_Camera; }
 
 	friend class CInputHandler_Cutscene;
-	friend class CCoreBaseEntitiesLoader;
+	friend class CoreBaseEntitiesLoader;
 };
 } // namespace amorphous
 

@@ -23,7 +23,7 @@ public:
 	void InitCopyEntity( CCopyEntity* pCopyEnt );
 	void Act(CCopyEntity* pCopyEnt);
 	void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
-	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 	void Draw(CCopyEntity* pCopyEnt);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );

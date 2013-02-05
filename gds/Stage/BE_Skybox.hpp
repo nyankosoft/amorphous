@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CBE_Skybox : public CBaseEntity
+class CBE_Skybox : public BaseEntity
 {
 private:
 
@@ -17,7 +17,7 @@ private:
 	std::string m_SkyboxTextureFilepath;
 	TextureHandle m_SkyboxTexture;
 
-	// CBaseEntity::m_MeshProperty is used for the mesh of the skybox
+	// BaseEntity::m_MeshProperty is used for the mesh of the skybox
 	
 public:
 
@@ -29,7 +29,7 @@ public:
 
 	void Act(CCopyEntity* pCopyEnt);	//behavior in in one frame
 	void Draw(CCopyEntity* pCopyEnt); 
-//	void MessageProcedure(SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
+//	void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
 
 	bool LoadSpecificPropertiesFromFile( CTextFileScanner& scanner );
 

@@ -185,7 +185,7 @@ bool GravityGun::GraspObjectInAimDirection()
 		 && pPhysicsActor->GetMass() < max_weight )
 		{
 			// locked a target
-			m_Target = CEntityHandle<>( tr.pTouchedEntity->Self() );
+			m_Target = EntityHandle<>( tr.pTouchedEntity->Self() );
 //			m_pTarget->pPhysicsActor->SetAllowFreezing( false );
 		}
 

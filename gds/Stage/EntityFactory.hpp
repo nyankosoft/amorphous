@@ -13,17 +13,17 @@ namespace amorphous
 {
 
 
-class CEntityFactory
+class EntityFactory
 {
 	shared_prealloc_pool<CCopyEntity> m_CopyEntityPool;
 
-	shared_prealloc_pool<CAlphaEntity> m_AlphaEntityPool;
+	shared_prealloc_pool<AlphaEntity> m_AlphaEntityPool;
 
-	shared_prealloc_pool<CLightEntity> m_LightEntityPool;
+	shared_prealloc_pool<LightEntity> m_LightEntityPool;
 
-	shared_prealloc_pool<CSoundEntity> m_SoundEntityPool;
+	shared_prealloc_pool<SoundEntity> m_SoundEntityPool;
 
-	shared_prealloc_pool<CScriptedCameraEntity> m_ScriptedCameraEntityPool;
+	shared_prealloc_pool<ScriptedCameraEntity> m_ScriptedCameraEntityPool;
 
 public:
 
@@ -38,9 +38,9 @@ public:
 
 public:
 
-	CEntityFactory();
+	EntityFactory();
 
-	virtual ~CEntityFactory();
+	virtual ~EntityFactory();
 
 	/// allocate memory for entities
 	/// must be called from a derived class if overridden
@@ -77,7 +77,7 @@ public:
 
 #include "EntityFactory.hpp"
 
-class CDerivedEntityFactory : public CEntityFactory
+class CDerivedEntityFactory : public EntityFactory
 {
 	fixed_prealloc_pool<CDerivedEntity00> m_DerivedEntityPool00;
 	fixed_prealloc_pool<CDerivedEntity01> m_DerivedEntityPool01;
@@ -117,7 +117,7 @@ public:
 
 	enum eUserDerivedEntityID
 	{
-		DERIVED_ID0 = CBaseEntity::USER_DEFINED_ENTITY_ID_OFFSET,
+		DERIVED_ID0 = BaseEntity::USER_DEFINED_ENTITY_ID_OFFSET,
 		DERIVED_ID1,
 		DERIVED_ID2,
 		NUM_DERIVED
@@ -180,7 +180,7 @@ void CDerivedEntityFactory::ReleaseDerivedEntity( CCopyEntity *pEntity )
 
 void CDerivedEntityFactory::ReleaseAllDerivedEntities()
 {
-	CEntityFactory::ReleaseAllEntities();
+	EntityFactory::ReleaseAllEntities();
 
 	m_DerivedEntityPool.release_all();
 }

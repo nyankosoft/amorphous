@@ -9,13 +9,13 @@ namespace amorphous
 {
 
 
-class CStandardEntityRenderer : public CEntityRenderer
+class CStandardEntityRenderer : public EntityRenderer
 {
-	CEntityRenderManager *m_pEntityRenderManager;
+	EntityRenderManager *m_pEntityRenderManager;
 
 public:
 
-	CStandardEntityRenderer( CEntityRenderManager *pEntityRenderManager )
+	CStandardEntityRenderer( EntityRenderManager *pEntityRenderManager )
 		:
 	m_pEntityRenderManager(pEntityRenderManager)
 	{}
@@ -74,7 +74,7 @@ public:
 };
 
 
-class CShadowCasterEntityRenderer : public CEntityRenderer
+class CShadowCasterEntityRenderer : public EntityRenderer
 {
 public:
 
@@ -98,7 +98,7 @@ public:
 };
 
 
-class CShadowReceiverEntityRenderer : public CEntityRenderer
+class CShadowReceiverEntityRenderer : public EntityRenderer
 {
 public:
 
@@ -124,7 +124,7 @@ public:
 };
 
 
-class CNonEnvMapTargetEntityRenderer : public CEntityRenderer
+class CNonEnvMapTargetEntityRenderer : public EntityRenderer
 {
 	U32 m_EnvMapTargetEntityID;
 
@@ -160,7 +160,7 @@ public:
 };
 
 
-class CEntityDepthRenderer : public CEntityRenderer
+class CEntityDepthRenderer : public EntityRenderer
 {
 	ShaderHandle m_DepthRenderShader;
 public:

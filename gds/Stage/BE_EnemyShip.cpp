@@ -199,7 +199,7 @@ void CBE_EnemyShip::UpdatePhysics( CCopyEntity *pCopyEnt, float dt )
 }
 
 
-void CBE_EnemyShip::MessageProcedure( SGameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self )
+void CBE_EnemyShip::MessageProcedure( GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self )
 {
 	CBEC_EnemyShipExtraData& ex = GetExtraData(pCopyEnt_Self);
 

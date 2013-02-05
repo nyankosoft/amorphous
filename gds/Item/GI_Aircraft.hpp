@@ -135,8 +135,8 @@ class CGI_Aircraft : public GameItem
 	/// weapon slot index : name of the previously used ammunition
 	std::map<int,std::string> m_PrevUsedAmmo;
 
-//	CBaseEntityHandle m_EngineNozzleFlame;
-//	CBaseEntityHandle m_MuzzleFlashBaseEntity;
+//	BaseEntityHandle m_EngineNozzleFlame;
+//	BaseEntityHandle m_MuzzleFlashBaseEntity;
 
 	std::vector< boost::shared_ptr<CMeshBoneController_AircraftBase> > m_vecpMeshController;
 
@@ -168,10 +168,10 @@ public:
 	virtual bool HandleInput( int input_code, int input_type, float fParam );
 
 	// return handle to a base entity used as ammunition
-//	inline CBaseEntityHandle& GetBaseEntityHandle() { return m_AmmoBaseEntity; }
+//	inline BaseEntityHandle& GetBaseEntityHandle() { return m_AmmoBaseEntity; }
 
 	// return handle to a base entity is used as muzzle flash of this ammo
-//	inline CBaseEntityHandle& GetMuzzleFlashHandle() { return m_MuzzleFlashBaseEntity; }
+//	inline BaseEntityHandle& GetMuzzleFlashHandle() { return m_MuzzleFlashBaseEntity; }
 
 	CPseudoAircraftSimulator &PseudoSimulator() { return m_PseudoSimulator; }
 
