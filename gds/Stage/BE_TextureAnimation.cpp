@@ -37,7 +37,7 @@ void CBE_TextureAnimation::Init()
 
 	for( int i=0; i<2; i++ )
 	{
-		CRectSetMesh& rect_mesh = (i==0) ? m_FrontRectMesh : m_RearRectMesh;
+		RectSetMesh& rect_mesh = (i==0) ? m_FrontRectMesh : m_RearRectMesh;
 
 		rect_mesh.Init( 1, VFF::POSITION | VFF::DIFFUSE_COLOR | VFF::TEXCOORD2_0 );
 
@@ -177,7 +177,7 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 		float r = this->m_aabb.vMax.x * ( 1.0f + fCurrentFrameTime * (m_fExpansionFactor - 1.0f) );
 		for( int i=0; i<2; i++ )
 		{
-			CRectSetMesh& rect_mesh = (i==0) ? m_FrontRectMesh : m_RearRectMesh;
+			RectSetMesh& rect_mesh = (i==0) ? m_FrontRectMesh : m_RearRectMesh;
 			rect_mesh.SetRectPosition(
 				0,
 				Vector3(-r, r, 0 ),
@@ -239,7 +239,7 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 
 
 // set texture coordinate for billboard
-void CBE_TextureAnimation::SetTextureCoord( CRectSetMesh& rect_mesh, int iCurrentFrame )
+void CBE_TextureAnimation::SetTextureCoord( RectSetMesh& rect_mesh, int iCurrentFrame )
 {
 	float fNumTextureSegments = (float)m_iNumTextureSegments;
 

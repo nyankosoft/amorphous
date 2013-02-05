@@ -30,7 +30,7 @@ namespace amorphous
 // Candidates of mesh classes for particle set
 //
 // CustomMesh
-// CRectSetMesh
+// RectSetMesh
 // BasicMesh
 //
 // Differences between mesh classes

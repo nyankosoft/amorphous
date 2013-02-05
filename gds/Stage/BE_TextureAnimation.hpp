@@ -43,8 +43,8 @@ private:
 	unsigned int m_AnimTypeFlag;
 
 	/// use 2 billboards to achieve smooth transition between frames
-	CRectSetMesh m_FrontRectMesh;
-	CRectSetMesh m_RearRectMesh;
+	RectSetMesh m_FrontRectMesh;
+	RectSetMesh m_RearRectMesh;
 
 	ShaderTechniqueHandle m_aShaderTechHandle[2];
 
@@ -58,7 +58,7 @@ public:
 	void Draw(CCopyEntity* pCopyEnt);
 	//void Touch(CCopyEntity* pCopyEnt_Self, CCopyEntity* pCopyEnt_Other);
 	//void MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEnt_Self);
-	void SetTextureCoord( CRectSetMesh& rect_mesh, int iCurrentFrame );
+	void SetTextureCoord( RectSetMesh& rect_mesh, int iCurrentFrame );
 
 //	void DrawGlare(CCopyEntity* pCopyEnt) { Draw( pCopyEnt ); }
 

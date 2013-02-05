@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CRectSetMesh : public CustomMesh
+class RectSetMesh : public CustomMesh
 {
 protected:
 
@@ -21,9 +21,9 @@ protected:
 
 public:
 
-	CRectSetMesh();
+	RectSetMesh();
 
-	~CRectSetMesh() {}
+	~RectSetMesh() {}
 
 	Result::Name Init( uint num_rects, U32 vertex_format_flags = VFF::POSITION | VFF::NORMAL | VFF::DIFFUSE_COLOR | VFF::TEXCOORD2_0 );
 
@@ -102,7 +102,7 @@ public:
 };
 
 
-class CRectSetMeshGenerator
+class RectSetMeshGenerator
 {
 	C3DMeshModelArchive m_MeshArchive;
 
@@ -118,8 +118,8 @@ class CRectSetMeshGenerator
 
 public:
 
-	CRectSetMeshGenerator() {}
-	~CRectSetMeshGenerator() {}
+	RectSetMeshGenerator() {}
+	~RectSetMeshGenerator() {}
 
 	bool Generate( int num_particles, float particle_radius, int num_tex_edge_divisions );
 
@@ -134,7 +134,7 @@ public:
 };
 
 
-inline float CRectSetMeshGenerator::GetRandRadius()
+inline float RectSetMeshGenerator::GetRandRadius()
 {
 	float r = m_fParticleRadius;
 	return r * RangedRand( 0.9f, 1.1f );

@@ -25,7 +25,7 @@ class CBE_Decal : public BaseEntity
 
 //	C2DRectSet m_DecalRectSet;
 
-	CRectSetMesh m_DecalRectsMesh;
+	RectSetMesh m_DecalRectsMesh;
 
 	float m_fDecalRadius;
 

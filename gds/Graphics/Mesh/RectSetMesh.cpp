@@ -9,13 +9,13 @@ namespace amorphous
 using namespace std;
 
 
-CRectSetMesh::CRectSetMesh()
+RectSetMesh::RectSetMesh()
 :
 m_NumRects(0)
 {}
 
 
-Result::Name CRectSetMesh::Init( uint num_rects, U32 vertex_format_flags )
+Result::Name RectSetMesh::Init( uint num_rects, U32 vertex_format_flags )
 {
 	m_NumRects = num_rects;
 
@@ -44,7 +44,7 @@ Result::Name CRectSetMesh::Init( uint num_rects, U32 vertex_format_flags )
 }
 
 
-bool CRectSetMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename, U32 option_flags )
+bool RectSetMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const std::string& filename, U32 option_flags )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 
@@ -53,28 +53,28 @@ bool CRectSetMesh::LoadFromArchive( C3DMeshModelArchive& rArchive, const std::st
 
 
 
-void CRectSetMesh::LoadVertices( void*& pVBData, C3DMeshModelArchive& archive )
+void RectSetMesh::LoadVertices( void*& pVBData, C3DMeshModelArchive& archive )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetRectMinMax( int rect_index, const Vector2& vMin, const Vector2& vMax )
+void RectSetMesh::SetRectMinMax( int rect_index, const Vector2& vMin, const Vector2& vMax )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetRectMinMax( int rect_index, const Vector3& vMin, const Vector3& vMax )
+void RectSetMesh::SetRectMinMax( int rect_index, const Vector3& vMin, const Vector3& vMax )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetRectPosition( int rect_index,
+void RectSetMesh::SetRectPosition( int rect_index,
 								    const Vector3& vTopLeft,
 								    const Vector3& vTopRight,
 								    const Vector3& vBottomRight,
@@ -97,42 +97,42 @@ void CRectSetMesh::SetRectPosition( int rect_index,
 
 
 
-void CRectSetMesh::SetRectMinMax( int rect_index, float min_x, float min_y, float max_x, float max_y )
+void RectSetMesh::SetRectMinMax( int rect_index, float min_x, float min_y, float max_x, float max_y )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetRectVertexPosition( int rect_index, int vert_index, const Vector2& vPos )
+void RectSetMesh::SetRectVertexPosition( int rect_index, int vert_index, const Vector2& vPos )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetRectVertexPosition( int rect_index, int vert_index, const Vector3& vPos )
+void RectSetMesh::SetRectVertexPosition( int rect_index, int vert_index, const Vector3& vPos )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetRectVertexPosition( int rect_index, int vert_index, const float x, const float y )
+void RectSetMesh::SetRectVertexPosition( int rect_index, int vert_index, const float x, const float y )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-void CRectSetMesh::SetVertexPosition( int vert_index, const float x, const float y )
+void RectSetMesh::SetVertexPosition( int vert_index, const float x, const float y )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-Vector2 CRectSetMesh::GetRectVertexPosition( int rect_index, int vert_index )
+Vector2 RectSetMesh::GetRectVertexPosition( int rect_index, int vert_index )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 
@@ -141,7 +141,7 @@ Vector2 CRectSetMesh::GetRectVertexPosition( int rect_index, int vert_index )
 
 
 
-void CRectSetMesh::SetRectNormal( int rect_index, const Vector3& vNormal )
+void RectSetMesh::SetRectNormal( int rect_index, const Vector3& vNormal )
 {
 	int element = VEE::NORMAL;
 	const uint vertex_size = m_VertexSize;
@@ -154,16 +154,16 @@ void CRectSetMesh::SetRectNormal( int rect_index, const Vector3& vNormal )
 }
 
 
-/// CRectSetMesh::texture CRectSetMesh::coord
+/// RectSetMesh::texture RectSetMesh::coord
 
-void CRectSetMesh::SetTextureCoordMinMax( int rect_index, float u_min, float v_min, float u_max, float v_max )
+void RectSetMesh::SetTextureCoordMinMax( int rect_index, float u_min, float v_min, float u_max, float v_max )
 {
 	SetTextureCoordMinMax( rect_index, TEXCOORD2(u_min,v_min), TEXCOORD2(u_max,v_max) );
 }
 
 
 
-void CRectSetMesh::SetTextureCoordMinMax( int rect_index, const TEXCOORD2& vMin, const TEXCOORD2& vMax )
+void RectSetMesh::SetTextureCoordMinMax( int rect_index, const TEXCOORD2& vMin, const TEXCOORD2& vMax )
 {
 	int element = VEE::TEXCOORD2_0;
 	const uint vertex_size = m_VertexSize;
@@ -181,46 +181,46 @@ void CRectSetMesh::SetTextureCoordMinMax( int rect_index, const TEXCOORD2& vMin,
 
 
 
-void CRectSetMesh::SetRectVertexTextureCoord( int rect_index, int vert_index, float u, float v )
+void RectSetMesh::SetRectVertexTextureCoord( int rect_index, int vert_index, float u, float v )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
 
-TEXCOORD2 CRectSetMesh::GetTopLeftTextureCoord( int rect_index )
-{
-	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
-	return TEXCOORD2(0,0);
-}
-
-
-TEXCOORD2 CRectSetMesh::GetBottomRightTextureCoord( int rect_index )
+TEXCOORD2 RectSetMesh::GetTopLeftTextureCoord( int rect_index )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 	return TEXCOORD2(0,0);
 }
 
 
-void CRectSetMesh::SetColor( const SFloatRGBAColor& color )
+TEXCOORD2 RectSetMesh::GetBottomRightTextureCoord( int rect_index )
+{
+	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
+	return TEXCOORD2(0,0);
+}
+
+
+void RectSetMesh::SetColor( const SFloatRGBAColor& color )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
-void CRectSetMesh::SetRectColor( int rect_index, const SFloatRGBAColor& color )
+void RectSetMesh::SetRectColor( int rect_index, const SFloatRGBAColor& color )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
-void CRectSetMesh::SetRectVertexColor( int rect_index, int vert_index, const SFloatRGBAColor& color )
+void RectSetMesh::SetRectVertexColor( int rect_index, int vert_index, const SFloatRGBAColor& color )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }
 
 
-void CRectSetMesh::SetColorARGB32( U32 color )
+void RectSetMesh::SetColorARGB32( U32 color )
 {
 	int element = VEE::DIFFUSE_COLOR;
 	const uint vertex_size = m_VertexSize;
@@ -246,7 +246,7 @@ void CRectSetMesh::SetColorARGB32( U32 color )
 }
 
 
-void CRectSetMesh::SetRectColorARGB32( int rect_index, U32 color )
+void RectSetMesh::SetRectColorARGB32( int rect_index, U32 color )
 {
 	LOG_PRINT_ERROR( " NOT IMPLEMENTED" );
 }

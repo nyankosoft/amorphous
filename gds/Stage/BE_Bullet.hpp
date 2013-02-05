@@ -22,7 +22,7 @@ class CBE_Bullet : public BaseEntity
 	float m_fBillboardRadius;
 
 	/// Holds a single billboard mesh
-	CRectSetMesh m_BillboardRectMesh;
+	RectSetMesh m_BillboardRectMesh;
 
 	/// distance which the bullet can cover
 	float m_fMaxRange;
