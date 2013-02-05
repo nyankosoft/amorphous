@@ -1,8 +1,6 @@
 #ifndef  __LIGHTENTITYMANAGER_H__
 #define  __LIGHTENTITYMANAGER_H__
 
-#include <vector>
-using namespace std;
 
 #include "../Graphics/GraphicsDevice.hpp"
 #include "../Stage/CopyEntity.hpp"
