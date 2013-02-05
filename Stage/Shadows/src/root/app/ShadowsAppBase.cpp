@@ -11,8 +11,9 @@
 #include "gds/App/GameWindowManager_Win32.hpp"
 
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 static string sg_TestStageScriptToLoad;
