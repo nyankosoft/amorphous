@@ -246,7 +246,7 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 	box_aabb.vMin = -vHalfLength;
 	box_aabb.vMax =  vHalfLength;
 
-	CBSPTreeForBox bsp_tree;
+	BSPTreeForBox bsp_tree;
 	bsp_tree.SetSize( rBox.GetSideLength().x, rBox.GetSideLength().y, rBox.GetSideLength().z );
 
 	// transform edges to the local space of the box, where the origin is the center of the box

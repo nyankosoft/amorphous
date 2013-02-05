@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-class CBSPTreeForBox
+class BSPTreeForBox
 {
 	float m_aDist[3];
 
@@ -27,8 +27,8 @@ public:
 		};
 	};
 
-	CBSPTreeForBox();
-	~CBSPTreeForBox();
+	BSPTreeForBox();
+	~BSPTreeForBox();
 
 	inline void SetSize( float width, float height, float depth );
 
@@ -43,7 +43,7 @@ public:
 
 //========================= inline implementations =========================
 
-inline void CBSPTreeForBox::SetSize( float width, float height, float depth )
+inline void BSPTreeForBox::SetSize( float width, float height, float depth )
 {
 	m_aDist[0] = width / 2.0f;
 	m_aDist[1] = height / 2.0f;

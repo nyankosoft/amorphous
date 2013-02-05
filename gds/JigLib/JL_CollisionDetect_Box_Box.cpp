@@ -255,7 +255,7 @@ static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 	float fFraction = 1.0f;
 	Vector3 vEnd = Vector3(0,0,0);
 
-	CBSPTreeForBox bsp_tree;
+	BSPTreeForBox bsp_tree;
 
 	// transform edges to the local space of the box
 	bool b0, b1;

@@ -6,11 +6,11 @@ namespace amorphous
 {
 
 
-CBSPTreeForBox::CBSPTreeForBox()
+BSPTreeForBox::BSPTreeForBox()
 {
 }
 
-CBSPTreeForBox::~CBSPTreeForBox()
+BSPTreeForBox::~BSPTreeForBox()
 {
 }
 
@@ -18,10 +18,10 @@ CBSPTreeForBox::~CBSPTreeForBox()
 #define MAX_DIVIDE_NUM	6
 
 
-static const CBSPTreeForBox::SBinaryNode g_aNode[6] = { -2,1, -2,2, -2,3, -2,4, -2,5, -2,-1 };
+static const BSPTreeForBox::SBinaryNode g_aNode[6] = { -2,1, -2,2, -2,3, -2,4, -2,5, -2,-1 };
 
 
-bool CBSPTreeForBox::ClipTrace( Vector3& vEndPos,
+bool BSPTreeForBox::ClipTrace( Vector3& vEndPos,
 							    float& fEndFrac,
 								const Vector3& vStart,
 								const Vector3& vGoal,
