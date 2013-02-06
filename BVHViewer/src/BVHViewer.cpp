@@ -4,7 +4,7 @@
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/ShaderLightManager.hpp"
-#include "gds/Graphics/MeshGenerators.hpp"
+#include "gds/Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 #include "gds/Graphics/Font/TextureFont.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
@@ -80,13 +80,13 @@ void CBVHViewer::RefreshFileList( const std::string& directory_path )
 }
 
 
-void CBVHViewer::SetLights( CShaderManager& shader_mgr )
+void CBVHViewer::SetLights( ShaderManager& shader_mgr )
 {
 	// change lighting render state
 	// - Needed when fixed function pipeline is used
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, m_Lighting );
 
-	shared_ptr<CShaderLightManager> pLightMgr
+	shared_ptr<ShaderLightManager> pLightMgr
 		= shader_mgr.GetShaderLightManager();
 
 	if( !pLightMgr )
@@ -100,8 +100,8 @@ void CBVHViewer::SetLights( CShaderManager& shader_mgr )
 		return;
 	}
 
-//	CDirectionalLight dir_light;
-	CHemisphericDirectionalLight dir_light;
+//	DirectionalLight dir_light;
+	HemisphericDirectionalLight dir_light;
 	dir_light.vDirection = Vec3GetNormalized( Vector3( 1,-3,2 ) );
 	dir_light.fIntensity = 1.0f;
 //	dir_light.DiffuseColor = SFloatRGBColor::White();
@@ -116,7 +116,7 @@ void CBVHViewer::SetLights( CShaderManager& shader_mgr )
 }
 
 
-void CBVHViewer::LoadBlankTextures( CBasicMesh& mesh )
+void CBVHViewer::LoadBlankTextures( BasicMesh& mesh )
 {
 	int num_subsets = mesh.GetNumMaterials();
 	for( int i=0; i<num_subsets; i++ )
@@ -129,7 +129,7 @@ void CBVHViewer::LoadBlankTextures( CBasicMesh& mesh )
 			mat.TextureDesc[0].Width  = 1;
 			mat.TextureDesc[0].Height = 1;
 			mat.TextureDesc[0].Format = TextureFormat::A8R8G8B8;
-			mat.TextureDesc[0].pLoader.reset( new CSingleColorTextureFilling(SFloatRGBAColor::White()) );
+			mat.TextureDesc[0].pLoader.reset( new SingleColorTextureGenerator(SFloatRGBAColor::White()) );
 			mat.Texture[0].Load( mat.TextureDesc[0] );
 		}
 	}
@@ -149,31 +149,31 @@ void CBVHViewer::LoadShaders()
 	shader_descs[1].ShaderLightingType = CShaderLightingType::PER_PIXEL;
 	shader_descs[1].Specular = CSpecularSource::DECAL_TEX_ALPHA;
 
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 
 //	m_Shaders.resize( shader_descs.size() );
 //	m_Techniques.resize( shader_descs.size() );
 	for( size_t i=0; i<shader_descs.size(); i++ )
 	{
 		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_descs[i]) );
-		CShaderHandle shader;
+		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
 		if( loaded )
 		{
 			m_Shaders.push_back( shader );
-			m_Techniques.push_back( CShaderTechniqueHandle() );
+			m_Techniques.push_back( ShaderTechniqueHandle() );
 			m_Techniques.back().SetTechniqueName( "Default" );
 		}
 
 	}
 
 	// added shader manager that uses fixed function pipeline as a fallback
-	CShaderResourceDesc default_desc;
+	ShaderResourceDesc default_desc;
 	default_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
-	m_Shaders.push_back( CShaderHandle() );
+	m_Shaders.push_back( ShaderHandle() );
 	m_Shaders.back().Load( default_desc );
-	m_Techniques.push_back( CShaderTechniqueHandle() );
+	m_Techniques.push_back( ShaderTechniqueHandle() );
 	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
 }
 
@@ -207,8 +207,8 @@ void CBVHViewer::RenderBVHSkeleton()
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
 	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
-	CShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	shader_mgr.SetParam( "g_vEyePos", GetCameraController()->GetPosition() );
 
@@ -390,7 +390,7 @@ int CBVHViewer::Init()
 
 	SetDefaultLinearFog();
 
-	shared_ptr<CTextureFont> pFont( new CTextureFont );
+	shared_ptr<TextureFont> pFont( new TextureFont );
 	bool res = pFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	m_pFont = pFont;
 	m_pFont->SetFontSize( 8, 16 );

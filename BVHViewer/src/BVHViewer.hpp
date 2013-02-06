@@ -14,25 +14,27 @@
 #include "gds/Input.hpp"
 #include "gds/BVH/BVHPlayer.hpp"
 
+using namespace amorphous;
+
 
 class CBVHViewer : public CGraphicsApplicationBase
 {
-	CMeshObjectHandle m_BoxForGround;
+	MeshHandle m_BoxForGround;
 
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
 	std::vector<std::string> m_Filepaths;
 
 	int m_CurrentFileIndex;
 
-	CShaderTechniqueHandle m_MeshTechnique;
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	std::vector<CShaderHandle> m_Shaders;
+	std::vector<ShaderHandle> m_Shaders;
 
-	std::vector<CShaderTechniqueHandle> m_Techniques;
+	std::vector<ShaderTechniqueHandle> m_Techniques;
 
 	int m_CurrentShaderIndex;
 
@@ -57,7 +59,7 @@ class CBVHViewer : public CGraphicsApplicationBase
 
 	bool m_Lighting;
 
-	CBVHPlayer m_BVHPlayer;
+	BVHPlayer m_BVHPlayer;
 
 	bool m_Playing;
 
@@ -77,9 +79,9 @@ protected:
 
 	void LoadShaders();
 
-	void SetLights( CShaderManager& shader_mgr );
+	void SetLights( ShaderManager& shader_mgr );
 
-	void LoadBlankTextures( CBasicMesh& mesh );
+	void LoadBlankTextures( BasicMesh& mesh );
 
 public:
 
