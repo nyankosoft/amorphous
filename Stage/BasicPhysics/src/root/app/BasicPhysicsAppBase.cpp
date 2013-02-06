@@ -51,7 +51,7 @@ CBasicPhysicsAppTask::CBasicPhysicsAppTask()
 {
 	CScriptManager::ms_UseBoostPythonModules = true;
 
-	CStageLoader stg_loader;
+	StageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
@@ -156,9 +156,9 @@ bool CBasicPhysicsAppBase::Init()
 	// Register base entity factory
 	//
 /*
-	BaseEntityManager().RegisterBaseEntityFactory( CBaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
+	GetBaseEntityManager().RegisterBaseEntityFactory( BaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
 
-	BaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
+	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
 	bool base_init = CGameApplicationBase::Init();
 	if( !base_init )

@@ -53,7 +53,7 @@ CBillboardAnimationAppTask::CBillboardAnimationAppTask()
 {
 	CScriptManager::ms_UseBoostPythonModules = true;
 
-	CStageLoader stg_loader;
+	StageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
@@ -81,7 +81,7 @@ void CBillboardAnimationAppTask::OnTriggerPulled()
 	const char *base_entity_name = "imex";
 //	const char *base_entity_name = "imex_L";
 	CCopyEntityDesc desc;
-	CBaseEntityHandle handle( base_entity_name );
+	BaseEntityHandle handle( base_entity_name );
 	desc.pBaseEntityHandle = &handle;
 	desc.WorldPose.vPosition = tr.vEnd;
 	desc.WorldPose.matOrient = Matrix33Identity();
@@ -207,9 +207,9 @@ bool CBillboardAnimationAppBase::Init()
 	// Register base entity factory
 	//
 /*
-	BaseEntityManager().RegisterBaseEntityFactory( CBaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
+	GetBaseEntityManager().RegisterBaseEntityFactory( BaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
 
-	BaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
+	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
 	bool base_init = CGameApplicationBase::Init();
 	if( !base_init )
