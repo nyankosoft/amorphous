@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\BuiltinMotionsTest.cpp" />
+    <ClCompile Include="..\..\..\..\_Common\TestMain_Win32.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BlendNode.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionBlender.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabase.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabaseBuilder.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionFSM.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitive.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitiveBlender.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\SkeletalMeshTransform.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\Skeleton.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\SkeletonRenderer.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\TransformCacheTree.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BuiltinMotions.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.cpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\BuiltinMotionsTest.hpp" />
+    <ClInclude Include="..\..\..\..\_Common\GraphicsTestBase.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BlendNode.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BuiltinMotions.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BVHMotionDatabaseCompiler.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\fwd.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionBlender.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabase.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionDatabaseBuilder.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionFSM.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitive.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\MotionPrimitiveBlender.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\SkeletalMeshTransform.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\Skeleton.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\SkeletonRenderer.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\TransformCacheTree.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\TransformNode.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\BVHUtilities.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Project1\gds\MotionSynthesis\Keyframe.hpp">
+      <Filter>MotionSynthesis</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MotionSynthesis">
+      <UniqueIdentifier>{f56398ac-be0a-441f-a6de-7dadb731addf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
