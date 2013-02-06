@@ -149,7 +149,7 @@ static void SetRectRenderStates( TextureHandle& texture )
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
 	pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
 */
-	CTextureStage ts0, ts1;
+	TextureStage ts0, ts1;
 
 	ts0.ColorOp   = TexStageOp::SELECT_ARG1;
 	ts0.ColorArg0 = TexStageArg::DIFFUSE;

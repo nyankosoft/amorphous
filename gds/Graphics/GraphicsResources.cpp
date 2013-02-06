@@ -438,9 +438,9 @@ struct IDAndString
 
 IDAndString g_MeshTypes[] =
 {
-	ID_AND_STRING(CMeshType::BASIC),
-	ID_AND_STRING(CMeshType::PROGRESSIVE),
-	ID_AND_STRING(CMeshType::SKELETAL)
+	ID_AND_STRING(MeshType::BASIC),
+	ID_AND_STRING(MeshType::PROGRESSIVE),
+	ID_AND_STRING(MeshType::SKELETAL)
 };
 */
 

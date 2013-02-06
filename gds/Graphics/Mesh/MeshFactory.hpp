@@ -16,9 +16,9 @@ public:
 	MeshImplFactory() {}
 	virtual ~MeshImplFactory() {}
 
-//	virtual MeshImpl* CreateMeshImpl( CMeshType::Name mesh_type ) = 0;
+//	virtual MeshImpl* CreateMeshImpl( MeshType::Name mesh_type ) = 0;
 
-//	boost::shared_ptr<MeshImpl> CreateMesh( CMeshType::Name mesh_type = CMeshType::SKELETAL );// = 0; //{ return boost::shared_ptr<MeshImpl>(); }
+//	boost::shared_ptr<MeshImpl> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );// = 0; //{ return boost::shared_ptr<MeshImpl>(); }
 
 	virtual MeshImpl* CreateBasicMeshImpl() { return NULL; }
 	virtual MeshImpl* CreateProgressiveMeshImpl() { return NULL; }
@@ -27,13 +27,13 @@ public:
 /*
 	MeshImpl* LoadMeshObjectFromFile( const std::string& filepath,
 		                               U32 load_option_flags = 0,
-		                               CMeshType::Name mesh_type = CMeshType::SKELETAL );
+		                               MeshType::Name mesh_type = MeshType::SKELETAL );
 
 	/// TODO: support PMesh and SMesh
 	MeshImpl*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 		                                 const std::string& filepath,
 										 U32 load_option_flags = 0,
-										 CMeshType::Name mesh_type = CMeshType::SKELETAL );
+										 MeshType::Name mesh_type = MeshType::SKELETAL );
 */
 };
 
@@ -56,9 +56,9 @@ public:
 	virtual boost::shared_ptr<MeshImpl> CreateProgressiveMeshImpl() = 0;
 	virtual boost::shared_ptr<MeshImpl> CreateSkeletalMeshImpl() = 0;
 */
-	BasicMesh *CreateMeshInstance( CMeshType::Name mesh_type = CMeshType::SKELETAL );
+	BasicMesh *CreateMeshInstance( MeshType::Name mesh_type = MeshType::SKELETAL );
 
-	boost::shared_ptr<BasicMesh> CreateMesh( CMeshType::Name mesh_type = CMeshType::SKELETAL );
+	boost::shared_ptr<BasicMesh> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );
 
 	BasicMesh *CreateBasicMeshInstance();
 	ProgressiveMesh *CreateProgressiveMeshInstance();
@@ -70,13 +70,13 @@ public:
 
 	BasicMesh* LoadMeshObjectFromFile( const std::string& filepath,
 		                                U32 load_option_flags = 0,
-		                                CMeshType::Name mesh_type = CMeshType::SKELETAL );
+		                                MeshType::Name mesh_type = MeshType::SKELETAL );
 
 	/// TODO: support PMesh and SMesh
 	BasicMesh* LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 		                                    const std::string& filepath,
 											U32 load_option_flags = 0,
-											CMeshType::Name mesh_type = CMeshType::SKELETAL );
+											MeshType::Name mesh_type = MeshType::SKELETAL );
 };
 
 /*
@@ -115,17 +115,17 @@ public:
 	CMeshObjectFactory() {}
 	virtual ~CMeshObjectFactory() {}
 
-	boost::shared_ptr<BasicMesh> CreateMesh( CMeshType::Name mesh_type = CMeshType::SKELETAL );
+	boost::shared_ptr<BasicMesh> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );
 
 	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filepath,
 		                                         U32 load_option_flags = 0,
-		                                         CMeshType::Name mesh_type = CMeshType::SKELETAL );
+		                                         MeshType::Name mesh_type = MeshType::SKELETAL );
 
 	/// TODO: support PMesh and SMesh
 	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 		                                             const std::string& filepath,
 													 U32 load_option_flags = 0,
-													 CMeshType::Name mesh_type = CMeshType::SKELETAL );
+													 MeshType::Name mesh_type = MeshType::SKELETAL );
 };
 */
 

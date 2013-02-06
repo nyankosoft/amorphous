@@ -131,9 +131,9 @@ void MeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 	string mesh_type = reader.GetAttributeText( "type" );
 	if( 0 < mesh_type.length() )
 	{
-		if( mesh_type == "basic" )            this->MeshType = CMeshType::BASIC;
-		else if( mesh_type == "progressive" ) this->MeshType = CMeshType::PROGRESSIVE;
-		else if( mesh_type == "skeletal" )    this->MeshType = CMeshType::SKELETAL;
+		if( mesh_type == "basic" )            this->MeshType = MeshType::BASIC;
+		else if( mesh_type == "progressive" ) this->MeshType = MeshType::PROGRESSIVE;
+		else if( mesh_type == "skeletal" )    this->MeshType = MeshType::SKELETAL;
 	}
 }
 

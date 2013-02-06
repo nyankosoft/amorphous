@@ -20,15 +20,15 @@ void SetCustomMesh( BasicMesh& src_mesh )
 // CMeshFactory
 //=============================================================================
 
-BasicMesh *CMeshFactory::CreateMeshInstance( CMeshType::Name mesh_type )
+BasicMesh *CMeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
 {
 	switch( mesh_type )
 	{
-	case CMeshType::BASIC:
+	case MeshType::BASIC:
 		return CreateBasicMeshInstance();
-	case CMeshType::PROGRESSIVE:
+	case MeshType::PROGRESSIVE:
 		return CreateProgressiveMeshInstance();
-	case CMeshType::SKELETAL:
+	case MeshType::SKELETAL:
 		return CreateSkeletalMeshInstance();
 	default:
 		return NULL;
@@ -38,7 +38,7 @@ BasicMesh *CMeshFactory::CreateMeshInstance( CMeshType::Name mesh_type )
 }
 
 
-shared_ptr<BasicMesh> CMeshFactory::CreateMesh( CMeshType::Name mesh_type )
+shared_ptr<BasicMesh> CMeshFactory::CreateMesh( MeshType::Name mesh_type )
 {
 	return shared_ptr<BasicMesh>( CreateMeshInstance( mesh_type ) );
 }
@@ -55,7 +55,7 @@ shared_ptr<SkeletalMesh> CMeshFactory::CreateSkeletalMesh() { shared_ptr<Skeleta
 
 BasicMesh* CMeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 												  U32 load_option_flags,
-												  CMeshType::Name mesh_type )
+												  MeshType::Name mesh_type )
 {
 	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
 	if( !pMesh )
@@ -79,7 +79,7 @@ BasicMesh* CMeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 BasicMesh* CMeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
 																    U32 load_option_flags,
-																	CMeshType::Name mesh_type )
+																	MeshType::Name mesh_type )
 {
 	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
 

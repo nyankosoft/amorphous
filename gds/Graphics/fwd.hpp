@@ -91,9 +91,9 @@ class General3DMesh;
 
 
 
-class CMeshObjectContainer;
+class MeshObjectContainer;
 class CMeshContainerNode;
-class CMeshContainerRenderMethod;
+class MeshContainerRenderMethod;
 class CMeshContainerNodeRenderMethod;
 class ShaderParamsLoader;
 class BlendTransformsLoader;
@@ -152,7 +152,7 @@ class CD3DXPMeshObject; // progressive mesh
 class CD3DXSMeshObject; // skeletal mesh
 
 
-class CMeshType
+class MeshType
 {
 public:
 	enum Name

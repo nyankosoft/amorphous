@@ -16,7 +16,7 @@ namespace amorphous
 {
 
 
-class CTextureStage;
+class TextureStage;
 class CTextureTransformParams;
 
 
@@ -240,7 +240,7 @@ public:
 
 	virtual Result::Name SetTexture( int stage, const TextureHandle& texture ) = 0;
 
-	virtual Result::Name SetTextureStageParams( uint stage, const CTextureStage& params ) = 0;
+	virtual Result::Name SetTextureStageParams( uint stage, const TextureStage& params ) = 0;
 
 	virtual Result::Name SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params ) = 0;
 

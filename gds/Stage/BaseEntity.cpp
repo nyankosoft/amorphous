@@ -43,7 +43,7 @@ m_PropertyFlags(0)
 {
 	m_ShaderTechnique.resize(1,1);
 	m_ShaderTechnique(0,0).SetTechniqueName( "NoShader" );
-	m_MeshDesc.MeshType = CMeshType::BASIC;
+	m_MeshDesc.MeshType = MeshType::BASIC;
 }
 
 
@@ -53,7 +53,7 @@ m_PropertyFlags(0)
 {
 	m_ShaderTechnique.resize(1,1);
 	m_ShaderTechnique(0,0).SetTechniqueName( "NoShader" );
-	m_MeshDesc.MeshType = CMeshType::BASIC;
+	m_MeshDesc.MeshType = MeshType::BASIC;
 	m_MeshDesc.ResourcePath = filename;
 }
 
@@ -262,7 +262,7 @@ void BaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 	// Got a valid mesh.
 	// Create alpha entities for mesh materials that have transparency
 
-	shared_ptr<CMeshContainerRenderMethod> pContainerRenderMethod
+	shared_ptr<MeshContainerRenderMethod> pContainerRenderMethod
 		= pCopyEnt->m_pMeshRenderMethod;
 
 	if( !pContainerRenderMethod )
@@ -310,7 +310,7 @@ void BaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 		int mat_index = subsets_with_transparency[i];
 		const string& mat_name = pMesh->Material(mat_index).Name;
 
-		shared_ptr<CMeshContainerRenderMethod> pContainerRenderMethodCopy
+		shared_ptr<MeshContainerRenderMethod> pContainerRenderMethodCopy
 			= pContainerRenderMethod->CreateCopy();
 
 		pContainerRenderMethodCopy->SubsetRenderMethodMaps().resize( 0 );
@@ -323,12 +323,12 @@ void BaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 		desc.pParent           = pCopyEnt;
 //		desc.NoCollision( true );
 
-		vector< map<string,CSubsetRenderMethod> >& mapDestSubsetRenderMethodMaps
+		vector< map<string,SubsetRenderMethod> >& mapDestSubsetRenderMethodMaps
 			= pContainerRenderMethodCopy->SubsetRenderMethodMaps();
 
 		mapDestSubsetRenderMethodMaps.resize(1); // single LOD
 
-		map<string,CSubsetRenderMethod>::iterator itr;
+		map<string,SubsetRenderMethod>::iterator itr;
 		itr = pContainerRenderMethod->SubsetRenderMethodMaps()[0].find( mat_name );
 		if( itr != pContainerRenderMethod->SubsetRenderMethodMaps()[0].end() )
 		{
@@ -352,7 +352,7 @@ void BaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )
 		}*/
 
 		// replace shader params loaders
-		typedef std::pair<string,CSubsetRenderMethod> str_and_rendermethod;
+		typedef std::pair<string,SubsetRenderMethod> str_and_rendermethod;
 //		BOOST_FOREACH( str_and_rendermethod& p, mapDestSubsetRenderMethodMaps[0] )
 		for( itr = mapDestSubsetRenderMethodMaps[0].begin();
 			 itr != mapDestSubsetRenderMethodMaps[0].end();
@@ -1236,10 +1236,10 @@ void BaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "MESH_TYPE", str ) )
 		{
-			CMeshType::Name type = CMeshType::INVALID;
-			if( str == "BASIC" )            type = CMeshType::BASIC;
-			else if( str == "PROGRESSIVE" ) type = CMeshType::PROGRESSIVE;
-			else if( str == "SKELETAL" )    type = CMeshType::SKELETAL;
+			MeshType::Name type = MeshType::INVALID;
+			if( str == "BASIC" )            type = MeshType::BASIC;
+			else if( str == "PROGRESSIVE" ) type = MeshType::PROGRESSIVE;
+			else if( str == "SKELETAL" )    type = MeshType::SKELETAL;
 			m_MeshProperty.m_MeshDesc.MeshType = type;
 		}
 

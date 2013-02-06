@@ -96,7 +96,7 @@ ItemEntity::~ItemEntity()
 void ItemEntity::UpdateGraphicsUpdateCallbacks()
 {
 //	if( m_MeshHandle.GetMesh()
-//	 && m_MeshHandle.GetMesh()->GetMeshType() == CMeshType::SKELETAL )
+//	 && m_MeshHandle.GetMesh()->GetMeshType() == MeshType::SKELETAL )
 
 	MeshHandle mesh = GetPrimaryMeshHandle( *m_pItem );
 	shared_ptr<SkeletalMesh> pSkeletalMesh
@@ -220,7 +220,7 @@ void ItemEntity::Draw()
 		if( single_mesh
 		 && 0 < m_pItem->GetMeshContainerRootNode().GetNumMeshContainers() )
 		{
-			CMeshObjectContainer& mesh_container
+			MeshObjectContainer& mesh_container
 				= *(m_pItem->GetMeshContainerRootNode().GetMeshContainer(0).get());
 
 			this->m_MeshHandle = mesh_container.m_MeshObjectHandle;

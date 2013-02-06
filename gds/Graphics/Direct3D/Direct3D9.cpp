@@ -382,7 +382,7 @@ Result::Name CDirect3D9::SetTexture( int stage, const TextureHandle& texture )
 }
 
 
-Result::Name CDirect3D9::SetTextureStageParams( uint stage, const CTextureStage& params )
+Result::Name CDirect3D9::SetTextureStageParams( uint stage, const TextureStage& params )
 {
 //	LOG_PRINT_ERROR( " Not implemented yet." );
 //	return Result::UNKNOWN_ERROR;

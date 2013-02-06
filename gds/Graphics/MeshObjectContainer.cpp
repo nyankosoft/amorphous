@@ -120,7 +120,7 @@ end: MeshContainer
 
 
 
-void CMeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
+void MeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_MeshDesc;
 	ar & m_ShaderTechnique;
@@ -133,7 +133,7 @@ void CMeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CMeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	// A simplified version - load the path from the attribute "path"
 	string mesh_path;
@@ -358,7 +358,7 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecMeshLocalPose.resize( vecReader.size(), Matrix34Identity() );
 	for( size_t i=0; i<vecReader.size(); i++ )
 	{
-		m_vecpMeshContainer[i] = boost::shared_ptr<CMeshObjectContainer>( new CMeshObjectContainer() );
+		m_vecpMeshContainer[i] = boost::shared_ptr<MeshObjectContainer>( new MeshObjectContainer() );
 		m_vecpMeshContainer[i]->LoadFromXMLNode( vecReader[i].GetChild( "MeshContainer" ) );
 		amorphous::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
 	}

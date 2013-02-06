@@ -77,7 +77,7 @@ public:
 
 	Result::Name SetTexture( int stage, const TextureHandle& texture );
 
-	Result::Name SetTextureStageParams( uint stage, const CTextureStage& params );
+	Result::Name SetTextureStageParams( uint stage, const TextureStage& params );
 
 	Result::Name SetTextureTrasnformParams( uint stage, const CTextureTransformParams& params );
 

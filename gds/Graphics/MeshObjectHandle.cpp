@@ -26,13 +26,13 @@ boost::shared_ptr<MeshResource> MeshHandle::GetMeshResource()
 }
 
 
-CMeshType::Name MeshHandle::GetMeshType()
+MeshType::Name MeshHandle::GetMeshType()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )
 		return GetEntry()->GetMeshResource()->GetMeshType();
 	else
-		return CMeshType::INVALID; // TODO: return a value that means invalid request
+		return MeshType::INVALID; // TODO: return a value that means invalid request
 }
 
 

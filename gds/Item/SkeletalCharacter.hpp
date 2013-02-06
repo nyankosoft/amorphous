@@ -64,7 +64,7 @@ class SkeletalCharacter : public GameItem
 {
 	boost::shared_ptr<msynth::CMotionFSMManager> m_pMotionFSMManager;
 
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pRenderMethod;
+	boost::shared_ptr<MeshContainerRenderMethod> m_pRenderMethod;
 
 	boost::shared_ptr<msynth::CMotionFSM> m_pLowerLimbsMotionsFSM;
 

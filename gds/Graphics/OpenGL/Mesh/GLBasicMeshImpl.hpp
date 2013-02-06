@@ -102,7 +102,7 @@ class CGLMeshImplFactory : public MeshImplFactory
 {
 public:
 
-//	MeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
+//	MeshImpl* CreateMeshImpl( MeshType::Name mesh_type );
 
 	MeshImpl* CreateBasicMeshImpl();
 	MeshImpl* CreateProgressiveMeshImpl();

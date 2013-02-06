@@ -44,7 +44,7 @@ public:
 //	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
 
-//	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
+//	virtual MeshType::Name GetMeshType() const { return MeshType::SKELETAL; }
 };
 
 

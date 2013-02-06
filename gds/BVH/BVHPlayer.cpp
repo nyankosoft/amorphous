@@ -255,7 +255,7 @@ bool BVHPlayer::Render()
 
 	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
 */
-	CTextureStage stg0, stg1;
+	TextureStage stg0, stg1;
 	stg0.ColorOp   = TexStageOp::SELECT_ARG0;
 	stg0.ColorArg0 = TexStageArg::DIFFUSE;
 	stg0.AlphaOp   = TexStageOp::SELECT_ARG0;

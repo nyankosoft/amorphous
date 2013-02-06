@@ -17,7 +17,7 @@ public:
 
 	virtual ~ProgressiveMesh() {}
 
-	virtual CMeshType::Name GetMeshType() const { return CMeshType::PROGRESSIVE; }
+	virtual MeshType::Name GetMeshType() const { return MeshType::PROGRESSIVE; }
 };
 
 

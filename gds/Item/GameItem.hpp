@@ -97,7 +97,7 @@ public:
 	// mesh object
 	//
 
-//	const CMeshObjectContainer& GetMeshObjectContainer() const { return m_MeshObjectContainer; }
+//	const MeshObjectContainer& GetMeshObjectContainer() const { return m_MeshObjectContainer; }
  
 //	const std::string& GetMeshObjectFilename() const { return m_MeshObjectContainer.m_MeshDesc.ResourcePath; }
 

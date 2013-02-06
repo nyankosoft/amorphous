@@ -24,7 +24,7 @@ public:
 
 	GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Mesh; }
 
-	CMeshType::Name GetMeshType();
+	MeshType::Name GetMeshType();
 
 	inline boost::shared_ptr<BasicMesh> GetMesh();
 

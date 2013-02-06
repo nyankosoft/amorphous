@@ -87,7 +87,7 @@ public:
 
 	void DumpSkeletonToTextFile( const std::string& output_filepath ) const;
 
-	virtual CMeshType::Name GetMeshType() const { return CMeshType::SKELETAL; }
+	virtual MeshType::Name GetMeshType() const { return MeshType::SKELETAL; }
 };
 
 

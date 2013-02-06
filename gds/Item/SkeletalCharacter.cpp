@@ -70,7 +70,7 @@ inline boost::shared_ptr<SkeletalMesh> SkeletalCharacter::GetCharacterSkeletalMe
 	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
 		return shared_ptr<SkeletalMesh>();
 
-	shared_ptr<CMeshObjectContainer> pContainer = m_MeshContainerRootNode.GetMeshContainer( 0 );
+	shared_ptr<MeshObjectContainer> pContainer = m_MeshContainerRootNode.GetMeshContainer( 0 );
 	if( !pContainer )
 		return shared_ptr<SkeletalMesh>();
 
@@ -98,8 +98,8 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 	// The mesh
 	// Previously the character's skeletal mesh was loaded here
 
-	m_pRenderMethod.reset( new CMeshContainerRenderMethod );
-//	m_pRenderMethod = shared_new<CMeshContainerRenderMethod>();
+	m_pRenderMethod.reset( new MeshContainerRenderMethod );
+//	m_pRenderMethod = shared_new<MeshContainerRenderMethod>();
 
 //	m_pRenderMethod->MeshRenderMethod().resize( 1 );
 //	m_pRenderMethod->MeshRenderMethod()[0].m_ShaderFilepath = "Shader/VertexBlend.fx";
@@ -108,10 +108,10 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 //	m_pRenderMethod->MeshRenderMethod()[0].m_Technique.SetTechniqueName( "SingleHSDL_Specular_CTS" );*/
 	m_pRenderMethod->LoadRenderMethodResources();
 
-	// TODO: add shader resource desc as a member variable to CSubsetRenderMethod
+	// TODO: add shader resource desc as a member variable to SubsetRenderMethod
 	ShaderResourceDesc shader_desc;
 	GenericShaderDesc gen_shader_desc;
-	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
+	gen_shader_desc.Specular = SpecularSource::DECAL_TEX_ALPHA;
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 	m_pRenderMethod->PrimaryMeshRenderMethod().m_Shader.Load( shader_desc );
@@ -786,9 +786,9 @@ void SkeletalCharacter::UpdateGraphics()
 
 Result::Name SkeletalCharacter::LoadCharacterMesh( const std::string& skeletal_mesh_pathname )
 {
-	shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
+	shared_ptr<MeshObjectContainer> pContainer( new MeshObjectContainer );
 	pContainer->m_MeshDesc.ResourcePath = skeletal_mesh_pathname;
-	pContainer->m_MeshDesc.MeshType = CMeshType::SKELETAL;
+	pContainer->m_MeshDesc.MeshType = MeshType::SKELETAL;
 //	pContainer->m_MeshDesc.pMeshGenerator.reset( new CBoxMeshGenerator() );
 	m_MeshContainerRootNode.SetMeshContainer( 0, pContainer );
 

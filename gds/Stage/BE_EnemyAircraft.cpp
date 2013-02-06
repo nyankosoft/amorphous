@@ -502,7 +502,7 @@ void CBE_EnemyAircraft::AddExtraData()
     ex.m_pAircraft = pItem;
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
-	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
+	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == MeshType::SKELETAL )
 	{
 		ex.m_pAircraft->ResetMeshController();
 		shared_ptr<BasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();

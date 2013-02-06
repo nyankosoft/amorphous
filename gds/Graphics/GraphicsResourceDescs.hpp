@@ -213,7 +213,7 @@ public:
 
 public:
 
-	CMeshType::Name MeshType;	///< used by mesh object
+	MeshType::Name MeshType;	///< used by mesh object
 
 	U32 LoadOptionFlags;
 
@@ -329,7 +329,7 @@ Sharable(true)
 
 inline MeshResourceDesc::MeshResourceDesc()
 :
-MeshType(CMeshType::BASIC),
+MeshType(MeshType::BASIC),
 NumVertices(0),
 NumIndices(0),
 VertexFormatFlags(0),

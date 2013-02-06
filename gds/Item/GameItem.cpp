@@ -32,7 +32,7 @@ m_TypeFlag(0)
 {
 	// create a mesh container in the root node
 	// - used as a default mesh container
-	shared_ptr<CMeshObjectContainer> pMeshContainer( new CMeshObjectContainer() );
+	shared_ptr<MeshObjectContainer> pMeshContainer( new MeshObjectContainer() );
 
 	m_MeshContainerRootNode.AddMeshContainer( pMeshContainer, Matrix34Identity() );
 }
@@ -105,7 +105,7 @@ void GameItem::LoadFromXMLNode( CXMLNodeReader& reader )
 		{
 			// simplified version: a single mesh file without local offset
 			m_MeshContainerRootNode.ClearMeshContainers();
-			boost::shared_ptr<CMeshObjectContainer> pContainer( new CMeshObjectContainer );
+			boost::shared_ptr<MeshObjectContainer> pContainer( new MeshObjectContainer );
 			m_MeshContainerRootNode.AddMeshContainer(pContainer);
 			m_MeshContainerRootNode.MeshContainer(0)->LoadFromXMLNode( model_node );
 		}
@@ -120,7 +120,7 @@ void GameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 	if( MeshContainerRootNode().GetNumMeshContainers() == 0 )
 		return; // has no mesh
 
-	shared_ptr<CMeshObjectContainer> pMeshContainer = MeshContainerRootNode().MeshContainer( 0 );
+	shared_ptr<MeshObjectContainer> pMeshContainer = MeshContainerRootNode().MeshContainer( 0 );
 	if( !pMeshContainer )
 		return;
 
@@ -128,7 +128,7 @@ void GameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 	if( !pBasicMesh )
 		return;
 
-	if( pBasicMesh->GetMeshType() != CMeshType::SKELETAL )
+	if( pBasicMesh->GetMeshType() != MeshType::SKELETAL )
 		return;
 
 	boost::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();

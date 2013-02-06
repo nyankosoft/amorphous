@@ -68,15 +68,15 @@ void CBE_StaticLiquid::Init()
 	// - Meshes of CBE_StaticLiquid cannot be stored in this->m_MeshProperty.
 
 	if( !m_MeshProperty.m_pMeshRenderMethod )
-		m_MeshProperty.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod() );
+		m_MeshProperty.m_pMeshRenderMethod.reset( new MeshContainerRenderMethod() );
 
 //	if( m_MeshProperty.m_pMeshRenderMethod->m_vecMeshRenderMethod.empty() )
-//		m_MeshProperty.m_pMeshRenderMethod->m_vecMeshRenderMethod.push_back( CSubsetRenderMethod() );
+//		m_MeshProperty.m_pMeshRenderMethod->m_vecMeshRenderMethod.push_back( SubsetRenderMethod() );
 
-//	CSubsetRenderMethod& render_method
+//	SubsetRenderMethod& render_method
 //		= m_MeshProperty.m_pMeshRenderMethod->m_vecMeshRenderMethod.front();
 
-	CSubsetRenderMethod& render_method = m_MeshProperty.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
+	SubsetRenderMethod& render_method = m_MeshProperty.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 
 	GenericShaderDesc shader_desc;
 	shader_desc.PlanarReflection = PlanarReflectionOption::PERTURBED;

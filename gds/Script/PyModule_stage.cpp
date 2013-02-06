@@ -34,16 +34,16 @@ void SetShaderToEntity( EntityHandle<>& entity, ShaderHandle& shader, ShaderTech
 
 	if( !pEntity->m_pMeshRenderMethod )
 	{
-		pEntity->m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+		pEntity->m_pMeshRenderMethod.reset( new MeshContainerRenderMethod );
 	}
 
-//	vector<CSubsetRenderMethod>& render_methods
+//	vector<SubsetRenderMethod>& render_methods
 //		= pEntity->m_pMeshRenderMethod->m_vecMeshRenderMethod;
 
 //	if( render_methods.empty() )
 //		render_methods.resize( 1 );
 
-	CSubsetRenderMethod& render_method = pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod();
+	SubsetRenderMethod& render_method = pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 
 	render_method.m_Shader = shader;
 	render_method.m_Technique = tech;

@@ -152,7 +152,7 @@ public:
 
 	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMeshInLoading();
 
-	CMeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
+	MeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
 	const GraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
 

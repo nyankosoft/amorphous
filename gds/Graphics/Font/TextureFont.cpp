@@ -24,7 +24,7 @@ void SetRenderStatesForTextureFont( AlphaBlend::Mode dest_alpha_blend )
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( dest_alpha_blend );
 
-	CTextureStage tex_stage_0, tex_stage_1;
+	TextureStage tex_stage_0, tex_stage_1;
 
 	tex_stage_0.ColorOp   = TexStageOp::MODULATE;
 	tex_stage_0.ColorArg0 = TexStageArg::DIFFUSE;

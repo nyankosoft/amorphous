@@ -210,7 +210,7 @@ public:
 
 	MeshHandle m_MeshHandle;
 
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pMeshRenderMethod;
+	boost::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
 
 public:
 

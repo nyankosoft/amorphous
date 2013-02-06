@@ -335,7 +335,7 @@ void CBE_PlayerPseudoAircraft::InitCopyEntity( CCopyEntity* pCopyEnt )
 	// - use the shader & shader technique stored in m_MeshProperty
 	if( 0 < m_pAircraft->MeshContainerRootNode().GetNumMeshContainers() )
 	{
-		shared_ptr<CMeshObjectContainer> pMeshContainer = m_pAircraft->MeshContainerRootNode().MeshContainer(0);
+		shared_ptr<MeshObjectContainer> pMeshContainer = m_pAircraft->MeshContainerRootNode().MeshContainer(0);
 //		if( pMeshContainer && pMeshContainer->m_ShaderTechnique.size_x() )
 		if( pMeshContainer && m_MeshProperty.m_ShaderTechnique.size_x() )
 		{
@@ -473,8 +473,8 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	m_MeshProperty.Release();
 
 	bool loaded = false;
-//	const CMeshObjectContainer &mesh_container = pAircraft->GetMeshObjectContainer();
-	const CMeshObjectContainer &mesh_container = *(pAircraft->MeshContainerRootNode().MeshContainer(0).get());
+//	const MeshObjectContainer &mesh_container = pAircraft->GetMeshObjectContainer();
+	const MeshObjectContainer &mesh_container = *(pAircraft->MeshContainerRootNode().MeshContainer(0).get());
 	if( !mesh_container.m_MeshObjectHandle.IsLoaded() )
 		loaded = pAircraft->LoadMeshObject(); // load the mesh of the aircraft item - the mesh controller uses it
 
@@ -488,7 +488,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	//>>> experiment
 	ShaderResourceDesc shader_desc;
 	GenericShaderDesc gen_shader_desc;
-	gen_shader_desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
+	gen_shader_desc.Specular = SpecularSource::DECAL_TEX_ALPHA;
 	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 
@@ -496,14 +496,14 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	m_MeshProperty.m_ShaderTechnique.resize( 1, 1 );
 	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "Default" );
 	m_MeshProperty.m_pMeshRenderMethod.reset();
-//	m_MeshProperty.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+//	m_MeshProperty.m_pMeshRenderMethod.reset( new MeshContainerRenderMethod );
 //	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().resize(1);
 //	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().back().m_Shader.Load( shader_desc );
 //	m_MeshProperty.m_pMeshRenderMethod->MeshRenderMethod().back().m_Technique.SetTechniqueName( "Default" );
 	//<<< experiment
 
 	if( m_MeshProperty.m_MeshObjectHandle.GetMesh()
-	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == CMeshType::SKELETAL )
+	 && m_MeshProperty.m_MeshObjectHandle.GetMeshType() == MeshType::SKELETAL )
 	{
 		m_pAircraft->ResetMeshController();
 		shared_ptr<BasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();

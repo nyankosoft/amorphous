@@ -220,7 +220,7 @@ public:
 
 	void SetVertexDeclaration();
 
-	virtual CMeshType::Name GetMeshType() const = 0;
+	virtual MeshType::Name GetMeshType() const = 0;
 
 	friend class CD3DXMeshVerticesLoader;
 	friend class CD3DXMeshIndicesLoader;
@@ -231,7 +231,7 @@ class CD3DMeshImplFactory : public MeshImplFactory
 {
 public:
 
-//	MeshImpl* CreateMeshImpl( CMeshType::Name mesh_type );
+//	MeshImpl* CreateMeshImpl( MeshType::Name mesh_type );
 
 	MeshImpl* CreateBasicMeshImpl();
 	MeshImpl* CreateProgressiveMeshImpl();

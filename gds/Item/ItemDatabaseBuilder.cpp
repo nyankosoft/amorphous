@@ -59,10 +59,10 @@ void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner
 //	string type_str;
 //	if( scanner.TryScanLine( "mesh_type",	type_str ) )
 //	{
-//		CMeshType::Name mesh_type = CMeshType::BASIC;
-//		if( type_str == "skeletal" )         mesh_type = CMeshType::SKELETAL;
-//		else if( type_str == "progressive" ) mesh_type = CMeshType::PROGRESSIVE;
-//		else if( type_str == "normal" )      mesh_type = CMeshType::BASIC;
+//		MeshType::Name mesh_type = MeshType::BASIC;
+//		if( type_str == "skeletal" )         mesh_type = MeshType::SKELETAL;
+//		else if( type_str == "progressive" ) mesh_type = MeshType::PROGRESSIVE;
+//		else if( type_str == "normal" )      mesh_type = MeshType::BASIC;
 //		pItem->m_MeshObjectContainer.m_MeshDesc.MeshType = mesh_type;
 //	}
 */

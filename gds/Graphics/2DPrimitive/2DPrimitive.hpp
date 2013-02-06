@@ -162,7 +162,7 @@ inline void C2DPrimitive::SetStdRenderStates()
 
 	GraphicsDevice().SetTexture( 0, TextureHandle() );
 
-	CTextureStage tex_stage_0, tex_stage_1;
+	TextureStage tex_stage_0, tex_stage_1;
 
 	tex_stage_0.ColorOp   = TexStageOp::SELECT_ARG0;
 	tex_stage_0.ColorArg0 = TexStageArg::DIFFUSE;
@@ -198,7 +198,7 @@ inline void C2DPrimitive::SetStdRenderStatesForTexture( const TextureHandle& tex
 		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
 	}
 */
-	CTextureStage tex_stage_0, tex_stage_1;
+	TextureStage tex_stage_0, tex_stage_1;
 
 	tex_stage_0.ColorOp   = TexStageOp::MODULATE;
 	tex_stage_0.ColorArg0 = TexStageArg::DIFFUSE;

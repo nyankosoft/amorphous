@@ -30,7 +30,7 @@ public:
 
 
 /// Stores params and settings to render all the subsets of a mesh or a subset of a mesh
-class CSubsetRenderMethod : public IArchiveObjectBase
+class SubsetRenderMethod : public IArchiveObjectBase
 {
 public:
 
@@ -55,12 +55,12 @@ public:
 /**
  See comments in MeshObjectContainerRenderMethod for details
 */
-class CMeshContainerRenderMethod : public IArchiveObjectBase
+class MeshContainerRenderMethod : public IArchiveObjectBase
 {
 	/// indices of mesh subsets (previously called materials) to render
 	std::vector<int> m_vecIndicesOfSubsetsToRender;
 
-//	std::vector<CSubsetRenderMethod> m_vecSubsetRenderMethod;
+//	std::vector<SubsetRenderMethod> m_vecSubsetRenderMethod;
 
 	std::vector<int> m_vecFullIndicesOfSubsets;
 
@@ -83,16 +83,16 @@ public:
 	/// Used when m_vecSubsetNameToRenderMethod is empty
 	/// - Applies the same shader and same techniques to all the subsets of the mesh
 	/// - Uses array to support LOD of shader
-//	std::vector<CSubsetRenderMethod> m_vecMeshRenderMethod;
+//	std::vector<SubsetRenderMethod> m_vecMeshRenderMethod;
 
-	std::vector< std::pair< CSubsetRenderMethod, std::vector<int> > > m_RenderMethodsAndSubsetIndices;
+	std::vector< std::pair< SubsetRenderMethod, std::vector<int> > > m_RenderMethodsAndSubsetIndices;
 
 	/// Different shader & technique for each mesh subset
 	/// - Uses array to support LOD of shader
 	/// map of string and subset render method
 	/// - string(key) - subset name saved in CMeshMaterial::Name
-	/// - CSubsetRenderMethod - method to render a subset of a mesh
-	std::vector< std::map<std::string,CSubsetRenderMethod> > m_vecSubsetNameToRenderMethod;
+	/// - SubsetRenderMethod - method to render a subset of a mesh
+	std::vector< std::map<std::string,SubsetRenderMethod> > m_vecSubsetNameToRenderMethod;
 
 	// shader params
 
@@ -115,29 +115,29 @@ private:
 	void RenderMeshOrMeshSubsets(
 		BasicMesh &mesh,
 		const std::vector<int>& subset_indices,
-		CSubsetRenderMethod& render_method,
+		SubsetRenderMethod& render_method,
 		const Matrix34& world_transform );
 
 public:
 
-	CMeshContainerRenderMethod()
+	MeshContainerRenderMethod()
 		:
 	m_LODIndex( 0 )
 	{}
 
-	virtual ~CMeshContainerRenderMethod() {}
+	virtual ~MeshContainerRenderMethod() {}
 
 	void RenderMesh( BasicMesh &mesh, const Matrix34& world_transform );
 
 	inline void RenderMesh( MeshHandle& mesh, const Matrix34& world_transform );
 
-	void RenderMeshContainer( CMeshObjectContainer& mesh_container,
+	void RenderMeshContainer( MeshObjectContainer& mesh_container,
 		                      const Matrix34& world_transform );
 							  //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
-//	std::vector<CSubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
+//	std::vector<SubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
 
-	CSubsetRenderMethod& PrimaryMeshRenderMethod()
+	SubsetRenderMethod& PrimaryMeshRenderMethod()
 	{
 		if( m_RenderMethodsAndSubsetIndices.empty() )
 			m_RenderMethodsAndSubsetIndices.resize( 1 );
@@ -145,9 +145,9 @@ public:
 		return m_RenderMethodsAndSubsetIndices[0].first;
 	}
 
-	std::vector< std::pair< CSubsetRenderMethod, std::vector<int> > >& RenderMethodsAndSubsetIndices() { return m_RenderMethodsAndSubsetIndices; }
+	std::vector< std::pair< SubsetRenderMethod, std::vector<int> > >& RenderMethodsAndSubsetIndices() { return m_RenderMethodsAndSubsetIndices; }
 
-	std::vector< std::map<std::string,CSubsetRenderMethod> >& SubsetRenderMethodMaps() { return m_vecSubsetNameToRenderMethod; }
+	std::vector< std::map<std::string,SubsetRenderMethod> >& SubsetRenderMethodMaps() { return m_vecSubsetNameToRenderMethod; }
 
 	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
 
@@ -158,7 +158,7 @@ public:
 
 	bool LoadRenderMethodResources();
 
-	boost::shared_ptr<CMeshContainerRenderMethod> CreateCopy();
+	boost::shared_ptr<MeshContainerRenderMethod> CreateCopy();
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
 
@@ -168,7 +168,7 @@ public:
 
 class CMeshContainerNodeRenderMethod : public IArchiveObjectBase
 {
-	std::vector< boost::shared_ptr<CMeshContainerRenderMethod> > m_vecpContainerRenderMethod;
+	std::vector< boost::shared_ptr<MeshContainerRenderMethod> > m_vecpContainerRenderMethod;
 
 	std::vector< boost::shared_ptr<CMeshContainerNodeRenderMethod> > m_vecpChild;
 
@@ -178,12 +178,12 @@ public:
 
 	~CMeshContainerNodeRenderMethod() {}
 
-	void AddMeshContainer( boost::shared_ptr<CMeshContainerRenderMethod> pMeshContainerRenderMethod )
+	void AddMeshContainer( boost::shared_ptr<MeshContainerRenderMethod> pMeshContainerRenderMethod )
 	{
 		m_vecpContainerRenderMethod.push_back( pMeshContainerRenderMethod );
 	}
 
-//	void RenderMeshContainer( CMeshObjectContainer& mesh_container, int index );
+//	void RenderMeshContainer( MeshObjectContainer& mesh_container, int index );
 
 	void RenderMeshContainerNode( CMeshContainerNode& node );//, std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
@@ -213,13 +213,13 @@ public:
 	// 
 
 //	int GetNumMeshContainers() const { return (int)m_vecpMeshContainer.size(); }
-//	const boost::shared_ptr<CMeshContainerRenderMethod> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
-//	boost::shared_ptr<CMeshContainerRenderMethod> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
+//	const boost::shared_ptr<MeshContainerRenderMethod> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
+//	boost::shared_ptr<MeshContainerRenderMethod> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 };
 
 //================================ inline implementations ================================
 
-inline void CMeshContainerRenderMethod::RenderMesh( MeshHandle& mesh, const Matrix34& world_transform )
+inline void MeshContainerRenderMethod::RenderMesh( MeshHandle& mesh, const Matrix34& world_transform )
 {
 	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 

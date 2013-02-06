@@ -478,7 +478,7 @@ inline void CMotionFSMManager::GetCurrentKeyframe( CKeyframe& dest )
 	dest.SetRootPose( Matrix34( t, dest.GetRootNode().GetLocalRotationQuaternion().ToRotationMatrix() ) );
 
 	// Commented out - root node pose is set to identity in CBlendMatricesLoader::UpdateShaderParams().
-	// It is, instead, specified as an argument to CMeshContainerRenderMethod::RenderMeshContainer
+	// It is, instead, specified as an argument to MeshContainerRenderMethod::RenderMeshContainer
 /*
 	// Overwrite the pose of the root node.
 	// The motions of first FSM controls the root node pose.

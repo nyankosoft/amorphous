@@ -153,7 +153,7 @@ void CBE_LaserDot::Draw(CCopyEntity* pCopyEnt)
 	{
 		FixedFunctionPipelineManager().SetWorldTransform( matWorld );
 
-		CTextureStage ts0, ts1;
+		TextureStage ts0, ts1;
 		ts0.ColorArg0 = TexStageArg::DIFFUSE;
 		ts0.ColorArg1 = TexStageArg::TEXTURE;
 		ts0.ColorOp   = TexStageOp::MODULATE;

@@ -387,7 +387,7 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<SkeletalMesh> pMesh )
 		if( 0 < m_MeshContainerRootNode.GetNumMeshContainers() )
 			pMeshObject = m_MeshContainerRootNode.MeshContainer(0)->m_MeshObjectHandle.GetMesh();
 
-		if( pMeshObject && pMeshObject->GetMeshType() == CMeshType::SKELETAL )
+		if( pMeshObject && pMeshObject->GetMeshType() == MeshType::SKELETAL )
 		{
 			pTargetMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMeshObject);
 		}
@@ -412,12 +412,12 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<SkeletalMesh> pMesh )
 // 
 void CGI_Aircraft::ResetMeshController()
 {
-//	CMeshObjectContainer& mesh_container = m_MeshObjectContainer;
+//	MeshObjectContainer& mesh_container = m_MeshObjectContainer;
 
 	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
 		return;
 
-	CMeshObjectContainer& mesh_container = *(m_MeshContainerRootNode.MeshContainer(0).get());
+	MeshObjectContainer& mesh_container = *(m_MeshContainerRootNode.MeshContainer(0).get());
 	if( !mesh_container.m_MeshObjectHandle.GetMesh() )
 		return;
 

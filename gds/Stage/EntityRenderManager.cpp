@@ -348,7 +348,7 @@ bool EntityRenderManager::LoadFallbackShader()
 
 	ShaderResourceDesc desc;
 	GenericShaderDesc shader_desc;
-	shader_desc.Specular = CSpecularSource::UNIFORM;
+	shader_desc.Specular = SpecularSource::UNIFORM;
 	desc.pShaderGenerator.reset( new GenericShaderGenerator(shader_desc) );
 	bool loaded = m_FallbackShader.Load( desc );
 

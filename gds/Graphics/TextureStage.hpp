@@ -36,11 +36,11 @@ public:
 };
 
 
-class CTextureStage
+class TextureStage
 {
 public:
 
-	CTextureStage()
+	TextureStage()
 		:
 	ColorOp(TexStageOp::SELECT_ARG0),
 	ColorArg0(TexStageArg::TEXTURE), ColorArg1(TexStageArg::TEXTURE),
@@ -48,7 +48,7 @@ public:
 	AlphaArg0(TexStageArg::TEXTURE), AlphaArg1(TexStageArg::TEXTURE)
 	{}
 
-	~CTextureStage() {}
+	~TextureStage() {}
 
 	TexStageOp::Name ColorOp;
 	TexStageArg::Name ColorArg0, ColorArg1;

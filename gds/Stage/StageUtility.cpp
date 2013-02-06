@@ -1328,31 +1328,31 @@ Result::Name CStageEntityUtility::SetShader( EntityHandle<>& entity, const std::
 	if( lod < 0 || max_shader_lod <= lod )
 		return Result::INVALID_ARGS;
 
-	CSubsetRenderMethod subset_render_method;
+	SubsetRenderMethod subset_render_method;
 	subset_render_method.m_ShaderDesc.ResourcePath = shader;
 	subset_render_method.m_Technique.SetTechniqueName( technique.c_str() );
 
 	if( !pEntity->m_pMeshRenderMethod )
-		pEntity->m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+		pEntity->m_pMeshRenderMethod.reset( new MeshContainerRenderMethod );
 
 	if( 0 == subset.length() )
 	{
-//		vector<CSubsetRenderMethod>& vecRenderMethod
+//		vector<SubsetRenderMethod>& vecRenderMethod
 //			= pEntity->m_pMeshRenderMethod->MeshRenderMethod();
 //
 //		while( (int)vecRenderMethod.size() <= lod )
-//			vecRenderMethod.push_back( CSubsetRenderMethod() );
+//			vecRenderMethod.push_back( SubsetRenderMethod() );
 //
 //			vecRenderMethod[lod] = subset_render_method;
 		pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod() = subset_render_method;
 	}
 	else
 	{
-		vector< map<string,CSubsetRenderMethod> >& mapRenderMethodMap
+		vector< map<string,SubsetRenderMethod> >& mapRenderMethodMap
 			= pEntity->m_pMeshRenderMethod->SubsetRenderMethodMaps();
 
 		while( (int)mapRenderMethodMap.size() <= lod )
-			mapRenderMethodMap.push_back( map<string,CSubsetRenderMethod>() );
+			mapRenderMethodMap.push_back( map<string,SubsetRenderMethod>() );
 
 		mapRenderMethodMap[lod][subset] = subset_render_method;
 	}
@@ -1416,7 +1416,7 @@ static void SetShaderParamLoaderToEntity( EntityHandle<>& entity, const char *pa
 		SetShaderParamToStaticGeometryEntity( pEntity, parameter_name, value );
 	}
 
-	shared_ptr<CMeshContainerRenderMethod> pRenderMethod
+	shared_ptr<MeshContainerRenderMethod> pRenderMethod
 		= pEntity->m_pMeshRenderMethod;
 
 	if( !pRenderMethod )
@@ -1427,7 +1427,7 @@ static void SetShaderParamLoaderToEntity( EntityHandle<>& entity, const char *pa
 	bool found_param_loader = false;
 	for( size_t i=0; i<pRenderMethod->RenderMethodsAndSubsetIndices().size(); i++ )
 	{
-		CSubsetRenderMethod& subset_render_method = pRenderMethod->RenderMethodsAndSubsetIndices()[i].first;
+		SubsetRenderMethod& subset_render_method = pRenderMethod->RenderMethodsAndSubsetIndices()[i].first;
 
 		for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
 		{

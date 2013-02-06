@@ -1074,15 +1074,15 @@ void CD3DXMeshObjectBase::SetVertexDeclaration()
 
 
 /*
-MeshImpl* CD3DMeshImplFactory::CreateMeshImpl( CMeshType::Name mesh_type )
+MeshImpl* CD3DMeshImplFactory::CreateMeshImpl( MeshType::Name mesh_type )
 {
 	switch( mesh_type )
 	{
-	case CMeshType::BASIC:
+	case MeshType::BASIC:
 		return new CD3DXMeshObject();
-	case CMeshType::PROGRESSIVE:
+	case MeshType::PROGRESSIVE:
 		return new CD3DXPMeshObject();
-	case CMeshType::SKELETAL:
+	case MeshType::SKELETAL:
 		return new CD3DXSMeshObject();
 	default:
 		return NULL;
@@ -1098,7 +1098,7 @@ MeshImpl* CD3DMeshImplFactory::CreateProgressiveMeshImpl() { return new CD3DXPMe
 MeshImpl* CD3DMeshImplFactory::CreateSkeletalMeshImpl()    { return new CD3DXSMeshObject(); }
 
 /*
-shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( CMeshType::Name mesh_type )
+shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( MeshType::Name mesh_type )
 {
 	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
 	return pMesh;
@@ -1107,7 +1107,7 @@ shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( CMeshType::Name 
 
 CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::string& filepath,
 																 U32 load_option_flags,
-																 CMeshType::Name mesh_type )
+																 MeshType::Name mesh_type )
 {
 	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
 
@@ -1123,7 +1123,7 @@ CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::stri
 }
 
 
-shared_ptr<MeshImpl> CD3DMeshImplFactory::CreateMesh( CMeshType::Name mesh_type )
+shared_ptr<MeshImpl> CD3DMeshImplFactory::CreateMesh( MeshType::Name mesh_type )
 {
 	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
 	return pMesh;
@@ -1132,7 +1132,7 @@ shared_ptr<MeshImpl> CD3DMeshImplFactory::CreateMesh( CMeshType::Name mesh_type 
 
 MeshImpl* CD3DMeshImplFactory::LoadMeshObjectFromFile( const std::string& filepath,
 																 U32 load_option_flags,
-																 CMeshType::Name mesh_type )
+																 MeshType::Name mesh_type )
 {
 	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
 
@@ -1151,7 +1151,7 @@ MeshImpl* CD3DMeshImplFactory::LoadMeshObjectFromFile( const std::string& filepa
 CD3DXMeshObjectBase* CD3DMeshImplFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
 																    U32 load_option_flags,
-																	CMeshType::Name mesh_type )
+																	MeshType::Name mesh_type )
 {
 	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
 

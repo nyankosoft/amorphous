@@ -32,7 +32,7 @@ class CoreBaseEntitiesLoader;
  * holds mesh object for base entity
  * serialized with base entity
  */
-class CBE_MeshObjectProperty : public CMeshObjectContainer
+class CBE_MeshObjectProperty : public MeshObjectContainer
 {
 public:
 
@@ -42,7 +42,7 @@ public:
 	/// used by skeletal mesh (not serialized)
 	std::vector<CMeshBoneControllerBase*> m_vecpMeshBoneController;
 
-	boost::shared_ptr<CMeshContainerRenderMethod> m_pMeshRenderMethod;
+	boost::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
 
 	std::vector< boost::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
 
@@ -84,7 +84,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshObjectContainer::Serialize( ar, version );
+		MeshObjectContainer::Serialize( ar, version );
 
 		ar & m_vecTargetMaterialIndex;
 

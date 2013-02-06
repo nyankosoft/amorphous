@@ -500,8 +500,8 @@ void Firearm::InitFirearmMesh()
 
 	BasicMesh& mesh = *pMesh;
 
-//	CMeshContainerRenderMethod render_method;
-//	CSubsetRenderMethod slide_render_method;
+//	MeshContainerRenderMethod render_method;
+//	SubsetRenderMethod slide_render_method;
 //	render_method.m_vecSubsetNameToRenderMethod["slide"] = slide_render_method;
 }
 

@@ -41,7 +41,7 @@ public:
 //	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 //		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
 
-//	virtual CMeshType::Name GetMeshType() const { return CMeshType::PROGRESSIVE; }
+//	virtual MeshType::Name GetMeshType() const { return MeshType::PROGRESSIVE; }
 };
 
 

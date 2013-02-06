@@ -278,7 +278,7 @@ void CSubDisplay::Render()
 
 	FixedFunctionPipelineManager().SetTexture( 0, m_pTextureRenderTarget->GetRenderTargetTexture() );
 
-	CTextureStage ts0, ts1;
+	TextureStage ts0, ts1;
 	ts0.ColorOp = TexStageOp::MODULATE;
 	ts0.ColorArg0 = TexStageArg::DIFFUSE;
 	ts0.ColorArg1 = TexStageArg::TEXTURE;

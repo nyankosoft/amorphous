@@ -172,7 +172,7 @@ GLint ToGLOperand( int src )
 }
 
 
-Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const CTextureStage& params )
+Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const TextureStage& params )
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
 //	return Result::UNKNOWN_ERROR;

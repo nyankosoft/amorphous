@@ -259,7 +259,7 @@ void DoubleConeScrollEffect::Render()
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
 
-	CTextureStage ts;
+	TextureStage ts;
 	ts.ColorArg0 = TexStageArg::DIFFUSE;
 	ts.ColorArg1 = TexStageArg::TEXTURE;
 	ts.ColorOp   = TexStageOp::SELECT_ARG1;

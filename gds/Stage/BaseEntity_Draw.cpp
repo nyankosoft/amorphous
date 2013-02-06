@@ -289,7 +289,7 @@ void BaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 	if( !pMesh )
 		return;
 
-	if( pMesh->GetMeshType() == CMeshType::SKELETAL )
+	if( pMesh->GetMeshType() == MeshType::SKELETAL )
 	{
 //		shared_ptr<SkeletalMesh> pSkeletalMesh
 //			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
@@ -356,12 +356,12 @@ void BaseEntity::Init3DModel()
 
 	// create default mesh render method
 
-	CSubsetRenderMethod render_method;
+	SubsetRenderMethod render_method;
 	render_method.m_Shader = m_MeshProperty.m_ShaderHandle;
 	if( 0 < m_MeshProperty.m_ShaderTechnique.size_x() )
 		render_method.m_Technique = m_MeshProperty.m_ShaderTechnique(0,0);
 
-	m_MeshProperty.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod() );
+	m_MeshProperty.m_pMeshRenderMethod.reset( new MeshContainerRenderMethod() );
 
 	if( m_EntityFlag & BETYPE_LIGHTING )
 	{
@@ -380,7 +380,7 @@ void BaseEntity::Init3DModel()
 	// set the mesh render method for the first LOD
 	m_MeshProperty.m_pMeshRenderMethod->PrimaryMeshRenderMethod() = render_method;
 
-	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
+	if( pMesh && pMesh->GetMeshType() == MeshType::SKELETAL )
 	{
 		// add blend matrices loader to m_MeshProperty.m_pBlendMatricesLoader
 		// if the base entity uses shared render methods
@@ -465,8 +465,8 @@ void BaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 
 	pMesh->Render( *pShaderMgr );
 
-/*	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
-	const bool is_skeletal_mesh = (pMesh->GetMeshType() == CMeshType::SKELETAL);
+/*	shared_ptr<MeshContainerRenderMethod> pMeshRenderMethod;
+	const bool is_skeletal_mesh = (pMesh->GetMeshType() == MeshType::SKELETAL);
 	if( is_skeletal_mesh )
 	{
 		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowCasterRenderMethod;
@@ -490,7 +490,7 @@ void BaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 	if( true )//render_all_subsets )
 	{
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
-		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
+		SubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
 //		const char *tech = is_skeletal_mesh ? "ShadowMap_VertexBlend" : "ShadowMap";
 //		mesh_render_method.m_Technique.SetTechniqueName( tech );
@@ -541,8 +541,8 @@ void BaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 
 	pMesh->Render( *pShaderMgr );
 
-/*	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethod;
-	const bool is_skeletal_mesh = (pMesh->GetMeshType() == CMeshType::SKELETAL);
+/*	shared_ptr<MeshContainerRenderMethod> pMeshRenderMethod;
+	const bool is_skeletal_mesh = (pMesh->GetMeshType() == MeshType::SKELETAL);
 	if( is_skeletal_mesh )
 	{
 		pMeshRenderMethod = this->m_MeshProperty.m_pSkeletalShadowReceiverRenderMethod;
@@ -564,7 +564,7 @@ void BaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	if( true )//render_all_subsets )
 	{
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
-		CSubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
+		SubsetRenderMethod& mesh_render_method = pMeshRenderMethod->MeshRenderMethod()[0];
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
 //		const char *tech = is_skeletal_mesh ? "SceneShadowMap_VertexBlend" : "SceneShadowMap";
 //		mesh_render_method.m_Technique.SetTechniqueName( tech );
@@ -636,7 +636,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<BlendTransformsLoader
 {
 	if( !entity.m_pMeshRenderMethod )
 	{
-		entity.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+		entity.m_pMeshRenderMethod.reset( new MeshContainerRenderMethod );
 //		entity.m_pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 	}
 
@@ -654,7 +654,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<BlendTransformsLoader
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendTransformsLoader );
 /*
 	shared_ptr<BasicMesh> pMesh = entity.m_MeshHandle.GetMesh();
-	if( pMesh && pMesh->GetMeshType() == CMeshType::SKELETAL )
+	if( pMesh && pMesh->GetMeshType() == MeshType::SKELETAL )
 	{
 //		shared_ptr<SkeletalMesh> pSkeletalMesh
 //			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
@@ -715,7 +715,7 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int s
 	}
 
 	// create a planar reflection entity
-//	shared_ptr<CMeshContainerRenderMethod> pMeshRenderMethodCopy
+//	shared_ptr<MeshContainerRenderMethod> pMeshRenderMethodCopy
 //		= entity.m_pMeshRenderMethod->CreateCopy();
 
 	shared_ptr<CMirroredSceneTextureParam> pTexParam;
@@ -786,9 +786,9 @@ void CreateMeshRenderMethod( EntityHandle<>& entity,
 
 	// create mesh render method from shader and shader technique of the base entity
 
-	pEntity->m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod() );
+	pEntity->m_pMeshRenderMethod.reset( new MeshContainerRenderMethod() );
 
-	CSubsetRenderMethod& render_method = pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod();
+	SubsetRenderMethod& render_method = pEntity->m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 	render_method.m_Shader    = shader;
 	render_method.m_Technique = tech;
 
@@ -872,9 +872,9 @@ void BaseEntity::InitEntityGraphics( CCopyEntity &entity,
 
 			// specularity
 			if( 0.001f < mesh.GetMaterial(i).m_Mat.fSpecularity )
-				shader_descs[i].Specular = CSpecularSource::UNIFORM;
+				shader_descs[i].Specular = SpecularSource::UNIFORM;
 			else
-				shader_descs[i].Specular = CSpecularSource::NONE;
+				shader_descs[i].Specular = SpecularSource::NONE;
 		}
 
 		vector< pair< GenericShaderDesc, vector<unsigned int> > > grouped_descs;
@@ -883,12 +883,12 @@ void BaseEntity::InitEntityGraphics( CCopyEntity &entity,
 		// Do a NULL check just in case
 		// The mesh render method is initialized by InitMeshRenderMethod() above.
 		if( !entity.m_pMeshRenderMethod )
-			entity.m_pMeshRenderMethod.reset( new CMeshContainerRenderMethod );
+			entity.m_pMeshRenderMethod.reset( new MeshContainerRenderMethod );
 
 		bool shader_loaded = false;
 		if( grouped_descs.size() == 1 )
 		{
-			CSubsetRenderMethod& render_method = entity.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
+			SubsetRenderMethod& render_method = entity.m_pMeshRenderMethod->PrimaryMeshRenderMethod();
 
 			render_method.m_Technique.SetTechniqueName( "Default" );
 			render_method.m_ShaderDesc.pShaderGenerator.reset( new GenericShaderGenerator( grouped_descs[0].first ) );
