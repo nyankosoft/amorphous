@@ -20,7 +20,7 @@ static void CollisionDetect_Box_Triangle( CJL_Shape_Box& rBox,
 
 static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 												CJL_Shape_Box& rBox,
-												CIndexedTriangle& rIndexedTriangle,
+												IndexedTriangle& rIndexedTriangle,
 												Triangle& rTriangle,
 												CJL_CollisionFunctor& rColFunctor,
 												Scalar fOldDepth );
@@ -47,7 +47,7 @@ static void CollisionDetect_Box_Triangle( CJL_Shape_Box& rBox,
 										  int iTriangleIndex, CTriangleMesh& rTriMesh,
 										  CJL_CollisionFunctor& rColFunctor )
 {
-	CIndexedTriangle& rTriangle	= rTriMesh.GetTriangle(iTriangleIndex);		// get indexed triangle
+	IndexedTriangle& rTriangle	= rTriMesh.GetTriangle(iTriangleIndex);		// get indexed triangle
 	Triangle triangle( rTriMesh.GetVertex( rTriangle.GetIndex(0) ),
 		                rTriMesh.GetVertex( rTriangle.GetIndex(1) ),
 						rTriMesh.GetVertex( rTriangle.GetIndex(2) ),
@@ -168,7 +168,7 @@ static void AddPoint( TCFixedVector<Vector3, MAX_POINTS_BOX_TRIANGLE>& rvecvCont
 
 static void AddContactPoint( Vector3& rvNormal, Scalar fPenetrationDepth,
 												CJL_Shape_Box& rBox,
-												CIndexedTriangle& rIndexedTriangle,
+												IndexedTriangle& rIndexedTriangle,
 												Triangle& rTriangle,
 												CJL_CollisionFunctor& rColFunctor,
 												Scalar fOldDepth )

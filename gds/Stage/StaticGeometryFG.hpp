@@ -22,7 +22,7 @@ class CTriangleMesh;
  loaded from binary database file
  - "key" and archive object types stored in db file
    - "Main": CStaticGeometryArchiveFG
-   - "CollisionMesh": CBSPTreeForTriangleMesh
+   - "CollisionMesh": BSPTreeForTriangleMesh
 */
 class CStaticGeometryFG : public CStaticGeometryBase
 {

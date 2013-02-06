@@ -92,7 +92,7 @@ void CBSPTree_CollisionModel_Exporter::SetCollisionModel( CPlaneBuffer *pPlaneBu
 
 	m_iNumPolygons = pvecMapFace->size();
 
-	m_paPolygon = new CConvexPolygon [m_iNumPolygons];
+	m_paPolygon = new ConvexPolygon [m_iNumPolygons];
 
 	vector<int> *paveciOnPlaneFaceIndex    = new vector<int> [m_iNumBSPNodes]; // store indices to faces that are on partition planes
 	vector<int> *paveciCrossPlaneFaceIndex = new vector<int> [m_iNumBSPNodes]; // store indices to faces that cross partition planes
@@ -123,11 +123,11 @@ void CBSPTree_CollisionModel_Exporter::SetCollisionModel( CPlaneBuffer *pPlaneBu
 		m_paBSPNode[iNodeIndex].iPlanePolygonIndex = k;
 		m_paBSPNode[iNodeIndex].iNumPlanePolygons = rveciFaceIndex.size();
 
-		// convert 'CMapFace' into 'CConvexPolygon'
+		// convert 'CMapFace' into 'ConvexPolygon'
 		for( i=0; i<rveciFaceIndex.size(); i++ )
 		{
 			CMapFace& rFace = pvecMapFace->at( rveciFaceIndex[i] );
-			CConvexPolygon& rPolygon = m_paPolygon[k++];
+			ConvexPolygon& rPolygon = m_paPolygon[k++];
 			MakePolygonFromFace( rPolygon, rFace );
 		}
 
@@ -137,11 +137,11 @@ void CBSPTree_CollisionModel_Exporter::SetCollisionModel( CPlaneBuffer *pPlaneBu
 		m_paBSPNode[iNodeIndex].iCrossPolygonIndex = k;
 		m_paBSPNode[iNodeIndex].iNumCrossPolygons = rveciCrossFaceIndex.size();
 
-		// convert 'CMapFace' into 'CConvexPolygon'
+		// convert 'CMapFace' into 'ConvexPolygon'
 		for( i=0; i<rveciCrossFaceIndex.size(); i++ )
 		{
 			CMapFace& rFace = pvecMapFace->at( rveciCrossFaceIndex[i] );
-			CConvexPolygon& rPolygon = m_paPolygon[k++];
+			ConvexPolygon& rPolygon = m_paPolygon[k++];
 			MakePolygonFromFace( rPolygon, rFace );
 		}
 	}
@@ -155,7 +155,7 @@ void CBSPTree_CollisionModel_Exporter::SetCollisionModel( CPlaneBuffer *pPlaneBu
 }
 
 
-void CBSPTree_CollisionModel_Exporter::MakePolygonFromFace(CConvexPolygon& rPolygon, // [out]
+void CBSPTree_CollisionModel_Exporter::MakePolygonFromFace(ConvexPolygon& rPolygon, // [out]
 														   CMapFace& rFace)			 // [in]
 {
 	Vector3 avVertex[128];
@@ -255,7 +255,7 @@ void CBSPTree_CollisionModel_Exporter::SetPolygonCollisionInfo()
 
 	for( i=0; i<m_iNumPolygons; i++ )
 	{
-		CConvexPolygon& rPolygon0 = m_paPolygon[i];
+		ConvexPolygon& rPolygon0 = m_paPolygon[i];
 		aabb0 = rPolygon0.GetAABB();
 		vNormal0 = rPolygon0.GetNormal();
 		fDist0 =   rPolygon0.GetDistance();
@@ -266,7 +266,7 @@ void CBSPTree_CollisionModel_Exporter::SetPolygonCollisionInfo()
 
 		for( j=0; j<m_iNumPolygons; j++ )
 		{
-			CConvexPolygon& rPolygon1 = m_paPolygon[j];
+			ConvexPolygon& rPolygon1 = m_paPolygon[j];
 
 			if( !aabb0.IsIntersectingWith(rPolygon1.GetAABB()) )
 				continue;
@@ -336,7 +336,7 @@ void CBSPTree_CollisionModel_Exporter::SetPolygonCollisionInfo()
 	int iNumVertices;
 	for( i=0; i<m_iNumPolygons; i++ )
 	{
-		CConvexPolygon& rPolygon = m_paPolygon[i];
+		ConvexPolygon& rPolygon = m_paPolygon[i];
 		iNumVertices = rPolygon.GetNumVertices();
 
 		for( m=0; m<iNumVertices; m++ )

@@ -310,7 +310,7 @@ public:
    - See m_TestCounter and how it is used
 */
 template<class TGeometry>
-class CLeafyAABTree : public AABTree<TGeometry>
+class LeafyAABTree : public AABTree<TGeometry>
 {
 	int m_TestCounter;
 
@@ -319,9 +319,9 @@ class CLeafyAABTree : public AABTree<TGeometry>
 
 public:
 
-	CLeafyAABTree() : m_TestCounter(0) {}
+	LeafyAABTree() : m_TestCounter(0) {}
 
-	virtual ~CLeafyAABTree() {}
+	virtual ~LeafyAABTree() {}
 
 	TreeType GetTreeType() const { return AABTree::LEAFY; }
 

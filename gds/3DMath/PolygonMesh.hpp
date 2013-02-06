@@ -3,37 +3,32 @@
 
 
 #include <vector>
+#include "aabb3.hpp"
+#include "ray.hpp"
+#include "AABTree.hpp"
 
 
 namespace amorphous
 {
-using namespace std;
-
-
-#include "3DMath/Vector3.hpp"
-#include "3DMath/aabb3.hpp"
-#include "3DMath/ray.hpp"
-#include "3DMath/AABTree.hpp"
-
 
 template <class TCPolygon>
-class CBSPTreeForPolygonMesh;
+class BSPTreeForPolygonMesh;
 
 
 
 //template<class T>
-//class CPolygonMesh;
+//class PolygonMesh;
 
 //==========================================================================================
-// CBSPTreeForPolygonMesh
+// BSPTreeForPolygonMesh
 //==========================================================================================
 
 template <class TCPolygon>
-class CBSPTreeForPolygonMesh
+class BSPTreeForPolygonMesh
 {
 public:
 
-	vector<SPMBinNode> m_vecNode;
+	std::vector<SPMBinNode> m_vecNode;
 
 	int m_iNumMaxTrianglesPerCell;
 
@@ -43,11 +38,11 @@ public:
 
 public:
 
-	CBSPTreeForPolygonMesh();
+	BSPTreeForPolygonMesh();
 
 	void Release();
 
-	bool Build( vector<TCPolygon>& rvecPolygon );
+	bool Build( std::vector<TCPolygon>& rvecPolygon );
 
 	void SetMinimumCellVolume( float fMinCellVolume ) { m_fMinimumCellVolume = fMinCellVolume; }
 
@@ -58,36 +53,36 @@ public:
 	const CAABNode& GetNode( int index ) const { return m_vecNode[index]; }
 
 	/// get a list of polygons whose aabb intersect with 'raabb'
-//	int inline GetIntersectingPolygons( vector<int>& rveciPolygonList, AABB3& raabb );
+//	int inline GetIntersectingPolygons( std::vector<int>& rveciPolygonList, AABB3& raabb );
 
-//	friend class CPolygonMesh;
+//	friend class PolygonMesh;
 
 };
 
 
 
 //==========================================================================================
-// CPolygonMesh
+// PolygonMesh
 //==========================================================================================
 
 template <class TCPolygon>
-class CPolygonMesh
+class PolygonMesh
 {
-	CBSPTreeForPolygonMesh<TCPolygon> m_Tree;
+	BSPTreeForPolygonMesh<TCPolygon> m_Tree;
 
-	vector<TCPolygon> m_vecPolygon;
+	std::vector<TCPolygon> m_vecPolygon;
 
 	/// holds indices to nodes (used at runtime)
-	vector<int> veciNodeToCheck;
+	std::vector<int> veciNodeToCheck;
 
 	/// test conter for polygons (used at runtime)
-	vector<int> m_veciTestCounter;
+	std::vector<int> m_veciTestCounter;
 
 public:
 
-	CPolygonMesh() {}
+	PolygonMesh() {}
 
-	~CPolygonMesh() { Release(); }
+	~PolygonMesh() { Release(); }
 
 	bool CreateMesh( vector<TCPolygon>& rvecPolygon );
 
@@ -123,11 +118,11 @@ public:
 
 
 //==========================================================================================
-// CBSPTreeForPolygonMesh
+// BSPTreeForPolygonMesh
 //==========================================================================================
 
 template <class TCPolygon>
-CBSPTreeForPolygonMesh<TCPolygon>::CBSPTreeForPolygonMesh()
+BSPTreeForPolygonMesh<TCPolygon>::BSPTreeForPolygonMesh()
 {
 	m_iNumMaxTrianglesPerCell = 8;
 
@@ -138,14 +133,14 @@ CBSPTreeForPolygonMesh<TCPolygon>::CBSPTreeForPolygonMesh()
 
 
 template <class TCPolygon>
-void CBSPTreeForPolygonMesh<TCPolygon>::Release()
+void BSPTreeForPolygonMesh<TCPolygon>::Release()
 {
 	m_vecNode.clear();
 }
 
 
 template <class TCPolygon>
-bool CBSPTreeForPolygonMesh<TCPolygon>::Build( vector<TCPolygon>& rvecPolygon )
+bool BSPTreeForPolygonMesh<TCPolygon>::Build( std::vector<TCPolygon>& rvecPolygon )
 {
 	Release();
 
@@ -175,7 +170,7 @@ bool CBSPTreeForPolygonMesh<TCPolygon>::Build( vector<TCPolygon>& rvecPolygon )
 	}
 
 	// stack of nodes we need to process
-	vector<int> veciNodeToProcess;
+	std::vector<int> veciNodeToProcess;
 	veciNodeToProcess.push_back(0);	// put the root node
 
 	while( !veciNodeToProcess.empty() )
@@ -234,11 +229,11 @@ bool CBSPTreeForPolygonMesh<TCPolygon>::Build( vector<TCPolygon>& rvecPolygon )
 
 
 //=================================================================================================================
-// CPolygonMesh
+// PolygonMesh
 //=================================================================================================================
 
 template <class TCPolygon>
-void CPolygonMesh<TCPolygon>::Release()
+void PolygonMesh<TCPolygon>::Release()
 {
 	m_vecPolygon.clear();
 	m_Tree.Release();
@@ -250,7 +245,7 @@ void CPolygonMesh<TCPolygon>::Release()
 // every three integers are interpreted as a set of indices to a triangle
 // vertices and indices are copied to member variables, so the user is responsible for releasing the original data
 template <class TCPolygon>
-bool CPolygonMesh<TCPolygon>::CreateMesh( vector<TCPolygon>& rvecPolygon )
+bool PolygonMesh<TCPolygon>::CreateMesh( std::vector<TCPolygon>& rvecPolygon )
 {
 	Release();
 
@@ -277,9 +272,9 @@ bool CPolygonMesh<TCPolygon>::CreateMesh( vector<TCPolygon>& rvecPolygon )
 
 
 template <class TCPolygon>
-bool CPolygonMesh<TCPolygon>::RayTrace( SRay& ray )
+bool PolygonMesh<TCPolygon>::RayTrace( SRay& ray )
 {
-	static vector<int> s_veciPolygonList;
+	static std::vector<int> s_veciPolygonList;
 	s_veciPolygonList.resize( 0 );
 
 	AABB3 aabb;
@@ -337,7 +332,7 @@ bool CPolygonMesh<TCPolygon>::RayTrace( SRay& ray )
 
 
 template <class TCPolygon>
-int CPolygonMesh<TCPolygon>::GetIntersectingPolygons( vector<int>& rveciPolygonList, AABB3& aabb )
+int PolygonMesh<TCPolygon>::GetIntersectingPolygons( std::vector<int>& rvestd::ygonList, AABB3& aabb )
 {
 	int i, iPolygonIndex;
 

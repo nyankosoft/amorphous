@@ -31,7 +31,7 @@ class CBSPTree_CollisionModel_Exporter : public CBSPTree_CollisionModel
 
 	void GetNodeIndex_r( int& riDestNodeIndex, int& rType, CMapFace& rFace,	int iNodeIndex = 0 );
 
-	void MakePolygonFromFace(CConvexPolygon& rPolygon, CMapFace& rFace);
+	void MakePolygonFromFace(ConvexPolygon& rPolygon, CMapFace& rFace);
 
 public:
 

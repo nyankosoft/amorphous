@@ -44,7 +44,7 @@ public:
 	std::string RecursionStopCond;	///< "&&"(and) or "||"(or)
 
 	/// filename of an archive
-	/// MUST be an archvie of CBSPTreeForTriangleMesh
+	/// MUST be an archvie of BSPTreeForTriangleMesh
 	std::string BSPTreeTriangleMeshArchiveFilename;
 
 	inline CJL_ShapeDesc_TriangleMesh()

@@ -34,7 +34,7 @@ struct SBSPNode
 };
 
 
-class CConvexPolygon;
+class ConvexPolygon;
 
 struct SNode;
 class CPlaneBuffer;
@@ -48,7 +48,7 @@ protected:
 	SBSPNode *m_paBSPNode;
 
 	int m_iNumPolygons;
-	CConvexPolygon *m_paPolygon;
+	ConvexPolygon *m_paPolygon;
 
 //	CCell_CollisionModel *m_paCell;
 	int m_iNumCells;

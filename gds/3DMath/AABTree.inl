@@ -154,7 +154,7 @@ inline void AABTree<TGeometry>::UpdateRegisteredGeometries()
 
 
 template<class TGeometry>
-inline void CLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex )
+inline void LeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex )
 {
 	size_t i;
 
@@ -333,7 +333,7 @@ inline void AABTree<TGeometry>::InitRootNode()
 
 
 template<class TGeometry>
-inline void CLeafyAABTree<TGeometry>::Build()
+inline void LeafyAABTree<TGeometry>::Build()
 {
 	if( m_vecGeometry.size() == 0 )
 		return;
@@ -418,7 +418,7 @@ inline void CLeafyAABTree<TGeometry>::Build()
 
 
 template<class TGeometry>
-inline void CLeafyAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int version )
+inline void LeafyAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int version )
 {
 	AABTree::Serialize( ar, version );
 

@@ -15,7 +15,7 @@ namespace amorphous
 
 #define EDGE_COLLISION_FLAG_OFFSET	16
 
-class CConvexPolygon
+class ConvexPolygon
 {
 	int m_iNumVertices;
 	Vector3 *m_pavVertex;
@@ -31,10 +31,10 @@ public:
 
   int m_iPolygonIndex;
 
-  CConvexPolygon();
-  CConvexPolygon( Vector3 *pavVertex, int iNumVertices );
+  ConvexPolygon();
+  ConvexPolygon( Vector3 *pavVertex, int iNumVertices );
 
-  ~CConvexPolygon();
+  ~ConvexPolygon();
 
   void SetVertices( Vector3 *pavVertex, int iNumVertices );
 

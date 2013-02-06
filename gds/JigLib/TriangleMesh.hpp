@@ -18,11 +18,11 @@ struct STrace;
 
 class CTriangleMesh : public CJL_ShapeBase
 {
-	CBSPTreeForTriangleMesh m_Tree;
+	BSPTreeForTriangleMesh m_Tree;
 
-	// 9/27/2007 moved to CBSPTreeForTriangleMesh
+	// 9/27/2007 moved to BSPTreeForTriangleMesh
 //	vector<Vector3> m_vecVertex;
-//	vector<CIndexedTriangle> m_vecIndexedTriangle;
+//	vector<IndexedTriangle> m_vecIndexedTriangle;
 
 	std::vector<int> veciNodeToCheck;	// used at runtime
 
@@ -51,12 +51,12 @@ public:
 	inline Vector3& GetVertex( int i ) { return m_Tree.m_vecVertex[i]; }
 
 	/// returns the i-th indexed triangle
-	inline CIndexedTriangle& GetTriangle( int i ) { return  m_Tree.GetGeometryBuffer()[i]; }
+	inline IndexedTriangle& GetTriangle( int i ) { return  m_Tree.GetGeometryBuffer()[i]; }
 
 	// returns a general geometry triangle that corresponds to the i-th indexed triangle
 //	inline void GetGeneralTriangle( Triangle& dest_triangle, int i );
 
-	// 08:32 2007/09/28 most of the routines were moved to CBSPTreeForTriangleMesh
+	// 08:32 2007/09/28 most of the routines were moved to BSPTreeForTriangleMesh
 	bool CreateMesh( std::vector<Vector3>& rvecVertex, std::vector<int>& rveciIndex, std::vector<short>& rvecsMatIndex );
 
 	inline int GetIntersectingTriangles( std::vector<int>& rveciTriList, AABB3& raabb );	// get a list of triangles whose aabb intersect with 'raabb'

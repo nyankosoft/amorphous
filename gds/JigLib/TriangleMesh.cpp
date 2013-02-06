@@ -52,12 +52,12 @@ void CTriangleMesh::ClipTrace( STrace& tr )
 //	float frac = 1.0f;
 	for( i=0; i<iNumTris; i++ )
 	{
-		CIndexedTriangle& tri = GetTriangle( s_veciTriList[i] );
+		IndexedTriangle& tri = GetTriangle( s_veciTriList[i] );
 		Triangle triangle( GetVertex( tri.GetIndex(0) ),
 			                GetVertex( tri.GetIndex(1) ),
 							GetVertex( tri.GetIndex(2) ),
 							tri.m_vNormal );
-
+		
 		// check intersection between ray and triangle
 		if( triangle.RayIntersect( vStart, vEnd ) )
 		{	// found intersection
@@ -105,7 +105,7 @@ void CTriangleMesh::ClipLineSegment( CJL_LineSegment& segment )
 
 	for( i=0; i<iNumTris; i++ )
 	{
-		CIndexedTriangle& tri = GetTriangle( s_veciTriList[i] );
+		IndexedTriangle& tri = GetTriangle( s_veciTriList[i] );
 		Triangle triangle( GetVertex( tri.GetIndex(0) ),
 			                GetVertex( tri.GetIndex(1) ),
 							GetVertex( tri.GetIndex(2) ),
@@ -137,9 +137,9 @@ static int g_iNumConcaveEdges = 0;
 
 CTriangleMesh::EdgeState CTriangleMesh::GetEdgeState( SEdgeRecord& edge0, SEdgeRecord& edge1 )
 {
-	vector<CIndexedTriangle>& rvecIndexedTriangle = m_Tree.GetGeometryBuffer();
-	CIndexedTriangle& tri0 = rvecIndexedTriangle[ edge0.iTriangle ];
-	CIndexedTriangle& tri1 = rvecIndexedTriangle[ edge1.iTriangle ];
+	vector<IndexedTriangle>& rvecIndexedTriangle = m_Tree.GetGeometryBuffer();
+	IndexedTriangle& tri0 = rvecIndexedTriangle[ edge0.iTriangle ];
+	IndexedTriangle& tri1 = rvecIndexedTriangle[ edge1.iTriangle ];
 
 	if( tri0.GetNormal() == tri1.GetNormal() )
 		return INTERIOR;
@@ -170,8 +170,8 @@ CTriangleMesh::EdgeState CTriangleMesh::GetEdgeState( SEdgeRecord& edge0, SEdgeR
 
 void CTriangleMesh::SetCollisionFlags()
 {
-//	vector<CIndexedTriangle>& rvecIndexedTriangle = m_Tree.m_vecIndexedTriangle;
-	vector<CIndexedTriangle>& rvecIndexedTriangle = m_Tree.GetGeometryBuffer();
+//	vector<IndexedTriangle>& rvecIndexedTriangle = m_Tree.m_vecIndexedTriangle;
+	vector<IndexedTriangle>& rvecIndexedTriangle = m_Tree.GetGeometryBuffer();
 	const size_t iNumTriangles = rvecIndexedTriangle.size();
 
 	vector< vector<SEdgeRecord> > vecSortedEdgeRecord;
@@ -186,7 +186,7 @@ void CTriangleMesh::SetCollisionFlags()
 
 	for( i=0; i<iNumTriangles; i++ )
 	{
-		CIndexedTriangle& triangle = rvecIndexedTriangle[i];
+		IndexedTriangle& triangle = rvecIndexedTriangle[i];
 		for( j=0; j<3; j++ )
 		{	// store edge record for each edge
 			edge.iTriangle = (int)i;
@@ -222,7 +222,7 @@ void CTriangleMesh::SetCollisionFlags()
 	{
 		// prepare references to the first edge and its owner triangle
 		SEdgeRecord& edge0 = vecSortedEdgeRecord[i][0];
-		CIndexedTriangle& tri = rvecIndexedTriangle[ edge0.iTriangle ];
+		IndexedTriangle& tri = rvecIndexedTriangle[ edge0.iTriangle ];
 
 		if( vecSortedEdgeRecord[i].size() == 1 || 3 <= vecSortedEdgeRecord[i].size() )
 		{
@@ -265,7 +265,7 @@ void CTriangleMesh::SetCollisionFlags()
 			for( j=0; j<2; j++ )
 			{
 				SEdgeRecord& edge = vecSortedEdgeRecord[i][j];
-				CIndexedTriangle& tri = rvecIndexedTriangle[edge.iTriangle];
+				IndexedTriangle& tri = rvecIndexedTriangle[edge.iTriangle];
 				tri.m_bVertexCollision[edge.iEdge] = false;
 				tri.m_bVertexCollision[(edge.iEdge+1) % 3] = false;
 			}

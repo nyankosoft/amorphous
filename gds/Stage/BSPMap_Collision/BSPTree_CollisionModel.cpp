@@ -51,7 +51,7 @@ void CBSPTree_CollisionModel::CheckCollision_r( int iNodeIndex,
 		// check the ploygons of this node
 		for( i=0; i<rCurrentNode.iNumCrossPolygons; i++ )
 		{
-			CConvexPolygon& rPolygon = m_paPolygon[rCurrentNode.iCrossPolygonIndex + i];
+			ConvexPolygon& rPolygon = m_paPolygon[rCurrentNode.iCrossPolygonIndex + i];
 
 			if( !aabb.IsIntersectingWith(rPolygon.GetAABB()) )
 				continue;
@@ -85,7 +85,7 @@ void CBSPTree_CollisionModel::CheckCollision_r( int iNodeIndex,
 			// check the ploygons on this plane
 			for( i=0; i<rCurrentNode.iNumPlanePolygons; i++ )
 			{
-				CConvexPolygon& rPolygon = m_paPolygon[rCurrentNode.iPlanePolygonIndex + i];
+				ConvexPolygon& rPolygon = m_paPolygon[rCurrentNode.iPlanePolygonIndex + i];
 
 				if( !aabb.IsIntersectingWith(rPolygon.GetAABB()) )
 					continue;
@@ -129,7 +129,7 @@ void CBSPTree_CollisionModel::LoadFromFile(FILE *fp)
 	fread( &m_iNumPolygons, sizeof(int), 1, fp );
 	if( 0 < m_iNumPolygons )
 	{
-		m_paPolygon = new CConvexPolygon [m_iNumPolygons];
+		m_paPolygon = new ConvexPolygon [m_iNumPolygons];
 
 		int i;
 		for( i=0; i<m_iNumPolygons; i++ )

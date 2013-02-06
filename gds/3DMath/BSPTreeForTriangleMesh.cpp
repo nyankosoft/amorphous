@@ -11,17 +11,17 @@ using namespace std;
 
 
 //=================================================================================================================
-// CBSPTreeForTriangleMesh
+// BSPTreeForTriangleMesh
 //=================================================================================================================
 
-CBSPTreeForTriangleMesh::CBSPTreeForTriangleMesh()
+BSPTreeForTriangleMesh::BSPTreeForTriangleMesh()
 {
 }
 
 
-void CBSPTreeForTriangleMesh::Release()
+void BSPTreeForTriangleMesh::Release()
 {
-	CLeafyAABTree<CIndexedTriangle>::Release();
+	LeafyAABTree<IndexedTriangle>::Release();
 
 	m_vecVertex.resize( 0 );
 }
@@ -73,11 +73,11 @@ struct LeafNodeStatistics
 };
 
 
-bool CBSPTreeForTriangleMesh::Build( vector<Vector3>& rvecVertex, vector<CIndexedTriangle>& rvecIndexedTriangle )
+bool BSPTreeForTriangleMesh::Build( vector<Vector3>& rvecVertex, vector<IndexedTriangle>& rvecIndexedTriangle )
 {
 //	m_AABTree.Build( rvecIndexedTriangle );
-//	CLeafyAABTree<CIndexedTriangle>::Build( rvecIndexedTriangle );
-	CLeafyAABTree<CIndexedTriangle>::Build();
+//	LeafyAABTree<IndexedTriangle>::Build( rvecIndexedTriangle );
+	LeafyAABTree<IndexedTriangle>::Build();
 
 	return true;
 }
@@ -89,7 +89,7 @@ bool CBSPTreeForTriangleMesh::Build( vector<Vector3>& rvecVertex, vector<CIndexe
  - every three integers are interpreted as a set of indices to a triangle
  - vertices and indices are copied to member variables, so the user is responsible for releasing the original data
  */
-bool CBSPTreeForTriangleMesh::CreateMesh( vector<Vector3>& rvecVertex,
+bool BSPTreeForTriangleMesh::CreateMesh( vector<Vector3>& rvecVertex,
 							              vector<int>& rveciIndex,		// vertex indices used by indexed triangles
 										  vector<short>& rvecsMatIndex )
 {
@@ -118,13 +118,13 @@ bool CBSPTreeForTriangleMesh::CreateMesh( vector<Vector3>& rvecVertex,
 //	m_WorldAABB.vMax += Vector3( 1.0f, 1.0f, 1.0f);
 
 	// copy triangles and make aabb and normal for each triangle
-	vector<CIndexedTriangle>& rvecIndexedTriangle = this->GetGeometryBuffer();
+	vector<IndexedTriangle>& rvecIndexedTriangle = this->GetGeometryBuffer();
 	rvecIndexedTriangle.reserve(iNumTriangles);
 	j = 0;
 	for( i=0; i<iNumTriangles; i++ )
 	{
-		rvecIndexedTriangle.push_back( CIndexedTriangle() );
-		CIndexedTriangle& triangle = rvecIndexedTriangle.back();
+		rvecIndexedTriangle.push_back( IndexedTriangle() );
+		IndexedTriangle& triangle = rvecIndexedTriangle.back();
 
 		triangle.m_aiVertexIndex[0] = rveciIndex[i*3];
 		triangle.m_aiVertexIndex[1] = rveciIndex[i*3+1];

@@ -12,13 +12,13 @@ using namespace serialization;
 
 
 class CTriangleMesh;
-class CBSPTreeForTriangleMesh;
+class BSPTreeForTriangleMesh;
 
 
-class CIndexedTriangle : public IArchiveObjectBase
+class IndexedTriangle : public IArchiveObjectBase
 {
 	friend class CTriangleMesh;
-	friend class CBSPTreeForTriangleMesh;
+	friend class BSPTreeForTriangleMesh;
 
 	int m_aiVertexIndex[3];
 	int m_iMaterialID;
@@ -31,8 +31,8 @@ class CIndexedTriangle : public IArchiveObjectBase
 
 public:
 
-	inline CIndexedTriangle();
-	~CIndexedTriangle() {}
+	inline IndexedTriangle();
+	~IndexedTriangle() {}
 
 	inline int GetIndex(int i) { return m_aiVertexIndex[i]; }
 	const AABB3& GetAABB() const { return m_aabb; }
@@ -54,10 +54,10 @@ public:
 
 
 //=================================================================================================================
-// CIndexedTriangle
+// IndexedTriangle
 //=================================================================================================================
 
-inline CIndexedTriangle::CIndexedTriangle()
+inline IndexedTriangle::IndexedTriangle()
 {
 	m_iTestCounter = -1;
 
@@ -70,7 +70,7 @@ inline CIndexedTriangle::CIndexedTriangle()
 }
 
 
-inline void CIndexedTriangle::Serialize( IArchive& ar, const unsigned int version )
+inline void IndexedTriangle::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_iMaterialID;
 	ar & m_iTestCounter;

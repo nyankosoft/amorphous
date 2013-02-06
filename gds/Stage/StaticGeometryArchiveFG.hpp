@@ -134,7 +134,7 @@ public:
 
 	/// triangle mesh for collision (B)
 	/// - stores the filename of the collision mesh archive
-	/// - MUST be an archive of CBSPTreeForTriangleMesh
+	/// - MUST be an archive of BSPTreeForTriangleMesh
 	/// - resistered to physics simulator
 	std::string m_CollisionMeshArchiveFilename;
 

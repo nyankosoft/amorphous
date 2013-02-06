@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-CConvexPolygon::CConvexPolygon()
+ConvexPolygon::ConvexPolygon()
 {
 	m_iNumVertices = 0;
 	m_pavVertex = NULL;
@@ -18,20 +18,20 @@ CConvexPolygon::CConvexPolygon()
 }
 
 
-CConvexPolygon::CConvexPolygon( Vector3 *pavVertex, int iNumVertices )
+ConvexPolygon::ConvexPolygon( Vector3 *pavVertex, int iNumVertices )
 {
 	m_pavVertex = NULL;
 	SetVertices( pavVertex, iNumVertices );
 }
 
 
-CConvexPolygon::~CConvexPolygon()
+ConvexPolygon::~ConvexPolygon()
 {
 	SafeDeleteArray( m_pavVertex );
 }
 
 
-void CConvexPolygon::SetVertices( Vector3 *pavVertex, int iNumVertices )
+void ConvexPolygon::SetVertices( Vector3 *pavVertex, int iNumVertices )
 {
 	SafeDeleteArray( m_pavVertex );
 
@@ -49,7 +49,7 @@ void CConvexPolygon::SetVertices( Vector3 *pavVertex, int iNumVertices )
 }
 
 
-void CConvexPolygon::ComputeAABB()
+void ConvexPolygon::ComputeAABB()
 {
 	Vector3 vMin = Vector3( 99999, 99999, 99999);
 	Vector3	vMax = Vector3(-99999,-99999,-99999);
@@ -71,20 +71,20 @@ void CConvexPolygon::ComputeAABB()
 }
 
 
-void CConvexPolygon::SetNormal( Vector3& rvNormal )
+void ConvexPolygon::SetNormal( Vector3& rvNormal )
 {
 	m_Plane.normal = rvNormal;
 ///	m_vNormal.setValue( (float *)&rvNormal );
 }
 
 
-void CConvexPolygon::SetDistance( Scalar fDist )
+void ConvexPolygon::SetDistance( Scalar fDist )
 {
 	m_Plane.dist = fDist;
 }
 
 
-Vector3 CConvexPolygon::GetSupportPoint(const Vector3& v) const
+Vector3 ConvexPolygon::GetSupportPoint(const Vector3& v) const
 {
 	Scalar d, max_dot = -99999;
 	int i, iNumVertices = m_iNumVertices; 
@@ -103,7 +103,7 @@ Vector3 CConvexPolygon::GetSupportPoint(const Vector3& v) const
 }
 
 
-void CConvexPolygon::LoadFromFile( FILE *fp )
+void ConvexPolygon::LoadFromFile( FILE *fp )
 {
 	fread( &m_iNumVertices, sizeof(int), 1, fp );
 
@@ -121,7 +121,7 @@ void CConvexPolygon::LoadFromFile( FILE *fp )
 }
 
 
-void CConvexPolygon::WriteToFile( FILE *fp )
+void ConvexPolygon::WriteToFile( FILE *fp )
 {
 	fwrite( &m_iNumVertices, sizeof(int), 1, fp );
 	fwrite( m_pavVertex, sizeof(Vector3), m_iNumVertices, fp );
@@ -137,7 +137,7 @@ void CConvexPolygon::WriteToFile( FILE *fp )
 
 
 
-void CConvexPolygon::SetVertexCollisionFlag(int iIndex, bool bCheckCollision)
+void ConvexPolygon::SetVertexCollisionFlag(int iIndex, bool bCheckCollision)
 {
 	if( bCheckCollision )
 	{	// raise the flag
@@ -150,7 +150,7 @@ void CConvexPolygon::SetVertexCollisionFlag(int iIndex, bool bCheckCollision)
 }
 
 
-void CConvexPolygon::SetEdgeCollisionFlag(int iIndex, bool bCheckCollision)
+void ConvexPolygon::SetEdgeCollisionFlag(int iIndex, bool bCheckCollision)
 {
 	if( bCheckCollision )
 	{	// raise the flag
