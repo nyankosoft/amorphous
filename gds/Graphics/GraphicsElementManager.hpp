@@ -100,20 +100,20 @@ class GraphicsElementManager : public GraphicsElementManagerBase, public Graphic
 
 //	int m_ReferenceResolutionWidth;
 
-	class CLayer
+	class Layer
 	{
 		std::vector<int> m_vecElement;
 
 	public:
-		CLayer() {}
-		virtual ~CLayer() {}
+		Layer() {}
+		virtual ~Layer() {}
 
 		inline bool RemoveElementFromLayer( boost::shared_ptr<GraphicsElement>& pElement );
 
 		friend class GraphicsElementManager;
 	};
 
-	std::vector<CLayer> m_vecLayer;
+	std::vector<Layer> m_vecLayer;
 
 	int m_NumMaxLayers;
 
@@ -237,7 +237,7 @@ public:
 
 // ==================================== inline implementations ====================================
 
-inline bool GraphicsElementManager::CLayer::RemoveElementFromLayer( boost::shared_ptr<GraphicsElement>& pElement )
+inline bool GraphicsElementManager::Layer::RemoveElementFromLayer( boost::shared_ptr<GraphicsElement>& pElement )
 {
 	int element_index = pElement->GetElementIndex();
 

@@ -117,7 +117,7 @@ bool GraphicsElementManager::RegisterToLayer( int element_index, int layer_index
 //	{
 //		int i, num_extra_layers = layer_index - (int)m_vecLayer.size() + 1;
 //		for( i=0; i<num_extra_layers; i++ )
-//			m_vecLayer.push_back( GraphicsElementManager::CLayer() );
+//			m_vecLayer.push_back( GraphicsElementManager::Layer() );
 //	}
 
 	m_vecLayer[layer_index].m_vecElement.push_back( element_index );
@@ -728,7 +728,7 @@ void GraphicsElementManager::RemoveFromLayer( boost::shared_ptr<GraphicsElement>
 	if( layer_index < 0 || (int)m_vecLayer.size() <= layer_index )
 		return;
 
-	CLayer& current_layer = m_vecLayer[layer_index];
+	Layer& current_layer = m_vecLayer[layer_index];
 
 	bool res = current_layer.RemoveElementFromLayer( pElement );
 
@@ -748,7 +748,7 @@ void GraphicsElementManager::SetElementToLayer( boost::shared_ptr<GraphicsElemen
 		// - Note that the previous check 'NUM_MAX_LAYERS <= layer_index'
 		//   guarantees that size of 'm_vecLayer' does not excceed NUM_MAX_LAYERS
 		while( (int)m_vecLayer.size() <= layer_index )
-			m_vecLayer.push_back( CLayer() );
+			m_vecLayer.push_back( Layer() );
 	}
 
 	RemoveFromLayer( pElement );
