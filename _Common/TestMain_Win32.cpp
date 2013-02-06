@@ -69,7 +69,7 @@ CStdKeyboard g_StdKeyboard;
 
 boost::shared_ptr<CInputHandler> g_pInputHandler;
 
-CFontSharedPtr g_pFont;
+boost::shared_ptr<FontBase> g_pFont;
 
 Camera g_Camera;
 
@@ -146,7 +146,7 @@ VOID Render()
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 //	g_Camera.SetPose( g_CameraController.GetPose() );
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	g_pTest->UpdateViewTransform( g_Camera.GetCameraMatrix() );
 	g_pTest->UpdateProjectionTransform( g_Camera.GetProjectionMatrix() );
