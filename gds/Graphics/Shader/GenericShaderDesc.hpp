@@ -64,7 +64,7 @@ public:
 	};
 };
 
-class CSpecularSource
+class SpecularSource
 {
 public:
 	enum Name
@@ -112,7 +112,7 @@ public:
 
 	ShaderLightingTechnique::Name LightingTechnique;
 	ShaderLightingType::Name LightingType; // per-vertex / per-pixel
-	CSpecularSource::Name Specular;
+	SpecularSource::Name Specular;
 	CVertexBlendType::Name VertexBlendType;
 	CAlphaBlendType::Name AlphaBlend;
 	CEnvMapOption::Name EnvMap;
@@ -128,7 +128,7 @@ public:
 		:
 	LightingTechnique(ShaderLightingTechnique::HEMISPHERIC),
 	LightingType(ShaderLightingType::PER_PIXEL),
-	Specular(CSpecularSource::NONE),
+	Specular(SpecularSource::NONE),
 	VertexBlendType(CVertexBlendType::NONE),
 	AlphaBlend(CAlphaBlendType::NONE),
 	EnvMap(CEnvMapOption::NONE),

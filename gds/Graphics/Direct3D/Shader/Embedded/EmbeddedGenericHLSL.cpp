@@ -808,14 +808,14 @@ void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( GenericShaderDesc& de
 {
 }
 
-static const char *GetSpecularTypeMacro( CSpecularSource::Name spec_src )
+static const char *GetSpecularTypeMacro( SpecularSource::Name spec_src )
 {
 	switch( spec_src )
 	{
-	case CSpecularSource::NONE:             return "#define SPECTYPE__NONE\n";
-	case CSpecularSource::UNIFORM:          return "#define SPECTYPE__UNIFORM\n";
-	case CSpecularSource::DECAL_TEX_ALPHA:  return "#define SPECTYPE__DECAL_TEX_ALPHA\n";
-	case CSpecularSource::NORMAL_MAP_ALPHA: return "#define SPECTYPE__NORMAL_MAP_ALPHA\n";
+	case SpecularSource::NONE:             return "#define SPECTYPE__NONE\n";
+	case SpecularSource::UNIFORM:          return "#define SPECTYPE__UNIFORM\n";
+	case SpecularSource::DECAL_TEX_ALPHA:  return "#define SPECTYPE__DECAL_TEX_ALPHA\n";
+	case SpecularSource::NORMAL_MAP_ALPHA: return "#define SPECTYPE__NORMAL_MAP_ALPHA\n";
 	default: return "#define SPECTYPE__NONE\n";
 	}
 }
@@ -927,7 +927,7 @@ void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& des
 	case ShaderLightingType::PER_VERTEX:
 		if( desc.VertexBlendType == CVertexBlendType::NONE )
 		{
-			if( desc.Specular == CSpecularSource::NONE )
+			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerVeretxLighting(desc,dest);
 			else
 				LoadShader_HSPerVeretxLighting_Specular(desc,dest);
@@ -935,7 +935,7 @@ void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& des
 		else if( desc.VertexBlendType == CVertexBlendType::QUATERNION_AND_VECTOR3
 		      || desc.VertexBlendType == CVertexBlendType::MATRIX )
 		{
-			if( desc.Specular == CSpecularSource::NONE )
+			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerVeretxLighting_QVertexBlend(desc,dest);
 			else
 				LoadShader_HSPerVeretxLighting_QVertexBlend_Specular(desc,dest);
@@ -945,7 +945,7 @@ void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& des
 	case ShaderLightingType::PER_PIXEL:
 		if( desc.VertexBlendType == CVertexBlendType::NONE )
 		{
-			if( desc.Specular == CSpecularSource::NONE )
+			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerPixelLighting(desc,dest);
 			else
 				LoadShader_HSPerPixelLighting_Specular(desc,dest);
@@ -953,7 +953,7 @@ void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& des
 		else if( desc.VertexBlendType == CVertexBlendType::QUATERNION_AND_VECTOR3
 		      || desc.VertexBlendType == CVertexBlendType::MATRIX )
 		{
-			if( desc.Specular == CSpecularSource::NONE )
+			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerPixelLighting_QVertexBlend(desc,dest);
 			else
 				LoadShader_HSPerPixelLighting_QVertexBlend_Specular(desc,dest);
