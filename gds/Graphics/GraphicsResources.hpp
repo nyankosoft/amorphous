@@ -2,7 +2,6 @@
 #define  __GraphicsResources_HPP__
 
 
-#include <string>
 #include <boost/weak_ptr.hpp>
 #include <boost/thread.hpp>
 #include "fwd.hpp"
@@ -15,9 +14,6 @@
 
 namespace amorphous
 {
-
-
-class stream_buffer;
 
 
 class GraphicsResourceState
