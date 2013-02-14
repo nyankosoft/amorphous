@@ -47,6 +47,9 @@ protected:
 	/// size of vertex (in bytes)
 	int m_iVertexSize;
 
+	/// index size in bytes. This is either 16 or 32. Default: 16
+	unsigned int m_IndexSizeInBits;
+
 	/// vertex elements
 	/// - updated when LoadVertices() is called.
 	D3DVERTEXELEMENT9 *m_paVertexElements;
@@ -247,6 +250,7 @@ inline CD3DXMeshObjectBase::CD3DXMeshObjectBase()
 :
 m_pMeshMaterials(NULL),
 m_iVertexSize(0),
+m_IndexSizeInBits(16),
 m_paVertexElements(NULL),
 m_pVertexDecleration(NULL)
 {

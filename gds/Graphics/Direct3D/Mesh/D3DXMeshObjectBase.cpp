@@ -192,17 +192,33 @@ LPD3DXMESH CD3DXMeshObjectBase::LoadD3DXMeshFromArchive( C3DMeshModelArchive& ar
 	CreateVertexDeclaration();
 
 	DWORD num_vertices = (DWORD)archive.GetVertexSet().GetNumVertices();
+	DWORD num_indices  = (DWORD)archive.GetVertexIndex().size();
 
+	if( num_indices < 0xFFFF )
+	{
+		LOG_PRINT( "Creating a mesh with 16-bit indices." );
+		m_IndexSizeInBits = 16;
+	}
+	else
+	{
+		LOG_PRINT( "Creating a mesh with 32-bit indices." );
+		m_IndexSizeInBits = 32;
+	}
 
 	LPD3DXMESH pMesh = NULL;
+	
+	DWORD options = D3DXMESH_MANAGED;
+
+	if( m_IndexSizeInBits == 32 )
+		options |= D3DXMESH_32BIT;
 
 	{
 		LOG_SCOPE( "D3DXCreateMesh" );
 
-	hr = D3DXCreateMesh( (DWORD)archive.GetVertexIndex().size() / 3,
+	hr = D3DXCreateMesh( num_indices / 3,
 		                 num_vertices,
 //						 0,
-						 D3DXMESH_MANAGED,
+						 options,
 						 m_paVertexElements,
 						 pd3dDev,
 						 &pMesh );
@@ -588,15 +604,25 @@ bool CD3DXMeshObjectBase::FillIndexBuffer( LPD3DXMESH pMesh, C3DMeshModelArchive
 	const vector<unsigned int>& rvecVertexIndex = archive.GetVertexIndex();
 	const int num_indices = archive.GetNumVertexIndices();
 
-	unsigned short* pusIBData;
 	HRESULT hr;
+	void *pIB = NULL;
 
 	// copy the index data to the index buffer
-    if( FAILED( hr = pMesh->LockIndexBuffer( 0, (VOID**)&pusIBData ) ) )
+    if( FAILED( hr = pMesh->LockIndexBuffer( 0, (VOID**)&pIB ) ) )
 		return false;
 
-	for( int i=0; i<num_indices; i++ )
-		pusIBData[i] = (unsigned short)rvecVertexIndex[i];
+	if( m_IndexSizeInBits == 16 )
+	{
+		unsigned short *pusIBData = (unsigned short *)pIB;
+		for( int i=0; i<num_indices; i++ )
+			pusIBData[i] = (unsigned short)rvecVertexIndex[i];
+	}
+	else
+	{
+		U32 *pIBData = (U32 *)pIB;
+		for( int i=0; i<num_indices; i++ )
+			pIBData[i] = (U32)rvecVertexIndex[i];
+	}
 
 	hr = pMesh->UnlockIndexBuffer();
 
