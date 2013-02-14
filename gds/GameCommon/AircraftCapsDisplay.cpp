@@ -1,10 +1,5 @@
-
 #include "AircraftCapsDisplay.hpp"
 #include "Item/GI_Aircraft.hpp"
-
-#include "Support/memory_helpers.hpp"
-#include "Support/msgbox.hpp"
-
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DFrameRect.hpp"
 
