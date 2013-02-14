@@ -129,7 +129,7 @@ void CBone::Serialize( IArchive & ar, const unsigned int version )
 	ar & m_vecChild;
 }
 
-int g_htrans_rev = 3;
+static int g_htrans_rev = 3;
 
 void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
 {
@@ -172,6 +172,12 @@ void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& p
   {
 	//
   }
+}
+
+
+int CBone::get_htrans_rev()
+{
+	return g_htrans_rev;
 }
 
 

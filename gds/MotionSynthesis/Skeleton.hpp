@@ -80,6 +80,8 @@ public:
 	void Serialize( IArchive & ar, const unsigned int version );
 
 	virtual unsigned int GetVersion() const { return 1; }
+
+	static int get_htrans_rev();
 };
 
 /*
