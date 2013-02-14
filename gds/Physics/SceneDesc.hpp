@@ -5,19 +5,14 @@
 #include <float.h>
 #include "fwd.hpp"
 #include "Enums.hpp"
-
-#include "../3DMath/Matrix34.hpp"
-#include "../3DMath/AABB3.hpp"
 #include "../Support/Serialization/Serialization.hpp"
 #include "../Support/Serialization/Serialization_3DMath.hpp"
+#include "../Support/msgbox.hpp"
 
 
 namespace amorphous
 {
 using namespace serialization;
-
-
-#include "../Support/msgbox.hpp"
 
 
 namespace physics
