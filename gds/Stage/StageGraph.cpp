@@ -12,7 +12,7 @@ namespace amorphous
 using namespace std;
 
 
-CSingleton<CStageGraph> CStageGraph::m_obj;
+singleton<CStageGraph> CStageGraph::m_obj;
 
 
 StageNode::StageNode( const StageNodeDesc& desc )

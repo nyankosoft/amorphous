@@ -6,7 +6,7 @@
 
 #include "fwd.hpp"
 #include "Rect.hpp"
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -149,7 +149,7 @@ class GraphicsComponentCollector
 
 public:
 
-	static CSingleton<GraphicsComponentCollector> m_obj;
+	static singleton<GraphicsComponentCollector> m_obj;
 
 //	static CShader* Get() { return m_obj->get(); }
 	static GraphicsComponentCollector* Get() { return m_obj.get(); }

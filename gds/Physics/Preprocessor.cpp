@@ -12,7 +12,7 @@ using namespace std;
 using namespace physics;
 
 
-CSingleton<CPreprocessor> CPreprocessor::m_obj;
+singleton<CPreprocessor> CPreprocessor::m_obj;
 
 
 CPreprocessor::CPreprocessor()

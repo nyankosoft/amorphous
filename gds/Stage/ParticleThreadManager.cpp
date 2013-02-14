@@ -17,7 +17,7 @@ using namespace std;
 //==================================================================================================
 
 // define the singleton instance
-CSingleton<CParticleThreadManager> CParticleThreadManager::m_obj;
+singleton<CParticleThreadManager> CParticleThreadManager::m_obj;
 
 
 CParticleThreadManager::CParticleThreadManager()

@@ -45,7 +45,7 @@ void CSaveDataComponent::SaveTo( CBinaryDatabase<std::string>& db )
 // CSaveDataManager
 //======================================================================================
 
-CSingleton<CSaveDataManager> CSaveDataManager::m_obj;
+singleton<CSaveDataManager> CSaveDataManager::m_obj;
 
 
 CSaveDataManager::~CSaveDataManager()

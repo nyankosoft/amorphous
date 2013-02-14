@@ -21,7 +21,7 @@ bool CScriptManager::ms_UseBoostPythonModules = true;
 // CPythonUserCount
 //=========================================================================
 
-CSingleton<CPythonUserCount> CPythonUserCount::m_obj;
+singleton<CPythonUserCount> CPythonUserCount::m_obj;
 
 
 

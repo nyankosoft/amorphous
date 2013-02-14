@@ -7,7 +7,7 @@
 #include "GraphicsResourceDescs.hpp"
 #include "GraphicsComponentCollector.hpp"
 
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -45,7 +45,7 @@ class GraphicsResourceFactory
 
 protected:
 
-	static CSingleton<GraphicsResourceFactory> m_obj;
+	static singleton<GraphicsResourceFactory> m_obj;
 
 public:
 
@@ -88,7 +88,7 @@ class GraphicsResourceCacheManager : public GraphicsComponent
 
 protected:
 
-	static CSingleton<GraphicsResourceCacheManager> m_obj;
+	static singleton<GraphicsResourceCacheManager> m_obj;
 
 public:
 

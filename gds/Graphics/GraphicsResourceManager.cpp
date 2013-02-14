@@ -71,7 +71,7 @@ ResourceLoadingStateSet::Name GetGraphicsResourceLoadingState()
 //==================================================================================================
 
 /// define the singleton instance
-CSingleton<GraphicsResourceManager> GraphicsResourceManager::m_obj;
+singleton<GraphicsResourceManager> GraphicsResourceManager::m_obj;
 
 
 GraphicsResourceManager::GraphicsResourceManager()

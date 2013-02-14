@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -23,7 +23,7 @@ class CRenderTaskProcessor
 
 protected:
 
-	static CSingleton<CRenderTaskProcessor> m_obj;
+	static singleton<CRenderTaskProcessor> m_obj;
 
 public:
 

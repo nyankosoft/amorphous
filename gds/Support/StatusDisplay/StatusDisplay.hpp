@@ -3,7 +3,7 @@
 #define __STATUSDISPLAY_SINGLETON_H__
 
 
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 
 #include <vector>
 #include <string>
@@ -66,7 +66,7 @@ public:
 private:
 
 	/// singleton instance
-	static NS_KGL::CSingleton<CStatusDisplay> m_obj;
+	static singleton<CStatusDisplay> m_obj;
 
 	/// top left corner of the task display
 	SPoint m_Position;

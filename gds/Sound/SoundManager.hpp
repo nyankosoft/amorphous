@@ -8,7 +8,7 @@
 #include "SoundDesc.hpp"
 #include "SoundManagerImpl.hpp"
 #include "../base.hpp"
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -33,7 +33,7 @@ protected:
 
 protected:
 
-	static CSingleton<CSoundManager> m_obj;
+	static singleton<CSoundManager> m_obj;
 
 public:
 
@@ -123,7 +123,7 @@ public:
 
 	inline void GetTextInfo( std::string& dest_buffer );
 
-	friend class CSingleton<CSoundManager>;
+	friend class singleton<CSoundManager>;
 };
 
 

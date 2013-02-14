@@ -7,7 +7,7 @@ namespace amorphous
 using namespace std;
 
 
-CSingleton<ShaderManagerHub> ShaderManagerHub::m_obj;
+singleton<ShaderManagerHub> ShaderManagerHub::m_obj;
 
 
 ShaderManagerHub::ShaderManagerHub()

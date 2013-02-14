@@ -7,7 +7,7 @@ namespace amorphous
 {
 
 
-CSingleton<CGraphicsDeviceHolder> CGraphicsDeviceHolder::m_obj;
+singleton<CGraphicsDeviceHolder> CGraphicsDeviceHolder::m_obj;
 
 
 // TODO: make this a member of CGraphicsDevice

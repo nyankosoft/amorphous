@@ -7,7 +7,7 @@
 #include "gds/Support/StringAux.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 
 
 namespace amorphous
@@ -60,7 +60,7 @@ class CSaveDataManager// : public ComponentManager<>
 
 	int m_MaxNumSaveDataFiles;
 
-	static CSingleton<CSaveDataManager> m_obj;
+	static singleton<CSaveDataManager> m_obj;
 
 	enum Params
 	{

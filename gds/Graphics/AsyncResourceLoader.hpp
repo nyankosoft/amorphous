@@ -8,7 +8,7 @@
 #include "fwd.hpp"
 #include "GraphicsResourceManager.hpp"
 
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -136,7 +136,7 @@ private:
 protected:
 
 	/// singleton
-	static CSingleton<AsyncResourceLoader> m_obj;
+	static singleton<AsyncResourceLoader> m_obj;
 
 public:
 

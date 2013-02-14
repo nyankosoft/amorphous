@@ -42,7 +42,7 @@ const GraphicsParameters& GraphicsComponent::GetCurrentGraphicsParams()
 //=====================================================================================
 
 // define singleton instance
-CSingleton<GraphicsComponentCollector> GraphicsComponentCollector::m_obj;
+singleton<GraphicsComponentCollector> GraphicsComponentCollector::m_obj;
 
 GraphicsComponentCollector::GraphicsComponentCollector()
 {

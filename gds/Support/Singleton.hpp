@@ -28,7 +28,7 @@ namespace amorphous
   - Can only be used as a static object.
 */
 template <class T>
-class CSingleton
+class singleton
 {
 
 public:
@@ -36,11 +36,11 @@ public:
 	/// Do nothing in ctor.
 	/// Nothing should be done for some reason related to the initialization
 	/// of non-local static objects.
-	CSingleton()
+	singleton()
 	{
 	}
 
-	~CSingleton() { Release(); }
+	~singleton() { Release(); }
 
 	///	mechanism to make the singleton look like a pointer
 	T& operator*() { return *get(); }
@@ -76,12 +76,12 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////
 
 // static objects
-template <class T> T* CSingleton<T>::m_lpObj = 0;
+template <class T> T* singleton<T>::m_lpObj = 0;
 
-template <class T> boost::mutex CSingleton<T>::m_Mutex;
+template <class T> boost::mutex singleton<T>::m_Mutex;
 
 
-template <class T> void	CSingleton<T>::CheckInstance()
+template <class T> void	singleton<T>::CheckInstance()
 {
 	if (m_lpObj==NULL)
 	{
@@ -95,7 +95,7 @@ template <class T> void	CSingleton<T>::CheckInstance()
 }
 
 
-template <class T> void	CSingleton<T>::Release()
+template <class T> void	singleton<T>::Release()
 {
 	if (m_lpObj!=NULL)
 	{

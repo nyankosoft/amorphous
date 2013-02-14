@@ -51,7 +51,7 @@
 #include "Support/SafeDelete.hpp"
 #include "Support/SafeDeleteVector.hpp"
 
-//#include "Support/Singleton.hpp"
+//#include "Support/singleton.hpp"
 
 /// general purpose stream buffers
 /// - inherits IArchiveObjectBase (serializable)

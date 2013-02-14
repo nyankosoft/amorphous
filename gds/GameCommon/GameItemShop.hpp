@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 #include "gds/Item/fwd.hpp"
 
 
@@ -86,7 +86,7 @@ public:
  */
 class GameItemShopList
 {
-	static CSingleton<GameItemShopList> m_obj;
+	static singleton<GameItemShopList> m_obj;
 
 	std::vector< boost::shared_ptr<GameItemShop> > m_vecpShopList;
 

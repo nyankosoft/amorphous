@@ -10,7 +10,7 @@
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceLoaders.hpp"
 
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 
 
 namespace amorphous
@@ -71,7 +71,7 @@ private:
 protected:
 ///	GraphicsResourceManager();		//singleton
 
-	static CSingleton<GraphicsResourceManager> m_obj;
+	static singleton<GraphicsResourceManager> m_obj;
 
 public:
 

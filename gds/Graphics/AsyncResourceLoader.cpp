@@ -10,7 +10,7 @@ namespace amorphous
 using namespace boost;
 
 
-CSingleton<AsyncResourceLoader> AsyncResourceLoader::m_obj;
+singleton<AsyncResourceLoader> AsyncResourceLoader::m_obj;
 
 
 AsyncResourceLoader::AsyncResourceLoader()

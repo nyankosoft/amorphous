@@ -134,7 +134,7 @@ const shared_ptr<GameItem> GameItemShop::GetItem( int index )
 // GameItemShopList
 //=============================================================================
 
-CSingleton<GameItemShopList> GameItemShopList::m_obj;
+singleton<GameItemShopList> GameItemShopList::m_obj;
 
 
 bool GameItemShopList::AddShop( shared_ptr<GameItemShop> pShop )

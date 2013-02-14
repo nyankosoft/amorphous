@@ -8,7 +8,7 @@ namespace amorphous
 
 
 
-NS_KGL::CSingleton<CStatusDisplay> CStatusDisplay::m_obj;
+singleton<CStatusDisplay> CStatusDisplay::m_obj;
 
 
 CStatusDisplay::STask::STask()

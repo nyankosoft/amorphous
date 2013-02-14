@@ -197,7 +197,7 @@ void CDebugItem_InputDevice::GetTextInfo()
 //======================================================================================
 
 
-CSingleton<CGlobalDebugOutput> CGlobalDebugOutput::m_obj;
+singleton<CGlobalDebugOutput> CGlobalDebugOutput::m_obj;
 
 
 CDebugOutput::CDebugOutput( const std::string& font_name, int w, int h, U32 color )

@@ -4,7 +4,7 @@
 
 #include "gds/Script/PythonHeaders.hpp"
 
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
 
@@ -121,7 +121,7 @@ class CStageGraph// : public IArchiveObjectBase
 
 public:
 
-	static CSingleton<CStageGraph> m_obj;
+	static singleton<CStageGraph> m_obj;
 
 	static CStageGraph* Get() { return m_obj.get(); }
 

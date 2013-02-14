@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-CSingleton<CFixedFunctionPipelineManagerHolder> CFixedFunctionPipelineManagerHolder::m_obj;
+singleton<CFixedFunctionPipelineManagerHolder> CFixedFunctionPipelineManagerHolder::m_obj;
 
 
 //static ShaderManager *sg_pFixedFunctionPipelineManager = NULL;

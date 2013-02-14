@@ -9,7 +9,7 @@
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
 #include "Rect.hpp"
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -313,7 +313,7 @@ class CGraphicsDeviceHolder
 protected:
 
 	/// singleton
-	static CSingleton<CGraphicsDeviceHolder> m_obj;
+	static singleton<CGraphicsDeviceHolder> m_obj;
 
 public:
 

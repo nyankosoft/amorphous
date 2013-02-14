@@ -9,7 +9,7 @@ namespace amorphous
 using namespace std;
 
 
-CSingleton<CRenderTaskProcessor> CRenderTaskProcessor::m_obj;
+singleton<CRenderTaskProcessor> CRenderTaskProcessor::m_obj;
 
 
 void CRenderTaskProcessor::Release()

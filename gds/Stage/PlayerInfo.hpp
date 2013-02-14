@@ -8,7 +8,7 @@
 #include "gds/GameCommon/SaveDataManager.hpp"
 #include "gds/GameCommon/PlayTime.hpp"
 #include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 #include <boost/shared_ptr.hpp>
 
 
@@ -105,7 +105,7 @@ private:
 
 protected:
 
-	static CSingleton<CSinglePlayerInfo> m_obj;
+	static singleton<CSinglePlayerInfo> m_obj;
 
 public:
 

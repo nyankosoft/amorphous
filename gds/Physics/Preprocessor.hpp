@@ -5,7 +5,7 @@
 #include <string>
 #include "../base.hpp"
 #include "3DMath/precision.h"
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 #include "fwd.hpp"
 #include "Stream.hpp"
 
@@ -71,7 +71,7 @@ private:
 
 protected:
 
-	static CSingleton<CPreprocessor> m_obj;
+	static singleton<CPreprocessor> m_obj;
 
 public:
 

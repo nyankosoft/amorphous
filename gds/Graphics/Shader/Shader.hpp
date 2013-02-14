@@ -3,7 +3,7 @@
 #define __SHADER_SINGLETON_H__
 
 
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 #include <stdlib.h>
 
 
@@ -18,7 +18,7 @@ class CShader
 	ShaderManager *m_pCurrentShaderManager;
 
 
-	static CSingleton<CShader> m_obj;	///< singleton instance
+	static singleton<CShader> m_obj;	///< singleton instance
 
 public:
 

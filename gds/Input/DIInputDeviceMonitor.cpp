@@ -32,7 +32,7 @@ BOOL CALLBACK EnumGameControllersCallback( const DIDEVICEINSTANCE* pdidInstance,
 }
 
 
-CSingleton<CDIInputDeviceMonitor> CDIInputDeviceMonitor::m_obj;
+singleton<CDIInputDeviceMonitor> CDIInputDeviceMonitor::m_obj;
 
 
 void CDIInputDeviceMonitor::ResetEnumStatus()

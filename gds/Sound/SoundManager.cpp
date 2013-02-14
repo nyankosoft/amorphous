@@ -31,7 +31,7 @@ using namespace std;
 
 
 /// define the singleton instance
-CSingleton<CSoundManager> CSoundManager::m_obj;
+singleton<CSoundManager> CSoundManager::m_obj;
 
 
 CSoundManager::CSoundManager()

@@ -5,6 +5,6 @@
 namespace amorphous
 {
 
-CSingleton<CStateLog> CStateLog::m_obj;
+singleton<CStateLog> CStateLog::m_obj;
 
 } // amorphous

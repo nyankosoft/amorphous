@@ -11,7 +11,7 @@
 #include "../Graphics/GraphicsComponentCollector.hpp"
 
 #include "SafeDelete.hpp" // Used by CGlobalDebugOutput
-#include "Singleton.hpp"  // Used by CGlobalDebugOutput
+#include "singleton.hpp"  // Used by CGlobalDebugOutput
 
 
 namespace amorphous
@@ -257,7 +257,7 @@ public:
 
 class CGlobalDebugOutput
 {
-	static CSingleton<CGlobalDebugOutput> m_obj;	///< singleton instance
+	static singleton<CGlobalDebugOutput> m_obj;	///< singleton instance
 
 	CDebugOutput *m_pDebugOutput;
 

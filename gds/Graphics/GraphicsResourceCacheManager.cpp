@@ -14,7 +14,7 @@ using boost::shared_ptr;
 //===============================================================
 
 /// define the singleton instance
-CSingleton<GraphicsResourceFactory> GraphicsResourceFactory::m_obj;
+singleton<GraphicsResourceFactory> GraphicsResourceFactory::m_obj;
 
 
 GraphicsResourceFactory::GraphicsResourceFactory()
@@ -52,7 +52,7 @@ shared_ptr<GraphicsResource> GraphicsResourceFactory::CreateGraphicsResource( co
 //===============================================================
 
 /// define the singleton instance
-CSingleton<GraphicsResourceCacheManager> GraphicsResourceCacheManager::m_obj;
+singleton<GraphicsResourceCacheManager> GraphicsResourceCacheManager::m_obj;
 
 
 bool GraphicsResourceCacheManager::Preload( const std::string& xml_filename )

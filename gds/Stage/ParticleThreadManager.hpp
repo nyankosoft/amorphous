@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 
 
 namespace amorphous
@@ -33,7 +33,7 @@ private:
 protected:
 ///	CParticleThreadManager();		//singleton
 
-	static CSingleton<CParticleThreadManager> m_obj;
+	static singleton<CParticleThreadManager> m_obj;
 
 public:
 

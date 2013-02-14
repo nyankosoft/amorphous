@@ -13,7 +13,7 @@ namespace amorphous
 using namespace std;
 
 
-CSingleton<CItemDatabaseManager> CItemDatabaseManager::m_obj;
+singleton<CItemDatabaseManager> CItemDatabaseManager::m_obj;
 
 
 void CItemDatabaseManager::Release()

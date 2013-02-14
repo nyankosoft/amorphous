@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "../Singleton.hpp"
+#include "../singleton.hpp"
 
 
 namespace amorphous
@@ -32,7 +32,7 @@ private:
 
 protected:
 
-	static CSingleton<CStateLog> m_obj;
+	static singleton<CStateLog> m_obj;
 
 public:
 

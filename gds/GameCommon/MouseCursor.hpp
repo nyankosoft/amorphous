@@ -16,7 +16,7 @@ namespace amorphous
 
 class CMouseCursor
 {
-	static CSingleton<CMouseCursor> m_obj;
+	static singleton<CMouseCursor> m_obj;
 
 	TextureHandle m_Texture[4];
 	C2DRect m_Rect[4];

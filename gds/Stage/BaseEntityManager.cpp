@@ -15,7 +15,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CSingleton<BaseEntityManager> BaseEntityManager::m_obj;
+singleton<BaseEntityManager> BaseEntityManager::m_obj;
 
 
 BaseEntityManager::BaseEntityManager()

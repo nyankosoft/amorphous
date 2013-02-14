@@ -11,7 +11,7 @@
 #include "Input/fwd.hpp"
 #include "Input/DirectInput.hpp"
 #include "Support/thread_starter.hpp"
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 
 
 namespace amorphous
@@ -120,7 +120,7 @@ private:
 protected:
 
 	/// singleton
-	static CSingleton<CDIInputDeviceMonitor> m_obj;
+	static singleton<CDIInputDeviceMonitor> m_obj;
 
 public:
 

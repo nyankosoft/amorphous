@@ -2,7 +2,7 @@
 #define  __FixedFunctionPipelineManager_HPP__
 
 
-#include "../../Support/Singleton.hpp"
+#include "../../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -22,7 +22,7 @@ class CFixedFunctionPipelineManagerHolder
 	ShaderManager *m_pFFPMgr;
 
 	/// singleton
-	static CSingleton<CFixedFunctionPipelineManagerHolder> m_obj;
+	static singleton<CFixedFunctionPipelineManagerHolder> m_obj;
 
 public:
 

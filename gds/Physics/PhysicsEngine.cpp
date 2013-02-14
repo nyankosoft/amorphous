@@ -11,7 +11,7 @@ using namespace std;
 using namespace physics;
 
 
-CSingleton<CPhysicsEngine> CPhysicsEngine::m_obj;
+singleton<CPhysicsEngine> CPhysicsEngine::m_obj;
 
 
 bool CPhysicsEngine::Init( const std::string& physics_engine )

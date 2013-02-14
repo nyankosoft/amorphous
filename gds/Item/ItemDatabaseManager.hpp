@@ -4,7 +4,7 @@
 
 #include "fwd.hpp"
 #include "GameItem.hpp"
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 #include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
 #include "gds/Support/Serialization/BinaryDatabase.hpp"
 #include <boost/shared_ptr.hpp>
@@ -31,7 +31,7 @@ private:
 
 public:
 
-	static CSingleton<CItemDatabaseManager> m_obj;
+	static singleton<CItemDatabaseManager> m_obj;
 
 	static CItemDatabaseManager* Get() { return m_obj.get(); }
 

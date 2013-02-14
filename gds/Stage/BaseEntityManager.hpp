@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 #include "fwd.hpp"
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 #include "Support/Serialization/Serialization.hpp"
 #include "Support/Serialization/ArchiveObjectFactory.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
@@ -52,7 +52,7 @@ private:
 
 protected:
 
-	static CSingleton<BaseEntityManager> m_obj;
+	static singleton<BaseEntityManager> m_obj;
 
 public:
 

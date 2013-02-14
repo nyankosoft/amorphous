@@ -8,7 +8,7 @@
 #include <boost/python.hpp>
 #include <boost/thread.hpp>
 #include "ScriptArchive.hpp"
-#include "gds/Support/Singleton.hpp"
+#include "gds/Support/singleton.hpp"
 
 
 namespace amorphous
@@ -27,7 +27,7 @@ class CPythonUserCount
 
 protected:
 
-	static CSingleton<CPythonUserCount> m_obj;
+	static singleton<CPythonUserCount> m_obj;
 
 public:
 

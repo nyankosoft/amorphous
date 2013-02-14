@@ -5,7 +5,7 @@
 #include "FixedFunctionPipelineManager.hpp"
 #include "ShaderManager.hpp"
 #include "../Camera.hpp"
-#include "../../Support/Singleton.hpp"
+#include "../../Support/singleton.hpp"
 
 
 namespace amorphous
@@ -31,7 +31,7 @@ private:
 
 protected:
 
-	static CSingleton<ShaderManagerHub> m_obj;
+	static singleton<ShaderManagerHub> m_obj;
 
 public:
 

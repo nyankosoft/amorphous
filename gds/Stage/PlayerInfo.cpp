@@ -23,7 +23,7 @@ using namespace boost;
 
 
 // definition of the singleton instance
-CSingleton<CSinglePlayerInfo> CSinglePlayerInfo::m_obj;
+singleton<CSinglePlayerInfo> CSinglePlayerInfo::m_obj;
 
 
 CSinglePlayerInfo::CSinglePlayerInfo()

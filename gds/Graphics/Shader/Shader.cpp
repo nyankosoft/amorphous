@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-CSingleton<CShader> CShader::m_obj;
+singleton<CShader> CShader::m_obj;
 
 
 } // namespace amorphous

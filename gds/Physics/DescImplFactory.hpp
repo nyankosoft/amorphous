@@ -2,7 +2,7 @@
 #define __PhysDescImplFactory_H__
 
 
-#include "Support/Singleton.hpp"
+#include "Support/singleton.hpp"
 
 
 namespace amorphous

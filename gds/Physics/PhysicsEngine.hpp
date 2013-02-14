@@ -4,7 +4,7 @@
 
 #include <string>
 #include "../3DMath/precision.h"
-#include "../Support/Singleton.hpp"
+#include "../Support/singleton.hpp"
 #include "fwd.hpp"
 
 
@@ -60,7 +60,7 @@ class CPhysicsEngine
 
 protected:
 
-	static CSingleton<CPhysicsEngine> m_obj;
+	static singleton<CPhysicsEngine> m_obj;
 
 public:
 
