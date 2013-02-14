@@ -12,10 +12,10 @@ namespace amorphous
 {
 
 
-class CTBBImageSplitterImpl;
+class TBBImageSplitterImpl;
 
 
-class CSplitImageFilepathPrinter
+class SplitImageFilepathPrinter
 {
 public:
 
@@ -23,13 +23,13 @@ public:
 };
 
 
-class CStdSplitImageFilepathPrinter : public CSplitImageFilepathPrinter
+class StdSplitImageFilepathPrinter : public SplitImageFilepathPrinter
 {
 	std::string m_SrcFilepath;
 
 public:
 
-	CStdSplitImageFilepathPrinter( std::string& src_filepath )
+	StdSplitImageFilepathPrinter( std::string& src_filepath )
 		:
 	m_SrcFilepath(src_filepath)
 	{}
@@ -43,7 +43,7 @@ public:
 };
 
 
-class CImageSplitter
+class ImageSplitter
 {
 	int m_NumSplitsX;
 	int m_NumSplitsY;
@@ -52,18 +52,18 @@ class CImageSplitter
 
 	std::string m_BaseDestFilepath;
 
-	CSplitImageFilepathPrinter *m_pSplitImageFilepathPrinter;
+	SplitImageFilepathPrinter *m_pSplitImageFilepathPrinter;
 
 	inline void Clip( int index ) const;
 
 public:
 
-	CImageSplitter(
+	ImageSplitter(
 		int num_splits_x,
 		int num_splits_y,
 		const std::string& base_dest_filepath,
 		const std::string& src_image_filepath,
-		CSplitImageFilepathPrinter *pDestFilepathPrinter )
+		SplitImageFilepathPrinter *pDestFilepathPrinter )
 		:
 	m_NumSplitsX(num_splits_x),
 	m_NumSplitsY(num_splits_y),
@@ -78,12 +78,12 @@ public:
 		}
 	}
 
-	CImageSplitter(
+	ImageSplitter(
 		int num_splits_x,
 		int num_splits_y,
 		const std::string& base_dest_filepath,
 		boost::shared_ptr<CBitmapImage> pBitmapImage,
-		CSplitImageFilepathPrinter *pDestFilepathPrinter )
+		SplitImageFilepathPrinter *pDestFilepathPrinter )
 		:
 	m_NumSplitsX(num_splits_x),
 	m_NumSplitsY(num_splits_y),
@@ -93,7 +93,7 @@ public:
 	{
 	}
 
-	virtual ~CImageSplitter() {}
+	virtual ~ImageSplitter() {}
 
 //	inline void operator() ( const tbb::blocked_range<int>& r ) const;
 
@@ -103,18 +103,18 @@ public:
 
 	inline void SplitST();
 
-	/// CTBBImageSplitterImpl needs to call CImageSplitter::Clip()
-	friend class CTBBImageSplitterImpl;
+	/// TBBImageSplitterImpl needs to call ImageSplitter::Clip()
+	friend class TBBImageSplitterImpl;
 };
 
 
-class CTBBImageSplitterImpl
+class TBBImageSplitterImpl
 {
-	const CImageSplitter *m_pSplitter;
+	const ImageSplitter *m_pSplitter;
 
 public:
 
-	CTBBImageSplitterImpl( const CImageSplitter *pSplitter )
+	TBBImageSplitterImpl( const ImageSplitter *pSplitter )
 		:
 	m_pSplitter(pSplitter)
 	{}
@@ -125,7 +125,7 @@ public:
 //----------------------- inline implementations -----------------------
 
 
-inline void CImageSplitter::Clip( int index ) const
+inline void ImageSplitter::Clip( int index ) const
 {
 	if( !m_pBitmapImage )
 		return;
@@ -160,17 +160,17 @@ inline void CImageSplitter::Clip( int index ) const
 }
 
 
-inline void CImageSplitter::SplitMT()
+inline void ImageSplitter::SplitMT()
 {
 	tbb::parallel_for( tbb::blocked_range<int>(
 		0,
 		m_NumSplitsX * m_NumSplitsY
 		/*grainsize*/ ),
-		CTBBImageSplitterImpl(this) );
+		TBBImageSplitterImpl(this) );
 }
 
 
-inline void CImageSplitter::SplitST()
+inline void ImageSplitter::SplitST()
 {
 	const int num_images = m_NumSplitsX * m_NumSplitsY;
 	for( int i=0; i<num_images; i++ )
@@ -180,7 +180,7 @@ inline void CImageSplitter::SplitST()
 }
 
 
-inline void CTBBImageSplitterImpl::operator() ( const tbb::blocked_range<int>& r ) const
+inline void TBBImageSplitterImpl::operator() ( const tbb::blocked_range<int>& r ) const
 {
 	for( int I = r.begin(); I != r.end(); ++I )
 	{

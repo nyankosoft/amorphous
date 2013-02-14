@@ -566,7 +566,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 	tbb::task_scheduler_init init;
 
 	CMGSplitImageFilepathPrinter filepath_printer( src_tex_filename, &m_MeshTree );
-	CImageSplitter is(
+	ImageSplitter is(
 		num_edge_splits,
 		num_edge_splits,
 		"",
