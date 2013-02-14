@@ -5,7 +5,7 @@
 #include <float.h>
 #include "../base.hpp"
 #include "../3DMath/Perlin.hpp"
-#include "../Support/2DArray.hpp"
+#include "../Support/array2d.hpp"
 
 
 namespace amorphous
@@ -40,7 +40,7 @@ inline float StdPerlin(     Perlin& obj, float x, float y, float w, float h ) { 
 inline float TilablePerlin( Perlin& obj, float x, float y, float w, float h ) { return obj.GetTilable(x,y,w,h); }
 
 
-inline void GetPerlinTexture( const CPerlinNoiseParams& params, C2DArray<float>& dest )
+inline void GetPerlinTexture( const CPerlinNoiseParams& params, array2d<float>& dest )
 {
 	Perlin pn( params.octaves, params.freq, params.amp, params.seed );
 

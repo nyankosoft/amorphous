@@ -154,12 +154,12 @@ protected:
 	void DrawMeshObject( const Matrix34& world_pose,
 						 BasicMesh *pMeshObject,
 						 const std::vector<int>& vecTargetMaterialIndex,
-						 C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
+						 array2d<ShaderTechniqueHandle>& rShaderTechHandleTable,
 						 int ShaderLOD = 0 );
 
 //	void DrawSkeletalMesh( CCopyEntity* pCopyEnt,
 //		                   SkeletalMesh *pSkeletalMesh,
-//		                   C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
+//		                   array2d<ShaderTechniqueHandle>& rShaderTechHandleTable,
 //						   int ShaderLOD = 0 );
 
 	/// \retval 0 shader for highest resolution mesh

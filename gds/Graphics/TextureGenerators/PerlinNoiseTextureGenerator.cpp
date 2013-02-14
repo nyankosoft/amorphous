@@ -13,7 +13,7 @@ void PerlinNoiseTextureGenerator::FillTexture( LockedTexture& texture )
 	int w = texture.GetWidth();
 	int h = texture.GetHeight();
 
-	C2DArray<float> buffer;
+	array2d<float> buffer;
 	buffer.resize( w, h, 0.0f );
 	GetPerlinTexture( m_Params, buffer );
 
@@ -35,7 +35,7 @@ void PerlinNoiseNormalMapGenerator::FillTexture( LockedTexture& texture )
 	int w = texture.GetWidth();
 	int h = texture.GetHeight();
 
-	C2DArray<float> buffer;
+	array2d<float> buffer;
 	buffer.resize( w, h, 0.0f );
 	GetPerlinTexture( m_Params, buffer );
 

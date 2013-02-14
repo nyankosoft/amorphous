@@ -9,8 +9,7 @@
 #include "Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/XML/fwd.hpp"
-#include "gds/Support/2DArray.hpp"
-#include "gds/Support/Serialization/Serialization_2DArray.hpp"
+#include "gds/Support/Serialization/Serialization_array2d.hpp"
 
 
 namespace amorphous
@@ -43,7 +42,7 @@ public:
 	/// table of shader techniques
 	/// - row:    corresponds to mesh materials
 	/// - column: corresponds to resolution (intended to be shader version of LOD)
-	C2DArray<ShaderTechniqueHandle> m_ShaderTechnique;
+	array2d<ShaderTechniqueHandle> m_ShaderTechnique;
 
 	ShaderResourceDesc m_ShaderDesc;
 

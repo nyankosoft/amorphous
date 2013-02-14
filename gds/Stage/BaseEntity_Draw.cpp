@@ -409,7 +409,7 @@ void BaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_inde
 	vector<int> single_index;
 	single_index.push_back( material_index );
 
-	C2DArray<ShaderTechniqueHandle> shader_tech_table;
+	array2d<ShaderTechniqueHandle> shader_tech_table;
 	shader_tech_table.resize( material_index + 1, 1 );
 	shader_tech_table( material_index, 0 ) = shader_tech;
 
@@ -424,7 +424,7 @@ void BaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_inde
 void BaseEntity::DrawMeshObject( const Matrix34& world_pose,
 								  BasicMesh *pMeshObject,
 								  const std::vector<int>& vecTargetMaterialIndex,
-							      C2DArray<ShaderTechniqueHandle>& rShaderTechHandleTable,
+							      array2d<ShaderTechniqueHandle>& rShaderTechHandleTable,
 							      int ShaderLOD )
 {
 	PROFILE_FUNCTION();

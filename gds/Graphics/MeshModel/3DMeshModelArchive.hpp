@@ -13,7 +13,7 @@
 #include "../VertexFormat.hpp"
 #include "../Mesh/BasicMaterialParams.hpp"
 
-#include "../../Support/2DArray.hpp"
+#include "../../Support/array2d.hpp"
 #include "../../Support/Serialization/SerializationEx.hpp"
 #include "../../Support/Serialization/BinaryDatabase.hpp"
 
@@ -185,10 +185,10 @@ public:
 	std::string strFilename;
 
 	/// holds raw texel data (8bits x 4) - not really used actually
-	C2DArray<S32BitColor> vecTexelData;
+	array2d<S32BitColor> vecTexelData;
 
 	/// holds raw texel data (4bytes x 4) - not really used actually
-	C2DArray<SFloatRGBAColor> vecfTexelData;
+	array2d<SFloatRGBAColor> vecfTexelData;
 
 public:
 

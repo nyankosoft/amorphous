@@ -6,7 +6,7 @@
 
 #include "../base.hpp"
 #include "Support/Log/LogOutputBase.hpp"
-#include "Support/2DArray.hpp"
+#include "Support/array2d.hpp"
 #include "3DMath/Vector2.hpp"
 
 

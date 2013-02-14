@@ -5,7 +5,7 @@
 #include "fwd.hpp"
 
 #include "3DMath/Matrix34.hpp"
-#include "Support/2DArray.hpp"
+#include "Support/array2d.hpp"
 #include "Graphics/IndexedPolygon.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/Rect.hpp"
@@ -45,21 +45,21 @@ class CLightmap
 	std::vector<int> m_vecGroupedFaceIndex;
 
 	// Positions of sampling points are calculated each time when GetPoint() is called
-//	C2DArray<Vector3> m_vecvPoint;
+//	array2d<Vector3> m_vecvPoint;
 
-	C2DArray<Vector3> m_vecvNormal;
+	array2d<Vector3> m_vecvNormal;
 
-//	C2DArray<char> m_vecTexelState;
+//	array2d<char> m_vecTexelState;
 
 	// whether a texel is on one of the stored polygons
-	C2DArray<char> m_vecbValidTexel;
+	array2d<char> m_vecbValidTexel;
 
-	C2DArray<SFloatRGBColor> m_vecIntensity;
+	array2d<SFloatRGBColor> m_vecIntensity;
 
 	/// holds average directions to light
-//	C2DArray<char> m_vecTexelState_LightDirMap;
+//	array2d<char> m_vecTexelState_LightDirMap;
 
-	C2DArray<Vector3> m_vecvLightDir;
+	array2d<Vector3> m_vecvLightDir;
 
 	std::vector<IndexedPolygon> *m_vecpPolygonBuffer;
 

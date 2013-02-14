@@ -9,7 +9,7 @@
 #include "../Graphics/FloatRGBColor.hpp"
 #include "../Graphics/FloatRGBAColor.hpp"
 #include "ImageArchive.hpp"
-#include "2DArray.hpp"
+#include "array2d.hpp"
 #include "Macro.h"
 
 
@@ -159,7 +159,7 @@ public:
 	/// - Need to do sth to CImageStreamBufferHolder. See the function definition
 	inline CBitmapImage( CImageArchive& img_archive );
 
-//	inline CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp );
+//	inline CBitmapImage( const array2d<SFloatRGBColor>& texel_buffer, int bpp );
 
 	~CBitmapImage() { Release(); }
 
@@ -213,7 +213,7 @@ public:
 };
 
 /*
-inline CBitmapImage::CBitmapImage( const C2DArray<SFloatRGBColor>& texel_buffer, int bpp )
+inline CBitmapImage::CBitmapImage( const array2d<SFloatRGBColor>& texel_buffer, int bpp )
 {
 	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
 }
@@ -673,7 +673,7 @@ inline boost::shared_ptr<CBitmapImage> CreateBitmapImage( const std::string& pat
 }
 
 
-inline bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::string& filepath )
+inline bool SaveToImageFile( const array2d<SFloatRGBColor>& texel, const std::string& filepath )
 {
 	int x,y;
 	int width  = texel.size_x();
@@ -694,7 +694,7 @@ inline bool SaveToImageFile( const C2DArray<SFloatRGBColor>& texel, const std::s
 }
 
 
-inline bool SaveToImageFile( const C2DArray<SFloatRGBAColor>& texel, const std::string& filepath )
+inline bool SaveToImageFile( const array2d<SFloatRGBAColor>& texel, const std::string& filepath )
 {
 	int x,y;
 	int width  = texel.size_x();
@@ -715,7 +715,7 @@ inline bool SaveToImageFile( const C2DArray<SFloatRGBAColor>& texel, const std::
 }
 
 
-inline bool SaveGrayscaleToImageFile( const C2DArray<U8>& texel, const std::string& filepath )
+inline bool SaveGrayscaleToImageFile( const array2d<U8>& texel, const std::string& filepath )
 {
 	int x,y;
 	int width  = texel.size_x();

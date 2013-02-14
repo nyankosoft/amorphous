@@ -64,7 +64,7 @@ CCopyEntity *CreateEntityFromDesc( CCopyEntityDesc& desc )
 
 /// row:    holds light groups
 /// column: holds object groups (lighting groups)
-C2DArray<char> m_LightToObject;
+array2d<char> m_LightToObject;
 
 int init_light_groups()
 {

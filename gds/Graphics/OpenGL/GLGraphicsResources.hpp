@@ -7,7 +7,7 @@
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include <gl/gl.h>
 
-//#include "Support/2DArray.hpp"
+//#include "Support/array2d.hpp"
 #include "Support/BitmapImage.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 
@@ -25,9 +25,9 @@ class CGLTextureResource : public TextureResource
 
 //	boost::shared_ptr<LockedTexture> m_pLockedTexture;
 
-//	boost::shared_ptr< C2DArray<SFloatRGBAColor> > m_pLockedTextureImageBuffer;
+//	boost::shared_ptr< array2d<SFloatRGBAColor> > m_pLockedTextureImageBuffer;
 
-//	boost::shared_ptr< C2DArray<U32> > m_pLockedTextureRGBA32ImageBuffer;
+//	boost::shared_ptr< array2d<U32> > m_pLockedTextureRGBA32ImageBuffer;
 
 	boost::shared_ptr<CBitmapImage> m_pLockedImage;
 

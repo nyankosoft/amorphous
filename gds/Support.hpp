@@ -4,7 +4,7 @@
 /// availability: Windows
 #include "Support/WindowMisc_Win32.hpp"
 
-#include "Support/2DArray.hpp"
+#include "Support/array2d.hpp"
 #include "Support/BitmapImage.hpp"
 
 // 3D camera related operations

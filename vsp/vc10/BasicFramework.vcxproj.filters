@@ -1622,9 +1622,6 @@
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_2DArray.hpp">
-      <Filter>Support\Serialization</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization_32BitColor.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
@@ -1859,6 +1856,12 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\3DMath\fwd.hpp">
       <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Support\array2d.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_array2d.hpp">
+      <Filter>Support\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,16 +1,16 @@
-#ifndef  __2DARRAY_H__
-#define  __2DARRAY_H__
+#ifndef  __array2d_HPP__
+#define  __array2d_HPP__
+
 
 #include <vector>
 
 
 namespace amorphous
 {
-//using namespace std;
 
 
 template<class T>
-class C2DArray
+class array2d
 {
 	/// holds values of 2d array in a 1d array
 	/// - size of this vector must always be nx * ny
@@ -20,9 +20,9 @@ class C2DArray
 
 public:
 
-	inline C2DArray() { nx = ny = 0; }
+	inline array2d() { nx = ny = 0; }
 
-	~C2DArray() {}
+	~array2d() {}
 
 	inline void resize( int x, int y );
 
@@ -50,7 +50,7 @@ public:
 
 
 template<class T>
-inline void C2DArray<T>::resize( int size_x, int size_y )
+inline void array2d<T>::resize( int size_x, int size_y )
 {
 	nx = size_x;
 	ny = size_y;
@@ -59,7 +59,7 @@ inline void C2DArray<T>::resize( int size_x, int size_y )
 
 
 template<class T>
-inline void C2DArray<T>::resize( int size_x, int size_y, const T& val )
+inline void array2d<T>::resize( int size_x, int size_y, const T& val )
 {
 	nx = size_x;
 	ny = size_y;
@@ -71,7 +71,7 @@ inline void C2DArray<T>::resize( int size_x, int size_y, const T& val )
 
 
 template<class T>
-inline void C2DArray<T>::increase_y( int amount_y, const T& val )
+inline void array2d<T>::increase_y( int amount_y, const T& val )
 {
 	int i;
 	for( i=0; i<amount_y*nx; i++ )
@@ -82,7 +82,7 @@ inline void C2DArray<T>::increase_y( int amount_y, const T& val )
 
 
 template<class T>
-inline void C2DArray<T>::increase_x( int amount_x, const T& val )
+inline void array2d<T>::increase_x( int amount_x, const T& val )
 {
 	int i, j;
 	typename std::vector<T>::iterator itr;
@@ -101,7 +101,7 @@ inline void C2DArray<T>::increase_x( int amount_x, const T& val )
 
 /*
 template<class T>
-inline void C2DArray<T>::resize( int size_x, int size_y, T val )
+inline void array2d<T>::resize( int size_x, int size_y, T val )
 {
 	nx = size_x;
 	ny = size_y;
@@ -113,21 +113,21 @@ inline void C2DArray<T>::resize( int size_x, int size_y, T val )
 */
 
 template<class T>
-inline T& C2DArray<T>::operator()( int x, int y )
+inline T& array2d<T>::operator()( int x, int y )
 {
 	return m_vecData.at( y * nx + x );
 }
 
 
 template<class T>
-inline const T& C2DArray<T>::operator()( int x, int y ) const
+inline const T& array2d<T>::operator()( int x, int y ) const
 {
 	return m_vecData.at( y * nx + x );
 }
 
 
 template<class T>
-inline void C2DArray<T>::clear()
+inline void array2d<T>::clear()
 {
 	return m_vecData.clear();
 }
@@ -136,4 +136,4 @@ inline void C2DArray<T>::clear()
 
 
 
-#endif		/*  __2DARRAY_H__  */
+#endif		/*  __array2d_HPP__  */

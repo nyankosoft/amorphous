@@ -2,7 +2,7 @@
 #define  __FreeTypeAux_H__
 
 
-#include "2DArray.hpp"
+#include "array2d.hpp"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -70,7 +70,7 @@ public:
 
 
 template<typename BitmapCalc>
-inline void DrawBitmap_Gen( FT_Bitmap *bitmap, int left, int top, C2DArray<U8>& dest_buffer )
+inline void DrawBitmap_Gen( FT_Bitmap *bitmap, int left, int top, array2d<U8>& dest_buffer )
 {
 	int x,y;//,r;
 //	int index;
@@ -88,7 +88,7 @@ inline void DrawBitmap_Gen( FT_Bitmap *bitmap, int left, int top, C2DArray<U8>& 
 }
 
 
-inline void DrawBitmap( FT_Bitmap *bitmap, int left, int top, C2DArray<U8>& dest_buffer )
+inline void DrawBitmap( FT_Bitmap *bitmap, int left, int top, array2d<U8>& dest_buffer )
 {
 	switch( bitmap->pixel_mode )
 	{

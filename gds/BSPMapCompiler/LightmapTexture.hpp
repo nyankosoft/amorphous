@@ -2,7 +2,7 @@
 #define __MAPCOMPILER_LIGHTMAPTEXTURE_H__
 
 
-#include "Support/2DArray.hpp"
+#include "Support/array2d.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/IndexedPolygon.hpp"
@@ -31,17 +31,17 @@ class CLightmapTexture
 	std::vector<int> m_vecLightmapIndex;
 
 	/// lightmap texture, the output of the CreateLightmapTexture
-	C2DArray<SFloatRGBColor> m_vecTexel;
+	array2d<SFloatRGBColor> m_vecTexel;
 
 	/// record the state of texels (whether it has been filled or not).
 	/// This information is used during margin filling
-	C2DArray<char> m_vecTexelState;
+	array2d<char> m_vecTexelState;
 
 	/// experiment with light direction map texture
 	/// records average directions to the lights that reach each lightmap surface
-	C2DArray<Vector3> m_vecvLightDirMap;
+	array2d<Vector3> m_vecvLightDirMap;
 
-	C2DArray<char> m_vecTexelState_LightDirMap;
+	array2d<char> m_vecTexelState_LightDirMap;
 
 	/// holds rectangular lightmap images in the tree
 	RectTree m_LightmapTree;

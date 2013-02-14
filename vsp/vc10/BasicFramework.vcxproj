@@ -588,6 +588,7 @@
     <ClInclude Include="..\..\gds\GUI\InputHandler_Dialog.hpp" />
     <ClInclude Include="..\..\gds\GUI\ui.hpp" />
     <ClInclude Include="..\..\gds\GUI\ui_fwd.hpp" />
+    <ClInclude Include="..\..\gds\Support\array2d.hpp" />
     <ClInclude Include="..\..\gds\Support\BitmapImage.hpp" />
     <ClInclude Include="..\..\gds\Support\BMPImageExporter.hpp" />
     <ClInclude Include="..\..\gds\Support\BuiltinImage.hpp" />
@@ -605,6 +606,7 @@
     <ClInclude Include="..\..\gds\Support\SafeDelete.hpp" />
     <ClInclude Include="..\..\gds\Support\SafeDeleteVector.hpp" />
     <ClInclude Include="..\..\gds\Support\SerializableStream.hpp" />
+    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_array2d.hpp" />
     <ClInclude Include="..\..\gds\Support\Singleton.hpp" />
     <ClInclude Include="..\..\gds\Support\stream_buffer.hpp" />
     <ClInclude Include="..\..\gds\Support\StringAux.hpp" />
@@ -623,7 +625,6 @@
     <ClInclude Include="..\..\gds\Support\Serialization\BinaryArchive_Output.hpp" />
     <ClInclude Include="..\..\gds\Support\Serialization\BinaryDatabase.hpp" />
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization.hpp" />
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_2DArray.hpp" />
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization_32BitColor.hpp" />
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization_3DCommon.hpp" />
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization_3DMath.hpp" />

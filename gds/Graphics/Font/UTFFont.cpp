@@ -121,7 +121,7 @@ static void RenderTextToBufferAndSetUpRects(
 	                    FT_Face& face,
 						const std::vector<U32> &utf8_code_points,
 						int char_height,
-//						C2DArray<U8>& dest_bitmap_buffer,
+//						array2d<U8>& dest_bitmap_buffer,
 						LockedTexture& dest_texture,
 //						vector<UTFFont::CharRect>& char_rects,
 						C2DRectSet& text_boxes,

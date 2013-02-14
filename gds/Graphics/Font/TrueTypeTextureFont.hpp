@@ -4,7 +4,7 @@
 
 #include "TextureFont.hpp"
 #include "../TextureGenerators/TextureFillingAlgorithm.hpp"
-#include "../../Support/2DArray.hpp"
+#include "../../Support/array2d.hpp"
 #include "../../Support/ImageArchive.hpp"
 
 
@@ -98,7 +98,7 @@ private:
 	void InitTrueTypeFontInternal();
 
 	/// Creates a bitmap that contains ANSI characters
-	bool CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest_bitmap_buffer );
+	bool CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer );
 
 public:
 

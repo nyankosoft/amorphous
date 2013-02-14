@@ -19,7 +19,7 @@ static const std::string gs_FontBasicInfoKeyname = "Base";
 static const std::string gs_FontTextureImageKeyname = "Texture";
 
 
-void DrawRect( C2DArray<U8>& dest_buffer, const SRect& rect, U8 color )
+void DrawRect( array2d<U8>& dest_buffer, const SRect& rect, U8 color )
 {
 	for( int y=rect.top; y<=rect.bottom; y++ )
 	{
@@ -37,7 +37,7 @@ void DrawRect( C2DArray<U8>& dest_buffer, const SRect& rect, U8 color )
 
 void FontTextureLoader::FillTexture( LockedTexture& texture )
 {
-	C2DArray<U8> dest_bitmap_buffer;
+	array2d<U8> dest_bitmap_buffer;
 	m_pFont->CreateFontTextureFromTrueTypeFont( dest_bitmap_buffer );
 
 //	texture.Clear( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.0f ) );
@@ -124,7 +124,7 @@ void TrueTypeTextureFont::InitTrueTypeFontInternal()
 void RenderTextToBuffer( FT_Face& face,
 						const std::string &text,
 						int char_height,
-						C2DArray<U8>& dest_bitmap_buffer,
+						array2d<U8>& dest_bitmap_buffer,
 						vector<TrueTypeTextureFont::CharRect>& char_rect )
 {
 	LOG_FUNCTION_SCOPE();
@@ -213,7 +213,7 @@ void RenderTextToBuffer( FT_Face& face,
 }
 
 
-bool TrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest_bitmap_buffer )
+bool TrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer )
 {
 	LOG_FUNCTION_SCOPE();
 

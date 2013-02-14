@@ -1,9 +1,8 @@
-
 #ifndef __KGL_2DARRAY_SERIALIZATION_H__
 #define __KGL_2DARRAY_SERIALIZATION_H__
 
-#include "../2DArray.hpp"
 
+#include "../array2d.hpp"
 #include "Archive.hpp"
 
 
@@ -15,7 +14,7 @@ namespace serialization
 
 
 template <class T>
-inline IArchive& operator & ( IArchive& ar, C2DArray<T>& r2DArray )
+inline IArchive& operator & ( IArchive& ar, array2d<T>& r2DArray )
 {
 	int x, y, iSizeX, iSizeY;
 	if( ar.GetMode() == IArchive::MODE_OUTPUT )
