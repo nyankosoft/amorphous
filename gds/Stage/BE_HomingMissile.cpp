@@ -14,7 +14,6 @@
 
 namespace amorphous
 {
-//#include "Support/msgbox.hpp"
 
 using namespace std;
 using namespace physics;
