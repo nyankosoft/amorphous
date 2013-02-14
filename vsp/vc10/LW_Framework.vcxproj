@@ -75,6 +75,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\gds\LightWave\fwd.hpp" />
     <ClInclude Include="..\..\gds\LightWave\LightWaveObject.hpp" />
     <ClInclude Include="..\..\gds\LightWave\LWO2_Common.hpp" />
     <ClInclude Include="..\..\gds\LightWave\LWO2_Layer.hpp" />

@@ -33,6 +33,9 @@
     <ClInclude Include="..\..\gds\LightWave\LWS_Items.hpp">
       <Filter>source files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\LightWave\fwd.hpp">
+      <Filter>source files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\LightWave\LWO2_Common.cpp">
