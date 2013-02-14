@@ -13,9 +13,6 @@ using namespace boost::filesystem;
 using namespace msynth;
 
 
-extern int g_htrans_rev;
-
-
 /*
 Playing motions
 - preloaded
@@ -517,7 +514,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 //	Matrix33 mat1 = pBone->GetOrientationAt( fTime ) * pBone->GetBoneRestOrientation(); // debug
 //	Matrix33 mat2 = pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()); // debug
 
-  if( g_htrans_rev == 1 )
+  if( CBone::get_htrans_rev() == 1 )
   {
 	// rotation
 //	Quaternion qRotaiton = Quaternion( pBone->GetOffsetOrientationAt( fTime ) );
@@ -558,7 +555,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
 	}
   }
-  else if( g_htrans_rev == 2 )
+  else if( CBone::get_htrans_rev() == 2 )
   {
 	// rotation
 	const Matrix33 matDeltaRotation = pBone->GetOrientationFromRestOrientationAt( fTime );
@@ -598,7 +595,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
 	}
   }
-  else if( g_htrans_rev == 3 )
+  else if( CBone::get_htrans_rev() == 3 )
   {
 	// rotation
 	const Matrix33 matDeltaRotation = pBone->GetOrientationAt( fTime );// * pBone->GetInvBoneRestOrientation();

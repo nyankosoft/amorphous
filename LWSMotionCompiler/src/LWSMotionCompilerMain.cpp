@@ -11,7 +11,7 @@ using std::string;
 using std::vector;
 using namespace boost;
 using namespace boost::filesystem;
-using namespace msynth;
+using namespace amorphous::msynth;
 
 
 
@@ -61,8 +61,8 @@ int main( int argc, char *argv[] )
 	CLogOutput_HTML html_log( html_log_filepath.string() );
 	g_Log.AddLogOutput( &html_log );
 
-	shared_ptr<CMotionPrimitiveCompilerCreator> pBVHCompilerCreator( new CBVHMotionPrimitiveCompilerCreator );
-	RegisterMotionPrimitiveCompilerCreator( pBVHCompilerCreator );
+//	shared_ptr<CMotionPrimitiveCompilerCreator> pBVHCompilerCreator( new CBVHMotionPrimitiveCompilerCreator );
+//	RegisterMotionPrimitiveCompilerCreator( pBVHCompilerCreator );
 
 	shared_ptr<CMotionPrimitiveCompilerCreator> pLWSCompilerCreator( new CLWSMotionPrimitiveCompilerCreator );
 	RegisterMotionPrimitiveCompilerCreator( pLWSCompilerCreator );

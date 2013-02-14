@@ -16,8 +16,7 @@
 
 #include "LightWave/fwd.hpp"
 
-
-class CLightWaveSceneLoader;
+using namespace amorphous;
 
 
 class CEnvelope
