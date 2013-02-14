@@ -26,7 +26,7 @@ double log2( double scalar )
 
 
 /// filepath printer for Mesh Generator
-class CMGSplitImageFilepathPrinter : public CSplitImageFilepathPrinter
+class CMGSplitImageFilepathPrinter : public SplitImageFilepathPrinter
 {
 	std::string m_SrcFilepath;
 
