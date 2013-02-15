@@ -53,7 +53,7 @@ class CLWSMotionDatabaseCompiler : public msynth::CMotionDatabaseCompiler
 
 //	std::string m_OutputFilepath;
 
-	boost::shared_ptr<CLightWaveSceneLoader> m_pScene;
+	boost::shared_ptr<LightWaveSceneLoader> m_pScene;
 
 	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
 
@@ -61,15 +61,15 @@ class CLWSMotionDatabaseCompiler : public msynth::CMotionDatabaseCompiler
 
 private:
 
-	boost::shared_ptr<CLWS_Bone> CreateSkeleton();
+	boost::shared_ptr<LWS_Bone> CreateSkeleton();
 
 	void CreateMotionPrimitive();
 
-	void CreateMotionPrimitives( boost::shared_ptr<CLWS_Bone> pRootBone );
+	void CreateMotionPrimitives( boost::shared_ptr<LWS_Bone> pRootBone );
 
-	void CollectKeyFrameTimes( CLWS_Bone& bone, std::vector<float>& vecKeyframeTime );
+	void CollectKeyFrameTimes( LWS_Bone& bone, std::vector<float>& vecKeyframeTime );
 
-	void CreateKeyframe( boost::shared_ptr<CLWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::CTransformNode& dest_node );
+	void CreateKeyframe( boost::shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::CTransformNode& dest_node );
 
 	void CreateMotionPrimitive( msynth::CMotionPrimitiveDescGroup& desc_group, msynth::CMotionPrimitiveDesc& desc, std::vector<msynth::CKeyframe>& vecSrcKeyframe );
 

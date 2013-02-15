@@ -142,7 +142,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 		return;
 	}
 
-	shared_ptr<CLWS_Bone> pRootBone = CreateSkeleton();
+	shared_ptr<LWS_Bone> pRootBone = CreateSkeleton();
 
 	if( m_pSkeleton )
 	{
@@ -201,19 +201,19 @@ inline bool find_similar_time( float in, vector<float>& vecfRef )
 }
 
 
-void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<float>& vecKeyframeTime )
+void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( LWS_Bone& bone, vector<float>& vecKeyframeTime )
 {
-//	shared_ptr<CLWS_Bone> pRootBone = ???;
+//	shared_ptr<LWS_Bone> pRootBone = ???;
 
 	int i,j;
 	int num_channels = bone.GetNumChannels();
 	for( i=0; i<num_channels; i++ )
 	{
-		const CLWS_Channel& channel = bone.GetChannel(i);
+		const LWS_Channel& channel = bone.GetChannel(i);
 		const int num_keys = (int)channel.vecKey.size();
 		for( j=0; j<num_keys; j++ )
 		{
-			const CLWS_Keyframe& keyframe = channel.vecKey[j];
+			const LWS_Keyframe& keyframe = channel.vecKey[j];
 			if( !find_similar_time( keyframe.fTime, vecKeyframeTime ) )
 				vecKeyframeTime.push_back( keyframe.fTime );
 		}
@@ -231,7 +231,7 @@ void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( CLWS_Bone& bone, vector<f
 /// \param pSrcBone [in] source from which skeletal structure is extracted
 /// \param parent_space [in]
 /// \param dest_bone [out] a destination buffer
-void CopyBones( const shared_ptr<CLWS_Bone> pSrcBone,
+void CopyBones( const shared_ptr<LWS_Bone> pSrcBone,
 			    const Matrix34& parent_space,
 			    CBone& dest_bone )
 {
@@ -294,7 +294,7 @@ void CopyBones( const shared_ptr<CLWS_Bone> pSrcBone,
 	dest_bone.Children().resize( num_children );
 	for( size_t i=0; i<num_children; i++ )
 	{
-		shared_ptr<CLWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
+		shared_ptr<LWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
 //		CBone dest_child_bone;
 //		dest_bone.AddChildBone( dest_child_bone );
 
@@ -307,21 +307,21 @@ void CopyBones( const shared_ptr<CLWS_Bone> pSrcBone,
 
 /// Returns a valid root bone on success
 /// Also, a valid skeleton is set to m_pSkeleton if everything works fine.
-shared_ptr<CLWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
+shared_ptr<LWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
 {
 	if( !m_pScene )
-		return shared_ptr<CLWS_Bone>();
+		return shared_ptr<LWS_Bone>();
 
 	// restore tree structure of the bones
 
-	vector< shared_ptr<CLWS_Bone> > vecpRootBones = m_pScene->GetRootBones();
+	vector< shared_ptr<LWS_Bone> > vecpRootBones = m_pScene->GetRootBones();
 
-	shared_ptr<CLWS_Bone> pRootBone;
+	shared_ptr<LWS_Bone> pRootBone;
 	const size_t num_root_bones = vecpRootBones.size();
 	if( num_root_bones == 0 )
 	{
 		LOG_PRINT_ERROR( " No root bone was found." );
-		return shared_ptr<CLWS_Bone>();
+		return shared_ptr<LWS_Bone>();
 	}
 	if( num_root_bones == 1 )
 	{
@@ -482,7 +482,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 
 void CLWSMotionDatabaseCompiler::CreateMotionPrimitive()
 {/*
-	shared_ptr<CLWS_Bone> pRootBone;
+	shared_ptr<LWS_Bone> pRootBone;
 
 	if( desc.root_node_name.length() == 0 )
 		pMotionRootBone = pRootBone;
@@ -502,7 +502,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive()
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, float fTime, const Matrix34& parent_transform, CTransformNode& dest_node )
+void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, CTransformNode& dest_node )
 {
 	if( 3.0f < fTime )
 		int break_here = 1;
@@ -536,8 +536,8 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 		vTranslation = pBone->GetPositionAt( fTime ) - pBone->GetBoneRestPosition();
 	}*/
 
-	CLWS_Item *pParent = pBone->GetParent();
-	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
+	LWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != LWS_Item::TYPE_BONE )
 	{
 		// the parent is not a bone
 		// - Assume this is a root bone and add the parent translation
@@ -563,8 +563,8 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 	const Matrix33 matWorldRotation = parent_transform.matOrient * matRestRotation;
 	Matrix33 matDestRotation( Matrix33Identity() );
 
-	CLWS_Item *pParent = pBone->GetParent();
-	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE ) // is root bone
+	LWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != LWS_Item::TYPE_BONE ) // is root bone
 		matDestRotation = matDeltaRotation;
 	else
 		matDestRotation = matWorldRotation * matDeltaRotation * Matrix33Transpose(matWorldRotation);
@@ -577,8 +577,8 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 	// translation
 	Vector3 vTranslation = Vector3(0,0,0);//pBone->GetPositionAt( fTime );
 
-//	CLWS_Item *pParent = pBone->GetParent();
-	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
+//	LWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != LWS_Item::TYPE_BONE )
 	{
 		// the parent is not a bone
 		// - Assume this is a root bone and add the parent translation
@@ -603,8 +603,8 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 	const Matrix33 matWorldRotation = parent_transform.matOrient * matRestRotation;
 	Matrix33 matDestRotation( matDeltaRotation );
 
-	CLWS_Item *pParent = pBone->GetParent();
-//	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE ) // is root bone
+	LWS_Item *pParent = pBone->GetParent();
+//	if( pParent && pParent->GetItemType() != LWS_Item::TYPE_BONE ) // is root bone
 //		matDestRotation = matDeltaRotation;
 //	else
 		matDestRotation = parent_transform.matOrient * matDeltaRotation * Matrix33Transpose(matWorldRotation);
@@ -615,8 +615,8 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 	// translation
 	Vector3 vTranslation = Vector3(0,0,0);//pBone->GetPositionAt( fTime );
 
-//	CLWS_Item *pParent = pBone->GetParent();
-	if( pParent && pParent->GetItemType() != CLWS_Item::TYPE_BONE )
+//	LWS_Item *pParent = pBone->GetParent();
+	if( pParent && pParent->GetItemType() != LWS_Item::TYPE_BONE )
 	{
 		// the parent is not a bone
 		// - Assume this is a root bone and add the parent translation
@@ -636,7 +636,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<CLWS_Bone> pBone, fl
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( boost::shared_ptr<CLWS_Bone> pRootBone )
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( boost::shared_ptr<LWS_Bone> pRootBone )
 {
 //	int num_motion_primitives = (int)m_vecMotionPrimitiveDesc.size();
 //	for( int i=0; i<num_motion_primitives; i++ )
@@ -651,7 +651,7 @@ bool CLWSMotionDatabaseCompiler::LoadLWSceneFile( const std::string& filepath ) 
 
 //	m_SceneFilepath = filepath_copy;
 
-	m_pScene = shared_ptr<CLightWaveSceneLoader>( new CLightWaveSceneLoader() );
+	m_pScene = shared_ptr<LightWaveSceneLoader>( new LightWaveSceneLoader() );
 
 	bool res = m_pScene->LoadFromFile( filepath );
 
@@ -720,7 +720,7 @@ Result::Name CLWSMotionDatabaseCompiler::BuildFromDescFile( const std::string& f
 
 	bool ret = LoadLWSceneFile( m_SceneFilepath.string() );
 
-	shared_ptr<CLWS_Bone> pRootBone = CreateSkeleton();
+	shared_ptr<LWS_Bone> pRootBone = CreateSkeleton();
 
 	if( !pRootBone )
 		return Result::UNKNOWN_ERROR;
@@ -734,14 +734,14 @@ Result::Name CLWSMotionDatabaseCompiler::BuildFromDescFile( const std::string& f
 /*
 // Recursively copies the bones and creates a skeleton structure
 // composed of CBone class objects
-void CopyBones( shared_ptr<CLWS_Bone> pSrcBone,
+void CopyBones( shared_ptr<LWS_Bone> pSrcBone,
 			    const Matrix34& parent_space,
 			    CBone& dest_bone )
 {
 	const size_t num_children = pSrcBone->ChildBone().size();
 	for( size_t i=0; i<num_children; i++ )
 	{
-		shared_ptr<CLWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
+		shared_ptr<LWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
 		CBone dest_child_bone;
 
 		string& bone_name = pSrcChildBone->GetBoneName();

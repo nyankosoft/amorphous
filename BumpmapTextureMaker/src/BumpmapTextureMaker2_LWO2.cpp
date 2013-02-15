@@ -86,17 +86,17 @@ void CBumpmapTextureMaker2_LWO2::Release()
 
 bool CBumpmapTextureMaker2_LWO2::LoadModel( const char *pFilename )
 {
-	shared_ptr<CLWO2_Object> pObj;
+	shared_ptr<LWO2_Object> pObj;
 
-	pObj = shared_ptr<CLWO2_Object>( new CLWO2_Object() );
+	pObj = shared_ptr<LWO2_Object>( new LWO2_Object() );
 	if( !pObj->LoadLWO2Object(pFilename) )
 	{
 		return false;
 	}
 
 	// find layer with the name "LYR_BumpSource"
-	list<CLWO2_Layer>::iterator itrLayer;
-	list<CLWO2_Layer>& rlstLayer = pObj->GetLayer();
+	list<LWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>& rlstLayer = pObj->GetLayer();
 
 	SLayerSet layer_set;
 
