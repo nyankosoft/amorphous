@@ -7,6 +7,8 @@
 #include "gds/Support/Macro.h"
 #include <float.h>
 
+using namespace amorphous;
+
 
 /// NOTE: this function produces the same noise image every time the app is run.
 /// Different noise images are produced when the function is called multiple times during an execution of the app.

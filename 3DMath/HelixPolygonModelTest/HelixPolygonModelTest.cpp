@@ -3,6 +3,7 @@
 #include "gds/Support/ParamLoader.hpp"
 
 using namespace std;
+using namespace amorphous;
 
 
 class tex2d { public: float u,v; tex2d(float _u,float _v) : u(_u), v(_v) {} };

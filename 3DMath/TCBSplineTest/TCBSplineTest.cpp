@@ -3,8 +3,8 @@
 #include "gds/3DMath/TCBSpline.hpp"
 #include "gds/3DMath/Vector2.hpp"
 
-//using namespace morph;
 using std::vector;
+using namespace amorphous;
 
 
 void draw_3x3_dot( CBitmapImage& img, int x, int y, const SFloatRGBAColor& color )
