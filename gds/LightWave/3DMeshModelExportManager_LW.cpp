@@ -73,7 +73,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	Release();
 
 	// load light wave model data
-	m_pObject = shared_ptr<CLWO2_Object>( new CLWO2_Object() );
+	m_pObject = shared_ptr<LWO2_Object>( new LWO2_Object() );
 
 	if( !m_pObject->LoadLWO2Object( lwo_filename.c_str() ) )
 	{
@@ -99,14 +99,14 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	string mesh_tag = "CreateMesh";
 	size_t i, j, num_layer_sets = 0;
 
-	vector<CLWO2_Layer *> vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", CLWO2_NameMatchCond::START_WITH );
+	vector<LWO2_Layer *> vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", LWO2_NameMatchCond::START_WITH );
 	size_t num_tgt_layers = vecpMeshLayer.size();
 	vector<string> words;
 
 	// layers with names that start with "CreateMesh" - registered as mesh layers
 	for( i=0; i<num_tgt_layers; i++ )
 	{
-		CLWO2_Layer *layer = vecpMeshLayer[i];
+		LWO2_Layer *layer = vecpMeshLayer[i];
 
 		words.resize( 0 );
 		SeparateStrings( words, layer->GetName().c_str(), " \t" );
@@ -159,7 +159,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	if( 1 < vecLayerSet.size() )
 		std::sort( vecLayerSet.begin(), vecLayerSet.end(), sort_by_group_number() );
 
-	vector<CLWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", CLWO2_NameMatchCond::START_WITH );
+	vector<LWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", LWO2_NameMatchCond::START_WITH );
 
 	// if a layer with the name that begins with "Skeleton" was not found, for skeletons, target the layers named with either "CreateMesh" or "Skeleton"
 	vecpSkeletonLayer.insert( vecpSkeletonLayer.end(), vecpMeshLayer.begin(), vecpMeshLayer.end() );
@@ -184,7 +184,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 		for( j=0; j<num_skeleton_layers; j++ )
 		{
-			CLWO2_Layer *pSkeletonLayer = vecpSkeletonLayer[j];
+			LWO2_Layer *pSkeletonLayer = vecpSkeletonLayer[j];
 			GetOutputFilename( strOutFilename, pSkeletonLayer->GetName() );
 
 			if( layer_set.strOutputFilename == strOutFilename )

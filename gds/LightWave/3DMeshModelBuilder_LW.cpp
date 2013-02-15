@@ -56,7 +56,7 @@ m_UseBoneStartAsBoneLocalOrigin(false)
 }
 
 
-C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW( boost::shared_ptr<CLWO2_Object> pSrcObject )
+C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW( boost::shared_ptr<LWO2_Object> pSrcObject )
 :
 m_pSrcObject(pSrcObject),
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
@@ -143,12 +143,12 @@ bool C3DMeshModelBuilder_LW::BuildMeshModel( SLayerSet& rLayerInfo )
 }
 
 
-int GetAnyPolygonGroup( const CLWO2_Layer& rLayer, int polygon_index )
+int GetAnyPolygonGroup( const LWO2_Layer& rLayer, int polygon_index )
 {
-	const std::vector<CLWO2_PolygonGroup>& groups = rLayer.GetPolygonGroup();
+	const std::vector<LWO2_PolygonGroup>& groups = rLayer.GetPolygonGroup();
 	for( size_t i=0; i<groups.size(); i++ )
 	{
-		const CLWO2_PolygonGroup& group = groups[i];
+		const LWO2_PolygonGroup& group = groups[i];
 		for( size_t j=0; j<group.m_vecPolygonIndex.size(); j++ )
 		{
 			if( polygon_index == group.m_vecPolygonIndex[j] )
@@ -160,7 +160,7 @@ int GetAnyPolygonGroup( const CLWO2_Layer& rLayer, int polygon_index )
 }
 
 
-void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFilter& filter )
+void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFilter& filter )
 {
 	if( !m_pSrcObject )
 	{
@@ -192,7 +192,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFi
 		TempVertexBuffer[i].m_DiffuseColor = default_color;
 
 	// check if there are any texture uv mappings
-	vector<CLWO2_TextureUVMap>& rTexUVMap = rLayer.GetTextureUVMap();
+	vector<LWO2_TextureUVMap>& rTexUVMap = rLayer.GetTextureUVMap();
 	if( 0 < rTexUVMap.size() )
 		RaiseVertexFormatFlags( CMMA_VertexSet::VF_2D_TEXCOORD );
 
@@ -216,14 +216,14 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFi
 	// =============== load polygons ===============
 
 	// get surface info
-	vector<CLWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
+	vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	const int iNumSurfaces = (int)rvecSurface.size();
 
 	// surfaces in LightWave are used as materials
 
 	int iMatIndex;
 
-	vector<CLWO2_Face>& rvecPolygon = rLayer.GetFace();
+	vector<LWO2_Face>& rvecPolygon = rLayer.GetFace();
 
 	const int iNumPolygons = (int)rvecPolygon.size();
 	int iNumPolVerts;
@@ -231,12 +231,12 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFi
 	vector<IndexedPolygon>& polygon_buffer = m_pMesh->GetPolygonBuffer();
 	for( i=0; i<iNumPolygons; i++ )
 	{
-		CLWO2_Face& rPolygon = rvecPolygon[i];
+		LWO2_Face& rPolygon = rvecPolygon[i];
 
 		const int surface_index = rPolygon.GetSurfaceIndex();
 
 
-		CLWO2_Surface *pSurf = m_pSrcObject->FindSurfaceFromTAG( surface_index );
+		LWO2_Surface *pSurf = m_pSrcObject->FindSurfaceFromTAG( surface_index );
 
 		if( !pSurf )
 		{
@@ -244,7 +244,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFi
 			continue;
 		}
 
-		const CLWO2_Surface& rSurf = *pSurf;
+		const LWO2_Surface& rSurf = *pSurf;
 
 		if( !filter.IncludeSurface( rSurf.GetName() ) )
 			continue;
@@ -277,7 +277,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFi
 
 		// set texture uv
 		// right now, only a single texture uvmap is supported
-		CLWO2_TextureUVMap* pUVMap = m_pSrcObject->FindTextureUVMapFromSurface( rSurf, ID_COLR, rLayer );
+		LWO2_TextureUVMap* pUVMap = m_pSrcObject->FindTextureUVMapFromSurface( rSurf, ID_COLR, rLayer );
 		float u,v;
 		int vert_index;
 
@@ -306,13 +306,13 @@ void C3DMeshModelBuilder_LW::ProcessLayer( CLWO2_Layer& rLayer, const GeometryFi
 	}
 /*
 	// create polygon groups
-	vector<CLWO2_PolygonGroup>& rvecPolygonGroup = rLayer.GetPolygonGroup();
+	vector<LWO2_PolygonGroup>& rvecPolygonGroup = rLayer.GetPolygonGroup();
 	const size_t num_groups = rvecPolygonGroup.size();
 
 	m_vecPolygonGroupIndex.insert( m_vecPolygonGroupIndex.end(), iNumPolygons );
 	for( i=0; i<num_groups; i++ )
 	{
-		CLWO2_PolygonGroup& group = rvecPolygonGroup[i];
+		LWO2_PolygonGroup& group = rvecPolygonGroup[i];
 		const size_t num_polygons = group.m_vecPolygonIndex.size();
 		const vector<UINT4>& rvecPolygonIndex = group.m_vecPolygonIndex;
 		for( j=0; j<num_polygons; j++ )
@@ -417,7 +417,7 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 		return;
 	}
 
-	vector<CLWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
+	vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	size_t i, iNumSurfaces = rvecSurface.size();
 
 //	CMMA_Material material;
@@ -425,7 +425,7 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 
 	size_t j = 0;
 
-	vector<CLWO2_StillClip>& rvecClip = m_pSrcObject->GetStillClip();
+	vector<LWO2_StillClip>& rvecClip = m_pSrcObject->GetStillClip();
 	size_t k, iNumClips = rvecClip.size();
 
 	vecMaterial.resize( iNumSurfaces );
@@ -437,20 +437,20 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 	{
 		CMMA_Material &material = vecMaterial[i];
 
-		const CLWO2_Surface& src_furface = rvecSurface[i];
+		const LWO2_Surface& src_furface = rvecSurface[i];
 
 		material.Name = src_furface.GetName();
 
-		material.fSpecular = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_SPECULAR );
+		material.fSpecular = src_furface.GetBaseShadingValue( LWO2_Surface::SHADE_SPECULAR );
 
-		material.m_Params.fSpecularity = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_SPECULAR);
-		material.m_Params.fLuminosity  = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_LUMINOSITY );
-		material.m_Params.fGlossiness  = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_GLOSSINESS );
-		material.m_Params.fReflection  = src_furface.GetBaseShadingValue( CLWO2_Surface::SHADE_REFLECTION );
+		material.m_Params.fSpecularity = src_furface.GetBaseShadingValue( LWO2_Surface::SHADE_SPECULAR);
+		material.m_Params.fLuminosity  = src_furface.GetBaseShadingValue( LWO2_Surface::SHADE_LUMINOSITY );
+		material.m_Params.fGlossiness  = src_furface.GetBaseShadingValue( LWO2_Surface::SHADE_GLOSSINESS );
+		material.m_Params.fReflection  = src_furface.GetBaseShadingValue( LWO2_Surface::SHADE_REFLECTION );
 
 		for( j=0; j<numof(tex_channel_tags); j++ )
 		{
-			const CLWO2_SurfaceBlock *pBlock = src_furface.GetSurfaceBlockByChannel( tex_channel_tags[j] );
+			const LWO2_SurfaceBlock *pBlock = src_furface.GetSurfaceBlockByChannel( tex_channel_tags[j] );
 
 			if( pBlock )
 			{
@@ -535,7 +535,7 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 		return;
 	}
 
-	vector<CLWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
+	vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	size_t i, num_surfaces = rvecSurface.size();
 	size_t pos;
 	const string tex_option = "-t ";
@@ -591,12 +591,12 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 
 
 void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
-														  const vector<CLWO2_Bone>& rvecSrcBone,
-														  const CLWO2_Layer& rLayer,
+														  const vector<LWO2_Bone>& rvecSrcBone,
+														  const LWO2_Layer& rLayer,
 	//													  const Vector3& vParentOffset,
 														  CMMA_Bone& rDestBone )
 {
-	const CLWO2_Bone& rBone = rvecSrcBone[iSrcBoneIndex];
+	const LWO2_Bone& rBone = rvecSrcBone[iSrcBoneIndex];
 	int next_pnt_index = rBone.GetVertexIndex(1);
 
 	rDestBone.vLocalOffset
@@ -645,9 +645,9 @@ void C3DMeshModelBuilder_LW::BuildBoneTransformsNROT_r(const Vector3& vParentOff
 }
 
 
-void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
+void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( LWO2_Layer& rLayer )
 {
-	const vector<CLWO2_Bone>& rvecBone = rLayer.GetBone();
+	const vector<LWO2_Bone>& rvecBone = rLayer.GetBone();
 
 	const string layer_name = rLayer.GetName();
 	if( layer_name.find( "--bone-local-origin=bone-start-pos" ) != string::npos )
@@ -731,9 +731,9 @@ void C3DMeshModelBuilder_LW::BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer )
 
 
 void C3DMeshModelBuilder_LW::SetVertexWeights( vector<General3DVertex>& rDestVertexBuffer,
-											   CLWO2_Layer& rLayer )
+											   LWO2_Layer& rLayer )
 {
-	vector<CLWO2_WeightMap>& rWeightMap = rLayer.GetVertexWeightMap();
+	vector<LWO2_WeightMap>& rWeightMap = rLayer.GetVertexWeightMap();
 
 	const int num_maps = (int)rWeightMap.size();
 
@@ -793,7 +793,7 @@ void C3DMeshModelBuilder_LW::SetVertexWeights( vector<General3DVertex>& rDestVer
 }
 
 
-bool C3DMeshModelBuilder_LW::BuildMeshFromLayer( CLWO2_Layer& rLayer )
+bool C3DMeshModelBuilder_LW::BuildMeshFromLayer( LWO2_Layer& rLayer )
 {
 	m_TargetLayerInfo.strOutputFilename = m_pSrcObject->GetFilename();
 
@@ -840,7 +840,7 @@ void C3DMeshModelBuilder_LW::LoadMeshModel()
 		if( !m_TargetLayerInfo.vecpMeshLayer[i] )
 			continue;
 
-		CLWO2_Layer& layer = *(m_TargetLayerInfo.vecpMeshLayer[i]);
+		LWO2_Layer& layer = *(m_TargetLayerInfo.vecpMeshLayer[i]);
 
 		if( !layer.GetPolygonGroup().empty() )
 			BreakPolygonsIntoSubsetsByPolygonGroups();
@@ -858,7 +858,7 @@ bool has_string( const std::vector<std::string>& string_buffer, const std::strin
 
 
 /// loads 3d mesh model from geometry filter
-bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const GeometryFilter& geometry_filter )
+bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<LWO2_Object> pObject, const GeometryFilter& geometry_filter )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -869,7 +869,7 @@ bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object>
 
 	SetVertexFormatFlags( m_DefaultVertexFlags );
 
-	list<CLWO2_Layer>& layer_list = m_pSrcObject->GetLayer();
+	list<LWO2_Layer>& layer_list = m_pSrcObject->GetLayer();
 
 	const vector<string>& layers_to_include = geometry_filter.Include.Layers;
 	const vector<string>& layers_to_exclude = geometry_filter.Exclude.Layers;
@@ -878,7 +878,7 @@ bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object>
 	/// 1. included in the 'include' filter
 	/// 2. but not included in the 'exclude' filter
 	vector<string>::const_iterator itr;
-	list<CLWO2_Layer>::iterator layer;
+	list<LWO2_Layer>::iterator layer;
 	for( layer = layer_list.begin();
 		 layer != layer_list.end();
 		 layer++ )
@@ -922,14 +922,14 @@ bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object>
 
 bool C3DMeshModelBuilder_LW::LoadFromFile( const std::string& model_filepath, const GeometryFilter& geometry_filter )
 {
-	shared_ptr<CLWO2_Object> pObject;
+	shared_ptr<LWO2_Object> pObject;
 
 //	if( !m_pSrcObject )
 	{
 		LOG_SCOPE( " - Loading LightWave object from file " );
 
 		// load the model
-		pObject.reset( new CLWO2_Object() );
+		pObject.reset( new LWO2_Object() );
 
 		bool loaded = pObject->LoadLWO2Object( model_filepath );
 

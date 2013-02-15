@@ -9,10 +9,10 @@ using namespace std;
 
 
 //================================================================================
-// CLWO2_TAGChunk::Methods()                                     - CLWO2_TAGChunk
+// LWO2_TAGChunk::Methods()                                     - LWO2_TAGChunk
 //================================================================================
 
-CLWO2_TAGChunk::CLWO2_TAGChunk(const CLWO2_TAGChunk& tagchunk)
+LWO2_TAGChunk::LWO2_TAGChunk(const LWO2_TAGChunk& tagchunk)
 {
 	this->tagchunk_size = tagchunk.tagchunk_size;
 	this->pTAGStrings = new char [tagchunk_size];
@@ -23,7 +23,7 @@ CLWO2_TAGChunk::CLWO2_TAGChunk(const CLWO2_TAGChunk& tagchunk)
 }
 
 
-void CLWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)
+void LWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)
 {
 	char *p;
 	int temp_indices[1024];
@@ -63,11 +63,11 @@ void CLWO2_TAGChunk::AllocateTAGStrings(UINT4 tagchunksize, FILE* fp)
 
 
 //================================================================================
-// CLWO2_StillClip::Methods()                                   - CLWO2_StillClip
+// LWO2_StillClip::Methods()                                   - LWO2_StillClip
 //================================================================================
 
 // only supports STIL subchunk
-void CLWO2_StillClip::Read(UINT4 clipsize, FILE* fp)
+void LWO2_StillClip::Read(UINT4 clipsize, FILE* fp)
 {
 	UINT4 uiType, uiClipID;
 	UINT4 bytesread, bytesleft;
@@ -128,19 +128,19 @@ void CLWO2_StillClip::Read(UINT4 clipsize, FILE* fp)
 
 
 //================================================================================
-// CLWO2_Object::Methods()                                         - CLWO2_Object
+// LWO2_Object::Methods()                                         - LWO2_Object
 //================================================================================
 
-bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
+bool LWO2_Object::LoadLWO2Object( const std::string& object_filename )
 {
 	UINT4 chunksize, bytesread = 0, datasize = 0;
 	UINT4 uiRead;
 	UINT4 uiTypeLastPOLS;
 	UINT4 uiPrevType;
 
-	CLWO2_Surface surf;
-	CLWO2_StillClip clip;
-	CLWO2_Layer new_layer;
+	LWO2_Surface surf;
+	LWO2_StillClip clip;
+	LWO2_Layer new_layer;
 
 	Vector3 vMin, vMax;
 
@@ -227,7 +227,7 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 		case ID_SURF:  //There are as many SURF chunks as the number of the surfaces in the LWO file
 //			surf.ReadOneSurface(chunksize, fp);
 //			this->m_vecSurface.push_back(surf);
-			m_vecSurface.push_back( CLWO2_Surface() );
+			m_vecSurface.push_back( LWO2_Surface() );
 			m_vecSurface.back().ReadOneSurface( chunksize, fp );
 			break;
 
@@ -268,7 +268,7 @@ bool CLWO2_Object::LoadLWO2Object( const std::string& object_filename )
 }
 
 
-void CLWO2_Object::WriteDebug( const std::string& filename ) const
+void LWO2_Object::WriteDebug( const std::string& filename ) const
 {
 	FILE* fp;
 	fp = fopen(filename.c_str(), "w");
@@ -283,7 +283,7 @@ void CLWO2_Object::WriteDebug( const std::string& filename ) const
 
 	fprintf( fp,"\n----- %d Layers -----\n", (int)m_lstLayer.size() );
 
-	list<CLWO2_Layer>::const_iterator p;
+	list<LWO2_Layer>::const_iterator p;
 	for(p = m_lstLayer.begin(); p!=m_lstLayer.end(); p++)
 	{
 		fprintf( fp, "[%02d] %s\n", p->GetLayerIndex(), p->GetName().c_str() );
@@ -297,7 +297,7 @@ void CLWO2_Object::WriteDebug( const std::string& filename ) const
 	size_t iNumSurfs = m_vecSurface.size();
 	for( i=0; i<iNumSurfs; i++ )
 	{
-		const CLWO2_Surface& rSurf = m_vecSurface[i];
+		const LWO2_Surface& rSurf = m_vecSurface[i];
 
 		fprintf( fp, "name: %s\n", rSurf.GetName().c_str() );
 		fprintf( fp, "texture uv: %s\n", "???"/*rSurf.GetUVMapName().c_str()*/ );
@@ -309,7 +309,7 @@ void CLWO2_Object::WriteDebug( const std::string& filename ) const
 	size_t iNumClips = m_vecStillClip.size();
 	for( i=0; i<iNumClips; i++ )
 	{
-		const CLWO2_StillClip& clip = m_vecStillClip[i];
+		const LWO2_StillClip& clip = m_vecStillClip[i];
 		fprintf( fp, " [%02d] %s\n", clip.uiClipIndex, clip.strName.c_str() );
 	}
 
@@ -317,20 +317,20 @@ void CLWO2_Object::WriteDebug( const std::string& filename ) const
 }
 
 /*
-CLWO2_Object::CLWO2_Object(const CLWO2_Object& lwo2data){
+LWO2_Object::LWO2_Object(const LWO2_Object& lwo2data){
 	this->m_lstLayer.assign(lwo2data.m_lstLayer.begin(), lwo2data.m_lstLayer.end());
 	this->m_vecSurface.assign(lwo2data.m_vecSurface.begin(), lwo2data.m_vecSurface.end());
 	this->m_vecStillClip.assign(lwo2data.m_vecStillClip.begin(), lwo2data.m_vecStillClip.end());
 }
 
-CLWO2_Object::~CLWO2_Object(){
+LWO2_Object::~LWO2_Object(){
 	m_lstLayer.clear();
 	m_vecSurface.clear();
 	m_vecStillClip.clear();
 }*/
 
 
-CLWO2_Surface *CLWO2_Object::FindSurfaceFromTAG( UINT2 wSurfIndex )
+LWO2_Surface *LWO2_Object::FindSurfaceFromTAG( UINT2 wSurfIndex )
 {
 	int surf_index = GetSurfaceIndexFromSurfaceTAG( wSurfIndex );
 
@@ -344,14 +344,14 @@ CLWO2_Surface *CLWO2_Object::FindSurfaceFromTAG( UINT2 wSurfIndex )
 }
 
 
-int CLWO2_Object::GetSurfaceIndexFromSurfaceTAG( const UINT2 wSurfTagIndex )
+int LWO2_Object::GetSurfaceIndexFromSurfaceTAG( const UINT2 wSurfTagIndex )
 {
 	const char* pcSurfaceName = m_tag.pTAGStrings + m_tag.piIndex[wSurfTagIndex];
 
 	size_t i, num_surfs = m_vecSurface.size();
 	for(i=0; i<num_surfs; i++)
 	{
-		CLWO2_Surface& rSurf = m_vecSurface[i];
+		LWO2_Surface& rSurf = m_vecSurface[i];
 		if( strcmp(pcSurfaceName, rSurf.GetName().c_str()) == 0 )
 			return (int)i;
 	}
@@ -365,9 +365,9 @@ int CLWO2_Object::GetSurfaceIndexFromSurfaceTAG( const UINT2 wSurfTagIndex )
 }
 
 
-void CLWO2_Object::ComputeFaceNormals()
+void LWO2_Object::ComputeFaceNormals()
 {
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 
 	for( itrLayer = m_lstLayer.begin(); itrLayer != m_lstLayer.end(); itrLayer++ )
 	{
@@ -376,9 +376,9 @@ void CLWO2_Object::ComputeFaceNormals()
 }
 
 
-void CLWO2_Object::ComputeVertexNormals()
+void LWO2_Object::ComputeVertexNormals()
 {
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 
 	for( itrLayer = m_lstLayer.begin(); itrLayer != m_lstLayer.end(); itrLayer++ )
 	{
@@ -388,14 +388,14 @@ void CLWO2_Object::ComputeVertexNormals()
 
 
 //find the uv-mapping used by the surface
-CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapByName(const char *pcTexUVMapName, CLWO2_Layer& rLayer)
+LWO2_TextureUVMap* LWO2_Object::FindTextureUVMapByName(const char *pcTexUVMapName, LWO2_Layer& rLayer)
 {
-	vector<CLWO2_TextureUVMap>& rvecTexUVMap = rLayer.GetTextureUVMap();
+	vector<LWO2_TextureUVMap>& rvecTexUVMap = rLayer.GetTextureUVMap();
 
 	size_t i, num = rvecTexUVMap.size();
 	for(i=0; i<num ; i++)
 	{
-		CLWO2_TextureUVMap& rTexUVMap = rvecTexUVMap.at(i);
+		LWO2_TextureUVMap& rTexUVMap = rvecTexUVMap.at(i);
 		if(strcmp(rTexUVMap.strName.c_str(), pcTexUVMapName) == 0)
 			return &rTexUVMap;
 	}
@@ -405,22 +405,22 @@ CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapByName(const char *pcTexUVMapN
 
 /*
 //find the uv-mapping used by the surface
-CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface(CLWO2_Surface& rSurf, CLWO2_Layer& rLayer)
+LWO2_TextureUVMap* LWO2_Object::FindTextureUVMapFromSurface(LWO2_Surface& rSurf, LWO2_Layer& rLayer)
 {
 	return FindTextureUVMapByName( rSurf.GetUVMapName().c_str(), rLayer);
 }
 */
 
-CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface( const CLWO2_Surface& rSurf,
+LWO2_TextureUVMap* LWO2_Object::FindTextureUVMapFromSurface( const LWO2_Surface& rSurf,
 		                                                       const UINT4 channel_id,
-													            CLWO2_Layer& rLayer)
+													            LWO2_Layer& rLayer)
 {
-	const vector<CLWO2_SurfaceBlock>& rvecSurfBlock = rSurf.GetSurfaceBlock();
+	const vector<LWO2_SurfaceBlock>& rvecSurfBlock = rSurf.GetSurfaceBlock();
 	int i, iNumSurfaceBlocks = (int)rvecSurfBlock.size();
 	int index;
 	for( i=0; i<iNumSurfaceBlocks; i++ )
 	{
-		const CLWO2_SurfaceBlock& rSurfBlock = rvecSurfBlock[i];
+		const LWO2_SurfaceBlock& rSurfBlock = rvecSurfBlock[i];
 
 		if( rSurfBlock.m_Channel == channel_id )
 		{
@@ -439,12 +439,12 @@ CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface( const CLWO2_Surfa
 
 /*
 //find the uv-mapping used by the surface
-CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface(CLWO2_Surface& rSurf, CLWO2_Layer& rLayer)
+LWO2_TextureUVMap* LWO2_Object::FindTextureUVMapFromSurface(LWO2_Surface& rSurf, LWO2_Layer& rLayer)
 {
 	int i;
 	for(i=0; i< rLayer.m_texuvmap.size(); i++)
 	{
-		CLWO2_TextureUVMap& rTexUVMap = rLayer.m_texuvmap.at(i);
+		LWO2_TextureUVMap& rTexUVMap = rLayer.m_texuvmap.at(i);
 		if(strcmp(rTexUVMap.pName, rSurf.pUVMapName) == 0)
 			return &rTexUVMap;
 	}
@@ -454,12 +454,12 @@ CLWO2_TextureUVMap* CLWO2_Object::FindTextureUVMapFromSurface(CLWO2_Surface& rSu
 
 
 //find the uv-mapping used by the surface
-CLWO2_VertexColorMap* CLWO2_Object::FindVertexColorMapFromSurface(CLWO2_Surface& rSurf, CLWO2_Layer& rLayer)
+LWO2_VertexColorMap* LWO2_Object::FindVertexColorMapFromSurface(LWO2_Surface& rSurf, LWO2_Layer& rLayer)
 {
 	size_t i, num = rLayer.GetVertexColorMap().size();
 	for(i=0; i<num ; i++)
 	{
-		CLWO2_VertexColorMap& rVCMap = rLayer.GetVertexColorMap()[i];
+		LWO2_VertexColorMap& rVCMap = rLayer.GetVertexColorMap()[i];
 
 		if( rVCMap.strName == rSurf.GetVertexColorMap().strName )
 			return &rVCMap;
@@ -469,13 +469,13 @@ CLWO2_VertexColorMap* CLWO2_Object::FindVertexColorMapFromSurface(CLWO2_Surface&
 }
 
 
-int CLWO2_Object::GetNumTagStrings() const
+int LWO2_Object::GetNumTagStrings() const
 {
 	return m_tag.iNumTAGs;
 }
 
 
-const char *CLWO2_Object::GetTagString( int i ) const
+const char *LWO2_Object::GetTagString( int i ) const
 {
 	if( m_tag.iNumTAGs <= i )
 		return NULL;
@@ -484,7 +484,7 @@ const char *CLWO2_Object::GetTagString( int i ) const
 }
 
 
-int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_Layer& rLayer )
+int LWO2_Object::GetBoneIndexForWeightMap( LWO2_WeightMap& rWeightMap, LWO2_Layer& rLayer )
 {
 	const string& strWeightMapName = rWeightMap.GetName();
 
@@ -502,8 +502,8 @@ int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_L
 	if( i == num_tags )
 		return -1;	// the corresponding tag string was not found
 
-	list<CLWO2_Layer>& rlstLayer = m_lstLayer;
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>& rlstLayer = m_lstLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 
 	// search all the layers to find the bone - weight maps because the skeleton may exist in
 	// a layer different from 'rLayer'
@@ -511,7 +511,7 @@ int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_L
 		itrLayer != rlstLayer.end();
 		itrLayer++)
 	{
-		const vector<CLWO2_BoneWeightMap>& rBoneWeightMap = (*itrLayer).GetBoneWeightMap();
+		const vector<LWO2_BoneWeightMap>& rBoneWeightMap = (*itrLayer).GetBoneWeightMap();
 		for( i=0; i<(int)rBoneWeightMap.size(); i++ )
 		{
 			if( rBoneWeightMap[i].iWeightMapTagIndex == tag_index )
@@ -519,7 +519,7 @@ int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_L
 		}
 	}
 /*
-	vector<CLWO2_BoneWeightMap>& rBoneWeightMap = rLayer.GetBoneWeightMap();
+	vector<LWO2_BoneWeightMap>& rBoneWeightMap = rLayer.GetBoneWeightMap();
 	for( i=0; i<rBoneWeightMap.size(); i++ )
 	{
 		if( rBoneWeightMap[i].iWeightMapTagIndex == tag_index )
@@ -530,15 +530,15 @@ int CLWO2_Object::GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_L
 }
 
 
-CLWO2_Layer *CLWO2_Object::GetLayerWithKeyword( const string& keyword, int match_condition )
+LWO2_Layer *LWO2_Object::GetLayerWithKeyword( const string& keyword, int match_condition )
 {
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 
 	for(itrLayer = m_lstLayer.begin();
 		itrLayer != m_lstLayer.end();
 		itrLayer++)
 	{
-		if( CLWO2_NameMatchCond::meet_cond( match_condition, keyword, itrLayer->GetName() ) )
+		if( LWO2_NameMatchCond::meet_cond( match_condition, keyword, itrLayer->GetName() ) )
 		{
 			// the layer name matches the target layer name
 			return &(*itrLayer);
@@ -549,16 +549,16 @@ CLWO2_Layer *CLWO2_Object::GetLayerWithKeyword( const string& keyword, int match
 }
 
 
-vector<CLWO2_Layer *> CLWO2_Object::GetLayersWithKeyword( const string& keyword, int match_condition)
+vector<LWO2_Layer *> LWO2_Object::GetLayersWithKeyword( const string& keyword, int match_condition)
 {
-	vector<CLWO2_Layer *> vecpTargetLayer;
+	vector<LWO2_Layer *> vecpTargetLayer;
 
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 	for(itrLayer = m_lstLayer.begin();
 		itrLayer != m_lstLayer.end();
 		itrLayer++)
 	{
-		if( CLWO2_NameMatchCond::meet_cond( match_condition, keyword, itrLayer->GetName() ) )
+		if( LWO2_NameMatchCond::meet_cond( match_condition, keyword, itrLayer->GetName() ) )
 		{
 			// the layer name matches the target layer name
 			vecpTargetLayer.push_back( &(*itrLayer) );
@@ -569,13 +569,13 @@ vector<CLWO2_Layer *> CLWO2_Object::GetLayersWithKeyword( const string& keyword,
 }
 
 
-vector<CLWO2_Layer *> CLWO2_Object::GetLayersWithKeywords( const vector<string> keyword,
+vector<LWO2_Layer *> LWO2_Object::GetLayersWithKeywords( const vector<string> keyword,
 													       int match_condition)
 {
-	vector<CLWO2_Layer *> vecpTargetLayer;
+	vector<LWO2_Layer *> vecpTargetLayer;
 
 	size_t i, num_keywords = keyword.size();
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 
 	// check each layer to see if it is a target
 	for(itrLayer = m_lstLayer.begin();
@@ -584,7 +584,7 @@ vector<CLWO2_Layer *> CLWO2_Object::GetLayersWithKeywords( const vector<string> 
 	{
 		for( i=0; i<num_keywords; i++ )
 		{
-			if( CLWO2_NameMatchCond::meet_cond( match_condition, keyword[i], itrLayer->GetName() ) )
+			if( LWO2_NameMatchCond::meet_cond( match_condition, keyword[i], itrLayer->GetName() ) )
 			{
 				// the layer name matches one of the target layer names
 				// add the layer to the buffer and leave the loop

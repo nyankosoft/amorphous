@@ -74,10 +74,10 @@ struct SVertexColor_LWO2
 
 
 //=========================================================================================
-// CLWO2_VertexColorMap
+// LWO2_VertexColorMap
 //=========================================================================================
 
-class CLWO2_VertexColorMap
+class LWO2_VertexColorMap
 {
 public:
 
@@ -89,9 +89,9 @@ public:
 
 public:
 
-	CLWO2_VertexColorMap() : iNumIndices(0), paVertexColor(NULL) {}
+	LWO2_VertexColorMap() : iNumIndices(0), paVertexColor(NULL) {}
 
-	~CLWO2_VertexColorMap() { Release(); }
+	~LWO2_VertexColorMap() { Release(); }
 
 	void Release() { iNumIndices = 0; SafeDelete(paVertexColor); }
 
@@ -99,17 +99,17 @@ public:
 
 	inline bool FindVertexColor( UINT4 pnt_index, SFloatRGBAColor& rDestColor );
 
-	CLWO2_VertexColorMap(const CLWO2_VertexColorMap& vc_map);
-	CLWO2_VertexColorMap operator=(CLWO2_VertexColorMap vc_map);
+	LWO2_VertexColorMap(const LWO2_VertexColorMap& vc_map);
+	LWO2_VertexColorMap operator=(LWO2_VertexColorMap vc_map);
 };
 
 
 
 //==================================================================================
-// CLWO2_TextureUVMap
+// LWO2_TextureUVMap
 //==================================================================================
 
-class CLWO2_TextureUVMap
+class LWO2_TextureUVMap
 {
 public:
 
@@ -117,26 +117,26 @@ public:
 
 	std::vector<SIndexAndUV> vecIndexUV;
 
-	CLWO2_TextureUVMap() {}
+	LWO2_TextureUVMap() {}
 
-	~CLWO2_TextureUVMap(){}
+	~LWO2_TextureUVMap(){}
 
 };
 
 
 
 //==================================================================================
-// CLWO2_PointSelectionSet
+// LWO2_PointSelectionSet
 //==================================================================================
 
-class CLWO2_PointSelectionSet
+class LWO2_PointSelectionSet
 {
 	std::string m_strName;
 	std::vector<UINT4> m_vecPointIndex;
 
 public:
 
-	CLWO2_PointSelectionSet() {}
+	LWO2_PointSelectionSet() {}
 
 	const std::string& GetName() const { return m_strName; }
 
@@ -146,14 +146,14 @@ public:
 
 	void SetName( const char *pcName ) { m_strName = pcName; }
 
-	friend class CLWO2_Layer;
+	friend class LWO2_Layer;
 };
 
 
 /**
  *   stores polygon info
  */
-class CLWO2_Face
+class LWO2_Face
 {
 	std::vector<UINT4> m_vecPointIndex;
 
@@ -165,10 +165,10 @@ class CLWO2_Face
 
 public:
 
-	CLWO2_Face(){ m_iSurfaceIndex = 0; m_iPartIndex = -1; m_vFaceNormal = Vector3(0,0,0); }
+	LWO2_Face(){ m_iSurfaceIndex = 0; m_iPartIndex = -1; m_vFaceNormal = Vector3(0,0,0); }
 
-//	CLWO2_Face(const CLWO2_Face& face);
-	~CLWO2_Face() {}
+//	LWO2_Face(const LWO2_Face& face);
+	~LWO2_Face() {}
 
 	inline int GetNumPoints() const { return (int)m_vecPointIndex.size(); }
 
@@ -182,12 +182,12 @@ public:
 
 	inline int GetPartIndex() const { return m_iPartIndex; }
 
-	friend class CLWO2_Layer;
+	friend class LWO2_Layer;
 };
 
 
 // represents named groups of polygons (Parts)
-class CLWO2_PolygonGroup
+class LWO2_PolygonGroup
 {
 public:
 
@@ -199,14 +199,14 @@ public:
 	/// tag indices
 	std::vector<UINT2> m_vecTag;
 
-//	CLWO2_PolygonGroup() {}
+//	LWO2_PolygonGroup() {}
 //	string& GetName() { return m_strName; }
-	friend class CLWO2_Layer;
+	friend class LWO2_Layer;
 };
 
 
 
-class CLWO2_WeightMap
+class LWO2_WeightMap
 {
 	std::string m_strName;
 
@@ -224,11 +224,11 @@ public:
 	/// finds a weight value for a vertex. returns true if the weight is found
 	inline bool FindWeight( UINT4 pnt_index, float& rfDestWeight );
 
-	friend class CLWO2_Layer;
+	friend class LWO2_Layer;
 };
 
 
-class CLWO2_Bone
+class LWO2_Bone
 {
 	std::string m_strName;
 	UINT4 m_aiPointIndex[2];
@@ -238,11 +238,11 @@ public:
 	const std::string& GetName() const { return m_strName; }
 	UINT4 GetVertexIndex( int i ) const { return m_aiPointIndex[i]; }
 
-	friend class CLWO2_Layer;
+	friend class LWO2_Layer;
 };
 
 
-class CLWO2_BoneWeightMap
+class LWO2_BoneWeightMap
 {
 public:
 	UINT4 iBoneIndex;
@@ -251,10 +251,10 @@ public:
 
 
 //==================================================================================
-// CLWO2_Layer
+// LWO2_Layer
 //==================================================================================
 
-class CLWO2_Layer
+class LWO2_Layer
 {
 	int m_iLayerIndex;
 
@@ -263,34 +263,34 @@ class CLWO2_Layer
 	/// buffer to store vertices
 	std::vector<Vector3> m_vecPoint;
 
-	std::vector<CLWO2_Face> m_vecFace;
+	std::vector<LWO2_Face> m_vecFace;
 
-	std::vector<CLWO2_TextureUVMap> m_vecTexuvmap;
+	std::vector<LWO2_TextureUVMap> m_vecTexuvmap;
 
-	std::vector<CLWO2_TextureUVMap> m_vecTexVMAD;
+	std::vector<LWO2_TextureUVMap> m_vecTexVMAD;
 
-	std::vector<CLWO2_VertexColorMap> m_vecVertexColorMap;
+	std::vector<LWO2_VertexColorMap> m_vecVertexColorMap;
 
-	std::vector<CLWO2_PointSelectionSet> m_vecPointSelectionSet;
+	std::vector<LWO2_PointSelectionSet> m_vecPointSelectionSet;
 
-	std::vector<CLWO2_PolygonGroup> m_vecPolygonGroup;
+	std::vector<LWO2_PolygonGroup> m_vecPolygonGroup;
 
-	std::vector<CLWO2_WeightMap> m_vecVertexWeightMap;
+	std::vector<LWO2_WeightMap> m_vecVertexWeightMap;
 
-	std::vector<CLWO2_Bone> m_vecBone;
+	std::vector<LWO2_Bone> m_vecBone;
 
 	/// binds bone indices and tag indices of the correspnding weight maps
-	std::vector<CLWO2_BoneWeightMap> m_vecBoneWeightMap;
+	std::vector<LWO2_BoneWeightMap> m_vecBoneWeightMap;
 
 	std::vector<Vector3> m_vecVertexNormal;
 
 public:
 
-	CLWO2_Layer() { m_iLayerIndex = 0; }
+	LWO2_Layer() { m_iLayerIndex = 0; }
 
-//	CLWO2_Layer(const CLWO2_Layer& layer);
+//	LWO2_Layer(const LWO2_Layer& layer);
 
-	~CLWO2_Layer() {}
+	~LWO2_Layer() {}
 
 	void ReadLayerChunk(UINT4& chunksize, FILE* fp);
 
@@ -302,11 +302,11 @@ public:
 
 	UINT4 ReadPols(UINT4& chunksize, FILE* fp);
 
-	void ReadPTAG(UINT4& ptagsize, CLWO2_Object& rObject, FILE* fp);
+	void ReadPTAG(UINT4& ptagsize, LWO2_Object& rObject, FILE* fp);
 
-	bool GetUV( float& u, float& v, int iPointIndex, CLWO2_TextureUVMap *pTexUVMap );
+	bool GetUV( float& u, float& v, int iPointIndex, LWO2_TextureUVMap *pTexUVMap );
 
-	Vector3 GetInterpolatedNormal( CLWO2_Face& rFace, int iPntIndex );
+	Vector3 GetInterpolatedNormal( LWO2_Face& rFace, int iPntIndex );
 
 	void ComputeFaceNormals();
 
@@ -325,56 +325,56 @@ public:
 
 	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
 
-	const std::vector<CLWO2_Face>& GetFace() const { return m_vecFace; }
+	const std::vector<LWO2_Face>& GetFace() const { return m_vecFace; }
 
-	std::vector<CLWO2_Face>& GetFace() { return m_vecFace; }
+	std::vector<LWO2_Face>& GetFace() { return m_vecFace; }
 
-	std::vector<CLWO2_PolygonGroup>& GetPolygonGroup() { return m_vecPolygonGroup; }
+	std::vector<LWO2_PolygonGroup>& GetPolygonGroup() { return m_vecPolygonGroup; }
 
-	const std::vector<CLWO2_PolygonGroup>& GetPolygonGroup() const { return m_vecPolygonGroup; }
+	const std::vector<LWO2_PolygonGroup>& GetPolygonGroup() const { return m_vecPolygonGroup; }
 
 	const std::string& GetPolygonGroupName();
 
-	std::vector<CLWO2_TextureUVMap>& GetTextureUVMap() { return m_vecTexuvmap; }
+	std::vector<LWO2_TextureUVMap>& GetTextureUVMap() { return m_vecTexuvmap; }
 
-	const std::vector<CLWO2_TextureUVMap>& GetTextureUVMap() const { return m_vecTexuvmap; }
+	const std::vector<LWO2_TextureUVMap>& GetTextureUVMap() const { return m_vecTexuvmap; }
 
-	std::vector<CLWO2_VertexColorMap>& GetVertexColorMap() { return m_vecVertexColorMap; }
+	std::vector<LWO2_VertexColorMap>& GetVertexColorMap() { return m_vecVertexColorMap; }
 
-	const std::vector<CLWO2_VertexColorMap>& GetVertexColorMap() const { return m_vecVertexColorMap; }
+	const std::vector<LWO2_VertexColorMap>& GetVertexColorMap() const { return m_vecVertexColorMap; }
 
-	std::vector<CLWO2_WeightMap>& GetVertexWeightMap() { return m_vecVertexWeightMap; }
+	std::vector<LWO2_WeightMap>& GetVertexWeightMap() { return m_vecVertexWeightMap; }
 
-	const std::vector<CLWO2_WeightMap>& GetVertexWeightMap() const { return m_vecVertexWeightMap; }
+	const std::vector<LWO2_WeightMap>& GetVertexWeightMap() const { return m_vecVertexWeightMap; }
 
-	std::vector<CLWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
+	std::vector<LWO2_PointSelectionSet>& GetPointSelectionSet() { return m_vecPointSelectionSet; }
 
-	bool GetVertexColor( SFloatRGBAColor& color, const int iPntIndex, const CLWO2_Surface& rSurf );
+	bool GetVertexColor( SFloatRGBAColor& color, const int iPntIndex, const LWO2_Surface& rSurf );
 
-	const std::vector<CLWO2_Bone>& GetBone() const { return m_vecBone; }
+	const std::vector<LWO2_Bone>& GetBone() const { return m_vecBone; }
 
-	std::vector<CLWO2_Bone>& GetBone() { return m_vecBone; }
+	std::vector<LWO2_Bone>& GetBone() { return m_vecBone; }
 
 //	std::vector<Vector3>& GetVertexNormal() { return m_vecVertexNormal; }
 
-	const std::vector<CLWO2_BoneWeightMap>& GetBoneWeightMap() const { return m_vecBoneWeightMap; }
+	const std::vector<LWO2_BoneWeightMap>& GetBoneWeightMap() const { return m_vecBoneWeightMap; }
 
-	bool operator==(CLWO2_Layer& layer){ return ( m_iLayerIndex == layer.m_iLayerIndex ); }
-	bool operator<(CLWO2_Layer& layer){return ( m_iLayerIndex < layer.m_iLayerIndex );}
+	bool operator==(LWO2_Layer& layer){ return ( m_iLayerIndex == layer.m_iLayerIndex ); }
+	bool operator<(LWO2_Layer& layer){return ( m_iLayerIndex < layer.m_iLayerIndex );}
 
 };
 
 
 // --------------------- inline implementations ---------------------
 
-inline void CLWO2_WeightMap::GetWeightMap( int index, UINT4& iPntIndex, float& fWeight )
+inline void LWO2_WeightMap::GetWeightMap( int index, UINT4& iPntIndex, float& fWeight )
 {
 	iPntIndex = m_vecPntIndex[index];
 	fWeight = m_vecfWeight[index];
 }
 
 
-inline bool CLWO2_VertexColorMap::FindVertexColor( UINT4 pnt_index, SFloatRGBAColor& rDestColor )
+inline bool LWO2_VertexColorMap::FindVertexColor( UINT4 pnt_index, SFloatRGBAColor& rDestColor )
 {
 	int i, num_maps = iNumIndices;	//GetNumMaps();
 	for( i=0; i<num_maps; i++ )
@@ -394,7 +394,7 @@ inline bool CLWO2_VertexColorMap::FindVertexColor( UINT4 pnt_index, SFloatRGBACo
 }
 
 
-inline bool CLWO2_WeightMap::FindWeight( UINT4 pnt_index, float& rfDestWeight )
+inline bool LWO2_WeightMap::FindWeight( UINT4 pnt_index, float& rfDestWeight )
 {
 	int i, num_maps = GetNumMaps();
 	for( i=0; i<num_maps; i++ )

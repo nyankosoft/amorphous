@@ -33,8 +33,8 @@ void CMassSpringExporter_LW::BuildMassSpringModel( const char *pcFilename )
 
 	string strTargetLayerName = "LYR_MassSpringMesh";
 
-	list<CLWO2_Layer>& rlstLayer = m_OrigModel.GetLayer();
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>& rlstLayer = m_OrigModel.GetLayer();
+	list<LWO2_Layer>::iterator itrLayer;
 
 	// search the layers and process ones that have the same name as 'strTargetLayerName'
 	for(itrLayer = rlstLayer.begin();
@@ -48,9 +48,9 @@ void CMassSpringExporter_LW::BuildMassSpringModel( const char *pcFilename )
 }
 
 
-bool CMassSpringExporter_LW::GetPointInfo( vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer )
+bool CMassSpringExporter_LW::GetPointInfo( vector<STempPointInfo>& rvecPointInfo, LWO2_Layer& rLayer )
 {
-	vector<CLWO2_PointSelectionSet>& rvecPointSet = rLayer.GetPointSelectionSet();
+	vector<LWO2_PointSelectionSet>& rvecPointSet = rLayer.GetPointSelectionSet();
 
 	size_t i, iNumPointSelectionSets = rvecPointSet.size();
 	for( i=0; i<iNumPointSelectionSets; i++ )
@@ -74,11 +74,11 @@ bool CMassSpringExporter_LW::GetPointInfo( vector<STempPointInfo>& rvecPointInfo
 }
 
 
-void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer )
+void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, LWO2_Layer& rLayer )
 {
 	size_t j, num_points = rvecPointInfo.size();
 
-	vector<CLWO2_WeightMap>& rvecWeightMap = rLayer.GetVertexWeightMap();
+	vector<LWO2_WeightMap>& rvecWeightMap = rLayer.GetVertexWeightMap();
 
 	// find a vertex map named "CPMass", which is supposed to include mass info for control points
 	size_t i, num_weightmaps = rvecWeightMap.size();
@@ -90,7 +90,7 @@ void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, CLW
 
 	if( i < num_weightmaps )
 	{
-		CLWO2_WeightMap& rWeightMap = rvecWeightMap[i];
+		LWO2_WeightMap& rWeightMap = rvecWeightMap[i];
 
 		float fWeight;
 		for( j=0; j<num_points; j++ )
@@ -103,7 +103,7 @@ void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, CLW
 	}
 
 	// a vertex colormap named "CPMass" also represents mass info
-	vector<CLWO2_VertexColorMap>& rvecVertColorMap = rLayer.GetVertexColorMap();
+	vector<LWO2_VertexColorMap>& rvecVertColorMap = rLayer.GetVertexColorMap();
 	size_t num_colormaps = rvecVertColorMap.size();
 	for( i=0; i<num_colormaps; i++ )
 	{
@@ -113,7 +113,7 @@ void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, CLW
 
 	if( i < num_colormaps )
 	{
-        CLWO2_VertexColorMap& rVertColorMap = rvecVertColorMap[i];
+        LWO2_VertexColorMap& rVertColorMap = rvecVertColorMap[i];
 		SFloatRGBAColor color;
 		for( j=0; j<num_points; j++ )
 		{
@@ -126,7 +126,7 @@ void CMassSpringExporter_LW::SetMass( vector<STempPointInfo>& rvecPointInfo, CLW
 }
 
 
-void CMassSpringExporter_LW::SetSpringInfo( vector<STempSpringInfo>& rvecSpringInfo, CLWO2_Object& rOrigObject )
+void CMassSpringExporter_LW::SetSpringInfo( vector<STempSpringInfo>& rvecSpringInfo, LWO2_Object& rOrigObject )
 {
 	string strTag;
 	size_t pos;
@@ -236,8 +236,8 @@ void CMassSpringExporter_LW::SetIndicesToFixedPoints()
 }
 
 
-void CMassSpringExporter_LW::SetFixedGroupIndex( CLWO2_Layer& rLayer,
-						                         CLWO2_Object& rOrigObject,
+void CMassSpringExporter_LW::SetFixedGroupIndex( LWO2_Layer& rLayer,
+						                         LWO2_Object& rOrigObject,
 												 vector<STempPointInfo>& rvecPointInfo,
 						                         vector<int>& rvecDestBoneIndex )
 {
@@ -245,7 +245,7 @@ void CMassSpringExporter_LW::SetFixedGroupIndex( CLWO2_Layer& rLayer,
 	int pnt_index, bone_index;
 	float fWeight;
 
-	vector<CLWO2_WeightMap>& rvecWeightMap = rLayer.GetVertexWeightMap();
+	vector<LWO2_WeightMap>& rvecWeightMap = rLayer.GetVertexWeightMap();
 	int num_weightmaps = rvecWeightMap.size();
 
 	int num_points = rvecPointInfo.size();
@@ -269,7 +269,7 @@ void CMassSpringExporter_LW::SetFixedGroupIndex( CLWO2_Layer& rLayer,
 }
 
 
-inline float GetEdgeLength( CLWO2_Face& rPolygon, vector<Vector3>& rvecVertex )
+inline float GetEdgeLength( LWO2_Face& rPolygon, vector<Vector3>& rvecVertex )
 {
 	return Vec3Length( rvecVertex[ rPolygon.GetVertexIndex()[1] ] - rvecVertex[ rPolygon.GetVertexIndex()[0] ] );
 }
@@ -290,8 +290,8 @@ inline int CMassSpringExporter_LW::FindSpringInfo( int iPartIndex, vector<STempS
 }
 
 
-bool CMassSpringExporter_LW::CreateMassSpringModel( CLWO2_Layer& rLayer,
-												    CLWO2_Object& rOrigObject,
+bool CMassSpringExporter_LW::CreateMassSpringModel( LWO2_Layer& rLayer,
+												    LWO2_Object& rOrigObject,
 													vector<int>& rvecDestBoneIndex )
 {
 	vector<STempSpringInfo> vecSpringInfo;
@@ -301,7 +301,7 @@ bool CMassSpringExporter_LW::CreateMassSpringModel( CLWO2_Layer& rLayer,
 	vector<Vector3>& rvecvOrigPoint = rLayer.GetVertex();
 
 	int iNumOrigPolygons = rLayer.GetFace().size();
-	vector<CLWO2_Face>& rvecOrigPolygon = rLayer.GetFace();
+	vector<LWO2_Face>& rvecOrigPolygon = rLayer.GetFace();
 
 	// used to check if a vertex has been already registered as a control point in the mass spring grid
 	// each i-th entry in 'vecPointInfo' corresponds to an i-th vertex in 'rLayer'
@@ -323,7 +323,7 @@ bool CMassSpringExporter_LW::CreateMassSpringModel( CLWO2_Layer& rLayer,
 	int spring_index;
 	for( i=0; i<iNumOrigPolygons; i++ )
 	{
-		CLWO2_Face& rOrigPolygon = rvecOrigPolygon[i];
+		LWO2_Face& rOrigPolygon = rvecOrigPolygon[i];
 
 		if( rOrigPolygon.GetNumPoints() != 2 )
 			continue;
@@ -414,15 +414,15 @@ bool CMassSpringExporter_LW::CreateMassSpringModel( CLWO2_Layer& rLayer,
 
 
 void CMassSpringExporter_LW::SetFixedGroupIndex( vector<STempPolygonGroup>& rvecPolygonGroup,
-						                         CLWO2_Layer& rLayer,
-						                         CLWO2_Object& rOrigObject,
+						                         LWO2_Layer& rLayer,
+						                         LWO2_Object& rOrigObject,
 						                         vector<int>& rvecDestBoneIndex )
 {
 	int i, j, k, num_groups;
 	int pnt_index, bone_index;
 	float fWeight;
 
-	vector<CLWO2_WeightMap>& rvecWeightMap = rLayer.GetVertexWeightMap();
+	vector<LWO2_WeightMap>& rvecWeightMap = rLayer.GetVertexWeightMap();
 	int num_weightmaps = rvecWeightMap.size();
 	num_groups = rvecPolygonGroup.size();
 
@@ -455,13 +455,13 @@ void CMassSpringExporter_LW::SetFixedGroupIndex( vector<STempPolygonGroup>& rvec
 }
 
 void CMassSpringExporter_LW::GroupConnectedPolygons_r( STempPolygonGroup& rGroup,
-													   vector<CLWO2_Face>& rvecPolygon,
+													   vector<LWO2_Face>& rvecPolygon,
 													   vector<bool>& Selected )
 {
 	int i, num_pols = (int)rvecPolygon.size();
 	int j, k, num_verts0, num_verts1;
 
-	CLWO2_Face& rPolygon0 = rvecPolygon[rGroup.vecIndex.back()];
+	LWO2_Face& rPolygon0 = rvecPolygon[rGroup.vecIndex.back()];
 	num_verts0 = rPolygon0.GetNumPoints();
 
 	for( i=0; i<num_pols; i++ )
@@ -469,7 +469,7 @@ void CMassSpringExporter_LW::GroupConnectedPolygons_r( STempPolygonGroup& rGroup
 		if( Selected[i] )
 			continue;
 
-		CLWO2_Face& rPolygon1 = rvecPolygon[i];
+		LWO2_Face& rPolygon1 = rvecPolygon[i];
 		num_verts1 = rPolygon1.GetNumPoints();
 		for( j=0; j<num_verts0; j++ )
 		{
@@ -488,10 +488,10 @@ void CMassSpringExporter_LW::GroupConnectedPolygons_r( STempPolygonGroup& rGroup
 }
 
 
-void CMassSpringExporter_LW::GroupConnectedPolygons( CLWO2_Layer& rLayer,
+void CMassSpringExporter_LW::GroupConnectedPolygons( LWO2_Layer& rLayer,
 													 vector<STempPolygonGroup>& rvecPolygonGroup )
 {
-	vector<CLWO2_Face>& rvecPolygon = rLayer.GetFace();
+	vector<LWO2_Face>& rvecPolygon = rLayer.GetFace();
 	int i, num_pols = rvecPolygon.size();
 
 	vector<bool> Selected;
@@ -513,7 +513,7 @@ void CMassSpringExporter_LW::GroupConnectedPolygons( CLWO2_Layer& rLayer,
 	}
 
 
-/*	vector<CLWO2_Face>& rvecPolygon = rLayer.GetFace();
+/*	vector<LWO2_Face>& rvecPolygon = rLayer.GetFace();
 	int i, num_pols = rvecPolygon.size();
 	int j, k, m, num_verts0, num_verts1;
 
@@ -530,7 +530,7 @@ void CMassSpringExporter_LW::GroupConnectedPolygons( CLWO2_Layer& rLayer,
 		rvecPolygonGroup.push_back( STempPolygonGroup() );
 		rvecPolygonGroup.back().vecIndex.push_back(i);
 
-		CLWO2_Face& rPolygon0 = rvecPolygon[i];
+		LWO2_Face& rPolygon0 = rvecPolygon[i];
 		num_verts0 = rPolygon0.GetNumPoints();
 
 		for( j=i+1; j<num_pols; j++ )
@@ -538,7 +538,7 @@ void CMassSpringExporter_LW::GroupConnectedPolygons( CLWO2_Layer& rLayer,
 			if( IsSelected[j] )
 				continue;
 
-			CLWO2_Face& rPolygon1 = rvecPolygon[j];
+			LWO2_Face& rPolygon1 = rvecPolygon[j];
 			num_verts1 = rPolygon1.GetNumPoints();
 			for( k=0; k<num_verts0; k++ )
 			{
@@ -560,10 +560,10 @@ void CMassSpringExporter_LW::GroupConnectedPolygons( CLWO2_Layer& rLayer,
 }
 
 
-void CMassSpringExporter_LW::BuildCollisionShapes( CLWO2_Layer& rLayer,
+void CMassSpringExporter_LW::BuildCollisionShapes( LWO2_Layer& rLayer,
 												   vector<STempPolygonGroup>& rvecPolygonGroup )
 {
-	vector<CLWO2_Face>& rvecPolygon = rLayer.GetFace();
+	vector<LWO2_Face>& rvecPolygon = rLayer.GetFace();
 	int i, num_pols = (int)rvecPolygon.size();
 	int j, k, num_verts;
 	int num_grouped_pols;
@@ -581,7 +581,7 @@ void CMassSpringExporter_LW::BuildCollisionShapes( CLWO2_Layer& rLayer,
 			num_grouped_pols = rvecPolygonGroup[i].vecIndex.size();
 			for( j=0; j<num_grouped_pols; j++ )
 			{
-				CLWO2_Face& rPolygon = rvecPolygon[ rvecPolygonGroup[i].vecIndex[j] ];
+				LWO2_Face& rPolygon = rvecPolygon[ rvecPolygonGroup[i].vecIndex[j] ];
 				num_verts = rPolygon.GetNumPoints();
 				for( k=0; k<num_verts; k++ )
 				{
@@ -602,8 +602,8 @@ void CMassSpringExporter_LW::BuildCollisionShapes( CLWO2_Layer& rLayer,
 }
 
 
-void CMassSpringExporter_LW::CreateCollisionShapes( CLWO2_Layer& rLayer,
-		                                            CLWO2_Object& rOrigObject,
+void CMassSpringExporter_LW::CreateCollisionShapes( LWO2_Layer& rLayer,
+		                                            LWO2_Object& rOrigObject,
 								                    vector<int>& rvecDestBoneIndex )
 {
 	vector<STempPolygonGroup> vecPolygonGroup;

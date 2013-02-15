@@ -12,10 +12,10 @@ namespace amorphous
 
 
 //=========================================================================================
-// CLWO2_TAGChunk
+// LWO2_TAGChunk
 //=========================================================================================
 
-class CLWO2_TAGChunk
+class LWO2_TAGChunk
 {
 public:
 	char* pTAGStrings;
@@ -23,37 +23,37 @@ public:
 	int* piIndex;
 	int iNumTAGs;  //how many string tags in this .lwo file
 
-	CLWO2_TAGChunk(const CLWO2_TAGChunk& tagchunk);
-	CLWO2_TAGChunk(){ memset(this, 0, sizeof(CLWO2_TAGChunk)); }
-	~CLWO2_TAGChunk(){ SafeDeleteArray(pTAGStrings); SafeDeleteArray(piIndex); }
+	LWO2_TAGChunk(const LWO2_TAGChunk& tagchunk);
+	LWO2_TAGChunk(){ memset(this, 0, sizeof(LWO2_TAGChunk)); }
+	~LWO2_TAGChunk(){ SafeDeleteArray(pTAGStrings); SafeDeleteArray(piIndex); }
 
 	void AllocateTAGStrings(UINT4 tagchunksize, FILE* fp);
 
-	bool operator==(CLWO2_TAGChunk& tag){ return (this->iNumTAGs == tag.iNumTAGs && memcmp(this->pTAGStrings, tag.pTAGStrings, tagchunk_size) == 0); }
-	bool operator<(CLWO2_TAGChunk& tag){return (this->iNumTAGs < tag.iNumTAGs); }
+	bool operator==(LWO2_TAGChunk& tag){ return (this->iNumTAGs == tag.iNumTAGs && memcmp(this->pTAGStrings, tag.pTAGStrings, tagchunk_size) == 0); }
+	bool operator<(LWO2_TAGChunk& tag){return (this->iNumTAGs < tag.iNumTAGs); }
 
 };
 
 
 
 //=========================================================================================
-// CLWO2_StillClip
+// LWO2_StillClip
 //=========================================================================================
 
-class CLWO2_StillClip
+class LWO2_StillClip
 {
 public:
 	UINT4 uiClipIndex;
 	std::string strName;
 public:
-	CLWO2_StillClip() : uiClipIndex(0) {}
+	LWO2_StillClip() : uiClipIndex(0) {}
 	void Read(UINT4 clipsize, FILE* fp);
 	UINT4 GetClipIndex() const { return uiClipIndex; }
 	const std::string& GetName() const { return strName; }
 };
 
 
-class CLWO2_NameMatchCond
+class LWO2_NameMatchCond
 {
 public:
 	enum type
@@ -84,70 +84,70 @@ public:
 /**
  *   holds the content of light wave object file with LWO2 format
  */
-class CLWO2_Object
+class LWO2_Object
 {
 	std::string m_strFilename;
 
-	std::list<CLWO2_Layer> m_lstLayer;
+	std::list<LWO2_Layer> m_lstLayer;
 
-	std::vector<CLWO2_Surface> m_vecSurface;
+	std::vector<LWO2_Surface> m_vecSurface;
 
-	std::vector<CLWO2_StillClip> m_vecStillClip;
+	std::vector<LWO2_StillClip> m_vecStillClip;
 
-	CLWO2_TAGChunk m_tag;
+	LWO2_TAGChunk m_tag;
 
 	// should you boost::shared_ptr<>?
 	progress_display m_ProgressDisplay;
 
 public:
 
-	CLWO2_Object(){}
-//	CLWO2_Object(const CLWO2_Object& lwo2data);
-	~CLWO2_Object() {}
+	LWO2_Object(){}
+//	LWO2_Object(const LWO2_Object& lwo2data);
+	~LWO2_Object() {}
 
 	bool LoadLWO2Object( const std::string& object_filename );
 
 	const std::string& GetFilename() const { return m_strFilename; }
 
-	std::list<CLWO2_Layer>& GetLayer() { return m_lstLayer; }
+	std::list<LWO2_Layer>& GetLayer() { return m_lstLayer; }
 
-	std::vector<CLWO2_Surface>& GetSurface() { return m_vecSurface; }
+	std::vector<LWO2_Surface>& GetSurface() { return m_vecSurface; }
 
-	const std::vector<CLWO2_Surface>& GetSurface() const { return m_vecSurface; }
+	const std::vector<LWO2_Surface>& GetSurface() const { return m_vecSurface; }
 
-	CLWO2_Surface *FindSurfaceFromTAG(UINT2 wSurfIndex);
+	LWO2_Surface *FindSurfaceFromTAG(UINT2 wSurfIndex);
 
 	/// when a surface tag stored in polygon is handed,
 	/// returns the index of the surface in the array
 	int GetSurfaceIndexFromSurfaceTAG( const UINT2 wSurfTagIndex );
 
 	/// find a uv-mapping associated with the surface
-//	CLWO2_TextureUVMap* FindTextureUVMapFromSurface(CLWO2_Surface& rSurf, CLWO2_Layer& rLayer);
+//	LWO2_TextureUVMap* FindTextureUVMapFromSurface(LWO2_Surface& rSurf, LWO2_Layer& rLayer);
 
-	CLWO2_TextureUVMap* FindTextureUVMapFromSurface( const CLWO2_Surface& rSurf,
+	LWO2_TextureUVMap* FindTextureUVMapFromSurface( const LWO2_Surface& rSurf,
 		                                             const UINT4 channel_id,
-													 CLWO2_Layer& rLayer);
+													 LWO2_Layer& rLayer);
 
-	CLWO2_TextureUVMap* FindTextureUVMapByName(const char *pcTexUVMapName, CLWO2_Layer& rLayer);
+	LWO2_TextureUVMap* FindTextureUVMapByName(const char *pcTexUVMapName, LWO2_Layer& rLayer);
 
-	CLWO2_VertexColorMap* FindVertexColorMapFromSurface(CLWO2_Surface& rSurf, CLWO2_Layer& rLayer);
+	LWO2_VertexColorMap* FindVertexColorMapFromSurface(LWO2_Surface& rSurf, LWO2_Layer& rLayer);
 
-	CLWO2_StillClip& GetStillClip(int i) { return m_vecStillClip[i]; }
+	LWO2_StillClip& GetStillClip(int i) { return m_vecStillClip[i]; }
 
-	std::vector<CLWO2_StillClip>& GetStillClip() { return m_vecStillClip; }
+	std::vector<LWO2_StillClip>& GetStillClip() { return m_vecStillClip; }
 
 	void ComputeFaceNormals();
 
 	void ComputeVertexNormals();
 
-	CLWO2_Layer *GetLayerWithKeyword( const std::string& keyword,
-		                              int match_condition = CLWO2_NameMatchCond::EQUAL );
+	LWO2_Layer *GetLayerWithKeyword( const std::string& keyword,
+		                              int match_condition = LWO2_NameMatchCond::EQUAL );
 
-	std::vector<CLWO2_Layer *> GetLayersWithKeyword( const std::string& keyword,
-		                                             int match_condition = CLWO2_NameMatchCond::EQUAL );
+	std::vector<LWO2_Layer *> GetLayersWithKeyword( const std::string& keyword,
+		                                             int match_condition = LWO2_NameMatchCond::EQUAL );
 
-	std::vector<CLWO2_Layer *> GetLayersWithKeywords( const std::vector<std::string> keyword,
-		                                              int match_condition = CLWO2_NameMatchCond::EQUAL );
+	std::vector<LWO2_Layer *> GetLayersWithKeywords( const std::vector<std::string> keyword,
+		                                              int match_condition = LWO2_NameMatchCond::EQUAL );
 
 	void WriteDebug( const std::string& filename ) const;
 
@@ -155,7 +155,7 @@ public:
 
 	const char *GetTagString( int i ) const;
 
-	int GetBoneIndexForWeightMap( CLWO2_WeightMap& rWeightMap, CLWO2_Layer& rLayer );
+	int GetBoneIndexForWeightMap( LWO2_WeightMap& rWeightMap, LWO2_Layer& rLayer );
 
 	const progress_display& GetProgressDisplay() const { return m_ProgressDisplay; }
 };

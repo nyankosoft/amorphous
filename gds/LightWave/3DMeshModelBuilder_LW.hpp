@@ -18,13 +18,13 @@ struct SLayerSet
 
 	int GroupNumber;
 
-	std::vector<CLWO2_Layer *> vecpMeshLayer;
+	std::vector<LWO2_Layer *> vecpMeshLayer;
 
 	/// A skeleton is created from the skelegons in this layer and saved
 	/// to the same file with the mesh data extracted from vecpMeshLayer.
 	/// A skeleton of a mesh must be represented as a single skelegon tree
 	/// in a single layer. 
-	CLWO2_Layer *pSkelegonLayer;
+	LWO2_Layer *pSkelegonLayer;
 
 public:
 
@@ -34,7 +34,7 @@ public:
 	pSkelegonLayer(NULL)
 	{}
 
-	SLayerSet( const std::vector<CLWO2_Layer *>& mesh_layer )
+	SLayerSet( const std::vector<LWO2_Layer *>& mesh_layer )
 		:
 	GroupNumber(-1),
 	vecpMeshLayer(mesh_layer),
@@ -55,7 +55,7 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 	/// borrowed reference
 	/// this class does not load / release the model data
 	/// the model data has to be supplied before building the model
-	boost::shared_ptr<CLWO2_Object> m_pSrcObject;
+	boost::shared_ptr<LWO2_Object> m_pSrcObject;
 
 
 	std::string m_strTargetLayerName;
@@ -81,8 +81,8 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 private:
 
 	void BuildSkeletonFromSkelegon_r( int iSrcBoneIndex,
-		                              const std::vector<CLWO2_Bone>& rvecSrcBone,
-									  const CLWO2_Layer& rLayer,
+		                              const std::vector<LWO2_Bone>& rvecSrcBone,
+									  const LWO2_Layer& rLayer,
 //									  const Vector3& vParentOffset,
 									  CMMA_Bone& rDestBone );
 
@@ -90,9 +90,9 @@ private:
 	/// all the bone transforms are not supposed to have rotations
 	void BuildBoneTransformsNROT_r(const Vector3& vParentOffset, CMMA_Bone& rDestBone );
 
-	void SetVertexWeights( std::vector<General3DVertex>& rDestVertexBuffer, CLWO2_Layer& rLayer );
+	void SetVertexWeights( std::vector<General3DVertex>& rDestVertexBuffer, LWO2_Layer& rLayer );
 
-	void ProcessLayer( CLWO2_Layer& rLayer, const GeometryFilter& filter = GeometryFilter() );
+	void ProcessLayer( LWO2_Layer& rLayer, const GeometryFilter& filter = GeometryFilter() );
 
 	/// create mesh materials from the surfaces of the LightWave object
 	/// - surface texture:    stored in CMMA_Material.vecTexture[0]
@@ -108,7 +108,7 @@ public:
 
 	C3DMeshModelBuilder_LW();
 
-	C3DMeshModelBuilder_LW( boost::shared_ptr<CLWO2_Object> pSrcObject );
+	C3DMeshModelBuilder_LW( boost::shared_ptr<LWO2_Object> pSrcObject );
 
 	~C3DMeshModelBuilder_LW();
 
@@ -131,13 +131,13 @@ public:
 	/// create mesh archive object by directly handing a layer.
 	/// the pointer to a source LW object must be set in advance as an argument
 	/// of the constructor when the instance is created.
-	bool BuildMeshFromLayer( CLWO2_Layer& rLayer );
+	bool BuildMeshFromLayer( LWO2_Layer& rLayer );
 
-	void BuildSkeletonFromSkelegon( CLWO2_Layer& rLayer );
+	void BuildSkeletonFromSkelegon( LWO2_Layer& rLayer );
 
 	std::vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
 
-	bool LoadFromLWO2Object( boost::shared_ptr<CLWO2_Object> pObject, const GeometryFilter& geometry_filter );
+	bool LoadFromLWO2Object( boost::shared_ptr<LWO2_Object> pObject, const GeometryFilter& geometry_filter );
 
 	virtual bool LoadFromFile( const std::string& model_filepath, const GeometryFilter& geometry_filter );
 

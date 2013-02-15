@@ -26,7 +26,7 @@ namespace amorphous
 class C3DShapesExporter_LW
 {
 
-	boost::shared_ptr<CLWO2_Object> m_pObject;
+	boost::shared_ptr<LWO2_Object> m_pObject;
 
 public:
 
@@ -36,9 +36,9 @@ public:
 
 	void Release();
 
-	bool ExtractShapes( boost::shared_ptr<CLWO2_Object> pObject, const std::vector<std::string>& output_filepaths );
+	bool ExtractShapes( boost::shared_ptr<LWO2_Object> pObject, const std::vector<std::string>& output_filepaths );
 
-	bool ExtractShapes( boost::shared_ptr<CLWO2_Object> pObject, const std::string& output_filepath );
+	bool ExtractShapes( boost::shared_ptr<LWO2_Object> pObject, const std::string& output_filepath );
 };
 
 

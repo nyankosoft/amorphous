@@ -122,18 +122,18 @@ void CCompositeMeshExporter_LW::SetIndicesForMeshAndMassSpringModel()
 bool CCompositeMeshExporter_LW::Compile( const char *pcFilename )
 {
 //	m_OrigModel.LoadLWO2Object( pcFilename );
-	m_pOrigModel = shared_ptr<CLWO2_Object>( new CLWO2_Object() );
+	m_pOrigModel = shared_ptr<LWO2_Object>( new LWO2_Object() );
 	m_pOrigModel->LoadLWO2Object( pcFilename );
 
 	string strToken = "CreateMesh";
 
-	list<CLWO2_Layer>& rlstLayer = m_pOrigModel->GetLayer();
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>& rlstLayer = m_pOrigModel->GetLayer();
+	list<LWO2_Layer>::iterator itrLayer;
 
 	size_t pos;
 
-	list<CLWO2_Layer>::iterator itrMeshLayer = rlstLayer.end(), itrShadowMeshLayer = rlstLayer.end(), itrSkelegonLayer = rlstLayer.end();
-	list<CLWO2_Layer>::iterator itrMSpringCollision = rlstLayer.end();
+	list<LWO2_Layer>::iterator itrMeshLayer = rlstLayer.end(), itrShadowMeshLayer = rlstLayer.end(), itrSkelegonLayer = rlstLayer.end();
+	list<LWO2_Layer>::iterator itrMSpringCollision = rlstLayer.end();
 
 	// search the layers and process ones that have the same name as 'strTargetLayerName'
 	for(itrLayer = rlstLayer.begin();

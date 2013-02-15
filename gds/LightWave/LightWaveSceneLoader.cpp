@@ -11,7 +11,7 @@ using std::vector;
 using namespace boost;
 
 
-bool CLWSceneInfo::LoadSceneInfo( CTextFileScanner& scanner )
+bool LWSceneInfo::LoadSceneInfo( CTextFileScanner& scanner )
 {
 	if( scanner.GetTagString() == "LWSC" )
 	{
@@ -35,7 +35,7 @@ bool CLWSceneInfo::LoadSceneInfo( CTextFileScanner& scanner )
 }
 
 
-CLightWaveSceneLoader::CLightWaveSceneLoader()
+LightWaveSceneLoader::LightWaveSceneLoader()
 {
 	m_afAmbientColor[0] = 0;
 	m_afAmbientColor[1] = 0;
@@ -48,7 +48,7 @@ CLightWaveSceneLoader::CLightWaveSceneLoader()
 }
 
 
-boost::shared_ptr<CLWS_Bone> GetBone( int bone_id, std::vector< boost::shared_ptr<CLWS_Bone> >& vecpBone )
+boost::shared_ptr<LWS_Bone> GetBone( int bone_id, std::vector< boost::shared_ptr<LWS_Bone> >& vecpBone )
 {
 	const int num_bones = (int)vecpBone.size();
 	for( int i=0; i<num_bones; i++ )
@@ -57,16 +57,16 @@ boost::shared_ptr<CLWS_Bone> GetBone( int bone_id, std::vector< boost::shared_pt
 			return vecpBone[i];
 	}
 
-	return boost::shared_ptr<CLWS_Bone>();
+	return boost::shared_ptr<LWS_Bone>();
 }
 
 
-void CLightWaveSceneLoader::UpdateItemTrees()
+void LightWaveSceneLoader::UpdateItemTrees()
 {
 	const int num_bones = (int)m_vecpBone.size();
 	for( int i=0; i<num_bones; i++ )
 	{
-		CLWS_Bone& bone = *(m_vecpBone[i].get());
+		LWS_Bone& bone = *(m_vecpBone[i].get());
 
 		if( bone.GetParentType() != 4 )
 			continue;
@@ -80,7 +80,7 @@ void CLightWaveSceneLoader::UpdateItemTrees()
 }
 
 
-bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
+bool LightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 {
 	CTextFileScanner scanner;
 
@@ -119,7 +119,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 		if( tag == "LoadObjectLayer" )
 		{
-			m_vecObjectLayer.push_back( shared_ptr<CLWS_ObjectLayer>( new CLWS_ObjectLayer() ) );
+			m_vecObjectLayer.push_back( shared_ptr<LWS_ObjectLayer>( new LWS_ObjectLayer() ) );
 			if( 5 <= m_SceneInfo.m_Version )
 			{
 				scanner.ScanLine( tag,
@@ -142,7 +142,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 		else if( tag == "AddNullObject" )
 		{
-			m_vecObjectLayer.push_back( shared_ptr<CLWS_ObjectLayer>( new CLWS_ObjectLayer() ) );
+			m_vecObjectLayer.push_back( shared_ptr<LWS_ObjectLayer>( new LWS_ObjectLayer() ) );
 			scanner.ScanLine( tag, m_vecObjectLayer.back()->m_strObjectFilename );
 			m_vecObjectLayer.back()->SetNullObject( true );
 
@@ -153,7 +153,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 		else if( tag == "AddBone" )
 		{
-			m_vecpBone.push_back( shared_ptr<CLWS_Bone>( new CLWS_Bone() ) );
+			m_vecpBone.push_back( shared_ptr<LWS_Bone>( new LWS_Bone() ) );
 
 			if( 5 <= m_SceneInfo.m_Version )
 				scanner.ScanLine( tag, item_id_in_hex );
@@ -166,7 +166,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 		else if( tag == "AddLight" )
 		{
-			m_vecLight.push_back( shared_ptr<CLWS_Light>( new CLWS_Light() ) );
+			m_vecLight.push_back( shared_ptr<LWS_Light>( new LWS_Light() ) );
 
 			if( 5 <= m_SceneInfo.m_Version )
 				scanner.ScanLine( tag, item_id_in_hex );
@@ -179,7 +179,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 
 /*		else if( tag == "AddCamera" )
 		{
-			m_vecpCamera.push_back( shared_ptr<CLWS_Camera>( new CLWS_Camera() ) );
+			m_vecpCamera.push_back( shared_ptr<LWS_Camera>( new LWS_Camera() ) );
 
 			if( 5 <= m_SceneInfo.m_Version )
 				scanner.ScanLine( tag, item_id );
@@ -216,7 +216,7 @@ bool CLightWaveSceneLoader::LoadFromFile( const std::string& filepath )
 }
 
 
-void CLightWaveSceneLoader::AddParentToChildLinks()
+void LightWaveSceneLoader::AddParentToChildLinks()
 {
 	int i, num_object_layers = (int)m_vecObjectLayer.size();
 
@@ -228,15 +228,15 @@ void CLightWaveSceneLoader::AddParentToChildLinks()
 
 			switch( m_vecObjectLayer[i]->GetParentType() )
 			{
-			case CLWS_Item::TYPE_OBJECT:
-				m_vecObjectLayer[parent_index]->AddChildItemInfo( CLWS_Item::TYPE_OBJECT, i );
+			case LWS_Item::TYPE_OBJECT:
+				m_vecObjectLayer[parent_index]->AddChildItemInfo( LWS_Item::TYPE_OBJECT, i );
 				break;
-			case CLWS_Item::TYPE_LIGHT:
-				m_vecLight[parent_index]->AddChildItemInfo( CLWS_Item::TYPE_OBJECT, i );
+			case LWS_Item::TYPE_LIGHT:
+				m_vecLight[parent_index]->AddChildItemInfo( LWS_Item::TYPE_OBJECT, i );
 				break;
-/*			case CLWS_Item::TYPE_CAMERA:
+/*			case LWS_Item::TYPE_CAMERA:
 				break;
-			case CLWS_Item::TYPE_BONE:
+			case LWS_Item::TYPE_BONE:
 				break;*/
 			default:
 				break;
@@ -253,15 +253,15 @@ void CLightWaveSceneLoader::AddParentToChildLinks()
 
 			switch( m_vecLight[i]->GetParentType() )
 			{
-			case CLWS_Item::TYPE_OBJECT:
-				m_vecObjectLayer[parent_index]->AddChildItemInfo( CLWS_Item::TYPE_LIGHT, i );
+			case LWS_Item::TYPE_OBJECT:
+				m_vecObjectLayer[parent_index]->AddChildItemInfo( LWS_Item::TYPE_LIGHT, i );
 				break;
-			case CLWS_Item::TYPE_LIGHT:
-				m_vecLight[parent_index]->AddChildItemInfo( CLWS_Item::TYPE_LIGHT, i );
+			case LWS_Item::TYPE_LIGHT:
+				m_vecLight[parent_index]->AddChildItemInfo( LWS_Item::TYPE_LIGHT, i );
 				break;
-/*			case CLWS_Item::TYPE_CAMERA:
+/*			case LWS_Item::TYPE_CAMERA:
 				break;
-			case CLWS_Item::TYPE_BONE:
+			case LWS_Item::TYPE_BONE:
 				break;*/
 			}
 		}
@@ -275,7 +275,7 @@ void CLightWaveSceneLoader::AddParentToChildLinks()
 }
 
 
-bool CLightWaveSceneLoader::LoadFogDataBlock( CTextFileScanner& scanner )
+bool LightWaveSceneLoader::LoadFogDataBlock( CTextFileScanner& scanner )
 {
 	string tag, strLine;
 
@@ -345,7 +345,7 @@ bool CLightWaveSceneLoader::LoadFogDataBlock( CTextFileScanner& scanner )
 }
 
 
-CLWS_ObjectLayer* CLightWaveSceneLoader::GetObjectLayer(int i)
+LWS_ObjectLayer* LightWaveSceneLoader::GetObjectLayer(int i)
 {
 	if( i<0 || (int)m_vecObjectLayer.size()<=i )
 		return NULL;
@@ -354,7 +354,7 @@ CLWS_ObjectLayer* CLightWaveSceneLoader::GetObjectLayer(int i)
 }
 
 
-CLWS_Light* CLightWaveSceneLoader::GetLight(int i)
+LWS_Light* LightWaveSceneLoader::GetLight(int i)
 {
 	if( i<0 || (int)m_vecLight.size()<=i )
 		return NULL;
@@ -363,18 +363,18 @@ CLWS_Light* CLightWaveSceneLoader::GetLight(int i)
 }
 
 
-shared_ptr<CLWS_Bone> CLightWaveSceneLoader::GetBone(int i)
+shared_ptr<LWS_Bone> LightWaveSceneLoader::GetBone(int i)
 {
 	if( i<0 || (int)m_vecpBone.size()<=i )
-		return shared_ptr<CLWS_Bone>();
+		return shared_ptr<LWS_Bone>();
 
 	return m_vecpBone[i];
 }
 
 
-std::vector< boost::shared_ptr<CLWS_Bone> > CLightWaveSceneLoader::GetRootBones()
+std::vector< boost::shared_ptr<LWS_Bone> > LightWaveSceneLoader::GetRootBones()
 {
-	vector< shared_ptr<CLWS_Bone> > vecpRootBone;
+	vector< shared_ptr<LWS_Bone> > vecpRootBone;
 	vecpRootBone.reserve( 8 );
 	const int num_bones = (int)m_vecpBone.size();
 	for( int i=0; i<num_bones; i++ )
@@ -387,7 +387,7 @@ std::vector< boost::shared_ptr<CLWS_Bone> > CLightWaveSceneLoader::GetRootBones(
 }
 
 
-CLWS_Fog* CLightWaveSceneLoader::GetFog()
+LWS_Fog* LightWaveSceneLoader::GetFog()
 {
 	if( m_Fog.iType == 0 )
 		return NULL;	//no fog in this scene
@@ -396,7 +396,7 @@ CLWS_Fog* CLightWaveSceneLoader::GetFog()
 }
 
 
-void CLightWaveSceneLoader::Clear()
+void LightWaveSceneLoader::Clear()
 {
 	m_vecpItem.resize( 0 );
 	m_vecObjectLayer.resize( 0 );

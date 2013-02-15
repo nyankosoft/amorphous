@@ -17,7 +17,7 @@ namespace amorphous
 
 class CCompositeMeshExporter_LW
 {
-	boost::shared_ptr<CLWO2_Object> m_pOrigModel;
+	boost::shared_ptr<LWO2_Object> m_pOrigModel;
 
 	CMA_CompositeMeshArchive m_CompositeMeshArchive;
 

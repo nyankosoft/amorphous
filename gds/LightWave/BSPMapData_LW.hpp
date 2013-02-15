@@ -20,11 +20,11 @@ class CLightWaveSceneLoader;
 
 class CBSPMapData_LW : public CBSPMapData
 {
-	CLWO2_Object m_LWO2Object;
+	LWO2_Object m_LWO2Object;
 
 private:
 
-	int GetMaterialIndex( CLWO2_Surface& rSurf );
+	int GetMaterialIndex( LWO2_Surface& rSurf );
 
 	void SetSurface();
 
@@ -39,9 +39,9 @@ public:
 
 	int LoadSpecificMapDataFromFile( const char* pFilename );
 
-	void SetFace(vector<CMapFace>* pFace, list<CLWO2_Layer>::iterator itr);
+	void SetFace(vector<CMapFace>* pFace, list<LWO2_Layer>::iterator itr);
 
-	void SetVertexColor( MAPVERTEX& rvDestVertex, DWORD dwPointIndex, DWORD dwPolygonIndex, CLWO2_VertexColorMap *pVertexColorMap );
+	void SetVertexColor( MAPVERTEX& rvDestVertex, DWORD dwPointIndex, DWORD dwPolygonIndex, LWO2_VertexColorMap *pVertexColorMap );
 
 	void SetLight( CLightWaveSceneLoader& rLightWaveScene );
 

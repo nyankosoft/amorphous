@@ -35,10 +35,10 @@ struct SBSP_VertexColorMap
 
 
 //=========================================================================================
-// CLWO2_Surface
+// LWO2_Surface
 //=========================================================================================
 
-class CLWO2_SurfaceBlock
+class LWO2_SurfaceBlock
 {
 public:
 
@@ -53,17 +53,17 @@ public:
 
 public:
 
-	CLWO2_SurfaceBlock() { m_Channel = 0; m_ImageTag = 0; }
+	LWO2_SurfaceBlock() { m_Channel = 0; m_ImageTag = 0; }
 
 	UINT4 GetImageTag() const { return m_ImageTag; }
 };
 
 
 //=========================================================================================
-// CLWO2_Surface
+// LWO2_Surface
 //=========================================================================================
 
-class CLWO2_Surface
+class LWO2_Surface
 {
 public:
 
@@ -86,7 +86,7 @@ private:
 //	string m_strUVMapName;
 //	UINT4 imagetag;
 
-	std::vector<CLWO2_SurfaceBlock> m_vecSurfaceBlock;
+	std::vector<LWO2_SurfaceBlock> m_vecSurfaceBlock;
 
 	std::string m_strComment;
 
@@ -99,7 +99,7 @@ private:
 
 public:
 
-	CLWO2_Surface();
+	LWO2_Surface();
 
 	void Clear();
 
@@ -116,11 +116,11 @@ public:
 
 //	UINT4 GetImageTag() { return imagetag; }
 
-	const std::vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() const { return m_vecSurfaceBlock; }
+	const std::vector<LWO2_SurfaceBlock>& GetSurfaceBlock() const { return m_vecSurfaceBlock; }
 
-	std::vector<CLWO2_SurfaceBlock>& GetSurfaceBlock() { return m_vecSurfaceBlock; }
+	std::vector<LWO2_SurfaceBlock>& GetSurfaceBlock() { return m_vecSurfaceBlock; }
 
-	const CLWO2_SurfaceBlock *GetSurfaceBlockByChannel( UINT4 uiChannelID ) const;
+	const LWO2_SurfaceBlock *GetSurfaceBlockByChannel( UINT4 uiChannelID ) const;
 
 	const std::string& GetComment() const { return m_strComment; }
 

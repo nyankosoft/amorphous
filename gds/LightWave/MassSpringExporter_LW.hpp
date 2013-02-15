@@ -55,12 +55,12 @@ class CMassSpringExporter_LW : public CMassSpringExporter
 
 private:
 
-	void SetSpringInfo( std::vector<STempSpringInfo>& rvecSpringInfo, CLWO2_Object& rOrigObject );
+	void SetSpringInfo( std::vector<STempSpringInfo>& rvecSpringInfo, LWO2_Object& rOrigObject );
 
-	bool GetPointInfo( std::vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer );
+	bool GetPointInfo( std::vector<STempPointInfo>& rvecPointInfo, LWO2_Layer& rLayer );
 
 	/// find mass for each control point
-	void SetMass( std::vector<STempPointInfo>& rvecPointInfo, CLWO2_Layer& rLayer );
+	void SetMass( std::vector<STempPointInfo>& rvecPointInfo, LWO2_Layer& rLayer );
 
 	int FindSpringInfo( int iPartIndex, std::vector<STempSpringInfo>& rvecSpringInfo );
 
@@ -71,25 +71,25 @@ private:
 
 	/// for collision shape creation
 
-	void GroupConnectedPolygons( CLWO2_Layer& rLayer, std::vector<STempPolygonGroup>& vecPolygonGroup );
+	void GroupConnectedPolygons( LWO2_Layer& rLayer, std::vector<STempPolygonGroup>& vecPolygonGroup );
 
 	void GroupConnectedPolygons_r( STempPolygonGroup& rGroup,
-								   std::vector<CLWO2_Face>& rvecPolygon,
+								   std::vector<LWO2_Face>& rvecPolygon,
 								   std::vector<bool>& Selected );
 
 	/// set fixed group indices for control points
-	void SetFixedGroupIndex( CLWO2_Layer& rLayer,
-							 CLWO2_Object& rOrigObject,
+	void SetFixedGroupIndex( LWO2_Layer& rLayer,
+							 LWO2_Object& rOrigObject,
 							 std::vector<STempPointInfo>& rvecPointInfo,
 							 std::vector<int>& rvecDestBoneIndex );
 
 	/// set fixed group indices for collision shapes
 	void SetFixedGroupIndex( std::vector<STempPolygonGroup>& rvecPolygonGroup,
-							 CLWO2_Layer& rLayer,
-							 CLWO2_Object& rOrigObject,
+							 LWO2_Layer& rLayer,
+							 LWO2_Object& rOrigObject,
 							 std::vector<int>& rvecDestBoneIndex );
 
-    void BuildCollisionShapes( CLWO2_Layer& rLayer, std::vector<STempPolygonGroup>& vecPolygonGroup );
+    void BuildCollisionShapes( LWO2_Layer& rLayer, std::vector<STempPolygonGroup>& vecPolygonGroup );
 
 public:
 
@@ -99,12 +99,12 @@ public:
 
 	void BuildMassSpringModel( const char *pcFilename );
 
-	bool CreateMassSpringModel( CLWO2_Layer& rLayer,
-		                        CLWO2_Object& rOrigObject,
+	bool CreateMassSpringModel( LWO2_Layer& rLayer,
+		                        LWO2_Object& rOrigObject,
 								std::vector<int>& rvecDestBoneIndex );
 
-	void CreateCollisionShapes( CLWO2_Layer& rLayer,
-		                        CLWO2_Object& rOrigObject,
+	void CreateCollisionShapes( LWO2_Layer& rLayer,
+		                        LWO2_Object& rOrigObject,
 								std::vector<int>& rvecDestBoneIndex );
 
 //	void SetBoneIndexMap( vector<int>& rvecDestBoneIndex )

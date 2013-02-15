@@ -27,7 +27,7 @@ class C3DMeshModelBuilder;
 class C3DMeshModelExportManager_LW
 {
 
-	boost::shared_ptr<CLWO2_Object> m_pObject;
+	boost::shared_ptr<LWO2_Object> m_pObject;
 
 	std::vector<C3DMeshModelBuilder *> m_vecpModelBuilder;
 
@@ -57,7 +57,7 @@ public:
 
 	uint GetNumOutputFilepaths() const { return (uint)m_OutputFilepaths.size(); }
 
-	boost::shared_ptr<CLWO2_Object> GetLWO2Object() { return m_pObject; }
+	boost::shared_ptr<LWO2_Object> GetLWO2Object() { return m_pObject; }
 
 	std::vector< std::vector<std::string> > GetOriginalTextureFilepaths( uint model_index );
 

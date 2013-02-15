@@ -21,7 +21,7 @@ namespace amorphous
 class CTextFileScanner;
 
 
-class CLWS_Keyframe
+class LWS_Keyframe
 {
 public:
 
@@ -32,7 +32,7 @@ public:
 
 public:
 
-	CLWS_Keyframe()
+	LWS_Keyframe()
 		:
 	fValue(0),
 	fTime(0),
@@ -43,17 +43,17 @@ public:
 };
 
 
-class CLWS_Channel
+class LWS_Channel
 {
 public:
 
-	std::vector<CLWS_Keyframe> vecKey;
+	std::vector<LWS_Keyframe> vecKey;
 	int iPreBehavior;
 	int iPostBehavior;
 
 public:
 
-	CLWS_Channel()
+	LWS_Channel()
 		:
 	iPreBehavior(0),
 	iPostBehavior(0)
@@ -67,10 +67,10 @@ public:
 
 
 //===============================================================================================
-// CLWS_Item
+// LWS_Item
 //===============================================================================================
 
-class CLWS_Item
+class LWS_Item
 {
 protected:
 
@@ -80,7 +80,7 @@ protected:
 	};
 
 	int m_iNumChannels;
-	CLWS_Channel m_aChannel[NUM_MAX_CHANNELS];
+	LWS_Channel m_aChannel[NUM_MAX_CHANNELS];
 
 	/// parent item info
 	int m_iParentType;
@@ -99,8 +99,8 @@ protected:
 
 	float m_afPivotRotationAngle[3];
 
-//	boost::shared_ptr<CLWS_Item> m_pParent;
-	CLWS_Item *m_pParent;
+//	boost::shared_ptr<LWS_Item> m_pParent;
+	LWS_Item *m_pParent;
 
 protected:
 
@@ -112,7 +112,7 @@ protected:
 
 	void AddChildItemInfo( int type, int index ) { m_vecChildType.push_back(type); m_vecChildIndex.push_back(index); }
 
-	friend class CLightWaveSceneLoader;
+	friend class LightWaveSceneLoader;
 
 public:
 
@@ -127,7 +127,7 @@ public:
 
 public:
 
-	CLWS_Item();
+	LWS_Item();
 
 	virtual ItemType GetItemType() const = 0;
 
@@ -181,11 +181,11 @@ public:
 
 	int GetParentID() const { return m_ParentID; }
 
-	CLWS_Item *GetParent() { return m_pParent; }
+	LWS_Item *GetParent() { return m_pParent; }
 
 	int GetNumChannels() const { return m_iNumChannels; }
 
-	const CLWS_Channel& GetChannel( int i ) const { return m_aChannel[i]; }
+	const LWS_Channel& GetChannel( int i ) const { return m_aChannel[i]; }
 
 	void QuantizeRotations( float q );
 	void QuantizeTranslations( float q );
@@ -193,7 +193,7 @@ public:
 //	Matrix33 GetOrientationAtKeyFrame( int iKeyFrame );
 };
 
-inline Matrix33 CLWS_Item::GetOrientationAt( float fTime )
+inline Matrix33 LWS_Item::GetOrientationAt( float fTime )
 {
 	Matrix33 matOrient = Matrix33Identity();
 	GetOrientationAt( fTime, matOrient );
@@ -202,10 +202,10 @@ inline Matrix33 CLWS_Item::GetOrientationAt( float fTime )
 
 
 //===============================================================================================
-// CLWS_ObjectLayer
+// LWS_ObjectLayer
 //===============================================================================================
 
-class CLWS_ObjectLayer : public CLWS_Item
+class LWS_ObjectLayer : public LWS_Item
 {
 	std::string m_strObjectFilename;
 
@@ -215,7 +215,7 @@ class CLWS_ObjectLayer : public CLWS_Item
 
 public:
 
-	CLWS_ObjectLayer();
+	LWS_ObjectLayer();
 
 	ItemType GetItemType() const { return TYPE_OBJECT; }
 
@@ -227,16 +227,16 @@ public:
 
 	void SetNullObject( bool b ) { m_bNullObject = b; }
 
-	friend class CLightWaveSceneLoader;
+	friend class LightWaveSceneLoader;
 };
 
 
 
 //===============================================================================================
-// CLWS_Bone
+// LWS_Bone
 //===============================================================================================
 
-class CLWS_Bone : public CLWS_Item
+class LWS_Bone : public LWS_Item
 {
 	std::string m_strBoneName;
 
@@ -251,20 +251,20 @@ class CLWS_Bone : public CLWS_Item
 //	Vector3 m_vBoneRestDirection;
 
 	/// rotation angles in radians
-	/// - CLWS_Bone::LoadFromFile() converts the value from degree to radian
+	/// - LWS_Bone::LoadFromFile() converts the value from degree to radian
 	/// - LWS file stores this value in degrees, even though Key values in rotation channels
 	///   are in radian.
 	float m_afBoneRestAngle[3];
 
 	std::string m_strBoneWeightMapName;
 
-	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpChildBone;
+	std::vector< boost::shared_ptr<LWS_Bone> > m_vecpChildBone;
 
-	boost::shared_ptr<CLWS_Bone> m_pParentBone;
+	boost::shared_ptr<LWS_Bone> m_pParentBone;
 
 public:
 
-	CLWS_Bone();
+	LWS_Bone();
 
 	ItemType GetItemType() const { return TYPE_BONE; }
 
@@ -272,9 +272,9 @@ public:
 
 	const std::string& GetBoneName() const { return m_strBoneName; }
 
-	std::vector< boost::shared_ptr<CLWS_Bone> >& ChildBone() { return m_vecpChildBone; }
+	std::vector< boost::shared_ptr<LWS_Bone> >& ChildBone() { return m_vecpChildBone; }
 
-	boost::shared_ptr<CLWS_Bone> GetParentBone() { return m_pParentBone; }
+	boost::shared_ptr<LWS_Bone> GetParentBone() { return m_pParentBone; }
 
 	float GetBoneRestLength() const { return m_fBoneRestLength; }
 
@@ -291,16 +291,16 @@ public:
 
 	Matrix33 GetBoneRestOrientation() const;
 
-	friend class CLightWaveSceneLoader;
+	friend class LightWaveSceneLoader;
 };
 
 
 
 //===============================================================================================
-// CLWS_Light
+// LWS_Light
 //===============================================================================================
 
-class CLWS_Light : public CLWS_Item
+class LWS_Light : public LWS_Item
 {
 	std::string m_strLightName;
 
@@ -323,7 +323,7 @@ public:
 
 public:
 
-	CLWS_Light();
+	LWS_Light();
 
 	ItemType GetItemType() const { return TYPE_LIGHT; }
 
@@ -341,10 +341,10 @@ public:
 
 
 //===============================================================================================
-// CLWS_Fog
+// LWS_Fog
 //===============================================================================================
 
-class CLWS_Fog
+class LWS_Fog
 {
 public:
 
@@ -365,7 +365,7 @@ public:
 	float fMaxAmount;
 	float afColor[3];	// [0]:red / [1]:green / [2]:blue
 
-	CLWS_Fog();
+	LWS_Fog();
 };
 
 } // amorphous

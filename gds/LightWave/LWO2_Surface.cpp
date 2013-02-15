@@ -8,17 +8,17 @@ using namespace std;
 
 
 //================================================================================
-// CLWO2_Surface::Methods()                                       - CLWO2_Surface
+// LWO2_Surface::Methods()                                       - LWO2_Surface
 //================================================================================
 
 
-CLWO2_Surface::CLWO2_Surface()
+LWO2_Surface::LWO2_Surface()
 {
 	Clear();
 }
 
 
-void CLWO2_Surface::Clear()
+void LWO2_Surface::Clear()
 {
 	m_strName = "";
 	m_strComment = "";
@@ -37,10 +37,10 @@ void CLWO2_Surface::Clear()
 
 
 
-void CLWO2_Surface::ReadSurfaceBlock(UINT2 wBlockSize, FILE* fp)
+void LWO2_Surface::ReadSurfaceBlock(UINT2 wBlockSize, FILE* fp)
 {
-	m_vecSurfaceBlock.push_back( CLWO2_SurfaceBlock() );
-	CLWO2_SurfaceBlock& rBlock = m_vecSurfaceBlock.back();
+	m_vecSurfaceBlock.push_back( LWO2_SurfaceBlock() );
+	LWO2_SurfaceBlock& rBlock = m_vecSurfaceBlock.back();
 
 	UINT4 uiSubchunk;//, uiImageNum;
 	UINT2 wSize;//, wImageNum;
@@ -132,7 +132,7 @@ void CLWO2_Surface::ReadSurfaceBlock(UINT2 wBlockSize, FILE* fp)
 
 
 // process "one SURF / one call"
-void CLWO2_Surface::ReadOneSurface(UINT4 chunksize, FILE* fp)
+void LWO2_Surface::ReadOneSurface(UINT4 chunksize, FILE* fp)
 {
 	UINT4 uiRead;
 	UINT4 bytesread = 0;
@@ -257,7 +257,7 @@ void CLWO2_Surface::ReadOneSurface(UINT4 chunksize, FILE* fp)
 }
 
 
-const CLWO2_SurfaceBlock *CLWO2_Surface::GetSurfaceBlockByChannel( UINT4 uiChannelID ) const
+const LWO2_SurfaceBlock *LWO2_Surface::GetSurfaceBlockByChannel( UINT4 uiChannelID ) const
 {
 	int i, iNumBlocks = m_vecSurfaceBlock.size();
 	for( i=0; i<iNumBlocks; i++ )

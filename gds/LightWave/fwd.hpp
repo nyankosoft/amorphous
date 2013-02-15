@@ -5,26 +5,26 @@
 namespace amorphous
 {
 
-class CLWO2_Object;
-class CLWO2_Layer;
-class CLWO2_VertexColorMap;
-class CLWO2_TextureUVMap;
-class CLWO2_PointSelectionSet;
-class CLWO2_Face;
-class CLWO2_PolygonGroup;
-class CLWO2_WeightMap;
-class CLWO2_Bone;
-class CLWO2_BoneWeightMap;
-class CLWO2_Layer;
+class LWO2_Object;
+class LWO2_Layer;
+class LWO2_VertexColorMap;
+class LWO2_TextureUVMap;
+class LWO2_PointSelectionSet;
+class LWO2_Face;
+class LWO2_PolygonGroup;
+class LWO2_WeightMap;
+class LWO2_Bone;
+class LWO2_BoneWeightMap;
+class LWO2_Layer;
 
-class CLightWaveSceneLoader;
-class CLWS_Keyframe;
-class CLWS_Channel;
-class CLWS_Item;
-class CLWS_ObjectLayer;
-class CLWS_Bone;
-class CLWS_Light;
-class CLWS_Fog;
+class LightWaveSceneLoader;
+class LWS_Keyframe;
+class LWS_Channel;
+class LWS_Item;
+class LWS_ObjectLayer;
+class LWS_Bone;
+class LWS_Light;
+class LWS_Fog;
 
 } // namespace amorphous
 

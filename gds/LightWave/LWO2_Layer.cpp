@@ -35,10 +35,10 @@ UINT4 SVertexColor_LWO2::GetColor_UINT4_ARGB()
 
 
 //================================================================================
-// CLWO2_VertexColorMap::Methods()                         - CLWO2_VertexColorMap
+// LWO2_VertexColorMap::Methods()                         - LWO2_VertexColorMap
 //================================================================================
 
-CLWO2_VertexColorMap::CLWO2_VertexColorMap(const CLWO2_VertexColorMap& vc_map)
+LWO2_VertexColorMap::LWO2_VertexColorMap(const LWO2_VertexColorMap& vc_map)
 :
 iNumIndices(0),
 paVertexColor(NULL)
@@ -60,7 +60,7 @@ paVertexColor(NULL)
 }
 
 
-CLWO2_VertexColorMap CLWO2_VertexColorMap::operator=(CLWO2_VertexColorMap vc_map)
+LWO2_VertexColorMap LWO2_VertexColorMap::operator=(LWO2_VertexColorMap vc_map)
 {
 	strName = vc_map.strName;
 
@@ -82,10 +82,10 @@ CLWO2_VertexColorMap CLWO2_VertexColorMap::operator=(CLWO2_VertexColorMap vc_map
 
 
 //================================================================================
-// CLWO2_Layer::Methods()                                           - CLWO2_Layer
+// LWO2_Layer::Methods()                                           - LWO2_Layer
 //================================================================================
 
-void CLWO2_Layer::ReadLayerChunk(UINT4& chunksize, FILE* fp)
+void LWO2_Layer::ReadLayerChunk(UINT4& chunksize, FILE* fp)
 {
 	m_iLayerIndex = ReadBE2BytesIntoLE(fp);
 	UINT2 wFlag = ReadBE2BytesIntoLE(fp);
@@ -115,7 +115,7 @@ void CLWO2_Layer::ReadLayerChunk(UINT4& chunksize, FILE* fp)
 }
 
 
-void CLWO2_Layer::ReadVertices(UINT4& chunksize, FILE* fp)
+void LWO2_Layer::ReadVertices(UINT4& chunksize, FILE* fp)
 {
 	UINT4 uiReads[3];
 	int i, iNumVertices;
@@ -150,7 +150,7 @@ void CLWO2_Layer::ReadVertices(UINT4& chunksize, FILE* fp)
 #define DAFAULT_MAX_UV 512
 
 
-void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
+void LWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 {
 	UINT4 uiRead, dwType, bytesread;
 	UINT2 wDimension;
@@ -160,11 +160,11 @@ void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 	UINT4 pnt_index;
 
 	// Prepare for the TXUV subchunk
-//	CLWO2_TextureUVMap* pUVMap = NULL;
+//	LWO2_TextureUVMap* pUVMap = NULL;
 
 	// Prepare for the RGBA subchunk of vertex color maps
-	CLWO2_VertexColorMap new_vcmap;
-	CLWO2_VertexColorMap *pNewVertexColorMap = NULL;
+	LWO2_VertexColorMap new_vcmap;
+	LWO2_VertexColorMap *pNewVertexColorMap = NULL;
 	vector<SVertexColor_LWO2> vecTempVertexColor;
 	SVertexColor_LWO2 vertex_color;
 	int iNumVertexColorIndices;
@@ -184,8 +184,8 @@ void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 //			MessageBox(NULL, "Cannot handle this: The dimension must be 2 for texture mapping", "Error", MB_OK|MB_ICONWARNING);
 
 		// texture uv map set
-		this->m_vecTexuvmap.push_back( CLWO2_TextureUVMap() );
-		CLWO2_TextureUVMap& rUVMap = m_vecTexuvmap.back();
+		this->m_vecTexuvmap.push_back( LWO2_TextureUVMap() );
+		LWO2_TextureUVMap& rUVMap = m_vecTexuvmap.back();
 
 		rUVMap.strName = acVMapName; // set the name of this texture mapping
 
@@ -261,8 +261,8 @@ void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 			break;
 		}
 
-		m_vecPointSelectionSet.push_back( CLWO2_PointSelectionSet() );
-		CLWO2_PointSelectionSet& rPointSet = m_vecPointSelectionSet.back();
+		m_vecPointSelectionSet.push_back( LWO2_PointSelectionSet() );
+		LWO2_PointSelectionSet& rPointSet = m_vecPointSelectionSet.back();
 		rPointSet.SetName( acVMapName );
 		while( bytesread < chunksize )
 		{
@@ -281,7 +281,7 @@ void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 
 		float fWeight;
 
-		m_vecVertexWeightMap.push_back( CLWO2_WeightMap() );
+		m_vecVertexWeightMap.push_back( LWO2_WeightMap() );
 		m_vecVertexWeightMap.back().m_strName = acVMapName;
 
 		while( bytesread < chunksize )
@@ -307,7 +307,7 @@ void CLWO2_Layer::ReadVertexMap(UINT4& chunksize, FILE* fp)
 }
 
 
-void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
+void LWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 {
 	UINT4 uiRead, dwType, bytesread;
 	UINT2 wDimension;
@@ -318,8 +318,8 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 	vector<Vector2> txuv;
 
 	// Prepare for the RGBA subchunk of vertex color maps
-	CLWO2_VertexColorMap new_vcmap;
-	CLWO2_VertexColorMap *pNewVertexColorMap = NULL;
+	LWO2_VertexColorMap new_vcmap;
+	LWO2_VertexColorMap *pNewVertexColorMap = NULL;
 	vector<SVertexColor_LWO2> vecTempVertexColor;
 	SVertexColor_LWO2 vertex_color;
 	int iNumVertexColorIndices;
@@ -397,7 +397,7 @@ void CLWO2_Layer::ReadVMADChunk(UINT4& chunksize, FILE* fp)
 
 
 
-UINT4 CLWO2_Layer::ReadPols(UINT4& chunksize, FILE* fp)
+UINT4 LWO2_Layer::ReadPols(UINT4& chunksize, FILE* fp)
 {
 	UINT4 numpols = 0;
 	UINT4 uiRead, dwType, bytesread = 0;
@@ -407,8 +407,8 @@ UINT4 CLWO2_Layer::ReadPols(UINT4& chunksize, FILE* fp)
 	dwType = ReadBE4BytesIntoLE(fp);
 	bytesread +=4;
 
-//	vector<CLWO2_Bone> m_vecTempBone;
-//	TCFixedVector<CLWO2_Bone, 128> m_vecTempBone;
+//	vector<LWO2_Bone> m_vecTempBone;
+//	TCFixedVector<LWO2_Bone, 128> m_vecTempBone;
 
 	switch( dwType )
 	{
@@ -421,9 +421,9 @@ UINT4 CLWO2_Layer::ReadPols(UINT4& chunksize, FILE* fp)
 			vertexcount = ReadBE2BytesIntoLE(fp); bytesread += 2;
 			vertexcount &= 1023;	// Mask the high 6 bits  "1023 = 0000001111111111(2)"
 
-			CLWO2_Face new_face;
+			LWO2_Face new_face;
 			this->m_vecFace.push_back(new_face);
-			CLWO2_Face& face = this->m_vecFace.back();
+			LWO2_Face& face = this->m_vecFace.back();
 
 //			face.wNumPnts = vertexcount;
 			face.m_vecPointIndex.resize( vertexcount );	// = new UINT4 [vertexcount];
@@ -452,7 +452,7 @@ UINT4 CLWO2_Layer::ReadPols(UINT4& chunksize, FILE* fp)
 	case ID_BONE:
 		while( bytesread < chunksize )
 		{
-			m_vecBone.push_back( CLWO2_Bone() );
+			m_vecBone.push_back( LWO2_Bone() );
 
 			vertexcount = ReadBE2BytesIntoLE(fp); bytesread += 2;
 			vertexcount &= 1023;	// Mask the high 6 bits  "1023 = 0000001111111111(2)"
@@ -483,7 +483,7 @@ UINT4 CLWO2_Layer::ReadPols(UINT4& chunksize, FILE* fp)
 
 
 //If the type of the PTAG is SURF, link the face to its surface
-void CLWO2_Layer::ReadPTAG(UINT4& ptagsize, CLWO2_Object& rObject, FILE* fp)
+void LWO2_Layer::ReadPTAG(UINT4& ptagsize, LWO2_Object& rObject, FILE* fp)
 {
 	UINT4 i, uiType, uiRead = 0, numfaces = 0;
 	UINT4 bytesread = 0;
@@ -546,7 +546,7 @@ void CLWO2_Layer::ReadPTAG(UINT4& ptagsize, CLWO2_Object& rObject, FILE* fp)
 			break;
 		}
 */
-		m_vecPolygonGroup.push_back( CLWO2_PolygonGroup() );
+		m_vecPolygonGroup.push_back( LWO2_PolygonGroup() );
 		while( bytesread < ptagsize )
 		{
 			face_index = ReadVLIndex( fp, &index_size );
@@ -567,7 +567,7 @@ void CLWO2_Layer::ReadPTAG(UINT4& ptagsize, CLWO2_Object& rObject, FILE* fp)
 	case ID_BNWT:
 		while( bytesread < ptagsize )
 		{
-			m_vecBoneWeightMap.push_back( CLWO2_BoneWeightMap() );
+			m_vecBoneWeightMap.push_back( LWO2_BoneWeightMap() );
 			m_vecBoneWeightMap.back().iBoneIndex = ReadVLIndex( fp, &index_size );
 			m_vecBoneWeightMap.back().iWeightMapTagIndex = ReadBE2BytesIntoLE(fp);
 			bytesread += ( index_size + 2 );
@@ -588,7 +588,7 @@ void CLWO2_Layer::ReadPTAG(UINT4& ptagsize, CLWO2_Object& rObject, FILE* fp)
 }
 
 
-void CLWO2_Layer::ComputeFaceNormals()
+void LWO2_Layer::ComputeFaceNormals()
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -598,7 +598,7 @@ void CLWO2_Layer::ComputeFaceNormals()
 
 	for( iFace=0; iFace < iNumFaces; iFace++ )
 	{
-		CLWO2_Face& rFace = m_vecFace[iFace];
+		LWO2_Face& rFace = m_vecFace[iFace];
 
 		iNumPoints = rFace.m_vecPointIndex.size();
 		for( i=1; i <= iNumPoints-2; i++ )
@@ -621,11 +621,11 @@ void CLWO2_Layer::ComputeFaceNormals()
 }
 
 
-void CLWO2_Layer::ComputeVertexNormals()
+void LWO2_Layer::ComputeVertexNormals()
 {
 	LOG_FUNCTION_SCOPE();
 
-/*	CLWO2_Face temp;
+/*	LWO2_Face temp;
 
 	Vector3 vNormal;
 
@@ -676,7 +676,7 @@ void CLWO2_Layer::ComputeVertexNormals()
 // TODO: support multiple PNTS / POLS chunks
 // When there are multiple POLS chunks in a layer, a point index('iPntIndex') alone
 // will not be the enough information to determine which faces are sharing the point.
-Vector3 CLWO2_Layer::GetInterpolatedNormal( CLWO2_Face& rFace, int iPntIndex )
+Vector3 LWO2_Layer::GetInterpolatedNormal( LWO2_Face& rFace, int iPntIndex )
 {
 	int i, j, num_verts;
 	int iNumFaces = m_vecFace.size();
@@ -709,7 +709,7 @@ Vector3 CLWO2_Layer::GetInterpolatedNormal( CLWO2_Face& rFace, int iPntIndex )
  * \return false if the texture uv is not found for the vertex of the specified index
  * \param [out] uv texture u & v
  */
-bool CLWO2_Layer::GetUV( float& u, float& v, int iPointIndex, CLWO2_TextureUVMap *pTexUVMap )
+bool LWO2_Layer::GetUV( float& u, float& v, int iPointIndex, LWO2_TextureUVMap *pTexUVMap )
 {
 	if( !pTexUVMap )
 		return false;
@@ -755,7 +755,7 @@ bool CLWO2_Layer::GetUV( float& u, float& v, int iPointIndex, CLWO2_TextureUVMap
 }
 
 /*
-bool CLWO2_Layer::GetUV( float& u, float& v, int iPointIndex, CLWO2_TextureUVMap *pTexUVMap )
+bool LWO2_Layer::GetUV( float& u, float& v, int iPointIndex, LWO2_TextureUVMap *pTexUVMap )
 {
 	if( !pTexUVMap )
 		return false;
@@ -779,9 +779,9 @@ bool CLWO2_Layer::GetUV( float& u, float& v, int iPointIndex, CLWO2_TextureUVMap
 }
 */
 
-bool CLWO2_Layer::GetVertexColor( SFloatRGBAColor& color,	 // [out] vertex color is stored here if a corresponding one is found
+bool LWO2_Layer::GetVertexColor( SFloatRGBAColor& color,	 // [out] vertex color is stored here if a corresponding one is found
 		  			              const int iPntIndex,		 // [in]  index to a point
-					              const CLWO2_Surface& rSurf // [in]
+					              const LWO2_Surface& rSurf // [in]
 					             )
 {
 	int i, iNumVertexColorMaps = m_vecVertexColorMap.size();

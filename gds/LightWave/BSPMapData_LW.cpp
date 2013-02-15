@@ -70,14 +70,14 @@ int CBSPMapData_LW::LoadSpecificMapDataFromFile( const char *pFilename )
 	string log_filename = "DebugInfoFile\\lwo2_loaded_data.txt";
 	m_LWO2Object.WriteDebug(log_filename.c_str());
 
-	list<CLWO2_Layer>::iterator itrLayer;
+	list<LWO2_Layer>::iterator itrLayer;
 
 	this->m_aPlane.reserve(DEFAULT_NUM_PLANES);
 	this->m_aMainFace.reserve(DEFAULT_NUM_MAINFACES);
 	this->m_aInteriorFace.reserve(DEFAULT_NUM_MAINFACES);
 
 //	itrLayer = m_LWO2Object.m_layer.begin();
-	list<CLWO2_Layer>& lstLayer = m_LWO2Object.GetLayer();
+	list<LWO2_Layer>& lstLayer = m_LWO2Object.GetLayer();
 	itrLayer = lstLayer.begin();
 	for(; itrLayer != lstLayer.end() ; itrLayer++)
 	{
@@ -203,7 +203,7 @@ void CBSPMapData_LW::CreateTriangleMesh()
 
 
 void CBSPMapData_LW::SetVertexColor( MAPVERTEX& rvDestVertex, DWORD dwPointIndex, DWORD dwPolygonIndex,
-									 CLWO2_VertexColorMap *pVertexColorMap )
+									 LWO2_VertexColorMap *pVertexColorMap )
 {
 	int i;
 	for( i=0; i<pVertexColorMap->iNumIndices; i++ )
@@ -221,7 +221,7 @@ void CBSPMapData_LW::SetVertexColor( MAPVERTEX& rvDestVertex, DWORD dwPointIndex
 }
 
 
-int CBSPMapData_LW::GetMaterialIndex( CLWO2_Surface& rSurf )
+int CBSPMapData_LW::GetMaterialIndex( LWO2_Surface& rSurf )
 {
 	// find material name in the comment string of this surface
 	string tag = "[MAT:";
@@ -258,16 +258,16 @@ int CBSPMapData_LW::GetMaterialIndex( CLWO2_Surface& rSurf )
 }
 
 
-void CBSPMapData_LW::SetFace(vector<CMapFace>* pvecFace, list<CLWO2_Layer>::iterator thislayer)
+void CBSPMapData_LW::SetFace(vector<CMapFace>* pvecFace, list<LWO2_Layer>::iterator thislayer)
 {
 	int i;
 	WORD j;
 	DWORD pnt_index;
 	MAPVERTEX vDest;
 	SPlane plane;
-	CLWO2_Object& lwobject = this->m_LWO2Object;
-	CLWO2_TextureUVMap* pTexuvmap = NULL;
-	CLWO2_VertexColorMap* pVertexColorMap = NULL;
+	LWO2_Object& lwobject = this->m_LWO2Object;
+	LWO2_TextureUVMap* pTexuvmap = NULL;
+	LWO2_VertexColorMap* pVertexColorMap = NULL;
 
 	int iSurfaceIndex;
 
@@ -275,14 +275,14 @@ void CBSPMapData_LW::SetFace(vector<CMapFace>* pvecFace, list<CLWO2_Layer>::iter
 
 	// caution : this is a temporary solution. this will not work when multiple PNTS chunks exist
 	// in a single layer.
-	CLWO2_TextureUVMap *pLightmapTextureUVMap = lwobject.FindTextureUVMapByName( "TUV_Lightmap", *thislayer );
+	LWO2_TextureUVMap *pLightmapTextureUVMap = lwobject.FindTextureUVMapByName( "TUV_Lightmap", *thislayer );
 
-	vector<CLWO2_Face>& rvecPolygon = thislayer->GetFace();
+	vector<LWO2_Face>& rvecPolygon = thislayer->GetFace();
 	int iNumFaces = rvecPolygon.size();
 
 	for(i=0; i<iNumFaces; i++)  // How many faces in the layer
 	{
-		CLWO2_Face& rSrcFace = rvecPolygon[i];
+		LWO2_Face& rSrcFace = rvecPolygon[i];
 
 		if( rSrcFace.GetNumPoints() <= 2 )
 			continue;
@@ -290,7 +290,7 @@ void CBSPMapData_LW::SetFace(vector<CMapFace>* pvecFace, list<CLWO2_Layer>::iter
 		CMapFace new_face;
 
 		// Find the surface mapped on this face
-		CLWO2_Surface& rSurf = lwobject.FindSurfaceFromTAG( rSrcFace.GetSurfaceIndex() );
+		LWO2_Surface& rSurf = lwobject.FindSurfaceFromTAG( rSrcFace.GetSurfaceIndex() );
 		iSurfaceIndex = lwobject.GetSurfaceIndexFromSurfaceTAG( rSrcFace.GetSurfaceIndex() );
 
 		strcpy( new_face.m_acSurfaceName, rSurf.GetName().c_str() );
@@ -410,7 +410,7 @@ void CBSPMapData_LW::SetTextureFilename()
 
 	this->m_vecTextureFile.clear();
 
-	vector<CLWO2_StillClip>& rvecStillClip = m_LWO2Object.GetStillClip();
+	vector<LWO2_StillClip>& rvecStillClip = m_LWO2Object.GetStillClip();
 	int iNumStillClips = rvecStillClip.size();
 	for(i=0; i<iNumStillClips; i++)
 	{
@@ -428,16 +428,16 @@ void CBSPMapData_LW::SetSurface()
 
 	m_vecSurface.resize( iNumSurfaces );
 
-	vector<CLWO2_StillClip>& rvecStillClip = m_LWO2Object.GetStillClip();
+	vector<LWO2_StillClip>& rvecStillClip = m_LWO2Object.GetStillClip();
 	int j, iNumStillClips = rvecStillClip.size();
 	UINT4 image_tag;
-	CLWO2_SurfaceBlock *pBlock;
+	LWO2_SurfaceBlock *pBlock;
 
 
 	// find the index for the surface texture
 	for(i=0; i<iNumSurfaces; i++)
 	{
-		CLWO2_Surface& rSurf = m_LWO2Object.GetSurface()[i];
+		LWO2_Surface& rSurf = m_LWO2Object.GetSurface()[i];
 		pBlock = rSurf.GetSurfaceBlockByChannel( ID_COLR );
 
 		if( pBlock )

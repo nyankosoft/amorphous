@@ -12,7 +12,7 @@ namespace amorphous
 class CTextFileScanner;
 
 
-class CLWSceneInfo
+class LWSceneInfo
 {
 public:
 	int m_Version;
@@ -27,35 +27,35 @@ public:
 	int m_CurrentFrame;
 	int m_FramesPerSecond;
 
-	CLWSceneInfo()
+	LWSceneInfo()
 	{
-		memset( this, 0, sizeof(CLWSceneInfo) );
+		memset( this, 0, sizeof(LWSceneInfo) );
 	}
 
 	bool LoadSceneInfo( CTextFileScanner& scanner );
 };
 
 
-class CLightWaveSceneLoader
+class LightWaveSceneLoader
 {
-	std::vector< boost::shared_ptr<CLWS_ObjectLayer> > m_vecObjectLayer;
+	std::vector< boost::shared_ptr<LWS_ObjectLayer> > m_vecObjectLayer;
 
-	std::vector< boost::shared_ptr<CLWS_Light> > m_vecLight;
+	std::vector< boost::shared_ptr<LWS_Light> > m_vecLight;
 
-	std::vector< boost::shared_ptr<CLWS_Bone> > m_vecpBone;
+	std::vector< boost::shared_ptr<LWS_Bone> > m_vecpBone;
 
-//	std::vector< boost::shared_ptr<CLWS_Camera> > m_vecpCamera;
+//	std::vector< boost::shared_ptr<LWS_Camera> > m_vecpCamera;
 
 	// borrowed reference
-	std::vector<CLWS_Item *> m_vecpItem;
+	std::vector<LWS_Item *> m_vecpItem;
 
 	float m_afAmbientColor[3];	//0:red / 1:green / 2:blue
 
 	float m_fAmbientIntensity;
 
-	CLWS_Fog m_Fog;
+	LWS_Fog m_Fog;
 
-	CLWSceneInfo m_SceneInfo;
+	LWSceneInfo m_SceneInfo;
 
 	bool LoadFogDataBlock( CTextFileScanner& scanner );
 
@@ -70,7 +70,7 @@ private:
 
 public:
 
-	CLightWaveSceneLoader();
+	LightWaveSceneLoader();
 
 	bool LoadFromFile( const std::string& filepath );
 
@@ -78,41 +78,41 @@ public:
 
 	int GetNumObjectLayers() { return (int)m_vecObjectLayer.size(); }
 
-//	boost::shared_ptr<CLWS_ObjectLayer> GetObjectLayer(int i);
-	CLWS_ObjectLayer* GetObjectLayer(int i);
+//	boost::shared_ptr<LWS_ObjectLayer> GetObjectLayer(int i);
+	LWS_ObjectLayer* GetObjectLayer(int i);
 
 	// lights
 
 	int GetNumLights() const { return (int)m_vecLight.size(); }
 
-//	boost::shared_ptr<CLWS_Light> GetLight(int i);
-	CLWS_Light* GetLight(int i);
+//	boost::shared_ptr<LWS_Light> GetLight(int i);
+	LWS_Light* GetLight(int i);
 
 	// bones
 
 	int GetNumBones() const { return (int)m_vecpBone.size(); }
 
-	boost::shared_ptr<CLWS_Bone> GetBone(int i);
+	boost::shared_ptr<LWS_Bone> GetBone(int i);
 
-	const std::vector< boost::shared_ptr<CLWS_Bone> >& Bones() const{ return m_vecpBone; }
+	const std::vector< boost::shared_ptr<LWS_Bone> >& Bones() const{ return m_vecpBone; }
 
-	std::vector< boost::shared_ptr<CLWS_Bone> > GetRootBones();
+	std::vector< boost::shared_ptr<LWS_Bone> > GetRootBones();
 
-	inline CLWS_Item *GetItemByID( int item_id );
+	inline LWS_Item *GetItemByID( int item_id );
 
-	CLWS_Fog *GetFog();
+	LWS_Fog *GetFog();
 
 	const float* GetAmbientColor() const { return m_afAmbientColor; }
 	float GetAmbientIntensity() const { return m_fAmbientIntensity; }
 
-	const CLWSceneInfo& GetSceneInfo() const { return m_SceneInfo; }
+	const LWSceneInfo& GetSceneInfo() const { return m_SceneInfo; }
 
 	void Clear();
 };
 
 //=============================== inline  implementations ===============================
 
-inline CLWS_Item *CLightWaveSceneLoader::GetItemByID( int item_id )
+inline LWS_Item *LightWaveSceneLoader::GetItemByID( int item_id )
 {
 	const int num_items = (int)m_vecpItem.size();
 	for( int i=0; i<num_items; i++ )
