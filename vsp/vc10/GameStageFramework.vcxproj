@@ -205,6 +205,7 @@
     <ClInclude Include="..\..\gds\Stage\EntityHandle.hpp" />
     <ClInclude Include="..\..\gds\Stage\LightEntity.hpp" />
     <ClInclude Include="..\..\gds\Task.hpp" />
+    <ClInclude Include="..\..\gds\Task\fwd.hpp" />
     <ClInclude Include="..\..\gds\Task\GameTask.hpp" />
     <ClInclude Include="..\..\gds\Task\GameTask_AsyncStageLoader.hpp" />
     <ClInclude Include="..\..\gds\Task\GameTask_GlobalStageLoader.hpp" />

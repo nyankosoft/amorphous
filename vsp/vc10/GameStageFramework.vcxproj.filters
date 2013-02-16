@@ -822,6 +822,9 @@
     <ClInclude Include="..\..\gds\JigLib\JL_PhysicsVisualizer.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Task\fwd.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
