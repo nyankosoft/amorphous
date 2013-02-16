@@ -5,7 +5,6 @@
 #include "stream_buffer.hpp"
 #include "Log/DefaultLog.hpp"
 #include "Serialization/Serialization.hpp"
-#include "Serialization/ArchiveObjectFactory.hpp"
 
 
 namespace amorphous
