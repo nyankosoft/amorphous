@@ -13,12 +13,12 @@ namespace amorphous
 {
 
 
-inline CTimer& GlobalTimer()
+inline Timer& GlobalTimer()
 {
 	// Using an accessor function gives control of the construction order
 	// - This is a non-thread safe implementation of singleton pattern.
 	// - Make sure GlobalTimer() is not called by more than one thread at the same time.
-	static CTimer timer;
+	static Timer timer;
 
 	static int initialized = 0;
 	if( initialized == 0 )

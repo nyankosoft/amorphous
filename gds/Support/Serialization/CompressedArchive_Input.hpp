@@ -38,7 +38,7 @@ public:
 	/// load archive objects saved in binary format file
 	bool operator>> ( IArchiveObjectBase& obj )
 	{
-		CSerializableStream compressed_buffer;
+		SerializableStream compressed_buffer;
 
 		// load compressed data
 		CBinaryArchive_Input archive( m_Filename );
@@ -90,7 +90,7 @@ protected:
 
 	std::string m_Filename;
 
-	CSerializableStream m_Stream;	///< buffer to temporarily hold uncompressed data
+	SerializableStream m_Stream;	///< buffer to temporarily hold uncompressed data
 
 //	ifstream m_InputFileStream;
 };

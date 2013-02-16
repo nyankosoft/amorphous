@@ -14,7 +14,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CBitmapImage;
+class BitmapImage;
 
 
 const std::string g_NullString = "";
@@ -101,8 +101,8 @@ class CDiskTextureLoader : public GraphicsResourceLoader
 	TextureResourceDesc m_TextureDesc;
 
 	/// Stores texture data loaded from disk
-//	boost::shared_ptr<CBitmapImage> m_pImage;
-	std::vector< boost::shared_ptr<CBitmapImage> > m_vecpImage;
+//	boost::shared_ptr<BitmapImage> m_pImage;
+	std::vector< boost::shared_ptr<BitmapImage> > m_vecpImage;
 
 	boost::weak_ptr<CDiskTextureLoader> m_pSelf;
 
@@ -115,7 +115,7 @@ protected:
 //	boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pTextureEntry.lock(); }
 
 	/// Returns true on success
-	bool InitImageArray( boost::shared_ptr<CBitmapImage> pBaseImage );
+	bool InitImageArray( boost::shared_ptr<BitmapImage> pBaseImage );
 
 	/// Creates rescaled images for mipmaps.
 	/// Returns true on success.

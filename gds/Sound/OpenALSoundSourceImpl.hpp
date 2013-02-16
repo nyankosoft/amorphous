@@ -182,7 +182,7 @@ private:
 
 	bool OpenOrLoadOggResource( const std::string& resource_path,
 								OggVorbis_File& sOggVorbisFile,
-								CSerializableStream& src_buffer );
+								SerializableStream& src_buffer );
 
 	inline CSoundSource::State GetRequestedState();
 

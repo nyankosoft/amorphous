@@ -23,7 +23,7 @@ m_StartupDebugWindow( "none" )
 
 bool CGameStageFrameworkGlobalParams::LoadFromTextFile( const std::string& filename )
 {
-	CParamLoader loader( filename );
+	ParamLoader loader( filename );
 
 	if( !loader.IsReady() )
 		return false;

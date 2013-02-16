@@ -47,7 +47,7 @@ public:
 		// reset the pointer position of the buffer
 		m_Stream.m_Buffer.reset_pos();
 
-		CSerializableStream compressed_buffer;
+		SerializableStream compressed_buffer;
 		compressed_buffer.m_Buffer.buffer().reserve( m_Stream.m_Buffer.buffer().size() );
 
 		// compress data
@@ -87,7 +87,7 @@ protected:
 
 	std::string m_Filename;
 
-	CSerializableStream m_Stream;	///< buffer to temporarily hold uncompressed data
+	SerializableStream m_Stream;	///< buffer to temporarily hold uncompressed data
 
 //	ofstream m_OutputFileStream;
 

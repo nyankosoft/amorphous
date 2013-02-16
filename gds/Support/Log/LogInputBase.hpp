@@ -14,7 +14,7 @@ namespace amorphous
 
 
 class CLogOutputBase;
-class CTimer;
+class Timer;
 
 
 class CLogInputBase
@@ -24,7 +24,7 @@ class CLogInputBase
 
 	TimeFormat::Format m_TimeStampFormat;
 
-	CTimer *m_pTimer;
+	Timer *m_pTimer;
 
 	/// holds pointers to output device (borrowed reference)
 	/// NOTE: user is responsible for releasing these instances

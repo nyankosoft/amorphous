@@ -82,7 +82,7 @@ public:
 
 		if( IsImageFormatSupported( input_path ) )
 		{
-			CImageArchive img_archive( input_path.string() );
+			ImageArchive img_archive( input_path.string() );
 			bool added = db.AddData( keyname, img_archive );
 
 			return Result::SUCCESS;
@@ -91,7 +91,7 @@ public:
 			return Result::INVALID_ARGS;
 	}
 
-//	Result::Name CreateArchive( const std::string& input_filepath, CImageArchive& img_archive )
+//	Result::Name CreateArchive( const std::string& input_filepath, ImageArchive& img_archive )
 //	{
 //		int res = img_archive.LoadFromFile( input_filepath );
 //	}
@@ -104,13 +104,13 @@ public:
 		if( !IsImageFormatSupported( input_filepath ) )
 			return Result::INVALID_ARGS;
 
-		CImageArchive img_archive( input_filepath );
+		ImageArchive img_archive( input_filepath );
 		if( !img_archive.IsValid() )
 			return Result::UNKNOWN_ERROR;
 
 		bool saved = img_archive.SaveToFile( output_filepath );
 
-//		boost::shared_ptr<CImageArchive> pImgArchive( new CImageArchive( input_filepath ) );
+//		boost::shared_ptr<ImageArchive> pImgArchive( new ImageArchive( input_filepath ) );
 //		pArchive = pImgArchive;
 
 		return saved ? Result::SUCCESS : Result::UNKNOWN_ERROR;

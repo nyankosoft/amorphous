@@ -22,7 +22,7 @@ namespace amorphous
 class CGameTask : public GraphicsComponent
 {
 	/// Started in CGameTask::CGameTask()
-	CTimer m_Timer;
+	Timer m_Timer;
 
 	/// set to true when the Render() is called for the first time
 	bool m_Rendered;
@@ -91,7 +91,7 @@ protected:
 
 protected:
 
-	const CTimer& GetTaskTimer() const { return m_Timer; }
+	const Timer& GetTaskTimer() const { return m_Timer; }
 
 	bool IsInTransitionToNextTask() const { return GetRequestedNextTaskID() != CGameTask::ID_INVALID; }
 

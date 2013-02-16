@@ -106,7 +106,7 @@ bool TextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
 
 
 /*
-bool TextureHandle::Load( CImageArchive& img_archive )
+bool TextureHandle::Load( ImageArchive& img_archive )
 {
 	return false;
 }

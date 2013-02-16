@@ -16,7 +16,7 @@ namespace amorphous
    - Uses an FreeImage library to retrieve the width and height of the image
 
 */
-class CImageArchive : public CSerializableStream
+class ImageArchive : public SerializableStream
 {
 public:
 
@@ -40,11 +40,11 @@ public:
 
 public:
 
-	inline CImageArchive();
+	inline ImageArchive();
 
 	/// Creates an image archive from the given image file
 	/// and stores the image to the internal buffer
-	inline CImageArchive( const std::string& image_filename );
+	inline ImageArchive( const std::string& image_filename );
 
 //	bool LoadImage_FloatRGBA( vector<SFloatRGBAColor>& dest_buffer );
 
@@ -61,13 +61,13 @@ public:
 
 // ============================ inline implementations ============================
 
-inline CImageArchive::CImageArchive()
+inline ImageArchive::ImageArchive()
 :
 m_Format(IMGFMT_INVALID)
 {}
 
 
-inline CImageArchive::CImageArchive( const std::string& image_filename )
+inline ImageArchive::ImageArchive( const std::string& image_filename )
 :
 m_Format(IMGFMT_INVALID)
 {
@@ -75,7 +75,7 @@ m_Format(IMGFMT_INVALID)
 }
 
 
-inline bool CImageArchive::LoadFromFile( const std::string& image_filename )
+inline bool ImageArchive::LoadFromFile( const std::string& image_filename )
 {
 	// get the suffix from the filename
 	size_t dot_pos = image_filename.rfind(".");
@@ -88,12 +88,12 @@ inline bool CImageArchive::LoadFromFile( const std::string& image_filename )
 		return false;
 
 	// load image data to buffer
-	return CSerializableStream::LoadBinaryStream(image_filename);
+	return SerializableStream::LoadBinaryStream(image_filename);
 }
 
 
 /// TODO: do non-case-sensitive comparison
-inline bool CImageArchive::SetFormatFromFileExtension( const std::string& image_ext )
+inline bool ImageArchive::SetFormatFromFileExtension( const std::string& image_ext )
 {
 	if( image_ext == "bmp" )       m_Format = IMGFMT_BMP24; // TODO: support 32-bit image
 	else if ( image_ext == "jpg" ) m_Format = IMGFMT_JPEG;
@@ -112,15 +112,15 @@ inline bool CImageArchive::SetFormatFromFileExtension( const std::string& image_
 }
 
 
-inline bool CImageArchive::IsValid()
+inline bool ImageArchive::IsValid()
 {
 	return (m_Format != IMGFMT_INVALID) && ( 0 < m_Buffer.buffer().size() );
 }
 
 
-inline void CImageArchive::Serialize( IArchive& ar, const unsigned int version )
+inline void ImageArchive::Serialize( IArchive& ar, const unsigned int version )
 {
-	CSerializableStream::Serialize( ar, version );
+	SerializableStream::Serialize( ar, version );
 
 	ar & (int&)m_Format;
 

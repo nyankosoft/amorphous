@@ -54,7 +54,7 @@ public:
 
 private:
 
-	void LoadLogVerbosity( CParamLoader& loader );
+	void LoadLogVerbosity( ParamLoader& loader );
 
 public:
 
@@ -75,7 +75,7 @@ public:
 
 	bool LoadFromFile( const std::string& filename )
 	{
-		CParamLoader loader( filename );
+		ParamLoader loader( filename );
 
 		if( !loader.IsReady() )
 			return false;

@@ -35,7 +35,7 @@ m_TimeStampFormat(TimeFormat::HHMMSSMS)
 	m_pBuffer	 = new char [buffer_size];
 	m_BufferSize = buffer_size;
 
-	m_pTimer = new CTimer;
+	m_pTimer = new Timer;
 	m_pTimer->Start();
 }
 

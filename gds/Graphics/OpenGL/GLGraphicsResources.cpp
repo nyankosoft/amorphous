@@ -21,11 +21,11 @@ using namespace std;
 
 class CGLLockedTexture : public LockedTexture
 {
-	boost::shared_ptr<CBitmapImage> m_pImage;
+	boost::shared_ptr<BitmapImage> m_pImage;
 
 public:
 
-	CGLLockedTexture( boost::shared_ptr<CBitmapImage>& pImage )
+	CGLLockedTexture( boost::shared_ptr<BitmapImage>& pImage )
 		:
 	m_pImage(pImage)
 	{}
@@ -123,7 +123,7 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
  \param [out] src_format
  \param [out] src_type
 */
-Result::Name GetSrcPixelTypeAndFormat( CBitmapImage& img, GLenum& src_format, GLenum& src_type )
+Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLenum& src_type )
 {
 	src_format = GL_RGB;
 	src_type   = GL_UNSIGNED_BYTE;
@@ -190,7 +190,7 @@ inline static int GetNumMipmaps( const TextureResourceDesc& desc )
 
 // Create texture from a bitmap image
 // \param src_img [in] the source image. NOTE: the image is altered by one or more scaling operations to create mipmap textures.
-bool CGLTextureResource::CreateGLTextureFromBitmapImage( CBitmapImage& src_image )
+bool CGLTextureResource::CreateGLTextureFromBitmapImage( BitmapImage& src_image )
 {
 	GLenum src_format = GL_RGB;
 	GLenum src_type   = GL_UNSIGNED_BYTE;
@@ -237,7 +237,7 @@ FIC_CMYK CMYK bitmap (32 bit only)
 // Used in synchronous loading
 bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 {
-	CBitmapImage img;
+	BitmapImage img;
 	bool loaded = img.LoadFromFile( filepath );
 	if( !loaded )
 		return false;
@@ -359,7 +359,7 @@ bool CGLTextureResource::CreateFromDesc()
 //	if( desc.Format == TextureFormat::X8R8G8B8 )
 //		bpp = 24;
 
-	m_pLockedImage.reset( new CBitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
+	m_pLockedImage.reset( new BitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
 
 	boost::shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
 

@@ -675,7 +675,7 @@ public:
 */
 class GraphicsElementAnimationManager : public GraphicsElementAnimationManagerBase
 {
-	CTimer *m_pTimer;
+	Timer *m_pTimer;
 
 //	std::list<GraphicsElementAnimation *> m_vecpEffect;
 	std::vector<GraphicsElementAnimation *> m_vecpEffect;

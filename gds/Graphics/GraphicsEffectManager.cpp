@@ -372,7 +372,7 @@ GraphicsElementLinearAnimation( pTargetElement, start_time, 0.0f ), m_CharsPerSe
 //m_pGraphicsElementManager(pElementManager)
 GraphicsElementAnimationManager::GraphicsElementAnimationManager()
 {
-	m_pTimer = new CTimer();
+	m_pTimer = new Timer();
 	m_pTimer->Start();
 
 	SetTimeOffset();

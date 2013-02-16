@@ -66,7 +66,7 @@ void FontTextureLoader::FillTexture( LockedTexture& texture )
 		db.AddData( "Base", archive );
 
 		int img_depth = 32; // ARGB, 8bits for each channel
-		CBitmapImage img( w, h, img_depth, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
+		BitmapImage img( w, h, img_depth, SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ) );
 		for( int y=0; y<h; y++ )
 		{
 			for( int x=0; x<w; x++ )
@@ -76,7 +76,7 @@ void FontTextureLoader::FillTexture( LockedTexture& texture )
 		}
 
 		// create the image archive and add it to the db with the key
-		CImageArchive img_archive( img );
+		ImageArchive img_archive( img );
 		db.AddData( gs_FontTextureImageKeyname, img_archive );
 	}*/
 }
@@ -387,7 +387,7 @@ bool TrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
 	if( !db_open )
 		return false;
 
-	CImageArchive ia;
+	ImageArchive ia;
 	bool image_loaded = ia.LoadFromFile( temporary_texture_pathname );
 	if( !image_loaded )
 		return false;

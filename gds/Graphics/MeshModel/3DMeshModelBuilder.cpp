@@ -117,7 +117,7 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh
 
 //				path src_tex_path = path(src_dirpath) / tex.strFilename;
 				path src_tex_path = path(src_dirpath) / m_OrigTextureFilepaths[i][j];
-				CImageArchive ia( src_tex_path.string() );
+				ImageArchive ia( src_tex_path.string() );
 				if( !ia.IsValid() )
 					continue;
 

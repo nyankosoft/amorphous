@@ -187,7 +187,7 @@ bool LoadOggVorbisSoundFromDisk( const std::string& resource_path, OggVorbis_Fil
 /// \param [out] sound_stream buffer to store the loaded sound
 /// \param [out] sOggVorbisFile contains callback function and pointer to src_buffer. They get registered for decoding the ogg file
 bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
-					             CSerializableStream& sound_stream,
+					             SerializableStream& sound_stream,
 						         OggVorbis_File& sOggVorbisFile )
 {
 	if( is_db_filepath_and_keyname(resource_path) )

@@ -21,7 +21,7 @@ public:
 	std::vector<std::string> m_vecSourceFilename;
 
 	// each element stores a script file
-	std::vector<CSerializableStream> m_vecBuffer;
+	std::vector<SerializableStream> m_vecBuffer;
 
 	CScriptArchive() {}
 	~CScriptArchive() {}

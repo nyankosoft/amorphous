@@ -179,7 +179,7 @@ shared_ptr<TextureResource> CDiskTextureLoader::GetTextureResource()
 }
 
 
-bool CDiskTextureLoader::InitImageArray( boost::shared_ptr<CBitmapImage> pBaseImage )
+bool CDiskTextureLoader::InitImageArray( boost::shared_ptr<BitmapImage> pBaseImage )
 {
 	if( !pBaseImage )
 		return false;
@@ -210,7 +210,7 @@ bool CDiskTextureLoader::CreateScaledImagesForMipmaps()
 	int num_mipmaps = (int)m_vecpImage.size();
 	for( int i=0; i<num_mipmaps - 1; i++ )
 	{
-		CBitmapImage& src_img = *m_vecpImage[i];
+		BitmapImage& src_img = *m_vecpImage[i];
 		m_vecpImage[i+1] = src_img.GetRescaled( src_img.GetWidth() / 2, src_img.GetHeight() / 2 );
 
 		if( !m_vecpImage[i+1] )
@@ -223,7 +223,7 @@ bool CDiskTextureLoader::CreateScaledImagesForMipmaps()
 
 bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
 {
-	shared_ptr<CBitmapImage> pBaseImage( new CBitmapImage );
+	shared_ptr<BitmapImage> pBaseImage( new BitmapImage );
 	bool image_loaded = pBaseImage->LoadFromFile( GetSourceFilepath() );
 
 	if( !image_loaded )
@@ -251,11 +251,11 @@ bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
 
 bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
-	CImageArchive img_archive;
+	ImageArchive img_archive;
 	bool retrieved = db.GetData( keyname, img_archive );
 	if( retrieved )
 	{
-		shared_ptr<CBitmapImage> pBaseImage( new CBitmapImage );
+		shared_ptr<BitmapImage> pBaseImage( new BitmapImage );
 		bool image_loaded = pBaseImage->CreateFromImageArchive( img_archive );
 
 		if( !image_loaded )
@@ -310,7 +310,7 @@ void CDiskTextureLoader::FillResourceDesc()
 	if( m_vecpImage.empty() || !m_vecpImage[0] )
 		return;
 
-	CBitmapImage& img = *m_vecpImage[0];
+	BitmapImage& img = *m_vecpImage[0];
 
 	m_TextureDesc.Width  = img.GetWidth();
 	m_TextureDesc.Height = img.GetHeight();
@@ -328,7 +328,7 @@ void CDiskTextureLoader::FillTexture( LockedTexture& texture )
 		return;
 	}
 
-	CBitmapImage& img = *m_vecpImage[m_CurrentMipLevel];
+	BitmapImage& img = *m_vecpImage[m_CurrentMipLevel];
 
 //	LOG_PRINT_VERBOSE( fmt_string(" Filling a texture (size: %dx%d)", img.GetWidth(), img.GetHeight() ) );
 

@@ -73,7 +73,7 @@ m_pStageDebugInputHandler(NULL)
 	boost::thread::id thread_id = boost::this_thread::get_id();
 
 //	m_pTimer = new PrecisionTimer();
-	m_pTimer = new CTimer();
+	m_pTimer = new Timer();
 	PauseTimer();	// don't start until the initialization is complete
 
 	m_pScreenEffectManager.reset( new ScreenEffectManager );

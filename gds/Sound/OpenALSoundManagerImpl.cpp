@@ -94,7 +94,7 @@ bool CSoundBuffer::LoadFromDisk( const std::string& resource_path )
 bool CSoundBuffer::LoadOggVorbisSoundFromDisk( const std::string& resource_path )
 {
 	// create as a single buffer and a single source
-	CSerializableStream src_buffer;
+	SerializableStream src_buffer;
 	OggVorbis_File ogg_vorbis_file;
 
 	// load on memory

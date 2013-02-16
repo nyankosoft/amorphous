@@ -127,7 +127,7 @@ void UpdateScriptArchives( const std::string & src_dir_path,
 		for( size_t i=0; i<script_file_list.size(); i++ )
 		{
 			// load script file
-			script_archive.m_vecBuffer.push_back( CSerializableStream() );
+			script_archive.m_vecBuffer.push_back( SerializableStream() );
 			script_archive.m_vecBuffer.back().LoadTextFile( script_file_list[i] );
 
 			// save the filepath to let the system reload scripts at runtime for debugging

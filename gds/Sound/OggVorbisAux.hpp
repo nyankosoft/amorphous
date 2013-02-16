@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CSerializableStream;
+class SerializableStream;
 class stream_buffer;
 
 
@@ -28,7 +28,7 @@ class stream_buffer;
 extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path, OggVorbis_File& sOggVorbisFile );
 
 extern bool LoadOggVorbisSoundFromDisk( const std::string& resource_path,
-					                    CSerializableStream& src_stream,
+					                    SerializableStream& src_stream,
 						                OggVorbis_File& sOggVorbisFile );
 
 extern unsigned long DecodeOggVorbis( OggVorbis_File *psOggVorbisFile, unsigned long ulChannels, stream_buffer& dest_buffer );

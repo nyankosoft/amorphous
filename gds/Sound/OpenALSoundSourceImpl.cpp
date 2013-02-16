@@ -317,7 +317,7 @@ void COpenALStreamedSoundSourceImpl::StartStreamThread()
 
 bool COpenALStreamedSoundSourceImpl::OpenOrLoadOggResource( const std::string& resource_path,
 														    OggVorbis_File& sOggVorbisFile,
-															CSerializableStream& src_stream )
+															SerializableStream& src_stream )
 {
 	bool resource_loaded = false;
 	switch( m_StreamMethod )
@@ -363,7 +363,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 	m_NumTotalBuffersProcessed = 0;
 
 	// Open Ogg Stream
-	CSerializableStream src_stream;
+	SerializableStream src_stream;
 	OggVorbis_File sOggVorbisFile;
 
 	bool resource_loaded = false;

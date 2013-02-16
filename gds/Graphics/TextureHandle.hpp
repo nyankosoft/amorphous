@@ -72,7 +72,7 @@ public:
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 
 	/// loads texture from memory in the form of image archive
-//	bool Load( CImageArchive& img_archive );
+//	bool Load( ImageArchive& img_archive );
 
 	static const TextureHandle& Null() { return ms_NullHandle; }
 

@@ -85,7 +85,7 @@ void CScreenShotManager::OutputImageDataToFile( U32 *pdwImageData, int iImageWid
 //	FILE *fp = fopen( "dbg_img_content.txt", "w" );
 
 	const int depth = 24;
-	CBitmapImage img( iImageWidth, iImageHeight, depth );
+	BitmapImage img( iImageWidth, iImageHeight, depth );
 	int x,y;
 	for( y=0; y<iImageHeight; y++ )
 	{

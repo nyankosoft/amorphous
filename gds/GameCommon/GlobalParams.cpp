@@ -13,7 +13,7 @@ using namespace std;
 CGlobalParams GlobalParams;
 
 
-void CGlobalParams::LoadLogVerbosity( CParamLoader& loader )
+void CGlobalParams::LoadLogVerbosity( ParamLoader& loader )
 {
 	string verbosity_title;
 	loader.LoadParam( "log_verbosity", verbosity_title );

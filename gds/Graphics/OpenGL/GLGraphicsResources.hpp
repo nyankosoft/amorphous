@@ -29,7 +29,7 @@ class CGLTextureResource : public TextureResource
 
 //	boost::shared_ptr< array2d<U32> > m_pLockedTextureRGBA32ImageBuffer;
 
-	boost::shared_ptr<CBitmapImage> m_pLockedImage;
+	boost::shared_ptr<BitmapImage> m_pLockedImage;
 
 protected:
 
@@ -51,7 +51,7 @@ protected:
 
 	bool UpdateGLTextureImage( GLenum target, int level, int width, int height, const GLenum& src_format, const GLenum& src_type, void *pImageData );
 
-	bool CreateGLTextureFromBitmapImage( CBitmapImage& src_img );
+	bool CreateGLTextureFromBitmapImage( BitmapImage& src_img );
 
 public:
 

@@ -17,7 +17,7 @@ class CPlayTime : public IArchiveObjectBase
 {
 	unsigned long m_LastSavedTimeMS;
 
-	CTimer m_Timer;
+	Timer m_Timer;
 
 public:
 

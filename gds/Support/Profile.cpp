@@ -29,7 +29,7 @@ using namespace std;
 // TODO: move this to some "win32 platform" module
 class CProfileTimer_Win32 : public CProfileTimer
 {
-	CTimer m_Timer;
+	Timer m_Timer;
 
 public:
 
@@ -113,7 +113,7 @@ void SetProfileTimer( CProfileTimer* pTimer )
 
 static float GetExactTime()
 {
-//	static CTimer s_Timer;
+//	static Timer s_Timer;
 //	return (float)s_Timer.GetTime();
 
 	static int s_TimerInitialized = 0;

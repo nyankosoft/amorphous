@@ -48,7 +48,7 @@ class ImageSplitter
 	int m_NumSplitsX;
 	int m_NumSplitsY;
 
-	boost::shared_ptr<CBitmapImage> m_pBitmapImage;
+	boost::shared_ptr<BitmapImage> m_pBitmapImage;
 
 	std::string m_BaseDestFilepath;
 
@@ -70,7 +70,7 @@ public:
 	m_BaseDestFilepath(base_dest_filepath),
 	m_pSplitImageFilepathPrinter(pDestFilepathPrinter)
 	{
-		m_pBitmapImage.reset( new CBitmapImage() );
+		m_pBitmapImage.reset( new BitmapImage() );
 		bool loaded = m_pBitmapImage->LoadFromFile( src_image_filepath );
 		if( !loaded )
 		{
@@ -82,7 +82,7 @@ public:
 		int num_splits_x,
 		int num_splits_y,
 		const std::string& base_dest_filepath,
-		boost::shared_ptr<CBitmapImage> pBitmapImage,
+		boost::shared_ptr<BitmapImage> pBitmapImage,
 		SplitImageFilepathPrinter *pDestFilepathPrinter )
 		:
 	m_NumSplitsX(num_splits_x),
@@ -135,7 +135,7 @@ inline void ImageSplitter::Clip( int index ) const
 
 	int num_color_bits = 24;
 
-	CBitmapImage dest_img( dest_tex_width, dest_tex_height, num_color_bits );
+	BitmapImage dest_img( dest_tex_width, dest_tex_height, num_color_bits );
 	U8 r=0,g=0,b=0,a=0;
 	int x,y,offset_x,offset_y;
 

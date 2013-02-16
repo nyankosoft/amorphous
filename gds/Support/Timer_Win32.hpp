@@ -13,11 +13,11 @@ namespace amorphous
  Performs timer operations.
  - Use GetGlobalTimer() or macro 'TIMER' to get the global instance.
  */
-class CTimer
+class Timer
 {
 public:
 
-	CTimer();
+	Timer();
 
 	void Reset(); ///< resets the timer
 

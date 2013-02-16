@@ -175,7 +175,7 @@ void CGraphicsApplicationBase::Run()
 */
 
 	string graphics_library_name = "Direct3D";
-	CParamLoader param_loader( "config" );
+	ParamLoader param_loader( "config" );
 	if( param_loader.IsReady() )
 	{
 		param_loader.LoadParam( "GraphicsLibrary", graphics_library_name );

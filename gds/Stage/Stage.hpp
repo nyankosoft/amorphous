@@ -51,7 +51,7 @@ class CStage
 	/// keeps time elapsed in stage
 	/// CGameTask_Stage() pauses the timer when the stage task is left
 	/// and resumes it when the task gets active again
-	CTimer *m_pTimer;	
+	Timer *m_pTimer;	
 //	PrecisionTimer *m_pTimer;
 
 	/// owned reference

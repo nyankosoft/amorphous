@@ -11,7 +11,7 @@ namespace amorphous
 
 /*  --- template 1 (inside a function) ---
 
-	CParamLoader loader( filename );
+	ParamLoader loader( filename );
 	if( loader.IsReady() )
 	{
 		loader.LoadParam( "INPUT", input_filename );
@@ -24,7 +24,7 @@ namespace amorphous
 
 bool LoadFromFile( const string& filename )
 {
-	CParamLoader loader( filename );
+	ParamLoader loader( filename );
 
 	if( !loader.IsReady() )
 		return false;
@@ -34,17 +34,17 @@ bool LoadFromFile( const string& filename )
 }
 */
 
-class CParamLoader
+class ParamLoader
 {
 	CTextFileScanner m_Scanner;
 
 public:
 
-	CParamLoader() {}
+	ParamLoader() {}
 
-	CParamLoader( const std::string& filename ) { m_Scanner.OpenFile(filename); }
+	ParamLoader( const std::string& filename ) { m_Scanner.OpenFile(filename); }
 	
-	~CParamLoader() { CloseFile(); }
+	~ParamLoader() { CloseFile(); }
 
 	bool OpenFile( const std::string& filename ) { m_Scanner.OpenFile( filename ); }
 
@@ -116,7 +116,7 @@ public:
 template<typename T>
 inline void LoadParamFromFile( const std::string& filepath, const char *param_name, T& param )
 {
-	CParamLoader loader( filepath );
+	ParamLoader loader( filepath );
 	if( loader.IsReady() )
 		loader.LoadParam( param_name, param );
 }
@@ -125,7 +125,7 @@ inline void LoadParamFromFile( const std::string& filepath, const char *param_na
 template<typename T0, typename T1>
 inline void LoadParamFromFile( const std::string& filepath, const char *param_name, T0& param0, T1& param1 )
 {
-	CParamLoader loader( filepath );
+	ParamLoader loader( filepath );
 	if( loader.IsReady() )
 		loader.LoadParam( param_name, param0, param1 );
 }
@@ -134,7 +134,7 @@ inline void LoadParamFromFile( const std::string& filepath, const char *param_na
 template<typename T0, typename T1, typename T2>
 inline void LoadParamFromFile( const std::string& filepath, const char *param_name, T0& param0, T1& param1, T2& param2 )
 {
-	CParamLoader loader( filepath );
+	ParamLoader loader( filepath );
 	if( loader.IsReady() )
 		loader.LoadParam( param_name, param0, param1, param2 );
 }
@@ -144,7 +144,7 @@ template<typename T>
 inline T LoadParamFromFile( const std::string& filepath, const char *param_name )
 {
 	T param;
-	CParamLoader loader( filepath );
+	ParamLoader loader( filepath );
 	if( loader.IsReady() )
 		loader.LoadParam( param_name, param );
 	return param;

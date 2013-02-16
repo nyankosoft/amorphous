@@ -24,7 +24,7 @@ public:
 		if( !m_BuiltinImage.IsValid() )
 			return;
 
-		CBitmapImage img;
+		BitmapImage img;
 		bool loaded = LoadBuiltinImage( m_BuiltinImage, img );
 		if( !loaded )
 			return;

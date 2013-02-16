@@ -16,7 +16,7 @@ using namespace serialization;
 /**
  holds serializable stream
 */
-class CSerializableStream : public IArchiveObjectBase
+class SerializableStream : public IArchiveObjectBase
 {
 public:
 
@@ -24,14 +24,14 @@ public:
 
 public:
 
-	CSerializableStream() {}
+	SerializableStream() {}
 
 	/// Returns true on success
 	inline bool LoadBinaryStream( const std::string& filepath );
 
 	inline bool LoadTextFile( const std::string& filepath );
 
-	~CSerializableStream() {}
+	~SerializableStream() {}
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -47,7 +47,7 @@ public:
 };
 
 
-inline bool CSerializableStream::LoadBinaryStream( const std::string& filepath )
+inline bool SerializableStream::LoadBinaryStream( const std::string& filepath )
 {
 	bool res = m_Buffer.LoadBinaryStream( filepath );
 
@@ -61,7 +61,7 @@ inline bool CSerializableStream::LoadBinaryStream( const std::string& filepath )
 }
 
 
-inline bool CSerializableStream::LoadTextFile( const std::string& filepath )
+inline bool SerializableStream::LoadTextFile( const std::string& filepath )
 {
 	bool res = m_Buffer.LoadTextFile( filepath );
 

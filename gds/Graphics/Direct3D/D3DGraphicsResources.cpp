@@ -22,20 +22,20 @@ using std::map;
 using namespace boost;
 
 
-static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( CImageArchive::ImageFormat img_archive_format )
+static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( ImageArchive::ImageFormat img_archive_format )
 {
 	switch(img_archive_format)
 	{
-	case CImageArchive::IMGFMT_BMP24: return D3DXIFF_BMP;
-	case CImageArchive::IMGFMT_BMP32: return D3DXIFF_BMP;
-	case CImageArchive::IMGFMT_JPEG:  return D3DXIFF_JPG;
-	case CImageArchive::IMGFMT_TGA:   return D3DXIFF_TGA;
-	case CImageArchive::IMGFMT_PNG:   return D3DXIFF_PNG;
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_DDS,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_PPM,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_DIB,
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_HDR,       //high dynamic range formats
-//	case CImageArchive::IMGFMT_ : return D3DXIFF_PFM,       //
+	case ImageArchive::IMGFMT_BMP24: return D3DXIFF_BMP;
+	case ImageArchive::IMGFMT_BMP32: return D3DXIFF_BMP;
+	case ImageArchive::IMGFMT_JPEG:  return D3DXIFF_JPG;
+	case ImageArchive::IMGFMT_TGA:   return D3DXIFF_TGA;
+	case ImageArchive::IMGFMT_PNG:   return D3DXIFF_PNG;
+//	case ImageArchive::IMGFMT_ : return D3DXIFF_DDS,
+//	case ImageArchive::IMGFMT_ : return D3DXIFF_PPM,
+//	case ImageArchive::IMGFMT_ : return D3DXIFF_DIB,
+//	case ImageArchive::IMGFMT_ : return D3DXIFF_HDR,       //high dynamic range formats
+//	case ImageArchive::IMGFMT_ : return D3DXIFF_PFM,       //
 	default: return D3DXIFF_BMP;
 	}
 
@@ -122,7 +122,7 @@ CD3DTextureResource::~CD3DTextureResource()
 }
 
 
-static HRESULT LoadTextureFromImageArchive( CImageArchive& src_img, LPDIRECT3DTEXTURE9& pTexture )
+static HRESULT LoadTextureFromImageArchive( ImageArchive& src_img, LPDIRECT3DTEXTURE9& pTexture )
 {
 	HRESULT hr = 
 			D3DXCreateTextureFromFileInMemory(
@@ -148,7 +148,7 @@ bool CD3DTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const st
 
 	HRESULT hr = S_OK;
 
-	CImageArchive img;
+	ImageArchive img;
 	bool img_found = db.GetData( image_archive_key, img );
 
 	if( !img_found )
@@ -244,12 +244,12 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 
 	HRESULT hr = E_FAIL;
 
-	// For a system that does not use CImageArchive, this suffices.
+	// For a system that does not use ImageArchive, this suffices.
 //	hr = D3DXCreateTextureFromFile( DIRECT3D9.GetDevice(), filepath.c_str(), &m_pTexture );
 
 	if( lfs::get_ext(filepath) == "ia" )
 	{
-		CImageArchive img;
+		ImageArchive img;
 		bool loaded = img.LoadFromFile( filepath );
 		if( loaded )
 			hr = LoadTextureFromImageArchive( img, m_pTexture );
@@ -266,7 +266,7 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 		{
 			string ia_filepath( filepath );
 			lfs::change_ext( ia_filepath, "ia" );
-			CImageArchive img( ia_filepath );
+			ImageArchive img( ia_filepath );
 			if( img.IsValid() )
 				hr = LoadTextureFromImageArchive( img, m_pTexture );
 //			if( SUCCEEDED(hr) )

@@ -9,7 +9,7 @@ namespace amorphous
 
 
 //--------------------------------------------------------------------------------------
-CTimer::CTimer()
+Timer::Timer()
 {
 	m_bUsingQPF         = false;
 	m_bTimerStopped     = true;
@@ -48,7 +48,7 @@ CTimer::CTimer()
 
 
 //--------------------------------------------------------------------------------------
-void CTimer::Reset()
+void Timer::Reset()
 {
     if( !m_bUsingQPF )
         return;
@@ -68,7 +68,7 @@ void CTimer::Reset()
 
 
 //--------------------------------------------------------------------------------------
-void CTimer::Start()
+void Timer::Start()
 {
 	if( !m_bUsingQPF )
 		return;
@@ -89,7 +89,7 @@ void CTimer::Start()
 
 
 //--------------------------------------------------------------------------------------
-void CTimer::Stop()
+void Timer::Stop()
 {
     if( !m_bUsingQPF )
         return;
@@ -111,7 +111,7 @@ void CTimer::Stop()
 
 /*
 //--------------------------------------------------------------------------------------
-void CTimer::Advance()
+void Timer::Advance()
 {
     if( !m_bUsingQPF )
         return;
@@ -121,7 +121,7 @@ void CTimer::Advance()
 
 
 //--------------------------------------------------------------------------------------
-double CTimer::GetAbsoluteTime()
+double Timer::GetAbsoluteTime()
 {
     if( !m_bUsingQPF )
         return -1.0;
@@ -140,7 +140,7 @@ double CTimer::GetAbsoluteTime()
 
 
 //--------------------------------------------------------------------------------------
-double CTimer::GetTime() const
+double Timer::GetTime() const
 {
     if( !m_bUsingQPF )
         return -1.0;
@@ -162,7 +162,7 @@ const double max_fps = 1000;
 const double min_frametime = 1.0 / max_fps;
 
 //--------------------------------------------------------------------------------------
-void CTimer::UpdateFrameTime()
+void Timer::UpdateFrameTime()
 {
     if( m_bUsingQPF )
 	{
@@ -238,7 +238,7 @@ void CTimer::UpdateFrameTime()
 
 /*
 //--------------------------------------------------------------------------------------
-double CTimer::GetFrameTime64()
+double Timer::GetFrameTime64()
 {
     if( !m_bUsingQPF )
         return -1.0;
