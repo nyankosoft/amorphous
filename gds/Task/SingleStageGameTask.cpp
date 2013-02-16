@@ -11,18 +11,18 @@ namespace amorphous
 using namespace std;
 
 
-CSingleStageGameTask::CSingleStageGameTask()
+SingleStageGameTask::SingleStageGameTask()
 {
 }
 
 
-CSingleStageGameTask::~CSingleStageGameTask()
+SingleStageGameTask::~SingleStageGameTask()
 {
 }
 
 
 
-void CSingleStageGameTask::LoadStage( const std::string& script_name )
+void SingleStageGameTask::LoadStage( const std::string& script_name )
 {
 	using namespace boost::filesystem;
 
@@ -48,27 +48,27 @@ void CSingleStageGameTask::LoadStage( const std::string& script_name )
 }
 
 
-int CSingleStageGameTask::FrameMove( float dt )
+int SingleStageGameTask::FrameMove( float dt )
 {
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
 	if( m_pStage )
 		m_pStage->Update( dt );
 
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
-void CSingleStageGameTask::Render()
+void SingleStageGameTask::Render()
 {
 	// render stage
 	if( m_pStage )
 		m_pStage->Render();
 
 	// render GUI components over the stage
-	CGUIGameTask::Render();
+	GUIGameTask::Render();
 }
 
 

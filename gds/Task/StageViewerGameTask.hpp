@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CStageViewerGameTask : public CSingleStageGameTask
+class StageViewerGameTask : public SingleStageGameTask
 {
 	Camera m_Camera;
 
@@ -34,9 +34,9 @@ protected:
 
 public:
 
-	CStageViewerGameTask();
+	StageViewerGameTask();
 
-	virtual ~CStageViewerGameTask();
+	virtual ~StageViewerGameTask();
 
 	void UpdateCameraPose();
 

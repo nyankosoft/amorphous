@@ -10,18 +10,18 @@ namespace amorphous
 {
 
 
-class CGameTaskFactoryBase
+class GameTaskFactoryBase
 {	
 
 public:
 
-	CGameTaskFactoryBase() {}
+	GameTaskFactoryBase() {}
 
-	virtual ~CGameTaskFactoryBase();
+	virtual ~GameTaskFactoryBase();
 
-	virtual CGameTask *CreateTask( int iTaskID );
+	virtual GameTask *CreateTask( int iTaskID );
 
-	CGameTask *CreateTask( const std::string& task_name );
+	GameTask *CreateTask( const std::string& task_name );
 };
 
 } // namespace amorphous

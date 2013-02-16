@@ -38,14 +38,14 @@ enum eCaptionID
 	NUM_CAPTION_IDS
 };
 
-CGameTask::eGameTask CGameTask_MainMenu::ms_NextTaskID;
+GameTask::eGameTask GameTask_MainMenu::ms_NextTaskID;
 
 
-CGameTask_MainMenu::CGameTask_MainMenu()
+GameTask_MainMenu::GameTask_MainMenu()
 {
 //	m_pFlowCaptionRenderRoutine = NULL;
 
-	CGameTask_MainMenu::SetNextTaskID( CGameTask::ID_INVALID );
+	GameTask_MainMenu::SetNextTaskID( GameTask::ID_INVALID );
 
 	InitMenu();
 
@@ -60,7 +60,7 @@ CGameTask_MainMenu::CGameTask_MainMenu()
 }
 
 
-CGameTask_MainMenu::~CGameTask_MainMenu()
+GameTask_MainMenu::~GameTask_MainMenu()
 {
 	InputHub().RemoveInputHandler( 1, m_pInputHandler );
 
@@ -73,7 +73,7 @@ CGameTask_MainMenu::~CGameTask_MainMenu()
 #define array_size(fixed_array)	sizeof(fixed_array) / sizeof(fixed_array[0])
 
 
-CGM_Dialog *CGameTask_MainMenu::CreateControlMenu()
+CGM_Dialog *GameTask_MainMenu::CreateControlMenu()
 {
 	string button_title[] = { "INPUT", "GAMEPAD", "KEYBOARD", "MOUSE" };
 	CGM_DialogDesc dlg_desc;
@@ -114,7 +114,7 @@ CGM_Dialog *CGameTask_MainMenu::CreateControlMenu()
 }
 
 
-CGM_Dialog *CGameTask_MainMenu::CreateOptionMenu()
+CGM_Dialog *GameTask_MainMenu::CreateOptionMenu()
 {
 	string button_title[] = { "VIDEO", "SOUND" };
 	CGM_DialogDesc dlg_desc;
@@ -141,7 +141,7 @@ CGM_Dialog *CGameTask_MainMenu::CreateOptionMenu()
 }
 
 
-CGM_Dialog *CGameTask_MainMenu::CreateVideoOptionMenu()
+CGM_Dialog *GameTask_MainMenu::CreateVideoOptionMenu()
 {
 	string button_title[] = { "RESOLUTION", "EFFECT" };
 	CGM_DialogDesc dlg_desc;
@@ -168,7 +168,7 @@ CGM_Dialog *CGameTask_MainMenu::CreateVideoOptionMenu()
 }
 
 
-CGM_Dialog *CGameTask_MainMenu::CreateScreenResolutionSelectMenu()
+CGM_Dialog *GameTask_MainMenu::CreateScreenResolutionSelectMenu()
 {
 	// --- video option sub dialog
 	CGM_Dialog *apVideoOptSubDlg[2];
@@ -237,7 +237,7 @@ CGM_Dialog *CGameTask_MainMenu::CreateScreenResolutionSelectMenu()
 }
 
 
-CGM_Dialog *CGameTask_MainMenu::CreateSoundOptionMenu()
+CGM_Dialog *GameTask_MainMenu::CreateSoundOptionMenu()
 {
 	return NULL;
 }
@@ -258,7 +258,7 @@ enum root_items
 };
 
 
-void CGameTask_MainMenu::CreateMenu()
+void GameTask_MainMenu::CreateMenu()
 {
 	CGM_DialogDesc dlg_desc;
 	CGM_ButtonDesc btn_desc;
@@ -270,7 +270,7 @@ void CGameTask_MainMenu::CreateMenu()
 	dlg_desc.ID = ID_UI_DLG_ROOT;
 	dlg_desc.bRootDialog = true;
 //	dlg_desc.pEventHandler = &m_RootMenuEventHandler;
-	dlg_desc.pEventHandler = CGM_DialogEventHandlerSharedPtr( new CMainMenuEventHandler );
+	dlg_desc.pEventHandler = CGM_DialogEventHandlerSharedPtr( new MainMenuEventHandler );
 
 	CGM_Dialog *pRootDialog = m_pDialogManager->AddDialog( dlg_desc );
 
@@ -310,7 +310,7 @@ void CGameTask_MainMenu::CreateMenu()
 		ID_UI_EXIT,	"Yes",	btn_rect1,
 		0,			"No",	btn_rect2 );
 
-	CGM_DialogEventHandlerSharedPtr pEventHandler( new CMainMenuEventHandler() );
+	CGM_DialogEventHandlerSharedPtr pEventHandler( new MainMenuEventHandler() );
 	pExitDialog->SetEventHandler( pEventHandler );
 
 	apSubDlgButton[ITM_EXIT-1]->SetSubDialog( pExitDialog );
@@ -324,7 +324,7 @@ void CGameTask_MainMenu::CreateMenu()
 }
 
 
-void CGameTask_MainMenu::InitFont()
+void GameTask_MainMenu::InitFont()
 {
 	// set font
 /*	FontDesc font_desc;
@@ -337,11 +337,11 @@ void CGameTask_MainMenu::InitFont()
 */
 ///	if( !m_pUIRenderManager->AddFont( 0, font_desc ) )
 	if( !m_pUIRenderManager->GetGraphicsElementManager()->LoadFont( 0, "Texture\\HGGE_16x8_256.dds", FontBase::FONTTYPE_TEXTURE, 12, 24 )  )
-		PrintLog( "cannot create a font. CGameTask_MainMenu::InitFont()" );
+		PrintLog( "cannot create a font. GameTask_MainMenu::InitFont()" );
 }
 
 
-void CGameTask_MainMenu::InitMenu()
+void GameTask_MainMenu::InitMenu()
 {
 //	SafeDelete( m_pUIRenderManager );
 	CGM_ControlRendererManagerSharedPtr pRenderMgr( new CGM_StdControlRendererManager );
@@ -362,7 +362,7 @@ void CGameTask_MainMenu::InitMenu()
 }
 
 
-CGM_Dialog *CGameTask_MainMenu::CreateDebugMenu()
+CGM_Dialog *GameTask_MainMenu::CreateDebugMenu()
 {
 //	string button_title[] = { "graphics", "physics", "sound" };
 
@@ -391,7 +391,7 @@ CGM_Dialog *CGameTask_MainMenu::CreateDebugMenu()
 
 
 
-CGM_Dialog *CGameTask_MainMenu::CreatePhysicsDebugSubDialog()
+CGM_Dialog *GameTask_MainMenu::CreatePhysicsDebugSubDialog()
 {
 //	CGM_RadioButtonDesc radio_btn[8];
 	int btn_width = 100, btn_wmargin = 8;
@@ -457,15 +457,15 @@ CGM_Dialog *CGameTask_MainMenu::CreatePhysicsDebugSubDialog()
 }
 
 
-int CGameTask_MainMenu::FrameMove( float dt )
+int GameTask_MainMenu::FrameMove( float dt )
 {
-//	return CGameTask::ID_INVALID;
+//	return GameTask::ID_INVALID;
 	return ms_NextTaskID;
 
 }
 
 
-void CGameTask_MainMenu::RenderQuickGuide()
+void GameTask_MainMenu::RenderQuickGuide()
 {
 	string strText[20];
 	Vector2 vPos = Vector2(120, 50);
@@ -489,7 +489,7 @@ void CGameTask_MainMenu::RenderQuickGuide()
 }
 
 
-void CGameTask_MainMenu::Render()
+void GameTask_MainMenu::Render()
 {
 	RenderQuickGuide();
 
@@ -505,7 +505,7 @@ void CGameTask_MainMenu::Render()
 }
 
 
-void CGameTask_MainMenu::InitFontForBackgroundText()
+void GameTask_MainMenu::InitFontForBackgroundText()
 {
 	boost::shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
@@ -517,13 +517,13 @@ void CGameTask_MainMenu::InitFontForBackgroundText()
 }
 
 
-void CGameTask_MainMenu::ReleaseGraphicsResources()
+void GameTask_MainMenu::ReleaseGraphicsResources()
 {
 //	m_pFont->Release();
 }
 
 
-void CGameTask_MainMenu::LoadGraphicsResources( const GraphicsParameters& rParam )
+void GameTask_MainMenu::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	InitMenu();
 

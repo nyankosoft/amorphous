@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CSingleStageGameTask : public CGUIGameTask
+class SingleStageGameTask : public GUIGameTask
 {
 protected:
 
@@ -20,9 +20,9 @@ protected:
 
 public:
 
-	CSingleStageGameTask();
+	SingleStageGameTask();
 
-	virtual ~CSingleStageGameTask();
+	virtual ~SingleStageGameTask();
 
 	/// Synchronously loads a stage
 	/// \param script_name [in] a script archive which contains the stage information

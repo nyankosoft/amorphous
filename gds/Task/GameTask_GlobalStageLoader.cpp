@@ -17,10 +17,10 @@ namespace amorphous
 using namespace std;
 
 
-std::string CGameTask_GlobalStageLoader::ms_strStageTask = "Stage";
+std::string GameTask_GlobalStageLoader::ms_strStageTask = "Stage";
 
 
-CGameTask_GlobalStageLoader::CGameTask_GlobalStageLoader()
+GameTask_GlobalStageLoader::GameTask_GlobalStageLoader()
 {
 	m_bRendered = false;
 
@@ -32,23 +32,23 @@ CGameTask_GlobalStageLoader::CGameTask_GlobalStageLoader()
 }
 
 
-CGameTask_GlobalStageLoader::~CGameTask_GlobalStageLoader()
+GameTask_GlobalStageLoader::~GameTask_GlobalStageLoader()
 {
 	SafeDelete( m_pFont );
 }
 
 
-int CGameTask_GlobalStageLoader::FrameMove( float dt )
+int GameTask_GlobalStageLoader::FrameMove( float dt )
 {
-	int ret = CGameTask::FrameMove(dt);
+	int ret = GameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
 	if( !m_bRendered )
-		return CGameTask::ID_INVALID;
+		return GameTask::ID_INVALID;
 	
 	if( m_bStageLoaded )
-		return CGameTask::ID_INVALID;
+		return GameTask::ID_INVALID;
 
 	// load the global stage
 	if( 0 < GetGlobalStageScriptFilename().length() )
@@ -64,7 +64,7 @@ int CGameTask_GlobalStageLoader::FrameMove( float dt )
 	else
 	{
 		LOG_PRINT( "No global stage has been specified" );
-		return CGameTask::ID_PREVTASK;
+		return GameTask::ID_PREVTASK;
 	}
 
 	m_bStageLoaded = true;
@@ -77,11 +77,11 @@ int CGameTask_GlobalStageLoader::FrameMove( float dt )
 	// move on to the stage task
 	RequestTaskTransition( ms_strStageTask, 0, 0.0f, 0.0f, 0.0f );
 
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
-void CGameTask_GlobalStageLoader::Render()
+void GameTask_GlobalStageLoader::Render()
 {
 	// render stage select dialog
 //	m_pDialogManager->Render( dt );
@@ -104,12 +104,12 @@ void CGameTask_GlobalStageLoader::Render()
 }
 
 
-void CGameTask_GlobalStageLoader::ReleaseGraphicsResources()
+void GameTask_GlobalStageLoader::ReleaseGraphicsResources()
 {
 }
 
 
-void CGameTask_GlobalStageLoader::LoadGraphicsResources( const GraphicsParameters& rParam )
+void GameTask_GlobalStageLoader::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 }
 

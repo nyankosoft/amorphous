@@ -40,13 +40,13 @@ const string& GetGlobalStageScriptFilename()
 }
 
 
-static int gs_iState = CGameTask_Stage::STAGE_NOT_LOADED;
+static int gs_iState = GameTask_Stage::STAGE_NOT_LOADED;
 
 
 void LoadStage( const string& strStageScriptFilename )
 {
 	// update the database of base entity before intitializing the stage
-	// 070223 moved to ctor in CGameTask_TitleFG
+	// 070223 moved to ctor in GameTask_TitleFG
 //	UpdateBaseEntityDatabase();
 
 	// old version that uses raw pointer for stage
@@ -65,16 +65,16 @@ void LoadStage( const string& strStageScriptFilename )
 
 	if( bResult )
 	{
-		gs_iState = CGameTask_Stage::STAGE_LOADED;
+		gs_iState = GameTask_Stage::STAGE_LOADED;
 		LOG_PRINT( "loaded the stage: " + strStageScriptFilename );
 	}
 	else
 	{
-		gs_iState = CGameTask_Stage::STAGE_NOT_LOADED;
+		gs_iState = GameTask_Stage::STAGE_NOT_LOADED;
 		LOG_PRINT_ERROR( "cannot load the stage: " + strStageScriptFilename );
 	}
 
-//	if( gs_iState != CGameTask_StageSelect::STAGE_LOADED )
+//	if( gs_iState != GameTask_StageSelect::STAGE_LOADED )
 //		LOG_PRINT_ERROR( "unable to load stage" + strStageScriptFilename
 
 	// do not start the stage timer until the stage task is initiated
@@ -84,9 +84,9 @@ void LoadStage( const string& strStageScriptFilename )
 }
 
 
-unsigned int CGameTask_Stage::ms_FadeInTime = 500;
+unsigned int GameTask_Stage::ms_FadeInTime = 500;
 
-CGameTask_Stage::CGameTask_Stage()
+GameTask_Stage::GameTask_Stage()
 {
 	if( !g_pStage )
 	{
@@ -114,26 +114,26 @@ CGameTask_Stage::CGameTask_Stage()
 }
 
 
-CGameTask_Stage::~CGameTask_Stage()
+GameTask_Stage::~GameTask_Stage()
 {
 	ms_FadeInTime = 500;	// set the default fade-in time
 }
 
 
-int CGameTask_Stage::FrameMove( float dt )
+int GameTask_Stage::FrameMove( float dt )
 {
-	ONCE( g_Log.Print( "CGameTask_Stage::FrameMove()" ) );
+	ONCE( g_Log.Print( "GameTask_Stage::FrameMove()" ) );
 
-	int ret = CGameTask::FrameMove(dt);
+	int ret = GameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
 	if( !g_pStage )
-		return CGameTask::ID_INVALID;	// stage is not loaded
+		return GameTask::ID_INVALID;	// stage is not loaded
 
 	ProfileBegin( "Main Loop" );
 
-//	ONCE( g_Log.Print( "CGameTask_Stage::FrameMove() - stage state: %d", g_pStage->GetState() ) );
+//	ONCE( g_Log.Print( "GameTask_Stage::FrameMove() - stage state: %d", g_pStage->GetState() ) );
 
 	int state = STATE_PLAYER_IN_STAGE;//this->GetState();
 
@@ -154,48 +154,48 @@ int CGameTask_Stage::FrameMove( float dt )
 		break;
 
 	case STATE_PLAYER_LEFT_STAGE:
-		return CGameTask::ID_STAGE_SELECT;
+		return GameTask::ID_STAGE_SELECT;
 /*
 	case CStage::MISSION_FAILED:
-//		return CGameTaskFG::ID_ON_MISSIONFAILED;
+//		return GameTaskFG::ID_ON_MISSIONFAILED;
 
 	case CStage::MISSION_ACCOMPLISHED:
-//		return CGameTaskFG::ID_MAINMENU;
+//		return GameTaskFG::ID_MAINMENU;
 */
 	default:
-		ONCE( g_Log.Print( WL_WARNING, "CGameTask_Stage::FrameMove() - unsupported stage state" ) );
-		return CGameTask::ID_INVALID;
+		ONCE( g_Log.Print( WL_WARNING, "GameTask_Stage::FrameMove() - unsupported stage state" ) );
+		return GameTask::ID_INVALID;
 
 	}
 
 	// update player info (includes update routines for items)
 	SinglePlayerInfo().Update( dt );
 
-	ONCE( g_Log.Print( "CGameTask_Stage::FrameMove() - updated player info" ) );
+	ONCE( g_Log.Print( "GameTask_Stage::FrameMove() - updated player info" ) );
 
 	// update text message
 	// 0:40 2007/05/06 - moved to CStage::Update()
 //	GetTextMessageManager().Update( dt );
 
-	if( SinglePlayerInfo().GetTaskRequest() != CGameTask::ID_INVALID )
+	if( SinglePlayerInfo().GetTaskRequest() != GameTask::ID_INVALID )
 	{
 		g_pStage->PauseTimer();
 
-//		CGameTask::eGameTask next_task = SinglePlayerInfo().GetTaskRequest();
+//		GameTask::eGameTask next_task = SinglePlayerInfo().GetTaskRequest();
 		int next_task = SinglePlayerInfo().GetTaskRequest();
-		SinglePlayerInfo().RequestTaskChange( CGameTask::ID_INVALID );
+		SinglePlayerInfo().RequestTaskChange( GameTask::ID_INVALID );
 		return next_task;
 	}
 	else
 	{
-		return CGameTask::ID_INVALID;
+		return GameTask::ID_INVALID;
 	}
 }
 
 
-void CGameTask_Stage::Render()
+void GameTask_Stage::Render()
 {
-	ONCE( g_Log.Print( "CGameTask_Stage::Render() - rendering the stage" ) );
+	ONCE( g_Log.Print( "GameTask_Stage::Render() - rendering the stage" ) );
 
 	// set the camera and draw the scene
 	if( g_pStage )

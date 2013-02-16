@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CGUIGameTask : public CGameTask
+class GUIGameTask : public GameTask
 {
 	/// Initialized in ctor
 	CGM_DialogManagerSharedPtr m_pDialogBoxManager;
@@ -34,9 +34,9 @@ protected:
 
 public:
 
-	CGUIGameTask();
+	GUIGameTask();
 
-	virtual ~CGUIGameTask();
+	virtual ~GUIGameTask();
 
 	virtual int FrameMove( float dt );
 

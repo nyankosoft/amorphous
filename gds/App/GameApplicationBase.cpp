@@ -88,20 +88,20 @@ CGameApplicationBase::~CGameApplicationBase()
 
 int CGameApplicationBase::GetStartTaskID() const
 {
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
-CGameTaskFactoryBase *CGameApplicationBase::CreateGameTaskFactory() const
+GameTaskFactoryBase *CGameApplicationBase::CreateGameTaskFactory() const
 {
-	return new CGameTaskFactoryBase();
+	return new GameTaskFactoryBase();
 }
 
 
 void CGameApplicationBase::Release()
 {
 	SafeDelete( m_pTaskManager );
-	CGameTask::SetMouseInputDevice( shared_ptr<MouseInputDevice>() );
+	GameTask::SetMouseInputDevice( shared_ptr<MouseInputDevice>() );
 
 	m_pMouse.reset();
 	SafeDelete( m_pDIKeyboard );
@@ -207,7 +207,7 @@ bool CGameApplicationBase::InitBase()
 	m_pMouse.reset( new CDirectInputMouse );
 	m_pMouse->Init();
 
-	CGameTask::SetMouseInputDevice( m_pMouse );
+	GameTask::SetMouseInputDevice( m_pMouse );
 
 	LOG_PRINT( " - Initialized the direct input mouse device." );
 
@@ -272,13 +272,13 @@ bool CGameApplicationBase::InitBase()
 	m_pGlobalInputHandler = new CGlobalInputHandler;
 	InputHub().PushInputHandler( 0, m_pGlobalInputHandler );
 
-	CGameTask::AddTaskNameToTaskIDMap( "Stage",             CGameTask::ID_STAGE );
-	CGameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", CGameTask::ID_GLOBALSTAGELOADER );
+	GameTask::AddTaskNameToTaskIDMap( "Stage",             GameTask::ID_STAGE );
+	GameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", GameTask::ID_GLOBALSTAGELOADER );
 
 	// Create a graphics effect manager used by all game tasks
-	CGameTask::InitAnimatedGraphicsManager();
+	GameTask::InitAnimatedGraphicsManager();
 
-	shared_ptr<CStdInputDeviceStateCallback> pDeviceStateCallback( new CStdInputDeviceStateCallback(CGameTask::GetAnimatedGraphicsManager()) );
+	shared_ptr<CStdInputDeviceStateCallback> pDeviceStateCallback( new CStdInputDeviceStateCallback(GameTask::GetAnimatedGraphicsManager()) );
 	pDeviceStateCallback->Init();
 	DIInputDeviceMonitor().RegisterCallback( pDeviceStateCallback );
 	
@@ -321,13 +321,13 @@ bool CGameApplicationBase::InitTaskManager()
 
 	if( 0 < start_task_name.length() )
 	{
-		m_pTaskManager = new CGameTaskManager( CreateGameTaskFactory(), start_task_name );
+		m_pTaskManager = new GameTaskManager( CreateGameTaskFactory(), start_task_name );
 	}
 	else
 	{
 		const int start_task_id = GetStartTaskID();
-		if( start_task_id != CGameTask::ID_INVALID )
-			m_pTaskManager = new CGameTaskManager( CreateGameTaskFactory(), start_task_id );
+		if( start_task_id != GameTask::ID_INVALID )
+			m_pTaskManager = new GameTaskManager( CreateGameTaskFactory(), start_task_id );
 		else
 		{
 			LOG_PRINT_WARNING( " No start task was specified by the user." );
@@ -432,11 +432,11 @@ void CGameApplicationBase::Execute()
 
 	DIInputDeviceMonitor().ExitThread();
 
-	// release the ballback object before releasing CGameTask::ms_pAnimatedGraphicsManager
-	// by calling CGameTask::ReleaseAnimatedGraphicsManager()
+	// release the ballback object before releasing GameTask::ms_pAnimatedGraphicsManager
+	// by calling GameTask::ReleaseAnimatedGraphicsManager()
 	DIInputDeviceMonitor().UnregisterCallback();
 
-	CGameTask::ReleaseAnimatedGraphicsManager();
+	GameTask::ReleaseAnimatedGraphicsManager();
 }
 
 
@@ -477,7 +477,7 @@ void CGameApplicationBase::Run()
 		g_Log.Print( WL_ERROR, "exception: at %s (%s, L%d)", function, file, line );
 	}
 
-	CGameTask::ReleaseAnimatedGraphicsManager();
+	GameTask::ReleaseAnimatedGraphicsManager();
 
 	g_Log.RemoveLogOutput( &html_log );
 }

@@ -14,41 +14,41 @@ namespace amorphous
 {
 
 
-CGameTaskFactoryBase::~CGameTaskFactoryBase()
+GameTaskFactoryBase::~GameTaskFactoryBase()
 {
 }
 
 
-CGameTask *CGameTaskFactoryBase::CreateTask( const std::string& task_name )
+GameTask *GameTaskFactoryBase::CreateTask( const std::string& task_name )
 {
-	return CreateTask( CGameTask::GetTaskIDFromTaskName( task_name ) );
+	return CreateTask( GameTask::GetTaskIDFromTaskName( task_name ) );
 }
 
 
-CGameTask *CGameTaskFactoryBase::CreateTask( int iTaskID )
+GameTask *GameTaskFactoryBase::CreateTask( int iTaskID )
 {
 	switch( iTaskID )
 	{
-	case CGameTask::ID_STAGE:
-		return new CGameTask_Stage;
+	case GameTask::ID_STAGE:
+		return new GameTask_Stage;
 
-	case CGameTask::ID_MAIN_MENU:
-		return new CGameTask_MainMenu;
+	case GameTask::ID_MAIN_MENU:
+		return new GameTask_MainMenu;
 
-	case CGameTask::ID_GLOBALSTAGELOADER:
-		return new CGameTask_GlobalStageLoader;
+	case GameTask::ID_GLOBALSTAGELOADER:
+		return new GameTask_GlobalStageLoader;
 
-	case CGameTask::ID_ASYNCSTAGELOADER:
-		return new CGameTask_AsyncStageLoader;
+	case GameTask::ID_ASYNCSTAGELOADER:
+		return new GameTask_AsyncStageLoader;
 
-	case CGameTask::ID_GUI_TASK:
-		return new CGUIGameTask;
+	case GameTask::ID_GUI_TASK:
+		return new GUIGameTask;
 
-	case CGameTask::ID_SINGLE_STAGE_TASK:
-		return new CSingleStageGameTask;
+	case GameTask::ID_SINGLE_STAGE_TASK:
+		return new SingleStageGameTask;
 
-	case CGameTask::ID_STAGE_VIEWER_TASK:
-		return new CStageViewerGameTask;
+	case GameTask::ID_STAGE_VIEWER_TASK:
+		return new StageViewerGameTask;
 
 	default:
 //		LOG_PRINT_ERROR( "An invalid task id:" + to_string(iTaskID) );

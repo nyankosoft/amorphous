@@ -15,7 +15,7 @@ namespace amorphous
 class FontBase;
 
 
-class CGameTask_AsyncStageLoader : public CGameTask
+class GameTask_AsyncStageLoader : public GameTask
 {
 protected:
 
@@ -69,8 +69,8 @@ protected:
 
 public:
 
-	CGameTask_AsyncStageLoader();
-	virtual ~CGameTask_AsyncStageLoader();
+	GameTask_AsyncStageLoader();
+	virtual ~GameTask_AsyncStageLoader();
 
 	virtual int FrameMove( float dt );
 	virtual void Render();
@@ -85,11 +85,11 @@ public:
 /*
 class CAsyncLoadThreadStarter
 {
-	CGameTask_AsyncStageLoader *m_pAsyncLoaderTask;
+	GameTask_AsyncStageLoader *m_pAsyncLoaderTask;
 
 public:
 
-	CAsyncLoadThreadStarter( CGameTask_AsyncStageLoader* pTask ) : m_pAsyncLoaderTask(pTask) {}
+	CAsyncLoadThreadStarter( GameTask_AsyncStageLoader* pTask ) : m_pAsyncLoaderTask(pTask) {}
 	~CAsyncLoadThreadStarter() {}
 
 	void operator()()

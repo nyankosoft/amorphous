@@ -49,7 +49,7 @@ class CStage
 	boost::shared_ptr<ScreenEffectManager> m_pScreenEffectManager;
 
 	/// keeps time elapsed in stage
-	/// CGameTask_Stage() pauses the timer when the stage task is left
+	/// GameTask_Stage() pauses the timer when the stage task is left
 	/// and resumes it when the task gets active again
 	Timer *m_pTimer;	
 //	PrecisionTimer *m_pTimer;

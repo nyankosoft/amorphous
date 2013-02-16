@@ -71,7 +71,7 @@ private:
 	CWeaponSystem *m_pWeaponSystem;
 
 	/// used to change tasks
-//	CGameTask::eGameTask m_TaskID;
+//	GameTask::eGameTask m_TaskID;
 	int m_TaskID;
 
 	/// a list of items the player is carrying
@@ -127,11 +127,11 @@ public:
 
 	inline CWeaponSystem *GetWeaponSystem() { return m_pWeaponSystem; }
 
-//	inline CGameTask::eGameTask GetTaskRequest() { return m_TaskID; }
+//	inline GameTask::eGameTask GetTaskRequest() { return m_TaskID; }
 	inline int GetTaskRequest() { return m_TaskID; }
 
 	// request a task change
-//	inline void RequestTaskChange( CGameTask::eGameTask task_id ) { m_TaskID = task_id; }
+//	inline void RequestTaskChange( GameTask::eGameTask task_id ) { m_TaskID = task_id; }
 	inline void RequestTaskChange( int task_id ) { m_TaskID = task_id; }
 
 	/// --- item control ---

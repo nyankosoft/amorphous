@@ -5,9 +5,9 @@
 namespace amorphous
 {
 
-class CGameTask;
-class CGameTaskFactoryBase;
-class CGameTaskManager;
+class GameTask;
+class GameTaskFactoryBase;
+class GameTaskManager;
 
 } // namespace amorphous
 

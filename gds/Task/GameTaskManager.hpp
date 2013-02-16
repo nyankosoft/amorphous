@@ -10,15 +10,15 @@ namespace amorphous
 {
 
 
-// m_p = new CGameTaskManager( new CGameTaskFactoryCustomized, init_task_id );
+// m_p = new GameTaskManager( new GameTaskFactoryCustomized, init_task_id );
 
 
-class CGameTaskManager
+class GameTaskManager
 {
 	/// owned reference?
-	CGameTaskFactoryBase* m_pFactory;
+	GameTaskFactoryBase* m_pFactory;
 
-	CGameTask *m_pCurrentTask;
+	GameTask *m_pCurrentTask;
 
 	int m_CurrentTaskID;
 
@@ -28,22 +28,22 @@ class CGameTaskManager
 
 private:
 
-	CGameTask *CreateTask( int iTaskID );
+	GameTask *CreateTask( int iTaskID );
 
 public:
 
-	CGameTaskManager( CGameTaskFactoryBase* pFactory, int iInitialTaskID );
+	GameTaskManager( GameTaskFactoryBase* pFactory, int iInitialTaskID );
 
 	/// - NOTE: Task names and task ids must be mapped before creating task manager
-	CGameTaskManager( CGameTaskFactoryBase* pFactory, const std::string& initial_task_name );
+	GameTaskManager( GameTaskFactoryBase* pFactory, const std::string& initial_task_name );
 
-	~CGameTaskManager();
+	~GameTaskManager();
 
 	void Update( float dt );
 
 	void Render();
 
-	CGameTask *GetCurrentTask() { return m_pCurrentTask; }
+	GameTask *GetCurrentTask() { return m_pCurrentTask; }
 };
 
 

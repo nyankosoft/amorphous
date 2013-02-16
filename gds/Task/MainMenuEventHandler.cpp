@@ -18,19 +18,19 @@ namespace amorphous
 using namespace std;
 
 
-CMainMenuBaseEventHandler::CMainMenuBaseEventHandler()
+MainMenuBaseEventHandler::MainMenuBaseEventHandler()
 {
 	m_FocusShiftSound.SetResourceName( "focusshift" );
 	m_ButtonPressSound.SetResourceName( "itemselect" );
 }
 
 
-CMainMenuBaseEventHandler::~CMainMenuBaseEventHandler()
+MainMenuBaseEventHandler::~MainMenuBaseEventHandler()
 {
 }
 
 
-void CMainMenuBaseEventHandler::HandleEvent( CGM_Event &event )
+void MainMenuBaseEventHandler::HandleEvent( CGM_Event &event )
 {
 	if( event.Type == CGM_Event::FOCUS_SHIFTED )
 	{
@@ -50,7 +50,7 @@ CPhysSimVisEventHandler::CPhysSimVisEventHandler()
 
 void CPhysSimVisEventHandler::HandleEvent( CGM_Event &event )
 {
-	CMainMenuBaseEventHandler::HandleEvent( event );
+	MainMenuBaseEventHandler::HandleEvent( event );
 
 	if( !event.pControl )
 		return;
@@ -99,9 +99,9 @@ void CPhysSimVisEventHandler::HandleEvent( CGM_Event &event )
 }
 
 
-void CMainMenuEventHandler::HandleEvent( CGM_Event &event )
+void MainMenuEventHandler::HandleEvent( CGM_Event &event )
 {
-	CMainMenuBaseEventHandler::HandleEvent( event );
+	MainMenuBaseEventHandler::HandleEvent( event );
 
 	if( !event.pControl )
 		return;
@@ -110,8 +110,8 @@ void CMainMenuEventHandler::HandleEvent( CGM_Event &event )
 	{
 	case ID_UI_RESUME_GAME:
 		if( event.Type == CGM_Event::BUTTON_CLICKED )
-//			CGameTask_MainMenu::SetNextTaskID( CGameTask::ID_STAGE );
-			CGameTask_MainMenu::SetNextTaskID( CGameTask::ID_PREVTASK );
+//			GameTask_MainMenu::SetNextTaskID( GameTask::ID_STAGE );
+			GameTask_MainMenu::SetNextTaskID( GameTask::ID_PREVTASK );
 		break;
 	case ID_UI_SAVE:
 		break;

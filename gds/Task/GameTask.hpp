@@ -19,9 +19,9 @@ namespace amorphous
 {
 
 
-class CGameTask : public GraphicsComponent
+class GameTask : public GraphicsComponent
 {
-	/// Started in CGameTask::CGameTask()
+	/// Started in GameTask::GameTask()
 	Timer m_Timer;
 
 	/// set to true when the Render() is called for the first time
@@ -33,7 +33,7 @@ class CGameTask : public GraphicsComponent
 	U32 m_FadeoutStartTimeMS;
 
 	/// turned on when the task transition was started
-	/// - prevent the multiple executions of task transition initiation routine in CGameTask::ProcessTaskTransitionRequest()
+	/// - prevent the multiple executions of task transition initiation routine in GameTask::ProcessTaskTransitionRequest()
 	bool m_bTaskTransitionStarted;
 
 	unsigned long m_TaskTransitionTimeMS;
@@ -93,15 +93,15 @@ protected:
 
 	const Timer& GetTaskTimer() const { return m_Timer; }
 
-	bool IsInTransitionToNextTask() const { return GetRequestedNextTaskID() != CGameTask::ID_INVALID; }
+	bool IsInTransitionToNextTask() const { return GetRequestedNextTaskID() != GameTask::ID_INVALID; }
 
 	virtual void ProcessTaskTransitionRequest();
 
 public:
 
-	CGameTask();
+	GameTask();
 
-	virtual ~CGameTask();
+	virtual ~GameTask();
 
 	static void AddTaskNameToTaskIDMap( std::string task_name, int task_id ) { ms_TaskNameStringToTaskID[task_name] = task_id; }
 
@@ -112,7 +112,7 @@ public:
 	/**
 	   must be called from FrameMove() of derived classes
 
-		int ret = CGameTask::FrameMove(dt);
+		int ret = GameTask::FrameMove(dt);
 		if( ret != ID_INVALID )
 			return ret;
 	 */
@@ -138,9 +138,9 @@ public:
 	/// the task is terminated after it fades out completely
 	inline void StartFadeout();
 
-	/// Override this in your CGameTask subclasses if there is anything
+	/// Override this in your GameTask subclasses if there is anything
 	/// that needs to be done before a certain task transition.
-	/// When you do that, call CGameTask::RequestTaskTransition() in the overridden
+	/// When you do that, call GameTask::RequestTaskTransition() in the overridden
 	/// virtual function
 	/// \param fade_out_time [in] time spent on fade out [sec].
 	///        Default fade out time is used when a negative value is set
@@ -229,7 +229,7 @@ public:
 // ==================================== inline implementations ====================================
 
 
-inline void CGameTask::Render()
+inline void GameTask::Render()
 {
 	if( !m_Rendered )
 	{
@@ -239,19 +239,19 @@ inline void CGameTask::Render()
 }
 
 
-inline void CGameTask::StartFadeout()
+inline void GameTask::StartFadeout()
 {
 	m_FadeoutStartTimeMS = m_Timer.GetTimeMS();
 }
 
 
-class CGameTaskRenderTask : public CRenderTask
+class GameTaskRenderTask : public CRenderTask
 {
-	CGameTask *m_pGameTask;
+	GameTask *m_pGameTask;
 
 public:
 
-	CGameTaskRenderTask( CGameTask *pGameTask )
+	GameTaskRenderTask( GameTask *pGameTask )
 		:
 	m_pGameTask(pGameTask)
 	{

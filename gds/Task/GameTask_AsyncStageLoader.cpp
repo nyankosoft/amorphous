@@ -18,11 +18,11 @@ namespace amorphous
 using namespace std;
 
 
-string CGameTask_AsyncStageLoader::ms_strNextTaskName;
-string CGameTask_AsyncStageLoader::ms_strStageScripName;
+string GameTask_AsyncStageLoader::ms_strNextTaskName;
+string GameTask_AsyncStageLoader::ms_strStageScripName;
 
 
-CGameTask_AsyncStageLoader::CGameTask_AsyncStageLoader()
+GameTask_AsyncStageLoader::GameTask_AsyncStageLoader()
 :
 m_State(STATE_STAGE_NOT_LOADED),
 m_pStageLoader(NULL),
@@ -48,7 +48,7 @@ m_bTerminateAsyncLoadThread(false)
 }
 
 
-CGameTask_AsyncStageLoader::~CGameTask_AsyncStageLoader()
+GameTask_AsyncStageLoader::~GameTask_AsyncStageLoader()
 {
 //	m_AsyncStageLoader.Join();
 
@@ -60,7 +60,7 @@ CGameTask_AsyncStageLoader::~CGameTask_AsyncStageLoader()
 }
 
 /*
-void CGameTask_AsyncStageLoader::LoadStageAsync()
+void GameTask_AsyncStageLoader::LoadStageAsync()
 {
 	if( m_State == STATE_LOADING_STAGE 
 	 || m_State == STATE_LOADED_STAGE )
@@ -88,21 +88,21 @@ void CGameTask_AsyncStageLoader::LoadStageAsync()
 		m_State = STATE_FAILED_TO_LOAD_STAGE;
 
 		LOG_PRINT_ERROR( "cannot load stage: " + ms_strStageScripName );
-//		return CGameTask::ID_PREVTASK;
+//		return GameTask::ID_PREVTASK;
 	}
 }*/
 
 
-int CGameTask_AsyncStageLoader::FrameMove( float dt )
+int GameTask_AsyncStageLoader::FrameMove( float dt )
 {
-	int ret = CGameTask::FrameMove(dt);
+	int ret = GameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
 	switch( m_State )
 	{
 	case STATE_FAILED_TO_LOAD_STAGE:
-		RequestTaskTransition( CGameTask::ID_PREVTASK );
+		RequestTaskTransition( GameTask::ID_PREVTASK );
 		return ID_INVALID;
 
 	case STATE_LOADED_STAGE:
@@ -118,7 +118,7 @@ int CGameTask_AsyncStageLoader::FrameMove( float dt )
 			m_State = STATE_LOADED_STAGE_AND_CHANGING_TASKS;
 
 			// move on to the stage task
-			CGameTask::RequestTaskTransition( ms_strNextTaskName );
+			GameTask::RequestTaskTransition( ms_strNextTaskName );
 			return ID_INVALID;
 		}
 		break;
@@ -139,16 +139,16 @@ int CGameTask_AsyncStageLoader::FrameMove( float dt )
 	}
 
 //	if( !m_bRendered )
-//		return CGameTask::ID_INVALID;
+//		return GameTask::ID_INVALID;
 	
 //	if( m_bStageLoaded )
-//		return CGameTask::ID_INVALID;
+//		return GameTask::ID_INVALID;
 
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
-void CGameTask_AsyncStageLoader::Render()
+void GameTask_AsyncStageLoader::Render()
 {
 	// render stage select dialog
 //	m_pDialogManager->Render( dt );
@@ -169,7 +169,7 @@ void CGameTask_AsyncStageLoader::Render()
 }
 
 /*
-void CGameTask_AsyncStageLoader::AsyncLoadThreadMain()
+void GameTask_AsyncStageLoader::AsyncLoadThreadMain()
 {
 	if( !fnop::path_exists( ms_strStageScripName ) )
 	{

@@ -30,7 +30,7 @@ CSinglePlayerInfo::CSinglePlayerInfo()
 {
 	m_pCurrentPlayerBaseEntity = NULL;
 
-	m_TaskID = CGameTask::ID_INVALID;
+	m_TaskID = GameTask::ID_INVALID;
 
 	m_pWeaponSystem = new CWeaponSystem;
 	m_pWeaponSystem->SetProjectileGroup( ENTITY_GROUP_MIN_ID );// CE_GROUP_PLAYER_PROJECTILE );

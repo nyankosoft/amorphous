@@ -16,7 +16,7 @@ class TitleEventHandler;
 class FontBase;
 
 
-class CGameTask_GlobalStageLoader : public CGameTask
+class GameTask_GlobalStageLoader : public GameTask
 {
 	// handles the input to the player ship
 //	CInputHandler *m_pInputHandler;
@@ -34,8 +34,8 @@ class CGameTask_GlobalStageLoader : public CGameTask
 
 public:
 
-	CGameTask_GlobalStageLoader();
-	virtual ~CGameTask_GlobalStageLoader();
+	GameTask_GlobalStageLoader();
+	virtual ~GameTask_GlobalStageLoader();
 
 	virtual int FrameMove( float dt );
 	virtual void Render();

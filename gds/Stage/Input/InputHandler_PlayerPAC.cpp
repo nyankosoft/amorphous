@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-int CInputHandler_PlayerPAC::ms_TaskOnPause = CGameTask::ID_INVALID;
+int CInputHandler_PlayerPAC::ms_TaskOnPause = GameTask::ID_INVALID;
 
 
 CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()
@@ -238,8 +238,8 @@ void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
 	case GIC_GPD_BUTTON_08:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			SinglePlayerInfo().RequestTaskChange( CGameTask::ID_MAIN_MENU );
-//			SinglePlayerInfo().RequestTaskChange( CGameTaskFG::ID_INSTAGEMENU_FG );
+//			SinglePlayerInfo().RequestTaskChange( GameTask::ID_MAIN_MENU );
+//			SinglePlayerInfo().RequestTaskChange( GameTaskFG::ID_INSTAGEMENU_FG );
 			SinglePlayerInfo().RequestTaskChange( ms_TaskOnPause );
 		}
 		break;

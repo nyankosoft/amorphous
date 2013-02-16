@@ -57,7 +57,7 @@ enum eUIControlID
 
 
 
-class CGameTask_MainMenu : public CGameTask
+class GameTask_MainMenu : public GameTask
 {
 private:
 
@@ -65,7 +65,7 @@ private:
 
 	CGM_ControlRendererManagerSharedPtr m_pUIRenderManager;
 
-//	CMainMenuEventHandler m_RootMenuEventHandler;
+//	MainMenuEventHandler m_RootMenuEventHandler;
 
 	CResolutionChangeEventHandler m_ResChangerEventHandler;
 	CPhysSimVisEventHandler m_PhysSimVisEventHandler;
@@ -74,7 +74,7 @@ private:
 
 	boost::shared_ptr<FontBase> m_pFont;
 
-	static CGameTask::eGameTask ms_NextTaskID;
+	static GameTask::eGameTask ms_NextTaskID;
 
 private:
 
@@ -93,8 +93,8 @@ private:
 
 public:
 
-	CGameTask_MainMenu();
-	virtual ~CGameTask_MainMenu();
+	GameTask_MainMenu();
+	virtual ~GameTask_MainMenu();
 
 	void InitMenu();
 
@@ -104,7 +104,7 @@ public:
 
 	void RenderQuickGuide();
 
-	static void SetNextTaskID( CGameTask::eGameTask task_id ) { ms_NextTaskID = task_id; }
+	static void SetNextTaskID( GameTask::eGameTask task_id ) { ms_NextTaskID = task_id; }
 
 	void ReleaseGraphicsResources();
 

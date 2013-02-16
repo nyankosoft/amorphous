@@ -14,7 +14,7 @@ using namespace std;
 using namespace boost;
 
 
-class CGameTaskDesc
+class GameTaskDesc
 {
 public:
 	std::string ScriptName;
@@ -22,7 +22,7 @@ public:
 };
 
 
-CStageViewerGameTask::CStageViewerGameTask()
+StageViewerGameTask::StageViewerGameTask()
 :
 m_EnableCameraController(true)
 {
@@ -33,14 +33,14 @@ m_EnableCameraController(true)
 }
 
 
-CStageViewerGameTask::~CStageViewerGameTask()
+StageViewerGameTask::~StageViewerGameTask()
 {
 }
 
 
-int CStageViewerGameTask::FrameMove( float dt )
+int StageViewerGameTask::FrameMove( float dt )
 {
-	int ret = CSingleStageGameTask::FrameMove(dt);
+	int ret = SingleStageGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
@@ -53,22 +53,22 @@ int CStageViewerGameTask::FrameMove( float dt )
 		m_Camera.UpdateVFTreeForWorldSpace();
 	}
 
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
-void CStageViewerGameTask::Render()
+void StageViewerGameTask::Render()
 {
 	// render stage
 	if( m_pStage )
 		m_pStage->Render( m_Camera );
 
 	// render GUI components over the stage
-	CGUIGameTask::Render();
+	GUIGameTask::Render();
 }
 
 
-void CStageViewerGameTask::UpdateCameraPose()
+void StageViewerGameTask::UpdateCameraPose()
 {
 //	m_Camera.SetPose(  );
 }

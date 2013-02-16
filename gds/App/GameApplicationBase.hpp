@@ -42,7 +42,7 @@ protected:
 	/// - taking screen shot (not debug input)
 	CGlobalInputHandler *m_pGlobalInputHandler;
 
-	CGameTaskManager *m_pTaskManager;
+	GameTaskManager *m_pTaskManager;
 
 	LogOutput_ScrolledTextBuffer *m_pOnScreenLog;
 
@@ -67,7 +67,7 @@ protected:
 
 	virtual int GetStartTaskID() const;
 
-	virtual CGameTaskFactoryBase *CreateGameTaskFactory() const;
+	virtual GameTaskFactoryBase *CreateGameTaskFactory() const;
 
 	/// Called at the end of InitBase()
 	virtual bool Init() { return true; }
@@ -96,7 +96,7 @@ public:
 
 	void AcquireInputDevices();
 
-	CGameTaskManager *GetTaskManager() { return m_pTaskManager; }
+	GameTaskManager *GetTaskManager() { return m_pTaskManager; }
 
 	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
 

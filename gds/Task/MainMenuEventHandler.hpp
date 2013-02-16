@@ -13,14 +13,14 @@ namespace amorphous
  * event handler for basic menu operations
  *
  */
-class CMainMenuBaseEventHandler : public CGM_EventHandlerBase
+class MainMenuBaseEventHandler : public CGM_EventHandlerBase
 {
 	CSoundHandle m_FocusShiftSound;
 	CSoundHandle m_ButtonPressSound;
 
 public:
-	CMainMenuBaseEventHandler();
-	virtual ~CMainMenuBaseEventHandler();
+	MainMenuBaseEventHandler();
+	virtual ~MainMenuBaseEventHandler();
 	void HandleEvent( CGM_Event &event );
 };
 
@@ -29,11 +29,11 @@ public:
  * event handler for root menu
  *
  */
-class CMainMenuEventHandler : public CMainMenuBaseEventHandler
+class MainMenuEventHandler : public MainMenuBaseEventHandler
 {
 public:
-//	CMainMenuEventHandler() {}
-//	~CMainMenuEventHandler() {}
+//	MainMenuEventHandler() {}
+//	~MainMenuEventHandler() {}
 	virtual void HandleEvent( CGM_Event &event );
 };
 
@@ -43,7 +43,7 @@ public:
  * event handler for resolution settings
  *
  */
-class CResolutionChangeEventHandler : public CMainMenuBaseEventHandler
+class CResolutionChangeEventHandler : public MainMenuBaseEventHandler
 {
 	int m_SelectedScreenWidth;
 	int m_SelectedScreenHeight;
@@ -57,7 +57,7 @@ public:
 };
 
 
-class CPhysSimVisEventHandler : public CMainMenuBaseEventHandler
+class CPhysSimVisEventHandler : public MainMenuBaseEventHandler
 {
 public:
 	CPhysSimVisEventHandler();

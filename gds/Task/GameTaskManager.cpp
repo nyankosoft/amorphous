@@ -14,34 +14,34 @@ namespace amorphous
 {
 
 
-CGameTask *CGameTaskManager::CreateTask( int iTaskID )
+GameTask *GameTaskManager::CreateTask( int iTaskID )
 {
 	return m_pFactory->CreateTask( iTaskID );
 }
 
 
-CGameTaskManager::CGameTaskManager( CGameTaskFactoryBase* pFactory,
+GameTaskManager::GameTaskManager( GameTaskFactoryBase* pFactory,
 								    int iInitialTaskID )
 :
 m_pFactory(pFactory),
 m_pCurrentTask(NULL),
-m_CurrentTaskID(CGameTask::ID_INVALID),
+m_CurrentTaskID(GameTask::ID_INVALID),
 m_NextTaskID(iInitialTaskID)
 {
 }
 
 
-CGameTaskManager::CGameTaskManager( CGameTaskFactoryBase* pFactory, const std::string& initial_task_name )
+GameTaskManager::GameTaskManager( GameTaskFactoryBase* pFactory, const std::string& initial_task_name )
 :
 m_pFactory(pFactory),
 m_pCurrentTask(NULL),
-m_CurrentTaskID(CGameTask::ID_INVALID),
-m_NextTaskID(CGameTask::GetTaskIDFromTaskName(initial_task_name))
+m_CurrentTaskID(GameTask::ID_INVALID),
+m_NextTaskID(GameTask::GetTaskIDFromTaskName(initial_task_name))
 {
 }
 
 
-CGameTaskManager::~CGameTaskManager()
+GameTaskManager::~GameTaskManager()
 {
 	SafeDelete( m_pCurrentTask );
 
@@ -49,13 +49,13 @@ CGameTaskManager::~CGameTaskManager()
 }
 
 
-void CGameTaskManager::Update( float dt )
+void GameTaskManager::Update( float dt )
 {
 	PROFILE_FUNCTION();
 
 	// get the prev task id if it has been requested
 	int next_task_id;
-	if( m_NextTaskID == CGameTask::ID_PREVTASK )
+	if( m_NextTaskID == GameTask::ID_PREVTASK )
 	{
 		if( 0 < m_vecTaskIDStack.size() )
 		{
@@ -65,18 +65,18 @@ void CGameTaskManager::Update( float dt )
 		else
 		{
 			// prev task has been requested, but there is no task in the stack
-			next_task_id = CGameTask::ID_INVALID;
+			next_task_id = GameTask::ID_INVALID;
 		}
 	}
 	else
 		next_task_id = m_NextTaskID;
 
 	// switch tasks if new one has been requested
-	if( next_task_id != CGameTask::ID_INVALID )
+	if( next_task_id != GameTask::ID_INVALID )
 	{
 		if( m_pCurrentTask )
 		{
-			if( m_NextTaskID != CGameTask::ID_PREVTASK )
+			if( m_NextTaskID != GameTask::ID_PREVTASK )
                 m_vecTaskIDStack.push_back( m_CurrentTaskID );
 //			if( TASKID_STACK_SIZE < m_vecTaskIDStack.size() )
 //				m_vecTaskIDStack.erase( m_vecTaskIDStack.begin() );
@@ -94,7 +94,7 @@ void CGameTaskManager::Update( float dt )
 		// init
 		if( m_pCurrentTask )
 		{
-			int prev_task_id = 0 < m_vecTaskIDStack.size() ? m_vecTaskIDStack.back() : CGameTask::ID_INVALID;
+			int prev_task_id = 0 < m_vecTaskIDStack.size() ? m_vecTaskIDStack.back() : GameTask::ID_INVALID;
 			m_pCurrentTask->SetPrevTaskID( prev_task_id );
 
 			m_pCurrentTask->OnEnterTask();
@@ -118,7 +118,7 @@ void CGameTaskManager::Update( float dt )
 }
 
 
-void CGameTaskManager::Render()
+void GameTaskManager::Render()
 {
 	PROFILE_FUNCTION();
 

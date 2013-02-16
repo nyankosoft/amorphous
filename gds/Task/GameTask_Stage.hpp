@@ -18,12 +18,12 @@ extern void LoadStage( const std::string& strStageScriptFilename );
 
 
 /**
- - CGameTask_Stage.cpp does some works for global stage
+ - GameTask_Stage.cpp does some works for global stage
 
 
 
  */
-class CGameTask_Stage : public CGameTask
+class GameTask_Stage : public GameTask
 {
 protected:
 
@@ -31,8 +31,8 @@ protected:
 
 public:
 
-	CGameTask_Stage();
-	virtual ~CGameTask_Stage();
+	GameTask_Stage();
+	virtual ~GameTask_Stage();
 
 	virtual int FrameMove( float dt );
 	virtual void Render();

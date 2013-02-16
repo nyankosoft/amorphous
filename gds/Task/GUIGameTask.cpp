@@ -15,7 +15,7 @@ using namespace std;
 using namespace boost;
 
 
-CGUIGameTask::CGUIGameTask()
+GUIGameTask::GUIGameTask()
 :
 m_RenderGUI(true)
 {
@@ -30,7 +30,7 @@ m_RenderGUI(true)
 }
 
 
-CGUIGameTask::~CGUIGameTask()
+GUIGameTask::~GUIGameTask()
 {
 	// Remove the borrowed reference of the GUI input handler
 	// from the list of child input handlers of m_pInputHandler
@@ -38,20 +38,20 @@ CGUIGameTask::~CGUIGameTask()
 }
 
 
-int CGUIGameTask::FrameMove( float dt )
+int GUIGameTask::FrameMove( float dt )
 {
-	int ret = CGameTask::FrameMove(dt);
+	int ret = GameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
 	if( m_pDialogBoxManager )
 		m_pDialogBoxManager->Update( dt );
 
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
-void CGUIGameTask::Render()
+void GUIGameTask::Render()
 {
 	// render stage select dialog
 	if( m_pDialogBoxManager && m_RenderGUI )
@@ -59,7 +59,7 @@ void CGUIGameTask::Render()
 }
 
 
-void CGUIGameTask::SetGUIRendererManager( CGM_ControlRendererManagerSharedPtr pRendererManager )
+void GUIGameTask::SetGUIRendererManager( CGM_ControlRendererManagerSharedPtr pRendererManager )
 {
 //	m_pDialogBoxManager->Set...
 }

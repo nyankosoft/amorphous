@@ -190,7 +190,7 @@ void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
 	switch( input.iGICode )
 	{
 	case GIC_ESC:
-		SinglePlayerInfo().RequestTaskChange( CGameTask::ID_MAIN_MENU );
+		SinglePlayerInfo().RequestTaskChange( GameTask::ID_MAIN_MENU );
 		break;
 	}
 }

@@ -29,23 +29,23 @@ public:
 
 // Static member variables
 
-boost::shared_ptr<MouseInputDevice> CGameTask::ms_pMouse;
+boost::shared_ptr<MouseInputDevice> GameTask::ms_pMouse;
 
-GraphicsElementAnimationManager *CGameTask::ms_pAnimatedGraphicsManager = NULL;
+GraphicsElementAnimationManager *GameTask::ms_pAnimatedGraphicsManager = NULL;
 
-std::map<std::string,int> CGameTask::ms_TaskNameStringToTaskID;
+std::map<std::string,int> GameTask::ms_TaskNameStringToTaskID;
 
-int CGameTask::ms_FadeinTimeForNextTaskMS = -1;
+int GameTask::ms_FadeinTimeForNextTaskMS = -1;
 
 
 /**
-Creates an input handler that delegates input data to CGameTask::HandleInput(),
+Creates an input handler that delegates input data to GameTask::HandleInput(),
 which can be overriden by derived classes.
 The input handler is pushed to the input handler stack of the index
-returned by CGameTask::GetInputHandlerIndex(), which, by default, returns
+returned by GameTask::GetInputHandlerIndex(), which, by default, returns
 CInputHub::MIN_USER_INPUT_HANDLER_INDEX, and can be overriden by derived classes.
 */
-CGameTask::CGameTask()
+GameTask::GameTask()
 :
 m_RequestedNextTaskID(ID_INVALID),
 m_bTaskTransitionStarted(false),
@@ -60,7 +60,7 @@ m_Rendered(false),
 m_bShowMouseCursor(true),
 m_RequestedNextTaskPriority(0),
 m_TaskTransitionMinimumAllowedPriority(0),
-m_PrevTaskID(CGameTask::ID_INVALID)
+m_PrevTaskID(GameTask::ID_INVALID)
 //ms_pAnimatedGraphicsManager(NULL)
 {
 	m_Timer.Start();
@@ -76,12 +76,12 @@ m_PrevTaskID(CGameTask::ID_INVALID)
 		m_FadeinTimeMS = m_DefaultFadeinTimeMS;
 
 	// Push an input handler on the stack.
-	m_pInputHandler = new CInputDataDelegate<CGameTask>(this);
+	m_pInputHandler = new CInputDataDelegate<GameTask>(this);
 	InputHub().PushInputHandler( GetInputHandlerIndex(), m_pInputHandler );
 }
 
 
-CGameTask::~CGameTask()
+GameTask::~GameTask()
 {
 	InputHub().RemoveInputHandler( m_pInputHandler );
 	SafeDelete( m_pInputHandler );
@@ -90,7 +90,7 @@ CGameTask::~CGameTask()
 }
 
 
-void CGameTask::ProcessTaskTransitionRequest()
+void GameTask::ProcessTaskTransitionRequest()
 {
 	if( GetRequestedNextTaskID() != ID_INVALID 
 	 && m_TaskTransitionTimeMS <= m_Timer.GetTimeMS()
@@ -134,7 +134,7 @@ void CGameTask::ProcessTaskTransitionRequest()
 	// render UI
 
 */
-inline void CGameTask::RenderFadeEffect()
+inline void GameTask::RenderFadeEffect()
 {
 	// calc alpha
 	int alpha = 0;
@@ -161,14 +161,14 @@ inline void CGameTask::RenderFadeEffect()
 }
 
 
-void CGameTask::RequestTaskTransitionMS( int next_task_id,
+void GameTask::RequestTaskTransitionMS( int next_task_id,
 										 int priority,
 									     int delay_in_ms,
 		                                 int fade_out_time_in_ms,
 									     int fade_in_time_in_ms )
 {
-	if( next_task_id == CGameTask::ID_PREVTASK
-	 && m_PrevTaskID == CGameTask::ID_INVALID )
+	if( next_task_id == GameTask::ID_PREVTASK
+	 && m_PrevTaskID == GameTask::ID_INVALID )
 		return; // There is no previous task. The task stack is empty
 
 	if( m_RequestedNextTaskPriority < m_TaskTransitionMinimumAllowedPriority )
@@ -190,7 +190,7 @@ void CGameTask::RequestTaskTransitionMS( int next_task_id,
 }
 
 
-void CGameTask::RequestTaskTransitionMS( const std::string& next_task_name,
+void GameTask::RequestTaskTransitionMS( const std::string& next_task_name,
 										 int priority,
 		                                 int delay_in_ms,
 		                                 int fade_out_time_in_ms,
@@ -203,7 +203,7 @@ void CGameTask::RequestTaskTransitionMS( const std::string& next_task_name,
 }
 
 
-void CGameTask::RequestTaskTransition( int next_task_id,
+void GameTask::RequestTaskTransition( int next_task_id,
 									   int priority,
 									   float delay_in_sec,
 		                               float fade_out_time_in_sec,
@@ -217,7 +217,7 @@ void CGameTask::RequestTaskTransition( int next_task_id,
 }
 
 
-void CGameTask::RequestTaskTransition( const std::string& next_task_name,
+void GameTask::RequestTaskTransition( const std::string& next_task_name,
 									   int priority,
 		                               float delay_in_sec,
 		                               float fade_out_time_in_sec,
@@ -236,7 +236,7 @@ void CGameTask::RequestTaskTransition( const std::string& next_task_name,
   2. Update animations
   3. Update task transition-related status
 */
-int CGameTask::FrameMove( float dt )
+int GameTask::FrameMove( float dt )
 {
 	PROFILE_FUNCTION();
 
@@ -279,7 +279,7 @@ int CGameTask::FrameMove( float dt )
 }
 
 
-int CGameTask::GetInputHandlerIndex() const
+int GameTask::GetInputHandlerIndex() const
 {
 	return CInputHub::MIN_USER_INPUT_HANDLER_INDEX;
 }
@@ -292,7 +292,7 @@ int CGameTask::GetInputHandlerIndex() const
  4. Render the mouse cursor (<- Isn't this created as graphics element(s)?)
  5. Render the fade-in/out effect
 */
-void CGameTask::RenderBase()
+void GameTask::RenderBase()
 {
 	PROFILE_FUNCTION();
 
@@ -314,7 +314,7 @@ void CGameTask::RenderBase()
 	res = GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,   false );
 
 	// do the render routine of the base class
-	CGameTask::Render();
+	GameTask::Render();
 
 	// render routine of each derived class
 	Render();
@@ -333,13 +333,13 @@ void CGameTask::RenderBase()
 }
 
 
-void CGameTask::CreateRenderTasks()
+void GameTask::CreateRenderTasks()
 {
-	RenderTaskProcessor.AddRenderTask( new CGameTaskRenderTask( this ) );
+	RenderTaskProcessor.AddRenderTask( new GameTaskRenderTask( this ) );
 }
 
 
-void CGameTask::GetCurrentMousePosition( int& x, int& y )
+void GameTask::GetCurrentMousePosition( int& x, int& y )
 {
 	if( ms_pMouse )
 		ms_pMouse->GetCurrentPosition( x, y );
@@ -355,7 +355,7 @@ void CGameTask::GetCurrentMousePosition( int& x, int& y )
 ///     right now
 ///     - width: 1600
 ///     - height: [900,1280]
-void CGameTask::DrawMouseCursor()
+void GameTask::DrawMouseCursor()
 {
 	MouseCursor().Draw();
 }
@@ -365,7 +365,7 @@ void CGameTask::DrawMouseCursor()
 // static member functions
 //
 
-void CGameTask::InitAnimatedGraphicsManager()
+void GameTask::InitAnimatedGraphicsManager()
 {
 	SafeDelete( ms_pAnimatedGraphicsManager );
 
@@ -380,7 +380,7 @@ void CGameTask::InitAnimatedGraphicsManager()
 }
 
 
-void CGameTask::SetAnimatedGraphicsManagerForScript()
+void GameTask::SetAnimatedGraphicsManagerForScript()
 {
 	if( !ms_pAnimatedGraphicsManager )
 		return;
@@ -389,7 +389,7 @@ void CGameTask::SetAnimatedGraphicsManagerForScript()
 }
 
 
-void CGameTask::RemoveAnimatedGraphicsManagerForScript()
+void GameTask::RemoveAnimatedGraphicsManagerForScript()
 {
 	if( !ms_pAnimatedGraphicsManager )
 		return;
@@ -398,13 +398,13 @@ void CGameTask::RemoveAnimatedGraphicsManagerForScript()
 }
 
 
-void CGameTask::ReleaseAnimatedGraphicsManager()
+void GameTask::ReleaseAnimatedGraphicsManager()
 {
 	SafeDelete( ms_pAnimatedGraphicsManager );
 }
 
 
-int CGameTask::GetTaskIDFromTaskName( const std::string& task_name )
+int GameTask::GetTaskIDFromTaskName( const std::string& task_name )
 {
 	map<string,int>::iterator itr = ms_TaskNameStringToTaskID.find( task_name );
 
@@ -413,7 +413,7 @@ int CGameTask::GetTaskIDFromTaskName( const std::string& task_name )
 	else
 	{
 		LOG_PRINT_ERROR( "An invalid task name: " + task_name );
-		return CGameTask::ID_INVALID;
+		return GameTask::ID_INVALID;
 	}
 }
 
