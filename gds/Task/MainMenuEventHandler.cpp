@@ -34,11 +34,11 @@ void MainMenuBaseEventHandler::HandleEvent( CGM_Event &event )
 {
 	if( event.Type == CGM_Event::FOCUS_SHIFTED )
 	{
-		SoundManager().Play( m_FocusShiftSound );
+		GetSoundManager().Play( m_FocusShiftSound );
 	}
 	else if( event.Type == CGM_Event::BUTTON_CLICKED )
 	{
-		SoundManager().Play( m_ButtonPressSound );
+		GetSoundManager().Play( m_ButtonPressSound );
 	}
 }
 

@@ -14,27 +14,27 @@ using namespace std;
 /**
  Usage
  1. Play short, non-looping sounds (gunshots, explosions, etc.)
-   - Call SoundManager().PlayAt()
+   - Call GetSoundManager().PlayAt()
    - No release operation is necessary
      - Sound source is automatically released
  2. Play background music
-   - Call SoundManager().PlayStream() to play
-   - Call SoundManager().StopStream() to stop
+   - Call GetSoundManager().PlayStream() to play
+   - Call GetSoundManager().StopStream() to stop
      - These two functions must be called in pairs
  3. Create a sound source object in 3D environment
-   - Call SoundManager().CreateSoundSource()
-     - Call CSoundSource::Play() to play the sound from the created sound source
-     - Call CSoundSource::Stop() to stop the sound
-   - Call SoundManager().ReleaseSoundSource() to release the sound source
-     - SoundManager().CreateSoundSource() and SoundManager().ReleaseSoundSource() must be called in pairs
+   - Call GetSoundManager().CreateSoundSource()
+     - Call SoundSource::Play() to play the sound from the created sound source
+     - Call SoundSource::Stop() to stop the sound
+   - Call GetSoundManager().ReleaseSoundSource() to release the sound source
+     - GetSoundManager().CreateSoundSource() and GetSoundManager().ReleaseSoundSource() must be called in pairs
 */
 
 
 /// define the singleton instance
-singleton<CSoundManager> CSoundManager::m_obj;
+singleton<SoundManager> SoundManager::m_obj;
 
 
-CSoundManager::CSoundManager()
+SoundManager::SoundManager()
 :
 m_pSoundManagerImpl(NULL)
 {
@@ -42,13 +42,13 @@ m_pSoundManagerImpl(NULL)
 }
 
 
-CSoundManager::~CSoundManager()
+SoundManager::~SoundManager()
 {
 	Release();
 }
 
 
-void CSoundManager::Release()
+void SoundManager::Release()
 {
 	m_pSoundManagerImpl->Release();
 
@@ -56,18 +56,18 @@ void CSoundManager::Release()
 }
 
 
-bool CSoundManager::Init( const std::string& library_name )
+bool SoundManager::Init( const std::string& library_name )
 {
 	Release();
 
 	if( library_name == "OpenAL" )
 	{
-		m_pSoundManagerImpl = new COpenALSoundManagerImpl();
+		m_pSoundManagerImpl = new OpenALSoundManagerImpl();
 	}
 	else if( library_name == "DirectSound" )
 	{
 		LOG_PRINT_ERROR( "Sound manager for DirectSound has not been implemented yet." );
-		m_pSoundManagerImpl = NULL;//new CDirectSoundManager();
+		m_pSoundManagerImpl = NULL;//new DirectSoundManager();
 	}
 	else
 	{
@@ -79,7 +79,7 @@ bool CSoundManager::Init( const std::string& library_name )
 }
 
 
-bool CSoundManager::PlayStream( const std::string& resource_path, double fadein_time, bool looped, int sound_group, U8 volume )
+bool SoundManager::PlayStream( const std::string& resource_path, double fadein_time, bool looped, int sound_group, U8 volume )
 {
 //	m_pSoundManagerImpl->PlayStream( resource_path, fadein_time, looped, sound_group, volume );
 
@@ -89,12 +89,12 @@ bool CSoundManager::PlayStream( const std::string& resource_path, double fadein_
 		return false;
 	}
 
-	CSoundDesc desc;
+	SoundDesc desc;
 	desc.Loop             = looped == 1 ? true : false;
 	desc.Streamed         = true;
-	desc.SourceManagement = CSoundSource::Manual;
+	desc.SourceManagement = SoundSource::Manual;
 
-	CSoundSource *pSource = CreateSoundSource( resource_path, desc );
+	SoundSource *pSource = CreateSoundSource( resource_path, desc );
 	if( pSource )
 	{
 		m_mapNameToSoundSource[resource_path] = pSource;
@@ -109,9 +109,9 @@ bool CSoundManager::PlayStream( const std::string& resource_path, double fadein_
 }
 
 
-bool CSoundManager::StopStream( const std::string& resource_path, double fadeout_time )
+bool SoundManager::StopStream( const std::string& resource_path, double fadeout_time )
 {
-	map<string,CSoundSource *>::iterator itr
+	map<string,SoundSource *>::iterator itr
 		= m_mapNameToSoundSource.find( resource_path );
 
 	if( itr == m_mapNameToSoundSource.end() )
@@ -119,11 +119,11 @@ bool CSoundManager::StopStream( const std::string& resource_path, double fadeout
 		return false;
 	}
 
-	CSoundSource *pSource = itr->second;
+	SoundSource *pSource = itr->second;
 	if( pSource )
 	{
 		pSource->Stop();
-		SoundManager().ReleaseSoundSource( pSource );
+		GetSoundManager().ReleaseSoundSource( pSource );
 	}
 
 	m_mapNameToSoundSource.erase( itr );
@@ -141,7 +141,7 @@ bool CSoundManager::StopStream( const std::string& resource_path, double fadeout
 */
 
 
-bool CSoundManager::LoadSoundsFromList( const std::string& sound_list_file )
+bool SoundManager::LoadSoundsFromList( const std::string& sound_list_file )
 {
 /*
 	CTextFileScanner scanner( sound_list_file );
@@ -156,7 +156,7 @@ bool CSoundManager::LoadSoundsFromList( const std::string& sound_list_file )
 	float fDefaultMinDist, fDefaultMaxDist;
 	DWORD dwCreationFlags;
 	GUID guid3DAlgorithm;
-	CGameSound* pNewSound;
+	GameSound* pNewSound;
 	HRESULT hr;
 
 	for( ; !scanner.End(); scanner.NextLine() )

@@ -146,7 +146,7 @@ void CBE_Explosive::Explode(CCopyEntity* pCopyEnt)
 
 
 	// play explosion sound
-	SoundManager().PlayAt( m_ExplosionSound, pCopyEnt->GetWorldPosition() );
+	GetSoundManager().PlayAt( m_ExplosionSound, pCopyEnt->GetWorldPosition() );
 
 	// if 'pCopyEnt' is a homing missile, target entity has to be cleared
 	pCopyEnt->m_Target.Reset();
@@ -302,7 +302,7 @@ void CBE_Explosive::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCo
 		float& rfLife = pCopyEnt_Self->fLife;
 		rfLife -= rGameMessage.fParam1;
 
-		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->GetWorldPosition() );
+		GetSoundManager().PlayAt( "bosu21", pCopyEnt_Self->GetWorldPosition() );
 
 		if( rfLife <= 0 )
 			Explode( pCopyEnt_Self );

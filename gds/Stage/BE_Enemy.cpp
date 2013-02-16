@@ -572,7 +572,7 @@ void CBE_Enemy::Fire( CCopyEntity* pCopyEnt )
 		}
 
 		// play firing sound of this enemy entity
-		SoundManager().PlayAt( m_FireSound, vWorldMuzzlePosition );
+		GetSoundManager().PlayAt( m_FireSound, vWorldMuzzlePosition );
 
 	}
 	else
@@ -689,7 +689,7 @@ void CBE_Enemy::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEn
 			rsCurrentState = CEnemyState::STATE_UNDERATTACK;
 		}
 
-		SoundManager().PlayAt( "bosu21", pCopyEnt_Self->GetWorldPosition() );
+		GetSoundManager().PlayAt( "bosu21", pCopyEnt_Self->GetWorldPosition() );
 
 		if( rfLife <= 0 )
 		{

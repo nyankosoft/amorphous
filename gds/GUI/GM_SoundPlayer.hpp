@@ -56,14 +56,14 @@ void SetDefaultSound()
 
 class CGM_DialogSoundPlayer : public CGM_EventHandlerBase
 {
-//	CSoundHandle m_aSoundHandle[CGM_Event::NUM_EVENTS];
+//	SoundHandle m_aSoundHandle[CGM_Event::NUM_EVENTS];
 
-	CSoundHandle m_SoundOnControlFocusShifted;
-	CSoundHandle m_SoundOnDialogClosedByCancelInput;
-	CSoundHandle m_SoundOnDialogClosedByListBoxItemSelection;
-	CSoundHandle m_SoundOnDialogClosedByDialogSwitching;
-	CSoundHandle m_SoundOnDialogClosedByDialogCloseButton;
-	CSoundHandle m_SoundOnOpenDialogAttemptedToClose;
+	SoundHandle m_SoundOnControlFocusShifted;
+	SoundHandle m_SoundOnDialogClosedByCancelInput;
+	SoundHandle m_SoundOnDialogClosedByListBoxItemSelection;
+	SoundHandle m_SoundOnDialogClosedByDialogSwitching;
+	SoundHandle m_SoundOnDialogClosedByDialogCloseButton;
+	SoundHandle m_SoundOnOpenDialogAttemptedToClose;
 
 
 
@@ -85,16 +85,16 @@ public:
 
 class CGM_ButtonSoundPlayer : public CGM_ButtonEventHandler
 {
-//	CSoundHandle m_aSoundHandle[CGM_Event::NUM_EVENTS];
+//	SoundHandle m_aSoundHandle[CGM_Event::NUM_EVENTS];
 
-	CSoundHandle m_SoundOnButtonPressed;
-	CSoundHandle m_SoundOnButtonReleased;
+	SoundHandle m_SoundOnButtonPressed;
+	SoundHandle m_SoundOnButtonReleased;
 
-	CSoundHandle m_SoundOnChecked;
-	CSoundHandle m_SoundOnCheckCleared;
+	SoundHandle m_SoundOnChecked;
+	SoundHandle m_SoundOnCheckCleared;
 
-	CSoundHandle m_SoundOnRadioButtonChecked;
-	CSoundHandle m_SoundOnRadioButtonCheckCleared;
+	SoundHandle m_SoundOnRadioButtonChecked;
+	SoundHandle m_SoundOnRadioButtonCheckCleared;
 
 public:
 
@@ -115,10 +115,10 @@ public:
 
 class CGM_ListBoxSoundPlayer : public CGM_ListBoxEventHandler
 {
-//	CSoundHandle m_aSoundHandle[CGM_Event::NUM_EVENTS];
+//	SoundHandle m_aSoundHandle[CGM_Event::NUM_EVENTS];
 
-	CSoundHandle m_SoundOnItemSelected;
-	CSoundHandle m_SoundOnItemFocusShifted;
+	SoundHandle m_SoundOnItemSelected;
+	SoundHandle m_SoundOnItemFocusShifted;
 
 public:
 

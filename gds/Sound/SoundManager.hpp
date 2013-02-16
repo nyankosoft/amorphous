@@ -15,31 +15,31 @@ namespace amorphous
 {
 
 
-class CSoundManager
+class SoundManager
 {
 private:
 
-	CSoundManagerImpl *m_pSoundManagerImpl;
+	SoundManagerImpl *m_pSoundManagerImpl;
 
 	bool m_bMute;
 
-	std::map<std::string,CSoundSource *> m_mapNameToSoundSource;
+	std::map<std::string,SoundSource *> m_mapNameToSoundSource;
 
 protected:
 
-	CSoundManager();		// singleton
+	SoundManager();		// singleton
 
-	inline bool UpdateSoundHandle( CSoundHandle& sound_handle );
+	inline bool UpdateSoundHandle( SoundHandle& sound_handle );
 
 protected:
 
-	static singleton<CSoundManager> m_obj;
+	static singleton<SoundManager> m_obj;
 
 public:
 
-	static CSoundManager* Get() { return m_obj.get(); }
+	static SoundManager* Get() { return m_obj.get(); }
 
-	~CSoundManager();
+	~SoundManager();
 
 	void Release();
 
@@ -50,7 +50,7 @@ public:
 	/// Simplified interface for playing a 3D sound
 	/// - Plays a sound at a specified position
 	/// - The sound is automatically released after being played
-	inline void PlayAt( CSoundHandle& sound_handle, const Vector3& vPosition, float max_dist = 1000.0f, float ref_dist = 100.0f, float rolloff_factor = 1.0f );
+	inline void PlayAt( SoundHandle& sound_handle, const Vector3& vPosition, float max_dist = 1000.0f, float ref_dist = 100.0f, float rolloff_factor = 1.0f );
 
 	/// Simplified interface for playing a 3D sound
 	/// - Plays a sound at a specified position
@@ -58,7 +58,7 @@ public:
 
 	/// Simplified interface for playing a non-3D sound
 	/// - The sound is automatically released after being played
-	inline void Play( CSoundHandle& sound_handle );
+	inline void Play( SoundHandle& sound_handle );
 
 	/// Simplified interface for playing a non-3D sound
 	/// - The sound is automatically released after being played
@@ -67,7 +67,7 @@ public:
 	/// General interface for playing a 3D / non-3D sound
 	/// \param sound_handle [in] sound resource
 	/// \param desc [in] sound properties (position, volume, 3D / Non-3D, looped or not, range, etc.)
-	inline void Play( CSoundHandle& sound_handle, const CSoundDesc& desc );
+	inline void Play( SoundHandle& sound_handle, const SoundDesc& desc );
 
 	/// A convenience function for playing a non-3D, streamed sound
 	/// - Plays a non-3D, streamed sound
@@ -80,21 +80,21 @@ public:
 	/// - Caller is responsible for releasing the sound by ReleaseSoundSource()
 	/// \param type [in] 3D / non 3D sound
 	/// \param stream_type [in] streamed / non-streamed sound
-	inline CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-		                                    const CSoundDesc& desc );
+	inline SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+		                                    const SoundDesc& desc );
 
-	inline CSoundSource *CreateSoundSource( const std::string& resource_path,
-		                                    const CSoundDesc& desc );
+	inline SoundSource *CreateSoundSource( const std::string& resource_path,
+		                                    const SoundDesc& desc );
 
-	inline CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-		                                    CSoundSource::Type type,
-											CSoundSource::StreamType stream_type );
+	inline SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+		                                    SoundSource::Type type,
+											SoundSource::StreamType stream_type );
 
-	inline CSoundSource *CreateSoundSource( const std::string& resource_path,
-		                                    CSoundSource::Type type,
-											CSoundSource::StreamType stream_type );
+	inline SoundSource *CreateSoundSource( const std::string& resource_path,
+		                                    SoundSource::Type type,
+											SoundSource::StreamType stream_type );
 
-	inline void ReleaseSoundSource( CSoundSource*& pSoundSource );
+	inline void ReleaseSoundSource( SoundSource*& pSoundSource );
 
 
 	inline void PauseAllSounds();
@@ -123,114 +123,114 @@ public:
 
 	inline void GetTextInfo( std::string& dest_buffer );
 
-	friend class singleton<CSoundManager>;
+	friend class singleton<SoundManager>;
 };
 
 
 //================================= inline implementations ============================================
 
-inline void CSoundManager::PlayAt( const std::string& resource_path, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
+inline void SoundManager::PlayAt( const std::string& resource_path, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
 {
-	CSoundHandle sound_handle( resource_path );
+	SoundHandle sound_handle( resource_path );
 	m_pSoundManagerImpl->PlayAt( sound_handle, vPosition, max_dist, ref_dist, rolloff_factor );
 }
 
 
-inline void CSoundManager::PlayAt( CSoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
+inline void SoundManager::PlayAt( SoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
 {
 	m_pSoundManagerImpl->PlayAt( sound_handle, vPosition, max_dist, ref_dist, rolloff_factor );
 }
 
 
-inline void CSoundManager::Play( CSoundHandle& sound_handle )
+inline void SoundManager::Play( SoundHandle& sound_handle )
 {
 	m_pSoundManagerImpl->Play( sound_handle );
 }
 
 
-inline void CSoundManager::Play( const std::string& resource_path )
+inline void SoundManager::Play( const std::string& resource_path )
 {
-	CSoundHandle sound_handle( resource_path );
+	SoundHandle sound_handle( resource_path );
 	m_pSoundManagerImpl->Play( sound_handle );
 }
 
 
-inline void CSoundManager::Play( CSoundHandle& sound_handle, const CSoundDesc& desc )
+inline void SoundManager::Play( SoundHandle& sound_handle, const SoundDesc& desc )
 {
 	m_pSoundManagerImpl->Play( sound_handle, desc );
 }
 
 
-inline CSoundSource *CSoundManager::CreateSoundSource( CSoundHandle& sound_handle,
-	                                                   const CSoundDesc& desc )
+inline SoundSource *SoundManager::CreateSoundSource( SoundHandle& sound_handle,
+	                                                   const SoundDesc& desc )
 {
 	return m_pSoundManagerImpl->CreateSoundSource( sound_handle, desc );
 }
 
 
-inline CSoundSource *CSoundManager::CreateSoundSource( const std::string& resource_path,
-	                                                   const CSoundDesc& desc )
+inline SoundSource *SoundManager::CreateSoundSource( const std::string& resource_path,
+	                                                   const SoundDesc& desc )
 {
-	CSoundHandle sound_handle( resource_path );
+	SoundHandle sound_handle( resource_path );
 	return m_pSoundManagerImpl->CreateSoundSource( sound_handle, desc );
 }
 
 
-inline CSoundSource *CSoundManager::CreateSoundSource( CSoundHandle& sound_handle,
-		                                               CSoundSource::Type type,
-											           CSoundSource::StreamType stream_type )
+inline SoundSource *SoundManager::CreateSoundSource( SoundHandle& sound_handle,
+		                                               SoundSource::Type type,
+											           SoundSource::StreamType stream_type )
 {
-	CSoundDesc desc;
+	SoundDesc desc;
 	desc.SoundSourceType = type;
-	desc.Streamed = ( stream_type == CSoundSource::Streamed );
+	desc.Streamed = ( stream_type == SoundSource::Streamed );
 
 	return CreateSoundSource( sound_handle, desc );
 }
 
 
-inline CSoundSource *CSoundManager::CreateSoundSource( const std::string& resource_path,
-		                                               CSoundSource::Type type,
-											           CSoundSource::StreamType stream_type )
+inline SoundSource *SoundManager::CreateSoundSource( const std::string& resource_path,
+		                                               SoundSource::Type type,
+											           SoundSource::StreamType stream_type )
 {
-	CSoundDesc desc;
+	SoundDesc desc;
 	desc.SoundSourceType = type;
-	desc.Streamed = ( stream_type == CSoundSource::Streamed );
+	desc.Streamed = ( stream_type == SoundSource::Streamed );
 
 	return CreateSoundSource( resource_path, desc );
 }
 
 
-inline void CSoundManager::ReleaseSoundSource( CSoundSource*& pSoundSource )
+inline void SoundManager::ReleaseSoundSource( SoundSource*& pSoundSource )
 {
 	m_pSoundManagerImpl->ReleaseSoundSource( pSoundSource );
 }
 
 
-inline void CSoundManager::PauseAllSounds()
+inline void SoundManager::PauseAllSounds()
 {
 	m_pSoundManagerImpl->PauseAllSounds();
 }
 
 
-inline void CSoundManager::ResumeAllSounds()
+inline void SoundManager::ResumeAllSounds()
 {
 	m_pSoundManagerImpl->ResumeAllSounds();
 }
 
 
-inline void CSoundManager::SetVolume( int volume_group, uint volume )
+inline void SoundManager::SetVolume( int volume_group, uint volume )
 {
 	m_pSoundManagerImpl->SetVolume( volume_group, volume );
 }
 
 
-inline void CSoundManager::SetListenerPosition( const Vector3& vPosition )
+inline void SoundManager::SetListenerPosition( const Vector3& vPosition )
 {
 	m_pSoundManagerImpl->SetListenerPosition( vPosition );
 }
 
 
-inline void CSoundManager::SetListenerPose( const Vector3& vPosition,
+inline void SoundManager::SetListenerPose( const Vector3& vPosition,
 											const Vector3& vLookAtDirection,
 		                                    const Vector3& vUp )
 {
@@ -238,7 +238,7 @@ inline void CSoundManager::SetListenerPose( const Vector3& vPosition,
 }
 
 
-inline void CSoundManager::SetListenerPose( const Matrix34& pose )
+inline void SoundManager::SetListenerPose( const Matrix34& pose )
 {
 	m_pSoundManagerImpl->SetListenerPose(
 		pose.vPosition,
@@ -248,27 +248,27 @@ inline void CSoundManager::SetListenerPose( const Matrix34& pose )
 }
 
 
-inline void CSoundManager::SetListenerVelocity( const Vector3& vVelocity )
+inline void SoundManager::SetListenerVelocity( const Vector3& vVelocity )
 {
 	m_pSoundManagerImpl->SetListenerVelocity( vVelocity );
 }
 
 
-inline void CSoundManager::CommitDeferredSettings()
+inline void SoundManager::CommitDeferredSettings()
 {
 	m_pSoundManagerImpl->CommitDeferredSettings();
 }
 
 
-inline void CSoundManager::GetTextInfo( std::string& dest_buffer )
+inline void SoundManager::GetTextInfo( std::string& dest_buffer )
 {
 	m_pSoundManagerImpl->GetTextInfo( dest_buffer );
 }
 
 
-inline CSoundManager& SoundManager()
+inline SoundManager& GetSoundManager()
 {
-	return *(CSoundManager::Get());
+	return *(SoundManager::Get());
 }
 
 } // namespace amorphous

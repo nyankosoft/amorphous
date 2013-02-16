@@ -81,7 +81,7 @@ protected:
 	/// where muzzle is pointing along z-axis
 	Vector3 m_vLocalRecoilForce;
 
-	CSoundHandle m_FireSound;
+	SoundHandle m_FireSound;
 
 	/// firing mechanism
 	/// 1 or more: semi-auto burst triggers

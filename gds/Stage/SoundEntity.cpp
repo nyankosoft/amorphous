@@ -43,7 +43,7 @@ void SoundEntity::Update( float dt )
 			if( dist_to_camera <= m_fCurrentRadius )
 			{
 				float ref_dist = 100.0f;
-				SoundManager().PlayAt( "resource_path", GetWorldPosition(), m_fMaxRadius, ref_dist );
+				GetSoundManager().PlayAt( "resource_path", GetWorldPosition(), m_fMaxRadius, ref_dist );
 			}
 		}
 	}

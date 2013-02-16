@@ -5,14 +5,14 @@
 namespace amorphous
 {
 
-class CSoundHandle;
-class CSoundSource;
-class CSoundManager;
-class CSoundManagerImpl;
+class SoundHandle;
+class SoundSource;
+class SoundManager;
+class SoundManagerImpl;
 
 // sound buffer for OpenAL
-class CSoundBuffer;
-class COpenALSoundManagerImpl;
+class SoundBuffer;
+class OpenALSoundManagerImpl;
 
 } // namespace amorphous
 

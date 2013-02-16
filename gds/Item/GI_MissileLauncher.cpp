@@ -611,7 +611,7 @@ void MissileLauncher::Fire()
 
 	// play sound for the shot
 //	pStage->PlaySound3D( m_FireSound, rvMuzzleEndPosition );
-	SoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
+	GetSoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
 
 	if( m_vecCurrentTarget.size() <= m_FireTargetIndex )
 		m_FireTargetIndex = 0;

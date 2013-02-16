@@ -13,7 +13,7 @@ namespace serialization
 {
 
 
-inline IArchive& operator & ( IArchive& ar, CSoundHandle& rSoundHandle )
+inline IArchive& operator & ( IArchive& ar, SoundHandle& rSoundHandle )
 {
 /*	string strTemp;
 	if( ar.GetMode() == IArchive::MODE_INPUT )

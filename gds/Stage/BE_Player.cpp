@@ -336,7 +336,7 @@ void CBE_Player::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyE
 		// play a damage sound according to the type of damage
 		iVariation = PLYAER_DAMAGESOUND_VARIATION * rand() / RAND_MAX;
 		if( PLYAER_DAMAGESOUND_VARIATION <= iVariation ) iVariation = PLYAER_DAMAGESOUND_VARIATION - 1;
-		SoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->GetWorldPosition() );
+		GetSoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->GetWorldPosition() );
 
 		// flash screen with red
 		m_pStage->GetScreenEffectManager()->FadeInFrom( SFloatRGBAColor( 0.973f, 0.125f, 0.000f, 0.250f ), 0.20f, AlphaBlend::InvSrcAlpha );

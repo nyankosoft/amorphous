@@ -23,10 +23,10 @@ namespace amorphous
 class CWaveFile;
 
 //-----------------------------------------------------------------------------
-// Name: class CGameSound
+// Name: class GameSound
 // Desc: Encapsulates functionality of a DirectSound buffer.
 //-----------------------------------------------------------------------------
-class CGameSound
+class GameSound
 {
 protected:
 	char				 m_acSoundName[64];
@@ -43,11 +43,11 @@ protected:
 
 public:
 
-    CGameSound( const char* pcSoundName, LPDIRECTSOUNDBUFFER* apDSBuffer, DWORD dwDSBufferSize,
+    GameSound( const char* pcSoundName, LPDIRECTSOUNDBUFFER* apDSBuffer, DWORD dwDSBufferSize,
 				DWORD dwNumBuffers, CWaveFile* pWaveFile, DWORD dwCreationFlags,
 				float fDefaultMinDist, float fDefaultMaxDist );
 
-	virtual ~CGameSound();
+	virtual ~GameSound();
 
 	const char* GetName() const { return m_acSoundName; }
 

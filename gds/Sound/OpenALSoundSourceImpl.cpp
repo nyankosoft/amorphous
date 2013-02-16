@@ -116,7 +116,7 @@ bool GetFormatFrequencyChannelsBufferSize( OggVorbis_File& ogg_vorbis_file,
 COpenALSoundSourceImpl::COpenALSoundSourceImpl()
 :
 m_Released(false),
-m_SourceType(CSoundSource::Type_Non3DSound),
+m_SourceType(SoundSource::Type_Non3DSound),
 m_uiSource(0),
 m_pManager(NULL)
 {
@@ -152,14 +152,14 @@ void COpenALSoundSourceImpl::SetPose( const Matrix34& pose )
 
 bool COpenALSoundSourceImpl::IsDone()
 {
-	if( m_ManagementType == CSoundSource::Manual )
+	if( m_ManagementType == SoundSource::Manual )
 	{
 		// manual sound source has been released by the user
 		return ( m_Released ? true : false );
 	}
 	else
 	{
-		// m_ManagementType == CSoundSource::Auto
+		// m_ManagementType == SoundSource::Auto
 		ALint state;
 		alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
 		if( state == AL_STOPPED )
@@ -176,17 +176,17 @@ void COpenALSoundSourceImpl::OnReleased()
 }
 
 
-CSoundSource::State COpenALSoundSourceImpl::GetState()
+SoundSource::State COpenALSoundSourceImpl::GetState()
 {
 	ALint state;
 	alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
 
 	switch( state )
 	{
-	case AL_PLAYING: return CSoundSource::State_Playing;
-	case AL_STOPPED: return CSoundSource::State_Stopped;
-	case AL_PAUSED:  return CSoundSource::State_Paused;
-	default:         return CSoundSource::State_Invalid;
+	case AL_PLAYING: return SoundSource::State_Playing;
+	case AL_STOPPED: return SoundSource::State_Stopped;
+	case AL_PAUSED:  return SoundSource::State_Paused;
+	default:         return SoundSource::State_Invalid;
 	}
 }
 
@@ -281,25 +281,25 @@ void COpenALStreamedSoundSourceImpl::Release()
 
 void COpenALStreamedSoundSourceImpl::Play( double fadein_time )
 {
-	SetRequestedState( CSoundSource::State_Playing );
+	SetRequestedState( SoundSource::State_Playing );
 }
 
 
 void COpenALStreamedSoundSourceImpl::Stop( double fadeout_time )
 {
-	SetRequestedState( CSoundSource::State_Stopped );
+	SetRequestedState( SoundSource::State_Stopped );
 }
 
 
 void COpenALStreamedSoundSourceImpl::Pause( double fadeout_time )
 {
-	SetRequestedState( CSoundSource::State_Paused );
+	SetRequestedState( SoundSource::State_Paused );
 }
 
 
 void COpenALStreamedSoundSourceImpl::Resume( double fadein_time )
 {
-	SetRequestedState( CSoundSource::State_Playing );
+	SetRequestedState( SoundSource::State_Playing );
 }
 
 
@@ -338,7 +338,7 @@ void COpenALStreamedSoundSourceImpl::StreamMain()
 	{
 		sleep_milliseonds( m_ServiceUpdatePeriodMS );
 
-		if( GetRequestedState() == CSoundSource::State_Playing )
+		if( GetRequestedState() == SoundSource::State_Playing )
 		{
 			PlayStream();
 		}
@@ -437,22 +437,22 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 	m_NumTotalBuffersProcessed = 0;
 
 	ALint state;
-	while( GetRequestedState() != CSoundSource::State_Stopped )
+	while( GetRequestedState() != SoundSource::State_Stopped )
 	{
 		sleep_milliseonds( m_ServiceUpdatePeriodMS );
 
 		alGetSourcei( m_uiSource, AL_SOURCE_STATE, &state );
-		if( GetRequestedState() == CSoundSource::State_Paused
+		if( GetRequestedState() == SoundSource::State_Paused
 		 && state == AL_PLAYING )
 		{
 			// pause
 			alSourcePause( m_uiSource );
-			while( GetRequestedState() == CSoundSource::State_Paused )
+			while( GetRequestedState() == SoundSource::State_Paused )
 			{
 				sleep_milliseonds( m_ServiceUpdatePeriodMS );
 			}
 
-			if( GetRequestedState() == CSoundSource::State_Playing )
+			if( GetRequestedState() == SoundSource::State_Playing )
 				alSourcePlay( m_uiSource );
 
 			// Sometimes sound is not correctly played after this
@@ -464,7 +464,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 			sleep_milliseonds( 100 );
 		}
 
-/*		if( GetRequestedState() == CSoundSource::State_Playing
+/*		if( GetRequestedState() == SoundSource::State_Playing
 		 && state == AL_PAUSED )
 		{
 			// resume
@@ -531,7 +531,7 @@ int COpenALStreamedSoundSourceImpl::PlayStream()
 		// or the Source was starved of audio data, and needs to be restarted.
 		alGetSourcei(m_uiSource, AL_SOURCE_STATE, &iState);
 		if( iState != AL_PLAYING
-		 && GetRequestedState() == CSoundSource::State_Playing )
+		 && GetRequestedState() == SoundSource::State_Playing )
 		{
 			// If there are Buffers in the Source Queue then the Source was starved of audio
 			// data, so needs to be restarted (because there is more audio data to play)

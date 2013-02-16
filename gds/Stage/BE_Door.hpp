@@ -14,10 +14,10 @@ class CBE_Door : public CBE_PhysicsBaseEntity
 	float m_fOpenLength;			// how much the door slides when it opens
 	Vector3 m_vLocalOpenDirection;	// the direction in which the door slides
 
-//	CSoundHandle m_OpenStartSound;
-//	CSoundHandle m_OpenEndSound;
-//	CSoundHandle m_CloseStartSound;
-//	CSoundHandle m_CloseEndSound;
+//	SoundHandle m_OpenStartSound;
+//	SoundHandle m_OpenEndSound;
+//	SoundHandle m_CloseStartSound;
+//	SoundHandle m_CloseEndSound;
 
 	float m_fSpring;
 	float m_fDamper;

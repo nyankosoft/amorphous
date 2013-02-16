@@ -80,15 +80,15 @@ void CSurfaceMaterial::LoadReactionSounds( CTextFileScanner& scanner )
 	for( ; !scanner.TryScanLine( "[Sound:End]", str ); scanner.NextLine() )
 	{
 		if( scanner.TryScanLine( "OnBulletHit", str ) )
-			m_vecSound[REACTION_TO_BULLET_HIT].push_back( CSoundHandle(str) );
+			m_vecSound[REACTION_TO_BULLET_HIT].push_back( SoundHandle(str) );
 		else if( scanner.TryScanLine( "OnBulletOut", str ) )
-			m_vecSound[REACTION_TO_BULLET_OUT].push_back( CSoundHandle(str) );
+			m_vecSound[REACTION_TO_BULLET_OUT].push_back( SoundHandle(str) );
 		else if( scanner.TryScanLine( "OnExplosion_S", str ) )
-			m_vecSound[REACTION_TO_EXPLOSION_S].push_back( CSoundHandle(str) );
+			m_vecSound[REACTION_TO_EXPLOSION_S].push_back( SoundHandle(str) );
 		else if( scanner.TryScanLine( "OnExplosion_M", str ) )
-			m_vecSound[REACTION_TO_EXPLOSION_M].push_back( CSoundHandle(str) );
+			m_vecSound[REACTION_TO_EXPLOSION_M].push_back( SoundHandle(str) );
 		else if( scanner.TryScanLine( "OnExplosion_L", str ) )
-			m_vecSound[REACTION_TO_EXPLOSION_L].push_back( CSoundHandle(str) );
+			m_vecSound[REACTION_TO_EXPLOSION_L].push_back( SoundHandle(str) );
 	}
 }
 
@@ -133,10 +133,10 @@ void CSurfaceMaterial::LoadFromTextFile( CTextFileScanner& scanner )
 
 
 		else if( scanner.TryScanLine( "SoundOnBulletHit", str ) )
-			m_vecSound[REACTION_TO_BULLET_HIT].push_back( CSoundHandle( str ) );
+			m_vecSound[REACTION_TO_BULLET_HIT].push_back( SoundHandle( str ) );
 
 		else if( scanner.TryScanLine( "SoundOnHit", str ) )
-			m_vecSound[REACTION_TO_HIT].push_back( CSoundHandle( str ) );*/
+			m_vecSound[REACTION_TO_HIT].push_back( SoundHandle( str ) );*/
 	}
 }
 
@@ -198,7 +198,7 @@ void CSurfaceMaterial::Load( CSurfaceMaterialData& src_material )
 
 		for( j=0; j<src_material.m_vecstrSoundName[i].size(); j++ )
 		{
-			m_vecSound[i].push_back( CSoundHandle() );
+			m_vecSound[i].push_back( SoundHandle() );
 			m_vecSound[i].back().SetResourceName( src_material.m_vecstrSoundName[i][j].c_str() );
 		}
 	}

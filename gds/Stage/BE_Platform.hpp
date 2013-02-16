@@ -12,8 +12,8 @@ namespace amorphous
 
 class CBE_Platform : public CBE_PhysicsBaseEntity
 {
-	CSoundHandle m_StartSound;
-	CSoundHandle m_StopSound;
+	SoundHandle m_StartSound;
+	SoundHandle m_StopSound;
 
 public:
 

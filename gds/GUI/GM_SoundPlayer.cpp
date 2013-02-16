@@ -17,7 +17,7 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 	{
 	case CGM_Event::FOCUS_SHIFTED:
 		if( 0 < m_SoundOnControlFocusShifted.GetResourceName().length() )
-			SoundManager().Play( m_SoundOnControlFocusShifted );
+			GetSoundManager().Play( m_SoundOnControlFocusShifted );
 		break;
 
 	case CGM_Event::DIALOG_CLOSED:
@@ -25,22 +25,22 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 		{
 		case CGM_SubEvent::DC_CANCELED:
 			if( 0 < m_SoundOnDialogClosedByCancelInput.GetResourceName().length() )
-				SoundManager().Play( m_SoundOnDialogClosedByCancelInput );
+				GetSoundManager().Play( m_SoundOnDialogClosedByCancelInput );
 			break;
 
 		case CGM_SubEvent::DC_LISTBOXITEM_SELECTED:
 			if( 0 < m_SoundOnDialogClosedByListBoxItemSelection.GetResourceName().length() )
-				SoundManager().Play( m_SoundOnDialogClosedByListBoxItemSelection );
+				GetSoundManager().Play( m_SoundOnDialogClosedByListBoxItemSelection );
 			break;
 
 		case CGM_SubEvent::DC_DIALOG_SWITCHED:
 			if( 0 < m_SoundOnDialogClosedByDialogSwitching.GetResourceName().length() )
-				SoundManager().Play( m_SoundOnDialogClosedByDialogSwitching );
+				GetSoundManager().Play( m_SoundOnDialogClosedByDialogSwitching );
 			break;
 
 		case CGM_SubEvent::DC_DLGCLOSEBUTTON_PRESSED:
 			if( 0 < m_SoundOnDialogClosedByDialogCloseButton.GetResourceName().length() )
-				SoundManager().Play( m_SoundOnDialogClosedByDialogCloseButton );
+				GetSoundManager().Play( m_SoundOnDialogClosedByDialogCloseButton );
 			break;
 
 		default:
@@ -50,7 +50,7 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 
 	case CGM_Event::OPENDIALOG_ATTEMPTED_TO_CLOSE:
 		if( 0 < m_SoundOnOpenDialogAttemptedToClose.GetResourceName().length() )
-			SoundManager().Play( m_SoundOnOpenDialogAttemptedToClose );
+			GetSoundManager().Play( m_SoundOnOpenDialogAttemptedToClose );
 		break;
 	default:
 		break;
@@ -65,14 +65,14 @@ void CGM_DialogSoundPlayer::HandleEvent( CGM_Event &event )
 void CGM_ButtonSoundPlayer::OnPressed()
 {
 	if( 0 < m_SoundOnButtonPressed.GetResourceName().length() )
-		SoundManager().Play( m_SoundOnButtonPressed );
+		GetSoundManager().Play( m_SoundOnButtonPressed );
 }
 
 
 void CGM_ButtonSoundPlayer::OnReleased()
 {
 	if( 0 < m_SoundOnButtonReleased.GetResourceName().length() )
-		SoundManager().Play( m_SoundOnButtonReleased );
+		GetSoundManager().Play( m_SoundOnButtonReleased );
 }
 
 
@@ -83,14 +83,14 @@ void CGM_ButtonSoundPlayer::OnReleased()
 void CGM_ListBoxSoundPlayer::OnItemSelected( CGM_ListBoxItem& item, int item_index )
 {
 	if( 0 < m_SoundOnItemSelected.GetResourceName().length() )
-		SoundManager().Play( m_SoundOnItemSelected );
+		GetSoundManager().Play( m_SoundOnItemSelected );
 }
 
 
 void CGM_ListBoxSoundPlayer::OnItemSelectionChanged( CGM_ListBoxItem& item, int item_index )
 {
 	if( 0 < m_SoundOnItemFocusShifted.GetResourceName().length() )
-		SoundManager().Play( m_SoundOnItemFocusShifted );
+		GetSoundManager().Play( m_SoundOnItemFocusShifted );
 }
 
 

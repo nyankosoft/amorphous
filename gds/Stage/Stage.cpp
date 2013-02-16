@@ -804,13 +804,13 @@ void CStage::UpdateListener()
 	}
 
 	// update listener for sound manager
-	SoundManager().SetListenerPose( cam_pose ); 
+	GetSoundManager().SetListenerPose( cam_pose ); 
 
 	CCopyEntity *pCameraEntity = this->GetEntitySet()->GetCameraEntity();
 	if( pCameraEntity )
-		SoundManager().SetListenerVelocity( pCameraEntity->Velocity() ); 
+		GetSoundManager().SetListenerVelocity( pCameraEntity->Velocity() ); 
 
-	SoundManager().CommitDeferredSettings();
+	GetSoundManager().CommitDeferredSettings();
 }
 
 
@@ -818,19 +818,19 @@ void CStage::UpdateListener()
 /*
 void CStage::PlaySound3D( char* pcSoundName, Vector3& rvPosition )
 {
-	SoundManager().PlayAt( pcSoundName, rvPosition );
+	GetSoundManager().PlayAt( pcSoundName, rvPosition );
 }
 
 
 void CStage::PlaySound3D( int iIndex, Vector3& rvPosition )
 {
-	SoundManager().PlayAt( iIndex, rvPosition );
+	GetSoundManager().PlayAt( iIndex, rvPosition );
 }
 
 
-void CStage::PlaySound3D( CSoundHandle &rSoundHandle, Vector3& rvPosition )
+void CStage::PlaySound3D( SoundHandle &rSoundHandle, Vector3& rvPosition )
 {
-	SoundManager().PlayAt( rSoundHandle, rvPosition );
+	GetSoundManager().PlayAt( rSoundHandle, rvPosition );
 }
 */
 

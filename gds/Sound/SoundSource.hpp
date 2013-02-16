@@ -10,16 +10,16 @@ namespace amorphous
 {
 
 
-class CSoundSourceImpl;
+class SoundSourceImpl;
 
 
 //====================================================================================
-// CSoundSource
+// SoundSource
 //====================================================================================
 
-class CSoundSource
+class SoundSource
 {
-	CSoundSourceImpl *m_pImpl;
+	SoundSourceImpl *m_pImpl;
 
 	int m_StockIndex;
 	int m_StockID;
@@ -28,9 +28,9 @@ private:
 	
 	/// set borrowed reference
 	/// - Not deleted in dtor
-	void SetImpl( CSoundSourceImpl *pImpl ) { m_pImpl = pImpl; }
+	void SetImpl( SoundSourceImpl *pImpl ) { m_pImpl = pImpl; }
 
-	CSoundSourceImpl *GetImpl() { return m_pImpl; }
+	SoundSourceImpl *GetImpl() { return m_pImpl; }
 
 public:
 
@@ -66,14 +66,14 @@ public:
 
 public:
 
-	CSoundSource() : m_pImpl(NULL) {}
+	SoundSource() : m_pImpl(NULL) {}
 
-	~CSoundSource() {}
+	~SoundSource() {}
 
-	/// See CSoundSourceImpl::OnReleased()
+	/// See SoundSourceImpl::OnReleased()
 	inline void OnReleased();
 
-	/// See CSoundSourceImpl::Release()
+	/// See SoundSourceImpl::Release()
 	inline void Release();
 
 	inline void Play( double fadein_time = 0.0f );
@@ -94,19 +94,19 @@ public:
 
 	inline bool IsDone();
 
-	inline CSoundSource::Type GetSoundType();
+	inline SoundSource::Type GetSoundType();
 
-	inline CSoundSource::StreamType GetStreamType();
+	inline SoundSource::StreamType GetStreamType();
 
-	inline CSoundSource::Management GetManagementType();
+	inline SoundSource::Management GetManagementType();
 
-	inline CSoundSource::State GetState();
+	inline SoundSource::State GetState();
 
 	inline void GetTextInfo( std::string& dest_buffer );
 
 	// functions used by pre_alloc_pool
 	// - Not used if the implementation of the sound manager does not use
-	//   pre_alloc_pool for memory management of CSoundSource
+	//   pre_alloc_pool for memory management of SoundSource
 
 	int GetStockIndex() const { return m_StockIndex; }
 	void SetStockIndex( int index ) { m_StockIndex = index; }
@@ -114,26 +114,26 @@ public:
 	int GetStockID() const { return m_StockID; }
 	void SetStockID( int id ) { m_StockID = id; }
 
-	friend class CSoundManagerImpl;
+	friend class SoundManagerImpl;
 };
 
 
 
 //====================================================================================
-// CSoundSourceImpl
+// SoundSourceImpl
 //====================================================================================
 
-class CSoundSourceImpl
+class SoundSourceImpl
 {
 public:
 
 	/// Implemented by sound source implementations of OpenAL 
-	/// - Called in COpenALSoundManagerImpl::Update() when a source is detached
+	/// - Called in OpenALSoundManagerImpl::Update() when a source is detached
 	///   from the active source list
 	virtual void Release() {}
 
 	/// Implemented by sound source implementations of OpenAL 
-	/// - Called in COpenALSoundManagerImpl::ReleaseSoundSource()
+	/// - Called in OpenALSoundManagerImpl::ReleaseSoundSource()
 	virtual void OnReleased() {}
 
 	virtual void Play( double fadein_time ) = 0;
@@ -157,13 +157,13 @@ public:
 	/// - sound source is supposed to be automatically released and it has been fiinshed playing.
 	virtual bool IsDone() { return false; }
 
-	virtual CSoundSource::Type GetSoundType() = 0;
+	virtual SoundSource::Type GetSoundType() = 0;
 
-	virtual CSoundSource::StreamType GetStreamType() = 0;
+	virtual SoundSource::StreamType GetStreamType() = 0;
 
-	virtual CSoundSource::Management GetManagementType() = 0;
+	virtual SoundSource::Management GetManagementType() = 0;
 
-	virtual CSoundSource::State GetState() = 0;
+	virtual SoundSource::State GetState() = 0;
 
 	virtual void GetTextInfo( std::string& dest_buffer ) {}
 };
@@ -171,82 +171,82 @@ public:
 
 //=================================== inline implementations ===================================
 
-inline void CSoundSource::Release()
+inline void SoundSource::Release()
 {
 	m_pImpl->Release();
 }
 
-inline void CSoundSource::OnReleased()
+inline void SoundSource::OnReleased()
 {
 	m_pImpl->OnReleased();
 }
 
-inline void CSoundSource::Play( double fadein_time )
+inline void SoundSource::Play( double fadein_time )
 {
 	m_pImpl->Play( fadein_time );
 }
 
-inline void CSoundSource::Stop( double fadeout_time )
+inline void SoundSource::Stop( double fadeout_time )
 {
 	m_pImpl->Stop( fadeout_time );
 }
 
-inline void CSoundSource::Pause( double fadeout_time )
+inline void SoundSource::Pause( double fadeout_time )
 {
 	m_pImpl->Pause( fadeout_time );
 }
 
-inline void CSoundSource::Resume( double fadein_time )
+inline void SoundSource::Resume( double fadein_time )
 {
 	m_pImpl->Resume( fadein_time );
 }
 
-inline void CSoundSource::SetPosition( const Vector3& vPosition )
+inline void SoundSource::SetPosition( const Vector3& vPosition )
 {
 	m_pImpl->SetPosition( vPosition );
 }
 
-inline void CSoundSource::SetVelocity( const Vector3& vVelocity )
+inline void SoundSource::SetVelocity( const Vector3& vVelocity )
 {
 	m_pImpl->SetVelocity( vVelocity );
 }
 
-inline void CSoundSource::SetPose( const Matrix34& pose )
+inline void SoundSource::SetPose( const Matrix34& pose )
 {
 	m_pImpl->SetPose( pose );
 }
 
-inline void CSoundSource::SetLoop( bool loop )
+inline void SoundSource::SetLoop( bool loop )
 {
 	m_pImpl->SetLoop( loop );
 }
 
-inline bool CSoundSource::IsDone()
+inline bool SoundSource::IsDone()
 {
 	return m_pImpl->IsDone();
 }
 
-inline CSoundSource::Type CSoundSource::GetSoundType()
+inline SoundSource::Type SoundSource::GetSoundType()
 {
 	return m_pImpl->GetSoundType();
 }
 
-inline CSoundSource::StreamType CSoundSource::GetStreamType()
+inline SoundSource::StreamType SoundSource::GetStreamType()
 {
 	return m_pImpl->GetStreamType();
 }
 
-inline CSoundSource::Management CSoundSource::GetManagementType()
+inline SoundSource::Management SoundSource::GetManagementType()
 {
 	return m_pImpl->GetManagementType();
 }
 
-inline CSoundSource::State CSoundSource::GetState()
+inline SoundSource::State SoundSource::GetState()
 {
 	return m_pImpl->GetState();
 }
 
-inline void CSoundSource::GetTextInfo( std::string& dest_buffer )
+inline void SoundSource::GetTextInfo( std::string& dest_buffer )
 {
 	return m_pImpl->GetTextInfo( dest_buffer );
 }

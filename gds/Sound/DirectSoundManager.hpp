@@ -5,11 +5,6 @@
 
 #include <string>
 
-
-namespace amorphous
-{
-
-
 // define 'DWORD_PTR' for "dsound.h" in DX9 SDK Summer 2004
 #ifndef DWORD_PTR
 #define DWORD_PTR DWORD*
@@ -26,7 +21,11 @@ namespace amorphous
 #pragma comment( lib, "dxguid.lib" )
 
 
-class CDirectSoundManager : public CSoundManagerImpl
+namespace amorphous
+{
+
+
+class DirectSoundManager : public CSoundManagerImpl
 {
 private:
 
@@ -42,7 +41,7 @@ private:
 
 protected:
 
-	CDirectSoundManager();		//singleton
+	DirectSoundManager();		//singleton
 
 	HRESULT CreateSound( CGameSound** ppSound, LPTSTR strWaveFileName,
 		                 DWORD dwCreationFlags, GUID guid3DAlgorithm, DWORD dwNumBuffers,
@@ -52,9 +51,9 @@ protected:
 
 public:
 
-	static CDirectSoundManager ms_SingletonInstance_;	//single instance of 'CDirectSoundManager'
+	static DirectSoundManager ms_SingletonInstance_;	//single instance of 'DirectSoundManager'
 
-	~CDirectSoundManager();
+	~DirectSoundManager();
 
 	HRESULT Init( HWND hWnd );
 
@@ -105,7 +104,7 @@ public:
 //================================= inline implementations ============================================
 
 
-inline bool CDirectSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
+inline bool DirectSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
 {
 	if( rSoundHandle.m_iIndex < 0 )
 	{
@@ -122,7 +121,7 @@ inline bool CDirectSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
 				return true;
 		}
 //		else
-//			PrintLog( "CDirectSoundManager::UpdateSoundHandle() - invalid sound handle" );
+//			PrintLog( "DirectSoundManager::UpdateSoundHandle() - invalid sound handle" );
 	}
 	else
 		return true;
@@ -131,7 +130,7 @@ inline bool CDirectSoundManager::UpdateSoundHandle( CSoundHandle& rSoundHandle )
 }
 
 
-inline void CDirectSoundManager::PlayAt( const char* pcSoundName, const Vector3& vPosition )
+inline void DirectSoundManager::PlayAt( const char* pcSoundName, const Vector3& vPosition )
 {
 	if( !m_pDirectSound )
 		return;
@@ -150,7 +149,7 @@ inline void CDirectSoundManager::PlayAt( const char* pcSoundName, const Vector3&
 }
 
 
-inline void CDirectSoundManager::PlayAt( int index, const Vector3& vPosition )
+inline void DirectSoundManager::PlayAt( int index, const Vector3& vPosition )
 {
 	if( !m_pDirectSound )
 		return;
@@ -165,7 +164,7 @@ inline void CDirectSoundManager::PlayAt( int index, const Vector3& vPosition )
 }
 
 
-inline void CDirectSoundManager::PlayAt( CSoundHandle& rSoundHandle, const Vector3& vPosition )
+inline void DirectSoundManager::PlayAt( CSoundHandle& rSoundHandle, const Vector3& vPosition )
 {
 	if( !UpdateSoundHandle( rSoundHandle ) )
 		return;
@@ -174,7 +173,7 @@ inline void CDirectSoundManager::PlayAt( CSoundHandle& rSoundHandle, const Vecto
 }
 
 
-inline void CDirectSoundManager::Play( CSoundHandle& rSoundHandle )
+inline void DirectSoundManager::Play( CSoundHandle& rSoundHandle )
 {
 	if( !m_pDirectSound )
 		return;
@@ -189,13 +188,13 @@ inline void CDirectSoundManager::Play( CSoundHandle& rSoundHandle )
 }
 
 
-inline void CDirectSoundManager::SetListenerPosition( const Vector3& vPosition )
+inline void DirectSoundManager::SetListenerPosition( const Vector3& vPosition )
 {
 	m_pDSListener->SetPosition(	rvPosition.x, rvPosition.y, rvPosition.z, DS3D_DEFERRED );
 }
 
 
-inline void CDirectSoundManager::SetListenerPose( const Vector3& vPosition, const Vector3& vLookAtDirection,
+inline void DirectSoundManager::SetListenerPose( const Vector3& vPosition, const Vector3& vLookAtDirection,
 		                                       const Vector3& vUp/* , const Vector3& rvVelocity */ )
 {
 	if( !m_pDirectSound )
@@ -210,7 +209,7 @@ inline void CDirectSoundManager::SetListenerPose( const Vector3& vPosition, cons
 }
 
 
-inline void CDirectSoundManager::SetListenerPose( const Matrix34& pose )
+inline void DirectSoundManager::SetListenerPose( const Matrix34& pose )
 {
 	if( !m_pDirectSound )
 		return;
@@ -224,7 +223,7 @@ inline void CDirectSoundManager::SetListenerPose( const Matrix34& pose )
 }
 
 
-inline void CDirectSoundManager::SetListenerVelocity( const Vector3& vVelocity )
+inline void DirectSoundManager::SetListenerVelocity( const Vector3& vVelocity )
 {
 	if( !m_pDirectSound )
 		return;

@@ -563,7 +563,7 @@ void Firearm::Fire()
 
 	// play sound for the shot
 //	ms_pStage->PlaySoundAt( m_FireSound, rvMuzzleEndPosition );
-	SoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
+	GetSoundManager().PlayAt( m_FireSound, rvMuzzleEndPosition );
 
 	Vector3 vFireDirection;
 	Vector3 vFireDir_Right, vUp = Vector3(0,1,0);

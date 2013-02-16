@@ -12,10 +12,10 @@ namespace amorphous
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::CGameSound()
+// Name: GameSound::GameSound()
 // Desc: Constructs the class
 //-----------------------------------------------------------------------------
-CGameSound::CGameSound( const char* pcSoundName, LPDIRECTSOUNDBUFFER* apDSBuffer, DWORD dwDSBufferSize, 
+GameSound::GameSound( const char* pcSoundName, LPDIRECTSOUNDBUFFER* apDSBuffer, DWORD dwDSBufferSize, 
 					    DWORD dwNumBuffers, CWaveFile* pWaveFile, DWORD dwCreationFlags,
 						float fDefaultMinDist, float fDefaultMaxDist )
 {
@@ -43,10 +43,10 @@ CGameSound::CGameSound( const char* pcSoundName, LPDIRECTSOUNDBUFFER* apDSBuffer
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::~CGameSound()
+// Name: GameSound::~GameSound()
 // Desc: Destroys the class
 //-----------------------------------------------------------------------------
-CGameSound::~CGameSound()
+GameSound::~GameSound()
 {
     for( DWORD i=0; i<m_dwNumBuffers; i++ )
     {
@@ -59,10 +59,10 @@ CGameSound::~CGameSound()
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::FillBufferWithSound()
+// Name: GameSound::FillBufferWithSound()
 // Desc: Fills a DirectSound buffer with a sound file 
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::FillBufferWithSound( LPDIRECTSOUNDBUFFER pDSB, BOOL bRepeatWavIfBufferLarger )
+HRESULT GameSound::FillBufferWithSound( LPDIRECTSOUNDBUFFER pDSB, BOOL bRepeatWavIfBufferLarger )
 {
     HRESULT hr; 
     VOID*   pDSLockedBuffer      = NULL; // Pointer to locked buffer memory
@@ -141,11 +141,11 @@ HRESULT CGameSound::FillBufferWithSound( LPDIRECTSOUNDBUFFER pDSB, BOOL bRepeatW
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::RestoreBuffer()
+// Name: GameSound::RestoreBuffer()
 // Desc: Restores the lost buffer. *pbWasRestored returns TRUE if the buffer was 
 //       restored.  It can also NULL if the information is not needed.
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::RestoreBuffer( LPDIRECTSOUNDBUFFER pDSB, BOOL* pbWasRestored )
+HRESULT GameSound::RestoreBuffer( LPDIRECTSOUNDBUFFER pDSB, BOOL* pbWasRestored )
 {
     HRESULT hr;
 
@@ -187,11 +187,11 @@ HRESULT CGameSound::RestoreBuffer( LPDIRECTSOUNDBUFFER pDSB, BOOL* pbWasRestored
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::GetFreeBuffer()
+// Name: GameSound::GetFreeBuffer()
 // Desc: Finding the first buffer that is not playing and return a pointer to 
 //       it, or if all are playing return a pointer to a randomly selected buffer.
 //-----------------------------------------------------------------------------
-LPDIRECTSOUNDBUFFER CGameSound::GetFreeBuffer()
+LPDIRECTSOUNDBUFFER GameSound::GetFreeBuffer()
 {
     if( m_apDSBuffer == NULL )
         return FALSE; 
@@ -218,10 +218,10 @@ LPDIRECTSOUNDBUFFER CGameSound::GetFreeBuffer()
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::GetBuffer()
+// Name: GameSound::GetBuffer()
 // Desc: 
 //-----------------------------------------------------------------------------
-LPDIRECTSOUNDBUFFER CGameSound::GetBuffer( DWORD dwIndex )
+LPDIRECTSOUNDBUFFER GameSound::GetBuffer( DWORD dwIndex )
 {
     if( m_apDSBuffer == NULL )
         return NULL;
@@ -235,10 +235,10 @@ LPDIRECTSOUNDBUFFER CGameSound::GetBuffer( DWORD dwIndex )
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::Get3DBufferInterface()
+// Name: GameSound::Get3DBufferInterface()
 // Desc: 
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::Get3DBufferInterface( DWORD dwIndex, LPDIRECTSOUND3DBUFFER* ppDS3DBuffer )
+HRESULT GameSound::Get3DBufferInterface( DWORD dwIndex, LPDIRECTSOUND3DBUFFER* ppDS3DBuffer )
 {
     if( m_apDSBuffer == NULL )
         return CO_E_NOTINITIALIZED;
@@ -253,11 +253,11 @@ HRESULT CGameSound::Get3DBufferInterface( DWORD dwIndex, LPDIRECTSOUND3DBUFFER* 
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::Play()
+// Name: GameSound::Play()
 // Desc: Plays the sound using voice management flags.  Pass in DSBPLAY_LOOPING
 //       in the dwFlags to loop the sound
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::Play( DWORD dwPriority, DWORD dwFlags, LONG lVolume, LONG lFrequency, LONG lPan )
+HRESULT GameSound::Play( DWORD dwPriority, DWORD dwFlags, LONG lVolume, LONG lFrequency, LONG lPan )
 {
     HRESULT hr;
     BOOL    bRestored;
@@ -304,11 +304,11 @@ HRESULT CGameSound::Play( DWORD dwPriority, DWORD dwFlags, LONG lVolume, LONG lF
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::Play3D()
+// Name: GameSound::Play3D()
 // Desc: Plays the sound using voice management flags.  Pass in DSBPLAY_LOOPING
 //       in the dwFlags to loop the sound
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::Play3D( LPDS3DBUFFER p3DBuffer, DWORD dwPriority, DWORD dwFlags, LONG lFrequency )
+HRESULT GameSound::Play3D( LPDS3DBUFFER p3DBuffer, DWORD dwPriority, DWORD dwFlags, LONG lFrequency )
 {
     HRESULT hr;
     BOOL    bRestored;
@@ -356,7 +356,7 @@ HRESULT CGameSound::Play3D( LPDS3DBUFFER p3DBuffer, DWORD dwPriority, DWORD dwFl
 }
 
 
-HRESULT CGameSound::Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& vPosition,
+HRESULT GameSound::Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& vPosition,
 							float fMinDist, float fMaxDist,
 							DWORD dwPriority, DWORD dwFlags, LONG lFrequency )
 {
@@ -422,10 +422,10 @@ HRESULT CGameSound::Play3D( LPDIRECTSOUND3DLISTENER pDSListener, const Vector3& 
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::Stop()
+// Name: GameSound::Stop()
 // Desc: Stops the sound from playing
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::Stop()
+HRESULT GameSound::Stop()
 {
     if( m_apDSBuffer == NULL )
         return CO_E_NOTINITIALIZED;
@@ -442,10 +442,10 @@ HRESULT CGameSound::Stop()
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::Reset()
+// Name: GameSound::Reset()
 // Desc: Reset all of the sound buffers
 //-----------------------------------------------------------------------------
-HRESULT CGameSound::Reset()
+HRESULT GameSound::Reset()
 {
     if( m_apDSBuffer == NULL )
         return CO_E_NOTINITIALIZED;
@@ -462,10 +462,10 @@ HRESULT CGameSound::Reset()
 
 
 //-----------------------------------------------------------------------------
-// Name: CGameSound::IsSoundPlaying()
+// Name: GameSound::IsSoundPlaying()
 // Desc: Checks to see if a buffer is playing and returns TRUE if it is.
 //-----------------------------------------------------------------------------
-BOOL CGameSound::IsSoundPlaying()
+BOOL GameSound::IsSoundPlaying()
 {
     BOOL bIsPlaying = FALSE;
 

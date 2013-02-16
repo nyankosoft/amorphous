@@ -15,10 +15,10 @@ using namespace serialization;
 
 
 /// only for non-streamed sound
-/// - Use this as a sound argument of CSoundManager().Play(), PlayAt(), etc.
+/// - Use this as a sound argument of GetSoundManager().Play(), PlayAt(), etc.
 /// - cache the pointer to the sound buffer when the sound is played for the first time
-///   - Sound manager can skip the search in subsequent calls of CSoundManager().Play(), PlayAt(), etc.
-class CSoundHandle : public IArchiveObjectBase
+///   - Sound manager can skip the search in subsequent calls of GetSoundManager().Play(), PlayAt(), etc.
+class SoundHandle : public IArchiveObjectBase
 {
 	pooled_object_handle m_Handle;
 
@@ -27,9 +27,9 @@ class CSoundHandle : public IArchiveObjectBase
 
 public:
 
-	CSoundHandle() {}
+	SoundHandle() {}
 
-	CSoundHandle( const std::string& sound_name )
+	SoundHandle( const std::string& sound_name )
 		:
 	m_ResourceName(sound_name)
 	{}
@@ -53,8 +53,8 @@ public:
 		}
 	}
 
-//	friend class CSoundManager;
-	friend class CSoundManagerImpl;
+//	friend class SoundManager;
+	friend class SoundManagerImpl;
 };
 
 } // namespace amorphous

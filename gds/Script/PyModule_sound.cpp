@@ -18,118 +18,118 @@ using namespace boost::python;
 /// play From Resource
 inline void PlayAtFR( const std::string& resource_path, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
 {
-	CSoundHandle sound_handle( resource_path );
-	SoundManager().PlayAt( sound_handle, vPosition, max_dist, ref_dist, rolloff_factor );
+	SoundHandle sound_handle( resource_path );
+	GetSoundManager().PlayAt( sound_handle, vPosition, max_dist, ref_dist, rolloff_factor );
 }
 
 
-inline void PlayAt( CSoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
+inline void PlayAt( SoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor )
 {
-	SoundManager().PlayAt( sound_handle, vPosition, max_dist, ref_dist, rolloff_factor );
+	GetSoundManager().PlayAt( sound_handle, vPosition, max_dist, ref_dist, rolloff_factor );
 }
 
 /// play From Handle
-inline void PlayFH( CSoundHandle& sound_handle )
+inline void PlayFH( SoundHandle& sound_handle )
 {
-	SoundManager().Play( sound_handle );
+	GetSoundManager().Play( sound_handle );
 }
 
 /// play From Resource
 inline void PlayFR( const std::string& resource_path )
 {
-	CSoundHandle sound_handle( resource_path );
-	SoundManager().Play( sound_handle );
+	SoundHandle sound_handle( resource_path );
+	GetSoundManager().Play( sound_handle );
 }
 
 
-inline void PlayFHD( CSoundHandle& sound_handle, const CSoundDesc& desc )
+inline void PlayFHD( SoundHandle& sound_handle, const SoundDesc& desc )
 {
-	SoundManager().Play( sound_handle, desc );
+	GetSoundManager().Play( sound_handle, desc );
 }
 
 
 inline void PlayStream( const std::string& resource_path, double fadein_time, bool looped, int sound_group, U8 volume )
 {
-	SoundManager().PlayStream( resource_path, fadein_time, looped, sound_group, volume );
+	GetSoundManager().PlayStream( resource_path, fadein_time, looped, sound_group, volume );
 }
 
 inline bool StopStream( const std::string& resource_path, double fadeout_time )
 {
-	return SoundManager().PlayStream( resource_path, fadeout_time );
+	return GetSoundManager().PlayStream( resource_path, fadeout_time );
 }
 
-inline CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-	                                                   const CSoundDesc& desc )
+inline SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+	                                                   const SoundDesc& desc )
 {
-	return SoundManager().CreateSoundSource( sound_handle, desc );
-}
-
-
-inline CSoundSource *CreateSoundSourceFromResource( const std::string& resource_path,
-	                                                   const CSoundDesc& desc )
-{
-	CSoundHandle sound_handle( resource_path );
-	return SoundManager().CreateSoundSource( sound_handle, desc );
+	return GetSoundManager().CreateSoundSource( sound_handle, desc );
 }
 
 
-inline CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-		                                               CSoundSource::Type type,
-											           CSoundSource::StreamType stream_type )
+inline SoundSource *CreateSoundSourceFromResource( const std::string& resource_path,
+	                                                   const SoundDesc& desc )
 {
-	CSoundDesc desc;
+	SoundHandle sound_handle( resource_path );
+	return GetSoundManager().CreateSoundSource( sound_handle, desc );
+}
+
+
+inline SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+		                                               SoundSource::Type type,
+											           SoundSource::StreamType stream_type )
+{
+	SoundDesc desc;
 	desc.SoundSourceType = type;
-	desc.Streamed = ( stream_type == CSoundSource::Streamed );
+	desc.Streamed = ( stream_type == SoundSource::Streamed );
 
-	return SoundManager().CreateSoundSource( sound_handle, desc );
+	return GetSoundManager().CreateSoundSource( sound_handle, desc );
 }
 
 
-inline CSoundSource *CreateSoundSource( const std::string& resource_path,
-		                                               CSoundSource::Type type,
-											           CSoundSource::StreamType stream_type )
+inline SoundSource *CreateSoundSource( const std::string& resource_path,
+		                                               SoundSource::Type type,
+											           SoundSource::StreamType stream_type )
 {
-	CSoundDesc desc;
+	SoundDesc desc;
 	desc.SoundSourceType = type;
-	desc.Streamed = ( stream_type == CSoundSource::Streamed );
+	desc.Streamed = ( stream_type == SoundSource::Streamed );
 
-	return SoundManager().CreateSoundSource( resource_path, desc );
+	return GetSoundManager().CreateSoundSource( resource_path, desc );
 }
 
 
-inline void ReleaseSoundSource( CSoundSource*& pSoundSource )
+inline void ReleaseSoundSource( SoundSource*& pSoundSource )
 {
-	SoundManager().ReleaseSoundSource( pSoundSource );
+	GetSoundManager().ReleaseSoundSource( pSoundSource );
 }
 
 
 inline void PauseAllSounds()
 {
-	SoundManager().PauseAllSounds();
+	GetSoundManager().PauseAllSounds();
 }
 
 
 inline void ResumeAllSounds()
 {
-	SoundManager().ResumeAllSounds();
+	GetSoundManager().ResumeAllSounds();
 }
 
 
 inline void SetVolume( int volume_group, uint volume )
 {
-	SoundManager().SetVolume( volume_group, volume );
+	GetSoundManager().SetVolume( volume_group, volume );
 }
 
 
 inline void SetMute( bool mute )
 {
-	SoundManager().SetMute( mute );
+	GetSoundManager().SetMute( mute );
 }
 
 
 inline void SetListenerPosition( const Vector3& vPosition )
 {
-	SoundManager().SetListenerPosition( vPosition );
+	GetSoundManager().SetListenerPosition( vPosition );
 }
 
 /*
@@ -137,13 +137,13 @@ inline void SetListenerPose( const Vector3& vPosition,
 											const Vector3& vLookAtDirection,
 		                                    const Vector3& vUp )
 {
-	SoundManager().SetListenerPose( vPosition, vLookAtDirection, vUp );
+	GetSoundManager().SetListenerPose( vPosition, vLookAtDirection, vUp );
 }
 */
 
 inline void SetListenerPose( const Matrix34& pose )
 {
-	SoundManager().SetListenerPose(
+	GetSoundManager().SetListenerPose(
 		pose.vPosition,
 		pose.matOrient.GetColumn(2),
 		pose.matOrient.GetColumn(1)
@@ -153,40 +153,40 @@ inline void SetListenerPose( const Matrix34& pose )
 
 inline void SetListenerVelocity( const Vector3& vVelocity )
 {
-	SoundManager().SetListenerVelocity( vVelocity );
+	GetSoundManager().SetListenerVelocity( vVelocity );
 }
 
 
 inline void CommitDeferredSettings()
 {
-	SoundManager().CommitDeferredSettings();
+	GetSoundManager().CommitDeferredSettings();
 }
 
 
 
 BOOST_PYTHON_MODULE(sound)
 {
-//	typedef CSoundManager SndMgr;
+//	typedef SoundManager SndMgr;
 
-	class_<CSoundHandle>("SoundHandle")
+	class_<SoundHandle>("SoundHandle")
 		.def(init<const std::string&>())
-//		.def("GetResourceName",   &CSoundHandle::GetResourceName) // error
-		.def("SetResourceName",   &CSoundHandle::SetResourceName)
+//		.def("GetResourceName",   &SoundHandle::GetResourceName) // error
+		.def("SetResourceName",   &SoundHandle::SetResourceName)
 	;
 
-	class_<CSoundDesc>("SoundDesc")
-		.def_readwrite("Position",           &CSoundDesc::Position)
-		.def_readwrite("Direction",          &CSoundDesc::Direction)
-		.def_readwrite("Velocity",           &CSoundDesc::Velocity)
-		.def_readwrite("Streamed",           &CSoundDesc::Streamed)
-		.def_readwrite("Loop",               &CSoundDesc::Loop)
-		.def_readwrite("Volume",             &CSoundDesc::Volume)
-		.def_readwrite("MaxDistance",        &CSoundDesc::MaxDistance)
-		.def_readwrite("ReferenceDistance",  &CSoundDesc::ReferenceDistance)
-		.def_readwrite("RollOffFactor",      &CSoundDesc::RollOffFactor)
-		.def_readwrite("SoundSourceType",    &CSoundDesc::SoundSourceType)
-//		.def_readwrite("SourceManagement",   &CSoundDesc::SourceManagement) // Should always be auto?
-		.def_readwrite("SoundGroup",         &CSoundDesc::SoundGroup)
+	class_<SoundDesc>("SoundDesc")
+		.def_readwrite("Position",           &SoundDesc::Position)
+		.def_readwrite("Direction",          &SoundDesc::Direction)
+		.def_readwrite("Velocity",           &SoundDesc::Velocity)
+		.def_readwrite("Streamed",           &SoundDesc::Streamed)
+		.def_readwrite("Loop",               &SoundDesc::Loop)
+		.def_readwrite("Volume",             &SoundDesc::Volume)
+		.def_readwrite("MaxDistance",        &SoundDesc::MaxDistance)
+		.def_readwrite("ReferenceDistance",  &SoundDesc::ReferenceDistance)
+		.def_readwrite("RollOffFactor",      &SoundDesc::RollOffFactor)
+		.def_readwrite("SoundSourceType",    &SoundDesc::SoundSourceType)
+//		.def_readwrite("SourceManagement",   &SoundDesc::SourceManagement) // Should always be auto?
+		.def_readwrite("SoundGroup",         &SoundDesc::SoundGroup)
 	;
 
 	def( "PlayAt",              PlayAt,   ( python::arg("sound_handle"),  python::arg("pos"), python::arg("max_dist") = 1000.0f, python::arg("ref_dist") = 100.0f, python::arg("rolloff_factor") = 1.0f ) );
@@ -203,7 +203,7 @@ BOOST_PYTHON_MODULE(sound)
 */
 
 /*
-	class_< CSoundManagerWrapper//, boost::shared_ptr<> >("SoundManager")
+	class_< SoundManagerWrapper//, boost::shared_ptr<> >("SoundManager")
 		.def( "PlayAt",              &SndMgr::PlayAt, ( python::arg("sound_handle"),  python::arg("pos"), python::arg("max_dist") = 1000.0f, python::arg("ref_dist") = 100.0f, python::arg("rolloff_factor") = 1.0f ) )
 		.def( "PlayAt",              &SndMgr::PlayAt, ( python::arg("resource_path"), python::arg("pos"), python::arg("max_dist") = 1000.0f, python::arg("max_dist") = 100.0f, python::arg("rolloff_factor") = 1.0f ) )
 		.def( "Play",                &SndMgr::Play,   ( python::arg("sound_handle") ) )

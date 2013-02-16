@@ -156,7 +156,7 @@ public:
 
 //	void PlaySound3D( char* pcSoundName, Vector3& rvPosition );
 //	void PlaySound3D( int iIndex, Vector3& rvPosition );
-//	void PlaySound3D( CSoundHandle &rSoundHandle, Vector3& rvPosition );
+//	void PlaySound3D( SoundHandle &rSoundHandle, Vector3& rvPosition );
 
 	void UpdateListener();
 

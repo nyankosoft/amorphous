@@ -88,7 +88,7 @@ private:
 
 	/// sound that are played when objects hit the material
 	/// sounds are usually chosen randomly
-	std::vector<CSoundHandle> m_vecSound[NUM_REACTION_TYPES];
+	std::vector<SoundHandle> m_vecSound[NUM_REACTION_TYPES];
 
 	bool m_bValid;
 
@@ -126,7 +126,7 @@ public:
 	/// returns true if sound should be made when something interacts with the surface
 	inline bool HasSoundOf( int ReactionType ) const;
 
-	inline CSoundHandle& GetSound_Random( int ReactionType );
+	inline SoundHandle& GetSound_Random( int ReactionType );
 
 //	void Load( CSurfaceMaterialData& src_material );
 
@@ -155,7 +155,7 @@ inline bool CSurfaceMaterial::HasSoundOf( int ReactionType ) const
 }
 
 
-inline CSoundHandle& CSurfaceMaterial::GetSound_Random( int ReactionType )
+inline SoundHandle& CSurfaceMaterial::GetSound_Random( int ReactionType )
 {
 	size_t i = RangedRand( 0, (int)(m_vecSound[ReactionType].size() - 1) );
 

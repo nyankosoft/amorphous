@@ -15,8 +15,8 @@ namespace amorphous
  */
 class MainMenuBaseEventHandler : public CGM_EventHandlerBase
 {
-	CSoundHandle m_FocusShiftSound;
-	CSoundHandle m_ButtonPressSound;
+	SoundHandle m_FocusShiftSound;
+	SoundHandle m_ButtonPressSound;
 
 public:
 	MainMenuBaseEventHandler();

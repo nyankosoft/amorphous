@@ -58,7 +58,7 @@ protected:
 
 	float m_fMinimumExplodeImpactSpeed;
 
-	CSoundHandle m_ExplosionSound;
+	SoundHandle m_ExplosionSound;
 
 public:
 	CBE_Explosive();

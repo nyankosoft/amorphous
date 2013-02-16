@@ -11,10 +11,10 @@ namespace amorphous
 using namespace std;
 
 
-static map<int,CSoundSource *> gs_mapIDToSoundSource;
+static map<int,SoundSource *> gs_mapIDToSoundSource;
 
 /// used by PlayStream() and StopStream()
-static map<string,CSoundSource *> gs_mapNameToSoundSource;
+static map<string,SoundSource *> gs_mapNameToSoundSource;
 
 
 
@@ -23,22 +23,22 @@ static map<string,CSoundSource *> gs_mapNameToSoundSource;
 void ReleaseAllScriptSounds()
 {
 	// release sound sources held by id
-	map<int,CSoundSource *>::iterator id_itr;
+	map<int,SoundSource *>::iterator id_itr;
 	for( id_itr = gs_mapIDToSoundSource.begin();
 		 id_itr != gs_mapIDToSoundSource.end();
 		 id_itr++ )
 	{
-		SoundManager().ReleaseSoundSource( id_itr->second );
+		GetSoundManager().ReleaseSoundSource( id_itr->second );
 	}
 	gs_mapIDToSoundSource.clear();
 
 	// release sound sources held by name
-	map<string,CSoundSource *>::iterator name_itr;
+	map<string,SoundSource *>::iterator name_itr;
 	for( name_itr = gs_mapNameToSoundSource.begin();
 		 name_itr != gs_mapNameToSoundSource.end();
 		 name_itr++ )
 	{
-		SoundManager().ReleaseSoundSource( name_itr->second );
+		GetSoundManager().ReleaseSoundSource( name_itr->second );
 	}
 	gs_mapNameToSoundSource.clear();
 }
@@ -52,11 +52,11 @@ PyObject* Play( PyObject* self, PyObject* args )
 	int volume = 100;
 	int result = PyArg_ParseTuple( args, "s|i", &sound_name, &volume );
 
-//	CSoundHandle snd_handle;
+//	SoundHandle snd_handle;
 //	snd_handle.SetResourceName( sound_name );
 
-//	SoundManager().Play( snd_handle );
-	SoundManager().Play( sound_name );
+//	GetSoundManager().Play( snd_handle );
+	GetSoundManager().Play( sound_name );
 
 	return Py_None;
 }
@@ -71,7 +71,7 @@ PyObject* Play3D( PyObject* self, PyObject* args )
 	int result = PyArg_ParseTuple( args, "sfff|ff", &sound_name, &pos.x, &pos.y, &pos.z,
 		                                            &volume );
 
-	SoundManager().PlayAt( sound_name, pos );
+	GetSoundManager().PlayAt( sound_name, pos );
 
     Py_INCREF( Py_None );
 	return Py_None;
@@ -96,12 +96,12 @@ PyObject* PlayStream( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	CSoundDesc desc;
+	SoundDesc desc;
 	desc.Loop             = loop == 1 ? true : false;
 	desc.Streamed         = true;
-	desc.SourceManagement = CSoundSource::Manual;
+	desc.SourceManagement = SoundSource::Manual;
 
-	CSoundSource *pSource = SoundManager().CreateSoundSource( sound_name, desc );
+	SoundSource *pSource = GetSoundManager().CreateSoundSource( sound_name, desc );
 	if( pSource )
 	{
 		gs_mapNameToSoundSource[sound_name] = pSource;
@@ -134,7 +134,7 @@ PyObject* StopStream( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	map<string,CSoundSource *>::iterator itr
+	map<string,SoundSource *>::iterator itr
 		= gs_mapNameToSoundSource.find( sound_name );
 
 	if( itr == gs_mapNameToSoundSource.end() )
@@ -143,11 +143,11 @@ PyObject* StopStream( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	CSoundSource *pSource = itr->second;
+	SoundSource *pSource = itr->second;
 	if( pSource )
 	{
 		pSource->Stop();
-		SoundManager().ReleaseSoundSource( pSource );
+		GetSoundManager().ReleaseSoundSource( pSource );
 	}
 
 	gs_mapNameToSoundSource.erase( itr );

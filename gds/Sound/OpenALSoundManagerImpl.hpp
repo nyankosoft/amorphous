@@ -22,9 +22,9 @@ namespace amorphous
 #pragma comment( lib, "alut.lib" )
 
 
-/// Can be used by more than one CSoundSource object
+/// Can be used by more than one SoundSource object
 /// - Not used by CStreamSound
-class CSoundBuffer
+class SoundBuffer
 {
 	std::string m_ResourcePath;
 
@@ -42,9 +42,9 @@ private:
 
 public:
 
-	CSoundBuffer();
+	SoundBuffer();
 
-	~CSoundBuffer();
+	~SoundBuffer();
 
 	void Release();
 
@@ -59,11 +59,11 @@ public:
 	int GetStockID() const { return m_StockID; }
 	void SetStockID( int id ) { m_StockID = id; }
 
-	friend class COpenALSoundManagerImpl;
+	friend class OpenALSoundManagerImpl;
 };
 
 
-class COpenALSoundManagerImpl : public CSoundManagerImpl
+class OpenALSoundManagerImpl : public SoundManagerImpl
 {
 	enum Params
 	{
@@ -82,16 +82,16 @@ class COpenALSoundManagerImpl : public CSoundManagerImpl
 	};
 
 	/// for non-streamed sounds
-	prealloc_pool<CSoundBuffer> m_SoundBufferPool;
+	prealloc_pool<SoundBuffer> m_SoundBufferPool;
 
 	/// stores borrowed references of sound sources currently being played
-	std::list<CSoundSource *> m_ActiveSoundList;
+	std::list<SoundSource *> m_ActiveSoundList;
 
 	/// Stores borrowed references of sound buffers
 	/// key: resource path (filename or db::keyname)
-	std::map< std::string, CSoundBuffer *> m_ActiveSoundBuffer;
+	std::map< std::string, SoundBuffer *> m_ActiveSoundBuffer;
 
-	prealloc_pool<CSoundSource> m_SoundSourcePool;
+	prealloc_pool<SoundSource> m_SoundSourcePool;
 
 	prealloc_pool<COpenALStreamedSoundSourceImpl> m_StreamedSourceImplPool;
 
@@ -114,9 +114,9 @@ class COpenALSoundManagerImpl : public CSoundManagerImpl
 	{
 	public:
 
-		ThreadStarter( COpenALSoundManagerImpl *p ) : pTarget(p) {}
+		ThreadStarter( OpenALSoundManagerImpl *p ) : pTarget(p) {}
 
-		COpenALSoundManagerImpl *pTarget;
+		OpenALSoundManagerImpl *pTarget;
 
 		void operator()()
 		{
@@ -126,19 +126,19 @@ class COpenALSoundManagerImpl : public CSoundManagerImpl
 
 private:
 
-	COpenALSoundSourceImpl *GetSoundSourceImpl( CSoundSource::StreamType stream_type );
+	COpenALSoundSourceImpl *GetSoundSourceImpl( SoundSource::StreamType stream_type );
 
-	void DetachImpl( CSoundSource* pSoundSource );
+	void DetachImpl( SoundSource* pSoundSource );
 
-	CSoundBuffer *GetSoundBuffer( CSoundHandle& sound_handle );
+	SoundBuffer *GetSoundBuffer( SoundHandle& sound_handle );
 
-	void AddToActiveSourceList( CSoundSource *pSource );
+	void AddToActiveSourceList( SoundSource *pSource );
 
 public:
 
-	COpenALSoundManagerImpl();
+	OpenALSoundManagerImpl();
 
-	~COpenALSoundManagerImpl();
+	~OpenALSoundManagerImpl();
 
 	bool Init();
 
@@ -149,29 +149,29 @@ public:
 	///   - e.g.) sound played when a button is pressed in a GUI menu
 	bool LoadNonStreamedSound( const std::string& resource_path, int sound_group = 0 )
 	{
-		CSoundHandle handle( resource_path );
+		SoundHandle handle( resource_path );
 		return LoadNonStreamedSound( handle, sound_group );
 	}
 
-	bool LoadNonStreamedSound( CSoundHandle& sound_handle, int sound_group = 0 );
+	bool LoadNonStreamedSound( SoundHandle& sound_handle, int sound_group = 0 );
 
 	void ReleaseNonStreamedSound( const std::string& resource_path );
 
 	/// plays a non-streamed sound at a specified position
-	void PlayAt( CSoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor );
+	void PlayAt( SoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor );
 
 	/// plays non-3D sound
-	void Play( CSoundHandle& sound_handle );
+	void Play( SoundHandle& sound_handle );
 
 	/// plays 3D or non-3D sound
-	void Play( CSoundHandle& sound_handle, const CSoundDesc& desc );
+	void Play( SoundHandle& sound_handle, const SoundDesc& desc );
 
-	void PlayStream( CSoundHandle& sound_handle );
+	void PlayStream( SoundHandle& sound_handle );
 
-	CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-		                             const CSoundDesc& desc );
+	SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+		                             const SoundDesc& desc );
 
-	void ReleaseSoundSource( CSoundSource*& pSoundSource );
+	void ReleaseSoundSource( SoundSource*& pSoundSource );
 
 	void PauseAllSounds();
 
@@ -194,7 +194,7 @@ public:
 
 	void GetTextInfo( std::string& dest_buffer );
 
-//	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type );
+//	SoundSourceImpl *CreateSoundSourceImpl( SoundSource::Type type, SoundSource::StreamType stream_type );
 
 	void ThreadMain();
 

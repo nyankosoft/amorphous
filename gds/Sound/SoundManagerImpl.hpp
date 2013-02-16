@@ -11,46 +11,46 @@ namespace amorphous
 {
 
 
-class CSoundSourceImpl;
+class SoundSourceImpl;
 
 
-class CSoundManagerImpl
+class SoundManagerImpl
 {
 protected:
 
-	void SetImpl( CSoundSource *pSource, CSoundSourceImpl *pImpl ) { pSource->SetImpl( pImpl ); }
+	void SetImpl( SoundSource *pSource, SoundSourceImpl *pImpl ) { pSource->SetImpl( pImpl ); }
 
-	CSoundSourceImpl *GetImpl( CSoundSource *pSource ) { return pSource->GetImpl(); }
+	SoundSourceImpl *GetImpl( SoundSource *pSource ) { return pSource->GetImpl(); }
 
-	void SetInternalSoundHandle( CSoundHandle& sound_handle, const pooled_object_handle& handle ) { sound_handle.m_Handle = handle; }
+	void SetInternalSoundHandle( SoundHandle& sound_handle, const pooled_object_handle& handle ) { sound_handle.m_Handle = handle; }
 
-	pooled_object_handle& GetInternalSoundHandle( CSoundHandle& handle ) { return handle.m_Handle; }
+	pooled_object_handle& GetInternalSoundHandle( SoundHandle& handle ) { return handle.m_Handle; }
 
 public:
 
-	CSoundManagerImpl() {}
+	SoundManagerImpl() {}
 
-	virtual ~CSoundManagerImpl() {}
+	virtual ~SoundManagerImpl() {}
 
 	virtual void Release() {}
 
 	virtual bool Init() = 0;
 
 	/// plays a sound at a specified position
-	virtual void PlayAt( CSoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor ) = 0;
+	virtual void PlayAt( SoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor ) = 0;
 
 	/// plays non-3D sound
-	virtual void Play( CSoundHandle& sound_handle ) = 0;
+	virtual void Play( SoundHandle& sound_handle ) = 0;
 
 	/// plays 3D or non-3D sound
-	virtual void Play( CSoundHandle& sound_handle, const CSoundDesc& desc ) = 0;
+	virtual void Play( SoundHandle& sound_handle, const SoundDesc& desc ) = 0;
 
-	virtual void PlayStream( CSoundHandle& sound_handle ) = 0;
+	virtual void PlayStream( SoundHandle& sound_handle ) = 0;
 
-	virtual CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-		                                     const CSoundDesc& desc ) = 0;
+	virtual SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+		                                     const SoundDesc& desc ) = 0;
 
-	virtual void ReleaseSoundSource( CSoundSource*& pSoundSource ) = 0;
+	virtual void ReleaseSoundSource( SoundSource*& pSoundSource ) = 0;
 
 	virtual void PauseAllSounds() = 0;
 
@@ -71,15 +71,15 @@ public:
 
 	virtual void GetTextInfo( std::string& dest_buffer ) {}
 
-//	virtual CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) = 0;
+//	virtual SoundSourceImpl *CreateSoundSourceImpl( SoundSource::Type type, SoundSource::StreamType stream_type ) = 0;
 };
 
 
-class CNullSoundManagerImpl : public CSoundManagerImpl
+class CNullSoundManagerImpl : public SoundManagerImpl
 {
 public:
 
-	// TODO: add empty implementations of pure virtual functions declared by CSoundManagerImpl 
+	// TODO: add empty implementations of pure virtual functions declared by SoundManagerImpl 
 
 	CNullSoundManagerImpl() {}
 
@@ -89,18 +89,18 @@ public:
 
 	bool Init() { return false; }
 
-	void PlayAt( CSoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor ) {}
+	void PlayAt( SoundHandle& sound_handle, const Vector3& vPosition, float max_dist, float ref_dist, float rolloff_factor ) {}
 
-	void Play( CSoundHandle& sound_handle ) {}
+	void Play( SoundHandle& sound_handle ) {}
 
-	void Play( CSoundHandle& sound_handle, const CSoundDesc& desc ) {}
+	void Play( SoundHandle& sound_handle, const SoundDesc& desc ) {}
 
-	void PlayStream( CSoundHandle& sound_handle ) {}
+	void PlayStream( SoundHandle& sound_handle ) {}
 
-	CSoundSource *CreateSoundSource( CSoundHandle& sound_handle,
-	                                 const CSoundDesc& desc ) { return NULL; }
+	SoundSource *CreateSoundSource( SoundHandle& sound_handle,
+	                                 const SoundDesc& desc ) { return NULL; }
 
-	void ReleaseSoundSource( CSoundSource*& pSoundSource ) {}
+	void ReleaseSoundSource( SoundSource*& pSoundSource ) {}
 
 	void PauseAllSounds() {}
 
@@ -116,7 +116,7 @@ public:
 
 	void SetListenerVelocity( const Vector3& vVelocity ) {}
 
-//	CSoundSourceImpl *CreateSoundSourceImpl( CSoundSource::Type type, CSoundSource::StreamType stream_type ) { return NULL; }
+//	SoundSourceImpl *CreateSoundSourceImpl( SoundSource::Type type, SoundSource::StreamType stream_type ) { return NULL; }
 };
 
 } // namespace amorphous

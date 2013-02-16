@@ -17,7 +17,7 @@ using namespace std;
 
 
 
-CDirectSoundManager::CDirectSoundManager()
+DirectSoundManager::DirectSoundManager()
 {
 	m_pDirectSound = NULL;
 	m_pDSListener  = NULL;
@@ -27,7 +27,7 @@ CDirectSoundManager::CDirectSoundManager()
 }
 
 
-CDirectSoundManager::~CDirectSoundManager()
+DirectSoundManager::~DirectSoundManager()
 {
 	for(int i=0; i<m_iNumGameSounds; i++)
 	{
@@ -53,7 +53,7 @@ static const char *GetDSoundError( HRESULT hr )
 }
 
 
-HRESULT CDirectSoundManager::Init( HWND hWnd )
+HRESULT DirectSoundManager::Init( HWND hWnd )
 {
     HRESULT hr;
 
@@ -88,7 +88,7 @@ HRESULT CDirectSoundManager::Init( HWND hWnd )
     return S_OK;
 }
 
-HRESULT CDirectSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels, 
+HRESULT DirectSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels, 
                                                    DWORD dwPrimaryFreq, 
                                                    DWORD dwPrimaryBitRate )
 {
@@ -132,7 +132,7 @@ HRESULT CDirectSoundManager::SetPrimaryBufferFormat( DWORD dwPrimaryChannels,
     return S_OK;
 }
 
-HRESULT CDirectSoundManager::Set3DListenerInterface()
+HRESULT DirectSoundManager::Set3DListenerInterface()
 {
     HRESULT             hr;
     DSBUFFERDESC        dsbdesc;
@@ -161,7 +161,7 @@ HRESULT CDirectSoundManager::Set3DListenerInterface()
 
     return S_OK;
 }
-HRESULT CDirectSoundManager::CreateSound( CGameSound** ppSound, 
+HRESULT DirectSoundManager::CreateSound( CGameSound** ppSound, 
 										LPTSTR strWaveFileName, 
 									    DWORD dwCreationFlags, 
 									    GUID guid3DAlgorithm,

@@ -11,12 +11,12 @@ namespace amorphous
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::CWaveFile()
+// Name: WaveFile::WaveFile()
 // Desc: Constructs the class.  Call Open() to open a wave file for reading.  
 //       Then call Read() as needed.  Calling the destructor or Close() 
 //       will close the file.  
 //-----------------------------------------------------------------------------
-CWaveFile::CWaveFile()
+WaveFile::WaveFile()
 {
     m_pwfx    = NULL;
     m_hmmio   = NULL;
@@ -27,10 +27,10 @@ CWaveFile::CWaveFile()
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::~CWaveFile()
+// Name: WaveFile::~WaveFile()
 // Desc: Destructs the class
 //-----------------------------------------------------------------------------
-CWaveFile::~CWaveFile()
+WaveFile::~WaveFile()
 {
     Close();
 
@@ -40,10 +40,10 @@ CWaveFile::~CWaveFile()
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::Open()
+// Name: WaveFile::Open()
 // Desc: Opens a wave file for reading
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::Open( LPTSTR strFileName, WAVEFORMATEX* pwfx, DWORD dwFlags )
+HRESULT WaveFile::Open( LPTSTR strFileName, WAVEFORMATEX* pwfx, DWORD dwFlags )
 {
     HRESULT hr;
 
@@ -129,10 +129,10 @@ HRESULT CWaveFile::Open( LPTSTR strFileName, WAVEFORMATEX* pwfx, DWORD dwFlags )
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::OpenFromMemory()
-// Desc: copy data to CWaveFile member variable from memory
+// Name: WaveFile::OpenFromMemory()
+// Desc: copy data to WaveFile member variable from memory
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::OpenFromMemory( BYTE* pbData, ULONG ulDataSize, 
+HRESULT WaveFile::OpenFromMemory( BYTE* pbData, ULONG ulDataSize, 
                                    WAVEFORMATEX* pwfx, DWORD dwFlags )
 {
     m_pwfx       = pwfx;
@@ -149,12 +149,12 @@ HRESULT CWaveFile::OpenFromMemory( BYTE* pbData, ULONG ulDataSize,
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::ReadMMIO()
+// Name: WaveFile::ReadMMIO()
 // Desc: Support function for reading from a multimedia I/O stream.
 //       m_hmmio must be valid before calling.  This function uses it to
 //       update m_ckRiff, and m_pwfx. 
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::ReadMMIO()
+HRESULT WaveFile::ReadMMIO()
 {
     MMCKINFO        ckIn;           // chunk info. for general use.
     PCMWAVEFORMAT   pcmWaveFormat;  // Temp PCM structure to load in.       
@@ -234,10 +234,10 @@ HRESULT CWaveFile::ReadMMIO()
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::GetSize()
+// Name: WaveFile::GetSize()
 // Desc: Retuns the size of the read access wave file 
 //-----------------------------------------------------------------------------
-DWORD CWaveFile::GetSize()
+DWORD WaveFile::GetSize()
 {
     return m_dwSize;
 }
@@ -246,11 +246,11 @@ DWORD CWaveFile::GetSize()
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::ResetFile()
+// Name: WaveFile::ResetFile()
 // Desc: Resets the internal m_ck pointer so reading starts from the 
 //       beginning of the file again 
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::ResetFile()
+HRESULT WaveFile::ResetFile()
 {
     if( m_bIsReadingFromMemory )
     {
@@ -294,14 +294,14 @@ HRESULT CWaveFile::ResetFile()
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::Read()
+// Name: WaveFile::Read()
 // Desc: Reads section of data from a wave file into pBuffer and returns 
 //       how much read in pdwSizeRead, reading not more than dwSizeToRead.
 //       This uses m_ck to determine where to start reading from.  So 
 //       subsequent calls will be continue where the last left off unless 
 //       Reset() is called.
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::Read( BYTE* pBuffer, DWORD dwSizeToRead, DWORD* pdwSizeRead )
+HRESULT WaveFile::Read( BYTE* pBuffer, DWORD dwSizeToRead, DWORD* pdwSizeRead )
 {
     if( m_bIsReadingFromMemory )
     {
@@ -373,10 +373,10 @@ HRESULT CWaveFile::Read( BYTE* pBuffer, DWORD dwSizeToRead, DWORD* pdwSizeRead )
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::Close()
+// Name: WaveFile::Close()
 // Desc: Closes the wave file 
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::Close()
+HRESULT WaveFile::Close()
 {
     if( m_dwFlags == WAVEFILE_READ )
     {
@@ -431,13 +431,13 @@ HRESULT CWaveFile::Close()
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::WriteMMIO()
+// Name: WaveFile::WriteMMIO()
 // Desc: Support function for reading from a multimedia I/O stream
 //       pwfxDest is the WAVEFORMATEX for this new wave file.  
 //       m_hmmio must be valid before calling.  This function uses it to
 //       update m_ckRiff, and m_ck.  
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::WriteMMIO( WAVEFORMATEX *pwfxDest )
+HRESULT WaveFile::WriteMMIO( WAVEFORMATEX *pwfxDest )
 {
     DWORD    dwFactChunk; // Contains the actual fact chunk. Garbage until WaveCloseWriteFile.
     MMCKINFO ckOut1;
@@ -502,10 +502,10 @@ HRESULT CWaveFile::WriteMMIO( WAVEFORMATEX *pwfxDest )
 
 
 //-----------------------------------------------------------------------------
-// Name: CWaveFile::Write()
+// Name: WaveFile::Write()
 // Desc: Writes data to the open wave file
 //-----------------------------------------------------------------------------
-HRESULT CWaveFile::Write( UINT nSizeToWrite, BYTE* pbSrcData, UINT* pnSizeWrote )
+HRESULT WaveFile::Write( UINT nSizeToWrite, BYTE* pbSrcData, UINT* pnSizeWrote )
 {
     UINT cT;
 

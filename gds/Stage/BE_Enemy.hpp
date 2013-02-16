@@ -93,7 +93,7 @@ protected:
 	float m_fFireCeaseInterval;
 	float m_fRandomFireDirection;
 
-	CSoundHandle m_FireSound;
+	SoundHandle m_FireSound;
 
 	/// muzzle position in local space
 	Vector3 m_vLocalMuzzlePosition;

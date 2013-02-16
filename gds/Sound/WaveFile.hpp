@@ -16,10 +16,10 @@ namespace amorphous
 #define WAVEFILE_WRITE  2
 
 //-----------------------------------------------------------------------------
-// Name: class CWaveFile
+// Name: class WaveFile
 // Desc: Encapsulates reading or writing sound data to or from a wave file
 //-----------------------------------------------------------------------------
-class CWaveFile
+class WaveFile
 {
 public:
     WAVEFORMATEX* m_pwfx;        // Pointer to WAVEFORMATEX structure
@@ -40,8 +40,8 @@ protected:
     HRESULT WriteMMIO( WAVEFORMATEX *pwfxDest );
 
 public:
-    CWaveFile();
-    ~CWaveFile();
+    WaveFile();
+    ~WaveFile();
 
     HRESULT Open( LPTSTR strFileName, WAVEFORMATEX* pwfx, DWORD dwFlags );
     HRESULT OpenFromMemory( BYTE* pbData, ULONG ulDataSize, WAVEFORMATEX* pwfx, DWORD dwFlags );

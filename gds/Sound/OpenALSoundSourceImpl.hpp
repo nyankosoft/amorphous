@@ -62,12 +62,12 @@ inline const char* GetTextFromID( int id, const IDAndTextPair *id_and_text_array
 }
 
 
-class COpenALSoundSourceImpl : public CSoundSourceImpl
+class COpenALSoundSourceImpl : public SoundSourceImpl
 {
-	/// set by COpenALSoundManagerImpl
-	CSoundSource::Management m_ManagementType;
+	/// set by OpenALSoundManagerImpl
+	SoundSource::Management m_ManagementType;
 
-	CSoundSource::Type m_SourceType;
+	SoundSource::Type m_SourceType;
 
 	pooled_object_handle m_BufferHandle;
 
@@ -79,7 +79,7 @@ class COpenALSoundSourceImpl : public CSoundSourceImpl
 
 protected:
 
-	COpenALSoundManagerImpl *m_pManager;
+	OpenALSoundManagerImpl *m_pManager;
 
 	ALuint m_uiSource;
 
@@ -102,15 +102,15 @@ public:
 
 	void SetResourcePath( const std::string& resource_path ) { m_ResourcePath = resource_path; }
 
-	CSoundSource::Type GetSoundType() { return m_SourceType; }
+	SoundSource::Type GetSoundType() { return m_SourceType; }
 
-	CSoundSource::Management GetManagementType() { return m_ManagementType; }
+	SoundSource::Management GetManagementType() { return m_ManagementType; }
 
 	virtual void OnCreated() { m_Released = false; }
 
 	virtual void OnReleased();
 
-	CSoundSource::State GetState();
+	SoundSource::State GetState();
 
 //	void GetTextInfo( std::string& dest_buffer );
 
@@ -129,7 +129,7 @@ public:
 	int GetStockID() const { return m_StockID; }
 	void SetStockID( int id ) { m_StockID = id; }
 
-	friend class COpenALSoundManagerImpl;
+	friend class OpenALSoundManagerImpl;
 };
 
 
@@ -174,7 +174,7 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 
 	int m_NumTotalBuffersProcessed;
 
-	CSoundSource::State m_RequestedState;
+	SoundSource::State m_RequestedState;
 
 	bool m_ExitStreamThread;
 
@@ -184,7 +184,7 @@ private:
 								OggVorbis_File& sOggVorbisFile,
 								SerializableStream& src_buffer );
 
-	inline CSoundSource::State GetRequestedState();
+	inline SoundSource::State GetRequestedState();
 
 	int PlayStream();
 
@@ -208,7 +208,7 @@ public:
 
 	void SetLoop( bool loop );
 
-	CSoundSource::StreamType GetStreamType() { return CSoundSource::Streamed; }
+	SoundSource::StreamType GetStreamType() { return SoundSource::Streamed; }
 
 	void GetTextInfo( std::string& dest_buffer );
 
@@ -219,7 +219,7 @@ public:
 	/// Use this as a thread main loop?
 	void StreamMain();
 
-	inline void SetRequestedState( CSoundSource::State state );
+	inline void SetRequestedState( SoundSource::State state );
 
 	void OnCreated();
 
@@ -229,17 +229,17 @@ public:
 
 // -------------------------- inline implementations --------------------------
 
-inline CSoundSource::State COpenALStreamedSoundSourceImpl::GetRequestedState()
+inline SoundSource::State COpenALStreamedSoundSourceImpl::GetRequestedState()
 {
 	boost::mutex::scoped_lock scoped_lock(m_StreamSoundMutex);
 
-	const CSoundSource::State state = m_RequestedState;
+	const SoundSource::State state = m_RequestedState;
 
 	return state;
 }
 
 
-inline void COpenALStreamedSoundSourceImpl::SetRequestedState( CSoundSource::State state )
+inline void COpenALStreamedSoundSourceImpl::SetRequestedState( SoundSource::State state )
 {
 	boost::mutex::scoped_lock scoped_lock(m_StreamSoundMutex);
 
@@ -247,7 +247,7 @@ inline void COpenALStreamedSoundSourceImpl::SetRequestedState( CSoundSource::Sta
 }
 
 
-/// Needs a CSoundBuffer object to play a sound
+/// Needs a SoundBuffer object to play a sound
 /// - handle pause request from user and system differently
 class COpenALNonStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 {
@@ -271,7 +271,7 @@ public:
 
 	void SetLoop( bool loop );
 
-	CSoundSource::StreamType GetStreamType() { return CSoundSource::NonStreamed; }
+	SoundSource::StreamType GetStreamType() { return SoundSource::NonStreamed; }
 
 	void GetTextInfo( std::string& dest_buffer );
 };

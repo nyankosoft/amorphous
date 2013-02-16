@@ -231,11 +231,11 @@ bool CGameApplicationBase::InitBase()
 	// Sound Module Initialization
 	//
 
-	bool sound_module_init = SoundManager().Init( global_params.AudioLibraryName );
+	bool sound_module_init = GetSoundManager().Init( global_params.AudioLibraryName );
 
 	LOG_PRINT( " Sound module initialization: " + string(sound_module_init ? "[  OK  ]" : "[FAILED]") );
 
-	SoundManager().LoadSoundsFromList( "./Sound/SoundList.lst" );
+	GetSoundManager().LoadSoundsFromList( "./Sound/SoundList.lst" );
 
 
 	//

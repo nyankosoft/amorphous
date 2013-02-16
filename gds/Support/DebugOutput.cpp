@@ -177,7 +177,7 @@ void CDebugItem_GraphicsResourceManager::GetTextInfo()
 void CDebugItem_SoundManager::GetTextInfo()
 {
 	m_TextBuffer.resize( 0 );
-	SoundManager().GetTextInfo( m_TextBuffer );
+	GetSoundManager().GetTextInfo( m_TextBuffer );
 }
 
 

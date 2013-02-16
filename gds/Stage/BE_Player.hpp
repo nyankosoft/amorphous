@@ -83,7 +83,7 @@ protected:
 	float m_fBoost;
 
 	/// sound names played when the player gets shot
-	CSoundHandle m_aDamageSound[NUM_DAMAGE_TYPES][PLYAER_DAMAGESOUND_VARIATION];
+	SoundHandle m_aDamageSound[NUM_DAMAGE_TYPES][PLYAER_DAMAGESOUND_VARIATION];
 
 	/// view from the player
 	Camera m_Camera;

@@ -32,8 +32,8 @@ class CBE_DoorController : public BaseEntity
 
 	TCFixedVector<SDoorComponentSet, NUM_MAX_DOOR_COMPONENTS> m_vecDoorComponent;
 
-	CSoundHandle m_OpenSound;
-	CSoundHandle m_CloseSound;
+	SoundHandle m_OpenSound;
+	SoundHandle m_CloseSound;
 
 	/// passward string to unlock the door
 	std::string m_strKeyCode;

@@ -22,7 +22,7 @@ class CBE_SupplyItem : public BaseEntity
 	float m_fRotationSpeed;
 
 	/// played when player gets this item
-	CSoundHandle m_Sound;
+	SoundHandle m_Sound;
 
 	BaseEntityHandle m_PseudoGlare;	// base entity for pseudo glare effect put together with items
 

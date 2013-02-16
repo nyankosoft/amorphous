@@ -887,7 +887,7 @@ void CBE_PlayerPseudoAircraft::MessageProcedure(GameMessage& rGameMessage, CCopy
 		if( PLYAER_DAMAGESOUND_VARIATION <= iVariation )
 			iVariation = PLYAER_DAMAGESOUND_VARIATION - 1;
 
-//		SoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
+//		GetSoundManager().PlayAt( m_aDamageSound[rGameMessage.s1][iVariation], pCopyEnt_Self->Position() );
 
 		// flash screen with red
 //		m_pStage->GetScreenEffectManager()->FadeInFrom( 0x40F82000, 0.20f, D3DBLEND_INVSRCALPHA );

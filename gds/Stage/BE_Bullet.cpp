@@ -568,7 +568,7 @@ void CBE_Bullet::OnBulletHit( CCopyEntity* pCopyEnt, STrace& tr )
 			if( mat.HasSoundOf( CSurfaceMaterial::REACTION_TO_HIT ) )
 			{
 				// play hit sound
-				SoundManager().PlayAt( mat.GetSound_Random( CSurfaceMaterial::REACTION_TO_HIT ), pCopyEnt->GetWorldPosition() );
+				GetSoundManager().PlayAt( mat.GetSound_Random( CSurfaceMaterial::REACTION_TO_HIT ), pCopyEnt->GetWorldPosition() );
 			}
 		}
 	}

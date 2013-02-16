@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CSoundDesc
+class SoundDesc
 {
 public:
 
@@ -22,7 +22,7 @@ public:
 
 	Vector3 Velocity;
 
-	// CSoundSource::StreamType StreamType;
+	// SoundSource::StreamType StreamType;
 	bool Streamed;
 
 	bool Loop;
@@ -35,12 +35,12 @@ public:
 
 	float RollOffFactor;
 
-	CSoundSource::Type SoundSourceType;
+	SoundSource::Type SoundSourceType;
 
-	/// Sound source management type. CSoundSource::Manual by default.
+	/// Sound source management type. SoundSource::Manual by default.
 	/// - auto ... sound source is automatically released after being played.
-	/// - manual ... user is responsible for releasing the sound by calling SoundManager().ReleaseSoundSource()
-	CSoundSource::Management SourceManagement;
+	/// - manual ... user is responsible for releasing the sound by calling GetSoundManager().ReleaseSoundSource()
+	SoundSource::Management SourceManagement;
 
 	/// group to which the sound source belongs
 	/// e.g., music, effect, etc.
@@ -51,23 +51,23 @@ public:
 
 public:
 
-	CSoundDesc()
+	SoundDesc()
 		:
 	Position(Vector3(0,0,0)),
 	Direction(Vector3(0,0,0)),
 	Velocity(Vector3(0,0,0)),
-	SoundSourceType(CSoundSource::Type_Non3DSound),
+	SoundSourceType(SoundSource::Type_Non3DSound),
 	Loop(false),
 	Streamed(false),
 	MaxDistance(1000.0f),
 	ReferenceDistance(100.0f),
 	RollOffFactor(1.0f),
 	Volume(255),
-	SourceManagement(CSoundSource::Manual),
+	SourceManagement(SoundSource::Manual),
 	SoundGroup(-1)
 	{}
 
-	friend class CSoundManager;
+	friend class SoundManager;
 };
 
 } // namespace amorphous
