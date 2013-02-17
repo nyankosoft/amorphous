@@ -32,8 +32,8 @@ extern CGameApplicationBase *g_pGameAppBase;
 class CGameApplicationBase : public CApplicationBase
 {
 	boost::shared_ptr<MouseInputDevice> m_pMouse;
-	CDIKeyboard *m_pDIKeyboard;
-	CDirectInputGamepad *m_pDIGamepad;
+	DIKeyboard *m_pDIKeyboard;
+	DirectInputGamepad *m_pDIGamepad;
 
 protected:
 

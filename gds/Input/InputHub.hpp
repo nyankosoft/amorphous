@@ -30,15 +30,15 @@ namespace amorphous
     after removing the borrowed reference from the input hub.
   - The developer has two ways of registering and unregistering input handlers to the input hub.
     - 1. Set and remove input handlers to and from the input hub.
-      - Use CInputHandler::SetInputHandler() and CInputHandler::RemoveInputHandler()
+      - Use InputHandler::SetInputHandler() and InputHandler::RemoveInputHandler()
     - 2. Push and pop input handlers to and from the input hub.
-      - Use CInputHandler::PushInputHandler() and CInputHandler::PopInputHandler()
-      - You can pop a pushed input handler with CInputHandler::RemoveInputHandler().
-	    This is usually safer because CInputHandler::RemoveInputHandler() removes
+      - Use InputHandler::PushInputHandler() and InputHandler::PopInputHandler()
+      - You can pop a pushed input handler with InputHandler::RemoveInputHandler().
+	    This is usually safer because InputHandler::RemoveInputHandler() removes
         the input handler even if another input handler is on top of the stack.
     - Be careful when you use stack: all the input handlers in the stack must not be released until they are popped or removed.
  */
-class CInputHub
+class InputHub
 {
 public:
 
@@ -53,15 +53,15 @@ public:
 
 private:
 
-//	CInputHandler *m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
+//	InputHandler *m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
 
 	/// stacks of input handelers
 	/// - borrowed reference?
-	std::vector<CInputHandler *> m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
+	std::vector<InputHandler *> m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
 
 	int m_CurrentMaxIndex;
 
-	static CInputHub ms_InputHub_Instance_;		// singleton instance
+	static InputHub ms_InputHub_Instance_;		// singleton instance
 
 private:
 
@@ -72,13 +72,13 @@ private:
 
 protected:
 
-	CInputHub();
+	InputHub();
 
 public:
 
-	~CInputHub();
+	~InputHub();
 
-	static inline CInputHub& GetInstance() { return ms_InputHub_Instance_; }
+	static inline InputHub& GetInstance() { return ms_InputHub_Instance_; }
 
 	/// releases all input handlers
 //	void ReleaseInputHandlers();
@@ -87,48 +87,48 @@ public:
 
 	/// Sets an input handler in the slot 0.
 	/// Calling this will cause memory leak if an input handler already exists in the slot with the specified index.
-	inline void SetInputHandler( int index, CInputHandler *pInputHandler );
+	inline void SetInputHandler( int index, InputHandler *pInputHandler );
 
 	/// sets an input handler in the slot 0
-	inline void SetInputHandler( CInputHandler *pInputHandler );// { m_vecpInputHandler[0] = pInputHandler; }
+	inline void SetInputHandler( InputHandler *pInputHandler );// { m_vecpInputHandler[0] = pInputHandler; }
 
 
 	/// returns a borrowed reference to the root input handler currently at the top of the stack
 	/// - Does not pop the input handler from that stack.
 	/// - Never release the returned pointer before removing it from the stack with RemoveInputHandler()
-	inline CInputHandler *GetInputHandler( int index );
+	inline InputHandler *GetInputHandler( int index );
 
-	inline const CInputHandler *GetInputHandler( int index ) const;
+	inline const InputHandler *GetInputHandler( int index ) const;
 
 
-	inline void PushInputHandler( int index, CInputHandler *pInputHandler );
+	inline void PushInputHandler( int index, InputHandler *pInputHandler );
 
-	inline void PushInputHandler( CInputHandler *pInputHandler );
+	inline void PushInputHandler( InputHandler *pInputHandler );
 
 
 	// Removes the input handler currently on top of the stack specified with the index.
-	inline CInputHandler *PopInputHandler( int index );
+	inline InputHandler *PopInputHandler( int index );
 
 	/// Removes an input handler from the stack.
 	/// The input handler does not have to be at the top of the stack. The function search the stack and removes the input handler from the stack.
 	/// Does not release it from the memory.
 	/// \return Result::SUCCESS The specified input handler was found and removed.
 	/// \return Result::INVALID_ARGS The specified input handler was not found. The content of the stack was not changed.
-	inline Result::Name RemoveInputHandler( int index, CInputHandler *pInputHandler );
+	inline Result::Name RemoveInputHandler( int index, InputHandler *pInputHandler );
 
-	inline Result::Name RemoveInputHandler( CInputHandler *pInputHandler );
+	inline Result::Name RemoveInputHandler( InputHandler *pInputHandler );
 
 
-	inline void UpdateInput( SInputData& input );
+	inline void UpdateInput( InputData& input );
 
-	inline void SendAutoRepeatInputToInputHandlers( SInputData& input );
+	inline void SendAutoRepeatInputToInputHandlers( InputData& input );
 
-	friend class CInputDevice;
+	friend class InputDevice;
 };
 
 //=============================== inline implementations ===============================
 
-inline void CInputHub::UpdateMaxIndex()
+inline void InputHub::UpdateMaxIndex()
 {
 	for( int i=NUM_MAX_INPUT_HANDLERS-1; 0<=i; i-- )
 	{
@@ -143,7 +143,7 @@ inline void CInputHub::UpdateMaxIndex()
 }
 
 
-inline void CInputHub::UpdateInput( SInputData& input )
+inline void InputHub::UpdateInput( InputData& input )
 {
 	for( int i=0; i<=m_CurrentMaxIndex; i++ )
 	{
@@ -156,7 +156,7 @@ inline void CInputHub::UpdateInput( SInputData& input )
 }
 
 
-inline void CInputHub::SendAutoRepeatInputToInputHandlers( SInputData& input )
+inline void InputHub::SendAutoRepeatInputToInputHandlers( InputData& input )
 {
 	for( int i=0; i<=m_CurrentMaxIndex; i++ )
 	{
@@ -170,13 +170,13 @@ inline void CInputHub::SendAutoRepeatInputToInputHandlers( SInputData& input )
 }
 
 
-inline void CInputHub::SetInputHandler( CInputHandler *pInputHandler )
+inline void InputHub::SetInputHandler( InputHandler *pInputHandler )
 {
 	SetInputHandler( 0, pInputHandler );
 }
 
 
-inline void CInputHub::SetInputHandler( int index, CInputHandler *pInputHandler )
+inline void InputHub::SetInputHandler( int index, InputHandler *pInputHandler )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
 		return;
@@ -192,7 +192,7 @@ inline void CInputHub::SetInputHandler( int index, CInputHandler *pInputHandler 
 }
 
 /*
-inline void CInputHub::ReleaseInputHandler( int index )
+inline void InputHub::ReleaseInputHandler( int index )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
 		return;
@@ -202,7 +202,7 @@ inline void CInputHub::ReleaseInputHandler( int index )
 */
 
 
-inline CInputHandler *CInputHub::GetInputHandler( int index )
+inline InputHandler *InputHub::GetInputHandler( int index )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
 		return NULL;
@@ -214,20 +214,20 @@ inline CInputHandler *CInputHub::GetInputHandler( int index )
 }
 
 
-inline const CInputHandler *CInputHub::GetInputHandler( int index ) const
+inline const InputHandler *InputHub::GetInputHandler( int index ) const
 {
-	const CInputHub& const_ref = (*this);
+	const InputHub& const_ref = (*this);
 	return const_ref.GetInputHandler(index);
 }
 
 
-inline void CInputHub::PushInputHandler( CInputHandler *pInputHandler )
+inline void InputHub::PushInputHandler( InputHandler *pInputHandler )
 {
 	m_vecpInputHandler[0].push_back( pInputHandler );
 }
 
 
-inline void CInputHub::PushInputHandler( int index, CInputHandler *pInputHandler )
+inline void InputHub::PushInputHandler( int index, InputHandler *pInputHandler )
 {
 	m_vecpInputHandler[index].push_back( pInputHandler );
 
@@ -236,7 +236,7 @@ inline void CInputHub::PushInputHandler( int index, CInputHandler *pInputHandler
 }
 
 
-inline CInputHandler *CInputHub::PopInputHandler( int index )
+inline InputHandler *InputHub::PopInputHandler( int index )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
 		return NULL;
@@ -244,7 +244,7 @@ inline CInputHandler *CInputHub::PopInputHandler( int index )
 	if( m_vecpInputHandler[index].size() == 0 )
 		return NULL;	// no input handler in the stack
 
-	CInputHandler* pTop = m_vecpInputHandler[index].back();
+	InputHandler* pTop = m_vecpInputHandler[index].back();
 
 	m_vecpInputHandler[index].pop_back();
 
@@ -253,7 +253,7 @@ inline CInputHandler *CInputHub::PopInputHandler( int index )
 }
 
 
-inline Result::Name CInputHub::RemoveInputHandler( int index, CInputHandler *pInputHandler )
+inline Result::Name InputHub::RemoveInputHandler( int index, InputHandler *pInputHandler )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
 		return Result::INVALID_ARGS;
@@ -281,7 +281,7 @@ inline Result::Name CInputHub::RemoveInputHandler( int index, CInputHandler *pIn
 }
 
 
-inline Result::Name CInputHub::RemoveInputHandler( CInputHandler *pInputHandler )
+inline Result::Name InputHub::RemoveInputHandler( InputHandler *pInputHandler )
 {
 	for( int i=0; i<NUM_MAX_INPUT_HANDLERS; i++ )
 	{
@@ -294,10 +294,10 @@ inline Result::Name CInputHub::RemoveInputHandler( CInputHandler *pInputHandler 
 }
 
 
-inline CInputHub& InputHub()
+inline InputHub& GetInputHub()
 {
-//	return (*CInputHub::Get());
-	return CInputHub::GetInstance();
+//	return (*InputHub::Get());
+	return InputHub::GetInstance();
 }
 
 

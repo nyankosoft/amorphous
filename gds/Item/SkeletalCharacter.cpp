@@ -184,14 +184,14 @@ Result::Name SkeletalCharacter::InitClothSystem()
 void SkeletalCharacter::InitInputHandler( int input_handler_index )
 {
 	if( m_pInputHandler )
-		InputHub().RemoveInputHandler( m_pInputHandler.get() );
+		GetInputHub().RemoveInputHandler( m_pInputHandler.get() );
 
 	m_pInputHandler.reset( new CInputDataDelegate<SkeletalCharacter>( this ) );
 
-	if( InputHub().GetInputHandler(input_handler_index) )
-		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler.get() );
+	if( GetInputHub().GetInputHandler(input_handler_index) )
+		GetInputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler.get() );
 	else
-		InputHub().PushInputHandler( input_handler_index, m_pInputHandler.get() );
+		GetInputHub().PushInputHandler( input_handler_index, m_pInputHandler.get() );
 }
 
 
@@ -512,7 +512,7 @@ CInputState::Name SkeletalCharacter::GetActionInputState( int action_code, CKeyB
 	for( size_t i=0; i<itr->second.size(); i++ )
 	{
 		CInputState::Name input_stat
-			= InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( itr->second[i] ); 
+			= GetInputDeviceHub().GetInputDeviceGroup(0)->GetInputState( itr->second[i] ); 
 
 		// Key is considered pressed if any one of the keys for the general input codes are pressed.
 		if( input_stat == CInputState::PRESSED )
@@ -523,7 +523,7 @@ CInputState::Name SkeletalCharacter::GetActionInputState( int action_code, CKeyB
 }
 
 
-void SkeletalCharacter::HandleInput( const SInputData& input_data )
+void SkeletalCharacter::HandleInput( const InputData& input_data )
 {
 	int action_code = m_pKeyBind ? m_pKeyBind->GetActionCode( input_data.iGICode ) : ACTION_NOT_ASSIGNED;
 
@@ -1009,7 +1009,7 @@ void SkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 }
 
 
-bool CCharacterMotionNodeAlgorithm::HandleInputForTransition( const SInputData& input, int action_code )
+bool CCharacterMotionNodeAlgorithm::HandleInputForTransition( const InputData& input, int action_code )
 {
 	map<pair<int,int>,string>::iterator itr = m_ActionInputsToMotionNodes.find( pair<int,int>(action_code,input.iType) );
 	if( itr != m_ActionInputsToMotionNodes.end() )
@@ -1028,7 +1028,7 @@ CInputState::Name CCharacterMotionNodeAlgorithm::GetActionInputState( int action
 }
 
 
-bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input, int action_code )
+bool CCharacterMotionNodeAlgorithm::HandleInput( const InputData& input, int action_code )
 {
 	bool res = HandleInputForTransition( input, action_code );
 	if( res )
@@ -1145,7 +1145,7 @@ void CFwdMotionNode::Update( float dt )
 }
 
 
-bool CFwdMotionNode::HandleInput( const SInputData& input, int action_code )
+bool CFwdMotionNode::HandleInput( const InputData& input, int action_code )
 {
 	CCharacterMotionNodeAlgorithm::HandleInput( input, action_code );
 
@@ -1200,7 +1200,7 @@ void CRunMotionNode::Update( float dt )
 }
 
 
-bool CRunMotionNode::HandleInput( const SInputData& input, int action_code )
+bool CRunMotionNode::HandleInput( const InputData& input, int action_code )
 {
 	CCharacterMotionNodeAlgorithm::HandleInput( input, action_code );
 
@@ -1264,7 +1264,7 @@ void CJumpMotionNode::EnterState()
 }
 
 
-bool CJumpMotionNode::HandleInput( const SInputData& input, int action_code )
+bool CJumpMotionNode::HandleInput( const InputData& input, int action_code )
 {
 	return false;
 }
@@ -1284,7 +1284,7 @@ void CStandingMotionNode::Update( float dt )
 }
 
 
-bool CStandingMotionNode::HandleInput( const SInputData& input, int action_code )
+bool CStandingMotionNode::HandleInput( const InputData& input, int action_code )
 {
 	CCharacterMotionNodeAlgorithm::HandleInput( input, action_code );
 

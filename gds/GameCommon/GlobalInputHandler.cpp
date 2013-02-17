@@ -75,7 +75,7 @@ CGlobalInputHandler::~CGlobalInputHandler()
 }
 
 
-void CGlobalInputHandler::ProcessInput(SInputData& input)
+void CGlobalInputHandler::ProcessInput(InputData& input)
 {
 	switch( input.iGICode )
 	{

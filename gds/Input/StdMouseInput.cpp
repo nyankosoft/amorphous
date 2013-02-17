@@ -6,24 +6,24 @@ namespace amorphous
 {
 
 
-CStdMouseInput::CStdMouseInput()
+Win32StdMouseInput::Win32StdMouseInput()
 {
 	m_iPosX = 0;
 	m_iPosY = 0;
 
-	InputDeviceHub().RegisterInputDeviceToGroup( this );
+	GetInputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 
-Result::Name CStdMouseInput::SendBufferedInputToInputHandlers()
+Result::Name Win32StdMouseInput::SendBufferedInputToInputHandlers()
 {
 	return Result::UNKNOWN_ERROR;
 }
 
 
-void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
+void Win32StdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	SInputData input;
+	InputData input;
 
 	int iMouseMoveX, iMouseMoveY;
 	int iNewPosX, iNewPosY;
@@ -49,19 +49,19 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_L;
 			UpdateInputState( input );
-			InputHub().UpdateInput( input );
+			GetInputHub().UpdateInput( input );
 		}
 		else if( msg == WM_RBUTTONDOWN || msg == WM_RBUTTONUP )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_R;
 			UpdateInputState( input );
-			InputHub().UpdateInput( input );
+			GetInputHub().UpdateInput( input );
 		}
 		else if( msg == WM_MBUTTONDOWN )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_M;
 			UpdateInputState( input );
-			InputHub().UpdateInput( input );
+			GetInputHub().UpdateInput( input );
 		}
 
 		break;
@@ -82,14 +82,14 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 		{
 			input.iGICode = GIC_MOUSE_AXIS_X;
 			input.fParam1 = (float)iMouseMoveX;
-			InputHub().UpdateInput( input );
+			GetInputHub().UpdateInput( input );
 		}
 
 		if( iMouseMoveY != 0 )
 		{
 			input.iGICode = GIC_MOUSE_AXIS_Y;
 			input.fParam1 = (float)iMouseMoveY;
-			InputHub().UpdateInput( input );
+			GetInputHub().UpdateInput( input );
 		}
 
 		m_iPosX = iNewPosX;
@@ -101,7 +101,7 @@ void CStdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 //		input.iGICode = GIC_MOUSE_WHEEL_UP;
 		input.iGICode = ( 0 < rotated_dist ) ? GIC_MOUSE_WHEEL_UP : GIC_MOUSE_WHEEL_DOWN;
 		UpdateInputState( input );
-		InputHub().UpdateInput( input );
+		GetInputHub().UpdateInput( input );
 		break;
 	}
 

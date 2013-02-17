@@ -9,14 +9,14 @@ namespace amorphous
 {
 
 
-class CStdMouseInput : public MouseInputDevice
+class Win32StdMouseInput : public MouseInputDevice
 {
 	int m_iPosX, m_iPosY;	// current mouse position
 
 public:
 
-	CStdMouseInput();
-	~CStdMouseInput() {}
+	Win32StdMouseInput();
+	~Win32StdMouseInput() {}
 
 	Result::Name SendBufferedInputToInputHandlers();
 

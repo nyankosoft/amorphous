@@ -8,22 +8,22 @@
 namespace amorphous
 {
 
-struct SInputData;
-class CInputHandler;
+struct InputData;
+class InputHandler;
 
-class CInputDevice;
+class InputDevice;
 class MouseInputDevice;
-class CInputDeviceStateCallback;
-class CStdKeyboard;        /// for Windows platform
-class CStdMouseInput;      /// for Windows platform
-class CDIKeyboard;         /// for Windows platform (DirectInput)
-class CDirectInputMouse;   /// for Windows platform (DirectInput)
-class CDirectInputGamepad; /// for Windows platform (DirectInput)
+class InputDeviceStateCallback;
+class Win32StdKeyboard;        /// for Windows platform
+class Win32StdMouseInput;      /// for Windows platform
+class DIKeyboard;         /// for Windows platform (DirectInput)
+class DirectInputMouse;   /// for Windows platform (DirectInput)
+class DirectInputGamepad; /// for Windows platform (DirectInput)
 
-typedef boost::shared_ptr<CInputHandler> CInputHandlerSharedPtr;
+typedef boost::shared_ptr<InputHandler> InputHandlerSharedPtr;
 
 
-class CInputDeviceParam
+class InputDeviceParam
 {
 public:
 

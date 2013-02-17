@@ -32,10 +32,10 @@ BOOL CALLBACK    EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VO
 static LPDIRECTINPUTDEVICE8 g_pDITempJoystickDevice = NULL;
 //static vector<DIDEVICEOBJECTINSTANCE> g_vecDITempJoystickDeviceInstance;
 static boost::mutex gs_GamepadDeviceCreationMutex;
-static CDirectInputGamepad *sg_pDIGamepad = NULL;
+static DirectInputGamepad *sg_pDIGamepad = NULL;
 
 
-CDirectInputGamepad::CDirectInputGamepad()
+DirectInputGamepad::DirectInputGamepad()
 :
 m_pDIJoystick(NULL)
 {
@@ -61,17 +61,17 @@ m_pDIJoystick(NULL)
 	for( i=0; i<NUM_ANALOG_CONTROLS; i++ )
         m_afAnalogInputScale[i] = 1.0f;
 
-	InputDeviceHub().RegisterInputDeviceToGroup( this );
+	GetInputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 
-CDirectInputGamepad::~CDirectInputGamepad()
+DirectInputGamepad::~DirectInputGamepad()
 {
 	Release();
 }
 
 
-void CDirectInputGamepad::Release()
+void DirectInputGamepad::Release()
 {
     // Unacquire the device one last time just in case
     // the app tried to exit while the device is still acquired.
@@ -83,7 +83,7 @@ void CDirectInputGamepad::Release()
 }
 
 
-HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
+HRESULT DirectInputGamepad::InitDIGamepad( HWND hWnd )
 {
 	if( !m_pDIJoystick )
 		return E_FAIL;
@@ -195,7 +195,7 @@ HRESULT CDirectInputGamepad::InitDIGamepad( HWND hWnd )
 }
 
 
-Result::Name CDirectInputGamepad::Init()
+Result::Name DirectInputGamepad::Init()
 {
 	boost::mutex::scoped_lock( gs_GamepadDeviceCreationMutex );
 
@@ -234,7 +234,7 @@ Result::Name CDirectInputGamepad::Init()
 }
 
 
-Result::Name CDirectInputGamepad::InitDevice( const DIDEVICEINSTANCE& di )
+Result::Name DirectInputGamepad::InitDevice( const DIDEVICEINSTANCE& di )
 {
 	m_InstanceName = di.tszInstanceName;
 	m_ProductName  = di.tszProductName;
@@ -254,7 +254,7 @@ Result::Name CDirectInputGamepad::InitDevice( const DIDEVICEINSTANCE& di )
 
 
 
-Result::Name CDirectInputGamepad::CreateDevice( const DIDEVICEINSTANCE& di )
+Result::Name DirectInputGamepad::CreateDevice( const DIDEVICEINSTANCE& di )
 {
 	HRESULT hr;
 	hr = DIRECTINPUT.GetDirectInputObject()->CreateDevice( di.guidInstance, &m_pDIJoystick, NULL );
@@ -431,7 +431,7 @@ BOOL CALLBACK EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi,
 }
 
 
-HRESULT CDirectInputGamepad::Acquire()
+HRESULT DirectInputGamepad::Acquire()
 {
 	if( m_pDIJoystick )
 		return m_pDIJoystick->Acquire();
@@ -441,7 +441,7 @@ HRESULT CDirectInputGamepad::Acquire()
 
 
 /// Read input data from buffer
-HRESULT CDirectInputGamepad::ReadBufferedData()
+HRESULT DirectInputGamepad::ReadBufferedData()
 {
 	m_pDIJoystick->Poll();
 
@@ -502,7 +502,7 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
     if( FAILED(hr) )  
         return hr;
 
-	SInputData input;
+	InputData input;
 
     // Study each of the buffer elements and process them.
     for( i = 0; i < dwElements; i++ )
@@ -521,7 +521,7 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 		if( DIJOFS_BUTTON0 <= didod[i].dwOfs && didod[i].dwOfs <= DIJOFS_BUTTON11 )
 		{
 			input.iGICode = GIC_GPD_BUTTON_00 + ( didod[i].dwOfs - DIJOFS_BUTTON0 );
-			InputHub().UpdateInput(input);
+			GetInputHub().UpdateInput(input);
 
 			UpdateInputState( input );
 /*
@@ -614,7 +614,7 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 		input.fParam1 *= m_afAnalogInputScale[i]; // scale to a user defined value if necessary
 //		input.iParam = m_aAxisPosition[i]; // non-scaled original value (signed integer)
 
-		InputHub().UpdateInput(input);
+		GetInputHub().UpdateInput(input);
 	}
 
 	if( m_bSendExtraDigitalInputFromAnalogInput )
@@ -634,7 +634,7 @@ HRESULT CDirectInputGamepad::ReadBufferedData()
 }
 
 
-bool CDirectInputGamepad::IsKeyPressed( int gi_code )
+bool DirectInputGamepad::IsKeyPressed( int gi_code )
 {
 	DWORD& pov0 = m_InputState.rgdwPOV[0];
 	switch( gi_code )
@@ -668,7 +668,7 @@ bool CDirectInputGamepad::IsKeyPressed( int gi_code )
 }
 
 
-void CDirectInputGamepad::RefreshKeyStates()
+void DirectInputGamepad::RefreshKeyStates()
 {
     if( NULL == m_pDIJoystick ) 
         return;// S_OK;
@@ -694,7 +694,7 @@ void CDirectInputGamepad::RefreshKeyStates()
 }
 
 
-Result::Name CDirectInputGamepad::SendBufferedInputToInputHandlers()
+Result::Name DirectInputGamepad::SendBufferedInputToInputHandlers()
 {
 	HRESULT hr = ReadBufferedData();
 
@@ -705,7 +705,7 @@ Result::Name CDirectInputGamepad::SendBufferedInputToInputHandlers()
 }
 
 
-void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
+void DirectInputGamepad::SendAnalogInputAsDigitalInput()
 {
 	static const int s_GICodeForBinarizedAnalogInput[] =
 	{
@@ -717,7 +717,7 @@ void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
 		GIC_GPD_ROTATION_Z_D, ///< ROTATION_Z,
 	};
 
-	SInputData input;
+	InputData input;
 	for( int i=0; i<NUM_ANALOG_CONTROLS; i++ )
 	{
 		const int& dirkey_threshold = 700;
@@ -735,13 +735,13 @@ void CDirectInputGamepad::SendAnalogInputAsDigitalInput()
 		{
 			input.iType = ITYPE_KEY_PRESSED;
 			input.fParam1 = 1.0f;
-			InputHub().UpdateInput(input);
+			GetInputHub().UpdateInput(input);
 		}
 		else if( prev_hold && !hold )
 		{
 			input.iType = ITYPE_KEY_RELEASED;
 			input.fParam1 = 0.0f;
-			InputHub().UpdateInput(input);
+			GetInputHub().UpdateInput(input);
 		}
 
 		// update input state
@@ -763,9 +763,9 @@ static inline int GetGICodeFromPOV( int pov )
 }
 
 
-void CDirectInputGamepad::SendPOVInputAsDigitalInput()
+void DirectInputGamepad::SendPOVInputAsDigitalInput()
 {
-	SInputData input;
+	InputData input;
 	for( int i=0; i<1/*NUM_POV_INPUTS*/; i++ )
 	{
 		if( m_aPrevPOV[i] == -1 && m_aPOV[i] != -1 )
@@ -773,7 +773,7 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 			input.iGICode = GetGICodeFromPOV( m_aPOV[i] );
 			input.iType = ITYPE_KEY_PRESSED;
 			input.fParam1 = 1.0f;
-			InputHub().UpdateInput(input);
+			GetInputHub().UpdateInput(input);
 
 			// update input state
 			UpdateInputState( input );
@@ -783,7 +783,7 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 			input.iGICode = GetGICodeFromPOV( m_aPrevPOV[i] );
 			input.iType = ITYPE_KEY_RELEASED;
 			input.fParam1 = 0.0f;
-			InputHub().UpdateInput(input);
+			GetInputHub().UpdateInput(input);
 
 			// update input state
 			UpdateInputState( input );
@@ -795,7 +795,7 @@ void CDirectInputGamepad::SendPOVInputAsDigitalInput()
 }
 
 
-CForceFeedbackEffect CDirectInputGamepad::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
+CForceFeedbackEffect DirectInputGamepad::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
 {
 	CForceFeedbackEffect ffe;
 
@@ -814,7 +814,7 @@ CForceFeedbackEffect CDirectInputGamepad::CreateForceFeedbackEffect( const CForc
 }
 
 
-Result::Name CDirectInputGamepad::InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl )
+Result::Name DirectInputGamepad::InitForceFeedbackEffect( CDIForceFeedbackEffectImpl& impl )
 {
 	Result::Name res = impl.Init( m_pFFParams );
 
@@ -822,7 +822,7 @@ Result::Name CDirectInputGamepad::InitForceFeedbackEffect( CDIForceFeedbackEffec
 }
 
 
-void CDirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
+void DirectInputGamepad::GetStatus( std::vector<std::string>& buffer )
 {
 	buffer.reserve( NUM_ANALOG_CONTROLS + 1 );
 

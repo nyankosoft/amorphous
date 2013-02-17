@@ -18,7 +18,7 @@ namespace amorphous
 {
 
 
-class CInputDevice
+class InputDevice
 {
 	enum Param
 	{
@@ -26,7 +26,7 @@ class CInputDevice
 //		NUM_MAX_SIMULTANEOUS_PRESSES  = 4,
 	};
 
-	void SetGroup( CInputDeviceGroup *pGroup );
+	void SetGroup( InputDeviceGroup *pGroup );
 
 protected:
 
@@ -34,7 +34,7 @@ protected:
 
 	std::string m_ProductName;
 
-	CInputDeviceGroup *m_pGroup;
+	InputDeviceGroup *m_pGroup;
 
 protected:
 
@@ -59,17 +59,17 @@ public:
 
 public:
 
-	CInputDevice();
+	InputDevice();
 
-	virtual ~CInputDevice();
+	virtual ~InputDevice();
 
-	virtual CInputDevice::InputDeviceType GetInputDeviceType() const = 0;
+	virtual InputDevice::InputDeviceType GetInputDeviceType() const = 0;
 
-	TCFixedVector<int,CInputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& PressedKeyList() { return m_pGroup->m_PressedKeyList; }
+	TCFixedVector<int,InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& PressedKeyList() { return m_pGroup->m_PressedKeyList; }
 
 	CInputState& InputState( int gi_code ) { return m_pGroup->m_aInputState[gi_code]; }
 
-	void UpdateInputState( const SInputData& input_data );
+	void UpdateInputState( const InputData& input_data );
 
 	virtual Result::Name Init() { return Result::SUCCESS; }
 
@@ -83,39 +83,39 @@ public:
 
 	virtual void GetStatus( std::vector<std::string>& buffer ) {}
 
-	friend class CInputDeviceHub;
+	friend class InputDeviceHub;
 };
 
 
 
 /// Used as a singleton class
-class CInputDeviceHub
+class InputDeviceHub
 {
-	std::vector<CInputDevice *> m_vecpInputDevice;
+	std::vector<InputDevice *> m_vecpInputDevice;
 
-	std::vector< boost::shared_ptr<CInputDeviceGroup> > m_vecpGroup;
+	std::vector< boost::shared_ptr<InputDeviceGroup> > m_vecpGroup;
 
 	boost::mutex m_Mutex;
 
 public:
 
-	CInputDeviceHub();
+	InputDeviceHub();
 
-	void RegisterInputDevice( CInputDevice *pDevice );
+	void RegisterInputDevice( InputDevice *pDevice );
 
-	void UnregisterInputDevice( CInputDevice *pDevice );
+	void UnregisterInputDevice( InputDevice *pDevice );
 
-	void RegisterInputDeviceToGroup( CInputDevice *pDevice );
+	void RegisterInputDeviceToGroup( InputDevice *pDevice );
 
-	void UnregisterInputDeviceFromGroup( CInputDevice *pDevice );
+	void UnregisterInputDeviceFromGroup( InputDevice *pDevice );
 
 	void SendInputToInputHandlers();
 
 	void SendAutoRepeat();
 
-	void SendAutoRepeat( CInputDeviceGroup& group );
+	void SendAutoRepeat( InputDeviceGroup& group );
 
-	boost::shared_ptr<CInputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
+	boost::shared_ptr<InputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
 
 	int GetNumInputDeviceGroups() const { return (int)m_vecpGroup.size(); }
 
@@ -123,24 +123,24 @@ public:
 };
 
 
-inline CInputDeviceHub& InputDeviceHub()
+inline InputDeviceHub& GetInputDeviceHub()
 {
-	static CInputDeviceHub s_instance;
+	static InputDeviceHub s_instance;
 	return s_instance;
 }
 
 
-template<class CInputDeviceClass>
-inline CInputDeviceClass *GetPrimaryInputDevice()
+template<class InputDeviceClass>
+inline InputDeviceClass *GetPrimaryInputDevice()
 {
-	boost::shared_ptr<CInputDeviceGroup> pGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	boost::shared_ptr<InputDeviceGroup> pGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 	if( !pGroup )
 		return NULL;
 
-	const std::vector<CInputDevice *>& pInputDevices = pGroup->InputDevice();
+	const std::vector<InputDevice *>& pInputDevices = pGroup->InputDevice();
 	for( size_t i=0; i<pInputDevices.size(); i++ )
 	{
-		CInputDeviceClass *pDest = dynamic_cast<CInputDeviceClass *>( pInputDevices[i] );
+		InputDeviceClass *pDest = dynamic_cast<InputDeviceClass *>( pInputDevices[i] );
 		if( !pDest )
 			continue;
 

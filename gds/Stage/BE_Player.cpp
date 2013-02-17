@@ -141,7 +141,7 @@ void CBE_Player::InitCopyEntity(CCopyEntity* pCopyEnt)
 	// set the input handler for the player entity operations
 	SafeDelete( m_pInputHandler );
 	m_pInputHandler = CreatePlayerInputHandler();
-	InputHub().PushInputHandler( ms_InputHandlerIndex, m_pInputHandler );
+	GetInputHub().PushInputHandler( ms_InputHandlerIndex, m_pInputHandler );
 
 //	SinglePlayerInfo().SetInputHandlerForPlayerShip();
 }
@@ -192,7 +192,7 @@ void CBE_Player::Act(CCopyEntity* pCopyEnt)
 ///	else
 //		LaserAimingDevice( false );
 
-	CInputHandler_PlayerBase *pInputHandler = m_pInputHandler;
+	InputHandler_PlayerBase *pInputHandler = m_pInputHandler;
 	if( pInputHandler
 	 && 0 < pInputHandler->GetActionState(ACTION_ATK_UNLOCK_TRIGGER_SAFETY) )
 		LaserAimingDevice( true );
@@ -430,7 +430,7 @@ void CBE_Player::OnEntityDestroyed(CCopyEntity* pCopyEnt)
 
 	if( m_pInputHandler )
 	{
-		InputHub().RemoveInputHandler( ms_InputHandlerIndex, m_pInputHandler );
+		GetInputHub().RemoveInputHandler( ms_InputHandlerIndex, m_pInputHandler );
 		SafeDelete( m_pInputHandler );
 	}
 }

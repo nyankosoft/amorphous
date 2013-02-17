@@ -18,11 +18,11 @@ namespace amorphous
 {
 
 
-class CInputDeviceStateCallback
+class InputDeviceStateCallback
 {
 public:
 
-	virtual ~CInputDeviceStateCallback() {}
+	virtual ~InputDeviceStateCallback() {}
 
 	virtual void OnInputDeviceDetected() {}
 	virtual void OnInputDeviceInitialized() {}
@@ -35,7 +35,7 @@ class CDIInputDeviceContainer
 {
 public:
 
-	boost::shared_ptr<CDirectInputGamepad> m_pGamepad;
+	boost::shared_ptr<DirectInputGamepad> m_pGamepad;
 
 	DIDEVICEINSTANCE m_DeviceInstance;
 
@@ -104,7 +104,7 @@ class CDIInputDeviceMonitor : public thread_class
 
 	bool m_ExitThread;
 
-	boost::shared_ptr<CInputDeviceStateCallback> m_pCallback;
+	boost::shared_ptr<InputDeviceStateCallback> m_pCallback;
 
 private:
 
@@ -149,9 +149,9 @@ public:
 
 	void AcquireInputDevices();
 
-	void RegisterCallback( boost::shared_ptr<CInputDeviceStateCallback> pCallback ) { m_pCallback = pCallback; }
+	void RegisterCallback( boost::shared_ptr<InputDeviceStateCallback> pCallback ) { m_pCallback = pCallback; }
 
-	void UnregisterCallback() { m_pCallback = boost::shared_ptr<CInputDeviceStateCallback>(); }
+	void UnregisterCallback() { m_pCallback = boost::shared_ptr<InputDeviceStateCallback>(); }
 };
 
 

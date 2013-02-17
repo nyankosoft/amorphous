@@ -5,9 +5,9 @@ namespace amorphous
 {
 
 // definition of the singleton instance
-CDirectInput CDirectInput::ms_SingletonInstance_;
+DirectInput DirectInput::ms_SingletonInstance_;
 
-CDirectInput::CDirectInput()
+DirectInput::DirectInput()
 : m_pDI(NULL)
 {
 }
@@ -15,7 +15,7 @@ CDirectInput::CDirectInput()
 
 #define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
 
-CDirectInput::~CDirectInput()
+DirectInput::~DirectInput()
 {
 	if( m_pDI )
 	{
@@ -24,7 +24,7 @@ CDirectInput::~CDirectInput()
 	}
 }
 
-HRESULT CDirectInput::InitDirectInput()
+HRESULT DirectInput::InitDirectInput()
 {
 	HRESULT hr;
 
@@ -36,7 +36,7 @@ HRESULT CDirectInput::InitDirectInput()
 	return S_OK;
 }
 
-LPDIRECTINPUT8 CDirectInput::GetDirectInputObject()
+LPDIRECTINPUT8 DirectInput::GetDirectInputObject()
 {
 	if( !m_pDI )
 		InitDirectInput();

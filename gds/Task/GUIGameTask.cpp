@@ -34,7 +34,7 @@ GUIGameTask::~GUIGameTask()
 {
 	// Remove the borrowed reference of the GUI input handler
 	// from the list of child input handlers of m_pInputHandler
-	InputHub().RemoveInputHandler( m_pGUIInputHandler.get() );
+	GetInputHub().RemoveInputHandler( m_pGUIInputHandler.get() );
 }
 
 

@@ -38,7 +38,7 @@ public:
 
 	virtual void Update( float dt ) {}
 
-	virtual bool HandleInput( const SInputData& input_data, int action_code ) { return false; }
+	virtual bool HandleInput( const InputData& input_data, int action_code ) { return false; }
 
 	friend class SkeletalCharacter;
 };
@@ -82,7 +82,7 @@ class SkeletalCharacter : public GameItem
 
 	boost::shared_ptr<msynth::CMotionFSMInputHandler> m_pMotionFSMInputHandler;
 
-	boost::shared_ptr<CInputHandler> m_pInputHandler;
+	boost::shared_ptr<InputHandler> m_pInputHandler;
 
 	boost::shared_ptr<CKeyBind> m_pKeyBind;
 
@@ -147,7 +147,7 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input_data );
+	void HandleInput( const InputData& input_data );
 
 	void OnPhysicsTrigger( physics::CShape& my_shape, CCopyEntity &other_entity, physics::CShape& other_shape, U32 trigger_flags );
 
@@ -205,7 +205,7 @@ public:
 	void Update( float dt ) {}
 
 	/// Returns true if the input was handled.
-	bool HandleInput( const SInputData& input ) { return false; }
+	bool HandleInput( const InputData& input ) { return false; }
 };
 
 
@@ -224,7 +224,7 @@ protected:
 
 protected:
 
-	bool HandleInputForTransition( const SInputData& input, int action_code );
+	bool HandleInputForTransition( const InputData& input, int action_code );
 
 public:
 
@@ -238,9 +238,9 @@ public:
 
 //	void SetKeyBind( boost::shared_ptr<CKeyBind>& pKeybind ) { m_pKeybind = pKeybind; }
 
-	inline bool HandleInput( const SInputData& input );
+	inline bool HandleInput( const InputData& input );
 
-	virtual bool HandleInput( const SInputData& input, int action_code );
+	virtual bool HandleInput( const InputData& input, int action_code );
 
 	CInputState::Name GetActionInputState( int action_code );
 
@@ -248,9 +248,9 @@ public:
 };
 
 
-inline bool CCharacterMotionNodeAlgorithm::HandleInput( const SInputData& input )
+inline bool CCharacterMotionNodeAlgorithm::HandleInput( const InputData& input )
 {
-	SInputData input_copy = input;
+	InputData input_copy = input;
 
 	const boost::shared_ptr<CKeyBind> pKeybind = GetKeyBind();
 	if( !pKeybind )
@@ -276,7 +276,7 @@ public:
 
 	void Update( float dt );
 
-	bool HandleInput( const SInputData& input, int action_code );
+	bool HandleInput( const InputData& input, int action_code );
 
 	void EnterState();
 };
@@ -288,7 +288,7 @@ public:
 
 	void Update( float dt );
 
-	bool HandleInput( const SInputData& input, int action_code );
+	bool HandleInput( const InputData& input, int action_code );
 
 	void EnterState();
 };
@@ -302,7 +302,7 @@ public:
 
 	void Update( float dt );
 
-	bool HandleInput( const SInputData& input, int action_code );
+	bool HandleInput( const InputData& input, int action_code );
 
 	void EnterState();
 };
@@ -315,7 +315,7 @@ public:
 
 	void Update( float dt );
 
-	bool HandleInput( const SInputData& input, int action_code );
+	bool HandleInput( const InputData& input, int action_code );
 };
 
 

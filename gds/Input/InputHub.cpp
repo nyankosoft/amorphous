@@ -7,12 +7,12 @@ namespace amorphous
 
 
 //===================================================================
-// CInputHub
+// InputHub
 //===================================================================
 
-CInputHub CInputHub::ms_InputHub_Instance_;
+InputHub InputHub::ms_InputHub_Instance_;
 
-CInputHub::CInputHub()
+InputHub::InputHub()
 :
 m_CurrentMaxIndex(-1)
 {
@@ -27,13 +27,13 @@ m_CurrentMaxIndex(-1)
 }
 
 
-CInputHub::~CInputHub()
+InputHub::~InputHub()
 {
 //	ReleaseInputHandlers();
 }
 
 /*
-void CInputHub::ReleaseInputHandlers()
+void InputHub::ReleaseInputHandlers()
 {
 	for( int i=0; i<NUM_MAX_INPUT_HANDLERS; i++ )
 		SafeDelete( m_apInputHandler[i] );

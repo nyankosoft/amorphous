@@ -38,7 +38,7 @@ public:
 	void SetVerticalMotionInput( float f ) { m_fVeritcalCameraSpaceInput = f; }
 	void SetHorizontalMotionInput( float f ) { m_fHorizontalCameraSpaceInput = f; }
 
-	void HandleInput( int action_code, const SInputData& input );
+	void HandleInput( int action_code, const InputData& input );
 };
 
 } // namespace amorphous

@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-CInputHandler_PlayerShip::CInputHandler_PlayerShip()
+InputHandler_PlayerShip::InputHandler_PlayerShip()
 {
 /*	int i;
 	for( i=0; i<256; i++ )
@@ -27,12 +27,12 @@ CInputHandler_PlayerShip::CInputHandler_PlayerShip()
 }
 
 
-CInputHandler_PlayerShip::~CInputHandler_PlayerShip()
+InputHandler_PlayerShip::~InputHandler_PlayerShip()
 {
 }
 
 
-void CInputHandler_PlayerShip::SetDefaultKeyBind()
+void InputHandler_PlayerShip::SetDefaultKeyBind()
 {
 	m_aiActionForGICode['E']			= ACTION_MOV_FORWARD;
 	m_aiActionForGICode['S']			= ACTION_MOV_SLIDE_L;
@@ -81,7 +81,7 @@ void CInputHandler_PlayerShip::SetDefaultKeyBind()
 }
 
 
-void CInputHandler_PlayerShip::ProcessInput( SInputData& input )
+void InputHandler_PlayerShip::ProcessInput( InputData& input )
 {
 	CBE_Player* pPlayerBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 

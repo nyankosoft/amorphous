@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-class CInputHandler_StageDebug : public CInputHandler
+class InputHandler_StageDebug : public InputHandler
 {
 	boost::weak_ptr<CStage> m_pStage;
 
@@ -24,15 +24,15 @@ private:
 
 public:
 
-	CInputHandler_StageDebug( boost::weak_ptr<CStage> pStage )
+	InputHandler_StageDebug( boost::weak_ptr<CStage> pStage )
 		:
 	m_pStage(pStage),
 	m_EntityTreeFileLastOutputTime(0)
 	{}
 
-	~CInputHandler_StageDebug() {}
+	~InputHandler_StageDebug() {}
 
-	void ProcessInput( SInputData& input );
+	void ProcessInput( InputData& input );
 
 };
 

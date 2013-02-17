@@ -43,7 +43,7 @@ Creates an input handler that delegates input data to GameTask::HandleInput(),
 which can be overriden by derived classes.
 The input handler is pushed to the input handler stack of the index
 returned by GameTask::GetInputHandlerIndex(), which, by default, returns
-CInputHub::MIN_USER_INPUT_HANDLER_INDEX, and can be overriden by derived classes.
+InputHub::MIN_USER_INPUT_HANDLER_INDEX, and can be overriden by derived classes.
 */
 GameTask::GameTask()
 :
@@ -77,13 +77,13 @@ m_PrevTaskID(GameTask::ID_INVALID)
 
 	// Push an input handler on the stack.
 	m_pInputHandler = new CInputDataDelegate<GameTask>(this);
-	InputHub().PushInputHandler( GetInputHandlerIndex(), m_pInputHandler );
+	GetInputHub().PushInputHandler( GetInputHandlerIndex(), m_pInputHandler );
 }
 
 
 GameTask::~GameTask()
 {
-	InputHub().RemoveInputHandler( m_pInputHandler );
+	GetInputHub().RemoveInputHandler( m_pInputHandler );
 	SafeDelete( m_pInputHandler );
 
 //	SafeDelete( ms_pAnimatedGraphicsManager );
@@ -106,7 +106,7 @@ void GameTask::ProcessTaskTransitionRequest()
 
 		// Don't accept input after this point
 		int input_handler_index = 1; // index of the input handlers registered by the framework
-		if( InputHub().GetInputHandler(input_handler_index) == m_pInputHandler
+		if( GetInputHub().GetInputHandler(input_handler_index) == m_pInputHandler
 		 && m_pInputHandler )
 		{
 			m_pInputHandler->SetActive( false );
@@ -281,7 +281,7 @@ int GameTask::FrameMove( float dt )
 
 int GameTask::GetInputHandlerIndex() const
 {
-	return CInputHub::MIN_USER_INPUT_HANDLER_INDEX;
+	return InputHub::MIN_USER_INPUT_HANDLER_INDEX;
 }
 
 

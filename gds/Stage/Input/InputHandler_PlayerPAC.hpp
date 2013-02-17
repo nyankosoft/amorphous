@@ -8,14 +8,14 @@ namespace amorphous
 {
 
 
-class CInputHandler_PlayerPAC : public CInputHandler_PlayerBase
+class InputHandler_PlayerPAC : public InputHandler_PlayerBase
 {
 
 public:
-	CInputHandler_PlayerPAC();
-	~CInputHandler_PlayerPAC();
+	InputHandler_PlayerPAC();
+	~InputHandler_PlayerPAC();
 
-	void ProcessInput(SInputData& input);
+	void ProcessInput(InputData& input);
 	void SetDefaultKeyBind();
 
 	// TODO: how to notidy when the keybinds have been changed

@@ -15,7 +15,7 @@ namespace amorphous
 {
 
 
-class CInputHandler_Cutscene;
+class InputHandler_Cutscene;
 
 /**
 - Camera controller entity holds one or more camera entities as its child entities
@@ -38,7 +38,7 @@ private:
 
 	/// handles input during the cutscene.
 	/// e.g.) skipping the cutscene by start button
-	CInputHandler_Cutscene *m_pInputHandler;
+	InputHandler_Cutscene *m_pInputHandler;
 
 	bool m_bUseCutsceneInputHandler;
 
@@ -89,7 +89,7 @@ public:
 	virtual void UpdateCamera( CCopyEntity *pCopyEnt ) {}
 //	virtual Camera *GetCamera() { return &m_Camera; }
 
-	friend class CInputHandler_Cutscene;
+	friend class InputHandler_Cutscene;
 	friend class CoreBaseEntitiesLoader;
 };
 } // namespace amorphous

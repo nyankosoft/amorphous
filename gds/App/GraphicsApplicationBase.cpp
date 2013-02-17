@@ -34,16 +34,16 @@ m_BackgroundColor( SFloatRGBAColor::Blue() )
 
 	m_pInputHandler.reset( new CInputDataDelegate<CGraphicsApplicationBase>( this ) );
 
-	if( InputHub().GetInputHandler(sg_InputHandlerIndex) )
-		InputHub().GetInputHandler(sg_InputHandlerIndex)->AddChild( m_pInputHandler.get() );
+	if( GetInputHub().GetInputHandler(sg_InputHandlerIndex) )
+		GetInputHub().GetInputHandler(sg_InputHandlerIndex)->AddChild( m_pInputHandler.get() );
 	else
-		InputHub().PushInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
+		GetInputHub().PushInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
 }
 
 
 CGraphicsApplicationBase::~CGraphicsApplicationBase()
 {
-	InputHub().RemoveInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
+	GetInputHub().RemoveInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
 	m_pCameraController.reset();
 }
 

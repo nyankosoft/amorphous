@@ -133,7 +133,7 @@ public:
 	/// Handles mouse movements
 	/// Don't use this with CPlatformDependentCameraController::HandleMessage( UINT, WPARAM, LPARAM ),
 	/// otherwise the mouse input will be processed twice
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

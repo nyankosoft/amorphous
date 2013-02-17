@@ -14,26 +14,26 @@ namespace amorphous
 {
 
 
-class CInputDeviceGroup
+class InputDeviceGroup
 {
-	std::vector<CInputDevice *> m_vecpDevice;
+	std::vector<InputDevice *> m_vecpDevice;
 
 	CInputState m_aInputState[NUM_GENERAL_INPUT_CODES];
 
-	TCFixedVector<int,CInputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES> m_PressedKeyList;
+	TCFixedVector<int,InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES> m_PressedKeyList;
 
 public:
 
-	CInputDeviceGroup() {}
+	InputDeviceGroup() {}
 
-	~CInputDeviceGroup() {}
+	~InputDeviceGroup() {}
 
 	CInputState::Name GetInputState( int gi_code ) const { return m_aInputState[gi_code].m_State; }
 
-	std::vector<CInputDevice *>& InputDevice() { return m_vecpDevice; }
+	std::vector<InputDevice *>& InputDevice() { return m_vecpDevice; }
 
-	friend class CInputDevice;
-	friend class CInputDeviceHub;
+	friend class InputDevice;
+	friend class InputDeviceHub;
 };
 
 } // namespace amorphous

@@ -40,7 +40,7 @@ using namespace boost;
 
 CGameApplicationBase *g_pGameAppBase = NULL;
 
-CDirectInputMouse *m_pMouse = NULL;
+DirectInputMouse *m_pMouse = NULL;
 
 
 void UpdateBaseEntityDatabase()
@@ -107,7 +107,7 @@ void CGameApplicationBase::Release()
 	SafeDelete( m_pDIKeyboard );
 //	SafeDelete( m_pDIGamepad );
 
-	InputHub().RemoveInputHandler( 0, m_pGlobalInputHandler );
+	GetInputHub().RemoveInputHandler( 0, m_pGlobalInputHandler );
 	SafeDelete( m_pGlobalInputHandler );
 
 	// release any singleton class that inherits GraphicsComponent
@@ -204,7 +204,7 @@ bool CGameApplicationBase::InitBase()
 		GameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
 
 	// create DirectInput mouse device
-	m_pMouse.reset( new CDirectInputMouse );
+	m_pMouse.reset( new DirectInputMouse );
 	m_pMouse->Init();
 
 	GameTask::SetMouseInputDevice( m_pMouse );
@@ -212,12 +212,12 @@ bool CGameApplicationBase::InitBase()
 	LOG_PRINT( " - Initialized the direct input mouse device." );
 
 	// initialize keyboard (DirectInput)
-	m_pDIKeyboard = new CDIKeyboard;
+	m_pDIKeyboard = new DIKeyboard;
 	m_pDIKeyboard->Init();
 
 //	LOG_PRINT( " - Initialized the direct input keyboard device." );
 
-/*	m_pDIGamepad = new CDirectInputGamepad;
+/*	m_pDIGamepad = new DirectInputGamepad;
 	Result::Name r = m_pDIGamepad->Init();
 	if( r != Result::SUCCESS )
 		SafeDelete( m_pDIGamepad );*/
@@ -270,7 +270,7 @@ bool CGameApplicationBase::InitBase()
 	}
 
 	m_pGlobalInputHandler = new CGlobalInputHandler;
-	InputHub().PushInputHandler( 0, m_pGlobalInputHandler );
+	GetInputHub().PushInputHandler( 0, m_pGlobalInputHandler );
 
 	GameTask::AddTaskNameToTaskIDMap( "Stage",             GameTask::ID_STAGE );
 	GameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", GameTask::ID_GLOBALSTAGELOADER );
@@ -382,7 +382,7 @@ void CGameApplicationBase::UpdateFrame()
 	DIInputDeviceMonitor().ProcessInputDeviceManagementRequest();
 
 	// Send input data to the active input handlers
-	InputDeviceHub().SendInputToInputHandlers();
+	GetInputDeviceHub().SendInputToInputHandlers();
 
 	/// Update the task, stage, entities and all the other subsystems
 

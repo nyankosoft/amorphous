@@ -24,7 +24,7 @@ public:
 
 	CameraController( int input_handler_index );
 
-	CameraController( CInputHandler *pParentInputHandler );
+	CameraController( InputHandler *pParentInputHandler );
 
 	~CameraController();
 

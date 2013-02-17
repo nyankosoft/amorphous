@@ -14,23 +14,23 @@ namespace amorphous
 
 
 /*
-class CInputDeviceFactory
+class InputDeviceFactory
 {
 public:
 
 	CMouseInputDevice *CreateMouse( int type )
 	{
-		return new CDirectInputMouse();
+		return new DirectInputMouse();
 	}
 
 	CKeyboardInputDevice *CreateKeyboard( int type )
 	{
-		return new CDIKeyboard();
+		return new DIKeyboard();
 	}
 };
 */
 
-CDirectInputMouse::CDirectInputMouse()
+DirectInputMouse::DirectInputMouse()
 :
 m_pDIMouse(NULL)
 {
@@ -39,17 +39,17 @@ m_pDIMouse(NULL)
 
 	m_iPosX = m_iPosY = 0;
 
-	InputDeviceHub().RegisterInputDeviceToGroup( this );
+	GetInputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 
-CDirectInputMouse::~CDirectInputMouse()
+DirectInputMouse::~DirectInputMouse()
 {
 	Release();
 }
 
 
-HRESULT CDirectInputMouse::InitDIMouse( HWND hWnd )
+HRESULT DirectInputMouse::InitDIMouse( HWND hWnd )
 {
 	HRESULT hr;
 
@@ -133,7 +133,7 @@ HRESULT CDirectInputMouse::InitDIMouse( HWND hWnd )
 }
 
 
-Result::Name CDirectInputMouse::Init()
+Result::Name DirectInputMouse::Init()
 {
 	HRESULT hr = InitDIMouse( GameWindowManager_Win32().GetWindowHandle() );
 
@@ -145,7 +145,7 @@ Result::Name CDirectInputMouse::Init()
 
 
 /*
-bool CDirectInputMouse::InvertMouse()
+bool DirectInputMouse::InvertMouse()
 {
 	if( 0 < m_fInvertMouse_Y )
 		return true;
@@ -153,7 +153,7 @@ bool CDirectInputMouse::InvertMouse()
 		return false;
 }
 
-void CDirectInputMouse::SetInvertMouse( bool bEnableInvertMouse )
+void DirectInputMouse::SetInvertMouse( bool bEnableInvertMouse )
 {
 	if( bEnableInvertMouse )
 		m_fInvertMouse_Y = 1.0f;	// turn on invert mouse
@@ -162,7 +162,7 @@ void CDirectInputMouse::SetInvertMouse( bool bEnableInvertMouse )
 }*/
 
 
-void CDirectInputMouse::AcquireMouse()
+void DirectInputMouse::AcquireMouse()
 {
 	if( m_pDIMouse )
 	{
@@ -170,12 +170,12 @@ void CDirectInputMouse::AcquireMouse()
 
 		if(FAILED(hr))
 			int err = 1;
-//			PrintLog( "CDirectInputMouse::AcquireMouse() - unable to acquire mouse" );
+//			PrintLog( "DirectInputMouse::AcquireMouse() - unable to acquire mouse" );
 	}
 }
 
 
-void CDirectInputMouse::Release()
+void DirectInputMouse::Release()
 {
     // Unacquire the device one last time just in case 
     // the app tried to exit while the device is still acquired.
@@ -188,7 +188,7 @@ void CDirectInputMouse::Release()
 
 
 /// Read input data from buffer and send them to the input handlers
-HRESULT CDirectInputMouse::UpdateInput()
+HRESULT DirectInputMouse::UpdateInput()
 {
 	PROFILE_FUNCTION();
 
@@ -247,7 +247,7 @@ HRESULT CDirectInputMouse::UpdateInput()
 
 	int iMoveX = 0, iMoveY = 0;
 	float fNewMove_X = 0, fNewMove_Y = 0; 
-	SInputData input;
+	InputData input;
 //	const float factor = (float)REFERENCE_SCREEN_WIDTH / (float)m_ScreenWidth;
 	const float scale = (float)m_ScreenWidth / (float)GraphicsComponent::REFERENCE_SCREEN_WIDTH;
 
@@ -279,17 +279,17 @@ HRESULT CDirectInputMouse::UpdateInput()
             case DIMOFS_BUTTON0:
 				input.iGICode = GIC_MOUSE_BUTTON_L;	
 				UpdateInputState( input );
-				InputHub().UpdateInput(input);
+				GetInputHub().UpdateInput(input);
 				break;
             case DIMOFS_BUTTON1:
 				input.iGICode = GIC_MOUSE_BUTTON_R;
 				UpdateInputState( input );
-				InputHub().UpdateInput(input);
+				GetInputHub().UpdateInput(input);
 				break;
             case DIMOFS_BUTTON2:
 				input.iGICode = GIC_MOUSE_BUTTON_M;	
 				UpdateInputState( input );
-				InputHub().UpdateInput(input);
+				GetInputHub().UpdateInput(input);
 				break;
 
             case DIMOFS_X:
@@ -304,7 +304,7 @@ HRESULT CDirectInputMouse::UpdateInput()
 				else
 					input.iGICode = GIC_MOUSE_WHEEL_DOWN;
 				UpdateInputState( input );
-				InputHub().UpdateInput(input);
+				GetInputHub().UpdateInput(input);
 				break;
         }			
 
@@ -343,12 +343,12 @@ HRESULT CDirectInputMouse::UpdateInput()
 	input.iGICode = GIC_MOUSE_AXIS_X;
 //	input.fParam1 = (float)iMoveX * factor;	//	fNewMove_X
 	input.fParam1 = (float)iMoveX / scale;
-	InputHub().UpdateInput(input);
+	GetInputHub().UpdateInput(input);
 
 	input.iGICode = GIC_MOUSE_AXIS_Y;
 //	input.fParam1 = (float)iMoveY * factor;	//	fNewMove_Y
 	input.fParam1 = (float)iMoveY / scale;
-	InputHub().UpdateInput(input);
+	GetInputHub().UpdateInput(input);
 
 	///	StateLog().Register( "non-scaled mouse move x", iMoveX );
 	///	StateLog().Register( "non-scaled mouse move y", iMoveY );
@@ -359,7 +359,7 @@ HRESULT CDirectInputMouse::UpdateInput()
 }
 
 
-Result::Name CDirectInputMouse::SendBufferedInputToInputHandlers()
+Result::Name DirectInputMouse::SendBufferedInputToInputHandlers()
 {
 	HRESULT hr = UpdateInput();
 

@@ -31,20 +31,20 @@ class GPD2KBDInputConverter
 
 	bool m_bPrevHold[NUM_ANALOG_KEYS];
 
-	inline bool GetNewAnalogKeyInput( int analog_key, float param, SInputData& dest_input );
+	inline bool GetNewAnalogKeyInput( int analog_key, float param, InputData& dest_input );
 
 public:
 
 	GPD2KBDInputConverter() { for( int i=0; i<NUM_ANALOG_KEYS; i++ ) m_bPrevHold[i] = false; }
 
-	inline SInputData Convert( const SInputData& gpd_input );
+	inline InputData Convert( const InputData& gpd_input );
 };
 
 
 /// Returns true if change in analog axis input should be treated as pressing or releasing of a key
 inline bool GPD2KBDInputConverter::GetNewAnalogKeyInput( int analog_key,
 														 float param,
-														 SInputData& dest_input )
+														 InputData& dest_input )
 {
 	const float& dirkey_threshold = 0.7f;
 
@@ -70,9 +70,9 @@ inline bool GPD2KBDInputConverter::GetNewAnalogKeyInput( int analog_key,
 }
 
 
-inline SInputData GPD2KBDInputConverter::Convert( const SInputData& gpd_input )
+inline InputData GPD2KBDInputConverter::Convert( const InputData& gpd_input )
 {
-	SInputData kbd_input = gpd_input;
+	InputData kbd_input = gpd_input;
 
 	const float& gpd_param = gpd_input.fParam1;
 
@@ -126,7 +126,7 @@ inline SInputData GPD2KBDInputConverter::Convert( const SInputData& gpd_input )
  - Sends input data to dialog manager
  - Auto repeat is enabled by default
  */
-class CInputHandler_Dialog : public CInputHandler
+class CInputHandler_Dialog : public InputHandler
 {
 	/// UI manager that uses inputs sent from this input handler.
 	/// - borrowed reference
@@ -146,7 +146,7 @@ public:
 
 	virtual ~CInputHandler_Dialog();
 
-	virtual void ProcessInput(SInputData& input);
+	virtual void ProcessInput(InputData& input);
 
 	bool PrevInputProcessed() { return m_bPrevInputProcessed; }
 

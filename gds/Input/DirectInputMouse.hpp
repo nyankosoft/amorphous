@@ -17,9 +17,9 @@ namespace amorphous
 
 /// - Send mouse positions in reference screen coordinates
 /// - When the screen resolution is changed, the mouse device object needs to be notified
-///   by CDirectInputMouse::UpdateScreenSize()
-/// - Internally, CDirectInputMouse stores the cursor position in non-scaled coordinates
-class CDirectInputMouse : public MouseInputDevice
+///   by DirectInputMouse::UpdateScreenSize()
+/// - Internally, DirectInputMouse stores the cursor position in non-scaled coordinates
+class DirectInputMouse : public MouseInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pDIMouse;
 
@@ -46,9 +46,9 @@ private:
 
 public:
 
-	CDirectInputMouse();
+	DirectInputMouse();
 
-	~CDirectInputMouse();
+	~DirectInputMouse();
 
 	Result::Name Init();
 
@@ -79,7 +79,7 @@ public:
 
 //----------------------- inline implementation -----------------------
 
-inline void CDirectInputMouse::GetCurrentPosition( int& x, int& y ) const
+inline void DirectInputMouse::GetCurrentPosition( int& x, int& y ) const
 {
 	x = m_iPosX;
 	y = m_iPosY;

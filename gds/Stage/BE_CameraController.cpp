@@ -58,7 +58,7 @@ void CBE_CameraController::Init()
 //	m_ActorDesc.iCollisionGroup = ENTITY_COLL_GROUP_OTHER_ENTITIES;
 //	m_ActorDesc.ActorFlag = JL_ACTOR_APPLY_NO_IMPULSE;
 
-	m_pInputHandler = new CInputHandler_Cutscene( this );
+	m_pInputHandler = new InputHandler_Cutscene( this );
 
 	// create texture render targets
 	// TODO: Do this only if necessary
@@ -156,7 +156,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		m_pStage->GetEntitySet()->SetCameraEntity( pCopyEnt );
 
 		if( m_bUseCutsceneInputHandler )
-            InputHub().PushInputHandler( gs_InputHandlerIndex, m_pInputHandler );
+            GetInputHub().PushInputHandler( gs_InputHandlerIndex, m_pInputHandler );
 	}
 	else if( !camera_active && pCurrentCameraEntity == pCopyEnt )
 	{
@@ -378,7 +378,7 @@ void CBE_CameraController::EndCutscene( CCopyEntity* pCopyEnt )
 	if( m_bUseCutsceneInputHandler )
 	{
 		// set the previous input handler
-		InputHub().PopInputHandler( gs_InputHandlerIndex );
+		GetInputHub().PopInputHandler( gs_InputHandlerIndex );
 	}
 
 	m_CutsceneEndStartedTime = 0;

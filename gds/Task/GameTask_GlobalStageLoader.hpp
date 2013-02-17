@@ -9,7 +9,7 @@
 namespace amorphous
 {
 
-class CInputHandler;
+class InputHandler;
 class CGM_DialogManager;
 class CGM_StdControlRendererManager;
 class TitleEventHandler;
@@ -19,7 +19,7 @@ class FontBase;
 class GameTask_GlobalStageLoader : public GameTask
 {
 	// handles the input to the player ship
-//	CInputHandler *m_pInputHandler;
+//	InputHandler *m_pInputHandler;
 //	CGM_DialogManagerSharedPtr m_pDialogManager;
 //	CGM_ControlRendererManagerSharedPtr m_pUIRenderManager;
 //	TitleEventHandler* m_pEventHandler;

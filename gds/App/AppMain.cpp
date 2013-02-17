@@ -73,8 +73,8 @@ void MainLoop( CApplicationBase *pApp )
 // message procedure
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	static CStdKeyboard s_StdKeyboard;
-	static CStdMouseInput s_StdMouse;
+	static Win32StdKeyboard s_StdKeyboard;
+	static Win32StdMouseInput s_StdMouse;
 
 	if( CApplicationBase::GetInstance()->UseDefaultMouse() )
 		s_StdMouse.UpdateInput( msg, wParam, lParam );

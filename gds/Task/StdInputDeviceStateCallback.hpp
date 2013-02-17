@@ -17,7 +17,7 @@ namespace amorphous
 // TODO:
 // - Add code to initialize GameTask::ms_pAnimatedGraphicsManager by the system at app init phase
 
-class CStdInputDeviceStateCallback : public CInputDeviceStateCallback
+class CStdInputDeviceStateCallback : public InputDeviceStateCallback
 {
 	GraphicsElementAnimationManager *m_pEffectMgr;
 

@@ -27,7 +27,7 @@ class CGraphicsApplicationBase : public CApplicationBase
 
 	boost::shared_ptr<FontBase> m_pFont;
 
-	boost::shared_ptr<CInputHandler> m_pInputHandler;
+	boost::shared_ptr<InputHandler> m_pInputHandler;
 
 	SFloatRGBAColor m_BackgroundColor;
 
@@ -50,7 +50,7 @@ private:
 
 	virtual void Update( float dt ) {}
 
-	virtual void HandleInput( const SInputData& input ) {}
+	virtual void HandleInput( const InputData& input ) {}
 
 	void RenderBase();
 

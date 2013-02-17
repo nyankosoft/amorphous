@@ -15,15 +15,15 @@ namespace amorphous
    and reports it as general input code
 
 */
-class CStdKeyboard : public CInputDevice
+class Win32StdKeyboard : public InputDevice
 {
 	int m_aiGICodeForVKCode[NUM_GENERAL_INPUT_CODES];
 
 public:
-	CStdKeyboard();
-	~CStdKeyboard() {}
+	Win32StdKeyboard();
+	~Win32StdKeyboard() {}
 
-	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
+	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
 
 	Result::Name SendBufferedInputToInputHandlers();
 
@@ -33,9 +33,9 @@ public:
 };
 
 
-inline CStdKeyboard& StdWin32Keyboard()
+inline Win32StdKeyboard& StdWin32Keyboard()
 {
-	static CStdKeyboard s_kbd;
+	static Win32StdKeyboard s_kbd;
 
 	return s_kbd;
 }

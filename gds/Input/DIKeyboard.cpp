@@ -13,16 +13,16 @@ namespace amorphous
 #define DIKEYBOARD_BUFFER_SIZE 32  // arbitrary number of buffer elements
 
 
-CDIKeyboard::CDIKeyboard()
+DIKeyboard::DIKeyboard()
 : m_pKeyboard(NULL)
 {
 	InitKeyCodeMap();
 
-	InputDeviceHub().RegisterInputDeviceToGroup( this );
+	GetInputDeviceHub().RegisterInputDeviceToGroup( this );
 }
 
 
-CDIKeyboard::~CDIKeyboard()
+DIKeyboard::~DIKeyboard()
 {
 	Release();
 }
@@ -36,7 +36,7 @@ static int gs_aGICodeToDIKCode[0xFF];
  - maps from DTK_ codes to GIC_ codes
  - maps from GIC_ codes to DIK_ codes
  */
-void CDIKeyboard::InitKeyCodeMap()
+void DIKeyboard::InitKeyCodeMap()
 {
 	// Mappings from DIK codes to GI codes
 
@@ -227,7 +227,7 @@ void CDIKeyboard::InitKeyCodeMap()
 //============================================================================================
 // Init()
 //============================================================================================
-HRESULT CDIKeyboard::InitDIKeyboard( HWND hWnd )
+HRESULT DIKeyboard::InitDIKeyboard( HWND hWnd )
 {
 
     HRESULT hr;
@@ -317,7 +317,7 @@ HRESULT CDIKeyboard::InitDIKeyboard( HWND hWnd )
 
 
 /// Read the input device's state in immediate mode and display it.
-void CDIKeyboard::RefreshKeyStates()
+void DIKeyboard::RefreshKeyStates()
 {
 	HRESULT hr;
 
@@ -358,7 +358,7 @@ void CDIKeyboard::RefreshKeyStates()
 //	return S_OK;
 }
 
-bool CDIKeyboard::IsKeyPressed( int gi_code )
+bool DIKeyboard::IsKeyPressed( int gi_code )
 {
 	if( !m_pGroup )
 		return false;
@@ -383,7 +383,7 @@ bool CDIKeyboard::IsKeyPressed( int gi_code )
 }
 
 
-Result::Name CDIKeyboard::Init()
+Result::Name DIKeyboard::Init()
 {
 	HRESULT hr = InitDIKeyboard( GameWindowManager_Win32().GetWindowHandle() );
 
@@ -397,7 +397,7 @@ Result::Name CDIKeyboard::Init()
 /**
  Read the input device's state from the buffer and send the input data to the input handlers through InputHub()
 */
-HRESULT CDIKeyboard::ReadBufferedData()
+HRESULT DIKeyboard::ReadBufferedData()
 {
     DIDEVICEOBJECTDATA didod[ DIKEYBOARD_BUFFER_SIZE ];  // Receives buffered data 
     DWORD              dwElements;
@@ -458,7 +458,7 @@ HRESULT CDIKeyboard::ReadBufferedData()
 		return S_OK;	// no input in buffer
 
     // Study each of the buffer elements and process them.
-	SInputData input;
+	InputData input;
     for( i = 0; i < dwElements; i++ ) 
     {
 		if( 255 < didod[i].dwOfs )
@@ -481,7 +481,7 @@ HRESULT CDIKeyboard::ReadBufferedData()
 		}
 
 		// send a pressed/released event to input hub
-		InputHub().UpdateInput(input);
+		GetInputHub().UpdateInput(input);
 
 		UpdateInputState( input );
 
@@ -504,7 +504,7 @@ HRESULT CDIKeyboard::ReadBufferedData()
 }
 
 
-Result::Name CDIKeyboard::SendBufferedInputToInputHandlers()
+Result::Name DIKeyboard::SendBufferedInputToInputHandlers()
 {
 	 HRESULT hr = ReadBufferedData();
 	 if( SUCCEEDED(hr) )
@@ -518,7 +518,7 @@ Result::Name CDIKeyboard::SendBufferedInputToInputHandlers()
 // Name: Acquire()
 // Desc: Acquire DirectInput keyboard.
 //-----------------------------------------------------------------------------
-void CDIKeyboard::Acquire()
+void DIKeyboard::Acquire()
 {
 	if( m_pKeyboard )
 		m_pKeyboard->Acquire();
@@ -529,7 +529,7 @@ void CDIKeyboard::Acquire()
 // Name: Release()
 // Desc: Initialize the DirectInput variables.
 //-----------------------------------------------------------------------------
-void CDIKeyboard::Release()
+void DIKeyboard::Release()
 {
     // Unacquire the device one last time just in case 
     // the app tried to exit while the device is still acquired.

@@ -31,7 +31,7 @@ public:
  * - customizable threshold for analog to digital conversion
  *
  */
-class CDirectInputGamepad : public CInputDevice
+class DirectInputGamepad : public InputDevice
 {
 public:
 
@@ -112,11 +112,11 @@ protected:
 
 public:
 
-	CDirectInputGamepad();
+	DirectInputGamepad();
 
-	~CDirectInputGamepad();
+	~DirectInputGamepad();
 
-	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_GAMEPAD; }
+	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_GAMEPAD; }
 
 	Result::Name Init();
 

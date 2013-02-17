@@ -11,21 +11,21 @@ namespace amorphous
 class CCopyEntity;
 class CBE_CameraController;
 
-class CInputHandler_Cutscene : public CInputHandler
+class InputHandler_Cutscene : public InputHandler
 {
 	CCopyEntity *m_pEntity;
 	CBE_CameraController *m_pCameraController;
 
-	void NormalizeAnalogInput( SInputData& input );
+	void NormalizeAnalogInput( InputData& input );
 
 public:
 
-//	CInputHandler_Cutscene();
-	CInputHandler_Cutscene( /*CCopyEntity *pEntity,*/ CBE_CameraController *pCameraController );
+//	InputHandler_Cutscene();
+	InputHandler_Cutscene( /*CCopyEntity *pEntity,*/ CBE_CameraController *pCameraController );
 
-	~CInputHandler_Cutscene();
+	~InputHandler_Cutscene();
 
-	void ProcessInput(SInputData& input);
+	void ProcessInput(InputData& input);
 
 	void SetEntity( CCopyEntity *pCameraControllerEntity ) { m_pEntity = pCameraControllerEntity; }
 

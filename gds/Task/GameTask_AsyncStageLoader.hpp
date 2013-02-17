@@ -20,7 +20,7 @@ class GameTask_AsyncStageLoader : public GameTask
 protected:
 
 	// handles the input to the player ship
-//	CInputHandler *m_pInputHandler;
+//	InputHandler *m_pInputHandler;
 //	CGM_DialogManagerSharedPtr m_pDialogManager;
 //	CGM_ControlRendererManagerSharedPtr m_pUIRenderManager;
 //	TitleEventHandler* m_pEventHandler;

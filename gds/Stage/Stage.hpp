@@ -55,7 +55,7 @@ class CStage
 //	PrecisionTimer *m_pTimer;
 
 	/// owned reference
-	CInputHandler *m_pStageDebugInputHandler;
+	InputHandler *m_pStageDebugInputHandler;
 
 private:
 

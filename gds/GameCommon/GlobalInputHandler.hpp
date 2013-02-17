@@ -10,13 +10,13 @@ namespace amorphous
 //extern bool g_bAppExitRequested;
 
 
-class CGlobalInputHandler : public CInputHandler
+class CGlobalInputHandler : public InputHandler
 {
 public:
 	CGlobalInputHandler();
 	virtual ~CGlobalInputHandler();
 
-	void ProcessInput(SInputData& input);
+	void ProcessInput(InputData& input);
 
 };
 

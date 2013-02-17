@@ -104,7 +104,7 @@ void CThirdPersonMotionController::Update()
 }
 
 
-float GetAnalogMotionInput( const SInputData& input, float sign )
+float GetAnalogMotionInput( const InputData& input, float sign )
 {
 	if( input.iType == ITYPE_KEY_PRESSED
 	 || input.iType == ITYPE_VALUE_CHANGED )
@@ -120,7 +120,7 @@ float GetAnalogMotionInput( const SInputData& input, float sign )
 }
 
 
-void CThirdPersonMotionController::HandleInput( int action_code, const SInputData& input )
+void CThirdPersonMotionController::HandleInput( int action_code, const InputData& input )
 {
 	switch( action_code )
 	{

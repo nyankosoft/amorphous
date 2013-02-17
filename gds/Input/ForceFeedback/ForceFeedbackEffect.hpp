@@ -150,7 +150,7 @@ public:
 
 	Result::Name Stop() { return m_pImpl->Stop(); }
 
-	friend class CInputDevice;
+	friend class InputDevice;
 };
 
 

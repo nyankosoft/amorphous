@@ -53,16 +53,16 @@ GameTask_MainMenu::GameTask_MainMenu()
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
 
 	int input_handler_index = 1;
-	if( InputHub().GetInputHandler(input_handler_index) )
-		InputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler );
+	if( GetInputHub().GetInputHandler(input_handler_index) )
+		GetInputHub().GetInputHandler(input_handler_index)->AddChild( m_pInputHandler );
 	else
-		InputHub().PushInputHandler( input_handler_index, m_pInputHandler );
+		GetInputHub().PushInputHandler( input_handler_index, m_pInputHandler );
 }
 
 
 GameTask_MainMenu::~GameTask_MainMenu()
 {
-	InputHub().RemoveInputHandler( 1, m_pInputHandler );
+	GetInputHub().RemoveInputHandler( 1, m_pInputHandler );
 
 	SafeDelete( m_pInputHandler );
 //	SafeDelete( m_pFlowCaptionRenderRoutine );
@@ -532,10 +532,10 @@ void GameTask_MainMenu::LoadGraphicsResources( const GraphicsParameters& rParam 
 	// Since the screen size change is done from this main menu,
 	// and the dialog manager has been destroyed and re-created
 	// input handler also has to be updated.
-	InputHub().RemoveInputHandler( m_pInputHandler );
+	GetInputHub().RemoveInputHandler( m_pInputHandler );
 	SafeDelete( m_pInputHandler );
 	m_pInputHandler = new CInputHandler_Dialog( m_pDialogManager );
-	InputHub().PushInputHandler( 1, m_pInputHandler );
+	GetInputHub().PushInputHandler( 1, m_pInputHandler );
 }
 
 

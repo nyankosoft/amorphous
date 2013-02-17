@@ -174,7 +174,7 @@ private:
 
 	HUD_PlayerBase *GetHUD() { return m_pPlayerAircraftHUD; }
 
-	CInputHandler_PlayerBase *CreatePlayerInputHandler();
+	InputHandler_PlayerBase *CreatePlayerInputHandler();
 
 	void OnDestroyingEnemyEntity( GameMessage& msg );
 

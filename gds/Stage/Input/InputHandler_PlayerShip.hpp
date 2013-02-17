@@ -11,7 +11,7 @@ namespace amorphous
 //#define NUM_PLAYERSHIP_ACTIONS 256
 
 
-class CInputHandler_PlayerShip : public CInputHandler_PlayerBase
+class InputHandler_PlayerShip : public InputHandler_PlayerBase
 {
 /*	/// holds player actions for each general input code 
 	int m_aiActionForGICode[NUM_GENERAL_INPUT_CODES];
@@ -23,10 +23,10 @@ class CInputHandler_PlayerShip : public CInputHandler_PlayerBase
 */
 
 public:
-	CInputHandler_PlayerShip();
-	~CInputHandler_PlayerShip();
+	InputHandler_PlayerShip();
+	~InputHandler_PlayerShip();
 
-	void ProcessInput(SInputData& input);
+	void ProcessInput(InputData& input);
 	void SetDefaultKeyBind();
 
 //	inline void ResetActionState();	// clear all the actions
@@ -40,7 +40,7 @@ public:
 //================================================================================================
 /*
 
-inline void CInputHandler_PlayerShip::ResetActionState()
+inline void InputHandler_PlayerShip::ResetActionState()
 {
 	int i;
 	for(i=0; i<NUM_PLAYERSHIP_ACTIONS; i++)
@@ -49,7 +49,7 @@ inline void CInputHandler_PlayerShip::ResetActionState()
 	}
 }
 
-inline float CInputHandler_PlayerShip::GetActionState( int iActionCode )
+inline float InputHandler_PlayerShip::GetActionState( int iActionCode )
 {
 	return m_afActionState[iActionCode];
 }*/

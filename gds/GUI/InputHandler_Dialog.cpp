@@ -38,7 +38,7 @@ CInputHandler_Dialog::~CInputHandler_Dialog()
 }
 
 
-void CInputHandler_Dialog::ProcessInput(SInputData& input)
+void CInputHandler_Dialog::ProcessInput(InputData& input)
 {
 	if( input.IsGamepadInput() )
 		input = m_GPD2KBDInputConterter.Convert( input );

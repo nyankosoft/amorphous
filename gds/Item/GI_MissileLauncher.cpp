@@ -560,7 +560,7 @@ void MissileLauncher::ApplyForceFeedback()
 	m_pFFEffect->Start( 1, 0 );
 
 //	CForceFeedbackTargetDevice fft;
-//	fft.m_Type = CInputDevice::TYPE_GAMEPAD;
+//	fft.m_Type = InputDevice::TYPE_GAMEPAD;
 
 //	m_FFEffect.Init( desc, group, fft );
 }

@@ -573,9 +573,9 @@ void CBE_PlayerShip::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-CInputHandler_PlayerBase *CBE_PlayerShip::CreatePlayerInputHandler()
+InputHandler_PlayerBase *CBE_PlayerShip::CreatePlayerInputHandler()
 {
-	return new CInputHandler_PlayerShip();
+	return new InputHandler_PlayerShip();
 }
 
 

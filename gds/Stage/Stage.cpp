@@ -109,7 +109,7 @@ CStage::~CStage()
 //	SafeDelete( m_pPhysicsVisualizer );
 
 	// release the input handler registered for debugging
-	InputHub().RemoveInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
+	GetInputHub().RemoveInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
 	SafeDelete( m_pStageDebugInputHandler );
 
 	SafeDelete( m_pTimer );
@@ -762,11 +762,11 @@ bool CStage::Initialize( const string& script_archive_filename )
 	LoadMaterial();
 
 	// register input handler for debugging the stage
-	m_pStageDebugInputHandler = new CInputHandler_StageDebug( m_pSelf );
-	if( InputHub().GetInputHandler(gs_DebugInputHandlerIndex) )
-		InputHub().GetInputHandler(gs_DebugInputHandlerIndex)->AddChild( m_pStageDebugInputHandler );
+	m_pStageDebugInputHandler = new InputHandler_StageDebug( m_pSelf );
+	if( GetInputHub().GetInputHandler(gs_DebugInputHandlerIndex) )
+		GetInputHub().GetInputHandler(gs_DebugInputHandlerIndex)->AddChild( m_pStageDebugInputHandler );
 	else
-		InputHub().PushInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
+		GetInputHub().PushInputHandler( gs_DebugInputHandlerIndex, m_pStageDebugInputHandler );
 
 	// stage has been initialized - start the timer
 	ResumeTimer();

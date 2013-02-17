@@ -12,10 +12,10 @@ namespace amorphous
 {
 
 
-int CInputHandler_PlayerPAC::ms_TaskOnPause = GameTask::ID_INVALID;
+int InputHandler_PlayerPAC::ms_TaskOnPause = GameTask::ID_INVALID;
 
 
-CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()
+InputHandler_PlayerPAC::InputHandler_PlayerPAC()
 {
 	// 13:22 2007/07/14 - keybind init moved to SetDefaultKeybindFG()
 //	SetDefaultKeyBind();
@@ -27,19 +27,19 @@ CInputHandler_PlayerPAC::CInputHandler_PlayerPAC()
 }
 
 
-CInputHandler_PlayerPAC::~CInputHandler_PlayerPAC()
+InputHandler_PlayerPAC::~InputHandler_PlayerPAC()
 {
 }
 
 /*
-void CInputHandler_PlayerPAC::UpdateKeyBind()
+void InputHandler_PlayerPAC::UpdateKeyBind()
 {
 	for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		m_aiActionForGICode[i] = SinglePlayerInfo().KeyBind().GetActionCode(i);
 }
 
 
-void CInputHandler_PlayerPAC::SetDefaultKeyBind()
+void InputHandler_PlayerPAC::SetDefaultKeyBind()
 {
 	m_aiActionForGICode[GIC_UP]			= ACTION_MOV_PITCH_ACCEL_POS;
 	m_aiActionForGICode[GIC_DOWN]		= ACTION_MOV_PITCH_ACCEL_NEG;
@@ -108,7 +108,7 @@ void CInputHandler_PlayerPAC::SetDefaultKeyBind()
 }
 */
 
-void CInputHandler_PlayerPAC::ProcessInput( SInputData& input )
+void InputHandler_PlayerPAC::ProcessInput( InputData& input )
 {
 	CBE_Player* pPlayerBaseEntity = SinglePlayerInfo().GetCurrentPlayerBaseEntity();
 

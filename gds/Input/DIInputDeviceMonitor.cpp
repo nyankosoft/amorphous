@@ -53,7 +53,7 @@ void CDIInputDeviceMonitor::ResetEnumStatus()
 
 bool CDIInputDeviceMonitor::CreateDevice( CDIInputDeviceContainer& container )
 {
-	container.m_pGamepad.reset( new CDirectInputGamepad() );
+	container.m_pGamepad.reset( new DirectInputGamepad() );
 
 	Result::Name res = container.m_pGamepad->InitDevice( container.m_DeviceInstance );
 
@@ -267,7 +267,7 @@ void CDIInputDeviceMonitor::AcquireInputDevices()
 		 itr != m_vecDIDeviceInstanceContainer.end();
 		 itr++ )
 	{
-/*		shared_ptr<CDirectInputGamepad> pGamepad = itr->second.m_pGamepad;
+/*		shared_ptr<DirectInputGamepad> pGamepad = itr->second.m_pGamepad;
 
 		if( pGamepad )
 			pGamepad->Acquire();*/

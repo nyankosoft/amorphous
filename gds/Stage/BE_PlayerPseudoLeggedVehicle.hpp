@@ -65,7 +65,7 @@ class CBE_PlayerPseudoLeggedVehicle : public CBE_Player
 
 private:
 
-	CInputHandler_PlayerBase *CreatePlayerInputHandler();
+	InputHandler_PlayerBase *CreatePlayerInputHandler();
 
 public:
 

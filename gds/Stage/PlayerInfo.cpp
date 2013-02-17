@@ -94,11 +94,11 @@ void CSinglePlayerInfo::SetInputHandlerForPlayerShip()
 	{
 	case BaseEntity::BE_PLAYERSHIP:
 	case BaseEntity::BE_PLAYERPSEUDOLEGGEDVEHICLE:
-		m_pInputHandler = new CInputHandler_PlayerShip;
+		m_pInputHandler = new InputHandler_PlayerShip;
 //		m_pHUD = new HUD_PlayerShip;
 		break;
 	case BaseEntity::BE_PLAYERPSEUDOAIRCRAFT:
-		m_pInputHandler = new CInputHandler_PlayerPAC;
+		m_pInputHandler = new InputHandler_PlayerPAC;
 		break;
 	}
 

@@ -16,7 +16,7 @@ namespace amorphous
 #pragma comment( lib, "dinput8.lib" )
 
 
-class CDIKeyboard : public CInputDevice
+class DIKeyboard : public InputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pKeyboard; ///< The DirectX Input keyboard device
 
@@ -44,11 +44,11 @@ protected:
 
 public:
 
-	CDIKeyboard();
+	DIKeyboard();
 
-	~CDIKeyboard();
+	~DIKeyboard();
 
-	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
+	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
 
 	Result::Name Init();
 

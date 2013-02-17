@@ -2,7 +2,7 @@
 #define  __INPUTHANDLER_H__
 
 
-#include <vector> // Used by CInputHandler
+#include <vector> // Used by InputHandler
 
 
 namespace amorphous
@@ -181,7 +181,7 @@ inline bool IsMouseMoveInputCode( int gi_code )
 #define ITYPE_VALUE_CHANGED  0 ///< mouse positions & gamepad axes
 
 
-struct SInputData
+struct InputData
 {
 	/// general input code (GIC_)
 	int iGICode;
@@ -194,7 +194,7 @@ struct SInputData
 	unsigned int uiParam;
 
 
-	inline SInputData() : iGICode(GIC_INVALID), iType(0), fParam1(0), uiParam(0) {}
+	inline InputData() : iGICode(GIC_INVALID), iType(0), fParam1(0), uiParam(0) {}
 
 	inline short GetParamH16() const { return (short)(0x0000FFFF & (uiParam >> 16)); }
 	inline short GetParamL16() const { return (short)(0x0000FFFF & uiParam); }
@@ -212,63 +212,63 @@ struct SInputData
 
 ///////////////////////////// inline implementations /////////////////////////////
 
-inline bool SInputData::IsKeyboardInput() const
+inline bool InputData::IsKeyboardInput() const
 {
 	return IsKeyboardInputCode( iGICode );
 }
 
 
-inline bool SInputData::IsMouseInput() const
+inline bool InputData::IsMouseInput() const
 {
 	return IsMouseInputCode( iGICode );
 }
 
 
-inline bool SInputData::IsGamepadInput() const
+inline bool InputData::IsGamepadInput() const
 {
 	return IsGamepadInputCode( iGICode );
 }
 
 
 
-class CInputHandler
+class InputHandler
 {
 	bool m_bActive;
 
 	bool m_bAutoRepeat;
 
 	/// borrowed references
-	std::vector<CInputHandler *> m_vecpChild;
+	std::vector<InputHandler *> m_vecpChild;
 
 public:
 
-	CInputHandler()
+	InputHandler()
 		:
 	m_bActive(true),
 	m_bAutoRepeat(false)
 	{}
 
-	virtual ~CInputHandler() {}
+	virtual ~InputHandler() {}
 
 	void SetActive( bool active ) { m_bActive = active; }
 
-	inline void ProcessInputBase(SInputData& input);
+	inline void ProcessInputBase(InputData& input);
 
 	void EnableAutoRepeat( bool enable_auto_repeat ) { m_bAutoRepeat = enable_auto_repeat; }
 
 	bool IsAutoRepeatEnabled() const { return m_bAutoRepeat; }
 
-	void AddChild( CInputHandler *pInputHandler ) { m_vecpChild.push_back( pInputHandler ); }
+	void AddChild( InputHandler *pInputHandler ) { m_vecpChild.push_back( pInputHandler ); }
 
 	/// Returns true if the input handler is found in the child list and removed.
 	/// NOTE: detach the child and does not release the memory.
-	inline bool RemoveChild( CInputHandler *pInputHandler );
+	inline bool RemoveChild( InputHandler *pInputHandler );
 
-	virtual void ProcessInput(SInputData& input) = 0;
+	virtual void ProcessInput(InputData& input) = 0;
 };
 
 
-inline void CInputHandler::ProcessInputBase(SInputData& input)
+inline void InputHandler::ProcessInputBase(InputData& input)
 {
 	if( m_bActive )
 	{
@@ -280,7 +280,7 @@ inline void CInputHandler::ProcessInputBase(SInputData& input)
 }
 
 
-inline bool CInputHandler::RemoveChild( CInputHandler *pInputHandler )
+inline bool InputHandler::RemoveChild( InputHandler *pInputHandler )
 {
 	for( size_t i=0; i<m_vecpChild.size(); i++ )
 	{
@@ -297,11 +297,11 @@ inline bool CInputHandler::RemoveChild( CInputHandler *pInputHandler )
 
 /// Used as a parent of input handlers.
 /// Does not process input for itself.
-class CParentCInputHandler : public CInputHandler
+class CParentInputHandler : public InputHandler
 {
 public:
 
-	void ProcessInput(SInputData& input) {}
+	void ProcessInput(InputData& input) {}
 };
 
 
@@ -342,13 +342,13 @@ public:
 
 
 template<class T>
-class CInputDataDelegate : public CInputHandler
+class CInputDataDelegate : public InputHandler
 {
 	T *m_pTarget;
 public:
 	CInputDataDelegate(T *pTarget) : m_pTarget(pTarget) {}
 
-	void ProcessInput( SInputData& input )
+	void ProcessInput( InputData& input )
 	{
 		m_pTarget->HandleInput( input );
 	}

@@ -183,7 +183,7 @@ void CDebugItem_SoundManager::GetTextInfo()
 
 void CDebugItem_InputDevice::GetTextInfo()
 {
-	InputDeviceHub().GetInputDeviceStatus( m_vecTextBuffer );
+	GetInputDeviceHub().GetInputDeviceStatus( m_vecTextBuffer );
 
 	m_TextBuffer.resize( 0 );
 	for( size_t i=0; i<m_vecTextBuffer.size(); i++ )

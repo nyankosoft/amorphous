@@ -240,7 +240,7 @@ public:
 
 	/// Returns true if the input was handled.
 	/// - Called if m_pNode is the current motion node of the motion FSM that owns m_pNode.
-	virtual bool HandleInput( const SInputData& input ) { return false; }
+	virtual bool HandleInput( const InputData& input ) { return false; }
 
 	void RequestTransition( const std::string& dest_motion_name )
 	{
@@ -337,7 +337,7 @@ public:
 	// and store the result to blend node tree
 	void CalculateKeyframe();
 
-	void HandleInput( const SInputData& input )
+	void HandleInput( const InputData& input )
 	{
 		if( m_pCurrent )
 			m_pCurrent->GetAlgorithm()->HandleInput( input );
@@ -419,7 +419,7 @@ public:
 
 	boost::shared_ptr<CMotionPrimitive> GetCompleteSkeletonSourceMotion();
 
-	inline void HandleInput( const SInputData& input );
+	inline void HandleInput( const InputData& input );
 
 	void GetDebugInfo( std::string& dest_text_buffer );
 
@@ -497,14 +497,14 @@ inline void CMotionFSMManager::SetStartBlendNodeToMotionPrimitives()
 }
 
 
-inline void CMotionFSMManager::HandleInput( const SInputData& input )
+inline void CMotionFSMManager::HandleInput( const InputData& input )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->HandleInput( input );
 }
 
 
-class CMotionFSMInputHandler : public CInputHandler
+class CMotionFSMInputHandler : public InputHandler
 {
 //	CMotionFSM *m_pFSM;
 	boost::shared_ptr<CMotionFSMManager> m_pMotionGraphManager;
@@ -513,11 +513,11 @@ public:
 
 	CMotionFSMInputHandler(boost::shared_ptr<CMotionFSMManager>& pMgr) : m_pMotionGraphManager(pMgr) {}
 
-	inline void ProcessInput(SInputData& input);
+	inline void ProcessInput(InputData& input);
 };
 
 
-inline void CMotionFSMInputHandler::ProcessInput(SInputData& input)
+inline void CMotionFSMInputHandler::ProcessInput(InputData& input)
 {
 	m_pMotionGraphManager->HandleInput( input );
 }

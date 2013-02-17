@@ -190,9 +190,9 @@ Result::Name CDIForceFeedbackEffectImpl::Init( const CForceFeedbackEffectDesc& d
 }
 
 
-CInputDevice *CDIForceFeedbackEffectImpl::GetTargetInputDevice()
+InputDevice *CDIForceFeedbackEffectImpl::GetTargetInputDevice()
 {
-	vector<CInputDevice *>& vecInputDevice = InputDeviceHub().GetInputDeviceGroup(m_Target.m_Group)->InputDevice();
+	vector<InputDevice *>& vecInputDevice = GetInputDeviceHub().GetInputDeviceGroup(m_Target.m_Group)->InputDevice();
 	for( size_t i=0; i<vecInputDevice.size(); i++ )
 	{
 		if( vecInputDevice[i]->GetInputDeviceType() != m_Target.m_Type )
@@ -211,7 +211,7 @@ Result::Name CDIForceFeedbackEffectImpl::Init( const CForceFeedbackEffectDesc& d
 	m_pDesc = desc.CreateCopy();
 	m_Target = target;
 
-	CInputDevice *pInputDevice = GetTargetInputDevice();
+	InputDevice *pInputDevice = GetTargetInputDevice();
 
 	if( pInputDevice )
 		return pInputDevice->InitForceFeedbackEffect( *this );
@@ -222,7 +222,7 @@ Result::Name CDIForceFeedbackEffectImpl::Init( const CForceFeedbackEffectDesc& d
 
 Result::Name CDIForceFeedbackEffectImpl::OnInputDevicePlugged()
 {
-	CInputDevice *pInputDevice = GetTargetInputDevice();
+	InputDevice *pInputDevice = GetTargetInputDevice();
 
 	if( pInputDevice )
 		return pInputDevice->InitForceFeedbackEffect( *this );

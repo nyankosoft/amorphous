@@ -18,7 +18,7 @@
 namespace amorphous
 {
 
-class CInputHandler_PlayerBase;
+class InputHandler_PlayerBase;
 class HUD_PlayerBase;
 class CShockWaveCameraEffect;
 
@@ -75,7 +75,7 @@ protected:
 
 	CCopyEntity* m_pPlayerCopyEntity;
 
-	CInputHandler_PlayerBase *m_pInputHandler;
+	InputHandler_PlayerBase *m_pInputHandler;
 
 	/// ENTITY_GROUP_MIN is set by default
 	EntityGroupHandle m_ProjectileEntityGroup;
@@ -126,7 +126,7 @@ protected:
 	/// and requests screen effects to screen effect manager if necessary
 	void UpdateCameraEffect( Vector3& vNewCameraPos, CCopyEntity* pCopyEnt );
 
-	virtual CInputHandler_PlayerBase *CreatePlayerInputHandler() { return NULL; }
+	virtual InputHandler_PlayerBase *CreatePlayerInputHandler() { return NULL; }
 
 	virtual void OnDestroyingEnemyEntity( GameMessage& msg );
 

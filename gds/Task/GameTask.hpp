@@ -87,7 +87,7 @@ class GameTask : public GraphicsComponent
 
 protected:
 
-	CInputHandler *m_pInputHandler;
+	InputHandler *m_pInputHandler;
 
 protected:
 
@@ -120,7 +120,7 @@ public:
 
 	inline virtual void Render();
 
-	virtual void HandleInput( const SInputData& input ) {}
+	virtual void HandleInput( const InputData& input ) {}
 
 	virtual int GetInputHandlerIndex() const;
 

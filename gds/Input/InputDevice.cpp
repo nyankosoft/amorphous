@@ -13,33 +13,33 @@ using namespace boost;
 
 
 //=============================================================================
-// CInputDevice
+// InputDevice
 //=============================================================================
 
-CInputDevice::CInputDevice()
+InputDevice::InputDevice()
 :
 m_pGroup(NULL)
 {
-	InputDeviceHub().RegisterInputDevice( this );
+	GetInputDeviceHub().RegisterInputDevice( this );
 
-//	InputDeviceHub().RegisterInputDeviceToGroup( this ); // pure virtual function call
+//	GetInputDeviceHub().RegisterInputDeviceToGroup( this ); // pure virtual function call
 }
 
 
-CInputDevice::~CInputDevice()
+InputDevice::~InputDevice()
 {
-	InputDeviceHub().UnregisterInputDevice( this );
+	GetInputDeviceHub().UnregisterInputDevice( this );
 
-	InputDeviceHub().UnregisterInputDeviceFromGroup( this );
+	GetInputDeviceHub().UnregisterInputDeviceFromGroup( this );
 }
 
 
-void CInputDevice::UpdateInputState( const SInputData& input_data )
+void InputDevice::UpdateInputState( const InputData& input_data )
 {
 	if( !m_pGroup )
 		return;
 
-	TCFixedVector<int,CInputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& pressed_key_list = PressedKeyList();
+	TCFixedVector<int,InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& pressed_key_list = PressedKeyList();
 
 	// access the input state holder in InputHub()
 	CInputState& key = InputState( input_data.iGICode );
@@ -51,7 +51,7 @@ void CInputDevice::UpdateInputState( const SInputData& input_data )
 		// schedule the first auto repeat event
 		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetTimeMS() + FIRST_AUTO_REPEAT_INTERVAL_MS;
 
-		if( pressed_key_list.size() < CInputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES )
+		if( pressed_key_list.size() < InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES )
 		{
 			// Return if the key has already been registered as a 'pressed' key
 			// because the same key cannot be pressed again before it is released
@@ -80,7 +80,7 @@ void CInputDevice::UpdateInputState( const SInputData& input_data )
 }
 
 
-void CInputDevice::CheckPressedKeys()
+void InputDevice::CheckPressedKeys()
 {
 	if( !m_pGroup )
 		return;
@@ -89,7 +89,7 @@ void CInputDevice::CheckPressedKeys()
 	RefreshKeyStates();
 
 	// check each key currently marked as pressed
-	TCFixedVector<int,CInputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& pressed_key = PressedKeyList();
+	TCFixedVector<int,InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& pressed_key = PressedKeyList();
 	int i, num_pressed_keys = pressed_key.size();
 	for( i=0; i<num_pressed_keys; /* Do not increment i here */)
 	{
@@ -104,10 +104,10 @@ void CInputDevice::CheckPressedKeys()
 			// The key is marked as pressed but not actually pressed right now
 			// - Probably the release event has been missed
 			// - Send the release event
-			SInputData input;
+			InputData input;
 			input.iType = ITYPE_KEY_RELEASED;
 			input.fParam1 = 0.0f;
-			InputHub().UpdateInput( input );
+			GetInputHub().UpdateInput( input );
 			// UpdateInputState( input );
 
 			pressed_key.erase_at( i );
@@ -124,36 +124,36 @@ void CInputDevice::CheckPressedKeys()
 }
 
 
-void CInputDevice::SetGroup( CInputDeviceGroup *pGroup )
+void InputDevice::SetGroup( InputDeviceGroup *pGroup )
 {
 	m_pGroup = pGroup;
 }
 
 
-CForceFeedbackEffect CInputDevice::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
+CForceFeedbackEffect InputDevice::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
 {
 	return CForceFeedbackEffect();
 }
 
 
-void CInputDevice::SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe )
+void InputDevice::SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe )
 {
 	ffe.m_pImpl = pImpl;
 }
 
 
 //=============================================================================
-// CInputDeviceHub
+// InputDeviceHub
 //=============================================================================
 
-CInputDeviceHub::CInputDeviceHub()
+InputDeviceHub::InputDeviceHub()
 {
 	m_vecpGroup.resize( 1 );
-	m_vecpGroup.back().reset( new CInputDeviceGroup() );
+	m_vecpGroup.back().reset( new InputDeviceGroup() );
 }
 
 
-void CInputDeviceHub::RegisterInputDevice( CInputDevice *pDevice )
+void InputDeviceHub::RegisterInputDevice( InputDevice *pDevice )
 {
 	boost::mutex::scoped_lock(m_Mutex);
 
@@ -161,11 +161,11 @@ void CInputDeviceHub::RegisterInputDevice( CInputDevice *pDevice )
 }
 
 
-void CInputDeviceHub::RegisterInputDeviceToGroup( CInputDevice *pDevice )
+void InputDeviceHub::RegisterInputDeviceToGroup( InputDevice *pDevice )
 {
 	switch( pDevice->GetInputDeviceType() )
 	{
-	case CInputDevice::TYPE_GAMEPAD:
+	case InputDevice::TYPE_GAMEPAD:
 	{
 		// one gamepad per group
 		size_t i = 0;
@@ -174,7 +174,7 @@ void CInputDeviceHub::RegisterInputDeviceToGroup( CInputDevice *pDevice )
 			size_t j = 0;
 			for( j=0; j<m_vecpGroup[i]->m_vecpDevice.size(); j++ )
 			{
-				if( m_vecpGroup[i]->m_vecpDevice[j]->GetInputDeviceType() == CInputDevice::TYPE_GAMEPAD )
+				if( m_vecpGroup[i]->m_vecpDevice[j]->GetInputDeviceType() == InputDevice::TYPE_GAMEPAD )
 					break;
 			}
 
@@ -189,18 +189,18 @@ void CInputDeviceHub::RegisterInputDeviceToGroup( CInputDevice *pDevice )
 
 		if( m_vecpGroup.size() == i )	
 		{
-			boost::shared_ptr<CInputDeviceGroup> pGroup( new CInputDeviceGroup() );
+			boost::shared_ptr<InputDeviceGroup> pGroup( new InputDeviceGroup() );
 			m_vecpGroup.push_back( pGroup );
 			m_vecpGroup.back()->m_vecpDevice.push_back( pDevice );
 			pDevice->SetGroup( m_vecpGroup.back().get() );
 		}
 	}
 		break;
-	case CInputDevice::TYPE_KEYBOARD:
+	case InputDevice::TYPE_KEYBOARD:
 		m_vecpGroup[0]->m_vecpDevice.push_back( pDevice );
 		pDevice->SetGroup( m_vecpGroup[0].get() );
 		break;
-	case CInputDevice::TYPE_MOUSE:
+	case InputDevice::TYPE_MOUSE:
 		m_vecpGroup[0]->m_vecpDevice.push_back( pDevice );
 		pDevice->SetGroup( m_vecpGroup[0].get() );
 		break;
@@ -210,12 +210,12 @@ void CInputDeviceHub::RegisterInputDeviceToGroup( CInputDevice *pDevice )
 }
 
 
-void CInputDeviceHub::UnregisterInputDeviceFromGroup( CInputDevice *pDevice )
+void InputDeviceHub::UnregisterInputDeviceFromGroup( InputDevice *pDevice )
 {
 }
 
 
-void CInputDeviceHub::UnregisterInputDevice( CInputDevice *pDevice )
+void InputDeviceHub::UnregisterInputDevice( InputDevice *pDevice )
 {
 	boost::mutex::scoped_lock(m_Mutex);
 
@@ -229,7 +229,7 @@ void CInputDeviceHub::UnregisterInputDevice( CInputDevice *pDevice )
 }
 
 
-void CInputDeviceHub::SendInputToInputHandlers()
+void InputDeviceHub::SendInputToInputHandlers()
 {
 	PROFILE_FUNCTION();
 
@@ -253,7 +253,7 @@ void CInputDeviceHub::SendInputToInputHandlers()
 }
 
 
-void CInputDeviceHub::SendAutoRepeat()
+void InputDeviceHub::SendAutoRepeat()
 {
 	for( size_t i=0; i<m_vecpGroup.size(); i++ )
 	{
@@ -262,13 +262,13 @@ void CInputDeviceHub::SendAutoRepeat()
 }
 
 
-void CInputDeviceHub::SendAutoRepeat( CInputDeviceGroup& group )
+void InputDeviceHub::SendAutoRepeat( InputDeviceGroup& group )
 {
 	int i, num_keys = group.m_PressedKeyList.size();
 	for( i=0; i<num_keys; i++ )
 	{
 		unsigned long current_time = GlobalTimer().GetTimeMS();
-		SInputData input_data;
+		InputData input_data;
 
 		CInputState& pressed_key_state = group.m_aInputState[ group.m_PressedKeyList[i] ];
 		if( pressed_key_state.m_NextAutoRepeatTimeMS <= current_time )
@@ -279,7 +279,7 @@ void CInputDeviceHub::SendAutoRepeat( CInputDeviceGroup& group )
 			input_data.iType = ITYPE_KEY_PRESSED;
 			input_data.fParam1 = 1.0f;
 
-			InputHub().SendAutoRepeatInputToInputHandlers( input_data );
+			GetInputHub().SendAutoRepeatInputToInputHandlers( input_data );
 
 			// set the next auto repeat scheduled time
 			unsigned long auto_repeat_interval_error = 50;
@@ -287,20 +287,20 @@ void CInputDeviceHub::SendAutoRepeat( CInputDeviceGroup& group )
 			{
 				// Let's assume that the app is running at a reasonable frame rate
 				// - So, ...
-				pressed_key_state.m_NextAutoRepeatTimeMS += CInputHub::AUTO_REPEAT_INTERVAL_MS;
+				pressed_key_state.m_NextAutoRepeatTimeMS += InputHub::AUTO_REPEAT_INTERVAL_MS;
 			}
 			else
 			{
 				// Probably the frame rate is too low.
 				// - So, ...
-				pressed_key_state.m_NextAutoRepeatTimeMS = current_time + CInputHub::AUTO_REPEAT_INTERVAL_MS;
+				pressed_key_state.m_NextAutoRepeatTimeMS = current_time + InputHub::AUTO_REPEAT_INTERVAL_MS;
 			}
 		}
 	}
 }
 
 
-void CInputDeviceHub::GetInputDeviceStatus( std::vector<std::string>& dest_text_buffer )
+void InputDeviceHub::GetInputDeviceStatus( std::vector<std::string>& dest_text_buffer )
 {
 	boost::mutex::scoped_lock(m_Mutex);
 

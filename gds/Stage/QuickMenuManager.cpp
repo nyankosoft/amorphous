@@ -195,7 +195,7 @@ int OpenAmmoSelectMenu()
 }
 
 
-//bool CQuickMenuManager::HandleMouseInput( SInputData& input )
+//bool CQuickMenuManager::HandleMouseInput( InputData& input )
 bool CQuickMenuManager::HandleMouseInput( int iActionCode, int input_type, float fVal )
 {
 

@@ -13,7 +13,7 @@ namespace amorphous
 /// - When the screen resolution is changed, the mouse device object needs to be notified
 ///   by MouseInputDevice::UpdateScreenSize()
 /// - Internally, MouseInputDevice stores the cursor position in non-scaled coordinates
-class MouseInputDevice : public CInputDevice
+class MouseInputDevice : public InputDevice
 {
 	enum eMouseAction
 	{
@@ -32,7 +32,7 @@ public:
 
 	virtual ~MouseInputDevice() {}
 
-	CInputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
+	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_MOUSE; }
 
 	virtual void AcquireMouse() {}
 

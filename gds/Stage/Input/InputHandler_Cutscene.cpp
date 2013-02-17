@@ -7,8 +7,8 @@ namespace amorphous
 {
 
 
-//CInputHandler_Cutscene::CInputHandler_Cutscene()
-CInputHandler_Cutscene::CInputHandler_Cutscene( /*CCopyEntity *pEntity,*/ CBE_CameraController *pCameraController )
+//InputHandler_Cutscene::InputHandler_Cutscene()
+InputHandler_Cutscene::InputHandler_Cutscene( /*CCopyEntity *pEntity,*/ CBE_CameraController *pCameraController )
 :
 //m_pEntity(pEntity),
 m_pCameraController(pCameraController)
@@ -23,12 +23,12 @@ m_pCameraController(pCameraController)
 }
 
 
-CInputHandler_Cutscene::~CInputHandler_Cutscene()
+InputHandler_Cutscene::~InputHandler_Cutscene()
 {
 }
 
 
-void CInputHandler_Cutscene::NormalizeAnalogInput( SInputData& input )
+void InputHandler_Cutscene::NormalizeAnalogInput( InputData& input )
 {
 	// process the fixed-keybind(non-configurable) controles
 	float& fParam = input.fParam1;
@@ -57,7 +57,7 @@ void CInputHandler_Cutscene::NormalizeAnalogInput( SInputData& input )
 }
 
 
-void CInputHandler_Cutscene::ProcessInput( SInputData& input )
+void InputHandler_Cutscene::ProcessInput( InputData& input )
 {
 	int action_code = 0;
 

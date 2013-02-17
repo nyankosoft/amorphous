@@ -8,9 +8,9 @@ namespace amorphous
 {
 
 
-CStdKeyboard::CStdKeyboard()
+Win32StdKeyboard::Win32StdKeyboard()
 {
-	InputDeviceHub().RegisterInputDeviceToGroup( this );
+	GetInputDeviceHub().RegisterInputDeviceToGroup( this );
 
 	for( int i=0; i<NUM_GENERAL_INPUT_CODES; i++ )
 		m_aiGICodeForVKCode[i] = GIC_INVALID;
@@ -92,15 +92,15 @@ CStdKeyboard::CStdKeyboard()
 }
 
 
-Result::Name CStdKeyboard::SendBufferedInputToInputHandlers()
+Result::Name Win32StdKeyboard::SendBufferedInputToInputHandlers()
 {
 	return Result::SUCCESS;
 }
 
 
-void CStdKeyboard::NotifyKeyDown( int iVK_Code )
+void Win32StdKeyboard::NotifyKeyDown( int iVK_Code )
 {
-	SInputData input;
+	InputData input;
 
 	input.iGICode = m_aiGICodeForVKCode[iVK_Code];
 
@@ -115,15 +115,15 @@ void CStdKeyboard::NotifyKeyDown( int iVK_Code )
 	input.fParam1 = 1.0f;
 
 	// send input to input hub
-	InputHub().UpdateInput(input);
+	GetInputHub().UpdateInput(input);
 
 	UpdateInputState( input );
 }
 
 
-void CStdKeyboard::NotifyKeyUp( int iVK_Code )
+void Win32StdKeyboard::NotifyKeyUp( int iVK_Code )
 {
-	SInputData input;
+	InputData input;
 
 	input.iGICode = m_aiGICodeForVKCode[iVK_Code];
 
@@ -138,7 +138,7 @@ void CStdKeyboard::NotifyKeyUp( int iVK_Code )
 	input.fParam1 = 0.0f;
 
 	// send input to input hub
-	InputHub().UpdateInput(input);
+	GetInputHub().UpdateInput(input);
 
 	UpdateInputState( input );
 }

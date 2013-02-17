@@ -253,9 +253,9 @@ void CBE_PlayerPseudoAircraft::CreateNozzleFlames( CCopyEntity* pCopyEnt )
 }
 
 
-CInputHandler_PlayerBase *CBE_PlayerPseudoAircraft::CreatePlayerInputHandler()
+InputHandler_PlayerBase *CBE_PlayerPseudoAircraft::CreatePlayerInputHandler()
 {
-	return new CInputHandler_PlayerPAC();
+	return new InputHandler_PlayerPAC();
 }
 
 

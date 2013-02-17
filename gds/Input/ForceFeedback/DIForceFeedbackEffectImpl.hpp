@@ -35,7 +35,7 @@ class CDIForceFeedbackEffectImpl : public CForceFeedbackEffectImpl
 
 private:
 
-	CInputDevice *GetTargetInputDevice();
+	InputDevice *GetTargetInputDevice();
 
 public:
 

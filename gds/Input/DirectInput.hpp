@@ -17,9 +17,9 @@ namespace amorphous
 #pragma comment( lib, "dxguid.lib" )
 
 
-#define DIRECTINPUT ( CDirectInput::ms_SingletonInstance_ )
+#define DIRECTINPUT ( DirectInput::ms_SingletonInstance_ )
 
-class CDirectInput
+class DirectInput
 {
 private:
 	LPDIRECTINPUT8 m_pDI;
@@ -27,12 +27,12 @@ private:
 	HRESULT InitDirectInput();
 
 protected:
-	CDirectInput();		//singleton
+	DirectInput();		//singleton
 
 public:
-	static CDirectInput ms_SingletonInstance_;	//single instance of 'CDirectInput'
+	static DirectInput ms_SingletonInstance_;	//single instance of 'DirectInput'
 
-	~CDirectInput();
+	~DirectInput();
 
 	LPDIRECTINPUT8 GetDirectInputObject();
 

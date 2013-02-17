@@ -113,7 +113,7 @@ void CameraControllerBase::AssignKeyForCameraControl( int general_input_code, Ca
 }
 
 
-void CameraControllerBase::HandleInput( const SInputData& input )
+void CameraControllerBase::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
     {

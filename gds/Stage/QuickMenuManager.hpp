@@ -124,7 +124,7 @@ public:
 
 	void Update( float dt );
 
-//	bool HandleMouseInput( SInputData& input );
+//	bool HandleMouseInput( InputData& input );
 	bool HandleMouseInput( int iActionCode, int input_type, float fVal );
 
 	void Render( FontBase *pFont );
