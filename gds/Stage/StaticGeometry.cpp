@@ -85,7 +85,7 @@ bool CShaderContainer::Load()
 	// load textures specified as texture params
 	for( size_t i=0; i<m_ParamGroup.m_Texture.size(); i++ )
 	{
-		CTextureParam& tex_param = m_ParamGroup.m_Texture[i].Parameter();
+		TextureParam& tex_param = m_ParamGroup.m_Texture[i].Parameter();
 		tex_param.m_Handle.Load( tex_param.m_Desc );
 	}
 
@@ -701,7 +701,7 @@ int CStaticGeometry::ClipTrace( STrace& tr )
 }
 
 
-inline static void SetRGBAColor( const SFloatRGBAColor& src_color, CShaderParameter< vector<float> >& dest_param )
+inline static void SetRGBAColor( const SFloatRGBAColor& src_color, ShaderParameter< vector<float> >& dest_param )
 {
 	dest_param.Parameter().resize( 4 ); // 4 float values for rgba
 	dest_param.Parameter()[0] = src_color.red;
@@ -719,7 +719,7 @@ void CStaticGeometry::SetAmbientColor( const SFloatRGBAColor& ambient_color )
 		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
-			CShaderParameter< vector<float> > param( "g_AmbientColor" );
+			ShaderParameter< vector<float> > param( "g_AmbientColor" );
 			SetRGBAColor( ambient_color, param );
 
 			pMgr->SetParam( param );
@@ -735,7 +735,7 @@ void CStaticGeometry::SetFogColor( const SFloatRGBAColor& color )
 		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
-			CShaderParameter< vector<float> > param( "g_vTerrainFadeColor" );
+			ShaderParameter< vector<float> > param( "g_vTerrainFadeColor" );
 			SetRGBAColor( color, param );
 
 			pMgr->SetParam( param );
@@ -751,7 +751,7 @@ void CStaticGeometry::SetFogStartDist( float dist )
 		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
-			CShaderParameter< vector<float> > param( "g_fFogStart" );
+			ShaderParameter< vector<float> > param( "g_fFogStart" );
 			param.Parameter().resize( 1 ); // 4 float values for rgba
 			param.Parameter()[0] = dist;
 
@@ -768,7 +768,7 @@ void CStaticGeometry::SetFogEndDist( float dist )
 		ShaderManager *pMgr = m_Archive.m_vecShaderContainer[i].m_ShaderHandle.GetShaderManager();
 		if( pMgr )
 		{
-			CShaderParameter< vector<float> > param( "g_fFarClip" );
+			ShaderParameter< vector<float> > param( "g_fFarClip" );
 			param.Parameter().resize( 1 ); // 4 float values for rgba
 			param.Parameter()[0] = dist;
 
@@ -778,19 +778,19 @@ void CStaticGeometry::SetFogEndDist( float dist )
 }
 
 
-void CStaticGeometry::SetFloatShaderParam( CShaderParameter<float>& tex_param )
+void CStaticGeometry::SetFloatShaderParam( ShaderParameter<float>& tex_param )
 {
 	// NOT IMPLEMENTED
 }
 
 
-void CStaticGeometry::SetColorShaderParam( CShaderParameter<SFloatRGBAColor>& tex_param )
+void CStaticGeometry::SetColorShaderParam( ShaderParameter<SFloatRGBAColor>& tex_param )
 {
 	// NOT IMPLEMENTED
 }
 
 
-void CStaticGeometry::SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param )
+void CStaticGeometry::SetTextureShaderParam( ShaderParameter<TextureParam>& tex_param )
 {
 	// set texture param to all the shaders
 	for( size_t i=0; i<m_Archive.m_vecShaderContainer.size(); i++ )

@@ -320,7 +320,7 @@ void FlatShadowMap::BeginSceneShadowReceivers()
 	// set the shadow map texture to determine shadowed pixels
 //	m_ShaderManager.SetTexture( 3, m_pShadowMap );
 //	m_Shader.GetShaderManager()->GetEffect()->SetTexture( "g_txShadow", m_pShadowMap );
-	CShaderParameter<CTextureParam> tex;
+	ShaderParameter<TextureParam> tex;
 	tex.SetParameterName( "g_txShadow" );
 	tex.Parameter().m_Handle = m_pShadowmapRenderTarget->GetRenderTargetTexture();
 	m_Shader.GetShaderManager()->SetParam( tex );

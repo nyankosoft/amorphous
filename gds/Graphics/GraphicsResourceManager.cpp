@@ -200,20 +200,20 @@ shared_ptr<GraphicsResourceLoader> GraphicsResourceManager::CreateResourceLoader
 	{
 	case GraphicsResourceType::Texture:
 	{
-		shared_ptr<CDiskTextureLoader> pTexLoader( new CDiskTextureLoader(pEntry,*dynamic_cast<const TextureResourceDesc *>(&desc)) );
+		shared_ptr<DiskTextureLoader> pTexLoader( new DiskTextureLoader(pEntry,*dynamic_cast<const TextureResourceDesc *>(&desc)) );
 		pTexLoader->SetWeakPtr( pTexLoader );
 		pLoader = pTexLoader;
 		break;
 	}
 	case GraphicsResourceType::Mesh:
 	{
-		shared_ptr<CMeshLoader> pMeshLoader( new CMeshLoader(pEntry,*dynamic_cast<const MeshResourceDesc *>(&desc)) );
+		shared_ptr<MeshLoader> pMeshLoader( new MeshLoader(pEntry,*dynamic_cast<const MeshResourceDesc *>(&desc)) );
 		pMeshLoader->SetWeakPtr( pMeshLoader );
 		pLoader = pMeshLoader;
 		break;
 	}
 	case GraphicsResourceType::Shader:
-		pLoader = shared_ptr<GraphicsResourceLoader>( new CShaderLoader(pEntry,*dynamic_cast<const ShaderResourceDesc *>(&desc)) );
+		pLoader = shared_ptr<GraphicsResourceLoader>( new ShaderLoader(pEntry,*dynamic_cast<const ShaderResourceDesc *>(&desc)) );
 	default:
 		return pLoader;
 	}

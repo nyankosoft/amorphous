@@ -216,18 +216,18 @@ BOOST_PYTHON_MODULE(gfx)
 
 	class_< CShaderVariableLoader<float>, boost::shared_ptr< CShaderVariableLoader<float> > >("ShaderFloatLoader")
 		.def( init< const char *, float >() )
-		.def( init< CShaderParameter<float> >() )
+		.def( init< ShaderParameter<float> >() )
 		.def( "UpdateShaderParams",   &CShaderVariableLoader<float>::UpdateShaderParams ) // compile test
 	;
 
 	class_< CShaderVariableLoader<Vector3>, boost::shared_ptr< CShaderVariableLoader<Vector3> > >("ShaderVec3Loader")
 //		.def( init< const char *, Vector3 >() ) // (A) Either (A) or (B) compiles. (B) conforms to the original argument types.
 		.def( init< const char *, const Vector3& >() ) // (B)
-		.def( init< CShaderParameter<Vector3> >() )
+		.def( init< ShaderParameter<Vector3> >() )
 	;
 /*
 	class_< CShaderVariableLoader<SFloatRGBAColor>, boost::shared_ptr< CShaderVariableLoader<SFloatRGBAColor> > >("ShaderColorLoader")
-		.def( init< CShaderParameter<SFloatRGBAColor> >() )
+		.def( init< ShaderParameter<SFloatRGBAColor> >() )
 	;*/
 }
 

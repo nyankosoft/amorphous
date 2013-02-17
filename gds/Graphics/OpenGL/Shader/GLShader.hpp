@@ -168,9 +168,9 @@ public:
 
 //	D3DXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
 
-	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
+	virtual void SetParam( ShaderParameter< std::vector<float> >& float_param ) {}
 
-//	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
+//	void SetParam( ShaderParameter< std::vector<int> >& integer_param );
 
 //	void SetTextureParam()
 */

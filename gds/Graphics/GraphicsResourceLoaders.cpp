@@ -160,7 +160,7 @@ void GraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
 
 
 //===================================================================================
-// CDiskTextureLoader
+// DiskTextureLoader
 //===================================================================================
 
 static inline double log2( double scalar )
@@ -169,7 +169,7 @@ static inline double log2( double scalar )
 }
 
 
-shared_ptr<TextureResource> CDiskTextureLoader::GetTextureResource()
+shared_ptr<TextureResource> DiskTextureLoader::GetTextureResource()
 {
 	shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( !pEntry )
@@ -179,7 +179,7 @@ shared_ptr<TextureResource> CDiskTextureLoader::GetTextureResource()
 }
 
 
-bool CDiskTextureLoader::InitImageArray( boost::shared_ptr<BitmapImage> pBaseImage )
+bool DiskTextureLoader::InitImageArray( boost::shared_ptr<BitmapImage> pBaseImage )
 {
 	if( !pBaseImage )
 		return false;
@@ -205,7 +205,7 @@ bool CDiskTextureLoader::InitImageArray( boost::shared_ptr<BitmapImage> pBaseIma
 }
 
 
-bool CDiskTextureLoader::CreateScaledImagesForMipmaps()
+bool DiskTextureLoader::CreateScaledImagesForMipmaps()
 {
 	int num_mipmaps = (int)m_vecpImage.size();
 	for( int i=0; i<num_mipmaps - 1; i++ )
@@ -221,7 +221,7 @@ bool CDiskTextureLoader::CreateScaledImagesForMipmaps()
 }
 
 
-bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
+bool DiskTextureLoader::LoadFromFile( const std::string& filepath )
 {
 	shared_ptr<BitmapImage> pBaseImage( new BitmapImage );
 	bool image_loaded = pBaseImage->LoadFromFile( GetSourceFilepath() );
@@ -249,7 +249,7 @@ bool CDiskTextureLoader::LoadFromFile( const std::string& filepath )
 }
 
 
-bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool DiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	ImageArchive img_archive;
 	bool retrieved = db.GetData( keyname, img_archive );
@@ -272,7 +272,7 @@ bool CDiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 }
 
 
-bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
+bool DiskTextureLoader::CopyLoadedContentToGraphicsResource()
 {
 	shared_ptr<TextureResource> pTexture = GetTextureResource();
 
@@ -291,7 +291,7 @@ bool CDiskTextureLoader::CopyLoadedContentToGraphicsResource()
 }
 
 
-bool CDiskTextureLoader::Lock()
+bool DiskTextureLoader::Lock()
 {
 	shared_ptr<TextureResource> pTexture = GetTextureResource();
 
@@ -305,7 +305,7 @@ bool CDiskTextureLoader::Lock()
 }
 
 
-void CDiskTextureLoader::FillResourceDesc()
+void DiskTextureLoader::FillResourceDesc()
 {
 	if( m_vecpImage.empty() || !m_vecpImage[0] )
 		return;
@@ -319,7 +319,7 @@ void CDiskTextureLoader::FillResourceDesc()
 }
 
 
-void CDiskTextureLoader::FillTexture( LockedTexture& texture )
+void DiskTextureLoader::FillTexture( LockedTexture& texture )
 {
 	if( m_vecpImage.empty()
 	 || (int)m_vecpImage.size() <= m_CurrentMipLevel
@@ -373,7 +373,7 @@ void CDiskTextureLoader::FillTexture( LockedTexture& texture )
 }
 
 
-void CDiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
+void DiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
 {
 	m_CurrentMipLevel += 1;
 
@@ -393,10 +393,10 @@ void CDiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
 
 
 //===================================================================================
-// CMeshLoader
+// MeshLoader
 //===================================================================================
 
-CMeshLoader::CMeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc )
+MeshLoader::MeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc )
 :
 GraphicsResourceLoader(pEntry),
 m_MeshDesc(desc),
@@ -406,12 +406,12 @@ m_MeshLoaderStateFlags(0)
 }
 
 
-CMeshLoader::~CMeshLoader()
+MeshLoader::~MeshLoader()
 {
 }
 
 
-bool CMeshLoader::LoadFromFile( const std::string& filepath )
+bool MeshLoader::LoadFromFile( const std::string& filepath )
 {
 	// load mesh archive from file
 	bool res = false;
@@ -432,13 +432,13 @@ bool CMeshLoader::LoadFromFile( const std::string& filepath )
 }
 
 
-bool CMeshLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+bool MeshLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
 {
 	return db.GetData( keyname, *m_pArchive );
 }
 
 
-bool CMeshLoader::CopyLoadedContentToGraphicsResource()
+bool MeshLoader::CopyLoadedContentToGraphicsResource()
 {
 	// Done by sub resource loaders
 
@@ -462,7 +462,7 @@ bool CMeshLoader::CopyLoadedContentToGraphicsResource()
 }
 
 
-bool CMeshLoader::AcquireResource()
+bool MeshLoader::AcquireResource()
 {
 	bool res = GraphicsResourceLoader::AcquireResource();
 	if( !res )
@@ -474,13 +474,13 @@ bool CMeshLoader::AcquireResource()
 }
 
 
-void CMeshLoader::RaiseStateFlags( U32 flags )
+void MeshLoader::RaiseStateFlags( U32 flags )
 {
 	m_MeshLoaderStateFlags |= flags;
 }
 
 
-void CMeshLoader::SendLockRequestIfAllSubresourcesHaveBeenLoaded()
+void MeshLoader::SendLockRequestIfAllSubresourcesHaveBeenLoaded()
 {
 	if( m_MeshLoaderStateFlags & VERTICES_LOADED
 	 && m_MeshLoaderStateFlags & INDICES_LOADED
@@ -495,7 +495,7 @@ void CMeshLoader::SendLockRequestIfAllSubresourcesHaveBeenLoaded()
 }
 
 
-bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
+bool MeshLoader::LoadToGraphicsMemoryByRenderThread()
 {
 	LOG_PRINT( "Loading a mesh: " + m_MeshDesc.ResourcePath );
 
@@ -533,7 +533,7 @@ bool CMeshLoader::LoadToGraphicsMemoryByRenderThread()
 
 /// Cannot create an empty shader object and copy the content to it.
 /// - Load from file
-bool CShaderLoader::AcquireResource()
+bool ShaderLoader::AcquireResource()
 {
 	shared_ptr<GraphicsResourceEntry> pHolder = GetResourceEntry();
 
@@ -552,7 +552,7 @@ bool CShaderLoader::AcquireResource()
 }
 
 
-bool CShaderLoader::LoadFromFile( const std::string& filepath )
+bool ShaderLoader::LoadFromFile( const std::string& filepath )
 {
 	bool res = m_ShaderTextBuffer.LoadTextFile( filepath );
 
@@ -560,7 +560,7 @@ bool CShaderLoader::LoadFromFile( const std::string& filepath )
 }
 
 
-void CShaderLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
+void ShaderLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
 	GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );
@@ -568,7 +568,7 @@ void CShaderLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader
 }
 
 
-bool CShaderLoader::LoadToGraphicsMemoryByRenderThread()
+bool ShaderLoader::LoadToGraphicsMemoryByRenderThread()
 {
 	bool res = GraphicsResourceLoader::AcquireResource();
 	if( !res )

@@ -94,9 +94,9 @@ public:
 //	inline Result::Name SetTechnique( const unsigned int id );
 //	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
 
-	void SetParam( CShaderParameter< std::vector<float> >& float_param );
+	void SetParam( ShaderParameter< std::vector<float> >& float_param );
 
-//	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
+//	void SetParam( ShaderParameter< std::vector<int> >& integer_param );
 
 //	void SetTextureParam()
 

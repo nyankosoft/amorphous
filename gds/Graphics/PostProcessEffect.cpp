@@ -1718,7 +1718,7 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, CFilterSh
 	if( pShader && pShader->GetShader().GetShaderManager() )
 	{
 		ShaderManager *pShaderMgr = pShader->GetShader().GetShaderManager();
-		CShaderParameter< vector<float> > bloom_scale( "g_fBloomScale" ), star_scale( "g_fStarScale" );
+		ShaderParameter< vector<float> > bloom_scale( "g_fBloomScale" ), star_scale( "g_fStarScale" );
 		bloom_scale.Parameter().resize(1);
 		star_scale.Parameter().resize(1);
 		bloom_scale.Parameter()[0] = 1.0f;

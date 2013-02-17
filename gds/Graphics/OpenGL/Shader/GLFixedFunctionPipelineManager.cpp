@@ -65,7 +65,7 @@ bool CGLFixedFunctionPipelineManager::LoadShaderFromText( const stream_buffer& b
 }
 
 
-void CGLFixedFunctionPipelineManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
+void CGLFixedFunctionPipelineManager::SetParam( ShaderParameter< std::vector<float> >& float_param )
 {
 }
 

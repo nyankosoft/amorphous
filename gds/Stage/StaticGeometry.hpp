@@ -50,7 +50,7 @@ public:
 	/// - Not serialized.
 	ShaderHandle m_ShaderHandle;
 
-	CShaderParameterGroup m_ParamGroup;
+	ShaderParameterGroup m_ParamGroup;
 
 public:
 
@@ -128,7 +128,7 @@ public:
 
 	float m_FarClipDist;
 
-	CShaderParameterGroup m_GlobalShaderParameter;
+	ShaderParameterGroup m_GlobalShaderParameter;
 
 public:
 
@@ -201,11 +201,11 @@ public:
 
 	void SetFogEndDist( float dist );
 
-	void SetFloatShaderParam( CShaderParameter<float>& tex_param );
+	void SetFloatShaderParam( ShaderParameter<float>& tex_param );
 
-	void SetColorShaderParam( CShaderParameter<SFloatRGBAColor>& tex_param );
+	void SetColorShaderParam( ShaderParameter<SFloatRGBAColor>& tex_param );
 
-	void SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param );
+	void SetTextureShaderParam( ShaderParameter<TextureParam>& tex_param );
 
 	virtual void SetDynamicLightManager( EntityManager* pEntitySet ) {}
 

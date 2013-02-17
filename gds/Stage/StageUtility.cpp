@@ -1363,21 +1363,21 @@ Result::Name CStageEntityUtility::SetShader( EntityHandle<>& entity, const std::
 
 
 static void SetShaderParamToStaticGeometry( CStaticGeometryBase *pStaticGeometry,
-										    CShaderParameter<float> param )
+										    ShaderParameter<float> param )
 {
 	pStaticGeometry->SetFloatShaderParam( param );
 }
 
 
 static void SetShaderParamToStaticGeometry( CStaticGeometryBase *pStaticGeometry,
-										    CShaderParameter<SFloatRGBAColor> param )
+										    ShaderParameter<SFloatRGBAColor> param )
 {
 	pStaticGeometry->SetColorShaderParam( param );
 }
 
 
 static void SetShaderParamToStaticGeometry( CStaticGeometryBase *pStaticGeometry,
-										    CShaderParameter<CTextureParam> param )
+										    ShaderParameter<TextureParam> param )
 {
 	pStaticGeometry->SetTextureShaderParam( param );
 }
@@ -1397,7 +1397,7 @@ static void SetShaderParamToStaticGeometryEntity( CCopyEntity *pEntity,
 	if( !pStaticGeometry )
 		return;
 
-	CShaderParameter<T> param(parameter_name);
+	ShaderParameter<T> param(parameter_name);
 	param.Parameter() = value;
 
 	SetShaderParamToStaticGeometry( pStaticGeometry, param );
@@ -1451,7 +1451,7 @@ static void SetShaderParamLoaderToEntity( EntityHandle<>& entity, const char *pa
 	{
 		// no shader variable loader for the parameter with parameter_name was found
 		// - register a new variable loader
-		CShaderParameter<T> param(parameter_name);
+		ShaderParameter<T> param(parameter_name);
 		param.Parameter() = value;
 
 		shared_ptr< CShaderVariableLoader<T> > pVarLoader( new CShaderVariableLoader<T>(param) );
@@ -1478,9 +1478,9 @@ void SetColorShaderParamToEntity( EntityHandle<> entity, const char *parameter_n
 
 void SetTextureShaderParamToEntity( EntityHandle<> entity, const char *parameter_name, const char *tex_path )
 {
-//	CShaderParameter<CTextureParam> tex_param( parameter_name );
+//	ShaderParameter<TextureParam> tex_param( parameter_name );
 //	tex_param.Parameter().m_Desc.ResourcePath = tex_path;
-	CTextureParam tex_param;
+	TextureParam tex_param;
 	tex_param.m_Desc.ResourcePath = tex_path;
 	bool tex_loaded = tex_param.m_Handle.Load( tex_param.m_Desc );
 	SetShaderParamLoaderToEntity( entity, parameter_name, tex_param );

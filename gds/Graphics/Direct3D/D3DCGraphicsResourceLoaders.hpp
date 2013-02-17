@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CD3DMeshLoader : public CMeshLoader
+class CD3DMeshLoader : public MeshLoader
 {
 
 	void *m_pVertexBufferContent;

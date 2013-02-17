@@ -64,13 +64,13 @@ protected:
 	bool IsInvalidTechnique( ShaderTechniqueHandle& tech_handle ) { return tech_handle.GetTechniqueIndex() == ShaderTechniqueHandle::INVALID_INDEX; }
 
 	template<typename T>
-	T GetParameterValue( CShaderParameter<T> param ) { return param.m_Parameter; }
+	T GetParameterValue( ShaderParameter<T> param ) { return param.m_Parameter; }
 
 	template<typename T>
-	int GetParameterIndex( CShaderParameter<T> param ) { return param.m_ParameterIndex; }
+	int GetParameterIndex( ShaderParameter<T> param ) { return param.m_ParameterIndex; }
 
 	template<typename T>
-	void SetParameterIndex( CShaderParameter<T>& param, int index ) { param.m_ParameterIndex = index; }
+	void SetParameterIndex( ShaderParameter<T>& param, int index ) { param.m_ParameterIndex = index; }
 
 public:
 
@@ -142,25 +142,25 @@ public:
 //	bool RegisterTechnique( const unsigned int id, const char *pcTechnique );
 
 	// Sets a single integer value
-	virtual void SetParam( CShaderParameter<int>& int_param ) {}
+	virtual void SetParam( ShaderParameter<int>& int_param ) {}
 
 	// Sets a single float value
-	virtual void SetParam( CShaderParameter<float>& float_param ) {}
+	virtual void SetParam( ShaderParameter<float>& float_param ) {}
 
 	// Sets a single float value
-	virtual void SetParam( CShaderParameter<Vector3>& vec3_param ) {}
+	virtual void SetParam( ShaderParameter<Vector3>& vec3_param ) {}
 
 	// Sets a color value as 4 floats in RGBA order
-	virtual void SetParam( CShaderParameter<SFloatRGBAColor>& color_param ) {}
+	virtual void SetParam( ShaderParameter<SFloatRGBAColor>& color_param ) {}
 
 	// Sets one or more float values
-	virtual void SetParam( CShaderParameter< std::vector<float> >& float_param ) {}
+	virtual void SetParam( ShaderParameter< std::vector<float> >& float_param ) {}
 
 	// Sets a texture
-	virtual void SetParam( CShaderParameter<CTextureParam>& tex_param ) {}
+	virtual void SetParam( ShaderParameter<TextureParam>& tex_param ) {}
 
 	// Sets a column-major 4x4 matrix
-	virtual void SetParam( CShaderParameter<Matrix44>& mat44_param ) {}
+	virtual void SetParam( ShaderParameter<Matrix44>& mat44_param ) {}
 
 	// Sets a single float value
 	virtual void SetParam( const char *parameter_name, int int_param ) {}
@@ -183,7 +183,7 @@ public:
 	// Sets a column-major 4x4 matrix
 	virtual void SetParam( const char *parameter_name, const Matrix44& mat44_param ) {}
 
-//	void SetParam( CShaderParameter< std::vector<int> >& integer_param );
+//	void SetParam( ShaderParameter< std::vector<int> >& integer_param );
 
 //	void SetTextureParam()
 

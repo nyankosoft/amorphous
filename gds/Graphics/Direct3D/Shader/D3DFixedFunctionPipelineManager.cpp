@@ -80,7 +80,7 @@ bool CD3DFixedFunctionPipelineManager::LoadShaderFromText( const stream_buffer& 
 }
 
 
-void CD3DFixedFunctionPipelineManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
+void CD3DFixedFunctionPipelineManager::SetParam( ShaderParameter< std::vector<float> >& float_param )
 {
 /*	int index = float_param.m_ParameterIndex;
 	if( index < 0 )

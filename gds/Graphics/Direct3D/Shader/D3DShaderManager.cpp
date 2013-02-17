@@ -257,7 +257,7 @@ bool CHLSLShaderManager::LoadShaderFromText( const stream_buffer& buffer )
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<int>& int_param )
+void CHLSLShaderManager::SetParam( ShaderParameter<int>& int_param )
 {
 	HRESULT hr;
 	int index = GetParameterIndex( int_param );
@@ -269,7 +269,7 @@ void CHLSLShaderManager::SetParam( CShaderParameter<int>& int_param )
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<float>& float_param )
+void CHLSLShaderManager::SetParam( ShaderParameter<float>& float_param )
 {
 	HRESULT hr;
 	int index = GetParameterIndex( float_param );
@@ -281,13 +281,13 @@ void CHLSLShaderManager::SetParam( CShaderParameter<float>& float_param )
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<Vector3>& vec3_param )
+void CHLSLShaderManager::SetParam( ShaderParameter<Vector3>& vec3_param )
 {
 	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<SFloatRGBAColor>& color_param )
+void CHLSLShaderManager::SetParam( ShaderParameter<SFloatRGBAColor>& color_param )
 {
 	int index = GetParameterIndex( color_param );
 	if( index < 0 )
@@ -303,7 +303,7 @@ void CHLSLShaderManager::SetParam( CShaderParameter<SFloatRGBAColor>& color_para
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float_param )
+void CHLSLShaderManager::SetParam( ShaderParameter< std::vector<float> >& float_param )
 {
 	HRESULT hr;
 	int index = GetParameterIndex( float_param );
@@ -315,7 +315,7 @@ void CHLSLShaderManager::SetParam( CShaderParameter< std::vector<float> >& float
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<CTextureParam>& tex_param )
+void CHLSLShaderManager::SetParam( ShaderParameter<TextureParam>& tex_param )
 {
 	HRESULT hr;
 	int index = GetParameterIndex( tex_param );
@@ -348,7 +348,7 @@ void CHLSLShaderManager::SetParam( CShaderParameter<CTextureParam>& tex_param )
 }
 
 
-void CHLSLShaderManager::SetParam( CShaderParameter<Matrix44>& mat44_param )
+void CHLSLShaderManager::SetParam( ShaderParameter<Matrix44>& mat44_param )
 {
 	HRESULT hr;
 	int index = GetParameterIndex( mat44_param );

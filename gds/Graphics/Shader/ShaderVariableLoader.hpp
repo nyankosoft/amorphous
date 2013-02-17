@@ -15,7 +15,7 @@ namespace amorphous
 template<typename T>
 class CShaderVariableLoader : public ShaderParamsLoader
 {
-	CShaderParameter<T> m_Parameter;
+	ShaderParameter<T> m_Parameter;
 
 public:
 
@@ -23,7 +23,7 @@ public:
 
 	CShaderVariableLoader( const char *param_name, const T& param_value )
 		:
-	m_Parameter( CShaderParameter<T>(param_name) )
+	m_Parameter( ShaderParameter<T>(param_name) )
 	{
 		m_Parameter.Parameter() = param_value;
 	}
@@ -32,8 +32,8 @@ public:
 
 	void SetParamValue( const T& value ) { m_Parameter.Parameter() = value; }
 
-//	CShaderVariableLoader( CShaderParameter<T>& shader_parameter ) // This causes a compiler error in PyModule_Graphics.cpp
-	CShaderVariableLoader( const CShaderParameter<T>& shader_parameter )
+//	CShaderVariableLoader( ShaderParameter<T>& shader_parameter ) // This causes a compiler error in PyModule_Graphics.cpp
+	CShaderVariableLoader( const ShaderParameter<T>& shader_parameter )
 		:
 	m_Parameter(shader_parameter)
 	{}

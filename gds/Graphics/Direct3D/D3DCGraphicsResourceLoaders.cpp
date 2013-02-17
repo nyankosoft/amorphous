@@ -86,7 +86,7 @@ void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoade
 		apLoader[i]->m_pArchive   = m_pArchive;
 //		apLoader[i]->m_pMeshEntry = m_pMeshEntry;
 
-		apLoader[i]->m_pMeshLoader = boost::dynamic_pointer_cast<CD3DMeshLoader,CMeshLoader>( m_pSelf.lock() );
+		apLoader[i]->m_pMeshLoader = boost::dynamic_pointer_cast<CD3DMeshLoader,MeshLoader>( m_pSelf.lock() );
 
 		// add requests to load subresource from the mesh archive
 //		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
@@ -146,7 +146,7 @@ bool CD3DXMeshVerticesLoader::LoadFromArchive()
 
 //	LoadVerticesForD3DXMesh( m_pArchive->GetVertexSet(), elems, size, dest_buffer );
 
-	m_pMeshLoader->RaiseStateFlags( CMeshLoader::VERTICES_LOADED );
+	m_pMeshLoader->RaiseStateFlags( MeshLoader::VERTICES_LOADED );
 	m_pMeshLoader->SendLockRequestIfAllSubresourcesHaveBeenLoaded();
 */
 	return true;
@@ -215,7 +215,7 @@ bool CD3DXMeshIndicesLoader::LoadFromArchive()
 	GetMesh()->LoadIndices( pIBData, *(m_pArchive.get()) );
 	m_pIndexBufferContent = (void *)pIBData;
 
-	m_pMeshLoader->RaiseStateFlags( CMeshLoader::INDICES_LOADED );
+	m_pMeshLoader->RaiseStateFlags( MeshLoader::INDICES_LOADED );
 	m_pMeshLoader->SendLockRequestIfAllSubresourcesHaveBeenLoaded();
 */
 	return true;

@@ -81,11 +81,11 @@ public:
 
 	virtual void SetFogEndDist( float dist ) {}
 
-	virtual void SetFloatShaderParam( CShaderParameter<float>& tex_param ) {}
+	virtual void SetFloatShaderParam( ShaderParameter<float>& tex_param ) {}
 
-	virtual void SetColorShaderParam( CShaderParameter<SFloatRGBAColor>& tex_param ) {}
+	virtual void SetColorShaderParam( ShaderParameter<SFloatRGBAColor>& tex_param ) {}
 
-	virtual void SetTextureShaderParam( CShaderParameter<CTextureParam>& tex_param ) {}
+	virtual void SetTextureShaderParam( ShaderParameter<TextureParam>& tex_param ) {}
 
 	virtual void SetDynamicLightManager( EntityManager* pEntitySet ) {}
 

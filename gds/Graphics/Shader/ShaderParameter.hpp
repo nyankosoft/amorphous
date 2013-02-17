@@ -15,7 +15,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CTextureParam : public IArchiveObjectBase
+class TextureParam : public IArchiveObjectBase
 {
 public:
 
@@ -27,7 +27,7 @@ public:
 
 public:
 
-	CTextureParam()
+	TextureParam()
 		:
 	m_Stage(-1)
 	{}
@@ -40,7 +40,7 @@ public:
 
 
 template<typename T>
-class CShaderParameter : public IArchiveObjectBase
+class ShaderParameter : public IArchiveObjectBase
 {
 	int m_ShaderManagerID;
 	int m_ParameterIndex;
@@ -48,11 +48,11 @@ class CShaderParameter : public IArchiveObjectBase
 	std::string m_ParameterName;
 
 //	std::vector<T> m_vecParameter;
-	T m_Parameter; ///< This could be CTextureParam, int, float, Vector3, etc...
+	T m_Parameter; ///< This could be TextureParam, int, float, Vector3, etc...
 
 public:
 
-	CShaderParameter( const std::string& param_name = "" )
+	ShaderParameter( const std::string& param_name = "" )
 		:
 	m_ParameterName(param_name),
 	m_ShaderManagerID(-2),
@@ -84,16 +84,16 @@ public:
 };
 
 
-class CShaderParameterGroup : public IArchiveObjectBase
+class ShaderParameterGroup : public IArchiveObjectBase
 {
 public:
 
-	std::vector< CShaderParameter< std::vector<int> > > m_Int;
+	std::vector< ShaderParameter< std::vector<int> > > m_Int;
 
-	std::vector< CShaderParameter< std::vector<float> > > m_Float;
+	std::vector< ShaderParameter< std::vector<float> > > m_Float;
 
 	/// array index is used as the texture stage
-	std::vector< CShaderParameter<CTextureParam> > m_Texture;
+	std::vector< ShaderParameter<TextureParam> > m_Texture;
 
 public:
 
@@ -106,13 +106,13 @@ public:
 
 // default behavior of LoadShaderParam - do nothing.
 template<typename T>
-inline bool LoadShaderParam( CShaderParameter<T>& param )
+inline bool LoadShaderParam( ShaderParameter<T>& param )
 {
 	return true;
 }
 
 
-inline bool LoadShaderParam( CShaderParameter<CTextureParam>& param )
+inline bool LoadShaderParam( ShaderParameter<TextureParam>& param )
 {
 	return param.Parameter().m_Handle.Load( param.Parameter().m_Desc );
 }

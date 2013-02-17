@@ -94,7 +94,7 @@ public:
 
 
 /// loads a texture from disk
-class CDiskTextureLoader : public GraphicsResourceLoader
+class DiskTextureLoader : public GraphicsResourceLoader
 {
 	/// Stores image properties such as width and height.
 	/// - Image properties are obtained from m_Image after the image is loaded
@@ -104,7 +104,7 @@ class CDiskTextureLoader : public GraphicsResourceLoader
 //	boost::shared_ptr<BitmapImage> m_pImage;
 	std::vector< boost::shared_ptr<BitmapImage> > m_vecpImage;
 
-	boost::weak_ptr<CDiskTextureLoader> m_pSelf;
+	boost::weak_ptr<DiskTextureLoader> m_pSelf;
 
 	int m_CurrentMipLevel;
 
@@ -123,14 +123,14 @@ protected:
 
 public:
 
-	CDiskTextureLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const TextureResourceDesc& desc )
+	DiskTextureLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const TextureResourceDesc& desc )
 		:
 	GraphicsResourceLoader(pEntry),
 	m_TextureDesc(desc),
 	m_CurrentMipLevel(0)
 	{}
 
-	virtual ~CDiskTextureLoader() {}
+	virtual ~DiskTextureLoader() {}
 
 	bool LoadFromFile( const std::string& filepath );
 
@@ -152,11 +152,11 @@ public:
 
 	void OnResourceLoadedOnGraphicsMemory();
 
-	void SetWeakPtr( boost::weak_ptr<CDiskTextureLoader> pSelf ) { m_pSelf = pSelf; }
+	void SetWeakPtr( boost::weak_ptr<DiskTextureLoader> pSelf ) { m_pSelf = pSelf; }
 };
 
 
-class CMeshLoader : public GraphicsResourceLoader
+class MeshLoader : public GraphicsResourceLoader
 {
 protected:
 
@@ -166,13 +166,13 @@ protected:
 
 	U32 m_MeshLoaderStateFlags;
 
-	boost::weak_ptr<CMeshLoader> m_pSelf;
+	boost::weak_ptr<MeshLoader> m_pSelf;
 
 public:
 
-	CMeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc );
+	MeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc );
 
-	virtual ~CMeshLoader();
+	virtual ~MeshLoader();
 
 	bool LoadFromFile( const std::string& filepath );
 
@@ -197,7 +197,7 @@ public:
 
 	virtual void LoadMeshSubresources() {}
 
-	void SetWeakPtr( boost::weak_ptr<CMeshLoader> pSelf ) { m_pSelf = pSelf; }
+	void SetWeakPtr( boost::weak_ptr<MeshLoader> pSelf ) { m_pSelf = pSelf; }
 
 	const GraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
 
@@ -256,7 +256,7 @@ inline const std::string& GraphicsResourceLoader::GetSourceFilepath()
 
 
 /// loads a shader from disk
-class CShaderLoader : public GraphicsResourceLoader
+class ShaderLoader : public GraphicsResourceLoader
 {
 	/// Stores filepath
 	ShaderResourceDesc m_ShaderDesc;
@@ -266,7 +266,7 @@ class CShaderLoader : public GraphicsResourceLoader
 
 public:
 
-	CShaderLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const ShaderResourceDesc& desc )
+	ShaderLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const ShaderResourceDesc& desc )
 		:
 	GraphicsResourceLoader(pEntry),
 	m_ShaderDesc(desc)

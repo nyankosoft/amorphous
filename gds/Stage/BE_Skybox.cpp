@@ -107,7 +107,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 
 	bool shift_camera_height = true;
 
-//	CShaderParameter<float> cam_height_param( "g_CameraHeight" );
+//	ShaderParameter<float> cam_height_param( "g_CameraHeight" );
 
 	// Disable depth-test and writing to depth buffer.
 	// These 2 settings and restored after rendering skybox because they are changed only when necessary.

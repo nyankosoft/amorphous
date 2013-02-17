@@ -195,7 +195,7 @@ private:
 	void LoadNullShader();
 
 	template<typename T>
-	inline int RegisterHLSLParam( CShaderParameter<T>& param );
+	inline int RegisterHLSLParam( ShaderParameter<T>& param );
 
 public:
 
@@ -244,24 +244,24 @@ public:
 	D3DXHANDLE GetTechniqueHandle( int id ) { return m_aTechniqueHandle[id]; }
 
 	// Sets a single integer value
-	void SetParam( CShaderParameter<int>& int_param );
+	void SetParam( ShaderParameter<int>& int_param );
 
 	// Sets a single float value
-	void SetParam( CShaderParameter<float>& float_param );
+	void SetParam( ShaderParameter<float>& float_param );
 
 	// Sets a single float value
-	void SetParam( CShaderParameter<Vector3>& vec3_param );
+	void SetParam( ShaderParameter<Vector3>& vec3_param );
 
 	// Sets a color value as 4 floats in RGBA order
-	void SetParam( CShaderParameter<SFloatRGBAColor>& color_param );
+	void SetParam( ShaderParameter<SFloatRGBAColor>& color_param );
 
 	// Sets one or more float values
-	void SetParam( CShaderParameter< std::vector<float> >& float_param );
+	void SetParam( ShaderParameter< std::vector<float> >& float_param );
 
-	void SetParam( CShaderParameter<CTextureParam>& tex_param );
+	void SetParam( ShaderParameter<TextureParam>& tex_param );
 
 	// Sets a column-major 4x4 matrix
-	void SetParam( CShaderParameter<Matrix44>& mat44_param );
+	void SetParam( ShaderParameter<Matrix44>& mat44_param );
 
 	// Sets a single float value
 	void SetParam( const char *parameter_name, int int_param );
@@ -530,7 +530,7 @@ inline Result::Name CHLSLShaderManager::SetTechnique( ShaderTechniqueHandle& tec
 
 
 template<typename T>
-inline int CHLSLShaderManager::RegisterHLSLParam( CShaderParameter<T>& param )
+inline int CHLSLShaderManager::RegisterHLSLParam( ShaderParameter<T>& param )
 {
 //	int index = float_param.m_ParameterIndex;
 	int index = GetParameterIndex( param );

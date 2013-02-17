@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-typedef CShaderParameter< std::vector<float> > CShaderParamFloatArray;
+typedef ShaderParameter< std::vector<float> > CShaderParamFloatArray;
 
 
 /**

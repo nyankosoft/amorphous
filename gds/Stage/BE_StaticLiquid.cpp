@@ -88,7 +88,7 @@ void CBE_StaticLiquid::Init()
 
 	bool loaded = m_MeshProperty.m_pMeshRenderMethod->LoadRenderMethodResources();
 
-	shared_ptr<ShaderParamsLoader> pReflectionTextureParam( new CShaderVariableLoader<CTextureParam>() );
+	shared_ptr<ShaderParamsLoader> pReflectionTextureParam( new CShaderVariableLoader<TextureParam>() );
 	m_MeshProperty.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pReflectionTextureParam );
 }
 

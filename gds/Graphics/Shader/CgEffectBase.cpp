@@ -152,7 +152,7 @@ void CCgEffectBase::LoadNullShader()
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter<int>& int_param )
+void CCgEffectBase::SetParam( ShaderParameter<int>& int_param )
 {
 	int index = GetParameterIndex( int_param );
 	if( index < 0 )
@@ -163,7 +163,7 @@ void CCgEffectBase::SetParam( CShaderParameter<int>& int_param )
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter<float>& float_param )
+void CCgEffectBase::SetParam( ShaderParameter<float>& float_param )
 {
 	int index = GetParameterIndex( float_param );
 	if( index < 0 )
@@ -174,13 +174,13 @@ void CCgEffectBase::SetParam( CShaderParameter<float>& float_param )
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter<Vector3>& vec3_param )
+void CCgEffectBase::SetParam( ShaderParameter<Vector3>& vec3_param )
 {
 	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter<SFloatRGBAColor>& color_param )
+void CCgEffectBase::SetParam( ShaderParameter<SFloatRGBAColor>& color_param )
 {
 	int index = GetParameterIndex( color_param );
 	if( index < 0 )
@@ -196,7 +196,7 @@ void CCgEffectBase::SetParam( CShaderParameter<SFloatRGBAColor>& color_param )
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter< std::vector<float> >& float_param )
+void CCgEffectBase::SetParam( ShaderParameter< std::vector<float> >& float_param )
 {
 	int index = GetParameterIndex( float_param );
 	if( index < 0 )
@@ -228,7 +228,7 @@ void CCgEffectBase::SetParam( CShaderParameter< std::vector<float> >& float_para
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter<CTextureParam>& tex_param )
+void CCgEffectBase::SetParam( ShaderParameter<TextureParam>& tex_param )
 {
 	int index = GetParameterIndex( tex_param );
 	if( index < 0 )
@@ -260,7 +260,7 @@ void CCgEffectBase::SetParam( CShaderParameter<CTextureParam>& tex_param )
 }
 
 
-void CCgEffectBase::SetParam( CShaderParameter<Matrix44>& mat44_param )
+void CCgEffectBase::SetParam( ShaderParameter<Matrix44>& mat44_param )
 {
 	int index = GetParameterIndex( mat44_param );
 	if( index < 0 )
