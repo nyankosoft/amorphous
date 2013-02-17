@@ -228,9 +228,6 @@
     <ClCompile Include="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\Shader.cpp">
-      <Filter>Graphics\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\Graphics\Shader\ShaderLightManager.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
@@ -939,9 +936,6 @@
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp">
-      <Filter>Graphics\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\Shader.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\Shader\ShaderGenerator.hpp">

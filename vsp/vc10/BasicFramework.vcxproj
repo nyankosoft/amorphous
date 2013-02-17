@@ -121,7 +121,6 @@
     <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectBase.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectLightManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp" />
-    <ClCompile Include="..\..\gds\Graphics\Shader\Shader.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\ShaderLightManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\ShaderManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\ShaderManagerHub.cpp" />
@@ -396,7 +395,6 @@
     <ClInclude Include="..\..\gds\Graphics\Shader\GenericShaderDesc.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\GenericShaderGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\Shader\Shader.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\ShaderGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\ShaderLightManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\ShaderManager.hpp" />
