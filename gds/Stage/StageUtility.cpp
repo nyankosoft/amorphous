@@ -1431,12 +1431,12 @@ static void SetShaderParamLoaderToEntity( EntityHandle<>& entity, const char *pa
 
 		for( size_t j=0; j<subset_render_method.m_vecpShaderParamsLoader.size(); j++ )
 		{
-			if( typeid(*subset_render_method.m_vecpShaderParamsLoader[j]) != typeid(CShaderVariableLoader<T>) )
+			if( typeid(*subset_render_method.m_vecpShaderParamsLoader[j]) != typeid(ShaderVariableLoader<T>) )
 				continue;
 
 			// found a shader variable loader
-			CShaderVariableLoader<T> *pLoader
-				= dynamic_cast< CShaderVariableLoader<T> *>( subset_render_method.m_vecpShaderParamsLoader[j].get() );
+			ShaderVariableLoader<T> *pLoader
+				= dynamic_cast< ShaderVariableLoader<T> *>( subset_render_method.m_vecpShaderParamsLoader[j].get() );
 
 			if( pLoader
 			 && pLoader->GetParamName() == parameter_name )
@@ -1454,7 +1454,7 @@ static void SetShaderParamLoaderToEntity( EntityHandle<>& entity, const char *pa
 		ShaderParameter<T> param(parameter_name);
 		param.Parameter() = value;
 
-		shared_ptr< CShaderVariableLoader<T> > pVarLoader( new CShaderVariableLoader<T>(param) );
+		shared_ptr< ShaderVariableLoader<T> > pVarLoader( new ShaderVariableLoader<T>(param) );
 
 		pRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pVarLoader );
 	}

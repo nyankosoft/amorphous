@@ -140,7 +140,7 @@ void MeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
 
 bool ShaderResourceDesc::IsValid() const
 {
-	if( ShaderType == CShaderType::NON_PROGRAMMABLE )
+	if( ShaderType == ShaderType::NON_PROGRAMMABLE )
 		return true;
 	else
 	{

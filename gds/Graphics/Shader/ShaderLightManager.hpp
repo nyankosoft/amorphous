@@ -59,13 +59,13 @@ public:
 };
 
 
-class CShaderLightParamsWriter : public LightVisitor
+class ShaderLightParamsWriter : public LightVisitor
 {
 	ShaderLightManager *m_pShaderLightManager;
 
 public:
 
-	CShaderLightParamsWriter( ShaderLightManager *pMgr )
+	ShaderLightParamsWriter( ShaderLightManager *pMgr )
 	:
 	m_pShaderLightManager(pMgr)
 	{}

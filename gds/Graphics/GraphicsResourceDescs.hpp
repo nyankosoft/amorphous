@@ -262,7 +262,7 @@ public:
 };
 
 
-class CShaderType
+class ShaderType
 {
 public:
 	enum Name
@@ -280,13 +280,13 @@ class ShaderResourceDesc : public GraphicsResourceDesc
 {
 public:
 
-	CShaderType::Name ShaderType;
+	ShaderType::Name ShaderType;
 
 	boost::shared_ptr<ShaderGenerator> pShaderGenerator;
 
 	ShaderResourceDesc()
 		:
-	ShaderType(CShaderType::PROGRAMMABLE)
+	ShaderType(ShaderType::PROGRAMMABLE)
 	{}
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }

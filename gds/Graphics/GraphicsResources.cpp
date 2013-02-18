@@ -660,7 +660,7 @@ void ShaderResource::Release()
 
 bool ShaderResource::IsDiskResource() const
 {
-	if( m_ShaderDesc.ShaderType == CShaderType::PROGRAMMABLE
+	if( m_ShaderDesc.ShaderType == ShaderType::PROGRAMMABLE
 	 && 0 < m_ShaderDesc.ResourcePath.length() )
 	{
 		return true;
@@ -688,7 +688,7 @@ bool ShaderResource::CreateFromDesc()
 
 		return CreateShaderFromTextBuffer( buffer );
 	}
-	else if( m_ShaderDesc.ShaderType == CShaderType::NON_PROGRAMMABLE )
+	else if( m_ShaderDesc.ShaderType == ShaderType::NON_PROGRAMMABLE )
 	{
 		SafeDelete( m_pShaderManager );
 

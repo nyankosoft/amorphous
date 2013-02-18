@@ -440,13 +440,13 @@ ShaderManager *CGLShaderResource::CreateShaderManager()
 {
 	switch( m_ShaderDesc.ShaderType )
 	{
-	case CShaderType::VERTEX_SHADER:
+	case ShaderType::VERTEX_SHADER:
 		return new CGLVertexShader;
-	case CShaderType::PIXEL_SHADER:
+	case ShaderType::PIXEL_SHADER:
 		return new CGLFragmentShader;
-	case CShaderType::NON_PROGRAMMABLE:
+	case ShaderType::NON_PROGRAMMABLE:
 		return NULL;//CGLFixedFunctionPipelineManager;
-	case CShaderType::PROGRAMMABLE:
+	case ShaderType::PROGRAMMABLE:
 		{
 			const string& resource_path = m_ShaderDesc.ResourcePath;
 			if( resource_path.find(".cgfx") == resource_path.length() - 5 )

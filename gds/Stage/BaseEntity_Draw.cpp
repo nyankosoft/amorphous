@@ -608,7 +608,7 @@ void SetLightsToShader( CCopyEntity& entity, ShaderManager& rShaderMgr )
 	// clear any lights currenly stored in the shader light manager
 	pShaderLightMgr->ClearLights();
 
-	CShaderLightParamsWriter light_params_writer( pShaderLightMgr.get() );
+	ShaderLightParamsWriter light_params_writer( pShaderLightMgr.get() );
 
 	for( i=0; i<num_current_lights; i++ )
 	{

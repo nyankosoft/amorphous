@@ -144,9 +144,9 @@ bool VarianceShadowMapManager::Init()
 	SetBlurParameters( texel_size, 0, m_avSampleOffsetH, m_afSampleWeights );
 	SetBlurParameters( 0, texel_size, m_avSampleOffsetV, m_afSampleWeights );
 
-	m_SampleWeights  = CShaderParamFloatArray( "sampleWeights[0]" );
-	m_SampleOffsetsH = CShaderParamFloatArray( "sampleOffsets[0]" );
-	m_SampleOffsetsV = CShaderParamFloatArray( "sampleOffsets[0]" );
+	m_SampleWeights  = ShaderParamFloatArray( "sampleWeights[0]" );
+	m_SampleOffsetsH = ShaderParamFloatArray( "sampleOffsets[0]" );
+	m_SampleOffsetsV = ShaderParamFloatArray( "sampleOffsets[0]" );
 
 	m_SampleWeights.Parameter().resize( NUM_GAUSSIAN_SAMPLES );
 	m_SampleOffsetsH.Parameter().resize( NUM_GAUSSIAN_SAMPLES * 2 );
@@ -350,7 +350,7 @@ void VarianceShadowMapManager::BeginSceneDepthMap()
 {
 	ShadowMapManager::BeginSceneDepthMap();
 /*
-	CShaderParamFloatArray farclip = CShaderParamFloatArray( "g_fFarClip" );
+	ShaderParamFloatArray farclip = ShaderParamFloatArray( "g_fFarClip" );
 	farclip.Parameter().resize( 1 );
 	farclip.Parameter()[0] = m_SceneCamera.GetFarClip();
 

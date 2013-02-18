@@ -273,12 +273,12 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 
 		// vertex program
 		vs_desc.ResourcePath = vs_path;
-		vs_desc.ShaderType = CShaderType::VERTEX_SHADER;
+		vs_desc.ShaderType = ShaderType::VERTEX_SHADER;
 		vs_loaded = m_VertexShader.Load( vs_desc );
 
 		// fragment program
 		fs_desc.ResourcePath = fs_path;
-		vs_desc.ShaderType = CShaderType::PIXEL_SHADER;
+		vs_desc.ShaderType = ShaderType::PIXEL_SHADER;
 		fs_loaded = m_FragmentShader.Load( fs_desc );
 
 //		m_pVertexShader   = dynamic_pointer_cast<CGLVertexShader,ShaderManager>( m_VertexShader.GetShaderManager() );

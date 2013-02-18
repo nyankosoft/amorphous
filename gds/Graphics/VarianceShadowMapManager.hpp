@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-typedef ShaderParameter< std::vector<float> > CShaderParamFloatArray;
+typedef ShaderParameter< std::vector<float> > ShaderParamFloatArray;
 
 
 /**
@@ -27,9 +27,9 @@ class VarianceShadowMapManager : public ShadowMapManager
 
 	ShaderHandle m_BlurShader;
 
-	CShaderParamFloatArray m_SampleOffsetsH;
-	CShaderParamFloatArray m_SampleOffsetsV;
-	CShaderParamFloatArray m_SampleWeights;
+	ShaderParamFloatArray m_SampleOffsetsH;
+	ShaderParamFloatArray m_SampleOffsetsV;
+	ShaderParamFloatArray m_SampleWeights;
 
 	enum Params
 	{

@@ -214,19 +214,19 @@ BOOST_PYTHON_MODULE(gfx)
 		.def( "AddLensFlareRect",      &LensFlare::AddLensFlareRect,                    (  py::arg("dim"), py::arg("scale_factor") = 1, py::arg("dist_factor") = 1, py::arg("color") = SFloatRGBAColor::White(), py::arg("group_index") = 0, py::arg("tex_seg_index_x") = 0, py::arg("tex_seg_index_y") = 0 ) )
 	;
 
-	class_< CShaderVariableLoader<float>, boost::shared_ptr< CShaderVariableLoader<float> > >("ShaderFloatLoader")
+	class_< ShaderVariableLoader<float>, boost::shared_ptr< ShaderVariableLoader<float> > >("ShaderFloatLoader")
 		.def( init< const char *, float >() )
 		.def( init< ShaderParameter<float> >() )
-		.def( "UpdateShaderParams",   &CShaderVariableLoader<float>::UpdateShaderParams ) // compile test
+		.def( "UpdateShaderParams",   &ShaderVariableLoader<float>::UpdateShaderParams ) // compile test
 	;
 
-	class_< CShaderVariableLoader<Vector3>, boost::shared_ptr< CShaderVariableLoader<Vector3> > >("ShaderVec3Loader")
+	class_< ShaderVariableLoader<Vector3>, boost::shared_ptr< ShaderVariableLoader<Vector3> > >("ShaderVec3Loader")
 //		.def( init< const char *, Vector3 >() ) // (A) Either (A) or (B) compiles. (B) conforms to the original argument types.
 		.def( init< const char *, const Vector3& >() ) // (B)
 		.def( init< ShaderParameter<Vector3> >() )
 	;
 /*
-	class_< CShaderVariableLoader<SFloatRGBAColor>, boost::shared_ptr< CShaderVariableLoader<SFloatRGBAColor> > >("ShaderColorLoader")
+	class_< ShaderVariableLoader<SFloatRGBAColor>, boost::shared_ptr< ShaderVariableLoader<SFloatRGBAColor> > >("ShaderColorLoader")
 		.def( init< ShaderParameter<SFloatRGBAColor> >() )
 	;*/
 }
