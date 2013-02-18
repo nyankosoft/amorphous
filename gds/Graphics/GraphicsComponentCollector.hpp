@@ -151,7 +151,6 @@ public:
 
 	static singleton<GraphicsComponentCollector> m_obj;
 
-//	static CShader* Get() { return m_obj->get(); }
 	static GraphicsComponentCollector* Get() { return m_obj.get(); }
 
 	GraphicsComponentCollector();
