@@ -1,0 +1,15 @@
+================= explosive grenade
+CLASSNAME	CBE_Explosive
+NAME		framed_wooden_crate_00
+AABB		1.0  1.0  1.0
+BV_TYPE		BVTYPE_AABB
+3DMODEL		models/misc/framed_wooden_crate_00.msh
+LIGHTING	TRUE
+RIGIDBODY	TRUE
+SHAPE_BOX   1.0  1.0  1.0
+MASS        2.0
+LIFE		20.0
+BLASTNAME	t.blast
+EXPLOSION_ANIM	qBang
+EXPLOSION_ANIM_TIME_OFFSET	-0.02
+END

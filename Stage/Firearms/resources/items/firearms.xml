@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item>
+		<ClassName>Magazine</ClassName>
+		<Name>USP Magazine (9mm, 15)</Name>
+		<Caliber>9x19mm</Caliber>
+		<Capacity>15</Capacity>
+		<MaxQuantity>16</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>USP (9mm)</Name>
+		<Caliber>9x19mm</Caliber>
+		<CompliantMagazines>
+			<Magazine>USP Magazine (9mm, 15)</Magazine>
+		</CompliantMagazines>
+		<StandardMagazineCapacity>15</StandardMagazineCapacity>
+		<Model path="models/firearms/USP.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Magazine</ClassName>
+		<Name>1911 Magazine (8)</Name>
+		<Caliber>.45 ACP</Caliber>
+		<Capacity>8</Capacity>
+		<MaxQuantity>16</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>1911</Name>
+		<Caliber>.45 ACP</Caliber>
+		<Magazine>1911 Magazine</Magazine>
+		<StandardMagazineCapacity>15</StandardMagazineCapacity>
+		<Model path="models/firearms/1911.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>Five-seveN</Name>
+		<Caliber>5.7x28mm</Caliber>
+		<Magazine>Five-seveN Magazine</Magazine>
+		<StandardMagazineCapacity>15</StandardMagazineCapacity>
+		<Model path="models/firearms/Five-seveN.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Magazine</ClassName>
+		<Name>MP5 Magazine (30)</Name>
+		<Caliber>9x19mm</Caliber>
+		<Capacity>30</Capacity>
+		<MaxQuantity>16</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>MP5A4</Name>
+		<Caliber>9x19mm</Caliber>
+		<CompliantMagazines>
+			<Magazine>MP5 Magazine (9mm, 30)</Magazine>
+		</CompliantMagazines>
+		<StandardMagazineCapacity>30</StandardMagazineCapacity>
+		<Model path="models/firearms/MP5A4.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>MP5A5</Name>
+		<Caliber>9x19mm</Caliber>
+		<CompliantMagazines>
+			<Magazine>MP5 Magazine (9mm, 30)</Magazine>
+		</CompliantMagazines>
+		<StandardMagazineCapacity>30</StandardMagazineCapacity>
+		<Model path="models/firearms/MP5A5.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>MP5SD4</Name>
+		<Caliber>9x19mm</Caliber>
+		<CompliantMagazines>
+			<Magazine>MP5 Magazine (9mm, 30)</Magazine>
+		</CompliantMagazines>
+		<StandardMagazineCapacity>30</StandardMagazineCapacity>
+		<Model path="models/firearms/MP5SD4.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>MP5SD5</Name>
+		<Caliber>9x19mm</Caliber>
+		<CompliantMagazines>
+			<Magazine>MP5 Magazine (9mm, 30)</Magazine>
+		</CompliantMagazines>
+		<StandardMagazineCapacity>30</StandardMagazineCapacity>
+		<Model path="models/firearms/MP5SD5.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Firearm</ClassName>
+		<Name>P90</Name>
+		<Caliber>9x19mm</Caliber>
+		<CompliantMagazines>
+			<Magazine>P90 Magazine (50)</Magazine>
+		</CompliantMagazines>
+		<StandardMagazineCapacity>30</StandardMagazineCapacity>
+		<Model path="models/firearms/MP5SD5.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+</Items>

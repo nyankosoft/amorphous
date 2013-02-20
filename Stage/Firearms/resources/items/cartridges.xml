@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>.22 LR (FMJ)</Name>
+		<Caliber>.22 LR</Caliber>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>.22 LR (JHP)</Name>
+		<Caliber>.22 LR</Caliber>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>.22 LR (JHP, subsonic)</Name>
+		<Caliber>.22 LR</Caliber>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>9x19mm (FMJ)</Name>
+		<Caliber>9x19mm</Caliber>
+		<EmptyCase>case-brass-9x19mm</EmptyCase>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>9x19mm (JHP)</Name>
+		<Caliber>9x19mm</Caliber>
+		<EmptyCase>case-brass-9x19mm</EmptyCase>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>.45 ACP (FMJ)</Name>
+		<Caliber>.45 ACP</Caliber>
+		<EmptyCase>case-brass-45ACP</EmptyCase>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>Cartridge</ClassName>
+		<Name>.45 ACP (JHP)</Name>
+		<Caliber>.45 ACP</Caliber>
+		<EmptyCase>case-brass-45ACP</EmptyCase>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+</Items>

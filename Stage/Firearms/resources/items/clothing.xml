@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item>
+		<ClassName>Clothing</ClassName>
+		<Name>vest</Name>
+		<Model path="vest.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1000</MaxQuantity>
+	</Item>
+</Items>

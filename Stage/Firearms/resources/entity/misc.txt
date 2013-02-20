@@ -1,0 +1,11 @@
+================= miscellaneous entities
+CLASSNAME	CBE_GeneralEntity
+NAME		shooting_target_stand
+AABB		1.0  1.0  1.0
+BV_TYPE		BVTYPE_AABB
+3DMODEL		models/misc/shooting_target_stand.msh
+LIGHTING	TRUE
+RIGIDBODY	TRUE
+MASS            6.0
+FLAGS           INDESTRUCTIBLE
+END

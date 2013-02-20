@@ -1,0 +1,5 @@
+input  explosives.txt
+input  barrels.txt
+input  misc.txt
+input  architecture.txt
+input cartridge_cases.txt
