@@ -50,15 +50,6 @@ CMultibyteFontTest::CMultibyteFontTest()
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-//	int enabled = 1;
-//	LoadParamFromFile( "params.txt", "cached_resource", enabled );
-//	m_UseCachedResources = (enabled == 1);
-
-//	LoadParamFromFile( "params.txt", "num_texture_mipmaps", m_NumTextureMipmaps );
-
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
 }
 
 
