@@ -231,34 +231,6 @@ void CMultibyteFontTest::CreateSampleUI()
 {
 }
 
-/*
-bool CMultibyteFontTest::InitShader()
-{
-	// initialize shader
-	bool shader_loaded = m_Shader.Load( "./shaders/MultibyteFontTest.fx" );
-	
-	if( !shader_loaded )
-		return false;
-
-	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
-
-	HemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
-
-//	pShaderLightMgr->SetLight( 0, light );
-//	pShaderLightMgr->SetDirectionalLightOffset( 0 );
-//	pShaderLightMgr->SetNumDirectionalLights( 1 );
-	pShaderLightMgr->SetHemisphericDirectionalLight( light );
-
-	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-	m_Shader.GetShaderManager()->SetProjectionTransform( proj );
-
-	return true;
-}
-*/
-
 
 class CPerfRecord
 {
@@ -413,16 +385,6 @@ void CMultibyteFontTest::Render()
 
 void CMultibyteFontTest::HandleInput( const InputData& input )
 {
-	if( m_pUIInputHandler )
-	{
-//		InputHandler::ProcessInput() does not take const InputData&
-		InputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}
-
 	switch( input.iGICode )
 	{
 	case GIC_F12:
