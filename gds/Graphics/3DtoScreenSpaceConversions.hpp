@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const Vector3& vWorldPos, int screen_width, int screen_height )
+inline Vector2 CalculateScreenCoordsFromWorldPosition( const Camera& cam, const Vector3& vWorldPos, int screen_width, int screen_height )
 {
 	Vector3 vProjPos
 		= cam.GetProjectionMatrix()
@@ -25,7 +25,7 @@ inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const
 }
 
 
-inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
+inline void CalculateScreenCoordsFromWorldPositions( const Camera& cam,
 											   const std::vector<Vector3>& vWorldPos,
 											   int screen_width,
 											   int screen_height,
@@ -47,21 +47,21 @@ inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
 }
 
 
-inline Vector2 CalculateScreenCoordsFromWorldPosition( const CCamera& cam, const Vector3& vWorldPos )
+inline Vector2 CalculateScreenCoordsFromWorldPosition( const Camera& cam, const Vector3& vWorldPos )
 {
-	return CalculateScreenCoordsFromWorldPosition( cam, vWorldPos, CGraphicsComponent::GetReferenceScreenWidth(), CGraphicsComponent::GetReferenceScreenHeight() );
+	return CalculateScreenCoordsFromWorldPosition( cam, vWorldPos, GraphicsComponent::GetReferenceScreenWidth(), GraphicsComponent::GetReferenceScreenHeight() );
 }
 
 
-inline void CalculateScreenCoordsFromWorldPositions( const CCamera& cam,
+inline void CalculateScreenCoordsFromWorldPositions( const Camera& cam,
 											   const std::vector<Vector3>& vWorldPos,
 											   std::vector<Vector2>& vDest )
 {
 	CalculateScreenCoordsFromWorldPositions(
 		cam,
 		vWorldPos,
-		CGraphicsComponent::GetReferenceScreenWidth(),
-		CGraphicsComponent::GetReferenceScreenHeight(),
+		GraphicsComponent::GetReferenceScreenWidth(),
+		GraphicsComponent::GetReferenceScreenHeight(),
 		vDest
 		);
 }
