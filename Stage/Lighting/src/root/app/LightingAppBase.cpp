@@ -20,7 +20,7 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/hs_lights.bin";
 
 
-extern CApplicationBase *CreateApplicationInstance() { return new CLightingAppBase(); }
+extern CApplicationBase *amorphous::CreateApplicationInstance() { return new CLightingAppBase(); }
 
 
 CLightingAppTask::CLightingAppTask()
@@ -31,11 +31,11 @@ CLightingAppTask::CLightingAppTask()
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
-	CameraController()->SetPose( Matrix34( Vector3(0,20,-15), Matrix33Identity() ) );
+	GetCameraController()->SetPose( Matrix34( Vector3(0,20,-15), Matrix33Identity() ) );
 }
 
 
-void CLightingAppTask::DisplayEntityPositions( CAnimatedGraphicsManager& animated_graphics_manager )
+void CLightingAppTask::DisplayEntityPositions( GraphicsElementAnimationManager& animated_graphics_manager )
 {
 	AABB3 aabb;
 	aabb.vMin = Vector3(1,1,1) * (-100.0f);
@@ -44,9 +44,9 @@ void CLightingAppTask::DisplayEntityPositions( CAnimatedGraphicsManager& animate
 	COverlapTestAABB aabb_test( aabb, &pEntities );
 	m_pStage->GetEntitySet()->GetOverlappingEntities( aabb_test );
 
-	shared_ptr<CGraphicsElementManager> pElementMgr = animated_graphics_manager.GetGraphicsElementManager();
+	shared_ptr<GraphicsElementManager> pElementMgr = animated_graphics_manager.GetGraphicsElementManager();
 
-	static vector< shared_ptr<CFrameRectElement> > pFrameRects;
+	static vector< shared_ptr<FrameRectElement> > pFrameRects;
 	const size_t num_max_frame_rects = 128;
 	const int frame_width = 4;
 	int rect_edge_length = 50;
@@ -100,8 +100,8 @@ void CLightingAppTask::DisplayEntityPositions( CAnimatedGraphicsManager& animate
 //		clamp( pos.x, 0.0f, 800.0f );
 //		clamp( pos.y, 0.0f, 600.0f );
 
-		if( 0 <= pos.x && pos.x <= CGraphicsComponent::GetReferenceScreenWidth()
-		 && 0 <= pos.y && pos.y <= CGraphicsComponent::GetReferenceScreenHeight() )
+		if( 0 <= pos.x && pos.x <= GraphicsComponent::GetReferenceScreenWidth()
+		 && 0 <= pos.y && pos.y <= GraphicsComponent::GetReferenceScreenHeight() )
 		{
 			// display the entity position
 			Vector2 top_left_pos = pos - Vector2((float)rect_edge_length,(float)rect_edge_length) * 0.5f;
@@ -117,7 +117,7 @@ void CLightingAppTask::DisplayEntityPositions( CAnimatedGraphicsManager& animate
 
 int CLightingAppTask::FrameMove( float dt )
 {
-	int ret = CStageViewerGameTask::FrameMove(dt);
+	int ret = StageViewerGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
@@ -159,7 +159,7 @@ const std::string CLightingAppBase::GetStartTaskName() const
 
 int CLightingAppBase::GetStartTaskID() const
 {
-//	return CGameTask::ID_STAGE_VIEWER_TASK;
+//	return GameTask::ID_STAGE_VIEWER_TASK;
 	return GAMETASK_ID_LIGHTING;
 }
 
@@ -196,9 +196,9 @@ bool CLightingAppBase::Init()
 	// Register (task name) : (task ID) maps
 	//
 
-	CGameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
+	GameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
+	GameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
+	GameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
 */
 	return true;
 }

@@ -6,6 +6,8 @@
 #include "gds/Task/StageViewerGameTask.hpp"
 #include "gds/Task/GameTaskFactoryBase.hpp"
 
+using namespace amorphous;
+
 
 enum ShadowAppTaskID
 {
@@ -14,9 +16,9 @@ enum ShadowAppTaskID
 };
 
 
-class CLightingAppTask : public CStageViewerGameTask
+class CLightingAppTask : public StageViewerGameTask
 {
-	void DisplayEntityPositions( CAnimatedGraphicsManager& animated_graphics_manager );
+	void DisplayEntityPositions( GraphicsElementAnimationManager& animated_graphics_manager );
 
 public:
 
@@ -28,18 +30,18 @@ public:
 };
 
 
-class CLightingAppTaskFactory : public CGameTaskFactoryBase
+class CLightingAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
-	CGameTask *CreateTask( int iTaskID )
+	GameTask *CreateTask( int iTaskID )
 	{
 		switch( iTaskID )
 		{
 		case GAMETASK_ID_LIGHTING:
 			return new CLightingAppTask();
 		default:
-			return CGameTaskFactoryBase::CreateTask( iTaskID );
+			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
 	}
 };
@@ -63,7 +65,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	CGameTaskFactoryBase *CreateGameTaskFactory() const { return new CLightingAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CLightingAppTaskFactory(); }
 
 	void Release();
 };
