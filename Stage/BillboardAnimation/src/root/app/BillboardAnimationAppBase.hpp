@@ -6,6 +6,8 @@
 #include "gds/Task/StageViewerGameTask.hpp"
 #include "gds/Task/GameTaskFactoryBase.hpp"
 
+using namespace amorphous;
+
 
 enum ShadowAppTaskID
 {
@@ -15,7 +17,7 @@ enum ShadowAppTaskID
 };
 
 
-class CBillboardAnimationAppTask : public CStageViewerGameTask
+class CBillboardAnimationAppTask : public StageViewerGameTask
 {
 	void OnTriggerPulled();
 
@@ -25,11 +27,11 @@ public:
 
 	~CBillboardAnimationAppTask() {}
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 
-class CBillboardAnimationAppGUITask : public CGUIGameTask
+class CBillboardAnimationAppGUITask : public GUIGameTask
 {
 	enum GUI_ID
 	{
@@ -51,11 +53,11 @@ public:
 };
 
 
-class CBillboardAnimationAppTaskFactory : public CGameTaskFactoryBase
+class CBillboardAnimationAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
-	CGameTask *CreateTask( int iTaskID )
+	GameTask *CreateTask( int iTaskID )
 	{
 		switch( iTaskID )
 		{
@@ -64,7 +66,7 @@ public:
 //		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
 //			return new CBillboardAnimationAppGUITask();
 		default:
-			return CGameTaskFactoryBase::CreateTask( iTaskID );
+			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
 	}
 };
@@ -88,7 +90,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	CGameTaskFactoryBase *CreateGameTaskFactory() const { return new CBillboardAnimationAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CBillboardAnimationAppTaskFactory(); }
 
 	void Release();
 };

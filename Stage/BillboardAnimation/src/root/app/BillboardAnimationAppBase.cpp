@@ -19,7 +19,7 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/explosion.bin";
 
 
-extern CApplicationBase *CreateApplicationInstance() { return new CBillboardAnimationAppBase(); }
+extern CApplicationBase *amorphous::CreateApplicationInstance() { return new CBillboardAnimationAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -57,7 +57,7 @@ CBillboardAnimationAppTask::CBillboardAnimationAppTask()
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
-	CameraController()->SetPose( Matrix34( Vector3(0,20,-15), Matrix33Identity() ) );
+	GetCameraController()->SetPose( Matrix34( Vector3(0,20,-15), Matrix33Identity() ) );
 }
 
 
@@ -67,7 +67,7 @@ void CBillboardAnimationAppTask::OnTriggerPulled()
 		return;
 
 	// raycast
-	Matrix34 cam_pose = CameraController()->GetPose();
+	Matrix34 cam_pose = GetCameraController()->GetPose();
 	Vector3 vStart = cam_pose.vPosition;
 	Vector3 vGoal  = vStart + cam_pose.matOrient.GetColumn(2) * 10.0f;
 	STrace tr;
@@ -90,7 +90,7 @@ void CBillboardAnimationAppTask::OnTriggerPulled()
 }
 
 
-void CBillboardAnimationAppTask::HandleInput( const SInputData& input )
+void CBillboardAnimationAppTask::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
     {
@@ -153,7 +153,7 @@ void CBillboardAnimationAppGUITask::LoadStage( const std::string& stage_script_n
 
 int CBillboardAnimationAppGUITask::FrameMove( float dt )
 {
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 /*
@@ -196,7 +196,7 @@ const std::string CBillboardAnimationAppBase::GetStartTaskName() const
 
 int CBillboardAnimationAppBase::GetStartTaskID() const
 {
-//	return CGameTask::ID_STAGE_VIEWER_TASK;
+//	return GameTask::ID_STAGE_VIEWER_TASK;
 	return GAMETASK_ID_BASIC_PHYSICS;
 }
 
@@ -233,9 +233,9 @@ bool CBillboardAnimationAppBase::Init()
 	// Register (task name) : (task ID) maps
 	//
 
-	CGameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
+	GameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
+	GameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
+	GameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
 */
 	return true;
 }
