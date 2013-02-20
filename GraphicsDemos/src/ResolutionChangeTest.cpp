@@ -19,9 +19,6 @@ using std::vector;
 using namespace boost;
 
 
-extern Camera g_Camera;
-
-
 CResolutionChangeTest::CResolutionChangeTest()
 :
 m_CurrentlyEnteredDigits(-1)
