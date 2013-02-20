@@ -12,7 +12,7 @@ using std::vector;
 using namespace boost;
 
 
-void CCubeMapTestRenderer::RenderSceneToCubeMap( CCamera& camera )
+void CubeMapTestRenderer::RenderSceneToCubeMap( Camera& camera )
 {
 	m_pEnvMapTest->RenderNonEnvMappedMeshes();
 }
@@ -59,17 +59,17 @@ int CEnvMapTest::Init()
 	bool loaded = false;
 	if( m_UseEmbeddedShader )
 	{
-		CGenericShaderDesc gs_desc;
+		GenericShaderDesc gs_desc;
 		gs_desc.EnvMap = CEnvMapOption::ENABLED;
-		gs_desc.Specular = CSpecularSource::NONE;
-		CShaderResourceDesc shader_desc;
-		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gs_desc) );
+		gs_desc.Specular = SpecularSource::NONE;
+		ShaderResourceDesc shader_desc;
+		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 
 		loaded = m_EnvMappedMeshShader.Load( shader_desc );
 
 		gs_desc.EnvMap = CEnvMapOption::NONE;
-		gs_desc.Specular = CSpecularSource::NONE;
-		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gs_desc) );
+		gs_desc.Specular = SpecularSource::NONE;
+		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 
 		loaded = m_NonEnvMappedMeshShader.Load( shader_desc );
 	}
@@ -78,19 +78,19 @@ int CEnvMapTest::Init()
 		loaded = m_EnvMappedMeshShader.Load( "./shaders/EnvMapTest.fx" );
 	}
 
-	CShaderManager *pShaderManager = m_EnvMappedMeshShader.GetShaderManager();
+	ShaderManager *pShaderManager = m_EnvMappedMeshShader.GetShaderManager();
 //	if( !pShaderManager )
 //		return -1;
 
-	CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 
 	// init cube map manager and envmap scene renderer
 
-	m_pCubeMapManager.reset( new CCubeMapManager() );
+	m_pCubeMapManager.reset( new CubeMapManager() );
 
 	m_pCubeMapManager->Init();
 
-	m_pCubeMapSceneRenderer.reset( new CCubeMapTestRenderer(this) ); 
+	m_pCubeMapSceneRenderer.reset( new CubeMapTestRenderer(this) ); 
 
 	m_pCubeMapManager->SetCubeMapSceneRenderer( m_pCubeMapSceneRenderer.get() );
 
@@ -111,7 +111,7 @@ int CEnvMapTest::Init()
 
 	BOOST_FOREACH( const string& filepath, env_mapped_mesh_file )
 	{
-		m_vecEnvMappedMesh.push_back( CMeshObjectHandle() );
+		m_vecEnvMappedMesh.push_back( MeshHandle() );
 //		m_vecEnvMappedMesh.back().filename = filepath;
 		m_vecEnvMappedMesh.back().Load( filepath );
 	}
@@ -125,24 +125,24 @@ int CEnvMapTest::Init()
 
 	BOOST_FOREACH( const string& filepath, non_env_mapped_mesh_file )
 	{
-		m_vecNonEnvMappedMesh.push_back( CMeshObjectHandle() );
+		m_vecNonEnvMappedMesh.push_back( MeshHandle() );
 //		m_vecNonEnvMappedMesh.back().filename = filepath;
 		m_vecNonEnvMappedMesh.back().Load( filepath );
 	}
 */
-//	shared_ptr<CShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
-	shared_ptr<CShaderLightManager> pShaderLightMgrs[] =
+//	shared_ptr<ShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
+	shared_ptr<ShaderLightManager> pShaderLightMgrs[] =
 	{
 		FixedFunctionPipelineManager().GetShaderLightManager(),
 		shader_mgr.GetShaderLightManager()
 	};
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 0.7f, 0.7f, 0.7f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
 
-	CHemisphericPointLight pnt_light;
+	HemisphericPointLight pnt_light;
 	pnt_light.Attribute.UpperDiffuseColor.SetRGBA( 0.6f, 0.6f, 0.6f, 1.0f );
 	pnt_light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	pnt_light.vPosition = Vector3( -0.2f, 2.8f, -0.1f );
@@ -172,7 +172,7 @@ int CEnvMapTest::Init()
 
 	// load the terrain mesh
 	m_TerrainMesh.filename = "./models/terrain06.msh";
-	m_TerrainMesh.SetMeshType( CBasicMesh::TYPE_MESH );
+	m_TerrainMesh.SetMeshType( BasicMesh::TYPE_MESH );
 	m_TerrainMesh.Load();
 */
 	return 0;
@@ -190,10 +190,10 @@ void CEnvMapTest::RenderBase()
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-	CShaderManager *pShaderManager = m_EnvMappedMeshShader.GetShaderManager();
+	ShaderManager *pShaderManager = m_EnvMappedMeshShader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
-//	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 
 	// update env map texture
 	// RenderNonEnvMappedMeshes() is called 6 times in each RenderToCubeMap() call
@@ -215,7 +215,7 @@ void CEnvMapTest::RenderBase()
 
 	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	Matrix44 mat;
 	GetCurrentCamera().GetCameraMatrix( mat );
@@ -232,9 +232,9 @@ void CEnvMapTest::RenderBase()
 
 //	RenderNonEnvMappedMeshes();
 	shader_mgr.SetTechnique( m_NonEnvMappedMesh );
-	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecNonEnvMappedMesh )
+	BOOST_FOREACH( MeshHandle& mesh, m_vecNonEnvMappedMesh )
 	{
-		shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )
 			continue;
 
@@ -246,9 +246,9 @@ void CEnvMapTest::RenderBase()
 //	RenderEnvMappedMeshes();
 	Result::Name res = shader_mgr.SetTechnique( m_EnvMappedMesh );
 	Vector3 positions[] = { Vector3(1,1,1), Vector3(1,1,-1), Vector3(-1,1,-1), Vector3(-1,1,1), Vector3(0,1,0) };
-	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecEnvMappedMesh )
+	BOOST_FOREACH( MeshHandle& mesh, m_vecEnvMappedMesh )
 	{
-		shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )
 			continue;
 
@@ -286,17 +286,17 @@ void CEnvMapTest::RenderBase()
 
 void CEnvMapTest::RenderNonEnvMappedMeshes()
 {
-	CShaderManager *pShaderManager = m_EnvMappedMeshShader.GetShaderManager();
+	ShaderManager *pShaderManager = m_EnvMappedMeshShader.GetShaderManager();
 //	if( !pShaderManager )
 //		return;
 
-//	CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
-	CShaderManager& shader_mgr = FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 
 	shader_mgr.SetTechnique( m_NonEnvMappedMesh );
-	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecNonEnvMappedMesh )
+	BOOST_FOREACH( MeshHandle& mesh, m_vecNonEnvMappedMesh )
 	{
-		shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )
 			continue;
 
@@ -306,12 +306,12 @@ void CEnvMapTest::RenderNonEnvMappedMeshes()
 	shader_mgr.SetTechnique( m_NonEnvMappedMesh ); // Do not use envmap texture to render the model to env map texture?
 	for( size_t i=0; i<m_vecEnvMappedMesh.size(); i++ )
 	{
-		CMeshObjectHandle& mesh = m_vecEnvMappedMesh[i];
+		MeshHandle& mesh = m_vecEnvMappedMesh[i];
 
 		if( m_CurrentEnvMapTarget == i )
 			continue;
 
-		shared_ptr<CBasicMesh> pMesh = mesh.GetMesh();
+		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )
 			continue;
 
@@ -319,7 +319,7 @@ void CEnvMapTest::RenderNonEnvMappedMeshes()
 	}
 }
 
-void CEnvMapTest::HandleInput( const SInputData& input )
+void CEnvMapTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

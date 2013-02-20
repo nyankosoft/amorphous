@@ -17,15 +17,15 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class CGLSLTest : public CGraphicsTestBase, public CGraphicsComponent
+class CGLSLTest : public CGraphicsTestBase, public GraphicsComponent
 {
-	std::vector<CMeshObjectHandle> m_Meshes;
+	std::vector<MeshHandle> m_Meshes;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	boost::shared_ptr<CGLProgram> m_pGLProgram;
 
@@ -59,10 +59,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

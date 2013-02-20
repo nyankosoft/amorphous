@@ -15,19 +15,19 @@
 
 class CCustomMeshTest : public CGraphicsTestBase
 {
-//	std::vector<CMeshObjectHandle> m_vecMesh;
+//	std::vector<MeshHandle> m_vecMesh;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	std::string m_TextBuffer;
 
-	CCustomMesh m_Mesh;
+	CustomMesh m_Mesh;
 
-	CMeshObjectHandle m_RegularMesh;
+	MeshHandle m_RegularMesh;
 
 private:
 
@@ -53,7 +53,7 @@ public:
 
 	void Render();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 };
 
 

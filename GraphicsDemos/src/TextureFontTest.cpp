@@ -37,8 +37,8 @@ int CTextureFontTest::Init()
 
 	LoadCurrentFont();
 /*
-	shared_ptr<CTrueTypeTextureFont> pFont( new CTrueTypeTextureFont() );
-//	m_pFont = shared_ptr<CTrueTypeTextureFont>( new CTrueTypeTextureFont() );
+	shared_ptr<TrueTypeTextureFont> pFont( new TrueTypeTextureFont() );
+//	m_pFont = shared_ptr<TrueTypeTextureFont>( new CTrueTypeTextureFont() );
 	pFont->InitFont( "fonts/rationalinteger.ttf", 64, 8, 16 );
 */
 	if( m_pFont )
@@ -47,7 +47,7 @@ int CTextureFontTest::Init()
 		m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
 		m_pFont->SetFontColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
 
-		U32 initial_flags = CFontBase::SHADOW;
+		U32 initial_flags = FontBase::SHADOW;
 		m_pFont->SetFlags( initial_flags );
 		m_FontFlags = initial_flags;
 		m_pFont->SetShadowColor( SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.5f ) );
@@ -102,7 +102,7 @@ void CTextureFontTest::RenderText()
 void CTextureFontTest::Render()
 {
 
-	C2DRect bg_rect( RectLTWH( 0, 0, CGraphicsComponent::GetScreenWidth(), CGraphicsComponent::GetScreenHeight() ) );
+	C2DRect bg_rect( RectLTWH( 0, 0, GraphicsComponent::GetScreenWidth(), GraphicsComponent::GetScreenHeight() ) );
 	bg_rect.SetColor( SFloatRGBAColor::White() );
 	bg_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 	bg_rect.Draw( m_BGTexture );
@@ -113,7 +113,7 @@ void CTextureFontTest::Render()
 }
 
 
-void CTextureFontTest::HandleInput( const SInputData& input )
+void CTextureFontTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -128,7 +128,7 @@ void CTextureFontTest::HandleInput( const SInputData& input )
 	case 'S':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_FontFlags ^= CFontBase::SHADOW;
+			m_FontFlags ^= FontBase::SHADOW;
 			if( m_pFont )
 				m_pFont->SetFlags( m_FontFlags );
 		}
@@ -206,8 +206,8 @@ void CTextureFontTest::LoadCurrentFont()
 	string font_file_pathname;
 	m_FontFilePathnames.get_current( font_file_pathname );
 
-	shared_ptr<CTrueTypeTextureFont> pFont( new CTrueTypeTextureFont() );
-//	m_pFont = shared_ptr<CTrueTypeTextureFont>( new CTrueTypeTextureFont() );
+	shared_ptr<TrueTypeTextureFont> pFont( new TrueTypeTextureFont() );
+//	m_pFont = shared_ptr<TrueTypeTextureFont>( new TrueTypeTextureFont() );
 	bool initialized = pFont->InitFont( font_file_pathname, 64, 8, 16 );
 	if( initialized )
 	{

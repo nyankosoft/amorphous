@@ -77,7 +77,7 @@ bool RunPyScript( const std::string& filename )
 
 void CGraphicsElementEffectTest::CreateGraphicsElements()
 {
-	shared_ptr<CGraphicsElementManager> pGraphicsElementManager
+	shared_ptr<GraphicsElementManager> pGraphicsElementManager
 		 = m_pAnimGraphicsManager->GetGraphicsElementManager();
 
 	// load resources
@@ -116,7 +116,7 @@ void CGraphicsElementEffectTest::CreateGraphicsEffects()
 
 void CGraphicsElementEffectTest::Render()
 {
-	shared_ptr<CGraphicsElementManager> pGraphicsElementManager
+	shared_ptr<GraphicsElementManager> pGraphicsElementManager
 		 = m_pAnimGraphicsManager->GetGraphicsElementManager();
 
 	if( pGraphicsElementManager )
@@ -133,12 +133,12 @@ void CGraphicsElementEffectTest::Update( float dt )
 
 int CGraphicsElementEffectTest::Init()
 {
-	m_pAnimGraphicsManager.reset( new CAnimatedGraphicsManager() );
+	m_pAnimGraphicsManager.reset( new GraphicsElementAnimationManager() );
 
-	shared_ptr<CGraphicsElementManager> pGraphicsElementManager
+	shared_ptr<GraphicsElementManager> pGraphicsElementManager
 		 = m_pAnimGraphicsManager->GetGraphicsElementManager();
 
-	// retrieve and save the pointer to CGraphicsElementManager
+	// retrieve and save the pointer to GraphicsElementManager
 	// the pointer is a borrowed reference and must not be deleted
 	// it is deleted by CAnimatedGraphicsManager
 //	m_pGraphicsElementManager = m_pAnimGraphicsManager->GetGraphicsElementManager();

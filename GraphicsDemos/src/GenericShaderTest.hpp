@@ -13,17 +13,17 @@
 
 class CGenericShaderTest : public CGraphicsTestBase
 {
-	std::vector<CMeshObjectHandle> m_Meshes;
+	std::vector<MeshHandle> m_Meshes;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_Technique;
+	ShaderTechniqueHandle m_Technique;
 
-	CGenericShaderDesc m_GenericShaderDesc;
+	GenericShaderDesc m_GenericShaderDesc;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 //	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
@@ -37,7 +37,7 @@ private:
 
 	void CreateSampleUI();
 
-	bool SetShaderParams( CShaderManager& shader_mgr );
+	bool SetShaderParams( ShaderManager& shader_mgr );
 
 	bool InitShader();
 
@@ -65,7 +65,7 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 };
 
 

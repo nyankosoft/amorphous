@@ -14,14 +14,14 @@ using std::string;
 using namespace boost;
 
 
-void CPostProcessEffectTest::HandleInput( const SInputData& input )
+void CPostProcessEffectTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
 	case GIC_F6:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			CPostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 1;
+			PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 1;
 		}
 		break;
 
@@ -45,13 +45,13 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 
 //			LoadHDRParamValues();
 
-			if( !m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_HDR_LIGHTING) )
+			if( !m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_HDR_LIGHTING) )
 			{
 				m_pPostProcessEffectManager->EnableHDRLighting( true );
 				m_pPostProcessEffectManager->SetHDRLightingParams(
-					CHDRLightingParams::KEY_VALUE
-				   |CHDRLightingParams::TONE_MAPPING
-				   |CHDRLightingParams::LUMINANCE_ADAPTATION_RATE,
+					HDRLightingParams::KEY_VALUE
+				   |HDRLightingParams::TONE_MAPPING
+				   |HDRLightingParams::LUMINANCE_ADAPTATION_RATE,
 					m_HDRLightingParams
 					);
 			}
@@ -66,7 +66,7 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 			if( !m_pPostProcessEffectManager )
 				return;
 
-			if( !m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_BLUR) )
+			if( !m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_BLUR) )
 				m_pPostProcessEffectManager->EnableBlur( true );
 			else
 				m_pPostProcessEffectManager->EnableBlur( false );
@@ -81,10 +81,10 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 			if( !m_pPostProcessEffectManager )
 				return;
 
-			if( !m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_MONOCHROME_COLOR) )
-				m_pPostProcessEffectManager->EnableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
+			if( !m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_MONOCHROME_COLOR) )
+				m_pPostProcessEffectManager->EnableEffect( PostProcessEffect::TF_MONOCHROME_COLOR );
 			else
-				m_pPostProcessEffectManager->DisableEffect( CPostProcessEffect::TF_MONOCHROME_COLOR );
+				m_pPostProcessEffectManager->DisableEffect( PostProcessEffect::TF_MONOCHROME_COLOR );
 
 			// set the blur effect
 		}
@@ -136,13 +136,13 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 			bool page_up = (input.iGICode == GIC_PAGE_UP);
 
 			float delta = 0.01f;
-			if( m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_HDR_LIGHTING) )
+			if( m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_HDR_LIGHTING) )
 			{
 				delta *= page_up ? 1.0f : -1.0f;
 				m_HDRLightingParams.key_value += delta;
-				m_pPostProcessEffectManager->SetHDRLightingParams( CHDRLightingParams::KEY_VALUE, m_HDRLightingParams );
+				m_pPostProcessEffectManager->SetHDRLightingParams( HDRLightingParams::KEY_VALUE, m_HDRLightingParams );
 			}
-			else if( m_pPostProcessEffectManager->IsEnabled(CPostProcessEffect::TF_BLUR) )
+			else if( m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_BLUR) )
 			{
 				delta = 0.05f;
 				delta *= page_up ? 1.0f : -1.0f;
@@ -159,7 +159,7 @@ void CPostProcessEffectTest::HandleInput( const SInputData& input )
 				return;
 
 			m_HDRLightingParams.key_value -= 0.01f;
-			m_pPostProcessEffectManager->SetHDRLightingParams( CHDRLightingParams::KEY_VALUE, m_HDRLightingParams );
+			m_pPostProcessEffectManager->SetHDRLightingParams( HDRLightingParams::KEY_VALUE, m_HDRLightingParams );
 		}
 		break;
 
@@ -240,13 +240,13 @@ void CPostProcessEffectTest::RenderMeshes()
 	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
 	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
-/*	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+/*	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( pShaderManager )
 	{
 		pShaderManager->SetParam( "m_vEyePos", g_Camera.GetPosition() );
 //		hr = pEffect->SetValue( "m_vEyePos", &(g_Camera.GetPosition()), sizeof(float) * 3 );
 
-		CShaderTechniqueHandle tech_handle;
+		ShaderTechniqueHandle tech_handle;
 //		tech_handle.SetTechniqueName( "Default" );
 //		tech_handle.SetTechniqueName( "NullShader" );
 		tech_handle.SetTechniqueName( "QuickTest" );
@@ -279,7 +279,7 @@ void CPostProcessEffectTest::RenderMeshes()
 
 	for( i=1; i<num_meshes; i++ )
 	{
-		shared_ptr<CBasicMesh> pMesh = m_vecMesh[i].GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_vecMesh[i].GetMesh();
 
 		hr = pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, fog_colors[i] );
 
@@ -345,8 +345,8 @@ bool CPostProcessEffectTest::LoadModels()
 	m_vecMeshFilepath[2] = "PostProcessEffectDemo/models/uge-underground.msh";
 
 	m_vecMesh.resize( 3 );
-	CMeshResourceDesc skybox_mesh_desc;
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator );
+	MeshResourceDesc skybox_mesh_desc;
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -394,7 +394,7 @@ int CPostProcessEffectTest::Init()
 	if( !loaded )
 		return 1;
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return 1;
 
@@ -407,7 +407,7 @@ int CPostProcessEffectTest::Init()
 	m_ShaderLightManager.Init();
 
 	// create a light for the scene
-	CHemisphericDirLight light;
+	HemisphericDirLight light;
 	light.UpperColor.SetRGBA( 1.00f, 1.00f, 1.00f, 1.00f );
 	light.LowerColor.SetRGBA( 0.25f, 0.25f, 0.25f, 1.00f );
 	Vector3 vDir = Vector3(-1.0f,-3.0f,-1.5f);
@@ -427,7 +427,7 @@ int CPostProcessEffectTest::Init()
 	bool test_ppeffect_mgr = true;
 	if( test_ppeffect_mgr )
 	{
-		m_pPostProcessEffectManager.reset( new CPostProcessEffectManager );
+		m_pPostProcessEffectManager.reset( new PostProcessEffectManager );
 
 		int load_embedded_effect_shader = 1;
 		LoadParamFromFile( "PostProcessEffectDemo/params.txt", "load_embedded_effect_shader", load_embedded_effect_shader );
@@ -453,7 +453,7 @@ int CPostProcessEffectTest::Init()
 
 void CPostProcessEffectTest::LoadHDRParamValues()
 {
-	CParamLoader pl( "PostProcessEffectDemo/params.txt" );
+	ParamLoader pl( "PostProcessEffectDemo/params.txt" );
 	pl.LoadParam( "hdr.tone_mapping_key_value",    m_HDRLightingParams.key_value );
 	pl.LoadParam( "hdr.luminance_adaptation_rate", m_HDRLightingParams.luminance_adaptation_rate );
 //	pl.LoadBoolParam( "hdr.tone_mapping", m_HDRLightingParams.tone_mapping );

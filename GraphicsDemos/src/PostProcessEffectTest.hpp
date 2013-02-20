@@ -51,7 +51,7 @@ enum eSizeFilterType
 class CPostProcessEffectTest : public CGraphicsTestBase
 {
 //	shared_ptr<CPostProcessManager> m_pPPManager;
-	boost::shared_ptr<CPostProcessEffectManager> m_pPostProcessEffectManager;
+	boost::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
 
 //	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
 
@@ -65,21 +65,21 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 	U32 m_PPEffectFlags;
 
-	std::vector<CMeshObjectHandle> m_vecMesh;
+	std::vector<MeshHandle> m_vecMesh;
 
 	std::vector<std::string> m_vecMeshFilepath;
 
-	CShaderTechniqueHandle m_MeshTechnique;
-	CShaderTechniqueHandle m_SkyboxTechnique;
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_SkyboxTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CFontSharedPtr m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 //	float m_fKeyValue;
 
-	CHDRLightingParams m_HDRLightingParams;
+	HDRLightingParams m_HDRLightingParams;
 
 	float m_fBlurStrength;
 
@@ -113,7 +113,7 @@ public:
 
 //	void UpdateProjectionTransform( const D3DXMATRIX& matProj );
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 
 	void LoadHDRParamValues();
 };

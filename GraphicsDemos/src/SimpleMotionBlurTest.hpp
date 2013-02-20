@@ -13,26 +13,26 @@
 
 class CSimpleMotionBlurTest : public CGraphicsTestBase
 {
-	boost::shared_ptr<CSimpleMotionBlur> m_pSimpleMotionBlur;
+	boost::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
 
-//	CMeshObjectHandle m_SkyboxMesh;
-	CTextureHandle m_SkyTexture;
+//	MeshHandle m_SkyboxMesh;
+	TextureHandle m_SkyTexture;
 
-	CMeshObjectHandle m_TerrainMesh;
+	MeshHandle m_TerrainMesh;
 
-//	std::vector<CMeshObjectHandle> m_vecpMeshes;
+//	std::vector<MeshHandle> m_vecpMeshes;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-//	CShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
 
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
 //	float m_FOV;// = PI / 4.0f;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 protected:
 

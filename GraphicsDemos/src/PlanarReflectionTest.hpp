@@ -16,29 +16,29 @@
 
 class CPlanarReflectionTest : public CGraphicsTestBase
 {
-	CMeshObjectHandle m_SkyboxMesh;
+	MeshHandle m_SkyboxMesh;
 
-	CMeshObjectHandle m_TerrainMesh;
+	MeshHandle m_TerrainMesh;
 
-	std::vector<CMeshObjectHandle> m_ReflectionSourceMeshes;
+	std::vector<MeshHandle> m_ReflectionSourceMeshes;
 
-	std::vector<CMeshObjectHandle> m_ReflectiveSurfaceMeshes;
+	std::vector<MeshHandle> m_ReflectiveSurfaceMeshes;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-//	CShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
 
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderHandle m_PlanarReflectionShader;
+	ShaderHandle m_PlanarReflectionShader;
 
-	CTextureHandle m_PerturbationTexture;
+	TextureHandle m_PerturbationTexture;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
-	boost::shared_ptr<CTextureRenderTarget> m_pTextureRenderTarget;
+	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 protected:
 

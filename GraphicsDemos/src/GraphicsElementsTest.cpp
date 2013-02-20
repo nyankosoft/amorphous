@@ -12,7 +12,7 @@ CGraphicsElementsTest::CGraphicsElementsTest()
 {
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	m_pGraphicsElementManager.reset( new CGraphicsElementManager() );
+	m_pGraphicsElementManager.reset( new GraphicsElementManager() );
 }
 
 
@@ -47,11 +47,11 @@ int CGraphicsElementsTest::Init()
 void CGraphicsElementsTest::CreateGraphicsElements()
 {
 	typedef SFloatRGBAColor FRGBA;
-	typedef CGraphicsComponent gc;
+	typedef GraphicsComponent gc;
 
 	int left = 0, top = 0, w = 0, h = 0;
 
-	shared_ptr<CGraphicsElementManager> pMgr = m_pGraphicsElementManager;
+	shared_ptr<GraphicsElementManager> pMgr = m_pGraphicsElementManager;
 
 	if( !pMgr )
 		return;
@@ -178,7 +178,7 @@ void CGraphicsElementsTest::Render()
 }
 
 
-void CGraphicsElementsTest::HandleInput( const SInputData& input )
+void CGraphicsElementsTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -228,7 +228,7 @@ void CGraphicsElementsTest::ReleaseGraphicsResources()
 }
 
 
-void CGraphicsElementsTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGraphicsElementsTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	CreateSampleUI();
 }

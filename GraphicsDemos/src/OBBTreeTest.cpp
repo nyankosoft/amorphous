@@ -17,7 +17,7 @@ using std::string;
 using namespace boost;
 
 
-COBBTreeTest::COBBTreeTest()
+OBBTreeTest::OBBTreeTest()
 :
 m_DrawLevel(0),
 m_NumDrawLevels(8)
@@ -25,12 +25,12 @@ m_NumDrawLevels(8)
 }
 
 
-COBBTreeTest::~COBBTreeTest()
+OBBTreeTest::~OBBTreeTest()
 {
 }
 
 
-int COBBTreeTest::Init()
+int OBBTreeTest::Init()
 {
 	if( CameraController() )
 		CameraController()->SetPosition( Vector3(0,1,-3) );
@@ -48,7 +48,7 @@ int COBBTreeTest::Init()
 //	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
 
 	// load the terrain mesh
-//	CMeshResourceDesc mesh_desc;
+//	MeshResourceDesc mesh_desc;
 //	mesh_desc.ResourcePath = "./models/terrain06.msh";
 //	mesh_desc.MeshType     = CMeshType::BASIC;
 //	m_Mesh.Load( mesh_desc );
@@ -70,9 +70,9 @@ int COBBTreeTest::Init()
 }
 
 
-void COBBTreeTest::InitOBBTree( C3DMeshModelArchive& mesh_archive )
+void OBBTreeTest::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 {
-	m_pOBBTree.reset( new COBBTree );
+	m_pOBBTree.reset( new OBBTree );
 
 	int level = 8;
 	LoadParamFromFile( "params.txt", "obb_tree_level", level );
@@ -88,17 +88,17 @@ void COBBTreeTest::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 }
 
 
-void COBBTreeTest::Update( float dt )
+void OBBTreeTest::Update( float dt )
 {
 }
 
 
-void COBBTreeTest::Render()
+void OBBTreeTest::Render()
 {
 	Matrix44 matWorld = Matrix44Identity();
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 //	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
 
@@ -112,7 +112,7 @@ void COBBTreeTest::Render()
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
-	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 		pMesh->Render( shader_mgr );
 
@@ -124,7 +124,7 @@ void COBBTreeTest::Render()
 }
 
 
-void COBBTreeTest::HandleInput( const SInputData& input )
+void OBBTreeTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -143,12 +143,12 @@ void COBBTreeTest::HandleInput( const SInputData& input )
 
 
 /*
-void COBBTreeTest::UpdateViewTransform( const Matrix44& matView )
+void OBBTreeTest::UpdateViewTransform( const Matrix44& matView )
 {
 }
 
 
-void COBBTreeTest::UpdateProjectionTransform( const Matrix44& matProj )
+void OBBTreeTest::UpdateProjectionTransform( const Matrix44& matProj )
 {
 }
 */

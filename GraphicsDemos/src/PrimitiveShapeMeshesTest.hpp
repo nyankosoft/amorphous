@@ -13,16 +13,16 @@
 
 class CPrimitiveShapeMeshesTest : public CGraphicsTestBase
 {
-	std::vector<CMeshObjectHandle> m_vecMesh;
+	std::vector<MeshHandle> m_vecMesh;
 //	std::vector<CTestMeshHolder> m_vecMesh;
 
-	CTextureHandle m_ConeTexture;
+	TextureHandle m_ConeTexture;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	std::string m_TextBuffer;
 
@@ -56,7 +56,7 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

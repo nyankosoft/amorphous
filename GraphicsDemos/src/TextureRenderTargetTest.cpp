@@ -44,24 +44,24 @@ bool CTextureRenderTargetTest::InitShader()
 //	bool shader_loaded = m_Shader.Load( "./shaders/PerPixelSingleHSDirectionalLight.fx" );
 //	bool shader_loaded = m_Shader.Load( "./shaders/null.fx" );
 
-	CShaderResourceDesc shader_desc;
-	CGenericShaderDesc gen_shader_desc;
-	gen_shader_desc.LightingTechnique = CLightingTechnique::HEMISPHERIC;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+	ShaderResourceDesc shader_desc;
+	GenericShaderDesc gen_shader_desc;
+	gen_shader_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 	
 //	if( !shader_loaded )
 //		return false;
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
 
-	shared_ptr<CShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
+	shared_ptr<ShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
 
 	if( pShaderLightMgr )
 	{
-		CHemisphericDirectionalLight light;
+		HemisphericDirectionalLight light;
 		light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		light.Attribute.LowerDiffuseColor.SetRGBA( 0.2f, 0.2f, 0.2f, 1.0f );
 		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.5f, -0.9f ) );
@@ -81,21 +81,21 @@ int CTextureRenderTargetTest::Init()
 
 	InitShader();
 
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Width  = 1280;
 	tex_desc.Height = 720;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
 	tex_desc.UsageFlags = UsageFlag::RENDER_TARGET;
 	tex_desc.MipLevels  = 1;
 
-	m_pTextureRenderTarget = CTextureRenderTarget::Create();
+	m_pTextureRenderTarget = TextureRenderTarget::Create();
 	bool res = m_pTextureRenderTarget->Init( tex_desc );
 //	bool res = m_pTextureRenderTarget->Init( 1280, 720 );
 	if( !res )
 		LOG_PRINT_ERROR( "Failed to create a render target texture." );
 
-	CBoxMeshGenerator generator;
-	generator.Generate( Vector3(1,1,1), CMeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
+	BoxMeshGenerator generator;
+	generator.Generate( Vector3(1,1,1), MeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
 	C3DMeshModelArchive& box_mesh_archive = generator.MeshArchive();
 	m_BoxMesh.LoadFromArchive( box_mesh_archive );
 	bool tex_loaded = false;
@@ -126,22 +126,22 @@ void CTextureRenderTargetTest::RenderMeshes()
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 //	GraphicsDevice().Enable( RenderStateType::LIGHTING );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
-//	shared_ptr<CShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
+//	shared_ptr<ShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
 //	if( pLightMgr )
 
 	// render the scene
 
 	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	CCamera cam;
+	Camera cam;
 	cam.SetAspectRatio( 16.0f / 9.0f );
 	cam.SetPose( Matrix34( Vector3( 0, 1, -3 ), Matrix33Identity() ) );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( cam );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( cam );
 
 	Result::Name res = shader_mgr.SetTechnique( m_MeshTechnique );
 
@@ -151,13 +151,13 @@ void CTextureRenderTargetTest::RenderMeshes()
 	shader_mgr.SetWorldTransform( world_transform );
 	m_BoxMesh.Render( shader_mgr );
 
-	CPrimitiveShapeRenderer renderer;
+	PrimitiveShapeRenderer renderer;
 	renderer.SetShader( m_Shader );
 	world_transform = Matrix34( Vector3(3,1,3), Matrix33RotationX((float)current_time) * Matrix33RotationY((float)current_time * 0.2f) );
 	shader_mgr.SetWorldTransform( world_transform );
 	renderer.RenderBox( Vector3(1,1,1), world_transform );
 
-	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 	{
 		world_transform = Matrix34( Vector3(-3,1,3), Matrix33RotationZ((float)current_time * 0.3f) * Matrix33RotationY((float)current_time * 0.6f) );
@@ -165,7 +165,7 @@ void CTextureRenderTargetTest::RenderMeshes()
 		pMesh->Render( shader_mgr );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+	GetShaderManagerHub().PopViewAndProjectionMatrices();
 }
 
 
@@ -174,14 +174,14 @@ void CTextureRenderTargetTest::RenderTexturedRect()
 	if( !m_pTextureRenderTarget )
 		return;
 
-	CTextureHandle render_target_texture = m_pTextureRenderTarget->GetRenderTargetTexture();
+	TextureHandle render_target_texture = m_pTextureRenderTarget->GetRenderTargetTexture();
 	Matrix34 pose( Matrix34Identity() );
 	pose.vPosition = Vector3(0,1,3);
 	pose.matOrient = Matrix33RotationY( (float)PI );
 	float width  = 1.28f * 2.0f;
 	float height = 0.72f * 2.0f;
 
-	CPrimitiveShapeRenderer renderer;
+	PrimitiveShapeRenderer renderer;
 	renderer.RenderPlane( pose, width, height, SFloatRGBAColor::White(), render_target_texture );
 }
 
@@ -225,7 +225,7 @@ void CTextureRenderTargetTest::SaveTexturesAsImageFiles()
 }
 
 
-void CTextureRenderTargetTest::HandleInput( const SInputData& input )
+void CTextureRenderTargetTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

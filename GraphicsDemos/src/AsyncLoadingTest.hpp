@@ -17,12 +17,12 @@
 class CTestMeshHolder
 {
 public:
-	CMeshObjectHandle m_Handle;
+	MeshHandle m_Handle;
 	Matrix34 m_Pose;
 
 	float m_fScale;
 
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
 	enum LoadingStyleName
 	{
@@ -38,18 +38,18 @@ public:
 };
 
 
-class CAsyncLoadingTest : public CGraphicsTestBase, public CGraphicsComponent
+class CAsyncLoadingTest : public CGraphicsTestBase, public GraphicsComponent
 {
-//	std::vector<CMeshObjectHandle> m_vecMesh;
+//	std::vector<MeshHandle> m_vecMesh;
 	std::vector<CTestMeshHolder> m_vecMesh;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
@@ -93,10 +93,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

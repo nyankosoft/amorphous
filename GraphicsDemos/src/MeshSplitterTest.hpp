@@ -17,7 +17,7 @@ class CSplitMeshNode
 {
 public:
 
-	boost::shared_ptr<CCustomMesh> m_pMesh;
+	boost::shared_ptr<CustomMesh> m_pMesh;
 
 	std::vector<CSplitMeshNode> m_Children;
 };*/
@@ -26,7 +26,7 @@ public:
 class CSplitMeshNodeObjects
 {
 public:
-	boost::shared_ptr<CCustomMesh> pMesh;
+	boost::shared_ptr<CustomMesh> pMesh;
 	Vector3 shift;
 
 	CSplitMeshNodeObjects()
@@ -41,19 +41,19 @@ class CMeshSplitterTest : public CGraphicsTestBase
 	typedef binary_node<CSplitMeshNodeObjects> CMeshNode;
 
 //	CSplitMeshNode m_RootMeshNode;
-//	binary_node<CCustomMesh> m_RootMeshNode;
+//	binary_node<CustomMesh> m_RootMeshNode;
 	CMeshNode m_RootMeshNode;
 
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	bool m_ControlSplitPlane;
 
-	boost::shared_ptr<CCameraController> m_pSplitPlaneController;
+	boost::shared_ptr<amorphous::CameraController> m_pSplitPlaneController;
 
 	std::string m_TextBuffer;
 
@@ -61,7 +61,7 @@ private:
 
 	bool InitShader();
 
-	void RenderMeshes( binary_node<CSplitMeshNodeObjects>& node, CShaderManager& shader_mgr, const Matrix34& parent_transform );
+	void RenderMeshes( binary_node<CSplitMeshNodeObjects>& node, ShaderManager& shader_mgr, const Matrix34& parent_transform );
 
 	void RenderMeshes();
 
@@ -95,7 +95,7 @@ public:
 
 	void Render();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 };
 
 

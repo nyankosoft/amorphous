@@ -24,23 +24,23 @@ class CResolutionChangeTest : public CGraphicsTestBase
 		NUM_MESHES
 	};
 
-	std::vector<CDisplayMode>  m_AvailableDisplayModes;
+	std::vector<DisplayMode>  m_AvailableDisplayModes;
 
-//	CMeshObjectHandle m_SkyboxMesh;
+//	MeshHandle m_SkyboxMesh;
 
-//	CMeshObjectHandle m_SphereMesh;
+//	MeshHandle m_SphereMesh;
 
-	std::vector<CMeshObjectHandle> m_Meshes;
+	std::vector<MeshHandle> m_Meshes;
 
-//	CShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
 
-//	CShaderTechniqueHandle m_DefaultTechnique;
+//	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	std::vector<CTextureHandle> m_TestTextures;
+	std::vector<TextureHandle> m_TestTextures;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	int m_CurrentlyEnteredDigits;
 
@@ -66,7 +66,7 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

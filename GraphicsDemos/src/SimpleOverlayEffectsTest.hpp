@@ -15,23 +15,23 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public CGraphicsComponent
+class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public GraphicsComponent
 {
-	CPseudoNoiseEffect m_PseudoNoiseEffect;
+	PseudoNoiseEffect m_PseudoNoiseEffect;
 
 	bool m_EnableNoiseEffect;
 
-	CTextureHandle m_StripeTexture;
+	TextureHandle m_StripeTexture;
 
 	bool m_EnableStripeEffect;
 
-	std::vector<CMeshObjectHandle> m_Meshes;
+	std::vector<MeshHandle> m_Meshes;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	std::string m_TextBuffer;
 
@@ -65,10 +65,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

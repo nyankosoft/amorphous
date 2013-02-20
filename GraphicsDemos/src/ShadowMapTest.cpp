@@ -49,15 +49,15 @@ int CShadowMapTest::Init()
 //	string shader_path = "./shaders/PerPixelSingleHSDirectionalLight.fx";
 	bool shader_loaded = m_Shader.Load( shader_path );
 */
-	CGenericShaderDesc desc;
+	GenericShaderDesc desc;
 
-	desc.ShaderLightingType = CShaderLightingType::PER_PIXEL;
-	desc.Specular = CSpecularSource::NONE;
+	desc.LightingType = ShaderLightingType::PER_PIXEL;
+	desc.Specular = SpecularSource::NONE;
 
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 
 //	m_Techniques.resize( shader_descs.size() );
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(desc) );
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
 //	if( shader_loaded )
@@ -72,28 +72,28 @@ int CShadowMapTest::Init()
 	m_Mesh.Load( model );
 
 	// load the terrain mesh
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = "ShadowMapDemo/models/floor.msh";
-	mesh_desc.MeshType     = CMeshType::BASIC;
+	mesh_desc.MeshType     = MeshType::BASIC;
 	m_FloorMesh.Load( mesh_desc );
 //	m_FloorMesh = CreateBoxMesh();
 
-	m_pShadowMapManager.reset( new CShadowMapManager );
+	m_pShadowMapManager.reset( new ShadowMapManager );
 	m_pShadowMapManager->SetShadowMapShaderFilename( "ShadowMapDemo/shaders/SimpleShadowMap.fx" );
 	bool initialized = m_pShadowMapManager->Init();
 
 	// Create a light
-	shared_ptr<CHemisphericDirectionalLight> pLight;
-	pLight.reset( new CHemisphericDirectionalLight );
+	shared_ptr<HemisphericDirectionalLight> pLight;
+	pLight.reset( new HemisphericDirectionalLight );
 	pLight->vDirection = Vec3GetNormalized( Vector3( -1.0f, -3.0f, 1.0f ) );
 	pLight->Attribute.UpperDiffuseColor = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f );
 	pLight->Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.2f, 0.2f, 0.2f, 1.0f );
 	m_pLight = pLight;
 
 	// Set the light to the shader
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
-	shared_ptr<CShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	shared_ptr<ShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
 	if( pLightMgr )
 	{
 		pLightMgr->SetHemisphericDirectionalLight( *pLight );
@@ -114,14 +114,14 @@ void CShadowMapTest::Update( float dt )
 }
 
 
-void CShadowMapTest::RenderScene( CShaderManager& shader_mgr )
+void CShadowMapTest::RenderScene( ShaderManager& shader_mgr )
 {
 //	m_pShadowMapManager->ShaderTechniqueForShadowCaster();
 
 	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, false );
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,    true );
 
-	shared_ptr<CShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
+	shared_ptr<ShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
 	if( pLightMgr )
 		pLightMgr->CommitChanges();
 
@@ -133,17 +133,17 @@ void CShadowMapTest::RenderScene( CShaderManager& shader_mgr )
 
 		shader_mgr.SetWorldTransform( pose );
 
-		shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 		if( pMesh )
 			pMesh->Render( shader_mgr );
 	}
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
-	shared_ptr<CBasicMesh> pFloor = m_FloorMesh.GetMesh();
+	shared_ptr<BasicMesh> pFloor = m_FloorMesh.GetMesh();
 	if( pFloor )
 		pFloor->Render( shader_mgr );
 
-//	CPrimitiveShapeRenderer renderer;
+//	PrimitiveShapeRenderer renderer;
 //	renderer.SetShader(  );
 //	renderer.RenderBox( Vector3( 100.0f, 0.1f, 100.0f ), Matrix34( Vector3(0.0f,-0.05f,0.0f), Matrix33Identity() ) );
 }
@@ -160,8 +160,8 @@ void CShadowMapTest::Render()
 
 	m_pShadowMapManager->RenderShadowReceivers( g_Camera );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
 
 	m_pShadowMapManager->BeginScene();
 
@@ -181,7 +181,7 @@ void CShadowMapTest::Render()
 }
 
 
-void CShadowMapTest::HandleInput( const SInputData& input )
+void CShadowMapTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -190,10 +190,10 @@ void CShadowMapTest::HandleInput( const SInputData& input )
 		{
 			if( m_pShadowMapManager )
 			{
-				CTextureHandle tex = m_pShadowMapManager->GetSceneShadowTexture();
+				TextureHandle tex = m_pShadowMapManager->GetSceneShadowTexture();
 				tex.SaveTextureToImageFile( "scene_shadow_texture.png" );
 
-//				shared_ptr<CTextureRenderTarget> pTexRenderTarget
+//				shared_ptr<TextureRenderTarget> pTexRenderTarget
 //					= m_pShadowMapManager->GetSceneShadowTexture();
 //
 //				if( pTexRenderTarget )
@@ -205,30 +205,30 @@ void CShadowMapTest::HandleInput( const SInputData& input )
 }
 
 
-void CShadowMapTest::RenderShadowCasters( CCamera& camera )
+void CShadowMapTest::RenderShadowCasters( Camera& camera )
 {
-	CShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
+	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
-	CShaderTechniqueHandle tech = m_pShadowMapManager->ShaderTechniqueForShadowCaster();
+	ShaderTechniqueHandle tech = m_pShadowMapManager->ShaderTechniqueForShadowCaster();
 	Result::Name res = shader_mgr.SetTechnique( tech );
 
 	RenderScene( shader_mgr );
 }
 
 
-void CShadowMapTest::RenderShadowReceivers( CCamera& camera )
+void CShadowMapTest::RenderShadowReceivers( Camera& camera )
 {
-	CShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
+	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
-	CShaderTechniqueHandle tech = m_pShadowMapManager->ShaderTechniqueForShadowReceiver();
+	ShaderTechniqueHandle tech = m_pShadowMapManager->ShaderTechniqueForShadowReceiver();
 	Result::Name res = shader_mgr.SetTechnique( tech );
 
 	RenderScene( shader_mgr );

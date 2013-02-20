@@ -19,31 +19,31 @@ class CShadowMapTestSceneRenderer;
 
 class CShadowMapTest : public CGraphicsTestBase
 {
-	CMeshObjectHandle m_SkyboxMesh;
+	MeshHandle m_SkyboxMesh;
 
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
-	CMeshObjectHandle m_FloorMesh;
+	MeshHandle m_FloorMesh;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-//	CShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
 
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
-	boost::shared_ptr<CShadowMapManager> m_pShadowMapManager;
+	boost::shared_ptr<ShadowMapManager> m_pShadowMapManager;
 
-	boost::shared_ptr<CLight> m_pLight;
+	boost::shared_ptr<Light> m_pLight;
 
 	boost::shared_ptr<CShadowMapTestSceneRenderer> m_pShadowMapSceneRenderer;
 
 private:
 
-	void RenderScene( CShaderManager& shader_mgr );
+	void RenderScene( ShaderManager& shader_mgr );
 
 public:
 
@@ -61,15 +61,15 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 
-	void RenderShadowCasters( CCamera& camera );
+	void RenderShadowCasters( Camera& camera );
 
-	void RenderShadowReceivers( CCamera& camera );
+	void RenderShadowReceivers( Camera& camera );
 };
 
 
-class CShadowMapTestSceneRenderer : public CShadowMapSceneRenderer
+class CShadowMapTestSceneRenderer : public ShadowMapSceneRenderer
 {
 	CShadowMapTest *m_pTarget;
 
@@ -77,9 +77,9 @@ public:
 
 	CShadowMapTestSceneRenderer( CShadowMapTest *pTarget ) : m_pTarget(pTarget) {}
 
-	void RenderSceneToShadowMap( CCamera& camera ) { m_pTarget->RenderShadowCasters( camera ); }
+	void RenderSceneToShadowMap( Camera& camera ) { m_pTarget->RenderShadowCasters( camera ); }
 
-	void RenderShadowReceivers( CCamera& camera ) { m_pTarget->RenderShadowReceivers( camera ); }
+	void RenderShadowReceivers( Camera& camera ) { m_pTarget->RenderShadowReceivers( camera ); }
 };
 
 

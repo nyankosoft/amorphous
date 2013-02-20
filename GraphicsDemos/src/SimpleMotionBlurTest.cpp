@@ -40,9 +40,9 @@ int CSimpleMotionBlurTest::Init()
 	m_SkyTexture.SaveTextureToImageFile( "sky.png" );
 
 	// load the terrain mesh
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = "./models/terrain06.msh";
-	mesh_desc.MeshType     = CMeshType::BASIC;
+	mesh_desc.MeshType     = MeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
 //	g_CameraController.SetPosition( Vector3( 0, 3, 0 ) );
@@ -61,12 +61,12 @@ void CSimpleMotionBlurTest::Update( float dt )
 void CSimpleMotionBlurTest::RenderScene()
 {
 	Matrix44 matWorld = Matrix44Identity();
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
 	GraphicsDevice().Enable( RenderStateType::FACE_CULLING );
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 //	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPose() );
 	RenderSkybox( m_SkyTexture, GetCurrentCamera().GetPose() );
@@ -75,7 +75,7 @@ void CSimpleMotionBlurTest::RenderScene()
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
-	shared_ptr<CBasicMesh> pTerrainMesh = m_TerrainMesh.GetMesh();
+	shared_ptr<BasicMesh> pTerrainMesh = m_TerrainMesh.GetMesh();
 	if( pTerrainMesh )
 		pTerrainMesh->Render( shader_mgr );
 }
@@ -85,7 +85,7 @@ void CSimpleMotionBlurTest::Render()
 {
 	if( !m_pSimpleMotionBlur )
 	{
-		m_pSimpleMotionBlur.reset( new CSimpleMotionBlur );
+		m_pSimpleMotionBlur.reset( new SimpleMotionBlur );
 		m_pSimpleMotionBlur->InitForScreenSize();
 		m_pSimpleMotionBlur->SetBlurWeight( 0.1f );
 	}

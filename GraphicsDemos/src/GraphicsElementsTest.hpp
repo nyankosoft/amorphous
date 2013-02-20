@@ -12,19 +12,19 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class CGraphicsElementsTest : public CGraphicsTestBase//, public CGraphicsComponent
+class CGraphicsElementsTest : public CGraphicsTestBase//, public GraphicsComponent
 {
-	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
+	boost::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 //	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	std::vector< boost::shared_ptr<CCombinedRectElement> > m_pRects;
+	std::vector< boost::shared_ptr<CombinedRectElement> > m_pRects;
 
-	std::vector< boost::shared_ptr<CCombinedRoundRectElement> > m_pRoundRects;
+	std::vector< boost::shared_ptr<CombinedRoundRectElement> > m_pRoundRects;
 
-	boost::shared_ptr<CCombinedTriangleElement> m_apTriangle[0xFF];
+	boost::shared_ptr<CombinedTriangleElement> m_apTriangle[0xFF];
 
 	std::string m_TextBuffer;
 
@@ -60,10 +60,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

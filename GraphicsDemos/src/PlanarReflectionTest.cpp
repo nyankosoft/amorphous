@@ -124,9 +124,9 @@ int CPlanarReflectionTest::Init()
 	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
 
 	// load the terrain mesh
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = "./models/terrain06.msh";
-	mesh_desc.MeshType     = CMeshType::BASIC;
+	mesh_desc.MeshType     = MeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
 	m_ReflectionSourceMeshes.resize( 1 );
@@ -137,7 +137,7 @@ int CPlanarReflectionTest::Init()
 
 //	m_TestTexture.Load( "./textures/flare02.dds" );
 
-	m_pTextureRenderTarget = CTextureRenderTarget::Create();
+	m_pTextureRenderTarget = TextureRenderTarget::Create();
 	m_pTextureRenderTarget->InitScreenSizeRenderTarget();
 
 	m_PerturbationTexture.Load( "./textures/watersurf_nmap.jpg" );
@@ -162,11 +162,11 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera
 	GraphicsDevice().SetCullingMode( culling_mode );
 
 	Matrix44 matWorld = Matrix44Identity();
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetWorldTransform( matWorld );
 
@@ -174,7 +174,7 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera
 
 	for( size_t i=0; i<m_ReflectionSourceMeshes.size(); i++ )
 	{
-		shared_ptr<CBasicMesh> pMesh = m_ReflectionSourceMeshes[i].GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_ReflectionSourceMeshes[i].GetMesh();
 		
 		if( !pMesh )
 			continue;
@@ -186,15 +186,15 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera
 
 void CPlanarReflectionTest::RenderReflectionSurface()
 {
-	CShaderManager *pShaderMgr = m_PlanarReflectionShader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_PlanarReflectionShader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderManager& shader_mgr = *pShaderMgr;
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetTexture( 2, m_PerturbationTexture );
 
-	CShaderTechniqueHandle tech;
+	ShaderTechniqueHandle tech;
 	tech.SetTechniqueName( "Default" );
 	shader_mgr.SetTechnique( tech );
 
@@ -210,7 +210,7 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 
 	for( size_t i=0; i<m_ReflectiveSurfaceMeshes.size(); i++ )
 	{
-		shared_ptr<CBasicMesh> pMesh = m_ReflectiveSurfaceMeshes[i].GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_ReflectiveSurfaceMeshes[i].GetMesh();
 		
 		if( !pMesh )
 			continue;
@@ -322,13 +322,13 @@ void CPlanarReflectionTest::Render()
 	Matrix44 mirror = Matrix44Mirror( reflection_plane );
 
 	Matrix44 view = GetCurrentCamera().GetCameraMatrix();
-	ShaderManagerHub.PushViewAndProjectionMatrices( view * mirror, GetCurrentCamera().GetProjectionMatrix() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( view * mirror, GetCurrentCamera().GetProjectionMatrix() );
 
-/*	CShaderManager& ffp_mgr = FixedFunctionPipelineManager();
+/*	ShaderManager& ffp_mgr = FixedFunctionPipelineManager();
 	Matrix44 view = ffp_mgr.GetViewTransform();
 	ffp_mgr.SetViewTransform( view * mirror );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( pShaderMgr )
 	{
 		view = pShaderMgr->GetViewTransform();
@@ -361,7 +361,7 @@ void CPlanarReflectionTest::Render()
 
 	GraphicsDevice().DisableClipPlane( 0 );
 
-	ShaderManagerHub.PopViewAndProjectionMatrices();
+	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	m_pTextureRenderTarget->ResetRenderTarget();
 

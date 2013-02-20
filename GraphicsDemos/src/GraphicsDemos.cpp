@@ -41,7 +41,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 	else if( demo_name == "LensFlareTest" )                   return new CLensFlareTest;
 	else if( demo_name == "MeshSplitterTest" )                return new CMeshSplitterTest;
 	else if( demo_name == "MultibyteFontTest" )               return new CMultibyteFontTest;
-	else if( demo_name == "OBBTreeTest" )                     return new COBBTreeTest;
+	else if( demo_name == "OBBTreeTest" )                     return new OBBTreeTest;
 	else if( demo_name == "PerlinNoiseTextureGeneratorTest" ) return new CPerlinNoiseTextureGeneratorTest;
 	else if( demo_name == "PlanarReflectionTest" )            return new CPlanarReflectionTest;
 	else if( demo_name == "PostProcessEffectTest" )           return new CPostProcessEffectTest;

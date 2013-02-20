@@ -15,8 +15,8 @@ class CTextureFontTest : public CGraphicsTestBase
 {
 private:
 
-//	boost::shared_ptr<CTrueTypeTextureFont> m_pFont;
-	boost::shared_ptr<CFontBase> m_pFont;
+//	boost::shared_ptr<TrueTypeTextureFont> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	indexed_vector<std::string> m_FontFilePathnames;
 
@@ -28,7 +28,7 @@ private:
 	int m_FontWidth;
 	int m_FontHeight;
 
-	CTextureHandle m_BGTexture;
+	TextureHandle m_BGTexture;
 
 public:
 
@@ -48,7 +48,7 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void LoadCurrentFont();
 

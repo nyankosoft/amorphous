@@ -11,7 +11,7 @@
 
 class C2DPrimitivesTest : public CGraphicsTestBase
 {
-//	boost::shared_ptr<CFontBase> m_pFont;
+//	boost::shared_ptr<FontBase> m_pFont;
 
 	enum Params
 	{
@@ -20,7 +20,7 @@ class C2DPrimitivesTest : public CGraphicsTestBase
 
 	int m_Type;
 
-	std::vector<CTextureHandle> m_vecTexture;
+	std::vector<TextureHandle> m_vecTexture;
 
 	std::vector<C2DFrameRect> m_FrameRects;
 
@@ -42,7 +42,7 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

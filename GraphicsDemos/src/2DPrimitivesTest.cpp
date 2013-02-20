@@ -101,7 +101,7 @@ void C2DPrimitivesTest::Render()
 }
 
 
-void C2DPrimitivesTest::HandleInput( const SInputData& input )
+void C2DPrimitivesTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

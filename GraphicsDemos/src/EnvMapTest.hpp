@@ -17,58 +17,58 @@
 class CEnvMapTest;
 
 
-class CCubeMapTestRenderer : public CCubeMapSceneRenderer
+class CubeMapTestRenderer : public CCubeMapSceneRenderer
 {
 	CEnvMapTest *m_pEnvMapTest;
 
 public:
 
-	CCubeMapTestRenderer(CEnvMapTest *pEnvMapTest) : m_pEnvMapTest(pEnvMapTest) {}
+	CubeMapTestRenderer(CEnvMapTest *pEnvMapTest) : m_pEnvMapTest(pEnvMapTest) {}
 
-	virtual ~CCubeMapTestRenderer() {}
+	virtual ~CubeMapTestRenderer() {}
 
 	virtual Vector3 GetCameraPosition() { return Vector3(0,1,0); }//g_Camera.GetPosition(); }
 
-	/// Called by CCubeMapManager in CCubeMapManager::RenderToCubeMap()
+	/// Called by CubeMapManager in CubeMapManager::RenderToCubeMap()
 	/// to render the scene to the cube map surface.
 	/// - called 6 times in total to render the scene to all the cube map surfaces
 	/// - IDirect3DDevice9::BeginScene() & EndScene() pair is not called
-	///   in CCubeMapManager::RenderToCubeMap() before and after the 
+	///   in CubeMapManager::RenderToCubeMap() before and after the 
 	///   RenderSceneToCubeMap() calls.
 	///   User must call them in this functions?
-	///   - changed: BeginScene() and EndScene() are called in CCubeMapManager::RenderToCubeMap()
-	virtual void RenderSceneToCubeMap( CCamera& camera );
+	///   - changed: BeginScene() and EndScene() are called in CubeMapManager::RenderToCubeMap()
+	virtual void RenderSceneToCubeMap( Camera& camera );
 };
 
 
 class CEnvMapTest : public CGraphicsTestBase
 {
-	boost::shared_ptr<CCubeMapManager> m_pCubeMapManager;
+	boost::shared_ptr<CubeMapManager> m_pCubeMapManager;
 
 	boost::shared_ptr<CCubeMapSceneRenderer> m_pCubeMapSceneRenderer;
 
-	std::vector<CMeshObjectHandle> m_vecEnvMappedMesh;
+	std::vector<MeshHandle> m_vecEnvMappedMesh;
 
-	std::vector<CMeshObjectHandle> m_vecNonEnvMappedMesh;
+	std::vector<MeshHandle> m_vecNonEnvMappedMesh;
 
 	int m_CurrentEnvMapTarget;
 
-	CShaderTechniqueHandle m_NonEnvMappedMesh;
-	CShaderTechniqueHandle m_EnvMappedMesh;
-//	CShaderTechniqueHandle m_SkyboxTechnique;
-//	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_NonEnvMappedMesh;
+	ShaderTechniqueHandle m_EnvMappedMesh;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_EnvMappedMeshShader;
+	ShaderHandle m_EnvMappedMeshShader;
 
-	CShaderHandle m_NonEnvMappedMeshShader;
+	ShaderHandle m_NonEnvMappedMeshShader;
 
-//	shared_ptr<CShaderLightManager> m_pShaderLightManager;
+//	shared_ptr<ShaderLightManager> m_pShaderLightManager;
 
 	bool m_UseEmbeddedShader;
 
 	Vector3 m_vLightPosition;
 
-	CFontSharedPtr m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 public:
 
@@ -88,7 +88,7 @@ public:
 
 	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void RenderNonEnvMappedMeshes();
 

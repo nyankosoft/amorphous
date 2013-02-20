@@ -19,7 +19,7 @@ using std::vector;
 using namespace boost;
 
 
-extern CCamera g_Camera;
+extern Camera g_Camera;
 
 
 CResolutionChangeTest::CResolutionChangeTest()
@@ -36,7 +36,7 @@ CResolutionChangeTest::~CResolutionChangeTest()
 
 int CResolutionChangeTest::Init()
 {
-	vector<CAdapterMode>  adapter_modes;
+	vector<AdapterMode>  adapter_modes;
 	GraphicsDevice().GetAdapterModesForDefaultAdapter( adapter_modes );
 
 	for( size_t i=0; i<adapter_modes.size(); i++ )
@@ -46,7 +46,7 @@ int CResolutionChangeTest::Init()
 			const int num_display_modes = (int)adapter_modes[i].vecDisplayMode.size();
 			for( int j=0; j<num_display_modes; j++ )
 			{
-				const CDisplayMode& display_mode = adapter_modes[i].vecDisplayMode[j];
+				const DisplayMode& display_mode = adapter_modes[i].vecDisplayMode[j];
 				float h = (float) display_mode.Height;
 				float w = (float) display_mode.Width;
 				if( 0.001 < fabs( h / w - 9.0f / 16.0f)
@@ -66,22 +66,22 @@ int CResolutionChangeTest::Init()
 
 	// initialize shader
 //	bool shader_loaded = m_Shader.Load( "./shaders/ResolutionChangeTest.fx" );
-	CShaderResourceDesc shader_desc;
-	CGenericShaderDesc gs_desc;
+	ShaderResourceDesc shader_desc;
+	GenericShaderDesc gs_desc;
 
-	gs_desc.ShaderLightingType = CShaderLightingType::PER_PIXEL;
-	gs_desc.LightingTechnique  = CLightingTechnique::HEMISPHERIC;
-	gs_desc.Specular           = CSpecularSource::UNIFORM;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gs_desc) );
+	gs_desc.LightingType = ShaderLightingType::PER_PIXEL;
+	gs_desc.LightingTechnique  = ShaderLightingTechnique::HEMISPHERIC;
+	gs_desc.Specular           = SpecularSource::UNIFORM;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 	m_Shader.Load( shader_desc );
 
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
 
 	// load the terrain mesh
-//	CMeshResourceDesc mesh_desc;
+//	MeshResourceDesc mesh_desc;
 //	mesh_desc.ResourcePath = "./models/terrain06.msh";
-//	mesh_desc.MeshType     = CMeshType::BASIC;
+//	mesh_desc.MeshType     = MeshType::BASIC;
 //	m_TerrainMesh.Load( mesh_desc );
 
 //	m_TestTexture.Load( "./textures/flare02.dds" );
@@ -93,12 +93,12 @@ int CResolutionChangeTest::Init()
 
 	m_Meshes.resize( NUM_MESHES );
 
-	CMeshResourceDesc sphere_mesh_desc;
+	MeshResourceDesc sphere_mesh_desc;
 	CSphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 0.5f;
 	sphere_desc.num_segments = 32;
 	sphere_desc.num_sides    = 64;
-	sphere_mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	sphere_mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 
 //	bool sphere_mesh_loaded = m_SphereMesh.Load( sphere_mesh_desc );
 	bool sphere_mesh_loaded = m_Meshes[MESH_SPHERE].Load( sphere_mesh_desc );
@@ -167,11 +167,11 @@ void CResolutionChangeTest::Render2DRects()
 void CResolutionChangeTest::Render()
 {
 	Matrix44 matWorld = Matrix44Identity();
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 //	if( !pShaderMgr )
 //		return;
 
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 //	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
 
@@ -184,7 +184,7 @@ void CResolutionChangeTest::Render()
 	// Need to set the light again when the graphics device is released and re-created
 //	if( pShaderMgr )
 //	{
-//		shared_ptr<CShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
+//		shared_ptr<ShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
 //		if( pShaderLightMgr )
 //			pShaderLightMgr->CommitChanges();
 //	}
@@ -199,7 +199,7 @@ void CResolutionChangeTest::Render()
 
 	for( size_t i=0; i<m_Meshes.size(); i++ )
 	{
-		shared_ptr<CBasicMesh> pMesh = m_Meshes[i].GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
 		if( !pMesh )
 			continue;
 
@@ -209,7 +209,7 @@ void CResolutionChangeTest::Render()
 	}
 
 
-//	shared_ptr<CBasicMesh> pSphereMesh = m_SphereMesh.GetMesh();
+//	shared_ptr<BasicMesh> pSphereMesh = m_SphereMesh.GetMesh();
 //	if( pSphereMesh )
 //		pSphereMesh->Render( shader_mgr );
 
@@ -224,7 +224,7 @@ void CResolutionChangeTest::Render()
 	m_pFont->SetFontColor( SFloatRGBAColor::White() );
 	for( int i=0; i<(int)m_AvailableDisplayModes.size(); i++ )
 	{
-		const CDisplayMode& mode = m_AvailableDisplayModes[i];
+		const DisplayMode& mode = m_AvailableDisplayModes[i];
 		string text = fmt_string( "%d: %dx%d (%u Hz)", i, mode.Width, mode.Height, mode.RefreshRate );
 		SFloatRGBAColor text_color = mode.Current ? SFloatRGBAColor::Aqua() : SFloatRGBAColor::White();
 		m_pFont->SetFontColor( text_color );
@@ -238,7 +238,7 @@ void CResolutionChangeTest::Render()
 }
 
 
-void CResolutionChangeTest::HandleInput( const SInputData& input )
+void CResolutionChangeTest::HandleInput( const InputData& input )
 {
 	if( input.iType == ITYPE_KEY_PRESSED
 	 && '0' <= input.iGICode
@@ -260,7 +260,7 @@ void CResolutionChangeTest::HandleInput( const SInputData& input )
 			if( 0 <= m_CurrentlyEnteredDigits
 			 && m_CurrentlyEnteredDigits < (int)m_AvailableDisplayModes.size() )
 			{
-				const CDisplayMode& display_mode = m_AvailableDisplayModes[m_CurrentlyEnteredDigits];
+				const DisplayMode& display_mode = m_AvailableDisplayModes[m_CurrentlyEnteredDigits];
 
 				GameWindowManager().ChangeScreenSize( display_mode.Width, display_mode.Height, false );
 
@@ -285,15 +285,15 @@ void CResolutionChangeTest::HandleInput( const SInputData& input )
 
 void CResolutionChangeTest::SetLight()
 {
-	CHemisphericDirectionalLight hs_dir_light;
+	HemisphericDirectionalLight hs_dir_light;
 	hs_dir_light.Attribute.UpperDiffuseColor = SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f);
 	hs_dir_light.Attribute.LowerDiffuseColor = SFloatRGBAColor(0.1f,0.1f,0.1f,1.0f);
 	hs_dir_light.vDirection = Vec3GetNormalized( Vector3(1.0f,-3.0f,1.5f) );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( pShaderMgr )
 	{
-		shared_ptr<CShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
+		shared_ptr<ShaderLightManager> pShaderLightMgr = pShaderMgr->GetShaderLightManager();
 		if( pShaderLightMgr )
 		{
 			pShaderLightMgr->ClearLights();

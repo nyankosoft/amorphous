@@ -38,18 +38,18 @@ bool CPrimitiveShapeMeshesTest::InitShader()
 //	bool shader_loaded = m_Shader.Load( "./shaders/PrimitiveShapeMeshesTest.fx" );
 
 	// For now, use the fixed function pipeline.
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	int use_fixed_function_pipeline = 1;
 	LoadParamFromFile( "PrimitiveShapeMeshesDemo/params.txt", "use_fixed_function_pipeline", use_fixed_function_pipeline );
 	if( use_fixed_function_pipeline )
 	{
 		return true;
-//		shader_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
+//		shader_desc.ShaderType = ShaderType::NON_PROGRAMMABLE;
 	}
 	else
 	{
-		CGenericShaderDesc gen_shader_desc;
-		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+		GenericShaderDesc gen_shader_desc;
+		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 
 		bool shader_loaded = m_Shader.Load( shader_desc );
 	
@@ -57,14 +57,14 @@ bool CPrimitiveShapeMeshesTest::InitShader()
 			return false;
 	}
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
 
-	shared_ptr<CShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
+	shared_ptr<ShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
 	if( !pShaderLightMgr )
 		return false;
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -82,10 +82,10 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	string texture_file_pathname = show_texture ? "AshySandstone.jpg" : "white.png";
 	string texture_pathname = "PrimitiveShapeMeshesDemo/textures/" + texture_file_pathname;
 
-	CMeshResourceDesc mesh_desc[6];
+	MeshResourceDesc mesh_desc[6];
 	m_vecMesh.resize( numof(mesh_desc) );
 
-	shared_ptr<CBoxMeshGenerator> pBoxGenerator( new CBoxMeshGenerator() );
+	shared_ptr<BoxMeshGenerator> pBoxGenerator( new BoxMeshGenerator() );
 	pBoxGenerator->SetEdgeLengths( Vector3( 1.0f, 1.0f, 1.0f ) );
 	mesh_desc[0].pMeshGenerator = pBoxGenerator;
 	mesh_desc[0].pMeshGenerator->SetTexturePath( texture_pathname );
@@ -95,13 +95,13 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	CConeDesc cone_desc;
 	cone_desc.cone_height = 4.0f;
 	cone_desc.body_height = 4.0f;
-	mesh_desc[1].pMeshGenerator = shared_ptr<CMeshGenerator>( new CConeMeshGenerator( cone_desc ) );
+	mesh_desc[1].pMeshGenerator.reset( new ConeMeshGenerator( cone_desc ) );
 	mesh_desc[1].ResourcePath = "ConeMesh";
 	mesh_desc[1].pMeshGenerator->SetTexturePath( texture_pathname );
 	m_vecMesh[1].Load( mesh_desc[1] );
 
 	CCapsuleDesc capsule_desc;
-	shared_ptr<CCapsuleMeshGenerator> pCapsuleGenerator( new CCapsuleMeshGenerator(capsule_desc) );
+	shared_ptr<CapsuleMeshGenerator> pCapsuleGenerator( new CapsuleMeshGenerator(capsule_desc) );
 	mesh_desc[2].pMeshGenerator = pCapsuleGenerator;
 	mesh_desc[2].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[2].ResourcePath = "CapsuleMesh";
@@ -111,7 +111,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	shpere_desc.num_sides = 32;
 	shpere_desc.num_segments = 16;
 //	shpere_desc.poly_dir = MeshPolygonDirection::INWARD;
-	shared_ptr<CSphereMeshGenerator> pSphereGenerator( new CSphereMeshGenerator(shpere_desc) );
+	shared_ptr<SphereMeshGenerator> pSphereGenerator( new SphereMeshGenerator(shpere_desc) );
 	mesh_desc[3].pMeshGenerator = pSphereGenerator;
 	mesh_desc[3].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[3].ResourcePath = "SphereMesh";
@@ -119,7 +119,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 
 	CCylinderDesc cylinder_desc;
 	cylinder_desc.num_sides = 24;
-	shared_ptr<CCylinderMeshGenerator> pCylinderGenerator( new CCylinderMeshGenerator(cylinder_desc) );
+	shared_ptr<CylinderMeshGenerator> pCylinderGenerator( new CylinderMeshGenerator(cylinder_desc) );
 	mesh_desc[4].pMeshGenerator = pCylinderGenerator;
 	mesh_desc[4].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[4].ResourcePath = "CylinderMesh";
@@ -139,7 +139,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 
 int CPrimitiveShapeMeshesTest::Init()
 {
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont() );
+	shared_ptr<TextureFont> pTexFont( new TextureFont() );
 	pTexFont->InitFont( GetBuiltinFontData("BitstreamVeraSansMono-Bold-256") );
 	pTexFont->SetFontSize( 8, 16 );
 	m_pFont = pTexFont;
@@ -164,9 +164,9 @@ void CPrimitiveShapeMeshesTest::Update( float dt )
 
 void CPrimitiveShapeMeshesTest::RenderMeshes()
 {
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	// render the scene
 
@@ -174,7 +174,7 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 
 	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 	if( shader_mgr.GetShaderLightManager() )
@@ -182,9 +182,9 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
+//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
 //	{
-		shared_ptr<CBasicMesh> pMesh = m_vecMesh[m_MeshIndex].GetMesh();//mesh.GetMesh();
+		shared_ptr<BasicMesh> pMesh = m_vecMesh[m_MeshIndex].GetMesh();//mesh.GetMesh();
 
 		if( pMesh )
 		{
@@ -205,7 +205,7 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 		}
 //	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -231,7 +231,7 @@ void CPrimitiveShapeMeshesTest::Render()
 }
 
 
-void CPrimitiveShapeMeshesTest::HandleInput( const SInputData& input )
+void CPrimitiveShapeMeshesTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

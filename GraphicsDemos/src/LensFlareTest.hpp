@@ -15,33 +15,33 @@
 
 class CLensFlareTest : public CGraphicsTestBase
 {
-	boost::shared_ptr<CLensFlare> m_pLensFlare;
+	boost::shared_ptr<LensFlare> m_pLensFlare;
 
-	CMeshObjectHandle m_SkyboxMesh;
+	MeshHandle m_SkyboxMesh;
 
-	CMeshObjectHandle m_TerrainMesh;
+	MeshHandle m_TerrainMesh;
 
-//	std::vector<CMeshObjectHandle> m_vecpMeshes;
+//	std::vector<MeshHandle> m_vecpMeshes;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-//	CShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
 
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CTextureHandle m_TestTexture;
+	TextureHandle m_TestTexture;
 
-	CTextureHandle m_SkyTexture;
+	TextureHandle m_SkyTexture;
 
-	CMeshObjectHandle m_LightPosIndicator;
+	MeshHandle m_LightPosIndicator;
 
 //	float m_FOV;// = PI / 4.0f;
 
 	Vector3 m_vLightPosition;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 protected:
 

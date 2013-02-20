@@ -57,9 +57,9 @@ bool CHLSLEffectTest::SetShader( int index )
 	if( !m_Shaders[index].GetShaderManager() )
 		return false;
 
-	CShaderManager& shader_mgr = *(m_Shaders[index].GetShaderManager());
+	ShaderManager& shader_mgr = *(m_Shaders[index].GetShaderManager());
 
-	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 
 	// Set lights
 
@@ -67,7 +67,7 @@ bool CHLSLEffectTest::SetShader( int index )
 
 	if( m_EnableLight[0] )
 	{
-		CHemisphericDirectionalLight dir_light;
+		HemisphericDirectionalLight dir_light;
 		dir_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		dir_light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
 		dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -77,14 +77,14 @@ bool CHLSLEffectTest::SetShader( int index )
 
 	if( m_EnableLight[1] )
 	{
-		CHemisphericPointLight pnt_light;
+		HemisphericPointLight pnt_light;
 		pnt_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		pnt_light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 		pnt_light.vPosition = Vector3( 10.0f, 3.0f, -15.0f );
 		pnt_light.fAttenuation[0] = 0.1f;
 		pnt_light.fAttenuation[1] = 0.1f;
 		pnt_light.fAttenuation[2] = 0.1f;
-		CParamLoader loader( "params.txt" );
+		ParamLoader loader( "params.txt" );
 		if( loader.IsReady() )
 		{
 			loader.LoadParam( "pnt_light_position",      pnt_light.vPosition );
@@ -143,7 +143,7 @@ bool CHLSLEffectTest::InitShaders()
 
 int CHLSLEffectTest::Init()
 {
-//	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+//	shared_ptr<TextureFont> pTexFont( new TextureFont );
 //	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	m_pFont = CreateDefaultBuiltinFont();
 	m_pFont->SetFontSize( 6, 12 );
@@ -164,9 +164,9 @@ int CHLSLEffectTest::Init()
 
 	BOOST_FOREACH( const string& filepath, mesh_file )
 	{
-		m_vecMesh.push_back( CMeshObjectHandle() );
+		m_vecMesh.push_back( MeshHandle() );
 
-		CMeshResourceDesc desc;
+		MeshResourceDesc desc;
 		desc.ResourcePath = filepath;
 
 		if( m_TestAsyncLoading )
@@ -217,7 +217,7 @@ void CHLSLEffectTest::RenderMesh()
 
 	SetShader( m_CurrentShaderIndex );
 
-	CShaderManager *pShaderManager = m_Shaders[m_CurrentShaderIndex].GetShaderManager();
+	ShaderManager *pShaderManager = m_Shaders[m_CurrentShaderIndex].GetShaderManager();
 	if( !pShaderManager )
 		return;
 
@@ -225,7 +225,7 @@ void CHLSLEffectTest::RenderMesh()
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	if( m_CurrentMeshIndex < 0 || (int)m_vecMesh.size() <= m_CurrentMeshIndex )
 		return;
@@ -242,13 +242,13 @@ void CHLSLEffectTest::RenderMesh()
 		FixedFunctionPipelineManager().SetWorldTransform( world );
 		pShaderManager->SetWorldTransform( world );
 
-		CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
+		BasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 
 		if( pMesh )
 			pMesh->Render( *pShaderManager );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -270,7 +270,7 @@ void CHLSLEffectTest::RenderDebugInfo()
 
 	if( 0 <= m_CurrentShaderIndex && m_CurrentShaderIndex < (int)m_Shaders.size() )
 	{
-		CShaderHandle& shader = m_Shaders[m_CurrentShaderIndex];
+		ShaderHandle& shader = m_Shaders[m_CurrentShaderIndex];
 		if( shader.GetEntry()
 		 && shader.GetEntry()->GetResource() )
 		{
@@ -299,12 +299,12 @@ void CHLSLEffectTest::Render()
 }
 
 
-void CHLSLEffectTest::HandleInput( const SInputData& input )
+void CHLSLEffectTest::HandleInput( const InputData& input )
 {
 	if( m_pUIInputHandler )
 	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
+//		InputHandler::ProcessInput() does not take const InputData&
+		InputData input_copy = input;
 		m_pUIInputHandler->ProcessInput( input_copy );
 
 		if( m_pUIInputHandler->PrevInputProcessed() )
@@ -391,7 +391,7 @@ void CHLSLEffectTest::ReleaseGraphicsResources()
 }
 
 
-void CHLSLEffectTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CHLSLEffectTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	CreateSampleUI();
 }

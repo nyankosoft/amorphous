@@ -13,11 +13,11 @@
 
 class CPrimitiveRendererTest : public CGraphicsTestBase
 {
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	std::string m_TextBuffer;
 
@@ -41,7 +41,7 @@ public:
 
 	void Render();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 };
 
 

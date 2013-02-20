@@ -16,16 +16,13 @@
 //		m_pGraphicsElementManager->SetScale( g_WindowSize.x / 800.0f );
 
 
-typedef CAnimatedGraphicsManager CGraphicsEffectManager;
-
-
 class CGraphicsElementEffectTest : public CGraphicsTestBase
 {
-	boost::shared_ptr<CGraphicsEffectManager> m_pAnimGraphicsManager;
+	boost::shared_ptr<GraphicsElementAnimationManager> m_pAnimGraphicsManager;
 
 //	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
 
-	boost::shared_ptr<CGraphicsElement> m_pElements[8];
+	boost::shared_ptr<GraphicsElement> m_pElements[8];
 
 private:
 

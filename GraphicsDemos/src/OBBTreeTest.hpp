@@ -12,29 +12,29 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class COBBTreeTest : public CGraphicsTestBase
+class OBBTreeTest : public CGraphicsTestBase
 {
-	boost::shared_ptr<COBBTree> m_pOBBTree;
+	boost::shared_ptr<OBBTree> m_pOBBTree;
 
 	int m_DrawLevel;
 
 	int m_NumDrawLevels;
 
-//	CMeshObjectHandle m_SkyboxMesh;
+//	MeshHandle m_SkyboxMesh;
 
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
-//	std::vector<CMeshObjectHandle> m_vecpMeshes;
+//	std::vector<MeshHandle> m_vecpMeshes;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-//	CShaderTechniqueHandle m_SkyboxTechnique;
+//	ShaderTechniqueHandle m_SkyboxTechnique;
 
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 private:
 
@@ -42,9 +42,9 @@ private:
 
 public:
 
-	COBBTreeTest();
+	OBBTreeTest();
 
-	~COBBTreeTest();
+	~OBBTreeTest();
 
 	const char *GetAppTitle() const { return "OBBTreeTest"; }
 
@@ -56,7 +56,7 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 
 
 //	void UpdateViewTransform( const Matrix44& matView );

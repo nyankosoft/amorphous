@@ -14,19 +14,19 @@
 
 class CTextureRenderTargetTest : public CGraphicsTestBase
 {
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	std::string m_TextBuffer;
 
-	boost::shared_ptr<CTextureRenderTarget> m_pTextureRenderTarget;
+	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
-	CCustomMesh m_BoxMesh;
+	CustomMesh m_BoxMesh;
 
 private:
 
@@ -54,7 +54,7 @@ public:
 
 	void Render();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 };
 
 

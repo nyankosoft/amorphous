@@ -65,9 +65,9 @@ boost::shared_ptr<CGraphicsTestBase> g_pTest;
 // Global variables
 //-----------------------------------------------------------------------------
 
-CStdKeyboard g_StdKeyboard;
+Win32StdKeyboard g_StdKeyboard;
 
-boost::shared_ptr<CInputHandler> g_pInputHandler;
+boost::shared_ptr<InputHandler> g_pInputHandler;
 
 boost::shared_ptr<FontBase> g_pFont;
 
@@ -210,7 +210,7 @@ VOID Render()
 //-----------------------------------------------------------------------------
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	static CStdMouseInput s_Mouse;
+	static Win32StdMouseInput s_Mouse;
 
 	s_Mouse.UpdateInput( msg, wParam, lParam );
 
@@ -251,7 +251,7 @@ bool Init()
 
 	g_pInputHandler.reset( new CGraphicsTestInputHandler(g_pTest) );
 
-	InputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pInputHandler.get() );
+	GetInputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pInputHandler.get() );
 
 //	g_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
 
@@ -289,7 +289,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 */
 
 	string graphics_library_name = "Direct3D";
-	CParamLoader param_loader( "config" );
+	ParamLoader param_loader( "config" );
 	if( param_loader.IsReady() )
 	{
 		param_loader.LoadParam( "GraphicsLibrary", graphics_library_name );

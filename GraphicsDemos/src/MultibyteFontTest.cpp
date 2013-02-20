@@ -72,8 +72,8 @@ CMultibyteFontTest::~CMultibyteFontTest()
 void RenderUTF8TextToBuffer( const FT_Face& face,
 						const std::string &text,
 						int char_height,
-						C2DArray<U8>& dest_bitmap_buffer,                 ///< [out] buffer to render the text to
-						vector<CTrueTypeTextureFont::CharRect>& char_rect
+						array2d<U8>& dest_bitmap_buffer,                 ///< [out] buffer to render the text to
+						vector<TrueTypeTextureFont::CharRect>& char_rect
 						)
 {
 	LOG_FUNCTION_SCOPE();
@@ -183,7 +183,7 @@ bool CMultibyteFontTest::RenderUTF8TextToBufferToImageFile( const std::string& t
 
 	const string& ttf_filepath = font_file;//"fonts/ipam.ttf";
 
-	C2DArray<U8> dest_bitmap_buffer;
+	array2d<U8> dest_bitmap_buffer;
 
 	CFreeTypeLibrary ftlib;
 
@@ -225,7 +225,7 @@ bool CMultibyteFontTest::RenderUTF8TextToBufferToImageFile( const std::string& t
 
 //	string text = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";
 
-	vector<CTextureFont::CharRect> m_vecCharRect;
+	vector<TextureFont::CharRect> m_vecCharRect;
 	RenderUTF8TextToBuffer( face, text, base_char_height, dest_bitmap_buffer, m_vecCharRect );
 
 	const string img_filepath = "./results/" + lfs::get_leaf(ttf_filepath) + fmt_string("-%02d-",base_char_height) + ".bmp";
@@ -249,9 +249,9 @@ bool CMultibyteFontTest::InitShader()
 	if( !shader_loaded )
 		return false;
 
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -282,7 +282,7 @@ vector<CPerfRecord> g_rec;
 
 int CMultibyteFontTest::Init()
 {
-//	C2DArray<U8> dest_render_buffer;
+//	array2d<U8> dest_render_buffer;
 //	bool res = CreateFontTextureFromTrueTypeFont( dest_render_buffer );
 
 	string text_file = "texts/test.txt";
@@ -334,7 +334,7 @@ int CMultibyteFontTest::Init()
 		48
 	};
 	
-	CTimer m_Timer;
+	Timer m_Timer;
 	m_Timer.Start();
 
 	vector<CPerfRecord>& rec = g_rec;
@@ -361,11 +361,11 @@ int CMultibyteFontTest::Init()
 		}
 	}
 */
-	shared_ptr<CUTFFont> pUTF8Font( new CUTFFont );
+	shared_ptr<UTFFont> pUTF8Font( new UTFFont );
 	pUTF8Font->InitFont( "MultibyteFontDemo/fonts/ipagp.ttf", 32 );
 	m_pUTFFont = pUTF8Font;
 
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 6, 12 );
 	m_pFont = pTexFont;
@@ -420,12 +420,12 @@ void CMultibyteFontTest::Render()
 }
 
 
-void CMultibyteFontTest::HandleInput( const SInputData& input )
+void CMultibyteFontTest::HandleInput( const InputData& input )
 {
 	if( m_pUIInputHandler )
 	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
+//		InputHandler::ProcessInput() does not take const InputData&
+		InputData input_copy = input;
 		m_pUIInputHandler->ProcessInput( input_copy );
 
 		if( m_pUIInputHandler->PrevInputProcessed() )

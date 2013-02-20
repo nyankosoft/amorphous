@@ -30,13 +30,13 @@ CCustomMeshTest::~CCustomMeshTest()
 
 void CCustomMeshTest::SetLights( bool use_hemespheric_light )
 {
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 //	if( !pShaderMgr )
 //		return;
 
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 	if( !pShaderLightMgr )
 		return;
 
@@ -44,11 +44,11 @@ void CCustomMeshTest::SetLights( bool use_hemespheric_light )
 
 	if( use_hemespheric_light )
 	{
-//		CHemisphericDirectionalLight light;
+//		HemisphericDirectionalLight light;
 //		light.Attribute.UpperDiffuseColor.SetRGBA( 0.0f, 1.0f, 1.0f, 1.0f );
 //		light.Attribute.LowerDiffuseColor.SetRGBA( 1.0f, 0.1f, 0.1f, 1.0f );
 //		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
-		CHemisphericDirectionalLight light;
+		HemisphericDirectionalLight light;
 		light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		light.Attribute.LowerDiffuseColor.SetRGBA( 0.0f, 0.0f, 0.0f, 1.0f );
 		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.5f, -0.9f ) );
@@ -56,7 +56,7 @@ void CCustomMeshTest::SetLights( bool use_hemespheric_light )
 	}
 	else
 	{
-		CDirectionalLight dir_light;
+		DirectionalLight dir_light;
 		dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
 		dir_light.fIntensity = 1.0f;
 		dir_light.vDirection = Vec3GetNormalized( Vector3( 1.2f, -1.8f, 1.0f ) );
@@ -66,7 +66,7 @@ void CCustomMeshTest::SetLights( bool use_hemespheric_light )
 	bool set_pnt_light = false;
 	if( set_pnt_light )
 	{
-		CPointLight pnt_light;
+		PointLight pnt_light;
 		pnt_light.DiffuseColor = SFloatRGBColor(1,1,1);
 		pnt_light.fIntensity = 1.0f;
 		pnt_light.vPosition = Vector3( 2.0f, 2.8f, -1.9f );
@@ -82,11 +82,11 @@ void CCustomMeshTest::SetLights( bool use_hemespheric_light )
 
 bool CCustomMeshTest::InitShader()
 {
-	CShaderResourceDesc shader_desc;
-	CGenericShaderDesc gen_shader_desc;
-	gen_shader_desc.LightingTechnique = CLightingTechnique::HEMISPHERIC;
-//	gen_shader_desc.Specular = CSpecularSource::NONE;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(gen_shader_desc) );
+	ShaderResourceDesc shader_desc;
+	GenericShaderDesc gen_shader_desc;
+	gen_shader_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
+//	gen_shader_desc.Specular = SpecularSource::NONE;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	return shader_loaded;
@@ -99,7 +99,7 @@ int CCustomMeshTest::Init()
 	m_pFont->SetFontSize( 8, 16 );
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
 	m_vecMesh.back().m_MeshDesc.pMeshGenerator = pBoxMeshGenerator;
@@ -116,9 +116,9 @@ int CCustomMeshTest::Init()
 	}
 	else
 	{
-		CBoxMeshGenerator box_mesh_generator;
+		BoxMeshGenerator box_mesh_generator;
 //		box_mesh_generator.Generate( Vector3(1,1,1) );
-		box_mesh_generator.Generate( Vector3(1,1,1), CMeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
+		box_mesh_generator.Generate( Vector3(1,1,1), MeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
 		C3DMeshModelArchive ar = box_mesh_generator.GetMeshArchive();
 		loaded = m_Mesh.LoadFromArchive( ar );
 	}
@@ -132,8 +132,8 @@ int CCustomMeshTest::Init()
 	if( use_programmable_shader )
 		InitShader();
 
-	CMeshResourceDesc mesh_desc;
-	mesh_desc.pMeshGenerator.reset( new CBoxMeshGenerator );
+	MeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator.reset( new BoxMeshGenerator );
 	m_RegularMesh.Load( mesh_desc );
 
 //	SetLights();
@@ -154,8 +154,8 @@ void CCustomMeshTest::RenderMeshes()
 
 	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 	// render the scene
 
@@ -165,12 +165,12 @@ void CCustomMeshTest::RenderMeshes()
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
-//	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	m_Mesh.Render( shader_mgr );
 /*
 	pShaderManager->SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
+//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
 	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
 	{
 		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
@@ -180,14 +180,14 @@ void CCustomMeshTest::RenderMeshes()
 //			FixedPipelineManager().SetWorldTransform( mesh_world_pose );
 			pShaderManager->SetWorldTransform( mesh_world_pose );
 
-			shared_ptr<CBasicMesh> pMesh = holder.m_Handle.GetMesh();
+			shared_ptr<BasicMesh> pMesh = holder.m_Handle.GetMesh();
 
 			if( pMesh )
 				pMesh->Render( *pShaderManager );
 		}
 	}
 */
-//	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -217,7 +217,7 @@ void CCustomMeshTest::Render()
 }
 
 
-void CCustomMeshTest::HandleInput( const SInputData& input )
+void CCustomMeshTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

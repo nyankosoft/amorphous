@@ -46,10 +46,10 @@ bool CMeshSplitterTest::InitShader()
 
 	// initialize shader
 //	bool shader_loaded = m_Shader.Load( "./shaders/MeshSplitterTest.fx" );
-	CGenericShaderDesc gs_desc;
-	gs_desc.Specular = CSpecularSource::NONE;
-	CShaderResourceDesc shader_desc;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator( gs_desc ) );
+	GenericShaderDesc gs_desc;
+	gs_desc.Specular = SpecularSource::NONE;
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator( gs_desc ) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 	
 	return shader_loaded;
@@ -58,16 +58,16 @@ bool CMeshSplitterTest::InitShader()
 
 bool CMeshSplitterTest::SetLight()
 {
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return false;
 
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
 	if( pShaderLightMgr )
 	{
 		pShaderLightMgr->ClearLights();
 
-		CHemisphericDirectionalLight light;
+		HemisphericDirectionalLight light;
 		light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -101,16 +101,16 @@ void CMeshSplitterTest::Reset()
 		string builtin_mesh_name = mesh_pathname.substr( strlen(builtin_mesh_prefix) );
 		if( builtin_mesh_name == "box" )
 		{
-			CBoxMeshGenerator box_generator;
+			BoxMeshGenerator box_generator;
 			box_generator.Generate();
-			m_RootMeshNode.object.pMesh.reset( new CCustomMesh );
+			m_RootMeshNode.object.pMesh.reset( new CustomMesh );
 			m_RootMeshNode.object.pMesh->LoadFromArchive( box_generator.MeshArchive() );
 		}
 	}
 	else
 	{
 		mesh_pathname = "MeshSplitterDemo/" + mesh_pathname;
-		m_RootMeshNode.object.pMesh.reset( new CCustomMesh );
+		m_RootMeshNode.object.pMesh.reset( new CustomMesh );
 		bool res = m_RootMeshNode.object.pMesh->LoadFromFile( mesh_pathname );
 	}
 }
@@ -123,7 +123,7 @@ int CMeshSplitterTest::Init()
 
 	InitShader();
 
-	m_pSplitPlaneController.reset( new CCameraController( 3 ) );
+	m_pSplitPlaneController.reset( new amorphous::CameraController( 3 ) );
 	UpdateSplitPlaneControllerState();
 
 	m_pSplitPlaneController->AssignKeyForCameraControl( GIC_INVALID, CameraControl::Forward );
@@ -147,7 +147,7 @@ void CMeshSplitterTest::Update( float dt )
 }
 
 
-void CMeshSplitterTest::RenderMeshes( binary_node<CSplitMeshNodeObjects>& node, CShaderManager& shader_mgr, const Matrix34& parent_transform )
+void CMeshSplitterTest::RenderMeshes( binary_node<CSplitMeshNodeObjects>& node, ShaderManager& shader_mgr, const Matrix34& parent_transform )
 {
 	Matrix34 pose = parent_transform * Matrix34( node.object.shift, Matrix33Identity() );
 	if( !node.child0 && !node.child1 )
@@ -169,17 +169,17 @@ void CMeshSplitterTest::RenderMeshes()
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 	GraphicsDevice().SetRenderState( RenderStateType::WRITING_INTO_DEPTH_BUFFER, true );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 //	if( !pShaderManager )
 //		return;
 
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	// render the scene
 
 	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
@@ -187,7 +187,7 @@ void CMeshSplitterTest::RenderMeshes()
 
 	RenderMeshes( m_RootMeshNode, shader_mgr, Matrix34Identity() );
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -199,7 +199,7 @@ void CMeshSplitterTest::RenderSplitPlane()
 //	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
-	CPrimitiveShapeRenderer shape_renderer;
+	PrimitiveShapeRenderer shape_renderer;
 	shape_renderer.RenderBox( Vector3(10.0f, 0.1f, 10.0f), pose, SFloatRGBAColor(0.0f,0.5f,0.5f,0.0f) );
 }
 
@@ -275,15 +275,15 @@ void CMeshSplitterTest::SplitMesh()
 
 void CMeshSplitterTest::UpdateSplitPlaneControllerState()
 {
-	if( InputHub().GetInputHandler(3) )
-		InputHub().GetInputHandler(3)->SetActive( m_ControlSplitPlane );
+	if( GetInputHub().GetInputHandler(3) )
+		GetInputHub().GetInputHandler(3)->SetActive( m_ControlSplitPlane );
 
-	if( InputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex) )
-		InputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex)->SetActive( !m_ControlSplitPlane );
+	if( GetInputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex) )
+		GetInputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex)->SetActive( !m_ControlSplitPlane );
 }
 
 
-void CMeshSplitterTest::HandleInput( const SInputData& input )
+void CMeshSplitterTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

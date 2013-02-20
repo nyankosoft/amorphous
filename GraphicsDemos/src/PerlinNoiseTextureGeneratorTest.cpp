@@ -25,7 +25,7 @@ m_fTextureRepeats( 1.0f )
 	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
 //	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
 
-	m_pTimer.reset( new CTimer );
+	m_pTimer.reset( new Timer );
 
 	InitRand( (unsigned long)timeGetTime() );
 }
@@ -44,9 +44,9 @@ bool CPerlinNoiseTextureGeneratorTest::InitShader()
 	if( !shader_loaded )
 		return false;
 
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -83,16 +83,16 @@ void CPerlinNoiseTextureGeneratorTest::CreatePerlinNoiseTexture()
 
 	bool loaded = false;
 
-	CTextureResourceDesc tex_desc;
-	tex_desc.pLoader.reset( new CPerlinNoiseTextureGenerator(pn_params) );
+	TextureResourceDesc tex_desc;
+	tex_desc.pLoader.reset( new PerlinNoiseTextureGenerator(pn_params) );
 	tex_desc.Width  = m_ImageWidth;
 	tex_desc.Height = m_ImageWidth;
 	tex_desc.Format = TextureFormat::A8R8G8B8;
 
 	loaded = m_PerlinNoiseTexture.Load( tex_desc );
 
-	CTextureResourceDesc nmap_desc;
-	nmap_desc.pLoader.reset( new CPerlinNoiseNormalMapGenerator(pn_params) );
+	TextureResourceDesc nmap_desc;
+	nmap_desc.pLoader.reset( new PerlinNoiseNormalMapGenerator(pn_params) );
 	nmap_desc.Width  = m_ImageWidth;
 	nmap_desc.Height = m_ImageWidth;
 	nmap_desc.Format = TextureFormat::A8R8G8B8;
@@ -103,7 +103,7 @@ void CPerlinNoiseTextureGeneratorTest::CreatePerlinNoiseTexture()
 
 int CPerlinNoiseTextureGeneratorTest::Init()
 {
-	shared_ptr<CFontBase> pFont( CreateDefaultBuiltinFont() );
+	shared_ptr<FontBase> pFont( CreateDefaultBuiltinFont() );
 	pFont->SetFontSize( 6, 12 );
 
 	CreatePerlinNoiseTexture();
@@ -126,7 +126,7 @@ void CPerlinNoiseTextureGeneratorTest::Render()
 /*	shared_ptr<CGraphicsResourceEntry> pTexEntry( m_PerlinNoiseTexture.GetEntry() );
 	if( pTexEntry )
 	{
-		shared_ptr<CTextureResource> pTex = GetTextureResource();
+		shared_ptr<TextureResource> pTex = GetTextureResource();
 		if( pTex )
 	}*/
 
@@ -159,17 +159,17 @@ void CPerlinNoiseTextureGeneratorTest::Render()
 
 void CPerlinNoiseTextureGeneratorTest::SaveTexturesAsImageFiles()
 {
-	CTextureHandle textures[] = { m_PerlinNoiseTexture, m_PerlinNoiseNormalMap };
+	TextureHandle textures[] = { m_PerlinNoiseTexture, m_PerlinNoiseNormalMap };
 	const char *names[] = { "pn", "pn_nmap" };
 	static int s_counter = 0;
 
 	for( int i=0; i<2; i++ )
 	{
-		shared_ptr<CGraphicsResourceEntry> pEntry = textures[i].GetEntry();
+		shared_ptr<GraphicsResourceEntry> pEntry = textures[i].GetEntry();
 		if( !pEntry )
 			continue;
 
-		shared_ptr<CTextureResource> pTexture = pEntry->GetTextureResource();
+		shared_ptr<TextureResource> pTexture = pEntry->GetTextureResource();
 		if( !pTexture )
 			continue;
 
@@ -178,7 +178,7 @@ void CPerlinNoiseTextureGeneratorTest::SaveTexturesAsImageFiles()
 }
 
 
-void CPerlinNoiseTextureGeneratorTest::HandleInput( const SInputData& input )
+void CPerlinNoiseTextureGeneratorTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

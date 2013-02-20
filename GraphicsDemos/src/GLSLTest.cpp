@@ -37,18 +37,18 @@ void CGLSLTest::SetLights()
 {
 	PROFILE_FUNCTION();
 
-//	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager *pShaderMgr = m_pGLProgram.get();
+//	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_pGLProgram.get();
 	if( !pShaderMgr )
 		return;
 
-	CShaderLightManager *pShaderLightMgr = pShaderMgr->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = pShaderMgr->GetShaderLightManager().get();
 	if( !pShaderLightMgr )
 		return;
 
 	pShaderLightMgr->ClearLights();
 
-	CDirectionalLight dir_light;
+	DirectionalLight dir_light;
 	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
 	dir_light.fIntensity = 1.0f;
 	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, 0.9f ) );
@@ -57,7 +57,7 @@ void CGLSLTest::SetLights()
 	bool set_pnt_light = false;
 	if( set_pnt_light )
 	{
-		CPointLight pnt_light;
+		PointLight pnt_light;
 		pnt_light.DiffuseColor = SFloatRGBColor(1,1,1);
 		pnt_light.fIntensity = 1.0f;
 		pnt_light.vPosition = Vector3( 2.0f, 2.8f, -1.9f );
@@ -67,7 +67,7 @@ void CGLSLTest::SetLights()
 		pShaderLightMgr->SetPointLight( pnt_light );
 	}
 
-/*	CHemisphericDirectionalLight light;
+/*	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -106,16 +106,16 @@ bool CGLSLTest::InitShader()
 
 int CGLSLTest::Init()
 {
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 8, 16 );
 	m_pFont = pTexFont;
 
-	m_Meshes.push_back( CMeshObjectHandle() );
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
+	m_Meshes.push_back( MeshHandle() );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 //	mesh_desc.OptionFlags |= GraphicsResourceOption::DONT_SHARE;
 	m_Meshes.back().Load( mesh_desc );
@@ -151,16 +151,16 @@ void CGLSLTest::RenderMeshes()
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,   true );
 
-	CShaderManager *pShaderManager = m_pGLProgram.get();
-//	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-//	CShaderManager *pShaderManager = NULL;
-	CShaderManager &shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderManager = m_pGLProgram.get();
+//	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
+//	ShaderManager *pShaderManager = NULL;
+	ShaderManager &shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 
 	// render the scene
 
 	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
 
-//	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
@@ -172,7 +172,7 @@ void CGLSLTest::RenderMeshes()
 		{
 			const Matrix34 mesh_world_pose = Matrix34( Vector3((float)x,0,(float)z) * 2.0f, Matrix33Identity() );
 			shader_mgr.SetWorldTransform( mesh_world_pose );
-			shared_ptr<CBasicMesh> pMesh = m_Meshes[mesh_index].GetMesh();
+			shared_ptr<BasicMesh> pMesh = m_Meshes[mesh_index].GetMesh();
 
 			if( pMesh )
 				pMesh->Render( shader_mgr );
@@ -197,13 +197,13 @@ void CGLSLTest::RenderMeshes()
 //		const Matrix34 mesh_world_pose = Matrix34( mesh_positions[i], Matrix33Identity() );
 //		shader_mgr.SetWorldTransform( mesh_world_pose );
 //
-//		shared_ptr<CBasicMesh> pMesh = m_Meshes[i].GetMesh();
+//		shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
 //
 //		if( pMesh )
 //			pMesh->Render( shader_mgr );
 //	}
 
-//	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 
 //	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,    false );
@@ -233,7 +233,7 @@ void CGLSLTest::Render()
 
 
 
-void CGLSLTest::HandleInput( const SInputData& input )
+void CGLSLTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -273,6 +273,6 @@ void CGLSLTest::ReleaseGraphicsResources()
 }
 
 
-void CGLSLTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CGLSLTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 }

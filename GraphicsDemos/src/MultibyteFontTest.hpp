@@ -18,19 +18,19 @@
 
 class CMultibyteFontTest : public CGraphicsTestBase
 {
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
-	boost::shared_ptr<CUTFFont> m_pUTFFont;
+	boost::shared_ptr<UTFFont> m_pUTFFont;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	CTextureHandle m_TextBufferTexture;
+	TextureHandle m_TextBufferTexture;
 
 	std::string m_UTFText;
 
@@ -42,7 +42,7 @@ private:
 
 	bool InitShader();
 
-//	bool CreateFontTextureFromTrueTypeFont( C2DArray<U8>& dest_bitmap_buffer );
+//	bool CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer );
 	bool RenderUTF8TextToBufferToImageFile( const std::string& text,
 											 const std::string& font_file,
 											 const int base_char_height
@@ -64,7 +64,7 @@ public:
 
 	void Render();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 };
 
 

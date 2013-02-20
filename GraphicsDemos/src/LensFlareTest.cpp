@@ -52,7 +52,7 @@ static inline SFloatRGBAColor ARGB32toFloatRGBA( U32 argb )
 
 void CLensFlareTest::InitLensFlare( const string& strPath )
 {
-	m_pLensFlare = shared_ptr<CLensFlare>( new CLensFlare() );
+	m_pLensFlare = shared_ptr<LensFlare>( new LensFlare() );
 
 	string texture_directory = "LensFlareDemo/textures/";
 //	m_pLensFlare->AddTexture( texture_directory + "flare00.dds", 0, 1, 1 );
@@ -88,7 +88,7 @@ int CLensFlareTest::Init()
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
 
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/LensFlareTest.fx" );
+	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/CLensFlareTest.fx" );
 
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "LensFlareDemo/textures/skygrad_slim_01.jpg" );
@@ -97,17 +97,17 @@ int CLensFlareTest::Init()
 	InitSkyTexture();
 
 	// load the terrain mesh
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = "LensFlareDemo/models/terrain06.msh";
-	mesh_desc.MeshType     = CMeshType::BASIC;
+	mesh_desc.MeshType     = MeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
 	m_TestTexture.Load( "LensFlareDemo/textures/flare02.dds" );
 
-	CMeshResourceDesc sphere_mesh_desc;
+	MeshResourceDesc sphere_mesh_desc;
 	CSphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 2.0f;
-	sphere_mesh_desc.pMeshGenerator.reset( new CSphereMeshGenerator(sphere_desc) );
+	sphere_mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 	m_LightPosIndicator.Load( sphere_mesh_desc );
 
 	return 0;
@@ -127,11 +127,11 @@ void CLensFlareTest::Render()
 	C2DRect rect( Vector2( 80, 80 ), Vector2( 100, 100 ), 0xFFFF0000 );
 
 	Matrix44 matWorld = Matrix44Identity();
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 //	if( !pShaderMgr )
 //		return;
 
-	CShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 //	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPose() );
 	RenderSkybox( m_SkyTexture, GetCurrentCamera().GetPose() );
@@ -141,7 +141,7 @@ void CLensFlareTest::Render()
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
-	shared_ptr<CBasicMesh> pTerrainMesh = m_TerrainMesh.GetMesh();
+	shared_ptr<BasicMesh> pTerrainMesh = m_TerrainMesh.GetMesh();
 	if( pTerrainMesh )
 		pTerrainMesh->Render( shader_mgr );
 
@@ -150,7 +150,7 @@ void CLensFlareTest::Render()
 //	light_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
 	shader_mgr.SetWorldTransform( light_pose );
 	FixedFunctionPipelineManager().SetWorldTransform( light_pose );
-	shared_ptr<CBasicMesh> pLightPosIndicator = m_LightPosIndicator.GetMesh();
+	shared_ptr<BasicMesh> pLightPosIndicator = m_LightPosIndicator.GetMesh();
 	if( pLightPosIndicator )
 		pLightPosIndicator->Render();
 

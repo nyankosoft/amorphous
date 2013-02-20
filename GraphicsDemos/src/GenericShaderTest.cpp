@@ -42,14 +42,14 @@ void CGenericShaderTest::CreateSampleUI()
 }
 
 
-bool CGenericShaderTest::SetShaderParams( CShaderManager& shader_mgr )
+bool CGenericShaderTest::SetShaderParams( ShaderManager& shader_mgr )
 {
-	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 
 	if( !pShaderLightMgr )
 		return false;
 
-	CHemisphericDirectionalLight dir_light_0, dir_light_1;
+	HemisphericDirectionalLight dir_light_0, dir_light_1;
 
 	dir_light_0.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 0.8f, 0.1f, 1.0f );
 	dir_light_0.Attribute.LowerDiffuseColor.SetRGBA( 0.0f, 0.0f, 0.0f, 1.0f );
@@ -59,7 +59,7 @@ bool CGenericShaderTest::SetShaderParams( CShaderManager& shader_mgr )
 	dir_light_1.Attribute.LowerDiffuseColor.SetRGBA( 0.0f, 0.0f, 0.0f, 1.0f );
 	dir_light_1.vDirection = Vec3GetNormalized( Vector3( 1.0f, -1.5f, -0.6f ) );
 
-	CHemisphericPointLight pnt_light_0, pnt_light_1;
+	HemisphericPointLight pnt_light_0, pnt_light_1;
 
 	pnt_light_0.Attribute.UpperDiffuseColor.SetRGBA( 0.1f, 0.6f, 0.1f, 1.0f );
 	pnt_light_0.Attribute.LowerDiffuseColor.SetRGBA( 0.0f, 0.0f, 0.0f, 1.0f );
@@ -86,12 +86,12 @@ bool CGenericShaderTest::SetShaderParams( CShaderManager& shader_mgr )
 
 bool CGenericShaderTest::InitShader()
 {
-	CShaderResourceDesc shader_desc;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(m_GenericShaderDesc) );
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(m_GenericShaderDesc) );
 
 	bool loaded = m_Shader.Load( shader_desc );
 
-	m_Technique = CShaderTechniqueHandle();
+	m_Technique = ShaderTechniqueHandle();
 	m_Technique.SetTechniqueName( "Default" );
 
 	return loaded;
@@ -130,20 +130,20 @@ void CGenericShaderTest::RenderMeshes()
 {
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 
 	SetShaderParams( shader_mgr );
 
 	// render the scene
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	Result::Name res = pShaderManager->SetTechnique( m_Technique );
 	for( size_t i=0; i<m_Meshes.size(); i++ )
 	{
-		boost::shared_ptr<CBasicMesh> pMesh = m_Meshes[i].GetMesh();
+		boost::shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
 
 		if( !pMesh )
 			continue;
@@ -155,7 +155,7 @@ void CGenericShaderTest::RenderMeshes()
 		pMesh->Render( shader_mgr );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -185,7 +185,7 @@ void CGenericShaderTest::RenderShaderInfo()
 	const std::string shader_info[] =
 	{
 		fmt_string( "[H] lighting (normal/hemishperic):   %d", (int)m_GenericShaderDesc.LightingTechnique ),
-		fmt_string( "[L] per-vertx or per-pixel lighting: %d", (int)m_GenericShaderDesc.ShaderLightingType ),
+		fmt_string( "[L] per-vertx or per-pixel lighting: %d", (int)m_GenericShaderDesc.LightingType ),
 		fmt_string( "[G] specular:                        %d", (int)m_GenericShaderDesc.Specular ),
 		fmt_string( "[I] the number directional lights:   %d", (int)m_GenericShaderDesc.NumDirectionalLights ),
 		fmt_string( "[P] the number point lights:         %d", (int)m_GenericShaderDesc.NumPointLights ),
@@ -214,7 +214,7 @@ void CGenericShaderTest::Render()
 }
 
 
-void CGenericShaderTest::HandleInput( const SInputData& input )
+void CGenericShaderTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -223,7 +223,7 @@ void CGenericShaderTest::HandleInput( const SInputData& input )
 		{
 //			int num_specular_types = CSpecularSource::NUM_TYPES;
 			int num_specular_types = 3;
-			m_GenericShaderDesc.Specular = (CSpecularSource::Name)( (m_GenericShaderDesc.Specular + 1) % num_specular_types );
+			m_GenericShaderDesc.Specular = (SpecularSource::Name)( (m_GenericShaderDesc.Specular + 1) % num_specular_types );
 			InitShader();
 		}
 		break;

@@ -45,7 +45,7 @@ bool CSimpleOverlayEffectsTest::InitShader()
 	// initialize shader
 	bool shader_loaded = m_Shader.Load( "./shaders/SimpleOverlayEffectsTest.fx" );
 	
-	CShaderManager& shader_mgr
+	ShaderManager& shader_mgr
 		= (shader_loaded && m_Shader.GetShaderManager()) ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
 
 //	if( !shader_loaded )
@@ -54,11 +54,11 @@ bool CSimpleOverlayEffectsTest::InitShader()
 	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
 	shader_mgr.SetProjectionTransform( proj );
 
-	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 	if( !pShaderLightMgr )
 		return false;
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -80,11 +80,11 @@ int CSimpleOverlayEffectsTest::Init()
 	m_PseudoNoiseEffect.Init( 0.5f, 2 );
 
 	// stripe texture
-	CTextureResourceDesc desc;
+	TextureResourceDesc desc;
 	desc.Width  = 16;
 	desc.Height = 16;
 	desc.Format = TextureFormat::A8R8G8B8;
-	shared_ptr<CStripeTextureGenerator> pGenerator( new CStripeTextureGenerator );
+	shared_ptr<StripeTextureGenerator> pGenerator( new StripeTextureGenerator );
 	pGenerator->m_StripeWidth = 1;
 	int w = 0;
 	LoadParamFromFile( "params.txt", "stripe_width", w );
@@ -122,28 +122,28 @@ void CSimpleOverlayEffectsTest::RenderMeshes()
 {
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	CShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
 
 	// render the scene
 
 	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
-	BOOST_FOREACH( CMeshObjectHandle& mesh, m_Meshes )
+	BOOST_FOREACH( MeshHandle& mesh, m_Meshes )
 	{
 		shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-		CBasicMesh *pMesh = mesh.GetMesh().get();
+		BasicMesh *pMesh = mesh.GetMesh().get();
 
 		if( pMesh )
 			pMesh->Render( shader_mgr );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -195,7 +195,7 @@ void CSimpleOverlayEffectsTest::Render()
 }
 
 
-void CSimpleOverlayEffectsTest::HandleInput( const SInputData& input )
+void CSimpleOverlayEffectsTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
@@ -232,7 +232,7 @@ void CSimpleOverlayEffectsTest::ReleaseGraphicsResources()
 }
 
 
-void CSimpleOverlayEffectsTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CSimpleOverlayEffectsTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	CreateSampleUI();
 }

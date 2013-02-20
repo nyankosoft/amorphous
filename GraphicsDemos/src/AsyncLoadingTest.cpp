@@ -93,9 +93,9 @@ bool CAsyncLoadingTest::InitShader()
 	if( !shader_loaded )
 		return false;
 
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -114,7 +114,7 @@ bool CAsyncLoadingTest::InitShader()
 
 void CAsyncLoadingTest::CreateCachedResources()
 {
-	CTextureResourceDesc tex_desc;
+	TextureResourceDesc tex_desc;
 	tex_desc.Format    = TextureFormat::A8R8G8B8;
 	tex_desc.Width     = 1024;
 	tex_desc.Height    = 1024;
@@ -131,7 +131,7 @@ void CAsyncLoadingTest::CreateCachedResources()
 
 int CAsyncLoadingTest::Init()
 {
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 6, 12 );
 	m_pFont = pTexFont;
@@ -152,9 +152,9 @@ int CAsyncLoadingTest::Init()
 
 	BOOST_FOREACH( const string& filepath, mesh_file )
 	{
-		m_vecMesh.push_back( CMeshObjectHandle() );
+		m_vecMesh.push_back( MeshHandle() );
 
-		CMeshResourceDesc desc;
+		MeshResourceDesc desc;
 		desc.ResourcePath = filepath;
 
 		if( m_TestAsyncLoading )
@@ -203,7 +203,7 @@ void CAsyncLoadingTest::LoadResourcesAsync( CTestMeshHolder& holder )
 	if( holder.m_LoadingStyle == CTestMeshHolder::LOAD_MESH_AND_TEX_TOGETHER )
 		return;
 
-	CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
+	BasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 	if( !pMesh )
 		return;
 
@@ -219,7 +219,7 @@ void CAsyncLoadingTest::LoadResourcesAsync( CTestMeshHolder& holder )
 
 		Vector3 vDist = world_aabb.GetCenterPosition() - vCamPos;
 		const float fDist = Vec3Length(vDist);
-		CTextureHandle& tex = pMesh->GetTexture( i, 0 );
+		TextureHandle& tex = pMesh->GetTexture( i, 0 );
 
 		if( fDist < 25.0f // dist between cam position and the triangle set is less than 25m - for small parts
 		 || world_aabb.IsPointInside(vCamPos) ) // cam position is included in the AABB of the triangle set - for large parts
@@ -228,7 +228,7 @@ void CAsyncLoadingTest::LoadResourcesAsync( CTestMeshHolder& holder )
 			if( tex.GetEntryState() == GraphicsResourceState::RELEASED
 			 && !tex.GetEntry() )
 			{
-				CTextureResourceDesc desc = pMesh->GetMaterial(i).TextureDesc[0];
+				TextureResourceDesc desc = pMesh->GetMaterial(i).TextureDesc[0];
 				desc.LoadingMode = CResourceLoadingMode::ASYNCHRONOUS;
 				desc.Format = TextureFormat::A8R8G8B8;
 				desc.MipLevels = m_NumTextureMipmaps;
@@ -275,7 +275,7 @@ void CAsyncLoadingTest::RenderMeshes()
 {
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return;
 
@@ -283,13 +283,13 @@ void CAsyncLoadingTest::RenderMeshes()
 
 	pShaderManager->SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	pShaderManager->SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
+//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
 	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
 	{
-//		CBasicMesh *pMesh = mesh.GetMesh().get();
+//		BasicMesh *pMesh = mesh.GetMesh().get();
 
 		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
 		{
@@ -297,14 +297,14 @@ void CAsyncLoadingTest::RenderMeshes()
 			FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
 			pShaderManager->SetWorldTransform( holder.m_Pose );
 
-			CBasicMesh *pMesh = holder.m_Handle.GetMesh().get();
+			BasicMesh *pMesh = holder.m_Handle.GetMesh().get();
 
 			if( pMesh )
 				pMesh->Render( *pShaderManager );
 		}
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -340,22 +340,22 @@ void CAsyncLoadingTest::Render()
 
 void CAsyncLoadingTest::SaveTexturesAsImageFiles()
 {
-	CMeshObjectHandle& mesh_handle = m_vecMesh[0].m_Handle;//m_vecMesh[0];
+	MeshHandle& mesh_handle = m_vecMesh[0].m_Handle;//m_vecMesh[0];
 	if( m_vecMesh.size() == 0 || !mesh_handle.GetMesh() )
 		return;
 
-	CBasicMesh *pMesh = mesh_handle.GetMesh().get();
+	BasicMesh *pMesh = mesh_handle.GetMesh().get();
 
 	const int num_materials = pMesh->GetNumMaterials();
 	for( int i=0; i<num_materials; i++ )
 	{
 //		for(each texture)
 //		{
-			CTextureHandle& tex = pMesh->GetTexture( i, 0 );
+			TextureHandle& tex = pMesh->GetTexture( i, 0 );
 			if( !tex.GetEntry() )
 				continue;
 
-			shared_ptr<CTextureResource> pTexture = tex.GetEntry()->GetTextureResource();
+			shared_ptr<TextureResource> pTexture = tex.GetEntry()->GetTextureResource();
 			if( !pTexture )
 				continue;
 
@@ -365,12 +365,12 @@ void CAsyncLoadingTest::SaveTexturesAsImageFiles()
 }
 
 
-void CAsyncLoadingTest::HandleInput( const SInputData& input )
+void CAsyncLoadingTest::HandleInput( const InputData& input )
 {
 	if( m_pUIInputHandler )
 	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
+//		InputHandler::ProcessInput() does not take const InputData&
+		InputData input_copy = input;
 		m_pUIInputHandler->ProcessInput( input_copy );
 
 		if( m_pUIInputHandler->PrevInputProcessed() )
@@ -404,7 +404,7 @@ void CAsyncLoadingTest::ReleaseGraphicsResources()
 }
 
 
-void CAsyncLoadingTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CAsyncLoadingTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	CreateSampleUI();
 }

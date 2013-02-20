@@ -43,9 +43,9 @@ bool CPrimitiveRendererTest::InitShader()
 	if( !shader_loaded )
 		return false;
 
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
 
-	CHemisphericDirectionalLight light;
+	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -120,7 +120,7 @@ void CPrimitiveRendererTest::Render()
 //	m_TextBuffer.resize( 0 );
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 
-	FixedFunctionPipelineManager().SetTexture( 0, CTextureHandle() );
+	FixedFunctionPipelineManager().SetTexture( 0, TextureHandle() );
 
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
@@ -174,7 +174,7 @@ void CPrimitiveRendererTest::Render()
 }
 
 
-void CPrimitiveRendererTest::HandleInput( const SInputData& input )
+void CPrimitiveRendererTest::HandleInput( const InputData& input )
 {
 /*
 	switch( input.iGICode )

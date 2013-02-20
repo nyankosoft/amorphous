@@ -15,29 +15,29 @@
 #include "AsyncLoadingTest.hpp"
 
 
-class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
+class CHLSLEffectTest : public CGraphicsTestBase, public GraphicsComponent
 {
 	enum Params
 	{
 		TEXT_BUFFER_SIZE = 4096
 	};
 
-//	std::vector<CMeshObjectHandle> m_vecMesh;
+//	std::vector<MeshHandle> m_vecMesh;
 	std::vector<CTestMeshHolder> m_vecMesh;
 
-	std::vector<CShaderHandle> m_Shaders;
+	std::vector<ShaderHandle> m_Shaders;
 
-	std::vector<CShaderTechniqueHandle> m_Techniques;
+	std::vector<ShaderTechniqueHandle> m_Techniques;
 
 	int m_CurrentShaderIndex;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
 	bool m_EnableLight[2];
 
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
@@ -47,7 +47,7 @@ class CHLSLEffectTest : public CGraphicsTestBase, public CGraphicsComponent
 
 	int m_CurrentMeshIndex;
 
-	CTextureHandle m_LookupTextureForLighting;
+	TextureHandle m_LookupTextureForLighting;
 
 private:
 
@@ -81,10 +81,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

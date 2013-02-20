@@ -96,7 +96,7 @@ public:
 	virtual void OnKeyPressed( KeyCode::Code key_code ) {}
 	virtual void OnKeyReleased( KeyCode::Code key_code ) {}
 
-	virtual void HandleInput( const SInputData& input ) {}
+	virtual void HandleInput( const InputData& input ) {}
 
 	void SetWindowSize( int w, int h ) { m_WindowWidth = w; m_WindowHeight = h; }
 
@@ -109,7 +109,7 @@ public:
 };
 
 
-class CGraphicsTestInputHandler : public CInputHandler
+class CGraphicsTestInputHandler : public InputHandler
 {
 	boost::weak_ptr<CGraphicsTestBase> m_pTest;
 
@@ -119,7 +119,7 @@ public:
 		:
 	m_pTest(pTest) {}
 
-	void ProcessInput( SInputData& input )
+	void ProcessInput( InputData& input )
 	{
 		boost::shared_ptr<CGraphicsTestBase> pTest = m_pTest.lock();
 
