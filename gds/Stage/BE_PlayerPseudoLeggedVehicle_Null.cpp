@@ -26,9 +26,6 @@
 #include "Support/memory_helpers.hpp"
 #include "trace.hpp"
 
-#include "JigLib/JL_PhysicsActor.hpp"
-#include "JigLib/JL_LineSegment.hpp"
-
 
 namespace amorphous
 {

@@ -1,29 +1,4 @@
 #include "BE_PlayerPseudoAircraft.hpp"
-#include "PlayerInfo.hpp"
-#include "EntitySet.hpp"
-#include "CopyEntityDesc.hpp"
-#include "stage.h"
-#include "Input/InputHandler_PlayerPAC.hpp"
-#include "Item/WeaponSystem.hpp"
-#include "Stage/ScreenEffectManager.hpp"
-#include "GameMessage.hpp"
-
-#include "3DMath/Vector3.hpp"
-
-#include "GameCommon/GameMathMisc.hpp"
-#include "GameCommon/MTRand.hpp"
-#include "GameCommon/RandomDirectionTable.hpp"
-#include "GameCommon/ShockWaveCameraEffect.hpp"
-#include "GameCommon/PseudoAircraftSimulator.hpp"
-
-#include "Graphics/3DGameMath.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
-#include "Support/memory_helpers.hpp"
-#include "trace.hpp"
-
-#include "JigLib/JL_PhysicsActor.hpp"
-#include "JigLib/JL_LineSegment.hpp"
 
 
 namespace amorphous

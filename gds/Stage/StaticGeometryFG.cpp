@@ -24,10 +24,6 @@
 
 #include "Physics/Actor.hpp"
 #include "Physics/RaycastHit.hpp"
-//#include "JigLib/JL_PhysicsManager.hpp"
-//#include "JigLib/JL_PhysicsActor.hpp"
-//#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
-//#include "JigLib/TriangleMesh.hpp"
 
 #endif /* TEST_STATICGEOMETRY_FG */
 

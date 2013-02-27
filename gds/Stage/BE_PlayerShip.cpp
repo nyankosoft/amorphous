@@ -7,23 +7,16 @@
 #include "Item/WeaponSystem.hpp"
 #include "Stage/ScreenEffectManager.hpp"
 #include "GameMessage.hpp"
-
 #include "Support/MTRand.hpp"
 #include "Support/VectorRand.hpp"
 #include "GameCommon/ShockWaveCameraEffect.hpp"
-
-#include "Stage/BE_LaserDot.hpp"
+#include "trace.hpp"
+//#include "Stage/BE_LaserDot.hpp"
+//#include "Sound/SoundManager.hpp"
 
 
 namespace amorphous
 {
-
-//#include "Sound/SoundManager.hpp"
-
-#include "Support/memory_helpers.hpp"
-#include "trace.hpp"
-
-#include "JigLib/JL_PhysicsActor.hpp"
 
 
 

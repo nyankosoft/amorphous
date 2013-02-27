@@ -32,8 +32,6 @@
 namespace amorphous
 {
 
-//#include "JigLib/JL_PhysicsActor.hpp"
-
 using std::string;
 using std::vector;
 using boost::shared_ptr;

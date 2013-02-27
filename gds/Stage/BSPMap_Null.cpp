@@ -5,9 +5,6 @@
 #include "Stage/trace.hpp"
 #include "Stage/ScreenEffectManager.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "PerformanceCheck.h"
-
 #include "DynamicLightManagerForStaticGeometry.hpp"
 
 #include "Graphics/Direct3D9.hpp"
@@ -18,9 +15,6 @@
 
 #include "ShaderTechniqueIDs.h"
 
-#include "JigLib/JL_PhysicsManager.hpp"
-#include "JigLib/JL_ShapeDesc_TriangleMesh.hpp"
-#include "JigLib/JL_PhysicsActor.hpp"
 #include <direct.h>
 
 

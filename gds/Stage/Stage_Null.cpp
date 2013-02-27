@@ -9,34 +9,19 @@
 #include "Stage/ScreenEffectManager.hpp"
 #include "GameEvent/GameEventManager.hpp"
 
-#include "Item/WeaponSystem.hpp"
-
-
-namespace amorphous
-{
-//#include "GameCommon/WeaponDatabase.hpp"
-//#include "GameCommon/AmmoDatabase.hpp"
-
 #include "Support/memory_helpers.hpp"
-#include "Support/FileNameOperation.h"
 #include "Support/Profile.hpp"
-
-
-#include "Graphics/Shader/Shader.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-
-#include "ShaderTechniqueIDs.h"
-
-
-#include "JigLib/JL_PhysicsManager.hpp"
-#include "JigLib/JL_SurfaceMaterial.hpp"
 
 #include "SurfaceMaterialManager.hpp"
 
 #include "stage.h"
 
 #include "PerformanceCheck.h"
-SPerformanceCheck g_PerformanceCheck;
+
+
+namespace amorphous
+{
+
 
 CStage::CStage()
 {
@@ -181,10 +166,5 @@ void CStage::LoadEvents()
 
 //CGameEvent *CStage::GetEvent( int iIndex ) { return NULL; }
 
-
-CJL_PhysicsVisualizer_D3D *CStage::GetPhysicsVisualizer()
-{
-	return NULL;
-}
 
 } // amorphous

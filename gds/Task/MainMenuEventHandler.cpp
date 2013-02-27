@@ -8,7 +8,6 @@
 #include "Stage/PlayerInfo.hpp"
 //#include "Stage/ScreenEffectManager.hpp"
 #include "Stage/Stage.hpp"
-//#include "JigLib/JL_PhysicsVisualizer.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 

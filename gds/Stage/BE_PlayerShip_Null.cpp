@@ -1,28 +1,4 @@
 #include "BE_PlayerShip.hpp"
-#include "PlayerInfo.hpp"
-#include "EntitySet.hpp"
-#include "CopyEntityDesc.hpp"
-#include "stage.h"
-#include "Input/InputHandler_PlayerShip.hpp"
-#include "Item/WeaponSystem.hpp"
-#include "Stage/ScreenEffectManager.hpp"
-#include "GameMessage.hpp"
-
-#include "3DMath/Vector3.hpp"
-
-#include "GameCommon/MTRand.hpp"
-#include "GameCommon/RandomDirectionTable.hpp"
-#include "GameCommon/ShockWaveCameraEffect.hpp"
-
-#include "Stage/BE_LaserDot.hpp"
-
-// added for laser dot casting test
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
-#include "Support/memory_helpers.hpp"
-#include "trace.hpp"
-
-#include "JigLib/JL_PhysicsActor.hpp"
 
 
 namespace amorphous
