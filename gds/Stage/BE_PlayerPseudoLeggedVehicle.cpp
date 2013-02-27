@@ -21,9 +21,6 @@
 #include "Support/StringAux.hpp"
 #include "trace.hpp"
 
-//#include "JigLib/JL_PhysicsActor.hpp"
-#include "JigLib/JL_LineSegment.hpp"
-
 #include "Physics/Actor.hpp"
 
 
@@ -70,26 +67,25 @@ void CVehicleLeg::Update( CCopyEntity *pEntity, float dt )
 	world_pose.Transform( vWorldPos, m_vLocalPos );
 	vWorldDir = world_pose.matOrient * m_vLocalDir;
 
-	CJL_LineSegment segment;
-	segment.SetDefault();
-	segment.vStart = vWorldPos;
+	STrace tr;
+	tr.vStart = vWorldPos;
 
 	Vector3 vGoal = vWorldPos + vWorldDir * m_fLength;
-	segment.vGoal = vGoal;
+	tr.vGoal = vGoal;
 
-	segment.vEnd = vGoal;
-	segment.fFraction = 1.0f;
+	tr.vEnd = vGoal;
+	tr.fFraction = 1.0f;
 
 	CStage *pStage = m_pStage;
 
-//	pStage->ClipTrace( segment );
+//	pStage->ClipTrace( tr );
 
-	if( segment.fFraction < 1.0f && 0.1f < -Vec3Dot( segment.plane.normal, vWorldDir ) )
+	if( tr.fFraction < 1.0f && 0.1f < -Vec3Dot( tr.plane.normal, vWorldDir ) )
 	{
 		m_OnGround = true;
 
 //		float depth = Vec3Length( vGoal - segment.vEnd );
-		float depth = - Vec3Dot( vGoal - segment.vEnd, segment.plane.normal );
+		float depth = - Vec3Dot( vGoal - tr.vEnd, tr.plane.normal );
 
 //		assert( 0 <= depth );
 //		assert( 0 <= segment.fFraction );
@@ -100,7 +96,7 @@ void CVehicleLeg::Update( CCopyEntity *pEntity, float dt )
 			Vector3 vVelLegDir = Vec3Dot( vWorldDir, pPhysicsActor->GetLinearVelocity() ) * vWorldDir;
 
 			// reduce force when the leg is perpendicular to the contacted surface
-			float slope = fabsf( Vec3Dot( vWorldDir, segment.plane.normal ) );
+			float slope = fabsf( Vec3Dot( vWorldDir, tr.plane.normal ) );
 
 			// apply spring
 			Vector3 vForce;
