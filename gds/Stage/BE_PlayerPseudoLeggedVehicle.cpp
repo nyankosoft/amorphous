@@ -7,20 +7,11 @@
 #include "Item/WeaponSystem.hpp"
 #include "Stage/ScreenEffectManager.hpp"
 #include "GameMessage.hpp"
-
 #include "GameCommon/GameMathMisc.hpp"
-#include "Support/MTRand.hpp"
-#include "GameCommon/RandomDirectionTable.hpp"
-#include "GameCommon/ShockWaveCameraEffect.hpp"
-
-#include "Stage/bsptree.hpp"
-#include "Stage/BE_LaserDot.hpp"
-
-// added for laser dot casting test
 #include "Support/Log/StateLog.hpp"
 #include "Support/StringAux.hpp"
+#include "Support/MTRand.hpp"
 #include "trace.hpp"
-
 #include "Physics/Actor.hpp"
 
 
