@@ -9,7 +9,6 @@
 namespace amorphous
 {
 
-
 using namespace std;
 using namespace boost;
 
@@ -25,101 +24,7 @@ singleton<CPythonUserCount> CPythonUserCount::m_obj;
 
 
 
-//=========================================================================
-// Global Functions
-//=========================================================================
-
-
-static ScriptManager *g_pScriptManager = NULL;
-
-//static ScriptManager::EventScript *gs_pTargetScript = NULL;
-
-
-static PyObject *SetScriptUpdateCallback( PyObject *dummy, PyObject *args )
-{
-    PyObject *result = NULL;
-    PyObject *temp;
-
-	if( PyArg_ParseTuple(args, "O:set_callback", &temp) )
-	{
-		if (!PyCallable_Check(temp))
-		{
-			// PyCallable_Check does not necessarily return 0 for an invalid script
-			PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-			PrintLog( "an invalid event callback" );
-//			return NULL;
-			Py_INCREF(Py_None);
-			result = Py_None;
-			return result;
-		}
-
-		// Add a reference to new callback
-		Py_XINCREF(temp);
-
-//		Py_XDECREF(g_PythonCallback);  // Dispose of previous callback
-
-		// Remember new callback
-		g_pScriptManager->AddEventCallback( temp );
-
-		// Boilerplate to return "None"
-		Py_INCREF(Py_None);
-		result = Py_None;
-	}
-	return result;
-}
-
-
-static PyObject *SetScriptInitCallback( PyObject *dummy, PyObject *args )
-{
-    PyObject *result = NULL;
-    PyObject *temp;
-	try
-	{
-		if( PyArg_ParseTuple(args, "0:set_callback", &temp) )
-		{
-			if (!PyCallable_Check(temp))
-			{
-				// PyCallable_Check does not necessarily return 0 for an invalid script
-				PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-				PrintLog( "an invalid init callback" );
-//				return NULL;
-				Py_INCREF(Py_None);
-				result = Py_None;
-				return result;
-			}
-
-			// Add a reference to new callback
-			Py_XINCREF(temp);
-
-//			Py_XDECREF(g_PythonCallback);  // Dispose of previous callback
-
-			// Remember new callback
-			g_pScriptManager->AddInitCallback( temp );
-
-			// Boilerplate to return "None"
-			Py_INCREF(Py_None);
-			result = Py_None;
-		}
-	}
-	catch( std::exception& e )
-	{
-		g_Log.Print( WL_ERROR, "SetInitCallback() failed - exception: %s", e.what() );
-	}
-
-	return result;
-}
-
-
-PyMethodDef g_ScriptBaseMethod[] =
-{
-    { "SetCallback",		SetScriptUpdateCallback,	METH_VARARGS, "sets an event callback" },
-    { "SetInitCallback",	SetScriptInitCallback,		METH_VARARGS, "sets an init callback" },
-//	{ "SetInitCallback",	SetInitCallback,		METH_VARARGS, "sets an init callback" },
-    {NULL, NULL}
-};
-
-
-static string GetExtraErrorInfo()
+string ScriptManager::GetExtraErrorInfo()
 {
 	// failed attempt - exception returned by PyErr_Occurred() cannot be retrieved as a string
 /*
@@ -164,45 +69,12 @@ ScriptManager::ScriptManager()
 m_pTargetScript(NULL),
 m_bLoadFromNonArchivedFiles(false)
 {
-	g_pScriptManager = this;
-
 	PythonUserCount().IncRefCount();
-
-	if( ms_UseBoostPythonModules )
-	{
-		// add script_base module
-	}
-	else
-	{
-		// make a module for setting callbacks
-		AddModule( "ScriptBase", g_ScriptBaseMethod );
-//		PyObject *pBaseModule0 = PyImport_AddModule( "ScriptBase" );
-//		PyObject *pBaseModule = Py_InitModule( "ScriptBase", g_ScriptBaseMethod );
-	}
 }
 
 ScriptManager::~ScriptManager()
 {
 	PythonUserCount().DecRefCount();
-
-	g_pScriptManager = NULL;
-}
-
-
-// Called when boost::python is not used. See CStage::InitEventScriptManager()
-void ScriptManager::AddModule( const string& module_name, PyMethodDef method[] )
-{
-	PyObject *pModule0 = PyImport_AddModule( module_name.c_str() );
-	if( !pModule0 )
-	{
-		LOG_PRINT_ERROR( " - PyImport_AddModule() failed for module '" + module_name + "'. Error: " + GetExtraErrorInfo() );
-	}
-
-	PyObject *pModule  = Py_InitModule( module_name.c_str(), method );
-	if( !pModule )
-	{
-		LOG_PRINT_ERROR( " - Py_InitModule() failed for module '" + module_name + "'. Error: " + GetExtraErrorInfo() );
-	}
 }
 
 
@@ -220,96 +92,6 @@ void ScriptManager::AddInitCallback( PyObject* pEventCallback )
 }
 
 
-/// execute the script and register the callback from the script
-bool ScriptManager::LoadScript( const stream_buffer& buffer, EventScript& dest_script )
-{
-	boost::thread::id thread_id = boost::this_thread::get_id();
-
-	bool res = false;
-	if( ms_UseBoostPythonModules )
-	{
-		// Retrieve the main module
-		python::object main = python::import("__main__");
-
-		// Retrieve the main module's namespace
-		python::object global(main.attr("__dict__"));
-
-		// set script holder object that will be the target for registering callback functions
-		m_pTargetScript = &dest_script;
-
-		PyErr_Clear();
-
-		// run  the script and register the callback function(s)
-//		python::object result = python::exec( &(buffer.get_buffer()[0]), global, global );
-
-		try
-		{
-			python::object result = python::exec( &(buffer.get_buffer()[0]), global, global );
-		}
-		catch( std::exception& e )
-		{
-			g_Log.Print( WL_WARNING, "std::exception: %s", e.what() );
-		}
-		catch( boost::exception& e )
-		{
-			// handle exception
-			LOG_PRINT_ERROR( "boost::exception" );
-		}
-		catch( boost::python::error_already_set& e )
-		{
-			// handle exception
-			LOG_PRINT_ERROR( "python::exec() threw an exception 'error_already_set'. Error: " + GetExtraErrorInfo() );
-		}
-
-		res = true;//result
-
-		m_pTargetScript = NULL;
-	}
-	else
-	{
-		PyObject *pMainModule     = PyImport_AddModule( "__main__" );
-		PyObject *pMainDictionary = PyModule_GetDict( pMainModule );
-
-		// set script holder object that will be the target for registering callback functions
-		m_pTargetScript = &dest_script;
-
-		PyErr_Clear();
-
-		// run  the script and register the callback function(s)
-		PyObject* pRunResult = PyRun_String( (const char *)(&buffer.get_buffer()[0]),
-											 Py_file_input, pMainDictionary, pMainDictionary );
-
-		res = pRunResult ? true : false;
-
-		m_pTargetScript = NULL;
-	}
-
-	if( !dest_script.m_pEventCallback )
-	{
-		dest_script.m_bIsDone = true;
-		LOG_PRINT_ERROR( " No callback function has been found in the script or PyRun_String() returned NULL. Error: " + GetExtraErrorInfo() );
-//		g_Log.Print( "no callback has been found set for script[%02d]", m_vecEventScript.size() - 1 );
-		return false;
-	}
-
-//	if( pRunResult == NULL )
-	if( res == false )
-	{
-		return false;
-//		PrintLog( "an exception raised during the execution of the script, '" + filename + "'");
-		LOG_PRINT_ERROR( " PyRun_String() returned NULL. Error: " + GetExtraErrorInfo() );
-	}
-	else
-	{
-		dest_script.m_bIsDone = false;
-		return true;
-//		PrintLog( "script file, '" + filename + "' loaded");
-	}
-
-	return true;
-}
-
-
 bool ScriptManager::LoadScriptArchiveFile( const string& filename )
 {
 	ScriptArchive script_archive;
@@ -324,7 +106,7 @@ bool ScriptManager::LoadScriptArchiveFile( const string& filename )
 	{
 		string& script_filename = script_archive.m_vecSourceFilename[i];
 
-		m_vecEventScript.push_back( EventScript() );
+		m_vecEventScript.push_back( PythonEventScript() );
 
 		if( !LoadScript( script_archive.m_vecBuffer[i].m_Buffer, m_vecEventScript.back() ) )
 		{
@@ -356,7 +138,7 @@ bool ScriptManager::LoadScriptArchiveFile( const string& filename )
 
 bool ScriptManager::ExecuteScript( const stream_buffer& buffer )
 {
-	EventScript es;
+	PythonEventScript es;
 	return LoadScript( buffer, es );
 }
 
@@ -405,9 +187,9 @@ void ScriptManager::InitScripts()
 //			PyArg_ParseTuple( pResult, "i", &result );
 			PyArg_Parse( pResult, "i", &result );
 
-			if( result == EventScript::EVENT_DONE )
+			if( result == PythonEventScript::EVENT_DONE )
 			{
-				EventScript& script = m_vecEventScript[i];
+				PythonEventScript& script = m_vecEventScript[i];
 
 //	necessary?	Py_DECREF( m_vecEventScript[i].m_pInitCallback );
 				PrintLog( "script[" + to_string(int(i)) + "] '"+ script.name + "' has been initialized" );
@@ -426,7 +208,7 @@ void ScriptManager::ReloadUpdatedScriptFiles()
 
 	for( i=0; i<num_eventscripts; i++ )
 	{
-		EventScript& script = m_vecEventScript[i];
+		PythonEventScript& script = m_vecEventScript[i];
 
 		if( script.m_LastModifiedTime == 0 )
 			continue;	// last modified time is not recorded
@@ -515,9 +297,9 @@ void ScriptManager::Update()
 //			PyArg_ParseTuple( pResult, "i", &result );
 			PyArg_Parse( pResult, "i", &result );
 
-			if( result == EventScript::EVENT_DONE )
+			if( result == PythonEventScript::EVENT_DONE )
 			{
-				EventScript& script = m_vecEventScript[i];
+				PythonEventScript& script = m_vecEventScript[i];
 
 				script.m_bIsDone = true;
 //	necessary?	Py_DECREF( m_vecEventScript[i].m_pEventCallback );

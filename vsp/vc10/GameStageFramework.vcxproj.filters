@@ -825,6 +825,12 @@
     <ClInclude Include="..\..\gds\Task\fwd.hpp">
       <Filter>Source Files\Task</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Script\BoostPythonScriptManager.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Script\PythonScriptManager.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
@@ -1465,6 +1471,12 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\JigLib\JL_PhysicsVisualizer.cpp">
       <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\BoostPythonScriptManager.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\PythonScriptManager.cpp">
+      <Filter>Source Files\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

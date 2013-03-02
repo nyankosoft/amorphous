@@ -89,7 +89,9 @@ inline CPythonUserCount& PythonUserCount()
 
 class ScriptManager
 {
-	class EventScript
+protected:
+
+	class PythonEventScript
 	{
 	public:
 
@@ -115,7 +117,7 @@ class ScriptManager
 		time_t m_LastModifiedTime;
 
 	public:
-		EventScript()
+		PythonEventScript()
 			:
 		m_pInitCallback(NULL),
 		m_pEventCallback(NULL),
@@ -123,7 +125,7 @@ class ScriptManager
 		m_LastModifiedTime(0)
 		{}
 
-		EventScript(PyObject* pCallback)
+		PythonEventScript(PyObject* pCallback)
 			:
 		m_pInitCallback(NULL),
 		m_pEventCallback(pCallback),
@@ -131,13 +133,13 @@ class ScriptManager
 		m_LastModifiedTime(0)
 		{}
 
-		virtual ~EventScript() {}
+		virtual ~PythonEventScript() {}
 	};
 
 	/// each element holds one script file content
-	std::vector<EventScript> m_vecEventScript;
+	std::vector<PythonEventScript> m_vecEventScript;
 
-	EventScript *m_pTargetScript;
+	PythonEventScript *m_pTargetScript;
 
 	/// turned on if non archived script files are found in the reousrce directory
 	/// - they are reloaded when modified at runtime
@@ -147,9 +149,14 @@ private:
 
 	bool LoadScriptFromFile( const std::string& filename );
 
-	bool LoadScript( const stream_buffer& buffer, EventScript& dest_script );
-
 	void ReloadUpdatedScriptFiles();
+
+protected:
+
+	/// Execute the script and register the callback from the script.
+	virtual bool LoadScript( const stream_buffer& buffer, PythonEventScript& dest_script ) { return false; }
+
+	std::string GetExtraErrorInfo();
 
 public:
 
@@ -168,13 +175,11 @@ public:
 	void InitScripts();
 
 	/// called every frame
-	void Update();
+	virtual void Update();
 
 	void AddEventCallback( PyObject* pEventCallback );
 
 	void AddInitCallback( PyObject* pEventCallback );
-
-	void AddModule( const std::string& module_name, PyMethodDef method[] );
 
 	static bool ms_UseBoostPythonModules;
 };

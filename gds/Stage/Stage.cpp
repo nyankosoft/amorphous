@@ -17,7 +17,8 @@
 #include "Script/PyModule_StageUtility.hpp"
 #include "Script/PyModule_visual_effect.hpp"
 #include "Script/PyModules.hpp"
-#include "Script/ScriptManager.hpp"
+#include "Script/PythonScriptManager.hpp"
+#include "Script/BoostPythonScriptManager.hpp"
 #include "Script/convert_python_to_x.hpp"
 #include "Script/EmbeddedPythonModule.hpp"
 #include "Script/EmbeddedPythonModules.hpp"
@@ -51,6 +52,7 @@ static uint gs_DebugInputHandlerIndex = 0;
 using namespace std;
 using namespace boost;
 using namespace physics;
+using boost::shared_ptr;
 
 
 void SetStageForScriptCallback( CStage* pStage )
@@ -668,40 +670,45 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 {
 	LOG_FUNCTION_SCOPE();
 
-	if( !m_pScriptManager )
-		return false;
-
 	m_ScriptArchiveFilename = script_archive_filename;
 
 	if( ScriptManager::ms_UseBoostPythonModules )
 	{
+		shared_ptr<BoostPythonScriptManager> pBoostPythonScriptManager( new BoostPythonScriptManager );
 		RegisterPythonModule_math3d();
 		RegisterPythonModule_gfx();
 		RegisterPythonModule_sound();
 		RegisterPythonModule_stage();
 		RegisterPythonModule_visual_effect();
 		stage_util::RegisterPythonModule_stage_util();
+
+		m_pScriptManager = pBoostPythonScriptManager;
 	}
 	else
 	{
-		m_pScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
-		m_pScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
-		m_pScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
-		m_pScriptManager->AddModule( "Sound",		g_PyModuleSoundMethod );
-		m_pScriptManager->AddModule( "Entity",		gsf::py::entity::g_PyModuleEntityMethod );
-		m_pScriptManager->AddModule( "HUD",			g_PyModuleHUDMethod );
-		m_pScriptManager->AddModule( "cam",			gsf::py::cam::g_PyModuleCameraMethod );
-		m_pScriptManager->AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
-		m_pScriptManager->AddModule( "gr",			g_PyModuleGraphicsElementMethod );
-		m_pScriptManager->AddModule( "gre",			g_PyModuleAnimatedGraphicsMethod );
-		m_pScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
-		m_pScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
-		m_pScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
+		shared_ptr<PythonScriptManager> pPythonScriptManager( new PythonScriptManager );
+		pPythonScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
+		pPythonScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
+		pPythonScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
+		pPythonScriptManager->AddModule( "Sound",		g_PyModuleSoundMethod );
+		pPythonScriptManager->AddModule( "Entity",		gsf::py::entity::g_PyModuleEntityMethod );
+		pPythonScriptManager->AddModule( "HUD",			g_PyModuleHUDMethod );
+		pPythonScriptManager->AddModule( "cam",			gsf::py::cam::g_PyModuleCameraMethod );
+		pPythonScriptManager->AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
+		pPythonScriptManager->AddModule( "gr",			g_PyModuleGraphicsElementMethod );
+		pPythonScriptManager->AddModule( "gre",			g_PyModuleAnimatedGraphicsMethod );
+		pPythonScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
+		pPythonScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
+		pPythonScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
 
 		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_math3d() );
 		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_gfx() );
+
+		m_pScriptManager = pPythonScriptManager;
 	}
 
+	if( !m_pScriptManager )
+		return false;
 
 	bool res = m_pScriptManager->LoadScriptArchiveFile( script_archive_filename );
 
