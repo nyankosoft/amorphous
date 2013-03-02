@@ -14,7 +14,7 @@ using namespace std;
 using namespace boost;
 
 
-bool CScriptManager::ms_UseBoostPythonModules = true;
+bool ScriptManager::ms_UseBoostPythonModules = true;
 
 
 //=========================================================================
@@ -30,9 +30,9 @@ singleton<CPythonUserCount> CPythonUserCount::m_obj;
 //=========================================================================
 
 
-static CScriptManager *g_pScriptManager = NULL;
+static ScriptManager *g_pScriptManager = NULL;
 
-//static CScriptManager::CEventScript *gs_pTargetScript = NULL;
+//static ScriptManager::EventScript *gs_pTargetScript = NULL;
 
 
 static PyObject *SetScriptUpdateCallback( PyObject *dummy, PyObject *args )
@@ -156,10 +156,10 @@ static string GetExtraErrorInfo()
 
 
 //===========================================================================
-// CScriptManager
+// ScriptManager
 //===========================================================================
 
-CScriptManager::CScriptManager()
+ScriptManager::ScriptManager()
 :
 m_pTargetScript(NULL),
 m_bLoadFromNonArchivedFiles(false)
@@ -181,7 +181,7 @@ m_bLoadFromNonArchivedFiles(false)
 	}
 }
 
-CScriptManager::~CScriptManager()
+ScriptManager::~ScriptManager()
 {
 	PythonUserCount().DecRefCount();
 
@@ -189,7 +189,8 @@ CScriptManager::~CScriptManager()
 }
 
 
-void CScriptManager::AddModule( const string& module_name, PyMethodDef method[] )
+// Called when boost::python is not used. See CStage::InitEventScriptManager()
+void ScriptManager::AddModule( const string& module_name, PyMethodDef method[] )
 {
 	PyObject *pModule0 = PyImport_AddModule( module_name.c_str() );
 	if( !pModule0 )
@@ -205,14 +206,14 @@ void CScriptManager::AddModule( const string& module_name, PyMethodDef method[] 
 }
 
 
-void CScriptManager::AddEventCallback( PyObject* pEventCallback )
+void ScriptManager::AddEventCallback( PyObject* pEventCallback )
 {
 	if( m_pTargetScript )
 		m_pTargetScript->m_pEventCallback = pEventCallback;
 }
 
 
-void CScriptManager::AddInitCallback( PyObject* pEventCallback )
+void ScriptManager::AddInitCallback( PyObject* pEventCallback )
 {
 	if( m_pTargetScript )
 		m_pTargetScript->m_pInitCallback = pEventCallback;
@@ -220,7 +221,7 @@ void CScriptManager::AddInitCallback( PyObject* pEventCallback )
 
 
 /// execute the script and register the callback from the script
-bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest_script )
+bool ScriptManager::LoadScript( const stream_buffer& buffer, EventScript& dest_script )
 {
 	boost::thread::id thread_id = boost::this_thread::get_id();
 
@@ -309,9 +310,9 @@ bool CScriptManager::LoadScript( const stream_buffer& buffer, CEventScript& dest
 }
 
 
-bool CScriptManager::LoadScriptArchiveFile( const string& filename )
+bool ScriptManager::LoadScriptArchiveFile( const string& filename )
 {
-	CScriptArchive script_archive;
+	ScriptArchive script_archive;
 	bool res = script_archive.LoadFromFile( filename );
 	if( !res )
 		return false;
@@ -323,7 +324,7 @@ bool CScriptManager::LoadScriptArchiveFile( const string& filename )
 	{
 		string& script_filename = script_archive.m_vecSourceFilename[i];
 
-		m_vecEventScript.push_back( CEventScript() );
+		m_vecEventScript.push_back( EventScript() );
 
 		if( !LoadScript( script_archive.m_vecBuffer[i].m_Buffer, m_vecEventScript.back() ) )
 		{
@@ -353,14 +354,14 @@ bool CScriptManager::LoadScriptArchiveFile( const string& filename )
 }
 
 
-bool CScriptManager::ExecuteScript( const stream_buffer& buffer )
+bool ScriptManager::ExecuteScript( const stream_buffer& buffer )
 {
-	CEventScript es;
+	EventScript es;
 	return LoadScript( buffer, es );
 }
 
 
-bool CScriptManager::LoadScriptFromFile( const std::string& filename )
+bool ScriptManager::LoadScriptFromFile( const std::string& filename )
 {
 /*	stream_buffer script_buffer;
 	bool res = script_buffer.LoadTextFile( filename );
@@ -376,7 +377,7 @@ bool CScriptManager::LoadScriptFromFile( const std::string& filename )
 }
 
 
-void CScriptManager::InitScripts()
+void ScriptManager::InitScripts()
 {
 	size_t i, num_eventscripts = m_vecEventScript.size();
 	for( i=0; i<num_eventscripts; i++ )
@@ -404,9 +405,9 @@ void CScriptManager::InitScripts()
 //			PyArg_ParseTuple( pResult, "i", &result );
 			PyArg_Parse( pResult, "i", &result );
 
-			if( result == CEventScript::EVENT_DONE )
+			if( result == EventScript::EVENT_DONE )
 			{
-				CEventScript& script = m_vecEventScript[i];
+				EventScript& script = m_vecEventScript[i];
 
 //	necessary?	Py_DECREF( m_vecEventScript[i].m_pInitCallback );
 				PrintLog( "script[" + to_string(int(i)) + "] '"+ script.name + "' has been initialized" );
@@ -417,7 +418,7 @@ void CScriptManager::InitScripts()
 }
 
 
-void CScriptManager::ReloadUpdatedScriptFiles()
+void ScriptManager::ReloadUpdatedScriptFiles()
 {
 	size_t i, num_eventscripts = m_vecEventScript.size();
 	struct stat script_file_stat;
@@ -425,7 +426,7 @@ void CScriptManager::ReloadUpdatedScriptFiles()
 
 	for( i=0; i<num_eventscripts; i++ )
 	{
-		CEventScript& script = m_vecEventScript[i];
+		EventScript& script = m_vecEventScript[i];
 
 		if( script.m_LastModifiedTime == 0 )
 			continue;	// last modified time is not recorded
@@ -467,7 +468,7 @@ void CScriptManager::ReloadUpdatedScriptFiles()
 }
 
 
-void CScriptManager::Update()
+void ScriptManager::Update()
 {
 	PROFILE_FUNCTION();
 
@@ -514,9 +515,9 @@ void CScriptManager::Update()
 //			PyArg_ParseTuple( pResult, "i", &result );
 			PyArg_Parse( pResult, "i", &result );
 
-			if( result == CEventScript::EVENT_DONE )
+			if( result == EventScript::EVENT_DONE )
 			{
-				CEventScript& script = m_vecEventScript[i];
+				EventScript& script = m_vecEventScript[i];
 
 				script.m_bIsDone = true;
 //	necessary?	Py_DECREF( m_vecEventScript[i].m_pEventCallback );

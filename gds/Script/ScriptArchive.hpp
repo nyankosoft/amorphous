@@ -12,7 +12,7 @@ namespace amorphous
 /**
  * stores scripts as text data
  */
-class CScriptArchive : public IArchiveObjectBase
+class ScriptArchive : public IArchiveObjectBase
 {
 public:
 
@@ -23,8 +23,8 @@ public:
 	// each element stores a script file
 	std::vector<SerializableStream> m_vecBuffer;
 
-	CScriptArchive() {}
-	~CScriptArchive() {}
+	ScriptArchive() {}
+	~ScriptArchive() {}
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{

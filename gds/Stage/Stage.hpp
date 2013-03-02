@@ -44,7 +44,7 @@ class CStage
 	std::vector<physics::CMaterial *> m_vecpMaterial;
 
 	/// manages scripted events
-	boost::shared_ptr<CScriptManager> m_pScriptManager;
+	boost::shared_ptr<ScriptManager> m_pScriptManager;
 
 	boost::shared_ptr<ScreenEffectManager> m_pScreenEffectManager;
 
@@ -200,7 +200,7 @@ public:
 
 	physics::CScene *GetPhysicsScene() { return m_pPhysicsScene; }
 
-	boost::shared_ptr<CScriptManager> GetScriptManager() { return m_pScriptManager; }
+	boost::shared_ptr<ScriptManager> GetScriptManager() { return m_pScriptManager; }
 
 	friend class StageLoader;
 	friend class EntityManager;

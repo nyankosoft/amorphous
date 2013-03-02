@@ -39,7 +39,7 @@ struct GameMessage;
 class CBEC_MotionPath;
 class EntityMotionPathRequest;
 //class CDynamicLightManagerForStaticGeometry;
-class CScriptManager;
+class ScriptManager;
 
 typedef boost::shared_ptr<CStage> CStageSharedPtr;
 typedef boost::weak_ptr<CStage> CStageWeakPtr;

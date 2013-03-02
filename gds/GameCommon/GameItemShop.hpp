@@ -72,7 +72,7 @@ public:
 
 		SetShopForScript( this );
 
-		CScriptManager event_mgr;
+		ScriptManager event_mgr;
 		event_mgr.AddModule( "Shop",  );
 		event_mgr.LoadScriptArchiveFile( script_filename );
 

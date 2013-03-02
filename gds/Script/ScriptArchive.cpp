@@ -84,7 +84,7 @@ bool g_LoadScriptFilesFromListFile = true;
 void UpdateScriptArchives( const std::string & src_dir_path,
 						   const std::string & output_dir_path )
 {
-	CScriptArchive script_archive;
+	ScriptArchive script_archive;
 	vector<string> script_file_list;
 
 	directory_iterator end_itr;

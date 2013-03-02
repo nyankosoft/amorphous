@@ -87,7 +87,7 @@ m_pStageDebugInputHandler(NULL)
 
 	// create the script manager so that an application can add custom modules
 	// before calling CStage::Initialize() and running scripts for initialization
-	m_pScriptManager.reset( new CScriptManager );
+	m_pScriptManager.reset( new ScriptManager );
 }
 
 
@@ -673,7 +673,7 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 
 	m_ScriptArchiveFilename = script_archive_filename;
 
-	if( CScriptManager::ms_UseBoostPythonModules )
+	if( ScriptManager::ms_UseBoostPythonModules )
 	{
 		RegisterPythonModule_math3d();
 		RegisterPythonModule_gfx();

@@ -84,12 +84,12 @@ inline CPythonUserCount& PythonUserCount()
 
 
 //=========================================================================
-// CScriptManager
+// ScriptManager
 //=========================================================================
 
-class CScriptManager
+class ScriptManager
 {
-	class CEventScript
+	class EventScript
 	{
 	public:
 
@@ -115,7 +115,7 @@ class CScriptManager
 		time_t m_LastModifiedTime;
 
 	public:
-		CEventScript()
+		EventScript()
 			:
 		m_pInitCallback(NULL),
 		m_pEventCallback(NULL),
@@ -123,7 +123,7 @@ class CScriptManager
 		m_LastModifiedTime(0)
 		{}
 
-		CEventScript(PyObject* pCallback)
+		EventScript(PyObject* pCallback)
 			:
 		m_pInitCallback(NULL),
 		m_pEventCallback(pCallback),
@@ -131,13 +131,13 @@ class CScriptManager
 		m_LastModifiedTime(0)
 		{}
 
-		virtual ~CEventScript() {}
+		virtual ~EventScript() {}
 	};
 
 	/// each element holds one script file content
-	std::vector<CEventScript> m_vecEventScript;
+	std::vector<EventScript> m_vecEventScript;
 
-	CEventScript *m_pTargetScript;
+	EventScript *m_pTargetScript;
 
 	/// turned on if non archived script files are found in the reousrce directory
 	/// - they are reloaded when modified at runtime
@@ -147,15 +147,15 @@ private:
 
 	bool LoadScriptFromFile( const std::string& filename );
 
-	bool LoadScript( const stream_buffer& buffer, CEventScript& dest_script );
+	bool LoadScript( const stream_buffer& buffer, EventScript& dest_script );
 
 	void ReloadUpdatedScriptFiles();
 
 public:
 
-	CScriptManager();
+	ScriptManager();
 
-	virtual ~CScriptManager();
+	virtual ~ScriptManager();
 
 //	bool LoadScriptFromArchiveFile( const std::string& filename );
 
