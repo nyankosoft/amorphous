@@ -147,7 +147,7 @@ FirearmsAppTask::FirearmsAppTask()
 :
 m_vPrevCamPos( Vector3(0,0,0) )
 {
-	CScriptManager::ms_UseBoostPythonModules = true;
+	ScriptManager::ms_UseBoostPythonModules = true;
 
 	m_pKeyBind.reset( new CKeyBind );
 

@@ -51,7 +51,7 @@ public:
 
 CPlanarReflectionAppTask::CPlanarReflectionAppTask()
 {
-	CScriptManager::ms_UseBoostPythonModules = true;
+	ScriptManager::ms_UseBoostPythonModules = true;
 
 	StageLoader stg_loader;
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
@@ -60,7 +60,7 @@ CPlanarReflectionAppTask::CPlanarReflectionAppTask()
 }
 
 
-void CPlanarReflectionAppTask::HandleInput( const SInputData& input )
+void CPlanarReflectionAppTask::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
     {

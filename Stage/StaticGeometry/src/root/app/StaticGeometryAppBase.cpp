@@ -50,7 +50,7 @@ public:
 
 CStaticGeometryAppTask::CStaticGeometryAppTask()
 {
-	CScriptManager::ms_UseBoostPythonModules = true;
+	ScriptManager::ms_UseBoostPythonModules = true;
 
 	CStageLoader stg_loader;
 	LoadParamFromFile( "debug/params.txt", "script", sg_TestStageScriptToLoad );

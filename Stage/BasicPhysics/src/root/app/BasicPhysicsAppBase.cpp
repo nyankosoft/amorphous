@@ -49,7 +49,7 @@ public:
 
 CBasicPhysicsAppTask::CBasicPhysicsAppTask()
 {
-	CScriptManager::ms_UseBoostPythonModules = true;
+	ScriptManager::ms_UseBoostPythonModules = true;
 
 	StageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );

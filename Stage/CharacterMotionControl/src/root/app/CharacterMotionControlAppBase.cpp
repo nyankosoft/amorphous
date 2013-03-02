@@ -30,7 +30,7 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/empty.bin";
 
 /*
-void CCharacterMotionInputHandler::ProcessInput( SInputData& input )
+void CCharacterMotionInputHandler::ProcessInput( InputData& input )
 {
 	if( !m_pKeyBind )
 		return;
@@ -84,7 +84,7 @@ CCharacterMotionControlAppTask::CCharacterMotionControlAppTask()
 :
 m_vPrevCamPos( Vector3(0,0,0) )
 {
-	CScriptManager::ms_UseBoostPythonModules = true;
+	ScriptManager::ms_UseBoostPythonModules = true;
 
 	m_pKeyBind.reset( new CKeyBind );
 
@@ -219,13 +219,13 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	m_pThirdPersonMotionController->SetSkeletalCharacter( m_pCharacterItems[0] );
 
 //	m_pInputHandler.reset( new CCharacterMotionInputHandler(pCharacter,m_pKeyBind) );
-//	InputHub().SetInputHandler( 0, m_pInputHandler.get() );
+//	GetInputHub().SetInputHandler( 0, m_pInputHandler.get() );
 
 	m_pInputHandler.reset( new CInputDataDelegate<CCharacterMotionControlAppTask>( this ) );
 	if( InputHub().GetInputHandler(2) )
-		InputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
+		GetInputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
 	else
-		InputHub().PushInputHandler( 2, m_pInputHandler.get() );
+		GetInputHub().PushInputHandler( 2, m_pInputHandler.get() );
 
 	m_ScrollEffect.SetTextureFilepath( "textures/precipitation_mid-density-512.dds" );
 //	m_ScrollEffect.SetTextureFilepath( "textures/tex1024_red.bmp" );
@@ -299,7 +299,7 @@ void CCharacterMotionControlAppTask::Render()
 }
 
 
-void CCharacterMotionControlAppTask::HandleInput( SInputData& input )
+void CCharacterMotionControlAppTask::HandleInput( InputData& input )
 {
 	int action_code = m_pKeyBind ? m_pKeyBind->GetActionCode( input.iGICode ) : ACTION_NOT_ASSIGNED;
 
@@ -475,7 +475,7 @@ bool CCharacterMotionControlAppBase::Init()
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
 /*
-	CScriptManager script_mgr;
+	ScriptManager script_mgr;
 	script_mgr.AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
 	script_mgr.LoadScriptArchiveFile( "Script/init.bin" );
 	script_mgr.Update();

@@ -54,7 +54,7 @@ public:
 
 CShadowAppTask::CShadowAppTask()
 {
-	CScriptManager::ms_UseBoostPythonModules = true;
+	ScriptManager::ms_UseBoostPythonModules = true;
 
 	StageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
@@ -172,7 +172,7 @@ bool CShadowsAppBase::Init()
 	// Do initial settings using scripts
 	//
 /*
-	CScriptManager script_mgr;
+	ScriptManager script_mgr;
 	script_mgr.AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
 	script_mgr.AddModule( "Shop",		g_PyModuleShopMethod );
 	script_mgr.AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
