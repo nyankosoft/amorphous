@@ -2,15 +2,10 @@
 #define  __GAMEEVENTCONDITION_AND_GAMEEVENT_H__
 
 
-#include <string>
-#include <vector>
-using namespace std;
-
-#include "3DMath/AABB3.hpp"
-
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "../3DMath/AABB3.hpp"
+#include "../Support/Serialization/Serialization.hpp"
+#include "../Support/Serialization/Serialization_3DMath.hpp"
+#include "../Support/Serialization/ArchiveObjectFactory.hpp"
 
 
 namespace amorphous
@@ -41,7 +36,7 @@ public:
 
 	int type;	// one of the above conditions
 
-	string strData;
+	std::string strData;
 	int iData;
 	unsigned int uiData;
 
@@ -65,7 +60,7 @@ class CEventEntityDesc : public IArchiveObjectBase
 {
 public:
 	Matrix34 matWorldPose;
-	string strEntityName;
+	std::string strEntityName;
 
 	CEventEntityDesc() { matWorldPose.Identity(); }
 		
@@ -94,7 +89,7 @@ protected:
 	int m_Type;
 
 	/// event name
-	string m_strEventName;
+	std::string m_strEventName;
 
 	/// event trigger
 	AABB3 m_AABB;
@@ -109,10 +104,10 @@ protected:
 	int m_iEventCount;
 
 	/// conditions required for the event to happen
-	vector<CGameEventCondition> m_vecCondition;
+	std::vector<CGameEventCondition> m_vecCondition;
 
 	/// sound to make when the event happens
-	string m_strSound;
+	std::string m_strSound;
 
 public:
 
@@ -129,7 +124,7 @@ public:
 
 	void AddEventCondition(CGameEventCondition& rCondition) { m_vecCondition.push_back(rCondition); }
 
-	inline vector<CGameEventCondition>& GetCondition() { return m_vecCondition; }
+	inline std::vector<CGameEventCondition>& GetCondition() { return m_vecCondition; }
 
 	void Serialize( IArchive& ar, const unsigned int version );
 

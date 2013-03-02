@@ -24,7 +24,7 @@ class CGE_SpawnEvent : public CGameEvent
 		}
 	};*/
 
-	vector<CEventEntityDesc> m_vecEntity;
+	std::vector<CEventEntityDesc> m_vecEntity;
 
 public:
 
@@ -32,7 +32,7 @@ public:
 
 	void AddEntity( CEventEntityDesc& rEntity ) { m_vecEntity.push_back(rEntity); }
 
-	inline vector<CEventEntityDesc>& GetEntity() { return m_vecEntity; }
+	inline std::vector<CEventEntityDesc>& GetEntity() { return m_vecEntity; }
 	
 	void Serialize( IArchive& ar, const unsigned int version );
 

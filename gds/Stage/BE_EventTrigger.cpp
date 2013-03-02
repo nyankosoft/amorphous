@@ -10,6 +10,8 @@
 namespace amorphous
 {
 
+using namespace std;
+
 
 CBE_EventTrigger::CBE_EventTrigger()
 {
