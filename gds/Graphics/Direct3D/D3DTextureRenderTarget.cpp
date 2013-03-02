@@ -6,7 +6,6 @@
 
 namespace amorphous
 {
-//#include "Support/BMPImageExporter.hpp"
 
 
 CD3DTextureRenderTarget::CD3DTextureRenderTarget()
@@ -277,7 +276,7 @@ void CD3DTextureRenderTarget::OutputImageFile( const std::string& image_file_pat
 
 	CopyRenderTarget();
 
-	LPDIRECT3DTEXTURE9 pTex = GetD3DRenderTargetCopyTexture();
+	LPDIRECT3DTEXTURE9 pTex = NULL;//GetD3DRenderTargetCopyTexture();
 
 	std::string ext = image_file_path.substr( image_file_path.length()-3 );
 	D3DXIMAGE_FILEFORMAT img_fmt = GetD3DXImageFormatFromFileExt( ext );
