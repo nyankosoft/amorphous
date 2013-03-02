@@ -200,7 +200,7 @@ public:
 
 	const CPlayTime& GetPlayTime() { return m_PlayTime; }
 
-	friend class CPlayerCustomer;
+	friend class PlayerCustomer;
 };
 
 
