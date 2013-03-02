@@ -15,12 +15,6 @@
 namespace amorphous
 {
 
-
-//#include "Support/Serialization/Serialization.hpp"
-//#include "Support/Serialization/ArchiveObjectFactory.hpp"
-//using namespace serialization;
-
-
 // forward declerations
 class GameItem;
 class CWeaponSystem;
