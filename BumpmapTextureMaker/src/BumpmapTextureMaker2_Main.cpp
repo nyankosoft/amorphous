@@ -85,10 +85,16 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 				break;
 			case VK_F7:
 				break;
-			case VK_F12:
+			case VK_F11:
 				if( g_pBumpTexMaker )
 				{
 					g_pBumpTexMaker->SaveImages( 1024, 1024 );
+				}
+				break;
+			case VK_F12:
+				if( g_pBumpTexMaker )
+				{
+					g_pBumpTexMaker->SaveImages( 2048, 2048 );
 				}
 				break;
 			}
