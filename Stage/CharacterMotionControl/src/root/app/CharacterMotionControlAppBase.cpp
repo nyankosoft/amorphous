@@ -9,8 +9,6 @@
 #include "gds/GUI.hpp"
 #include "gds/GameCommon/MouseCursor.hpp"
 #include "gds/GameCommon/3DActionCode.hpp"
-#include "gds/GameCommon/ThirdPersonCameraController.hpp"
-#include "gds/GameCommon/ThirdPersonMotionController.hpp"
 #include "gds/Item/ItemEntity.hpp"
 #include "gds/Item/GameItem.hpp"
 #include "gds/Physics/ActorDesc.hpp"
@@ -42,7 +40,7 @@ void CCharacterMotionInputHandler::ProcessInput( InputData& input )
 */
 
 
-CApplicationBase *CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
+CApplicationBase *amorphous::CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
 
 /*
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -70,12 +68,12 @@ public:
 
 void ScaleAnalogInputValueRanges()
 {
-	CDirectInputGamepad *pGamepad = GetPrimaryInputDevice<CDirectInputGamepad>();
+	DirectInputGamepad *pGamepad = GetPrimaryInputDevice<DirectInputGamepad>();
 	if( !pGamepad )
 		return;
 
-	pGamepad->SetAnalogInputScale( CDirectInputGamepad::AXIS_X, 2.0f );
-	pGamepad->SetAnalogInputScale( CDirectInputGamepad::AXIS_Y, 2.0f );
+	pGamepad->SetAnalogInputScale( DirectInputGamepad::AXIS_X, 2.0f );
+	pGamepad->SetAnalogInputScale( DirectInputGamepad::AXIS_Y, 2.0f );
 }
 
 
@@ -120,11 +118,11 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 	m_pKeyBind->Assign( GIC_MOUSE_AXIS_Y, ACTION_MOV_LOOK_UP );
 
-	CStageLoader stg_loader;
+	StageLoader stg_loader;
 //	m_pStage = stg_loader.LoadStage( "shadow_for_directional_light.bin" );
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
-	CameraController()->SetPose( Matrix34( Vector3(0.8f,1.9f,-3.5f), Matrix33Identity() ) );
+	GetCameraController()->SetPose( Matrix34( Vector3(0.8f,1.9f,-3.5f), Matrix33Identity() ) );
 
 	m_pThirdPersonCameraController.reset( new CThirdPersonCameraController );
 
@@ -158,7 +156,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	const char *meshes[] = { "models/male_skinny_young.msh", "models/female99-age17-muscle73-weight66-height1.52.msh" };
 	for( int i=0; i<num_characters; i++ )
 	{
-		m_pCharacterItems[i].reset( new CSkeletalCharacter );
+		m_pCharacterItems[i].reset( new SkeletalCharacter );
 
 		Result::Name res = m_pCharacterItems[i]->LoadCharacterMesh( meshes[i] );
 
@@ -190,11 +188,11 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	}
 
 	CItemStageUtility stg_util( m_pStage );
-//	shared_ptr<CSkeletalCharacter> pCharacter( new CSkeletalCharacter ); // create an item
-	shared_ptr<CGameItem> pItem = m_pCharacterItems[0];
-//	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, Vector3(0,0,0) ); // create an entity for the item
-	CEntityHandle<CItemEntity> entity = stg_util.CreateItemEntity( pItem, actor_desc ); // create an entity for the item
-	shared_ptr<CItemEntity> pEntity = entity.Get();
+//	shared_ptr<SkeletalCharacter> pCharacter( new SkeletalCharacter ); // create an item
+	shared_ptr<GameItem> pItem = m_pCharacterItems[0];
+//	EntityHandle<ItemEntity> entity = stg_util.CreateItemEntity( pItem, Vector3(0,0,0) ); // create an entity for the item
+	EntityHandle<ItemEntity> entity = stg_util.CreateItemEntity( pItem, actor_desc ); // create an entity for the item
+	shared_ptr<ItemEntity> pEntity = entity.Get();
 	if( pEntity )
 	{
 		m_pCharacterItems[0]->OnEntityCreated( *pEntity ); // set pointer of mesh render method to CCopyEntity::m_pMeshRenderMethod
@@ -211,7 +209,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 	m_CharacterItemEntity = entity;
 
-	m_pThirdPersonCameraController->SetTargetEntity( CEntityHandle<>( weak_ptr<CCopyEntity>(pEntity) ) );
+	m_pThirdPersonCameraController->SetTargetEntity( EntityHandle<>( weak_ptr<CCopyEntity>(pEntity) ) );
 
 	// set keybind to the character item
 	m_pCharacterItems[0]->SetKeyBind( m_pKeyBind );
@@ -222,7 +220,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 //	GetInputHub().SetInputHandler( 0, m_pInputHandler.get() );
 
 	m_pInputHandler.reset( new CInputDataDelegate<CCharacterMotionControlAppTask>( this ) );
-	if( InputHub().GetInputHandler(2) )
+	if( GetInputHub().GetInputHandler(2) )
 		GetInputHub().GetInputHandler(2)->AddChild( m_pInputHandler.get() );
 	else
 		GetInputHub().PushInputHandler( 2, m_pInputHandler.get() );
@@ -259,7 +257,7 @@ void CCharacterMotionControlAppTask::UpdateThirdPersonCamera( float dt )
 
 int CCharacterMotionControlAppTask::FrameMove( float dt )
 {
-	int ret = CStageViewerGameTask::FrameMove(dt);
+	int ret = StageViewerGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
@@ -287,13 +285,13 @@ int CCharacterMotionControlAppTask::FrameMove( float dt )
 	m_vPrevCamPos = Camera().GetPosition();*/
 	m_ScrollEffect.Update( dt );
 
-	return CGameTask::ID_INVALID;
+	return GameTask::ID_INVALID;
 }
 
 
 void CCharacterMotionControlAppTask::Render()
 {
-	CStageViewerGameTask::Render();
+	StageViewerGameTask::Render();
 
 	m_ScrollEffect.Render();
 }
@@ -320,7 +318,7 @@ void CCharacterMotionControlAppTask::HandleInput( InputData& input )
 //			if( m_pCharacterItems.empty() )
 //				return;
 //
-//			shared_ptr<CItemEntity> pEntity = m_pCharacterItems[0]->GetItemEntity().Get();
+//			shared_ptr<ItemEntity> pEntity = m_pCharacterItems[0]->GetItemEntity().Get();
 //			if( !pEntity )
 //				return;
 //
@@ -403,7 +401,7 @@ void CCharacterMotionControlAppGUITask::LoadStage( const std::string& stage_scri
 
 int CCharacterMotionControlAppGUITask::FrameMove( float dt )
 {
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 /*
@@ -447,7 +445,7 @@ const std::string CCharacterMotionControlAppBase::GetStartTaskName() const
 
 int CCharacterMotionControlAppBase::GetStartTaskID() const
 {
-//	return CGameTask::ID_STAGE_VIEWER_TASK;
+//	return GameTask::ID_STAGE_VIEWER_TASK;
 	return GAMETASK_ID_BASIC_PHYSICS;
 }
 
@@ -484,9 +482,9 @@ bool CCharacterMotionControlAppBase::Init()
 	// Register (task name) : (task ID) maps
 	//
 
-	CGameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
+	GameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
+	GameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
+	GameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
 */
 	return true;
 }

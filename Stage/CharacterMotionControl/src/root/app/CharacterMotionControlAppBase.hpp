@@ -7,13 +7,13 @@
 #include "gds/Task/GameTaskFactoryBase.hpp"
 #include "gds/Stage.hpp"
 #include "gds/GameCommon/KeyBind.hpp"
+#include "gds/GameCommon/ThirdPersonCameraController.hpp"
+#include "gds/GameCommon/ThirdPersonMotionController.hpp"
 #include "gds/Item/ItemEntity.hpp"
+#include "gds/Item/SkeletalCharacter.hpp"
 #include "gds/Graphics/DoubleConeScrollEffect.hpp"
 
-
-class CSkeletalCharacter;
-class CThirdPersonCameraController;
-class CThirdPersonMotionController;
+using namespace amorphous;
 
 
 enum ShadowAppTaskID
@@ -24,7 +24,7 @@ enum ShadowAppTaskID
 };
 
 
-class CCharacterMotionControlAppTask : public CStageViewerGameTask
+class CCharacterMotionControlAppTask : public StageViewerGameTask
 {
 	boost::shared_ptr<CKeyBind> m_pKeyBind;
 
@@ -33,15 +33,15 @@ class CCharacterMotionControlAppTask : public CStageViewerGameTask
 
 //	boost::shared_ptr<CCharacterMotionInputHandler> m_pInputHandler;
 
-	CEntityHandle<CItemEntity> m_CharacterItemEntity;
+	EntityHandle<ItemEntity> m_CharacterItemEntity;
 
-	std::vector< boost::shared_ptr<CSkeletalCharacter> > m_pCharacterItems;
+	std::vector< boost::shared_ptr<SkeletalCharacter> > m_pCharacterItems;
 
 	boost::shared_ptr<CThirdPersonCameraController> m_pThirdPersonCameraController;
 
 	boost::shared_ptr<CThirdPersonMotionController> m_pThirdPersonMotionController;
 
-	CDoubleConeScrollEffect m_ScrollEffect;
+	DoubleConeScrollEffect m_ScrollEffect;
 
 	Vector3 m_vPrevCamPos;
 
@@ -62,7 +62,7 @@ public:
 	void HandleInput( InputData& input );
 };
 
-class CCharacterMotionControlAppGUITask : public CStageViewerGameTask
+class CCharacterMotionControlAppGUITask : public StageViewerGameTask
 {
 	enum GUI_ID
 	{
@@ -84,11 +84,11 @@ public:
 };
 
 
-class CCharacterMotionControlAppTaskFactory : public CGameTaskFactoryBase
+class CCharacterMotionControlAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
-	CGameTask *CreateTask( int iTaskID )
+	GameTask *CreateTask( int iTaskID )
 	{
 		switch( iTaskID )
 		{
@@ -97,7 +97,7 @@ public:
 //		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
 //			return new CCharacterMotionControlAppGUITask();
 		default:
-			return CGameTaskFactoryBase::CreateTask( iTaskID );
+			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
 	}
 };
@@ -121,7 +121,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	CGameTaskFactoryBase *CreateGameTaskFactory() const { return new CCharacterMotionControlAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CCharacterMotionControlAppTaskFactory(); }
 
 	void Release();
 };
