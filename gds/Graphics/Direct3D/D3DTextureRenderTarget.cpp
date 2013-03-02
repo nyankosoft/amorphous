@@ -266,31 +266,4 @@ void CD3DTextureRenderTarget::ResetRenderTarget()
 }
 
 
-void CD3DTextureRenderTarget::OutputImageFile( const std::string& image_file_path )
-{
-//	CBMPImageExporter bmp_exporter;
-//	DWORD *pdwTexelData;
-
-	if( image_file_path.length() <= 4 )
-		return;
-
-	CopyRenderTarget();
-
-	LPDIRECT3DTEXTURE9 pTex = NULL;//GetD3DRenderTargetCopyTexture();
-
-	std::string ext = image_file_path.substr( image_file_path.length()-3 );
-	D3DXIMAGE_FILEFORMAT img_fmt = GetD3DXImageFormatFromFileExt( ext );
-
-	D3DXSaveTextureToFile( image_file_path.c_str(), img_fmt, pTex, NULL );
-
-/*	D3DLOCKED_RECT locked_rect;
-	pTex->LockRect( 0, &locked_rect, NULL, 0 );
-	pdwTexelData = (DWORD *)locked_rect.pBits;
-
-	bmp_exporter.OutputImage_24Bit( filename, m_TextureDesc.Width, m_TextureDesc.Height, pdwTexelData );
-
-	pTex->UnlockRect( 0 );*/
-}
-
-
 } // namespace amorphous

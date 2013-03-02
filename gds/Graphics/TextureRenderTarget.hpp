@@ -83,8 +83,6 @@ public:
 
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
-	virtual void OutputImageFile( const std::string& image_file_path ) {}
-
 	static boost::shared_ptr<TextureRenderTarget> (*ms_pCreateTextureRenderTarget)(void);
 
 	static void SetInstanceCreationFunction( boost::shared_ptr<TextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateTextureRenderTarget = CreateTextureRenderTarget; }

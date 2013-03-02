@@ -691,7 +691,7 @@ void ShadowMapManager::EndScene()
 
 void ShadowMapManager::SaveSceneTextureToFile( const std::string& filename )
 {
-	m_pSceneRenderTarget->OutputImageFile( filename.c_str() );
+	m_pSceneRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( filename.c_str() );
 }
 
 
