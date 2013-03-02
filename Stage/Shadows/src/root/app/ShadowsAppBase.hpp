@@ -6,6 +6,8 @@
 #include "gds/Task/StageViewerGameTask.hpp"
 #include "gds/Task/GameTaskFactoryBase.hpp"
 
+using namespace amorphous;
+
 
 enum ShadowAppTaskID
 {
@@ -15,7 +17,7 @@ enum ShadowAppTaskID
 };
 
 
-class CShadowAppTask : public CStageViewerGameTask
+class CShadowAppTask : public StageViewerGameTask
 {
 public:
 
@@ -25,7 +27,7 @@ public:
 
 };
 
-class CShadowAppStageSelectTask : public CGUIGameTask
+class CShadowAppStageSelectTask : public GUIGameTask
 {
 	enum GUI_ID
 	{
@@ -47,11 +49,11 @@ public:
 };
 
 
-class CShadowAppTaskFactory : public CGameTaskFactoryBase
+class CShadowAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
-	CGameTask *CreateTask( int iTaskID )
+	GameTask *CreateTask( int iTaskID )
 	{
 		switch( iTaskID )
 		{
@@ -60,7 +62,7 @@ public:
 		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
 			return new CShadowAppStageSelectTask();
 		default:
-			return CGameTaskFactoryBase::CreateTask( iTaskID );
+			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
 	}
 };
@@ -84,7 +86,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	CGameTaskFactoryBase *CreateGameTaskFactory() const { return new CShadowAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CShadowAppTaskFactory(); }
 
 	void Release();
 };

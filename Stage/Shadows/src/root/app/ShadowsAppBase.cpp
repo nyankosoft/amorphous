@@ -19,7 +19,7 @@ using boost::shared_ptr;
 static string sg_TestStageScriptToLoad;
 
 
-extern CApplicationBase *CreateApplicationInstance() { return new CShadowsAppBase(); }
+extern CApplicationBase *amorphous::CreateApplicationInstance() { return new CShadowsAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -89,7 +89,7 @@ CShadowAppStageSelectTask::CShadowAppStageSelectTask()
 	shared_ptr<CGM_ListBoxEventHandler> pEventHandler( new StageSelectListBoxEventHandler(this) );
 	pStageSelectListBox->SetEventHandler( pEventHandler );
 
-	shared_ptr<CGraphicsElementManager> pGraphicsElemetMgr
+	shared_ptr<GraphicsElementManager> pGraphicsElemetMgr
 		= GetGUIRendererManager()->GetGraphicsElementManager();
 
 	pGraphicsElemetMgr->LoadFont( 0, "./Fonts/mono966_rld_b.TTF", 24, 48 );
@@ -104,7 +104,7 @@ void CShadowAppStageSelectTask::LoadStage( const std::string& stage_script_name 
 
 int CShadowAppStageSelectTask::FrameMove( float dt )
 {
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 
