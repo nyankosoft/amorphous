@@ -206,11 +206,11 @@ public:
 	CartridgeMaker(){}
 	~CartridgeMaker(){}
 
-	Result::Name MakeBullet( const BulletDesc bullet_desc, General3DMesh& dest_mesh );
+//	Result::Name MakeBullet( const BulletDesc bullet_desc, General3DMesh& dest_mesh );
 
-	Result::Name MakeCase( const CaseDesc src_desc, unsigned int num_sides, General3DMesh& dest_mesh );
+//	Result::Name MakeCase( const CaseDesc src_desc, unsigned int num_sides, General3DMesh& dest_mesh );
 
-	Result::Name Make( const CartridgeDesc src_desc, General3DMesh& dest_mesh );
+//	Result::Name Make( const CartridgeDesc src_desc, General3DMesh& dest_mesh );
 
 	Result::Name MakeBullet(
 		const BulletDesc& bullet_desc,
