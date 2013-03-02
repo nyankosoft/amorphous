@@ -23,7 +23,7 @@ public:
 
 	~CPlanarReflectionAppTask() {}
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

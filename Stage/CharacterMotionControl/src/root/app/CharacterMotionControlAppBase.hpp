@@ -59,7 +59,7 @@ public:
 
 	void Render();
 
-	void HandleInput( SInputData& input );
+	void HandleInput( InputData& input );
 };
 
 class CCharacterMotionControlAppGUITask : public CStageViewerGameTask
