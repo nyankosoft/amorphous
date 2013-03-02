@@ -75,11 +75,6 @@ public:
 
 	TextureHandle GetRenderTargetTexture() { return m_RenderTargetTexture; }
 
-	virtual LPDIRECT3DTEXTURE9 GetD3DRenderTargetTexture() { return NULL; }
-
-	/// returns the lockable texture of the scene
-	virtual LPDIRECT3DTEXTURE9 GetD3DRenderTargetCopyTexture() { return NULL; }
-
 	virtual bool LoadTextures() { return false; }
 
 	virtual void ReleaseTextures() {}
