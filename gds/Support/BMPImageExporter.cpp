@@ -4,6 +4,24 @@
 #include <wingdi.h>
 
 
+/*
+	// Save a Direct3D texture to an image file.
+
+	CBMPImageExporter bmp_exporter;
+	DWORD *pdwTexelData;
+
+	LPDIRECT3DTEXTURE9 pTex = ...;
+
+	D3DLOCKED_RECT locked_rect;
+	pTex->LockRect( 0, &locked_rect, NULL, 0 );
+	pdwTexelData = (DWORD *)locked_rect.pBits;
+
+	bmp_exporter.OutputImage_24Bit( filename, m_TextureDesc.Width, m_TextureDesc.Height, pdwTexelData );
+
+	pTex->UnlockRect( 0 );
+*/
+
+
 namespace amorphous
 {
 
