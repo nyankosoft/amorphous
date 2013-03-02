@@ -148,6 +148,8 @@ public:
 
 	inline void FlipPolygons();
 
+	inline void Unweld();
+
 	inline void CalculateVertexNormalsFromPolygonPlanes();
 
 //	void Append( General3DMesh& mesh );
@@ -236,6 +238,39 @@ inline void General3DMesh::FlipPolygons()
 	for( size_t i=0; i<num_polygons; i++ )
 	{
 		m_vecPolygon[i].Flip();
+	}
+}
+
+
+inline void General3DMesh::Unweld()
+{
+	if( !m_pVertexBuffer )
+		return;
+
+	std::vector<General3DVertex>& vertices = *m_pVertexBuffer;
+
+	std::vector<int> appeared;
+	appeared.resize( vertices.size(), 0 );
+
+	const size_t num_polygons = m_vecPolygon.size();
+	for( size_t i=0; i<num_polygons; i++ )
+	{
+		const size_t num_indices = m_vecPolygon[i].m_index.size();
+		for( size_t j=0; j<num_indices; j++ )
+		{
+			int polygon_index = m_vecPolygon[i].m_index[j];
+			if( appeared[polygon_index] )
+			{
+				// Duplicate the vertex because it is shared by at least two polygons.
+				m_vecPolygon[i].m_index[j] = (int)vertices.size();
+				General3DVertex vertex = vertices[polygon_index];
+				vertices.push_back( vertex );
+			}
+			else
+			{
+				appeared[polygon_index] = 1;
+			}
+		}
 	}
 }
 
