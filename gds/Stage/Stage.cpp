@@ -89,7 +89,10 @@ m_pStageDebugInputHandler(NULL)
 
 	// create the script manager so that an application can add custom modules
 	// before calling CStage::Initialize() and running scripts for initialization
-	m_pScriptManager.reset( new ScriptManager );
+	if( ScriptManager::ms_UseBoostPythonModules )
+		m_pScriptManager.reset( new BoostPythonScriptManager );
+	else
+		m_pScriptManager.reset( new PythonScriptManager );
 }
 
 
@@ -670,23 +673,28 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 {
 	LOG_FUNCTION_SCOPE();
 
+	if( !m_pScriptManager )
+		return false;
+
 	m_ScriptArchiveFilename = script_archive_filename;
 
 	if( ScriptManager::ms_UseBoostPythonModules )
 	{
-		shared_ptr<BoostPythonScriptManager> pBoostPythonScriptManager( new BoostPythonScriptManager );
 		RegisterPythonModule_math3d();
 		RegisterPythonModule_gfx();
 		RegisterPythonModule_sound();
 		RegisterPythonModule_stage();
 		RegisterPythonModule_visual_effect();
 		stage_util::RegisterPythonModule_stage_util();
-
-		m_pScriptManager = pBoostPythonScriptManager;
 	}
 	else
 	{
-		shared_ptr<PythonScriptManager> pPythonScriptManager( new PythonScriptManager );
+		shared_ptr<PythonScriptManager> pPythonScriptManager
+			= boost::dynamic_pointer_cast<PythonScriptManager,ScriptManager>( m_pScriptManager );
+
+		if( !pPythonScriptManager )
+			return false;
+
 		pPythonScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
 		pPythonScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
 		pPythonScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
@@ -706,9 +714,6 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 
 		m_pScriptManager = pPythonScriptManager;
 	}
-
-	if( !m_pScriptManager )
-		return false;
 
 	bool res = m_pScriptManager->LoadScriptArchiveFile( script_archive_filename );
 

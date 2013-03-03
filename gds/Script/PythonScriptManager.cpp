@@ -15,7 +15,7 @@ using namespace boost;
 //=========================================================================
 
 
-static ScriptManager *g_pScriptManager = NULL;
+static PythonScriptManager *g_pScriptManager = NULL;
 
 //static ScriptManager::EventScript *gs_pTargetScript = NULL;
 
@@ -140,6 +140,7 @@ void PythonScriptManager::AddModule( const string& module_name, PyMethodDef meth
 
 void PythonScriptManager::Update()
 {
+	ScriptManager::Update();
 }
 
 
