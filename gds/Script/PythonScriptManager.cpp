@@ -17,8 +17,6 @@ using namespace boost;
 
 static PythonScriptManager *g_pScriptManager = NULL;
 
-//static ScriptManager::EventScript *gs_pTargetScript = NULL;
-
 
 static PyObject *SetScriptUpdateCallback( PyObject *dummy, PyObject *args )
 {
@@ -110,8 +108,6 @@ PythonScriptManager::PythonScriptManager()
 
 	// make a module for setting callbacks
 	AddModule( "ScriptBase", g_ScriptBaseMethod );
-//	PyObject *pBaseModule0 = PyImport_AddModule( "ScriptBase" );
-//	PyObject *pBaseModule = Py_InitModule( "ScriptBase", g_ScriptBaseMethod );
 }
 
 
