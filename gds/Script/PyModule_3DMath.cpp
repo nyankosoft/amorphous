@@ -1,12 +1,11 @@
-#include <gds/3DMath/Matrix34.hpp>
-#include <gds/3DMath/Matrix23.hpp>
-#include <gds/3DMath/AABB3.hpp>
-#include <gds/3DMath/AABB2.hpp>
-#include <gds/Support/Vec3_StringAux.hpp>
-#include <gds/Support/Log/DefaultLog.hpp>
+#include "../3DMath/Matrix34.hpp"
+#include "../3DMath/Matrix23.hpp"
+#include "../3DMath/AABB3.hpp"
+#include "../3DMath/AABB2.hpp"
+#include "../Support/Vec3_StringAux.hpp"
+#include "../Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>
-#include <iostream>
 
 
 namespace amorphous

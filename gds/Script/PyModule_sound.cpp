@@ -1,9 +1,7 @@
 #include "PyModule_sound.hpp"
-
-#include <Sound/SoundManager.hpp>
-#include <Support/Log/DefaultLog.hpp>
+#include "../Sound/SoundManager.hpp"
+#include "../Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
-#include <iostream>
 
 
 namespace amorphous

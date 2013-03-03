@@ -1,22 +1,22 @@
 #include <gds/Script/PyModule_stage.hpp>
 #include <boost/python.hpp>
 
-#include <gds/base.hpp>
-#include <gds/Graphics/ShaderHandle.hpp>
-#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
-#include <gds/Stage/Stage.hpp>
-#include <gds/Stage/BE_PointLight.hpp>
-#include <gds/Stage/CopyEntityDesc.hpp>
-#include <gds/Stage/EntityHandle.hpp>
-#include <gds/Stage/LightEntity.hpp>
-#include <gds/Stage/BE_ScriptedCamera.hpp>
-#include <gds/Stage/EntityRenderManager.hpp>
-#include <gds/Stage/ScreenEffectManager.hpp>
-#include <gds/Stage/BaseEntity_Draw.hpp> // needed to create instance of CEntityShaderLightParamsLoader
-#include <gds/Stage/StageUtility.hpp>
-#include <gds/Support/Macro.h>
-#include <gds/Support/Vec3_StringAux.hpp>
-#include <gds/Support/Log/DefaultLog.hpp>
+#include "../base.hpp"
+#include "../Graphics/ShaderHandle.hpp"
+#include "../Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "../Stage/Stage.hpp"
+#include "../Stage/BE_PointLight.hpp"
+#include "../Stage/CopyEntityDesc.hpp"
+#include "../Stage/EntityHandle.hpp"
+#include "../Stage/LightEntity.hpp"
+#include "../Stage/BE_ScriptedCamera.hpp"
+#include "../Stage/EntityRenderManager.hpp"
+#include "../Stage/ScreenEffectManager.hpp"
+#include "../Stage/BaseEntity_Draw.hpp" // needed to create instance of CEntityShaderLightParamsLoader
+#include "../Stage/StageUtility.hpp"
+#include "../Support/Macro.h"
+#include "../Support/Vec3_StringAux.hpp"
+#include "../Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

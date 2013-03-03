@@ -1,10 +1,10 @@
 #include "PyModule_Graphics.hpp"
-#include <gds/Graphics/MeshObjectHandle.hpp>
-#include <gds/Graphics/ShaderHandle.hpp>
-#include <gds/Graphics/Shader/ShaderTechniqueHandle.hpp>
-#include <gds/Graphics/Shader/ShaderVariableLoader.hpp>
-#include <gds/Graphics/LensFlare.hpp>
-#include <gds/Support/Log/DefaultLog.hpp>
+#include "../Graphics/MeshObjectHandle.hpp"
+#include "../Graphics/ShaderHandle.hpp"
+#include "../Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "../Graphics/Shader/ShaderVariableLoader.hpp"
+#include "../Graphics/LensFlare.hpp"
+#include "../Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
 
 

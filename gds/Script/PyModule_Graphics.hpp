@@ -1,9 +1,9 @@
 #ifndef __PyModule_Graphics_HPP__
 #define __PyModule_Graphics_HPP__
 
-#include <gds/Graphics/Rect.hpp>
-#include <gds/Graphics/GraphicsElementManager.hpp>
-#include <gds/Graphics/GraphicsEffectManager.hpp>
+#include "../Graphics/Rect.hpp"
+#include "../Graphics/GraphicsElementManager.hpp"
+#include "../Graphics/GraphicsEffectManager.hpp"
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <map>

@@ -1,12 +1,10 @@
 #include "PyModule_task.hpp"
-#include "App/GameApplicationBase.hpp"
-#include "Task/GameTask.hpp"
-#include "Task/GameTaskManager.hpp"
-#include "Support/Macro.h"
-#include "Support/Log/DefaultLog.hpp"
+#include "../App/GameApplicationBase.hpp"
+#include "../Task/GameTask.hpp"
+#include "../Task/GameTaskManager.hpp"
+#include "../Support/Macro.h"
+#include "../Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
-
-#include "../base.hpp"
 
 
 namespace amorphous
