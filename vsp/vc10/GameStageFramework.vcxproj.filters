@@ -49,9 +49,6 @@
     <Filter Include="Source Files\Script">
       <UniqueIdentifier>{3b13857d-a3cc-4030-986e-47cd28ecb455}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Script\Modules">
-      <UniqueIdentifier>{0cfe55c3-c800-409c-b564-409331095d2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GameTextSystem">
       <UniqueIdentifier>{a9489911-c378-4e61-9b65-0776f3b3b4c9}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,12 @@
     </Filter>
     <Filter Include="Source Files\Script\EmbeddedPythonModules">
       <UniqueIdentifier>{0e51837f-4efc-44ea-b86f-9915b317c69b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script\BoostPython">
+      <UniqueIdentifier>{0f3e0d22-63fa-4414-8ea1-9d3304c9b528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script\BoostPython\Modules">
+      <UniqueIdentifier>{0cfe55c3-c800-409c-b564-409331095d2f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -685,31 +688,31 @@
       <Filter>Source Files\Script</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_3DMath.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_Graphics.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_shop.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_single_player.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_sound.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_stage.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_StageUtility.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_task.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Script\PyModule_visual_effect.hpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\GameTextSystem\GameTextSet.hpp">
       <Filter>Source Files\GameTextSystem</Filter>
@@ -825,11 +828,11 @@
     <ClInclude Include="..\..\gds\Task\fwd.hpp">
       <Filter>Source Files\Task</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Script\BoostPythonScriptManager.hpp">
-      <Filter>Source Files\Script</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gds\Script\PythonScriptManager.hpp">
       <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Script\BoostPythonScriptManager.hpp">
+      <Filter>Source Files\Script\BoostPython</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1356,31 +1359,31 @@
       <Filter>Source Files\Script</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_3DMath.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_Graphics.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_shop.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_single_player.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_sound.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_stage.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_StageUtility.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_task.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\PyModule_visual_effect.cpp">
-      <Filter>Source Files\Script\Modules</Filter>
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gds\GameTextSystem\GameTextSet.cpp">
       <Filter>Source Files\GameTextSystem</Filter>
@@ -1472,11 +1475,11 @@
     <ClCompile Include="..\..\gds\JigLib\JL_PhysicsVisualizer.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Script\BoostPythonScriptManager.cpp">
-      <Filter>Source Files\Script</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gds\Script\PythonScriptManager.cpp">
       <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\BoostPythonScriptManager.cpp">
+      <Filter>Source Files\Script\BoostPython</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
