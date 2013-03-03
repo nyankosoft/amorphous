@@ -49,18 +49,13 @@ void LoadStage( const string& strStageScriptFilename )
 	// 070223 moved to ctor in GameTask_TitleFG
 //	UpdateBaseEntityDatabase();
 
-	// old version that uses raw pointer for stage
-//	SafeDelete( g_pStage );
-//	g_pStage = new CStage;
-//	bool bResult = g_pStage->Initialize( strStageScriptFilename );
-
 	g_pStage.reset();
 
 	StageLoader stage_loader;
 	g_pStage = stage_loader.LoadStage( strStageScriptFilename );
 
 	bool bResult = false;
-	if( g_pStage.get() )
+	if( g_pStage )
 		bResult = true;
 
 	if( bResult )

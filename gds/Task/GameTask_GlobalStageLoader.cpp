@@ -4,10 +4,6 @@
 
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/BuiltinFonts.hpp"
-#include "Input/InputHub.hpp"
-#include "GUI.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/StateLog.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 
@@ -28,13 +24,12 @@ GameTask_GlobalStageLoader::GameTask_GlobalStageLoader()
 
 	int w = 16 * GetScreenWidth() / 800;
 	int h = w * 2;
-	m_pFont = CreateDefaultBuiltinFontRawPtr();
+	m_pFont = CreateDefaultBuiltinFont();
 }
 
 
 GameTask_GlobalStageLoader::~GameTask_GlobalStageLoader()
 {
-	SafeDelete( m_pFont );
 }
 
 
@@ -101,16 +96,6 @@ void GameTask_GlobalStageLoader::Render()
 	}
 
 	m_bRendered = true;
-}
-
-
-void GameTask_GlobalStageLoader::ReleaseGraphicsResources()
-{
-}
-
-
-void GameTask_GlobalStageLoader::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
 }
 
 
