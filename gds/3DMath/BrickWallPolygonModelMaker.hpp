@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "Vector3.hpp"
+#include "range.hpp"
 
 
 namespace amorphous
@@ -28,6 +29,8 @@ public:
 //	std::pair<float,float> size_variations;
 //	std::pair<float,float> inset_variations;
 //	std::pair<float,float> extrusion_variations;
+	range<T> size_variations;
+	range<T> position_variations;
 
 public:
 
