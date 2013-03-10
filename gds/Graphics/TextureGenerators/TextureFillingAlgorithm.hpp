@@ -2,6 +2,7 @@
 #define __TextureFillingAlgorithm_HPP__
 
 
+#include <vector>
 #include "../fwd.hpp"
 #include "../FloatRGBAColor.hpp"
 
@@ -47,10 +48,16 @@ class TextureFillingAlgorithm
 {
 public:
 
+	std::vector< boost::shared_ptr<TextureFilter> > m_pFilters;
+
+public:
+
 	virtual ~TextureFillingAlgorithm() {}
 
 	/// called by the system after the texture resource is created
 	virtual void FillTexture( LockedTexture& texture ) = 0;
+
+	void AddFilter( boost::shared_ptr<TextureFilter> pFilter ) { m_pFilters.push_back( pFilter ); }
 };
 
 
