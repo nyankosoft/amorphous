@@ -228,6 +228,13 @@ inline float RangedRand(float fMin, float fMax)
 	return fMin + (fMax - fMin) * RandFloat32();
 }
 
+
+// returns a float value in [fMin,fMax]
+inline double RangedRand(double fMin, double fMax)
+{
+	return fMin + (fMax - fMin) * RandReal1();
+}
+
 /*
 inline float GaussianRandFloat32()
 {
