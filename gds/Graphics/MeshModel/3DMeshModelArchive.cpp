@@ -403,7 +403,9 @@ Result::Name CreateSingleSubsetMeshArchive(
 
 	dest_mesh.GetMaterial().resize( 1 );
 	dest_mesh.GetMaterial()[0].vecTexture.resize( 1 );
-	dest_mesh.GetMaterial()[0].vecTexture[0].strFilename = "default.png";
+//	dest_mesh.GetMaterial()[0].vecTexture[0].strFilename = "default.png";
+	dest_mesh.GetMaterial()[0].vecTexture[0].type = CMMA_Texture::SINGLECOLOR;
+	dest_mesh.GetMaterial()[0].vecTexture[0].vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
 
 	vector<CMMA_TriangleSet>& triangle_sets = dest_mesh.GetTriangleSet();
 	triangle_sets.resize( 1 );
