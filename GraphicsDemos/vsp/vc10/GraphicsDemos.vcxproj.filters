@@ -99,6 +99,9 @@
     <ClInclude Include="..\..\src\GraphicsElementEffectTest.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\BrickWallTextureGeneratorTest.hpp">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
@@ -177,6 +180,9 @@
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\GraphicsElementEffectTest.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\BrickWallTextureGeneratorTest.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>
