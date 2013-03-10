@@ -798,6 +798,12 @@
     <ClCompile Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.cpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\3DMath\BrickWallPolygonModelMaker.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1856,6 +1862,12 @@
     </ClInclude>
     <ClInclude Include="..\..\gds\Support\Serialization\Serialization_array2d.hpp">
       <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\3DMath\BrickWallPolygonModelMaker.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
