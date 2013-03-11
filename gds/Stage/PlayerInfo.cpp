@@ -7,16 +7,13 @@
 #include "Item/ItemDatabaseManager.hpp"
 #include "Item/GameItemObjectFactory.hpp"
 #include "Item/WeaponSystem.hpp"
+#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "BE_Player.hpp"
 
 
 namespace amorphous
 {
-//#include "HUD_PlayerShip.hpp"
-//#include "HUD_PlayerAircraft.hpp"
 
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
-
-#include "BE_Player.hpp"
 
 using std::string;
 using namespace boost;
