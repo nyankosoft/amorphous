@@ -39,8 +39,8 @@ public:
 	num_horizontal_bricks(8),
 	num_vertical_bricks(16),
 	alternate_shift(1),
-	inset(0.010f),
-	extrusion(0.010f),
+	inset(0.008f),
+	extrusion(0.008f),
 	interval(0.005f)
 	{}
 };
