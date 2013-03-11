@@ -5,10 +5,14 @@
 #include <vector>
 #include "../fwd.hpp"
 #include "../FloatRGBAColor.hpp"
+#include "TextureFilter.hpp"
+#include "../../Support/Serialization/Serialization.hpp"
+#include "../../Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
 
 namespace amorphous
 {
+using namespace serialization;
 
 
 class LockedTexture
@@ -44,7 +48,7 @@ public:
 /// Used to fill the texture content when
 /// - A texture resource is created.
 /// - A texture resource is released and recreated after the graphics device is lost
-class TextureFillingAlgorithm
+class TextureFillingAlgorithm : public IArchiveObjectBase
 {
 public:
 
@@ -58,6 +62,11 @@ public:
 	virtual void FillTexture( LockedTexture& texture ) = 0;
 
 	void AddFilter( boost::shared_ptr<TextureFilter> pFilter ) { m_pFilters.push_back( pFilter ); }
+
+	virtual void Serialize( IArchive& ar, const unsigned int version )
+	{
+//		ar & m_pFilters;
+	}
 };
 
 

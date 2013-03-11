@@ -6,6 +6,7 @@
 #include "Graphics/Direct3D/Shader/D3DCgEffect.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "Graphics/TextureGenerators/TextureFilter.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -377,9 +378,16 @@ bool CD3DTextureResource::CreateFromDesc()
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		if( desc.pLoader )
+		boost::shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
+		if( pLoader && m_pLockedTexture )
 		{
-			desc.pLoader->FillTexture( *(m_pLockedTexture.get()) );
+			pLoader->FillTexture( *m_pLockedTexture );
+
+			for( size_t i=0; i<pLoader->m_pFilters.size(); i++ )
+			{
+				if( pLoader->m_pFilters[i] )
+					pLoader->m_pFilters[i]->ApplyFilter( *m_pLockedTexture );
+			}
 		}
 
 		bool unlocked = Unlock();

@@ -118,6 +118,7 @@
     <ClCompile Include="..\..\gds\Graphics\SkyboxMisc.cpp" />
     <ClCompile Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.cpp" />
     <ClCompile Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp" />
+    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\TextureFilter.cpp" />
     <ClCompile Include="..\..\gds\Graphics\TextureRenderTarget.cpp" />
     <ClCompile Include="..\..\gds\Graphics\VarianceShadowMapManager.cpp" />
     <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectBase.cpp" />
@@ -390,6 +391,7 @@
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GridTextureGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\TextureFilter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\TextureRenderTarget.hpp" />
     <ClInclude Include="..\..\gds\Graphics\VarianceShadowMapManager.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Shader\BlendTransformsLoader.hpp" />

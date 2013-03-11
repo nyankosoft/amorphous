@@ -1,6 +1,7 @@
 #include "GLGraphicsResources.hpp"
 
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "Graphics/TextureGenerators/TextureFilter.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "Graphics/OpenGL/glext.h" // GL_BGR
@@ -371,7 +372,13 @@ bool CGLTextureResource::CreateFromDesc()
 		if( pLoader )
 		{
 			// Let the user-defined routine to fill the texture
-			pLoader->FillTexture( *(pLockedTex.get()) );
+			pLoader->FillTexture( *pLockedTex );
+
+			for( size_t i=0; i<pLoader->m_pFilters.size(); i++ )
+			{
+				if( pLoader->m_pFilters[i] )
+					pLoader->m_pFilters[i]->ApplyFilter( *pLockedTex );
+			}
 		}
 
 		CreateGLTextureFromBitmapImage( *m_pLockedImage );
