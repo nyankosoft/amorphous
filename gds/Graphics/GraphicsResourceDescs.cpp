@@ -1,4 +1,5 @@
 #include "GraphicsResourceDescs.hpp"
+#include "TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Shader/ShaderGenerator.hpp"
 #include "XML.hpp"
 
@@ -53,6 +54,17 @@ bool TextureResourceDesc::CanBeSharedAsSameTextureResource( const TextureResourc
 		return true;
 	else
 		return false;
+}
+
+
+void TextureResourceDesc::Serialize( IArchive& ar, const unsigned int version )
+{
+	GraphicsResourceDesc::Serialize( ar, version );
+
+	ar & Width & Height & MipLevels;
+	ar & (int&)Format;
+	ar & UsageFlags;
+	ar & pLoader;
 }
 
 

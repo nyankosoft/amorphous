@@ -11,6 +11,7 @@
 #include "SurfaceFormat.hpp"
 #include "../XML/fwd.hpp"
 #include "../Support/Serialization/Serialization.hpp"
+#include "../Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
 
 namespace amorphous
@@ -178,13 +179,7 @@ public:
 		desc.pLoader      = pLoader;
 	}
 
-	void Serialize( IArchive& ar, const unsigned int version )
-	{
-		GraphicsResourceDesc::Serialize( ar, version );
-
-		ar & Width & Height & MipLevels;
-		ar & (int&)Format;
-	}
+	void Serialize( IArchive& ar, const unsigned int version );
 
 	void LoadFromXMLNode( CXMLNodeReader& reader );
 };
