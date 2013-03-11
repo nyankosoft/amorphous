@@ -8,10 +8,6 @@ valid combinations of geometry filters
 */
 
 
-#include <vector>
-#include <list>
-#include <boost/shared_ptr.hpp>
-
 #include "../fwd.hpp"
 #include "../General3DVertex.hpp"
 #include "../IndexedPolygon.hpp"
@@ -111,7 +107,7 @@ public:
 
 	/// Converts the general 3d mesh into the triangulated mesh archive
 	/// \param dest [out] mesh archive
-	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
+//	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
 
 	boost::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
 
