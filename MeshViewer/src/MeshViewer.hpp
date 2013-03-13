@@ -23,14 +23,14 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	int m_CurrentFileIndex;
 
-	CShaderTechniqueHandle m_MeshTechnique;
-	CShaderTechniqueHandle m_DefaultTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_DefaultTechnique;
 
 	ShaderHandle m_Shader;
 
 	std::vector<ShaderHandle> m_Shaders;
 
-	std::vector<CShaderTechniqueHandle> m_Techniques;
+	std::vector<ShaderTechniqueHandle> m_Techniques;
 
 	int m_CurrentShaderIndex;
 
@@ -41,7 +41,7 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	std::vector<ShaderHandle> m_SingleDiffuseColorShaders;
 
-	std::vector<CShaderTechniqueHandle> m_SingleDiffuseColorShaderTechniques;
+	std::vector<ShaderTechniqueHandle> m_SingleDiffuseColorShaderTechniques;
 
 	int m_CurrentSDCShaderIndex;
 
@@ -53,7 +53,7 @@ class CMeshViewer : public CGraphicsApplicationBase
 
 	Vector3 m_vLightPosition;
 
-	CFontSharedPtr m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	int m_CurrentMouseX;
 	int m_CurrentMouseY;
@@ -111,7 +111,7 @@ public:
 //	void UpdateViewTransform( const Matrix44& matView );
 //	void UpdateProjectionTransform( const Matrix44& matProj );
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

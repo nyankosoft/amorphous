@@ -92,7 +92,7 @@ void CMeshViewer::SetLights( ShaderManager& shader_mgr )
 	// - Needed when fixed function pipeline is used
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, m_Lighting );
 
-	shared_ptr<CShaderLightManager> pLightMgr
+	shared_ptr<ShaderLightManager> pLightMgr
 		= shader_mgr.GetShaderLightManager();
 
 	if( !pLightMgr )
@@ -202,18 +202,18 @@ void CMeshViewer::LoadShaders()
 	// Clear all the shaders
 	m_Shaders.resize( 0 );
 
-	vector<CGenericShaderDesc> shader_descs;
+	vector<GenericShaderDesc> shader_descs;
 	shader_descs.resize( 2 );
 
-	CGenericShaderDesc desc;
+	GenericShaderDesc desc;
 
-	shader_descs[0].ShaderLightingType = CShaderLightingType::PER_PIXEL;
-	shader_descs[0].Specular = CSpecularSource::NONE;
+	shader_descs[0].LightingType = ShaderLightingType::PER_PIXEL;
+	shader_descs[0].Specular = SpecularSource::NONE;
 
 	shader_descs[0].NormalMapTextureIndex = m_NormalMapTextureIndex;
 
-	shader_descs[1].ShaderLightingType = CShaderLightingType::PER_PIXEL;
-	shader_descs[1].Specular = CSpecularSource::DECAL_TEX_ALPHA;
+	shader_descs[1].LightingType = ShaderLightingType::PER_PIXEL;
+	shader_descs[1].Specular = SpecularSource::DECAL_TEX_ALPHA;
 
 	shader_descs[1].NormalMapTextureIndex = m_NormalMapTextureIndex;
 
@@ -223,14 +223,14 @@ void CMeshViewer::LoadShaders()
 //	m_Techniques.resize( shader_descs.size() );
 	for( size_t i=0; i<shader_descs.size(); i++ )
 	{
-		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_descs[i]) );
+		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(shader_descs[i]) );
 		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
 		if( loaded )
 		{
 			m_Shaders.push_back( shader );
-			m_Techniques.push_back( CShaderTechniqueHandle() );
+			m_Techniques.push_back( ShaderTechniqueHandle() );
 			m_Techniques.back().SetTechniqueName( "Default" );
 		}
 	}
@@ -252,24 +252,24 @@ void CMeshViewer::LoadShaders()
 		if( loaded )
 		{
 			m_SingleDiffuseColorShaders.push_back( shader );
-			m_SingleDiffuseColorShaderTechniques.push_back( CShaderTechniqueHandle() );
+			m_SingleDiffuseColorShaderTechniques.push_back( ShaderTechniqueHandle() );
 			m_SingleDiffuseColorShaderTechniques.back().SetTechniqueName( "Default" );
 		}
 	}
 
 	// added shader manager that uses fixed function pipeline as a fallback
 	ShaderResourceDesc default_desc;
-	default_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
+	default_desc.ShaderType = ShaderType::NON_PROGRAMMABLE;
 	m_Shaders.push_back( ShaderHandle() );
 	m_Shaders.back().Load( default_desc );
-	m_Techniques.push_back( CShaderTechniqueHandle() );
+	m_Techniques.push_back( ShaderTechniqueHandle() );
 	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
 
 	ShaderResourceDesc vegetation_shader_desc;
 	vegetation_shader_desc.ResourcePath = "shaders/vegetation.fx";
 	m_Shaders.push_back( ShaderHandle() );
 	m_Shaders.back().Load( vegetation_shader_desc );
-	m_Techniques.push_back( CShaderTechniqueHandle() );
+	m_Techniques.push_back( ShaderTechniqueHandle() );
 	m_Techniques.back().SetTechniqueName( "Default" ); // actually not used
 }
 
@@ -493,7 +493,7 @@ void SetDefaultLinearFog()
 
 	SFloatRGBAColor fog_color( 0.863f, 0.871f, 0.805f, 1.000f );
 
-	CFogParams params;
+	FogParams params;
 	params.Start = fStart;
 	params.End   = fEnd;
 	params.Mode  = FogMode::LINEAR;
@@ -569,9 +569,9 @@ int CMeshViewer::Init()
 }
 
 
-void CMeshViewer::HandleInput( const SInputData& input )
+void CMeshViewer::HandleInput( const InputData& input )
 {
-	shared_ptr<CInputDeviceGroup> pDeviceGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	shared_ptr<InputDeviceGroup> pDeviceGroup = InputDeviceHub().GetInputDeviceGroup(0);
 	int new_x = 0, new_y = 0;
 
 	switch( input.iGICode )
