@@ -571,7 +571,7 @@ int CMeshViewer::Init()
 
 void CMeshViewer::HandleInput( const InputData& input )
 {
-	shared_ptr<InputDeviceGroup> pDeviceGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	shared_ptr<InputDeviceGroup> pDeviceGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 	int new_x = 0, new_y = 0;
 
 	switch( input.iGICode )
