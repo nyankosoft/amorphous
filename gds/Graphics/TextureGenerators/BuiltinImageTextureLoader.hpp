@@ -54,7 +54,7 @@ public:
 };
 
 
-TextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image )
+inline TextureHandle CreateTextureFromBuiltinImage( const CBuiltinImage& builtin_image )
 {
 	TextureResourceDesc desc;
 	desc.Width     = builtin_image.width;
