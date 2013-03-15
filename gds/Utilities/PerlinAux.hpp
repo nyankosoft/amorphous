@@ -6,13 +6,16 @@
 #include "../base.hpp"
 #include "../3DMath/Perlin.hpp"
 #include "../Support/array2d.hpp"
+#include "../Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous
 {
 
+using namespace serialization;
 
-class CPerlinNoiseParams
+
+class CPerlinNoiseParams : public IArchiveObjectBase
 {
 public:
 	int octaves;
@@ -33,6 +36,17 @@ public:
 	seed(0),
 	tilable(false)
 	{}
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		ar & octaves;
+		ar & freq;
+		ar & amp;
+		ar & min_value;
+		ar & max_value;
+		ar & seed;
+		ar & tilable;
+	}
 };
 
 
