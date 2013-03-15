@@ -11,7 +11,6 @@
 #include "SurfaceFormat.hpp"
 #include "../XML/fwd.hpp"
 #include "../Support/Serialization/Serialization.hpp"
-#include "../Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
 
 namespace amorphous
