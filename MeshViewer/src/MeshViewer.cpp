@@ -13,7 +13,7 @@
 #include "gds/Graphics/HemisphericLight.hpp"
 #include "gds/Graphics/FogParams.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "gds/Graphics/Shader/MiscEmbeddedShaderGenerator.hpp"
+#include "gds/Graphics/Shader/EmbeddedMiscShaderGenerator.hpp"
 #include "gds/Graphics/2DPrimitive/2DRect.hpp"
 #include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Input.hpp"
@@ -236,16 +236,16 @@ void CMeshViewer::LoadShaders()
 	}
 
 	// miscellaneous shaders
-	CEmbeddedMiscShader::ID shader_ids[] =
+	EmbeddedMiscShader::ID shader_ids[] =
 	{
-		CEmbeddedMiscShader::SINGLE_DIFFUSE_COLOR,
-		CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR,
-		CEmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY
+		EmbeddedMiscShader::SINGLE_DIFFUSE_COLOR,
+		EmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR,
+		EmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY
 	};
 
 	for( size_t i=0; i<numof(shader_ids); i++ )
 	{
-		shader_desc.pShaderGenerator.reset( new CMiscEmbeddedShaderGenerator(shader_ids[i]) );
+		shader_desc.pShaderGenerator.reset( new EmbeddedMiscShaderGenerator(shader_ids[i]) );
 		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
