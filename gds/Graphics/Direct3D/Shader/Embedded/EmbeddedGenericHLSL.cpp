@@ -65,7 +65,7 @@ public:
 };
 
 
-const char *CEmbeddedGenericHLSL::ms_pMatrix =
+const char *EmbeddedGenericHLSL::ms_pMatrix =
 "#ifndef __MATRIX_FXH__\n"\
 "#define __MATRIX_FXH__\n"\
 
@@ -80,7 +80,7 @@ const char *CEmbeddedGenericHLSL::ms_pMatrix =
 "#endif\n"; /* __MATRIX_FXH__ */
 
 
-const char *CEmbeddedGenericHLSL::ms_pColorPair =
+const char *EmbeddedGenericHLSL::ms_pColorPair =
 "#ifndef __COLORPAIR_H__\n"\
 "#define __COLORPAIR_H__\n"\
 
@@ -96,7 +96,7 @@ const char *CEmbeddedGenericHLSL::ms_pColorPair =
 "#endif\n"; /* __COLORPAIR_H__ */
 
 
-const char *CEmbeddedGenericHLSL::ms_pTexDef =
+const char *EmbeddedGenericHLSL::ms_pTexDef =
 "#ifndef __TEXDEF_FXH__\n"\
 "#define __TEXDEF_FXH__\n"\
 
@@ -161,7 +161,7 @@ const char *CEmbeddedGenericHLSL::ms_pTexDef =
 
 
 
-const char *CEmbeddedGenericHLSL::ms_pLightDef =
+const char *EmbeddedGenericHLSL::ms_pLightDef =
 "#ifndef __LIGHTDEF_FXH__\n"\
 "#define __LIGHTDEF_FXH__\n"\
 
@@ -222,7 +222,7 @@ const char *CEmbeddedGenericHLSL::ms_pLightDef =
 
 
 
-const char *CEmbeddedGenericHLSL::ms_pQuaternion =
+const char *EmbeddedGenericHLSL::ms_pQuaternion =
 "#ifndef __Quaternion_FXH__\n"\
 "#define __Quaternion_FXH__\n"\
 
@@ -299,7 +299,7 @@ const char *CEmbeddedGenericHLSL::ms_pQuaternion =
 "#endif\n"; /* __Quaternion_FXH__ */
 
 
-const char *CEmbeddedGenericHLSL::ms_pTransform =
+const char *EmbeddedGenericHLSL::ms_pTransform =
 "#ifndef __Transform_FXH__\n"\
 "#define __Transform_FXH__\n"\
 
@@ -330,7 +330,7 @@ const char *CEmbeddedGenericHLSL::ms_pTransform =
 "#endif\n"; /* __Transform_FXH__ */
 
 
-const char *CEmbeddedGenericHLSL::ms_pQVertexBlendFunctions =
+const char *EmbeddedGenericHLSL::ms_pQVertexBlendFunctions =
 "#ifndef __QVertexBlendFunctions_FXH__\n"\
 "#define __QVertexBlendFunctions_FXH__\n"\
 
@@ -394,7 +394,7 @@ const char *CEmbeddedGenericHLSL::ms_pQVertexBlendFunctions =
 // - Increase in code size
 // - Does not support vertex blending of meshes that have many bones
 /*
-const char *CEmbeddedGenericHLSL::ms_pVertexBlendFunctions =
+const char *EmbeddedGenericHLSL::ms_pVertexBlendFunctions =
 "#ifndef __VertexBlendFunctions_FXH__\n"\
 "#define __VertexBlendFunctions_FXH__\n"\
 
@@ -453,7 +453,7 @@ const char *CEmbeddedGenericHLSL::ms_pVertexBlendFunctions =
 */
 
 
-const char *CEmbeddedGenericHLSL::ms_pEnvMapSamplerInclude =
+const char *EmbeddedGenericHLSL::ms_pEnvMapSamplerInclude =
 "texture  CubeMapTexture;"\
 "samplerCUBE CubeMapSampler = "\
 "sampler_state"\
@@ -465,7 +465,7 @@ const char *CEmbeddedGenericHLSL::ms_pEnvMapSamplerInclude =
 "};\n";
 
 
-const char *CEmbeddedGenericHLSL::ms_pOptionsMacros =
+const char *EmbeddedGenericHLSL::ms_pOptionsMacros =
 //"#define SPECTYPE__UNIFORM\n"\
 
 // specular types
@@ -625,7 +625,7 @@ const char *CEmbeddedGenericHLSL::ms_pOptionsMacros =
 "\n";
 
 
-const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
+const char *EmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 "#ifndef __PerPixelHSLighting_Specular_FXH__\n"\
 "#define __PerPixelHSLighting_Specular_FXH__\n"\
 
@@ -715,7 +715,7 @@ const char *CEmbeddedGenericHLSL::ms_pPerPixelHSLighting_Specular =
 "#endif\n";  /* __PerPixelHSLighting_Specular_FXH__ */
 
 
-const char *CEmbeddedGenericHLSL::ms_pTechniqueTemplate =
+const char *EmbeddedGenericHLSL::ms_pTechniqueTemplate =
 "technique $TECH"\
 "{"\
 	"pass P0"\
@@ -966,7 +966,7 @@ void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& des
 }
 
 
-Result::Name CEmbeddedGenericHLSL::GenerateShader( GenericShaderDesc& desc, std::string& hlsl_effect )
+Result::Name EmbeddedGenericHLSL::GenerateShader( GenericShaderDesc& desc, std::string& hlsl_effect )
 {
 	LOG_FUNCTION_SCOPE();
 

@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CEmbeddedGenericHLSL
+class EmbeddedGenericHLSL
 {
 	static const char *ms_pMatrix;
 
@@ -39,9 +39,9 @@ class CEmbeddedGenericHLSL
 
 public:
 
-	CEmbeddedGenericHLSL();
+	EmbeddedGenericHLSL();
 
-	virtual ~CEmbeddedGenericHLSL();
+	virtual ~EmbeddedGenericHLSL();
 
 	static Result::Name GenerateShader( GenericShaderDesc& desc, std::string& hlsl_effect );
 };

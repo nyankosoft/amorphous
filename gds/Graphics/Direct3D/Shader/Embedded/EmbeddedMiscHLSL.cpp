@@ -5,7 +5,7 @@ namespace amorphous
 {
 
 
-const char *CEmbeddedMiscHLSL::ms_pSingleDiffuseColor =
+const char *EmbeddedMiscHLSL::ms_pSingleDiffuseColor =
 "float4 DiffuseColor = float4(1,1,1,1);"\
 "float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
 "void VS( float4 Pos : POSITION,"\
@@ -14,7 +14,7 @@ const char *CEmbeddedMiscHLSL::ms_pSingleDiffuseColor =
 "void PS( out float4 Color : COLOR ) { Color = DiffuseColor; }\n";
 
 
-const char *CEmbeddedMiscHLSL::ms_pShadedSingleDiffuseColor =
+const char *EmbeddedMiscHLSL::ms_pShadedSingleDiffuseColor =
 "float4 DiffuseColor = float4(1,1,1,1);"\
 "float3 LightDirection = float3(0,-1,0);"\
 "float4x4 World : WORLD;\n"\
@@ -42,7 +42,7 @@ const char *CEmbeddedMiscHLSL::ms_pShadedSingleDiffuseColor =
 	"Color.a   = DiffuseColor.a;"\
 "}\n";
 
-const char *CEmbeddedMiscHLSL::ms_pVertexWeightMapDisplay =
+const char *EmbeddedMiscHLSL::ms_pVertexWeightMapDisplay =
 "float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
 "float4x4 World			: WORLD;\n"\
 "#define NUM_MAX_COLORS 22\n"\
@@ -91,7 +91,7 @@ const char *CEmbeddedMiscHLSL::ms_pVertexWeightMapDisplay =
 	"Color = Diffuse * (dot(Normal,-g_LightDirection) + 1.0) * 0.5;"\
 "}\n";
 
-const char *CEmbeddedMiscHLSL::ms_pDepthRenderingInViewSpace =
+const char *EmbeddedMiscHLSL::ms_pDepthRenderingInViewSpace =
 "float4x4 WorldViewProj : WORLDVIEWPROJ;\n"\
 
 "void VS( float4 Pos : POSITION,"\
@@ -105,7 +105,7 @@ const char *CEmbeddedMiscHLSL::ms_pDepthRenderingInViewSpace =
 	"Depth.xy = oPos.zw;"\
 "}\n";
 
-const char *CEmbeddedMiscHLSL::ms_pDepthRenderingInProjectionSpace =
+const char *EmbeddedMiscHLSL::ms_pDepthRenderingInProjectionSpace =
 "float4x4 WorldView : WORLDVIEW;\n"\
 "float4x4 Proj : PROJ;"\
 "void VS( float4 Pos : POSITION,"\
@@ -120,7 +120,7 @@ const char *CEmbeddedMiscHLSL::ms_pDepthRenderingInProjectionSpace =
     "Depth.xy = oPos.zw;"\
 "}\n";
 
-const char *CEmbeddedMiscHLSL::ms_pDepthRenderingPixelShaderAndTechnique =
+const char *EmbeddedMiscHLSL::ms_pDepthRenderingPixelShaderAndTechnique =
 "void PS( float2 Depth : TEXCOORD0,"\
          "out float4 Color : COLOR )"\
 "{"\
@@ -129,7 +129,7 @@ const char *CEmbeddedMiscHLSL::ms_pDepthRenderingPixelShaderAndTechnique =
 	"Color.g = Color.b = 0;"\
 "}\n";
 
-const char *CEmbeddedMiscHLSL::ms_pTechniqueTemplate =
+const char *EmbeddedMiscHLSL::ms_pTechniqueTemplate =
 "technique Default"\
 "{"\
 	"pass P0"\
@@ -144,32 +144,32 @@ const char *CEmbeddedMiscHLSL::ms_pTechniqueTemplate =
 "}\n";
 
 
-Result::Name CEmbeddedMiscHLSL::GetShader( CEmbeddedMiscShader::ID shader_id, std::string& hlsl_effect )
+Result::Name EmbeddedMiscHLSL::GetShader( EmbeddedMiscShader::ID shader_id, std::string& hlsl_effect )
 {
 	switch( shader_id )
 	{
-	case CEmbeddedMiscShader::SINGLE_DIFFUSE_COLOR:
+	case EmbeddedMiscShader::SINGLE_DIFFUSE_COLOR:
 		hlsl_effect = ms_pSingleDiffuseColor;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case CEmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
+	case EmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
 		hlsl_effect = ms_pShadedSingleDiffuseColor;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case CEmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
+	case EmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
 		hlsl_effect = ms_pVertexWeightMapDisplay;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case CEmbeddedMiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
+	case EmbeddedMiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
 		hlsl_effect = ms_pDepthRenderingInViewSpace;
 		hlsl_effect += ms_pDepthRenderingPixelShaderAndTechnique;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case CEmbeddedMiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
+	case EmbeddedMiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
 		hlsl_effect = ms_pDepthRenderingInProjectionSpace;
 		hlsl_effect += ms_pDepthRenderingPixelShaderAndTechnique;
 		hlsl_effect += ms_pTechniqueTemplate;

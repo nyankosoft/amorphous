@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CEmbeddedMiscShader
+class EmbeddedMiscShader
 {
 public:
 	enum ID
@@ -25,12 +25,12 @@ public:
 };
 
 
-class CEmbeddedMiscHLSL
+class EmbeddedMiscHLSL
 {
 public:
 
-	CEmbeddedMiscHLSL(){}
-	~CEmbeddedMiscHLSL(){}
+	EmbeddedMiscHLSL(){}
+	~EmbeddedMiscHLSL(){}
 
 	static const char *ms_pSingleDiffuseColor;
 
@@ -46,7 +46,7 @@ public:
 
 	static const char *ms_pTechniqueTemplate;
 
-	static Result::Name GetShader( CEmbeddedMiscShader::ID shader_id, std::string& hlsl_effect );
+	static Result::Name GetShader( EmbeddedMiscShader::ID shader_id, std::string& hlsl_effect );
 };
 
 

@@ -27,7 +27,7 @@ public:
 
 	void GetShader( std::string& shader )
 	{
-		Result::Name res = CEmbeddedGenericHLSL::GenerateShader( m_Desc, shader );
+		Result::Name res = EmbeddedGenericHLSL::GenerateShader( m_Desc, shader );
 	}
 
 //	void Accept( ShaderGeneratorVisitor& visitor ) { visitor.Visit( *this ); }
