@@ -64,6 +64,18 @@ inline void ChangeClientAreaSize( HWND hWnd, int new_width, int new_height )
 	BOOL b = SetWindowPos( hWnd, HWND_TOP, 0, 0, new_width + frame_width, new_height + frame_height, SWP_NOMOVE );
 }
 
+
+/// \param[out] width The width of the screen of the primary display monitor, in pixels.
+/// \param[out] height The height of the screen of the primary display monitor, in pixels.
+inline void GetCurrentPrimaryDisplayResolution( unsigned int& width, unsigned int& height )
+{
+	int ret_x = GetSystemMetrics( SM_CXSCREEN );
+	int ret_y = GetSystemMetrics( SM_CYSCREEN );
+	width  = ret_x;
+	height = ret_y;
+}
+
+
 } // amorphous
 
 
