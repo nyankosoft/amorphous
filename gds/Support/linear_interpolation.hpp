@@ -118,6 +118,8 @@ public:
 
 		m_table.push_back( std::pair<float,T>(position,obj) );
 	}
+
+	std::vector< std::pair<float,T> >& table() { return m_table; }
 };
 
 } // namespace amorphous
