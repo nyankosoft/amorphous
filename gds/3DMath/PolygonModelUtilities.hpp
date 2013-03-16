@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include "aabb3.hpp"
 
 
 namespace amorphous
@@ -39,6 +40,7 @@ inline void CalculatePolygonNormals(
 }
 
 
+/// \brief precondition: no polygon has duplicate vertex indices (may crash if there are polygons with duplicate vertices. Not confirmed).
 template<typename T>
 inline void CalculateVertexNormals(
 	const std::vector< tVector3<T> >& positions,
@@ -156,6 +158,42 @@ inline bool CopyUnweld(
 	}
 
 	return true;
+}
+
+
+template<typename T, typename Tex2D>
+inline void MakeTextureCoordinatesAlongAxis( 
+	std::vector< tVector3<T> >& positions,
+	unsigned int plane_axis,
+	unsigned int u_axis,
+	unsigned int v_axis,
+	std::vector< Tex2D >& tex_coords
+	)
+{
+	if( positions.empty() )
+		return;
+
+	AABB3 aa_box;
+	aa_box.Nullify();
+
+	const size_t num_vertices = positions.size();
+
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		aa_box.AddPoint( positions[i] );
+	}
+
+	tex_coords.resize( 0 );
+	tex_coords.resize( num_vertices );
+
+	T u_extent = aa_box.vMax[u_axis] - aa_box.vMin[u_axis];
+	T v_extent = aa_box.vMax[v_axis] - aa_box.vMin[v_axis];
+
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		tex_coords[i].u = (positions[i][u_axis] - aa_box.vMin[u_axis]) / u_extent;
+		tex_coords[i].v = (positions[i][v_axis] - aa_box.vMin[v_axis]) / v_extent;
+	}
 }
 
 
