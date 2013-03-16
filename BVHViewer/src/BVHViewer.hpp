@@ -42,7 +42,7 @@ class CBVHViewer : public CGraphicsApplicationBase
 
 	Vector3 m_vLightPosition;
 
-	CFontSharedPtr m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	int m_CurrentMouseX;
 	int m_CurrentMouseY;
@@ -102,7 +102,7 @@ public:
 //	void UpdateViewTransform( const Matrix44& matView );
 //	void UpdateProjectionTransform( const Matrix44& matProj );
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

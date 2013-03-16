@@ -15,7 +15,7 @@
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Graphics/GraphicsResourceManager.hpp"
 #include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include <boost/filesystem.hpp>
 
@@ -25,7 +25,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CApplicationBase *CreateApplicationInstance() { return new CBVHViewer; }
+CApplicationBase *amorphous::CreateApplicationInstance() { return new CBVHViewer; }
 
 
 
@@ -138,16 +138,16 @@ void CBVHViewer::LoadBlankTextures( BasicMesh& mesh )
 
 void CBVHViewer::LoadShaders()
 {
-	vector<CGenericShaderDesc> shader_descs;
+	vector<GenericShaderDesc> shader_descs;
 	shader_descs.resize( 2 );
 
-	CGenericShaderDesc desc;
+	GenericShaderDesc desc;
 
-	shader_descs[0].ShaderLightingType = CShaderLightingType::PER_PIXEL;
-	shader_descs[0].Specular = CSpecularSource::NONE;
+	shader_descs[0].LightingType = ShaderLightingType::PER_PIXEL;
+	shader_descs[0].Specular = SpecularSource::NONE;
 
-	shader_descs[1].ShaderLightingType = CShaderLightingType::PER_PIXEL;
-	shader_descs[1].Specular = CSpecularSource::DECAL_TEX_ALPHA;
+	shader_descs[1].LightingType = ShaderLightingType::PER_PIXEL;
+	shader_descs[1].Specular = SpecularSource::DECAL_TEX_ALPHA;
 
 	ShaderResourceDesc shader_desc;
 
@@ -155,7 +155,7 @@ void CBVHViewer::LoadShaders()
 //	m_Techniques.resize( shader_descs.size() );
 	for( size_t i=0; i<shader_descs.size(); i++ )
 	{
-		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(shader_descs[i]) );
+		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(shader_descs[i]) );
 		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
@@ -170,7 +170,7 @@ void CBVHViewer::LoadShaders()
 
 	// added shader manager that uses fixed function pipeline as a fallback
 	ShaderResourceDesc default_desc;
-	default_desc.ShaderType = CShaderType::NON_PROGRAMMABLE;
+	default_desc.ShaderType = ShaderType::NON_PROGRAMMABLE;
 	m_Shaders.push_back( ShaderHandle() );
 	m_Shaders.back().Load( default_desc );
 	m_Techniques.push_back( ShaderTechniqueHandle() );
@@ -332,7 +332,7 @@ void SetDefaultLinearFog()
 //	SFloatRGBAColor fog_color( 0.863f, 0.871f, 0.805f, 1.000f );
 	SFloatRGBAColor fog_color( 0.15f, 0.15f, 0.15f, 1.00f );
 
-	CFogParams params;
+	FogParams params;
 	params.Start = fStart;
 	params.End   = fEnd;
 	params.Mode  = FogMode::LINEAR;
@@ -400,9 +400,9 @@ int CBVHViewer::Init()
 }
 
 
-void CBVHViewer::HandleInput( const SInputData& input )
+void CBVHViewer::HandleInput( const InputData& input )
 {
-	shared_ptr<CInputDeviceGroup> pDeviceGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	shared_ptr<InputDeviceGroup> pDeviceGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 
 	switch( input.iGICode )
 	{
