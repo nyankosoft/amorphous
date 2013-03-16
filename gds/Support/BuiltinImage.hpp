@@ -18,6 +18,11 @@ public:
 	const U32 *data;
 	const uint data_size;
 
+	// Commented out because the following compiler error occurs on vc10 express
+	// when the default ctor is defined:
+	// "non-aggregates cannot be initialized with initializer list"
+//	CBuiltinImage() : format(""), width(0), height(0), data(NULL), data_size(0) {}
+
 	bool IsValid() const
 	{
 		if( format
