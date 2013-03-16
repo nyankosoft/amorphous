@@ -1,5 +1,6 @@
 #include "ShadowVolumeMeshGenerator.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 
 
 namespace amorphous
@@ -628,10 +629,12 @@ void CShadowVolumeMeshGenerator::SetShadowVolumeMeshProperties( C3DMeshModelArch
 	CMMA_Material material;
 	material.fSpecular = 0;
 	material.vecTexture.resize( 2 );
-	material.vecTexture[0].type = CMMA_Texture::ARCHIVE_32BITCOLOR;
-	material.vecTexture[0].vecTexelData.resize( 1, 1, S32BitColor(255,255,255,255) );
-	material.vecTexture[1].type = CMMA_Texture::ARCHIVE_32BITCOLOR;
-	material.vecTexture[1].vecTexelData.resize( 1, 1, S32BitColor(128,128,255,255) );
+//	material.vecTexture[0].type = CMMA_Texture::ARCHIVE_32BITCOLOR;
+//	material.vecTexture[0].vecTexelData.resize( 1, 1, S32BitColor(255,255,255,255) );
+//	material.vecTexture[1].type = CMMA_Texture::ARCHIVE_32BITCOLOR;
+//	material.vecTexture[1].vecTexelData.resize( 1, 1, S32BitColor(128,128,255,255) );
+	material.vecTexture[0].pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor(1.0f,1.0f,1.0f,1.0f) ) );
+	material.vecTexture[1].pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor(0.5f,0.5f,1.0f,1.0f) ) );
 
 	if( rSrcMesh.GetVertexSet().GetVertexFormat() & CMMA_VertexSet::VF_WEIGHT )
 	{

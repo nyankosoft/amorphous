@@ -12,6 +12,7 @@
 #include "../32BitColor.hpp"
 #include "../VertexFormat.hpp"
 #include "../Mesh/BasicMaterialParams.hpp"
+#include "../GraphicsResourceDescs.hpp"
 
 #include "../../Support/array2d.hpp"
 #include "../../Support/Serialization/SerializationEx.hpp"
@@ -218,7 +219,7 @@ public:
 
 	CBasicMaterialParams m_Params;
 
-	std::vector<CMMA_Texture> vecTexture;
+	std::vector<TextureResourceDesc> vecTexture;
 
 	/// minimum alpha value of diffuse colors of vertices that belong to the material
 	float fMinVertexDiffuseAlpha;
@@ -236,7 +237,7 @@ public:
 
 	// version 1: changed from SurfaceTexture & NormalMapTexture
 	// to vecTexture
-	virtual unsigned int GetVersion() const { return 4; }
+	virtual unsigned int GetVersion() const { return 5; }
 };
 
 

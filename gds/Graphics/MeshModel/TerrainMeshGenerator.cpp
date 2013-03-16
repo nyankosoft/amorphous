@@ -185,13 +185,12 @@ void TerrainMeshTree::AddToDestMesh( TerrainMeshNode& node )
 	}
 
 	// set the new material. esp. the texture
-	CMMA_Texture texture;
-	texture.type = CMMA_Texture::FILENAME;
+	TextureResourceDesc texture;
 
 	const CMMA_Material& src_mat = m_pSrcMesh->GetMaterialBuffer()[m_TargetMaterialIndex];
-	const string src_tex_filepath = src_mat.vecTexture[0].strFilename;
+	const string src_tex_filepath = src_mat.vecTexture[0].ResourcePath;
 
-	texture.strFilename = CreateSubdividedTextureFilepath( src_tex_filepath, node.m_TextureIndex );
+	texture.ResourcePath = CreateSubdividedTextureFilepath( src_tex_filepath, node.m_TextureIndex );
 
 	CMMA_Material mat;
 	mat.Name = src_mat.Name + fmt_string("%02d",node.m_TextureIndex);
@@ -654,7 +653,7 @@ bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<General3DMesh> p
 
 	LOG_PRINT( " - splitting src texture" );
 
-	bool res = SplitTexture( src_mat.vecTexture[0].strFilename );
+	bool res = SplitTexture( src_mat.vecTexture[0].ResourcePath );
 
 	if( !res )
 		return false;

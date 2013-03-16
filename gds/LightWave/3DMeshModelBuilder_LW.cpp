@@ -466,11 +466,11 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 							        tex <= j;
 									tex++ )
 						{
-							material.vecTexture.push_back( CMMA_Texture() );
+							material.vecTexture.push_back( TextureResourceDesc() );
 						}
 
 	//					material.SurfaceTexture.strFilename = rvecClip[j].strName;
-						material.vecTexture[j].strFilename = rvecClip[k].strName;
+						material.vecTexture[j].ResourcePath = rvecClip[k].strName;
 					}
 				}
 			}
@@ -484,13 +484,13 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 		// Win32 wants it to be           "D:/dev/models/object.lwo"
 		for( j=0; j<material.vecTexture.size(); j++ )
 		{
-			string filepath = material.vecTexture[j].strFilename;
+			string filepath = material.vecTexture[j].ResourcePath;
 
 			if( 2 <= filepath.length() && filepath[1] == ':' )
 			{
 				// absolute path
 				// - change it to a valid path string for Win32 platform
-				material.vecTexture[j].strFilename
+				material.vecTexture[j].ResourcePath
 					= filepath.substr( 0, 1 ) + ":/" + filepath.substr( 2, 2048 );
 			}
 		}
@@ -564,9 +564,9 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 //			vecMaterial[i].SurfaceTexture.strFilename = tex_filename;
 
 			if( vecMaterial[i].vecTexture.size() == 0 )
-				vecMaterial[i].vecTexture.push_back( CMMA_Texture() );
+				vecMaterial[i].vecTexture.push_back( TextureResourceDesc() );
 
-			vecMaterial[i].vecTexture[0].strFilename = tex_filename;
+			vecMaterial[i].vecTexture[0].ResourcePath = tex_filename;
 
 			// now the texture filename has been set, don't do anything
 			// in C3DMeshModelBuilder::ProcessTextureFilenames()

@@ -85,11 +85,11 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh
 			const int num_textures = (int)m_MeshModelArchive.GetMaterial()[i].vecTexture.size();
 			for( int j=0; j<num_textures; j++ )
 			{
-				CMMA_Texture& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
-				if( tex.type != CMMA_Texture::FILENAME )
+				TextureResourceDesc& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
+				if( tex.pLoader || tex.ResourcePath.length() == 0 )
 					continue;
 
-				lfs::change_ext( tex.strFilename, "ia" );
+				lfs::change_ext( tex.ResourcePath, "ia" );
 			}
 		}
 
@@ -562,7 +562,7 @@ void C3DMeshModelBuilder::SaveOrigTextureFilepaths()
 		m_OrigTextureFilepaths[i].resize( num_textures );
 		for( size_t tex=0; tex<num_textures; tex++ )
 		{
-			m_OrigTextureFilepaths[i][tex] = rvecMaterial[i].vecTexture[tex].strFilename;
+			m_OrigTextureFilepaths[i][tex] = rvecMaterial[i].vecTexture[tex].ResourcePath;
 		}
 	}
 }
@@ -592,7 +592,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 		const size_t num_textures = rvecMaterial[i].vecTexture.size();
 		for( size_t tex=0; tex<num_textures; tex++ )
 		{
-			string& strTextureFilename = rvecMaterial[i].vecTexture[tex].strFilename;
+			string& strTextureFilename = rvecMaterial[i].vecTexture[tex].ResourcePath;
 
 			switch( m_pModelLoader->GetTexturePathnameOption() )
 			{

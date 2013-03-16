@@ -398,7 +398,7 @@ bool CStaticGeometryFG::LoadFromFile( const std::string& db_filename, bool bLoad
 		if( 0 < skybox_mat.size()
 		 && 0 < skybox_mat[0].vecTexture.size() )
 		{
-			string fade_tex_filepath = skybox_mat[0].vecTexture[0].strFilename;
+			string fade_tex_filepath = skybox_mat[0].vecTexture[0].ResourcePath;
 			lfs::insert_before_extension( fade_tex_filepath, "_fade" );
 			m_FadeTex.Load( fade_tex_filepath );
 		}

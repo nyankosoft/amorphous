@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "Graphics/General3DVertex.hpp"
+#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/lfs.hpp"
@@ -245,7 +246,22 @@ void CMMA_Material::Serialize( IArchive& ar, const unsigned int version )
 	if( version < 1 )
 		assert( !string( string(__FUNCTION__) + " : archive version outdated - no longer supported" ).c_str() );
 
-	ar & vecTexture;
+	if( 5 <= version )
+		ar & vecTexture;
+	else
+	{
+		// Assumes ar.GetMode() == IArchive::MODE_INPUT
+		vector<CMMA_Texture> tex;
+		ar & tex;
+
+		vecTexture.resize( tex.size() );
+		for( size_t i=0; i<tex.size(); i++ )
+		{
+			vecTexture[i].ResourcePath = tex[i].strFilename;
+			if( tex[i].type == CMMA_Texture::SINGLECOLOR && 0 < tex[i].vecfTexelData.size_x() )
+				vecTexture[i].pLoader.reset( new SingleColorTextureGenerator( tex[i].vecfTexelData(0,0) ) );
+		}
+	}
 
 	if( 3 <= version )
 		ar & fMinVertexDiffuseAlpha;
@@ -303,9 +319,9 @@ void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 		const size_t num_textures = mesh_archive.GetMaterial()[i].vecTexture.size();
 		for( size_t j=0; j<num_textures; j++ )
 		{
-			CMMA_Texture& rTexture = mesh_archive.GetMaterial()[i].vecTexture[j];
+			TextureResourceDesc& rTexture = mesh_archive.GetMaterial()[i].vecTexture[j];
 
-			const string tex_filename = rTexture.strFilename;
+			const string tex_filename = rTexture.ResourcePath;
 
 			if( tex_filename.length() == 0 )
 				continue;
@@ -328,7 +344,7 @@ void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 
 			// overwrite original texture filename with the resource name
 			// - (db filename) + "::" + (archive key name)
-			rTexture.strFilename = tex_resource_name;
+			rTexture.ResourcePath = tex_resource_name;
 
 			if( db.KeyExists(tex_key) )
 			{
@@ -404,8 +420,9 @@ Result::Name CreateSingleSubsetMeshArchive(
 	dest_mesh.GetMaterial().resize( 1 );
 	dest_mesh.GetMaterial()[0].vecTexture.resize( 1 );
 //	dest_mesh.GetMaterial()[0].vecTexture[0].strFilename = "default.png";
-	dest_mesh.GetMaterial()[0].vecTexture[0].type = CMMA_Texture::SINGLECOLOR;
-	dest_mesh.GetMaterial()[0].vecTexture[0].vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
+//	dest_mesh.GetMaterial()[0].vecTexture[0].type = CMMA_Texture::SINGLECOLOR;
+//	dest_mesh.GetMaterial()[0].vecTexture[0].vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
+	dest_mesh.GetMaterial()[0].vecTexture[0].pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor::White() ) );
 
 	vector<CMMA_TriangleSet>& triangle_sets = dest_mesh.GetTriangleSet();
 	triangle_sets.resize( 1 );
@@ -705,7 +722,7 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 
 		const size_t num_textures = m_vecMaterial[i].vecTexture.size();
 		for( size_t tex=0; tex<num_textures; tex++ )
-			fprintf( fp, "texture[%d]: \"%s\"\n", tex, m_vecMaterial[i].vecTexture[tex].strFilename.c_str() );
+			fprintf( fp, "texture[%d]: \"%s\"\n", tex, m_vecMaterial[i].vecTexture[tex].ResourcePath.c_str() );
 
 		fprintf( fp, "min. vertex alpha: %f\n", m_vecMaterial[i].fMinVertexDiffuseAlpha );
 

@@ -112,8 +112,8 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 
 		for( size_t tex=0; tex<num_textures; tex++ )
 		{
-			const CMMA_Texture& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
-			tex_filename = texture_archive.strFilename;
+			const TextureResourceDesc& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
+			tex_filename = texture_archive.ResourcePath;
 			if( 0 < tex_filename.length() )
 			{
 				string tex_filepath;
@@ -139,20 +139,16 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 
 				m_vecMaterial[i].TextureDesc[tex].ResourcePath = tex_filepath;
 			}
-			else if( texture_archive.type == CMMA_Texture::SINGLECOLOR
-				&& 0 < texture_archive.vecfTexelData.size_x() )
+			else
 			{
 				TextureResourceDesc& current_desc = m_vecMaterial[i].TextureDesc[tex];
 
-				current_desc.pLoader.reset( new SingleColorTextureGenerator( texture_archive.vecfTexelData(0,0) ) );
-
-				current_desc.Width  = texture_archive.vecfTexelData.size_x();
-				current_desc.Height = texture_archive.vecfTexelData.size_y();
-				current_desc.Format = TextureFormat::A8R8G8B8;
+				current_desc = texture_archive;
 
 				// TODO: define a function to set texture resource id string
 				static int s_texcount = 0;
-				current_desc.ResourcePath = "<Texture>" + to_string(s_texcount);
+				if( current_desc.ResourcePath.length() == 0 )
+					current_desc.ResourcePath = "<Texture>" + to_string(s_texcount);
 
 			}
 
