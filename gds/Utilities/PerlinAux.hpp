@@ -15,7 +15,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CPerlinNoiseParams : public IArchiveObjectBase
+class PerlinNoiseParams : public IArchiveObjectBase
 {
 public:
 	int octaves;
@@ -26,7 +26,7 @@ public:
 	int seed;
 	bool tilable;
 
-	CPerlinNoiseParams()
+	PerlinNoiseParams()
 		:
 	octaves(10),
 	freq(10),
@@ -54,7 +54,7 @@ inline float StdPerlin(     Perlin& obj, float x, float y, float w, float h ) { 
 inline float TilablePerlin( Perlin& obj, float x, float y, float w, float h ) { return obj.GetTilable(x,y,w,h); }
 
 
-inline void GetPerlinTexture( const CPerlinNoiseParams& params, array2d<float>& dest )
+inline void GetPerlinTexture( const PerlinNoiseParams& params, array2d<float>& dest )
 {
 	Perlin pn( params.octaves, params.freq, params.amp, params.seed );
 
