@@ -306,6 +306,43 @@ public:
 
 
 	template<class T>
+	void Polymorphic( boost::shared_ptr<T>& pData, IArchiveObjectFactory& rFactory )
+	{
+		int id = -1;
+
+		if( m_Mode == MODE_OUTPUT )
+		{
+			if( pData )
+			{
+				id = (int)pData->GetArchiveObjectID();
+
+				(*this) & id;	// record id for this object
+
+				(*this) & (*(pData.get()));	// the object must override the Serialize function
+			}
+			else
+			{
+				id = -1;
+
+				(*this) & id;
+			}
+		}
+		else // i.e. ( m_Mode == MODE_INPUT )
+		{
+			(*this) & id;	// get id for this object
+
+			if( 0 <= id )
+			{
+				pData = boost::shared_ptr<T>( dynamic_cast<T*>(rFactory.CreateObject((unsigned int)id)) );
+
+				if( pData )
+					(*this) & (*(pData.get()));	// the object must override the Serialize function
+			}
+		}
+	}
+
+
+	template<class T>
 	void Polymorphic( std::vector< boost::shared_ptr<T> >& vecpData, IArchiveObjectFactory& rFactory )
 	{
 		size_t i, array_size = 0;
