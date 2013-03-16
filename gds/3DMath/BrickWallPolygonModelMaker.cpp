@@ -198,6 +198,23 @@ void CreateBrickWallPanel(
 			AddBrickIndices( brick_polygons, last_column_vertex_index, polygons );
 		}
 	}
+
+	if( desc.make_base_layer )
+	{
+		const unsigned int num_bricks_vertices = (unsigned int)positions.size();
+
+		// Add four vertices for base layer rectangle
+		positions.insert( positions.end(), 4, tVector3<T>(0,0,0) );
+		positions[num_bricks_vertices  ] = tVector3<T>(-0.5f, 0.5f, 0.0f );
+		positions[num_bricks_vertices+1] = tVector3<T>( 0.5f, 0.5f, 0.0f );
+		positions[num_bricks_vertices+2] = tVector3<T>( 0.5f,-0.5f, 0.0f );
+		positions[num_bricks_vertices+3] = tVector3<T>(-0.5f,-0.5f, 0.0f );
+
+		polygons.push_back( vector<unsigned int>() );
+		polygons.back().resize( 4 );
+		for( size_t i=0; i<4; i++ )
+			polygons.back()[i] = num_bricks_vertices + i;
+	}
 }
 
 

@@ -32,6 +32,13 @@ public:
 	range<T> size_variations;
 	range<T> position_variations;
 
+	/// If true, adds a rectangle polygon as a base layer
+	/// of the brick wall panel. More specifically,
+	/// - 4 vertices are added to the end of 'positions'.
+	/// - One 4-point polygon is added to the end of 'polygons'
+	/// in CreateBrickWallPanel().
+	bool make_base_layer;
+
 public:
 
 	brick_wall_panel_desc()
@@ -41,7 +48,8 @@ public:
 	alternate_shift(1),
 	inset(0.008f),
 	extrusion(0.008f),
-	interval(0.005f)
+	interval(0.005f),
+	make_base_layer(true)
 	{}
 };
 
