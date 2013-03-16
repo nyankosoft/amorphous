@@ -21,6 +21,7 @@
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/CameraController.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "gds/Support/WindowMisc_Win32.hpp"
 #include <boost/filesystem.hpp>
 
 using std::string;
@@ -480,6 +481,8 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 			break;
 		}
 	}
+
+	GameWindowManager().SetWindowTitleText( desc.ResourcePath );
 
 	return true;
 }
