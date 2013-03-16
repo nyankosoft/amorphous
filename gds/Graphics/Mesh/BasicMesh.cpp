@@ -2,7 +2,7 @@
 #include "MeshFactory.hpp" // ctor of BasicMesh needs the mesh impl factory 
 #include "../MeshModel/3DMeshModelArchive.hpp"
 #include "../MeshModel/MeshBone.hpp"
-#include "../TextureGenerators/SingleColorTextureGenerator.hpp"
+#include "../TextureUtilities.hpp"
 #include <boost/filesystem.hpp>
 
 
@@ -12,19 +12,6 @@ namespace amorphous
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
-
-
-void SetSingleColorTextureDesc( TextureResourceDesc& desc,
-							   const SFloatRGBAColor& color = SFloatRGBAColor::White(),
-							   int tex_width = 1,
-							   int tex_height = 1 )
-{
-	desc.Width  = tex_width;
-	desc.Height = tex_height;
-	desc.Format = TextureFormat::A8R8G8B8;
-	desc.pLoader.reset( new SingleColorTextureGenerator(SFloatRGBAColor::White()) );
-}
-
 
 
 //=============================================================================
