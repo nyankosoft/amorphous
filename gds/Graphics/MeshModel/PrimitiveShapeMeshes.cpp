@@ -4,7 +4,7 @@
 #include "General3DMesh.hpp"
 #include "3DMeshModelArchive.hpp"
 #include "3DMeshModelBuilder.hpp"
-#include "../TextureGenerators/SingleColorTextureGenerator.hpp"
+#include "../TextureUtilities.hpp"
 
 
 namespace amorphous
@@ -31,7 +31,7 @@ void SetDefaultMeshAttributes( C3DMeshModelArchive& mesh_archive )
 //		{
 //			tex0.type = CMMA_Texture::SINGLECOLOR;
 //			tex0.vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
-			tex0.pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor::White() ) );
+			SetSingleColorTextureDesc( tex0, SFloatRGBAColor::White(), TextureFormat::A8R8G8B8, 16, 16 );
 //		}
 	}
 }

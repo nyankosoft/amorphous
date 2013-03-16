@@ -3,7 +3,7 @@
 #include <fstream>
 
 #include "Graphics/General3DVertex.hpp"
-#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
+#include "Graphics/TextureUtilities.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/lfs.hpp"
@@ -259,7 +259,12 @@ void CMMA_Material::Serialize( IArchive& ar, const unsigned int version )
 		{
 			vecTexture[i].ResourcePath = tex[i].strFilename;
 			if( tex[i].type == CMMA_Texture::SINGLECOLOR && 0 < tex[i].vecfTexelData.size_x() )
+			{
+				vecTexture[i].Format = TextureFormat::A8R8G8B8;
+				vecTexture[i].Width  = 1;
+				vecTexture[i].Height = 1;
 				vecTexture[i].pLoader.reset( new SingleColorTextureGenerator( tex[i].vecfTexelData(0,0) ) );
+			}
 		}
 	}
 
@@ -422,7 +427,13 @@ Result::Name CreateSingleSubsetMeshArchive(
 //	dest_mesh.GetMaterial()[0].vecTexture[0].strFilename = "default.png";
 //	dest_mesh.GetMaterial()[0].vecTexture[0].type = CMMA_Texture::SINGLECOLOR;
 //	dest_mesh.GetMaterial()[0].vecTexture[0].vecfTexelData.resize( 1, 1, SFloatRGBAColor::White() );
-	dest_mesh.GetMaterial()[0].vecTexture[0].pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor::White() ) );
+	SetSingleColorTextureDesc(
+		dest_mesh.GetMaterial()[0].vecTexture[0],
+		SFloatRGBAColor::White(),
+		TextureFormat::A8R8G8B8,
+		1, // texture width
+		1  // texture height
+		);
 
 	vector<CMMA_TriangleSet>& triangle_sets = dest_mesh.GetTriangleSet();
 	triangle_sets.resize( 1 );
