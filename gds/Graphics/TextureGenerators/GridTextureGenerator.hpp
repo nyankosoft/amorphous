@@ -97,6 +97,21 @@ public:
 		for( int x=0; x<line_width_at_tex_border/2; x++ )
 			DrawVerticalLine( w - 1 - x, texture );
 	}
+
+	unsigned int GetArchiveObjectID() const { return TG_SINGLE_COLOR_TEXTURE_GENERATOR; }
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		ar & m_BaseColor & m_LineColor;
+
+		ar & m_NumRows & m_NumColumns;
+
+		ar & m_LineWidth;
+
+		ar & m_DoubleLineWidthAtTextureBorders;
+	}
 };
 
 

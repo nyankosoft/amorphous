@@ -4,6 +4,7 @@
 
 #include "TextureFillingAlgorithm.hpp"
 #include "../../Support/linear_interpolation.hpp"
+#include "../../Support/Serialization/Serialization_linear_interpolation.hpp"
 #include "../TextureHandle.hpp"
 
 
@@ -26,6 +27,13 @@ public:
 	void SetColors( linear_interpolation_table<SFloatRGBAColor>& colors )
 	{
 		m_Colors = colors;
+	}
+
+	virtual void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		ar & m_Colors;
 	}
 };
 
@@ -63,6 +71,8 @@ public:
 				texture.SetPixelARGB32( x, y, color.GetARGB32() );
 		}
 	}
+
+	unsigned int GetArchiveObjectID() const { return TG_HORIZONTAL_GRADATION_TEXTURE_GENERATOR; }
 };
 
 
@@ -99,6 +109,8 @@ public:
 				texture.SetPixelARGB32( x, y, color.GetARGB32() );
 		}
 	}
+
+	unsigned int GetArchiveObjectID() const { return TG_VERTICAL_GRADATION_TEXTURE_GENERATOR; }
 };
 
 

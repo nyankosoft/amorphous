@@ -1,5 +1,6 @@
 #include "GraphicsResourceDescs.hpp"
 #include "TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "TextureGenerators/TextureGeneratorFactory.hpp"
 #include "Shader/ShaderGenerator.hpp"
 #include "XML.hpp"
 
@@ -64,7 +65,9 @@ void TextureResourceDesc::Serialize( IArchive& ar, const unsigned int version )
 	ar & Width & Height & MipLevels;
 	ar & (int&)Format;
 	ar & UsageFlags;
-	ar & pLoader;
+
+	TextureGeneratorFactory factory;
+	ar.Polymorphic( pLoader, factory );
 }
 
 

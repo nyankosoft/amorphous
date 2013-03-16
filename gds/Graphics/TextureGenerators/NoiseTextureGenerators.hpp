@@ -47,6 +47,15 @@ public:
 	~UniformSingleColorNoiseTextureGenerator() {}
 
 	void FillTexture( LockedTexture& texture );
+
+	unsigned int GetArchiveObjectID() const { return TG_UNIFORM_SINGLE_COLOR_NOISE_TEXTURE_GENERATOR; }
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		ar & m_Color;
+	}
 };
 
 
@@ -79,6 +88,17 @@ public:
 	{}
 
 	void FillTexture( LockedTexture& texture );
+
+	unsigned int GetArchiveObjectID() const { return TG_STRIPE_TEXTURE_GENERATOR; }
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		ar & m_Color0 & m_Color1;
+
+		ar & m_StripeWidth;
+	}
 };
 
 } // namespace amorphous

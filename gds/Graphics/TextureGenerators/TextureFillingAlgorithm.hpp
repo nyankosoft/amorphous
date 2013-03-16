@@ -7,7 +7,7 @@
 #include "../FloatRGBAColor.hpp"
 #include "TextureFilter.hpp"
 #include "../../Support/Serialization/Serialization.hpp"
-#include "../../Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "../../Support/Serialization/Serialization_Color.hpp"
 
 
 namespace amorphous
@@ -52,6 +52,20 @@ class TextureFillingAlgorithm : public IArchiveObjectBase
 {
 public:
 
+	// types of texture generator - used for serialization
+	enum Type
+	{
+		TG_SINGLE_COLOR_TEXTURE_GENERATOR,
+		TG_GRID_TEXTURE_GENERATOR,
+		TG_HORIZONTAL_GRADATION_TEXTURE_GENERATOR,
+		TG_VERTICAL_GRADATION_TEXTURE_GENERATOR,
+		TG_PERLIN_NOISE_TEXTURE_GENERATOR,
+		TG_UNIFORM_SINGLE_COLOR_NOISE_TEXTURE_GENERATOR,
+		TG_STRIPE_TEXTURE_GENERATOR,
+		TG_BUILTIN_IMAGE_TEXTURE_LOADER,
+		NUM_TEXTURE_GENERATOR_TYPES
+	};
+
 	std::vector< boost::shared_ptr<TextureFilter> > m_pFilters;
 
 public:
@@ -63,9 +77,11 @@ public:
 
 	void AddFilter( boost::shared_ptr<TextureFilter> pFilter ) { m_pFilters.push_back( pFilter ); }
 
+//	virtual unsigned int GetArchiveObjectID() const { return TG_XXX; }
+
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-//		ar & m_pFilters;
+//		ar.Polymorphic( m_pFilters );
 	}
 };
 

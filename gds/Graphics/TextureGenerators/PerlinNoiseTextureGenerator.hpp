@@ -14,11 +14,13 @@ class PerlinNoiseTextureGenerator : public TextureFillingAlgorithm
 {
 public:
 
-	CPerlinNoiseParams m_Params;
+	PerlinNoiseParams m_Params;
 
 public:
 
-	inline PerlinNoiseTextureGenerator( const CPerlinNoiseParams& pn_params )
+	PerlinNoiseTextureGenerator() {}
+
+	inline PerlinNoiseTextureGenerator( const PerlinNoiseParams& pn_params )
 		:
 	m_Params(pn_params)
 	{}
@@ -26,6 +28,15 @@ public:
 	virtual ~PerlinNoiseTextureGenerator() {}
 
 	virtual void FillTexture( LockedTexture& texture );
+
+	virtual unsigned int GetArchiveObjectID() const { return TG_SINGLE_COLOR_TEXTURE_GENERATOR; }
+
+	virtual void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		ar & m_Params;
+	}
 };
 
 
@@ -33,7 +44,7 @@ class PerlinNoiseNormalMapGenerator : public PerlinNoiseTextureGenerator
 {
 public:
 
-	inline PerlinNoiseNormalMapGenerator( const CPerlinNoiseParams& pn_params )
+	inline PerlinNoiseNormalMapGenerator( const PerlinNoiseParams& pn_params )
 		:
 	PerlinNoiseTextureGenerator(pn_params)
 	{}
@@ -41,6 +52,8 @@ public:
 	virtual ~PerlinNoiseNormalMapGenerator() {}
 
 	void FillTexture( LockedTexture& texture );
+
+	unsigned int GetArchiveObjectID() const { return TG_SINGLE_COLOR_TEXTURE_GENERATOR; }
 };
 
 

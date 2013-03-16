@@ -25,6 +25,15 @@ public:
 	{
 		texture.Clear( m_Color );
 	}
+
+	unsigned int GetArchiveObjectID() const { return TG_SINGLE_COLOR_TEXTURE_GENERATOR; }
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		ar & m_Color;
+	}
 };
 
 } // amorphous

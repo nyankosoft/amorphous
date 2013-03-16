@@ -3,6 +3,7 @@
 
 
 #include "TextureFillingAlgorithm.hpp"
+#include "../../Support/Log/DefaultLog.hpp"
 #include "../../Support/BuiltinImage.hpp"
 
 
@@ -50,6 +51,15 @@ public:
 				texture.SetPixelARGB32( x, y, img.GetPixelARGB32(x,y) );
 			}
 		}
+	}
+
+	unsigned int GetArchiveObjectID() const { return TG_BUILTIN_IMAGE_TEXTURE_LOADER; }
+
+	void Serialize( IArchive& ar, const unsigned int version )
+	{
+		TextureFillingAlgorithm::Serialize( ar, version );
+
+		LOG_PRINT_ERROR( " The serialization of this class is not supported." );
 	}
 };
 
