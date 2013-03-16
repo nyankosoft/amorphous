@@ -4,18 +4,21 @@
 
 #include "gds/Input/fwd.hpp"
 #include "gds/Graphics.hpp"
+#include "gds/Graphics/LinePrimitives.hpp"
 #include "gds/GUI/fwd.hpp"
 #include "gds/MotionSynthesis/fwd.hpp"
 #include "gds/MotionSynthesis/SkeletonRenderer.hpp"
 
+using namespace amorphous;
 
-class CSkeletalMeshMotionViewer
+
+class SkeletalMeshMotionViewer
 {
-	CMeshObjectHandle m_SkeletalMesh;
+	MeshHandle m_SkeletalMesh;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_Technique;
+	ShaderTechniqueHandle m_Technique;
 
 	Matrix34 m_ViewerPose;
 
@@ -26,15 +29,15 @@ class CSkeletalMeshMotionViewer
 
 	void Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
-										  boost::shared_ptr<CSkeletalMesh>& pMesh );
+										  boost::shared_ptr<SkeletalMesh>& pMesh );
 
-	void UpdateVertexBlendTransforms( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh );
+	void UpdateVertexBlendTransforms( ShaderManager& shader_mgr, SkeletalMesh& skeletal_mesh );
 
-	void UpdateVertexBlendMatrices( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh );
+	void UpdateVertexBlendMatrices( ShaderManager& shader_mgr, SkeletalMesh& skeletal_mesh );
 
 public:
 
-	CSkeletalMeshMotionViewer();
+	SkeletalMeshMotionViewer();
 
 	void Init();
 	void LoadSkeletalMesh( const std::string& mesh_path );
@@ -51,9 +54,9 @@ class CMotionPrimitiveViewer
 {
 	CGM_DialogManagerSharedPtr m_pDialogManager;
 
-	boost::shared_ptr<CInputHandler> m_pGUIInputHandler;
+	boost::shared_ptr<InputHandler> m_pGUIInputHandler;
 
-	boost::shared_ptr<CInputHandler> m_pInputHandler;
+	boost::shared_ptr<InputHandler> m_pInputHandler;
 
 	std::vector< boost::shared_ptr<msynth::CMotionPrimitive> > m_vecpMotionPrimitive;
 
@@ -65,7 +68,7 @@ class CMotionPrimitiveViewer
 
 	msynth::CSkeletonRenderer m_SkeletonRenderer;
 
-	CCustomMesh m_UnitCube;
+	CustomMesh m_UnitCube;
 
 	CLineStrip m_MotionTrace;
 
@@ -77,7 +80,7 @@ class CMotionPrimitiveViewer
 
 	bool m_RenderMesh;
 
-	CSkeletalMeshMotionViewer m_MeshViewer;
+	SkeletalMeshMotionViewer m_MeshViewer;
 
 	float m_fPlaySpeedFactor;
 
@@ -124,7 +127,7 @@ public:
 
 	void UpdatePlayTime( float new_playtime );
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

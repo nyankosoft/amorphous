@@ -9,23 +9,10 @@
 #include "gds/Graphics/MeshUtilities.hpp"
 #include "gds/GUI.hpp"
 #include "gds/MotionSynthesis.hpp"
-//#include "gds/Support/CameraController.hpp"
-#include "gds/Support/memory_helpers.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 
 using namespace boost;
-
-
-extern int ConvertGICodeToWin32VKCode( int general_input_code );
-
-inline bool IsKeyPressed( int general_input_code )
-{
-	if( !IsValidGeneralInputCode( general_input_code ) )
-		return false;
-
-	return ( ( GetAsyncKeyState( ConvertGICodeToWin32VKCode(general_input_code) ) & 0x8000 ) != 0 );
-}
 
 
 static const float g_fIndicatorHeight = 0.05f;
@@ -53,7 +40,7 @@ class CTransformNodeToMeshBoneMap
 
 public:
 
-	void Create_r( const CBone& bone, CMM_Bone& mesh_bone, CSkeletalMesh& mesh )
+	void Create_r( const CBone& bone, CMM_Bone& mesh_bone, SkeletalMesh& mesh )
 	{
 		for( int i=0; i<bone.GetNumChildren(); i++ )
 		{
@@ -70,7 +57,7 @@ public:
 		}
 	}
 
-	void Create( CSkeleton& src_skeleton, CSkeletalMesh& mesh )
+	void Create( CSkeleton& src_skeleton, SkeletalMesh& mesh )
 	{
 		const CBone& root_bone = src_skeleton.GetRootBone();
 		CMM_Bone& mesh_bone = mesh.GetBone( root_bone.GetName() );
@@ -129,7 +116,7 @@ void DisplayLocalRotationIndicators()
 }
 
 
-CSkeletalMeshMotionViewer::CSkeletalMeshMotionViewer()
+SkeletalMeshMotionViewer::SkeletalMeshMotionViewer()
 :
 m_UseQuaternionForBoneTransformation(false)
 {
@@ -138,24 +125,24 @@ m_UseQuaternionForBoneTransformation(false)
 }
 
 
-void CSkeletalMeshMotionViewer::Init()
+void SkeletalMeshMotionViewer::Init()
 {
 	string mesh_filepath( "models/male_skinny_young.msh" );
 	LoadParamFromFile<string>( "params.txt", "Model", mesh_filepath );
 	LoadSkeletalMesh( mesh_filepath );
 
-	CShaderResourceDesc shader_desc;
+	ShaderResourceDesc shader_desc;
 	int use_embedded_shader = 1;
 //	LoadParamFromFile<string>( "config", "UseEmbeddedShader", mesh_filepath );
 	if( use_embedded_shader )
 	{
-		CGenericShaderDesc desc;
-		desc.Specular = CSpecularSource::DECAL_TEX_ALPHA;
+		GenericShaderDesc desc;
+		desc.Specular = SpecularSource::DECAL_TEX_ALPHA;
 		desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
-//		desc.ShaderLightingType = CShaderLightingType::PER_PIXEL;
+//		desc.ShaderLightingType = ShaderLightingType::PER_PIXEL;
 //		desc.Specular = CSpecularSource::NONE;
 
-		shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator(desc) );
+		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(desc) );
 	}
 	else
 	{
@@ -177,10 +164,10 @@ void CSkeletalMeshMotionViewer::Init()
 
 	m_Technique.SetTechniqueName( "VertBlend_PVL_1HSDL" );
 
-	shared_ptr<CShaderLightManager> pLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager();
+	shared_ptr<ShaderLightManager> pLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager();
 	if( pLightMgr )
 	{
-		CHemisphericDirectionalLight hsdl;
+		HemisphericDirectionalLight hsdl;
 		hsdl.Attribute.UpperDiffuseColor = SFloatRGBAColor( 0.6f, 0.6f, 0.6f, 1.0f );
 		hsdl.Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.3f, 0.3f, 0.3f, 1.0f );
 		hsdl.fIntensity = 1.0f;
@@ -191,11 +178,11 @@ void CSkeletalMeshMotionViewer::Init()
 }
 
 
-void CSkeletalMeshMotionViewer::LoadSkeletalMesh( const std::string& mesh_path )
+void SkeletalMeshMotionViewer::LoadSkeletalMesh( const std::string& mesh_path )
 {
-	CMeshResourceDesc desc;
+	MeshResourceDesc desc;
 	desc.ResourcePath = mesh_path;
-	desc.MeshType = CMeshType::SKELETAL;
+	desc.MeshType = MeshType::SKELETAL;
 
 	bool loaded = m_SkeletalMesh.Load( desc );
 	if( !loaded )
@@ -205,20 +192,20 @@ void CSkeletalMeshMotionViewer::LoadSkeletalMesh( const std::string& mesh_path )
 }
 
 
-shared_ptr<CSkeletalMesh> GetSkeletalMesh( CMeshObjectHandle& mesh_handle )
+shared_ptr<SkeletalMesh> GetSkeletalMesh( MeshHandle& mesh_handle )
 {
-	shared_ptr<CBasicMesh> pMesh = mesh_handle.GetMesh();
+	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh )
-		return shared_ptr<CSkeletalMesh>();
+		return shared_ptr<SkeletalMesh>();
 
-	shared_ptr<CSkeletalMesh> pSkeletalMesh
-		= boost::dynamic_pointer_cast<CSkeletalMesh,CBasicMesh>( pMesh );
+	shared_ptr<SkeletalMesh> pSkeletalMesh
+		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pMesh );
 
 	return pSkeletalMesh;
 }
 
 
-void CSkeletalMeshMotionViewer::UpdateVertexBlendTransforms( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh )
+void SkeletalMeshMotionViewer::UpdateVertexBlendTransforms( ShaderManager& shader_mgr, SkeletalMesh& skeletal_mesh )
 {
 	if( !shader_mgr.GetEffect() )
 		return;
@@ -232,7 +219,7 @@ void CSkeletalMeshMotionViewer::UpdateVertexBlendTransforms( CShaderManager& sha
 }
 
 
-void CSkeletalMeshMotionViewer::UpdateVertexBlendMatrices( CShaderManager& shader_mgr, CSkeletalMesh& skeletal_mesh )
+void SkeletalMeshMotionViewer::UpdateVertexBlendMatrices( ShaderManager& shader_mgr, SkeletalMesh& skeletal_mesh )
 {
 	if( !shader_mgr.GetEffect() )
 		return;
@@ -262,16 +249,16 @@ void CSkeletalMeshMotionViewer::UpdateVertexBlendMatrices( CShaderManager& shade
 }
 
 
-void CSkeletalMeshMotionViewer::Render()
+void SkeletalMeshMotionViewer::Render()
 {
-	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
+	shared_ptr<SkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
 	if( !pSkeletalMesh )
 		return;
 
 //	GraphicsDevice().SetWorldTransform( Matrix34Identity() );
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix34Identity() );
 
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( pShaderMgr )//&& pShaderMgr->GetEffect() )
 	{
 //		HRESULT hr = pShaderMgr->GetEffect()->SetFloatArray( "g_vEyePos", (float *)m_ViewerPose.vPosition, 3 );
@@ -300,9 +287,9 @@ void CSkeletalMeshMotionViewer::Render()
 extern int g_htrans_rev;
 
 /// NOTE: param 'bone' is used to calculate num_child_bones
-void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
+void SkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
-										  boost::shared_ptr<CSkeletalMesh>& pMesh )//,
+										  boost::shared_ptr<SkeletalMesh>& pMesh )//,
 //										  CMM_Bone& mesh_bone )
 {
 	// find the matrix index from the bone name (slow).
@@ -339,9 +326,9 @@ void CSkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
 }
 */
 
-void CSkeletalMeshMotionViewer::Update( const msynth::CKeyframe& keyframe )
+void SkeletalMeshMotionViewer::Update( const msynth::CKeyframe& keyframe )
 {
-	shared_ptr<CSkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
+	shared_ptr<SkeletalMesh> pSkeletalMesh = GetSkeletalMesh( m_SkeletalMesh );
 	if( !pSkeletalMesh )
 		return;
 
@@ -402,7 +389,7 @@ m_DisplaySkeletalMesh(true),
 m_pPlaytimeText(NULL),
 m_Playing(false)
 {
-	CBoxMeshGenerator box_mesh_generator;
+	BoxMeshGenerator box_mesh_generator;
 	box_mesh_generator.Generate( Vector3(1,1,1) );
 	C3DMeshModelArchive archive = box_mesh_generator.GetMeshArchive();
 	m_UnitCube.LoadFromArchive( archive );
@@ -415,7 +402,7 @@ CMotionPrimitiveViewer::~CMotionPrimitiveViewer()
 {
 	m_pGUIInputHandler->RemoveChild( m_pInputHandler.get() );
 //	or InputHub().RemoveInputHandler( m_pInputHandler.get() );
-	InputHub().RemoveInputHandler( m_pGUIInputHandler.get() );
+	GetInputHub().RemoveInputHandler( m_pGUIInputHandler.get() );
 }
 
 
@@ -452,17 +439,17 @@ void CMotionPrimitiveViewer::Init()
 	CGM_ControlRendererManagerSharedPtr pRendererMgr
 		= m_pDialogManager->GetControlRendererManagerSharedPtr();
 
-	shared_ptr<CGraphicsElementManager> pGraphicsElementMgr
+	shared_ptr<GraphicsElementManager> pGraphicsElementMgr
 		= pRendererMgr->GetGraphicsElementManager();
 
 //	pGraphicsElementMgr->LoadFont( 0, "Arial", CFontBase::FONTTYPE_NORMAL, 8, 16 );
-	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono-Bold-256", CFontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
+	pGraphicsElementMgr->LoadFont( 0, "BuiltinFont::BitstreamVeraSansMono-Bold-256", FontBase::FONTTYPE_TEXTURE, 8, 16, 0, 0 );
 
 	m_pPlaytimeText
-		= pDialog->AddStatic( STC_PLAYTIME, CGraphicsComponent::RectAtLeftBottom( 300, 40, 20, 20 ), "0.0" );
+		= pDialog->AddStatic( STC_PLAYTIME, GraphicsComponent::RectAtLeftBottom( 300, 40, 20, 20 ), "0.0" );
 
-	m_pGUIInputHandler = shared_ptr<CInputHandler>( new CGM_DialogInputHandler( m_pDialogManager ) );
-	InputHub().PushInputHandler( 0, m_pGUIInputHandler.get() );
+	m_pGUIInputHandler = shared_ptr<InputHandler>( new CGM_DialogInputHandler( m_pDialogManager ) );
+	GetInputHub().PushInputHandler( 0, m_pGUIInputHandler.get() );
 
 	// set up guide geometry
 	float h = g_fIndicatorHeight;
@@ -501,12 +488,19 @@ void CMotionPrimitiveViewer::Update( float dt )
 	}
 	else
 	{
-		if( IsKeyPressed( GIC_LSHIFT ) && IsKeyPressed( GIC_RIGHT ) )
-			m_fPlaySpeedFactor =  1.0f;
-		if( IsKeyPressed( GIC_LSHIFT ) && IsKeyPressed( GIC_LEFT ) )
-			m_fPlaySpeedFactor = -1.0f;
-/*		else
-			m_fPlaySpeedFactor =  0.0f;*/
+		shared_ptr<InputDeviceGroup> pInputDeivceGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
+		if( pInputDeivceGroup )
+		{
+			CInputState::Name left_shift = pInputDeivceGroup->GetInputState( GIC_LSHIFT );
+			CInputState::Name right      = pInputDeivceGroup->GetInputState( GIC_RIGHT );
+			CInputState::Name left       = pInputDeivceGroup->GetInputState( GIC_LEFT );
+			if( left_shift == CInputState::PRESSED && right == CInputState::PRESSED )
+				m_fPlaySpeedFactor =  1.0f;
+			if( left_shift == CInputState::PRESSED && left == CInputState::PRESSED )
+				m_fPlaySpeedFactor = -1.0f;
+/*			else
+				m_fPlaySpeedFactor =  0.0f;*/
+		}
 	}
 
 	UpdatePlayTime( m_fCurrentPlayTime + dt * m_fPlaySpeedFactor );
@@ -594,10 +588,10 @@ void CMotionPrimitiveViewer::Render()
 	 )
 	{
 		// borrow a font from GUI manager
-		shared_ptr<CGraphicsElementManager> pElementMgr
+		shared_ptr<GraphicsElementManager> pElementMgr
 			= m_pDialogManager->GetControlRendererManager()->GetGraphicsElementManager();
 
-		CFontBase *pFont = NULL;
+		FontBase *pFont = NULL;
 		if( pElementMgr )
 			pFont = pElementMgr->GetFont( 0 );
 
@@ -606,7 +600,7 @@ void CMotionPrimitiveViewer::Render()
 			int w=0,h=0;
 			pFont->GetFontSize( w, h );
 			pFont->SetFontSize( 8, 16 );
-			int sh = CGraphicsComponent::GetScreenHeight();
+			int sh = GraphicsComponent::GetScreenHeight();
 			int y = sh - 20 * 2 - 10;
 			pFont->DrawText( "V: Load a motion database", Vector2(300,(float)y+20*0), 0xFFFFFFFF );
 			pFont->DrawText( "C: Load a skeletal mesh",   Vector2(300,(float)y+20*1), 0xFFFFFFFF );
@@ -735,20 +729,24 @@ void CMotionPrimitiveViewer::UpdatePlayTime( float new_playtime )
 }
 
 
-void CMotionPrimitiveViewer::HandleInput( const SInputData& input )
+void CMotionPrimitiveViewer::HandleInput( const InputData& input )
 {
+	shared_ptr<InputDeviceGroup> pInputDeivceGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
+	const CInputState::Name left_shift
+		= pInputDeivceGroup ? pInputDeivceGroup->GetInputState( GIC_LSHIFT ) : CInputState::RELEASED;
+
 	switch( input.iGICode )
 	{
 	case GIC_RIGHT:
 		if( input.iType == ITYPE_KEY_PRESSED
 		 && !m_Playing
-		 && !IsKeyPressed( GIC_LSHIFT ) )
+		 && left_shift == CInputState::RELEASED )
 			UpdatePlayTime( m_fCurrentPlayTime + 1.0f / 60.0f );
 		break;
 	case GIC_LEFT:
 		if( input.iType == ITYPE_KEY_PRESSED
 		 && !m_Playing
-		 && !IsKeyPressed( GIC_LSHIFT ) )
+		 && left_shift == CInputState::RELEASED )
 			UpdatePlayTime( m_fCurrentPlayTime - 1.0f / 60.0f );
 		break;
 	case GIC_SPACE:

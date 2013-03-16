@@ -1,7 +1,8 @@
 #include "MotionEditorApp.hpp"
 #include "MotionPrimitiveViewer.h"
+#include "gds/3DMath/3DGameMath.hpp"
 #include "gds/Graphics/GraphicsDevice.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include "gds/Support/ParamLoader.hpp"
 
@@ -15,7 +16,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CApplicationBase *CreateApplicationInstance() { return new CMotionEditorApp; }
+CApplicationBase *amorphous::CreateApplicationInstance() { return new CMotionEditorApp; }
 
 
 /*
@@ -57,7 +58,7 @@ int CMotionEditorApp::Init()
 	if( 0 < ms_CommandLineArguments.size() )
 		cmdline = ms_CommandLineArguments[0];
 
-	shared_ptr<msynth::CMotionPrimitiveCompilerCreator> pCompilerCreator( new msynth::CBVHMotionPrimitiveCompilerCreator );
+	shared_ptr<msynth::CMotionPrimitiveCompilerCreator> pCompilerCreator( new msynth::BVHMotionPrimitiveCompilerCreator );
 	msynth::RegisterMotionPrimitiveCompilerCreator( pCompilerCreator );
 
 	msynth::CMotionDatabaseBuilder mdb;
@@ -135,7 +136,7 @@ void CMotionEditorApp::Render()
 /*
 void CMotionEditorApp::HandleInput( const SInputData& input )
 {
-	shared_ptr<CInputDeviceGroup> pDeviceGroup = InputDeviceHub().GetInputDeviceGroup(0);
+	shared_ptr<CInputDeviceGroup> pDeviceGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 
 	switch( input.iGICode )
 	{

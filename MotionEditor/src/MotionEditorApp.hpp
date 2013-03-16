@@ -8,6 +8,8 @@
 #include "gds/Graphics/Camera.hpp"
 #include "gds/Input/fwd.hpp"
 
+using namespace amorphous;
+
 
 class CMotionPrimitiveViewer;
 
