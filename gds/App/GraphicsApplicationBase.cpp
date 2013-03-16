@@ -207,7 +207,7 @@ void CGraphicsApplicationBase::Run()
 	}
 	else
 	{
-		// Probably an old display or a display on a small laptop; we go with XGA
+		// Probably an old display or a display on a small laptop; we go with XGA.
 		w = 1024;
 		h = 768;
 	}
