@@ -338,6 +338,11 @@ public:
 				if( pData )
 					(*this) & (*(pData.get()));	// the object must override the Serialize function
 			}
+			else
+			{
+				// id < 0 (this should always be id == -1):
+				// No serialized object to load (see the if( m_Mode == MODE_OUTPUT ) block above).
+			}
 		}
 	}
 
