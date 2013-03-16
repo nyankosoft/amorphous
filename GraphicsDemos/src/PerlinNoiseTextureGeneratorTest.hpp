@@ -2,7 +2,6 @@
 #define  __PerlinNoiseTextureGeneratorTest_H__
 
 
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
 #include "gds/Graphics/MeshObjectHandle.hpp"
 #include "gds/Graphics/TextureHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
