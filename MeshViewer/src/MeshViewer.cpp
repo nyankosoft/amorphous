@@ -537,31 +537,6 @@ int CMeshViewer::Init()
 		// load models
 		bool loaded = LoadModel( mesh_filepath );
 	}
-/*
-	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
-
-	// set the world matrix to the identity
-	pShaderManager->SetWorldTransform( Matrix44Identity() );
-
-	// set the projection matrix
-    D3DXMATRIX matProj;
-    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 640.0f / 480.0f, 0.5f, 320.0f );
-    DIRECT3D9.GetDevice()->SetTransform( D3DTS_PROJECTION, &matProj );
-	pShaderManager->SetProjectionTransform( matProj );
-*/
-/*
-	// initialize the light for the shader
-	m_ShaderLightManager.Init();
-
-	// create a light for the scene
-	CHemisphericDirLight light;
-	light.UpperColor.SetRGBA( 1.00f, 1.00f, 1.00f, 1.00f );
-	light.LowerColor.SetRGBA( 0.25f, 0.25f, 0.25f, 1.00f );
-	Vector3 vDir = Vector3(-1.0f,-3.0f,-1.5f);
-	Vec3Normalize( vDir, vDir );
-	light.vDirection = vDir;
-	m_ShaderLightManager.SetLight( 0, light );
-*/
 
 	SetDefaultLinearFog();
 
