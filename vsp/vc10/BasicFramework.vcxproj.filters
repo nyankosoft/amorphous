@@ -807,6 +807,9 @@
     <ClCompile Include="..\..\gds\Graphics\TextureGenerators\TextureFilter.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
@@ -1873,6 +1876,9 @@
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\TextureFilter.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\TextureGeneratorFactory.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
   </ItemGroup>
