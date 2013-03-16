@@ -6,6 +6,7 @@
 #include "gds/Support/MiscAux.hpp"
 #include "gds/Support/CameraController.hpp"
 #include "gds/Support/BitmapImage.hpp"
+#include "gds/Support/WindowMisc_Win32.hpp"
 #include "gds/Input/InputHub.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
 #include "gds/Graphics/Shader/ShaderManager.hpp"
@@ -194,8 +195,25 @@ void CGraphicsApplicationBase::Run()
 	// Create the instance of the test class
 //	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );
 
-	int w = 1024;//GetWindowWidth();
-	int h = 768;//GetWindowHeight();
+	unsigned int res_x = 0, res_y = 0;
+	GetCurrentPrimaryDisplayResolution( res_x, res_y );
+
+	int w=0,h=0;
+	if( 1280 < res_x )
+	{
+		// A rsolution higher than HD 720; An HD 720-sized window should fit.
+		w = 1280;
+		h = 720;
+	}
+	else
+	{
+		// Probably an old display or a display on a small laptop; we go with XGA
+		w = 1024;
+		h = 768;
+	}
+
+	m_Camera.SetAspectRatio( (float)w / (float)h );
+
 	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 	GameWindowManager().CreateGameWindow( w, h, mode, app_title );
 
