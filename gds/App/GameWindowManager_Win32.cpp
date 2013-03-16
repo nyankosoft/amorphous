@@ -17,6 +17,16 @@ m_hWnd(NULL)
 }
 
 
+void CGameWindowManager_Win32::SetWindowTitleText( const std::string& text )
+{
+	BOOL res = SetWindowText( m_hWnd, text.c_str() );
+	if( !res )
+	{
+//		LOG_PRINT_ERROR( "Failed to set the window title text." );
+	}
+}
+
+
 bool CGameWindowManager_Win32::IsMouseCursorInClientArea()
 {
 	long frame_w = 0, frame_h = 0;

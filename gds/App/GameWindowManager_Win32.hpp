@@ -36,6 +36,8 @@ public:
 
 //	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );
 
+	void SetWindowTitleText( const std::string& text );
+
 	HWND GetWindowHandle() { return m_hWnd; }
 
 	virtual void OnMainLoopFinished() {}
