@@ -22,9 +22,6 @@ m_fTextureRepeats( 1.0f )
 {
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.2f, 1.0f ) );
 
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
-
 	m_pTimer.reset( new Timer );
 
 	InitRand( (unsigned long)timeGetTime() );
@@ -38,34 +35,13 @@ CPerlinNoiseTextureGeneratorTest::~CPerlinNoiseTextureGeneratorTest()
 
 bool CPerlinNoiseTextureGeneratorTest::InitShader()
 {
-	// initialize shader
-/*	bool shader_loaded = m_Shader.Load( "./shaders/PerlinNoiseTextureGeneratorTest.fx" );
-	
-	if( !shader_loaded )
-		return false;
-
-	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
-
-	HemisphericDirectionalLight light;
-	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
-	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
-
-//	pShaderLightMgr->SetLight( 0, light );
-//	pShaderLightMgr->SetDirectionalLightOffset( 0 );
-//	pShaderLightMgr->SetNumDirectionalLights( 1 );
-	pShaderLightMgr->SetHemisphericDirectionalLight( light );
-
-	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-	m_Shader.GetShaderManager()->SetProjectionTransform( proj );
-*/
 	return true;
 }
 
 
 void CPerlinNoiseTextureGeneratorTest::CreatePerlinNoiseTexture()
 {
-	CPerlinNoiseParams pn_params;
+	PerlinNoiseParams pn_params;
 	pn_params.seed = (int)RandInt32();
 //	int octaves = 1; float freq = 1; float amp = 1; int seed = 0;
 	const char *params_file = "PerlinNoiseTextureGeneratorDemo/params.txt";
