@@ -57,7 +57,7 @@ void Win32StdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 			UpdateInputState( input );
 			GetInputHub().UpdateInput( input );
 		}
-		else if( msg == WM_MBUTTONDOWN )
+		else if( msg == WM_MBUTTONDOWN || msg == WM_MBUTTONUP )
 		{
 			input.iGICode = GIC_MOUSE_BUTTON_M;
 			UpdateInputState( input );
