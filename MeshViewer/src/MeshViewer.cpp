@@ -19,7 +19,7 @@
 #include "gds/Input.hpp"
 #include "gds/App/GameWindowManager.hpp"
 #include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 #include "gds/Support/FileOpenDialog_Win32.hpp"
 #include <boost/filesystem.hpp>
 
