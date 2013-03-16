@@ -37,6 +37,25 @@ public:
 	tilable(false)
 	{}
 
+	PerlinNoiseParams(
+		int octaves_,
+		float freq_ = 10,
+		float amp_ = 10,
+		float min_value_ = 0,
+		float max_value_ = 1,
+		int seed_ = 0,
+		bool tilable_ = false
+		)
+		:
+	octaves(octaves_),
+	freq(freq_),
+	amp(amp_),
+	min_value(min_value_),
+	max_value(max_value_),
+	seed(seed_),
+	tilable(tilable_)
+	{}
+
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
 		ar & octaves;
