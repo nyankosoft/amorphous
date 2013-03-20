@@ -158,7 +158,7 @@ void CBE_ParticleSet::InitParticleSetMesh()
 
 	ar.GetMaterial().resize( 1 );
 	ar.GetMaterial()[0].vecTexture.resize( 1 );
-	ar.GetMaterial()[0].vecTexture[0].strFilename = m_BillboardTextureFilepath;
+	ar.GetMaterial()[0].vecTexture[0].ResourcePath = m_BillboardTextureFilepath;
 
 	m_ParticleSetMesh.LoadFromArchive( ar );
 }
