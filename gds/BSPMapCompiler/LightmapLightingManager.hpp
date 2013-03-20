@@ -14,14 +14,12 @@
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Support/SafeDeleteVector.hpp"
-
+//#include "Support/StatusDisplay/StatusDisplay.hpp"
+#include "Lightmap.hpp"
 
 namespace amorphous
 {
-//#include "Support/StatusDisplay/StatusDisplay.hpp"
-//#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
-#include "Lightmap.hpp"
 
 
 class CLightmapLightingManager;
@@ -38,21 +36,21 @@ class CLightRaytrace
 {
 protected:
 
-	boost::shared_ptr<CLight> m_pLight;
+	boost::shared_ptr<Light> m_pLight;
 
 	/// polygon mesh for ray check
 	/// - borrowed reference
-	CAABTree<CIndexedPolygon> *m_pGeometry;
+	AABTree<IndexedPolygon> *m_pGeometry;
 
 public:
 
-	CLightRaytrace( boost::shared_ptr<CLight> pLight ) : m_pLight(pLight) {}
+	CLightRaytrace( boost::shared_ptr<Light> pLight ) : m_pLight(pLight) {}
 
 	virtual ~CLightRaytrace() {}
 
 	virtual void CalcLightAmount( CLightmap& rLightmap, int x, int y ) = 0;
 
-	void SetGeometry( CAABTree<CIndexedPolygon> *pGeometry ) { m_pGeometry = pGeometry; }
+	void SetGeometry( AABTree<IndexedPolygon> *pGeometry ) { m_pGeometry = pGeometry; }
 };
 
 
@@ -62,7 +60,7 @@ class CPointLightRaytrace : public CLightRaytrace
 
 public:
 
-	CPointLightRaytrace( boost::shared_ptr<CLight> pLight ) : CLightRaytrace(pLight) {}
+	CPointLightRaytrace( boost::shared_ptr<Light> pLight ) : CLightRaytrace(pLight) {}
 
 	inline virtual void CalcLightAmount( CLightmap& rLightmap, int x, int y );
 
@@ -75,7 +73,7 @@ class CDirectionalLightRaytrace : public CLightRaytrace
 
 public:
 
-	CDirectionalLightRaytrace( boost::shared_ptr<CLight> pLight ) : CLightRaytrace(pLight) {}
+	CDirectionalLightRaytrace( boost::shared_ptr<Light> pLight ) : CLightRaytrace(pLight) {}
 
 	inline virtual void CalcLightAmount( CLightmap& rLightmap, int x, int y );
 
@@ -93,7 +91,7 @@ class CLightmapRaytraceTask
 
 	CLightmapLightingManager *m_pMgr;
 
-	boost::shared_ptr<CAABTree<CIndexedPolygon>> m_pGeometry;
+	boost::shared_ptr<AABTree<IndexedPolygon>> m_pGeometry;
 
 public:
 
@@ -130,14 +128,14 @@ public:
 class CLightmapLightingManager
 {
 	/// pointer to the array of pointers to lights
-	std::vector<boost::shared_ptr<CLight>> *m_pvecpLight;
+	std::vector<boost::shared_ptr<Light>> *m_pvecpLight;
 
 	std::vector<CLightmap> *m_pvecLightmap;
 
-	CAABTree<CIndexedPolygon> *m_pGeometry;
+	AABTree<IndexedPolygon> *m_pGeometry;
 
 	/// ambient light: global & uniform lighting for the entire map
-	CAmbientLight m_AmbientLight;
+	AmbientLight m_AmbientLight;
 
 	float m_fContrast;
 
@@ -167,15 +165,15 @@ class CLightmapLightingManager
 
 private:
 
-	std::vector<CLightRaytrace *> CreateLightRaytraceTasks( std::vector<boost::shared_ptr<CLight>> *pvecpLight );
+	std::vector<CLightRaytrace *> CreateLightRaytraceTasks( std::vector<boost::shared_ptr<Light>> *pvecpLight );
 
 public:
 
 	CLightmapLightingManager();
 
-	bool CreateLightmaps( std::vector<boost::shared_ptr<CLight>> *pvecpLight,
+	bool CreateLightmaps( std::vector<boost::shared_ptr<Light>> *pvecpLight,
                           std::vector<CLightmap> *pvecLightmap,
-						  CAABTree<CIndexedPolygon> *pGeometry );
+						  AABTree<IndexedPolygon> *pGeometry );
 
 //	void SetLights( vector<CLight *>& rvecpLight ) { m_pvecpLight = &rvecpLight; }
 

@@ -1,6 +1,7 @@
 #include "Lightmap.hpp"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Graphics/Direct3D/Conversions.hpp"
 
 
 namespace amorphous
@@ -47,9 +48,9 @@ void CLightmap::SetSize( const int width, const int height )
 //	m_vecTexelState.resize( width, height, LMP_TEXEL_UNFILLED );
 
 	SFloatRGBColor color;
-	color.fRed = color.fGreen = 0.0f;
-//	color.fBlue = 1.0f;
-	color.fBlue = 0.0f;
+	color.red = color.green = 0.0f;
+//	color.blue = 1.0f;
+	color.blue = 0.0f;
 	m_vecIntensity.resize( width, height, color );
 
 //	m_vecbValidTexel.resize( width, height, true );
@@ -67,13 +68,13 @@ void CLightmap::SetTextureUV( const SRect& rRect,
 {
 	const size_t iNumGroupFaces = m_vecGroupedFaceIndex.size();
 	TEXCOORD2 texcoord;
-	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = GetPolygonBuffer();
 
 	Vector3 vLocalPos;
 
 	for( size_t i=0; i<iNumGroupFaces; i++)
 	{
-		CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
+		IndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
 		const int iNumVertices = polygon.GetNumVertices();
 		for( int j=0; j<iNumVertices; j++ )
 		{
@@ -88,7 +89,7 @@ void CLightmap::SetTextureUV( const SRect& rRect,
 
 			texcoord.v *= (-1.0f);
 //			polygon.SetLightmapTextureUV( j, texcoord );
-			CGeneral3DVertex& v = polygon.Vertex( j );
+			General3DVertex& v = polygon.Vertex( j );
 			v.m_TextureCoord[tex_coord_index] = texcoord;
 		}
 	}
@@ -97,7 +98,7 @@ void CLightmap::SetTextureUV( const SRect& rRect,
 
 void CLightmap::ComputeNormalsOnLightmap()
 {
-	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = GetPolygonBuffer();
 	size_t i;
 	const size_t iNumGroupedFaces = m_vecGroupedFaceIndex.size();
 
@@ -120,7 +121,7 @@ void CLightmap::ComputeNormalsOnLightmap()
 			fMinDist = 99999;
 			for(i=0; i<iNumGroupedFaces; i++)
 			{
-				CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
+				IndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
 				polygon.IsInSweptVolume(rvPoint, fDist);
 				if( fDist < fMinDist )
 				{
@@ -135,7 +136,7 @@ void CLightmap::ComputeNormalsOnLightmap()
 
 			for(i=0; i<iNumGroupedFaces; i++)
 			{
-				CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
+				IndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[i] ];
 
 				if( polygon.IsOnPolygon( rvPoint ) )
 				{
@@ -171,8 +172,8 @@ void CLightmap::TransformLightDirectionToLocalFaceCoord()
 
 	// TODO: calc Matrix34 for world to local transfromation
 	
-	vector<CIndexedPolygon>& polygon_buffer = GetPolygonBuffer();
-	CIndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[0] ];
+	vector<IndexedPolygon>& polygon_buffer = GetPolygonBuffer();
+	IndexedPolygon& polygon = polygon_buffer[ m_vecGroupedFaceIndex[0] ];
 
 	// normalize the light direction vectors
 	const int width  = m_Rect.GetWidth();
@@ -190,7 +191,10 @@ void CLightmap::TransformLightDirectionToLocalFaceCoord()
 		{
 			Vec3Normalize( v, m_vecvLightDir(x,y) );
 
-			D3DXVec3TransformCoord( &m_vecvLightDir(x,y), &v, &matToLocal );
+			D3DXVECTOR3 src = ToD3DXVECTOR3( v );
+			D3DXVECTOR3 dest( D3DXVECTOR3(0,0,0) );
+			D3DXVec3TransformCoord( &dest, &src, &matToLocal );
+			m_vecvLightDir(x,y) = ToVector3( dest );
 		}
 	}
 }

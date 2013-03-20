@@ -1,12 +1,12 @@
-
 #include "LightmapLightingManager.hpp"
 
 
 namespace amorphous
 {
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 void CLightmapRaytraceTask::RunTask()
@@ -109,12 +109,12 @@ void CLightmapLightingManager::ScaleIntensityAndAddAmbientLight()
 					continue;
 
 				const SFloatRGBColor& rTexel = rLightmap.GetTexelColor(x,y);
-				if( rTexel.fRed   > maxintensityR )	maxintensityR = rTexel.fRed;
-				if( rTexel.fRed   < minintensityR )	minintensityR = rTexel.fRed;
-				if( rTexel.fGreen > maxintensityG )	maxintensityG = rTexel.fGreen;
-				if( rTexel.fGreen < minintensityG )	minintensityG = rTexel.fGreen;
-				if( rTexel.fBlue  > maxintensityB )	maxintensityB = rTexel.fBlue;
-				if( rTexel.fBlue  < minintensityB )	minintensityB = rTexel.fBlue;
+				if( rTexel.red   > maxintensityR )	maxintensityR = rTexel.red;
+				if( rTexel.red   < minintensityR )	minintensityR = rTexel.red;
+				if( rTexel.green > maxintensityG )	maxintensityG = rTexel.green;
+				if( rTexel.green < minintensityG )	minintensityG = rTexel.green;
+				if( rTexel.blue  > maxintensityB )	maxintensityB = rTexel.blue;
+				if( rTexel.blue  < minintensityB )	minintensityB = rTexel.blue;
 			}
 	}
 
@@ -140,26 +140,26 @@ void CLightmapLightingManager::ScaleIntensityAndAddAmbientLight()
 					continue;
 
 				SFloatRGBColor texel = rLightmap.GetTexelColor(x,y);
-				texel.fRed   = ( texel.fRed   / scaleR ) * ( 1.0 - ambcolor.fRed   ) + ambcolor.fRed;
-				texel.fGreen = ( texel.fGreen / scaleG ) * ( 1.0 - ambcolor.fGreen ) + ambcolor.fGreen;
-				texel.fBlue  = ( texel.fBlue  / scaleB ) * ( 1.0 - ambcolor.fBlue  ) + ambcolor.fBlue;
-				if( texel.fRed   >= 1.0 ) texel.fRed = 1.0;
-				if( texel.fGreen >= 1.0 ) texel.fGreen = 1.0;
-				if( texel.fBlue  >= 1.0 ) texel.fBlue = 1.0;
+				texel.red   = ( texel.red   / scaleR ) * ( 1.0 - ambcolor.red   ) + ambcolor.red;
+				texel.green = ( texel.green / scaleG ) * ( 1.0 - ambcolor.green ) + ambcolor.green;
+				texel.blue  = ( texel.blue  / scaleB ) * ( 1.0 - ambcolor.blue  ) + ambcolor.blue;
+				if( texel.red   >= 1.0 ) texel.red = 1.0;
+				if( texel.green >= 1.0 ) texel.green = 1.0;
+				if( texel.blue  >= 1.0 ) texel.blue = 1.0;
 				rLightmap.SetTexelColor( x, y, texel );
 			}
 	}
 }
 
 
-vector<CLightRaytrace *> CLightmapLightingManager::CreateLightRaytraceTasks( vector<shared_ptr<CLight>> *pvecpLight )
+vector<CLightRaytrace *> CLightmapLightingManager::CreateLightRaytraceTasks( vector< shared_ptr<Light> > *pvecpLight )
 {
-	vector<shared_ptr<CLight>> rvecpLight = *pvecpLight;
+	vector< shared_ptr<Light> > rvecpLight = *pvecpLight;
 
 	// classify lights
 	const size_t num_lights = rvecpLight.size();
 
-//	CAmbientLight *pAmbientLight;
+//	AmbientLight *pAmbientLight;
 
 	vector<CLightRaytrace *> vecpLightRaytraceTask;
 
@@ -167,25 +167,25 @@ vector<CLightRaytrace *> CLightmapLightingManager::CreateLightRaytraceTasks( vec
 	{
 		switch( rvecpLight[i]->GetLightType() )
 		{
-		case CLight::POINT:
-		case CLight::HEMISPHERIC_POINT:
+		case Light::POINT:
+		case Light::HEMISPHERIC_POINT:
 			vecpLightRaytraceTask.push_back( new CPointLightRaytrace(rvecpLight[i]) );
 			break;
 
-		case CLight::DIRECTIONAL:
-		case CLight::HEMISPHERIC_DIRECTIONAL:
+		case Light::DIRECTIONAL:
+		case Light::HEMISPHERIC_DIRECTIONAL:
 			vecpLightRaytraceTask.push_back( new CDirectionalLightRaytrace(rvecpLight[i]) );
 			break;
 
-		case CLight::AMBIENT:
+		case Light::AMBIENT:
 			{
-				CAmbientLight *pAmbientLight = dynamic_cast<CAmbientLight *>(rvecpLight[i].get());
+				AmbientLight *pAmbientLight = dynamic_cast<AmbientLight *>(rvecpLight[i].get());
 				if( pAmbientLight )
 					m_AmbientLight = *pAmbientLight;
 			}
 			break;
 
-//		case CLight::ZONE_AMBIENT:
+//		case Light::ZONE_AMBIENT:
 //			m_vecpZoneAmbientLight.push_back( (CZoneAmbientLight *)(m_pvecpLight->at(i)) );
 //			break;
 
@@ -197,21 +197,21 @@ vector<CLightRaytrace *> CLightmapLightingManager::CreateLightRaytraceTasks( vec
 	return vecpLightRaytraceTask;
 }
 
-shared_ptr<CAABTree<CIndexedPolygon>> CreateAABTreeCopy( CAABTree<CIndexedPolygon> *pGeometry )
+shared_ptr<AABTree<IndexedPolygon>> CreateAABTreeCopy( AABTree<IndexedPolygon> *pGeometry )
 {
 	switch( pGeometry->GetTreeType() )
 	{
-	case CAABTree<CIndexedPolygon>::NON_LEAFY:
+	case AABTree<IndexedPolygon>::NON_LEAFY:
 		{
-			CNonLeafyAABTree<CIndexedPolygon> *pNonLeafy = dynamic_cast<CNonLeafyAABTree<CIndexedPolygon> *>(pGeometry);
-			return shared_ptr<CAABTree<CIndexedPolygon>>( new CNonLeafyAABTree<CIndexedPolygon>( *pNonLeafy ) );
+			CNonLeafyAABTree<IndexedPolygon> *pNonLeafy = dynamic_cast<CNonLeafyAABTree<IndexedPolygon> *>(pGeometry);
+			return shared_ptr<AABTree<IndexedPolygon>>( new CNonLeafyAABTree<IndexedPolygon>( *pNonLeafy ) );
 		}
 		break;
 
-	case CAABTree<CIndexedPolygon>::LEAFY:
+	case AABTree<IndexedPolygon>::LEAFY:
 		{
-			CLeafyAABTree<CIndexedPolygon> *pLeafy = dynamic_cast<CLeafyAABTree<CIndexedPolygon> *>(pGeometry);
-			return shared_ptr<CAABTree<CIndexedPolygon>>( new CLeafyAABTree<CIndexedPolygon>( *pLeafy ) );
+			LeafyAABTree<IndexedPolygon> *pLeafy = dynamic_cast<LeafyAABTree<IndexedPolygon> *>(pGeometry);
+			return shared_ptr<AABTree<IndexedPolygon>>( new LeafyAABTree<IndexedPolygon>( *pLeafy ) );
 		}
 		break;
 
@@ -219,7 +219,7 @@ shared_ptr<CAABTree<CIndexedPolygon>> CreateAABTreeCopy( CAABTree<CIndexedPolygo
 		break;
 	}
 
-	return shared_ptr<CAABTree<CIndexedPolygon>>();
+	return shared_ptr<AABTree<IndexedPolygon>>();
 }
 
 
@@ -249,9 +249,9 @@ static void StartRaytraceTask()
 }
 
 
-bool CLightmapLightingManager::CreateLightmaps( vector<shared_ptr<CLight>> *pvecpLight,
+bool CLightmapLightingManager::CreateLightmaps( vector<shared_ptr<Light>> *pvecpLight,
 											    vector<CLightmap> *pvecLightmap,
-											    CAABTree<CIndexedPolygon> *pGeometry )
+											    AABTree<IndexedPolygon> *pGeometry )
 {
 	LOG_FUNCTION_SCOPE();
 

@@ -160,7 +160,7 @@ bool CLightmapBuilder::UpdateTextureCoordinates()
 	m_Desc.m_pMesh->SetVertexFormatFlags( m_Desc.m_pMesh->GetVertexFormatFlags() | tex_flags[m_Desc.m_LightmapTextureCoordsIndex] );
 
 	// Each general vertex must have texture coordinates for lightmap texture
-	vector<CGeneral3DVertex>& vert_buffer = *(m_Desc.m_pMesh->GetVertexBuffer().get());
+	vector<General3DVertex>& vert_buffer = *(m_Desc.m_pMesh->GetVertexBuffer().get());
 	if( vert_buffer.size() == 0 )
 	{
 		LOG_PRINT_ERROR( " - Source geometry has no vertex" );
@@ -217,7 +217,7 @@ bool CLightmapBuilder::CreateLightmapTexture( CLightmapDesc& desc )
 	// compute normals for all the sampling points of the lightmaps
 	ComputeNormalsOnLightmap();
 
-	CNonLeafyAABTree<CIndexedPolygon> polygon_tree;
+	CNonLeafyAABTree<IndexedPolygon> polygon_tree;
 	polygon_tree.Build( m_Desc.m_pMesh->GetPolygonBuffer() );
 
 	CLightmapLightingManager lighting_mgr;
@@ -282,7 +282,7 @@ bool CLightmapBuilder::CreateLightmapTexture( CLightmapDesc& desc )
 void CLightmapBuilder::UpdateMeshMaterials()
 {
 	vector<CMMA_Material> new_material_buffer;
-	vector<CIndexedPolygon>& orig_polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& orig_polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
 	vector<CMMA_Material>& src_material_buffer = m_Desc.m_pMesh->GetMaterialBuffer();
 
 	new_material_buffer.reserve( src_material_buffer.size() );
@@ -307,7 +307,7 @@ void CLightmapBuilder::UpdateMeshMaterials()
 void CLightmapBuilder::GroupFaces()
 {
 	//vector<int>& rveciGroupedFacesIndex, 
-	vector<CIndexedPolygon>& polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
+	vector<IndexedPolygon>& polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
 
 	std::vector<int> vecTargetPolygonIndex;
 	const size_t num_polygons = m_Desc.m_pMesh->GetPolygonBuffer().size();
@@ -344,7 +344,7 @@ void CLightmapBuilder::GroupFaces()
 		for( i=0; i<num_lightmapped_polygons; i++ )
 		{
 			index0 = vecTargetPolygonIndex[i];
-			const CIndexedPolygon& polygon0 = polygon_buffer[ index0 ];
+			const IndexedPolygon& polygon0 = polygon_buffer[ index0 ];
 
 			if( Grouped[index0] )
 				continue; // the lightmap has been already created for this face.
@@ -373,12 +373,12 @@ void CLightmapBuilder::GroupFaces()
 			continue; // turn off face grouping when light direction map textures are created
 
 		vector<int>& rveciGroupedFacesIndex = rLightmap.GetGroupedFacesIndex();
-		CIndexedPolygon& polygon0 = polygon_buffer[ index0 ];
+		IndexedPolygon& polygon0 = polygon_buffer[ index0 ];
 
 		for( j=i+1; j<num_lightmapped_polygons; j++ )
 		{
 			int index1 = vecTargetPolygonIndex[j];
-			CIndexedPolygon& polygon1 = polygon_buffer[ index1 ];
+			IndexedPolygon& polygon1 = polygon_buffer[ index1 ];
 			if( Grouped[index1] )
 				continue;	//this face already has a lightmap
 
@@ -432,8 +432,8 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 
 	vector<int>& rveciGroupedFacesIndex = lightmap.m_vecGroupedFaceIndex;
 
-	vector<CIndexedPolygon>& polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
-	const CIndexedPolygon& polygon0 = polygon_buffer[ rveciGroupedFacesIndex[0] ];
+	vector<IndexedPolygon>& polygon_buffer = m_Desc.m_pMesh->GetPolygonBuffer();
+	const IndexedPolygon& polygon0 = polygon_buffer[ rveciGroupedFacesIndex[0] ];
 	const SPlane& rPlane = polygon0.GetPlane();
 
 	lightmap.m_Plane = rPlane;
@@ -464,7 +464,7 @@ void CLightmapBuilder::CalculateLightMapPosition( CLightmap& lightmap )
 	const size_t num_polygons = rveciGroupedFacesIndex.size();
 	for(size_t i=0; i<num_polygons; i++)
 	{
-		CIndexedPolygon& polygon = polygon_buffer[ rveciGroupedFacesIndex.at(i) ];
+		IndexedPolygon& polygon = polygon_buffer[ rveciGroupedFacesIndex.at(i) ];
 
 		iNumVertices = polygon.GetNumVertices();
 		for(j=0; j<iNumVertices; j++)
@@ -634,7 +634,7 @@ void CLightmapBuilder::AddLightmapTexturesToDB( CBinaryDatabase<std::string>& db
 	const int num_textures = (int)m_vecLightmapTexture.size();
 	for( int i=0; i<num_textures; i++)
 	{
-		CImageArchive img( 
+		ImageArchive img( 
 		m_vecLightmapTexture[i].SaveTextureImageToFile(
 			dirpath_and_bodyname + fmt_string("%03d",i) + img_file_suffix );
 	}

@@ -34,7 +34,7 @@ bool CLightmapTexture::AddLightmap( CLightmap& rLightmap, int index )
 	padded_rect.right  = orig_rect.right + 2;
 	padded_rect.bottom = orig_rect.bottom + 2;
 
-	if( CRectNode::INVALID_INDEX == m_LightmapTree.Insert( padded_rect, index ) )
+	if( RectNode::INVALID_INDEX == m_LightmapTree.Insert( padded_rect, index ) )
 		return false;	// couldn't find a place to put the lightmap
 	else
 	{
@@ -158,7 +158,7 @@ void CLightmapTexture::UpdateMaterials(
 		const int num_polygons = lightmap.GetNumPolygons();
 		for( int j=0; j<num_polygons; j++ )
 		{
-			CIndexedPolygon& polygon = lightmap.GetPolygon( j );
+			IndexedPolygon& polygon = lightmap.GetPolygon( j );
 			int new_index = get_new_index( OldToNewMatIndex, polygon.m_MaterialIndex );
 			if( new_index == -1 )
 			{
@@ -180,12 +180,12 @@ void CLightmapTexture::UpdateMaterials(
 
 		// add lightmap texture
 		while( (int)new_material.vecTexture.size() <= texture_archive_index )
-			new_material.vecTexture.push_back( CMMA_Texture() );
+			new_material.vecTexture.push_back( TextureResourceDesc() );
 
 //		"(database filepath)::(key name)";
 //		new_material.vecTexture[texture_archive_index].strFilename = db_filepath + "::" + m_KeyName;
 
-		new_material.vecTexture[texture_archive_index].strFilename = m_ImageFilepath;
+		new_material.vecTexture[texture_archive_index].ResourcePath = m_ImageFilepath;
 	}
 }
 
@@ -332,7 +332,7 @@ void CLightmapTexture::FillMarginRegions()
 
 			// found an unfilled texel - fill it with the averaged color of adjacent & filled texels
 			iNumSamples = 0;
-			color.fRed = color.fGreen = color.fBlue = 0;
+			color.red = color.green = color.blue = 0;
 			for(k=0; k<8; k++)
 			{
 				if( 0<=i+x[k] && i+x[k]<texture_width && 0<=j+y[k] && j+y[k]<texture_height &&
