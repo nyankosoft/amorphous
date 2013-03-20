@@ -7,13 +7,10 @@
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"
-#include "Support/SafeDeleteVector.hpp"
 
 
 namespace amorphous
 {
-
-//#include "Support/Serialization/BinaryDatabase.hpp"
 
 using std::vector;
 using namespace boost;
