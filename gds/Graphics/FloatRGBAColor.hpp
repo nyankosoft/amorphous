@@ -55,6 +55,18 @@ struct SFloatRGBAColor
 	inline U8 GetBlueByte()  const { return (U8)get_clamped( (U32)(blue  * 256.0f), (U32)0, (U32)255 ); }
 	inline U8 GetAlphaByte() const { return (U8)get_clamped( (U32)(alpha * 256.0f), (U32)0, (U32)255 ); }
 
+	/// clamp the a, r, g, and b values to [0,1]
+	void Clamp( float min_value, float max_value )
+	{
+		clamp( red,   min_value, max_value );
+		clamp( green, min_value, max_value );
+		clamp( blue,  min_value, max_value );
+		clamp( alpha, min_value, max_value );
+	}
+
+	/// clamp the a, r, g, and b values to [0,1]
+	void Clamp() { Clamp( 0.0f, 1.0f ); }
+
 	void SetToWhite()   { *this = White(); }
 	void SetToBlack()   { *this = Black(); }
 	void SetToRed()     { *this = Red(); }
