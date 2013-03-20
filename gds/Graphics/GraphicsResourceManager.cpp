@@ -4,9 +4,7 @@
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/ResourceLoadingStateHolder.hpp"
 #include "Graphics/GraphicsDevice.hpp"
-
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/SafeDelete.hpp"
 
 
 namespace amorphous
