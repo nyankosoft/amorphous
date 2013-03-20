@@ -6,8 +6,9 @@
 
 //#include <dae.h>
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 /*
 class CXMLDocument
@@ -27,7 +28,7 @@ public:
 //#define GET_CHILD_ELEMENT_TEXT_CONTENT( node_reader, text ) node_reader.GetChildElementTextContent( #text, text )
 
 
-bool LoadFilter( DOMNode *pFilterNode, CGeometryFilter::CTarget& rTarget )
+bool LoadFilter( DOMNode *pFilterNode, GeometryFilter::Target& rTarget )
 {
 	if( !pFilterNode )
 		return false;
@@ -40,7 +41,7 @@ bool LoadFilter( DOMNode *pFilterNode, CGeometryFilter::CTarget& rTarget )
 }
 
 
-bool LoadGeometryFilter( DOMNode *pParentNode, CGeometryFilter& rDestFilter )
+bool LoadGeometryFilter( DOMNode *pParentNode, GeometryFilter& rDestFilter )
 {
 	if( !pParentNode )
 		LOG_ERR_RETURN_FALSE( "An invalid node" );
@@ -112,8 +113,8 @@ bool CMeshTreeOptions::Load( CXMLNodeReader& node_reader )
 
 	string cond;
 	node_reader.GetChildElementTextContent( "RecursionStopCondition"  , cond );
-	if( cond == "OR" )       RecursionStopCondition = CAABTree<int>::COND_OR;
-	else if( cond == "AND" ) RecursionStopCondition = CAABTree<int>::COND_AND;
+	if( cond == "OR" )       RecursionStopCondition = AABTree<int>::COND_OR;
+	else if( cond == "AND" ) RecursionStopCondition = AABTree<int>::COND_AND;
 	else LOG_PRINT_ERROR( "An invalid recursion condition: " + cond );
 
 	return true;
@@ -263,7 +264,7 @@ bool CStaticGeometryDesc::LoadShaderParamsFromFile( const std::string& shaderpar
 		if( shader_filepath.length() == 0 )
 			continue;
 
-		CShaderParameterGroup param_group;
+		ShaderParameterGroup param_group;
 
 		vector<DOMNode *> vecpTex = GetImmediateChildNodes( vecpShader[i], "Texture" );
 		for( size_t j=0; j<vecpTex.size(); j++ )
@@ -275,14 +276,14 @@ bool CStaticGeometryDesc::LoadShaderParamsFromFile( const std::string& shaderpar
 				int stage = to_int(stage_str);
 				clamp( stage, 0, max_texture_stages );
 				while( (int)param_group.m_Texture.size() <= stage )
-					param_group.m_Texture.push_back( CShaderParameter<CTextureParam>() );
+					param_group.m_Texture.push_back( ShaderParameter<TextureParam>() );
 				index = stage;
 			}
 			else
 			{
 				// simply add another texture param
 				index = (int)param_group.m_Texture.size();
-				param_group.m_Texture.push_back( CShaderParameter<CTextureParam>() );
+				param_group.m_Texture.push_back( ShaderParameter<TextureParam>() );
 			}
 
 			DOMNode *pTexFile = GetChildNode( vecpTex[j], "File" );
@@ -321,7 +322,7 @@ void CStaticGeometryDesc::LoadLightsFromColladaFile( const std::string& dae_file
 
 void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 {
-//	vector<shared_ptr<CLight>> vecpLight;
+//	vector<shared_ptr<Light>> vecpLight;
 
 	xercesc::DOMNodeList *pNodeList = pLightsNode->getChildNodes();
 	const int num_nodes = (int)pNodeList->getLength();
@@ -334,21 +335,21 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 
 		if( light_type == "AmbientLight" )
 		{
-			CAmbientLight amb_light;
+			AmbientLight amb_light;
 			node.GetChildElementTextContentRGB( "Color", amb_light.DiffuseColor );
-			m_vecpLight.push_back( shared_ptr<CLight>( new CAmbientLight(amb_light) ) );
+			m_vecpLight.push_back( shared_ptr<Light>( new AmbientLight(amb_light) ) );
 		}
 		else if( light_type == "DirectionalLight" )
 		{
-			CDirectionalLight dir_light;
+			DirectionalLight dir_light;
 			node.GetChildElementTextContentRGB( "Color",     dir_light.DiffuseColor );
 			node.GetChildElementTextContent( "Direction", dir_light.vDirection );
 
-			m_vecpLight.push_back( shared_ptr<CLight>( new CDirectionalLight(dir_light) ) );
+			m_vecpLight.push_back( shared_ptr<Light>( new DirectionalLight(dir_light) ) );
 		}
 		else if( light_type == "PointLight" )
 		{
-			CPointLight pnt_light;
+			PointLight pnt_light;
 			node.GetChildElementTextContentRGB( "Color",    pnt_light.DiffuseColor );
 			node.GetChildElementTextContent( "Position", pnt_light.vPosition );
 
@@ -359,7 +360,7 @@ void CStaticGeometryDesc::LoadLights( DOMNode *pLightsNode )
 					pnt_light.fAttenuation[j] = vAttenu[j];
 			}
 
-			m_vecpLight.push_back( shared_ptr<CLight>( new CPointLight(pnt_light) ) );
+			m_vecpLight.push_back( shared_ptr<Light>( new PointLight(pnt_light) ) );
 		}
 	}
 

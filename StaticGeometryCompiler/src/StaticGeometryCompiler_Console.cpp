@@ -20,6 +20,7 @@
 #include "StaticGeometryCompiler_Main.h"
 
 using namespace std;
+using namespace amorphous;
 
 
 string m_OutputFilepath;

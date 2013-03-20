@@ -6,17 +6,13 @@
 #include "StaticGeometryDesc.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
+#include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
 #include "Stage/StaticGeometry.hpp"
 #include "Stage/StaticGeometryArchiveFG.hpp"
 #include "3DMath/AABTree.hpp"
 #include "Physics/Stream.hpp"
 
-using namespace MeshModel;
-
-
-class TerrainMeshNode;
-class TerrainMeshTree;
-class CTerrainMeshGenerator;
+using namespace amorphous;
 
 
 class CShaderInfo
@@ -37,15 +33,15 @@ class CStaticGeometryCompiler
 {
 	CStaticGeometryDesc m_Desc;
 
-	CGeneral3DMesh m_CollisionMesh;
+	General3DMesh m_CollisionMesh;
 
 	/// stores collision mesh data preprocessed by the physics engine
 	physics::CStream m_CollisionMeshStream;
 
 	/// changed to shared_ptr since terrain mesh builder accepts shared_ptr
-	boost::shared_ptr<CGeneral3DMesh> m_pGraphicsMesh;
+	boost::shared_ptr<General3DMesh> m_pGraphicsMesh;
 
-	CGeneral3DMesh m_GraphicsMeshWithLightmap;
+	General3DMesh m_GraphicsMeshWithLightmap;
 
 //	CNonLeafyAABTree<CMeshSubset> m_MeshSubsetTree;
 
@@ -56,7 +52,7 @@ class CStaticGeometryCompiler
 	/// subdivided graphics meshes
 	/// - Each mesh meets the limit of vertex and index count of decent graphics cards
 	/// - Created through 
-	std::vector< boost::shared_ptr<CGeneral3DMesh> > m_vecpDestGraphicsMesh;
+	std::vector< boost::shared_ptr<General3DMesh> > m_vecpDestGraphicsMesh;
 
 	std::vector<C3DMeshModelArchive> m_vecDestGraphicsMeshArchive;
 
@@ -73,10 +69,10 @@ protected:
 	void AddDestGraphicsMeshInstance();
 	
 //	virtual void CreateMeshArchive();
-	void CreateMeshSubsets_r( CAABTree<CIndexedPolygon>& src_tree,
+	void CreateMeshSubsets_r( AABTree<IndexedPolygon>& src_tree,
 							  int src_node_index,
-							  CGeneral3DMesh& src_mesh,
-					          CAABTree<CMeshSubset>& dest_tree );
+							  General3DMesh& src_mesh,
+					          AABTree<CMeshSubset>& dest_tree );
 
 	bool CompileGraphicsGeometry();
 
@@ -87,7 +83,7 @@ protected:
 	void SaveToBinaryDatabase( const std::string& db_filename );
 
 	void CopyTreeNodes_r( TerrainMeshTree& src_tree, TerrainMeshNode& node,
-					  CNonLeafyAABTree<CIndexedPolygon>& dest_tree, int dest_node_index/*, CAABNode& dest_node*/ );
+					  CNonLeafyAABTree<IndexedPolygon>& dest_tree, int dest_node_index/*, AABNode& dest_node*/ );
 
 	void UpdateSurfaceNameToSurfaceGroupIndexMapping();
 

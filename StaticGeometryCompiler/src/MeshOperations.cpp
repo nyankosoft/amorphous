@@ -3,13 +3,15 @@
 #include "3DMath/Sphere.hpp"
 #include <set>
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using std::set;
+using boost::shared_ptr;
 
 
 static void GetConnected( int pnt_id,
 						  std::set<int>& setCheckedPoints,
-						  const std::vector<CIndexedPolygon>& polygons,
+						  const std::vector<IndexedPolygon>& polygons,
 						  CConnectedSet& connected,
 						  std::set<int>& setConnectedPoly
 						  )
@@ -63,7 +65,7 @@ static void GetConnected( int pnt_id,
 
 
 void GetConnectedSets( const std::vector<int>& vecPoint,
-					   const std::vector<CIndexedPolygon>& polygons,
+					   const std::vector<IndexedPolygon>& polygons,
 					   std::vector<CConnectedSet>& vecConnected )
 {
 	set<int> setCheckedPoints;
@@ -96,7 +98,7 @@ void GetConnectedSets( const std::vector<int>& vecPoint,
 }
 
 
-void GetConnectedSets( CGeneral3DMesh& mesh,
+void GetConnectedSets( General3DMesh& mesh,
 					   std::vector<CConnectedSet>& vecConnected )
 {
 //	vector<LWPntID> vecPoint;
@@ -106,23 +108,23 @@ void GetConnectedSets( CGeneral3DMesh& mesh,
 //	mesh_info.GetPolygons( vecPoly );
 
 	vector<int> points;
-	const vector<CIndexedPolygon>& polygons = mesh.GetPolygonBuffer();
+	const vector<IndexedPolygon>& polygons = mesh.GetPolygonBuffer();
 
 	GetConnectedSets( points, polygons, vecConnected );
 }
 
 
 /// Returns true if a given set of vertices of a mesh is on a sphere
-bool AreVerticesOnSphere( const CGeneral3DMesh& mesh, // [in]
+bool AreVerticesOnSphere( const General3DMesh& mesh, // [in]
 						  const std::vector<int>& vertex_indices, // [in]
 						  Sphere& sphere, // [out]
 						  float radius_error_tolerance ) // [in]
 {
-	const shared_ptr< vector<CGeneral3DVertex> >& pVertices = mesh.GetVertexBuffer();
+	const shared_ptr< vector<General3DVertex> >& pVertices = mesh.GetVertexBuffer();
 	if( !pVertices )
 		return false;
 
-	const vector<CGeneral3DVertex>& vertices = *pVertices;
+	const vector<General3DVertex>& vertices = *pVertices;
 
 	if( vertices.size() <= 1 )
 		return false;

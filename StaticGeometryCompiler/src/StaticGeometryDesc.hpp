@@ -10,6 +10,8 @@
 #include "XML/XMLNodeReader.hpp"
 using namespace xercesc;
 
+using namespace amorphous;
+
 
 class CGeometryGroupParams
 {
@@ -145,16 +147,16 @@ public:
 
 	std::string m_ProgramRootDirectoryPath;
 
-	CGeometryFilter m_CollisionGeometryFilter;
-	CGeometryFilter m_GraphcisGeometryFilter;
+	GeometryFilter m_CollisionGeometryFilter;
+	GeometryFilter m_GraphcisGeometryFilter;
 
 	std::vector<CGeometrySurfaceDesc> m_vecSurfaceDesc;
 
 	std::map<std::string,std::string> m_SurfaceToDesc;
 
-	std::vector< boost::shared_ptr<CLight> > m_vecpLight;
+	std::vector< boost::shared_ptr<Light> > m_vecpLight;
 
-	std::map<std::string,CShaderParameterGroup> m_ShaderFileToParamGroup;
+	std::map<std::string,ShaderParameterGroup> m_ShaderFileToParamGroup;
 
 	CLightmapDesc m_Lightmap;
 

@@ -17,7 +17,9 @@
 #include "StaticGeometryCompiler.h"
 #include "StaticGeometryCompiler_Main.h"
 
-using namespace std;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 bool CompileStaticGeometry( const string& filename )
@@ -123,7 +125,7 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 		{
 			// select a desc file written in "./default_input"
 			// - see "D:\R&D\Project\App2\StaticGeometryCompiler"
-			CParamLoader loader( "default_input.txt" );
+			ParamLoader loader( "default_input.txt" );
 			if( loader.IsReady() )
 			{
 				loader.LoadParam( "input", filename );
@@ -169,7 +171,7 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 		{
 			compiled = CompileStaticGeometry( filename );
 		}
-		catch( exception& e )
+		catch( std::exception& e )
 		{
 			g_Log.Print( WL_ERROR, "exception: %s", e.what() );
 		}

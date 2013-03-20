@@ -6,12 +6,12 @@
 
 #include "LightWave/LightWaveObject.hpp"
 #include "LightWave/3DMeshModelBuilder_LW.hpp"
-using namespace MeshModel;
 
 #include "JigLib/TriangleMesh.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 
 
 // default size of the each split texture
@@ -65,8 +65,8 @@ bool CStaticGeometryCompilerFG::CreateMeshArchive( const string& target_layer_na
 {
 	LOG_PRINT( " - target layer name: " + target_layer_name );
 	// collect layers that start with certain keywords
-	vector<CLWO2_Layer *> vecpMeshLayer
-	= m_pObject->GetLayersWithKeyword( target_layer_name, CLWO2_NameMatchCond::START_WITH );
+	vector<LWO2_Layer *> vecpMeshLayer
+	= m_pObject->GetLayersWithKeyword( target_layer_name, LWO2_NameMatchCond::START_WITH );
 
 	if( vecpMeshLayer.size() == 0 )
 	{
@@ -274,8 +274,8 @@ bool CStaticGeometryCompilerFG::CreateSkyboxMesh()
 //		mat0.SurfaceTexture.strFilename = m_SkyboxTextureFilename;
 //		mat0.SurfaceTexture.type = CMMA_Texture::FILENAME;
 		mat0.vecTexture.resize( 1 );
-		mat0.vecTexture[0].strFilename = m_SkyboxTextureFilename;
-		mat0.vecTexture[0].type = CMMA_Texture::FILENAME;
+		mat0.vecTexture[0].ResourcePath = m_SkyboxTextureFilename;
+//		mat0.vecTexture[0].type = CMMA_Texture::FILENAME;
 	}
 	else
 	{
@@ -297,7 +297,7 @@ void CStaticGeometryCompilerFG::CreateCollisionMesh()
 	shared_ptr<C3DMeshModelBuilder_LW> pModelLoader
 		= shared_ptr<C3DMeshModelBuilder_LW>( new C3DMeshModelBuilder_LW( m_pObject ) );
 
-	vector<CLWO2_Layer*> vecpCollMeshLayer = m_pObject->GetLayersWithKeyword( "CollisionMesh" );
+	vector<LWO2_Layer*> vecpCollMeshLayer = m_pObject->GetLayersWithKeyword( "CollisionMesh" );
 
 	// TODO: build collision mesh from multiple layers
 	if( 0 < vecpCollMeshLayer.size() )
@@ -323,7 +323,7 @@ void CStaticGeometryCompilerFG::CreateCollisionMesh()
 			for( i=0; i<num_indices; i++ )
 				vecVertexIndex[i] = src_mesh_archive.GetVertexIndex()[i];
 
-			CBSPTreeForTriangleMesh& trimesh = m_TriangleMesh;
+			BSPTreeForTriangleMesh& trimesh = m_TriangleMesh;
 //			trimesh.SetNumMaxTrianglesPerCell( 16 );
 //			trimesh.SetMinimumCellVolume( 1000000.0f );
 			trimesh.SetNumMaxGeometriesPerCell( 128 );
@@ -389,7 +389,7 @@ bool CStaticGeometryCompilerFG::Build( const string& desc_filename )
 	float spec_intensity = 0;
 	string shader;
 
-	CParamLoader loader( desc_filename );
+	ParamLoader loader( desc_filename );
 	if( loader.IsReady() )
 	{
 		loader.LoadParam( "output",				output_filename );	// [out]
@@ -398,9 +398,9 @@ bool CStaticGeometryCompilerFG::Build( const string& desc_filename )
 
 		loader.LoadParam( "skybox_tex",			m_SkyboxTextureFilename );
 
-		loader.LoadParam( "ambient_color",		ambient_color.fRed, ambient_color.fGreen, ambient_color.fBlue );
+		loader.LoadParam( "ambient_color",		ambient_color.red, ambient_color.green, ambient_color.blue );
 
-		loader.LoadParam( "fog_color",			fog_color.fRed, fog_color.fGreen, fog_color.fBlue );
+		loader.LoadParam( "fog_color",			fog_color.red, fog_color.green, fog_color.blue );
 		loader.LoadParam( "fog_start_dist",		m_Archive.m_FogStartDist );
 		loader.LoadParam( "far_clip_dist",		m_Archive.m_FarClipDist );
 
@@ -412,7 +412,7 @@ bool CStaticGeometryCompilerFG::Build( const string& desc_filename )
 
 		loader.LoadParam( "spec_range_y",		spec_min_y, spec_max_y );
 		loader.LoadParam( "spec_intensity",		spec_intensity );
-		loader.LoadParam( "spec_color",			spec.fRed, spec.fGreen, spec.fBlue );
+		loader.LoadParam( "spec_color",			spec.red, spec.green, spec.blue );
 
 		loader.LoadParam( "tile_texture",		tile_tex_weight, tile_tex_filename );
 
@@ -463,7 +463,7 @@ bool CStaticGeometryCompilerFG::CompileModelFile( const string& model_filename,
 												  double tex_coord_shift_v )
 {
 	// load light wave model data
-	m_pObject =  shared_ptr<CLWO2_Object>( new CLWO2_Object() );
+	m_pObject =  shared_ptr<LWO2_Object>( new LWO2_Object() );
 
 	if( !m_pObject->LoadLWO2Object( model_filename.c_str() ) )
 	{

@@ -11,6 +11,7 @@
 
 #include "Stage/StaticGeometryArchiveFG.hpp"
 
+using namespace amorphous;
 
 
 /*
@@ -55,11 +56,11 @@ class CStaticGeometryCompilerFG
 
 	/// added to output db
 	/// - key: "CollisionMesh"
-    CBSPTreeForTriangleMesh m_TriangleMesh;
+    BSPTreeForTriangleMesh m_TriangleMesh;
 
 	CTerrainMeshGenerator m_TerrainMeshGenerator;
 
-	boost::shared_ptr<CLWO2_Object> m_pObject;
+	boost::shared_ptr<LWO2_Object> m_pObject;
 
 	std::string m_SkyboxTextureFilename;
 
