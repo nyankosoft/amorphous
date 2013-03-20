@@ -6,7 +6,6 @@
 #include <boost/thread.hpp>
 #include "fwd.hpp"
 #include "GraphicsResourceDescs.hpp"
-#include "FloatRGBAColor.hpp"
 #include "../Support/Serialization/BinaryDatabase.hpp"
 #include "../Support/fwd.hpp"
 #include <gl/gl.h>

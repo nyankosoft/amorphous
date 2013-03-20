@@ -1,11 +1,7 @@
 #include "GraphicsResourceEntries.hpp"
-
-#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/SafeDelete.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous

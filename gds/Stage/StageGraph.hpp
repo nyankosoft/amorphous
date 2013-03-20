@@ -6,7 +6,6 @@
 
 #include "gds/Support/singleton.hpp"
 #include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous

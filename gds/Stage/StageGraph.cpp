@@ -1,8 +1,6 @@
-
 #include "StageGraph.hpp"
-
 #include "3DMath/Vector3.hpp"
-#include "Support/memory_helpers.hpp"
+#include "Support/SafeDelete.hpp"
 
 
 namespace amorphous

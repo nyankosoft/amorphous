@@ -11,14 +11,10 @@
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceDescs.hpp"
 
-#include "../Support/Serialization/BinaryDatabase.hpp"
-
 
 namespace amorphous
 {
 using namespace serialization;
-
-//template<class T>class CBinaryDatabase<T>;
 
 
 /**

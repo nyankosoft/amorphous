@@ -3,6 +3,7 @@
 
 
 #include "BaseEntity.hpp"
+#include "../Graphics/FloatRGBAColor.hpp"
 
 
 namespace amorphous

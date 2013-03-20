@@ -5,6 +5,7 @@
 #include "../base.hpp"
 #include "../3DMath/fwd.hpp"
 #include "../3DMath/Plane.hpp"
+#include "FloatRGBAColor.hpp"
 #include "AlphaBlend.hpp"
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
