@@ -170,7 +170,7 @@ void CResolutionChangeTest::Render()
 
 	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-//	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
+//	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPosition() );
 
 	GraphicsDevice().Disable(  RenderStateType::FACE_CULLING );
 
