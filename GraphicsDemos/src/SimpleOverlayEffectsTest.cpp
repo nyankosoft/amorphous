@@ -104,6 +104,7 @@ int CSimpleOverlayEffectsTest::Init()
 
 	string model = "models/fw43.msh";
 	LoadParamFromFile( "params.txt", "model", model );
+	model = "SimpleOverlayEffectsDemo/" + model;
 	m_Meshes.resize( 1 );
 	m_Meshes[0].Load( model );
 
@@ -128,9 +129,9 @@ void CSimpleOverlayEffectsTest::RenderMeshes()
 
 	// render the scene
 
-	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 	BOOST_FOREACH( MeshHandle& mesh, m_Meshes )
@@ -158,7 +159,7 @@ void CSimpleOverlayEffectsTest::DisplayResourceInfo()
 
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
-	Vector3 vCamPos = g_Camera.GetPosition();
+	Vector3 vCamPos = GetCurrentCamera().GetPosition();
 	m_pFont->DrawText(
 		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
 		Vector2( 20, 300 ) );
