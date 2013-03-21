@@ -4,6 +4,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "StaticGeometryDesc.hpp"
+#include "App/ApplicationBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/MeshModel/General3DMesh.hpp"
 #include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
