@@ -30,8 +30,8 @@ CMeshSplitterTest::CMeshSplitterTest()
 
 	m_ControlSplitPlane = false;
 
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 1, -2 ) );
 }
 
 
