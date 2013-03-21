@@ -28,8 +28,8 @@ CTextureRenderTargetTest::CTextureRenderTargetTest()
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_Camera.SetPosition( Vector3( 0, 1, 0 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 1, -3 ) );
 }
 
 
