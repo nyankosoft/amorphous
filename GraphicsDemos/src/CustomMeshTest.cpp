@@ -19,7 +19,7 @@ CCustomMeshTest::CCustomMeshTest()
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
 	if( GetCameraController() )
-		GetCameraController()->SetPosition( Vector3( 0, 1, -120 ) );
+		GetCameraController()->SetPosition( Vector3( 0, 2, -10 ) );
 }
 
 
@@ -159,7 +159,7 @@ void CCustomMeshTest::RenderMeshes()
 
 	// render the scene
 
-	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
 	SetLights( pShaderMgr ? true : false );
 
@@ -212,7 +212,7 @@ void CCustomMeshTest::Render()
 
 	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
-	Vector3 vCamPos = g_Camera.GetPosition();
+	Vector3 vCamPos = GetCurrentCamera().GetPosition();
 	m_pFont->DrawText( string("camera: ") + to_string( vCamPos ), Vector2( 20, 300 ) );
 }
 

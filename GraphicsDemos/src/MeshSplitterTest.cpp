@@ -176,9 +176,9 @@ void CMeshSplitterTest::RenderMeshes()
 
 	// render the scene
 
-	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
