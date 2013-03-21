@@ -228,7 +228,7 @@ void CMeshSplitterTest::Render()
 	{
 		m_pFont->DrawText( m_TextBuffer, vTopLeft );
 
-		string cam_pos_text = to_string( g_Camera.GetPosition() );
+		string cam_pos_text = to_string( GetCurrentCamera().GetPosition() );
 		m_pFont->DrawText( string("camera position: ") + cam_pos_text, Vector2( 20, 300 ) );
 	}
 }
