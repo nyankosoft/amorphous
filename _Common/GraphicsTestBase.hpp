@@ -7,6 +7,7 @@
 #include <boost/weak_ptr.hpp>
 
 #include "gds/Graphics/fwd.hpp"
+#include "gds/Graphics/FloatRGBAColor.hpp"
 #include "KeyState.hpp"
 #include "gds/3DMath/fwd.hpp"
 #include "gds/3DMath/Matrix34.hpp"
