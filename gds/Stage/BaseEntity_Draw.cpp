@@ -718,8 +718,8 @@ Result::Name RegisterAsPlanarMirror( CCopyEntity& entity, BasicMesh& mesh, int s
 //	shared_ptr<MeshContainerRenderMethod> pMeshRenderMethodCopy
 //		= entity.m_pMeshRenderMethod->CreateCopy();
 
-	shared_ptr<CMirroredSceneTextureParam> pTexParam;
-	pTexParam.reset( new CMirroredSceneTextureParam( EntityHandle<>( entity.Self() ) ) );
+	shared_ptr<MirroredSceneTextureParam> pTexParam;
+	pTexParam.reset( new MirroredSceneTextureParam( EntityHandle<>( entity.Self() ) ) );
 	pTexParam->m_fReflection = mesh.GetMaterial(subset_index).m_Mat.fReflection;
 //	pMeshRenderMethodCopy->SetShaderParamsLoaderToAllMeshRenderMethods( pTexParam );
 
