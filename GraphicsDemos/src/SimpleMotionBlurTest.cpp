@@ -45,7 +45,6 @@ int CSimpleMotionBlurTest::Init()
 	mesh_desc.MeshType     = MeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
-//	g_CameraController.SetPosition( Vector3( 0, 3, 0 ) );
 	if( CameraController() )
 		CameraController()->SetPosition( Vector3( 0, 3, 0 ) );
 

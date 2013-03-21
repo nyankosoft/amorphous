@@ -243,8 +243,8 @@ void CPostProcessEffectTest::RenderMeshes()
 /*	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( pShaderManager )
 	{
-		pShaderManager->SetParam( "m_vEyePos", g_Camera.GetPosition() );
-//		hr = pEffect->SetValue( "m_vEyePos", &(g_Camera.GetPosition()), sizeof(float) * 3 );
+		pShaderManager->SetParam( "m_vEyePos", GetCurrentCamera().GetPosition() );
+//		hr = pEffect->SetValue( "m_vEyePos", &(GetCurrentCamera().GetPosition()), sizeof(float) * 3 );
 
 		ShaderTechniqueHandle tech_handle;
 //		tech_handle.SetTechniqueName( "Default" );
@@ -386,8 +386,6 @@ void SetDefaultLinearFog()
 
 int CPostProcessEffectTest::Init()
 {
-//	g_CameraController.SetPosition( Vector3(0,50,0) );
-
 	bool loaded = m_Shader.Load( "PostProcessEffectDemo/shaders/mesh.fx" );
 
 //	if( !m_pShaderManager->LoadShaderFromFile( "shaders/mesh.fx" ) )

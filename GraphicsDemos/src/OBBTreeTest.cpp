@@ -100,8 +100,6 @@ void OBBTreeTest::Render()
 
 	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
-//	RenderAsSkybox( m_SkyboxMesh, g_CameraController.GetPosition() );
-
 	shader_mgr.SetWorldTransform( matWorld );
 /*
 	pShaderMgr->SetTechnique( m_MeshTechnique );

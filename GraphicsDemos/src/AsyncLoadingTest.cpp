@@ -69,7 +69,6 @@ m_NumTextureMipmaps( 1 )
 	GraphicsResourceManager().AllowAsyncLoading( m_TestAsyncLoading );
 
 
-//	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
 	if( GetCameraController() )
 		GetCameraController()->SetPosition( Vector3( 0, 1, -50 ) );
 }
