@@ -3,7 +3,7 @@
 #include "JL_PhysicsActor.hpp"
 #include "JL_ShapeDesc_TriangleMesh.hpp"
 #include "JL_LineSegment.hpp"
-#include "Stage/trace.hpp"
+//#include "Stage/trace.hpp"
 #include "3DMath/Plane.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -33,7 +33,7 @@ bool CTriangleMesh::CreateMesh( vector<Vector3>& rvecVertex,
 	return m_Tree.CreateMesh( rvecVertex, rveciIndex, rvecsMatIndex );
 }
 
-
+/*
 void CTriangleMesh::ClipTrace( STrace& tr )
 {
 	static vector<int> s_veciTriList;
@@ -75,7 +75,7 @@ void CTriangleMesh::ClipTrace( STrace& tr )
 	tr.vEnd = vEnd;
 
 }
-
+*/
 	// clip trace at the point of contact
 void CTriangleMesh::ClipLineSegment( CJL_LineSegment& segment )
 {

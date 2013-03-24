@@ -66,7 +66,7 @@ public:
 	void SetCollisionFlags();
 
 	/// clip trace at the point of contact
-	void ClipTrace( STrace& tr );
+//	void ClipTrace( STrace& tr );
 
 	/// clip trace at the point of contact
 	void ClipLineSegment( CJL_LineSegment& segment );
