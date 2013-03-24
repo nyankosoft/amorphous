@@ -45,7 +45,7 @@ inline boost::shared_ptr<MeshImplFactory>& GetMeshImplFactory()
 }
 
 
-class CMeshFactory
+class MeshFactory
 {
 public:
 
@@ -80,10 +80,10 @@ public:
 };
 
 /*
-inline CMeshFactory& MeshFactory()
+inline MeshFactory& GetMeshFactory()
 {
-	static boost::shared_ptr<CMeshFactory> s_pMeshFactory;
-	if( s_pMeshFactory == boost::shared_ptr<CMeshFactory>() )
+	static boost::shared_ptr<MeshFactory> s_pMeshFactory;
+	if( s_pMeshFactory == boost::shared_ptr<MeshFactory>() )
 	{
 		InitMeshFactory( s_pMeshFactory );
 	}
@@ -93,18 +93,18 @@ inline CMeshFactory& MeshFactory()
 
 
 
-inline boost::shared_ptr<CMeshFactory>& MeshFactoryPtr()
+inline boost::shared_ptr<MeshFactory>& MeshFactoryPtr()
 {
-	static boost::shared_ptr<CMeshFactory> s_pMeshFactory;
+	static boost::shared_ptr<MeshFactory> s_pMeshFactory;
 	return s_pMeshFactory;
 }
 
 
 // MeshFactoryPtr() must be initialized before calling this
-inline CMeshFactory& MeshFactory()
-{
-	return *(MeshFactoryPtr().get());
-}
+//inline MeshFactory& GetMeshFactory()
+//{
+//	return *(MeshFactoryPtr().get());
+//}
 
 
 /*

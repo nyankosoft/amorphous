@@ -226,7 +226,7 @@ void MeshImpl::Render( ShaderManager& rShaderMgr, std::vector<ShaderTechniqueHan
 
 
 //class CMeshFactoryImpl_D3D : public CMeshFactoryImpl
-class CD3DMeshFactory : public CMeshFactory
+class CD3DMeshFactory : public MeshFactory
 {
 public:
 

@@ -17,10 +17,10 @@ void SetCustomMesh( BasicMesh& src_mesh )
 
 
 //=============================================================================
-// CMeshFactory
+// MeshFactory
 //=============================================================================
 
-BasicMesh *CMeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
+BasicMesh *MeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
 {
 	switch( mesh_type )
 	{
@@ -38,22 +38,22 @@ BasicMesh *CMeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
 }
 
 
-shared_ptr<BasicMesh> CMeshFactory::CreateMesh( MeshType::Name mesh_type )
+shared_ptr<BasicMesh> MeshFactory::CreateMesh( MeshType::Name mesh_type )
 {
 	return shared_ptr<BasicMesh>( CreateMeshInstance( mesh_type ) );
 }
 
 
-BasicMesh *CMeshFactory::CreateBasicMeshInstance() { return new BasicMesh; }
-ProgressiveMesh *CMeshFactory::CreateProgressiveMeshInstance() { return new ProgressiveMesh; } 
-SkeletalMesh *CMeshFactory::CreateSkeletalMeshInstance() { return new SkeletalMesh; } 
+BasicMesh *MeshFactory::CreateBasicMeshInstance() { return new BasicMesh; }
+ProgressiveMesh *MeshFactory::CreateProgressiveMeshInstance() { return new ProgressiveMesh; } 
+SkeletalMesh *MeshFactory::CreateSkeletalMeshInstance() { return new SkeletalMesh; } 
 
-shared_ptr<BasicMesh> CMeshFactory::CreateBasicMesh() { shared_ptr<BasicMesh> pMesh( CreateBasicMeshInstance() ); return pMesh; }
-shared_ptr<ProgressiveMesh> CMeshFactory::CreateProgressiveMesh() { shared_ptr<ProgressiveMesh> pMesh( CreateProgressiveMeshInstance() ); return pMesh; } 
-shared_ptr<SkeletalMesh> CMeshFactory::CreateSkeletalMesh() { shared_ptr<SkeletalMesh> pMesh( CreateSkeletalMeshInstance() ); return pMesh; } 
+shared_ptr<BasicMesh> MeshFactory::CreateBasicMesh() { shared_ptr<BasicMesh> pMesh( CreateBasicMeshInstance() ); return pMesh; }
+shared_ptr<ProgressiveMesh> MeshFactory::CreateProgressiveMesh() { shared_ptr<ProgressiveMesh> pMesh( CreateProgressiveMeshInstance() ); return pMesh; } 
+shared_ptr<SkeletalMesh> MeshFactory::CreateSkeletalMesh() { shared_ptr<SkeletalMesh> pMesh( CreateSkeletalMeshInstance() ); return pMesh; } 
 
 
-BasicMesh* CMeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
+BasicMesh* MeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 												  U32 load_option_flags,
 												  MeshType::Name mesh_type )
 {
@@ -76,7 +76,7 @@ BasicMesh* CMeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 }
 
 
-BasicMesh* CMeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
+BasicMesh* MeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
 																    U32 load_option_flags,
 																	MeshType::Name mesh_type )
