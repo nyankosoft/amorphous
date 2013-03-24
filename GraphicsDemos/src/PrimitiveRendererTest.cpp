@@ -24,8 +24,8 @@ CPrimitiveRendererTest::CPrimitiveRendererTest()
 
 //	LoadParamFromFile( "params.txt", "num_primitives_to_draw", m_NumPrimitivesToDraw );
 
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 2, -10 ) );
 }
 
 
@@ -176,7 +176,7 @@ void CPrimitiveRendererTest::Render()
 
 void CPrimitiveRendererTest::HandleInput( const InputData& input )
 {
-/*
+
 	switch( input.iGICode )
 	{
 	case GIC_SPACE:
@@ -186,6 +186,7 @@ void CPrimitiveRendererTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
-	}*/
+	}
 }

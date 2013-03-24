@@ -165,7 +165,7 @@ void CCustomMeshTest::RenderMeshes()
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
-//	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	m_Mesh.Render( shader_mgr );
 /*
@@ -221,12 +221,6 @@ void CCustomMeshTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-//			SaveTexturesAsImageFiles();
-		}
-		break;
 	case GIC_SPACE:
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
@@ -234,6 +228,7 @@ void CCustomMeshTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

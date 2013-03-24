@@ -1,15 +1,17 @@
 #include "SimpleOverlayEffectsTest.hpp"
 #include <boost/foreach.hpp>
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics.hpp"
+#include "gds/Graphics/HemisphericLight.hpp"
+#include "gds/Graphics/GraphicsResourceManager.hpp"
+#include "gds/Graphics/Shader/ShaderManagerHub.hpp"
+#include "gds/Graphics/Shader/ShaderLightManager.hpp"
 #include "gds/Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
-#include "gds/Support/Timer.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Support/Profile.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Macro.h"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 #include "gds/Input.hpp"
-#include "gds/GUI.hpp"
 
 using std::string;
 using namespace boost;
@@ -50,9 +52,6 @@ bool CSimpleOverlayEffectsTest::InitShader()
 
 //	if( !shader_loaded )
 //		return false;
-
-	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-	shader_mgr.SetProjectionTransform( proj );
 
 	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 	if( !pShaderLightMgr )
@@ -210,18 +209,15 @@ void CSimpleOverlayEffectsTest::HandleInput( const InputData& input )
 			m_EnableStripeEffect = !m_EnableStripeEffect;
 		break;
 
-//	case GIC_F12:
-//		if( input.iType == ITYPE_KEY_PRESSED )
-//			SaveTexturesAsImageFiles();
-//		break;
-
 	case GIC_SPACE:
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 		}
 		break;
+
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

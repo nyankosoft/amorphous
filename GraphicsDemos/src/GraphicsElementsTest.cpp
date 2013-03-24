@@ -182,12 +182,6 @@ void CGraphicsElementsTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}
-		break;
-
 	case 'R':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -217,6 +211,7 @@ void CGraphicsElementsTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

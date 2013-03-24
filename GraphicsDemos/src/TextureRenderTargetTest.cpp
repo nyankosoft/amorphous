@@ -229,7 +229,7 @@ void CTextureRenderTargetTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F12:
+	case GIC_F11:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			SaveTexturesAsImageFiles();
@@ -242,6 +242,7 @@ void CTextureRenderTargetTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

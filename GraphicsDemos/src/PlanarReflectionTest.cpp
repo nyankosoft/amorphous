@@ -107,40 +107,42 @@ int CPlanarReflectionTest::Init()
 {
 	m_pFont = CreateDefaultBuiltinFont();
 
+	string directory_path = "PlanarReflectionDemo/";
+
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "Default" );
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
 
 	// initialize shader
-//	string shader_path = "./shaders/PlanarReflectionTest.fx";
-	string shader_path = "./shaders/PerPixelSingleHSDirectionalLight.fx";
+//	string shader_path = directory_path + "shaders/PlanarReflectionTest.fx";
+	string shader_path = directory_path + "shaders/PerPixelSingleHSDirectionalLight.fx";
 	bool shader_loaded = m_Shader.Load( shader_path );
 
-	string pr_shader_path = "./shaders/PerPixelSingleHSDirectionalLight_PR.fx";
-	LoadParamFromFile( "params.txt", "planar_reflection_shader", pr_shader_path );
-	shader_loaded = m_PlanarReflectionShader.Load( pr_shader_path );
+	string pr_shader_path = "shaders/PerPixelSingleHSDirectionalLight_PR.fx";
+	LoadParamFromFile( directory_path + "params.txt", "planar_reflection_shader", pr_shader_path );
+	shader_loaded = m_PlanarReflectionShader.Load( directory_path + pr_shader_path );
 	
 	// load skybox mesh
-	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
+	m_SkyboxMesh = CreateSkyboxMesh( directory_path + "textures/skygrad_slim_01.jpg" );
 
 	// load the terrain mesh
 	MeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = "./models/terrain06.msh";
+	mesh_desc.ResourcePath = directory_path + "models/terrain06.msh";
 	mesh_desc.MeshType     = MeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
 	m_ReflectionSourceMeshes.resize( 1 );
-	m_ReflectionSourceMeshes[0].Load( "./models/wall_and_ceiling.msh" );
+	m_ReflectionSourceMeshes[0].Load( directory_path + "models/wall_and_ceiling.msh" );
 
 	m_ReflectiveSurfaceMeshes.resize( 1 );
-	m_ReflectiveSurfaceMeshes[0].Load( "./models/floor.msh" );
+	m_ReflectiveSurfaceMeshes[0].Load( directory_path + "models/floor.msh" );
 
 //	m_TestTexture.Load( "./textures/flare02.dds" );
 
 	m_pTextureRenderTarget = TextureRenderTarget::Create();
 	m_pTextureRenderTarget->InitScreenSizeRenderTarget();
 
-	m_PerturbationTexture.Load( "./textures/watersurf_nmap.jpg" );
+	m_PerturbationTexture.Load( directory_path + "textures/watersurf_nmap.jpg" );
 
 	return 0;
 }
@@ -240,7 +242,7 @@ void RenderReflectionClipPlane() //const Plane& reflection_plane )
 */
 
 
-void SetClipPlaneViaD3DXFunctions()// const Plane& reflection_plane )
+void SetClipPlaneViaD3DXFunctions( const Camera& camera )// const Plane& reflection_plane )
 {
 	D3DXPLANE clipPlane;
 	D3DXVECTOR3 point( 0 , 0, 0 );
@@ -252,7 +254,7 @@ void SetClipPlaneViaD3DXFunctions()// const Plane& reflection_plane )
 	// To transform a plane from world space to view space there is a methode D3DXPlaneTransform
 	// but the peculiar thing about this method is that it takes the inverse transpose of the viewprojection matrix
 
-	Matrix44 proj_view = g_Camera.GetProjectionMatrix() * g_Camera.GetCameraMatrix();
+	Matrix44 proj_view = camera.GetProjectionMatrix() * camera.GetCameraMatrix();
 	D3DXMATRIXA16 matrix, view_proj;
 	proj_view.GetRowMajorMatrix44( (float *)&view_proj );
 
@@ -269,12 +271,12 @@ void SetClipPlaneViaD3DXFunctions()// const Plane& reflection_plane )
 }
 
 
-void SetClipPlane( const Plane& reflection_plane )
+void SetClipPlane( const Camera& camera, const Plane& reflection_plane )
 {
 	Plane src_plane( reflection_plane );
 	src_plane.Flip();
 
-	Matrix44 proj_view = g_Camera.GetProjectionMatrix() * g_Camera.GetCameraMatrix();
+	Matrix44 proj_view = camera.GetProjectionMatrix() * camera.GetCameraMatrix();
 	Matrix44 inv_proj_view = proj_view.GetInverse();
 	Matrix44 inv_transpose_proj_view = Matrix44Transpose( inv_proj_view );
 
@@ -346,8 +348,8 @@ void CPlanarReflectionTest::Render()
 //	GraphicsDevice().SetCullingMode( CullingMode::CLOCKWISE );
 
 //	RenderReflectionClipPlane( /*reflection_plane*/ );
-/*	SetClipPlane( reflection_plane );
-	SetClipPlaneViaD3DXFunctions();*/
+/*	SetClipPlane( GetCurrentCamera(), reflection_plane );
+	SetClipPlaneViaD3DXFunctions( GetCurrentCamera() );*/
 
 //	RenderReflectionSourceMeshes( GetCurrentCamera().GetPose(), CullingMode::CLOCKWISE );
 //	RenderReflectionSourceMeshes( GetMirroredPose( Plane(Vector3(0,1,0),0), GetCurrentCamera().GetPose() ), CullingMode::CLOCKWISE );

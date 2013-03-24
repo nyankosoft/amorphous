@@ -113,6 +113,7 @@
     <ClInclude Include="..\..\src\TextureRenderTargetTest.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp" />
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp" />
     <ClCompile Include="..\..\src\2DPrimitivesTest.cpp" />
     <ClCompile Include="..\..\src\AsyncLoadingTest.cpp" />

@@ -27,7 +27,7 @@ public:
 
 	virtual ~CubeMapTestRenderer() {}
 
-	virtual Vector3 GetCameraPosition() { return Vector3(0,1,0); }//g_Camera.GetPosition(); }
+	virtual Vector3 GetCameraPosition() { return Vector3(0,1,0); }
 
 	/// Called by CubeMapManager in CubeMapManager::RenderToCubeMap()
 	/// to render the scene to the cube map surface.

@@ -20,9 +20,7 @@ using namespace amorphous;
 class CGraphicsTestBase;
 
 
-extern CGraphicsTestBase *g_pGraphicsTest;
 extern Camera g_Camera;
-extern std::string g_CmdLine;
 
 inline std::string GetCommonShadersDirectoryPath() { return "../../../Shaders/"; }
 
@@ -52,15 +50,7 @@ protected:
 
 public:
 
-	CGraphicsTestBase()
-		:
-	m_WindowWidth(1280),
-	m_WindowHeight(720),
-	m_UseRenderBase(false),
-	m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) )
-	{
-		m_pCameraController.reset( new amorphous::CameraController( ms_CameraControllerInputHandlerIndex ) );
-	}
+	CGraphicsTestBase();
 
 	virtual ~CGraphicsTestBase() {}
 
@@ -97,7 +87,7 @@ public:
 	virtual void OnKeyPressed( KeyCode::Code key_code ) {}
 	virtual void OnKeyReleased( KeyCode::Code key_code ) {}
 
-	virtual void HandleInput( const InputData& input ) {}
+	virtual void HandleInput( const InputData& input );
 
 	void SetWindowSize( int w, int h ) { m_WindowWidth = w; m_WindowHeight = h; }
 

@@ -190,6 +190,7 @@ void CPostProcessEffectTest::HandleInput( const InputData& input )
 		break;
 */
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

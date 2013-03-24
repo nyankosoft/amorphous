@@ -154,7 +154,7 @@ void CShadowMapTest::Render()
 	if( m_pLight )
 		m_pShadowMapManager->UpdateLightForShadow( sg_LightID, *m_pLight );
 
-	m_pShadowMapManager->SetSceneCamera( g_Camera );
+	m_pShadowMapManager->SetSceneCamera( GetCurrentCamera() );
 
 	m_pShadowMapManager->RenderShadowCasters( g_Camera );
 
@@ -185,7 +185,7 @@ void CShadowMapTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F12:
+	case GIC_F11:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			if( m_pShadowMapManager )
@@ -200,6 +200,9 @@ void CShadowMapTest::HandleInput( const InputData& input )
 //					pTexRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( "scene_shadow_texture.png" );
 			}
 		}
+		break;
+	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

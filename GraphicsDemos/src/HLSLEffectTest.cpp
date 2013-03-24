@@ -102,11 +102,11 @@ bool CHLSLEffectTest::SetShader( int index )
 	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
 	m_Shaders[index].GetShaderManager()->SetProjectionTransform( proj );
 
-//	shader_mgr.SetParam( "g_vEyeVS", g_Camera.GetCameraMatrix() * g_Camera.GetPosition() );
-	shader_mgr.SetParam( "g_vEyePos", g_Camera.GetPosition() );
+//	shader_mgr.SetParam( "g_vEyeVS", GetCurrentCamera().GetCameraMatrix() * GetCurrentCamera().GetPosition() );
+	shader_mgr.SetParam( "g_vEyePos", GetCurrentCamera().GetPosition() );
 
 	// for bright rim lights
-	shader_mgr.SetParam( "g_vEyeDir", g_Camera.GetPosition() );
+	shader_mgr.SetParam( "g_vEyeDir", GetCurrentCamera().GetPosition() );
 	shader_mgr.SetTexture( 3, m_LookupTextureForLighting );
 
 	m_CurrentShaderIndex = index;
@@ -223,9 +223,9 @@ void CHLSLEffectTest::RenderMesh()
 
 	// render the scene
 
-	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
+	pShaderManager->SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	if( m_CurrentMeshIndex < 0 || (int)m_vecMesh.size() <= m_CurrentMeshIndex )
 		return;

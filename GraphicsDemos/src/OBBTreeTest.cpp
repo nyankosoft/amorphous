@@ -1,8 +1,7 @@
 #include "OBBTreeTest.hpp"
-#include "gds/3DMath/Matrix34.hpp"
 #include "gds/3DMath/OBBTree.hpp"
 #include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
+#include "gds/Support/CameraController.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Graphics/Mesh/BasicMesh.hpp"
 #include "gds/Graphics/Font/BuiltinFonts.hpp"
@@ -37,12 +36,14 @@ int OBBTreeTest::Init()
 
 	m_pFont = CreateDefaultBuiltinFont();
 
+	const string dir_path = "OBBTreeDemo/";
+
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
 
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( "./shaders/OBBTreeTest.fx" );
+	bool shader_loaded = m_Shader.Load( dir_path + "shaders/OBBTreeTest.fx" );
 
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
@@ -53,8 +54,10 @@ int OBBTreeTest::Init()
 //	mesh_desc.MeshType     = CMeshType::BASIC;
 //	m_Mesh.Load( mesh_desc );
 
-	string model_pathname = "models/Chevelle.msh";
-	LoadParamFromFile( "params.txt", "model", model_pathname );
+	string relative_model_pathname = "models/Chevelle.msh";
+	LoadParamFromFile( dir_path + "params.txt", "model", relative_model_pathname );
+
+	string model_pathname = dir_path + relative_model_pathname;
 
 	bool model_loaded = m_Mesh.Load( model_pathname );
 
@@ -74,8 +77,10 @@ void OBBTreeTest::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 {
 	m_pOBBTree.reset( new OBBTree );
 
+	const string dir_path = "OBBTreeDemo/";
+
 	int level = 8;
-	LoadParamFromFile( "params.txt", "obb_tree_level", level );
+	LoadParamFromFile( dir_path + "params.txt", "obb_tree_level", level );
 
 	bool created = m_pOBBTree->Create(
 		mesh_archive.GetVertexSet().vecPosition,
@@ -135,18 +140,7 @@ void OBBTreeTest::HandleInput( const InputData& input )
 			m_DrawLevel = (m_DrawLevel-1+m_NumDrawLevels) % m_NumDrawLevels;
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
-
-
-/*
-void OBBTreeTest::UpdateViewTransform( const Matrix44& matView )
-{
-}
-
-
-void OBBTreeTest::UpdateProjectionTransform( const Matrix44& matProj )
-{
-}
-*/

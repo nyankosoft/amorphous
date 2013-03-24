@@ -57,13 +57,6 @@ public:
 	void Render();
 
 	void HandleInput( const InputData& input );
-
-
-//	void UpdateViewTransform( const Matrix44& matView );
-
-//	void UpdateProjectionTransform( const Matrix44& matProj );
-
-//	void OnKeyPressed( KeyCode::Code key_code );
 };
 
 

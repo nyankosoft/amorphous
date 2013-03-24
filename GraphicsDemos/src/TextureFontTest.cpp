@@ -1,7 +1,9 @@
 #include "TextureFontTest.hpp"
-#include "gds/Graphics.hpp"
+#include "gds/Graphics/2DPrimitive/2DRect.hpp"
+#include "gds/Graphics/GraphicsComponentCollector.hpp"
 #include "gds/Graphics/Font/TrueTypeTextureFont.hpp"
-#include "gds/Input.hpp"
+#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "gds/Input/InputHandler.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/filesystem_aux.hpp"
 
@@ -190,12 +192,8 @@ void CTextureFontTest::HandleInput( const InputData& input )
 		}
 		break;
 
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}
-		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
