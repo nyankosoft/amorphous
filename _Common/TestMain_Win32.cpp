@@ -2,7 +2,6 @@
 // File: D3DAppTestMain.cpp
 //-----------------------------------------------------------------------------
 
-#include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
 #include "gds/Graphics.hpp"
@@ -59,24 +58,21 @@ std::string g_CmdLine;
 */
 
 
-boost::shared_ptr<CGraphicsTestBase> g_pTest;
+static boost::shared_ptr<CGraphicsTestBase> g_pTest;
 
 //-----------------------------------------------------------------------------
 // Global variables
 //-----------------------------------------------------------------------------
 
-Win32StdKeyboard g_StdKeyboard;
+static Win32StdKeyboard g_StdKeyboard;
 
-boost::shared_ptr<InputHandler> g_pInputHandler;
+static boost::shared_ptr<InputHandler> g_pInputHandler;
 
-boost::shared_ptr<FontBase> g_pFont;
+static boost::shared_ptr<FontBase> g_pFont;
 
 Camera g_Camera;
 
-float g_FOV = (float)PI / 4.0f;
-
-const int g_WindowWidth  = 800;
-const int g_WindowHeight = 600;
+//float g_FOV = (float)PI / 4.0f;
 
 static const int sg_CameraControllerInputHandlerIndex = 0;
 static const int sg_GraphicsTestInputHandlerIndex = 1;
