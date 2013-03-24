@@ -1,5 +1,6 @@
 #include "BinaryArchive_Input.hpp"
 #include "ArchiveObjectBase.hpp"
+#include "../Log/DefaultLog.hpp"
 
 using namespace amorphous::serialization;
 
@@ -14,6 +15,9 @@ CBinaryArchive_Input::CBinaryArchive_Input( const string& filename,
 										    unsigned int flag )
 {
 	m_InputFileStream.open( filename.c_str(), ios::in|ios::binary );
+
+	if( !m_InputFileStream.is_open() )
+		LOG_PRINT_WARNING( " Failed to open the input file stream: " + filename );
 
 	m_Mode = MODE_INPUT;
 
