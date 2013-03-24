@@ -366,6 +366,7 @@
     <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.hpp" />
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
     <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.hpp" />
     <ClInclude Include="..\..\gds\Graphics\OpenGL\GLInitialization.hpp" />

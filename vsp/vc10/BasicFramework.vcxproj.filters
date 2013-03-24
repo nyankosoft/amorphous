@@ -1881,6 +1881,9 @@
     <ClInclude Include="..\..\gds\Graphics\TextureGenerators\TextureGeneratorFactory.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\RectMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\gds\Graphics\FloatRGBAColor.inl">
