@@ -6,6 +6,13 @@
 #include <stdlib.h>
 
 
+#ifdef _DEBUG
+#pragma comment ( lib, "LW_Framework_d.lib" )
+#else
+#pragma comment ( lib, "LW_Framework.lib" )
+#endif
+
+
 namespace amorphous
 {
 

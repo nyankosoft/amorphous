@@ -8,6 +8,13 @@
 #include "gds/Graphics/MeshModel/General3DMesh.hpp"
 
 
+#ifdef _DEBUG
+#pragma comment ( lib, "LW_FrameworkEx_d.lib" )
+#else
+#pragma comment ( lib, "LW_FrameworkEx.lib" )
+#endif
+
+
 namespace amorphous
 {
 

@@ -7,6 +7,13 @@
 #include "gds/Input/fwd.hpp"
 
 
+#ifdef _DEBUG
+#pragma comment ( lib, "BasicFramework_d.lib" )
+#else
+#pragma comment ( lib, "BasicFramework.lib" )
+#endif
+
+
 namespace amorphous
 {
 
