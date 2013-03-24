@@ -362,6 +362,9 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 
 		LOG_PRINT( " Created a graphics resource: " + desc.ResourcePath );
 
+		if( desc.ResourcePath.find( "vest.png" ) != std::string::npos )
+			int break_here = 1;
+
 		// A resource has been successfully loaded
 		return pResourceEntry;
 	}

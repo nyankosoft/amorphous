@@ -6,6 +6,7 @@
 #include "Item/WeaponSystem.hpp"
 #include "Item/ItemEntity.hpp"
 #include "Item/GI_Aircraft.hpp"
+#include "Script/PythonScriptManager.hpp"
 #include <boost/weak_ptr.hpp>
 
 
@@ -245,7 +246,7 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModulePlayerMethod[] =
+static PyMethodDef sg_PyModulePlayerMethod[] =
 {
     { "GetPositionX",	GetPositionX,	METH_VARARGS, "Returns x component of the player's position" },
     { "GetPositionY",	GetPositionY,	METH_VARARGS, "Returns y(altimeter) component of the player's position" },
@@ -263,6 +264,12 @@ PyMethodDef g_PyModulePlayerMethod[] =
     { "CreateEntityFromCurrentVehicleItem",CreateEntityFromCurrentVehicleItem,METH_VARARGS, "Creates a player entity as an item entity." },
     {NULL, NULL}
 };
+
+
+void RegisterPythonModule_PlayerInfo( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "PlayerInfo", sg_PyModulePlayerMethod );
+}
 
 
 } // namespace amorphous

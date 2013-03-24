@@ -1,7 +1,7 @@
 #include "PyModule_SoundMethods.hpp"
-#include "Sound/SoundManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include <string>
+#include "../Script/PythonScriptManager.hpp"
+#include "../Sound/SoundManager.hpp"
+#include "../Support/Log/DefaultLog.hpp"
 #include <map>
 
 
@@ -168,7 +168,7 @@ PyObject* ReleaseAllSounds( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModuleSoundMethod[] =
+static PyMethodDef sg_PyModuleSoundMethod[] =
 {
 	{ "Play",             Play,	            METH_VARARGS, "plays a non-3D sound" },
 	{ "Play3D",           Play3D,           METH_VARARGS, "plays a sound at a given position (world coordinates)" },
@@ -182,5 +182,12 @@ PyMethodDef g_PyModuleSoundMethod[] =
 //	{ "Play",              Play,              METH_VARARGS, "" },
 	{ NULL, NULL }
 };
+
+
+void RegisterPythonModule_Sound( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "Sound", sg_PyModuleSoundMethod );
+}
+
 
 } // namespace amorphous

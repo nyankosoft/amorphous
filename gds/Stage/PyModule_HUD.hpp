@@ -2,14 +2,14 @@
 #define __PyModule_HUD_H__
 
 
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
-#include <string>
 
 
 namespace amorphous
 {
 
-extern PyMethodDef g_PyModuleHUDMethod[];
+void RegisterPythonModule_HUD( PythonScriptManager& mgr );
 
 } // namespace amorphous
 

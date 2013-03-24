@@ -1,16 +1,12 @@
 #include "PyModule_Camera.hpp"
 #include "PyModule_Stage.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix34.hpp"
-
 #include "BE_ScriptedCamera.hpp"
 #include "EntityMotionPathRequest.hpp"
 #include "GameMessage.hpp"
 #include "Stage.hpp"
 #include "EntitySet.hpp"
-
-#include "CopyEntityDesc.hpp"
+#include "Script/PythonScriptManager.hpp"
 
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
@@ -28,7 +24,7 @@ using namespace std;
 inline static CStage *GetStage() { return GetStageForScriptCallback(); }
 
 
-using namespace gsf::py::cam;
+using namespace amorphous::py::cam;
 
 /*
 struct NamedEntityCache
@@ -299,7 +295,7 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::cam::SetPose( PyObject* self, PyObject* args )
+PyObject* py::cam::SetPose( PyObject* self, PyObject* args )
 {
     Py_INCREF( Py_None );
 
@@ -328,7 +324,7 @@ PyObject* gsf::py::cam::SetPose( PyObject* self, PyObject* args )
 // link error from multiple definition (conflict with the one defined in PyModule_GraphicsElement.cpp)
 // The linker cannot tell the difference.
 
-PyObject* gsf::py::cam::SetTimeOffset( PyObject* self, PyObject* args )
+PyObject* py::cam::SetTimeOffset( PyObject* self, PyObject* args )
 {
 	if( !GetStage() )
 		return Py_None;
@@ -395,14 +391,14 @@ PyObject* SetBlendWeight( PyObject* self, PyObject* args )
 
 
 
-PyMethodDef gsf::py::cam::g_PyModuleCameraMethod[] =
+static PyMethodDef sg_PyModuleCameraMethod[] =
 {
 	{ "CreateCameraController",	CreateCameraController,	METH_VARARGS, "" },
 	{ "CreateCamera",			CreateCamera,			METH_VARARGS, "" },
 	{ "StartCameraScript",		StartCameraScript,		METH_VARARGS, "" },
 	{ "EndCameraScript",		EndCameraScript,		METH_VARARGS, "" },
 	{ "SetScreenColorC32",		SetScreenColorC32,		METH_VARARGS, "" },
-	{ "SetPose",				gsf::py::cam::SetPose,	METH_VARARGS, "" },
+	{ "SetPose",				py::cam::SetPose,	METH_VARARGS, "" },
 //	{ "SetPosition",			SetPosition,	B		METH_VARARGS, "" },
 //	{ "SetOrientation",			SetOrientation,			METH_VARARGS, "" },
 	{ "SetTarget",				SetTarget,				METH_VARARGS, "" },
@@ -412,9 +408,15 @@ PyMethodDef gsf::py::cam::g_PyModuleCameraMethod[] =
 	{ "SetGlareThreshold",		SetGlareThreshold,		METH_VARARGS, "" },
 	{ "SetBlendWeight",			SetBlendWeight,			METH_VARARGS, "" },
 //	{ "SetBlendOrder",			SetBlendOrder,			METH_VARARGS, "" },
-	{ "SetTimeOffset",			gsf::py::cam::SetTimeOffset,		METH_VARARGS, "" },
+	{ "SetTimeOffset",			py::cam::SetTimeOffset,		METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+void py::cam::RegisterPythonModule_Camera( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "cam", sg_PyModuleCameraMethod );
+}
 
 
 } // namespace amorphous

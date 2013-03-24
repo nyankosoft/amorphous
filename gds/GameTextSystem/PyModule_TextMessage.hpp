@@ -3,6 +3,7 @@
 
 
 #include "fwd.hpp"
+#include "../Script/fwd.hpp"
 #include "../Script/PythonHeaders.hpp"
 
 
@@ -13,7 +14,7 @@ namespace amorphous
 //extern void SetTextMessageManager( CTextMessageManager* pTextMessageMgr );
 extern void SetTextMsgMgrForScriptCallback( CTextMessageManager* pTextMessageMgr );
 
-extern PyMethodDef g_PyModuleTextMessageMethod[];
+void RegisterPythonModule_TextMessage( PythonScriptManager& mgr );
 
 } // namespace amorphous
 

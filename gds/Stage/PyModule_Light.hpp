@@ -3,14 +3,11 @@
 
 
 #include "fwd.hpp"
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 
 
 namespace amorphous
-{
-
-
-namespace gsf
 {
 
 namespace py
@@ -20,7 +17,7 @@ namespace light
 {
 
 
-extern PyMethodDef g_PyModuleLightMethod[];
+void RegisterPythonModule_Light( PythonScriptManager& mgr );
 
 extern void SetEntityForLight( CCopyEntity* pEntity );
 
@@ -44,8 +41,6 @@ extern PyObject* CreateHSSpotlight(        PyObject* self, PyObject* args, PyObj
 }  /* light */
 
 }  /* py */
-
-}  /* gsf */
 
 } // namespace amorphous
 

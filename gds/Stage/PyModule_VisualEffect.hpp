@@ -2,15 +2,11 @@
 #define __PyModule_VisualEffect_H__
 
 
-#include "fwd.hpp"
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 
 
 namespace amorphous
-{
-
-
-namespace gsf
 {
 
 namespace py
@@ -20,14 +16,12 @@ namespace ve
 {
 
 
-extern PyMethodDef g_PyModuleVisualEffectMethod[];
+void RegisterPythonModule_VisualEffect( PythonScriptManager& mgr );
 
 
 }  /* ve */
 
 }  /* py */
-
-}  /* gsf */
 
 } // namespace amorphous
 

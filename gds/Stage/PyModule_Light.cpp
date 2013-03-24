@@ -16,6 +16,7 @@
 
 #include "../base.hpp"
 #include "../Script/convert_python_to_x.hpp"
+#include "../Script/PythonScriptManager.hpp"
 
 
 namespace amorphous
@@ -98,7 +99,7 @@ inline static void GetInvalidDesc( LightEntityDesc& desc )
 
 
 
-using namespace gsf::py::light;
+using namespace py::light;
 
 
 static CCopyEntity *GetEntityByName( const char* entity_name )
@@ -110,7 +111,7 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
 }
 
 
-PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
+PyObject* py::light::CreateDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	LightEntityDesc desc( Light::DIRECTIONAL );
 	char *base_name = "";
@@ -165,7 +166,7 @@ PyObject* gsf::py::light::CreateDirectionalLight( PyObject* self, PyObject* args
 }
 
 
-PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyObject *keywords )
+PyObject* py::light::CreatePointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	LightEntityDesc desc( Light::POINT );
 	char *base_name = "";
@@ -211,7 +212,7 @@ PyObject* gsf::py::light::CreatePointLight( PyObject* self, PyObject* args, PyOb
 }
 
 
-PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args, PyObject *keywords )
+PyObject* py::light::CreateSpotlight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	LOG_PRINT_ERROR( "Not implemented yet." );
 
@@ -220,7 +221,7 @@ PyObject* gsf::py::light::CreateSpotlight( PyObject* self, PyObject* args, PyObj
 }
 
 
-PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
+PyObject* py::light::CreateHSDirectionalLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	LightEntityDesc desc( Light::HEMISPHERIC_DIRECTIONAL );
 
@@ -284,7 +285,7 @@ PyObject* gsf::py::light::CreateHSDirectionalLight( PyObject* self, PyObject* ar
 }
 
 
-PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
+PyObject* py::light::CreateHSPointLight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	LightEntityDesc desc( Light::HEMISPHERIC_POINT );
 
@@ -338,7 +339,7 @@ PyObject* gsf::py::light::CreateHSPointLight( PyObject* self, PyObject* args, Py
 }
 
 
-PyObject* gsf::py::light::CreateHSSpotlight( PyObject* self, PyObject* args, PyObject *keywords )
+PyObject* py::light::CreateHSSpotlight( PyObject* self, PyObject* args, PyObject *keywords )
 {
 	LOG_PRINT_ERROR( "Not implemented yet." );
 
@@ -348,28 +349,28 @@ PyObject* gsf::py::light::CreateHSSpotlight( PyObject* self, PyObject* args, PyO
 
 
 /*
-PyObject* gsf::py::light::LoadHSSpotlight( PyObject* self, PyObject* args )
+PyObject* py::light::LoadHSSpotlight( PyObject* self, PyObject* args )
 {
 	Py_INCREF( Py_None );
 	return Py_None;
 }
 */
 /*
-PyObject* gsf::py::light::CreateTriDirectionalLight( PyObject* self, PyObject* args )
+PyObject* py::light::CreateTriDirectionalLight( PyObject* self, PyObject* args )
 {
 	Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
-PyObject* gsf::py::light::CreateTriPointLight( PyObject* self, PyObject* args )
+PyObject* py::light::CreateTriPointLight( PyObject* self, PyObject* args )
 {
 	Py_INCREF( Py_None );
 	return Py_None;
 }
 
 
-PyObject* gsf::py::light::CreateTriSpotlight( PyObject* self, PyObject* args )
+PyObject* py::light::CreateTriSpotlight( PyObject* self, PyObject* args )
 {
 	Py_INCREF( Py_None );
 	return Py_None;
@@ -424,7 +425,7 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 }
 
 
-PyObject* gsf::py::light::SetColorU32( PyObject* self, PyObject* args )
+PyObject* py::light::SetColorU32( PyObject* self, PyObject* args )
 {
 	int index;
 	U32 color;	// 32-bit ARGB color (8 bits for each channel)
@@ -440,7 +441,7 @@ PyObject* gsf::py::light::SetColorU32( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::light::SetColor( PyObject* self, PyObject* args )
+PyObject* py::light::SetColor( PyObject* self, PyObject* args )
 {
 	int index;
 	SFloatRGBColor color;
@@ -453,7 +454,7 @@ PyObject* gsf::py::light::SetColor( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
+PyObject* py::light::SetPosition( PyObject* self, PyObject* args )
 {
 	Vector3 pos;
 	int result = PyArg_ParseTuple( args, "fff", &pos.x, &pos.y, &pos.z );
@@ -469,7 +470,7 @@ PyObject* gsf::py::light::SetPosition( PyObject* self, PyObject* args )
 }
 
 
-PyObject* gsf::py::light::SetTargetLight( PyObject* self, PyObject* args )
+PyObject* py::light::SetTargetLight( PyObject* self, PyObject* args )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -492,34 +493,40 @@ PyObject* gsf::py::light::SetTargetLight( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef gsf::py::light::g_PyModuleLightMethod[] =
+static PyMethodDef sg_PyModuleLightMethod[] =
 {
-	{ "CreateDirectionalLight",    (PyCFunction)gsf::py::light::CreateDirectionalLight,       METH_VARARGS | METH_KEYWORDS, "" },
-	{ "CreatePointLight",          (PyCFunction)gsf::py::light::CreatePointLight,             METH_VARARGS | METH_KEYWORDS, "" },
-	{ "CreateSpotlight",           (PyCFunction)gsf::py::light::CreateSpotlight,              METH_VARARGS | METH_KEYWORDS, "" },
-	{ "CreateHSDirectionalLight",  (PyCFunction)gsf::py::light::CreateHSDirectionalLight,     METH_VARARGS | METH_KEYWORDS, "" },
-	{ "CreateHSPointLight",        (PyCFunction)gsf::py::light::CreateHSPointLight,           METH_VARARGS | METH_KEYWORDS, "" },
-	{ "CreateHSSpotlight",         (PyCFunction)gsf::py::light::CreateHSSpotlight,            METH_VARARGS | METH_KEYWORDS, "" },
-//	{ "CreateTriPointLight",       (PyCFunction)gsf::py::light::CreateTriPointLight,          METH_VARARGS | METH_KEYWORDS, "" },
-//	{ "CreateTriDirectionalLight", (PyCFunction)gsf::py::light::CreateTriDirectionalLight,    METH_VARARGS | METH_KEYWORDS, "" },
-//	{ "CreateTriSpotlight",        (PyCFunction)gsf::py::light::CreateTriSpotlight,           METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateDirectionalLight",    (PyCFunction)py::light::CreateDirectionalLight,       METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreatePointLight",          (PyCFunction)py::light::CreatePointLight,             METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateSpotlight",           (PyCFunction)py::light::CreateSpotlight,              METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateHSDirectionalLight",  (PyCFunction)py::light::CreateHSDirectionalLight,     METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateHSPointLight",        (PyCFunction)py::light::CreateHSPointLight,           METH_VARARGS | METH_KEYWORDS, "" },
+	{ "CreateHSSpotlight",         (PyCFunction)py::light::CreateHSSpotlight,            METH_VARARGS | METH_KEYWORDS, "" },
+//	{ "CreateTriPointLight",       (PyCFunction)py::light::CreateTriPointLight,          METH_VARARGS | METH_KEYWORDS, "" },
+//	{ "CreateTriDirectionalLight", (PyCFunction)py::light::CreateTriDirectionalLight,    METH_VARARGS | METH_KEYWORDS, "" },
+//	{ "CreateTriSpotlight",        (PyCFunction)py::light::CreateTriSpotlight,           METH_VARARGS | METH_KEYWORDS, "" },
 
-//	{ "RemoveLight",               gsf::py::light::RemoveLight,                  METH_VARARGS, "" },
-//	{ "RemoveNamedLight",          gsf::py::light::RemoveNamedLight,             METH_VARARGS, "" },
+//	{ "RemoveLight",               py::light::RemoveLight,                  METH_VARARGS, "" },
+//	{ "RemoveNamedLight",          py::light::RemoveNamedLight,             METH_VARARGS, "" },
 
 	// used to set/change light properies after creating the light
-	{ "SetTargetLight",         gsf::py::light::SetTargetLight,       METH_VARARGS, "" },
-	{ "SetColor",               gsf::py::light::SetColor,             METH_VARARGS, "" },
-//	{ "SetUpperDiffuseColor",   gsf::py::light::SetUpperDiffuseColor, METH_VARARGS, "" },
-//	{ "SetLowerDiffuseColor",   gsf::py::light::SetLowerDiffuseColor, METH_VARARGS, "" },
-	{ "SetColorU32",            gsf::py::light::SetColorU32,          METH_VARARGS, "" },
-	{ "SetPosition",            gsf::py::light::SetPosition,	      METH_VARARGS, "" },
-//	{ "SetDirection",           gsf::py::light::SetDirection,	      METH_VARARGS, "" },
+	{ "SetTargetLight",         py::light::SetTargetLight,       METH_VARARGS, "" },
+	{ "SetColor",               py::light::SetColor,             METH_VARARGS, "" },
+//	{ "SetUpperDiffuseColor",   py::light::SetUpperDiffuseColor, METH_VARARGS, "" },
+//	{ "SetLowerDiffuseColor",   py::light::SetLowerDiffuseColor, METH_VARARGS, "" },
+	{ "SetColorU32",            py::light::SetColorU32,          METH_VARARGS, "" },
+	{ "SetPosition",            py::light::SetPosition,	      METH_VARARGS, "" },
+//	{ "SetDirection",           py::light::SetDirection,	      METH_VARARGS, "" },
 	{ "SetAttenuationFactors",  SetAttenuationFactors,	              METH_VARARGS, "set attenuation factors for point lights" },
-//	{ "SetDirection",      gsf::py::light::SetDirection,	METH_VARARGS, "" },
+//	{ "SetDirection",      py::light::SetDirection,	METH_VARARGS, "" },
 //	{ "",       SetTarget,				METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+void py::light::RegisterPythonModule_Light( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "Light", sg_PyModuleLightMethod );
+}
 
 
 void CreateDirectionalLight( const std::string& name,

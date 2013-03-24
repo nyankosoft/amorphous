@@ -142,7 +142,7 @@ void RegisterPythonModule_visual_effect()
 }
 
 /*
-PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
+PyMethodDef amorphous::py::ve::g_PyModuleVisualEffectMethod[] =
 {
 	{ "EnableEnvMap",                    EnableEnvMap,                    METH_VARARGS, "" },
 	{ "DisableEnvMap",                   DisableEnvMap,                   METH_VARARGS, "" },

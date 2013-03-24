@@ -2,6 +2,7 @@
 #define __PYMODULE_GAMEITEMSHOP_H__
 
 
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 
 
@@ -9,7 +10,7 @@ namespace amorphous
 {
 
 
-extern PyMethodDef g_PyModuleShopMethod[];
+void RegisterPythonModule_Shop( PythonScriptManager& mgr );
 
 
 class GameItemShop;

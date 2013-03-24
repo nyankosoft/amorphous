@@ -2,6 +2,7 @@
 #define __PyModule_Player_H__
 
 
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 
 
@@ -9,7 +10,8 @@ namespace amorphous
 {
 
 
-extern PyMethodDef g_PyModulePlayerMethod[];
+void RegisterPythonModule_PlayerInfo( PythonScriptManager& mgr );
+
 
 } // namespace amorphous
 

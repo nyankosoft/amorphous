@@ -3,11 +3,8 @@
 #include "App/GameApplicationBase.hpp"
 #include "Task/GameTask.hpp"
 #include "Task/GameTaskManager.hpp"
-
-#include "Support/Macro.h"
+#include "Script/PythonScriptManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
-
-#include "../base.hpp"
 
 
 namespace amorphous
@@ -27,9 +24,6 @@ inline static bool IsTaskAvailable()
 }
 
 #define RETURN_PYNONE_IF_NO_TASK()	if( !IsTaskAvailable() )	{	Py_INCREF( Py_None );	return Py_None;	}
-
-
-using namespace gsf::py::task;
 
 
 PyObject* RequestTaskTransition( PyObject* self, PyObject* args )
@@ -52,12 +46,18 @@ PyObject* RequestTaskTransition( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef gsf::py::task::g_PyModuleTaskMethod[] =
+static PyMethodDef sg_PyModuleTaskMethod[] =
 {
 	{ "RequestTaskTransition",		RequestTaskTransition,		METH_VARARGS, "" },
 //	{ "RequestTransitionToNextTask",RequestTransitionToNextTask,METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+void RegisterPythonModule_Task( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "Task", sg_PyModuleTaskMethod );
+}
 
 
 } // namespace amorphous

@@ -3,11 +3,8 @@
 
 
 #include "fwd.hpp"
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
-
-
-namespace amorphous
-{
 
 
 /*
@@ -28,7 +25,7 @@ namespace amorphous
  5. end camera script settings mode
  */
 
-namespace gsf
+namespace amorphous
 {
 
 namespace py
@@ -38,7 +35,7 @@ namespace cam
 {
 
 
-extern PyMethodDef g_PyModuleCameraMethod[];
+void RegisterPythonModule_Camera( PythonScriptManager& mgr );
 
 extern void SetStageForEntityScriptCallback( CStage* pStage );
 
@@ -49,8 +46,6 @@ extern PyObject* SetPose( PyObject* self, PyObject* args );
 }  /* cam */
 
 }  /* py */
-
-}  /* gsf */
 
 } // namespace amorphous
 

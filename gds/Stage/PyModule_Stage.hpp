@@ -3,6 +3,7 @@
 
 
 #include "fwd.hpp"
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 #include "gds/3DMath/Matrix34.hpp"
 #include "gds/Physics/fwd.hpp"
@@ -12,7 +13,7 @@ namespace amorphous
 {
 
 
-extern PyMethodDef g_PyModuleStageMethod[];
+void RegisterPythonModule_Stage( PythonScriptManager& mgr );
 
 
 extern void SetStageForStageScriptCallback( CStage* pStage );

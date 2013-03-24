@@ -1,22 +1,18 @@
 #include "PyModule_VisualEffect.hpp"
 #include "PyModule_Stage.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix34.hpp"
 #include "Graphics/FloatRGBColor.hpp"
 #include "Graphics/ShadowMaps.hpp"
 
-#include "BE_DirectionalLight.hpp"
 #include "BaseEntity_Draw.hpp"
-#include "BE_PointLight.hpp"
-#include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
 #include "EntitySet.hpp"
 #include "EntityRenderManager.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Support/Macro.h"
 #include "Support/Log/DefaultLog.hpp"
+
+#include "Script/PythonScriptManager.hpp"
 
 #include "../base.hpp"
 
@@ -56,7 +52,7 @@ using namespace boost;
 static const int gs_DefaultEffectPriorityIDforScript = ScreenEffectManager::MAX_EFFECT_PRIORITY_ID;
 
 
-using namespace gsf::py::ve;
+using namespace amorphous::py::ve;
 
 
 inline static ScreenEffectManager *GetScreenEffectManager()
@@ -474,7 +470,7 @@ PyObject* ClearMonochrome( PyObject* self, PyObject* args )
 
 
 
-PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
+static PyMethodDef sg_PyModuleVisualEffectMethod[] =
 {
 	{ "EnableEnvMap",                    EnableEnvMap,                    METH_VARARGS, "" },
 	{ "DisableEnvMap",                   DisableEnvMap,                   METH_VARARGS, "" },
@@ -507,6 +503,12 @@ PyMethodDef gsf::py::ve::g_PyModuleVisualEffectMethod[] =
 	{ "ClearMonochrome",                 ClearMonochrome,                 METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+void py::ve::RegisterPythonModule_VisualEffect( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "VisualEffect", sg_PyModuleVisualEffectMethod );
+}
 
 
 } // namespace amorphous

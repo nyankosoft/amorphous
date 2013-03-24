@@ -1,6 +1,7 @@
 #include "PyModule_HUD.hpp"
 
-#include "3DMath/Vector3.hpp"
+#include "../3DMath/Vector3.hpp"
+#include "../Script/PythonScriptManager.hpp"
 #include "PlayerInfo.hpp"
 #include "HUD_PlayerBase.hpp"
 
@@ -108,7 +109,7 @@ PyObject* LoadGlobalMap( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModuleHUDMethod[] =
+static PyMethodDef sg_PyModuleHUDMethod[] =
 {
 	{ "HideTime",				HideTime,				METH_VARARGS, "" },
 	{ "ShowTime",				ShowTime,				METH_VARARGS, "" },
@@ -119,6 +120,12 @@ PyMethodDef g_PyModuleHUDMethod[] =
 //	{ "CreateEntityHrz",		CreateEntityHrz,		METH_VARARGS, "creates an entity at a given position" },
 	{ NULL, NULL }
 };
+
+
+void RegisterPythonModule_HUD( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "HUD", sg_PyModuleHUDMethod );
+}
 
 
 } // namespace amorphous

@@ -2,19 +2,19 @@
 #define __PYMODULE_GRAPHICSELEMENT_H__
 
 
+#include "fwd.hpp"
+#include "../Script/fwd.hpp"
 #include "../Script/PythonHeaders.hpp"
 
 
 namespace amorphous
 {
 
+//void RegisterPythonModule_Graphics( PythonScriptManager& mgr );
+//void RegisterPythonModule_Animation( PythonScriptManager& mgr );
 
-extern PyMethodDef g_PyModuleGraphicsElementMethod[];
-extern PyMethodDef g_PyModuleAnimatedGraphicsMethod[];
-
-
-class GraphicsElementManager;
-class GraphicsElementAnimationManager;
+void AddPythonModule_Graphics();
+void AddPythonModule_Animation();
 
 void SetGraphicsElementManagerForScript( GraphicsElementManager *pManager );
 void RemoveGraphicsElementManagerForScript();

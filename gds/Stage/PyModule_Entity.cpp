@@ -7,6 +7,7 @@
 #include "BE_StaticParticleSet.hpp"
 #include "BaseEntity_Draw.hpp"
 
+#include "Script/PythonScriptManager.hpp"
 #include "Support/Macro.h"
 #include "Support/Vec3_StringAux.hpp"
 #include "Support/fixed_string.hpp"
@@ -22,7 +23,7 @@ static CStage *gs_pTargetStage = NULL;
 
 double g_fTimeOffset = 0.0f;
 
-void gsf::py::entity::SetStageForEntityScriptCallback( CStage* pStage )
+void amorphous::py::entity::SetStageForEntityScriptCallback( CStage* pStage )
 {
 	gs_pTargetStage = pStage;
 }
@@ -49,7 +50,7 @@ static CCopyEntity *GetEntityByName( const char* entity_name )
 }
 
 
-using namespace gsf::py::entity;
+using namespace py::entity;
 
 
 
@@ -183,7 +184,7 @@ PyObject* CalculateNextKeyframeFromDeltaTimeAndSpeed( PyObject* self, PyObject* 
 }
 
 
-PyObject* gsf::py::entity::SetTimeOffset( PyObject* self, PyObject* args )
+PyObject* amorphous::py::entity::SetTimeOffset( PyObject* self, PyObject* args )
 {
     Py_INCREF( Py_None );
 
@@ -278,7 +279,7 @@ PyObject* CommitStaticParticleSet( PyObject* self, PyObject* args )
 static CCopyEntity *gs_pTargetEntity = NULL;
 
 /// \param entity name
-PyObject* gsf::py::entity::SetTarget( PyObject* self, PyObject* args )
+PyObject* amorphous::py::entity::SetTarget( PyObject* self, PyObject* args )
 {
 	char *entity_name = NULL;
 	int result = PyArg_ParseTuple( args, "s", &entity_name );
@@ -299,7 +300,7 @@ PyObject* gsf::py::entity::SetTarget( PyObject* self, PyObject* args )
 
 
 /*
-PyObject* gsf::py::entity::ReleaseTarget( PyObject* self, PyObject* args )
+PyObject* amorphous::py::entity::ReleaseTarget( PyObject* self, PyObject* args )
 {
 	char *entity_name = NULL;
 	int result = PyArg_ParseTuple( args, "s", &entity_name );
@@ -314,7 +315,7 @@ PyObject* gsf::py::entity::ReleaseTarget( PyObject* self, PyObject* args )
 */
 
 
-PyObject* gsf::py::entity::SetPosition( PyObject* self, PyObject* args )
+PyObject* amorphous::py::entity::SetPosition( PyObject* self, PyObject* args )
 {
 	Vector3 pos;
 	int result = PyArg_ParseTuple( args, "fff", &pos.x, &pos.y, &pos.z );
@@ -404,24 +405,30 @@ PyObject* SetMeshMaterialParamValue( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef gsf::py::entity::g_PyModuleEntityMethod[] =
+static PyMethodDef sg_PyModuleEntityMethod[] =
 {
 	{ "StartPath",				  EntityStartPath,                 METH_VARARGS, "notify the start of motion path set routine" },
 	{ "EndPath",				  EntityEndPath,                   METH_VARARGS, "notify the end of motion path set routine" },
 	{ "AddPath",				  EntityAddPath,                   METH_VARARGS, "add a way point (keyframe) for motion path" },
 	{ "SetCurrentPoseAsKeyframe", SetCurrentPoseAsKeyframe,        METH_VARARGS, "" },
 	{ "CalculateNextKeyframeFromDeltaTimeAndSpeed", CalculateNextKeyframeFromDeltaTimeAndSpeed,        METH_VARARGS, "" },
-	{ "SetTimeOffset",			  gsf::py::entity::SetTimeOffset,  METH_VARARGS, "set the offset of the time argument of AddPath()" },
+	{ "SetTimeOffset",			  amorphous::py::entity::SetTimeOffset,  METH_VARARGS, "set the offset of the time argument of AddPath()" },
 //	{ "GetVelocity",			  GetVelocity,                     METH_VARARGS, "" },
 //	{ "GetSpeed",				  GetSpeed,                        METH_VARARGS, "" },
 	{ "CreateStaticParticleSet",  CreateStaticParticleSet,         METH_VARARGS, "" },
 	{ "CommitStaticParticleSet",  CommitStaticParticleSet,         METH_VARARGS, "" },
-	{ "SetTarget",                gsf::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
-	{ "SetPosition",              gsf::py::entity::SetPosition,    METH_VARARGS, "" },
+	{ "SetTarget",                amorphous::py::entity::SetTarget,      METH_VARARGS, "find and lock the target entity for the subsequent calls" },
+	{ "SetPosition",              amorphous::py::entity::SetPosition,    METH_VARARGS, "" },
 	{ "SetEntityGroup",           SetEntityGroup,                  METH_VARARGS, "Sets an entity group to the entity currently selected as the target" },
 	{ "SetMeshMaterialParamValue",SetMeshMaterialParamValue,       METH_VARARGS, "" },
 	{NULL, NULL}
 };
+
+
+void py::entity::RegisterPythonModule_Entity( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "Entity", sg_PyModuleEntityMethod );
+}
 
 
 } // namespace amorphous

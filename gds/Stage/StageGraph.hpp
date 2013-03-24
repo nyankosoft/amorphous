@@ -2,6 +2,7 @@
 #define __STAGEGRAPH_SINGLETON_H__
 
 
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 
 #include "gds/Support/singleton.hpp"
@@ -14,7 +15,7 @@ namespace amorphous
 using namespace serialization;
 
 
-extern PyMethodDef g_PyModuleStageGraphMethod[];
+void RegisterPythonModule_StageGraph( PythonScriptManager& mgr );
 
 
 #define StageGraph	(*(CStageGraph::Get()))

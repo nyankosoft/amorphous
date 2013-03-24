@@ -1,6 +1,7 @@
 #include "StageGraph.hpp"
 #include "3DMath/Vector3.hpp"
 #include "Support/SafeDelete.hpp"
+#include "Script/PythonScriptManager.hpp"
 
 
 namespace amorphous
@@ -154,12 +155,18 @@ PyObject* MarkStageNodeAsCleared( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModuleStageGraphMethod[] =
+static PyMethodDef sg_PyModuleStageGraphMethod[] =
 {
 	{ "AddStageNode",				AddStageNode,			METH_VARARGS, "add a stage node to the stage graph" },
 	{ "MarkStageNodeAsCleared",		MarkStageNodeAsCleared,	METH_VARARGS, "mark a stage node as cleared" },
 	{NULL, NULL}
 };
+
+
+void RegisterPythonModule_StageGraph( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "StageGraph", sg_PyModuleStageGraphMethod );
+}
 
 
 

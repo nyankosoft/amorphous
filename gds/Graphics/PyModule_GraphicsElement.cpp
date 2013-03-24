@@ -1,5 +1,4 @@
 #include "PyModule_GraphicsElement.hpp"
-
 #include "GraphicsEffectManager.hpp"
 
 #include "../base.hpp"
@@ -7,6 +6,7 @@
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/Rect.hpp"
+#include "Script/PythonScriptManager.hpp"
 
 
 namespace amorphous
@@ -575,7 +575,7 @@ PyObject* TranslateNonLinear( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModuleGraphicsElementMethod[] =
+static PyMethodDef sg_PyModuleGraphicsElementMethod[] =
 {
 //	{ "SetRectColor",			SetRectColor,			METH_VARARGS, "" },
 //	{ "SetRectPosition",		SetRectPosition,		METH_VARARGS, "" },
@@ -603,7 +603,7 @@ PyMethodDef g_PyModuleGraphicsElementMethod[] =
 };
 
 
-PyMethodDef g_PyModuleAnimatedGraphicsMethod[] =
+static PyMethodDef sg_PyModuleAnimatedGraphicsMethod[] =
 {
 //	{ "Translate"				Translate,				METH_VARARGS, "" },
 	{ "SetTimeOffset",			SetTimeOffset,			METH_VARARGS, "" },
@@ -633,6 +633,36 @@ PyMethodDef g_PyModuleGraphicsElementMethod[] =
 	{NULL, NULL}
 };
 */
+
+//void RegisterPythonModule_Graphics( PythonScriptManager& mgr )
+//{
+//	mgr.AddModule( "gr", sg_PyModuleGraphicsElementMethod );
+//}
+//
+//
+//void RegisterPythonModule_Animation( PythonScriptManager& mgr )
+//{
+//	mgr.AddModule( "gre", sg_PyModuleAnimatedGraphicsMethod );
+//}
+
+
+void AddPythonModule( const char *module_name, PyMethodDef method[] )
+{
+	PyObject *pModule0 = PyImport_AddModule( module_name );
+	PyObject *pModule  = Py_InitModule( module_name, method );
+}
+
+
+void AddPythonModule_Graphics()
+{
+	AddPythonModule( "gr",	sg_PyModuleGraphicsElementMethod );
+}
+
+
+void AddPythonModule_Animation()
+{
+	AddPythonModule( "gre",	sg_PyModuleAnimatedGraphicsMethod );
+}
 
 
 } // namespace amorphous

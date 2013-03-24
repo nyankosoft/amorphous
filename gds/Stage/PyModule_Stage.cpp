@@ -9,6 +9,7 @@
 #include "BE_Skybox.hpp"	// used by SetFogColor()
 #include "StageUtility.hpp"
 #include "../Script/convert_python_to_x.hpp"
+#include "../Script/PythonScriptManager.hpp"
 
 
 namespace amorphous
@@ -569,7 +570,7 @@ PyObject* EntityDestroyed( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModuleStageMethod[] =
+static PyMethodDef sg_PyModuleStageMethod[] =
 {
 	{ "CreateEntity",			CreateEntity,			METH_VARARGS, "creates an entity at a position with a direction & a velocity" },
 	{ "CreateEntityAt",			CreateEntityAt,			METH_VARARGS, "creates an entity at a given position" },
@@ -596,6 +597,11 @@ PyMethodDef g_PyModuleStageMethod[] =
 	{NULL, NULL}
 };
 
+
+void RegisterPythonModule_Stage( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "Stage", sg_PyModuleStageMethod );
+}
 
 
 /*

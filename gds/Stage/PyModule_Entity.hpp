@@ -2,17 +2,12 @@
 #define __PYMODULE_ENTITY_H__
 
 
-#include "gds/Script/PythonHeaders.hpp"
+#include "fwd.hpp"
+#include "../Script/fwd.hpp"
+#include "../Script/PythonHeaders.hpp"
 
 
 namespace amorphous
-{
-
-
-class CStage;
-
-
-namespace gsf
 {
 
 namespace py
@@ -22,7 +17,7 @@ namespace entity
 {
 
 
-extern PyMethodDef g_PyModuleEntityMethod[];
+void RegisterPythonModule_Entity( PythonScriptManager& mgr );
 
 extern void SetStageForEntityScriptCallback( CStage* pStage );
 
@@ -34,8 +29,6 @@ extern PyObject* SetTimeOffset( PyObject* self, PyObject* args );
 }  /* entity */
 
 }  /* py */
-
-}  /* gsf */
 
 } // namespace amorphous
 

@@ -25,7 +25,7 @@ inline static bool IsTaskAvailable()
 }
 
 
-//using namespace gsf::py::task;
+//using namespace amorphous::py::task;
 
 
 /// time spent on fade out effect for the current task (default value is used when a negative value is specified)

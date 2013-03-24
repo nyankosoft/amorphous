@@ -1,6 +1,7 @@
+#include "PyModule_ShopMethods.hpp"
 #include "GameItemShop.hpp"
 #include "Item/ItemDatabaseManager.hpp"
-#include "PyModule_ShopMethods.hpp"
+#include "Script/PythonScriptManager.hpp"
 
 
 namespace amorphous
@@ -35,14 +36,17 @@ PyObject* AddItem( PyObject* self, PyObject* args )
 }
 
 
-PyMethodDef g_PyModuleShopMethod[] =
+static PyMethodDef sg_PyModuleShopMethod[] =
 {
 	{ "AddItem",				AddItem,				METH_VARARGS, "add an item to a shop" },
 	{ NULL, NULL }
 };
 
 
-
+void RegisterPythonModule_Shop( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "Shop", sg_PyModuleShopMethod );
+}
 
 
 } // namespace amorphous

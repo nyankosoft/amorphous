@@ -58,7 +58,7 @@ using boost::shared_ptr;
 void SetStageForScriptCallback( CStage* pStage )
 {
 	SetStageForStageScriptCallback( pStage );
-	gsf::py::entity::SetStageForEntityScriptCallback( pStage );
+	py::entity::SetStageForEntityScriptCallback( pStage );
 }
 
 
@@ -695,19 +695,23 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 		if( !pPythonScriptManager )
 			return false;
 
-		pPythonScriptManager->AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
-		pPythonScriptManager->AddModule( "Stage",		g_PyModuleStageMethod );
-		pPythonScriptManager->AddModule( "TextMessage",	g_PyModuleTextMessageMethod );
-		pPythonScriptManager->AddModule( "Sound",		g_PyModuleSoundMethod );
-		pPythonScriptManager->AddModule( "Entity",		gsf::py::entity::g_PyModuleEntityMethod );
-		pPythonScriptManager->AddModule( "HUD",			g_PyModuleHUDMethod );
-		pPythonScriptManager->AddModule( "cam",			gsf::py::cam::g_PyModuleCameraMethod );
-		pPythonScriptManager->AddModule( "StageGraph",	g_PyModuleStageGraphMethod );
-		pPythonScriptManager->AddModule( "gr",			g_PyModuleGraphicsElementMethod );
-		pPythonScriptManager->AddModule( "gre",			g_PyModuleAnimatedGraphicsMethod );
-		pPythonScriptManager->AddModule( "Task",			gsf::py::task::g_PyModuleTaskMethod );
-		pPythonScriptManager->AddModule( "Light",		gsf::py::light::g_PyModuleLightMethod );
-		pPythonScriptManager->AddModule( "VisualEffect",	gsf::py::ve::g_PyModuleVisualEffectMethod );
+		PythonScriptManager& script_mgr = *pPythonScriptManager;
+
+		RegisterPythonModule_PlayerInfo(   script_mgr );
+		RegisterPythonModule_Stage(        script_mgr );
+		RegisterPythonModule_TextMessage(  script_mgr );
+		RegisterPythonModule_Sound(        script_mgr );
+		py::entity::RegisterPythonModule_Entity(       script_mgr );
+		RegisterPythonModule_HUD(        script_mgr );
+		py::cam::RegisterPythonModule_Camera( script_mgr );
+		RegisterPythonModule_StageGraph(   script_mgr );
+//		RegisterPythonModule_Graphics(     script_mgr );
+//		RegisterPythonModule_Animation(    script_mgr );
+		AddPythonModule_Graphics();
+		AddPythonModule_Animation();
+		RegisterPythonModule_Task(         script_mgr );
+		py::light::RegisterPythonModule_Light(     script_mgr );
+		py::ve::RegisterPythonModule_VisualEffect( script_mgr );
 
 		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_math3d() );
 		RegisterEmbeddedPythonModule( GetEmbeddedPythonModule_gfx() );

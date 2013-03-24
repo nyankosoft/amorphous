@@ -2,35 +2,16 @@
 #define __PYMODULE_TASK_H__
 
 
+#include "gds/Script/fwd.hpp"
 #include "gds/Script/PythonHeaders.hpp"
 
 
 namespace amorphous
 {
 
-class CStage;
 
+void RegisterPythonModule_Task( PythonScriptManager& mgr );
 
-namespace gsf
-{
-
-namespace py
-{
-
-namespace task
-{
-
-
-extern PyMethodDef g_PyModuleTaskMethod[];
-
-//extern void SetStageForEntityScriptCallback( CStage* pStage );
-
-
-}  /* task */
-
-}  /* py */
-
-}  /* gsf */
 
 } // namespace amorphous
 

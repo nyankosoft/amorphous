@@ -1,5 +1,6 @@
 #include "PyModule_TextMessage.hpp"
 #include "TextMessageManager.hpp"
+#include "../Script/PythonScriptManager.hpp"
 #include <map>
 
 
@@ -132,7 +133,7 @@ PyObject* DisplayTextMessage( PyObject* self, PyObject* args )
 
 
 
-PyMethodDef g_PyModuleTextMessageMethod[] =
+static PyMethodDef sg_PyModuleTextMessageMethod[] =
 {
 	{ "SetTextMessageManager",     SetTextMessageManager,     METH_VARARGS, "Sets the target text message manager for the script" },
 	{ "StartLoadMessage",          StartLoadMessage,          METH_VARARGS, "starts pre-loading of text message" },
@@ -144,6 +145,12 @@ PyMethodDef g_PyModuleTextMessageMethod[] =
 //	{ "EndPreloadText",            EndPreloadText,            METH_VARARGS,  },
 	{NULL, NULL}
 };
+
+
+void RegisterPythonModule_TextMessage( PythonScriptManager& mgr )
+{
+	mgr.AddModule( "TextMessage", sg_PyModuleTextMessageMethod );
+}
 
 
 } // namespace amorphous
