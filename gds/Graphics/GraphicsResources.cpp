@@ -337,7 +337,7 @@ bool MeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::stri
 	C3DMeshModelArchive mesh_archive;
 	db.GetData( mesh_archive_key, mesh_archive );
 
-	CMeshFactory factory;
+	MeshFactory factory;
 	BasicMesh *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
 	m_pMeshObject = boost::shared_ptr<BasicMesh>( pMesh );
 
@@ -349,7 +349,7 @@ bool MeshResource::LoadFromFile( const std::string& filepath )
 {
 	m_pMeshObject.reset();
 
-	CMeshFactory factory;
+	MeshFactory factory;
 	BasicMesh *pMeshObject
 		= factory.LoadMeshObjectFromFile( filepath, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
 
@@ -359,7 +359,10 @@ bool MeshResource::LoadFromFile( const std::string& filepath )
 		return true;
 	}
 	else
+	{
+		LOG_PRINT_WARNING( "Failed to load the mesh: " + filepath );
 		return false;
+	}
 }
 
 
@@ -393,7 +396,7 @@ bool MeshResource::CreateFromDesc()
 	if( res != Result::SUCCESS )
 		return false;
 
-	CMeshFactory factory;
+	MeshFactory factory;
 	BasicMesh *pMeshObject
 		= factory.LoadMeshObjectFromArchive( m_MeshDesc.pMeshGenerator->MeshArchive(),
 		                                     m_MeshDesc.ResourcePath,
@@ -459,7 +462,7 @@ bool MeshResource::Create()
 			&pMesh
 		);
 */
-	CMeshFactory factory;
+	MeshFactory factory;
 	m_pMeshObject = factory.CreateMesh( m_MeshDesc.MeshType );
 
 	if( !m_pMeshObject )
