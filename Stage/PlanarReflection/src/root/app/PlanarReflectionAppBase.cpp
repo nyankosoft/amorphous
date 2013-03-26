@@ -19,7 +19,7 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/default.bin";
 
 
-extern CApplicationBase *CreateApplicationInstance() { return new CPlanarReflectionAppBase(); }
+extern CApplicationBase *amorphous::CreateApplicationInstance() { return new CPlanarReflectionAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -56,7 +56,7 @@ CPlanarReflectionAppTask::CPlanarReflectionAppTask()
 	StageLoader stg_loader;
 	m_pStage = stg_loader.LoadStage( sg_TestStageScriptToLoad );
 
-	CameraController()->SetPose( Matrix34( Vector3(0,1.8f,0), Matrix33Identity() ) );
+	GetCameraController()->SetPose( Matrix34( Vector3(0,1.8f,0), Matrix33Identity() ) );
 }
 
 
@@ -94,7 +94,7 @@ void CPlanarReflectionAppGUITask::LoadStage( const std::string& stage_script_nam
 
 int CPlanarReflectionAppGUITask::FrameMove( float dt )
 {
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 /*
