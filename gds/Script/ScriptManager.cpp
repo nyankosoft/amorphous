@@ -264,6 +264,9 @@ void ScriptManager::Update()
 		if( m_vecEventScript[i].m_bIsDone )
 			continue;
 
+		if( !m_vecEventScript[i].m_pEventCallback )
+			continue;
+
 		PyObject *pArgList;
 		pArgList = Py_BuildValue( "()" );
 
