@@ -12,11 +12,11 @@ using namespace std;
 
 
 /**
-How to replace D3DXMATRIX CMeshBone::m_pWorldTransform
+How to replace D3DXMATRIX MeshBone::m_pWorldTransform
 -----------------------------------------------------
 - Replace with Matrix44
   - pros:
-    - Direct3D and OpenGL implementations may be able to share CMeshBone.
+    - Direct3D and OpenGL implementations may be able to share MeshBone.
   - cons:
     - ID3DXEffect::SetMatrixTranspose() is slower than ID3DXEffect::SetMatrix()
 Replace with Transform
@@ -24,19 +24,19 @@ Replace with Transform
     - Less data to send to shader
   - cons:
     - No support for scaling
-	- Need to convert to Matrix34 unless CMeshBone::m_BoneTransform
-      and CMeshBone::m_LocalTransform are also Transform.
+	- Need to convert to Matrix34 unless MeshBone::m_BoneTransform
+      and MeshBone::m_LocalTransform are also Transform.
 */
 
 
 //=========================================================================================
-// CMeshBone
+// MeshBone
 //=========================================================================================
 
-const CMeshBone CMeshBone::ms_NullBone = CMeshBone();
+const MeshBone MeshBone::ms_NullBone = MeshBone();
 
 
-void CMeshBone::LoadBone_r( CMMA_Bone& rSrcBone,
+void MeshBone::LoadBone_r( CMMA_Bone& rSrcBone,
 						   Transform *paBlendTransforms,
 						   int &iNumRegisteredMatrices )
 {
@@ -44,7 +44,7 @@ void CMeshBone::LoadBone_r( CMMA_Bone& rSrcBone,
 
 	m_iNumChildren = (int)rSrcBone.vecChild.size();
 
-	m_paChild = new CMeshBone [m_iNumChildren];
+	m_paChild = new MeshBone [m_iNumChildren];
 
 	// set pointer to the transform matrix array
 	m_pWorldTransform = paBlendTransforms + iNumRegisteredMatrices;
@@ -68,7 +68,7 @@ void CMeshBone::LoadBone_r( CMMA_Bone& rSrcBone,
 }
 
 
-inline void CMeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
+inline void MeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 									           const Matrix34 *paSrcMatrix,
 									           int& rIndex,
 									           Matrix34& dest_world_transform )
@@ -89,7 +89,7 @@ inline void CMeshBone::CalculateWorldTransform( const Matrix34* pParentMatrix,
 }
 
 
-inline void CMeshBone::CalculateBlendTransform( const Transform *pParentTransform,
+inline void MeshBone::CalculateBlendTransform( const Transform *pParentTransform,
 									            const Transform& src_local_transform,
 									            Transform& dest_blend_transform )
 {
@@ -123,7 +123,7 @@ inline void CMeshBone::CalculateBlendTransform( const Transform *pParentTransfor
 }
 
 
-void CMeshBone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex )
+void MeshBone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int& rIndex )
 {
 	Matrix34 world_transform( Matrix34Identity() );
 	CalculateWorldTransform( pParentMatrix, paSrcMatrix, rIndex, world_transform );
@@ -139,7 +139,7 @@ void CMeshBone::Transform_r( Matrix34* pParentMatrix, Matrix34 *paSrcMatrix, int
 }
 
 
-void CMeshBone::CalculateBlendTransforms_r( Transform* pParentTransform, const Transform *paSrcTransform, Transform *pBlendTransforms, int& rIndex )
+void MeshBone::CalculateBlendTransforms_r( Transform* pParentTransform, const Transform *paSrcTransform, Transform *pBlendTransforms, int& rIndex )
 {
 	CalculateBlendTransform( pParentTransform, paSrcTransform[rIndex], pBlendTransforms[rIndex] );
 
@@ -152,7 +152,7 @@ void CMeshBone::CalculateBlendTransforms_r( Transform* pParentTransform, const T
 }
 
 /*
-void CMeshBone::CalculateBlendTransforms_r( const Transform *pParentTransform,
+void MeshBone::CalculateBlendTransforms_r( const Transform *pParentTransform,
 									        const Transform& src_transform,
 									        int& rIndex,
 									        Transform *paDest )
@@ -167,9 +167,9 @@ void CMeshBone::CalculateBlendTransforms_r( const Transform *pParentTransform,
 }
 */
 
-int CMeshBone::GetBoneMatrixIndexByName_r( const char *pName )
+int MeshBone::GetBoneMatrixIndexByName_r( const char *pName )
 {
-/*	const CMeshBone& bone = GetBoneByName_r( pName );
+/*	const MeshBone& bone = GetBoneByName_r( pName );
 
 	if( bone == NullBone() )
 		return -1;
@@ -198,7 +198,7 @@ int CMeshBone::GetBoneMatrixIndexByName_r( const char *pName )
 }
 
 
-const CMeshBone& CMeshBone::GetBoneByName_r( const char *pName ) const
+const MeshBone& MeshBone::GetBoneByName_r( const char *pName ) const
 {
 	if( m_strName == pName )
 		return *this;
@@ -210,7 +210,7 @@ const CMeshBone& CMeshBone::GetBoneByName_r( const char *pName ) const
 		{
 			for( int i=0; i<m_iNumChildren; i++ )
 			{
-				const CMeshBone& bone = m_paChild[i].GetBoneByName_r( pName );
+				const MeshBone& bone = m_paChild[i].GetBoneByName_r( pName );
 				if( bone != NullBone() )
 					return bone;	// found the bone with the specified name
 			}
@@ -221,7 +221,7 @@ const CMeshBone& CMeshBone::GetBoneByName_r( const char *pName ) const
 }
 
 
-void CMeshBone::SetBoneToArray_r( vector<CMeshBone *>& vecpDestArray )
+void MeshBone::SetBoneToArray_r( vector<MeshBone *>& vecpDestArray )
 {
 	vecpDestArray.push_back( this );
 
@@ -232,7 +232,7 @@ void CMeshBone::SetBoneToArray_r( vector<CMeshBone *>& vecpDestArray )
 }
 
 
-void CMeshBone::DumpToTextFile( FILE* fp, int depth )
+void MeshBone::DumpToTextFile( FILE* fp, int depth )
 {
 	for( int i=0; i<depth; i++ ) fprintf( fp, "  " );
 	fprintf( fp, "%s: t%s, q%s\n", m_strName.c_str(), to_string(m_LocalTransform.vPosition).c_str(), to_string(Quaternion(m_LocalTransform.matOrient)).c_str() );

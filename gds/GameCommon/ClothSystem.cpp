@@ -278,8 +278,8 @@ void CClothCollisionObject::UpdateWorldTransform( SkeletalMesh& skeletal_mesh, c
 	if( m_MeshBoneIndex == -2 )
 	{
 		m_MeshBoneIndex = skeletal_mesh.GetBoneMatrixIndexByName( m_BoneName );
-		const CMeshBone& bone = skeletal_mesh.GetBone( m_BoneName );
-		if( bone != CMeshBone::NullBone() )
+		const MeshBone& bone = skeletal_mesh.GetBone( m_BoneName );
+		if( bone != MeshBone::NullBone() )
 		{
 			m_InvBoneTransform = bone.GetBoneTransform().GetInverseROT();
 		}
@@ -640,7 +640,7 @@ void CClothSystem::RenderObjectsForDebugging()
 	if( !m_SphereMesh.IsLoaded() )
 	{
 		MeshResourceDesc mesh_desc;
-		mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(CSphereDesc()) );
+		mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(SphereDesc()) );
 		mesh_desc.pMeshGenerator->SetDiffuseColor( SFloatRGBAColor( RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), 1.0f ) );
 		m_SphereMesh.Load( mesh_desc );
 	}*/

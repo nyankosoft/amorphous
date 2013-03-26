@@ -409,7 +409,7 @@ Result::Name SetCylinderConvexShapeDesc( MeshHandle& mesh_handle, CConvexShapeDe
 	static const int cylinder_mesh_side_subdivisions = 16;
 
 	// Assumes that the cylinder mesh is upright position in model space
-	CCylinderDesc cylinder_desc;
+	CylinderDesc cylinder_desc;
 	cylinder_desc.height    = aabb.vMax.y - aabb.vMin.y;
 	cylinder_desc.radii[0]  = aabb.vMax.x - aabb.vMin.x;
 	cylinder_desc.radii[1]  = aabb.vMax.z - aabb.vMin.z;
@@ -766,7 +766,7 @@ EntityHandle<> CStageMiscUtility::CreateSphere( float diameter,
 {
 	string actual_entity_attributes_name = 0 < entity_attributes_name.length() ? entity_attributes_name : "__BoxFromDimension__";
 
-	CSphereDesc sphere_desc;
+	SphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = diameter * 0.5f;
 	shared_ptr<SphereMeshGenerator> pSphereMeshGenerator( new SphereMeshGenerator(sphere_desc) );
 	pSphereMeshGenerator->SetDiffuseColor( diffuse_color );
@@ -1229,7 +1229,7 @@ void CStageMiscUtility::CreateSkysphere( const std::string& texture_resource_pat
 
 	desc.WorldPose = Matrix34Identity();
 
-	CSphereDesc sphere_desc;
+	SphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
 	sphere_desc.num_segments = 6;
 	sphere_desc.num_sides    = 12;

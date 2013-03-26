@@ -515,12 +515,12 @@ void MeshContainerRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 
-CMeshContainerNodeRenderMethod::CMeshContainerNodeRenderMethod()
+MeshContainerNodeRenderMethod::MeshContainerNodeRenderMethod()
 {
 }
 
 
-void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode& node )//,
+void MeshContainerNodeRenderMethod::RenderMeshContainerNode( MeshContainerNode& node )//,
 															  //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
 {
 	const int num_mesh_containers = node.GetNumMeshContainers();
@@ -549,7 +549,7 @@ void CMeshContainerNodeRenderMethod::RenderMeshContainerNode( CMeshContainerNode
 
 
 /// Load shaders, etc.
-bool CMeshContainerNodeRenderMethod::LoadRenderMethodResources()
+bool MeshContainerNodeRenderMethod::LoadRenderMethodResources()
 {
 	if( m_vecpContainerRenderMethod.size() == 0
 	 && m_vecpChild.size() == 0 )
@@ -579,7 +579,7 @@ bool CMeshContainerNodeRenderMethod::LoadRenderMethodResources()
 }
 
 
-void CMeshContainerNodeRenderMethod::Serialize( IArchive& ar, const unsigned int version )
+void MeshContainerNodeRenderMethod::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecpContainerRenderMethod;
 	ar & m_vecpChild;
@@ -588,7 +588,7 @@ void CMeshContainerNodeRenderMethod::Serialize( IArchive& ar, const unsigned int
 
 
 /// Use "MeshNode" as the element name of the argument 'reader'
-void CMeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	vector<CXMLNodeReader> vecReader = reader.GetImmediateChildren( "MeshContainerRenderMethod" );
 	m_vecpContainerRenderMethod.resize( vecReader.size() );
@@ -602,7 +602,7 @@ void CMeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecpChild.resize( vecChild.size() );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{
-		m_vecpChild[i].reset( new CMeshContainerNodeRenderMethod() ); 
+		m_vecpChild[i].reset( new MeshContainerNodeRenderMethod() ); 
 		m_vecpChild[i]->LoadFromXMLNode( vecChild[i] );
 	}
 }

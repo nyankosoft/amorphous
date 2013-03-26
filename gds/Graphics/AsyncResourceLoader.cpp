@@ -48,7 +48,7 @@ void AsyncResourceLoader::Release()
 }
 
 
-bool AsyncResourceLoader::AddResourceLoadRequest( const CResourceLoadRequest& req )
+bool AsyncResourceLoader::AddResourceLoadRequest( const ResourceLoadRequest& req )
 {
 	mutex::scoped_lock scoped_lock(m_IOMutex);
 
@@ -79,7 +79,7 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 	bool copied = false;
 	Result::Name res = Result::SUCCESS;
 	shared_ptr<GraphicsResourceLoader> pLoader;
-	CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, shared_ptr<GraphicsResourceLoader>(), weak_ptr<GraphicsResourceEntry>() );
+	ResourceLoadRequest req( ResourceLoadRequest::LoadFromDisk, shared_ptr<GraphicsResourceLoader>(), weak_ptr<GraphicsResourceEntry>() );
 
 	if( 0 < m_ResourceLoadRequestQueue.size() )
 	{
@@ -92,7 +92,7 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 
 	switch( req.GetRequestType() )
 	{
-	case CResourceLoadRequest::LoadFromDisk:
+	case ResourceLoadRequest::LoadFromDisk:
 		pLoader = req.m_pLoader;
 
 		// load the resource from disk or memory
@@ -130,7 +130,7 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 		}
 		break;
 
-	case CResourceLoadRequest::CopyToGraphicsMemory:
+	case ResourceLoadRequest::CopyToGraphicsMemory:
 		// copy loaded data to locked graphics memory
 		copied = req.m_pLoader->CopyLoadedContentToGraphicsResource();
 		if( copied )
@@ -225,7 +225,7 @@ void AsyncResourceLoader::ProcessGraphicsDeviceRequests()
 				if( locked )
 				{
 					AddResourceLoadRequest(
-						CResourceLoadRequest( CResourceLoadRequest::CopyToGraphicsMemory, req.m_pLoader, pEntry )
+						ResourceLoadRequest( ResourceLoadRequest::CopyToGraphicsMemory, req.m_pLoader, pEntry )
 					);
 				}
 

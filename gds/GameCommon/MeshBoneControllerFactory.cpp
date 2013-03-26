@@ -7,30 +7,30 @@ namespace amorphous
 {
 
 
-CMeshBoneControllerFactory::CMeshBoneControllerFactory()
+MeshBoneControllerFactory::MeshBoneControllerFactory()
 {
 }
 
 
-CMeshBoneControllerFactory::~CMeshBoneControllerFactory()
+MeshBoneControllerFactory::~MeshBoneControllerFactory()
 {
 }
 
 
-IArchiveObjectBase *CMeshBoneControllerFactory::CreateObject( const unsigned int id )
+IArchiveObjectBase *MeshBoneControllerFactory::CreateObject( const unsigned int id )
 {
 	switch(id)
 	{
-		case CMeshBoneControllerBase::ID_AIRCRAFT_FLAP:      return new CMeshBoneController_Flap;
-		case CMeshBoneControllerBase::ID_AIRCRAFT_VFLAP:     return new CMeshBoneController_VFlap;
-		case CMeshBoneControllerBase::ID_AIRCRAFT_ROTOR:     return new CMeshBoneController_Rotor;
-		case CMeshBoneControllerBase::ID_AIRCRAFT_COVER:     return new CMeshBoneController_Cover;
-		case CMeshBoneControllerBase::ID_AIRCRAFT_SHAFT:     return new CMeshBoneController_Shaft;
-		case CMeshBoneControllerBase::ID_AIRCRAFT_GEAR_UNIT: return new CMeshBoneController_GearUnit;
+		case MeshBoneControllerBase::ID_AIRCRAFT_FLAP:      return new MeshBoneController_Flap;
+		case MeshBoneControllerBase::ID_AIRCRAFT_VFLAP:     return new MeshBoneController_VFlap;
+		case MeshBoneControllerBase::ID_AIRCRAFT_ROTOR:     return new MeshBoneController_Rotor;
+		case MeshBoneControllerBase::ID_AIRCRAFT_COVER:     return new MeshBoneController_Cover;
+		case MeshBoneControllerBase::ID_AIRCRAFT_SHAFT:     return new MeshBoneController_Shaft;
+		case MeshBoneControllerBase::ID_AIRCRAFT_GEAR_UNIT: return new MeshBoneController_GearUnit;
 //		case MeshBoneControllerBase::ID_AIRCRAFT_:           return new ;
 
 		default:
-			g_Log.Print( "CMeshBoneControllerFactory::CreateObject() - invalid base id or mesh controller" );
+			g_Log.Print( "MeshBoneControllerFactory::CreateObject() - invalid base id or mesh controller" );
 			return NULL;
 	}
 }

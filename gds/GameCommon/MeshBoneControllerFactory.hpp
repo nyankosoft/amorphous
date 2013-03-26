@@ -11,14 +11,14 @@ namespace amorphous
 using namespace serialization;
 
 
-class CMeshBoneControllerFactory : public IArchiveObjectFactory
+class MeshBoneControllerFactory : public IArchiveObjectFactory
 {
 
 public:
 
-	CMeshBoneControllerFactory();
+	MeshBoneControllerFactory();
 
-	virtual ~CMeshBoneControllerFactory();
+	virtual ~MeshBoneControllerFactory();
 
 	IArchiveObjectBase *CreateObject( const unsigned int id );
 

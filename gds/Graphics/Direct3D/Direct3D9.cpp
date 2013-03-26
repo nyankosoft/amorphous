@@ -656,7 +656,7 @@ Result::Name CDirect3D9::SetCullingMode( CullingMode::Name cull_mode )
 }
 
 
-Result::Name CDirect3D9::GetViewport( CViewport& viewport )
+Result::Name CDirect3D9::GetViewport( Viewport& viewport )
 {
 	D3DVIEWPORT9 vp;
 	HRESULT hr = m_pD3DDevice->GetViewport( &vp );
@@ -671,7 +671,7 @@ Result::Name CDirect3D9::GetViewport( CViewport& viewport )
 }
 
 
-Result::Name CDirect3D9::SetViewport( const CViewport& viewport )
+Result::Name CDirect3D9::SetViewport( const Viewport& viewport )
 {
 	D3DVIEWPORT9 vp;
 	vp.X      = (DWORD)viewport.UpperLeftX;

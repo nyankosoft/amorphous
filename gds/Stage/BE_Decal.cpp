@@ -55,7 +55,7 @@ void CBE_Decal::Init()
 	for(int i=0; i<NUM_MAX_DECALS; i++)
 		m_DecalRectsMesh.SetTextureCoordMinMax( i, TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
-	CMeshMaterial& mat = m_DecalRectsMesh.Material(0);
+	MeshMaterial& mat = m_DecalRectsMesh.Material(0);
 	mat.TextureDesc.resize( 1 );
 	mat.Texture.resize( 1 );
 	mat.TextureDesc[0].ResourcePath = m_DecalTextureFilepath;

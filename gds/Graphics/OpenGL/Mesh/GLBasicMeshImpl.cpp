@@ -94,7 +94,7 @@ bool IsExtensionSupported( char* szTargetExtension )
 */
 
 
-static void SetGLTextures( CMeshMaterial& mat )
+static void SetGLTextures( MeshMaterial& mat )
 {
 	vector<TextureHandle>& vecTex = mat.Texture;
 	for( int j=0; j<(int)vecTex.size(); j++ )

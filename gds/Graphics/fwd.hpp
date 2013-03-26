@@ -66,11 +66,6 @@ class PostProcessEffect;
 class PostProcessEffectManager;
 class HDRLightingParams;
 
-class CUnitCube;
-class CUnitSphere;
-
-class General3DVertex;
-
 class LensFlare;
 class FogParams;
 
@@ -84,19 +79,17 @@ class CMMA_Bone;
 class C3DMeshModelArchive;
 class C3DMeshModelBuilder;
 class C3DModelLoader;
-class CMeshBone;
+class MeshBone;
 
+class General3DVertex;
 class General3DMesh;
 
-
-
 class MeshObjectContainer;
-class CMeshContainerNode;
+class MeshContainerNode;
 class MeshContainerRenderMethod;
-class CMeshContainerNodeRenderMethod;
+class MeshContainerNodeRenderMethod;
 class ShaderParamsLoader;
 class BlendTransformsLoader;
-
 
 class BasicMesh;
 class ProgressiveMesh;

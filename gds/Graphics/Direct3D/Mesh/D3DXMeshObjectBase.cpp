@@ -740,7 +740,7 @@ void CD3DXMeshObjectBase::RenderSubsets( ShaderManager& rShaderMgr,
 										 const int *paMaterialIndex,
 										 ShaderTechniqueHandle *paShaderTechnique,
 										 int num_indices )
-										 // Also need CMeshMaterial *pMaterials = NULL?
+										 // Also need MeshMaterial *pMaterials = NULL?
 										 // rationale: render the same model with different materials
 {
 //	bool single_shader_technique = ( vecShaderTechnique.size() == 0 ) ? true : false;
@@ -810,7 +810,7 @@ void CD3DXMeshObjectBase::RenderSubsetsCg( LPD3DXBASEMESH pMesh,
 										   const int *paMaterialIndex,
 										   ShaderTechniqueHandle *paShaderTechnique,
 										   int num_indices )
-										   // Also need CMeshMaterial *pMaterials = NULL?
+										   // Also need MeshMaterial *pMaterials = NULL?
 										   // rationale: render the same model with different materials
 {
 	bool single_shader_technique = ( paShaderTechnique == NULL ) ? true : false;

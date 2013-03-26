@@ -12,8 +12,8 @@ namespace amorphous
 
 
 /**
- * init steps for CMeshBoneController_Aircraft derived classes
- * 1. create an instance: pController = new CMeshBoneController_Flap()
+ * init steps for MeshBoneController_Aircraft derived classes
+ * 1. create an instance: pController = new MeshBoneController_Flap()
  * 2. set target bone names
  * 3. set control params
  * 4. set target mesh: pController->SetTargetMesh( pMesh )
@@ -91,9 +91,9 @@ public:
 
 
 class CPseudoAircraftSimulator;
-class CMeshBoneController_AircraftBase;
-class CMeshBoneController_GearUnit;
-class CMeshBoneController_Cover;
+class MeshBoneController_AircraftBase;
+class MeshBoneController_GearUnit;
+class MeshBoneController_Cover;
 
 
 class CConstraintComponent : public IArchiveObjectBase
@@ -103,7 +103,7 @@ public:
 	/// name of the component that constrains the motions of owner component
 	std::string Name;
 
-	boost::shared_ptr<CMeshBoneController_Cover> m_pComponent;
+	boost::shared_ptr<MeshBoneController_Cover> m_pComponent;
 
 	/// range of angle in which the constrained component can move
 	RangedSet<float> AllowedAngleRange;
@@ -123,7 +123,7 @@ public:
 };
 
 
-class CMeshBoneController_AircraftBase : public CMeshBoneControllerBase
+class MeshBoneController_AircraftBase : public MeshBoneControllerBase
 {
 protected:
 
@@ -131,36 +131,36 @@ protected:
 
 	double m_CurrentTime;
 
-//	boost::shared_ptr<CMeshBoneController_AircraftBase> m_pParent;
+//	boost::shared_ptr<MeshBoneController_AircraftBase> m_pParent;
 
 public:
 
-	CMeshBoneController_AircraftBase()
+	MeshBoneController_AircraftBase()
 		:
-	CMeshBoneControllerBase(boost::shared_ptr<SkeletalMesh>()),
+	MeshBoneControllerBase(boost::shared_ptr<SkeletalMesh>()),
 	m_pSimulator(NULL)
 	{}
 
-	CMeshBoneController_AircraftBase( boost::shared_ptr<SkeletalMesh> pTargetMesh,
+	MeshBoneController_AircraftBase( boost::shared_ptr<SkeletalMesh> pTargetMesh,
 		CPseudoAircraftSimulator *pSimulator,
-		boost::shared_ptr<CMeshBoneController_AircraftBase> pParent = boost::shared_ptr<CMeshBoneController_AircraftBase>() )
+		boost::shared_ptr<MeshBoneController_AircraftBase> pParent = boost::shared_ptr<MeshBoneController_AircraftBase>() )
 		:
-	CMeshBoneControllerBase( pTargetMesh ),
+	MeshBoneControllerBase( pTargetMesh ),
 	m_pSimulator( pSimulator )//,
 //	m_pParent(pParent)
 	{}
 
-	virtual ~CMeshBoneController_AircraftBase() {}
+	virtual ~MeshBoneController_AircraftBase() {}
 
 	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
 	void SetPseudoAircraftSimulator( CPseudoAircraftSimulator *pSimulator ) { m_pSimulator = pSimulator; }
 
-//	void SetParent( boost::shared_ptr<CMeshBoneController_AircraftBase> pParent ) { m_pParent = pParent; }
+//	void SetParent( boost::shared_ptr<MeshBoneController_AircraftBase> pParent ) { m_pParent = pParent; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshBoneControllerBase::Serialize( ar, version );
+		MeshBoneControllerBase::Serialize( ar, version );
 	}
 
 	virtual void Update( float dt ) {}
@@ -174,7 +174,7 @@ public:
  * controls a pair of flaps
  * always holds a pair of right & left flaps. does not hold single right / left flap
  */
-class CMeshBoneController_Flap : public CMeshBoneController_AircraftBase
+class MeshBoneController_Flap : public MeshBoneController_AircraftBase
 {
 	enum flap
 	{
@@ -188,10 +188,10 @@ class CMeshBoneController_Flap : public CMeshBoneController_AircraftBase
 
 public:
 
-	CMeshBoneController_Flap() : m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
+	MeshBoneController_Flap() : m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
 
-	CMeshBoneController_Flap( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
+	MeshBoneController_Flap( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+		: MeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_fAnglePerPitchAccel(0.4f), m_fAnglePerRollAccel(0.4f) {}
 
 	virtual void UpdateTransforms();
 
@@ -203,7 +203,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshBoneController_AircraftBase::Serialize( ar, version );
+		MeshBoneController_AircraftBase::Serialize( ar, version );
 		ar & m_fAnglePerPitchAccel & m_fAnglePerRollAccel;
 	}
 
@@ -211,7 +211,7 @@ public:
 };
 
 
-class CMeshBoneController_VFlap : public CMeshBoneController_AircraftBase
+class MeshBoneController_VFlap : public MeshBoneController_AircraftBase
 {
 	enum flap
 	{
@@ -233,12 +233,12 @@ public:
 		NUM_VFLAP_TYPES
 	};
 
-	CMeshBoneController_VFlap() : m_fAnglePerYawAccel(0.5f), m_Type(TYPE_SINGLE) {}
+	MeshBoneController_VFlap() : m_fAnglePerYawAccel(0.5f), m_Type(TYPE_SINGLE) {}
 
-	CMeshBoneController_VFlap( boost::shared_ptr<SkeletalMesh> pTargetMesh,
+	MeshBoneController_VFlap( boost::shared_ptr<SkeletalMesh> pTargetMesh,
 		                       CPseudoAircraftSimulator *pSimulator,
 							   int type = TYPE_SINGLE )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_Type(type) { m_fAnglePerYawAccel = 0.7f; }
+		: MeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_Type(type) { m_fAnglePerYawAccel = 0.7f; }
 
 	virtual void UpdateTransforms();
 
@@ -250,7 +250,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshBoneController_AircraftBase::Serialize( ar, version );
+		MeshBoneController_AircraftBase::Serialize( ar, version );
 		ar & m_fAnglePerYawAccel & m_Type;
 	}
 
@@ -258,7 +258,7 @@ public:
 };
 
 
-class CMeshBoneController_Rotor : public CMeshBoneController_AircraftBase
+class MeshBoneController_Rotor : public MeshBoneController_AircraftBase
 {
 	float m_fRotationSpeed;
 	float m_fAngle;
@@ -277,10 +277,10 @@ class CMeshBoneController_Rotor : public CMeshBoneController_AircraftBase
 
 public:
 
-	CMeshBoneController_Rotor() : m_fRotationSpeed(5.0f), m_fAngle(0), m_fAngleOffset(0), m_RotationDirection(DIR_CW) {}
+	MeshBoneController_Rotor() : m_fRotationSpeed(5.0f), m_fAngle(0), m_fAngleOffset(0), m_RotationDirection(DIR_CW) {}
 
-	CMeshBoneController_Rotor( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_RotationDirection(DIR_CW) {}
+	MeshBoneController_Rotor( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+		: MeshBoneController_AircraftBase( pTargetMesh, pSimulator ), m_RotationDirection(DIR_CW) {}
 
 	virtual void UpdateTransforms();
 
@@ -294,7 +294,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshBoneController_AircraftBase::Serialize( ar, version );
+		MeshBoneController_AircraftBase::Serialize( ar, version );
 
 		ar & m_fRotationSpeed & m_fAngle & m_fAngleOffset;
 		ar & m_RotationDirection;
@@ -322,7 +322,7 @@ public:
 
 
 
-class CMeshBoneController_Cover : public CMeshBoneController_AircraftBase
+class MeshBoneController_Cover : public MeshBoneController_AircraftBase
 {
 public:
 
@@ -343,7 +343,7 @@ public:
 
 	// CPhysJoint *m_pJoint
 
-	CMeshBoneController_GearUnit *m_pParent;
+	MeshBoneController_GearUnit *m_pParent;
 
 private:
 
@@ -355,7 +355,7 @@ private:
 
 public:
 
-	CMeshBoneController_Cover()
+	MeshBoneController_Cover()
 		:
 	m_fOpenAngle(0),
 	m_pParent(NULL)
@@ -375,7 +375,7 @@ public:
 
 	float GetCurrentAngle() const { return m_Angle.current; }
 
-	void SetParent( CMeshBoneController_GearUnit *pParent ) { m_pParent = pParent; }
+	void SetParent( MeshBoneController_GearUnit *pParent ) { m_pParent = pParent; }
 
 	const std::string GetName();
 
@@ -385,35 +385,35 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshBoneController_AircraftBase::Serialize( ar, version );
+		MeshBoneController_AircraftBase::Serialize( ar, version );
 
 		ar & m_fOpenAngle;
 	}
 };
 
 
-class CMeshBoneController_Tire : public CMeshBoneController_AircraftBase
+class MeshBoneController_Tire : public MeshBoneController_AircraftBase
 {
 public:
 };
 
 
-class CMeshBoneController_Shaft: public CMeshBoneController_Cover
+class MeshBoneController_Shaft: public MeshBoneController_Cover
 {
-	boost::shared_ptr<CMeshBoneController_Tire> m_pTire;
+	boost::shared_ptr<MeshBoneController_Tire> m_pTire;
 public:
 
-	CMeshBoneController_Shaft() {}
+	MeshBoneController_Shaft() {}
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_SHAFT; }
 };
 
 
-class CMeshBoneController_GearUnit : public CMeshBoneController_AircraftBase
+class MeshBoneController_GearUnit : public MeshBoneController_AircraftBase
 {
 	/// first component is always the main shaft with tire
-//	std::vector<CMeshBoneController_Cover> m_vecComponent;
-	std::vector< boost::shared_ptr<CMeshBoneController_Cover> > m_vecpComponent;
+//	std::vector<MeshBoneController_Cover> m_vecComponent;
+	std::vector< boost::shared_ptr<MeshBoneController_Cover> > m_vecpComponent;
 
 	CAircraftComponentState::Name m_State;
 
@@ -451,10 +451,10 @@ class CMeshBoneController_GearUnit : public CMeshBoneController_AircraftBase
 
 public:
 
-	CMeshBoneController_GearUnit() {}
+	MeshBoneController_GearUnit() {}
 
-	CMeshBoneController_GearUnit( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
+	MeshBoneController_GearUnit( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+		: MeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
 
 	virtual void UpdateTransforms();
 
@@ -476,19 +476,19 @@ public:
 
 	void Close();
 
-	boost::shared_ptr<CMeshBoneController_Cover> GetComponent( const std::string& component_name );
+	boost::shared_ptr<MeshBoneController_Cover> GetComponent( const std::string& component_name );
 
 	friend class CItemDatabaseBuilder;
 };
 
 
-class CMeshBoneController_CockpitCanopy : public CMeshBoneController_AircraftBase
+class MeshBoneController_CockpitCanopy : public MeshBoneController_AircraftBase
 {
 
 public:
 
-	CMeshBoneController_CockpitCanopy( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
-		: CMeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
+	MeshBoneController_CockpitCanopy( boost::shared_ptr<SkeletalMesh> pTargetMesh, CPseudoAircraftSimulator *pSimulator )
+		: MeshBoneController_AircraftBase( pTargetMesh, pSimulator ) {}
 
 	virtual void UpdateTransforms() {}
 
@@ -496,7 +496,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
-		CMeshBoneController_AircraftBase::Serialize( ar, version );
+		MeshBoneController_AircraftBase::Serialize( ar, version );
 //		ar & m_RotationDirection;
 	}
 

@@ -43,7 +43,7 @@ void CBE_TextureAnimation::Init()
 
 		rect_mesh.SetDiffuseColors( SFloatRGBAColor::White() );
 
-		CMeshMaterial& mat = rect_mesh.Material(0);
+		MeshMaterial& mat = rect_mesh.Material(0);
 		mat.TextureDesc.resize( 1 );
 		mat.Texture.resize( 1 );
 		mat.TextureDesc[0].ResourcePath = m_AnimTextureFilepath;

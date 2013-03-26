@@ -57,7 +57,7 @@ public:
 };
 
 
-class CConeDesc
+class ConeDesc
 {
 public:
 
@@ -70,7 +70,7 @@ public:
 
 public:
 
-	CConeDesc()
+	ConeDesc()
 		:
 	radius(1),
 	cone_height(1),
@@ -82,7 +82,7 @@ public:
 };
 
 
-class CBoxDesc
+class BoxDesc
 {
 public:
 
@@ -90,7 +90,7 @@ public:
 
 public:
 
-	CBoxDesc()
+	BoxDesc()
 		:
 	vLengths( Vector3(1,1,1) )
 	{}
@@ -109,7 +109,7 @@ public:
 };
 
 
-class CCylinderDesc
+class CylinderDesc
 {
 public:
 
@@ -131,7 +131,7 @@ public:
 
 public:
 
-	CCylinderDesc()
+	CylinderDesc()
 		:
 	height(1),
 	axis(AxisAndDirection::POS_Y),
@@ -159,7 +159,7 @@ public:
 };
 
 
-class CSphereDesc
+class SphereDesc
 {
 public:
 	MeshPolygonDirection::Type poly_dir;
@@ -170,7 +170,7 @@ public:
 
 public:
 
-	CSphereDesc()
+	SphereDesc()
 		:
 	poly_dir(MeshPolygonDirection::OUTWARD),
 	num_sides(12),
@@ -233,14 +233,14 @@ public:
 
 
 
-extern void CreateCylinderMesh( const CCylinderDesc& desc, General3DMesh& mesh );
-extern void CreateConeMesh( const CConeDesc& desc,         General3DMesh& mesh );
-extern void CreateSphereMesh( const CSphereDesc& desc,     General3DMesh& mesh );
+extern void CreateCylinderMesh( const CylinderDesc& desc, General3DMesh& mesh );
+extern void CreateConeMesh( const ConeDesc& desc,         General3DMesh& mesh );
+extern void CreateSphereMesh( const SphereDesc& desc,     General3DMesh& mesh );
 extern void CreateCapsuleMesh( const CCapsuleDesc& desc,   General3DMesh& mesh );
 
-extern Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelArchive& mesh_archive );
-extern Result::Name CreateConeMeshArchive( const CConeDesc& desc,         C3DMeshModelArchive& mesh_archive );
-extern Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,     C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateCylinderMeshArchive( const CylinderDesc& desc, C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateConeMeshArchive( const ConeDesc& desc,         C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateSphereMeshArchive( const SphereDesc& desc,     C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
 
 extern Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );

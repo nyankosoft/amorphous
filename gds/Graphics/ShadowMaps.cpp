@@ -104,31 +104,31 @@ FlatShadowMap::FlatShadowMap()
 }
 
 
-ShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( VertexBlendType::Name vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
-	case CVertexBlendType::NONE:
+	case VertexBlendType::NONE:
 	default:
 		return m_ShadowMapTechnique;
-	case CVertexBlendType::QUATERNION_AND_VECTOR3:
+	case VertexBlendType::QUATERNION_AND_VECTOR3:
 		return m_VertexBlendShadowMapTechnique;
-//	case CVertexBlendType::MATRIX:
+//	case VertexBlendType::MATRIX:
 //		return ???;
 	}
 }
 
 
-ShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( VertexBlendType::Name vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
-	case CVertexBlendType::NONE:
+	case VertexBlendType::NONE:
 	default:
 		return m_DepthTestTechnique;
-	case CVertexBlendType::QUATERNION_AND_VECTOR3:
+	case VertexBlendType::QUATERNION_AND_VECTOR3:
 		return m_VertexBlendDepthTestTechnique;
-//	case CVertexBlendType::MATRIX:
+//	case VertexBlendType::MATRIX:
 //		return ???;
 	}
 }
@@ -448,7 +448,7 @@ void OrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
 	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
 
 	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
-	CViewport vp;
+	Viewport vp;
 	GraphicsDevice().GetViewport( vp );
 
 
@@ -544,7 +544,7 @@ void SpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
 
 	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.
-	CViewport vp;
+	Viewport vp;
 	GraphicsDevice().GetViewport( vp );
 
 

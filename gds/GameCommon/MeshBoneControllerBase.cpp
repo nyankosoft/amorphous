@@ -14,20 +14,20 @@ using namespace boost;
 // CBoneControlParam
 //=================================================================================
 
-CMeshBoneControllerBase::CBoneControlParam CMeshBoneControllerBase::CBoneControlParam::ms_NullObject;
+MeshBoneControllerBase::CBoneControlParam MeshBoneControllerBase::CBoneControlParam::ms_NullObject;
 
 
-void CMeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	reader.GetChildElementTextContent( "Name", Name );
 }
 
 
 //=================================================================================
-// CMeshBoneControllerBase
+// MeshBoneControllerBase
 //=================================================================================
 
-void CMeshBoneControllerBase::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneControllerBase::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	vector<CXMLNodeReader> param_reader = reader.GetImmediateChildren( "ControlParam" );
 
@@ -41,7 +41,7 @@ void CMeshBoneControllerBase::LoadFromXMLNode( CXMLNodeReader& reader )
 }
 
 /*
-void CMeshBoneControllerBase::UpdateTargetMeshTransforms()
+void MeshBoneControllerBase::UpdateTargetMeshTransforms()
 {
 	if( !m_pTargetMesh )
 		return;
@@ -55,7 +55,7 @@ void CMeshBoneControllerBase::UpdateTargetMeshTransforms()
 }
 */
 
-void CMeshBoneControllerBase::UpdateMeshBoneLocalTransforms( std::vector<Transform>& dest_mesh_bone_local_transforms )
+void MeshBoneControllerBase::UpdateMeshBoneLocalTransforms( std::vector<Transform>& dest_mesh_bone_local_transforms )
 {
 	size_t i, num = m_vecBoneControlParam.size();
 	for( i=0; i<num; i++ )
@@ -90,13 +90,13 @@ void CMeshBoneControllerBase::UpdateMeshBoneLocalTransforms( std::vector<Transfo
 */
 
 /*
-CMeshBoneControllerBase::CMeshBoneControllerBase()
+MeshBoneControllerBase::MeshBoneControllerBase()
 {
 }
 
 
 
-void CMeshBoneController_Flap::SetTransform()
+void MeshBoneController_Flap::SetTransform()
 {
 	size_t i, num = m_vecBoneControlParam.size();
 	for( i=0; i<num; i++ )
@@ -111,19 +111,19 @@ void CMeshBoneController_Flap::SetTransform()
 
 
 
-void CMeshBoneControllerBase::Init()
+void MeshBoneControllerBase::Init()
 {
-	vector<CMeshBone>& vecBone;
+	vector<MeshBone>& vecBone;
 
 	string tgt_bone_name;
 	size_t i, num_bones = vecBone.size();
 	for( i=0; i<num_bones; i++ )
 	{
-		CMeshBone& bone = vecBone[i];
+		MeshBone& bone = vecBone[i];
 		if( bone[i].name.find( "axis: " ) == 0 )
 		{
 			tgt_bone_name = bone[i].name.substr( strlen("axis: "), 1024 );
-			CMeshBone* tgt_bone = mesh.GetBoneByName( tgt_bone_name );
+			MeshBone* tgt_bone = mesh.GetBoneByName( tgt_bone_name );
 			m_vecBoneControlParam[ GetIndex( tgt_bone_name ) ]
 				= BoneControlParam( tgt_bone,  ??? axis ???  );
 //			m_vecBoneControlParam.push_back( tgt_bone, bone[i].???vLocalOffset??? );

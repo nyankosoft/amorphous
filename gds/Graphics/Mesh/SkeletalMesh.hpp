@@ -30,11 +30,11 @@ public:
 
 	inline int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
 
-//	inline const CMeshBone& GetBone( int index ) const;
+//	inline const MeshBone& GetBone( int index ) const;
 
-	inline const CMeshBone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
+	inline const MeshBone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
 
-	inline const CMeshBone& GetRootBone() const { return m_pImpl->GetRootBone(); }
+	inline const MeshBone& GetRootBone() const { return m_pImpl->GetRootBone(); }
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 

@@ -38,7 +38,7 @@ inline MeshHandle CreateSphereMesh( float radius,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
-	CSphereDesc sphere_desc;
+	SphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = radius;
 	sphere_desc.axis = 1;
 	MeshResourceDesc mesh_desc;
@@ -55,7 +55,7 @@ inline MeshHandle CreateSphereMesh( float radius,
 }
 
 
-inline MeshHandle CreateConeMesh( const CConeDesc& desc,
+inline MeshHandle CreateConeMesh( const ConeDesc& desc,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
@@ -77,7 +77,7 @@ inline MeshHandle CreateConeMesh( float radius = 0.5f, float height = 1.0f,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
-	CConeDesc desc;
+	ConeDesc desc;
 	desc.radius = radius;
 	desc.cone_height = height;
 
@@ -89,7 +89,7 @@ inline MeshHandle CreateCylinderMesh( float radius = 0.5f, float height = 1.0f,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
 								const Matrix34& model_pose = Matrix34Identity() )
 {
-	CCylinderDesc cylinder_desc;
+	CylinderDesc cylinder_desc;
 	cylinder_desc.radii[0] = cylinder_desc.radii[1] = radius;
 	cylinder_desc.height = height;
 

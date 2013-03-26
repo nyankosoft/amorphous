@@ -17,7 +17,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CMeshBoneControllerBase : public IArchiveObjectBase
+class MeshBoneControllerBase : public IArchiveObjectBase
 {
 protected:
 
@@ -30,7 +30,7 @@ protected:
 		std::string Name;
 
 		Vector3 vRotationAxis;
-//		CMeshBone* pBone;
+//		MeshBone* pBone;
 
 		// RotationAngleFunction
 
@@ -76,11 +76,11 @@ public:
 		NUM_IDS
 	};
 
-	CMeshBoneControllerBase( boost::shared_ptr<SkeletalMesh> pTargetMesh = boost::shared_ptr<SkeletalMesh>() ){}
+	MeshBoneControllerBase( boost::shared_ptr<SkeletalMesh> pTargetMesh = boost::shared_ptr<SkeletalMesh>() ){}
 //		:
 //	m_pTargetMesh(pTargetMesh) {}
 
-	virtual ~CMeshBoneControllerBase() {}
+	virtual ~MeshBoneControllerBase() {}
 
 	virtual void Init( const SkeletalMesh& target_skeletal_mesh ) {}
 

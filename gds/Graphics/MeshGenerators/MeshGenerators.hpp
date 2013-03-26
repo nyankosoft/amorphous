@@ -48,11 +48,11 @@ public:
 
 class CylinderMeshGenerator : public MeshGenerator
 {
-	CCylinderDesc m_Desc;
+	CylinderDesc m_Desc;
 
 public:
 
-	CylinderMeshGenerator( const CCylinderDesc& desc )
+	CylinderMeshGenerator( const CylinderDesc& desc )
 		:
 	m_Desc(desc)
 	{}
@@ -65,11 +65,11 @@ public:
 
 class ConeMeshGenerator : public MeshGenerator
 {
-	CConeDesc m_Desc;
+	ConeDesc m_Desc;
 
 public:
 
-	ConeMeshGenerator( const CConeDesc& desc )
+	ConeMeshGenerator( const ConeDesc& desc )
 		:
 	m_Desc(desc)
 	{}
@@ -80,11 +80,11 @@ public:
 
 class SphereMeshGenerator : public MeshGenerator
 {
-	CSphereDesc m_Desc;
+	SphereDesc m_Desc;
 
 public:
 
-	SphereMeshGenerator( const CSphereDesc& desc )
+	SphereMeshGenerator( const SphereDesc& desc )
 		:
 	m_Desc(desc)
 	{}

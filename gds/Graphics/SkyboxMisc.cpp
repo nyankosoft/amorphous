@@ -31,7 +31,7 @@ boost::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string
 
 static boost::shared_ptr<CylinderMeshGenerator> CreateSkyCylinderMeshGenerator( const std::string& texture_filepath )
 {
-	CCylinderDesc desc;
+	CylinderDesc desc;
 	desc.style_flags |= CCylinderMeshStyleFlags::WELD_VERTICES;
 	desc.num_sides = 32;
 	desc.radii[0] = desc.radii[1] = 10.0f;

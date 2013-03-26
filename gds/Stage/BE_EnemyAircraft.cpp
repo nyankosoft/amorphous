@@ -391,7 +391,7 @@ void CBE_EnemyAircraft::Draw(CCopyEntity* pCopyEnt)
 	CBEC_EnemyAircraftExtraData& ex = GetExtraData(pCopyEnt);
 
 	// When the aircraft has no hierarchical mesh,
-	// CMeshBoneControllerBase::UpdateTargetMeshTransforms() has no target mesh
+	// MeshBoneControllerBase::UpdateTargetMeshTransforms() has no target mesh
 	// and returns without doing anything
 	if( ex.m_pAircraft )
 		ex.m_pAircraft->UpdateTargetMeshTransforms();

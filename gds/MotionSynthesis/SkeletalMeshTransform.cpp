@@ -157,7 +157,7 @@ void CreateTransformMapTree( const msynth::CSkeleton& src_skeleton, msynth::CTra
 }
 
 
-void CreateMSynthSkeletonFromMeshSkeleton_r( const CMeshBone& src_bone, msynth::CBone& dest_bone )
+void CreateMSynthSkeletonFromMeshSkeleton_r( const MeshBone& src_bone, msynth::CBone& dest_bone )
 {
 	dest_bone.SetOffset( src_bone.GetLocalOffset() );
 	dest_bone.SetOrient( Matrix33Identity() );

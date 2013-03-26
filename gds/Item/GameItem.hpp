@@ -64,7 +64,7 @@ protected:
 	/// holds mesh related properties
 	/// - mesh object handle
 	/// - 2d array of shader technique handles
-	CMeshContainerNode m_MeshContainerRootNode;
+	MeshContainerNode m_MeshContainerRootNode;
 
 	/// holds how many(much) units the owner can carry
 	int m_iMaxQuantity;
@@ -111,9 +111,9 @@ public:
 	}
 */
 
-	const CMeshContainerNode& GetMeshContainerRootNode() const { return m_MeshContainerRootNode; }
+	const MeshContainerNode& GetMeshContainerRootNode() const { return m_MeshContainerRootNode; }
 
-	CMeshContainerNode& MeshContainerRootNode() { return m_MeshContainerRootNode; }
+	MeshContainerNode& MeshContainerRootNode() { return m_MeshContainerRootNode; }
 
 	virtual bool LoadMeshObject();
 

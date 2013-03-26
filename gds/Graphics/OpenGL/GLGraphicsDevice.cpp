@@ -382,7 +382,7 @@ Result::Name CGLGraphicsDevice::SetCullingMode( CullingMode::Name cull_mode )
 }
 
 
-Result::Name CGLGraphicsDevice::GetViewport( CViewport& viewport )
+Result::Name CGLGraphicsDevice::GetViewport( Viewport& viewport )
 {
 	GLint params[4];
 	glGetIntegerv( GL_VIEWPORT, params );
@@ -395,7 +395,7 @@ Result::Name CGLGraphicsDevice::GetViewport( CViewport& viewport )
 }
 
 
-Result::Name CGLGraphicsDevice::SetViewport( const CViewport& viewport )
+Result::Name CGLGraphicsDevice::SetViewport( const Viewport& viewport )
 {
 	glViewport(
 		viewport.UpperLeftX,

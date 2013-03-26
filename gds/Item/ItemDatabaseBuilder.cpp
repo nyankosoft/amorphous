@@ -174,7 +174,7 @@ void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, Missi
 
 void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft,
 															 CTextFileScanner& scanner,
-						                                     vector< shared_ptr<CMeshBoneController_AircraftBase> >& vecpMeshController )
+						                                     vector< shared_ptr<MeshBoneController_AircraftBase> >& vecpMeshController )
 {
 	string tag, type;
 	char _tag[32], _type[32];
@@ -192,48 +192,48 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 //		scanner.ScanLine( tag, type, angle_per_pitchaccel, angle_per_rollaccel, flapR_name, flapL_name );
 		sscanf( current_line.c_str(), "%s %s %f %f %s %s",
 			_tag, _type, &angle_per_pitchaccel, &angle_per_rollaccel, flapR_name, flapL_name );
-		CMeshBoneController_Flap* pFlapControl = new CMeshBoneController_Flap();
+		MeshBoneController_Flap* pFlapControl = new MeshBoneController_Flap();
 		pFlapControl->m_fAnglePerPitchAccel = angle_per_pitchaccel;
 		pFlapControl->m_fAnglePerRollAccel = angle_per_rollaccel;
 		pFlapControl->m_vecBoneControlParam.resize( 2 );
 		pFlapControl->m_vecBoneControlParam[0].Name = flapR_name;
 		pFlapControl->m_vecBoneControlParam[1].Name = flapL_name;
-		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pFlapControl) );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<MeshBoneController_AircraftBase>(pFlapControl) );
 	}
 	else if( type == "tvflap" )
 	{
 //		scanner.ScanLine( tag, type, vflap_type, vflap0_name, vflap1_name );
 		sscanf( current_line.c_str(), "%s %s %f %s %s",
 			_tag, _type, &angle_per_accel, vflap0_name, vflap1_name );
-		CMeshBoneController_VFlap* pFlapControl = new CMeshBoneController_VFlap();
+		MeshBoneController_VFlap* pFlapControl = new MeshBoneController_VFlap();
 		pFlapControl->m_fAnglePerYawAccel = angle_per_accel;
 		pFlapControl->m_vecBoneControlParam.resize( 2 );
 		pFlapControl->m_vecBoneControlParam[0].Name = vflap0_name;
 		pFlapControl->m_vecBoneControlParam[1].Name = vflap1_name;
-		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pFlapControl) );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<MeshBoneController_AircraftBase>(pFlapControl) );
 	}
 	else if( type == "svflap" )
 	{
 //		scanner.ScanLine( tag, type, angle_per_accel, vflap0_name );
 		sscanf( current_line.c_str(), "%s %s %f %s", _tag, _type, &angle_per_accel, vflap0_name );
-		CMeshBoneController_VFlap* pFlapControl = new CMeshBoneController_VFlap();
+		MeshBoneController_VFlap* pFlapControl = new MeshBoneController_VFlap();
 		pFlapControl->m_fAnglePerYawAccel = angle_per_accel;
 		pFlapControl->m_vecBoneControlParam.resize( 1 );
 		pFlapControl->m_vecBoneControlParam[0].Name = vflap0_name;
-		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pFlapControl) );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<MeshBoneController_AircraftBase>(pFlapControl) );
 	}
 	else if( type == "rotor" )
 	{
 //		scanner.ScanLine( tag, type, rotation_direction, rotor_name );
 		sscanf( current_line.c_str(), "%s %s %s %s", _tag, _type, dir_name, rotor_name );
-		CMeshBoneController_Rotor* pRotorControl = new CMeshBoneController_Rotor();
-		if( dir_name == "ccw" )		dir = CMeshBoneController_Rotor::DIR_CCW;
-		else if( dir_name == "cw" )	dir = CMeshBoneController_Rotor::DIR_CW;
-		else dir = CMeshBoneController_Rotor::DIR_CW;
+		MeshBoneController_Rotor* pRotorControl = new MeshBoneController_Rotor();
+		if( dir_name == "ccw" )		dir = MeshBoneController_Rotor::DIR_CCW;
+		else if( dir_name == "cw" )	dir = MeshBoneController_Rotor::DIR_CW;
+		else dir = MeshBoneController_Rotor::DIR_CW;
 		pRotorControl->m_RotationDirection = dir;
 		pRotorControl->m_vecBoneControlParam.resize( 1 );
 		pRotorControl->m_vecBoneControlParam[0].Name = rotor_name;
-		aircraft.m_vecpMeshController.push_back( shared_ptr<CMeshBoneController_AircraftBase>(pRotorControl) );
+		aircraft.m_vecpMeshController.push_back( shared_ptr<MeshBoneController_AircraftBase>(pRotorControl) );
 	}
 }
 

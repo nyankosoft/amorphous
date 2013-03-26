@@ -89,7 +89,7 @@ void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoade
 		apLoader[i]->m_pMeshLoader = boost::dynamic_pointer_cast<CD3DMeshLoader,MeshLoader>( m_pSelf.lock() );
 
 		// add requests to load subresource from the mesh archive
-//		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
+//		ResourceLoadRequest req( ResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
 //		GetAsyncResourceLoader().AddResourceLoadRequest( req );
 
 		// subresources have been loaded

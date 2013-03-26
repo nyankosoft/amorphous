@@ -16,7 +16,7 @@ using std::vector;
 using namespace boost;
 
 
-class CDoubleConeMeshGenerator : public MeshGenerator
+class DoubleConeMeshGenerator : public MeshGenerator
 {
 public:
 
@@ -24,16 +24,16 @@ public:
 
 public:
 
-	CDoubleConeMeshGenerator() {}
+	DoubleConeMeshGenerator() {}
 
-	~CDoubleConeMeshGenerator() {}
+	~DoubleConeMeshGenerator() {}
 
 	Result::Name Generate();
 };
 
 
 
-Result::Name CDoubleConeMeshGenerator::Generate()
+Result::Name DoubleConeMeshGenerator::Generate()
 {
 	const int num_sides = 12;
 
@@ -234,7 +234,7 @@ void DoubleConeScrollEffect::Init()
 	// - create with unit radius and height, scale at runtime
 
 	MeshResourceDesc mesh_desc;
-	shared_ptr<CDoubleConeMeshGenerator> pMeshGenerator( new CDoubleConeMeshGenerator );
+	shared_ptr<DoubleConeMeshGenerator> pMeshGenerator( new DoubleConeMeshGenerator );
 	pMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
 	pMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
 	pMeshGenerator->SetTexturePath( m_TextureFilepath );

@@ -63,7 +63,7 @@ static void ForceTextureMipMapLevelsToOne( boost::shared_ptr<BasicMesh> pMesh )
 
 	for( int i=0; i<pMesh->GetNumMaterials(); i++ )
 	{
-		CMeshMaterial& mat = pMesh->Material(i);
+		MeshMaterial& mat = pMesh->Material(i);
 
 		for( size_t j=0; j<mat.TextureDesc.size(); j++ )
 		{
@@ -274,7 +274,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const Came
 			 && rCam.GetPosition().y < dbg_tex_load_height )
 			{
 				// load the texture
-				CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
+				MeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
 				const size_t num_textures = mat.Texture.size();
 				for( size_t k=0; k<num_textures; k++ )
 				{
@@ -287,7 +287,7 @@ void CStaticGeometry::UpdateMeshSubsetResources( CMeshSubset& subset, const Came
 			}
 			else if( dbg_tex_load_height < rCam.GetPosition().y )
 			{
-				CMeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
+				MeshMaterial& mat = pMesh->Material(subset.vecMaterialIndex[j]);
 				const size_t num_textures = mat.Texture.size();
 				for( size_t k=0; k<num_textures; k++ )
 				{

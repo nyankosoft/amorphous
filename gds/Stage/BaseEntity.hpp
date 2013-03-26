@@ -22,7 +22,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CMeshBoneControllerBase;
+class MeshBoneControllerBase;
 class CEntityShaderLightParamsLoader;
 class CRenderContext;
 class CoreBaseEntitiesLoader;
@@ -40,7 +40,7 @@ public:
 	std::vector<std::string> m_vecTransparentMaterialName;
 
 	/// used by skeletal mesh (not serialized)
-	std::vector<CMeshBoneControllerBase*> m_vecpMeshBoneController;
+	std::vector<MeshBoneControllerBase*> m_vecpMeshBoneController;
 
 	boost::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
 

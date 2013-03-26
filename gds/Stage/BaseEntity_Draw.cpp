@@ -345,7 +345,7 @@ void BaseEntity::Init3DModel()
 		const int num_materials = pMesh->GetNumMaterials();
 		for( int i=0; i<num_materials; i++ )
 		{
-			const CMeshMaterial& mat = pMesh->GetMaterial( i );
+			const MeshMaterial& mat = pMesh->GetMaterial( i );
 
 			if( 1.0f - error_for_alpha < mat.fMinVertexDiffuseAlpha )
 			{
@@ -461,7 +461,7 @@ void BaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 
 	pShaderMgr->SetWorldTransform( pCopyEnt->GetWorldPose() );
 
-	pShaderMgr->SetTechnique( pShadowMgr->ShaderTechniqueForShadowCaster( CVertexBlendType::NONE ) );
+	pShaderMgr->SetTechnique( pShadowMgr->ShaderTechniqueForShadowCaster( VertexBlendType::NONE ) );
 
 	pMesh->Render( *pShaderMgr );
 
@@ -494,7 +494,7 @@ void BaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
 //		const char *tech = is_skeletal_mesh ? "ShadowMap_VertexBlend" : "ShadowMap";
 //		mesh_render_method.m_Technique.SetTechniqueName( tech );
-		CVertexBlendType::Name blend_type = is_skeletal_mesh ? CVertexBlendType::QUATERNION_AND_VECTOR3 : CVertexBlendType::NONE;
+		VertexBlendType::Name blend_type = is_skeletal_mesh ? VertexBlendType::QUATERNION_AND_VECTOR3 : VertexBlendType::NONE;
 		mesh_render_method.m_Technique = pShadowMgr->ShaderTechniqueForShadowCaster( blend_type );
 //		pMeshRenderMethod->MeshRenderMethod().resize( 1 );
 //		pMeshRenderMethod.SetMeshRenderMethod( mesh_render_method, 0 );
@@ -533,9 +533,9 @@ void BaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	ShaderTechniqueHandle tech;
 	const U32 entity_flags = pCopyEnt->GetEntityFlags();
 	if( entity_flags & BETYPE_SHADOW_RECEIVER )
-		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( CVertexBlendType::NONE );
+		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( VertexBlendType::NONE );
 	else // i.e. entity_flags & BETYPE_SHADOW_CASTER. See EntityNode::RenderShadowReceivers() for details.
-		tech = pShadowMgr->ShaderTechniqueForNonShadowedCasters( CVertexBlendType::NONE );
+		tech = pShadowMgr->ShaderTechniqueForNonShadowedCasters( VertexBlendType::NONE );
 
 	pShaderMgr->SetTechnique( tech );
 
@@ -568,7 +568,7 @@ void BaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 		mesh_render_method.m_Shader    = pShadowMgr->GetShader();
 //		const char *tech = is_skeletal_mesh ? "SceneShadowMap_VertexBlend" : "SceneShadowMap";
 //		mesh_render_method.m_Technique.SetTechniqueName( tech );
-		CVertexBlendType::Name blend_type = is_skeletal_mesh ? CVertexBlendType::QUATERNION_AND_VECTOR3 : CVertexBlendType::NONE;
+		VertexBlendType::Name blend_type = is_skeletal_mesh ? VertexBlendType::QUATERNION_AND_VECTOR3 : VertexBlendType::NONE;
 		mesh_render_method.m_Technique = pShadowMgr->ShaderTechniqueForShadowReceiver( blend_type );
 //		render_method.SetMeshRenderMethod( mesh_render_method, 0 );
 		pMeshRenderMethod->RenderMesh( pCopyEnt->m_MeshHandle, pCopyEnt->GetWorldPose() );
@@ -738,7 +738,7 @@ bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int sub
 	if( mesh.GetMaterial(subset_index).m_Mat.fReflection < 0.001f )
 		return false;
 
-	const CMeshMaterial& mat = mesh.GetMaterial(subset_index);
+	const MeshMaterial& mat = mesh.GetMaterial(subset_index);
 	const AABB3& aabb = mesh.GetAABB(subset_index);
 
 	bool subset_triangles_on_plane = false;
@@ -764,7 +764,7 @@ bool RegisterAsMirrorIfReflective( CCopyEntity& entity, BasicMesh& mesh, int sub
 	{
 		// TODO: Register as an envmap target?
 //		entity.RaiseEntityFlags( BETYPE_ENVMAPTARGET );
-//		shader_desc.EnvMap = CEnvMapOption::ENABLED;
+//		shader_desc.EnvMap = EnvMapOption::ENABLED;
 		return false;
 	}
 

@@ -52,7 +52,7 @@ void CBE_Skybox::Init()
 	{
 		// The default mesh for skybox, which is currently "./Model/skybox.msh", was not found;
 		// create a skysphere mesh with sphere mesh generator.
-		CSphereDesc sphere_desc;
+		SphereDesc sphere_desc;
 		sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
 		sphere_desc.axis = 1; // shift texture coords along y-axis
 		sphere_desc.poly_dir = MeshPolygonDirection::INWARD;

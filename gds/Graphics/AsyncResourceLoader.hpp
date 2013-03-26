@@ -15,7 +15,7 @@ namespace amorphous
 {
 
 
-class CResourceLoadRequest
+class ResourceLoadRequest
 {
 public:
 
@@ -37,7 +37,7 @@ private:
 
 public:
 
-	CResourceLoadRequest( Type type,
+	ResourceLoadRequest( Type type,
 		boost::shared_ptr<GraphicsResourceLoader> pLoader,
 		boost::weak_ptr<GraphicsResourceEntry> pEntry
 		)
@@ -96,7 +96,7 @@ public:
 
 class AsyncResourceLoader
 {
-	std::queue<CResourceLoadRequest> m_ResourceLoadRequestQueue;
+	std::queue<ResourceLoadRequest> m_ResourceLoadRequestQueue;
 
 	boost::mutex m_IOMutex;
 
@@ -149,7 +149,7 @@ public:
 
 	static AsyncResourceLoader* Get() { return m_obj.get(); }
 
-	bool AddResourceLoadRequest( const CResourceLoadRequest& req );
+	bool AddResourceLoadRequest( const ResourceLoadRequest& req );
 
 	bool AddGraphicsDeviceRequest( const CGraphicsDeviceRequest& req );
 

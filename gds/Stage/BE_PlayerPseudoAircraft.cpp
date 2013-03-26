@@ -489,7 +489,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	ShaderResourceDesc shader_desc;
 	GenericShaderDesc gen_shader_desc;
 	gen_shader_desc.Specular = SpecularSource::DECAL_TEX_ALPHA;
-	gen_shader_desc.VertexBlendType = CVertexBlendType::QUATERNION_AND_VECTOR3;
+	gen_shader_desc.VertexBlendType = VertexBlendType::QUATERNION_AND_VECTOR3;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 
 	loaded = m_MeshProperty.m_ShaderHandle.Load( shader_desc ); // Blend transform variables are initilized in this call.
@@ -520,12 +520,12 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 		rMesh.m_vecpMeshBoneController.resize( 2 );
 
 		rMesh.m_vecpMeshBoneController[0]
-		= new CMeshBoneController_Flap( (CD3DXSMeshObject *)rMesh.m_pMeshObject, &m_pAircraft->PseudoSimulator() );
+		= new MeshBoneController_Flap( (CD3DXSMeshObject *)rMesh.m_pMeshObject, &m_pAircraft->PseudoSimulator() );
 		rMesh.m_vecpMeshBoneController[0]->Init();
 
 		rMesh.m_vecpMeshBoneController[1]
-		= new CMeshBoneController_VFlap( (CD3DXSMeshObject *)rMesh.m_pMeshObject,
-			&m_pAircraft->PseudoSimulator(), CMeshBoneController_VFlap::TYPE_SINGLE );
+		= new MeshBoneController_VFlap( (CD3DXSMeshObject *)rMesh.m_pMeshObject,
+			&m_pAircraft->PseudoSimulator(), MeshBoneController_VFlap::TYPE_SINGLE );
 		rMesh.m_vecpMeshBoneController[1]->Init();
 	}*/
 

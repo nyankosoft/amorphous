@@ -78,7 +78,7 @@ class ShapeDetector
 public:
 	bool IsAABox( const General3DMesh& src_mesh, AABB3& aabb );
 
-	bool IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose );
+	bool IsBox( const General3DMesh& src_mesh, BoxDesc& desc, Matrix34& pose );
 
 	bool IsConvex( const General3DMesh& src_mesh );
 
@@ -86,7 +86,7 @@ public:
 
 	bool IsCapsule( const General3DMesh& src_mesh, Capsule& capsule );
 
-//	bool IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
+//	bool IsCylinder( const General3DMesh& src_mesh, CylinderDesc& cylinder );
 
 	/// How to represent the detection results?
 	bool DetectShape( const General3DMesh& src_mesh, ShapeDetectionResults& results );

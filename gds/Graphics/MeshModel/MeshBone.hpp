@@ -17,7 +17,7 @@ namespace amorphous
  bone for mesh that needs hierarchical transformation
 
  */
-class CMeshBone
+class MeshBone
 {
 	/// holds bone name (for debugging)
 	std::string m_strName;
@@ -35,13 +35,13 @@ class CMeshBone
 	/// bone space to local space
 	Matrix34 m_LocalTransform;
 
-	CMeshBone *m_paChild;
+	MeshBone *m_paChild;
 
 	int m_iNumChildren;
 
 	/// for functions that finds a bone and returns its of bone,
 	/// but has return null if the bone is not found
-	static const CMeshBone ms_NullBone;
+	static const MeshBone ms_NullBone;
 
 public:
 
@@ -51,9 +51,9 @@ public:
 
 public:
 
-	inline CMeshBone();
+	inline MeshBone();
 
-	~CMeshBone() { SafeDeleteArray( m_paChild ); }
+	~MeshBone() { SafeDeleteArray( m_paChild ); }
 
 	void LoadBone_r( CMMA_Bone& rSrcBone, Transform *paBoneTransformMatrix, int &iNumRegisteredMatrices );
 
@@ -81,14 +81,14 @@ public:
 
 	const Matrix34& GetBoneTransform() const { return m_BoneTransform; }
 
-	const CMeshBone& GetBoneByName_r( const char *pName ) const;
+	const MeshBone& GetBoneByName_r( const char *pName ) const;
 
-	void SetBoneToArray_r( std::vector<CMeshBone *>& vecpDestArray );
+	void SetBoneToArray_r( std::vector<MeshBone *>& vecpDestArray );
 
-//	static const CMeshBone& NullBone() const { return ms_NullBone; }
-	static const CMeshBone& NullBone() { return ms_NullBone; }
+//	static const MeshBone& NullBone() const { return ms_NullBone; }
+	static const MeshBone& NullBone() { return ms_NullBone; }
 
-	bool operator==( const CMeshBone& bone ) const
+	bool operator==( const MeshBone& bone ) const
 	{
 		if( m_strName == bone.m_strName
 		 && m_MatrixIndex == bone.m_MatrixIndex
@@ -99,14 +99,14 @@ public:
 			return false;
 	}
 
-	bool operator!=( const CMeshBone& bone ) const
+	bool operator!=( const MeshBone& bone ) const
 	{
 		return !( (*this) == bone );
 	}
 
 	unsigned int GetNumChildren() const { return (unsigned int)m_iNumChildren; }
 
-	inline const CMeshBone& GetChild( unsigned int index ) const;
+	inline const MeshBone& GetChild( unsigned int index ) const;
 
 	const std::string& GetName() const { return m_strName; }
 
@@ -118,7 +118,7 @@ public:
 
 //============================= inline implementations =============================
 
-inline CMeshBone::CMeshBone()
+inline MeshBone::MeshBone()
 :
 m_vLocalOffset( Vector3(0,0,0) ),
 m_pWorldTransform(NULL),
@@ -130,7 +130,7 @@ m_iNumChildren(0)
 {}
 
 
-inline const CMeshBone& CMeshBone::GetChild( unsigned int index ) const
+inline const MeshBone& MeshBone::GetChild( unsigned int index ) const
 {
 	if( !m_paChild
 	 || m_iNumChildren <= (int)index )

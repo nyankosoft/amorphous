@@ -204,9 +204,9 @@ public:
 	/// Used mainly for updating blend transforms of a skeletal mesh
 	boost::shared_ptr<CGraphicsResourcesUpdateCallback> m_pGraphicsUpdate;
 
-//	boost::shared_ptr<CMeshContainerNode> m_pMeshNode;
+//	boost::shared_ptr<MeshContainerNode> m_pMeshNode;
 
-//	boost::shared_ptr<CMeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
+//	boost::shared_ptr<MeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
 
 	MeshHandle m_MeshHandle;
 

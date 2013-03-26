@@ -273,7 +273,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadAsync( const Grap
 		// save a copy of the desc
 		pEntry->m_pDesc = desc.GetCopy();
 
-		CResourceLoadRequest req( CResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
+		ResourceLoadRequest req( ResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
 		GetAsyncResourceLoader().AddResourceLoadRequest( req );
 
 		// register to the loading state holder

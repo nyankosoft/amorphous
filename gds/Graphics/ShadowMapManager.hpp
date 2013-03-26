@@ -62,7 +62,7 @@ protected:
 //	LPDIRECT3DSURFACE9 m_pOriginalSurface;
 //	LPDIRECT3DSURFACE9 m_pOriginalDepthSurface;
 
-	CViewport m_OriginalViewport;
+	Viewport m_OriginalViewport;
 
 	int m_iTextureWidth;
 	int m_iTextureHeight;
@@ -127,11 +127,11 @@ public:
 
 	ShaderHandle& GetShader() { return m_Shader; }
 
-	ShaderTechniqueHandle ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
+	ShaderTechniqueHandle ShaderTechniqueForShadowCaster( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE );
 
-	ShaderTechniqueHandle ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
+	ShaderTechniqueHandle ShaderTechniqueForShadowReceiver( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE );
 
-	ShaderTechniqueHandle ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type = CVertexBlendType::NONE );
+	ShaderTechniqueHandle ShaderTechniqueForNonShadowedCasters( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE );
 
 //	void Init( int texture_width, int texture_height );
 

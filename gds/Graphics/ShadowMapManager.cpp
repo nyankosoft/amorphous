@@ -364,7 +364,7 @@ void ShadowMapManager::RenderShadowReceivers( Camera& camera )
 }
 
 
-ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( VertexBlendType::Name vertex_blend_type )
 {
 /*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 //	HRESULT hr = pEffect->SetTechnique( "ShadowMap" );
@@ -381,7 +381,7 @@ ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowCaster( CVertexB
 }
 
 
-ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( VertexBlendType::Name vertex_blend_type )
 {
 /*	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 //	HRESULT hr = pEffect->SetTechnique( "SceneShadowMap" );
@@ -398,7 +398,7 @@ ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForShadowReceiver( CVerte
 }
 
 
-ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForNonShadowedCasters( CVertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle ShadowMapManager::ShaderTechniqueForNonShadowedCasters( VertexBlendType::Name vertex_blend_type )
 {
 	ShaderTechniqueHandle tech;
 	tech.SetTechniqueName( "SceneShadowMap_NonShadowed" );

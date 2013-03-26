@@ -15,10 +15,10 @@ using namespace boost::filesystem;
 
 
 //=============================================================================
-// CMeshMaterial
+// MeshMaterial
 //=============================================================================
 
-void CMeshMaterial::LoadTextureAsync( int i )
+void MeshMaterial::LoadTextureAsync( int i )
 {
 	if( i < 0 || (int)Texture.size() <= i )
 		return;
@@ -41,15 +41,15 @@ m_bViewFrustumTest(false)
 }
 
 
-const CMeshBone& MeshImpl::GetBone( const std::string& bone_name ) const
+const MeshBone& MeshImpl::GetBone( const std::string& bone_name ) const
 {
-	return CMeshBone::NullBone();
+	return MeshBone::NullBone();
 }
 
 
-const CMeshBone& MeshImpl::GetRootBone() const
+const MeshBone& MeshImpl::GetRootBone() const
 {
-	return CMeshBone::NullBone();
+	return MeshBone::NullBone();
 }
 
 

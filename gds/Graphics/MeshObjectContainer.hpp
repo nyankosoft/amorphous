@@ -83,7 +83,7 @@ public:
 };
 
 
-class CMeshContainerNode : public IArchiveObjectBase
+class MeshContainerNode : public IArchiveObjectBase
 {
 	Matrix34 m_LocalPose; ///< local pose of the node
 
@@ -97,19 +97,19 @@ class CMeshContainerNode : public IArchiveObjectBase
 
 	std::vector<Matrix34> m_vecMeshLocalPose;
 
-	std::vector< boost::shared_ptr<CMeshContainerNode> > m_vecpChild;
+	std::vector< boost::shared_ptr<MeshContainerNode> > m_vecpChild;
 
 	std::vector<ShaderTechniqueHandle> m_vecShaderTechniqueBuffer;
 
 private:
 
-//	void Render_r( const Matrix34& parent_transform, CMeshContainerNodeRenderMethod& render_method, bool use_fallback_shaders );
+//	void Render_r( const Matrix34& parent_transform, MeshContainerNodeRenderMethod& render_method, bool use_fallback_shaders );
 
 public:
 
-	CMeshContainerNode();
+	MeshContainerNode();
 
-	~CMeshContainerNode() {}
+	~MeshContainerNode() {}
 
 	Matrix34 GetMeshContainerWorldTransform( int mesh_container_index );
 
@@ -144,12 +144,12 @@ public:
 
 	int GetNumChildren() { return (int)m_vecpChild.size(); }
 
-	const boost::shared_ptr<CMeshContainerNode> GetChild( int index ) const { return m_vecpChild[index]; }
+	const boost::shared_ptr<MeshContainerNode> GetChild( int index ) const { return m_vecpChild[index]; }
 
 	/// Returns non-const pointer
-	boost::shared_ptr<CMeshContainerNode> Child( int index ) { return m_vecpChild[index]; }
+	boost::shared_ptr<MeshContainerNode> Child( int index ) { return m_vecpChild[index]; }
 
-	void AddChild( boost::shared_ptr<CMeshContainerNode> pChild ) { m_vecpChild.push_back( pChild ); }
+	void AddChild( boost::shared_ptr<MeshContainerNode> pChild ) { m_vecpChild.push_back( pChild ); }
 
 	/// Recursively load all meshes on the nodes of the tree
 	bool LoadMeshesFromDesc();
@@ -163,7 +163,7 @@ public:
 
 //=============================== inline implementations ===============================
 
-inline void CMeshContainerNode::SetMeshContainer( int index,
+inline void MeshContainerNode::SetMeshContainer( int index,
 												  boost::shared_ptr<MeshObjectContainer>& pContainer,
 												  const Matrix34& local_pose )
 {

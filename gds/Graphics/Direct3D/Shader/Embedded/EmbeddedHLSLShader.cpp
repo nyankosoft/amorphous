@@ -18,7 +18,7 @@ _Specular: appended if the shader includes calculations related to specular refl
 */
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend = EmbeddedHLSLShader
 (
 "VS_PVL_HSLs_QVertexBlend",
 "VS_PVL_HSLs_QVertexBlend()"\
@@ -27,7 +27,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend = CEmbedde
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_QVertexBlend = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_PS_PVL_HSLs_QVertexBlend = EmbeddedHLSLShader
 (
 "PS_PVL_HSLs_QVertexBlend",
 "PS_PVL_HSLs_QVertexBlend()"\
@@ -36,7 +36,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_QVertexBlend = CEmbedde
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PVL_HSLs = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_VS_PVL_HSLs = EmbeddedHLSLShader
 (
 "VS_PVL_HSLs",
 "VS_PVL_HSLs()"\
@@ -45,7 +45,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PVL_HSLs = CEmbeddedHLSLShader
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PVL_HSLs = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_PS_PVL_HSLs = EmbeddedHLSLShader
 (
 "PS_PVL_HSLs",
 "PS_PVL_HSLs()"\
@@ -54,7 +54,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PVL_HSLs = CEmbeddedHLSLShader
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_Specular = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_VS_PVL_HSLs_Specular = EmbeddedHLSLShader
 (
 "VS_PVL_HSLs_Specular",
 "VS_PVL_HSLs_Specular()"\
@@ -63,7 +63,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_Specular = CEmbeddedHLS
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular = EmbeddedHLSLShader
 (
 "PS_PVL_HSLs_Specular",
 "PS_PVL_HSLs_Specular()"\
@@ -71,7 +71,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular = CEmbeddedHLS
 "}"\
 );
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_VS_PPL_HSLs = EmbeddedHLSLShader
 (
 // name
 "VS_PPL_HSLs",
@@ -104,7 +104,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs = CEmbeddedHLSLShader
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_PS_PPL_HSLs = EmbeddedHLSLShader
 (
 "PS_PPL_HSLs",
 "#include \"LightDef.fxh\"\n"\
@@ -186,7 +186,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs = CEmbeddedHLSLShader
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular = EmbeddedHLSLShader
 (
 "VS_PPL_HSLs_Specular",
 "#include \"Matrix.fxh\"\n"\
@@ -231,7 +231,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular = CEmbeddedHLS
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = EmbeddedHLSLShader
 (
 "PS_PPL_HSLs_Specular",
 "#include \"TexDef.fxh\"\n"\
@@ -328,7 +328,7 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular = CEmbeddedHLS
 );
 
 
-CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular = CEmbeddedHLSLShader
+EmbeddedHLSLShader EmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular = EmbeddedHLSLShader
 (
 "VS_PPL_HSLs_QVertexBlend_Specular",
 "#define NUM_MAX_BLEND_TRANSFORMS	72\n"\
@@ -375,8 +375,8 @@ CEmbeddedHLSLShader CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular =
 // Used for compile test
 int main()// { return 0; }
 {
-	printf( "name:    %s\n", CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular.pName );
-	printf( "content: %s\n", CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular.pContent );
+	printf( "name:    %s\n", EmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular.pName );
+	printf( "content: %s\n", EmbeddedHLSLShaders::ms_PS_PVL_HSLs_Specular.pContent );
 }
 */
 

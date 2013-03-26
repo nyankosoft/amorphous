@@ -59,7 +59,7 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 	const int num_mats = mesh.GetNumMaterials();
 	for( int i=0; i<num_mats; i++ )
 	{
-		const CMeshMaterial& mat = mesh.GetMaterial(i);
+		const MeshMaterial& mat = mesh.GetMaterial(i);
 		for( size_t j=0; j<mat.Texture.size(); j++ )
 		{
 			const GLuint tex_id = mat.Texture[j].GetGLTextureID();

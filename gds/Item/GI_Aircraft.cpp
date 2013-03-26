@@ -273,9 +273,9 @@ void CGI_Aircraft::Update( float dt )
 
 		m_vecpMeshController[i]->Update( dt );
 
-//		if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_AIRCRAFT_ROTOR
+//		if( m_vecpMeshController[i]->GetArchiveObjectID() == MeshBoneControllerBase::ID_AIRCRAFT_ROTOR
 //		 && 0 < m_vecRotor.size() )
-//			((CMeshBoneController_Rotor *)m_vecpMeshController[i])->SetRotationAngle( m_vecRotor[0].fAngle );
+//			((MeshBoneController_Rotor *)m_vecpMeshController[i])->SetRotationAngle( m_vecRotor[0].fAngle );
 
 		m_vecpMeshController[i]->UpdateTransforms();
 	}
@@ -505,7 +505,7 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 	}
 
 	// serialization of mesh controllers
-	CMeshBoneControllerFactory factory;
+	MeshBoneControllerFactory factory;
 	ar.Polymorphic( m_vecpMeshController, factory );
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
@@ -513,8 +513,8 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 		size_t i, num = m_vecpMeshController.size();
 		for( i=0; i<num; i++ )
 		{
-//			if( m_vecpMeshController[i]->GetArchiveObjectID() == CMeshBoneControllerBase::ID_... )
-//				((CMeshBoneController_AircraftBase *)m_vecpMeshController[i])->SetPseudoAircraftSimulator( &m_PseudoSimulator );
+//			if( m_vecpMeshController[i]->GetArchiveObjectID() == MeshBoneControllerBase::ID_... )
+//				((MeshBoneController_AircraftBase *)m_vecpMeshController[i])->SetPseudoAircraftSimulator( &m_PseudoSimulator );
 				m_vecpMeshController[i]->SetPseudoAircraftSimulator( &m_PseudoSimulator );
 		}
 	}
@@ -566,24 +566,24 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 	for( size_t i = 0; i<components.size(); i++ )
 	{
 		CXMLNodeReader& component_reader = components[i];
-		shared_ptr<CMeshBoneController_AircraftBase> pComponent;
+		shared_ptr<MeshBoneController_AircraftBase> pComponent;
 		if( component_reader.GetName() == "Flap" )
 		{
-			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_Flap() );
+			pComponent = shared_ptr<MeshBoneController_AircraftBase>( new MeshBoneController_Flap() );
 		}
 		else if( component_reader.GetName() == "VFlap" )
 		{
-			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_VFlap() );
+			pComponent = shared_ptr<MeshBoneController_AircraftBase>( new MeshBoneController_VFlap() );
 		}
 		else if( component_reader.GetName() == "Rotor" )
 		{
-			pComponent = shared_ptr<CMeshBoneController_AircraftBase>( new CMeshBoneController_Rotor() );
+			pComponent = shared_ptr<MeshBoneController_AircraftBase>( new MeshBoneController_Rotor() );
 		}
 		else if( component_reader.GetName() == "GearUnit" )
 		{
 			// store to the gear unit array to open/close the gear box(es)
-			shared_ptr<CMeshBoneController_GearUnit> pGearUnit;
-			pGearUnit = shared_ptr<CMeshBoneController_GearUnit>( new CMeshBoneController_GearUnit() );
+			shared_ptr<MeshBoneController_GearUnit> pGearUnit;
+			pGearUnit = shared_ptr<MeshBoneController_GearUnit>( new MeshBoneController_GearUnit() );
 			m_vecpGear.push_back( pGearUnit );
 
 			pComponent = pGearUnit;

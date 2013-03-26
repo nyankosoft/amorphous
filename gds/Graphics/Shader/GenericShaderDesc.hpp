@@ -29,7 +29,7 @@ public:
 };
 
 
-class CAlphaBlendType
+class AlphaBlendType
 {
 public:
 	enum Name
@@ -52,7 +52,7 @@ public:
 };
 
 
-class CVertexBlendType
+class VertexBlendType
 {
 public:
 	enum Name
@@ -82,7 +82,7 @@ public:
 	};
 };
 
-class CEnvMapOption
+class EnvMapOption
 {
 public:
 	enum Name
@@ -113,9 +113,9 @@ public:
 	ShaderLightingTechnique::Name LightingTechnique;
 	ShaderLightingType::Name LightingType; // per-vertex / per-pixel
 	SpecularSource::Name Specular;
-	CVertexBlendType::Name VertexBlendType;
-	CAlphaBlendType::Name AlphaBlend;
-	CEnvMapOption::Name EnvMap;
+	VertexBlendType::Name VertexBlendType;
+	AlphaBlendType::Name AlphaBlend;
+	EnvMapOption::Name EnvMap;
 	PlanarReflectionOption::Name PlanarReflection;
 	int NormalMapTextureIndex;
 	int NumPointLights;
@@ -129,9 +129,9 @@ public:
 	LightingTechnique(ShaderLightingTechnique::HEMISPHERIC),
 	LightingType(ShaderLightingType::PER_PIXEL),
 	Specular(SpecularSource::NONE),
-	VertexBlendType(CVertexBlendType::NONE),
-	AlphaBlend(CAlphaBlendType::NONE),
-	EnvMap(CEnvMapOption::NONE),
+	VertexBlendType(VertexBlendType::NONE),
+	AlphaBlend(AlphaBlendType::NONE),
+	EnvMap(EnvMapOption::NONE),
 	PlanarReflection(PlanarReflectionOption::NONE),
 	NormalMapTextureIndex(-1),
 	NumPointLights(-1),

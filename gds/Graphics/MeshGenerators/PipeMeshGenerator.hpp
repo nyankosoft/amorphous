@@ -11,7 +11,7 @@ namespace amorphous
 
 class PipeMeshGenerator : public MeshGenerator
 {
-	CCylinderDesc m_Desc;
+	CylinderDesc m_Desc;
 
 	float m_fWallThickness;
 
@@ -30,7 +30,7 @@ public:
 		m_fWallThickness     = outer_radius - inner_radius;
 	}
 
-	PipeMeshGenerator( const CCylinderDesc& desc, float wall_thickness )
+	PipeMeshGenerator( const CylinderDesc& desc, float wall_thickness )
 		:
 	m_Desc(desc),
 	m_fWallThickness(wall_thickness)

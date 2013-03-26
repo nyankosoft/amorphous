@@ -65,7 +65,7 @@ public:
 };
 
 
-class CViewport
+class Viewport
 {
 public:
 	uint UpperLeftX;
@@ -75,7 +75,7 @@ public:
 	float MinDepth;
 	float MaxDepth;
 
-	CViewport()
+	Viewport()
 		:
 	UpperLeftX(0),
 	UpperLeftY(0),
@@ -269,9 +269,9 @@ public:
 
 	virtual Result::Name SetCullingMode( CullingMode::Name cull_mode ) = 0;
 
-	virtual Result::Name GetViewport( CViewport& viewport ) = 0;
+	virtual Result::Name GetViewport( Viewport& viewport ) = 0;
 
-	virtual Result::Name SetViewport( const CViewport& viewport ) = 0;
+	virtual Result::Name SetViewport( const Viewport& viewport ) = 0;
 
 	inline Result::Name GetViewportSize( uint& width, uint& height );
 
@@ -298,7 +298,7 @@ public:
 
 inline Result::Name CGraphicsDevice::GetViewportSize( uint& width, uint& height )
 {
-	CViewport vp;
+	Viewport vp;
 	Result::Name res = GetViewport( vp );
 	width  = vp.Width;
 	height = vp.Height;

@@ -114,7 +114,7 @@ bool ShapeDetector::IsAABox( const General3DMesh& src_mesh, AABB3& aabb )
 }
 
 
-bool ShapeDetector::IsBox( const General3DMesh& src_mesh, CBoxDesc& desc, Matrix34& pose )
+bool ShapeDetector::IsBox( const General3DMesh& src_mesh, BoxDesc& desc, Matrix34& pose )
 {
 	// collect normals
 	// If the mesh
@@ -383,7 +383,7 @@ bool ShapeDetector::IsCapsule( const General3DMesh& src_mesh, Capsule& capsule )
 }
 
 /*
-bool ShapeDetector::IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cylinder );
+bool ShapeDetector::IsCylinder( const General3DMesh& src_mesh, CylinderDesc& cylinder );
 {
 	return false;
 }
@@ -392,7 +392,7 @@ bool ShapeDetector::IsCylinder( const General3DMesh& src_mesh, CCylinderDesc& cy
 bool ShapeDetector::DetectShape( const General3DMesh& src_mesh, ShapeDetectionResults& results )
 {
 	AABB3 aabb;
-	CBoxDesc box_desc;
+	BoxDesc box_desc;
 	Matrix34 pose( Matrix34Identity() );
 	Sphere sphere;
 	Capsule cap;

@@ -83,7 +83,7 @@ static Matrix33 GetRotationMatrixToAlignToAxisForCylinder( AxisAndDirection::Nam
 }
 
 
-void CreateCylinderMesh( const CCylinderDesc& desc, General3DMesh& mesh )
+void CreateCylinderMesh( const CylinderDesc& desc, General3DMesh& mesh )
 {
 	mesh.SetVertexFormatFlags(
 		 CMMA_VertexSet::VF_POSITION
@@ -144,7 +144,7 @@ void CreateCylinderMesh( const CCylinderDesc& desc, General3DMesh& mesh )
 }
 
 
-void CreateConeMesh( const CConeDesc& desc, General3DMesh& mesh )
+void CreateConeMesh( const ConeDesc& desc, General3DMesh& mesh )
 {
 	int i,j;
 	int vert_index = 0;
@@ -266,7 +266,7 @@ static void RotateVertices( vector<General3DVertex>& vecVertex, Matrix33 matRota
 }
 
 
-void CreateSphereMesh( const CSphereDesc& desc, General3DMesh& mesh )
+void CreateSphereMesh( const SphereDesc& desc, General3DMesh& mesh )
 {
 	if( !desc.IsValid() )
 		return;
@@ -516,7 +516,7 @@ void CreateCapsuleMesh( const CCapsuleDesc& desc, General3DMesh& mesh )
 }
 
 
-Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelArchive& mesh_archive )
+Result::Name CreateCylinderMeshArchive( const CylinderDesc& desc, C3DMeshModelArchive& mesh_archive )
 {
 	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateCylinderMesh( desc, *pMesh );
@@ -524,7 +524,7 @@ Result::Name CreateCylinderMeshArchive( const CCylinderDesc& desc, C3DMeshModelA
 }
 
 
-Result::Name CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& mesh_archive )
+Result::Name CreateConeMeshArchive( const ConeDesc& desc, C3DMeshModelArchive& mesh_archive )
 {
 //	General3DMesh mesh;
 //	CreateConeMesh( desc, mesh );
@@ -535,7 +535,7 @@ Result::Name CreateConeMeshArchive( const CConeDesc& desc, C3DMeshModelArchive& 
 	return CreateArchiveFromGeneral3DMesh( pMesh, mesh_archive );
 }
 
-Result::Name CreateSphereMeshArchive( const CSphereDesc& desc,   C3DMeshModelArchive& mesh_archive )
+Result::Name CreateSphereMeshArchive( const SphereDesc& desc,   C3DMeshModelArchive& mesh_archive )
 {
 	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateSphereMesh( desc, *pMesh );

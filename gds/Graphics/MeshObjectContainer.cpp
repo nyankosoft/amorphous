@@ -182,7 +182,7 @@ void MeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 
-CMeshContainerNode::CMeshContainerNode()
+MeshContainerNode::MeshContainerNode()
 :
 m_LocalPose(Matrix34Identity()),
 m_LocalTransform(Matrix34Identity()),
@@ -191,7 +191,7 @@ m_WorldTransform(Matrix34Identity())
 }
 
 
-Matrix34 CMeshContainerNode::GetMeshContainerWorldTransform( int mesh_container_index )
+Matrix34 MeshContainerNode::GetMeshContainerWorldTransform( int mesh_container_index )
 {
 /*	Matrix34 transform
 		= m_WorldTransform
@@ -212,7 +212,7 @@ Matrix34 CMeshContainerNode::GetMeshContainerWorldTransform( int mesh_container_
 
 
 /// Render the meshes with the shaders stored in the mesh containers
-void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
+void MeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 {
 	Matrix34 world_transform = m_WorldTransform;
 
@@ -252,20 +252,20 @@ void CMeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 }
 
 /*
-void CMeshContainerNode::Render( const Matrix34& parent_transform, CMeshContainerNodeRenderMethod& render_method );
+void MeshContainerNode::Render( const Matrix34& parent_transform, MeshContainerNodeRenderMethod& render_method );
 {
 	Render_r( parent_transform, render_method, false );
 }
 
 
-void CMeshContainerNode::Render( const Matrix34& parent_transform )
+void MeshContainerNode::Render( const Matrix34& parent_transform )
 {
-	CMeshContainerNodeRenderMethod null_render_method;
+	MeshContainerNodeRenderMethod null_render_method;
 	Render_r( parent_transform, null_render_method, true );
 }
 */
 
-void CMeshContainerNode::UpdateWorldTransforms( const Matrix34& parent_transform  )
+void MeshContainerNode::UpdateWorldTransforms( const Matrix34& parent_transform  )
 {
 	Matrix34 world_transform
 		= parent_transform
@@ -279,7 +279,7 @@ void CMeshContainerNode::UpdateWorldTransforms( const Matrix34& parent_transform
 }
 
 
-bool CMeshContainerNode::LoadMeshesFromDesc()
+bool MeshContainerNode::LoadMeshesFromDesc()
 {
 	if( m_vecpMeshContainer.size() == 0
 	 && m_vecpChild.size() == 0 )
@@ -309,7 +309,7 @@ bool CMeshContainerNode::LoadMeshesFromDesc()
 }
 
 
-bool CMeshContainerNode::LoadShadersFromDesc()
+bool MeshContainerNode::LoadShadersFromDesc()
 {
 	if( m_vecpMeshContainer.size() == 0
 	 && m_vecpChild.size() == 0 )
@@ -339,7 +339,7 @@ bool CMeshContainerNode::LoadShadersFromDesc()
 }
 
 
-void CMeshContainerNode::Serialize( IArchive& ar, const unsigned int version )
+void MeshContainerNode::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecpMeshContainer;
 	ar & m_vecpChild;
@@ -348,7 +348,7 @@ void CMeshContainerNode::Serialize( IArchive& ar, const unsigned int version )
 
 
 /// Use "MeshNode" as the element name of the argument 'reader'
-void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 {
 	// local pose of the node
 	amorphous::LoadFromXMLNode( reader.GetChild( "LocalPose" ), m_LocalPose );
@@ -367,7 +367,7 @@ void CMeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 	m_vecpChild.resize( vecChild.size() );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{
-		m_vecpChild[i].reset( new CMeshContainerNode() ); 
+		m_vecpChild[i].reset( new MeshContainerNode() ); 
 		m_vecpChild[i]->LoadFromXMLNode( vecChild[i] );
 	}
 }

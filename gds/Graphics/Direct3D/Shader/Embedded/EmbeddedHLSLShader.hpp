@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CEmbeddedHLSLShader
+class EmbeddedHLSLShader
 {
 public:
 	std::vector<const char *> pDependencies;
@@ -18,7 +18,7 @@ public:
 	const char *pName;
 	const char *pContent;
 
-	CEmbeddedHLSLShader( const char *_pName = "", const char *_pContent = "" )
+	EmbeddedHLSLShader( const char *_pName = "", const char *_pContent = "" )
 		:
 	pName(_pName),
 	pContent(_pContent)
@@ -40,7 +40,7 @@ public:
 
 
 
-class CEmbeddedHLSLShaders
+class EmbeddedHLSLShaders
 {
 public:
 
@@ -55,25 +55,25 @@ public:
 	// [4]: _QVertexBlend = vertex blending via quaternion
 	// [5]: _Specular = supports specular highlight
 
-	static CEmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend;
-	static CEmbeddedHLSLShader ms_PS_PVL_HSLs_QVertexBlend;
+	static EmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend;
+	static EmbeddedHLSLShader ms_PS_PVL_HSLs_QVertexBlend;
 
-//	static CEmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend_Specular;
-//	static CEmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend_Specular;
+//	static EmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend_Specular;
+//	static EmbeddedHLSLShader ms_VS_PVL_HSLs_QVertexBlend_Specular;
 
-	static CEmbeddedHLSLShader ms_VS_PVL_HSLs;
-	static CEmbeddedHLSLShader ms_PS_PVL_HSLs;
+	static EmbeddedHLSLShader ms_VS_PVL_HSLs;
+	static EmbeddedHLSLShader ms_PS_PVL_HSLs;
 
-	static CEmbeddedHLSLShader ms_VS_PVL_HSLs_Specular;
-	static CEmbeddedHLSLShader ms_PS_PVL_HSLs_Specular;
+	static EmbeddedHLSLShader ms_VS_PVL_HSLs_Specular;
+	static EmbeddedHLSLShader ms_PS_PVL_HSLs_Specular;
 
-	static CEmbeddedHLSLShader ms_VS_PPL_HSLs;
-	static CEmbeddedHLSLShader ms_PS_PPL_HSLs;
+	static EmbeddedHLSLShader ms_VS_PPL_HSLs;
+	static EmbeddedHLSLShader ms_PS_PPL_HSLs;
 
-	static CEmbeddedHLSLShader ms_VS_PPL_HSLs_Specular;
-	static CEmbeddedHLSLShader ms_PS_PPL_HSLs_Specular;
+	static EmbeddedHLSLShader ms_VS_PPL_HSLs_Specular;
+	static EmbeddedHLSLShader ms_PS_PPL_HSLs_Specular;
 
-	static CEmbeddedHLSLShader ms_VS_PPL_HSLs_QVertexBlend_Specular;
+	static EmbeddedHLSLShader ms_VS_PPL_HSLs_QVertexBlend_Specular;
 };
 
 

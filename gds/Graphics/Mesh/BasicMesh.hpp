@@ -31,7 +31,7 @@ public:
 };
 
 
-class CMeshMaterial
+class MeshMaterial
 {
 public:
 
@@ -70,7 +70,7 @@ protected:
 	std::string m_strFilename;
 
 	/// materials for each subset
-	std::vector<CMeshMaterial> m_vecMaterial;
+	std::vector<MeshMaterial> m_vecMaterial;
 
 	/// Holds material indices
 	/// The values are always set to [0,m_vecMaterial.size()-1]
@@ -179,13 +179,13 @@ public:
 	int GetNumMaterials() const { return (int)m_vecMaterial.size(); }
 
 	/// returns const reference to the i-th material
-	const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
+	const MeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
 
-	const std::vector<CMeshMaterial>& GetMaterials() const { return m_vecMaterial; }
+	const std::vector<MeshMaterial>& GetMaterials() const { return m_vecMaterial; }
 
-	CMeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
+	MeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
 
-	std::vector<CMeshMaterial>& Materials() { return m_vecMaterial; }
+	std::vector<MeshMaterial>& Materials() { return m_vecMaterial; }
 
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return (int)m_vecMaterial[material_index].Texture.size(); }
@@ -212,11 +212,11 @@ public:
 
 	virtual int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return 0; }
 
-//	inline const CMeshBone& GetBone( int index ) const;
+//	inline const MeshBone& GetBone( int index ) const;
 
-	virtual const CMeshBone& GetBone( const std::string& bone_name ) const;
+	virtual const MeshBone& GetBone( const std::string& bone_name ) const;
 
-	virtual const CMeshBone& GetRootBone() const;
+	virtual const MeshBone& GetRootBone() const;
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 	/// calculate hierarchical transforms by handiing an array of matrices
@@ -322,11 +322,11 @@ public:
 	int GetNumMaterials() const { return m_pImpl->GetNumMaterials(); }
 
 	/// returns const reference to the i-th material
-	const CMeshMaterial& GetMaterial( int material_index ) const { return m_pImpl->GetMaterial( material_index ); }
+	const MeshMaterial& GetMaterial( int material_index ) const { return m_pImpl->GetMaterial( material_index ); }
 
-	const std::vector<CMeshMaterial>& GetMaterials() const { m_pImpl->GetMaterials(); }
+	const std::vector<MeshMaterial>& GetMaterials() const { m_pImpl->GetMaterials(); }
 
-	CMeshMaterial& Material( int material_index ) { return m_pImpl->Material( material_index ); }
+	MeshMaterial& Material( int material_index ) { return m_pImpl->Material( material_index ); }
 
 	/// the number of textures for the i-th material
 	int GetNumTextures( int material_index ) const { return m_pImpl->GetNumTextures( material_index ); }
@@ -350,8 +350,8 @@ public:
 /*
 	int GetNumBones() const { return m_pImpl->GetNumBones(); }
 	int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
-//	inline const CMeshBone& GetBone( int index ) const;
-	const CMeshBone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
+//	inline const MeshBone& GetBone( int index ) const;
+	const MeshBone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 	/// calculate hierarchical transforms by handiing an array of matrices
 	/// that represents local transformations at each bone

@@ -22,7 +22,7 @@ namespace amorphous
 {
 
 
-//class CMeshBoneController_AircraftBase;
+//class MeshBoneController_AircraftBase;
 
 /*
 class AccelProperty
@@ -138,11 +138,11 @@ class CGI_Aircraft : public GameItem
 //	BaseEntityHandle m_EngineNozzleFlame;
 //	BaseEntityHandle m_MuzzleFlashBaseEntity;
 
-	std::vector< boost::shared_ptr<CMeshBoneController_AircraftBase> > m_vecpMeshController;
+	std::vector< boost::shared_ptr<MeshBoneController_AircraftBase> > m_vecpMeshController;
 
-//	std::vector< boost::shared_ptr<CMeshBoneController_Rotor> > m_vecpRotor;
+//	std::vector< boost::shared_ptr<MeshBoneController_Rotor> > m_vecpRotor;
 
-	std::vector< boost::shared_ptr<CMeshBoneController_GearUnit> > m_vecpGear;
+	std::vector< boost::shared_ptr<MeshBoneController_GearUnit> > m_vecpGear;
 
 	float m_fDefaultForwardAirFriction;
 

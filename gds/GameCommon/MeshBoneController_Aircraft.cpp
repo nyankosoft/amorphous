@@ -42,7 +42,7 @@ public:
 */
 
 
-void CMeshBoneController_AircraftBase::Init( const SkeletalMesh& target_mesh )
+void MeshBoneController_AircraftBase::Init( const SkeletalMesh& target_mesh )
 {
 //	if( !m_pTargetMesh )
 //		return;
@@ -51,9 +51,9 @@ void CMeshBoneController_AircraftBase::Init( const SkeletalMesh& target_mesh )
 
 	for( i=0; i<num_bones; i++ )
 	{
-//		const CMeshBone& bone = m_pTargetMesh->GetBone( m_vecBoneControlParam[i].Name );
-		const CMeshBone& bone = target_mesh.GetBone( m_vecBoneControlParam[i].Name );
-		if( bone == CMeshBone::NullBone() )
+//		const MeshBone& bone = m_pTargetMesh->GetBone( m_vecBoneControlParam[i].Name );
+		const MeshBone& bone = target_mesh.GetBone( m_vecBoneControlParam[i].Name );
+		if( bone == MeshBone::NullBone() )
 		{
 			LOG_PRINT_WARNING( fmt_string(" The bone named '%s' was not found in the skeleton of the target mesh.",m_vecBoneControlParam[i].Name.c_str()) );
 			continue;
@@ -67,7 +67,7 @@ void CMeshBoneController_AircraftBase::Init( const SkeletalMesh& target_mesh )
 
 
 //=====================================================================================
-// CMeshBoneController_VFlap
+// MeshBoneController_VFlap
 //=====================================================================================
 
 /**
@@ -75,13 +75,13 @@ void CMeshBoneController_AircraftBase::Init( const SkeletalMesh& target_mesh )
 
 
 */
-void CMeshBoneController_Flap::Init( const SkeletalMesh& target_skeletal_mesh )
+void MeshBoneController_Flap::Init( const SkeletalMesh& target_skeletal_mesh )
 {
-	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
+	MeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
 
 
-void CMeshBoneController_Flap::UpdateTransforms()
+void MeshBoneController_Flap::UpdateTransforms()
 {
 /*
 	float pitch_factor = current_pitch_accel / ( current_pitch_accel > 0 ) ? pitch_accel.max ? pitch_accel.min;
@@ -126,9 +126,9 @@ void CMeshBoneController_Flap::UpdateTransforms()
 }
 
 
-void CMeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "AnglePerPitchAccel", m_fAnglePerPitchAccel );
 	reader.GetChildElementTextContent( "AnglePerRollAccel",  m_fAnglePerRollAccel );
@@ -141,7 +141,7 @@ void CMeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 //=====================================================================================
-// CMeshBoneController_VFlap
+// MeshBoneController_VFlap
 //=====================================================================================
 
 /**
@@ -150,13 +150,13 @@ void CMeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
  - m_Type == TYPE_TWIN:   "VFlapR", "VFlapL"
 
 */
-void CMeshBoneController_VFlap::Init( const SkeletalMesh& target_skeletal_mesh )
+void MeshBoneController_VFlap::Init( const SkeletalMesh& target_skeletal_mesh )
 {
-	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
+	MeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
 
 
-void CMeshBoneController_VFlap::UpdateTransforms()
+void MeshBoneController_VFlap::UpdateTransforms()
 {
 	const float current_yaw_accel = m_pSimulator->GetYawAccel();
 
@@ -178,9 +178,9 @@ void CMeshBoneController_VFlap::UpdateTransforms()
 }
 
 
-void CMeshBoneController_VFlap::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_VFlap::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
 	reader.GetChildElementTextContent( "AnglePerYawAccel",  m_fAnglePerYawAccel );
 
@@ -206,18 +206,18 @@ void CMeshBoneController_VFlap::LoadFromXMLNode( CXMLNodeReader& reader )
 
 
 //=====================================================================================
-// CMeshBoneController_Rotor
+// MeshBoneController_Rotor
 //=====================================================================================
 
 /*
-void CMeshBoneController_Rotor::Update( float dt )
+void MeshBoneController_Rotor::Update( float dt )
 {
 	m_fRotorAngle = rotor_speed * dt;
 }
 */
 
 
-void CMeshBoneController_Rotor::Init( const SkeletalMesh& target_skeletal_mesh )
+void MeshBoneController_Rotor::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	if( m_vecBoneControlParam.size() != 1 )
 	{
@@ -225,17 +225,17 @@ void CMeshBoneController_Rotor::Init( const SkeletalMesh& target_skeletal_mesh )
 		return;
 	}
 
-	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
+	MeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 }
 
 
-void CMeshBoneController_Rotor::Update( float dt )
+void MeshBoneController_Rotor::Update( float dt )
 {
 	m_fAngle += m_fRotationSpeed * dt;
 }
 
 
-void CMeshBoneController_Rotor::UpdateTransforms()
+void MeshBoneController_Rotor::UpdateTransforms()
 {
 //	if( m_pSimulator->GetNumRotors
 //	const float current_angle = m_pSimulator->GetRotor(0);
@@ -259,9 +259,9 @@ void CMeshBoneController_Rotor::UpdateTransforms()
 }
 
 
-void CMeshBoneController_Rotor::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_Rotor::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
 	string rot_dir;
 	reader.GetChildElementTextContent( "RotationDirection", rot_dir );
@@ -287,7 +287,7 @@ void CConstraintComponent::LoadFromXMLNode( CXMLNodeReader& reader )
 //=====================================================================================
 
 /*
-void CMeshBoneController_Cover::Init( std::vector<CMeshBoneController_Cover>& vecComponent )
+void MeshBoneController_Cover::Init( std::vector<MeshBoneController_Cover>& vecComponent )
 {
 	for( size_t i=0; i<m_vecConstraint.size(); i++ )
 	{
@@ -299,23 +299,23 @@ void CMeshBoneController_Cover::Init( std::vector<CMeshBoneController_Cover>& ve
 }
 */
 
-void CMeshBoneController_Cover::Open()
+void MeshBoneController_Cover::Open()
 {
 	m_Angle.target = m_fOpenAngle;
 	m_State = CAircraftComponentState::OPENING;
 }
 
 
-void CMeshBoneController_Cover::Close()
+void MeshBoneController_Cover::Close()
 {
 	m_Angle.target = 0;
 	m_State = CAircraftComponentState::CLOSING;
 }
 
 
-void CMeshBoneController_Cover::Init( const SkeletalMesh& target_skeletal_mesh )
+void MeshBoneController_Cover::Init( const SkeletalMesh& target_skeletal_mesh )
 {
-	CMeshBoneController_AircraftBase::Init( target_skeletal_mesh );
+	MeshBoneController_AircraftBase::Init( target_skeletal_mesh );
 
 	if( m_pParent )
 	{
@@ -328,7 +328,7 @@ void CMeshBoneController_Cover::Init( const SkeletalMesh& target_skeletal_mesh )
 }
 
 
-void CMeshBoneController_Cover::UpdatedFromRequestedState( CAircraftComponentState::Name requested_state )
+void MeshBoneController_Cover::UpdatedFromRequestedState( CAircraftComponentState::Name requested_state )
 {
 	switch( requested_state )
 	{
@@ -379,7 +379,7 @@ void CMeshBoneController_Cover::UpdatedFromRequestedState( CAircraftComponentSta
 }
 
 
-void CMeshBoneController_Cover::Update( float dt )
+void MeshBoneController_Cover::Update( float dt )
 {
 	if( m_pParent )
 		UpdatedFromRequestedState( m_pParent->GetRequestedState() );
@@ -389,7 +389,7 @@ void CMeshBoneController_Cover::Update( float dt )
 }
 
 
-void CMeshBoneController_Cover::UpdateTransforms()
+void MeshBoneController_Cover::UpdateTransforms()
 {
 	float angle = GetCurrentAngle();
 	Matrix33 matRot;
@@ -407,7 +407,7 @@ void CMeshBoneController_Cover::UpdateTransforms()
 }
 
 
-bool CMeshBoneController_Cover::SatisfyConstraints()
+bool MeshBoneController_Cover::SatisfyConstraints()
 {
 	float current_angle = GetCurrentAngle();
 	for( size_t i=0; i<m_vecConstraint.size(); i++ )
@@ -425,7 +425,7 @@ bool CMeshBoneController_Cover::SatisfyConstraints()
 }
 
 
-const string CMeshBoneController_Cover::GetName()
+const string MeshBoneController_Cover::GetName()
 {
 	if( 1 <= m_vecBoneControlParam.size() )
 		return m_vecBoneControlParam[0].Name;
@@ -434,9 +434,9 @@ const string CMeshBoneController_Cover::GetName()
 }
 
 
-void CMeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CMeshBoneController_AircraftBase::LoadFromXMLNode( reader );
+	MeshBoneController_AircraftBase::LoadFromXMLNode( reader );
 
 	float open_angle_deg = 0;
 	reader.GetChildElementTextContent( "OpenAngle", open_angle_deg );
@@ -485,9 +485,9 @@ void CMeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
 </GearUnit>
 */
 //=====================================================================================
-// CMeshBoneController_GearUnit
+// MeshBoneController_GearUnit
 //=====================================================================================
-void CMeshBoneController_GearUnit::Init( const SkeletalMesh& target_skeletal_mesh )
+void MeshBoneController_GearUnit::Init( const SkeletalMesh& target_skeletal_mesh )
 {
 	for( size_t i=0; i<m_vecpComponent.size(); i++ )
 	{
@@ -497,7 +497,7 @@ void CMeshBoneController_GearUnit::Init( const SkeletalMesh& target_skeletal_mes
 }
 
 
-void CMeshBoneController_GearUnit::Update( float dt )
+void MeshBoneController_GearUnit::Update( float dt )
 {
 //	m_ShaftAngle.Update( dt );
 
@@ -527,23 +527,23 @@ void CMeshBoneController_GearUnit::Update( float dt )
 }
 
 
-void CMeshBoneController_GearUnit::UpdateTransforms()
+void MeshBoneController_GearUnit::UpdateTransforms()
 {
 	for( size_t i=0; i<m_vecpComponent.size(); i++ )
 		m_vecpComponent[i]->UpdateTransforms();
 }
 
 
-void CMeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<SkeletalMesh> pTargetMesh )
+void MeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<SkeletalMesh> pTargetMesh )
 {
-//	CMeshBoneControllerBase::SetTargetMesh( pTargetMesh );
+//	MeshBoneControllerBase::SetTargetMesh( pTargetMesh );
 
 //	for( size_t i=0; i<m_vecpComponent.size(); i++ )
 //		m_vecpComponent[i]->SetTargetMesh( pTargetMesh );
 }
 
 
-void CMeshBoneController_GearUnit::Open()
+void MeshBoneController_GearUnit::Open()
 {
 //	m_OpenStartTime = m_CurrentTime;
 //	m_ShaftAngle.target = m_fShaftAngleOpen;
@@ -552,7 +552,7 @@ void CMeshBoneController_GearUnit::Open()
 }
 
 
-void CMeshBoneController_GearUnit::Close()
+void MeshBoneController_GearUnit::Close()
 {
 //	m_CloseStartTime = m_CurrentTime;
 //	m_ShaftAngle.target = m_fShaftAngleClosed;
@@ -561,7 +561,7 @@ void CMeshBoneController_GearUnit::Close()
 }
 
 
-shared_ptr<CMeshBoneController_Cover> CMeshBoneController_GearUnit::GetComponent( const std::string& component_name )
+shared_ptr<MeshBoneController_Cover> MeshBoneController_GearUnit::GetComponent( const std::string& component_name )
 {
 	for( size_t i=0; i<m_vecpComponent.size(); i++ )
 	{
@@ -571,13 +571,13 @@ shared_ptr<CMeshBoneController_Cover> CMeshBoneController_GearUnit::GetComponent
 		}
 	}
 
-	return shared_ptr<CMeshBoneController_Cover>();
+	return shared_ptr<MeshBoneController_Cover>();
 }
 
 
-void CMeshBoneController_GearUnit::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_GearUnit::LoadFromXMLNode( CXMLNodeReader& reader )
 {
-	CMeshBoneControllerBase::LoadFromXMLNode( reader );
+	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
 	vector<CXMLNodeReader> vecCover = reader.GetImmediateChildren( "Cover" );
 	vector<CXMLNodeReader> vecShaft = reader.GetImmediateChildren( "Shaft" );
@@ -585,24 +585,24 @@ void CMeshBoneController_GearUnit::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	for( size_t i=0; i<vecCover.size(); i++ )
 	{
-		m_vecpComponent[i] = shared_ptr<CMeshBoneController_Cover>( new CMeshBoneController_Cover() );
+		m_vecpComponent[i] = shared_ptr<MeshBoneController_Cover>( new MeshBoneController_Cover() );
 		m_vecpComponent[i]->LoadFromXMLNode( vecCover[i] );
 	}
 
 	for( size_t i=0; i<vecShaft.size(); i++ )
 	{
 		size_t index = vecCover.size() + i;
-		m_vecpComponent[index] = shared_ptr<CMeshBoneController_Cover>( new CMeshBoneController_Shaft() );
+		m_vecpComponent[index] = shared_ptr<MeshBoneController_Cover>( new MeshBoneController_Shaft() );
 		m_vecpComponent[index]->LoadFromXMLNode( vecShaft[i] );
 	}
 }
 
 
-void CMeshBoneController_GearUnit::Serialize( IArchive& ar, const unsigned int version )
+void MeshBoneController_GearUnit::Serialize( IArchive& ar, const unsigned int version )
 {
-	CMeshBoneController_AircraftBase::Serialize( ar, version );
+	MeshBoneController_AircraftBase::Serialize( ar, version );
 
-	CMeshBoneControllerFactory factory;
+	MeshBoneControllerFactory factory;
 	ar.Polymorphic( m_vecpComponent, factory );
 //	ar & m_TirePose & m_ShaftPose & m_vecCoverPose;
 //	ar & m_fTireAngle & m_fShaftOpenAngle;

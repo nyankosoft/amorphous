@@ -99,9 +99,9 @@ public:
 
 	Result::Name SetCullingMode( CullingMode::Name cull_mode );
 
-	Result::Name GetViewport( CViewport& viewport );
+	Result::Name GetViewport( Viewport& viewport );
 
-	Result::Name SetViewport( const CViewport& viewport );
+	Result::Name SetViewport( const Viewport& viewport );
 
 	Result::Name SetClearColor( const SFloatRGBAColor& color );
 

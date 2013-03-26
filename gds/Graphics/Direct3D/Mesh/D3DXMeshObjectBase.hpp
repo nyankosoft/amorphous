@@ -131,10 +131,10 @@ public:
 	inline const D3DMATERIAL9& GetD3DMaterial( int i ) const { return m_pMeshMaterials[i]; }
 
 	/// returns const reference to the i-th material
-	inline const CMeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
+	inline const MeshMaterial& GetMaterial( int material_index ) const { return m_vecMaterial[material_index]; }
 
 	/// returns non-const reference to the i-th material
-	inline CMeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
+	inline MeshMaterial& Material( int material_index ) { return m_vecMaterial[material_index]; }
 
 	bool CreateVertexDeclaration();
 

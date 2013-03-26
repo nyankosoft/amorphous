@@ -90,7 +90,7 @@ public:
 	/// Different shader & technique for each mesh subset
 	/// - Uses array to support LOD of shader
 	/// map of string and subset render method
-	/// - string(key) - subset name saved in CMeshMaterial::Name
+	/// - string(key) - subset name saved in MeshMaterial::Name
 	/// - SubsetRenderMethod - method to render a subset of a mesh
 	std::vector< std::map<std::string,SubsetRenderMethod> > m_vecSubsetNameToRenderMethod;
 
@@ -166,17 +166,17 @@ public:
 };
 
 
-class CMeshContainerNodeRenderMethod : public IArchiveObjectBase
+class MeshContainerNodeRenderMethod : public IArchiveObjectBase
 {
 	std::vector< boost::shared_ptr<MeshContainerRenderMethod> > m_vecpContainerRenderMethod;
 
-	std::vector< boost::shared_ptr<CMeshContainerNodeRenderMethod> > m_vecpChild;
+	std::vector< boost::shared_ptr<MeshContainerNodeRenderMethod> > m_vecpChild;
 
 public:
 
-	CMeshContainerNodeRenderMethod();
+	MeshContainerNodeRenderMethod();
 
-	~CMeshContainerNodeRenderMethod() {}
+	~MeshContainerNodeRenderMethod() {}
 
 	void AddMeshContainer( boost::shared_ptr<MeshContainerRenderMethod> pMeshContainerRenderMethod )
 	{
@@ -185,7 +185,7 @@ public:
 
 //	void RenderMeshContainer( MeshObjectContainer& mesh_container, int index );
 
-	void RenderMeshContainerNode( CMeshContainerNode& node );//, std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
+	void RenderMeshContainerNode( MeshContainerNode& node );//, std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
 	//
 	// child nodes
@@ -193,12 +193,12 @@ public:
 
 	int GetNumChildren() { return (int)m_vecpChild.size(); }
 
-	const boost::shared_ptr<CMeshContainerNodeRenderMethod> GetChild( int index ) const { return m_vecpChild[index]; }
+	const boost::shared_ptr<MeshContainerNodeRenderMethod> GetChild( int index ) const { return m_vecpChild[index]; }
 
 	/// Returns non-const pointer
-	boost::shared_ptr<CMeshContainerNodeRenderMethod> Child( int index ) { return index < (int)m_vecpChild.size() ? m_vecpChild[index] : boost::shared_ptr<CMeshContainerNodeRenderMethod>(); }
+	boost::shared_ptr<MeshContainerNodeRenderMethod> Child( int index ) { return index < (int)m_vecpChild.size() ? m_vecpChild[index] : boost::shared_ptr<MeshContainerNodeRenderMethod>(); }
 
-	void AddChild( boost::shared_ptr<CMeshContainerNodeRenderMethod> pChild ) { m_vecpChild.push_back( pChild ); }
+	void AddChild( boost::shared_ptr<MeshContainerNodeRenderMethod> pChild ) { m_vecpChild.push_back( pChild ); }
 
 	/// Recursively load all meshes on the nodes of the tree
 	bool LoadRenderMethodResources();

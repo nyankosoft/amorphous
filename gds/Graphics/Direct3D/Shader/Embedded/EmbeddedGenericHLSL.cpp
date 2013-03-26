@@ -13,11 +13,11 @@ using namespace std;
 using namespace boost;
 
 
-class CEmbeddedHLSLEffectDesc
+class EmbeddedHLSLEffectDesc
 {
 public:
-	CEmbeddedHLSLShader vs;
-	CEmbeddedHLSLShader ps;
+	EmbeddedHLSLShader vs;
+	EmbeddedHLSLShader ps;
 //	const char *pTechniqueName;
 
 //	const char *pVSName;
@@ -27,7 +27,7 @@ public:
 
 public:
 
-	CEmbeddedHLSLEffectDesc()
+	EmbeddedHLSLEffectDesc()
 //		:
 //	pTechniqueName("")
 /*	pVSName(""),
@@ -736,22 +736,22 @@ const char *EmbeddedGenericHLSL::ms_pTechniqueTemplate =
 // ??? VS_HSPerVertexLights_QVertexBlend
 
 
-static const char *GetAlphaBlendTypeMacro( CAlphaBlendType::Name alpha_blend )
+static const char *GetAlphaBlendTypeMacro( AlphaBlendType::Name alpha_blend )
 {
 	switch( alpha_blend )
 	{
-	case CAlphaBlendType::NONE:                                  return "#define ALPHABLEND__NONE\n";
-//	case CAlphaBlendType::UNIFORM:                               return "#define ALPHABLEND__UNIFORM\n";
-	case CAlphaBlendType::DIFFUSE_ALPHA:                         return "#define ALPHABLEND__DIFFUSE_ALPHA\n";
-	case CAlphaBlendType::DECAL_TEX_ALPHA:                       return "#define ALPHABLEND__DECAL_TEX_ALPHA\n";
-//	case CAlphaBlendType::NORMAL_MAP_ALPHA:                      return "#define ALPHABLEND__NORMAL_MAP_ALPHA\n";
-	case CAlphaBlendType::MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA: return "#define ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n";
+	case AlphaBlendType::NONE:                                  return "#define ALPHABLEND__NONE\n";
+//	case AlphaBlendType::UNIFORM:                               return "#define ALPHABLEND__UNIFORM\n";
+	case AlphaBlendType::DIFFUSE_ALPHA:                         return "#define ALPHABLEND__DIFFUSE_ALPHA\n";
+	case AlphaBlendType::DECAL_TEX_ALPHA:                       return "#define ALPHABLEND__DECAL_TEX_ALPHA\n";
+//	case AlphaBlendType::NORMAL_MAP_ALPHA:                      return "#define ALPHABLEND__NORMAL_MAP_ALPHA\n";
+	case AlphaBlendType::MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA: return "#define ALPHABLEND__MOD_DIFFUSE_ALPHA_AND_DECAL_TEX_ALPHA\n";
 	default: return "#define ALPHABLEND__NONE\n";
 	}
 }
 
 
-void LoadShader_HSPerVeretxLighting( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	// per-vetex without specular reflection
 	// Just select the shader for multi lights
@@ -762,15 +762,15 @@ void LoadShader_HSPerVeretxLighting( GenericShaderDesc& desc, CEmbeddedHLSLEffec
 }
 
 
-void LoadShader_HSPerVeretxLighting_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 /*	switch( desc.num_directional_lights )
 	{
 	case -1:
 		switch( desc.num_point_lights )
 		{
-			dest.vs = CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_Spacular;
-			dest.ps = CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_Spacular;
+			dest.vs = EmbeddedHLSLShaders::ms_VS_PVL_HSLs_Spacular;
+			dest.ps = EmbeddedHLSLShaders::ms_PS_PVL_HSLs_Spacular;
 			dest.pTechniqueName = "PVL_HSLs_Spacular";
 //			CreateShader( vs, ps,  );
 
@@ -789,10 +789,10 @@ void LoadShader_HSPerVeretxLighting_Specular( GenericShaderDesc& desc, CEmbedded
 
 
 void LoadShader_HSPerVeretxLighting_QVertexBlend( GenericShaderDesc& desc,
-												  CEmbeddedHLSLEffectDesc& dest )
+												  EmbeddedHLSLEffectDesc& dest )
 {
-	dest.vs = CEmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend;
-	dest.ps = CEmbeddedHLSLShaders::ms_PS_PVL_HSLs_QVertexBlend;
+	dest.vs = EmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend;
+	dest.ps = EmbeddedHLSLShaders::ms_PS_PVL_HSLs_QVertexBlend;
 //	dest.pTechniqueName = "";
 
 	switch( desc.NumDirectionalLights )
@@ -804,7 +804,7 @@ void LoadShader_HSPerVeretxLighting_QVertexBlend( GenericShaderDesc& desc,
 }
 
 
-void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 }
 
@@ -842,12 +842,12 @@ static const char *GetBumpMapSamplerMacro( int index )
 
 }
 
-static const char *GetEnvMapOptionMacro( CEnvMapOption::Name envmap_option )
+static const char *GetEnvMapOptionMacro( EnvMapOption::Name envmap_option )
 {
 	switch( envmap_option )
 	{
-	case CEnvMapOption::NONE:             return "#define ENVMAP__NONE\n";
-	case CEnvMapOption::ENABLED:          return "#define ENVMAP__ENABLED\n";
+	case EnvMapOption::NONE:             return "#define ENVMAP__NONE\n";
+	case EnvMapOption::ENABLED:          return "#define ENVMAP__ENABLED\n";
 	default: return "#define ENVMAP__NONE\n";
 	}
 }
@@ -863,10 +863,10 @@ static const char *GetPlanarReflectionOptionMacro( PlanarReflectionOption::Name 
 	}
 }
 
-void LoadShader_HSPerPixelLighting_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
-	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
-	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
+	dest.vs = EmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
+	dest.ps = EmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
 
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
@@ -879,10 +879,10 @@ void LoadShader_HSPerPixelLighting_Specular( GenericShaderDesc& desc, CEmbeddedH
 }
 
 
-void LoadShader_HSPerPixelLighting( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
-	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs;
-	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs;
+	dest.vs = EmbeddedHLSLShaders::ms_VS_PPL_HSLs;
+	dest.ps = EmbeddedHLSLShaders::ms_PS_PPL_HSLs;
 //	dest.pTechniqueName = "PPL_HSLs";
 
 	dest.ps.pDependencies.push_back( GetBumpMapOptionMacro(desc.NormalMapTextureIndex) );
@@ -892,16 +892,16 @@ void LoadShader_HSPerPixelLighting( GenericShaderDesc& desc, CEmbeddedHLSLEffect
 }
 
 
-void LoadShader_HSPerPixelLighting_QVertexBlend( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting_QVertexBlend( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
-void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
-	dest.vs = CEmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular;
-	dest.ps = CEmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
+	dest.vs = EmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular;
+	dest.ps = EmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
 
 	dest.ps.pDependencies.push_back( GetAlphaBlendTypeMacro(desc.AlphaBlend) );
 	dest.ps.pDependencies.push_back( GetSpecularTypeMacro(desc.Specular) );
@@ -910,7 +910,7 @@ void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( GenericShaderDesc& des
 }
 
 /*
-void LoadPerVeretxLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadPerVeretxLightingShader( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	switch( desc. )
 	{
@@ -920,20 +920,20 @@ void LoadPerVeretxLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDe
 }
 */
 
-void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& dest )
+void LoadHSLightingShader( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	switch( desc.LightingType )
 	{
 	case ShaderLightingType::PER_VERTEX:
-		if( desc.VertexBlendType == CVertexBlendType::NONE )
+		if( desc.VertexBlendType == VertexBlendType::NONE )
 		{
 			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerVeretxLighting(desc,dest);
 			else
 				LoadShader_HSPerVeretxLighting_Specular(desc,dest);
 		}
-		else if( desc.VertexBlendType == CVertexBlendType::QUATERNION_AND_VECTOR3
-		      || desc.VertexBlendType == CVertexBlendType::MATRIX )
+		else if( desc.VertexBlendType == VertexBlendType::QUATERNION_AND_VECTOR3
+		      || desc.VertexBlendType == VertexBlendType::MATRIX )
 		{
 			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerVeretxLighting_QVertexBlend(desc,dest);
@@ -943,15 +943,15 @@ void LoadHSLightingShader( GenericShaderDesc& desc, CEmbeddedHLSLEffectDesc& des
 		break;
 
 	case ShaderLightingType::PER_PIXEL:
-		if( desc.VertexBlendType == CVertexBlendType::NONE )
+		if( desc.VertexBlendType == VertexBlendType::NONE )
 		{
 			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerPixelLighting(desc,dest);
 			else
 				LoadShader_HSPerPixelLighting_Specular(desc,dest);
 		}
-		else if( desc.VertexBlendType == CVertexBlendType::QUATERNION_AND_VECTOR3
-		      || desc.VertexBlendType == CVertexBlendType::MATRIX )
+		else if( desc.VertexBlendType == VertexBlendType::QUATERNION_AND_VECTOR3
+		      || desc.VertexBlendType == VertexBlendType::MATRIX )
 		{
 			if( desc.Specular == SpecularSource::NONE )
 				LoadShader_HSPerPixelLighting_QVertexBlend(desc,dest);
@@ -970,7 +970,7 @@ Result::Name EmbeddedGenericHLSL::GenerateShader( GenericShaderDesc& desc, std::
 {
 	LOG_FUNCTION_SCOPE();
 
-	CEmbeddedHLSLEffectDesc hlsl_desc;
+	EmbeddedHLSLEffectDesc hlsl_desc;
 
 //	LoadShader( desc, hlsl_desc );
 	LoadHSLightingShader( desc, hlsl_desc );
@@ -986,7 +986,7 @@ Result::Name EmbeddedGenericHLSL::GenerateShader( GenericShaderDesc& desc, std::
 		hlsl_effect += hlsl_desc.ps.pDependencies[i];
 	hlsl_effect += hlsl_desc.ps.pContent; // pixel shader
 
-	if( desc.EnvMap != CEnvMapOption::NONE )
+	if( desc.EnvMap != EnvMapOption::NONE )
 		hlsl_effect = ms_pEnvMapSamplerInclude + hlsl_effect;
 
 	replace_all( hlsl_effect, "#include \"Matrix.fxh\"",                      ms_pMatrix );

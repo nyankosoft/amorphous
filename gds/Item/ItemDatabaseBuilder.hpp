@@ -22,7 +22,7 @@ class CGI_NightVision;
 class MissileLauncher;
 class CGI_Aircraft;
 
-class CMeshBoneController_AircraftBase;
+class MeshBoneController_AircraftBase;
 
 
 class CItemDatabaseBuilder
@@ -54,7 +54,7 @@ class CItemDatabaseBuilder
 
     void AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft, 
 		                                   CTextFileScanner& scanner,
-										   std::vector< boost::shared_ptr<CMeshBoneController_AircraftBase> >& vecpMeshController );
+										   std::vector< boost::shared_ptr<MeshBoneController_AircraftBase> >& vecpMeshController );
 
 	void LoadItems( CXMLNodeReader& items_node_reader );
 
