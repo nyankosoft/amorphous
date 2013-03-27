@@ -30,7 +30,7 @@ HUD_PlayerShip::~HUD_PlayerShip()
 
 void HUD_PlayerShip::UpdateScreenSize()
 {
-	float fScreenWidth  = (float)GameWindowManager().GetScreenWidth();
+	float fScreenWidth  = (float)GetGameWindowManager().GetScreenWidth();
 //	float fScreenHeight = ms_iScreenHeight;
 
 	// background rectangle in translucent black
@@ -143,7 +143,7 @@ void HUD_PlayerShip::RenderImpl()
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
 	SetRenderStatesForTextureFont( AlphaBlend::One );
 
-	float fScreenWidth = (float)GameWindowManager().GetScreenWidth();
+	float fScreenWidth = (float)GetGameWindowManager().GetScreenWidth();
 	float fRatio = fScreenWidth / 800.0f;
 
 	Vector2 vPos = Vector2( 400 - 15, 547.5f ) * fRatio;

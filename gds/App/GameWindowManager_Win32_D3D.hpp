@@ -12,7 +12,7 @@ namespace amorphous
 extern LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM );
 
 
-class CGameWindowManager_Win32_D3D : public CGameWindowManager_Win32
+class GameWindowManager_Win32_D3D : public GameWindowManager_Win32
 {
 private:
 
@@ -21,13 +21,13 @@ private:
 
 protected:
 
-	CGameWindowManager_Win32_D3D();		//singleton
+	GameWindowManager_Win32_D3D();		//singleton
 
 public:
 
-	static CGameWindowManager_Win32_D3D ms_SingletonInstance_;	//single instance of 'CGameWindowManager_Win32'
+	static GameWindowManager_Win32_D3D ms_SingletonInstance_;	//single instance of 'GameWindowManager_Win32'
 
-	~CGameWindowManager_Win32_D3D();
+	~GameWindowManager_Win32_D3D();
 
 	bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title );
 
@@ -35,9 +35,9 @@ public:
 };
 
 
-inline CGameWindowManager_Win32_D3D& GameWindowManager_Win32_D3D()
+inline GameWindowManager_Win32_D3D& GetGameWindowManager_Win32_D3D()
 {
-	return CGameWindowManager_Win32_D3D::ms_SingletonInstance_;
+	return GameWindowManager_Win32_D3D::ms_SingletonInstance_;
 }
 
 } // namespace amorphous

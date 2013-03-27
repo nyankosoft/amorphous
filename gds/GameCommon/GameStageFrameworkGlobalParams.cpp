@@ -46,7 +46,7 @@ void CGameStageFrameworkGlobalParams::UpdateParams()
 
 //	ScreenEffectManager::SetDefaultShBaderFilename( m_DefaultShaderFilename );
 
-	CGameApplicationBase::SetDefaultSleepTime( m_DefaultSleepTimeMS );
+	GameApplicationBase::SetDefaultSleepTime( m_DefaultSleepTimeMS );
 
 	if( m_StartupDebugWindow == "none" )
 		DebugOutput.Hide();

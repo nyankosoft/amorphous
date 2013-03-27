@@ -17,7 +17,7 @@ using namespace std;
 LRESULT (WINAPI *g_pMessageProcedureForGameWindow_Win32_GL)( HWND, UINT, WPARAM, LPARAM ) = NULL;
 
 // definition of the singleton instance
-CGameWindowManager_Win32_GL CGameWindowManager_Win32_GL::ms_SingletonInstance_;
+GameWindowManager_Win32_GL GameWindowManager_Win32_GL::ms_SingletonInstance_;
 
 
 void ReSizeGLScene(GLsizei width, GLsizei height)		// Resize and initialize the GL Window
@@ -59,7 +59,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 */
 
 
-CGameWindowManager_Win32_GL::CGameWindowManager_Win32_GL()
+GameWindowManager_Win32_GL::GameWindowManager_Win32_GL()
 {
 	m_CurrentScreenMode = GameWindow::WINDOWED;
 
@@ -70,7 +70,7 @@ CGameWindowManager_Win32_GL::CGameWindowManager_Win32_GL()
 }
 
 
-CGameWindowManager_Win32_GL::~CGameWindowManager_Win32_GL()
+GameWindowManager_Win32_GL::~GameWindowManager_Win32_GL()
 {
 //	DIRECT3D9.Release();
 //	UnregisterClass( m_ApplicationClassName.c_str(), m_WindowClassEx.hInstance );
@@ -86,7 +86,7 @@ CGameWindowManager_Win32_GL::~CGameWindowManager_Win32_GL()
  */
 
 //bool CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag)
-bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title )
+bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -269,7 +269,7 @@ bool CGameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScree
 }
 
 
-void CGameWindowManager_Win32_GL::ChangeScreenSize( int iNewScreenWidth,
+void GameWindowManager_Win32_GL::ChangeScreenSize( int iNewScreenWidth,
 												 int iNewScreenHeight,
 												 bool bFullScreen )
 {/*
@@ -318,14 +318,14 @@ void CGameWindowManager_Win32_GL::ChangeScreenSize( int iNewScreenWidth,
 }
 
 
-void CGameWindowManager_Win32_GL::OnMainLoopFinished()
+void GameWindowManager_Win32_GL::OnMainLoopFinished()
 {
 	SwapBuffers( m_hDC );
 }
 
 
 /*
-void CGameWindowManager_Win32_GL::SetWindowLeftTopCornerPosition( int left, int top )
+void GameWindowManager_Win32_GL::SetWindowLeftTopCornerPosition( int left, int top )
 {
 	// set the position
 	// - use SWP_NOSIZE flag to ignore window size parameters
@@ -347,7 +347,7 @@ bool	active=TRUE;		// Window Active Flag Set To TRUE By Default
 
 
 /// Properly Kill The Window
-Result::Name CGameWindowManager_Win32_GL::KillGLWindow()
+Result::Name GameWindowManager_Win32_GL::KillGLWindow()
 {
 	if( m_CurrentScreenMode == GameWindow::FULLSCREEN )	// Are We In Fullscreen Mode?
 	{

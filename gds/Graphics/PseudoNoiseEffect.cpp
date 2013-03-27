@@ -66,8 +66,8 @@ void PseudoNoiseEffect::LoadExtraTexture( const char *pcTextureFilename, float f
 
 void PseudoNoiseEffect::UpdateScreenSize()
 {
-//	m_iScreenWidth  = GameWindowManager().GetScreenWidth();
-//	m_iScreenHeight = GameWindowManager().GetScreenHeight();
+//	m_iScreenWidth  = GetGameWindowManager().GetScreenWidth();
+//	m_iScreenHeight = GetGameWindowManager().GetScreenHeight();
 
 	uint w=0,h=0;
 	GraphicsDevice().GetViewportSize( w, h );

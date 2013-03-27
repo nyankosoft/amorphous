@@ -6,10 +6,10 @@ namespace amorphous
 {
 
 
-CGameWindowManager_Win32 *g_pGameWindowManager_Win32 = NULL;
+GameWindowManager_Win32 *g_pGameWindowManager_Win32 = NULL;
 
 
-CGameWindowManager_Win32::CGameWindowManager_Win32()
+GameWindowManager_Win32::GameWindowManager_Win32()
 :
 m_hWnd(NULL)
 {
@@ -17,7 +17,7 @@ m_hWnd(NULL)
 }
 
 
-void CGameWindowManager_Win32::SetWindowTitleText( const std::string& text )
+void GameWindowManager_Win32::SetWindowTitleText( const std::string& text )
 {
 	BOOL res = SetWindowText( m_hWnd, text.c_str() );
 	if( !res )
@@ -27,7 +27,7 @@ void CGameWindowManager_Win32::SetWindowTitleText( const std::string& text )
 }
 
 
-bool CGameWindowManager_Win32::IsMouseCursorInClientArea()
+bool GameWindowManager_Win32::IsMouseCursorInClientArea()
 {
 	long frame_w = 0, frame_h = 0;
 	GetNonClientAreaSize( m_hWnd, frame_w, frame_h );
@@ -56,7 +56,7 @@ bool CGameWindowManager_Win32::IsMouseCursorInClientArea()
 }
 
 
-void CGameWindowManager_Win32::SetWindowLeftTopCornerPosition( int left, int top )
+void GameWindowManager_Win32::SetWindowLeftTopCornerPosition( int left, int top )
 {
 	// set the position
 	// - use SWP_NOSIZE flag to ignore window size parameters

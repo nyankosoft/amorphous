@@ -18,7 +18,7 @@ namespace amorphous
  Base class for graphics application
  - This class is for state-less application that uses a window and graphics.
  */
-class CGraphicsApplicationBase : public CApplicationBase
+class GraphicsApplicationBase : public ApplicationBase
 {
 	Camera m_Camera;
 
@@ -66,9 +66,9 @@ protected:
 
 public:
 
-	CGraphicsApplicationBase();
+	GraphicsApplicationBase();
 
-	virtual ~CGraphicsApplicationBase();
+	virtual ~GraphicsApplicationBase();
 
 //	bool InitBase();
 
@@ -80,7 +80,7 @@ public:
 
 	void Run();
 
-	friend class CInputDataDelegate<CGraphicsApplicationBase>;
+	friend class CInputDataDelegate<GraphicsApplicationBase>;
 };
 
 } // namespace amorphous

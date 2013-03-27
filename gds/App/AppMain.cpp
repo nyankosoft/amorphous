@@ -25,28 +25,28 @@ using namespace std;
 
 
 // global variable(s)
-CApplicationBase *g_pAppBase = NULL;
+ApplicationBase *g_pAppBase = NULL;
 
 
 #define APPBASE_TIMER_RESOLUTION	1
 
 
 /*
-class CUserDefinedApp : public CApplicationBase
+class CUserDefinedApp : public ApplicationBase
 {
 public:
 };
 
-extern CApplicationBase *CreateApplicationInstance() { return new CUserDefinedApp(); }
+extern ApplicationBase *CreateApplicationInstance() { return new CUserDefinedApp(); }
 
 */
 
 
-extern CApplicationBase *CreateApplicationInstance();
+extern ApplicationBase *CreateApplicationInstance();
 
 
 /// Main loop function used on Windows platform
-void MainLoop( CApplicationBase *pApp )
+void MainLoop( ApplicationBase *pApp )
 {
     // Enter the message loop
     MSG msg;
@@ -76,7 +76,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 	static Win32StdKeyboard s_StdKeyboard;
 	static Win32StdMouseInput s_StdMouse;
 
-	if( CApplicationBase::GetInstance()->UseDefaultMouse() )
+	if( ApplicationBase::GetInstance()->UseDefaultMouse() )
 		s_StdMouse.UpdateInput( msg, wParam, lParam );
 
     switch( msg )
@@ -89,18 +89,18 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             if( WA_INACTIVE != wParam )
             {
                 // Make sure the device is acquired, if we are gaining focus.
-				if( CApplicationBase::GetInstance() )
-					CApplicationBase::GetInstance()->AcquireInputDevices();
+				if( ApplicationBase::GetInstance() )
+					ApplicationBase::GetInstance()->AcquireInputDevices();
             }
             break;
 
 		case WM_KEYDOWN:
-			if( CApplicationBase::GetInstance()->UseDefaultKeyboard() )
+			if( ApplicationBase::GetInstance()->UseDefaultKeyboard() )
 				s_StdKeyboard.NotifyKeyDown( (int)wParam );
 			break;
 
 		case WM_KEYUP:
-			if( CApplicationBase::GetInstance()->UseDefaultKeyboard() )
+			if( ApplicationBase::GetInstance()->UseDefaultKeyboard() )
 				s_StdKeyboard.NotifyKeyUp( (int)wParam );
 			break;
     }
@@ -112,11 +112,11 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 void StartApp()
 {
 	// Create the instance of application implemented by the user
-	CApplicationBase::SetInstance( CreateApplicationInstance() );
+	ApplicationBase::SetInstance( CreateApplicationInstance() );
 
-	CApplicationBase::GetInstance()->Run();
+	ApplicationBase::GetInstance()->Run();
 
-	CApplicationBase::ReleaseInstance();
+	ApplicationBase::ReleaseInstance();
 }
 
 
@@ -142,8 +142,8 @@ static void SetCommandLineArguments( LPSTR lpCmdLine )
 			cmd_line = cmd_line.substr( 0, cmd_line.length()-1 );
 	}
 
-	CApplicationBase::ms_CommandLineArguments.resize( 1 );
-	CApplicationBase::ms_CommandLineArguments[0] = cmd_line;
+	ApplicationBase::ms_CommandLineArguments.resize( 1 );
+	ApplicationBase::ms_CommandLineArguments[0] = cmd_line;
 }
 
 } // namespace amorphous
@@ -178,7 +178,7 @@ AppMain_Gen.cpp
 
 
 // in AppMain_Gen.cpp
-void MainLoop( CApplicationBase *pApp )
+void MainLoop( ApplicationBase *pApp )
 {
 	while( !g_QuitApp )
 	{

@@ -385,7 +385,7 @@ bool DIKeyboard::IsKeyPressed( int gi_code )
 
 Result::Name DIKeyboard::Init()
 {
-	HRESULT hr = InitDIKeyboard( GameWindowManager_Win32().GetWindowHandle() );
+	HRESULT hr = InitDIKeyboard( GetGameWindowManager_Win32().GetWindowHandle() );
 
 	if( SUCCEEDED(hr) )
 		return Result::SUCCESS;

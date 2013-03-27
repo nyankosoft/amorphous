@@ -38,7 +38,7 @@ using namespace boost;
 
 // ================================ global variables ================================
 
-CGameApplicationBase *g_pGameAppBase = NULL;
+GameApplicationBase *g_pGameAppBase = NULL;
 
 DirectInputMouse *m_pMouse = NULL;
 
@@ -61,14 +61,14 @@ void UpdateBaseEntityDatabase()
 
 
 //========================================================================================
-// CGameApplicationBase
+// GameApplicationBase
 //========================================================================================
 
 
-int CGameApplicationBase::ms_DefaultSleepTimeMS = 3;
+int GameApplicationBase::ms_DefaultSleepTimeMS = 3;
 
 
-CGameApplicationBase::CGameApplicationBase()
+GameApplicationBase::GameApplicationBase()
 {
 	m_pTaskManager = NULL;
 
@@ -80,25 +80,25 @@ CGameApplicationBase::CGameApplicationBase()
 }
 
 
-CGameApplicationBase::~CGameApplicationBase()
+GameApplicationBase::~GameApplicationBase()
 {
 	Release();
 }
 
 
-int CGameApplicationBase::GetStartTaskID() const
+int GameApplicationBase::GetStartTaskID() const
 {
 	return GameTask::ID_INVALID;
 }
 
 
-GameTaskFactoryBase *CGameApplicationBase::CreateGameTaskFactory() const
+GameTaskFactoryBase *GameApplicationBase::CreateGameTaskFactory() const
 {
 	return new GameTaskFactoryBase();
 }
 
 
-void CGameApplicationBase::Release()
+void GameApplicationBase::Release()
 {
 	SafeDelete( m_pTaskManager );
 	GameTask::SetMouseInputDevice( shared_ptr<MouseInputDevice>() );
@@ -115,7 +115,7 @@ void CGameApplicationBase::Release()
 }
 
 
-void CGameApplicationBase::InitDebugItems()
+void GameApplicationBase::InitDebugItems()
 {
 	const string font_name = "BuiltinFont::BitstreamVeraSansMono-Bold-256";//"DotumChe";
 
@@ -154,7 +154,7 @@ void CGameApplicationBase::InitDebugItems()
 }
 
 
-void CGameApplicationBase::ReleaseDebugItems()
+void GameApplicationBase::ReleaseDebugItems()
 {
 	// delete debug output
 	//  - it uses the borrowed reference of screen overlay log (m_pOnScreenLog)
@@ -170,7 +170,7 @@ void CGameApplicationBase::ReleaseDebugItems()
 }
 
 
-bool CGameApplicationBase::InitBase()
+bool GameApplicationBase::InitBase()
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -197,11 +197,11 @@ bool CGameApplicationBase::InitBase()
 	// Direct3D is initialized in this function
 	GameWindow::ScreenMode mode
 		= global_params.FullScreen ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
-	GameWindowManager().CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
-//	GameWindowManager().CreateGameWindow( 800, 600, GameWindow::WINDOWED /*GameWindow::FULLSCREEN*/ );
+	GetGameWindowManager().CreateGameWindow( global_params.ScreenWidth, global_params.ScreenHeight, mode, GetApplicationTitle() );
+//	GetGameWindowManager().CreateGameWindow( 800, 600, GameWindow::WINDOWED /*GameWindow::FULLSCREEN*/ );
 
 	if( 0 <= global_params.WindowLeftPos && 0 <= global_params.WindowTopPos )
-		GameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
+		GetGameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
 
 	// create DirectInput mouse device
 	m_pMouse.reset( new DirectInputMouse );
@@ -315,7 +315,7 @@ bool CGameApplicationBase::InitBase()
 }
 
 
-bool CGameApplicationBase::InitTaskManager()
+bool GameApplicationBase::InitTaskManager()
 {
 	const std::string start_task_name = GetStartTaskName();
 
@@ -339,12 +339,12 @@ bool CGameApplicationBase::InitTaskManager()
 }
 
 
-void CGameApplicationBase::AcquireInputDevices()
+void GameApplicationBase::AcquireInputDevices()
 {
 	if( m_pDIKeyboard )
 		m_pDIKeyboard->Acquire();
 
-	if( m_pMouse && GameWindowManager().IsMouseCursorInClientArea() )
+	if( m_pMouse && GetGameWindowManager().IsMouseCursorInClientArea() )
 		m_pMouse->AcquireMouse();
 
 	DIInputDeviceMonitor().AcquireInputDevices();
@@ -353,7 +353,7 @@ void CGameApplicationBase::AcquireInputDevices()
 }
 
 
-void CGameApplicationBase::UpdateFrame()
+void GameApplicationBase::UpdateFrame()
 {
 	// update the timer
 	GlobalTimer().UpdateFrameTime();
@@ -363,11 +363,11 @@ void CGameApplicationBase::UpdateFrame()
 	if( m_pMouse )
 	{
 		m_pMouse->UpdateScreenSize(
-			GameWindowManager().GetScreenWidth(),
-			GameWindowManager().GetScreenHeight() );
+			GetGameWindowManager().GetScreenWidth(),
+			GetGameWindowManager().GetScreenHeight() );
 
 //		float scale
-//			= (float)GameWindowManager().GetScreenWidth()
+//			= (float)GetGameWindowManager().GetScreenWidth()
 //			/ (float)GraphicsComponent::REFERENCE_SCREEN_WIDTH;
 
 		// MouseCursor() uses non-scaled screen coordinates
@@ -410,7 +410,7 @@ void CGameApplicationBase::UpdateFrame()
 }
 
 
-void CGameApplicationBase::Execute()
+void GameApplicationBase::Execute()
 {
 	if( !InitBase() )
 		return;
@@ -440,13 +440,13 @@ void CGameApplicationBase::Execute()
 }
 
 
-void CGameApplicationBase::Run()
+void GameApplicationBase::Run()
 {
 	const char *app_id = GetUniqueID();
 	if( app_id && 0 < strlen(app_id) && is_another_instance_running(app_id) )
 		return;
 
-	g_pGameAppBase = dynamic_cast<CGameApplicationBase *>( CApplicationBase::GetInstance() );
+	g_pGameAppBase = dynamic_cast<GameApplicationBase *>( ApplicationBase::GetInstance() );
 
 	// initialize the XML module here and release at the end of this function
 	CXMLParserInitReleaseManager xml_module;

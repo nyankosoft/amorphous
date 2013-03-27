@@ -16,16 +16,16 @@ namespace amorphous
 LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM ) = NULL;
 
 // definition of the singleton instance
-CGameWindowManager_Win32_D3D CGameWindowManager_Win32_D3D::ms_SingletonInstance_;
+GameWindowManager_Win32_D3D GameWindowManager_Win32_D3D::ms_SingletonInstance_;
 
 
-CGameWindowManager_Win32_D3D::CGameWindowManager_Win32_D3D()
+GameWindowManager_Win32_D3D::GameWindowManager_Win32_D3D()
 {
 	m_CurrentScreenMode = GameWindow::WINDOWED;
 }
 
 
-CGameWindowManager_Win32_D3D::~CGameWindowManager_Win32_D3D()
+GameWindowManager_Win32_D3D::~GameWindowManager_Win32_D3D()
 {
 	DIRECT3D9.Release();
     UnregisterClass( m_ApplicationClassName.c_str(), m_WindowClassEx.hInstance );
@@ -44,7 +44,7 @@ void GetCurrentResolution(int* piDesktopWidth, int* piDesktopHeight)
 }
 
 
-bool CGameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title )
+bool GameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -124,7 +124,7 @@ bool CGameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScre
 }
 
 
-void CGameWindowManager_Win32_D3D::ChangeScreenSize( int iNewScreenWidth,
+void GameWindowManager_Win32_D3D::ChangeScreenSize( int iNewScreenWidth,
 												 int iNewScreenHeight,
 												 bool bFullScreen )
 {

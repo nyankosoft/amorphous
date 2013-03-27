@@ -5,8 +5,8 @@ namespace amorphous
 {
 
 
-CApplicationBase *CApplicationBase::ms_pInstance = NULL;
-std::vector<std::string> CApplicationBase::ms_CommandLineArguments;
+ApplicationBase *ApplicationBase::ms_pInstance = NULL;
+std::vector<std::string> ApplicationBase::ms_CommandLineArguments;
 
 
 } // namespace amorphous

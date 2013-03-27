@@ -135,7 +135,7 @@ HRESULT DirectInputMouse::InitDIMouse( HWND hWnd )
 
 Result::Name DirectInputMouse::Init()
 {
-	HRESULT hr = InitDIMouse( GameWindowManager_Win32().GetWindowHandle() );
+	HRESULT hr = InitDIMouse( GetGameWindowManager_Win32().GetWindowHandle() );
 
 	if( SUCCEEDED(hr) )
 		return Result::SUCCESS;

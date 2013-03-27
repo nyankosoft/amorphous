@@ -21,7 +21,7 @@ public:
 };
 
 
-class CGameWindowManager
+class GameWindowManager
 {
 protected:
 
@@ -33,9 +33,9 @@ protected:
 
 public:
 
-	CGameWindowManager() {}
+	GameWindowManager() {}
 
-	virtual ~CGameWindowManager() {}
+	virtual ~GameWindowManager() {}
 
 	virtual bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode = GameWindow::WINDOWED, const std::string& app_title = "Application" ) = 0;
 
@@ -53,14 +53,14 @@ public:
 	virtual bool IsMouseCursorInClientArea() { return false; }
 };
 
-//extern shared_ptr<CGameWindowManager> g_pGameWindowManager;
-extern CGameWindowManager *g_pGameWindowManager;
+//extern shared_ptr<GameWindowManager> g_pGameWindowManager;
+extern GameWindowManager *g_pGameWindowManager;
 
 
 extern Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name );
 
 
-inline CGameWindowManager& GameWindowManager()
+inline GameWindowManager& GetGameWindowManager()
 {
 	return *g_pGameWindowManager;
 }

@@ -121,8 +121,8 @@ void CGlobalInputHandler::ProcessInput(InputData& input)
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			boost::shared_ptr<TextureRenderTarget> pTextureRenderTarget = TextureRenderTarget::Create();
-			int screen_width  = GameWindowManager().GetScreenWidth();
-			int screen_height = GameWindowManager().GetScreenHeight();
+			int screen_width  = GetGameWindowManager().GetScreenWidth();
+			int screen_height = GetGameWindowManager().GetScreenHeight();
 			pTextureRenderTarget->Init( screen_width, screen_height );
 			pTextureRenderTarget->SetRenderTarget();
 

@@ -225,7 +225,7 @@ Result::Name DirectInputGamepad::Init()
 
 	sg_pDIGamepad = NULL;
 
-	hr = InitDIGamepad( GameWindowManager_Win32().GetWindowHandle() );
+	hr = InitDIGamepad( GetGameWindowManager_Win32().GetWindowHandle() );
 
 	if( SUCCEEDED(hr) )
 		return Result::SUCCESS;
@@ -244,7 +244,7 @@ Result::Name DirectInputGamepad::InitDevice( const DIDEVICEINSTANCE& di )
 	if( res != Result::SUCCESS )
 		return res;
 
-	HRESULT hr = InitDIGamepad( GameWindowManager_Win32().GetWindowHandle() );
+	HRESULT hr = InitDIGamepad( GetGameWindowManager_Win32().GetWindowHandle() );
 
 	if( SUCCEEDED(hr) )
 		return Result::SUCCESS;

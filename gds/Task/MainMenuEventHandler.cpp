@@ -140,8 +140,8 @@ void MainMenuEventHandler::HandleEvent( CGM_Event &event )
 
 CResolutionChangeEventHandler::CResolutionChangeEventHandler()
 {
-	m_SelectedScreenWidth  = GameWindowManager().GetScreenWidth();
-	m_SelectedScreenHeight = GameWindowManager().GetScreenHeight();
+	m_SelectedScreenWidth  = GetGameWindowManager().GetScreenWidth();
+	m_SelectedScreenHeight = GetGameWindowManager().GetScreenHeight();
 	m_bFulscreenModeSelected = false;
 }
 
@@ -177,7 +177,7 @@ void CResolutionChangeEventHandler::HandleEvent( CGM_Event &event )
 		m_bFulscreenModeSelected = ((CGM_CheckBox *)(pControl))->IsChecked() ? true : false;
 		break;
 	case ID_UI_RESOLUTION_APPLY:
-		GameWindowManager().ChangeScreenSize( m_SelectedScreenWidth,
+		GetGameWindowManager().ChangeScreenSize( m_SelectedScreenWidth,
 			                                m_SelectedScreenHeight,
 											m_bFulscreenModeSelected );
 		break;

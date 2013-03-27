@@ -16,20 +16,20 @@ namespace amorphous
 using namespace std;
 
 
-CGameWindowManager *g_pGameWindowManager = NULL;
+GameWindowManager *g_pGameWindowManager = NULL;
 
 
 Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 {
 	if( graphics_library_name == "OpenGL" )
 	{
-		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_GL();
+		g_pGameWindowManager_Win32 = &GetGameWindowManager_Win32_GL();
 		InitializeOpenGLClasses();
 	}
 #ifdef BUILD_WITH_DIRECT3D
 	else if( graphics_library_name == "Direct3D" )
 	{
-		g_pGameWindowManager_Win32 = &GameWindowManager_Win32_D3D();
+		g_pGameWindowManager_Win32 = &GetGameWindowManager_Win32_D3D();
 		InitializeDirect3DClasses();
 	}
 #endif /* BUILD_WITH_DIRECT3D */

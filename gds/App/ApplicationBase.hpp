@@ -17,21 +17,21 @@
 namespace amorphous
 {
 
-class CApplicationBase;
+class ApplicationBase;
 
 
 // =============================== function externs ===============================
-extern void MainLoop( CApplicationBase *pApp );
-extern CApplicationBase *CreateApplicationInstance();
+extern void MainLoop( ApplicationBase *pApp );
+extern ApplicationBase *CreateApplicationInstance();
 
 // =============================== variable externs ===============================
-//extern CApplicationBase *g_pAppBase;
+//extern ApplicationBase *g_pAppBase;
 
 /**
  * base class for 3d game app
  *
  */
-class CApplicationBase
+class ApplicationBase
 {
 protected:
 
@@ -53,18 +53,18 @@ private:
 	/// Called by the system in ::MainLoop()
 	virtual void UpdateFrame() {}
 
-	static CApplicationBase *ms_pInstance;
+	static ApplicationBase *ms_pInstance;
 
 public:
 
-	CApplicationBase()
+	ApplicationBase()
 		:
 	m_UseDefaultMouse(true),
 	m_UseDefaultKeyboard(true),
 	m_IsAppExitRequested(false)
 	{}
 
-	virtual ~CApplicationBase() {}
+	virtual ~ApplicationBase() {}
 
 //	virtual void Release() {}
 
@@ -72,7 +72,7 @@ public:
 
 	bool IsAppExitRequested() const { return m_IsAppExitRequested; }
 
-	/// Implemented by CGameApplicationBase
+	/// Implemented by GameApplicationBase
 	virtual void AcquireInputDevices() {}
 
 //	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
@@ -83,9 +83,9 @@ public:
 
 	bool UseDefaultMouse() const { return m_UseDefaultMouse; }
 
-	static void SetInstance( CApplicationBase *pApp ) { ms_pInstance = pApp; }
+	static void SetInstance( ApplicationBase *pApp ) { ms_pInstance = pApp; }
 
-	static CApplicationBase *GetInstance() { return ms_pInstance; }
+	static ApplicationBase *GetInstance() { return ms_pInstance; }
 
 	static void ReleaseInstance()
 	{
@@ -98,8 +98,8 @@ public:
 
 	static std::vector<std::string> ms_CommandLineArguments;
 
-	friend void MainLoop( CApplicationBase *pApp );
-	friend CApplicationBase *CreateApplicationInstance();
+	friend void MainLoop( ApplicationBase *pApp );
+	friend ApplicationBase *CreateApplicationInstance();
 };
 
 } // namespace amorphous

@@ -26,14 +26,14 @@ static int sg_CameraControllerInputHandlerIndex = 1;
 static int sg_InputHandlerIndex = 1;
 
 
-CGraphicsApplicationBase::CGraphicsApplicationBase()
+GraphicsApplicationBase::GraphicsApplicationBase()
 :
 m_UseCameraController(true),
 m_BackgroundColor( SFloatRGBAColor::Blue() )
 {
 	m_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
 
-	m_pInputHandler.reset( new CInputDataDelegate<CGraphicsApplicationBase>( this ) );
+	m_pInputHandler.reset( new CInputDataDelegate<GraphicsApplicationBase>( this ) );
 
 	if( GetInputHub().GetInputHandler(sg_InputHandlerIndex) )
 		GetInputHub().GetInputHandler(sg_InputHandlerIndex)->AddChild( m_pInputHandler.get() );
@@ -42,19 +42,19 @@ m_BackgroundColor( SFloatRGBAColor::Blue() )
 }
 
 
-CGraphicsApplicationBase::~CGraphicsApplicationBase()
+GraphicsApplicationBase::~GraphicsApplicationBase()
 {
 	GetInputHub().RemoveInputHandler( sg_InputHandlerIndex, m_pInputHandler.get() );
 	m_pCameraController.reset();
 }
 
 
-void CGraphicsApplicationBase::UpdateCameraMatrices()
+void GraphicsApplicationBase::UpdateCameraMatrices()
 {
 }
 
 
-void CGraphicsApplicationBase::UpdateFrame()
+void GraphicsApplicationBase::UpdateFrame()
 {
 	GlobalTimer().UpdateFrameTime();
 
@@ -78,13 +78,13 @@ void CGraphicsApplicationBase::UpdateFrame()
 
 	ProfileDumpOutputToBuffer();
 
-	GameWindowManager_Win32().OnMainLoopFinished();
+	GetGameWindowManager_Win32().OnMainLoopFinished();
 
 	boost::this_thread::sleep( boost::posix_time::milliseconds( 2 ) );
 }
 
 
-void CGraphicsApplicationBase::RenderBase()
+void GraphicsApplicationBase::RenderBase()
 {
 	PROFILE_FUNCTION();
 
@@ -154,7 +154,7 @@ void CGraphicsApplicationBase::RenderBase()
 }
 
 
-void CGraphicsApplicationBase::Run()
+void GraphicsApplicationBase::Run()
 {
 	const std::string app_title = GetApplicationTitle();
 
@@ -215,7 +215,7 @@ void CGraphicsApplicationBase::Run()
 	m_Camera.SetAspectRatio( (float)w / (float)h );
 
 	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
-	GameWindowManager().CreateGameWindow( w, h, mode, app_title );
+	GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
 
 	try
 	{

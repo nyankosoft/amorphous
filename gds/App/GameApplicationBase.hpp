@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 class CGlobalInputHandler;
-class CGameApplicationBase;
+class GameApplicationBase;
 class LogOutput_ScrolledTextBuffer;
 
 
@@ -20,16 +20,16 @@ class LogOutput_ScrolledTextBuffer;
 
 
 // =============================== function externs ===============================
-extern void MainLoop( CApplicationBase *pApp );
+extern void MainLoop( ApplicationBase *pApp );
 
 // =============================== variable externs ===============================
-extern CGameApplicationBase *g_pGameAppBase;
+extern GameApplicationBase *g_pGameAppBase;
 
 /**
  * base class for 3d game app
  *
  */
-class CGameApplicationBase : public CApplicationBase
+class GameApplicationBase : public ApplicationBase
 {
 	boost::shared_ptr<MouseInputDevice> m_pMouse;
 	DIKeyboard *m_pDIKeyboard;
@@ -84,8 +84,8 @@ private:
 
 public:
 
-	CGameApplicationBase();
-	virtual ~CGameApplicationBase();
+	GameApplicationBase();
+	virtual ~GameApplicationBase();
 
 	bool InitBase();
 
@@ -102,7 +102,7 @@ public:
 
 	void Run();
 
-	friend void MainLoop( CApplicationBase *pApp );
+	friend void MainLoop( ApplicationBase *pApp );
 };
 
 } // namespace amorphous
