@@ -57,8 +57,7 @@ inline void conv_to_x( std::vector<std::string>& src, int& index, unsigned int& 
 	if( 1 <= (int)src.size() - index )
 	{
 		uint val = 0;
-		STRAUX_SSCANF( src[index].c_str(), "%d", &val );
-//		dest = to_uint(src);
+		dest = (uint)to_int(src[index].c_str());
 		index += 1;
 	}
 }
