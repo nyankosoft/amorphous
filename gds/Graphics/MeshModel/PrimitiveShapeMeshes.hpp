@@ -198,7 +198,7 @@ public:
 
 
 
-class CCapsuleDesc
+class CapsuleDesc
 {
 public:
 	float radius;
@@ -208,7 +208,7 @@ public:
 
 public:
 
-	CCapsuleDesc()
+	CapsuleDesc()
 		:
 	radius(0.5f),
 	length(2.0f),
@@ -236,12 +236,12 @@ public:
 extern void CreateCylinderMesh( const CylinderDesc& desc, General3DMesh& mesh );
 extern void CreateConeMesh( const ConeDesc& desc,         General3DMesh& mesh );
 extern void CreateSphereMesh( const SphereDesc& desc,     General3DMesh& mesh );
-extern void CreateCapsuleMesh( const CCapsuleDesc& desc,   General3DMesh& mesh );
+extern void CreateCapsuleMesh( const CapsuleDesc& desc,   General3DMesh& mesh );
 
 extern Result::Name CreateCylinderMeshArchive( const CylinderDesc& desc, C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateConeMeshArchive( const ConeDesc& desc,         C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateSphereMeshArchive( const SphereDesc& desc,     C3DMeshModelArchive& mesh_archive );
-extern Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
+extern Result::Name CreateCapsuleMeshArchive( const CapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
 
 extern Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );
 

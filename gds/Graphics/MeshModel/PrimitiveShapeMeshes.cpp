@@ -401,7 +401,7 @@ void CreateSphereMesh( const SphereDesc& desc, General3DMesh& mesh )
 }
 
 
-void CreateCapsuleMesh( const CCapsuleDesc& desc, General3DMesh& mesh )
+void CreateCapsuleMesh( const CapsuleDesc& desc, General3DMesh& mesh )
 {
 	if( !desc.IsValid() )
 		return;
@@ -543,7 +543,7 @@ Result::Name CreateSphereMeshArchive( const SphereDesc& desc,   C3DMeshModelArch
 }
 
 
-Result::Name CreateCapsuleMeshArchive( const CCapsuleDesc& desc, C3DMeshModelArchive& mesh_archive )
+Result::Name CreateCapsuleMeshArchive( const CapsuleDesc& desc, C3DMeshModelArchive& mesh_archive )
 {
 	shared_ptr<General3DMesh> pMesh( new General3DMesh() );
 	CreateCapsuleMesh( desc, *pMesh );
