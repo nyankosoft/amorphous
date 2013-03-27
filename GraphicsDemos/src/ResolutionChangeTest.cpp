@@ -91,7 +91,7 @@ int CResolutionChangeTest::Init()
 	m_Meshes.resize( NUM_MESHES );
 
 	MeshResourceDesc sphere_mesh_desc;
-	CSphereDesc sphere_desc;
+	SphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 0.5f;
 	sphere_desc.num_segments = 32;
 	sphere_desc.num_sides    = 64;

@@ -92,7 +92,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	mesh_desc[0].ResourcePath = "BoxMesh";
 	m_vecMesh[0].Load( mesh_desc[0] );
 
-	CConeDesc cone_desc;
+	ConeDesc cone_desc;
 	cone_desc.cone_height = 4.0f;
 	cone_desc.body_height = 4.0f;
 	mesh_desc[1].pMeshGenerator.reset( new ConeMeshGenerator( cone_desc ) );
@@ -100,14 +100,14 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	mesh_desc[1].pMeshGenerator->SetTexturePath( texture_pathname );
 	m_vecMesh[1].Load( mesh_desc[1] );
 
-	CCapsuleDesc capsule_desc;
+	CapsuleDesc capsule_desc;
 	shared_ptr<CapsuleMeshGenerator> pCapsuleGenerator( new CapsuleMeshGenerator(capsule_desc) );
 	mesh_desc[2].pMeshGenerator = pCapsuleGenerator;
 	mesh_desc[2].pMeshGenerator->SetTexturePath( texture_pathname );
 	mesh_desc[2].ResourcePath = "CapsuleMesh";
 	m_vecMesh[2].Load( mesh_desc[2] );
 
-	CSphereDesc shpere_desc;
+	SphereDesc shpere_desc;
 	shpere_desc.num_sides = 32;
 	shpere_desc.num_segments = 16;
 //	shpere_desc.poly_dir = MeshPolygonDirection::INWARD;
@@ -117,7 +117,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	mesh_desc[3].ResourcePath = "SphereMesh";
 	m_vecMesh[3].Load( mesh_desc[3] );
 
-	CCylinderDesc cylinder_desc;
+	CylinderDesc cylinder_desc;
 	cylinder_desc.num_sides = 24;
 	shared_ptr<CylinderMeshGenerator> pCylinderGenerator( new CylinderMeshGenerator(cylinder_desc) );
 	mesh_desc[4].pMeshGenerator = pCylinderGenerator;

@@ -60,14 +60,14 @@ int CEnvMapTest::Init()
 	if( m_UseEmbeddedShader )
 	{
 		GenericShaderDesc gs_desc;
-		gs_desc.EnvMap = CEnvMapOption::ENABLED;
+		gs_desc.EnvMap = EnvMapOption::ENABLED;
 		gs_desc.Specular = SpecularSource::NONE;
 		ShaderResourceDesc shader_desc;
 		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 
 		loaded = m_EnvMappedMeshShader.Load( shader_desc );
 
-		gs_desc.EnvMap = CEnvMapOption::NONE;
+		gs_desc.EnvMap = EnvMapOption::NONE;
 		gs_desc.Specular = SpecularSource::NONE;
 		shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 

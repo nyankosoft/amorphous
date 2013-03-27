@@ -63,8 +63,8 @@ bool RunPyScript( const std::string& filename )
 	PyObject *pMainModule     = PyImport_AddModule( "__main__" );
 	PyObject *pMainDictionary = PyModule_GetDict( pMainModule );
 
-	AddModule( "gr",	g_PyModuleGraphicsElementMethod );
-	AddModule( "gre",	g_PyModuleAnimatedGraphicsMethod );
+	AddPythonModule_Graphics();
+	AddPythonModule_Animation();
 
 	PyRun_String( buffer, Py_file_input, pMainDictionary, pMainDictionary );
 

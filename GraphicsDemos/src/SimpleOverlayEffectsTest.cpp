@@ -178,7 +178,7 @@ void CSimpleOverlayEffectsTest::Render()
 
 	if( m_EnableStripeEffect )
 	{
-		CViewport vp;
+		Viewport vp;
 		GraphicsDevice().GetViewport( vp );
 		C2DRect rect;
 		static SFloatRGBAColor color( SFloatRGBAColor::White() );

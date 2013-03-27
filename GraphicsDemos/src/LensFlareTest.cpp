@@ -105,7 +105,7 @@ int CLensFlareTest::Init()
 	m_TestTexture.Load( "LensFlareDemo/textures/flare02.dds" );
 
 	MeshResourceDesc sphere_mesh_desc;
-	CSphereDesc sphere_desc;
+	SphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 2.0f;
 	sphere_mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
 	m_LightPosIndicator.Load( sphere_mesh_desc );
