@@ -159,7 +159,7 @@ void CPerlinNoiseTextureGeneratorTest::HandleInput( const InputData& input )
 			CreatePerlinNoiseTexture();
 		}
 		break;
-	case GIC_F12:
+	case GIC_F11:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			SaveTexturesAsImageFiles();
@@ -172,6 +172,7 @@ void CPerlinNoiseTextureGeneratorTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
