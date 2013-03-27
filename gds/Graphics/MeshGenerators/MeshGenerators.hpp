@@ -95,11 +95,11 @@ public:
 
 class CapsuleMeshGenerator : public MeshGenerator
 {
-	CCapsuleDesc m_Desc;
+	CapsuleDesc m_Desc;
 
 public:
 
-	CapsuleMeshGenerator( const CCapsuleDesc& desc )
+	CapsuleMeshGenerator( const CapsuleDesc& desc )
 		:
 	m_Desc(desc)
 	{}
