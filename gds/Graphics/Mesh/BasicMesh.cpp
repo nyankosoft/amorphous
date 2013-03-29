@@ -215,46 +215,6 @@ void MeshImpl::Render( ShaderManager& rShaderMgr, std::vector<ShaderTechniqueHan
 }
 
 
-
-//=============================================================================
-// CD3DMeshFactory
-//=============================================================================
-/*
-#include "D3DBasicMeshImpl.hpp"
-#include "D3DProgressiveMeshImpl.hpp"
-#include "D3DSkeletalMeshImpl.hpp"
-
-
-//class CMeshFactoryImpl_D3D : public CMeshFactoryImpl
-class CD3DMeshFactory : public MeshFactory
-{
-public:
-
-	boost::shared_ptr<BasicMesh> CreateBasicMeshImpl()
-	{
-		shared_ptr<CD3DBasicMeshImpl> pImpl( new CD3DBasicMeshImpl );
-		shared_ptr<BasicMesh> p( new BasicMesh(pImpl) );
-		return p;
-	}
-
-	boost::shared_ptr<ProgressiveMesh> CreateProgressiveMeshImpl()
-	{
-		shared_ptr<CD3DProgressiveMeshImpl> pImpl( new CD3DProgressiveMeshImpl );
-		shared_ptr<ProgressiveMesh> p( new ProgressiveMesh(pImpl) );
-		return p;
-	}
-
-	boost::shared_ptr<SkeletalMesh> CreateSkeletalMeshImpl()
-	{
-		shared_ptr<CD3DSkeletalMeshImpl> pImpl( new CD3DSkeletalMeshImpl );
-		shared_ptr<SkeletalMesh> p( new SkeletalMesh(pImpl) );
-		return p;
-	}
-};
-*/
-
-
-
 BasicMesh::BasicMesh()
 {
 	MeshImpl *pImpl = GetMeshImplFactory()->CreateBasicMeshImpl();

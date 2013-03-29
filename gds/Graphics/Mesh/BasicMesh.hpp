@@ -168,10 +168,6 @@ public:
 	/// Currently implemented only by CustomMesh
 	virtual void RenderZSorted( ShaderManager& rShaderMgr ) {};
 
-	/// D3D-specific feature
-
-//	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, std::vector<D3DVERTEXELEMENT9>& vecVertexElement ) { return false; }
-
 	bool CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags ) { return false; }
 
 	bool LoadNonAsyncResources( C3DMeshModelArchive& rArchive, U32 option_flags ) { return false; }
@@ -345,25 +341,6 @@ public:
 
 	void GetVertexIndices( std::vector<unsigned int>& dest ) const { m_pImpl->GetVertexIndices( dest ); }
 
-	// methods for skeletal mesh
-	// - skeletal mesh class has to implement these functions
-/*
-	int GetNumBones() const { return m_pImpl->GetNumBones(); }
-	int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
-//	inline const MeshBone& GetBone( int index ) const;
-	const MeshBone& GetBone( const std::string& bone_name ) const { return m_pImpl->GetBone( bone_name ); }
-//	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
-	/// calculate hierarchical transforms by handiing an array of matrices
-	/// that represents local transformations at each bone
-	void SetLocalTransforms( Matrix34 *paLocalTransform ) { m_pImpl->SetLocalTransforms( paLocalTransform ); }
-
-	/// set local transformation for a bone to a cache
-	/// NOTE: do not updates transformation for the bone
-	/// use is responsible for calling SetLocalTransformsFromCache() later to updates the transformations for bones
-	void SetLocalTransformToCache( int index, const Matrix34& local_transform ) { m_pImpl->SetLocalTransformToCache( index, local_transform ); }
-	void SetLocalTransformsFromCache() { m_pImpl->SetLocalTransformsFromCache(); }
-	void ResetLocalTransformsCache() { m_pImpl->ResetLocalTransformsCache(); }
-*/
 	// Call this before rendering when you render subsets separately by RenderSubsets()
 	void SetVertexDeclaration() { m_pImpl->SetVertexDeclaration(); }
 
