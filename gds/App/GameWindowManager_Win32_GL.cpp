@@ -320,7 +320,12 @@ void GameWindowManager_Win32_GL::ChangeScreenSize( int iNewScreenWidth,
 
 void GameWindowManager_Win32_GL::OnMainLoopFinished()
 {
-	SwapBuffers( m_hDC );
+	BOOL ret = SwapBuffers( m_hDC );
+	if( !ret )
+	{
+		DWORD error = GetLastError();
+		LOG_PRINTF_ERROR(( "SwapBuffers() failed (error: %d).", (int)error ));
+	}
 }
 
 
