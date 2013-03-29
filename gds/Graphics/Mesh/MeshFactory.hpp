@@ -107,27 +107,6 @@ inline boost::shared_ptr<MeshFactory>& MeshFactoryPtr()
 //}
 
 
-/*
-class CMeshObjectFactory
-{
-public:
-
-	CMeshObjectFactory() {}
-	virtual ~CMeshObjectFactory() {}
-
-	boost::shared_ptr<BasicMesh> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );
-
-	CD3DXMeshObjectBase* LoadMeshObjectFromFile( const std::string& filepath,
-		                                         U32 load_option_flags = 0,
-		                                         MeshType::Name mesh_type = MeshType::SKELETAL );
-
-	/// TODO: support PMesh and SMesh
-	CD3DXMeshObjectBase*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
-		                                             const std::string& filepath,
-													 U32 load_option_flags = 0,
-													 MeshType::Name mesh_type = MeshType::SKELETAL );
-};
-*/
 
 } // namespace amorphous
 
