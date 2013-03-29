@@ -281,6 +281,12 @@ public:
 
 	virtual Result::Name Clear( U32 buffer_mask ) = 0;
 
+	virtual Result::Name BeginScene() { return Result::SUCCESS; }
+
+	virtual Result::Name EndScene() { return Result::SUCCESS; }
+
+	virtual Result::Name Present() { return Result::SUCCESS; }
+
 	virtual Result::Name SetClipPlane( uint index, const Plane& clip_plane ) = 0;
 
 	virtual Result::Name EnableClipPlane( uint index ) = 0;

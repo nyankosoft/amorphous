@@ -719,6 +719,27 @@ Result::Name CDirect3D9::Clear( U32 buffer_mask )
 }
 
 
+Result::Name CDirect3D9::BeginScene()
+{
+	HRESULT hr = m_pD3DDevice->BeginScene();
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::EndScene()
+{
+	HRESULT hr = m_pD3DDevice->EndScene();
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CDirect3D9::Present()
+{
+	HRESULT hr = m_pD3DDevice->Present( NULL, NULL, NULL, NULL );
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
 Result::Name CDirect3D9::SetClipPlane( uint index, const Plane& clip_plane )
 {
 	if( (uint)m_vecClipPlane.size() <= index )

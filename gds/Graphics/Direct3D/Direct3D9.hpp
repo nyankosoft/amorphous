@@ -119,6 +119,12 @@ public:
 
 	Result::Name Clear( U32 buffer_mask );
 
+	Result::Name BeginScene();
+
+	Result::Name EndScene();
+
+	Result::Name Present();
+
 	Result::Name SetClipPlane( uint index, const Plane& clip_plane );
 
 	Result::Name EnableClipPlane( uint index );
