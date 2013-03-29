@@ -47,20 +47,6 @@
 
 #endif
 
-//#include <limits.h>
-#include <float.h>
-
-/*
-// Define some sized types
-typedef unsigned char uint8;
-typedef   signed char  int8;
-
-typedef unsigned short uint16;
-typedef   signed short  int16;
-
-typedef unsigned int uint32;
-typedef   signed int  int32;
-*/
 #include <stddef.h>
 typedef ptrdiff_t intptr;
 
@@ -96,18 +82,10 @@ typedef ptrdiff_t intptr;
 #define alignment(x) __attribute__ ((aligned(x)))
 #endif
 
-// Utility functions
-void ErrorMsg(const char *string);
-void WarningMsg(const char *string);
-void InfoMsg(const char *string);
-
 // Note: returns true for 0
 inline bool isPowerOf2(const int x){
 	return (x & (x - 1)) == 0;
 }
-
-void initTime();
-float getCurrentTime();
 
 
 #ifdef _WIN32
