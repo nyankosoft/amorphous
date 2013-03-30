@@ -312,7 +312,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	int h = g_pTest->GetWindowHeight(); //  720;
 	param_loader.LoadParam( "ScreenResolution", w, h );
 	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
-	GameWindowManager().CreateGameWindow( w, h, mode, app_title );
+	GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
 	g_Camera.SetAspectRatio( (float)w / (float)h );
 
 	try
@@ -369,7 +369,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 			ProfileDumpOutputToBuffer();
 
-			GameWindowManager_Win32().OnMainLoopFinished();
+			GetGameWindowManager_Win32().OnMainLoopFinished();
 
 			Sleep( 5 );
 		}

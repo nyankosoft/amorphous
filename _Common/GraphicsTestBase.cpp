@@ -63,8 +63,8 @@ void TakeScreenshot(
 	using namespace boost::filesystem;
 
 	boost::shared_ptr<TextureRenderTarget> pTextureRenderTarget = TextureRenderTarget::Create();
-	const int screen_width  = GameWindowManager().GetScreenWidth();
-	const int screen_height = GameWindowManager().GetScreenHeight();
+	const int screen_width  = GetGameWindowManager().GetScreenWidth();
+	const int screen_height = GetGameWindowManager().GetScreenHeight();
 	pTextureRenderTarget->Init( screen_width, screen_height );
 	pTextureRenderTarget->SetRenderTarget();
 
