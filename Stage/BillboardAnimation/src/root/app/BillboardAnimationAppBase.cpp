@@ -19,7 +19,7 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/explosion.bin";
 
 
-extern CApplicationBase *amorphous::CreateApplicationInstance() { return new CBillboardAnimationAppBase(); }
+extern ApplicationBase *amorphous::CreateApplicationInstance() { return new CBillboardAnimationAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -211,7 +211,7 @@ bool CBillboardAnimationAppBase::Init()
 
 	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CGameApplicationBase::Init();
+	bool base_init = GameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
@@ -220,7 +220,7 @@ bool CBillboardAnimationAppBase::Init()
 	// Do initial settings using scripts
 	//
 
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GameWindowManager().GetScreenWidth()) / 800.0f;
+	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
 /*

@@ -72,7 +72,7 @@ public:
 };
 
 
-class CBillboardAnimationAppBase : public CGameApplicationBase
+class CBillboardAnimationAppBase : public GameApplicationBase
 {
 public:
 
