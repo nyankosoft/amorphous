@@ -107,7 +107,7 @@ public:
 };
 
 
-class FirearmsAppBase : public CGameApplicationBase
+class FirearmsAppBase : public GameApplicationBase
 {
 public:
 

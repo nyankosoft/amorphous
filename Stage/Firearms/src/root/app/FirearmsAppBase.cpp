@@ -38,7 +38,7 @@ using namespace amorphous;
 static string sg_TestStageScriptToLoad = "./Script/default.bin";
 
 
-CApplicationBase *amorphous::CreateApplicationInstance() { return new FirearmsAppBase(); }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new FirearmsAppBase(); }
 
 
 /*
@@ -526,7 +526,7 @@ bool FirearmsAppBase::Init()
 
 	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CGameApplicationBase::Init();
+	bool base_init = GameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
@@ -535,7 +535,7 @@ bool FirearmsAppBase::Init()
 	// Do initial settings using scripts
 	//
 
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GameWindowManager().GetScreenWidth()) / 800.0f;
+	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
 /*
