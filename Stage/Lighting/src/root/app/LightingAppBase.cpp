@@ -166,39 +166,12 @@ int CLightingAppBase::GetStartTaskID() const
 
 bool CLightingAppBase::Init()
 {
-	//
-	// Register base entity factory
-	//
-/*
-	GetBaseEntityManager().RegisterBaseEntityFactory( BaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
-
-	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
-*/
 	bool base_init = GameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
-
-	//
-	// Do initial settings using scripts
-	//
-
 	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
-/*
-	ScriptManager script_mgr;
-	script_mgr.AddModule( "PlayerInfo",	g_PyModulePlayerMethod );
-	script_mgr.LoadScriptArchiveFile( "Script/init.bin" );
-	script_mgr.Update();
-
-	//
-	// Register (task name) : (task ID) maps
-	//
-
-	GameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
-	GameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
-	GameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
-*/
 	return true;
 }
