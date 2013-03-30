@@ -48,14 +48,10 @@ public:
 };
 
 
-extern GameWindowManager_Win32 *g_pGameWindowManager_Win32;
+Result::Name SelectGraphicsLibrary_Win32( const std::string& graphics_library_name, GameWindowManager*& pGameWindowManager );
 
+GameWindowManager_Win32& GetGameWindowManager_Win32();
 
-inline GameWindowManager_Win32& GetGameWindowManager_Win32()
-{
-//	return GameWindowManager_Win32::ms_SingletonInstance_;
-	return *g_pGameWindowManager_Win32;
-}
 
 } // namespace amorphous
 
