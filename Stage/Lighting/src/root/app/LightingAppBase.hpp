@@ -47,7 +47,7 @@ public:
 };
 
 
-class CLightingAppBase : public CGameApplicationBase
+class CLightingAppBase : public GameApplicationBase
 {
 public:
 
