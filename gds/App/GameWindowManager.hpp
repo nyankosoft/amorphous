@@ -51,6 +51,8 @@ public:
 	virtual void SetWindowLeftTopCornerPosition( int left, int top ) {}
 
 	virtual bool IsMouseCursorInClientArea() { return false; }
+
+	virtual void OnMainLoopFinished() {}
 };
 
 

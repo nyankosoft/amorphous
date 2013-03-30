@@ -40,8 +40,6 @@ public:
 
 	HWND GetWindowHandle() { return m_hWnd; }
 
-	virtual void OnMainLoopFinished() {}
-
 	bool IsMouseCursorInClientArea();
 
 	/// do nothing in full screen mode

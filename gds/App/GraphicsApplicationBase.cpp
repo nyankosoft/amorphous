@@ -1,5 +1,5 @@
 #include "GraphicsApplicationBase.hpp"
-#include "gds/App/GameWindowManager_Win32.hpp"
+#include "gds/App/GameWindowManager.hpp"
 #include "gds/Support/Timer.hpp"
 #include "gds/Support/ParamLoader.hpp"
 #include "gds/Support/Profile.hpp"
@@ -77,7 +77,7 @@ void GraphicsApplicationBase::UpdateFrame()
 
 	ProfileDumpOutputToBuffer();
 
-	GetGameWindowManager_Win32().OnMainLoopFinished();
+	GetGameWindowManager().OnMainLoopFinished();
 
 	boost::this_thread::sleep( boost::posix_time::milliseconds( 2 ) );
 }
