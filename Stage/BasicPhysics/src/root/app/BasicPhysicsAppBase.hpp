@@ -6,6 +6,8 @@
 #include "gds/Task/StageViewerGameTask.hpp"
 #include "gds/Task/GameTaskFactoryBase.hpp"
 
+using namespace amorphous;
+
 
 enum ShadowAppTaskID
 {
@@ -15,7 +17,7 @@ enum ShadowAppTaskID
 };
 
 
-class CBasicPhysicsAppTask : public CStageViewerGameTask
+class CBasicPhysicsAppTask : public StageViewerGameTask
 {
 public:
 
@@ -25,7 +27,7 @@ public:
 
 };
 
-class CBasicPhysicsAppGUITask : public CGUIGameTask
+class CBasicPhysicsAppGUITask : public GUIGameTask
 {
 	enum GUI_ID
 	{
@@ -47,11 +49,11 @@ public:
 };
 
 
-class CBasicPhysicsAppTaskFactory : public CGameTaskFactoryBase
+class CBasicPhysicsAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
-	CGameTask *CreateTask( int iTaskID )
+	GameTask *CreateTask( int iTaskID )
 	{
 		switch( iTaskID )
 		{
@@ -60,13 +62,13 @@ public:
 //		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
 //			return new CBasicPhysicsAppGUITask();
 		default:
-			return CGameTaskFactoryBase::CreateTask( iTaskID );
+			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
 	}
 };
 
 
-class CBasicPhysicsAppBase : public CGameApplicationBase
+class CBasicPhysicsAppBase : public GameApplicationBase
 {
 public:
 
@@ -84,7 +86,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	CGameTaskFactoryBase *CreateGameTaskFactory() const { return new CBasicPhysicsAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CBasicPhysicsAppTaskFactory(); }
 
 	void Release();
 };

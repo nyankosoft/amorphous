@@ -17,7 +17,7 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/rigid_bodies.bin";
 
 
-extern CApplicationBase *CreateApplicationInstance() { return new CBasicPhysicsAppBase(); }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new CBasicPhysicsAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -101,7 +101,7 @@ void CBasicPhysicsAppGUITask::LoadStage( const std::string& stage_script_name )
 
 int CBasicPhysicsAppGUITask::FrameMove( float dt )
 {
-	int ret = CGUIGameTask::FrameMove(dt);
+	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
 		return ret;
 /*
@@ -160,12 +160,12 @@ bool CBasicPhysicsAppBase::Init()
 
 	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CGameApplicationBase::Init();
+	bool base_init = GameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
 
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GameWindowManager().GetScreenWidth()) / 800.0f;
+	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
 	return true;
