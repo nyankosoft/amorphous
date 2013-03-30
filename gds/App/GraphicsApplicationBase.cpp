@@ -12,7 +12,6 @@
 #include "gds/Graphics/Shader/ShaderManager.hpp"
 #include "gds/Graphics/Shader/ShaderManagerHub.hpp"
 #include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "gds/Graphics/Direct3D/Direct3D9.hpp"
 
 
 namespace amorphous
@@ -88,8 +87,6 @@ void GraphicsApplicationBase::RenderBase()
 {
 	PROFILE_FUNCTION();
 
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 //	g_Camera.SetPose( g_CameraController.GetPose() );
@@ -125,8 +122,7 @@ void GraphicsApplicationBase::RenderBase()
 //	g_pTest->RenderScene();
 
     // begin the scene
-	if( pd3dDevice )
-		pd3dDevice->BeginScene();
+	GraphicsDevice().BeginScene();
 
 	Render();
 
@@ -141,14 +137,11 @@ void GraphicsApplicationBase::RenderBase()
 //		g_pFont->DrawText( text.c_str(), Vector2( 20, 40 + i*16 ), 0xF0F0F0FF );
 	}
 
-	if( pd3dDevice )
-	{
-		// end the scene
-		pd3dDevice->EndScene();
+	// end the scene
+	GraphicsDevice().EndScene();
 
-		// present the backbuffer contents to the display
-		pd3dDevice->Present( NULL, NULL, NULL, NULL );
-	}
+	// present the backbuffer contents to the display
+	GraphicsDevice().Present();
 
 	GetShaderManagerHub().PopViewAndProjectionMatrices();
 }
