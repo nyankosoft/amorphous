@@ -85,6 +85,7 @@
     <ClInclude Include="..\..\gds\Script\EmbeddedPythonModule.hpp" />
     <ClInclude Include="..\..\gds\Script\gfx_py.hpp" />
     <ClInclude Include="..\..\gds\Script\math3d_py.hpp" />
+    <ClInclude Include="..\..\gds\Script\PythonCommon.hpp" />
     <ClInclude Include="..\..\gds\Script\PythonScriptManager.hpp" />
     <ClInclude Include="..\..\gds\Stage.hpp" />
     <ClInclude Include="..\..\gds\Stage\BE_StaticLiquid.hpp" />
@@ -348,6 +349,7 @@
     <ClCompile Include="..\..\gds\Script\EmbeddedPythonModule.cpp" />
     <ClCompile Include="..\..\gds\Script\gfx_py.cpp" />
     <ClCompile Include="..\..\gds\Script\math3d_py.cpp" />
+    <ClCompile Include="..\..\gds\Script\PythonCommon.cpp" />
     <ClCompile Include="..\..\gds\Script\PythonScriptManager.cpp" />
     <ClCompile Include="..\..\gds\Stage\BE_StaticLiquid.cpp" />
     <ClCompile Include="..\..\gds\Stage\BSPMap.cpp">

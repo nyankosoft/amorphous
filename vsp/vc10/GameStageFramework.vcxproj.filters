@@ -834,6 +834,9 @@
     <ClInclude Include="..\..\gds\Script\BoostPythonScriptManager.hpp">
       <Filter>Source Files\Script\BoostPython</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gds\Script\PythonCommon.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gds\Stage\BSPMapFileExporter.cpp">
@@ -1480,6 +1483,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gds\Script\BoostPythonScriptManager.cpp">
       <Filter>Source Files\Script\BoostPython</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gds\Script\PythonCommon.cpp">
+      <Filter>Source Files\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
