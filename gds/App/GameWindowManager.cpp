@@ -7,19 +7,19 @@
 #ifdef BUILD_WITH_DIRECT3D
 #include "GameWindowManager_Win32_D3D.hpp"
 #include "Graphics/Direct3D/D3DInitialization.hpp"
+#endif /* BUILD_WITH_DIRECT3D */
 
 
 namespace amorphous
 {
-#endif /* BUILD_WITH_DIRECT3D */
 
 using namespace std;
 
 
-GameWindowManager *g_pGameWindowManager = NULL;
+static GameWindowManager *g_pGameWindowManager = NULL;
 
 
-Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
+Result::Name SelectGraphicsLibrary_Win32( const std::string& graphics_library_name )
 {
 	if( graphics_library_name == "OpenGL" )
 	{
@@ -48,6 +48,22 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 	g_pGameWindowManager = g_pGameWindowManager_Win32;
 
 	return Result::SUCCESS;
+}
+
+
+Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
+{
+#ifdef _MSC_VER
+	return SelectGraphicsLibrary_Win32( graphics_library_name );
+#else
+//	return SelectGraphicsLibrary_???( graphics_library_name );
+#endif
+}
+
+
+GameWindowManager& GetGameWindowManager()
+{
+	return *g_pGameWindowManager;
 }
 
 

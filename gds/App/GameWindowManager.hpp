@@ -2,7 +2,7 @@
 #define  __GameWindowManager_HPP__
 
 #include <string>
-#include <gds/base.hpp>
+#include "gds/base.hpp"
 
 
 namespace amorphous
@@ -53,17 +53,11 @@ public:
 	virtual bool IsMouseCursorInClientArea() { return false; }
 };
 
-//extern shared_ptr<GameWindowManager> g_pGameWindowManager;
-extern GameWindowManager *g_pGameWindowManager;
 
+Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name );
 
-extern Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name );
+GameWindowManager& GetGameWindowManager();
 
-
-inline GameWindowManager& GetGameWindowManager()
-{
-	return *g_pGameWindowManager;
-}
 
 } // namespace amorphous
 
