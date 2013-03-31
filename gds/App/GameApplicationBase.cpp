@@ -453,7 +453,7 @@ void GameApplicationBase::Run()
 
 	// set log output device
 //	boost::filesystem::complete( "./debug" );
-	CLogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );
+	LogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
 	{

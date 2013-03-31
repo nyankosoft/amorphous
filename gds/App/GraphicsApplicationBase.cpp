@@ -180,7 +180,7 @@ void GraphicsApplicationBase::Run()
 	if( res != Result::SUCCESS )
 		return;
 
-	CLogOutput_HTML html_log( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
+	LogOutput_HTML html_log( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
 
 	InitFreeImage();

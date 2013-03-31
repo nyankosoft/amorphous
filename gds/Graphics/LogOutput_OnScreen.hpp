@@ -18,7 +18,7 @@ namespace amorphous
  * displays log texts on screen using D3D
  *
  */
-class LogOutput_ScrolledTextBuffer : public CLogOutputBase
+class LogOutput_ScrolledTextBuffer : public LogOutputBase
 {
 protected:
 
@@ -45,7 +45,7 @@ public:
 
 	~LogOutput_ScrolledTextBuffer();
 
-	virtual void Print( const CLogMessage& msg );
+	virtual void Print( const LogMessage& msg );
 
 	inline const char *GetText( int row );
 

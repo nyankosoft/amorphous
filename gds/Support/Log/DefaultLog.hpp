@@ -15,7 +15,7 @@
 namespace amorphous
 {
 
-extern CLogInput_Default g_Log;
+extern LogInput_Default g_Log;
 
 #define PrintLog(n)	g_Log.Print(n)
 

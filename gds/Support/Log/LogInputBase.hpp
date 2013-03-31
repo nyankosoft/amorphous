@@ -13,11 +13,11 @@ namespace amorphous
 {
 
 
-class CLogOutputBase;
+class LogOutputBase;
 class Timer;
 
 
-class CLogInputBase
+class LogInputBase
 {
 	char *m_pBuffer;
 	int m_BufferSize;
@@ -28,7 +28,7 @@ class CLogInputBase
 
 	/// holds pointers to output device (borrowed reference)
 	/// NOTE: user is responsible for releasing these instances
-	std::vector<CLogOutputBase *> m_vecpLogOutput;
+	std::vector<LogOutputBase *> m_vecpLogOutput;
 
 	void PrintInternal( int filter_val, const char *format,... );
 
@@ -43,9 +43,9 @@ public:
 		MAX_LOG_TEXT_BUFFER_SIZE = 1024
 	};
 
-	CLogInputBase( int buffer_size = MAX_LOG_TEXT_BUFFER_SIZE );
+	LogInputBase( int buffer_size = MAX_LOG_TEXT_BUFFER_SIZE );
 
-	virtual ~CLogInputBase();
+	virtual ~LogInputBase();
 
 	void Print( const std::string& text );
 
@@ -56,14 +56,14 @@ public:
 	void Print( int filter_val, const char *format,... );
 
 	/// add a log output instance to the list
-	inline void AddLogOutputDevice( CLogOutputBase *pLogOutput ) { m_vecpLogOutput.push_back( pLogOutput ); }
-	inline void AddLogOutput( CLogOutputBase *pLogOutput ) { AddLogOutputDevice( pLogOutput ); } /// deprecated
+	inline void AddLogOutputDevice( LogOutputBase *pLogOutput ) { m_vecpLogOutput.push_back( pLogOutput ); }
+	inline void AddLogOutput( LogOutputBase *pLogOutput ) { AddLogOutputDevice( pLogOutput ); } /// deprecated
 
 	/// removes the specified log output instance from the list
 	/// returns fales if it was not found in the list
 	/// NOTE: does not release the actual memory, just releases the pointer from the list
-	bool RemoveLogOutputDevice( CLogOutputBase *pLogOutput );
-	bool RemoveLogOutput( CLogOutputBase *pLogOutput ) { return RemoveLogOutputDevice(pLogOutput); } /// deprecated
+	bool RemoveLogOutputDevice( LogOutputBase *pLogOutput );
+	bool RemoveLogOutput( LogOutputBase *pLogOutput ) { return RemoveLogOutputDevice(pLogOutput); } /// deprecated
 
 	void RemoveAllLogOutputDevices() { m_vecpLogOutput.resize( 0 ); }
 
@@ -80,7 +80,7 @@ public:
 };
 
 
-class CLogInput_Default : public CLogInputBase
+class LogInput_Default : public LogInputBase
 {
 
 	/// filter reference value
@@ -101,9 +101,9 @@ public:
 		NUM_FILTERTYPES
 	};
 	
-	CLogInput_Default() : m_FilterRefVal(0), m_FilterType(FILTER_GREATERTHAN_EQUALTO_REFVAL) {}
+	LogInput_Default() : m_FilterRefVal(0), m_FilterType(FILTER_GREATERTHAN_EQUALTO_REFVAL) {}
 
-	virtual ~CLogInput_Default() {}
+	virtual ~LogInput_Default() {}
 
 
 	void SetRefVal( int ref_val ) { m_FilterRefVal = ref_val; }

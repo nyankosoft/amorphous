@@ -19,10 +19,10 @@ using namespace std;
 
 
 //================================================================================
-// CLogInputBase
+// LogInputBase
 //================================================================================
 
-CLogInputBase::CLogInputBase( int buffer_size )
+LogInputBase::LogInputBase( int buffer_size )
 :
 m_TimeStampFormat(TimeFormat::HHMMSSMS)
 {
@@ -40,21 +40,21 @@ m_TimeStampFormat(TimeFormat::HHMMSSMS)
 }
 
 
-CLogInputBase::~CLogInputBase()
+LogInputBase::~LogInputBase()
 {
 	SafeDelete( m_pBuffer );
 	SafeDelete( m_pTimer );
 }
 
 
-void CLogInputBase::Print( const string& text )
+void LogInputBase::Print( const string& text )
 {
 	// print request without any filter value - output the text unconditionally
 	SendLogMessageToOutput( 0, text );
 }
 
 
-void CLogInputBase::Print( int filter_val, const string& text )
+void LogInputBase::Print( int filter_val, const string& text )
 {
 	if( !TestFilter( filter_val ) )
 		return;
@@ -63,7 +63,7 @@ void CLogInputBase::Print( int filter_val, const string& text )
 }
 
 
-void CLogInputBase::Print( const char *format,... )
+void LogInputBase::Print( const char *format,... )
 {
 	// print request without any filter value - output the text unconditionally
 
@@ -87,7 +87,7 @@ void CLogInputBase::Print( const char *format,... )
 }
 
 
-void CLogInputBase::Print( int filter_val, const char *format,... )
+void LogInputBase::Print( int filter_val, const char *format,... )
 {
 	if( !TestFilter( filter_val ) )
 		return;
@@ -112,7 +112,7 @@ void CLogInputBase::Print( int filter_val, const char *format,... )
 }
 
 
-void CLogInputBase::PrintInternal( int filter_val, const char *format,... )
+void LogInputBase::PrintInternal( int filter_val, const char *format,... )
 {
 //	g_LogMutex.lock();
 
@@ -132,7 +132,7 @@ void CLogInputBase::PrintInternal( int filter_val, const char *format,... )
 }
 
 
-void CLogInputBase::GetTimeStampString( string& strTime )
+void LogInputBase::GetTimeStampString( string& strTime )
 {
 	unsigned long time_ms = (unsigned long)( m_pTimer->GetTime() * 1000 );
 
@@ -140,12 +140,12 @@ void CLogInputBase::GetTimeStampString( string& strTime )
 }
 
 
-void CLogInputBase::SendLogMessageToOutput( int filter_val, const string strText )
+void LogInputBase::SendLogMessageToOutput( int filter_val, const string strText )
 {
 	string strTime;
 	GetTimeStampString( strTime );
 
-	CLogMessage msg( strTime, filter_val, strText );
+	LogMessage msg( strTime, filter_val, strText );
 
 	size_t i, num_output_devices = m_vecpLogOutput.size();
 	for( i=0; i<num_output_devices; i++ )
@@ -155,9 +155,9 @@ void CLogInputBase::SendLogMessageToOutput( int filter_val, const string strText
 }
 
 
-bool CLogInputBase::RemoveLogOutputDevice( CLogOutputBase *pLogOutput )
+bool LogInputBase::RemoveLogOutputDevice( LogOutputBase *pLogOutput )
 {
-	vector<CLogOutputBase *>::iterator itr;
+	vector<LogOutputBase *>::iterator itr;
 	for( itr = m_vecpLogOutput.begin(); itr != m_vecpLogOutput.end(); itr++ )
 	{
 		if( *itr == pLogOutput )
@@ -170,7 +170,7 @@ bool CLogInputBase::RemoveLogOutputDevice( CLogOutputBase *pLogOutput )
 }
 
 
-unsigned long CLogInputBase::GetCurrentTimeMS() const
+unsigned long LogInputBase::GetCurrentTimeMS() const
 {
 	return (unsigned long)(m_pTimer->GetTime() * 1000.0f);
 }
@@ -178,10 +178,10 @@ unsigned long CLogInputBase::GetCurrentTimeMS() const
 
 
 //================================================================================
-// CLogInput_Default
+// LogInput_Default
 //================================================================================
 
-bool CLogInput_Default::TestFilter( int filter_val )
+bool LogInput_Default::TestFilter( int filter_val )
 {
 	switch(m_FilterType)
 	{

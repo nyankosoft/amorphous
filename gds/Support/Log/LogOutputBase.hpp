@@ -27,7 +27,7 @@ enum LogWarningLevel
  * holds log info such as time & text
  * 
  */
-class CLogMessage
+class LogMessage
 {
 public:
 
@@ -37,7 +37,7 @@ public:
 
 	const std::string m_Text;
 
-	CLogMessage( const std::string time, int filter_val, const std::string strText )
+	LogMessage( const std::string time, int filter_val, const std::string strText )
 		:
 	m_Time(time),
 	m_FilterVal(filter_val),
@@ -49,21 +49,21 @@ public:
  * base class for log output device
  * each derived class output logs in a particular format
  */
-class CLogOutputBase
+class LogOutputBase
 {
 public:
 
-	CLogOutputBase();
+	LogOutputBase();
 
-	virtual ~CLogOutputBase();
+	virtual ~LogOutputBase();
 
-	virtual void Print( const CLogMessage& msg ) = 0;
-//	virtual void Print( const CLogMessage& msg ) { printf( "pure virtual function call\n" ); }
+	virtual void Print( const LogMessage& msg ) = 0;
+//	virtual void Print( const LogMessage& msg ) { printf( "pure virtual function call\n" ); }
 
 };
 
 
-class CLogOutput_TextFile : public CLogOutputBase
+class LogOutput_TextFile : public LogOutputBase
 {
 protected:
 
@@ -86,25 +86,25 @@ protected:
 
 public:
 
-	CLogOutput_TextFile( const std::string& filename );
+	LogOutput_TextFile( const std::string& filename );
 
-	~CLogOutput_TextFile();
+	~LogOutput_TextFile();
 
-	virtual void Print( const CLogMessage& msg );
+	virtual void Print( const LogMessage& msg );
 
 	void SetNewLineCharacterOption( int option );
 };
 
 
-class CLogOutput_Console : public CLogOutputBase
+class LogOutput_Console : public LogOutputBase
 {
 public:
 
-	CLogOutput_Console() {}
+	LogOutput_Console() {}
 
-	~CLogOutput_Console() {}
+	~LogOutput_Console() {}
 
-	virtual void Print( const CLogMessage& msg );
+	virtual void Print( const LogMessage& msg );
 
 };
 
@@ -112,28 +112,28 @@ public:
 /**
  * outputs log as a simple html source
  */
-class CLogOutput_HTML : public CLogOutput_TextFile
+class LogOutput_HTML : public LogOutput_TextFile
 {
 public:
 
-	CLogOutput_HTML( const std::string& filename );
+	LogOutput_HTML( const std::string& filename );
 
-	virtual ~CLogOutput_HTML();
+	virtual ~LogOutput_HTML();
 
-	virtual void Print( const CLogMessage& msg );
+	virtual void Print( const LogMessage& msg );
 
 };
 
 
-class CLogOutput_Overlay : public CLogOutputBase
+class LogOutput_Overlay : public LogOutputBase
 {
 public:
 
-	CLogOutput_Overlay();
+	LogOutput_Overlay();
 
-	virtual ~CLogOutput_Overlay();
+	virtual ~LogOutput_Overlay();
 
-	virtual void Print( const CLogMessage& msg );
+	virtual void Print( const LogMessage& msg );
 
 };
 

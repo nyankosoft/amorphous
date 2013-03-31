@@ -4,7 +4,7 @@
 namespace amorphous
 {
 
-CLogInput_Default g_Log;
+LogInput_Default g_Log;
 
 
 

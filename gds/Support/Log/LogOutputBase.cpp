@@ -10,25 +10,25 @@ using namespace std;
 
 
 //=================================================================================
-// CLogOutputBase
+// LogOutputBase
 //=================================================================================
 
-CLogOutputBase::CLogOutputBase()
+LogOutputBase::LogOutputBase()
 {
 }
 
 
-CLogOutputBase::~CLogOutputBase()
+LogOutputBase::~LogOutputBase()
 {
 }
 
 
 
 //=================================================================================
-// CLogOutput_TextFile
+// LogOutput_TextFile
 //=================================================================================
 
-CLogOutput_TextFile::CLogOutput_TextFile( const string& filename )
+LogOutput_TextFile::LogOutput_TextFile( const string& filename )
 {
 //	m_pFile = fopen( pFilename, "w" );
 
@@ -43,7 +43,7 @@ CLogOutput_TextFile::CLogOutput_TextFile( const string& filename )
 }
 
 
-CLogOutput_TextFile::~CLogOutput_TextFile()
+LogOutput_TextFile::~LogOutput_TextFile()
 {
 //	if( m_pFile )
 //		fclose( m_pFile );
@@ -52,13 +52,13 @@ CLogOutput_TextFile::~CLogOutput_TextFile()
 }
 
 
-void CLogOutput_TextFile::SetNewLineCharacterOption( int option )
+void LogOutput_TextFile::SetNewLineCharacterOption( int option )
 {
 	m_NewLineCharacterOption = option;
 }
 
 
-void CLogOutput_TextFile::Print( const CLogMessage& msg )
+void LogOutput_TextFile::Print( const LogMessage& msg )
 {
 //	if( !m_pFile )
 //		return;
@@ -88,10 +88,10 @@ void CLogOutput_TextFile::Print( const CLogMessage& msg )
 
 
 //=================================================================================
-// CLogOutput_Console
+// LogOutput_Console
 //=================================================================================
 
-void CLogOutput_Console::Print( const CLogMessage& msg )
+void LogOutput_Console::Print( const LogMessage& msg )
 {
 //	printf( "%s %s", msg.m_Time.c_str(), msg.m_Text.c_str() );
 	cout << "[" << msg.m_Time << "] " << msg.m_Text;
@@ -100,7 +100,7 @@ void CLogOutput_Console::Print( const CLogMessage& msg )
 
 
 //=================================================================================
-// CLogOutput_HTML
+// LogOutput_HTML
 //=================================================================================
 
 #define NUM_TEMPLATE_LINES	10
@@ -130,8 +130,8 @@ static const char *s_LogTextColor[] =
 };
 
 
-CLogOutput_HTML::CLogOutput_HTML( const std::string& filename )
-: CLogOutput_TextFile( filename )
+LogOutput_HTML::LogOutput_HTML( const std::string& filename )
+: LogOutput_TextFile( filename )
 {
 	for( int i=0; i<NUM_BEGINNING_LINES; i++ )
 		m_OutputFileStream << s_HTMLTemplate[i];
@@ -140,14 +140,14 @@ CLogOutput_HTML::CLogOutput_HTML( const std::string& filename )
 }
 
 
-CLogOutput_HTML::~CLogOutput_HTML()
+LogOutput_HTML::~LogOutput_HTML()
 {
 	for( int i=NUM_BEGINNING_LINES; i<NUM_TEMPLATE_LINES; i++ )
 		m_OutputFileStream << s_HTMLTemplate[i];
 }
 
 
-void CLogOutput_HTML::Print( const CLogMessage& msg )
+void LogOutput_HTML::Print( const LogMessage& msg )
 {
 	string text_in_html( msg.m_Text );
 
@@ -171,17 +171,17 @@ void CLogOutput_HTML::Print( const CLogMessage& msg )
 
 
 
-CLogOutput_Overlay::CLogOutput_Overlay()
+LogOutput_Overlay::LogOutput_Overlay()
 {
 }
 
 
-CLogOutput_Overlay::~CLogOutput_Overlay()
+LogOutput_Overlay::~LogOutput_Overlay()
 {
 }
 
 
-void CLogOutput_Overlay::Print( const CLogMessage& msg )
+void LogOutput_Overlay::Print( const LogMessage& msg )
 {
 }
 

@@ -64,7 +64,7 @@ static const DWORD s_LogTextColor[5] =
 };
 
 
-void LogOutput_ScrolledTextBuffer::Print( const CLogMessage& msg )
+void LogOutput_ScrolledTextBuffer::Print( const LogMessage& msg )
 {
 	m_TextBuffer[m_EndRowIndex] = fmt_string( "[%s] %s", msg.m_Time.c_str(), msg.m_Text.c_str() );
 
