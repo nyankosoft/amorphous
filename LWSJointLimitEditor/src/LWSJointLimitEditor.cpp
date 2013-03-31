@@ -1,5 +1,5 @@
 #include "LWSJointLimitEditor.hpp"
-#include <gds/Support/StringAux.hpp>
+#include "gds/Support/StringAux.hpp"
 #include <boost/tokenizer.hpp>
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
