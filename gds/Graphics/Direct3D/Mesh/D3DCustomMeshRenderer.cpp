@@ -1,5 +1,4 @@
 #include "D3DCustomMeshRenderer.hpp"
-#include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
@@ -119,8 +118,11 @@ void CD3DCustomMeshRenderer::DrawPrimitives( const CustomMesh& mesh, int subset_
 }
 
 
-void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const std::vector<int> subsets_to_render, bool use_zsorted_indices )
+void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const int *subsets_to_render, int num_subsets_to_render, bool use_zsorted_indices )
 {
+	if( !subsets_to_render || num_subsets_to_render == 0 )
+		return;
+
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
 
@@ -188,9 +190,13 @@ void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const std::vector<int
 
 void CD3DCustomMeshRenderer::RenderMesh(
 	CustomMesh& mesh, ShaderManager& shader_mgr,
-	const std::vector<int> subsets_to_render,
+	const int *subsets_to_render,
+	int num_subsets_to_render,
 	bool use_zsorted_indices )
 {
+	if( !subsets_to_render || num_subsets_to_render == 0 )
+		return;
+
 	if( &shader_mgr == &FixedFunctionPipelineManager() )
 	{
 		// Render the mesh via the fixed function pipeline.
@@ -212,7 +218,7 @@ void CD3DCustomMeshRenderer::RenderMesh(
 
 //		const int num_mats = mesh.GetNumMaterials();
 //		for( int i=0; i<num_mats; i++ )
-		for( int i=0; i<(int)subsets_to_render.size(); i++ )
+		for( int i=0; i<num_subsets_to_render; i++ )
 		{
 			int subset_index = subsets_to_render[i];
 
