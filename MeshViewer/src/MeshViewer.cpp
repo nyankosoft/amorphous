@@ -30,7 +30,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CApplicationBase *amorphous::CreateApplicationInstance() { return new CMeshViewer; }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new CMeshViewer; }
 
 
 
@@ -128,7 +128,7 @@ void CMeshViewer::LoadBlankTextures( BasicMesh& mesh )
 	int num_subsets = mesh.GetNumMaterials();
 	for( int i=0; i<num_subsets; i++ )
 	{
-		CMeshMaterial& mat = mesh.Material(i);
+		MeshMaterial& mat = mesh.Material(i);
 		if( mat.Texture.empty() )
 		{
 			mat.Texture.resize( 1 );
@@ -168,7 +168,7 @@ void CMeshViewer::RenderSubsetsInformation( BasicMesh& mesh )
 //		subset.GetNumVertices();
 //		subset.GetNumTriangles();
 
-		const CMeshMaterial& mat = mesh.GetMaterial(i);
+		const MeshMaterial& mat = mesh.GetMaterial(i);
 		const int num_textures = (int)mat.Texture.size();
 		for( int j=0; j<num_textures; j++ )
 		{
@@ -415,8 +415,8 @@ void CMeshViewer::Render()
 
 	RenderMeshes();
 
-	int screen_w = GameWindowManager().GetScreenWidth();
-	int screen_h = GameWindowManager().GetScreenHeight();
+	int screen_w = GetGameWindowManager().GetScreenWidth();
+	int screen_h = GetGameWindowManager().GetScreenHeight();
 	C2DRect rect( 0, screen_h - 25, screen_w - 1, screen_h - 1 );
 	rect.SetColor( SFloatRGBAColor(0,0,0,0.6f) );
 	rect.Draw();
@@ -482,7 +482,7 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 		}
 	}
 
-	GameWindowManager().SetWindowTitleText( desc.ResourcePath );
+	GetGameWindowManager().SetWindowTitleText( desc.ResourcePath );
 
 	return true;
 }

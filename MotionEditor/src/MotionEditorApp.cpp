@@ -16,7 +16,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CApplicationBase *amorphous::CreateApplicationInstance() { return new CMotionEditorApp; }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new CMotionEditorApp; }
 
 
 /*

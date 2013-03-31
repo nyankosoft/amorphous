@@ -25,7 +25,7 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-CApplicationBase *amorphous::CreateApplicationInstance() { return new CBVHViewer; }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new CBVHViewer; }
 
 
 
