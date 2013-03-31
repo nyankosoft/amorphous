@@ -1393,8 +1393,8 @@ void AdaptationCalcFilter::Render()
 	// texture stores a single texel cooresponding to the user's adapted 
 	// level.
 //	pEffect->SetTechnique( "CalculateAdaptedLum" );
-	pEffect->SetFloat( "g_fElapsedTime", m_fElapsedTime );
-	pEffect->SetFloat( "g_fElapsedTime", m_fLuminanceAdaptationRate );
+	pEffect->SetFloat( "g_fElapsedTime",    m_fElapsedTime );
+	pEffect->SetFloat( "g_fAdaptationRate", m_fLuminanceAdaptationRate );
 
 //	hr = pd3dDevice->SetRenderTarget( 0, pSurfAdaptedLum );
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pTexAdaptedLuminanceCur->m_pTexSurf );
