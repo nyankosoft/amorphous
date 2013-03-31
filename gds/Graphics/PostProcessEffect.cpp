@@ -859,8 +859,8 @@ void GaussianBlurFilter::Render()
 
 //	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
 //	hr = pEffect->SetValue( "g_avSampleWeights", avSampleWeights, sizeof( avSampleWeights ) );
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, sizeof( avSampleOffsets ) * 2 );
-	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, sizeof( avSampleWeights ) * 4 );
+	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof( avSampleOffsets ) * 2 );
+	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, numof( avSampleWeights ) * 4 );
 
 	// The gaussian blur smooths out rough edges to avoid aliasing effects
 	// when the star effect is run
@@ -936,8 +936,8 @@ void BloomFilter::Render()
 //	pEffect->SetTechnique( "Bloom" );
 //	hr = pEffect->SetValue( "g_avSampleOffsets", m_avSampleOffsets, sizeof( m_avSampleOffsets ) );
 //	hr = pEffect->SetValue( "g_avSampleWeights", m_avSampleWeights, sizeof( m_avSampleWeights ) );
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)m_avSampleOffsets, sizeof( m_avSampleOffsets ) * 2 );
-	shader_mgr.SetParam( "g_avSampleWeights", (float *)m_avSampleWeights, sizeof( m_avSampleWeights ) * 4 );
+	shader_mgr.SetParam( "g_avSampleOffsets", (float *)m_avSampleOffsets, numof( m_avSampleOffsets ) * 2 );
+	shader_mgr.SetParam( "g_avSampleWeights", (float *)m_avSampleWeights, numof( m_avSampleWeights ) * 4 );
 
 	// blur filter  -> set to 1/16
 	// bloom filter -> set to 1
