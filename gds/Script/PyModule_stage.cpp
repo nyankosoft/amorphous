@@ -1,4 +1,4 @@
-#include <gds/Script/PyModule_stage.hpp>
+#include "gds/Script/PyModule_stage.hpp"
 #include <boost/python.hpp>
 
 #include "../base.hpp"

@@ -1,9 +1,9 @@
-#include <gds/3DMath/PrimitivePolygonModelMaker.hpp>
-#include <gds/3DMath/Matrix23.hpp>
-#include <gds/3DMath/Matrix34.hpp>
-#include <gds/3DMath/3DGameMath.hpp>
-//#include <gds/Support/Log/DefaultLog.hpp>
-#include <gds/Support/Vec3_StringAux.hpp>
+#include "PrimitivePolygonModelMaker.hpp"
+#include "Matrix23.hpp"
+#include "Matrix34.hpp"
+#include "3DGameMath.hpp"
+//#include "../Support/Log/DefaultLog.hpp"
+#include "../Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous

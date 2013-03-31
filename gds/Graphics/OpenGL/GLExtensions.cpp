@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
-#include <gds/Support/Log/DefaultLog.hpp>
+#include "gds/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

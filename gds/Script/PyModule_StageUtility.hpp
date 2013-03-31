@@ -1,12 +1,8 @@
 #ifndef __PyModule_StageUtility_HPP__
 #define __PyModule_StageUtility_HPP__
 
-//#include <gds/Graphics/FloatRGBAColor.hpp>
-//#include <gds/3DMath/Matrix34.hpp>
-//#include <gds/3DMath/AABB3.hpp>
-#include <gds/Support/Vec3_StringAux.hpp>
-#include <gds/Stage/fwd.hpp>
-#include <gds/Stage/StageUtility.hpp>
+#include "gds/Support/Vec3_StringAux.hpp"
+#include "gds/Stage/StageUtility.hpp"
 #include <boost/thread.hpp>
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>

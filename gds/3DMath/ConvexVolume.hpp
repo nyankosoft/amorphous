@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <gds/3DMath/Plane.hpp>
+#include "Plane.hpp"
 
 
 namespace amorphous
