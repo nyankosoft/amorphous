@@ -543,7 +543,6 @@ bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, 
 void DownScale4x4Filter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -602,7 +601,6 @@ void DownScale4x4Filter::Render()
 
 	// Get the sample offsets used within the pixel shader
 	GetSampleOffsets_DownScale4x4( (unsigned int)prev_scene_width, (unsigned int)prev_scene_height, avSampleOffsets );
-//	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
 
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
@@ -644,8 +642,6 @@ Result::Name DownScale2x2Filter::Init( RenderTargetTextureCache& cache, CFilterS
 void DownScale2x2Filter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	LPD3DXEFFECT pEffect = m_pFilterShader->GetShader()->GetEffect();
-//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -684,7 +680,6 @@ void DownScale2x2Filter::Render()
 		return;// hr;
 
 	GetSampleOffsets_DownScale2x2( (unsigned int)desc.Width, (unsigned int)desc.Height, avSampleOffsets );
-//	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
 
 	// Create an exact 1/2 x 1/2 copy of the source texture
@@ -729,8 +724,6 @@ Result::Name HDRBrightPassFilter::Init( RenderTargetTextureCache& cache, CFilter
 void HDRBrightPassFilter::Render()
 {
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
-//	LPD3DXEFFECT pEffect = m_pFilterShader->GetShader()->GetEffect();
-//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -812,7 +805,6 @@ GaussianBlurFilter::GaussianBlurFilter()
 void GaussianBlurFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -857,8 +849,6 @@ void GaussianBlurFilter::Render()
 
 	GetSampleOffsets_GaussBlur5x5( desc.Width, desc.Height, avSampleOffsets, avSampleWeights );
 
-//	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
-//	hr = pEffect->SetValue( "g_avSampleWeights", avSampleWeights, sizeof( avSampleWeights ) );
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof( avSampleOffsets ) * 2 );
 	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, numof( avSampleWeights ) * 4 );
 
@@ -912,8 +902,6 @@ BloomFilter::BloomFilter()
 void BloomFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
-	HRESULT hr;
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -934,8 +922,6 @@ void BloomFilter::Render()
 	}
 
 //	pEffect->SetTechnique( "Bloom" );
-//	hr = pEffect->SetValue( "g_avSampleOffsets", m_avSampleOffsets, sizeof( m_avSampleOffsets ) );
-//	hr = pEffect->SetValue( "g_avSampleWeights", m_avSampleWeights, sizeof( m_avSampleWeights ) );
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)m_avSampleOffsets, numof( m_avSampleOffsets ) * 2 );
 	shader_mgr.SetParam( "g_avSampleWeights", (float *)m_avSampleWeights, numof( m_avSampleWeights ) * 4 );
 
@@ -993,7 +979,6 @@ void BloomFilter::Render()
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 
-//	RenderFullScreenQuad( pEffect, coords );
 	RenderFullScreenQuad( shader_mgr, coords );
 
 	if( m_DoScissorTesting )
@@ -1265,7 +1250,12 @@ void LuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height, 
 void LuminanceCalcFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
+
 	HRESULT hr = S_OK;
 
 	Vector2 avSampleOffsets[MAX_SAMPLES];
@@ -1282,7 +1272,7 @@ void LuminanceCalcFilter::Render()
 		break;
 	}
 
-	hr = pEffect->SetValue( "g_avSampleOffsets", avSampleOffsets, sizeof( avSampleOffsets ) );
+	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
 
 //	pd3dDevice->SetRenderTarget( 0, apSurfToneMap[dwCurTexture] );
 //	pd3dDevice->SetTexture( 0, g_pTexSceneScaled );
@@ -1291,7 +1281,7 @@ void LuminanceCalcFilter::Render()
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
 
-	RenderFullScreenQuad( pEffect, 0.0f, 0.0f, 1.0f, 1.0f );
+	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 }
 
 
@@ -1369,7 +1359,11 @@ Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, CFilte
 void AdaptationCalcFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 //	UINT uiPass, uiPassCount;
@@ -1393,8 +1387,8 @@ void AdaptationCalcFilter::Render()
 	// texture stores a single texel cooresponding to the user's adapted 
 	// level.
 //	pEffect->SetTechnique( "CalculateAdaptedLum" );
-	pEffect->SetFloat( "g_fElapsedTime",    m_fElapsedTime );
-	pEffect->SetFloat( "g_fAdaptationRate", m_fLuminanceAdaptationRate );
+	shader_mgr.SetParam( "g_fElapsedTime",    m_fElapsedTime );
+	shader_mgr.SetParam( "g_fAdaptationRate", m_fLuminanceAdaptationRate );
 
 //	hr = pd3dDevice->SetRenderTarget( 0, pSurfAdaptedLum );
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pTexAdaptedLuminanceCur->m_pTexSurf );
@@ -1408,7 +1402,7 @@ void AdaptationCalcFilter::Render()
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 
-	RenderFullScreenQuad( pEffect, 0.0f, 0.0f, 1.0f, 1.0f );
+	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 
 //	SAFE_RELEASE( pSurfAdaptedLum );
 //	return S_OK;
@@ -1476,6 +1470,11 @@ void HDRLightingFinalPassFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 
@@ -1492,7 +1491,7 @@ void HDRLightingFinalPassFilter::Render()
 	// effect textures will be added to the scene.
 
 //	V( pEffect->SetTechnique( "FinalScenePass" ) );
-	V( pEffect->SetFloat( "g_fMiddleGray", m_fKeyValue ) );
+	shader_mgr.SetParam( "g_fMiddleGray", m_fKeyValue );
 	V( pEffect->SetBool( "g_bEnableToneMap", m_ToneMappingEnabled ) );
 
 //	V( pd3dDevice->SetRenderTarget( 0, pSurfLDR ) );
@@ -1527,7 +1526,7 @@ void HDRLightingFinalPassFilter::Render()
 	pd3dDevice->SetSamplerState( 3, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 	pd3dDevice->SetSamplerState( 3, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
-	RenderFullScreenQuad( pEffect, 0.0f, 0.0f, 1.0f, 1.0f );
+	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 
 	V( pd3dDevice->SetTexture( 1, NULL ) );
 	V( pd3dDevice->SetTexture( 2, NULL ) );
@@ -1870,7 +1869,11 @@ Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, CFilt
 void MonochromeColorFilter::Render()
 {
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
-	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
+	ShaderManager *pShaderMgr = GetShaderManager(*this);
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	HRESULT hr = S_OK;
 /*
@@ -1910,7 +1913,7 @@ void MonochromeColorFilter::Render()
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 
-	RenderFullScreenQuad( pEffect, coords );
+	RenderFullScreenQuad( shader_mgr, coords );
 
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 
