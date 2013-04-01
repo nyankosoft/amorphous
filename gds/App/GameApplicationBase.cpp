@@ -187,7 +187,7 @@ bool GameApplicationBase::InitBase()
 
 	// load config file
 	// - users who feel that in-game UI is cumbersome can edit this text file
-	CGlobalParams global_params;
+	GlobalParams global_params;
 	global_params.LoadFromFile( "config" );
 
 	// init graphics library (Direct3D/OpenGL)
@@ -269,7 +269,7 @@ bool GameApplicationBase::InitBase()
 		printf( "exception: at %s (%s, L%d)\n", *function, *file, *line );
 	}
 
-	m_pGlobalInputHandler = new CGlobalInputHandler;
+	m_pGlobalInputHandler = new GlobalInputHandler;
 	GetInputHub().PushInputHandler( 0, m_pGlobalInputHandler );
 
 	GameTask::AddTaskNameToTaskIDMap( "Stage",             GameTask::ID_STAGE );
@@ -286,7 +286,7 @@ bool GameApplicationBase::InitBase()
 	InitDebugItems();
 
 	// load and update global params of the framework
-	CGameStageFrameworkGlobalParams gsf_params;
+	GameStageFrameworkGlobalParams gsf_params;
 	bool loaded = gsf_params.LoadFromTextFile( "../resources/gsf_params" );
 	if( loaded )
 	{
@@ -371,7 +371,7 @@ void GameApplicationBase::UpdateFrame()
 //			/ (float)GraphicsComponent::REFERENCE_SCREEN_WIDTH;
 
 		// MouseCursor() uses non-scaled screen coordinates
-		MouseCursor().UpdateCursorPosition(
+		GetMouseCursor().UpdateCursorPosition(
 			(int)( m_pMouse->GetCurrentPositionX() ),
 			(int)( m_pMouse->GetCurrentPositionY() ) );
 	}

@@ -120,8 +120,8 @@ void InputHandler_PlayerPAC::ProcessInput( InputData& input )
 
 	// get the action code for the GI code
 //	int action_code = m_aiActionForGICode[input.iGICode];
-	int action_code           = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_PRIMARY );
-	int secondary_action_code = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, CKeyBind::ACTION_TYPE_SECONDARY );
+	int action_code           = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, KeyBind::ACTION_TYPE_PRIMARY );
+	int secondary_action_code = SinglePlayerInfo().KeyBind().GetActionCode( input.iGICode, KeyBind::ACTION_TYPE_SECONDARY );
 
 	float fParam = input.fParam1;
 

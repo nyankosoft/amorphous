@@ -13,7 +13,7 @@
 namespace amorphous
 {
 
-class CShockWaveCameraEffect;
+class ShockWaveCameraEffect;
 
 /*
 class ThrustDirection

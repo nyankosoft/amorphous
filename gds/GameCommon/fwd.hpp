@@ -1,13 +1,12 @@
 namespace amorphous
 {
 
-class CTimer;
-class CKeyBind;
-class CThirdPersonCameraController;
-class CThirdPersonMotionController;
+class KeyBind;
+class ThirdPersonCameraController;
+class ThirdPersonMotionController;
 
 // singleton
 // class CSaveDataManager;
-// class CMouseCursor;
+// class MouseCursor;
 
 } // namespace amorphous

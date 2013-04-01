@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class CThirdPersonCameraController
+class ThirdPersonCameraController
 {
 	EntityHandle<> m_TargetEntity;
 
@@ -27,8 +27,8 @@ class CThirdPersonCameraController
 
 public:
 
-	CThirdPersonCameraController();
-	~CThirdPersonCameraController(){}
+	ThirdPersonCameraController();
+	~ThirdPersonCameraController(){}
 
 	void Update( float dt );
 

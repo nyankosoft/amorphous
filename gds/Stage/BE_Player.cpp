@@ -102,7 +102,7 @@ void CBE_Player::Init()
 
 //	m_fDefaultFOV = 3.141592f / 3.0f;
 
-	m_pShockWaveEffect = new CShockWaveCameraEffect;
+	m_pShockWaveEffect = new ShockWaveCameraEffect;
 
 	m_Camera.SetFarClip( 1000.0f );
 

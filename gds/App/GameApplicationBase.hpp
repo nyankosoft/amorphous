@@ -10,7 +10,7 @@
 namespace amorphous
 {
 
-class CGlobalInputHandler;
+class GlobalInputHandler;
 class GameApplicationBase;
 class LogOutput_ScrolledTextBuffer;
 
@@ -40,7 +40,7 @@ protected:
 	/// handles debug-related input
 	/// - turning on / off logs on the screen
 	/// - taking screen shot (not debug input)
-	CGlobalInputHandler *m_pGlobalInputHandler;
+	GlobalInputHandler *m_pGlobalInputHandler;
 
 	GameTaskManager *m_pTaskManager;
 

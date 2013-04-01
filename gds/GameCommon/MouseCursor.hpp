@@ -14,9 +14,9 @@ namespace amorphous
 {
 
 
-class CMouseCursor
+class MouseCursor
 {
-	static singleton<CMouseCursor> m_obj;
+	static singleton<MouseCursor> m_obj;
 
 	TextureHandle m_Texture[4];
 	C2DRect m_Rect[4];
@@ -29,9 +29,9 @@ class CMouseCursor
 
 public:
 
-	static CMouseCursor* Get() { return m_obj.get(); }
+	static MouseCursor* Get() { return m_obj.get(); }
 
-	CMouseCursor() : m_CurrentCursorIndex(0), m_bDisplay(true), m_PosX(0), m_PosY(0) { m_Rect[0] = C2DRect(0,0,0,0,0xFFFFFFFF); }
+	MouseCursor() : m_CurrentCursorIndex(0), m_bDisplay(true), m_PosX(0), m_PosY(0) { m_Rect[0] = C2DRect(0,0,0,0,0xFFFFFFFF); }
 
 	inline void Show()	{ m_bDisplay = true; }
 	inline void Hide()	{ m_bDisplay = false; }
@@ -81,9 +81,9 @@ public:
 };
 
 
-inline CMouseCursor& MouseCursor()
+inline MouseCursor& GetMouseCursor()
 {
-	return (*(CMouseCursor::Get()));
+	return (*(MouseCursor::Get()));
 }
 
 

@@ -25,7 +25,7 @@ class CPseudoAircraftSimulator;
  * - pitch ladder
  * TODO: flight path indicator
  */
-class CPseudoAircraftHUD : public GraphicsComponent
+class PseudoAircraftHUD : public GraphicsComponent
 {
 	TextureFont *m_pFont;
 
@@ -47,8 +47,8 @@ private:
 
 public:
 
-	CPseudoAircraftHUD();
-	virtual ~CPseudoAircraftHUD();
+	PseudoAircraftHUD();
+	virtual ~PseudoAircraftHUD();
 
 	void Init();
 
@@ -72,7 +72,7 @@ public:
 
 //--------------------- inline implementations ---------------------
 /*
-inline void CPseudoAircraftHUD::AddTargetInfo( const HUD_TargetInfo& info )
+inline void PseudoAircraftHUD::AddTargetInfo( const HUD_TargetInfo& info )
 {
 	if( m_vecTargetInfo.size() < NUM_MAX_TGT_INFO )
 		m_vecTargetInfo.push_back( info );

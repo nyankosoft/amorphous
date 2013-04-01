@@ -13,7 +13,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CPlayTime : public IArchiveObjectBase
+class PlayTime : public IArchiveObjectBase
 {
 	unsigned long m_LastSavedTimeMS;
 
@@ -32,7 +32,7 @@ public:
 
 public:
 
-	CPlayTime() : m_LastSavedTimeMS(0) { m_Timer.Start(); }
+	PlayTime() : m_LastSavedTimeMS(0) { m_Timer.Start(); }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -55,19 +55,19 @@ public:
 };
 
 
-inline unsigned long CPlayTime::GetCurrentPlayTimeInSec() const
+inline unsigned long PlayTime::GetCurrentPlayTimeInSec() const
 {
 	return GetCurrentPlayTimeInMS() / 1000;
 }
 
 
-inline unsigned long CPlayTime::GetCurrentPlayTimeInMS() const
+inline unsigned long PlayTime::GetCurrentPlayTimeInMS() const
 {
 	return m_LastSavedTimeMS + m_Timer.GetTimeMS();
 }
 
 
-inline std::string CPlayTime::GetCurrentPlayTimeString( int format ) const
+inline std::string PlayTime::GetCurrentPlayTimeString( int format ) const
 {
 	std::string dest;
 	GetCurrentPlayTimeString( dest, format );
@@ -75,7 +75,7 @@ inline std::string CPlayTime::GetCurrentPlayTimeString( int format ) const
 }
 
 
-inline void CPlayTime::GetCurrentPlayTimeString( std::string& dest, int format ) const
+inline void PlayTime::GetCurrentPlayTimeString( std::string& dest, int format ) const
 {
 	unsigned long total_playtime_sec = GetCurrentPlayTimeInSec();
 	unsigned long playtime_hours   = total_playtime_sec / 3600;

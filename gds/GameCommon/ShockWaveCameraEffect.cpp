@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-CShockWaveCameraEffect::CShockWaveCameraEffect()
+ShockWaveCameraEffect::ShockWaveCameraEffect()
 {
 	m_fOverlapTime = 0;
 	m_fTimeStep = 0.02f;
@@ -62,7 +62,7 @@ CShockWaveCameraEffect::CShockWaveCameraEffect()
 // Desc: 
 //-----------------------------------------------------------------------------
 
-void CShockWaveCameraEffect::Update( float fFrameTime )
+void ShockWaveCameraEffect::Update( float fFrameTime )
 {
 	int i, num_loops;
 	float dt = m_fTimeStep;

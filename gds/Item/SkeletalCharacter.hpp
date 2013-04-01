@@ -49,7 +49,7 @@ class CActionCodeToGICodesMap
 public:
 	/// Why vector?
 	/// - Because each action code of an action type can have one OR MORE general input codes.
-	std::map<int, std::vector<int> > m_mapActionCodeToGICodes[CKeyBind::NUM_ACTION_TYPES];
+	std::map<int, std::vector<int> > m_mapActionCodeToGICodes[KeyBind::NUM_ACTION_TYPES];
 };
 
 
@@ -84,7 +84,7 @@ class SkeletalCharacter : public GameItem
 
 	boost::shared_ptr<InputHandler> m_pInputHandler;
 
-	boost::shared_ptr<CKeyBind> m_pKeyBind;
+	boost::shared_ptr<KeyBind> m_pKeyBind;
 
 	std::vector< boost::shared_ptr<CCharacterMotionNodeAlgorithm> > m_pMotionNodes;
 
@@ -171,11 +171,11 @@ public:
 
 	void TurnIfNecessary( float dt, float turn_speed );
 
-	const boost::shared_ptr<CKeyBind>& GetKeyBind() const { return m_pKeyBind; }
+	const boost::shared_ptr<KeyBind>& GetKeyBind() const { return m_pKeyBind; }
 
-	void SetKeyBind( boost::shared_ptr<CKeyBind> pKeyBind );
+	void SetKeyBind( boost::shared_ptr<KeyBind> pKeyBind );
 
-	CInputState::Name GetActionInputState( int action_code, CKeyBind::ActionType action_type = CKeyBind::ACTION_TYPE_PRIMARY );
+	CInputState::Name GetActionInputState( int action_code, KeyBind::ActionType action_type = KeyBind::ACTION_TYPE_PRIMARY );
 
 	void AddItem( boost::shared_ptr<GameItem> pItem ) { m_pProperty.push_back( pItem ); }
 
@@ -216,7 +216,7 @@ protected:
 
 	SkeletalCharacter *m_pCharacter;
 
-//	boost::shared_ptr<CKeyBind> m_pKeybind;
+//	boost::shared_ptr<KeyBind> m_pKeybind;
 
 	/// pair contains an input condition
 	/// first: action code / second: input type (pressed, released or value changed)
@@ -234,9 +234,9 @@ public:
 
 	void SetSkeletalCharacter( SkeletalCharacter *pCharacter ) { m_pCharacter = pCharacter; }
 
-	const boost::shared_ptr<CKeyBind> GetKeyBind() const { return m_pCharacter ? m_pCharacter->GetKeyBind() : boost::shared_ptr<CKeyBind>(); }
+	const boost::shared_ptr<KeyBind> GetKeyBind() const { return m_pCharacter ? m_pCharacter->GetKeyBind() : boost::shared_ptr<KeyBind>(); }
 
-//	void SetKeyBind( boost::shared_ptr<CKeyBind>& pKeybind ) { m_pKeybind = pKeybind; }
+//	void SetKeyBind( boost::shared_ptr<KeyBind>& pKeybind ) { m_pKeybind = pKeybind; }
 
 	inline bool HandleInput( const InputData& input );
 
@@ -252,7 +252,7 @@ inline bool CCharacterMotionNodeAlgorithm::HandleInput( const InputData& input )
 {
 	InputData input_copy = input;
 
-	const boost::shared_ptr<CKeyBind> pKeybind = GetKeyBind();
+	const boost::shared_ptr<KeyBind> pKeybind = GetKeyBind();
 	if( !pKeybind )
 		return false;
 

@@ -84,7 +84,7 @@ void CBE_PlayerShip::Init()
 	m_vLocalMuzzlePos = Vector3(0.0f, -0.35f, 1.45f);
 
 
-//	m_pShockWaveEffect = new CShockWaveCameraEffect;
+//	m_pShockWaveEffect = new ShockWaveCameraEffect;
 }
 
 

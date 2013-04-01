@@ -26,7 +26,7 @@ fullscreen	yes
      to configure the settings.
 
 */
-class CGlobalParams
+class GlobalParams
 {
 public:
 
@@ -58,7 +58,7 @@ private:
 
 public:
 
-	CGlobalParams()
+	GlobalParams()
 		:
 	FullScreen(false),
 	ScreenWidth(1280),
@@ -94,7 +94,7 @@ public:
 };
 
 
-extern CGlobalParams GlobalParams;
+extern GlobalParams g_GlobalParams;
 
 } // namespace amorphous
 

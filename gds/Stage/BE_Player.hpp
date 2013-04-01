@@ -20,7 +20,7 @@ namespace amorphous
 
 class InputHandler_PlayerBase;
 class HUD_PlayerBase;
-class CShockWaveCameraEffect;
+class ShockWaveCameraEffect;
 
 
 enum eThrustDirection
@@ -99,7 +99,7 @@ protected:
 	CCopyEntity *m_pHeadLightEntity;
 	bool m_bHeadLightOn;
 
-	CShockWaveCameraEffect *m_pShockWaveEffect;
+	ShockWaveCameraEffect *m_pShockWaveEffect;
 
 	Vector3 m_vLocalMuzzlePos;
 	Matrix34 m_WorldMuzzlePose;

@@ -12,7 +12,7 @@ namespace amorphous
 {
 
 
-CGameStageFrameworkGlobalParams::CGameStageFrameworkGlobalParams()
+GameStageFrameworkGlobalParams::GameStageFrameworkGlobalParams()
 :
 m_fDefaultPhysicsSimulationTimestep( 0.01f ),
 m_DefaultShaderFilename( "./Shader/Default.fx" ),
@@ -21,7 +21,7 @@ m_StartupDebugWindow( "none" )
 {}
 
 
-bool CGameStageFrameworkGlobalParams::LoadFromTextFile( const std::string& filename )
+bool GameStageFrameworkGlobalParams::LoadFromTextFile( const std::string& filename )
 {
 	ParamLoader loader( filename );
 
@@ -40,7 +40,7 @@ bool CGameStageFrameworkGlobalParams::LoadFromTextFile( const std::string& filen
 }
 
 
-void CGameStageFrameworkGlobalParams::UpdateParams()
+void GameStageFrameworkGlobalParams::UpdateParams()
 {
 	EntityManager::SetDefaultPhysicsTimestep( m_fDefaultPhysicsSimulationTimestep );
 
@@ -59,7 +59,7 @@ void CGameStageFrameworkGlobalParams::UpdateParams()
 }
 
 
-void CGameStageFrameworkGlobalParams::Serialize( IArchive& ar, const unsigned int version )
+void GameStageFrameworkGlobalParams::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_fDefaultPhysicsSimulationTimestep;
 	ar & m_DefaultShaderFilename;

@@ -89,9 +89,9 @@ private:
 	/// and saves the borrowed reference, then use it as the player's aircraft in the stage
 	boost::shared_ptr<CGI_Aircraft> m_pCurrentAircraft;
 
-	CKeyBind m_KeyBind;
+	KeyBind m_KeyBind;
 
-	CPlayTime m_PlayTime;
+	PlayTime m_PlayTime;
 
 private:
 
@@ -185,14 +185,14 @@ public:
 
 	int GetMoneyLeft() const { return m_Money; }
 
-	CKeyBind& KeyBind() { return m_KeyBind; }
+	KeyBind& KeyBind() { return m_KeyBind; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 //	virtual const std::string& GetKeyString() const { return string("PlayerInfo"); }
 	virtual const char* GetKeyString() const { return "PlayerInfo"; }
 
-	const CPlayTime& GetPlayTime() { return m_PlayTime; }
+	const PlayTime& GetPlayTime() { return m_PlayTime; }
 
 	friend class PlayerCustomer;
 };

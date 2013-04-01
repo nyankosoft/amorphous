@@ -5,7 +5,7 @@ namespace amorphous
 {
 
 
-singleton<CMouseCursor> CMouseCursor::m_obj;
+singleton<MouseCursor> MouseCursor::m_obj;
 
 
 } // namespace amorphous

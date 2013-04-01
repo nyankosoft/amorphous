@@ -18,7 +18,7 @@ namespace amorphous
 using namespace std;
 
 
-CPseudoAircraftHUD::CPseudoAircraftHUD()
+PseudoAircraftHUD::PseudoAircraftHUD()
 :
 m_pFont(NULL)
 {
@@ -28,13 +28,13 @@ m_pFont(NULL)
 }
 
 
-CPseudoAircraftHUD::~CPseudoAircraftHUD()
+PseudoAircraftHUD::~PseudoAircraftHUD()
 {
 	Release();
 }
 
 
-void CPseudoAircraftHUD::Init()
+void PseudoAircraftHUD::Init()
 {
 	TextureFont *pTexFont = new TextureFont;
 	pTexFont->InitFont( "./Texture/MainFont.dds", 8, 12, 16, 8 );
@@ -47,23 +47,23 @@ void CPseudoAircraftHUD::Init()
 }
 
 
-void CPseudoAircraftHUD::Release()
+void PseudoAircraftHUD::Release()
 {
 	SafeDelete( m_pFont );
 }
 
 
-void CPseudoAircraftHUD::LoadGraphicsResources( const GraphicsParameters& rParam )
+void PseudoAircraftHUD::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 	float scale = GetScreenWidth() / 800.0f;
 
 	m_pFont->Reload();
-	// font size is updated every frame in CPseudoAircraftHUD::Render()
+	// font size is updated every frame in PseudoAircraftHUD::Render()
 //	m_pFont->SetFontSize(  );
 }
 
 
-void CPseudoAircraftHUD::ReleaseGraphicsResources()
+void PseudoAircraftHUD::ReleaseGraphicsResources()
 {
 	m_pFont->Release();
 }
@@ -75,7 +75,7 @@ static const char s_PitchTable[21][3] = { " 0", " 5", "10", "15", "20", "25", "3
 static const char s_DirTable[8][3] = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
 
-void CPseudoAircraftHUD::RenderCenterComponents()
+void PseudoAircraftHUD::RenderCenterComponents()
 {
 	C2DRect rect;
 	float scale = GetScreenWidth() / 800.0f;
@@ -94,7 +94,7 @@ void CPseudoAircraftHUD::RenderCenterComponents()
 }
 
 
-void CPseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
+void PseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 {
 	// enable alpha blending
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();

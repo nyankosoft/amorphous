@@ -65,17 +65,17 @@ inline int GetCurrentCountOfCounterFileAndIncrementCount( const std::string& cou
 }
 
 
-CGlobalInputHandler::CGlobalInputHandler()
+GlobalInputHandler::GlobalInputHandler()
 {
 }
 
 
-CGlobalInputHandler::~CGlobalInputHandler()
+GlobalInputHandler::~GlobalInputHandler()
 {
 }
 
 
-void CGlobalInputHandler::ProcessInput(InputData& input)
+void GlobalInputHandler::ProcessInput(InputData& input)
 {
 	switch( input.iGICode )
 	{

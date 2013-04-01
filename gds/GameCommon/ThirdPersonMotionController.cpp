@@ -10,7 +10,7 @@ namespace amorphous
 using namespace boost;
 
 
-CThirdPersonMotionController::CThirdPersonMotionController()
+ThirdPersonMotionController::ThirdPersonMotionController()
 :
 m_fVeritcalCameraSpaceInput(0),
 m_fHorizontalCameraSpaceInput(0)
@@ -40,7 +40,7 @@ Vector2 GetExtendedInputVector( const Vector2& vInput )
 }
 
 
-void CThirdPersonMotionController::Update()
+void ThirdPersonMotionController::Update()
 {
 	if( !m_pCharacter )
 		return;
@@ -120,7 +120,7 @@ float GetAnalogMotionInput( const InputData& input, float sign )
 }
 
 
-void CThirdPersonMotionController::HandleInput( int action_code, const InputData& input )
+void ThirdPersonMotionController::HandleInput( int action_code, const InputData& input )
 {
 	switch( action_code )
 	{

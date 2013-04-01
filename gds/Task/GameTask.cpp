@@ -357,7 +357,7 @@ void GameTask::GetCurrentMousePosition( int& x, int& y )
 ///     - height: [900,1280]
 void GameTask::DrawMouseCursor()
 {
-	MouseCursor().Draw();
+	GetMouseCursor().Draw();
 }
 
 

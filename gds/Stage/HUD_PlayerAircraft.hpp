@@ -96,7 +96,7 @@ private:
 
 	int m_ContainerSize;
 
-	CPseudoAircraftHUD m_HUD;
+	PseudoAircraftHUD m_HUD;
 
 	/// borrowed reference
 	CSubDisplay* m_pSubDisplay;

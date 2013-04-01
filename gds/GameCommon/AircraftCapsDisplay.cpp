@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-CAircraftCapsDisplay::CAircraftCapsDisplay()
+AircraftCapsDisplay::AircraftCapsDisplay()
 :
 m_pAircraft(NULL)
 {
@@ -24,12 +24,12 @@ m_pAircraft(NULL)
 }
 
 
-CAircraftCapsDisplay::~CAircraftCapsDisplay()
+AircraftCapsDisplay::~AircraftCapsDisplay()
 {
 }
 
 
-void CAircraftCapsDisplay::DrawDesc()
+void AircraftCapsDisplay::DrawDesc()
 {
 /*	CGI_Aircraft& aircraft = *m_pAircraft;
 
@@ -47,7 +47,7 @@ void CAircraftCapsDisplay::DrawDesc()
 }
 
 
-void CAircraftCapsDisplay::UpdateCaps()
+void AircraftCapsDisplay::UpdateCaps()
 {
 
 	m_vecCapsVal[SPEED].target = 0.5f;//m_pAircraft->GetStealthiness();
@@ -65,7 +65,7 @@ void CAircraftCapsDisplay::UpdateCaps()
 }
 
 /*
-void CAircraftCapsDisplay::Update( float dt )
+void AircraftCapsDisplay::Update( float dt )
 {
 	CGM_ControlRendererManager::Update( dt );
 
@@ -77,24 +77,24 @@ void CAircraftCapsDisplay::Update( float dt )
 }
 
 
-void CAircraftCapsDisplay::Render()
+void AircraftCapsDisplay::Render()
 {
 	CGM_ControlRendererManager::Render();
 }
 */
 
-CGM_ControlRenderer *CAircraftCapsDisplay::CreateStaticRenderer( CGM_Static *pStatic )
+CGM_ControlRenderer *AircraftCapsDisplay::CreateStaticRenderer( CGM_Static *pStatic )
 {
 	return CGM_StdControlRendererManager::CreateStaticRenderer( pStatic );
 }
 
 /*
-void CAircraftCapsDisplay::InitRenderParamStatic( CGM_Static& static_ctrl )
+void AircraftCapsDisplay::InitRenderParamStatic( CGM_Static& static_ctrl )
 {
 	CGM_ControlRenderMgr_Default::InitRenderParamStatic( static_ctrl );
 
 	int id = static_ctrl.GetID();
-	if( CAircraftCaps::CID_PERF_SPEED <= id && id <= CAircraftCaps::CID_PERF_STEALTHINESS )
+	if( AircraftCaps::CID_PERF_SPEED <= id && id <= AircraftCaps::CID_PERF_STEALTHINESS )
 	{
 		CControlRenderParam& param = GetRenderParam( static_ctrl.m_UserIndex );
 //		CControlRenderParam& param = ControlRenderParam().back();
@@ -121,13 +121,13 @@ void CAircraftCapsDisplay::InitRenderParamStatic( CGM_Static& static_ctrl )
 }
 */
 /*
-void CAircraftCapsDisplay::RenderStatic( CGM_Static& static_ctrl )
+void AircraftCapsDisplay::RenderStatic( CGM_Static& static_ctrl )
 {
 	int id = static_ctrl.GetID();
-	if( CAircraftCaps::CID_PERF_SPEED <= id && id <= CAircraftCaps::CID_PERF_STEALTHINESS )
+	if( AircraftCaps::CID_PERF_SPEED <= id && id <= AircraftCaps::CID_PERF_STEALTHINESS )
 	{
 		// performance items - draw perf bars
-		const int offset = CAircraftCaps::CID_PERF_SPEED;
+		const int offset = AircraftCaps::CID_PERF_SPEED;
 		int index = id - offset;
 		const SRect& rect = static_ctrl.GetBoundingBox();
 		C2DRect bar;

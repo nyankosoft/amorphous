@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CShockWaveCameraEffect
+class ShockWaveCameraEffect
 {
 	Vector3 m_vForce;
 
@@ -38,7 +38,7 @@ class CShockWaveCameraEffect
 
 public:
 
-	CShockWaveCameraEffect();
+	ShockWaveCameraEffect();
 
 	void Update( float fFrameTime );
 

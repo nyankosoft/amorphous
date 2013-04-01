@@ -15,7 +15,7 @@ namespace amorphous
 class CGI_Aircraft;
 
 
-class CAircraftCaps
+class AircraftCaps
 {
 public:
 	CGM_Static* pName;
@@ -57,7 +57,7 @@ public:
  *
  * what do we do about fonts ?
  */
-class CAircraftCapsDisplay : public CGM_StdControlRendererManager
+class AircraftCapsDisplay : public CGM_StdControlRendererManager
 {
 public:
 
@@ -97,8 +97,8 @@ public:
 
 	SPoint m_vPos[NUM_CAPS];
 
-	CAircraftCapsDisplay();
-	virtual ~CAircraftCapsDisplay();
+	AircraftCapsDisplay();
+	virtual ~AircraftCapsDisplay();
 
 //	virtual void Update( float dt );
 //	virtual void Render();
@@ -116,7 +116,7 @@ public:
 };
 
 
-static const char g_AircraftCapsText[CAircraftCapsDisplay::NUM_PERFS][32] =
+static const char g_AircraftCapsText[AircraftCapsDisplay::NUM_PERFS][32] =
 {
 	"speed",
 	"maneuverability",

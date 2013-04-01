@@ -10,10 +10,10 @@ using namespace std;
 
 
 // instance of the global params
-CGlobalParams GlobalParams;
+GlobalParams g_GlobalParams;
 
 
-void CGlobalParams::LoadLogVerbosity( ParamLoader& loader )
+void GlobalParams::LoadLogVerbosity( ParamLoader& loader )
 {
 	string verbosity_title;
 	loader.LoadParam( "log_verbosity", verbosity_title );

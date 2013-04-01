@@ -443,7 +443,7 @@ void SkeletalCharacter::Render()
 }
 
 
-void SkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
+void SkeletalCharacter::SetKeyBind( shared_ptr<KeyBind> pKeyBind )
 {
 	m_pKeyBind = pKeyBind;
 //	for( size_t i=0; i<m_pMotionNodes.size(); i++ )
@@ -460,7 +460,7 @@ void SkeletalCharacter::SetKeyBind( shared_ptr<CKeyBind> pKeyBind )
 		ACTION_CAMERA_ALIGN
 	};
 
-	for( int i=0; i<CKeyBind::NUM_ACTION_TYPES; i++ )
+	for( int i=0; i<KeyBind::NUM_ACTION_TYPES; i++ )
 	{
 		map<int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[i];
 
@@ -501,7 +501,7 @@ void SkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_n
 }
 
 
-CInputState::Name SkeletalCharacter::GetActionInputState( int action_code, CKeyBind::ActionType action_type )
+CInputState::Name SkeletalCharacter::GetActionInputState( int action_code, KeyBind::ActionType action_type )
 {
 	map< int, vector<int> >& ac_to_gics = m_ACtoGICs.m_mapActionCodeToGICodes[action_type];
 

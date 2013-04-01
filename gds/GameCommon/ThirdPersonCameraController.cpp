@@ -9,7 +9,7 @@ namespace amorphous
 using namespace boost;
 
 
-CThirdPersonCameraController::CThirdPersonCameraController()
+ThirdPersonCameraController::ThirdPersonCameraController()
 {
 	m_CameraOrientation.vel = Quaternion(Matrix33Identity());
 	m_CameraOrientation.smooth_time = 0.1f;
@@ -24,7 +24,7 @@ CThirdPersonCameraController::CThirdPersonCameraController()
 }
 
 
-void CThirdPersonCameraController::Update( float dt )
+void ThirdPersonCameraController::Update( float dt )
 {
 	m_CameraOrientation.Update( dt );
 	m_CameraPosition.Update( dt );
@@ -76,14 +76,14 @@ void CThirdPersonCameraController::Update( float dt )
 }
 
 
-Matrix34 CThirdPersonCameraController::GetCameraPose() const
+Matrix34 ThirdPersonCameraController::GetCameraPose() const
 {
 //	return Matrix34( m_CameraPosition.current, m_CameraOrientation.current.ToRotationMatrix() );
 	return Matrix34( m_CameraPosition.current, m_CurrentCameraOrientation );
 }
 
 
-void CThirdPersonCameraController::SetCameraPose( const Matrix34& pose )
+void ThirdPersonCameraController::SetCameraPose( const Matrix34& pose )
 {
 	m_CameraPosition.target    = m_CameraPosition.current    = pose.vPosition;
 	m_CameraOrientation.target = m_CameraOrientation.current = Quaternion( pose.matOrient );

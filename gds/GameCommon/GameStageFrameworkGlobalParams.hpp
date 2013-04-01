@@ -34,7 +34,7 @@ using namespace serialization;
   --------------------------------------------------------------
 
 */
-class CGameStageFrameworkGlobalParams : public IArchiveObjectBase
+class GameStageFrameworkGlobalParams : public IArchiveObjectBase
 {
 
     float m_fDefaultPhysicsSimulationTimestep;
@@ -47,7 +47,7 @@ class CGameStageFrameworkGlobalParams : public IArchiveObjectBase
 
 public:
 
-	CGameStageFrameworkGlobalParams();
+	GameStageFrameworkGlobalParams();
 
 	bool LoadFromTextFile( const std::string& filename );
 
