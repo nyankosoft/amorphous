@@ -25,7 +25,7 @@ using namespace amorphous;
 
 string m_OutputFilepath;
 
-//CLogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
+//LogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
 
 
 int RunApp( const string& cmd_line )
