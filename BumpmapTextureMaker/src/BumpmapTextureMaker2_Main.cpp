@@ -208,7 +208,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	lfs::dir_stack dirstack;
 	dirstack.push_cwd_and_chdir( lfs::get_parent_path(exe_filename) );
 
-	CLogOutput_HTML html_log( "BumpmpaTextureMaker2_" + string(GetBuildInfo()) + ".html" );
+	LogOutput_HTML html_log( "BumpmpaTextureMaker2_" + string(GetBuildInfo()) + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
 	g_pBumpTexMaker = new CBumpmapTextureMaker2_LWO2;

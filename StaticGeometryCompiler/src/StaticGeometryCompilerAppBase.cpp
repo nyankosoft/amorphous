@@ -72,7 +72,7 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 							   const std::string& initial_working_directory )
 {
 	// output log text on the screen
-//	g_pLogOutput = new CLogOutput_ScrolledTextBuffer( "Arial", 6, 12, 24, 120 );
+//	g_pLogOutput = new LogOutput_ScrolledTextBuffer( "Arial", 6, 12, 24, 120 );
 //	g_Log.AddLogOutput( g_pLogOutput );
 //	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
 
@@ -142,10 +142,10 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 	//   Open the log file in the same directory.
 	//   
 	string log_filename = string("log_") + GetBuildInfo();
-	CLogOutput_HTML html_log( log_filename + ".html" );
+	LogOutput_HTML html_log( log_filename + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
-	CLogOutput_TextFile textfile_log( log_filename + ".txt" );
+	LogOutput_TextFile textfile_log( log_filename + ".txt" );
 	g_Log.AddLogOutput( &textfile_log );
 
 	g_Log.Print( "initial working directory: " + initial_working_directory );

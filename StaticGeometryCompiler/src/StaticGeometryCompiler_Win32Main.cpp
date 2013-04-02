@@ -69,7 +69,7 @@ CCamera g_Camera;
 
 std::string m_OutputFilepath;
 
-CLogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
+LogOutput_ScrolledTextBuffer *g_pLogOutput = NULL;
 
 
 

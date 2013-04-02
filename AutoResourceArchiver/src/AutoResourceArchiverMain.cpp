@@ -112,7 +112,7 @@ int main( int argc, char *argv[] )
 	const string app_title( "AutoResourceArchiver" );
 	const string log_filename = app_title + "_" + string(GetBuildInfo()) + "_Log.html";
 	const path log_file_path = log_file_directory / log_filename;
-	CLogOutput_HTML html_log( log_file_path.string() );
+	LogOutput_HTML html_log( log_file_path.string() );
 	g_Log.AddLogOutput( &html_log );
 
 	CAutoResourceArchiver ara;

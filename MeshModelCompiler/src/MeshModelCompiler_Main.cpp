@@ -111,7 +111,7 @@ int main( int argc, char *argv[] )
 	path logfile_dirpath = path(src_filepath).parent_path();
 	path logfile_basepath = logfile_dirpath / ("mesh_model_compiler-" + path(src_filepath).leaf().string());
 
-	CLogOutput_HTML html_log( logfile_basepath.string() + ".html" );
+	LogOutput_HTML html_log( logfile_basepath.string() + ".html" );
 	g_Log.AddLogOutput( &html_log );
 
 	if( src_filepath.length() == 0 )

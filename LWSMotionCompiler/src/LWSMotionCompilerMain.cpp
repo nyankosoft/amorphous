@@ -58,7 +58,7 @@ int main( int argc, char *argv[] )
 	path dirpath = path(filepath).parent_path();
 	string log_filename = "log_" + string(GetBuildInfo()) + "-" + path(filepath).leaf().string() + ".html";
 	path html_log_filepath = dirpath / log_filename;
-	CLogOutput_HTML html_log( html_log_filepath.string() );
+	LogOutput_HTML html_log( html_log_filepath.string() );
 	g_Log.AddLogOutput( &html_log );
 
 //	shared_ptr<CMotionPrimitiveCompilerCreator> pBVHCompilerCreator( new CBVHMotionPrimitiveCompilerCreator );
