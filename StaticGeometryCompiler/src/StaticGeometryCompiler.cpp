@@ -442,6 +442,8 @@ bool CreateGeneral3DMesh( const std::string& model_filepath,
 
 bool CStaticGeometryCompiler::CreateCollisionMesh()
 {
+	LOG_PRINT( " Creating a collision geometry mesh..." );
+
 	// create collision mesh
 	bool mesh_created = CreateGeneral3DMesh(
 		m_Desc.m_InputFilepath,           // [in] .lwo, .3ds, etc.
@@ -450,7 +452,10 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 		);
 
 	if( !mesh_created )
+	{
+		LOG_PRINT_ERROR( " Failed to create a collision geometry mesh..." );
 		return false;
+	}
 
 	physics::CTriangleMeshDesc coll_mesh_desc;
 	m_CollisionMesh.GetIndexedTriangles(
@@ -475,6 +480,8 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 void LoadLightsFromLightPolygons( General3DMesh& light_polygon_mesh,
 								  std::vector< boost::shared_ptr<Light> >& dest_lights )
 {
+	LOG_FUNCTION_SCOPE();
+
 	vector<CConnectedSet> connected_sets;
 	GetConnectedSets( light_polygon_mesh, connected_sets );
 
@@ -512,9 +519,13 @@ bool CStaticGeometryCompiler::CreateLightmaps()
 
 	CreateGeneral3DMesh( m_Desc.m_InputFilepath, geom_filter, *pLightPolygonMesh );
 
-	if( pLightPolygonMesh->GetVertexBuffer()->empty()
+	LOG_PRINTF(( " num vertices: %d, lightmap option %d", (int)pLightPolygonMesh->GetVertexBuffer()->size(), (int)m_Desc.m_Lightmap.m_State ));
+
+//	if( pLightPolygonMesh->GetVertexBuffer()->empty()
+	if( pLightPolygonMesh->GetPolygonBuffer().empty()
 	 && m_Desc.m_Lightmap.m_State == CLightmapDesc::LIGHTMAP_NOT_SPECIFIED )
 	{
+		LOG_PRINT( " Light polygon mesh has no vertices && lightmap is not specified; leaving the function..." );
 		return false;
 	}
 
@@ -583,6 +594,8 @@ void CStaticGeometryCompiler::CopyTreeNodes_r( TerrainMeshTree& src_tree, Terrai
 /// m_pGraphicsMesh gets updated if the mesh is successfully subdivided
 bool CStaticGeometryCompiler::SubdivideGraphicsMesh( CTerrainMeshGenerator& mesh_divider )
 {
+	LOG_PRINT( " Subdividing the mesh..." );
+
 	mesh_divider.SetOutputTextureFormat( m_Desc.m_TextureSubdivisionOptions.m_OutputImageFormat );
 	mesh_divider.SetSplitTextureWidth( m_Desc.m_TextureSubdivisionOptions.m_SplitSize );
 	mesh_divider.SetTextureOutputDirectory( "./temp/" );
@@ -641,6 +654,8 @@ void CStaticGeometryCompiler::SetShaderParameterGroups()
 
 bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 {
+	LOG_PRINT( " Creating a mesh..." );
+
 	// create a single graphics mesh that contains all the graphics geometry
 	bool mesh_created = CreateGeneral3DMesh(
 		m_Desc.m_InputFilepath, // [in] .lwo, .3ds, etc.
@@ -649,7 +664,10 @@ bool CStaticGeometryCompiler::CompileGraphicsGeometry()
 		);
 
 	if( !mesh_created )
+	{
+		LOG_PRINT_ERROR( " Failed to create the mesh..." );
 		return false;
+	}
 
 	// separate graphics geometry
 	// 1. geometry that uses lightmap
