@@ -295,7 +295,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( res != Result::SUCCESS )
 		return 0;
 
-	CLogOutput_HTML html_log( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
+	LogOutput_HTML html_log( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
 	g_Log.AddLogOutput( &html_log );
 
 	InitFreeImage();
