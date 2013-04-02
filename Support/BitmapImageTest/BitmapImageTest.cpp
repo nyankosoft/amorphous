@@ -69,7 +69,7 @@ int main( int argc, char *argv[] )
 	InitFreeImage();
 
 	string log_filepath = "BitmapImageTest-" + string(GetBuildInfo()) + ".html";
-	boost::shared_ptr<CLogOutput_HTML> pLog( new CLogOutput_HTML(log_filepath) );
+	boost::shared_ptr<LogOutput_HTML> pLog( new LogOutput_HTML(log_filepath) );
 	g_Log.AddLogOutput( pLog.get() );
 
 	return RunTests();
