@@ -2,13 +2,13 @@
 #define __GraphicsElementEffectTest_HPP__
 
 
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/GraphicsEffectManager.hpp"
-#include "gds/Input/fwd.hpp"
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 

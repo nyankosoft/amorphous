@@ -1,12 +1,12 @@
 #include "CustomMeshTest.hpp"
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/VertexFormat.hpp"
-#include "gds/Graphics/Shader/GenericShaderDesc.hpp"
-#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Input.hpp"
+#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/VertexFormat.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Input.hpp"
 
 using std::string;
 using namespace boost;

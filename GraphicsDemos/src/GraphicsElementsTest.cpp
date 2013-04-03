@@ -1,8 +1,8 @@
 #include "GraphicsElementsTest.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Input.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Input.hpp"
 
 using std::string;
 using namespace boost;

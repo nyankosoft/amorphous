@@ -23,7 +23,7 @@
 #include "SimpleOverlayEffectsTest.hpp"
 #include "TextureFontTest.hpp"
 #include "TextureRenderTargetTest.hpp"
-#include "gds/Support/ParamLoader.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 
 CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )

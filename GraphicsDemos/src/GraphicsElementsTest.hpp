@@ -3,11 +3,11 @@
 
 
 #include <vector>
-#include "gds/Graphics/GraphicsElementManager.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Input/fwd.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 

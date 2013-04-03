@@ -1,10 +1,10 @@
 #include "EnvMapTest.hpp"
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/Direct3D/Direct3D9.hpp"
-#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "gds/Graphics/MeshUtilities.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Profile.hpp"
+#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/MeshUtilities.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Profile.hpp"
 #include <boost/foreach.hpp>
 
 using std::string;

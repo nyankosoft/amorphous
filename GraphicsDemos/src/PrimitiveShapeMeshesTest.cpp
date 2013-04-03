@@ -1,12 +1,12 @@
 #include "PrimitiveShapeMeshesTest.hpp"
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/Meshgenerators/PipeMeshGenerator.hpp"
-#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "gds/Graphics/Shader/ShaderLightManager.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Support/ParamLoader.hpp"
+#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/Meshgenerators/PipeMeshGenerator.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/ParamLoader.hpp"
 
 using std::string;
 using namespace boost;

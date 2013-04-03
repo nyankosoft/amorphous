@@ -1,16 +1,16 @@
 #include "PlanarReflectionTest.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics/Mesh/BasicMesh.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/Shader/ShaderManager.hpp"
-#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "gds/Graphics/Shader/ShaderManagerHub.hpp"
-#include "gds/Graphics/SkyboxMisc.hpp"
-#include "gds/Graphics/TextureRenderTarget.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
-#include "gds/Support/Timer.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/SkyboxMisc.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/CameraController_Win32.hpp"
+#include "amorphous/Support/Timer.hpp"
 
 using std::string;
 using std::vector;
@@ -36,10 +36,10 @@ public:
 };
 
 
-#include "gds/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 
 namespace amorphous {
-extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in gds/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
+extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in amorphous/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
 }
 
 void DrawPrimitives( PrimitiveType::Name primitive_type, const TLVertex<U32> *vertices, uint num_vertices )//, int u32_color_componets_order == always ARGB )

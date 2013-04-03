@@ -1,11 +1,11 @@
 #include "TextureFontTest.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/Font/TrueTypeTextureFont.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Input/InputHandler.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/filesystem_aux.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/Font/TrueTypeTextureFont.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/filesystem_aux.hpp"
 
 using std::vector;
 using std::string;

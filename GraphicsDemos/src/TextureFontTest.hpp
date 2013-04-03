@@ -3,10 +3,10 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "gds/base.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/TextureHandle.hpp"
-#include "gds/Support/indexed_vector.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Support/indexed_vector.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 

@@ -2,10 +2,10 @@
 #define  __BrickWallTextureGeneratorTest_HPP__
 
 
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Input/fwd.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 

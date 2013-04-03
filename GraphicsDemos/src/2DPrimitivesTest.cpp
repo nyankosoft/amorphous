@@ -1,7 +1,7 @@
 #include "2DPrimitivesTest.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/Font/TextureFont.hpp"
-#include "gds/Input.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Font/TextureFont.hpp"
+#include "amorphous/Input.hpp"
 
 
 using namespace std;

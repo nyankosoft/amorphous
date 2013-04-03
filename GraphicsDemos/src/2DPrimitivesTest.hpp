@@ -2,9 +2,9 @@
 #define  __2DPrimitivesTest_HPP__
 
 
-#include "gds/Graphics/2DPrimitive/2DFrameRect.hpp"
-#include "gds/Graphics/2DPrimitive/2DRoundRect.hpp"
-#include "gds/Input/fwd.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRoundRect.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 

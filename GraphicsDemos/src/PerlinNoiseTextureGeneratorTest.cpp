@@ -1,15 +1,15 @@
 #include "PerlinNoiseTextureGeneratorTest.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.hpp" //<<< This header contains the classes to test
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Support/MTRand.hpp"
-#include "gds/Utilities/PerlinAux.hpp"
-#include "gds/GUI.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.hpp" //<<< This header contains the classes to test
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Utilities/PerlinAux.hpp"
+#include "amorphous/GUI.hpp"
 
 using std::string;
 using namespace boost;

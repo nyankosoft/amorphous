@@ -1,13 +1,13 @@
 #include "GraphicsElementEffectTest.hpp"
-#include "gds/Graphics/Font/TextureFont.hpp"
-#include "gds/Graphics/GraphicsElementManager.hpp"
-#include "gds/Graphics/GraphicsEffectManager.hpp"
-#include "gds/Graphics/PyModule_GraphicsElement.hpp"
+#include "amorphous/Graphics/Font/TextureFont.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Graphics/PyModule_GraphicsElement.hpp"
 
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/lfs.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/lfs.hpp"
 using namespace lfs;
 
 #include <fstream>

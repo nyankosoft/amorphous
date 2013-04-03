@@ -2,13 +2,13 @@
 #define  __SimpleOverlayEffectsTest_H__
 
 
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/PseudoNoiseEffect.hpp"
-#include "gds/Input/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/PseudoNoiseEffect.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/GUI/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
