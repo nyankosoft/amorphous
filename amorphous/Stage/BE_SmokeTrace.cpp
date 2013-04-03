@@ -81,11 +81,9 @@ void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 	rvLastUpdatePos = rvEmitterPrevPos;
 
 	if( m_SmokeType == ST_PARTICLES_PER_DISTANCE )
-//		MakeDistanceBasedTrailParticles();
-        MakeSmokeTrace(pCopyEnt);
+        MakeDistanceBasedTrailParticles(pCopyEnt);
 	else // i.e. m_SmokeType == ST_PARTICLES_PER_TIME
-//		MakeTimeBasedTrailParticles();
-		MakeSmoke(pCopyEnt);
+		MakeTimeBasedTrailParticles(pCopyEnt);
 }
 
 
@@ -94,15 +92,15 @@ void CBE_SmokeTrace::Act( CCopyEntity* pCopyEnt )
 	ProfileBegin( "trail particle" );
 
 	if( m_SmokeType == ST_PARTICLES_PER_DISTANCE )
-        MakeSmokeTrace(pCopyEnt);
+        MakeDistanceBasedTrailParticles(pCopyEnt);
 	else // i.e. m_SmokeType == ST_PARTICLES_PER_TIME
-		MakeSmoke(pCopyEnt);
+		MakeTimeBasedTrailParticles(pCopyEnt);
 
 	ProfileEnd( "trail particle" );
 
 	if( !IsValidEntity(pCopyEnt) )
 	{
-		// terminated in MakeSmokeTrace() or MakeSmoke()
+		// terminated in MakeDistanceBasedTrailParticles() or MakeTimeBasedTrailParticles()
 		// - calling UpdateVertexBuffer() will cause error since extra data index is now -1
 		return;
 	}
@@ -126,7 +124,7 @@ void CBE_SmokeTrace::Act( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
+void CBE_SmokeTrace::MakeDistanceBasedTrailParticles( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
 	float& rfCurrentTime = CurrentTime(pCopyEnt);
@@ -287,7 +285,7 @@ void CBE_SmokeTrace::MakeSmokeTrace( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_SmokeTrace::MakeSmoke( CCopyEntity* pCopyEnt )
+void CBE_SmokeTrace::MakeTimeBasedTrailParticles( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
 

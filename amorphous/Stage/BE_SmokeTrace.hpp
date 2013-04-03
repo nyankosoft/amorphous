@@ -38,9 +38,9 @@ private:
 	};
 
 
-	void MakeSmoke( CCopyEntity* pCopyEnt );
+	void MakeTimeBasedTrailParticles( CCopyEntity* pCopyEnt );
 
-	void MakeSmokeTrace( CCopyEntity* pCopyEnt );
+	void MakeDistanceBasedTrailParticles( CCopyEntity* pCopyEnt );
 
 public:
 
