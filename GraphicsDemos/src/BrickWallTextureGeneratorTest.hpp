@@ -2,7 +2,6 @@
 #define  __BrickWallTextureGeneratorTest_HPP__
 
 
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
 #include "gds/Graphics/MeshObjectHandle.hpp"
 #include "gds/Graphics/ShaderHandle.hpp"
 #include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
@@ -23,7 +22,11 @@ class CBrickWallTextureGeneratorTest : public CGraphicsTestBase
 
 	MeshHandle m_BrickWallMesh;
 
+	unsigned int m_PresetIndex;
+
 private:
+
+	int LoadMesh();
 
 	bool InitShader();
 

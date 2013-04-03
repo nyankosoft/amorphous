@@ -2,6 +2,8 @@
 #include "gds/Graphics.hpp"
 #include "gds/Graphics/VertexFormat.hpp"
 #include "gds/Graphics/MeshGenerators/BrickWallMeshGenerator.hpp"
+#include "gds/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.hpp"
+#include "gds/Graphics/TextureGenerators/TextureFilter.hpp"
 #include "gds/Graphics/Shader/GenericShaderDesc.hpp"
 #include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "gds/Support/Profile.hpp"
@@ -14,6 +16,8 @@ using namespace boost;
 
 
 CBrickWallTextureGeneratorTest::CBrickWallTextureGeneratorTest()
+	:
+m_PresetIndex(0)
 {
 	m_MeshTechnique.SetTechniqueName( "Default" );
 
@@ -105,8 +109,11 @@ int CBrickWallTextureGeneratorTest::Init()
 	mesh_file_pathname = "BrickWallTextureGeneratorDemo/" + mesh_file_pathname;
 
 	BrickPanelDesc desc;
-	desc.per_brick_color_variations.min = SFloatRGBAColor( 0.5f, 0.5f, 0.5f, 1.0f );
-	desc.per_brick_color_variations.max = SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 1.0f );
+	desc.polygon_model_desc.size_variations.set( 0.000f, 0.002f );
+	desc.polygon_model_desc.position_variations.set( 0.000f, 0.002f );
+	desc.brick_color = SFloatRGBAColor( 0.8f, 0.8f, 0.8f, 1.0f );
+	desc.per_brick_color_variations.min = SFloatRGBAColor(-0.15f,-0.15f,-0.15f, 1.00f );//0.65f, 0.65f, 0.65f, 1.00f );
+	desc.per_brick_color_variations.max = SFloatRGBAColor( 0.15f, 0.15f, 0.15f, 1.00f );//0.95f, 0.95f, 0.95f, 1.00f );
 //	desc.color_variations.min = SFloatRGBAColor( 0.9f, 0.9f, 0.9f, 1.0f );
 //	desc.color_variations.max = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f );
 	desc.grayscale.set( 0.5f, 1.0f );
@@ -114,11 +121,23 @@ int CBrickWallTextureGeneratorTest::Init()
 	mesh_desc.pMeshGenerator.reset( new BrickWallMeshGenerator(desc) );
 	bool mesh_loaded = m_BrickWallMesh.Load( mesh_desc );
 
+	shared_ptr<BasicMesh> pBrickWallMesh = m_BrickWallMesh.GetMesh();
+
 	InitShader();
 
 //	SetLights( true );
 
 	return 0;
+}
+
+
+int CBrickWallTextureGeneratorTest::LoadMesh()
+{
+	MeshResourceDesc mesh_desc;
+	mesh_desc.pMeshGenerator.reset( new BrickWallMeshGenerator( (BrickPanelDesc::Preset)m_PresetIndex ) );
+	bool mesh_loaded = m_BrickWallMesh.Load( mesh_desc );
+
+	return mesh_loaded ? 0 : -1;
 }
 
 
@@ -145,7 +164,7 @@ void CBrickWallTextureGeneratorTest::RenderMeshes()
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-//	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	Result::Name res = shader_mgr.SetTechnique( m_MeshTechnique );
 
@@ -191,10 +210,18 @@ void CBrickWallTextureGeneratorTest::HandleInput( const InputData& input )
 			mesh_archive.SaveToFile( "brick_wall.msh" );
 		}
 		break;
-	case GIC_F12:
+	case GIC_RIGHT:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-//			SaveTexturesAsImageFiles();
+			m_PresetIndex = (m_PresetIndex + 1) % BrickPanelDesc::NUM_PRESETS;
+			LoadMesh();
+		}
+		break;
+	case GIC_LEFT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_PresetIndex = (m_PresetIndex + BrickPanelDesc::NUM_PRESETS - 1) % BrickPanelDesc::NUM_PRESETS;
+			LoadMesh();
 		}
 		break;
 	case GIC_SPACE:
@@ -204,6 +231,7 @@ void CBrickWallTextureGeneratorTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
