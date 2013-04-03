@@ -61,28 +61,9 @@ public:
 	virtual unsigned int GetArchiveObjectID() const { return BE_SMOKETRACE; }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
-
-//	void LoadGraphicsResources( const GraphicsParameters& rParam );
-//	void ReleaseGraphicsResources();
-
-
-/*	int GetNewExtraDataID()
-	{
-		if( m_iParticleSetCurrentIndex < NUM_MAX_PARTICLESETS )
-			return m_iParticleSetCurrentIndex++;
-		else
-		{
-			m_iParticleSetCurrentIndex = 0;
-			return m_iParticleSetCurrentIndex++;
-		}
-	}
-
-	SBE_ParticleSetExtraData& GetExtraData(int iExtraDataIndex)
-	{
-		return m_aParticleSet[iExtraDataIndex];
-	}*/
-
 };
+
+
 } // namespace amorphous
 
 
