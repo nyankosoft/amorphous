@@ -2,11 +2,11 @@
 #define  __TransformNode_H__
 
 
-#include "gds/3DMath/Quaternion.hpp"
-#include "gds/3DMath/Transform.hpp"
-#include "gds/BVH/fwd.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/3DMath/Transform.hpp"
+#include "amorphous/BVH/fwd.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

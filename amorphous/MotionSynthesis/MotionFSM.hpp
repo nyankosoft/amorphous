@@ -3,13 +3,13 @@
 
 
 #include <map>
-#include "gds/MotionSynthesis/fwd.hpp"
-#include "gds/MotionSynthesis/MotionPrimitive.hpp"
-#include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
-#include "gds/MotionSynthesis/BlendNode.hpp"
-#include "gds/Input/InputHandler.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/XML/fwd.hpp"
+#include "amorphous/MotionSynthesis/fwd.hpp"
+#include "amorphous/MotionSynthesis/MotionPrimitive.hpp"
+#include "amorphous/MotionSynthesis/MotionPrimitiveBlender.hpp"
+#include "amorphous/MotionSynthesis/BlendNode.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/XML/fwd.hpp"
 
 
 namespace amorphous

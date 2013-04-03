@@ -2,9 +2,9 @@
 #define __ENTITYMOTIONPATHREQUEST_H__
 
 
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/3DMath/Quaternion.hpp"
-#include "gds/Support/memory_helpers.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 #include "fwd.hpp"
 #include <vector>
 

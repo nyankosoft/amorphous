@@ -2,7 +2,7 @@
 #define  __CCOPYENTITYCALLBACK_H__
 
 
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 
 namespace amorphous

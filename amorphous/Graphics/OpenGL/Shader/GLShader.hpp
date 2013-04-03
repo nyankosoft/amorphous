@@ -2,13 +2,13 @@
 #define __GLShader_HPP__
 
 
-#include "gds/Graphics/OpenGL/GLGraphicsDevice.hpp"
-#include "gds/Graphics/OpenGL/fwd.hpp"
-#include "gds/Graphics/OpenGL/GLExtensions.hpp"
-#include "gds/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
-#include "gds/Graphics/Shader/ShaderManager.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/3DMath/Transform.hpp"
+#include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
+#include "amorphous/Graphics/OpenGL/fwd.hpp"
+#include "amorphous/Graphics/OpenGL/GLExtensions.hpp"
+#include "amorphous/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/3DMath/Transform.hpp"
 
 
 namespace amorphous

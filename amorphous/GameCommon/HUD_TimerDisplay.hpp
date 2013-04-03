@@ -2,8 +2,8 @@
 #define  __HUD_TimerDisplay_H__
 
 
-#include "gds/base.hpp"
-#include "gds/Graphics/fwd.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 
 
 namespace amorphous

@@ -6,8 +6,8 @@
 #include "GM_ControlRenderer.hpp"
 #include "GM_Control.hpp"
 
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/Graphics/GraphicsEffectHandle.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/GraphicsEffectHandle.hpp"
 
 #include <vector>
 

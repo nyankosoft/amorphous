@@ -1,11 +1,11 @@
 #include "CompositeMeshExporter_LW.hpp"
 #include "MassSpringExporter_LW.hpp"
-#include "gds/Support/StringAux.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/LightWave/LightWaveObject.hpp"
-#include "gds/LightWave/3DMeshModelBuilder_LW.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/LightWave/LightWaveObject.hpp"
+#include "amorphous/LightWave/3DMeshModelBuilder_LW.hpp"
 
-#include "gds/Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
+#include "amorphous/Graphics/MeshModel/ShadowVolumeMeshGenerator.hpp"
 
 
 namespace amorphous

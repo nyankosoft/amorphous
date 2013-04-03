@@ -2,12 +2,12 @@
 #define  __SkeletalCharacter_HPP__
 
 
-#include "gds/Item/GameItem.hpp"
-#include "gds/GameCommon/KeyBind.hpp"
-#include "gds/GameCommon/3DActionCode.hpp"
-#include "gds/MotionSynthesis/MotionFSM.hpp"
-#include "gds/MotionSynthesis/SkeletalMeshTransform.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/Item/GameItem.hpp"
+#include "amorphous/GameCommon/KeyBind.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/MotionSynthesis/MotionFSM.hpp"
+#include "amorphous/MotionSynthesis/SkeletalMeshTransform.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 
 namespace amorphous

@@ -1,22 +1,22 @@
 #include "ClothSystem.hpp"
-#include "gds/Graphics/MeshGenerators/MeshGenerators.hpp"
-#include "gds/Graphics/MeshUtilities.hpp"
-#include "gds/Graphics/GraphicsDevice.hpp"
-#include "gds/Graphics/Shader/ShaderManager.hpp"
-#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "gds/Graphics/Mesh/SkeletalMesh.hpp"
-#include "gds/Physics.hpp"
-#include "gds/XML.hpp"
-#include "gds/MotionSynthesis/MotionFSM.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/MTRand.hpp"
-#include "gds/Utilities/Physics/PhysicsMeshUtility.hpp"
+#include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
+#include "amorphous/Graphics/MeshUtilities.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/Physics.hpp"
+#include "amorphous/XML.hpp"
+#include "amorphous/MotionSynthesis/MotionFSM.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Utilities/Physics/PhysicsMeshUtility.hpp"
 
 
 namespace amorphous
 {
-//#include "gds/Support/lfs.hpp"
+//#include "amorphous/Support/lfs.hpp"
 
 using std::string;
 using std::vector;

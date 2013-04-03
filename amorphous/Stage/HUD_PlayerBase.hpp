@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/GraphicsEffectManager.hpp"
-#include "gds/GameCommon/HUD_TimerDisplay.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/GameCommon/HUD_TimerDisplay.hpp"
 
 
 namespace amorphous

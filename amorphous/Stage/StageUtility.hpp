@@ -2,18 +2,18 @@
 #define __StageUtility_HPP__
 
 
-#include "gds/Stage/Stage.hpp"
-#include "gds/Stage/EntityHandle.hpp"
-#include "gds/Physics/fwd.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/3DMath/AABB3.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/EntityHandle.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
 
 // for CStageCameraUtility
-#include "gds/Stage/BE_ScriptedCamera.hpp"
+#include "amorphous/Stage/BE_ScriptedCamera.hpp"
 
 // for CStageLightUtility
-#include "gds/Stage/LightEntity.hpp"
+#include "amorphous/Stage/LightEntity.hpp"
 
 
 namespace amorphous

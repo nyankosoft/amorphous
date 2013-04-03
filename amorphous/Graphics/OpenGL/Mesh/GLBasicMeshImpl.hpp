@@ -2,12 +2,12 @@
 #define __GLBasicMeshImpl_HPP__
 
 
-#include "gds/base.hpp"
+#include "amorphous/base.hpp"
 #include <gl/gl.h>											// Header File For The OpenGL32 Library
 #include <gl/glu.h>											// Header File For The GLu32 Library
-#include "gds/Graphics/Mesh/BasicMesh.hpp"
-#include "gds/Graphics/Mesh/MeshFactory.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/Mesh/MeshFactory.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

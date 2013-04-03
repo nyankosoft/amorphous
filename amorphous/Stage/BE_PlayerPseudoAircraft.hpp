@@ -1,18 +1,18 @@
 #ifndef  __BE_PLAYERPSEUDOAIRCRAFT_H__
 #define  __BE_PLAYERPSEUDOAIRCRAFT_H__
 
-#include "gds/Stage/BE_Player.hpp"
-#include "gds/Stage/BaseEntityHandle.hpp"
-#include "gds/Stage/CopyEntity.hpp"
-#include "gds/Stage/GameMessage.hpp"
-#include "gds/Stage/BEC_PseudoAircraft.hpp"
-#include "gds/Stage/HUD_PlayerAircraft.hpp"
-#include "gds/Stage/SubDisplay.hpp"
+#include "amorphous/Stage/BE_Player.hpp"
+#include "amorphous/Stage/BaseEntityHandle.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/GameMessage.hpp"
+#include "amorphous/Stage/BEC_PseudoAircraft.hpp"
+#include "amorphous/Stage/HUD_PlayerAircraft.hpp"
+#include "amorphous/Stage/SubDisplay.hpp"
 
-#include "gds/Support/FixedVector.hpp"
-#include "gds/GameCommon/PseudoAircraftSimulator.hpp"
-#include "gds/Item/GI_Aircraft.hpp"
-#include "gds/Item/Radar.hpp"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/GameCommon/PseudoAircraftSimulator.hpp"
+#include "amorphous/Item/GI_Aircraft.hpp"
+#include "amorphous/Item/Radar.hpp"
 
 
 namespace amorphous

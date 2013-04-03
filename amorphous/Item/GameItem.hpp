@@ -2,13 +2,13 @@
 #define  __GAMEITEM_H__
 
 
-#include "gds/Item/ItemEntity.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/MeshObjectContainer.hpp"
-#include "gds/GameCommon/LangID.hpp"
-#include "gds/Stage/fwd.hpp"
-#include "gds/XML/fwd.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Item/ItemEntity.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/MeshObjectContainer.hpp"
+#include "amorphous/GameCommon/LangID.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/XML/fwd.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 #include "fwd.hpp"
 
 

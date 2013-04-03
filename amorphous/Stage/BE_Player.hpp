@@ -6,13 +6,13 @@
 #include "BaseEntityHandle.hpp"
 #include "CopyEntity.hpp"
 #include "GameMessage.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Input/InputHandler.hpp"
-#include "gds/GameCommon/3DActionCode.hpp"
-#include "gds/GameCommon/CombatRecord.hpp"
-#include "gds/GUI/fwd.hpp"
-#include "gds/Sound/SoundHandle.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/GameCommon/CombatRecord.hpp"
+#include "amorphous/GUI/fwd.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
 
 
 namespace amorphous

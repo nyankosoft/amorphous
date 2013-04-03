@@ -4,9 +4,9 @@
 #include <vector>
 #include <boost/weak_ptr.hpp>
 
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/3DMath/ray.hpp"
-#include "gds/Graphics/fwd.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/ray.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 #include "Skeleton.hpp"
 
 

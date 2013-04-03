@@ -1,8 +1,8 @@
 #include "GLShader.hpp"
 #include <gl/gl.h>
-#include "gds/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/SafeDelete.hpp"
+#include "amorphous/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

@@ -1,5 +1,5 @@
 #include "SceneUtility.hpp"
-#include "gds/Physics.hpp"
+#include "amorphous/Physics.hpp"
 
 
 namespace amorphous

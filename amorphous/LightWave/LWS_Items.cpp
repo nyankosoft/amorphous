@@ -1,6 +1,6 @@
 #include "LWS_Items.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

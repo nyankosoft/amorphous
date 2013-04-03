@@ -2,11 +2,11 @@
 #define __PrimitiveShapeRenderer_HPP__
 
 
-#include "gds/3DMath/Sphere.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/3DMath/Sphere.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
 
 
 namespace amorphous

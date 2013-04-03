@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "gds/Support/shared_prealloc_pool.hpp"
+#include "amorphous/Support/shared_prealloc_pool.hpp"
 #include "fwd.hpp"
 
 

@@ -5,7 +5,7 @@
 #include "Skeleton.hpp"
 #include "TransformNode.hpp"
 #include "MotionPrimitive.hpp"
-#include "gds/Graphics/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 
 
 namespace amorphous

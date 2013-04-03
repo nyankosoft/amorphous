@@ -2,8 +2,8 @@
 #define  __MotionPrimitive_H__
 
 
-#include "gds/Support/Serialization/Serialization_BoostSmartPtr.hpp"
-#include "gds/Support/FixedVector.hpp"
+#include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 #include "fwd.hpp"
 #include "Skeleton.hpp"
 #include "Keyframe.hpp"

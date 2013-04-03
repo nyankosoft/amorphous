@@ -4,7 +4,7 @@
 
 #include <string>
 #include "fwd.hpp"
-#include "gds/Graphics/Rect.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 
 
 namespace amorphous

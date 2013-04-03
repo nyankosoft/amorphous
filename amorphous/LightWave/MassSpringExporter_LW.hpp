@@ -2,8 +2,8 @@
 #define  __MASSSPRINGEXPORTER_LW_H__
 
 
-#include "gds/PhysicsSim/MassSpringExporter.hpp"
-#include "gds/LightWave/LightWaveObject.hpp"
+#include "amorphous/PhysicsSim/MassSpringExporter.hpp"
+#include "amorphous/LightWave/LightWaveObject.hpp"
 
 
 namespace amorphous

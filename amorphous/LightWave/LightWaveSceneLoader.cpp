@@ -1,6 +1,6 @@
 #include "LightWaveSceneLoader.hpp"
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/Support/StringAux.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

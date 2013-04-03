@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

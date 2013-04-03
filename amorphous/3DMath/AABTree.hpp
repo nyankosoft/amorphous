@@ -9,8 +9,8 @@
 #include "AABB3.hpp"
 #include "ray.hpp"
 
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

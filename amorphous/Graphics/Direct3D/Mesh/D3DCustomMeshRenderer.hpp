@@ -3,8 +3,8 @@
 
 
 #include <vector>
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
-#include "gds/Graphics/Mesh/CustomMeshRenderer.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Graphics/Mesh/CustomMeshRenderer.hpp"
 
 
 namespace amorphous

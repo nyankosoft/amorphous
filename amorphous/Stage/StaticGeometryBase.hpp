@@ -3,11 +3,11 @@
 
 
 #include "fwd.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/Shader/ShaderParameter.hpp"
-#include "gds/3DMath/AABB3.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/Shader/ShaderParameter.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 
 namespace amorphous

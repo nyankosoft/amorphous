@@ -1,9 +1,9 @@
 #include "MotionPrimitiveBlender.hpp"
 
-#include "gds/Support/Macro.h"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/StringAux.hpp"
-#include "gds/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous

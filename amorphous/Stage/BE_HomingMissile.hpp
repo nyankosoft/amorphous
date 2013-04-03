@@ -4,7 +4,7 @@
 #include "CopyEntity.hpp"
 #include "BE_Explosive.hpp"
 #include "BaseEntityHandle.hpp"
-#include "gds/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Camera.hpp"
 
 
 namespace amorphous

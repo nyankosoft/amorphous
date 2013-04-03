@@ -2,7 +2,7 @@
 #define  __ScriptArchive_H__
 
 
-#include "gds/Support/SerializableStream.hpp"
+#include "amorphous/Support/SerializableStream.hpp"
 
 
 namespace amorphous

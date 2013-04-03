@@ -2,8 +2,8 @@
 #define  __Skeleton_H__
 
 
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 #include "fwd.hpp"
 #include "TransformNode.hpp"
 

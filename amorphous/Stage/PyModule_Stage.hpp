@@ -3,10 +3,10 @@
 
 
 #include "fwd.hpp"
-#include "gds/Script/fwd.hpp"
-#include "gds/Script/PythonHeaders.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/Script/fwd.hpp"
+#include "amorphous/Script/PythonHeaders.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 
 namespace amorphous

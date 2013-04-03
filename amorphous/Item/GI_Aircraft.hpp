@@ -5,17 +5,17 @@
 #include "GameItem.hpp"
 #include "WeaponSystem.hpp"
 
-#include "gds/Stage/BaseEntityHandle.hpp"
-#include "gds/Stage/Serialization_BaseEntityHandle.hpp"
+#include "amorphous/Stage/BaseEntityHandle.hpp"
+#include "amorphous/Stage/Serialization_BaseEntityHandle.hpp"
 
-#include "gds/Graphics/fwd.hpp"
-#include "gds/GameCommon/PseudoAircraftSimulator.hpp"
-#include "gds/GameCommon/NozzleFlameParams.hpp"
-#include "gds/GameCommon/MeshBoneController_Aircraft.hpp"
-#include "gds/GameCommon/MeshBoneControllerFactory.hpp"
-#include "gds/GameCommon/RangedSet.hpp"
-#include "gds/XML/fwd.hpp"
-#include "gds/Input/ForceFeedback/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/GameCommon/PseudoAircraftSimulator.hpp"
+#include "amorphous/GameCommon/NozzleFlameParams.hpp"
+#include "amorphous/GameCommon/MeshBoneController_Aircraft.hpp"
+#include "amorphous/GameCommon/MeshBoneControllerFactory.hpp"
+#include "amorphous/GameCommon/RangedSet.hpp"
+#include "amorphous/XML/fwd.hpp"
+#include "amorphous/Input/ForceFeedback/fwd.hpp"
 
 
 namespace amorphous

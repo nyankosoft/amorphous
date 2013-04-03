@@ -2,12 +2,12 @@
 #define  __TextFileScannerExtensions_HPP__
 
 
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/3DMath/Vector2.hpp"
-#include "gds/3DMath/Vector3.hpp"
-#include "gds/Graphics/FloatRGBColor.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/Graphics/Rect.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 
 
 namespace amorphous

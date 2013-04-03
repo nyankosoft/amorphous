@@ -7,11 +7,11 @@
 
 #include "fwd.hpp"
 #include "FloatRGBColor.hpp"
-#include "gds/3DMath/Vector3.hpp"
-#include "gds/3DMath/AABB3.hpp" // Used by CZoneAmbientLight
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
-#include "gds/Support/Serialization/Serialization_Color.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/AABB3.hpp" // Used by CZoneAmbientLight
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization_Color.hpp"
 
 
 namespace amorphous

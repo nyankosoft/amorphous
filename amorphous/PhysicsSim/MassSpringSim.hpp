@@ -3,10 +3,10 @@
 
 
 #include <vector>
-#include "gds/3DMath/Vector3.hpp"
-#include "gds/3DMath/AABTree.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/AABTree.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

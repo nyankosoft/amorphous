@@ -1,9 +1,9 @@
 #include "BVHMotionDatabaseCompiler.hpp"
 #include "BVHUtilities.hpp"
-#include "gds/BVH/BVHPlayer.hpp"
-#include "gds/XML/XMLDocumentLoader.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/StringAux.hpp"
+#include "amorphous/BVH/BVHPlayer.hpp"
+#include "amorphous/XML/XMLDocumentLoader.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
 #include <boost/foreach.hpp>
 
 

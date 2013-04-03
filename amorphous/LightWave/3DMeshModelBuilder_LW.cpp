@@ -1,10 +1,10 @@
-#include "gds/LightWave/LWO2_Object.hpp"
-#include "gds/LightWave/LWO2_Layer.hpp"
+#include "amorphous/LightWave/LWO2_Object.hpp"
+#include "amorphous/LightWave/LWO2_Layer.hpp"
 
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/StringAux.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "3DMeshModelBuilder_LW.hpp"
 

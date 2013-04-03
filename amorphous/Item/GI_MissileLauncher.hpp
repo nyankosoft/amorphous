@@ -3,12 +3,12 @@
 
 #include "GI_Weapon.hpp"
 
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Stage/fwd.hpp"
-#include "gds/Stage/ViewFrustumTest.hpp"
-#include "gds/base.hpp"
-#include "gds/Input/ForceFeedback/fwd.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/ViewFrustumTest.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Input/ForceFeedback/fwd.hpp"
 
 
 namespace amorphous

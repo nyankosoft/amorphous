@@ -4,10 +4,10 @@
 
 #include <boost/shared_ptr.hpp>
 #include "ApplicationBase.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/Support/CameraController.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Support/CameraController.hpp"
 
 
 namespace amorphous

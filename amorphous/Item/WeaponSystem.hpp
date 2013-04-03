@@ -4,11 +4,11 @@
 
 #include "GI_Weapon.hpp"
 #include "GI_Ammunition.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Stage/fwd.hpp"
-//#include "gds/Stage/BaseEntityHandle.hpp"
-#include "gds/Stage/EntityGroupHandle.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Stage/fwd.hpp"
+//#include "amorphous/Stage/BaseEntityHandle.hpp"
+#include "amorphous/Stage/EntityGroupHandle.hpp"
 
 
 namespace amorphous

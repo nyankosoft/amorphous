@@ -2,7 +2,7 @@
 #define  __BaseEntityFactory_H__
 
 
-#include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
 #include "fwd.hpp"
 
 

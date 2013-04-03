@@ -3,8 +3,8 @@
 
 
 #include <boost/weak_ptr.hpp>
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
 #include "MotionPrimitive.hpp"
 
 

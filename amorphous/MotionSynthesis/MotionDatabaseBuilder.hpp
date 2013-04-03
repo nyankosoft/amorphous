@@ -2,8 +2,8 @@
 #define  __MotionDatabaseBuilder_H__
 
 
-#include "gds/XML/XMLNodeReader.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
+#include "amorphous/XML/XMLNodeReader.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "fwd.hpp"
 #include "MotionPrimitive.hpp"

@@ -2,8 +2,8 @@
 #define  __MeshBoneControllerFactory_H__
 
 
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
 
 
 namespace amorphous

@@ -1,7 +1,7 @@
 #include "LWO2_Layer.hpp"
 #include "LWO2_Object.hpp"
-#include "gds/3DMath/Vector2.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "assert.h"
 #include <algorithm>

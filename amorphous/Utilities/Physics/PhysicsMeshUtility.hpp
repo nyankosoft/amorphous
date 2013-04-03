@@ -3,8 +3,8 @@
 
 
 #include <string>
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Physics/SceneUtility.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Physics/SceneUtility.hpp"
 
 
 namespace amorphous

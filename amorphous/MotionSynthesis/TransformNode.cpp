@@ -1,6 +1,6 @@
 #include "TransformNode.hpp"
-#include "gds/BVH/BVHBone.hpp"
-#include "gds/3DMath/TCBSpline.hpp"
+#include "amorphous/BVH/BVHBone.hpp"
+#include "amorphous/3DMath/TCBSpline.hpp"
 
 
 namespace amorphous

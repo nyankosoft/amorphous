@@ -4,8 +4,8 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "gds/Support/singleton.hpp"
-#include "gds/Item/fwd.hpp"
+#include "amorphous/Support/singleton.hpp"
+#include "amorphous/Item/fwd.hpp"
 
 
 namespace amorphous

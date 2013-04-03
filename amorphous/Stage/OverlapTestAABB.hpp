@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "gds/3DMath/AABB3.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
 #include "fwd.hpp"
 
 

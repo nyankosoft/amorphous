@@ -3,8 +3,8 @@
 
 
 #include "3DActionCode.hpp"
-#include "gds/Input/InputHandler.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

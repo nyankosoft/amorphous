@@ -3,7 +3,7 @@
 
 
 #include "CameraControllerBase.hpp"
-#include "gds/Input/InputHandler.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 #include <boost/shared_ptr.hpp>
 
 

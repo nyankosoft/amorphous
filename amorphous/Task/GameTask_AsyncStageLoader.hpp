@@ -3,10 +3,10 @@
 
 
 #include "GameTask.hpp"
-#include "gds/GUI/fwd.hpp"
-#include "gds/Stage/fwd.hpp"
-#include "gds/Stage/StageLoader.hpp"
-#include "gds/Support/Timer.hpp"
+#include "amorphous/GUI/fwd.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/StageLoader.hpp"
+#include "amorphous/Support/Timer.hpp"
 
 
 namespace amorphous

@@ -4,17 +4,17 @@
 
 #include "fwd.hpp"
 #include "EntityGroupHandle.hpp"
-#include "gds/Physics/fwd.hpp"
-#include "gds/3DMath/AABB3.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics/TextureHandle.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/MeshObjectContainer.hpp"
-#include "gds/Graphics/MeshContainerRenderMethod.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/MeshObjectContainer.hpp"
+#include "amorphous/Graphics/MeshContainerRenderMethod.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

@@ -3,9 +3,9 @@
 
 
 #include "GUIGameTask.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
-#include "gds/Stage/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/GUI/fwd.hpp"
+#include "amorphous/Stage/fwd.hpp"
 
 
 namespace amorphous

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "gds/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
 
 
 namespace amorphous

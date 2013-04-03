@@ -7,13 +7,13 @@
 #include "CopyEntity.hpp"
 #include "EntityMotionPathRequest.hpp"
 
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/FloatRGBColor.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/3DMath/Vector2.hpp"
-#include "gds/3DMath/Quaternion.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
 
-#include "gds/GameCommon/CriticalDamping.hpp"
+#include "amorphous/GameCommon/CriticalDamping.hpp"
 
 
 namespace amorphous

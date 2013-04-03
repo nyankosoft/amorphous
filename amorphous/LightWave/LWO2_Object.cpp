@@ -1,5 +1,5 @@
 #include "LWO2_Object.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

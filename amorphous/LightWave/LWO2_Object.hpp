@@ -4,7 +4,7 @@
 
 #include "LWO2_Surface.hpp"
 #include "LWO2_Layer.hpp"
-#include "gds/Support/progress_display.hpp"
+#include "amorphous/Support/progress_display.hpp"
 
 
 namespace amorphous

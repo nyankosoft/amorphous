@@ -7,8 +7,8 @@
 #include "ShaderHandle.hpp"
 #include "Shader/ShaderTechniqueHandle.hpp"
 #include "Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/XML/fwd.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/XML/fwd.hpp"
 
 
 namespace amorphous

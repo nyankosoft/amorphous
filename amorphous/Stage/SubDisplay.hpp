@@ -6,12 +6,12 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/3DMath/Quaternion.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/GameCommon/CriticalDamping.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/GameCommon/CriticalDamping.hpp"
 //#include "Graphics/GraphicsComponentCollector.hpp"
 
 #include "fwd.hpp"

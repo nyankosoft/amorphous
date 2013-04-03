@@ -3,8 +3,8 @@
 
 
 #include "fwd.hpp"
-#include "gds/Script/fwd.hpp"
-#include "gds/Script/PythonHeaders.hpp"
+#include "amorphous/Script/fwd.hpp"
+#include "amorphous/Script/PythonHeaders.hpp"
 
 
 /*

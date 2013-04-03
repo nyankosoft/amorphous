@@ -2,7 +2,7 @@
 #define  __GLCustomMeshRenderer_HPP__
 
 
-#include "gds/Graphics/Mesh/CustomMeshRenderer.hpp"
+#include "amorphous/Graphics/Mesh/CustomMeshRenderer.hpp"
 
 
 namespace amorphous

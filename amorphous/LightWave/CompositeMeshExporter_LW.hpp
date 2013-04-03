@@ -3,8 +3,8 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "gds/LightWave/fwd.hpp"
-#include "gds/Graphics/MeshModel/CompositeMesh.hpp"
+#include "amorphous/LightWave/fwd.hpp"
+#include "amorphous/Graphics/MeshModel/CompositeMesh.hpp"
 
 
 namespace amorphous

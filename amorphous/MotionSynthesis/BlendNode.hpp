@@ -3,12 +3,12 @@
 
 
 #include <map>
-#include "gds/3DMath/Quaternion.hpp"
-#include "gds/3DMath/Transform.hpp"
-#include "gds/Support/FixedVector.hpp"
-#include "gds/MotionSynthesis/fwd.hpp"
-#include "gds/MotionSynthesis/MotionPrimitive.hpp"
-#include "gds/MotionSynthesis/MotionPrimitiveBlender.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/3DMath/Transform.hpp"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/MotionSynthesis/fwd.hpp"
+#include "amorphous/MotionSynthesis/MotionPrimitive.hpp"
+#include "amorphous/MotionSynthesis/MotionPrimitiveBlender.hpp"
 
 
 namespace amorphous

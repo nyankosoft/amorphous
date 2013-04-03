@@ -2,12 +2,12 @@
 #define __COPYENTITY_H__
 
 
-#include "gds/base.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/3DMath/3DStructs.hpp"
-#include "gds/Support/FixedVector.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/3DStructs.hpp"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 #include "fwd.hpp"
 #include "CopyEntityDesc.hpp"

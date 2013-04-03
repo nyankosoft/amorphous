@@ -3,7 +3,7 @@
 
 
 #include "GameTask.hpp"
-#include "gds/Stage/fwd.hpp"
+#include "amorphous/Stage/fwd.hpp"
 
 
 namespace amorphous

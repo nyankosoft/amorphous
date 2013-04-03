@@ -3,7 +3,7 @@
 
 
 #include "GameTask.hpp"
-#include "gds/GUI/fwd.hpp"
+#include "amorphous/GUI/fwd.hpp"
 
 
 namespace amorphous

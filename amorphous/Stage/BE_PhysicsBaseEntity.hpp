@@ -2,8 +2,8 @@
 #define __BE_PHYSICSBASEENTITY_H__
 
 #include "BaseEntity.hpp"
-#include "gds/Physics/ActorDesc.hpp"
-#include "gds/Physics/TriangleMeshDesc.hpp"
+#include "amorphous/Physics/ActorDesc.hpp"
+#include "amorphous/Physics/TriangleMeshDesc.hpp"
 
 
 namespace amorphous

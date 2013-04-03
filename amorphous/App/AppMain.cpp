@@ -1,9 +1,9 @@
 #include "ApplicationBase.hpp"
-#include "gds/Graphics/GraphicsResourceManager.hpp"
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Input/StdKeyboard.hpp"
-#include "gds/Input/StdMouseInput.hpp"
+#include "amorphous/Graphics/GraphicsResourceManager.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Input/StdKeyboard.hpp"
+#include "amorphous/Input/StdMouseInput.hpp"
 
 // Windows headers
 #include <windows.h>

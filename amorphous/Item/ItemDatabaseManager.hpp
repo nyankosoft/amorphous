@@ -4,9 +4,9 @@
 
 #include "fwd.hpp"
 #include "GameItem.hpp"
-#include "gds/Support/singleton.hpp"
-#include "gds/Support/Serialization/ArchiveObjectFactory.hpp"
-#include "gds/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/singleton.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 #include <boost/shared_ptr.hpp>
 
 

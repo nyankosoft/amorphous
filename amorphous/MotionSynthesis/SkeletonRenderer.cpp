@@ -1,16 +1,16 @@
 #include "SkeletonRenderer.hpp"
 #include "MotionPrimitive.hpp"
 //#include "Support/LineSegmentRenderer.hpp"
-#include "gds/3DMath/MatrixConversions.hpp"
-#include "gds/Graphics/PrimitiveRenderer.hpp"
-#include "gds/Graphics/Shader/ShaderManager.hpp"
-#include "gds/Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/Graphics/PrimitiveRenderer.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 
 
 namespace amorphous
 {
-//#include "gds/Graphics/3DtoScreenSpaceConversions.hpp"
+//#include "amorphous/Graphics/3DtoScreenSpaceConversions.hpp"
 
 using namespace msynth;
 

@@ -2,8 +2,8 @@
 #define  __GameApplicationBase_HPP__
 
 
-#include "gds/Input/fwd.hpp"
-#include "gds/Task/fwd.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Task/fwd.hpp"
 #include "ApplicationBase.hpp"
 
 

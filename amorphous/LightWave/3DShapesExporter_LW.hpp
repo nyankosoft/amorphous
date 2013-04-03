@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "gds/base.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/LightWave/fwd.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/LightWave/fwd.hpp"
 
 
 namespace amorphous

@@ -3,14 +3,14 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
-#include "gds//base.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/TextureRenderTarget.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/PseudoNoiseEffect.hpp"
-#include "gds/Support/FixedVector.hpp"
+#include "amorphous//base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/PseudoNoiseEffect.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 #include "ScreenEffect.hpp"
 
 

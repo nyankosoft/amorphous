@@ -2,8 +2,8 @@
 #define  __GAMEITEMDATABASE_H__
 
 
-#include "gds/Support/memory_helpers.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

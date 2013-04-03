@@ -18,9 +18,9 @@
 */
 
 
-#include "gds/3DMath/Vector2.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/Rect.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 
 #include "fwd.hpp"
 #include "GM_Static.hpp"

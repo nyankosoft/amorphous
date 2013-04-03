@@ -4,13 +4,13 @@
 // base class for game task classes
 
 
-#include "gds/base.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Input/fwd.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 
-#include "gds/Graphics/RenderTask.hpp"
+#include "amorphous/Graphics/RenderTask.hpp"
 
 #include <map>
 

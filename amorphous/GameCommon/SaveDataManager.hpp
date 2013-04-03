@@ -4,10 +4,10 @@
 
 #include <vector>
 #include <string>
-#include "gds/Support/StringAux.hpp"
-#include "gds/Support/Serialization/BinaryDatabase.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
-#include "gds/Support/singleton.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/singleton.hpp"
 
 
 namespace amorphous

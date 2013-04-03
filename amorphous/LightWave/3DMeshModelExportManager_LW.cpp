@@ -2,9 +2,9 @@
 #include "3DMeshModelBuilder_LW.hpp"
 #include "LWO2_Common.hpp"
 #include "LWO2_Object.hpp"
-#include "gds/Support/memory_helpers.hpp"
-#include "gds/Support/progress_display.hpp"
-#include "gds/Support/lfs.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/progress_display.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
 

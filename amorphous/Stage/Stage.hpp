@@ -2,13 +2,13 @@
 #define __STAGE_H__
 
 
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Physics/fwd.hpp"
-#include "gds/Sound/fwd.hpp"
-#include "gds/Input/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/Sound/fwd.hpp"
+#include "amorphous/Input/fwd.hpp"
 
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Support/Timer.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Support/Timer.hpp"
 
 #include "fwd.hpp"
 #include "CopyEntity.hpp"

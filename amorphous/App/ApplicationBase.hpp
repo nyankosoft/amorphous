@@ -4,7 +4,7 @@
 
 #include <string>
 #include <vector>
-#include "gds/Input/fwd.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 
 #ifdef _DEBUG

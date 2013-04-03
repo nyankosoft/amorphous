@@ -2,7 +2,7 @@
 #define  __MASSSPRINGEXPORTER_H__
 
 
-#include "gds/PhysicsSim/MassSpringSim.hpp"
+#include "amorphous/PhysicsSim/MassSpringSim.hpp"
 
 
 namespace amorphous

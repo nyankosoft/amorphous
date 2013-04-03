@@ -2,11 +2,11 @@
 #define __MouseCursor_SINGLETON_H__
 
 
-#include "gds/Support/Singleton.hpp"
-#include "gds/base.hpp"
-#include "gds/Graphics/2DPrimitive/2DRect.hpp"
-#include "gds/Graphics/TextureHandle.hpp"
-#include "gds/Graphics/Rect.hpp"
+#include "amorphous/Support/Singleton.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 #include <string>
 
 

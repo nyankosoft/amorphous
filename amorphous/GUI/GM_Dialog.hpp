@@ -1,7 +1,7 @@
 #ifndef  __GM_DIALOG_H__
 #define  __GM_DIALOG_H__
 
-#include "gds/base.hpp"
+#include "amorphous/base.hpp"
 #include "fwd.hpp"
 #include "GM_Event.hpp"
 #include "GM_Control.hpp"

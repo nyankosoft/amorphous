@@ -2,12 +2,12 @@
 #define  __ItemEntity_H__
 
 
-#include "gds/Stage/fwd.hpp"
-#include "gds/Stage/CopyEntity.hpp"
-#include "gds/Stage/CopyEntityDesc.hpp"
-#include "gds/Stage/EntityMotionPathRequest.hpp"
-#include "gds/Stage/BaseEntityHandle.hpp"
-#include "gds/Stage/GraphicsResourcesUpdateCallback.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Stage/EntityMotionPathRequest.hpp"
+#include "amorphous/Stage/BaseEntityHandle.hpp"
+#include "amorphous/Stage/GraphicsResourcesUpdateCallback.hpp"
 #include "fwd.hpp"
 
 

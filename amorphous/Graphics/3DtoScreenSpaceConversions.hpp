@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "gds/3DMath/Vector2.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
 #include "Camera.hpp"
 
 

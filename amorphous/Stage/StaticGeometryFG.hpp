@@ -2,13 +2,13 @@
 #define  __STATICGEOMETRYFG_H__
 
 
-#include "gds/Stage/fwd.hpp"
-#include "gds/Stage/StaticGeometryBase.hpp"
-#include "gds/Stage/StaticGeometryArchiveFG.hpp"
-#include "gds/Physics/fwd.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/TextureHandle.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/StaticGeometryBase.hpp"
+#include "amorphous/Stage/StaticGeometryArchiveFG.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

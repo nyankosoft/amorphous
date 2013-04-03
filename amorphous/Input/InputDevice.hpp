@@ -10,8 +10,8 @@
 #include "ForceFeedback/fwd.hpp"
 
 /// auto repeat control requires the timer
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/FixedVector.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
 
 namespace amorphous

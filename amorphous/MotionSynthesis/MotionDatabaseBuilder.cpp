@@ -1,9 +1,9 @@
 #include "MotionDatabaseBuilder.hpp"
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/StringAux.hpp"
-#include "gds/XML/XMLDocumentLoader.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/XML/XMLDocumentLoader.hpp"
 
 
 namespace amorphous

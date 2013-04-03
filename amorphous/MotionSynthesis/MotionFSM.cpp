@@ -1,7 +1,7 @@
 #include "MotionFSM.hpp"
 #include "MotionDatabase.hpp"
-#include "gds/XML.hpp"
-#include "gds/Support/ParamLoader.hpp"
+#include "amorphous/XML.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 #include <boost/filesystem.hpp>
 
 

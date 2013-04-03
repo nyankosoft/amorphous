@@ -2,8 +2,8 @@
 #define  __MotionDatabase_H__
 
 
-#include "gds/Support/Serialization/BinaryDatabase.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 #include "fwd.hpp"
 #include "MotionPrimitive.hpp"
 

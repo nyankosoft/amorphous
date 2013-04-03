@@ -1,8 +1,8 @@
 #ifndef  __INPUTHANDLER_PLAYERBASE_H__
 #define  __INPUTHANDLER_PLAYERBASE_H__
 
-#include "gds/Input/InputHandler.hpp"
-#include "gds/GameCommon/3DActionCode.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
 
 
 namespace amorphous

@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include "CriticalDamping.hpp"
-#include "gds/GUI/GM_StdControlRendererManager.hpp"
+#include "amorphous/GUI/GM_StdControlRendererManager.hpp"
 
 
 namespace amorphous

@@ -2,8 +2,8 @@
 #define __RangedSet_H__
 
 
-#include "gds/Support/MTRand.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

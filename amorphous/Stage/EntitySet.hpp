@@ -11,8 +11,8 @@
 #include "BaseEntityHandle.hpp"
 #include "OverlapTestAABB.hpp"
 
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 
 namespace amorphous

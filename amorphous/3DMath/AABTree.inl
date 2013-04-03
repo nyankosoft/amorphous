@@ -1,5 +1,5 @@
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous

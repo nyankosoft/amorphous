@@ -4,7 +4,7 @@
 #include "BE_PhysicsBaseEntity.hpp"
 
 #include "BaseEntityHandle.hpp"
-#include "gds/Sound/SoundHandle.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
 
 
 namespace amorphous

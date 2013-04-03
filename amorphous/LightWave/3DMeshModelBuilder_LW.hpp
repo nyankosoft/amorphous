@@ -4,8 +4,8 @@
 
 #include <list>
 #include "fwd.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelBuilder.hpp"
-#include "gds/Graphics/MeshModel/General3DMesh.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "amorphous/Graphics/MeshModel/General3DMesh.hpp"
 
 
 #ifdef _DEBUG

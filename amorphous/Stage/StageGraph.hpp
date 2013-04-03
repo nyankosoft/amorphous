@@ -2,11 +2,11 @@
 #define __STAGEGRAPH_SINGLETON_H__
 
 
-#include "gds/Script/fwd.hpp"
-#include "gds/Script/PythonHeaders.hpp"
+#include "amorphous/Script/fwd.hpp"
+#include "amorphous/Script/PythonHeaders.hpp"
 
-#include "gds/Support/singleton.hpp"
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/singleton.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

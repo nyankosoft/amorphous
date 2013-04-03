@@ -2,9 +2,9 @@
 #define  __BEC_Destruction_H__
 
 
-#include "gds/GameCommon/RangedSet.hpp"
-#include "gds/Support/Serialization/Archive.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/GameCommon/RangedSet.hpp"
+#include "amorphous/Support/Serialization/Archive.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 #include "BaseEntityHandle.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 #include "fwd.hpp"

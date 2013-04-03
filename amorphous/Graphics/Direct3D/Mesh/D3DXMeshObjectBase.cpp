@@ -1,6 +1,6 @@
 #include "D3DXMeshObjectBase.hpp"
 
-#include "gds/base.hpp"
+#include "amorphous/base.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/CgEffectBase.hpp"

@@ -8,7 +8,7 @@
 #include <boost/python.hpp>
 #include <boost/thread.hpp>
 #include "ScriptArchive.hpp"
-#include "gds/Support/singleton.hpp"
+#include "amorphous/Support/singleton.hpp"
 
 
 namespace amorphous

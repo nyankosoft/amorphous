@@ -3,12 +3,12 @@
 
 #include "fwd.hpp"
 #include "BE_Player.hpp"
-#include "gds/Task/GameTask.hpp"
-#include "gds/GameCommon/KeyBind.hpp"
-#include "gds/GameCommon/SaveDataManager.hpp"
-#include "gds/GameCommon/PlayTime.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/singleton.hpp"
+#include "amorphous/Task/GameTask.hpp"
+#include "amorphous/GameCommon/KeyBind.hpp"
+#include "amorphous/GameCommon/SaveDataManager.hpp"
+#include "amorphous/GameCommon/PlayTime.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/singleton.hpp"
 #include <boost/shared_ptr.hpp>
 
 

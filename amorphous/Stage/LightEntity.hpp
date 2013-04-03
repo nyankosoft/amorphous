@@ -2,9 +2,9 @@
 #define  __LightEntity_H__
 
 
-#include "gds/Support/prealloc_pool.hpp"
-#include "gds/Graphics/HemisphericLight.hpp"
-#include "gds/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Support/prealloc_pool.hpp"
+#include "amorphous/Graphics/HemisphericLight.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
 #include "CopyEntity.hpp"
 
 

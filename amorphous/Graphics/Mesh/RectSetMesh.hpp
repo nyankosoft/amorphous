@@ -2,9 +2,9 @@
 #define __RectSetMesh_HPP__
 
 
-#include "gds/Support/MTRand.hpp"
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

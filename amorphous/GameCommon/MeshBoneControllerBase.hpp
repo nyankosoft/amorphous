@@ -5,11 +5,11 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "gds/3DMath/Transform.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/XML/fwd.hpp"
+#include "amorphous/3DMath/Transform.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/XML/fwd.hpp"
 
-#include "gds/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

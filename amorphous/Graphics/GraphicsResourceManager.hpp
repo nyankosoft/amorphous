@@ -10,7 +10,7 @@
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceLoaders.hpp"
 
-#include "gds/Support/singleton.hpp"
+#include "amorphous/Support/singleton.hpp"
 
 
 namespace amorphous

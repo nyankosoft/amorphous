@@ -1,7 +1,7 @@
-#include "gds/Script/PyModule_StageUtility.hpp"
-#include "gds/Stage/EntityMotionPathRequest.hpp"
-#include "gds/Stage/BE_ScriptedCamera.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
+#include "amorphous/Script/PyModule_StageUtility.hpp"
+#include "amorphous/Stage/EntityMotionPathRequest.hpp"
+#include "amorphous/Stage/BE_ScriptedCamera.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -2,7 +2,7 @@
 #define  __GameWindowManager_HPP__
 
 #include <string>
-#include "gds/base.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous

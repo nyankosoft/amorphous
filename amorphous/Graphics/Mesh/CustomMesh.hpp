@@ -3,12 +3,12 @@
 
 
 #include <vector>
-#include "gds/base.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/VertexFormat.hpp"
-#include "gds/Graphics/General3DVertex.hpp"
-#include "gds/Graphics/Mesh/BasicMesh.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/VertexFormat.hpp"
+#include "amorphous/Graphics/General3DVertex.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

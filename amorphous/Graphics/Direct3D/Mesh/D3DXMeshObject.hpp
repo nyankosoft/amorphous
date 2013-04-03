@@ -2,8 +2,8 @@
 #define __D3DXMESHOBJECT_H__
 
 
-#include "gds/base.hpp"
-#include "gds/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 #include "D3DXMeshObjectBase.hpp"
 
 

@@ -3,7 +3,7 @@
 
 
 #include "BaseEntityHandle.hpp"
-#include "gds/Support/Serialization/Archive.hpp"
+#include "amorphous/Support/Serialization/Archive.hpp"
 
 
 namespace amorphous

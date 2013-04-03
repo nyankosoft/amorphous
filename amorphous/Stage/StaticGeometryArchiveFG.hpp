@@ -2,9 +2,9 @@
 #define  __STATICGEOMETRYARCHIVEFG_H__
 
 
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

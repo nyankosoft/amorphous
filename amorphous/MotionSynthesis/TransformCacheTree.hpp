@@ -4,8 +4,8 @@
 
 #include <set>
 #include <string>
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Support/memory_helpers.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 #include "fwd.hpp"
 
 

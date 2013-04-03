@@ -1,5 +1,5 @@
 #include "SkeletalMeshTransform.hpp"
-#include "gds/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
 
 
 namespace amorphous

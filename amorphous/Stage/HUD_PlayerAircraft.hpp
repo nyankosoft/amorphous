@@ -4,11 +4,11 @@
 
 #include "HUD_PlayerBase.hpp"
 
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/TextureHandle.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
-#include "gds/GameTextSystem/fwd.hpp"
-#include "gds/GameCommon/PseudoAircraftHUD.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/GameTextSystem/fwd.hpp"
+#include "amorphous/GameCommon/PseudoAircraftHUD.hpp"
 
 
 namespace amorphous

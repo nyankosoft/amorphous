@@ -1,9 +1,9 @@
 #ifndef  __COMPOSITEMESH_H__
 #define  __COMPOSITEMESH_H__
 
-#include "gds/Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/PhysicsSim/MassSpringSim.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/PhysicsSim/MassSpringSim.hpp"
 
 
 namespace amorphous

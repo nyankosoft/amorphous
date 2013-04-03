@@ -1,8 +1,8 @@
 #ifndef __PyModule_StageUtility_HPP__
 #define __PyModule_StageUtility_HPP__
 
-#include "gds/Support/Vec3_StringAux.hpp"
-#include "gds/Stage/StageUtility.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Stage/StageUtility.hpp"
 #include <boost/thread.hpp>
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>

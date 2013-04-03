@@ -3,11 +3,11 @@
 
 #include "GameItem.hpp"
 
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Sound/SoundHandle.hpp"
-#include "gds/Sound/Serialization_SoundHandle.hpp"
-#include "gds/Stage/fwd.hpp"
-#include "gds/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
+#include "amorphous/Sound/Serialization_SoundHandle.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous
