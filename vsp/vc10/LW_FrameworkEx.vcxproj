@@ -76,18 +76,18 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\gds\LightWave\3DMeshModelBuilder_LW.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\3DMeshModelExportManager_LW.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\3DShapesExporter_LW.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\CompositeMeshExporter_LW.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\MassSpringExporter_LW.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\3DMeshModelBuilder_LW.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\3DMeshModelExportManager_LW.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\3DShapesExporter_LW.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\CompositeMeshExporter_LW.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\MassSpringExporter_LW.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\gds\LightWave\3DMeshModelBuilder_LW.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\3DMeshModelExportManager_LW.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\3DShapesExporter_LW.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\CompositeMeshExporter_LW.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\MassSpringExporter_LW.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\3DMeshModelBuilder_LW.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\3DMeshModelExportManager_LW.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\3DShapesExporter_LW.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\CompositeMeshExporter_LW.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\MassSpringExporter_LW.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="BasicFramework.vcxproj">

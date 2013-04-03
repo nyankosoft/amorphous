@@ -138,1949 +138,1949 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\gds\Graphics\BillboardArrayMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\BillboardArrayMesh.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\BuiltinSkyTextures.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\BuiltinSkyTextures.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Camera.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\CubeMapManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\CubeMapManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\DoubleConeScrollEffect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsComponentCollector.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsComponentCollector.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsDevice.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsDevice.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\IndexedPolygon.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\IndexedPolygon.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\LensFlare.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\LogOutput_OnScreen.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshContainerRenderMethod.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshObjectContainer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PostProcessEffect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffect.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PostProcessEffectManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PrimitiveShapeRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PseudoNoiseEffect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\PseudoNoiseEffect.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\RectTriListIndex.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\RenderTaskProcessor.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\RenderTaskProcessor.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\ShadowMapManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\ShadowMapManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\ShadowMaps.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\ShadowMaps.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\ShapeDetector.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\ShapeDetector.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\ShapesExtractor.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\ShapesExtractor.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\SimpleMotionBlur.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\SimpleMotionBlur.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\SkyboxMisc.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\SkyboxMisc.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\TextureRenderTarget.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\VarianceShadowMapManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\VarianceShadowMapManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectBase.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectBase.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\CgEffectLightManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\ShaderLightManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\ShaderManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManager.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Shader\ShaderManagerHub.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.cpp">
       <Filter>Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\BasicMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\BasicMesh.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\CustomMesh.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\CustomMeshRenderer.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\MeshBone.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshBone.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\MeshFactory.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshFactory.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\NVMeshMender.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\ProgressiveMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\ProgressiveMesh.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\RectSetMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\RectSetMesh.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\SkeletalMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\SkeletalMesh.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\AsyncResourceLoader.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\AsyncResourceLoader.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceCacheManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceCacheManager.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceDescs.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceDescs.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceEntries.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceEntries.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceHandle.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceHandle.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceLoaders.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceLoaders.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResourceManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceManager.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsResources.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResources.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshObjectHandle.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshObjectHandle.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\ResourceLoadingStateHolder.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\ShaderHandle.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\ShaderHandle.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\TextureHandle.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\TextureHandle.cpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DFrameRect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DPolygon.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DPrimitive.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DRect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DRectSet.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DRoundRect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DTexRect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTexRect.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\2DPrimitive\2DTriangle.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsEffectManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsEffectManager.cpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsElementManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsElementManager.cpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\GraphicsElements.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsElements.cpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PyModule_GraphicsElement.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Font\TextureFont.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Font\TextureFont.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Font\TrueTypeTextureFont.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Font\UTFFont.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\LinePrimitives.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\LinePrimitives.cpp">
       <Filter>Graphics\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\RectTree.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp">
       <Filter>Graphics\2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLExtensions.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLExtensions.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLGraphicsDevice.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLGraphicsResources.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLTextureRenderTarget.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
       <Filter>Graphics\OpenGL\2DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.cpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLCgEffect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.cpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLShader.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.cpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\Shader\GLSLShaderLightManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLSLShaderLightManager.cpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DGraphicsResources.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DGraphicsResources.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DTextureRenderTarget.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DTextureRenderTarget.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Direct3D9.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Direct3D9.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\TextureTool.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\TextureTool.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.cpp">
       <Filter>Graphics\Direct3D\2DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DCgEffect.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.cpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\D3DShaderManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DShaderManager.cpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\HLSLShaderLightManager.cpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.cpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.cpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.cpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.cpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObject.cpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.cpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXPMeshObject.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXPMeshObject.cpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\aabb3.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\aabb3.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\AABTree.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\AABTree.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\BSPTreeForBox.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForBox.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\BSPTreeForTriangleMesh.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\ConvexPolygon.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\ConvexPolygon.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\OBBTree.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\OBBTree.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\Perlin.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\Perlin.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\PrimitivePolygonModelMaker.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\DIInputDeviceMonitor.cpp">
+    <ClCompile Include="..\..\amorphous\Input\DIInputDeviceMonitor.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\DIKeyboard.cpp">
+    <ClCompile Include="..\..\amorphous\Input\DIKeyboard.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\DirectInput.cpp">
+    <ClCompile Include="..\..\amorphous\Input\DirectInput.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\DirectInputGamepad.cpp">
+    <ClCompile Include="..\..\amorphous\Input\DirectInputGamepad.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\DirectInputMouse.cpp">
+    <ClCompile Include="..\..\amorphous\Input\DirectInputMouse.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\InputDevice.cpp">
+    <ClCompile Include="..\..\amorphous\Input\InputDevice.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\InputHub.cpp">
+    <ClCompile Include="..\..\amorphous\Input\InputHub.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\StdKeyboard.cpp">
+    <ClCompile Include="..\..\amorphous\Input\StdKeyboard.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\StdMouseInput.cpp">
+    <ClCompile Include="..\..\amorphous\Input\StdMouseInput.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\ForceFeedback\DIForceFeedbackEffectImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Input\ForceFeedback\DIForceFeedbackEffectImpl.cpp">
       <Filter>Input\ForceFeedback</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Input\ForceFeedback\ForceFeedbackEffect.cpp">
+    <ClCompile Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.cpp">
       <Filter>Input\ForceFeedback</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Aux.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Aux.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Button.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Control.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Control.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_ControlDescBase.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_ControlDescBase.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_ControlRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_ControlRenderer.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_ControlRendererManager.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_ControlRendererManager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Dialog.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Dialog.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_DialogCloseButton.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_DialogCloseButton.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_DialogDesc.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_DialogDesc.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_DialogManager.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_DialogManager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Keybind.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Keybind.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_ListBox.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_ListBox.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_ScrollBar.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_ScrollBar.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Slider.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Slider.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_SoundPlayer.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_SoundPlayer.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_Static.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_Static.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_StdControlRenderer.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_StdControlRenderer.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_StdControlRendererManager.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_StdControlRendererManager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_SubDialogButton.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_SubDialogButton.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\GM_XMLParser.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\GM_XMLParser.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\GUI\InputHandler_Dialog.cpp">
+    <ClCompile Include="..\..\amorphous\GUI\InputHandler_Dialog.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\BMPImageExporter.cpp">
+    <ClCompile Include="..\..\amorphous\Support\BMPImageExporter.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\CameraController.cpp">
+    <ClCompile Include="..\..\amorphous\Support\CameraController.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\CameraController_Win32.cpp">
+    <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\CameraControllerBase.cpp">
+    <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\DebugOutput.cpp">
+    <ClCompile Include="..\..\amorphous\Support\DebugOutput.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\MTRand.cpp">
+    <ClCompile Include="..\..\amorphous\Support\MTRand.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Profile.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Profile.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Timer_Win32.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Timer_Win32.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Log\DefaultLog.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Log\DefaultLog.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Log\LogInputBase.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Log\LogOutputBase.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Log\LogOutputBase.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Log\StateLog.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Serialization\ArchiveObjectBase.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.cpp">
       <Filter>Support\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Serialization\BinaryArchive_Input.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.cpp">
       <Filter>Support\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Serialization\BinaryArchive_Output.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Output.cpp">
       <Filter>Support\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\Serialization\BinaryDatabase.cpp">
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryDatabase.cpp">
       <Filter>Support\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\adler32.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\adler32.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\compress.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\compress.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\crc32.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\crc32.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\deflate.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\deflate.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\infback.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\infback.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\inffast.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inffast.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\inflate.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inflate.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\inftrees.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inftrees.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\trees.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\trees.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\uncompr.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\uncompr.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\zpipe_stream.cpp">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\zpipe_stream.cpp">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Support\ZLib\zutil.c">
+    <ClCompile Include="..\..\amorphous\Support\ZLib\zutil.c">
       <Filter>Support\ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Sound\OggVorbisAux.cpp">
+    <ClCompile Include="..\..\amorphous\Sound\OggVorbisAux.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Sound\OpenALSoundManagerImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Sound\OpenALSoundManagerImpl.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Sound\OpenALSoundSourceImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Sound\OpenALSoundSourceImpl.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Sound\PyModule_SoundMethods.cpp">
+    <ClCompile Include="..\..\amorphous\Sound\PyModule_SoundMethods.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Sound\SoundManager.cpp">
+    <ClCompile Include="..\..\amorphous\Sound\SoundManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Sound\WaveFile.cpp">
+    <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\BVH\BVHBone.cpp">
+    <ClCompile Include="..\..\amorphous\BVH\BVHBone.cpp">
       <Filter>BVH</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\BVH\BVHPlayer.cpp">
+    <ClCompile Include="..\..\amorphous\BVH\BVHPlayer.cpp">
       <Filter>BVH</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\XML\XercesString.cpp">
+    <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
       <Filter>XML</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\XML\XMLDocumentLoader.cpp">
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentLoader.cpp">
       <Filter>XML</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Actor.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Actor.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\PhysicsEngine.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\PhysicsEngine.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Preprocessor.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Preprocessor.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Scene.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Scene.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\SceneUtility.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\SceneUtility.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysActor.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysActor.cpp">
       <Filter>Physics\engines\Ageia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysicsEngine.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysicsEngine.cpp">
       <Filter>Physics\engines\Ageia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysPreprocessorImpl.cpp">
       <Filter>Physics\engines\Ageia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysScene.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysScene.cpp">
       <Filter>Physics\engines\Ageia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysShapeDescFactory.cpp">
       <Filter>Physics\engines\Ageia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\App\ApplicationBase.cpp">
+    <ClCompile Include="..\..\amorphous\App\ApplicationBase.cpp">
       <Filter>BasicFramework</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\App\GameWindowManager.cpp">
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager.cpp">
       <Filter>BasicFramework</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\App\GameWindowManager_Win32.cpp">
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager_Win32.cpp">
       <Filter>BasicFramework</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\App\GameWindowManager_Win32_D3D.cpp">
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager_Win32_D3D.cpp">
       <Filter>BasicFramework</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\App\GameWindowManager_Win32_GL.cpp">
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager_Win32_GL.cpp">
       <Filter>BasicFramework</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\App\GraphicsApplicationBase.cpp">
+    <ClCompile Include="..\..\amorphous\App\GraphicsApplicationBase.cpp">
       <Filter>BasicFramework</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Utilities\Physics\PhysicsMeshUtility.cpp">
+    <ClCompile Include="..\..\amorphous\Utilities\Physics\PhysicsMeshUtility.cpp">
       <Filter>Utilities\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Font\FontFactory.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Font\FontFactory.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Font\D3DXFont.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.cpp">
       <Filter>Graphics\Direct3D\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DCGraphicsResourceLoaders.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\PostProcessEffectFilter.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectFilter.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\D3DInitialization.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.cpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\OpenGL\GLInitialization.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp">
       <Filter>Graphics\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.cpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\HelixPolygonModelMaker.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.cpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\3DMath\BrickWallPolygonModelMaker.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\TextureFilter.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gds\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\gds\Graphics\BillboardArrayMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\BoundingVolumeTreeRenderers.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\BuiltinSkyTextures.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\BuiltinSkyTextures.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Camera.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\CubeMapManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\D3DMisc.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\D3DMisc.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\DoubleConeScrollEffect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\FloatRGBAColor.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\FloatRGBAColor.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\FloatRGBColor.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\FloatRGBColor.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\General2DVertex.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\General2DVertex.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\General3DVertex.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\General3DVertex.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsComponentCollector.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsComponentCollector.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsDevice.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsDevice.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\HemisphericLight.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\HemisphericLight.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\IndexedPolygon.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\IndexedPolygon.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\LensFlare.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\LensFlare.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\LightStructs.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\LogOutput_OnScreen.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshContainerRenderMethod.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshObjectContainer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PostProcessEffect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffect.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PostProcessEffectManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectManager.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PrimitiveRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PrimitiveRenderer.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PrimitiveShapeRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PseudoNoiseEffect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PseudoNoiseEffect.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\RectTriListIndex.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\RenderTask.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\RenderTask.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\RenderTaskProcessor.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\RenderTaskProcessor.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ShadowMapManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ShadowMapManager.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ShadowMaps.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ShadowMaps.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ShapeContainers.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ShapeContainers.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ShapeDetector.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ShapeDetector.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ShapesExtractor.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ShapesExtractor.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\SimpleMotionBlur.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\SimpleMotionBlur.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\SkyboxMisc.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\SkyboxMisc.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\SurfaceFormat.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\SurfaceFormat.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureCoord.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureCoord.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureRenderTarget.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureRenderTarget.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\VarianceShadowMapManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\VarianceShadowMapManager.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\BlendTransformsLoader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\BlendTransformsLoader.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\CgEffectBase.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectBase.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\CgEffectLightManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\FixedFunctionPipelineManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\GenericShaderDesc.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderDesc.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\GenericShaderGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderGenerator.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderGenerator.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderLightManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManager.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderManagerHub.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderParameter.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderParameter.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderTechniqueHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderTechniqueHandle.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Shader\ShaderVariableLoader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderVariableLoader.hpp">
       <Filter>Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\3DMeshModelArchive.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\3DMeshModelBuilder.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\BasicMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\BasicMesh.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\CustomMesh.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\CustomMeshRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\CustomMeshRenderer.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMesh.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\General3DMeshFunctions.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\MeshBone.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshBone.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\MeshFactory.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshFactory.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\NVMeshMender.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\PrimitiveShapeMeshes.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\ProgressiveMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\ProgressiveMesh.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\RectSetMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\RectSetMesh.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\SkeletalMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\SkeletalMesh.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\TangentSpace.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TangentSpace.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshModel\TerrainMeshGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\AsyncResourceLoader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\AsyncResourceLoader.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceCacheManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceCacheManager.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceDescs.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceDescs.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceEntries.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceEntries.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceHandle.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceLoaders.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceLoaders.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResourceManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceManager.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsResources.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResources.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshObjectHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshObjectHandle.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ResourceLoadingStateHolder.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\ShaderHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\ShaderHandle.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureHandle.hpp">
       <Filter>Graphics\GraphicsResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DFrameRect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DPolygon.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DPrimitive.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DRect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DRectSet.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DRoundRect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DTexRect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTexRect.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\2DPrimitive\2DTriangle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsEffectHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectHandle.hpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsEffectManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectManager.hpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsElementManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsElementManager.hpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\GraphicsElements.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsElements.hpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PyModule_GraphicsElement.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.hpp">
       <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\BuiltinFonts.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\BuiltinFonts.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\FontBase.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\FontBase.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\GrayscalePixelDataLoader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\GrayscalePixelDataLoader.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\SimpleBitmapFontData.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\SimpleBitmapFontData.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\TextureFont.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\TextureFont.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\TrueTypeTextureFont.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Font\UTFFont.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Font\UTFFont.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\LinePrimitives.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\LinePrimitives.hpp">
       <Filter>Graphics\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Point.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Point.hpp">
       <Filter>Graphics\2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Rect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp">
       <Filter>Graphics\2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\RectTree.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\RectTree.hpp">
       <Filter>Graphics\2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\glext.h">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\glext.h">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLExtensions.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLExtensions.hpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLGraphicsDevice.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.hpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLGraphicsResources.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.hpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLTextureRenderTarget.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.hpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp">
       <Filter>Graphics\OpenGL\2DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp">
       <Filter>Graphics\OpenGL\2DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLCgEffect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.hpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLShader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.hpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\Shader\GLSLShaderLightManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLSLShaderLightManager.hpp">
       <Filter>Graphics\OpenGL\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DGraphicsResources.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DGraphicsResources.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DSurfaceFormat.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DSurfaceFormat.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DTextureRenderTarget.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DTextureRenderTarget.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Direct3D9.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Direct3D9.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_BillboardVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_BillboardVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_BumpVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_BumpVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_BumpWeightVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_BumpWeightVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_ColorVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_ColorVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_MapVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_MapVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_NormalVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_NormalVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_ShadowVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_ShadowVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_TextureVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_TextureVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_TextureVertex2.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_TextureVertex2.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_TLVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_TLVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_Vertices.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_Vertices.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\FVF_WeightVertex.h">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_WeightVertex.h">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\TextureTool.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\TextureTool.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.hpp">
       <Filter>Graphics\Direct3D\2DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\2DPrimitive\2DRectSetImpl_D3D.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DRectSetImpl_D3D.hpp">
       <Filter>Graphics\Direct3D\2DPrimitive</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DCgEffect.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.hpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.hpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.hpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\D3DShaderManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DShaderManager.hpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\HLSLShaderLightManager.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\HLSLShaderLightManager.hpp">
       <Filter>Graphics\Direct3D\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.hpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.hpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.hpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.hpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObject.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObject.hpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.hpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXPMeshObject.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXPMeshObject.hpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Mesh\D3DXSMeshObject.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.hpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\3DStructs.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\3DStructs.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\aabb2.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\aabb2.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\aabb3.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\aabb3.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\AABTree.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\AABTree.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\BSPTreeForBox.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForBox.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\BSPTreeForTriangleMesh.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\ConvexPolygon.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexPolygon.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Cylinder.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Cylinder.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\index.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\index.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\IndexedTriangle.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\IndexedTriangle.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\MathMisc.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\MathMisc.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Matrix22.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix22.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Matrix23.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix23.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Matrix33.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix33.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Matrix34.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix34.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Matrix44.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix44.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\MatrixConversions.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\MatrixConversions.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\misc.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\misc.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\OBB3.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\OBB3.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\OBBTree.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\OBBTree.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Perlin.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Perlin.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Plane.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Plane.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\precision.h">
+    <ClInclude Include="..\..\amorphous\3DMath\precision.h">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\PrimitivePolygonModelMaker.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Quaternion.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Quaternion.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\ray.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\ray.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Sphere.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Sphere.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\stream.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\stream.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Transform.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Transform.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Triangle.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Triangle.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Vector2.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Vector2.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Vector2_Gen.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Vector2_Gen.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Vector3.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Vector3.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Vector3_Gen.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Vector3_Gen.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\DIInputDeviceMonitor.hpp">
+    <ClInclude Include="..\..\amorphous\Input\DIInputDeviceMonitor.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\DIKeyboard.hpp">
+    <ClInclude Include="..\..\amorphous\Input\DIKeyboard.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\DirectInput.hpp">
+    <ClInclude Include="..\..\amorphous\Input\DirectInput.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\DirectInputGamepad.hpp">
+    <ClInclude Include="..\..\amorphous\Input\DirectInputGamepad.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\DirectInputMouse.hpp">
+    <ClInclude Include="..\..\amorphous\Input\DirectInputMouse.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\Input\fwd.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\GameInput.hpp">
+    <ClInclude Include="..\..\amorphous\Input\GameInput.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\GICodeTitle.hpp">
+    <ClInclude Include="..\..\amorphous\Input\GICodeTitle.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\InputDevice.hpp">
+    <ClInclude Include="..\..\amorphous\Input\InputDevice.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\InputDeviceGroup.hpp">
+    <ClInclude Include="..\..\amorphous\Input\InputDeviceGroup.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\InputHandler.hpp">
+    <ClInclude Include="..\..\amorphous\Input\InputHandler.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\InputHub.hpp">
+    <ClInclude Include="..\..\amorphous\Input\InputHub.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\StdKeyboard.hpp">
+    <ClInclude Include="..\..\amorphous\Input\StdKeyboard.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\StdMouseInput.hpp">
+    <ClInclude Include="..\..\amorphous\Input\StdMouseInput.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\ForceFeedback\DIForceFeedbackEffectImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\DIForceFeedbackEffectImpl.hpp">
       <Filter>Input\ForceFeedback</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\ForceFeedback\ForceFeedbackEffect.hpp">
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.hpp">
       <Filter>Input\ForceFeedback</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Input\ForceFeedback\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\fwd.hpp">
       <Filter>Input\ForceFeedback</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Aux.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Aux.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Button.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Button.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Control.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Control.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ControlDescBase.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ControlDescBase.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ControlRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ControlRenderer.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ControlRendererManager.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ControlRendererManager.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Controls.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Controls.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Dialog.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Dialog.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_DialogCloseButton.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_DialogCloseButton.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_DialogDesc.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_DialogDesc.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_DialogManager.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_DialogManager.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Event.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Event.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_EventHandlerBase.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_EventHandlerBase.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Input.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Input.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Keybind.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Keybind.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ListBox.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ListBox.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ListBoxDesc.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ListBoxDesc.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ScrollBar.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ScrollBar.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_ScrollBarDesc.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_ScrollBarDesc.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Slider.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Slider.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_SoundPlayer.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_SoundPlayer.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_Static.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_Static.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_StdControlRenderer.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_StdControlRenderer.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_StdControlRendererManager.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_StdControlRendererManager.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_SubDialogButton.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_SubDialogButton.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\GM_XMLParser.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\GM_XMLParser.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\InputHandler_Dialog.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\InputHandler_Dialog.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\ui.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\ui.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\GUI\ui_fwd.hpp">
+    <ClInclude Include="..\..\amorphous\GUI\ui_fwd.hpp">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\BitmapImage.hpp">
+    <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\BMPImageExporter.hpp">
+    <ClInclude Include="..\..\amorphous\Support\BMPImageExporter.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\BuiltinImage.hpp">
+    <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\CameraController.hpp">
+    <ClInclude Include="..\..\amorphous\Support\CameraController.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\CameraController_Win32.hpp">
+    <ClInclude Include="..\..\amorphous\Support\CameraController_Win32.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\CameraControllerBase.hpp">
+    <ClInclude Include="..\..\amorphous\Support\CameraControllerBase.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\DebugOutput.hpp">
+    <ClInclude Include="..\..\amorphous\Support\DebugOutput.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ImageArchive.hpp">
+    <ClInclude Include="..\..\amorphous\Support\ImageArchive.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\lfs.hpp">
+    <ClInclude Include="..\..\amorphous\Support\lfs.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Macro.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Macro.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\MTRand.hpp">
+    <ClInclude Include="..\..\amorphous\Support\MTRand.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ParamLoader.hpp">
+    <ClInclude Include="..\..\amorphous\Support\ParamLoader.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Profile.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Profile.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ResourceArchiver.hpp">
+    <ClInclude Include="..\..\amorphous\Support\ResourceArchiver.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\SafeDelete.hpp">
+    <ClInclude Include="..\..\amorphous\Support\SafeDelete.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\SafeDeleteVector.hpp">
+    <ClInclude Include="..\..\amorphous\Support\SafeDeleteVector.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\SerializableStream.hpp">
+    <ClInclude Include="..\..\amorphous\Support\SerializableStream.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Singleton.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Singleton.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\stream_buffer.hpp">
+    <ClInclude Include="..\..\amorphous\Support\stream_buffer.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\StringAux.hpp">
+    <ClInclude Include="..\..\amorphous\Support\StringAux.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\TextFileScanner.hpp">
+    <ClInclude Include="..\..\amorphous\Support\TextFileScanner.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Timer.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Timer.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Timer_Win32.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Timer_Win32.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Vec3_StringAux.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Vec3_StringAux.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Log\DefaultLog.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Log\DefaultLog.hpp">
       <Filter>Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Log\Log.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Log\Log.hpp">
       <Filter>Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Log\LogInputBase.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Log\LogInputBase.hpp">
       <Filter>Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Log\LogOutputBase.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutputBase.hpp">
       <Filter>Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Log\StateLog.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Log\StateLog.hpp">
       <Filter>Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Archive.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Archive.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\ArchiveObjectBase.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\BinaryArchive_Input.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\BinaryArchive_Output.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive_Output.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\BinaryDatabase.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryDatabase.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_32BitColor.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_32BitColor.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_3DCommon.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_3DCommon.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_3DMath.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_3DMath.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_Color.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Color.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_FixedVector.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_FixedVector.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_Light.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Light.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\crc32.hpp">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\crc32.hpp">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\deflate.hpp">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\deflate.hpp">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\inffast.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inffast.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\inffixed.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inffixed.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\inflate.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inflate.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\inftrees.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inftrees.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\trees.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\trees.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\zconf.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zconf.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\zconf.in.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zconf.in.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\zlib.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zlib.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\zpipe_stream.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zpipe_stream.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\ZLib\zutil.h">
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zutil.h">
       <Filter>Support\ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\UTF8\utf8.h">
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8.h">
       <Filter>Support\UTF8</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\UTF8\utf8\checked.h">
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\checked.h">
       <Filter>Support\UTF8\utf8</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\UTF8\utf8\core.h">
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\core.h">
       <Filter>Support\UTF8\utf8</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\UTF8\utf8\unchecked.h">
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\unchecked.h">
       <Filter>Support\UTF8\utf8</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\fwd.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\OggVorbisAux.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\OggVorbisAux.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\OpenALSoundManagerImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\OpenALSoundManagerImpl.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\OpenALSoundSourceImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\OpenALSoundSourceImpl.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\PyModule_SoundMethods.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\PyModule_SoundMethods.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\Serialization_SoundHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\Serialization_SoundHandle.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\SoundDesc.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\SoundDesc.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\SoundHandle.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\SoundHandle.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\SoundManager.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\SoundManager.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\SoundManagerImpl.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\SoundManagerImpl.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\SoundSource.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\SoundSource.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Sound\WaveFile.hpp">
+    <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\BVH\BVHBone.hpp">
+    <ClInclude Include="..\..\amorphous\BVH\BVHBone.hpp">
       <Filter>BVH</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\BVH\BVHPlayer.hpp">
+    <ClInclude Include="..\..\amorphous\BVH\BVHPlayer.hpp">
       <Filter>BVH</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\BVH\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\BVH\fwd.hpp">
       <Filter>BVH</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\XML\XercesString.hpp">
+    <ClInclude Include="..\..\amorphous\XML\XercesString.hpp">
       <Filter>XML</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\XML\xmlch2x.hpp">
+    <ClInclude Include="..\..\amorphous\XML\xmlch2x.hpp">
       <Filter>XML</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\XML\XMLDocumentLoader.hpp">
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentLoader.hpp">
       <Filter>XML</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\XML\XMLNodeReader.hpp">
+    <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp">
       <Filter>XML</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Physics\ContactStreamIterator.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\ContactStreamIterator.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Physics\MeshData.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\MeshData.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Physics\SceneUtility.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\SceneUtility.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Physics\Ageia\NxPhysContactStreamIterator.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Ageia\NxPhysContactStreamIterator.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\App\ApplicationBase.hpp">
+    <ClInclude Include="..\..\amorphous\App\ApplicationBase.hpp">
       <Filter>BasicFramework</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\App\GameWindowManager.hpp">
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager.hpp">
       <Filter>BasicFramework</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\App\GameWindowManager_Win32.hpp">
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager_Win32.hpp">
       <Filter>BasicFramework</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\App\GameWindowManager_Win32_D3D.hpp">
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager_Win32_D3D.hpp">
       <Filter>BasicFramework</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\App\GameWindowManager_Win32_GL.hpp">
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager_Win32_GL.hpp">
       <Filter>BasicFramework</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\App\GraphicsApplicationBase.hpp">
+    <ClInclude Include="..\..\amorphous\App\GraphicsApplicationBase.hpp">
       <Filter>BasicFramework</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Utilities\TextFileScannerExtensions.hpp">
+    <ClInclude Include="..\..\amorphous\Utilities\TextFileScannerExtensions.hpp">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Utilities\Physics\PhysicsMeshUtility.hpp">
+    <ClInclude Include="..\..\amorphous\Utilities\Physics\PhysicsMeshUtility.hpp">
       <Filter>Utilities\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Utilities\Physics\PhysicsShapeMakerVisitor.hpp">
+    <ClInclude Include="..\..\amorphous\Utilities\Physics\PhysicsShapeMakerVisitor.hpp">
       <Filter>Utilities\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath.hpp" />
-    <ClInclude Include="..\..\gds\base.hpp" />
-    <ClInclude Include="..\..\gds\Graphics.hpp" />
-    <ClInclude Include="..\..\gds\GUI.hpp" />
-    <ClInclude Include="..\..\gds\Input.hpp" />
-    <ClInclude Include="..\..\gds\Physics.hpp" />
-    <ClInclude Include="..\..\gds\Platform.hpp" />
-    <ClInclude Include="..\..\gds\Platform_Win32.hpp" />
-    <ClInclude Include="..\..\gds\Support.hpp" />
-    <ClInclude Include="..\..\gds\XML.hpp" />
-    <ClInclude Include="..\..\gds\Graphics\Font\FontFactory.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath.hpp" />
+    <ClInclude Include="..\..\amorphous\base.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics.hpp" />
+    <ClInclude Include="..\..\amorphous\GUI.hpp" />
+    <ClInclude Include="..\..\amorphous\Input.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics.hpp" />
+    <ClInclude Include="..\..\amorphous\Platform.hpp" />
+    <ClInclude Include="..\..\amorphous\Platform_Win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support.hpp" />
+    <ClInclude Include="..\..\amorphous\XML.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\FontFactory.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\Vector4.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\Vector4.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Font\D3DXFont.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.hpp">
       <Filter>Graphics\Direct3D\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\PostProcessEffectFilter.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectFilter.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GridTextureGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GridTextureGenerator.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\NoiseTextureGenerators.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\D3DInitialization.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.hpp">
       <Filter>Graphics\Direct3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\OpenGL\GLInitialization.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Mesh\ConvexMeshSplitter.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\ConvexPolygonUtilities.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexPolygonUtilities.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\GradationTextureGenerators.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GradationTextureGenerators.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\MeshGenerators.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\PipeMeshGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp">
       <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\HelixPolygonModelMaker.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\fwd.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\fwd.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\array2d.hpp">
+    <ClInclude Include="..\..\amorphous\Support\array2d.hpp">
       <Filter>Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Support\Serialization\Serialization_array2d.hpp">
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_array2d.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\3DMath\BrickWallPolygonModelMaker.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\TextureFilter.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\TextureGenerators\TextureGeneratorFactory.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gds\Graphics\MeshGenerators\RectMeshGenerator.hpp">
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\gds\Graphics\FloatRGBAColor.inl">
+    <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">
       <Filter>Graphics</Filter>
     </None>
-    <None Include="..\..\gds\Graphics\FloatRGBColor.inl">
+    <None Include="..\..\amorphous\Graphics\FloatRGBColor.inl">
       <Filter>Graphics</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\AABTree.inl">
+    <None Include="..\..\amorphous\3DMath\AABTree.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Matrix22.inl">
+    <None Include="..\..\amorphous\3DMath\Matrix22.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Matrix33.inl">
+    <None Include="..\..\amorphous\3DMath\Matrix33.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Matrix44.inl">
+    <None Include="..\..\amorphous\3DMath\Matrix44.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Quaternion.inl">
+    <None Include="..\..\amorphous\3DMath\Quaternion.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Vector2_Gen.inl">
+    <None Include="..\..\amorphous\3DMath\Vector2_Gen.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Vector3_Gen.inl">
+    <None Include="..\..\amorphous\3DMath\Vector3_Gen.inl">
       <Filter>3DMath</Filter>
     </None>
-    <None Include="..\..\gds\3DMath\Vector4.inl">
+    <None Include="..\..\amorphous\3DMath\Vector4.inl">
       <Filter>3DMath</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuildStep Include="..\..\gds\Physics\Actor.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Actor.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Actor.inl">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Actor.inl">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\ActorDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\ActorDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\BodyDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\BodyDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\BoxShapeDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\BoxShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\CapsuleShapeDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\CapsuleShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Cloth.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Cloth.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\ClothDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\ClothDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\DescImplFactory.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\DescImplFactory.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Enums.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Enums.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\fwd.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\fwd.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Joint.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Joint.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\JointDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\JointDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Material.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Material.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\MaterialDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\MaterialDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\PhysicsEngine.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\PhysicsEngine.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Preprocessor.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Preprocessor.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\RawTriangleMeshShapeDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\RawTriangleMeshShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ray.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ray.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\RaycastHit.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\RaycastHit.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\RevoluteJoint.Desc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\RevoluteJoint.Desc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\RevoluteJoint.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\RevoluteJoint.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Scene.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Scene.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\SceneDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\SceneDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Shape.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Shape.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\ShapeDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\ShapeDescFactory.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeDescFactory.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\ShapeEnums.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeEnums.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\ShapeImpl.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeImpl.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\SphereShapeDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\SphereShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\SphericalJoint.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\SphericalJoint.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\SphericalJointDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\SphericalJointDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\SpringDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\SpringDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Stream.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Stream.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\TriangleMesh.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMesh.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\TriangleMeshDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMeshDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\TriangleMeshShapeDesc.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMeshShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\fwd.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\fwd.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxMathConv.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxMathConv.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysActor.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysActor.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysCloth.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysCloth.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysConv.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysConv.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysicsEngine.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysicsEngine.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysJoint.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysJoint.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysMaterial.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysMaterial.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysOutputStream.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysOutputStream.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysPreprocessorImpl.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysPreprocessorImpl.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysScene.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysScene.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShape.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShape.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShapeDescFactory.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShapeDescFactory.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShapeFactory.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShapeFactory.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysShapeImpl.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShapeImpl.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysStream.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysStream.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxPhysTriangleMesh.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysTriangleMesh.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\gds\Physics\Ageia\NxShapeDescImplFactory.hpp">
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxShapeDescImplFactory.hpp">
       <Filter>Physics\engines\Ageia</Filter>
     </CustomBuildStep>
   </ItemGroup>

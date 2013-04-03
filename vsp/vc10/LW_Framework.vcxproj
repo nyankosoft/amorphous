@@ -75,22 +75,22 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\gds\LightWave\fwd.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LightWaveObject.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LWO2_Common.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LWO2_Layer.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LWO2_Object.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LWO2_Surface.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LightWaveSceneLoader.hpp" />
-    <ClInclude Include="..\..\gds\LightWave\LWS_Items.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LightWaveObject.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LWO2_Common.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LWO2_Layer.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LWO2_Object.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LWO2_Surface.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LightWaveSceneLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\LightWave\LWS_Items.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\gds\LightWave\LWO2_Common.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\LWO2_Layer.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\LWO2_Object.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\LWO2_Surface.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\LightWaveSceneLoader.cpp" />
-    <ClCompile Include="..\..\gds\LightWave\LWS_Items.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\LWO2_Common.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\LWO2_Layer.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\LWO2_Object.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\LWO2_Surface.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\LightWaveSceneLoader.cpp" />
+    <ClCompile Include="..\..\amorphous\LightWave\LWS_Items.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="BasicFramework.vcxproj">
