@@ -1,13 +1,13 @@
 #include "MotionEditorApp.hpp"
 #include "MotionPrimitiveViewer.h"
-#include "gds/3DMath/3DGameMath.hpp"
-#include "gds/Graphics/GraphicsDevice.hpp"
-#include "gds/Support/CameraController.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/ParamLoader.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Support/CameraController.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
-#include "gds/MotionSynthesis/MotionDatabaseBuilder.hpp"
-#include "gds/MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
+#include "amorphous/MotionSynthesis/MotionDatabaseBuilder.hpp"
+#include "amorphous/MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
 
 #include <boost/filesystem.hpp>
 

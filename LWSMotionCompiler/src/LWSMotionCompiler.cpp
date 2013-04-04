@@ -1,10 +1,10 @@
 #include "LWSMotionCompiler.hpp"
 #include "Platform_Win32.hpp"
-#include "gds/LightWave/LightWaveSceneLoader.hpp"
-#include "gds/MotionSynthesis/MotionPrimitive.hpp"
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/Support/StringAux.hpp"
-#include "gds/base.hpp"
+#include "amorphous/LightWave/LightWaveSceneLoader.hpp"
+#include "amorphous/MotionSynthesis/MotionPrimitive.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/base.hpp"
 
 using std::string;
 using std::vector;

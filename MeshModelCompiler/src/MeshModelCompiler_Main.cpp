@@ -4,17 +4,17 @@
 
 #include <boost/progress.hpp>
 #include <boost/filesystem.hpp>
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/memory_helpers.hpp"
-#include "gds/Support/progress_display.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/thread_starter.hpp"
-#include "gds/Support/Timer.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/progress_display.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/thread_starter.hpp"
+#include "amorphous/Support/Timer.hpp"
 
-#include "gds/Graphics/MeshModel/3DMeshModelBuilder.hpp"
-#include "gds/LightWave/3DMeshModelExportManager_LW.hpp"
-#include "gds/LightWave/3DShapesExporter_LW.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "amorphous/LightWave/3DMeshModelExportManager_LW.hpp"
+#include "amorphous/LightWave/3DShapesExporter_LW.hpp"
 
 //#include <vld.h>
 

@@ -1,5 +1,5 @@
 #include <string>
-#include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "LWSJointLimitEditor.hpp"
 
 using namespace std;

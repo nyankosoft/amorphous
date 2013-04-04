@@ -1,7 +1,7 @@
-#include "gds/Support/AutoResourceArchiver.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/MiscAux.hpp"
-#include "gds/LightWave.hpp"
+#include "amorphous/Support/AutoResourceArchiver.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/MiscAux.hpp"
+#include "amorphous/LightWave.hpp"
 
 using namespace std;
 using namespace boost;

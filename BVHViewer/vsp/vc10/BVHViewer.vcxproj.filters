@@ -12,7 +12,7 @@
     <ClCompile Include="..\..\src\BVHViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\gds\App\AppMain.cpp">
+    <ClCompile Include="..\..\..\..\Project1\amorphous\App\AppMain.cpp">
       <Filter>AppMain</Filter>
     </ClCompile>
   </ItemGroup>

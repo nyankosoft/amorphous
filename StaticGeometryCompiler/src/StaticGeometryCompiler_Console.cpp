@@ -8,12 +8,12 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/LogOutput_OnScreen.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/MiscAux.hpp"
-#include "gds/Stage/StaticGeometry.hpp"
-#include "gds/XML/XMLDocumentLoader.hpp"
+#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/LogOutput_OnScreen.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/MiscAux.hpp"
+#include "amorphous/Stage/StaticGeometry.hpp"
+#include "amorphous/XML/XMLDocumentLoader.hpp"
 
 #include "StaticGeometryCompilerFG.h"
 #include "StaticGeometryCompiler.h"

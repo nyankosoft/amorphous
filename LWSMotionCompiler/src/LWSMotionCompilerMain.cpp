@@ -1,11 +1,11 @@
 #include "LWSMotionCompiler.hpp"
 #include "MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
 #include "XML/XMLDocumentLoader.hpp"
-#include "gds/base.hpp"
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/MiscAux.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/MiscAux.hpp"
 
 using std::string;
 using std::vector;

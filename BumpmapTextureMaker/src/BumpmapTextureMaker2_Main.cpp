@@ -3,15 +3,15 @@
 // Desc: 
 //-----------------------------------------------------------------------------
 
-#include "gds/App/GameWindowManager.hpp"
-#include "gds/Graphics/Direct3D/Direct3D9.hpp"
-#include "gds/Graphics/GraphicsResourceManager.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/Log/DefaultLog.hpp"
-#include "gds/Support/MiscAux.hpp"
-#include "gds/Support/SafeDelete.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/GraphicsResourceManager.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/MiscAux.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 //#include <vld.h>
 
 #include "BumpmapTextureMaker2_LWO2.h"

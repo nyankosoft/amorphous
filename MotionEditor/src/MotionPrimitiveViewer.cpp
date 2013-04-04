@@ -2,15 +2,15 @@
 
 #include <map>
 #include <boost/foreach.hpp>
-#include "gds/Input.hpp"
-#include "gds/3DMath/misc.hpp"
-#include "gds/3DMath/MatrixConversions.hpp"
-#include "gds/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "gds/Graphics/MeshUtilities.hpp"
-#include "gds/GUI.hpp"
-#include "gds/MotionSynthesis.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Input.hpp"
+#include "amorphous/3DMath/misc.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/MeshUtilities.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/MotionSynthesis.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/FileOpenDialog_Win32.hpp"
 
 using namespace boost;
 
