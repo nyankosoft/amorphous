@@ -232,7 +232,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXPMeshObject.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp" />
-    <ClCompile Include="..\..\amorphous\3DMath\aabb3.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\AABTree.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForBox.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.cpp" />
@@ -516,8 +516,8 @@
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXPMeshObject.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\3DStructs.hpp" />
-    <ClInclude Include="..\..\amorphous\3DMath\aabb2.hpp" />
-    <ClInclude Include="..\..\amorphous\3DMath\aabb3.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\AABB2.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\AABB3.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\AABTree.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForBox.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.hpp" />

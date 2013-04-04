@@ -474,7 +474,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp">
       <Filter>Graphics\Direct3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\3DMath\aabb3.cpp">
+    <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\3DMath\AABTree.cpp">
@@ -1286,10 +1286,10 @@
     <ClInclude Include="..\..\amorphous\3DMath\3DStructs.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\3DMath\aabb2.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\AABB2.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\3DMath\aabb3.hpp">
+    <ClInclude Include="..\..\amorphous\3DMath\AABB3.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\3DMath\AABTree.hpp">
