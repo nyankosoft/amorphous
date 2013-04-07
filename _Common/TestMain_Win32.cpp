@@ -4,22 +4,22 @@
 
 #include <boost/foreach.hpp>
 
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Graphics/Direct3D/Direct3D9.hpp"
-#include "gds/Support/MiscAux.hpp"
-#include "gds/Support/WindowMisc_Win32.hpp"
-#include "gds/Support/CameraController_Win32.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/BitmapImage.hpp" // For InitFreeImage()
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/CameraController.hpp"
-#include "gds/Input.hpp"
-#include "gds/Input/StdMouseInput.hpp"
-//#include "gds/XML.hpp"
-#include "gds/App/GameWindowManager_Win32.hpp"
+#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Support/MiscAux.hpp"
+#include "amorphous/Support/WindowMisc_Win32.hpp"
+#include "amorphous/Support/CameraController_Win32.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/BitmapImage.hpp" // For InitFreeImage()
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/CameraController.hpp"
+#include "amorphous/Input.hpp"
+#include "amorphous/Input/StdMouseInput.hpp"
+//#include "amorphous/XML.hpp"
+#include "amorphous/App/GameWindowManager_Win32.hpp"
 //#include <gl/gl.h>
 
 #include "GraphicsTestBase.hpp"

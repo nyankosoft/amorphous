@@ -1,6 +1,6 @@
 #include "GraphicsTestBase.hpp"
-#include "gds/Graphics/TextureRenderTarget.hpp"
-#include "gds/App/GameWindowManager.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
 #include <boost/filesystem.hpp>
 
 

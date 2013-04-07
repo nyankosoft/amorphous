@@ -6,13 +6,13 @@
 #include <string>
 #include <boost/weak_ptr.hpp>
 
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
 #include "KeyState.hpp"
-#include "gds/3DMath/fwd.hpp"
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Input/InputHandler.hpp"
-#include "gds/Support/CameraController.hpp"
+#include "amorphous/3DMath/fwd.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Support/CameraController.hpp"
 
 using namespace amorphous;
 
