@@ -6,7 +6,7 @@
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
 #include "Stage/BaseEntity_Draw.hpp"
-#include "Stage/RenderContext.hpp"
+//#include "Stage/RenderContext.hpp"
 #include "Support/Log/StateLog.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Support/MTRand.hpp"
@@ -118,25 +118,25 @@ void ItemEntity::UpdateGraphicsUpdateCallbacks()
 
 void ItemEntity::RenderAs( CRenderContext& rc )
 {
-	if( !m_pItem )
-		return;
-
-	bool render_skeletal_mesh = m_pBlendTransformsLoader ? true : false;
-	CRenderContext::RenderObjectType model_type
-		= render_skeletal_mesh ? CRenderContext::ROT_SKELETAL_3D_MODEL : CRenderContext::ROT_3D_MODEL;
-
-	rc.SetShaderTechnique( model_type );
-
-	ShaderManager& shader_mgr = rc.GetShaderManager( model_type );
-
-	shader_mgr.SetWorldTransform( this->GetWorldPose() );
-
-	if( render_skeletal_mesh )
-		shader_mgr.SetVertexBlendTransforms( m_pBlendTransformsLoader->BlendTransforms() );
-
-	shared_ptr<BasicMesh> pMesh = GetPrimaryMesh(*m_pItem);
-	if( pMesh )
-		pMesh->Render( shader_mgr );
+//	if( !m_pItem )
+//		return;
+//
+//	bool render_skeletal_mesh = m_pBlendTransformsLoader ? true : false;
+//	CRenderContext::RenderObjectType model_type
+//		= render_skeletal_mesh ? CRenderContext::ROT_SKELETAL_3D_MODEL : CRenderContext::ROT_3D_MODEL;
+//
+//	rc.SetShaderTechnique( model_type );
+//
+//	ShaderManager& shader_mgr = rc.GetShaderManager( model_type );
+//
+//	shader_mgr.SetWorldTransform( this->GetWorldPose() );
+//
+//	if( render_skeletal_mesh )
+//		shader_mgr.SetVertexBlendTransforms( m_pBlendTransformsLoader->BlendTransforms() );
+//
+//	shared_ptr<BasicMesh> pMesh = GetPrimaryMesh(*m_pItem);
+//	if( pMesh )
+//		pMesh->Render( shader_mgr );
 }
 
 
