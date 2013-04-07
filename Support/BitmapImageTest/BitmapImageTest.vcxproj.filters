@@ -15,39 +15,39 @@
     <ClCompile Include="BitmapImageTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogInputBase.cpp">
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.cpp">
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\gds\Support\Log\DefaultLog.cpp">
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\gds\Support\Timer_Win32.cpp">
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Timer_Win32.cpp">
       <Filter>Source Files\Support</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\gds\Support\BitmapImage.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\BitmapImage.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\DefaultLog.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\Log.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\Log.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogInputBase.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\gds\Support\Timer.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\gds\Support\Timer_Win32.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer_Win32.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
   </ItemGroup>

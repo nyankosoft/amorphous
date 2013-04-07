@@ -1,5 +1,5 @@
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 #include <ostream>
 
 using namespace std;

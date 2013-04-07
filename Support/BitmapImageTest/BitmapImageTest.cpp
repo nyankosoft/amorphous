@@ -1,8 +1,8 @@
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/BitmapImage.hpp"
-#include "gds/Support/MiscAux.hpp"
-#include "gds/base.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/MiscAux.hpp"
+#include "amorphous/base.hpp"
 
 using namespace std;
 

@@ -1,10 +1,10 @@
 // #define fopen_s fopen
 // The above does not work - results in error in stdio.h
 
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Script/PyModule_3DMath.hpp"
-#include "gds/Support/stream_buffer.hpp"
-#include "gds/Support/lfs.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Script/PyModule_3DMath.hpp"
+#include "amorphous/Support/stream_buffer.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include <boost/python.hpp>
 
 using namespace std;

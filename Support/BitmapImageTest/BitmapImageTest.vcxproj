@@ -87,20 +87,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Project1\gds\Support\Log\DefaultLog.cpp" />
-    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogInputBase.cpp" />
-    <ClCompile Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.cpp" />
-    <ClCompile Include="..\..\..\Project1\gds\Support\Timer_Win32.cpp" />
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.cpp" />
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp" />
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.cpp" />
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Timer_Win32.cpp" />
     <ClCompile Include="BitmapImageTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\gds\Support\BitmapImage.hpp" />
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\DefaultLog.hpp" />
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\Log.hpp" />
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogInputBase.hpp" />
-    <ClInclude Include="..\..\..\Project1\gds\Support\Log\LogOutputBase.hpp" />
-    <ClInclude Include="..\..\..\Project1\gds\Support\Timer.hpp" />
-    <ClInclude Include="..\..\..\Project1\gds\Support\Timer_Win32.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\BitmapImage.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\Log.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer_Win32.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

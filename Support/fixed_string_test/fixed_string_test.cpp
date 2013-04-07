@@ -1,4 +1,4 @@
-#include "gds/Support/fixed_string.hpp"
+#include "amorphous/Support/fixed_string.hpp"
 #include <sys/stat.h>
 #include <ostream>
 
@@ -41,11 +41,11 @@ public:
 
 #define NUM_LOOPS_IN_SEPERATE_CALLS 50000
 
-#include "gds/base.hpp"
+#include "amorphous/base.hpp"
 #ifdef _MSC_VER
-#include "gds/Support/Timer.hpp"
+#include "amorphous/Support/Timer.hpp"
 #else
-#include "gds/Support/Timer_posix.hpp"
+#include "amorphous/Support/Timer_posix.hpp"
 #endif
 
 void operator_plus_of_fixed_string( CTimer& timer, ulong& t )

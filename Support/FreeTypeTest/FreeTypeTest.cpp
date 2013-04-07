@@ -1,13 +1,13 @@
-#include "gds/base.hpp"
-#include "gds/Support/lfs.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Profile.hpp"
-//#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Support/FreeTypeAux.hpp"
-#include "gds/Support/TextFileScanner.hpp"
-#include "gds/Support/BitmapImage.hpp"
-#include "gds/Support/UTF8/utf8.h"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Profile.hpp"
+//#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/FreeTypeAux.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/UTF8/utf8.h"
 
 using namespace std;
 
