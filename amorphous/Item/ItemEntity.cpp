@@ -8,8 +8,6 @@
 #include "Stage/BaseEntity_Draw.hpp"
 //#include "Stage/RenderContext.hpp"
 #include "Support/Log/StateLog.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/MTRand.hpp"
 #include "Item/GameItem.hpp"
 #include "Physics/ActorDesc.hpp"
 
