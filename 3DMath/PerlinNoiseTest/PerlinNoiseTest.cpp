@@ -1,10 +1,10 @@
-#include "gds/base.hpp"
-#include "gds/3DMath/Perlin.hpp"
-#include "gds/Support/BitmapImage.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/2DArray.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Macro.h"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Perlin.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/2DArray.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Macro.h"
 #include <float.h>
 
 using namespace amorphous;

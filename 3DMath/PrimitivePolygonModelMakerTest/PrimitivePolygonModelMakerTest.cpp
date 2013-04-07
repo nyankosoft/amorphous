@@ -1,6 +1,6 @@
-#include "gds/3DMath/PrimitivePolygonModelMaker.hpp"
-#include "gds/Support/wavefront_obj_output.hpp"
-#include "gds/Support/ParamLoader.hpp"
+#include "amorphous/3DMath/PrimitivePolygonModelMaker.hpp"
+#include "amorphous/Support/wavefront_obj_output.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 using namespace std;
 

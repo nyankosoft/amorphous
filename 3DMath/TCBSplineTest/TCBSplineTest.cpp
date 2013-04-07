@@ -1,7 +1,7 @@
-#include "gds/Support/BitmapImage.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/3DMath/TCBSpline.hpp"
-#include "gds/3DMath/Vector2.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/3DMath/TCBSpline.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
 
 using std::vector;
 using namespace amorphous;

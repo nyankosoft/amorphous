@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="PrimitivePolygonModelMakerTest.cpp" />
-    <ClCompile Include="..\..\..\Project1\gds\3DMath\PrimitivePolygonModelMaker.cpp">
+    <ClCompile Include="..\..\..\Project1\amorphous\3DMath\PrimitivePolygonModelMaker.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
   </ItemGroup>
@@ -12,7 +12,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\gds\3DMath\PrimitivePolygonModelMaker.hpp">
+    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\PrimitivePolygonModelMaker.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
   </ItemGroup>

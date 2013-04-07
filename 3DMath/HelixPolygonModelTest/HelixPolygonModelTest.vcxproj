@@ -75,11 +75,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Project1\gds\3DMath\HelixPolygonModelMaker.cpp" />
+    <ClCompile Include="..\..\..\Project1\amorphous\3DMath\HelixPolygonModelMaker.cpp" />
     <ClCompile Include="HelixPolygonModelTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\gds\3DMath\HelixPolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\HelixPolygonModelMaker.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
