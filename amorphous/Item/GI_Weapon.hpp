@@ -3,7 +3,6 @@
 
 #include "GameItem.hpp"
 
-#include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Sound/SoundHandle.hpp"
 #include "amorphous/Sound/Serialization_SoundHandle.hpp"
 #include "amorphous/Stage/fwd.hpp"
@@ -13,7 +12,6 @@
 namespace amorphous
 {
 
-class CWeaponSystem;
 struct SWeaponSlot;
 
 
