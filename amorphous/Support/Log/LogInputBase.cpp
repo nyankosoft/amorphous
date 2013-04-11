@@ -76,7 +76,7 @@ void LogInputBase::Print( const char *format,... )
 	va_list argptr;
 
 	va_start(argptr,format);
-	_vsnprintf(buffer,size,format,argptr);
+	vsnprintf(buffer,size,format,argptr);
 	buffer[size-1] = '\0';
 	va_end(argptr);
 
@@ -101,7 +101,7 @@ void LogInputBase::Print( int filter_val, const char *format,... )
 	va_list argptr;
 
 	va_start(argptr,format);
-	_vsnprintf(buffer,size,format,argptr);
+	vsnprintf(buffer,size,format,argptr);
 	buffer[size-1] = '\0';
 	va_end(argptr);
 
@@ -121,7 +121,7 @@ void LogInputBase::PrintInternal( int filter_val, const char *format,... )
 	va_list argptr;
 
 	va_start(argptr,format);
-	_vsnprintf(buffer,size,format,argptr);
+	vsnprintf(buffer,size,format,argptr);
 	buffer[size-1] = '\0';
 	va_end(argptr);
 
