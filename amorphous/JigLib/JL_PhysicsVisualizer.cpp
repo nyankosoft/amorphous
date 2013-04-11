@@ -9,7 +9,6 @@
 
 namespace amorphous
 {
-//#include "Graphics/UnitCube.hpp"
 
 using namespace std;
 
