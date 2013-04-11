@@ -10,15 +10,15 @@
 #ifdef _MSC_VER
 #include <direct.h>
 #include <assert.h>
-
-
-namespace amorphous
-{
 #define getcwd _getcwd
 #define chdir  _chdir
 #else /* _MSC_VER */
 #include <unistd.h>
 #endif /* _MSC_VER */
+
+
+namespace amorphous
+{
 
 
 /**
@@ -129,7 +129,7 @@ inline std::string get_cwd()
 inline bool set_wd( const std::string& workdir )
 {
 //	SetCurrentDirectory( workdir.c_str() );
-	if( _chdir( workdir.c_str() ) == 0 )
+	if( chdir( workdir.c_str() ) == 0 )
 		return true;
 	else
 		return false;
@@ -362,7 +362,7 @@ public:
 			m_vecDirectory.push_back( std::string( m_buffer ) );
 
 			// set the new directory
-			if( _chdir( path.c_str() ) == 0 )
+			if( chdir( path.c_str() ) == 0 )
 			{
 				return true;
 			}
@@ -386,7 +386,7 @@ public:
 			return false;	// no directory is in the stack
 
 		const std::string prev_path = m_vecDirectory.back();
-		if( _chdir( prev_path.c_str() ) == 0 )
+		if( chdir( prev_path.c_str() ) == 0 )
 		{
 			m_vecDirectory.pop_back();	// delete the last path at the top of the stack
 			return true;
