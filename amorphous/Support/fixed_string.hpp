@@ -62,6 +62,16 @@ public:
 		fixed_string<RetMaxLength> ret;
 	}
 
+	char& operator[](size_t pos)
+	{
+		return m_buffer[pos];
+	}
+
+	const char& operator[](size_t pos) const
+	{
+		return m_buffer[pos];
+	}
+
 	template<int RHSMaxLength>
 	const fixed_string<MaxLength>& operator=( const fixed_string<RHSMaxLength>& rhs )
 	{
