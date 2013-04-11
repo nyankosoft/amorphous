@@ -6,7 +6,6 @@
 #include "Stage.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-//#include "Graphics/UnitCube.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "3DMath/MatrixConversions.hpp"
 
