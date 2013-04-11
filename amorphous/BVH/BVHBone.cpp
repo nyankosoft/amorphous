@@ -2,7 +2,6 @@
 #include "3DMath/MatrixConversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-//#include "Graphics/UnitCube.hpp"
 #include "Graphics/GraphicsDevice.hpp"
 #include "Graphics/PrimitiveRenderer.hpp"
 #include "Graphics/PrimitiveShapeRenderer.hpp"
