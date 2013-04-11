@@ -1,6 +1,8 @@
 #include "MassSpringSim.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/FixedVector.hpp"
+#include "../Support/memory_helpers.hpp"
+#include "../Support/FixedVector.hpp"
+
+using namespace std;
 
 
 namespace amorphous
@@ -467,7 +469,8 @@ void CMS_MassSpringSim::Update( float fFrameTime )
 }
 
 
-void CMS_MassSpringSim::UpdateWorldProperties( D3DXMATRIX *paWorldTransform )
+//void CMS_MassSpringSim::UpdateWorldProperties( D3DXMATRIX *paWorldTransform )
+void CMS_MassSpringSim::UpdateWorldProperties( Matrix34 *paWorldTransform )
 {
 	CMS_PointState *paPoint = m_paPoint;
 	CMS_PointProperty *paProperty = m_paPointProperty;
@@ -480,11 +483,11 @@ void CMS_MassSpringSim::UpdateWorldProperties( D3DXMATRIX *paWorldTransform )
 		pnt_index = paFixedPointIndex[i];
 		grp_index = paProperty[pnt_index].iFixedPointGroup;
 
-		D3DXVec3TransformCoord( &(paPoint[pnt_index].vPosition),
-			                    &(paProperty[pnt_index].vBasePosition),
-								&paWorldTransform[grp_index] );
+//		D3DXVec3TransformCoord( &(paPoint[pnt_index].vPosition),
+//			                    &(paProperty[pnt_index].vBasePosition),
+//								&paWorldTransform[grp_index] );
 
-//		paMatrix[grp_index].Transform( paPoint[pnt_index].vPosition, paProperty[pnt_index].vBasePosition );
+		paWorldTransform[grp_index].Transform( paPoint[pnt_index].vPosition, paProperty[pnt_index].vBasePosition );
 	}
 
 	vector<CMS_Sphere>& rvecSphere = m_AABTree.GetGeometryBuffer();
@@ -497,17 +500,12 @@ void CMS_MassSpringSim::UpdateWorldProperties( D3DXMATRIX *paWorldTransform )
 		if( grp_index < 0 )
 			continue;
 
-		D3DXVec3TransformCoord( &rSphere.vWorldPosition,
-			                    &rSphere.vLocalPosition,
-								&paWorldTransform[grp_index] );
+//		D3DXVec3TransformCoord( &rSphere.vWorldPosition,
+//			                    &rSphere.vLocalPosition,
+//								&paWorldTransform[grp_index] );
 
-//		paMatrix[grp_index].Transform( rSphere.vWorldPosition, rSphere.vLocalPosition );
+		paWorldTransform[grp_index].Transform( rSphere.vWorldPosition, rSphere.vLocalPosition );
 	}
-}
-
-
-void CMS_MassSpringSim::UpdateWorldProperties( Matrix34 *paWorldTransform )
-{
 }
 
 
