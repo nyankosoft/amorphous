@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\_Common\GraphicsTestBase.cpp" />
     <ClCompile Include="..\..\src\ConvexTest.cpp" />
     <ClCompile Include="..\..\..\..\_Common\TestMain_Win32.cpp" />
   </ItemGroup>

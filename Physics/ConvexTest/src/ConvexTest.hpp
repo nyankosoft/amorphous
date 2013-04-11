@@ -2,14 +2,14 @@
 #define  __ConvexTest_HPP__
 
 
-#include "gds/3DMath/Quaternion.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
-#include "gds/Input/fwd.hpp"
-#include "gds/Physics/fwd.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Physics/fwd.hpp"
 
 #include "../../../_Common/GraphicsTestBase.hpp"
 
@@ -20,7 +20,7 @@ public:
 	CActorHolder() : pActor(NULL) {}
 	physics::CActor *pActor;
 //	Transform pose;
-	CCustomMesh mesh;
+	CustomMesh mesh;
 };
 
 
@@ -31,11 +31,11 @@ class CConvexTest : public CGraphicsTestBase
 
 	std::vector<CActorHolder> m_Actors;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 //	boost::shared_ptr<CCameraController> m_pSplitPlaneController;
 
@@ -69,7 +69,7 @@ public:
 
 	void Render();
 
-	void HandleInput( const SInputData& input );
+	void HandleInput( const InputData& input );
 };
 
 

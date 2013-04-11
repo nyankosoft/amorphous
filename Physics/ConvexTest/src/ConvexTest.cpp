@@ -68,10 +68,10 @@ bool CConvexTest::InitShader()
 
 	// initialize shader
 //	bool shader_loaded = m_Shader.Load( "./shaders/MeshSplitterTest.fx" );
-	CGenericShaderDesc gs_desc;
-	gs_desc.Specular = CSpecularSource::NONE;
-	CShaderResourceDesc shader_desc;
-	shader_desc.pShaderGenerator.reset( new CGenericShaderGenerator( gs_desc ) );
+	GenericShaderDesc gs_desc;
+	gs_desc.Specular = SpecularSource::NONE;
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator( gs_desc ) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 	
 	return shader_loaded;
@@ -80,16 +80,16 @@ bool CConvexTest::InitShader()
 
 bool CConvexTest::SetLight()
 {
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return false;
 
-	CShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
 	if( pShaderLightMgr )
 	{
 		pShaderLightMgr->ClearLights();
 
-		CHemisphericDirectionalLight light;
+		HemisphericDirectionalLight light;
 		light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 		light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 		light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -209,17 +209,17 @@ void CConvexTest::RenderMeshes()
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 	GraphicsDevice().SetRenderState( RenderStateType::WRITING_INTO_DEPTH_BUFFER, true );
 
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 //	if( !pShaderManager )
 //		return;
 
-	CShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
 
 	// render the scene
 
 	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
 
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
@@ -236,7 +236,7 @@ void CConvexTest::RenderMeshes()
 		m_Actors[i].mesh.Render( shader_mgr );
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -266,7 +266,7 @@ void CConvexTest::Render()
 }
 
 
-void CConvexTest::HandleInput( const SInputData& input )
+void CConvexTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
