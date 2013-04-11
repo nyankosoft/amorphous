@@ -129,9 +129,6 @@
     <ClInclude Include="..\..\amorphous\Stage\PlayerInfo.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Stage\QuickMenuManager.hpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Stage\ScreenEffect.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
@@ -879,9 +876,6 @@
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\PlayerInfo.cpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Stage\QuickMenuManager.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\ScreenEffect.cpp">

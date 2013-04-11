@@ -120,7 +120,6 @@
     <ClInclude Include="..\..\amorphous\Stage\OverlapTestAABB.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\ParticleThreadManager.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\PlayerInfo.hpp" />
-    <ClInclude Include="..\..\amorphous\Stage\QuickMenuManager.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\ScreenEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\ScreenEffectManager.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\Serialization_BaseEntityHandle.hpp" />
@@ -372,7 +371,6 @@
     <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerShip.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\ParticleThreadManager.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\PlayerInfo.cpp" />
-    <ClCompile Include="..\..\amorphous\Stage\QuickMenuManager.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\ScreenEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\ScreenEffectManager.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\SoundEntity.cpp" />
