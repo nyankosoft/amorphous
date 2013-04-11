@@ -5,7 +5,7 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 
-#include "QuickMenuManager.hpp"
+//#include "QuickMenuManager.hpp"
 
 #include "HUD_PlayerBase.hpp"
 
@@ -31,7 +31,7 @@ class HUD_PlayerShip : public HUD_PlayerBase
 
 	CGameTextWindow *m_pTextWindow;
 
-	CQuickMenuManager m_QuickMenuManager;
+//	CQuickMenuManager m_QuickMenuManager;
 
 	void LoadTextures();
 
@@ -67,13 +67,14 @@ public:
 
 inline void HUD_PlayerShip::Update( float  dt )
 {
-	m_QuickMenuManager.Update( dt );
+//	m_QuickMenuManager.Update( dt );
 }
 
 
 inline bool HUD_PlayerShip::HandleInput( int iActionCode, int input_type, float fVal )
 {
-	return m_QuickMenuManager.HandleMouseInput( iActionCode, input_type, fVal );
+//	return m_QuickMenuManager.HandleMouseInput( iActionCode, input_type, fVal );
+	return false;
 }
 
 } // namespace amorphous

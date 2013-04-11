@@ -191,7 +191,7 @@ void HUD_PlayerShip::RenderImpl()
 	font_width = (int)(8.0f * fRatio);
 	m_StatusFont.SetFontSize( font_width, font_width*2 );
 
-	m_QuickMenuManager.Render( &m_StatusFont );
+//	m_QuickMenuManager.Render( &m_StatusFont );
 }
 
 
