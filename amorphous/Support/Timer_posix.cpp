@@ -7,7 +7,7 @@ namespace amorphous
 
 
 //--------------------------------------------------------------------------------------
-CTimer::CTimer()
+Timer::Timer()
 {
 	memset( &m_StartTime,       0, sizeof(m_StartTime) );
 	memset( &m_LastElapsedTime, 0, sizeof(m_LastElapsedTime) );
@@ -21,20 +21,20 @@ CTimer::CTimer()
 
 
 //--------------------------------------------------------------------------------------
-void CTimer::Reset()
+void Timer::Reset()
 {
 }
 
 
 //--------------------------------------------------------------------------------------
-void CTimer::Start()
+void Timer::Start()
 {
 	gettimeofday( &m_StartTime, NULL );
 }
 
 
 //--------------------------------------------------------------------------------------
-void CTimer::Stop()
+void Timer::Stop()
 {
 	if( !m_bTimerStopped )
 	{
@@ -53,20 +53,20 @@ void CTimer::Stop()
 
 /*
 //--------------------------------------------------------------------------------------
-void CTimer::Advance()
+void Timer::Advance()
 {
 }*/
 
 
 //--------------------------------------------------------------------------------------
-double CTimer::GetAbsoluteTime()
+double Timer::GetAbsoluteTime()
 {
 	return 0;
 }
 
 
 //--------------------------------------------------------------------------------------
-double CTimer::GetTime() const
+double Timer::GetTime() const
 {
 	struct timeval current_time;
 	gettimeofday( &current_time, NULL );
@@ -84,7 +84,7 @@ const double max_fps = 1000;
 const double min_frametime = 1.0 / max_fps;
 
 //--------------------------------------------------------------------------------------
-void CTimer::UpdateFrameTime()
+void Timer::UpdateFrameTime()
 {
 	struct timeval current_time;
 	gettimeofday( &current_time, NULL );
@@ -101,7 +101,7 @@ void CTimer::UpdateFrameTime()
 
 /*
 //--------------------------------------------------------------------------------------
-double CTimer::GetFrameTime64()
+double Timer::GetFrameTime64()
 {
 }*/
 
