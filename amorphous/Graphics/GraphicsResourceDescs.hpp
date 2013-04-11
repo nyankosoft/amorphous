@@ -335,4 +335,4 @@ VertexSize(0)
 
 
 
-#endif  __GraphicsResourceDescs_H__
+#endif /* __GraphicsResourceDescs_H__ */
