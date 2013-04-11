@@ -1,8 +1,10 @@
 #include "amorphous/Support/fixed_string.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Timer.hpp"
 #include <sys/stat.h>
 #include <ostream>
 
-//using namespace morph;
+using namespace amorphous;
 
 /*
 VisualStudio
@@ -41,14 +43,8 @@ public:
 
 #define NUM_LOOPS_IN_SEPERATE_CALLS 50000
 
-#include "amorphous/base.hpp"
-#ifdef _MSC_VER
-#include "amorphous/Support/Timer.hpp"
-#else
-#include "amorphous/Support/Timer_posix.hpp"
-#endif
 
-void operator_plus_of_fixed_string( CTimer& timer, ulong& t )
+void operator_plus_of_fixed_string( Timer& timer, ulong& t )
 {
 	fixed_string<128> fstr0( "RandomString to TEST fixed_string<128>" ), fstr1( "ANOTHER Random String to test FIXED_STRING<128>" );
 	fixed_string<128> fstr2; // temporary object fixed_string<256> is created to hold the result of operator+
@@ -66,7 +62,7 @@ void operator_plus_of_fixed_string( CTimer& timer, ulong& t )
 }
 
 
-void operator_plus_of_std_string( CTimer& timer, ulong& t )
+void operator_plus_of_std_string( Timer& timer, ulong& t )
 {
 	std::string       sstr0( "RandomString to TEST fixed_string<128>" ), sstr1( "ANOTHER Random String to test FIXED_STRING<128>" ), sstr2;
 
@@ -84,7 +80,7 @@ void operator_plus_of_std_string( CTimer& timer, ulong& t )
 
 void compare_performances_of_operator_plus__separate_calls()
 {
-	CTimer timer;
+	Timer timer;
 	timer.Start();
 	ulong ms = 0;
 
@@ -104,7 +100,7 @@ void compare_performances_of_operator_plus__separate_calls()
 
 void compare_performances_of_operator_plus()
 {
-	CTimer timer;
+	Timer timer;
 	timer.Start();
 
 	const int num_loops = 20000;
@@ -163,6 +159,11 @@ int main( int argc, char *argv[] )
 	printf( "(empty string) += 'another string': %s (%d)\n", res_pe.c_str(), res_pe.length() );
 	res_pe += yet_another;
 	printf( "(above) += 'yet another string': %s (%d)\n", res_pe.c_str(), res_pe.length() );
+
+	// operator[]
+	for( size_t i=0; i<src.length(); i++ )
+		printf( "src[%02d]: %c\n", (int)i, src[i] );
+
 
 //	cout << 
 

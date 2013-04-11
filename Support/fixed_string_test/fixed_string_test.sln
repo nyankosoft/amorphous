@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fixed_string_test", "fixed_string_test.vcproj", "{7FF77A82-432F-44E4-953E-C5B7F861CE9E}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fixed_string_test", "fixed_string_test.vcxproj", "{7FF77A82-432F-44E4-953E-C5B7F861CE9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
