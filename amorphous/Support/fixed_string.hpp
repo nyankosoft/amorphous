@@ -12,10 +12,6 @@ namespace amorphous
 {
 
 
-//namespace __framework_name__
-//{
-
-
 template<int MaxLength>
 class fixed_string
 {
@@ -145,8 +141,6 @@ const fixed_string<MaxLength> operator+( const fixed_string<LHSMaxLength>& lhs, 
 	return out;
 }
 */
-
-//} // namespace __framework_name__
 
 
 } // amorphous
