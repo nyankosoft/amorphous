@@ -1,6 +1,7 @@
 #include "GLInitialization.hpp"
 #include "2DPrimitive/2DPrimitiveRenderer_GL.hpp"
 #include "2DPrimitive/2DRectSetImpl_GL.hpp"
+#include "GLGraphicsDevice.hpp"
 #include "PrimitiveRenderer_GL.hpp"
 #include "GLGraphicsResources.hpp"
 #include "GLTextureRenderTarget.hpp"
@@ -71,6 +72,7 @@ shared_ptr<ShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource(
 
 Result::Name InitializeOpenGLClasses()
 {
+	CGraphicsDeviceHolder::Get()->SetDevice( &GLGraphicsDevice() );
 	Ref2DPrimitiveRendererPtr() = &PrimitiveRenderer_GL();
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
 	GetGraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );

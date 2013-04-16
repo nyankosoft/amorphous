@@ -95,8 +95,6 @@ Result::Name SelectGraphicsLibrary_Win32( const std::string& graphics_library_na
 		return Result::INVALID_ARGS;
 	}
 
-	CGraphicsDeviceHolder::Get()->SelectGraphicsDevice( graphics_library_name );
-
 //	PrimitiveRenderer().Init();
 
 	pGameWindowManager = g_pGameWindowManager_Win32;

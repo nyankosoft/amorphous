@@ -71,6 +71,7 @@ shared_ptr<ShaderResource> CD3DGraphicsResourceFactoryImpl::CreateShaderResource
 
 Result::Name InitializeDirect3DClasses()
 {
+	CGraphicsDeviceHolder::Get()->SetDevice( &DIRECT3D9 );
 	Ref2DPrimitiveRendererPtr() = &PrimitiveRenderer_D3D();
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_D3D();
 	GetGraphicsResourceFactory().Init( new CD3DGraphicsResourceFactoryImpl() );

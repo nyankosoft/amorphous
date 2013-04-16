@@ -331,9 +331,9 @@ public:
 
 	static CGraphicsDeviceHolder* Get() { return m_obj.get(); }
 
-	Result::Name SelectGraphicsDevice( const std::string& library_name );
-
 	CGraphicsDevice& GetDevice() { return *m_pGraphicsDevice; }
+
+	void SetDevice( CGraphicsDevice *pGraphicsDevice ) { m_pGraphicsDevice = pGraphicsDevice; }
 };
 
 
