@@ -33,8 +33,6 @@ private:
 	TextureHandle m_RenderTargetCopyTexture;
 
 //	TextureResourceDesc m_TextureDesc;
-
-//	DWORD m_dwBackgroundColor;
 	
 public:
 
@@ -47,10 +45,6 @@ public:
 	~CD3DTextureRenderTarget();
 
 //	bool Init( const TextureResourceDesc& texture_desc );
-
-//	void SetTextureWidth( const int width, const int height );
-
-//	void SetBackgroundColor( const DWORD dwBGColor ) { m_dwBackgroundColor = dwBGColor; }
 
 	void SetRenderTarget();
 
@@ -72,9 +66,8 @@ public:
 	void OutputImageFile( const std::string& image_file_path );
 
 	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<CD3DTextureRenderTarget> p( new CD3DTextureRenderTarget ); return p; }
-
-//	void SetInstanceCreationFunction();
 };
+
 
 } // namespace amorphous
 
