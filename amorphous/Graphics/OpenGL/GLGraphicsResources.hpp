@@ -63,8 +63,6 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
-//	inline LPDIRECT3DTEXTURE9 GetTexture();
-
 	GLuint GetGLTextureID() const { return m_TextureID; }
 
 	/// Save the texture to disk as an image file
