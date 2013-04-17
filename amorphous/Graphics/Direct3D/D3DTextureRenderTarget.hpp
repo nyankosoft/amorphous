@@ -63,8 +63,6 @@ public:
 
 	void ReleaseTextures();
 
-	void OutputImageFile( const std::string& image_file_path );
-
 	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<CD3DTextureRenderTarget> p( new CD3DTextureRenderTarget ); return p; }
 };
 
