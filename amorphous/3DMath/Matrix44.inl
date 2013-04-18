@@ -355,7 +355,7 @@ inline bool Matrix44::GetInverse( Matrix44& dest ) const
 	inverse.data[15] = + data[ 8]*a3 - data[ 9]*a1 + data[10]*a0;
 
 	Scalar inv_det = ((Scalar)1)/det;
-	for( int i=0; i<NUM_ELEMENTS; i++ )
+	for( uint i=0; i<NUM_ELEMENTS; i++ )
 		inverse.data[i] *= inv_det;
 
 	return true;
