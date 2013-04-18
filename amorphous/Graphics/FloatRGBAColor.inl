@@ -61,10 +61,10 @@ inline SFloatRGBColor SFloatRGBAColor::GetRGBColor() const
 
 inline U32 SFloatRGBAColor::GetARGB32() const
 {
-	return ( ((int)(alpha * 255.0f)) << 24 ) & 0xFF000000 |
-		   ( ((int)(red   * 255.0f)) << 16 ) & 0x00FF0000 |
-		   ( ((int)(green * 255.0f)) <<  8 ) & 0x0000FF00 |
-		     ((int)(blue  * 255.0f))         & 0x000000FF;
+	return ( ( ((int)(alpha * 255.0f)) << 24 ) & 0xFF000000 ) |
+		   ( ( ((int)(red   * 255.0f)) << 16 ) & 0x00FF0000 ) |
+		   ( ( ((int)(green * 255.0f)) <<  8 ) & 0x0000FF00 ) |
+		   (   ((int)(blue  * 255.0f))         & 0x000000FF );
 }
 
 
