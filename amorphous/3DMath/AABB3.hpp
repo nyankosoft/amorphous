@@ -15,8 +15,8 @@ class AABB3
 {
 public:
 
-	Vector3 vMax;
 	Vector3 vMin;
+	Vector3 vMax;
 
 public:
 

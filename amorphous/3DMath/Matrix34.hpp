@@ -15,11 +15,11 @@ class tMatrix34
 {
 public:
 
-	/// rotation
-	tMatrix33<T> matOrient;
-
 	/// translation
 	tVector3<T> vPosition;
+
+	/// rotation
+	tMatrix33<T> matOrient;
 
 public:
 
