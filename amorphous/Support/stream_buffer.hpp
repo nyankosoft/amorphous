@@ -2,6 +2,7 @@
 #define  __stream_buffer_HPP__
 
 
+#include <string.h>
 #include <string>
 #include <vector>
 #include <fstream>
