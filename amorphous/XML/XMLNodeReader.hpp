@@ -41,7 +41,7 @@ namespace amorphous
 		</Color>
 	</HemisphericPointLight>
 
-/*
+
 	CXMLNodeReader loader( pNode );
 	loader.get( "Pos", vPos );
 	loader.get( "Color", color );
