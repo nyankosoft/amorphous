@@ -35,7 +35,11 @@
 // Include some standard files
 #if defined(_WIN32)
 #  define WIN32_LEAN_AND_MEAN
-#  define _WIN32_WINNT 0x0500
+
+// Commented out (2013-04-18); Visual C++ 2010 Express gives the following warning.
+// warning C4005: '_WIN32_WINNT' : macro redefinition
+//#  define _WIN32_WINNT 0x0500
+
 #  ifndef WINVER
 #     define WINVER 0x0500
 #  endif
