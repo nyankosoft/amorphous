@@ -127,7 +127,7 @@ public:
 
 	virtual Result::Name SetTexture( const int iStage, const TextureHandle& texture ) { return Result::UNKNOWN_ERROR; }
 
-	virtual Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture ) { return Result::UNKNOWN_ERROR; }
+	virtual Result::Name SetCubeTexture( const int index, const TextureHandle& cube_texture ) { return Result::UNKNOWN_ERROR; }
 
 	virtual void Begin() {}
 
