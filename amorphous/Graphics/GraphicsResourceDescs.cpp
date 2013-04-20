@@ -65,6 +65,7 @@ void TextureResourceDesc::Serialize( IArchive& ar, const unsigned int version )
 	ar & Width & Height & MipLevels;
 	ar & (int&)Format;
 	ar & UsageFlags;
+	ar & TypeFlags;
 
 	TextureGeneratorFactory factory;
 	ar.Polymorphic( pLoader, factory );

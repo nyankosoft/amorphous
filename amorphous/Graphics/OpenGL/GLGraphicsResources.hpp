@@ -5,6 +5,7 @@
 #include "fwd.hpp"
 #include "Graphics/GraphicsResources.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
+#include "Graphics/TextureResourceVisitor.hpp"
 #include <gl/gl.h>
 
 //#include "Support/array2d.hpp"
@@ -19,7 +20,27 @@ using namespace serialization;
 //template<class T>class CBinaryDatabase<T>;
 
 
-class CGLTextureResource : public TextureResource
+class GLTextureResourceBase : public TextureResource
+{
+
+public:
+
+	GLTextureResourceBase( const TextureResourceDesc *pDesc ) : TextureResource(pDesc) {}
+
+	virtual ~GLTextureResourceBase() {}
+
+	/// Sets the the image data to the texture
+	/// \param [in] pImageData A source image data
+	/// \param [out] texture_id A destination texture
+	bool UpdateGLTextureImage( GLenum target, int level, int width, int height, const GLenum& src_format, const GLenum& src_type, void *pImageData, GLuint texture_id );
+
+	/// \param [in] pImageData A source image data
+	/// \param [out] texture_id A destination texture
+	bool CreateGLTextureFromBitmapImage( GLenum target, BitmapImage& src_img, GLuint& texture_id );
+};
+
+
+class CGLTextureResource : public GLTextureResourceBase
 {
 	GLuint m_TextureID;
 
@@ -48,10 +69,6 @@ protected:
 //	void UpdateDescForCachedResource( const GraphicsResourceDesc& desc );
 
 	bool CreateGLTexture( GLenum target, const GLenum& src_format, const GLenum& src_type, void *pImageData );
-
-	bool UpdateGLTextureImage( GLenum target, int level, int width, int height, const GLenum& src_format, const GLenum& src_type, void *pImageData );
-
-	bool CreateGLTextureFromBitmapImage( BitmapImage& src_img );
 
 public:
 
@@ -86,6 +103,8 @@ public:
 	/// Called by the render thread.
 	bool Create();
 
+	Result::Name Accept( TextureResourceVisitor& visitor ) { return visitor.Visit( *this ); }
+
 	/// Returns true on success
 	/// - Succeeds only between a pair of Lock() and Unlock() calls
 	/// - Returns an object that provides access to the locked texture surface
@@ -94,6 +113,41 @@ public:
 	friend class GraphicsResourceManager;
 };
 
+
+class CGLCubeTextureResource : public GLTextureResourceBase
+{
+public:
+
+	enum Params
+	{
+		NUM_CUBE_MAP_FACES = 6,
+	};
+
+private:
+
+	GLuint m_TextureIDs[NUM_CUBE_MAP_FACES];
+
+public:
+
+//	CGLCubeTextureResource( const TextureResourceDesc *pDesc );
+	CGLCubeTextureResource( const TextureResourceDesc *pDesc )
+	:
+	GLTextureResourceBase(pDesc)
+	{
+	}
+
+	~CGLCubeTextureResource(){}
+
+	bool LoadFromFile( const std::string& filepath );
+
+	bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
+
+	bool Create();
+
+	GLuint GetCubeMapTexture( uint cube_map_face_index ) const { return m_TextureIDs[cube_map_face_index]; }
+
+	Result::Name Accept( TextureResourceVisitor& visitor ) { return visitor.Visit( *this ); }
+};
 
 
 class CGLShaderResource : public ShaderResource

@@ -55,7 +55,16 @@ public:
 
 shared_ptr<TextureResource> CD3DGraphicsResourceFactoryImpl::CreateTextureResource( const TextureResourceDesc& desc )
 {
-	return shared_ptr<CD3DTextureResource>( new CD3DTextureResource(&desc) );
+//	return shared_ptr<CD3DTextureResource>( new CD3DTextureResource(&desc) );
+
+	shared_ptr<CD3DTextureResource> pTexResource;
+
+	if( desc.TypeFlags & TextureTypeFlag::CUBE_MAP )
+		pTexResource.reset( new CD3DCubeTextureResource(&desc) );
+	else
+		pTexResource.reset( new CD3DTextureResource(&desc) );
+
+	return pTexResource;
 }
 
 shared_ptr<MeshResource> CD3DGraphicsResourceFactoryImpl::CreateMeshResource( const MeshResourceDesc& desc )

@@ -75,7 +75,7 @@ public:
 
 CGLTextureResource::CGLTextureResource( const TextureResourceDesc *pDesc )
 :
-TextureResource(pDesc)
+GLTextureResourceBase(pDesc)
 {
 	m_TextureID = 0;
 }
@@ -191,7 +191,7 @@ inline static int GetNumMipmaps( const TextureResourceDesc& desc )
 
 // Create texture from a bitmap image
 // \param src_img [in] the source image. NOTE: the image is altered by one or more scaling operations to create mipmap textures.
-bool CGLTextureResource::CreateGLTextureFromBitmapImage( BitmapImage& src_image )
+bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, BitmapImage& src_image, GLuint& texture_id )
 {
 	GLenum src_format = GL_RGB;
 	GLenum src_type   = GL_UNSIGNED_BYTE;
@@ -219,7 +219,7 @@ bool CGLTextureResource::CreateGLTextureFromBitmapImage( BitmapImage& src_image 
 			}
 		}
 
-		bool res = UpdateGLTextureImage( GL_TEXTURE_2D, i, next_width, next_height, src_format, src_type, FreeImage_GetBits(src_image.GetFBITMAP()) );
+		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, FreeImage_GetBits(src_image.GetFBITMAP()), texture_id );
 	}
 
 	return true;//CreateGLTexture( GL_TEXTURE_2D, src_format, src_type, FreeImage_GetBits(img.GetFBITMAP()) );
@@ -254,7 +254,7 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 
 	LOG_GL_ERROR( "glGenTextures() failed." );
 
-	return CreateGLTextureFromBitmapImage( img );
+	return CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, img, m_TextureID );
 }
 
 
@@ -266,17 +266,26 @@ bool CGLTextureResource::Create()
 	LOG_GL_ERROR( "glGenTextures() failed." );
 
 	int level = 0;
-	return UpdateGLTextureImage( GL_PROXY_TEXTURE_2D, level, m_TextureDesc.Width, m_TextureDesc.Height, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+	return UpdateGLTextureImage( GL_PROXY_TEXTURE_2D, level, m_TextureDesc.Width, m_TextureDesc.Height, GL_RGBA, GL_UNSIGNED_BYTE, NULL, m_TextureID );
 }
 
 
-bool CGLTextureResource::UpdateGLTextureImage( GLenum target, int level, int width, int height, const GLenum& src_format, const GLenum& src_type, void *pImageData )
+bool GLTextureResourceBase::UpdateGLTextureImage(
+	GLenum target,
+	int level,
+	int width,
+	int height,
+	const GLenum& src_format,
+	const GLenum& src_type,
+	void *pImageData,
+	GLuint texture_id
+	)
 {
 //	glGenTextures( 1, &m_TextureID );
 
 //	LOG_GL_ERROR( "glGenTextures() failed." );
 
-	glBindTexture( GL_TEXTURE_2D, m_TextureID );
+	glBindTexture( GL_TEXTURE_2D, texture_id );
 
 	LOG_GL_ERROR( "glBindTexture() failed." );
 
@@ -381,7 +390,7 @@ bool CGLTextureResource::CreateFromDesc()
 			}
 		}
 
-		CreateGLTextureFromBitmapImage( *m_pLockedImage );
+		CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, *m_pLockedImage, m_TextureID );
 
 //		Unlock();
 
@@ -425,6 +434,84 @@ void CGLTextureResource::Release()
 	SetState( GraphicsResourceState::RELEASED );
 }
 
+
+//==================================================================================================
+// CGLCubeTextureResource
+//==================================================================================================
+
+bool CGLCubeTextureResource::LoadFromFile( const std::string& filepath )
+{
+	if( filepath.find( "%u" ) )
+	{
+		LOG_PRINT_ERROR( "'%u' was not found in the input pathname." );
+		return false;
+	}
+
+	glGenTextures( NUM_CUBE_MAP_FACES, m_TextureIDs );
+
+	LOG_GL_ERROR( "glGenTextures() failed." );
+
+	const GLenum cube_map_targets[] =
+	{
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+	};
+
+	int prev_width = 0, prev_height = 0;
+	for( uint i=0; i<NUM_CUBE_MAP_FACES; i++ )
+	{
+		string image_pathname = fmt_string( filepath.c_str(), i );
+
+		BitmapImage img;
+		bool loaded = img.LoadFromFile( image_pathname );
+		if( !loaded )
+			return false;
+
+		if( i == 0 )
+		{
+			prev_width  = img.GetWidth();
+			prev_height = img.GetHeight();
+		}
+		else
+		{
+			if( prev_width  != img.GetWidth()
+			 || prev_height != img.GetHeight() )
+			{
+				LOG_PRINT_ERROR( " All the cube map images must have the same widths and heights." );
+				return false;
+			}
+		}
+
+		bool res = img.FlipVertical();
+
+		res = CreateGLTextureFromBitmapImage( cube_map_targets[i], img, m_TextureIDs[i] );
+		if( !res )
+			return false;
+	}
+
+	m_TextureDesc.Width  = prev_width;
+	m_TextureDesc.Height = prev_height;
+
+	return true;
+}
+
+
+bool CGLCubeTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname )
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return false;
+}
+
+
+bool CGLCubeTextureResource::Create()
+{
+	LOG_PRINT_ERROR( " Not implemented yet." );
+	return false;
+}
 
 
 //==================================================================================================

@@ -2,10 +2,9 @@
 #define __D3DFixedFunctionPipelineManager_HPP__
 
 
-#include <d3dx9.h>
-#include <string>
 #include "D3DShaderManager.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+#include "../Direct3D9.hpp"
+#include "../D3DTextureResourceVisitor.hpp"
 
 
 namespace amorphous
@@ -81,7 +80,7 @@ public:
 
 	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
-	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
+	inline Result::Name SetCubeTexture( const int index, const TextureHandle& cube_texture );
 
 	inline void Begin();
 
@@ -189,20 +188,23 @@ inline HRESULT CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, c
 
 inline Result::Name CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
-	HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( iStage, texture.GetTexture() );
-	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	D3D_FFP_TextureResourceVisitor visitor(iStage);
+	return texture.AcceptTextureResourceVisitor( visitor );
 }
 
 
-inline Result::Name CD3DFixedFunctionPipelineManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline Result::Name CD3DFixedFunctionPipelineManager::SetCubeTexture( int index, const TextureHandle& cube_texture )
 {
+	return SetTexture( index, cube_texture );
+/*
 //	if( m_aCubeTextureHandle[index] )
 //	{
-		HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( index, pCubeTexture );
+		HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( index, cube_texture.GetTexture() );
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 //	}
 //	else
 //		return E_FAIL;
+*/
 }
 
 

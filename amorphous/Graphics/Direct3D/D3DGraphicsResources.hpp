@@ -78,6 +78,8 @@ public:
 	/// Called by the render thread.
 	bool Create();
 
+	Result::Name Accept( TextureResourceVisitor& visitor ) { return visitor.Visit( *this ); }
+
 	friend class GraphicsResourceManager;
 };
 
@@ -95,6 +97,14 @@ private:
 	HRESULT CreateD3DTextureFromFile( const std::string& filepath );
 
 	LPDIRECT3DSURFACE9 GetPrimaryTextureSurface();
+
+public:
+
+	CD3DCubeTextureResource( const TextureResourceDesc *pDesc );
+
+	inline LPDIRECT3DCUBETEXTURE9 GetCubeTexture();
+
+	Result::Name Accept( TextureResourceVisitor& visitor ) { return visitor.Visit( *this ); }
 };
 
 
@@ -209,6 +219,19 @@ inline LPDIRECT3DTEXTURE9 CD3DTextureResource::GetTexture()
 {
 	if( GetState() == GraphicsResourceState::LOADED )
 		return m_pTexture;
+	else
+		return NULL;
+}
+
+
+//================================================================================
+// CD3DCubeTextureResource
+//================================================================================
+
+inline LPDIRECT3DCUBETEXTURE9 CD3DCubeTextureResource::GetCubeTexture()
+{
+	if( GetState() == GraphicsResourceState::LOADED )
+		return m_pCubeTexture;
 	else
 		return NULL;
 }

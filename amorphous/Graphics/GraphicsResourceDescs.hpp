@@ -56,6 +56,18 @@ public:
 };
 
 
+class TextureTypeFlag
+{
+public:
+	enum Name
+	{
+		CUBE_MAP              = (1 << 0),
+//		ANOTHER_TYPE_FLAG     = (1 << 1),
+//		YET_ANOTHER_TYPE_FLAG = (1 << 2),
+	};
+};
+
+
 class GraphicsResourceDesc : public IArchiveObjectBase
 {
 	bool m_IsCachedResource;
@@ -140,6 +152,8 @@ public:
 
 	uint UsageFlags;
 
+	uint TypeFlags;
+
 	boost::shared_ptr<TextureFillingAlgorithm> pLoader;
 
 public:
@@ -150,7 +164,8 @@ public:
 	Height(0),
 	MipLevels(0),
 	Format(TextureFormat::Invalid),
-	UsageFlags(0)
+	UsageFlags(0),
+	TypeFlags(0)
 	{}
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Texture; }

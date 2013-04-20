@@ -61,6 +61,19 @@ public:
 			return 0;
 	}
 
+	Result::Name AcceptTextureResourceVisitor( TextureResourceVisitor& visitor ) const
+	{
+		if( GetEntry()
+		 && GetEntry()->GetTextureResource() )
+		{
+			return GetEntry()->GetTextureResource()->Accept( visitor );
+		}
+		else
+		{
+			return Result::UNKNOWN_ERROR;
+		}
+	}
+
 	/// Creates an empty texture
 	/// - Created as a shareable resource (Right now resource are always sharable)
 	/// - GraphicsResourceHandle::filename is used as an id

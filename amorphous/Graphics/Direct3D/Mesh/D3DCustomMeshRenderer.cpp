@@ -2,6 +2,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
+#include "Graphics/Direct3D/D3DTextureResourceVisitor.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 
@@ -172,13 +173,14 @@ void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const int *subsets_to
 	hr = pd3dDevice->SetVertexShader( NULL );
 	hr = pd3dDevice->SetPixelShader( NULL );
 
+	Result::Name res = Result::SUCCESS;
 	for( int i=0; i<num_mats; i++ )
 	{
 		const int num_textures = mesh.GetNumTextures(i);
 		for( int j=0; j<num_textures; j++ )
 		{
-			LPDIRECT3DTEXTURE9 pTex = mesh.GetTexture(i,j).GetTexture();
-			hr = pd3dDevice->SetTexture( j, pTex );
+			D3D_FFP_TextureResourceVisitor tex_resource_visitor( (uint)j );
+			res = mesh.GetTexture(i,j).AcceptTextureResourceVisitor( tex_resource_visitor );
 		}
 
 		DrawPrimitives( mesh, i, use_zsorted_indices );

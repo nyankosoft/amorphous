@@ -6,6 +6,7 @@
 #include <boost/thread.hpp>
 #include "fwd.hpp"
 #include "GraphicsResourceDescs.hpp"
+#include "TextureResourceVisitor.hpp"
 #include "../Support/Serialization/BinaryDatabase.hpp"
 #include "../Support/fwd.hpp"
 #include <gl/gl.h>
@@ -176,6 +177,7 @@ public:
 
 	/// For Direct3D
 	inline virtual LPDIRECT3DTEXTURE9 GetTexture() { return NULL; }
+	inline virtual LPDIRECT3DCUBETEXTURE9 GetCubeTexture() { return NULL; }
 
 	/// For OpenGL
 	inline virtual GLuint GetGLTextureID() const { return 0; }
@@ -205,6 +207,8 @@ public:
 	/// Creates an empty texture from the current desc.
 	/// Called by the render thread.
 	virtual bool Create() = 0;
+
+	virtual Result::Name Accept( TextureResourceVisitor& visitor ) = 0;
 
 	/// Returns true on success
 	/// - Succeeds only between a pair of Lock() and Unlock() calls

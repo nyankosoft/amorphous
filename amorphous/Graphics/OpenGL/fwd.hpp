@@ -8,6 +8,8 @@ namespace amorphous
 class CGLFixedFunctionPipelineManager;
 class CGLFixedPipelineLightManager;
 class CGLSLShaderLightManager;
+class CGLTextureResource;
+class CGLCubeTextureResource;
 class CGLShaderResource;
 
 } // namespace amorphous

@@ -6,6 +6,8 @@ namespace amorphous
 {
 
 class CHLSLShaderLightManager;
+class CD3DTextureResource;
+class CD3DCubeTextureResource;
 
 } // amorphous
 

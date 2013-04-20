@@ -1,4 +1,5 @@
 #include "GLGraphicsDevice.hpp"
+#include "GLTextureResourceVisitor.hpp"
 #include "GLExtensions.hpp"
 #include "../TextureStage.hpp"
 #include "../FogParams.hpp"
@@ -139,11 +140,17 @@ Result::Name CGLGraphicsDevice::SetTexture( int stage, const TextureHandle& text
 {
 //	PROFILE_FUNCTION();
 
-	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
-
-	LOG_GL_ERROR( "glBindTexture() failed." );
-
-	return Result::SUCCESS;
+	if( texture.IsLoaded() )
+	{
+		GL_FFP_TextureResourceVisitor visitor((uint)stage);
+		return texture.AcceptTextureResourceVisitor( visitor );
+	}
+	else
+	{
+		// TODO: how to reset textures other than 2D, e.g. cube maps
+		glBindTexture( GL_TEXTURE_2D, 0 );
+		return Result::SUCCESS;
+	}
 }
 
 

@@ -521,6 +521,13 @@ LPDIRECT3DSURFACE9 CD3DCubeTextureResource::GetPrimaryTextureSurface()
 }
 
 
+CD3DCubeTextureResource::CD3DCubeTextureResource( const TextureResourceDesc *pDesc )
+:
+CD3DTextureResource(pDesc), m_pCubeTexture(NULL)
+{
+}
+
+
 //==================================================================================================
 // CD3DShaderResource
 //==================================================================================================
