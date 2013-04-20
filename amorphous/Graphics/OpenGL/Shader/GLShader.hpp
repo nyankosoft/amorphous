@@ -152,7 +152,7 @@ public:
 */
 	Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
-//	HRESULT SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture ) { return E_FAIL; }
+//	Result::Name SetCubeTexture( const int index, const TextureHandle& cube_texture ) { return Result::UNKNOWN_ERROR; }
 
 	void Begin();
 

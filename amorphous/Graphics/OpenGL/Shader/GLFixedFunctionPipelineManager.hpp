@@ -74,7 +74,7 @@ public:
 
 	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
-//	inline Result::Name SetCubeTexture( const int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture );
+//	inline Result::Name SetCubeTexture( const int index, const TextureHandle& cube_texture );
 
 	inline Result::Name SetTechnique( const unsigned int id );
 	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );
@@ -206,11 +206,11 @@ inline Result::Name CGLFixedFunctionPipelineManager::SetTexture( const int iStag
 }
 
 /*
-inline Result::Name CGLFixedFunctionPipelineManager::SetCubeTexture( int index, const LPDIRECT3DCUBETEXTURE9 pCubeTexture )
+inline Result::Name CGLFixedFunctionPipelineManager::SetCubeTexture( int index, const TextureHandle& cube_texture )
 {
 	if( m_aCubeTextureHandle[index] )
 	{
-        m_pEffect->SetTexture( m_aCubeTextureHandle[index], pCubeTexture );
+        m_pEffect->SetTexture( m_aCubeTextureHandle[index], cube_texture.GetCubeTexture() );
 		return ???;
 	}
 	else
