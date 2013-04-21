@@ -56,7 +56,14 @@ public:
 
 shared_ptr<TextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResource( const TextureResourceDesc& desc )
 {
-	return shared_ptr<CGLTextureResource>( new CGLTextureResource(&desc) );
+	shared_ptr<GLTextureResourceBase> pTexResource;
+
+	if( desc.TypeFlags & TextureTypeFlag::CUBE_MAP )
+		pTexResource.reset( new CGLCubeTextureResource(&desc) );
+	else
+		pTexResource.reset( new CGLTextureResource(&desc) );
+
+	return pTexResource;
 }
 
 shared_ptr<MeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( const MeshResourceDesc& desc )
