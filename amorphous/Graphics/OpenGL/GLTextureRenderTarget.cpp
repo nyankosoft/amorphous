@@ -2,12 +2,34 @@
 #include "GLExtensions.hpp"
 #include "glext.h"
 #include "GLGraphicsDevice.hpp" // LOG_GL_ERROR macro
+#include "GLGraphicsResources.hpp"
 
 
 namespace amorphous
 {
 
 
+class GLFramebufferTextureResourceVisitor : public TextureResourceVisitor
+{
+	GLenum m_Target;
+
+public:
+
+	GLFramebufferTextureResourceVisitor( GLenum target ) : m_Target(target) {}
+	~GLFramebufferTextureResourceVisitor() {}
+
+	Result::Name Visit( CGLTextureResource& texture_resource )
+	{
+		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_Target, texture_resource.GetGLTextureID(), 0);
+
+		LOG_GL_ERROR( "glBindTexture() failed." );
+
+		return Result::SUCCESS;
+	}
+};
+
+
+	
 CGLTextureRenderTarget::CGLTextureRenderTarget()
 {
 	m_Framebuffer = 0;
@@ -155,7 +177,7 @@ bool CGLTextureRenderTarget::LoadTextures()
 	glGenFramebuffersEXT(1, &m_Framebuffer);
 
 	//	glGenTextures(1, &tex);
-	GLuint tex = m_RenderTargetTexture.GetGLTextureID();
+//	GLuint tex = m_RenderTargetTexture.GetGLTextureID();
 
 	glGenRenderbuffersEXT(1, &depth_rb);
 
@@ -176,8 +198,10 @@ bool CGLTextureRenderTarget::LoadTextures()
 	glTexParameteri(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
-		texTarget, tex, 0);
+//	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
+//		texTarget, tex, 0);
+	GLFramebufferTextureResourceVisitor visitor(texTarget);
+	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
 
 //	GET_GLERROR(0);
 	LOG_GL_ERROR( " glFramebufferTexture2DEXT() returned error(s)" );

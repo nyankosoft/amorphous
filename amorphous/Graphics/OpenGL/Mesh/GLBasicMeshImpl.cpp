@@ -1,6 +1,7 @@
 #include "GLBasicMeshImpl.hpp"
 #include "../GLExtensions.hpp"
 #include "../GLGraphicsDevice.hpp" // for LOG_GL_ERROR() macro
+#include "../GLTextureResourceVisitor.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -97,12 +98,9 @@ bool IsExtensionSupported( char* szTargetExtension )
 static void SetGLTextures( MeshMaterial& mat )
 {
 	vector<TextureHandle>& vecTex = mat.Texture;
-	for( int j=0; j<(int)vecTex.size(); j++ )
+	for( uint j=0; j<(uint)vecTex.size(); j++ )
 	{
-		GLuint texture_id = vecTex[j].GetGLTextureID();
-		glBindTexture( GL_TEXTURE_2D, texture_id );
-
-		LOG_GL_ERROR( "glBindTexture() failed." );
+		SetTextureGL_FFP( j, vecTex[j] );
 	}
 }
 

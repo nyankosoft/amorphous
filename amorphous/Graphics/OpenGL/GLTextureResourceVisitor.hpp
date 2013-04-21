@@ -4,6 +4,7 @@
 
 #include "../TextureResourceVisitor.hpp"
 #include "GLGraphicsResources.hpp"
+#include "GLGraphicsDevice.hpp"
 #include "glext.h"
 #include <gl/gl.h>
 
@@ -52,6 +53,14 @@ public:
 		return Result::SUCCESS;
 	}
 };
+
+
+inline Result::Name SetTextureGL_FFP( uint stage, const TextureHandle& texture )
+{
+	GL_FFP_TextureResourceVisitor visitor( stage );
+	return texture.AcceptTextureResourceVisitor( visitor );
+}
+
 
 
 } // namespace amorphous

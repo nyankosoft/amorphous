@@ -1,6 +1,7 @@
 #include "GLShader.hpp"
 #include <gl/gl.h>
 #include "amorphous/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
+#include "amorphous/Graphics/OpenGL/GLTextureResourceVisitor.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/SafeDelete.hpp"
 
@@ -395,7 +396,8 @@ Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& text
 
 	// glMultiTexCoord2fARB
 
-	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
+//	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
+	SetTextureGL_FFP( iStage, texture );
 
 	return Result::UNKNOWN_ERROR;
 }

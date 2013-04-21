@@ -48,19 +48,6 @@ public:
 			return NULL;
 	}
 
-	/// Returns OpenGL texture
-	/// - User should not have to use this
-	inline GLuint GetGLTextureID() const
-	{
-		if( GetEntry()
-		 && GetEntry()->GetTextureResource() )
-		{
-			return GetEntry()->GetTextureResource()->GetGLTextureID();
-		}
-		else
-			return 0;
-	}
-
 	Result::Name AcceptTextureResourceVisitor( TextureResourceVisitor& visitor ) const
 	{
 		if( GetEntry()

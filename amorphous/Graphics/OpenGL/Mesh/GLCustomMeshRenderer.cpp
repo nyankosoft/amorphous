@@ -1,6 +1,7 @@
 #include "GLCustomMeshRenderer.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/OpenGL/GLTextureResourceVisitor.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
@@ -62,8 +63,7 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 		const MeshMaterial& mat = mesh.GetMaterial(i);
 		for( size_t j=0; j<mat.Texture.size(); j++ )
 		{
-			const GLuint tex_id = mat.Texture[j].GetGLTextureID();
-			glBindTexture( GL_TEXTURE_2D, tex_id );
+			SetTextureGL_FFP( j, mat.Texture[j] );
 		}
 	}
 
