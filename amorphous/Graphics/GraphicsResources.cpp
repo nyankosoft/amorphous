@@ -682,6 +682,9 @@ bool ShaderResource::CreateFromDesc()
 		string shader_content;
 		m_ShaderDesc.pShaderGenerator->GetShader( shader_content );
 
+		if( shader_content.length() == 0 )
+			return false;
+
 		// Need to convert to stream_buffer
 		stream_buffer buffer;
 
@@ -708,6 +711,9 @@ bool ShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
 {
 	if( !m_pShaderManager )
 		m_pShaderManager = CreateShaderManager();
+
+	if( !m_pShaderManager )
+		return false;
 
 	bool loaded = m_pShaderManager->LoadShaderFromText( buffer );
 
