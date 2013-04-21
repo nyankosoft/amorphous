@@ -6,6 +6,7 @@
 #include "ShaderGenerator.hpp"
 
 #include "../Direct3D/Shader/Embedded/EmbeddedGenericHLSL.hpp"
+#include "../Direct3D/Direct3D9.hpp"
 
 
 namespace amorphous
@@ -27,6 +28,13 @@ public:
 
 	void GetShader( std::string& shader )
 	{
+		if( !DIRECT3D9.GetDevice() )
+		{
+			// Currently only available in HLSL.
+			// TODO: Create a Cg version.
+			return;
+		}
+
 		Result::Name res = EmbeddedGenericHLSL::GenerateShader( m_Desc, shader );
 	}
 
