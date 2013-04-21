@@ -441,7 +441,7 @@ void CGLTextureResource::Release()
 
 bool CGLCubeTextureResource::LoadFromFile( const std::string& filepath )
 {
-	if( filepath.find( "%u" ) )
+	if( filepath.find( "%u" ) == string::npos )
 	{
 		LOG_PRINT_ERROR( "'%u' was not found in the input pathname." );
 		return false;

@@ -127,6 +127,8 @@ private:
 
 	GLuint m_TextureIDs[NUM_CUBE_MAP_FACES];
 
+	bool CreateFromDesc() { return false; }
+
 public:
 
 //	CGLCubeTextureResource( const TextureResourceDesc *pDesc );
