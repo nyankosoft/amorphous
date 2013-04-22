@@ -2,7 +2,7 @@
 #define  __XMLCH2X_H__
 
 
-#include "../Platform_Win32.hpp"
+#include "../Platform.hpp"
 #include "XercesString.hpp"
 #include <string>
 
