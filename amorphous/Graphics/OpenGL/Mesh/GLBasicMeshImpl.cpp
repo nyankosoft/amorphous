@@ -181,50 +181,13 @@ bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 	else
 		BuildVBOs_ARB( archive );
 
-/*
-//	LPD3DXMESH pMesh = LoadD3DXMeshFromArchive( archive );
-
-	if( !pMesh )
-		return false;
-*/
 	// load surface materials & textures
 	LoadMaterialsFromArchive( archive, option_flags );
 
 	m_vecTriangleSet = archive.GetTriangleSet();
 
-/*	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
-
-	if( FAILED(hr) )
-		return false;
-
-	m_pMesh = pMesh;
-	pMesh = NULL;
-
-	PeekAttribTables( m_pMesh );
-
-*/
 	return true;
 }
-
-/*
-bool CGLBasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option_flags,
-								  std::vector<D3DVERTEXELEMENT9>& vecVertexElement )
-{
-	HRESULT hr;
-	hr = D3DXCreateMesh(
-			num_indices / 3,         // DWORD NumFaces,
-			num_vertices,            // DWORD NumVertices,
-			option_flags,            // DWORD Options,
-			&(vecVertexElement[0]),  // CONST LPD3DVERTEXELEMENT9 * pDeclaration,
-			DIRECT3D9.GetDevice(),   // LPDIRECT3DDEVICE9 pD3DDevice,
-			&m_pMesh
-		);
-
-	return (m_pMesh != NULL);
-
-	return false;
-}
-*/
 
 
 bool CGLBasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags )
