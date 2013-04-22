@@ -70,7 +70,7 @@ public:
 class CXMLDocumentLoader
 {
 	// test
-	boost::shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string& filepath );
+	boost::shared_ptr<CXMLDocument> LoadWithLSParser( const std::string& filepath );
 
 public:
 
