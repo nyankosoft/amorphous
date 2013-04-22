@@ -177,7 +177,6 @@ public:
 
 	/// For Direct3D
 	inline virtual LPDIRECT3DTEXTURE9 GetTexture() { return NULL; }
-	inline virtual LPDIRECT3DCUBETEXTURE9 GetCubeTexture() { return NULL; }
 
 	/// For OpenGL
 	inline virtual GLuint GetGLTextureID() const { return 0; }
