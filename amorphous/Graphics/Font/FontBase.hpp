@@ -7,6 +7,7 @@
 #include "../FloatRGBAColor.hpp"
 #include "../AlphaBlend.hpp"
 
+#include <cstring>
 #include <string>
 
 
