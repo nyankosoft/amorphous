@@ -147,9 +147,7 @@ public:
 
 	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 
-/*
-	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
-*/
+
 	Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
 //	Result::Name SetCubeTexture( const int index, const TextureHandle& cube_texture ) { return Result::UNKNOWN_ERROR; }

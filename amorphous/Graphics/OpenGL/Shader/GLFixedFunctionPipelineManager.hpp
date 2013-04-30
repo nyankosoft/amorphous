@@ -192,12 +192,6 @@ inline void CGLFixedFunctionPipelineManager::SetViewerPosition( const Vector3& v
 //	m_pEffect->SetValue( m_aHandle[HANDLE_VIEWER_POS], &vEyePosition, sizeof(D3DXVECTOR3) );
 }
 
-/*
-inline HRESULT CGLFixedFunctionPipelineManager::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
-{
-	int break_here = 1;
-}*/
-
 
 inline Result::Name CGLFixedFunctionPipelineManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
