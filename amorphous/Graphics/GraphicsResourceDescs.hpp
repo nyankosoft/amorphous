@@ -203,6 +203,10 @@ class MeshResourceDesc : public GraphicsResourceDesc
 {
 public:
 
+	MeshType::Name MeshType;	///< used by mesh object
+
+	U32 LoadOptionFlags;
+
 	/// Set after the mesh archive is loaded from the desc
 	/// or used to create an empty mesh as cached resource
 	/// in asynchronous loading.
@@ -218,13 +222,6 @@ public:
 	//
 
 	int VertexSize;
-//	std::vector<D3DVERTEXELEMENT9> vecVertElement;
-
-public:
-
-	MeshType::Name MeshType;	///< used by mesh object
-
-	U32 LoadOptionFlags;
 
 public:
 
@@ -339,10 +336,10 @@ Sharable(true)
 inline MeshResourceDesc::MeshResourceDesc()
 :
 MeshType(MeshType::BASIC),
+LoadOptionFlags(0),
 NumVertices(0),
 NumIndices(0),
 VertexFormatFlags(0),
-LoadOptionFlags(0),
 VertexSize(0)
 {}
 
