@@ -36,7 +36,7 @@ public:
 		texture.Clear( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.0f ) );
 
 		const int w = m_Width;
-		const int h = m_Height;
+//		const int h = m_Height;
 		const int start_row = m_StartRow;
 		const int end_row = m_EndRow;
 		const char **papPixelRow = m_papPixelRow;

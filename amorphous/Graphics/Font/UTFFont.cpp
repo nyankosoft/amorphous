@@ -325,7 +325,7 @@ bool UTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2
 
 	// draw text to texture
 
-	vector<UTFFont::CharRect>& char_rects = m_vecCharRect;
+//	vector<UTFFont::CharRect>& char_rects = m_vecCharRect;
 	RenderTextToBufferAndSetUpRects(
 		m_Face,
 		utf_text,
@@ -404,6 +404,7 @@ static inline void ConvertToUTF8CodePoints( const std::string& src_text, std::ve
 	}
 
 	const int num_utf8_chars = (int)utf8_code_points.size();
+	LOG_PRINT_VERBOSE( " num_utf8_chars: " + to_string(num_utf8_chars) );
 }
 
 
