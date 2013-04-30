@@ -247,7 +247,20 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 	if( !m_pHBlurredShadowMap || !m_pBlurredShadowMap )
 		return;
 
-	LPDIRECT3DTEXTURE9 pShadowMap = shadow_map.GetShadowMapTexture();
+	// Commented out 9:55 2013/04/29
+	// All the implementations of shadow_map.GetShadowMapTexture() were returning NULL
+	// at the time the following line was commented out.
+//	LPDIRECT3DTEXTURE9 pShadowMap = shadow_map.GetShadowMapTexture();
+	LPDIRECT3DTEXTURE9 pShadowMap = NULL;
+
+	if( !pShadowMap )
+		return;
+
+	// TODO: get the shadow map texture as TextureHandle
+	TextureHandle shadow_map_texture;
+//	shadow_map_texture = shadow_map.GetShadowMapTexture();
+	if( !shadow_map_texture.IsLoaded() )
+		return;
 
 	m_pHBlurredShadowMap->SetRenderTarget();
 
@@ -273,7 +286,8 @@ void VarianceShadowMapManager::PostProcessDirectionalLightShadowMap( OrthoShadow
 
 	screen_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
 
-	rShaderMgr.SetTexture( 0, pShadowMap );
+//	rShaderMgr.SetTexture( 0, pShadowMap );
+	rShaderMgr.SetTexture( 0, shadow_map_texture );
 
 	LPD3DXEFFECT pEffect = rShaderMgr.GetEffect();
 	if( !pEffect )

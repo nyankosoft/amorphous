@@ -123,7 +123,7 @@ public:
 	virtual void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms ) {}
 
 
-	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
+//	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
 
 	virtual Result::Name SetTexture( const int iStage, const TextureHandle& texture ) { return Result::UNKNOWN_ERROR; }
 
