@@ -36,13 +36,6 @@ public:
 
 
 /*
-inline HRESULT CD3DCgEffect::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
-{
-	return E_FAIL;
-//	return m_pEffect->SetTexture( m_aTextureHandle[iStage], pTexture );
-}
-
-
 inline Result::Name CD3DCgEffect::SetTexture( const int iStage, const TextureHandle& texture )
 {
 //	HRESULT hr = cgD3D9SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
