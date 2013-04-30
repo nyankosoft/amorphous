@@ -58,94 +58,75 @@ void MeshMender::Triangle::Reset()
 	group = NO_GROUP;
 }
 
-class MeshMender::CanSmoothChecker
+bool MeshMender::CanSmoothNormalsChecker::CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)
 {
-public:
-	virtual bool CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)=0;
-};
 
+	assert(t1 && t2);
+	//for checking the angle, we want these to be normalized,
+	//they may not be for whatever reason
+	Vector3 tmp1 = t1->normal;
+	Vector3 tmp2 = t2->normal;
+	Vec3Normalize( &tmp1, &tmp1);
+	Vec3Normalize( &tmp2, &tmp2);
 
-class CanSmoothNormalsChecker: public MeshMender::CanSmoothChecker
-{
-public:
-	virtual bool CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)
+	if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
 	{
-
-		assert(t1 && t2);
-		//for checking the angle, we want these to be normalized,
-		//they may not be for whatever reason
-		Vector3 tmp1 = t1->normal;
-		Vector3 tmp2 = t2->normal;
-		Vec3Normalize( &tmp1, &tmp1);
-		Vec3Normalize( &tmp2, &tmp2);
-
-		if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
-		{
-			return true;
-		}
-		else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
-		{
-			// check for them both being null, then they are 
-			// welcome to smooth no matter what the minCreaseAngle is
-			return true;
-		}
-		return false;
+		return true;
 	}
-};
-
-class CanSmoothTangentsChecker: public MeshMender::CanSmoothChecker
-{
-public:
-	virtual bool CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)
+	else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
 	{
-
-		assert(t1 && t2);
-		//for checking the angle, we want these to be normalized,
-		//they may not be for whatever reason
-		Vector3 tmp1 = t1->tangent;
-		Vector3 tmp2 = t2->tangent;
-		Vec3Normalize( &tmp1, &tmp1);
-		Vec3Normalize( &tmp2, &tmp2);
-
-		if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
-		{
-			return true;
-		}
-		else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
-		{
-			// check for them both being null, then they are 
-			// welcome to smooth no matter what the minCreaseAngle is
-			return true;
-		}
-		return false;
+		// check for them both being null, then they are 
+		// welcome to smooth no matter what the minCreaseAngle is
+		return true;
 	}
-};
+	return false;
+}
 
-class CanSmoothBinormalsChecker: public MeshMender::CanSmoothChecker
+bool MeshMender::CanSmoothTangentsChecker::CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)
 {
-public:
-	virtual bool CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)
+
+	assert(t1 && t2);
+	//for checking the angle, we want these to be normalized,
+	//they may not be for whatever reason
+	Vector3 tmp1 = t1->tangent;
+	Vector3 tmp2 = t2->tangent;
+	Vec3Normalize( &tmp1, &tmp1);
+	Vec3Normalize( &tmp2, &tmp2);
+
+	if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
 	{
-
-		assert(t1 && t2);
-		//for checking the angle, we want these to be normalized,
-		//they may not be for whatever reason
-		Vector3 tmp1 = t1->binormal;
-		Vector3 tmp2 = t2->binormal;
-		Vec3Normalize( &tmp1, &tmp1);
-		Vec3Normalize( &tmp2, &tmp2);
-
-		if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
-			return true;
-		else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
-		{
-			// check for them both being null, then they are 
-			// welcome to smooth no matter what the minCreaseAngle is
-			return true;
-		}
-		return false;
+		return true;
 	}
-};
+	else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
+	{
+		// check for them both being null, then they are 
+		// welcome to smooth no matter what the minCreaseAngle is
+		return true;
+	}
+	return false;
+}
+
+bool MeshMender::CanSmoothBinormalsChecker::CanSmooth(MeshMender::Triangle* t1, MeshMender::Triangle* t2, const float& minCreaseAngle)
+{
+
+	assert(t1 && t2);
+	//for checking the angle, we want these to be normalized,
+	//they may not be for whatever reason
+	Vector3 tmp1 = t1->binormal;
+	Vector3 tmp2 = t2->binormal;
+	Vec3Normalize( &tmp1, &tmp1);
+	Vec3Normalize( &tmp2, &tmp2);
+
+	if(Vec3Dot( tmp1, tmp2 ) >= minCreaseAngle )
+		return true;
+	else if( ( tmp1 == Vector3(0,0,0) ) && ( tmp2 == Vector3(0,0,0) ) )
+	{
+		// check for them both being null, then they are 
+		// welcome to smooth no matter what the minCreaseAngle is
+		return true;
+	}
+	return false;
+}
 
 namespace amorphous{
 bool operator<( const Vector3& lhs, const Vector3& rhs )

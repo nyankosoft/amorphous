@@ -124,7 +124,7 @@ class MeshMender
 					  D3DFVF_TEXCOORDSIZE3( 1 ) |
 					  D3DFVF_TEXCOORDSIZE3( 2 )
 			};*/
-			Vertex::Vertex():pos(0.0f ,0.0f ,0.0f )
+			Vertex():pos(0.0f ,0.0f ,0.0f )
 										,normal(0.0f ,0.0f ,0.0f )
 										,s(0.0f )
 										,t(0.0f )
@@ -227,12 +227,6 @@ class MeshMender
 		float MinBinormalsCreaseCosAngle;
 		float WeightNormalsByArea;
 		ExistingSplitOption  m_RespectExistingSplits;
-
-		class CanSmoothChecker;
-		friend class CanSmoothChecker;
-		friend class CanSmoothNormalsChecker;
-		friend class CanSmoothTangentsChecker;
-		friend class CanSmoothBinormalsChecker;
 		
 		//sets up any internal data structures needed
 		void SetUpData(	std::vector< Vertex >&			theVerts,
@@ -261,7 +255,31 @@ class MeshMender
 			TriID myID;//a global id used to keep track of tris'
 
 		};
-		
+
+		class CanSmoothChecker
+		{
+		public:
+			virtual bool CanSmooth(Triangle* t1, Triangle* t2, const float& minCreaseAngle)=0;
+		};
+
+		class CanSmoothNormalsChecker : public CanSmoothChecker
+		{
+		public:
+			virtual bool CanSmooth(Triangle* t1, Triangle* t2, const float& minCreaseAngle);
+		};
+
+		class CanSmoothTangentsChecker : public CanSmoothChecker
+		{
+		public:
+			virtual bool CanSmooth(Triangle* t1, Triangle* t2, const float& minCreaseAngle);
+		};
+
+		class CanSmoothBinormalsChecker : public CanSmoothChecker
+		{
+		public:
+			virtual bool CanSmooth(Triangle* t1, Triangle* t2, const float& minCreaseAngle);
+		};
+
 		std::vector<Triangle> m_Triangles;
 
 		//each vertex has a set of triangles that contain it.
