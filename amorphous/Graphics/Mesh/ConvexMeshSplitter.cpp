@@ -1,8 +1,6 @@
 #include "ConvexMeshSplitter.hpp"
 #include "CustomMesh.hpp"
 #include "../../3DMath/ConvexPolygonUtilities.hpp"
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/point_xy.hpp>
 
 
 namespace amorphous
