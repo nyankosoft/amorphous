@@ -138,6 +138,25 @@ CGLBasicMeshImpl::~CGLBasicMeshImpl()
 
 void CGLBasicMeshImpl::Release()
 {
+	if( glGenBuffers )
+	{
+		glDeleteBuffers( 1, &m_PositionBuffer );
+		glDeleteBuffers( 1, &m_NormalBuffer );
+		glDeleteBuffers( 1, &m_DiffuseColorBuffer );
+		glDeleteBuffers( 1, &m_TexCoordBuffer );
+		glDeleteBuffers( 1, &m_IndexBuffer );
+	}
+	else
+	{
+		// ARB
+		glDeleteBuffersARB( 1, &m_PositionBuffer );
+		glDeleteBuffersARB( 1, &m_NormalBuffer );
+		glDeleteBuffersARB( 1, &m_DiffuseColorBuffer );
+		glDeleteBuffersARB( 1, &m_TexCoordBuffer );
+		glDeleteBuffersARB( 1, &m_IndexBuffer );
+	}
+
+	m_NumIndices = 0;
 }
 
 
@@ -492,6 +511,11 @@ void CGLBasicMeshImpl::Render()
 	// Disable Pointers
 	glDisableClientState( GL_VERTEX_ARRAY );					// Disable Vertex Arrays
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );				// Disable Texture Coord Arrays
+	glDisableClientState( GL_NORMAL_ARRAY );                    // Disable Normal Arrays
+	glDisableClientState( GL_COLOR_ARRAY );                     // Disable Color Arrays
+
+	glBindBuffer( GL_ARRAY_BUFFER/*_ARB*/, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER/*_ARB*/, 0 );
 }
 
 
