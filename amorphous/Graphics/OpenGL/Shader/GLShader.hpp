@@ -156,8 +156,6 @@ public:
 
 	void End();
 /*
-//	virtual void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture ) {}
-
 	virtual Result::Name SetTechnique( const unsigned int id ) { return Result::UNKNOWN_ERROR; }
 
 	virtual Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle ) { return Result::UNKNOWN_ERROR; }
