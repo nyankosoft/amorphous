@@ -1,5 +1,5 @@
-#ifndef __GLBasicMeshImpl_HPP__
-#define __GLBasicMeshImpl_HPP__
+#ifndef __GL2BasicMeshImpl_HPP__
+#define __GL2BasicMeshImpl_HPP__
 
 
 #include "amorphous/base.hpp"
@@ -15,7 +15,7 @@ namespace amorphous
 using namespace serialization;
 
 
-class CGLBasicMeshImpl : public MeshImpl
+class CGL2BasicMeshImpl : public MeshImpl
 {
 private:
 
@@ -50,11 +50,11 @@ private:
 
 public:
 
-	CGLBasicMeshImpl();
+	CGL2BasicMeshImpl();
 
-	CGLBasicMeshImpl( const std::string& filename );
+	CGL2BasicMeshImpl( const std::string& filename );
 
-	virtual ~CGLBasicMeshImpl();
+	virtual ~CGL2BasicMeshImpl();
 
 	void Release();
 
@@ -82,7 +82,7 @@ public:
 };
 
 /*
-class CGLProgressiveMeshImpl : public CGLBasicMeshImpl
+class CGLProgressiveMeshImpl : public CGL2BasicMeshImpl
 {
 public:
 
@@ -114,4 +114,4 @@ public:
 
 
 
-#endif	/*  __GLBasicMeshImpl_HPP__  */
+#endif	/*  __GL2BasicMeshImpl_HPP__  */

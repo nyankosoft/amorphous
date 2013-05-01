@@ -103,6 +103,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectFilter.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectManager.cpp" />
@@ -180,12 +181,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
@@ -370,6 +365,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectFilter.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectManager.hpp" />
@@ -474,7 +470,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp" />

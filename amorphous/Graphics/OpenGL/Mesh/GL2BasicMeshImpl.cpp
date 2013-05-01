@@ -1,4 +1,4 @@
-#include "GLBasicMeshImpl.hpp"
+#include "GL2BasicMeshImpl.hpp"
 #include "../GLExtensions.hpp"
 #include "../GLGraphicsDevice.hpp" // for LOG_GL_ERROR() macro
 #include "../GLTextureResourceVisitor.hpp"
@@ -105,7 +105,7 @@ static void SetGLTextures( MeshMaterial& mat )
 }
 
 
-CGLBasicMeshImpl::CGLBasicMeshImpl()
+CGL2BasicMeshImpl::CGL2BasicMeshImpl()
 :
 m_NumIndices(0),
 
@@ -119,7 +119,7 @@ m_IndexBuffer(0)
 }
 
 
-CGLBasicMeshImpl::CGLBasicMeshImpl( const std::string& filename )
+CGL2BasicMeshImpl::CGL2BasicMeshImpl( const std::string& filename )
 {
 	bool loaded = LoadFromFile(filename);
 
@@ -130,13 +130,13 @@ CGLBasicMeshImpl::CGLBasicMeshImpl( const std::string& filename )
 }
 
 
-CGLBasicMeshImpl::~CGLBasicMeshImpl()
+CGL2BasicMeshImpl::~CGL2BasicMeshImpl()
 {
 	Release();
 }
 
 
-void CGLBasicMeshImpl::Release()
+void CGL2BasicMeshImpl::Release()
 {
 	if( glGenBuffers )
 	{
@@ -160,7 +160,7 @@ void CGLBasicMeshImpl::Release()
 }
 
 
-bool CGLBasicMeshImpl::LoadFromFile( const std::string& filename, U32 option_flags )
+bool CGL2BasicMeshImpl::LoadFromFile( const std::string& filename, U32 option_flags )
 {
 	C3DMeshModelArchive archive;
 	bool loaded = archive.LoadFromFile( filename );
@@ -186,7 +186,7 @@ bool IsValidMeshModelArchive( C3DMeshModelArchive& archive )
 }
 
 
-bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
+bool CGL2BasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
 	if( !IsValidMeshModelArchive( archive ) )
 		return false;
@@ -209,14 +209,14 @@ bool CGLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 }
 
 
-bool CGLBasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags )
+bool CGL2BasicMeshImpl::CreateMesh( int num_vertices, int num_indices, U32 option_flags, U32 vertex_format_flags )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 	return false;
 }
 
 
-void CGLBasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
+void CGL2BasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
 {
 //	C3DMeshModelArchive archive;
 	CMMA_VertexSet& vert_set = archive.GetVertexSet();
@@ -296,7 +296,7 @@ void CGLBasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
 }
 
 
-void CGLBasicMeshImpl::BuildVBOs_ARB( C3DMeshModelArchive& archive )
+void CGL2BasicMeshImpl::BuildVBOs_ARB( C3DMeshModelArchive& archive )
 {
 //	C3DMeshModelArchive archive;
 	CMMA_VertexSet& vert_set = archive.GetVertexSet();
@@ -375,7 +375,7 @@ void CGLBasicMeshImpl::BuildVBOs_ARB( C3DMeshModelArchive& archive )
 
 /// renders subsets of the mesh
 /// - use different shader techniques for each material
-void CGLBasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
+void CGL2BasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 		                     const std::vector<int>& vecMaterialIndex,
 							 std::vector<ShaderTechniqueHandle>& vecShaderTechnique )
 {
@@ -423,7 +423,7 @@ void CGLBasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 }
 
 
-void CGLBasicMeshImpl::Render( ShaderManager& rShaderMgr )
+void CGL2BasicMeshImpl::Render( ShaderManager& rShaderMgr )
 {
 	rShaderMgr.Begin();
 
@@ -431,19 +431,19 @@ void CGLBasicMeshImpl::Render( ShaderManager& rShaderMgr )
 }
 
 
-void CGLBasicMeshImpl::RenderSubset( ShaderManager& rShaderMgr, int material_index )
+void CGL2BasicMeshImpl::RenderSubset( ShaderManager& rShaderMgr, int material_index )
 {
 }
 
 
 /*
-void CGLBasicMeshImpl::Render_Debug()
+void CGL2BasicMeshImpl::Render_Debug()
 {
 }
 */
 
 
-void CGLBasicMeshImpl::Render()
+void CGL2BasicMeshImpl::Render()
 {
 	// Enable Pointers
 	glEnableClientState( GL_VERTEX_ARRAY );	            // Enable Vertex Arrays
@@ -519,7 +519,7 @@ void CGLBasicMeshImpl::Render()
 }
 
 
-void CGLBasicMeshImpl::BindBuffers_ARB()
+void CGL2BasicMeshImpl::BindBuffers_ARB()
 {
 	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_PositionBuffer );
 	glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
@@ -545,13 +545,13 @@ void CGLBasicMeshImpl::BindBuffers_ARB()
 
 /// renders subsets of the mesh with the current shader technique
 /// - the same shader technique is used to render all the materials
-void CGLBasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
+void CGL2BasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */)
 {
 }
 
 
-MeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new CGLBasicMeshImpl; }
+MeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new CGL2BasicMeshImpl; }
 MeshImpl* CGLMeshImplFactory::CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
 MeshImpl* CGLMeshImplFactory::CreateSkeletalMeshImpl() { return new CGLSkeletalMeshImpl; }
 

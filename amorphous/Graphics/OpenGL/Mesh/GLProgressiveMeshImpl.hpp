@@ -2,7 +2,7 @@
 #define __GLProgressiveMeshImpl_HPP__
 
 
-#include "GLBasicMeshImpl.hpp"
+#include "GL2BasicMeshImpl.hpp"
 
 
 namespace amorphous
@@ -10,7 +10,7 @@ namespace amorphous
 
 
 /// NOT IMPLEMENTED YET
-class CGLProgressiveMeshImpl : public CGLBasicMeshImpl
+class CGLProgressiveMeshImpl : public CGL2BasicMeshImpl
 {
 
 public:

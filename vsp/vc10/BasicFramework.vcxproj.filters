@@ -393,9 +393,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
       <Filter>Graphics\OpenGL\2DPrimitive</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
-      <Filter>Graphics\OpenGL\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
@@ -810,6 +807,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1159,9 +1159,6 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp">
       <Filter>Graphics\OpenGL\2DPrimitive</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
-      <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
@@ -1883,6 +1880,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

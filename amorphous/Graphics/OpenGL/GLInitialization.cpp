@@ -5,7 +5,7 @@
 #include "PrimitiveRenderer_GL.hpp"
 #include "GLGraphicsResources.hpp"
 #include "GLTextureRenderTarget.hpp"
-#include "Mesh/GLBasicMeshImpl.hpp"
+#include "Mesh/GL2BasicMeshImpl.hpp"
 #include "Mesh/GLCustomMeshRenderer.hpp"
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
 #include "../GraphicsResources.hpp"
