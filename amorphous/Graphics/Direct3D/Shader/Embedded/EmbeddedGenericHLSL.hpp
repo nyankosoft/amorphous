@@ -43,7 +43,7 @@ public:
 
 	virtual ~EmbeddedGenericHLSL();
 
-	static Result::Name GenerateShader( GenericShaderDesc& desc, std::string& hlsl_effect );
+	static Result::Name GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
 };
 
 

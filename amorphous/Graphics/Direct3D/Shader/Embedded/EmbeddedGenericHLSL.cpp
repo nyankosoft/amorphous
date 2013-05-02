@@ -751,7 +751,7 @@ static const char *GetAlphaBlendTypeMacro( AlphaBlendType::Name alpha_blend )
 }
 
 
-void LoadShader_HSPerVeretxLighting( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerVeretxLighting( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	// per-vetex without specular reflection
 	// Just select the shader for multi lights
@@ -762,7 +762,7 @@ void LoadShader_HSPerVeretxLighting( GenericShaderDesc& desc, EmbeddedHLSLEffect
 }
 
 
-void LoadShader_HSPerVeretxLighting_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerVeretxLighting_Specular( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 /*	switch( desc.num_directional_lights )
 	{
@@ -788,7 +788,7 @@ void LoadShader_HSPerVeretxLighting_Specular( GenericShaderDesc& desc, EmbeddedH
 }
 
 
-void LoadShader_HSPerVeretxLighting_QVertexBlend( GenericShaderDesc& desc,
+static void LoadShader_HSPerVeretxLighting_QVertexBlend( const GenericShaderDesc& desc,
 												  EmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = EmbeddedHLSLShaders::ms_VS_PVL_HSLs_QVertexBlend;
@@ -804,7 +804,7 @@ void LoadShader_HSPerVeretxLighting_QVertexBlend( GenericShaderDesc& desc,
 }
 
 
-void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerVeretxLighting_QVertexBlend_Specular( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 }
 
@@ -863,7 +863,7 @@ static const char *GetPlanarReflectionOptionMacro( PlanarReflectionOption::Name 
 	}
 }
 
-void LoadShader_HSPerPixelLighting_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerPixelLighting_Specular( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = EmbeddedHLSLShaders::ms_VS_PPL_HSLs_Specular;
 	dest.ps = EmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
@@ -879,7 +879,7 @@ void LoadShader_HSPerPixelLighting_Specular( GenericShaderDesc& desc, EmbeddedHL
 }
 
 
-void LoadShader_HSPerPixelLighting( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerPixelLighting( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = EmbeddedHLSLShaders::ms_VS_PPL_HSLs;
 	dest.ps = EmbeddedHLSLShaders::ms_PS_PPL_HSLs;
@@ -892,13 +892,13 @@ void LoadShader_HSPerPixelLighting( GenericShaderDesc& desc, EmbeddedHLSLEffectD
 }
 
 
-void LoadShader_HSPerPixelLighting_QVertexBlend( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerPixelLighting_QVertexBlend( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
-void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadShader_HSPerPixelLighting_QVertexBlend_Specular( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	dest.vs = EmbeddedHLSLShaders::ms_VS_PPL_HSLs_QVertexBlend_Specular;
 	dest.ps = EmbeddedHLSLShaders::ms_PS_PPL_HSLs_Specular;
@@ -920,7 +920,7 @@ void LoadPerVeretxLightingShader( GenericShaderDesc& desc, EmbeddedHLSLEffectDes
 }
 */
 
-void LoadHSLightingShader( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
+static void LoadHSLightingShader( const GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest )
 {
 	switch( desc.LightingType )
 	{
@@ -966,7 +966,7 @@ void LoadHSLightingShader( GenericShaderDesc& desc, EmbeddedHLSLEffectDesc& dest
 }
 
 
-Result::Name EmbeddedGenericHLSL::GenerateShader( GenericShaderDesc& desc, std::string& hlsl_effect )
+Result::Name EmbeddedGenericHLSL::GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect )
 {
 	LOG_FUNCTION_SCOPE();
 
