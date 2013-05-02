@@ -4,9 +4,7 @@
 
 #include "GenericShaderDesc.hpp"
 #include "ShaderGenerator.hpp"
-
-#include "../Direct3D/Shader/Embedded/EmbeddedGenericHLSL.hpp"
-#include "../Direct3D/Direct3D9.hpp"
+#include "Embedded/EmbeddedGenericShader.hpp"
 
 
 namespace amorphous
@@ -28,14 +26,26 @@ public:
 
 	void GetShader( std::string& shader )
 	{
-		if( !DIRECT3D9.GetDevice() )
-		{
-			// Currently only available in HLSL.
-			// TODO: Create a Cg version.
-			return;
-		}
+		Result::Name res = Result::UNKNOWN_ERROR;
 
-		Result::Name res = EmbeddedGenericHLSL::GenerateShader( m_Desc, shader );
+		if( GetEmbeddedGenericShader() )
+			res = GetEmbeddedGenericShader()->GenerateShader( m_Desc, shader );
+	}
+
+	void GetVertexShader( std::string& shader )
+	{
+		Result::Name res = Result::UNKNOWN_ERROR;
+
+		if( GetEmbeddedGenericShader() )
+			res = GetEmbeddedGenericShader()->GenerateVertexShader( m_Desc, shader );
+	}
+
+	void GetPixelShader( std::string& shader )
+	{
+		Result::Name res = Result::UNKNOWN_ERROR;
+
+		if( GetEmbeddedGenericShader() )
+			res = GetEmbeddedGenericShader()->GenerateFragmentShader( m_Desc, shader );
 	}
 
 //	void Accept( ShaderGeneratorVisitor& visitor ) { visitor.Visit( *this ); }

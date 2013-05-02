@@ -8,6 +8,7 @@
 #include "Mesh/GL2BasicMeshImpl.hpp"
 #include "Mesh/GLCustomMeshRenderer.hpp"
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
+#include "Shader/Embedded/EmbeddedGenericGLSLShader.hpp"
 #include "../GraphicsResources.hpp"
 #include "../GraphicsResourceCacheManager.hpp"
 #include "../Mesh/CustomMesh.hpp"
@@ -89,6 +90,8 @@ Result::Name InitializeOpenGLClasses()
 	TextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
 	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_FRGBA );
+	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericGLSLShader( new EmbeddedGenericGLSLShader );
+	SetEmbeddedGenericShader( pEmbeddedGenericGLSLShader );
 
 	return Result::SUCCESS;
 }

@@ -2,8 +2,8 @@
 #define  __EmbeddedGenericHLSL_HPP__
 
 
-#include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Shader/Embedded/EmbeddedGenericShader.hpp"
 #include <string>
 
 
@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 
-class EmbeddedGenericHLSL
+class EmbeddedGenericHLSL : public EmbeddedGenericShader
 {
 	static const char *ms_pMatrix;
 
@@ -39,11 +39,11 @@ class EmbeddedGenericHLSL
 
 public:
 
-	EmbeddedGenericHLSL();
+	EmbeddedGenericHLSL() {}
 
-	virtual ~EmbeddedGenericHLSL();
+	~EmbeddedGenericHLSL() {}
 
-	static Result::Name GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
+	Result::Name GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
 };
 
 
