@@ -2,12 +2,10 @@
 #define  __2DRectSetImpl_GL_HPP__
 
 
-#include "../../base.hpp"
-#include "../../2DPrimitive/2DRectSet.hpp"
-#include "../../GraphicsDevice.hpp"
-#include "../../../Support/Profile.hpp"
-
-#include <vector>
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRectSet.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Support/Profile.hpp"
 #include "2DPrimitiveRenderer_GL.hpp"
 
 
