@@ -125,7 +125,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::CreateGraphicsResourc
 
 
 template<class T>
-size_t add_weak_ptr_to_vacant_slot( weak_ptr<T> ptr, vector<weak_ptr<T>>& vecPtr )
+size_t add_weak_ptr_to_vacant_slot( weak_ptr<T> ptr, vector< weak_ptr<T> >& vecPtr )
 {
 	for( size_t i=0; i<vecPtr.size(); i++ )
 	{
@@ -143,7 +143,7 @@ size_t add_weak_ptr_to_vacant_slot( weak_ptr<T> ptr, vector<weak_ptr<T>>& vecPtr
 
 
 template<class T>
-inline int share_as_same_resource( const GraphicsResourceDesc& desc, const std::vector<boost::shared_ptr<T>>& vecPtr )
+inline int share_as_same_resource( const GraphicsResourceDesc& desc, const std::vector< boost::shared_ptr<T> >& vecPtr )
 {
 	const  size_t num_resources = vecPtr.size();
 	for( size_t i=0; i<num_resources; i++ )
