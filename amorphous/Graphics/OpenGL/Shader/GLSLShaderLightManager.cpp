@@ -1,10 +1,10 @@
 #include "GLSLShaderLightManager.hpp"
 #include "Graphics/OpenGL/GLExtensions.hpp"
+#include "Support/Macro.h"
 
 
 namespace amorphous
 {
-//#include <boost/filesystem.hpp>
 
 using namespace std;
 //using namespace boost;
@@ -12,6 +12,7 @@ using namespace std;
 
 CGLSLShaderLightManager::CGLSLShaderLightManager()
 :
+m_Program(0),
 m_VertexShader(0),
 m_FragmentShader(0)
 {
@@ -20,10 +21,40 @@ m_FragmentShader(0)
 }
 
 
-void CGLSLShaderLightManager::Init()
+void CGLSLShaderLightManager::Init( GLuint program )
 {
+	if( program == 0 )
+		return;
+
+	m_Program = program;
+
+	glUseProgram( m_Program );
+
 	char var_name[16];
 	memset( var_name, 0, sizeof(var_name) );
+
+//	GLint dirs[2];
+
+//	for( int i=0; i<numof(m_HSDirLights); i++ )
+//	{
+//		sprintf( var_name, "HSDL_Dir[%d]", i );
+//		dirs[i] = glGetUniformLocation( program,   var_name );
+//	}
+
+	GLint udc = glGetUniformLocation( program, "HSDL_UDC" );
+	GLint ldc = glGetUniformLocation( program, "HSDL_LDC" );
+	GLint dir = glGetUniformLocation( program, "HSDL_Dir" );
+
+	SFloatRGBAColor hsdl_udc( SFloatRGBAColor::White() ), hsdl_ldc( SFloatRGBAColor(0,0,0,1) );
+	glUniform4fv( udc, 1, (GLfloat *)&hsdl_udc );
+	glUniform4fv( ldc, 1, (GLfloat *)&hsdl_ldc );
+
+	Vector3 hsdl_dir = Vec3GetNormalized( Vector3(-1,-3,1) );
+	glUniform3fv( dir, 1, (GLfloat *)&hsdl_dir );
+
+	for( int i=0; i<numof(m_HSPointLights); i++ )
+	{
+	}
 
 	int num_lights = 4;
 	for( int i=0; i<num_lights; i++ )

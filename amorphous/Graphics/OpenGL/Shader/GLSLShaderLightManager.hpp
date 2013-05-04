@@ -12,11 +12,19 @@ namespace amorphous
 
 class CGLSLShaderLightManager : public CGLFixedPipelineLightManager
 {
+	GLuint m_Program;
+
 	int m_VertexShader;
 	int m_FragmentShader;
 
 	int m_VSLowerLightColor[8];
 	int m_FSLowerLightColor[8];
+
+	HemisphericDirectionalLight m_HSDirLights[2];
+
+	HemisphericPointLight m_HSPointLights[4];
+
+private:
 
 	void SetHSDiffuseColors( const HemisphericLightAttribute& hs_light, GLenum light_id );
 
@@ -25,7 +33,7 @@ public:
 	CGLSLShaderLightManager();
 	~CGLSLShaderLightManager() {}
 
-	void Init();
+	void Init( GLuint program );
 
 	void SetAmbientLight( const AmbientLight& light );
 

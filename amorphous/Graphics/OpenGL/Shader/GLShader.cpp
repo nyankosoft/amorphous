@@ -1,9 +1,11 @@
 #include "GLShader.hpp"
-#include <gl/gl.h>
 #include "amorphous/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
 #include "amorphous/Graphics/OpenGL/GLTextureResourceVisitor.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/SafeDelete.hpp"
+
+
+#define GL_GEOMETRY_SHADER                0x8DD9
 
 
 namespace amorphous
@@ -131,6 +133,20 @@ void setShaders()
 #endif /* 0 */
 
 
+
+static const char *sg_MinimalVertexShader =
+"#version 330\n"\
+"layout(location = 0) in vec4 position;\n"\
+"uniform mat4 ProjViewWorld;\n"\
+"void main(){gl_Position = ProjViewWorld * position;}\n";
+
+
+static const char *sg_MinimalFragmentShader =
+"#version 330\n"\
+"out vec4 o_color;\n"\
+"void main(){o_color = vec4(1,1,1,1);}\n";
+
+
 CGLShader::CGLShader()
 :
 m_Shader(0)
@@ -138,8 +154,16 @@ m_Shader(0)
 }
 
 
+CGLShader::~CGLShader()
+{
+	Release();
+}
+
+
 bool CGLShader::LoadFromFile( const std::string& filepath )
 {
+	Release();
+
 	if( glCreateShader )
 		m_Shader = glCreateShader( GetShaderType() );
 	else if( glCreateShaderObjectARB )
@@ -154,25 +178,74 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 		return false;
 	}
 
+	return CreateShader( &buffer[0] );
+}
+
+
+static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::string& error_info )
+{
+//	const int max_log_length = 2048;
+//	char log_buffer[max_log_length];
+//	memset( log_buffer, 0, sizeof(log_buffer) );
+//	int log_length = 0;
+//	glGetInfoLogARB( shader, max_log_length - 1, &log_length, log_buffer );
+
+	GLint status = 0;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	LOG_GL_ERROR( " glGetShaderiv() failed." );
+	if (status == GL_FALSE)
+	{
+		GLint infoLogLength = 0;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+		if( infoLogLength == 0 )
+			return;
+
+		GLchar *strInfoLog = new GLchar[infoLogLength + 1];
+		glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
+		const char *strShaderType = "";
+		switch(shader_type)
+		{
+		case GL_VERTEX_SHADER:   strShaderType = "vertex";   break;
+		case GL_GEOMETRY_SHADER: strShaderType = "geometry"; break;
+		case GL_FRAGMENT_SHADER: strShaderType = "fragment"; break;
+		}
+
+		error_info = fmt_string( "Compile failure in %s shader:\n", strShaderType );
+		error_info += strInfoLog;
+
+		delete[] strInfoLog;
+	}
+}
+
+
+bool CGLShader::CreateShader( const char *source )
+{
+	LOG_GL_ERROR( " Entered." );
+
+	Release();
+
+	m_Shader = glCreateShader( GetShaderType() );
+
+	if( !source || strlen(source) == 0 )
+		return false;
+
 //	const char * vv = vs;
 
-	const char *pBuffer = &(buffer[0]);
-	glShaderSourceARB( m_Shader, 1, &pBuffer, NULL );
+	string error_info;
+
+	const char *pBuffer = source;
+	glShaderSource( m_Shader, 1, &pBuffer, NULL );
 
 	LOG_GL_ERROR( "glShaderSourceARB() failed." );
 
-	glCompileShaderARB( m_Shader );
+	glCompileShader( m_Shader );
 
 	LOG_GL_ERROR( "glCompileShaderARB() failed. Failed to compile a shader" );
 
-	const int max_log_length = 2048;
-	char log_buffer[max_log_length];
-	memset( log_buffer, 0, sizeof(log_buffer) );
-	int log_length = 0;
-	glGetInfoLogARB( m_Shader, max_log_length - 1, &log_length, log_buffer );
+	GetCompileStatus( GetShaderType(), m_Shader, error_info );
 
-	if( 0 < log_length )
-		LOG_PRINT_ERROR( log_buffer );
+	if( 0 < error_info.length() )
+		LOG_PRINT_ERROR( error_info );
 
 	return true;
 /*
@@ -195,7 +268,11 @@ bool CGLShader::LoadShaderFromText( const stream_buffer& buffer )
 
 void CGLShader::Release()
 {
-	// release m_Shader
+	if( 0 < m_Shader )
+	{
+		glDeleteShader( m_Shader );
+		m_Shader = 0;
+	}
 }
 
 
@@ -213,8 +290,8 @@ CGLFragmentShader::CGLFragmentShader()
 
 void CGLFragmentShader::InitGLShader()
 {
-	if( !glGetUniformLocation ) glGetUniformLocation = glGetUniformLocationARB;
-	if( !glUniform1i )          glUniform1i          = glUniform1iARB;
+//	if( !glGetUniformLocation ) glGetUniformLocation = glGetUniformLocationARB;
+//	if( !glUniform1i )          glUniform1i          = glUniform1iARB;
 
 	char sampler_name[16];
 	memset( sampler_name, 0, sizeof(sampler_name) );
@@ -240,6 +317,9 @@ m_Program(0),
 m_pVertexShader(NULL),
 m_pFragmentShader(NULL)
 {
+	for( int i=0; i<NUM_PREDEFINED_MATRIX_UNIFORMS; i++ )
+		m_PredefinedMatrixUniforms[i] = -1;
+
 	m_pLightManager.reset( new CGLSLShaderLightManager );
 }
 
@@ -311,26 +391,95 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 	if( !fs_loaded )
 		LOG_PRINT_ERROR( "Failed to load a fragment shader: " + fs_path );
 
+	if( !vs_loaded || !fs_loaded )
+	{
+		bool min_shaders_loaded = LoadMimalShaders();
+		if( min_shaders_loaded )
+			return false;
+	}
+
 	if( !m_pVertexShader || !m_pFragmentShader )
 		return false;
 
+	Result::Name res = InitProgram();
+
+	return (res == Result::SUCCESS) ? true : false;
+}
+
+
+Result::Name CGLProgram::InitProgram()
+{
+	if( !m_pVertexShader || !m_pFragmentShader )
+		return Result::UNKNOWN_ERROR;
+
 	m_Program = glCreateProgramObjectARB();
 
-	glAttachObjectARB( m_Program, m_pVertexShader->GetGLHandle() );
-	glAttachObjectARB( m_Program, m_pFragmentShader->GetGLHandle() );
+	LOG_GL_ERROR( " glCreateProgramObjectARB() failed." );
 
-//	glLinkProgramARB( m_Program );
+	glAttachShader( m_Program, m_pVertexShader->GetGLHandle() );
+
+	LOG_GL_ERROR( " glAttachShader() failed." );
+
+	glAttachShader( m_Program, m_pFragmentShader->GetGLHandle() );
+
+	LOG_GL_ERROR( " glAttachShader() failed." );
+
+	glLinkProgram( m_Program );
+
+	LOG_GL_ERROR( " glLinkProgram() failed." );
+
 //	glUseProgramObjectARB( m_Program );
+
+	InitUniforms();
+
+	if( m_pLightManager )
+		m_pLightManager->Init( m_Program );
 
 	LOG_GL_ERROR( "Detected a GL error at the end of the function." );
 
-	return true;
+	return Result::SUCCESS;
+}
+
+
+bool CGLProgram::LoadMimalShaders()
+{
+	SafeDelete( m_pVertexShader );
+	SafeDelete( m_pFragmentShader );
+
+	m_pVertexShader   = new CGLVertexShader;
+	m_pFragmentShader = new CGLFragmentShader;
+
+	bool min_vs_created = m_pVertexShader->CreateShader( sg_MinimalVertexShader );
+	bool min_fs_created = m_pFragmentShader->CreateShader( sg_MinimalFragmentShader );
+
+	return (min_vs_created && min_fs_created);
 }
 
 
 bool CGLProgram::LoadShaderFromText( const stream_buffer& buffer )
 {
 	return false;
+}
+
+
+bool CGLProgram::LoadShaderFromText( const char *vertex_shader, const char *fragment_shader )
+{
+	SafeDelete( m_pVertexShader );
+	SafeDelete( m_pFragmentShader );
+
+	m_pVertexShader   = new CGLVertexShader;
+	m_pFragmentShader = new CGLFragmentShader;
+
+	bool vs_created = m_pVertexShader->CreateShader( vertex_shader );
+	bool fs_created = m_pFragmentShader->CreateShader( fragment_shader );
+
+	if( !vs_created || !fs_created )
+	{
+	}
+
+	Result::Name res = InitProgram();
+
+	return (res == Result::SUCCESS) ? true : false;
 }
 
 
@@ -387,10 +536,15 @@ void CGLProgram::SetVertexBlendTransforms( const std::vector<Transform>& src_tra
 
 Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& texture )
 {
+	LOG_GL_ERROR( " Entered." );
+
 	if( glActiveTexture )
 		glActiveTexture( GL_TEXTURE0 + iStage );
 	else if( glActiveTextureARB )
 		glActiveTextureARB( GL_TEXTURE0_ARB + iStage );
+
+	string error_message = fmt_string( " glActiveTexture() failed (stage: %d).", iStage );
+	LOG_GL_ERROR( error_message.c_str() );
 
 	glEnable( GL_TEXTURE_2D );
 
@@ -405,15 +559,93 @@ Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& text
 
 void CGLProgram::Begin()
 {
+	LOG_GL_ERROR( " Entered." );
+
 	if( m_Program == 0 )
 		return;
 
-	glLinkProgramARB( m_Program );
-	glUseProgramObjectARB( m_Program );
+//	glLinkProgram( m_Program );
+
+	glUseProgram( m_Program );
+
+	LOG_GL_ERROR( " glUseProgram() failed." );
 }
 
 
 void CGLProgram::End()
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter<int>& int_param )
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter<float>& float_param )
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter<Vector3>& vec3_param )
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter<SFloatRGBAColor>& color_param )
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter< std::vector<float> >& float_param )
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter<TextureParam>& tex_param )
+{
+}
+
+
+void CGLProgram::SetParam( ShaderParameter<Matrix44>& mat44_param )
+{
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, int int_param )
+{
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, float float_param )
+{
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+		glUniform1f( location, float_param );
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const Vector3& vec3_param )
+{
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+//	if( 0 <= location )
+//		glUniform3fv( location, (const float *)&vec3_param );
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const SFloatRGBAColor& color_param )
+{
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const float *float_param, uint num_float_values )
+{
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const Matrix44& mat44_param )
 {
 }
 
@@ -423,6 +655,20 @@ boost::shared_ptr<ShaderLightManager> CGLProgram::GetShaderLightManager()
 	return m_pLightManager;
 }
 
+
+void CGLProgram::InitUniforms()
+{
+	glUseProgram( m_Program );
+
+	// Return values of glGetUniformLocation() will be -1 if
+	// 1. The matrix is not defined in the shader.
+	// 2. The matrix is defined in the shader, but not used (true?).
+	m_PredefinedMatrixUniforms[MATRIX_WORLD]           = glGetUniformLocation( m_Program, "World" );
+	m_PredefinedMatrixUniforms[MATRIX_VIEW]            = glGetUniformLocation( m_Program, "View" );
+	m_PredefinedMatrixUniforms[MATRIX_PROJ]            = glGetUniformLocation( m_Program, "Proj" );
+	m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD]      = glGetUniformLocation( m_Program, "ViewWorld" );
+	m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] = glGetUniformLocation( m_Program, "ProjViewWorld" );
+}
 
 /*
 //==================================================================================
