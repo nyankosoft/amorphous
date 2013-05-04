@@ -1,4 +1,5 @@
 #include "GLCustomMeshRenderer.hpp"
+#include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/OpenGL/GLTextureResourceVisitor.hpp"
@@ -36,25 +37,38 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 
 	const U32 vert_flags = mesh.GetVertexFormatFlags();
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	// Unbind GL_ARRAY_BUFFER and GL_ELEMENT_ARRAY_BUFFER to source a standard memory location (RAM).
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
+//	glEnableClientState(GL_VERTEX_ARRAY);
 
 	uchar *pPos = pV + mesh.GetVertexElementOffset( VEE::POSITION );
-	glVertexPointer( 3, GL_FLOAT, vertex_size, pPos );
+//	glVertexPointer( 3, GL_FLOAT, vertex_size, pPos );
+
+	glEnableVertexAttribArray( 0 );
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, vertex_size, pPos );
 
 	if( vert_flags & VFF::NORMAL )
 	{
-		glEnableClientState(GL_NORMAL_ARRAY);
+//		glEnableClientState(GL_NORMAL_ARRAY);
 
 		uchar *pNormal = pV + mesh.GetVertexElementOffset( VEE::NORMAL );
-		glNormalPointer( GL_FLOAT, vertex_size, pNormal );
+//		glNormalPointer( GL_FLOAT, vertex_size, pNormal );
+
+		glEnableVertexAttribArray( 1 );
+		glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, vertex_size, pNormal );
 	}
 
 	if( vert_flags & VFF::DIFFUSE_COLOR )
 	{
-		glEnableClientState(GL_COLOR_ARRAY);
+//		glEnableClientState(GL_COLOR_ARRAY);
 
 		uchar *pDiffuseColor = pV + mesh.GetVertexElementOffset( VEE::DIFFUSE_COLOR );
-		glColorPointer( 4, GL_FLOAT, vertex_size, pDiffuseColor );
+//		glColorPointer( 4, GL_FLOAT, vertex_size, pDiffuseColor );
+
+		glEnableVertexAttribArray( 2 );
+		glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, vertex_size, pDiffuseColor );
 	}
 
 	const int num_mats = mesh.GetNumMaterials();
@@ -70,10 +84,13 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 //	if(mTexId)
 	if( vert_flags & VFF::TEXCOORD2_0 )
 	{
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		uchar *pTex = pV + mesh.GetVertexElementOffset( VEE::TEXCOORD2_0 );
-		glTexCoordPointer( 2, GL_FLOAT, vertex_size, pTex );
+//		glTexCoordPointer( 2, GL_FLOAT, vertex_size, pTex );
+
+		glEnableVertexAttribArray( 3 );
+		glVertexAttribPointer( 3, 2, GL_FLOAT, GL_FALSE, vertex_size, pTex );
 
 		glEnable(GL_TEXTURE_2D);
 //		glBindTexture(GL_TEXTURE_2D, mTexId);
@@ -107,11 +124,11 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 //		glDisable(GL_TEXTURE_2D);
 	}
 
-	if( vert_flags & VFF::DIFFUSE_COLOR )
-		glDisableClientState(GL_COLOR_ARRAY);
-	if( vert_flags & VFF::NORMAL )
-		glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
+//	if( vert_flags & VFF::DIFFUSE_COLOR )
+//		glDisableClientState(GL_COLOR_ARRAY);
+//	if( vert_flags & VFF::NORMAL )
+//		glDisableClientState(GL_NORMAL_ARRAY);
+//	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 
