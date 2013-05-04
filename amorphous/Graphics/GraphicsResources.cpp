@@ -683,7 +683,16 @@ bool ShaderResource::CreateFromDesc()
 		m_ShaderDesc.pShaderGenerator->GetShader( shader_content );
 
 		if( shader_content.length() == 0 )
-			return false;
+		{
+			// We assume that the shader generator separately generates
+			// the vertex & fragment shaders.
+
+			string vs, fs;
+			m_ShaderDesc.pShaderGenerator->GetVertexShader( vs );
+			m_ShaderDesc.pShaderGenerator->GetPixelShader( fs );
+
+			return CreateProgramFromSource( vs, fs );
+		}
 
 		// Need to convert to stream_buffer
 		stream_buffer buffer;
@@ -716,6 +725,23 @@ bool ShaderResource::CreateShaderFromTextBuffer( stream_buffer& buffer )
 		return false;
 
 	bool loaded = m_pShaderManager->LoadShaderFromText( buffer );
+
+	if( loaded )
+		SetState( GraphicsResourceState::LOADED );
+
+	return loaded;
+}
+
+
+bool ShaderResource::CreateProgramFromSource( const std::string& vertex_shader, const std::string& fragment_shader )
+{
+	if( !m_pShaderManager )
+		m_pShaderManager = CreateShaderManager();
+
+	if( !m_pShaderManager )
+		return false;
+
+	bool loaded = m_pShaderManager->LoadShaderFromText( vertex_shader, fragment_shader );
 
 	if( loaded )
 		SetState( GraphicsResourceState::LOADED );

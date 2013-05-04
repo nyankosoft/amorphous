@@ -341,6 +341,8 @@ public:
 
 	bool CreateShaderFromTextBuffer( stream_buffer& buffer );
 
+	bool CreateProgramFromSource( const std::string& vertex_shader, const std::string& fragment_shader );
+
 	friend class GraphicsResourceManager;
 };
 
