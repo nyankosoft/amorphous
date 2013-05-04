@@ -21,45 +21,6 @@ using namespace std;
 
 
 /*
-// VBO Extension Definitions, From glext.h
-#define GL_ARRAY_BUFFER_ARB 0x8892
-#define GL_STATIC_DRAW_ARB 0x88E4
-typedef void (APIENTRY * PFNGLBINDBUFFERARBPROC) (GLenum target, GLuint buffer);
-typedef void (APIENTRY * PFNGLDELETEBUFFERSARBPROC) (GLsizei n, const GLuint *buffers);
-typedef void (APIENTRY * PFNGLGENBUFFERSARBPROC) (GLsizei n, GLuint *buffers);
-typedef void (APIENTRY * PFNGLBUFFERDATAARBPROC) (GLenum target, int size, const GLvoid *data, GLenum usage);
-*/
-
-
-/*
-// VBO Extension Function Pointers
-PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;					// VBO Name Generation Procedure
-PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;					// VBO Bind Procedure
-PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;					// VBO Data Loading Procedure
-PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;			// VBO Deletion Procedure
-
-
-
-void InitVBO()
-{
-	m_VBOSupported = IsExtensionSupported( "GL_ARB_vertex_buffer_object" );
-	if( m_VBOSupported )
-	{
-		// Get Pointers To The GL Functions
-		glGenBuffersARB = (PFNGLGENBUFFERSARBPROC) wglGetProcAddress("glGenBuffersARB");
-		glBindBufferARB = (PFNGLBINDBUFFERARBPROC) wglGetProcAddress("glBindBufferARB");
-		glBufferDataARB = (PFNGLBUFFERDATAARBPROC) wglGetProcAddress("glBufferDataARB");
-		glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC) wglGetProcAddress("glDeleteBuffersARB");
-		// Load Vertex Data Into The Graphics Card Memory
-//		g_pMesh->BuildVBOs();									// Build The VBOs
-	}
-//#else // NO_VBOS
-//	m_VBOSupported = false;
-//#endif
-}
-
-
-
 // TUTORIAL
 // Based Off Of Code Supplied At OpenGL.org
 bool IsExtensionSupported( char* szTargetExtension )
@@ -229,40 +190,40 @@ void CGL2BasicMeshImpl::BuildVBOs( C3DMeshModelArchive& archive )
 	}
 */
 	// Generate and bind the vertex buffer
-	glGenBuffers/*ARB*/( 1, &m_PositionBuffer );							// Get A Valid Name
-	glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_PositionBuffer );			// Bind The Buffer
+	glGenBuffers( 1, &m_PositionBuffer );							// Get A Valid Name
+	glBindBuffer( GL_ARRAY_BUFFER, m_PositionBuffer );			// Bind The Buffer
 
 	// Load The Data
-	glBufferData/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, num_vertices*3*sizeof(float), &(vert_set.vecPosition[0]), GL_STATIC_DRAW/*_ARB*/ );
+	glBufferData( GL_ARRAY_BUFFER, num_vertices*3*sizeof(float), &(vert_set.vecPosition[0]), GL_STATIC_DRAW );
 
 
 	if( vffs & CMMA_VertexSet::VF_NORMAL )
 	{
-		glGenBuffers/*ARB*/( 1, &m_NormalBuffer );							// Get A Valid Name
-		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_NormalBuffer );			// Bind The Buffer
+		glGenBuffers( 1, &m_NormalBuffer );							// Get A Valid Name
+		glBindBuffer( GL_ARRAY_BUFFER, m_NormalBuffer );			// Bind The Buffer
 
 		// Load The Data
-		glBufferData/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, num_vertices*3*sizeof(float), &(vert_set.vecNormal[0]), GL_STATIC_DRAW/*_ARB*/ );
+		glBufferData( GL_ARRAY_BUFFER, num_vertices*3*sizeof(float), &(vert_set.vecNormal[0]), GL_STATIC_DRAW );
 	}
 
 	if( vffs & CMMA_VertexSet::VF_DIFFUSE_COLOR )
 	{
-		glGenBuffers/*ARB*/( 1, &m_DiffuseColorBuffer );							// Get A Valid Name
-		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_DiffuseColorBuffer );			// Bind The Buffer
+		glGenBuffers( 1, &m_DiffuseColorBuffer );							// Get A Valid Name
+		glBindBuffer( GL_ARRAY_BUFFER, m_DiffuseColorBuffer );			// Bind The Buffer
 
 		// Load The Data
-		glBufferData/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, num_vertices*4*sizeof(float), &(vert_set.vecDiffuseColor[0]), GL_STATIC_DRAW/*_ARB*/ );
+		glBufferData( GL_ARRAY_BUFFER, num_vertices*4*sizeof(float), &(vert_set.vecDiffuseColor[0]), GL_STATIC_DRAW );
 	}
 
 	if( vffs & CMMA_VertexSet::VF_2D_TEXCOORD0
 	 && !vert_set.vecTex[0].empty() )
 	{
 		// Generate And Bind The Texture Coordinate Buffer
-		glGenBuffers/*ARB*/( 1, &m_TexCoordBuffer );							// Get A Valid Name
-		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_TexCoordBuffer );		// Bind The Buffer
+		glGenBuffers( 1, &m_TexCoordBuffer );							// Get A Valid Name
+		glBindBuffer( GL_ARRAY_BUFFER, m_TexCoordBuffer );		// Bind The Buffer
 
 		// Load The Data
-		glBufferData/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, num_vertices*2*sizeof(float), &(vert_set.vecTex[0][0]), GL_STATIC_DRAW/*_ARB*/ );
+		glBufferData( GL_ARRAY_BUFFER, num_vertices*2*sizeof(float), &(vert_set.vecTex[0][0]), GL_STATIC_DRAW );
 	}
 
 	// Mesh data has been copied to the graphics memory
@@ -456,14 +417,14 @@ void CGL2BasicMeshImpl::Render()
 	{
 		if( glGenBuffers )
 	  {
-		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_PositionBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, m_PositionBuffer );
 		glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
 
-		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_TexCoordBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, m_TexCoordBuffer );
 		glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// Set The TexCoord Pointer To The TexCoord Buffer
 
 		// color (diffuse color?)
-		glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_DiffuseColorBuffer );
+		glBindBuffer( GL_ARRAY_BUFFER, m_DiffuseColorBuffer );
 		glColorPointer( 4,             // GLint size,
                         GL_FLOAT,      // GLenum type,
                         0,             // GLsizei stride, ( 0 == tightly packed color array)
@@ -473,7 +434,7 @@ void CGL2BasicMeshImpl::Render()
 		// vertex normal?
 		if( m_NormalBuffer != 0 )
 		{
-			glBindBuffer/*ARB*/( GL_ARRAY_BUFFER/*_ARB*/, m_NormalBuffer );
+			glBindBuffer( GL_ARRAY_BUFFER, m_NormalBuffer );
 			glNormalPointer( GL_FLOAT,     // GLenum type,
 							 0,            // GLsizei	stride,
 							 (char *) NULL // const GLvoid *pointer
@@ -481,7 +442,7 @@ void CGL2BasicMeshImpl::Render()
 		}
 
 		// index buffer
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER/*_ARB*/, m_IndexBuffer );
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer );
 	  }
 	  else
 		  BindBuffers_ARB();
@@ -514,8 +475,8 @@ void CGL2BasicMeshImpl::Render()
 	glDisableClientState( GL_NORMAL_ARRAY );                    // Disable Normal Arrays
 	glDisableClientState( GL_COLOR_ARRAY );                     // Disable Color Arrays
 
-	glBindBuffer( GL_ARRAY_BUFFER/*_ARB*/, 0 );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER/*_ARB*/, 0 );
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
 

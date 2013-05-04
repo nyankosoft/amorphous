@@ -81,22 +81,6 @@ public:
 		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
 };
 
-/*
-class CGLProgressiveMeshImpl : public CGL2BasicMeshImpl
-{
-public:
-
-	CGLProgressiveMeshImpl();
-
-	virtual ~CGLProgressiveMeshImpl() {}
-};
-
-
-class CGLSkeletalMeshImpl : public CGLProgressiveMeshImpl
-{
-public:
-};
-*/
 
 class CGLMeshImplFactory : public MeshImplFactory
 {
