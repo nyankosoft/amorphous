@@ -148,19 +148,6 @@ public:
 	void SetBlendTransforms( const std::vector<Transform>& src_transforms );
 
 /*
-	virtual void SetWorldTransform( const Matrix34& world_pose ) {}
-
-	virtual void SetWorldTransform( const Matrix44& matWorld ) {}
-
-	virtual void SetViewTransform( const Matrix44& matView ) {}
-
-	virtual void SetProjectionTransform( const Matrix44& matProj ) {}
-
-	virtual void SetWorldViewTransform( const Matrix44& matWorld, const Matrix44& matView  ) {}
-
-	virtual void SetWorldViewProjectionTransform( const Matrix44& matWorld, const Matrix44& matView, const Matrix44& matProj ) {}
-
-
 	virtual void GetWorldTransform( Matrix44& matWorld ) const {}
 
 	virtual void GetViewTransform( Matrix44& matView ) const {}
@@ -251,24 +238,17 @@ inline void CGLProgram::SetWorldTransform( const Matrix44& world )
 	// Update cache
 	m_WorldMatrix = world;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_WORLD], 1, GL_FALSE, (GLfloat *)world.GetData() );
 
-//	D3DXMATRIX matWorldView;
-//	D3DXMatrixMultiply( &matWorldView, &matWorld, &m_matView );
 	Matrix44 view_world = m_ViewMatrix * world;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matWorldView );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)view_world.GetData() );
 
 	// set WorldViewProj
-//	D3DXMATRIX matWorldViewProj;
-//	D3DXMatrixMultiply( &matWorldViewProj, &matWorldView, &m_matProj );
 	Matrix44 proj_view_world = m_ProjectionMatrix * view_world;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldViewProj );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );
 }
@@ -285,23 +265,17 @@ inline void CGLProgram::SetViewTransform( const Matrix44& view )
 	// Update cache
 	m_ViewMatrix = view;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW], 1, GL_FALSE, (GLfloat *)view.GetData() );
 
-//	D3DXMatrixMultiply( &matWorldView, &m_matWorld, &matView );
 	Matrix44 view_world = view * m_WorldMatrix;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matWorldView );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)view_world.GetData() );
 
 	// set WorldViewProj
-//	D3DXMATRIX matWorldViewProj;
-//	D3DXMatrixMultiply( &matWorldViewProj, &matWorldView, &m_matProj );
 	Matrix44 proj_view_world = m_ProjectionMatrix * view_world;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldViewProj );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );
 }
@@ -316,20 +290,13 @@ inline void CGLProgram::SetProjectionTransform( const Matrix44& proj )
 	LOG_GL_ERROR( " glUseProgram() failed." );
 
 	// Update cache
-//	m_matProj = matProj;
 	m_ProjectionMatrix = proj;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_PROJ], &matProj );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ], 1, GL_FALSE, (GLfloat *)proj.GetData() );
 
-//	D3DXMATRIX matWorldView;
-//	D3DXMatrixMultiply( &matWorldView, &m_matWorld, &m_matView );
-
-//	D3DXMatrixMultiply( &matWorldView, &matWorldView, &matProj );
 	Matrix44 proj_view_world = proj * m_ViewMatrix * m_WorldMatrix;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldView );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );
 }
@@ -344,34 +311,22 @@ inline void CGLProgram::SetWorldViewTransform( const Matrix44& world, const Matr
 	LOG_GL_ERROR( " glUseProgram() failed." );
 
 	// Update cache
-//	m_matWorld = matWorld;
-//	m_matView  = matView;
 	m_WorldMatrix = world;
 	m_ViewMatrix  = view;
-
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
 
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_WORLD], 1, GL_FALSE, (GLfloat *)world.GetData() );
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_VIEW], &matView );
-
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW], 1, GL_FALSE, (GLfloat *)view.GetData() );
 
-//	D3DXMATRIX matWorldView;
-//	D3DXMatrixMultiply( &matWorldView, &matWorld, &matView );
 	Matrix44 view_world = view * world;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matWorldView );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)view_world.GetData() );
 
-//	D3DXMATRIX matWorldViewProj;
-//	D3DXMatrixMultiply( &matWorldViewProj, &matWorldView, &m_matProj );
 	Matrix44 proj_view_world = m_ProjectionMatrix * view_world;
 
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matWorldViewProj );
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );
 }
@@ -386,16 +341,9 @@ inline void CGLProgram::SetWorldViewProjectionTransform( const Matrix44& world, 
 	LOG_GL_ERROR( " glUseProgram() failed." );
 
 	// Update cache
-//	m_matWorld = matWorld;
-//	m_matView  = matView;
-//	m_matProj  = matProj;
 	m_WorldMatrix      = world;
 	m_ViewMatrix       = view;
 	m_ProjectionMatrix = proj;
-
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD], &matWorld );
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_VIEW],  &matView );
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_PROJ],  &matProj );
 
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_WORLD], 1, GL_FALSE, (GLfloat *)world.GetData() );
@@ -406,18 +354,11 @@ inline void CGLProgram::SetWorldViewProjectionTransform( const Matrix44& world, 
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ], 1, GL_FALSE, (GLfloat *)proj.GetData() );
 
-//	D3DXMATRIX matTrans;
 	Matrix44 view_world = view * world;
 	Matrix44 proj_view_world = proj * view_world;
 
-//	D3DXMatrixMultiply( &matTrans, &matWorld, &matView );
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW], &matTrans );
-
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)view_world.GetData() );
-
-//	D3DXMatrixMultiply( &matTrans, &matTrans, &matProj );
-//	m_pEffect->SetMatrix( m_aMatrixHandle[MATRIX_WORLD_VIEW_PROJ], &matTrans );
 
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );

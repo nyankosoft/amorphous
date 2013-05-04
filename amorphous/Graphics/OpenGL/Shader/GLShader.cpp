@@ -184,12 +184,6 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 
 static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::string& error_info )
 {
-//	const int max_log_length = 2048;
-//	char log_buffer[max_log_length];
-//	memset( log_buffer, 0, sizeof(log_buffer) );
-//	int log_length = 0;
-//	glGetInfoLogARB( shader, max_log_length - 1, &log_length, log_buffer );
-
 	GLint status = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	LOG_GL_ERROR( " glGetShaderiv() failed." );
@@ -248,15 +242,6 @@ bool CGLShader::CreateShader( const char *source )
 		LOG_PRINT_ERROR( error_info );
 
 	return true;
-/*
-	p = glCreateProgramObjectARB();
-	
-	glAttachObjectARB(p,m_Shader);
-//	glAttachObjectARB(p,f);
-
-	glLinkProgramARB(p);
-	glUseProgramObjectARB(p);
-*/
 }
 
 
