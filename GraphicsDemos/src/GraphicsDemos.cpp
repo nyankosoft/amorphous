@@ -22,6 +22,7 @@
 #include "ShadowMapTest.hpp"
 #include "SimpleMotionBlurTest.hpp"
 #include "SimpleOverlayEffectsTest.hpp"
+#include "SkeletalMeshTest.hpp"
 #include "TextureFontTest.hpp"
 #include "TextureRenderTargetTest.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
@@ -55,6 +56,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 	else if( demo_name == "ShadowMapTest" )                   return new CShadowMapTest;
 	else if( demo_name == "SimpleMotionBlurTest" )            return new CSimpleMotionBlurTest;
 	else if( demo_name == "SimpleOverlayEffectsTest" )        return new CSimpleOverlayEffectsTest;
+	else if( demo_name == "SkeletalMeshTest" )                return new CSkeletalMeshTest;
 	else if( demo_name == "TextureFontTest" )                 return new CTextureFontTest;
 	else if( demo_name == "TextureRenderTargetTest" )         return new CTextureRenderTargetTest;
 	else

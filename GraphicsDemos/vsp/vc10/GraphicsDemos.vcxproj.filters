@@ -105,6 +105,9 @@
     <ClInclude Include="..\..\src\CubeMapTest.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\SkeletalMeshTest.hpp">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
@@ -192,6 +195,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\CubeMapTest.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SkeletalMeshTest.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -110,6 +110,7 @@
     <ClInclude Include="..\..\src\ShadowMapTest.hpp" />
     <ClInclude Include="..\..\src\SimpleMotionBlurTest.hpp" />
     <ClInclude Include="..\..\src\SimpleOverlayEffectsTest.hpp" />
+    <ClInclude Include="..\..\src\SkeletalMeshTest.hpp" />
     <ClInclude Include="..\..\src\TextureFontTest.hpp" />
     <ClInclude Include="..\..\src\TextureRenderTargetTest.hpp" />
   </ItemGroup>
@@ -141,6 +142,7 @@
     <ClCompile Include="..\..\src\ShadowMapTest.cpp" />
     <ClCompile Include="..\..\src\SimpleMotionBlurTest.cpp" />
     <ClCompile Include="..\..\src\SimpleOverlayEffectsTest.cpp" />
+    <ClCompile Include="..\..\src\SkeletalMeshTest.cpp" />
     <ClCompile Include="..\..\src\TextureFontTest.cpp" />
     <ClCompile Include="..\..\src\TextureRenderTargetTest.cpp" />
   </ItemGroup>
