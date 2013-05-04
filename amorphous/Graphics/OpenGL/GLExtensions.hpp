@@ -24,10 +24,21 @@
 
 //#include "../Platform.h"
 #include "Platform.h"
+#include <gl/gl.h> // 2013-05-03
+
 
 
 namespace amorphous
 {
+
+//>>> 2013-05-03
+
+#ifndef GL_VERSION_2_0
+/* GL type for program/shader text */
+typedef char GLchar;			/* native character */
+#endif
+
+//<<< 2013-05-03
 
 #if defined(_WIN32)
 
@@ -172,6 +183,7 @@ extern bool GL_1_3_supported;
 extern bool GL_1_4_supported;
 extern bool GL_1_5_supported;
 extern bool GL_2_0_supported;
+extern bool GL_3_0_supported; // 2013-05-03
 
 extern int GLMajorVersion;
 extern int GLMinorVersion;
@@ -634,6 +646,15 @@ typedef GLvoid      (APIENTRY *PFNGLGETACTIVEUNIFORMARBPROC)(GLhandleARB program
 typedef GLvoid      (APIENTRY *PFNGLGETUNIFORMFVARBPROC)(GLhandleARB programObj, GLint location, GLfloat *params);
 typedef GLvoid      (APIENTRY *PFNGLGETUNIFORMIVARBPROC)(GLhandleARB programObj, GLint location, GLint *params);
 typedef GLvoid      (APIENTRY *PFNGLGETSHADERSOURCEARBPROC)(GLhandleARB obj, GLsizei maxLength, GLsizei *length, GLcharARB *source);
+//>>> 2013-05-03
+typedef GLvoid      (APIENTRY *PFNGLGETPROGRAMINFOLOGPROC) (GLuint program, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
+typedef GLvoid      (APIENTRY *PFNGLGETSHADERIVPROC) (GLuint shader, GLenum pname, GLint *params);
+typedef GLvoid      (APIENTRY *PFNGLGETSHADERINFOLOGPROC) (GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
+typedef GLvoid      (APIENTRY *PFNGLGETSHADERSOURCEPROC) (GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *source);
+typedef GLint       (APIENTRY *PFNGLGETUNIFORMLOCATIONPROC) (GLuint program, const GLchar *name);
+typedef GLvoid      (APIENTRY *PFNGLGETUNIFORMFVPROC) (GLuint program, GLint location, GLfloat *params);
+typedef GLvoid      (APIENTRY *PFNGLGETUNIFORMIVPROC) (GLuint program, GLint location, GLint *params);
+//<<< 2013-05-03
 #endif
 
 #ifdef GL_ARB_shader_objects_PROTOTYPES
@@ -2519,6 +2540,28 @@ typedef GLvoid (APIENTRY *PFNGLSTENCILMASKSEPARATEPROC)(GLenum face, GLuint mask
 
 #define GL_SHADING_LANGUAGE_VERSION   0x8B8C
 
+//>>> 2013-05-03
+#define GL_DELETE_STATUS                  0x8B80
+#define GL_COMPILE_STATUS                 0x8B81
+#define GL_LINK_STATUS                    0x8B82
+#define GL_VALIDATE_STATUS                0x8B83
+#define GL_INFO_LOG_LENGTH                0x8B84
+#define GL_ATTACHED_SHADERS               0x8B85
+#define GL_ACTIVE_UNIFORMS                0x8B86
+#define GL_ACTIVE_UNIFORM_MAX_LENGTH      0x8B87
+#define GL_SHADER_SOURCE_LENGTH           0x8B88
+#define GL_ACTIVE_ATTRIBUTES              0x8B89
+#define GL_ACTIVE_ATTRIBUTE_MAX_LENGTH    0x8B8A
+#define GL_FRAGMENT_SHADER_DERIVATIVE_HINT 0x8B8B
+#define GL_CURRENT_PROGRAM                0x8B8D
+#define GL_POINT_SPRITE_COORD_ORIGIN      0x8CA0
+#define GL_LOWER_LEFT                     0x8CA1
+#define GL_UPPER_LEFT                     0x8CA2
+#define GL_STENCIL_BACK_REF               0x8CA3
+#define GL_STENCIL_BACK_VALUE_MASK        0x8CA4
+#define GL_STENCIL_BACK_WRITEMASK         0x8CA5
+//<<< 2013-05-03
+
 extern PFNGLDELETEOBJECTARBPROC glDeleteProgram;
 extern PFNGLDELETEOBJECTARBPROC glDeleteShader;
 //extern PFNGLGETHANDLEARBPROC glGetHandle;
@@ -2613,10 +2656,29 @@ extern PFNGLSTENCILOPSEPARATEPROC   glStencilOpSeparate;
 extern PFNGLSTENCILFUNCSEPARATEPROC glStencilFuncSeparate;
 extern PFNGLSTENCILMASKSEPARATEPROC glStencilMaskSeparate;
 
+//>>> 2013-05-03
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfo;
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+//extern PFNGLGETSHADERSOURCEPROC
+//extern PFNGLGETUNIFORMLOCATIONPROC
+//extern PFNGLGETUNIFORMFVPROC
+//extern PFNGLGETUNIFORMIVPROC
+//<<< 2013-05-03
 #endif // GL_VERSION_2_0
 
 
+//>>> 2013-05-03
+#ifndef GL_VERSION_3_0
+#define GL_VERSION_3_0
+#define GL_VERSION_3_0_PROTOTYPES
+typedef GLvoid      (APIENTRY *PFNGLGENVERTEXARRAYSPROC)(GLsizei n, GLuint *arrays);
+typedef GLvoid      (APIENTRY *PFNGLBINDVERTEXARRAYPROC)(GLuint array);
+extern PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
+extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
 
+#endif // GL_VERSION_3_0
+//<<< 2013-05-03
 
 
 #if defined(_WIN32)

@@ -134,6 +134,7 @@ bool GL_1_3_supported = false;
 bool GL_1_4_supported = false;
 bool GL_1_5_supported = false;
 bool GL_2_0_supported = false;
+bool GL_3_0_supported = false; // 2013-05-03
 
 int GLMajorVersion   = 1;
 int GLMinorVersion   = 0;
@@ -781,7 +782,25 @@ PFNGLSTENCILOPSEPARATEPROC   glStencilOpSeparate   = NULL;
 PFNGLSTENCILFUNCSEPARATEPROC glStencilFuncSeparate = NULL;
 PFNGLSTENCILMASKSEPARATEPROC glStencilMaskSeparate = NULL;
 
+//>>> 2013-05-03
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfo  = NULL;
+PFNGLGETSHADERIVPROC glGetShaderiv           = NULL;
+PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = NULL;
+//PFNGLGETSHADERSOURCEPROC
+//PFNGLGETUNIFORMLOCATIONPROC
+//PFNGLGETUNIFORMFVPROC
+//PFNGLGETUNIFORMIVPROC
+//<<< 2013-05-03
+
 #endif // GL_VERSION_2_0_PROTOTYPES
+
+
+//>>> 2013-05-03
+#ifdef GL_VERSION_3_0_PROTOTYPES
+PFNGLGENVERTEXARRAYSPROC glGenVertexArrays = NULL;
+PFNGLBINDVERTEXARRAYPROC glBindVertexArray = NULL;
+#endif // GL_VERSION_3_0_PROTOTYPES
+//<<< 2013-05-03
 
 
 bool extensionSupported(char *extStr, const char *extension){
@@ -1561,7 +1580,22 @@ void initExtensions(){
 		glStencilFuncSeparate = (PFNGLSTENCILFUNCSEPARATEPROC) wglxGetProcAddress("glStencilFuncSeparate");
 		glStencilMaskSeparate = (PFNGLSTENCILMASKSEPARATEPROC) wglxGetProcAddress("glStencilMaskSeparate");
 
+//>>> 2013-05-03
+		glGetProgramInfo      = (PFNGLGETPROGRAMINFOLOGPROC) wglxGetProcAddress("glGetProgramInfo");
+		glGetShaderiv         = (PFNGLGETSHADERIVPROC)       wglxGetProcAddress("glGetShaderiv");
+		glGetShaderInfoLog    = (PFNGLGETSHADERINFOLOGPROC)  wglxGetProcAddress("glGetShaderInfoLog");
+//<<< 2013-05-03
+
 #endif // GL_VERSION_2_0_PROTOTYPES
+	}
+
+//>>> 2013-05-03
+	if (GL_3_0_supported = GLVER(3,0)){
+#ifdef GL_VERSION_3_0_PROTOTYPES
+		glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC) wglxGetProcAddress("glGenVertexArrays");
+		glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC) wglxGetProcAddress("glBindVertexArray");
+#endif // GL_VERSION_3_0_PROTOTYPES
+//<<< 2013-05-03
 	}
 }
 
