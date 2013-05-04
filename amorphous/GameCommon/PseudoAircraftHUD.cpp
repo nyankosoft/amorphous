@@ -6,8 +6,8 @@
 #include "3DMath/Matrix22.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/D3DMisc.hpp"
 #include "Graphics/Font/TextureFont.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Support/memory_helpers.hpp"
 #include "PseudoAircraftSimulator.hpp"
 
@@ -124,8 +124,11 @@ void PseudoAircraftHUD::Render( const CPseudoAircraftSimulator& craft )
 
 	Matrix22 matRotZ = Matrix22Rotation( craft.GetRoll() );
 
+	uint vpw=0,vph=0;
 	float width, height, far_clip = 50000.0f;
-	GetViewportSize( width, height );
+	GraphicsDevice().GetViewportSize( vpw, vph );
+	width  = (float)vpw;
+	height = (float)vph;
 	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4.0f, width / height, 1.0f, far_clip );
 	Matrix44 view, proj_view;
 
