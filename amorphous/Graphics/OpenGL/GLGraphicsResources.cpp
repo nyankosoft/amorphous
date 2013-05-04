@@ -4,7 +4,6 @@
 #include "Graphics/TextureGenerators/TextureFilter.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
-#include "Graphics/OpenGL/glext.h" // GL_BGR
 #include "Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "Graphics/OpenGL/Shader/GLShader.hpp"
 #include "Support/ImageArchive.hpp"
