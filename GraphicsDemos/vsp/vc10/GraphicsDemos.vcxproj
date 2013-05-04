@@ -89,6 +89,7 @@
     <ClInclude Include="..\..\src\2DPrimitivesTest.hpp" />
     <ClInclude Include="..\..\src\AsyncLoadingTest.hpp" />
     <ClInclude Include="..\..\src\BrickWallTextureGeneratorTest.hpp" />
+    <ClInclude Include="..\..\src\CubeMapTest.hpp" />
     <ClInclude Include="..\..\src\CustomMeshTest.hpp" />
     <ClInclude Include="..\..\src\EnvMapTest.hpp" />
     <ClInclude Include="..\..\src\GenericShaderTest.hpp" />
@@ -118,6 +119,7 @@
     <ClCompile Include="..\..\src\2DPrimitivesTest.cpp" />
     <ClCompile Include="..\..\src\AsyncLoadingTest.cpp" />
     <ClCompile Include="..\..\src\BrickWallTextureGeneratorTest.cpp" />
+    <ClCompile Include="..\..\src\CubeMapTest.cpp" />
     <ClCompile Include="..\..\src\CustomMeshTest.cpp" />
     <ClCompile Include="..\..\src\EnvMapTest.cpp" />
     <ClCompile Include="..\..\src\GenericShaderTest.cpp" />

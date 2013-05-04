@@ -102,6 +102,9 @@
     <ClInclude Include="..\..\src\BrickWallTextureGeneratorTest.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\CubeMapTest.hpp">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CubeMapTest.cpp">
+      <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

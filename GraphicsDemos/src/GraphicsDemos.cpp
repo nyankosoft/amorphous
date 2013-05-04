@@ -2,6 +2,7 @@
 #include "AsyncLoadingTest.hpp"
 #include "BrickWallTextureGeneratorTest.hpp"
 #include "CustomMeshTest.hpp"
+#include "CubeMapTest.hpp"
 #include "EnvMapTest.hpp"
 #include "GenericShaderTest.hpp"
 #include "GLSLTest.hpp"
@@ -34,6 +35,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 	else if( demo_name == "AsyncLoadingTest" )                return new CAsyncLoadingTest;
 	else if( demo_name == "BrickWallTextureGeneratorTest" )   return new CBrickWallTextureGeneratorTest;
 	else if( demo_name == "CustomMeshTest" )                  return new CCustomMeshTest;
+	else if( demo_name == "CubeMapTest" )                     return new CCubeMapTest;
 	else if( demo_name == "EnvMapTest" )                      return new CEnvMapTest;
 	else if( demo_name == "GenericShaderTest" )               return new CGenericShaderTest;
 	else if( demo_name == "GLSLTest" )                        return new CGLSLTest;
