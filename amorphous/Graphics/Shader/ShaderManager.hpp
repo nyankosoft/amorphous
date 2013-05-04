@@ -82,6 +82,8 @@ public:
 
 	virtual bool LoadShaderFromText( const stream_buffer& buffer ) { return false; }
 
+	virtual bool LoadShaderFromText( const std::string& vertex_shader, const std::string& fragment_shader ) { return false; }
+
 	virtual LPD3DXEFFECT GetEffect() { return NULL; }
 
 	virtual void Release() {}
