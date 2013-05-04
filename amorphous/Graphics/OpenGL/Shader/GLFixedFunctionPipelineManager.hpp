@@ -130,6 +130,8 @@ inline void CGLFixedFunctionPipelineManager::SetViewTransform( const Matrix44& m
 
 inline void CGLFixedFunctionPipelineManager::SetProjectionTransform( const Matrix44& matProj )
 {
+	m_matProjection = matProj;
+
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( matProj.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
@@ -170,8 +172,8 @@ inline void CGLFixedFunctionPipelineManager::SetWorldViewProjectionTransform( co
 //	glLoadIdentity(); // debug - reset the projection matrix
 
 	glMatrixMode( GL_PROJECTION );
-//	glLoadMatrixf( matProj.GetData() );
-	glLoadIdentity(); // debug - reset the projection matrix
+	glLoadMatrixf( matProj.GetData() );
+//	glLoadIdentity(); // debug - reset the projection matrix
 }
 
 
