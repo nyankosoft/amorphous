@@ -247,11 +247,6 @@ void CPrimitiveShapeMeshesTest::HandleInput( const InputData& input )
 			m_MeshIndex = (m_MeshIndex + m_NumPrimitiveMeshes - 1) % m_NumPrimitiveMeshes;
 		}
 		break;
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}
-		break;
 	case 'L':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -259,6 +254,7 @@ void CPrimitiveShapeMeshesTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
