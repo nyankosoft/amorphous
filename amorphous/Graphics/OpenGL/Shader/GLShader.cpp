@@ -653,6 +653,17 @@ void CGLProgram::InitUniforms()
 	m_PredefinedMatrixUniforms[MATRIX_PROJ]            = glGetUniformLocation( m_Program, "Proj" );
 	m_PredefinedMatrixUniforms[MATRIX_VIEW_WORLD]      = glGetUniformLocation( m_Program, "ViewWorld" );
 	m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] = glGetUniformLocation( m_Program, "ProjViewWorld" );
+
+	for( int i=0; i<NUM_TEXTURE_SAMPLER_UNIFORMS; i++ )
+	{
+		char sampler_name[8];
+		memset( sampler_name, 0, sizeof(sampler_name) );
+		sprintf( sampler_name, "T%d", i );
+
+		m_TextureSamplerUniforms[i] = glGetUniformLocation( m_Program, sampler_name );
+
+		glUniform1i( m_TextureSamplerUniforms[i], i );
+	}
 }
 
 /*

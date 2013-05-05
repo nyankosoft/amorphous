@@ -90,6 +90,11 @@ class CGLProgram : public ShaderManager
 		NUM_PREDEFINED_MATRIX_UNIFORMS
 	};
 
+	enum Params
+	{
+		NUM_TEXTURE_SAMPLER_UNIFORMS = 4,
+	};
+
 	GLhandleARB m_Program;
 
 //	boost::shared_ptr<CGLVertexShader> m_pVertexShader;
@@ -106,6 +111,8 @@ class CGLProgram : public ShaderManager
 	Matrix44 m_ProjectionMatrix, m_ViewMatrix, m_WorldMatrix;
 
 	GLint m_PredefinedMatrixUniforms[NUM_PREDEFINED_MATRIX_UNIFORMS];
+
+	GLuint m_TextureSamplerUniforms[NUM_TEXTURE_SAMPLER_UNIFORMS];
 
 	boost::shared_ptr<CGLSLShaderLightManager> m_pLightManager;
 
