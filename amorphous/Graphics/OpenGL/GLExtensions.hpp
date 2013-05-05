@@ -2561,6 +2561,7 @@ typedef GLvoid (APIENTRY *PFNGLSTENCILMASKSEPARATEPROC)(GLenum face, GLuint mask
 #define GL_STENCIL_BACK_VALUE_MASK        0x8CA4
 #define GL_STENCIL_BACK_WRITEMASK         0x8CA5
 //<<< 2013-05-03
+#define GL_TEXTURE_RECTANGLE              0x84F5 // Not sure which version this define belongs to
 
 extern PFNGLDELETEOBJECTARBPROC glDeleteProgram;
 extern PFNGLDELETEOBJECTARBPROC glDeleteShader;
