@@ -14,7 +14,8 @@ CGLSLShaderLightManager::CGLSLShaderLightManager()
 :
 m_Program(0),
 m_VertexShader(0),
-m_FragmentShader(0)
+m_FragmentShader(0),
+m_NumCurrentHSPointLights(0)
 {
 	memset( m_VSLowerLightColor, 0, sizeof(m_VSLowerLightColor) );
 	memset( m_FSLowerLightColor, 0, sizeof(m_FSLowerLightColor) );
@@ -41,19 +42,22 @@ void CGLSLShaderLightManager::Init( GLuint program )
 //		dirs[i] = glGetUniformLocation( program,   var_name );
 //	}
 
-	GLint udc = glGetUniformLocation( program, "HSDL_UDC" );
-	GLint ldc = glGetUniformLocation( program, "HSDL_LDC" );
-	GLint dir = glGetUniformLocation( program, "HSDL_Dir" );
+	m_HSDirLightUniforms.m_DiffuseColors[0] = glGetUniformLocation( program, "HSDL_UDC" );
+	m_HSDirLightUniforms.m_DiffuseColors[1] = glGetUniformLocation( program, "HSDL_LDC" );
+	m_HSDirLightUniforms.m_Direction        = glGetUniformLocation( program, "HSDL_Dir" );
 
-	SFloatRGBAColor hsdl_udc( SFloatRGBAColor::White() ), hsdl_ldc( SFloatRGBAColor(0,0,0,1) );
-	glUniform4fv( udc, 1, (GLfloat *)&hsdl_udc );
-	glUniform4fv( ldc, 1, (GLfloat *)&hsdl_ldc );
+	m_HSDirLight.Attribute.UpperDiffuseColor = SFloatRGBAColor::White();
+	m_HSDirLight.Attribute.LowerDiffuseColor = SFloatRGBAColor(0,0,0,1);
+	m_HSDirLight.vDirection = Vec3GetNormalized( Vector3(-1,-3,1) );
 
-	Vector3 hsdl_dir = Vec3GetNormalized( Vector3(-1,-3,1) );
-	glUniform3fv( dir, 1, (GLfloat *)&hsdl_dir );
+	UpdateHSDirLightUniformVariables( m_HSDirLight, m_HSDirLightUniforms );
 
-	for( int i=0; i<numof(m_HSPointLights); i++ )
+//	for( int i=0; i<numof(m_HSPointLights); i++ )
+	for( int i=0; i<1; i++ )
 	{
+		m_HSPointLightUniforms[i].m_DiffuseColors[0] = glGetUniformLocation( program, "HSPL_UDC" );
+		m_HSPointLightUniforms[i].m_DiffuseColors[1] = glGetUniformLocation( program, "HSPL_LDC" );
+		m_HSPointLightUniforms[i].m_Direction        = glGetUniformLocation( program, "HSPL_Pos" );
 	}
 
 	int num_lights = 4;
@@ -81,6 +85,33 @@ void CGLSLShaderLightManager::SetHSDiffuseColors( const HemisphericLightAttribut
 }
 
 
+void CGLSLShaderLightManager::UpdateHSDirLightUniformVariables( const HemisphericDirectionalLight& light, const GLSLLight& glsl_light )
+{
+	if( m_Program == 0 )
+		return;
+
+	glUseProgram( m_Program );
+
+	glUniform4fv( glsl_light.m_DiffuseColors[0], 1, (GLfloat *)&light.Attribute.UpperDiffuseColor );
+	glUniform4fv( glsl_light.m_DiffuseColors[1], 1, (GLfloat *)&light.Attribute.LowerDiffuseColor );
+	glUniform3fv( glsl_light.m_Direction,        1, (GLfloat *)&light.vDirection );
+}
+
+
+void CGLSLShaderLightManager::UpdateHSPointLightUniformVariables( const HemisphericPointLight& light, const GLSLLight& glsl_light )
+{
+	if( m_Program == 0 )
+		return;
+
+	glUseProgram( m_Program );
+
+	glUniform4fv( glsl_light.m_DiffuseColors[0], 1, (GLfloat *)&light.Attribute.UpperDiffuseColor );
+	glUniform4fv( glsl_light.m_DiffuseColors[1], 1, (GLfloat *)&light.Attribute.LowerDiffuseColor );
+	glUniform3fv( glsl_light.m_Position,         1, (GLfloat *)&light.vPosition );
+	glUniform3fv( glsl_light.m_Attenuation,      1, (GLfloat *)&light.fAttenuation );
+}
+
+
 void CGLSLShaderLightManager::SetAmbientLight( const AmbientLight& light )
 {
 }
@@ -88,28 +119,42 @@ void CGLSLShaderLightManager::SetAmbientLight( const AmbientLight& light )
 
 void CGLSLShaderLightManager::SetHemisphericDirectionalLight( const HemisphericDirectionalLight& light )
 {
-	GLenum light_id = m_NumCurrentLights;
+	m_HSDirLight = light;
 
-	CGLFixedPipelineLightManager::SetDirectionalLight( light );
+	UpdateHSDirLightUniformVariables( light, m_HSDirLightUniforms );
 
-	SetHSDiffuseColors( light.Attribute, light_id );
+//	GLenum light_id = m_NumCurrentLights;
+
+//	SetHSDiffuseColors( light.Attribute, light_id );
 }
 
 
 void CGLSLShaderLightManager::SetHemisphericPointLight( const HemisphericPointLight& light )
 {
-	GLenum light_id = m_NumCurrentLights;
+	if( m_NumCurrentHSPointLights == numof(m_HSPointLights) )
+		return;
 
-	CGLFixedPipelineLightManager::SetPointLight( light );
+	m_HSPointLights[m_NumCurrentHSPointLights] = light;
+
+	UpdateHSPointLightUniformVariables( light, m_HSPointLightUniforms[m_NumCurrentHSPointLights] );
+
+	m_NumCurrentHSPointLights += 1;
+
+//	GLenum light_id = m_NumCurrentLights;
+
+//	CGLFixedPipelineLightManager::SetPointLight( light );
 	
-	SetHSDiffuseColors( light.Attribute, light_id );
+//	SetHSDiffuseColors( light.Attribute, light_id );
 }
 
 //	void SetTriDirectionalLight( const CTriDirectionalLight& light ) {}
 //	void SetTriPointLight( const CTriPointLight& light ) {}
-/*
-void CGLSLShaderLightManager::ClearLights(){}
-*/
+
+void CGLSLShaderLightManager::ClearLights()
+{
+	m_NumCurrentHSPointLights = 0;
+}
+
 
 void CGLSLShaderLightManager::CommitChanges()
 {
