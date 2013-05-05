@@ -165,7 +165,8 @@ public:
 			LPDIRECT3DCUBETEXTURE9 pCubeTex
 				= m_pEntityRenderManager->GetEnvMapTexture(pEntity->GetID());
 
-			rShaderMgr.SetCubeTexture( m_CubeTexIndex, pCubeTex );
+			LOG_PRINT_ERROR( " ShaderManager::SetCubeTexture() has not been implemented yet." );
+//			rShaderMgr.SetCubeTexture( m_CubeTexIndex, pCubeTex );
 		}
 	}
 };
