@@ -29,11 +29,6 @@ private:
 
 	GLuint m_VBO;
 
-//	GLuint m_PositionBuffer;							// Vertex VBO Name
-//	GLuint m_NormalBuffer;							    // vertex normal?
-//	GLuint m_DiffuseColorBuffer;						// diffuse color?
-//	GLuint m_TexCoordBuffer;							// Texture Coordinate VBO Name
-
 	GLuint m_IBO;
 
 	std::vector<CMMA_TriangleSet> m_TriangleSets;

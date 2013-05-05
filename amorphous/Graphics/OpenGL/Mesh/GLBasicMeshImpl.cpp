@@ -33,10 +33,6 @@ GLBasicMeshImpl::GLBasicMeshImpl()
 m_VAO(0),
 m_VBO(0),
 m_IBO(0),
-//m_PositionBuffer(0),
-//m_NormalBuffer(0),
-//m_DiffuseColorBuffer(0),	
-//m_TexCoordBuffer(0),
 m_VertexFormatFlags(0),
 m_VertexSize(0),
 m_NumIndices(0),
@@ -70,7 +66,6 @@ GLBasicMeshImpl::~GLBasicMeshImpl()
 
 void GLBasicMeshImpl::Release()
 {
-//	glDeleteBuffers( 1, &m_PositionBuffer );
 	glDeleteBuffers( 1, &m_VBO );
 	glDeleteBuffers( 1, &m_IBO );
 }
