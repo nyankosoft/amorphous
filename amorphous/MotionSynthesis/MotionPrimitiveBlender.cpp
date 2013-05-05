@@ -433,7 +433,7 @@ void CMotionPrimitiveBlender::Update( float dt )
 //			AddMotionPrimitive( 0.0f, pCurrentMotion, 0 );
 
 			// Keep playing the current motion
-			LOG_PRINT( fmt_string(" looping motion: %s %f", pCurrentMotion->GetName().c_str()), m_fCurrentTime );
+			LOG_PRINT( fmt_string(" looping motion: %s %f", pCurrentMotion->GetName().c_str(), m_fCurrentTime) );
 		}
 		else
 		{
