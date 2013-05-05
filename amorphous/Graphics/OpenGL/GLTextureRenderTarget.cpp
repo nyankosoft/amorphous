@@ -1,6 +1,5 @@
 #include "GLTextureRenderTarget.hpp"
 #include "GLExtensions.hpp"
-#include "glext.h"
 #include "GLGraphicsDevice.hpp" // LOG_GL_ERROR macro
 #include "GLGraphicsResources.hpp"
 
@@ -158,7 +157,7 @@ bool CGLTextureRenderTarget::LoadTextures()
 	m_RenderTargetTexture.Load( m_TextureDesc );
 
 	GLenum texTarget = GL_TEXTURE_2D;
-	GLenum filter_mode = (texTarget == GL_TEXTURE_RECTANGLE_NV) ? GL_NEAREST : GL_LINEAR;
+	GLenum filter_mode = (texTarget == GL_TEXTURE_RECTANGLE) ? GL_NEAREST : GL_LINEAR;
 /*
 	if (!glh_init_extensions("GL_ARB_fragment_program "
 		"GL_ARB_vertex_program "
