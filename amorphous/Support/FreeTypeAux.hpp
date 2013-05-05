@@ -77,7 +77,7 @@ inline void DrawBitmap_Gen( FT_Bitmap *bitmap, int left, int top, array2d<U8>& d
 	int height = bitmap->rows;
 	int width = bitmap->width;
 	U8 *pBuffer = (U8 *)bitmap->buffer;
-	U8 grayscale = 0;
+//	U8 grayscale = 0;
 	for( y=0; y<height ; y++ )
 	{
 		for( x=0; x<width; x++ )
