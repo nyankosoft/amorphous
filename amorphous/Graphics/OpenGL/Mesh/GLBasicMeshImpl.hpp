@@ -25,28 +25,34 @@ private:
 
 	GLuint m_VAO; ///< A vertex array object
 
-	unsigned int m_VertexElementOffsets[VEE::NUM_VERTEX_ELEMENTS];
-
 	// Vertex Buffer Object Names
 
-	GLuint m_PositionBuffer;							// Vertex VBO Name
-	GLuint m_NormalBuffer;							    // vertex normal?
-	GLuint m_DiffuseColorBuffer;						// diffuse color?
-	GLuint m_TexCoordBuffer;							// Texture Coordinate VBO Name
+	GLuint m_VBO;
 
-	GLuint m_IndexBuffer;
+//	GLuint m_PositionBuffer;							// Vertex VBO Name
+//	GLuint m_NormalBuffer;							    // vertex normal?
+//	GLuint m_DiffuseColorBuffer;						// diffuse color?
+//	GLuint m_TexCoordBuffer;							// Texture Coordinate VBO Name
 
-	std::vector<int> m_vecClientState;
+	GLuint m_IBO;
 
-	std::vector<CMMA_TriangleSet> m_vecTriangleSet;
+	std::vector<CMMA_TriangleSet> m_TriangleSets;
+
+	U32 m_VertexFormatFlags;
+
+	uint m_VertexSize;
+
+	unsigned int m_VertexElementOffsets[VEE::NUM_VERTEX_ELEMENTS];
+
+	GLuint m_VertexElementStreamIndices[VEE::NUM_VERTEX_ELEMENTS];
 
 	int m_NumIndices;
 
-	std::vector<unsigned short> m_vecIndex;
+	GLenum m_IndexType; ///< Must be one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, or GL_UNSIGNED_INT
 
 private:
 
-	Result::Name InitVerticesAndIndices( const CMMA_VertexSet& vertex_set );
+	Result::Name InitVerticesAndIndices( C3DMeshModelArchive& archive );
 
 public:
 

@@ -31,12 +31,16 @@ static void SetGLTextures( MeshMaterial& mat )
 GLBasicMeshImpl::GLBasicMeshImpl()
 :
 m_VAO(0),
-m_NumIndices(0),
+m_VBO(0),
+m_IBO(0),
 //m_PositionBuffer(0),
 //m_NormalBuffer(0),
 //m_DiffuseColorBuffer(0),	
 //m_TexCoordBuffer(0),
-m_IndexBuffer(0)
+m_VertexFormatFlags(0),
+m_VertexSize(0),
+m_NumIndices(0),
+m_IndexType(GL_UNSIGNED_SHORT)
 {
 	m_VBOSupported = true;
 
@@ -67,6 +71,8 @@ GLBasicMeshImpl::~GLBasicMeshImpl()
 void GLBasicMeshImpl::Release()
 {
 //	glDeleteBuffers( 1, &m_PositionBuffer );
+	glDeleteBuffers( 1, &m_VBO );
+	glDeleteBuffers( 1, &m_IBO );
 }
 
 
@@ -82,8 +88,32 @@ bool GLBasicMeshImpl::LoadFromFile( const std::string& filename, U32 option_flag
 }
 
 
-Result::Name GLBasicMeshImpl::InitVerticesAndIndices( const CMMA_VertexSet& vertex_set )
+Result::Name GLBasicMeshImpl::InitVerticesAndIndices( C3DMeshModelArchive& archive )
 {
+	Release();
+
+	CustomMesh cm;
+	bool cm_loaded = cm.LoadFromArchive( archive );
+
+	if( !cm_loaded )
+	{
+		LOG_PRINT_ERROR( " Failed to load the mesh as a custom mesh." );
+		return Result::UNKNOWN_ERROR;
+	}
+
+	glGenBuffers( 1, &m_VBO );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_VBO );
+
+	glBufferData(
+		GL_ARRAY_BUFFER,
+		cm.GetVertexSize() * cm.GetNumVertices(),
+		cm.GetVertexBufferPtr(),
+		GL_STATIC_DRAW
+		);
+
+	const CMMA_VertexSet& vertex_set = archive.GetVertexSet();
+
 	glGenVertexArrays( 1, &m_VAO );
 	glBindVertexArray( m_VAO );
 
@@ -91,13 +121,16 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( const CMMA_VertexSet& vert
 
 	size_t offset = 0;
 
-	const uint vertex_flags = vertex_set.m_VertexFormatFlag;
+	const uint vertex_flags = ToVFF( vertex_set.GetVertexFormat() );
 
-	if( vertex_set.m_VertexFormatFlag & CMMA_VertexSet::VF_POSITION )
+	m_VertexFormatFlags = vertex_flags;
+
+	m_VertexSize = cm.GetVertexSize();
+
+	if( vertex_flags & VFF::POSITION )
 	{
-		glEnableVertexAttribArray( vertex_element_index );
-		glVertexAttribPointer( vertex_element_index++, 3, GL_FLOAT, GL_FALSE, 0, 0 );
-		offset += sizeof(float) * 3;
+		m_VertexElementOffsets[VEE::POSITION] = (uint)cm.GetVertexElementOffset( VEE::POSITION );
+		m_VertexElementStreamIndices[VEE::POSITION] = vertex_element_index++;
 	}
 	else
 	{
@@ -105,20 +138,16 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( const CMMA_VertexSet& vert
 		return Result::INVALID_ARGS;
 	}
 
-	if( vertex_set.m_VertexFormatFlag & CMMA_VertexSet::VF_NORMAL )
+	if( vertex_flags & VFF::NORMAL )
 	{
-		m_VertexElementOffsets[VEE::NORMAL] = offset;
-		glEnableVertexAttribArray( vertex_element_index );
-		glVertexAttribPointer( vertex_element_index++, 3, GL_FLOAT, GL_FALSE, 0, (void *)offset );
-		offset += sizeof(float) * 3;
+		m_VertexElementOffsets[VEE::NORMAL] = (uint)cm.GetVertexElementOffset( VEE::NORMAL );
+		m_VertexElementStreamIndices[VEE::NORMAL] = vertex_element_index++;
 	}
 
-	if( vertex_set.m_VertexFormatFlag & CMMA_VertexSet::VF_DIFFUSE_COLOR )
+	if( vertex_flags & VFF::DIFFUSE_COLOR )
 	{
-		m_VertexElementOffsets[VEE::DIFFUSE_COLOR] = offset;
-		glEnableVertexAttribArray( vertex_element_index );
-		glVertexAttribPointer( vertex_element_index++, 4, GL_FLOAT, GL_FALSE, 0, (void *)offset );
-		offset += sizeof(float) * 4;
+		m_VertexElementOffsets[VEE::DIFFUSE_COLOR] = (uint)cm.GetVertexElementOffset( VEE::DIFFUSE_COLOR );
+		m_VertexElementStreamIndices[VEE::DIFFUSE_COLOR] = vertex_element_index++;
 	}
 
 	U32 texcoord2_element_flags[] =
@@ -133,14 +162,35 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( const CMMA_VertexSet& vert
 	{
 		if( vertex_flags & texcoord2_element_flags[i] )
 		{
-			m_VertexElementOffsets[VEE::TEXCOORD2_0 + i] = offset;
-			glEnableVertexAttribArray( vertex_element_index );
-			glVertexAttribPointer( vertex_element_index++, 2, GL_FLOAT, GL_FALSE, 0, (void *)offset );
-			offset += sizeof(TEXCOORD2);
+			m_VertexElementOffsets[VEE::TEXCOORD2_0 + i] = (uint)cm.GetVertexElementOffset( (VEE::ElementName)(VEE::TEXCOORD2_0 + i) );
+			m_VertexElementStreamIndices[VEE::TEXCOORD2_0 + i] = vertex_element_index++;
 		}
 	}
 
 	glBindVertexArray( 0 );
+
+	// Copy indices
+	glGenBuffers( 1, &m_IBO );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_IBO );
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,
+		cm.GetIndexSize() * cm.GetNumIndices(),
+		cm.GetIndexBufferPtr(),
+		GL_STATIC_DRAW
+		);
+
+	switch( cm.GetIndexSize() )
+	{
+	case 1: m_IndexType = GL_UNSIGNED_BYTE;  break;
+	case 2: m_IndexType = GL_UNSIGNED_SHORT; break;
+//	case 4: m_IndexType = GL_UNSIGNED_INT;   break; // GL_UNSIGNED_INT == 4 bytes?
+	default:
+		LOG_PRINT_ERROR( " An unspoorted index size." );
+		return Result::UNKNOWN_ERROR;
+		break;
+	}
+
+	m_NumIndices = cm.GetNumIndices();
 
 	return Result::SUCCESS;
 }
@@ -155,15 +205,12 @@ bool GLBasicMeshImpl::LoadFromArchive( C3DMeshModelArchive& archive, const std::
 
 	m_strFilename = filename;
 
-	CustomMesh cm;
-	cm.LoadFromArchive( archive );
-
-	InitVerticesAndIndices( archive.GetVertexSet() );
+	InitVerticesAndIndices( archive );
 
 	// load surface materials & textures
 	LoadMaterialsFromArchive( archive, option_flags );
 
-	m_vecTriangleSet = archive.GetTriangleSet();
+	m_TriangleSets = archive.GetTriangleSet();
 
 	return true;
 }
@@ -200,14 +247,66 @@ void GLBasicMeshImpl::RenderSubset( ShaderManager& rShaderMgr, int material_inde
 
 void GLBasicMeshImpl::Render()
 {
-	if( m_VAO == 0 )
-		return;
+//	if( m_VAO == 0 )
+//		return;
 
-	glBindVertexArray( m_VAO );
+//	glBindVertexArray( m_VAO );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_VBO );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_IBO );
+
+	const U32 vertex_flags = m_VertexFormatFlags;
+	const uint vertex_size = m_VertexSize;
+
+	if( vertex_flags & VFF::POSITION )
+	{
+		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::POSITION] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::POSITION], 3, GL_FLOAT, GL_FALSE, vertex_size, 0 );
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " A vertex must at least have a position." );
+		return;
+	}
+
+	if( vertex_flags & VFF::NORMAL )
+	{
+		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::NORMAL] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::NORMAL], 3, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::NORMAL] );
+	}
+
+	if( vertex_flags & VFF::DIFFUSE_COLOR )
+	{
+		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::DIFFUSE_COLOR] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::DIFFUSE_COLOR], 4, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::DIFFUSE_COLOR] );
+	}
+
+	U32 texcoord2_element_flags[] =
+	{
+		VFF::TEXCOORD2_0,
+		VFF::TEXCOORD2_1,
+		VFF::TEXCOORD2_2,
+		VFF::TEXCOORD2_3
+	};
+
+	for( int i=0; i<numof(texcoord2_element_flags); i++ )
+	{
+		if( vertex_flags & texcoord2_element_flags[i] )
+		{
+			glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::TEXCOORD2_0 + i] );
+			glVertexAttribPointer( m_VertexElementStreamIndices[VEE::TEXCOORD2_0 + i], 2, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::TEXCOORD2_0 + i] );
+		}
+	}
+
+	if( m_TriangleSets.size() == 1 )
+	{
+		if( 0 < m_vecMaterial.size() )
+			SetGLTextures( m_vecMaterial[0] );
+	}
 
 	glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
 
-	glBindVertexArray( 0 );
+//	glBindVertexArray( 0 );
 }
 
 
