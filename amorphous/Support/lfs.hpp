@@ -4,12 +4,12 @@
 
 #include <sys/stat.h>
 #include <errno.h>
+#include <assert.h>
 #include <string>
 #include <vector>
 
 #ifdef _MSC_VER
 #include <direct.h>
-#include <assert.h>
 #define getcwd _getcwd
 #define chdir  _chdir
 #else /* _MSC_VER */
