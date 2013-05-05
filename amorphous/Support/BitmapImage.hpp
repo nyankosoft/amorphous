@@ -552,26 +552,33 @@ inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
 		fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
 	}
 
-	// check that the plugin has reading capabilities ...
-	if( (fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif) )
+	if(fif == FIF_UNKNOWN)
 	{
-		// ok, let's load the file
-		m_pFreeImageBitMap = FreeImage_Load(fif, pathname.c_str(), flag);
-
-		// unless a bad file format, we are done !
-		if( m_pFreeImageBitMap )
-		{
-			m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
-			return true;
-		}
-		else
-		{
-			LOG_PRINT_ERROR( " Failed to load a file: " + pathname );
-			return false;
-		}
+		LOG_PRINT_ERROR( " An unsupported image file format." );
+		return false;
 	}
 
-	return false;
+	// check that the plugin has reading capabilities ...
+	if( !FreeImage_FIFSupportsReading(fif) )
+	{
+		LOG_PRINT_ERROR( " FreeImage_FIFSupportsReading() failed on the following image file: " + pathname );
+		return false;
+	}
+
+	// ok, let's load the file
+	m_pFreeImageBitMap = FreeImage_Load(fif, pathname.c_str(), flag);
+
+	// unless a bad file format, we are done !
+	if( m_pFreeImageBitMap )
+	{
+		m_BitsPerPixel = FreeImage_GetBPP( m_pFreeImageBitMap );
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " Failed to load a file: " + pathname );
+		return false;
+	}
 }
 
 /** Generic image writer
@@ -664,12 +671,11 @@ inline bool BitmapImage::CreateFromImageArchive( ImageArchive& img_archive )
 
 inline boost::shared_ptr<BitmapImage> CreateBitmapImage( const std::string& pathname, int flag = 0 )
 {
-	boost::shared_ptr<BitmapImage> pImage
-		= boost::shared_ptr<BitmapImage>( new BitmapImage() );
+	boost::shared_ptr<BitmapImage> pImage( new BitmapImage() );
 
 	bool bSuccess = pImage->LoadFromFile( pathname, flag );
 
-	return pImage;
+	return bSuccess ? pImage : boost::shared_ptr<BitmapImage>();
 }
 
 
