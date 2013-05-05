@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectFilter.cpp" />
@@ -368,6 +369,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectFilter.hpp" />

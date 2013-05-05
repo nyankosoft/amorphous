@@ -822,6 +822,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.cpp">
       <Filter>Graphics\Shader\Embedded</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1901,6 +1904,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.hpp">
       <Filter>Graphics\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
