@@ -36,6 +36,9 @@ inline TextureHandle CreateSingleColorTexture( const SFloatRGBAColor& color = SF
 	TextureHandle tex;
 	bool loaded = tex.Load( desc );
 
+	if( !loaded )
+		LOG_PRINTF_ERROR(( " Failed to create the specified texture (size: %dx%d).", width, height ));
+
 	return tex;
 }
 
