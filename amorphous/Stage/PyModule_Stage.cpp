@@ -262,6 +262,8 @@ PyObject* LoadStaticGeometry( PyObject* self, PyObject* args )
 
 	int result = PyArg_ParseTuple( args, "s", &filename );
 
+	LOG_PRINTF_VERBOSE(( "file: %s", filename ? filename : "<None>" ));
+
 	gs_pTargetStage->LoadStaticGeometryFromFile( filename );
 
 	return Py_None;
