@@ -43,6 +43,8 @@ private:
 
 	int m_NumIndices;
 
+	unsigned int m_IndexSize;
+
 	GLenum m_IndexType; ///< Must be one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, or GL_UNSIGNED_INT
 
 private:

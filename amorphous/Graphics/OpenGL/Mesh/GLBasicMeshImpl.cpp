@@ -36,6 +36,7 @@ m_IBO(0),
 m_VertexFormatFlags(0),
 m_VertexSize(0),
 m_NumIndices(0),
+m_IndexSize(sizeof(unsigned short)),
 m_IndexType(GL_UNSIGNED_SHORT)
 {
 	m_VBOSupported = true;
@@ -174,7 +175,9 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( C3DMeshModelArchive& archi
 		GL_STATIC_DRAW
 		);
 
-	switch( cm.GetIndexSize() )
+	m_IndexSize = cm.GetIndexSize();
+
+	switch( m_IndexSize )
 	{
 	case 1: m_IndexType = GL_UNSIGNED_BYTE;  break;
 	case 2: m_IndexType = GL_UNSIGNED_SHORT; break;
@@ -297,9 +300,29 @@ void GLBasicMeshImpl::Render()
 	{
 		if( 0 < m_vecMaterial.size() )
 			SetGLTextures( m_vecMaterial[0] );
+		glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
+	}
+	else if( 2 <= m_TriangleSets.size() )
+	{
+		int num_subsets_to_draw = (int)m_TriangleSets.size();
+		for( int i=0; i<num_subsets_to_draw; i++ )
+		{
+			if( i < (int)m_vecMaterial.size() )
+				SetGLTextures( m_vecMaterial[i] );
+
+			const CMMA_TriangleSet& ts = m_TriangleSets[ i ];
+
+			glDrawRangeElements(
+				GL_TRIANGLES,                    // GLenum mode,
+				0,                               // GLuint start,
+				50000,                           // GLuint end,
+				ts.m_iNumTriangles * 3,          // GLsizei count,
+				m_IndexType,                     // GLenum type
+				GL_INDEX_BUFFER_OFFSET( ts.m_iStartIndex * m_IndexSize ) // const GLvoid *indices
+				);
+		}
 	}
 
-	glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
 
 //	glBindVertexArray( 0 );
 }
