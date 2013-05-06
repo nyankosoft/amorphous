@@ -21,7 +21,7 @@ inline std::string to_string( const Vector3& v, int precision = 3, int num_zfill
 
 	char buffer[64];
 	memset( buffer, 0, sizeof(buffer) );
-	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), v.x, v.y, v.z );
+	snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), v.x, v.y, v.z );
 
 	return std::string(buffer);
 }
@@ -64,7 +64,7 @@ inline std::string to_string( const Quaternion& q, int precision = 3, int num_zf
 
 	char buffer[80];
 	memset( buffer, 0, sizeof(buffer) );
-	_snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), q.x, q.y, q.z, q.w );
+	snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), q.x, q.y, q.z, q.w );
 
 	return std::string(buffer);
 }

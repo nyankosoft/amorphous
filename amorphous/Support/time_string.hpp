@@ -30,19 +30,19 @@ inline std::string get_time_stamp_string( unsigned long time_ms, TimeFormat::For
 		sec = ( time_ms - hrs_ms - mins_ms ) / 1000;
 		if( time_format == TimeFormat::HHMMSS )
 		{
-			STRAUX_SNPRINTF( strbuf, numof(strbuf)-1, "%02d:%02d:%02d", hrs, mins, sec );
+			snprintf( strbuf, numof(strbuf)-1, "%02d:%02d:%02d", hrs, mins, sec );
 		}
 		else if( time_format == TimeFormat::HHMMSSFF )
 		{
 			int frm = (time_ms - hrs_ms - mins_ms - sec*1000) * 60 / 1000;
-			STRAUX_SNPRINTF( strbuf, numof(strbuf)-1, "%02d:%02d:%02d:%02d", hrs, mins, sec, frm );
+			snprintf( strbuf, numof(strbuf)-1, "%02d:%02d:%02d:%02d", hrs, mins, sec, frm );
 		}
 		
 	}
 	else if( time_format == TimeFormat::HHMMSSMS )
 	{
 		int msec = (time_ms - hrs_ms - mins_ms);
-		STRAUX_SNPRINTF( strbuf, numof(strbuf)-1, "%02d:%02d:%02d.%03d", hrs, mins, msec/1000, msec%1000 );
+		snprintf( strbuf, numof(strbuf)-1, "%02d:%02d:%02d.%03d", hrs, mins, msec/1000, msec%1000 );
 	}
 
 	return std::string(strbuf);

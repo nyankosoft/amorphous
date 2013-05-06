@@ -11,6 +11,7 @@
 #include <stdarg.h>
 
 #include "../base.hpp"
+#include "../Platform.hpp"
 #include "Macro.h"
 
 
@@ -18,24 +19,11 @@ namespace amorphous
 {
 
 
-#ifdef _MSC_VER
-#define STRAUX_STRNCPY   strncpy_s
-#define STRAUX_SSCANF    sscanf_s
-#define STRAUX_SNPRINTF  _snprintf_s
-#define STRAUX_VSNPRINTF _vsnprintf_s
-#else /* MSC_VER */
-#define STRAUX_SSCANF   sscanf
-#define STRAUX_SNPRINTF snprintf
-#define STRAUX_STRNCPY  strncpy
-#define STRAUX_VSNPRINTF vsnprintf
-#endif /* MSC_VER */
-
-
 inline std::string to_string( int num )
 {
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%d", num );
+	snprintf( buffer, numof(buffer)-1, "%d", num );
 	return std::string(buffer);
 }
 
@@ -44,7 +32,7 @@ inline std::string to_string( unsigned int num )
 {
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%u", num );
+	snprintf( buffer, numof(buffer)-1, "%u", num );
 	return std::string(buffer);
 }
 
@@ -60,7 +48,7 @@ inline std::string to_string( long num )
 {
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%ld", num );
+	snprintf( buffer, numof(buffer)-1, "%ld", num );
 	return std::string(buffer);
 }
 
@@ -69,7 +57,7 @@ inline std::string to_string( unsigned long num )
 {
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%lu", num );
+	snprintf( buffer, numof(buffer)-1, "%lu", num );
 	return std::string(buffer);
 }
 
@@ -78,7 +66,7 @@ inline std::string to_string( double num )
 {
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, "%.3f", num );
+	snprintf( buffer, numof(buffer)-1, "%.3f", num );
 	return std::string(buffer);
 }
 
@@ -93,7 +81,7 @@ inline std::string to_string( float num, int precision = 3, int num_zfills = 0 )
 
 	char buffer[32];
 	memset( buffer, 0, sizeof(buffer) );
-	STRAUX_SNPRINTF( buffer, numof(buffer)-1, fmt_buffer.c_str(), num );
+	snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), num );
 	return std::string(buffer);
 }
 
@@ -106,7 +94,7 @@ inline int from_hex_to_int( const std::string& hex_int )
 		return 0;
 
 	int res = 0;
-	STRAUX_SSCANF( hex_int.c_str(), "%x", &res );
+	sscanf( hex_int.c_str(), "%x", &res );
 	return res;
 }
 
@@ -123,7 +111,7 @@ inline std::string fmt_string( const char *format,... )
 	va_list argptr;
 
 	va_start(argptr,format);
-	STRAUX_VSNPRINTF(buffer,size,format,argptr);
+	vsnprintf(buffer,size,format,argptr);
 	buffer[size-1] = '\0';
 	va_end(argptr);
 
@@ -136,7 +124,7 @@ inline std::string fmt_string( const char *format,... )
 inline float to_float( const std::string& str )
 {
 	float val = 0.0f;
-	STRAUX_SSCANF( str.c_str(), "%f", &val );
+	sscanf( str.c_str(), "%f", &val );
 	return val;
 }
 
@@ -144,7 +132,7 @@ inline float to_float( const std::string& str )
 inline int to_int( const std::string& str )
 {
 	int val = 0;
-	STRAUX_SSCANF( str.c_str(), "%d", &val );
+	sscanf( str.c_str(), "%d", &val );
 	return val;
 }
 
@@ -179,7 +167,7 @@ inline void SeparateStrings( std::vector<std::string>& rDestStr, const char *pSr
 		{
 			if( next_pos < i )
 			{
-				STRAUX_STRNCPY( str, pSrcStr + next_pos, i - next_pos );
+				strncpy( str, pSrcStr + next_pos, i - next_pos );
 				str[i - next_pos] = '\0';
 				rDestStr.push_back( std::string( str ) );
 			}
