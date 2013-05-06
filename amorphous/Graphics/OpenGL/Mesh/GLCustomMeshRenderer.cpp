@@ -2,6 +2,7 @@
 #include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/OpenGL/GLTextureResourceVisitor.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
@@ -17,8 +18,11 @@ using namespace std;
 CGLCustomMeshRenderer CGLCustomMeshRenderer::ms_Instance;
 
 
-void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
+void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 {
+	// NOTE: it seems that the fixed function pipeline does not work
+	// with glEnableVertexAttribArray() & glVertexAttribPointer().
+
 	PROFILE_FUNCTION();
 
 	uchar *pV = mesh.GetVertexBufferPtr();
@@ -37,38 +41,66 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 
 	const U32 vert_flags = mesh.GetVertexFormatFlags();
 
+	static const bool use_vertex_attrib_array_and_ptr = true;
+
 	// Unbind GL_ARRAY_BUFFER and GL_ELEMENT_ARRAY_BUFFER to source a standard memory location (RAM).
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
-//	glEnableClientState(GL_VERTEX_ARRAY);
+	if( vert_flags & VFF::POSITION )
+	{
+		uchar *pPos = pV + mesh.GetVertexElementOffset( VEE::POSITION );
 
-	uchar *pPos = pV + mesh.GetVertexElementOffset( VEE::POSITION );
-//	glVertexPointer( 3, GL_FLOAT, vertex_size, pPos );
+		if( use_vertex_attrib_array_and_ptr )
+		{
+			glEnableVertexAttribArray( 0 );
+			glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, vertex_size, pPos );
+		}
+		else
+		{
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glVertexPointer( 3, GL_FLOAT, vertex_size, pPos );
+		}
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " A vertex must at least have a position." );
+		return;
+	}
 
-	glEnableVertexAttribArray( 0 );
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, vertex_size, pPos );
 
 	if( vert_flags & VFF::NORMAL )
 	{
-//		glEnableClientState(GL_NORMAL_ARRAY);
-
 		uchar *pNormal = pV + mesh.GetVertexElementOffset( VEE::NORMAL );
-//		glNormalPointer( GL_FLOAT, vertex_size, pNormal );
 
-		glEnableVertexAttribArray( 1 );
-		glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, vertex_size, pNormal );
+		if( use_vertex_attrib_array_and_ptr )
+		{
+			glEnableVertexAttribArray( 1 );
+			glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, vertex_size, pNormal );
+		}
+		else
+		{
+			glDisableClientState(GL_NORMAL_ARRAY);
+//			glEnableClientState(GL_NORMAL_ARRAY);
+//			glNormalPointer( GL_FLOAT, vertex_size, pNormal );
+		}
 	}
 
 	if( vert_flags & VFF::DIFFUSE_COLOR )
 	{
-//		glEnableClientState(GL_COLOR_ARRAY);
-
 		uchar *pDiffuseColor = pV + mesh.GetVertexElementOffset( VEE::DIFFUSE_COLOR );
-//		glColorPointer( 4, GL_FLOAT, vertex_size, pDiffuseColor );
 
-		glEnableVertexAttribArray( 2 );
-		glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, vertex_size, pDiffuseColor );
+		if( use_vertex_attrib_array_and_ptr )
+		{
+			glEnableVertexAttribArray( 2 );
+			glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, vertex_size, pDiffuseColor );
+		}
+		else
+		{
+			glDisableClientState(GL_COLOR_ARRAY);
+//			glEnableClientState(GL_COLOR_ARRAY);
+//			glColorPointer( 4, GL_FLOAT, vertex_size, pDiffuseColor );
+		}
 	}
 
 	const int num_mats = mesh.GetNumMaterials();
@@ -84,17 +116,23 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 //	if(mTexId)
 	if( vert_flags & VFF::TEXCOORD2_0 )
 	{
-//		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
 		uchar *pTex = pV + mesh.GetVertexElementOffset( VEE::TEXCOORD2_0 );
-//		glTexCoordPointer( 2, GL_FLOAT, vertex_size, pTex );
 
-		glEnableVertexAttribArray( 3 );
-		glVertexAttribPointer( 3, 2, GL_FLOAT, GL_FALSE, vertex_size, pTex );
+		if( use_vertex_attrib_array_and_ptr )
+		{
+			glEnableVertexAttribArray( 3 );
+			glVertexAttribPointer( 3, 2, GL_FLOAT, GL_FALSE, vertex_size, pTex );
+		}
+		else
+		{
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//			glTexCoordPointer( 2, GL_FLOAT, vertex_size, pTex );
+		}
 
 		glEnable(GL_TEXTURE_2D);
 //		glBindTexture(GL_TEXTURE_2D, mTexId);
-		glColor4f(1.0f, 1.0f, 1.0f,1.0f);
+		/*glColor4f(1.0f, 1.0f, 1.0f,1.0f);*/
 	}
 
 	const uint index_size = mesh.GetIndexSize();
@@ -138,13 +176,23 @@ void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
 }
 
 
+void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
+{
+	glUseProgram( 0 );
+
+	RenderMeshWithCurrentProgram( mesh );
+}
+
+
 void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, ShaderManager& shader_mgr )
 {
 //	LOG_PRINT_ERROR( " Not implemented." );
 
 	shader_mgr.Begin();
 
-	RenderMesh( mesh );
+	bool using_programmable_shader = (&shader_mgr != &FixedFunctionPipelineManager()) ? true : false;
+
+	RenderMeshWithCurrentProgram( mesh );//, using_programmable_shader );
 }
 
 

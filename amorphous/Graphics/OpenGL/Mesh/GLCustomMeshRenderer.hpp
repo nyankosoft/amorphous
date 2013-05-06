@@ -11,6 +11,8 @@ namespace amorphous
 
 class CGLCustomMeshRenderer : public CustomMeshRenderer
 {
+	void RenderMeshWithCurrentProgram( CustomMesh& mesh );
+
 public:
 
 	void RenderMesh( CustomMesh& mesh );
