@@ -121,11 +121,11 @@ void CStaticGeometryFG::RenderTerrainMesh( const Camera& rCamera )
 	if( !pEffect )
 		return;
 
-	m_pShaderManager->SetTexture( 1, m_FadeTex.GetTexture() );
+	m_pShaderManager->SetTexture( 1, m_FadeTex );
 
-	m_pShaderManager->SetTexture( 2, m_TileTexture.GetTexture() );
+	m_pShaderManager->SetTexture( 2, m_TileTexture );
 
-	m_pShaderManager->SetTexture( 3, m_NormalMapForWaterSurface.GetTexture() );
+	m_pShaderManager->SetTexture( 3, m_NormalMapForWaterSurface );
 
 	hr = pEffect->SetValue( "g_vEyePos", &rCamera.GetPosition(), sizeof(float) * 3 );
 
