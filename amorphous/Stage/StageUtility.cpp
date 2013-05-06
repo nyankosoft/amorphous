@@ -911,6 +911,7 @@ EntityHandle<> CStageMiscUtility::CreateStaticTriangleMeshFromMesh( const char *
 
 	if( !resources_exists( mesh_resource_path ) )
 	{
+		LOG_PRINTF_WARNING(( " The specified mesh resource '%s' was not found.", mesh_resource_path ));
 		return EntityHandle<>();
 	}
 
