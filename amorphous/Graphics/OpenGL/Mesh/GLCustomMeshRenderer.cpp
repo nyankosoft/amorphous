@@ -33,8 +33,8 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 	if( !pI )
 		return;
 
-	uint num_indices = mesh.GetNumIndices();
-	uint num_triangles = num_indices / 3;
+	const uint num_indices = mesh.GetNumIndices();
+	const uint num_triangles = num_indices / 3;
 
 	const uint num_verts = mesh.GetNumVertices();
 	const int vertex_size = mesh.GetVertexSize();
