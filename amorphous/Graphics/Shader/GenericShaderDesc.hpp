@@ -110,6 +110,11 @@ class GenericShaderDesc
 {
 public:
 
+	/// If set to true, lighting is applied based on the parameters set to the variables below
+	/// If set to false, all the parameters related to lighting are ignored.
+	/// Default: true
+	bool Lighting;
+
 	ShaderLightingTechnique::Name LightingTechnique;
 	ShaderLightingType::Name LightingType; // per-vertex / per-pixel
 	SpecularSource::Name Specular;
@@ -126,6 +131,7 @@ public:
 
 	GenericShaderDesc()
 		:
+	Lighting(true),
 	LightingTechnique(ShaderLightingTechnique::HEMISPHERIC),
 	LightingType(ShaderLightingType::PER_PIXEL),
 	Specular(SpecularSource::NONE),
