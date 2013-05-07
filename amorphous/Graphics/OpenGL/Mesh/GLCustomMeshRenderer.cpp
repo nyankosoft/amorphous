@@ -20,6 +20,8 @@ CGLCustomMeshRenderer CGLCustomMeshRenderer::ms_Instance;
 
 void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 {
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 	// NOTE: it seems that the fixed function pipeline does not work
 	// with glEnableVertexAttribArray() & glVertexAttribPointer().
 
@@ -46,6 +48,8 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 	// Unbind GL_ARRAY_BUFFER and GL_ELEMENT_ARRAY_BUFFER to source a standard memory location (RAM).
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
+	LOG_GL_ERROR( " glBindBuffer() failed." );
 
 	if( vert_flags & VFF::POSITION )
 	{
