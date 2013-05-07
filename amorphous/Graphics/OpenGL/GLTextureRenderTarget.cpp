@@ -19,9 +19,25 @@ public:
 
 	Result::Name Visit( CGLTextureResource& texture_resource )
 	{
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_Target, texture_resource.GetGLTextureID(), 0);
+		LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
-		LOG_GL_ERROR( "glBindTexture() failed." );
+		// Attach a level of a texture object as a logical buffer to the currently bound framebuffer object
+		GLuint texture = texture_resource.GetGLTextureID();
+		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_Target, texture, 0);
+
+		LOG_GL_ERROR( "glFramebufferTexture2DEXT() failed." );
+
+		// Set the list of draw buffers.
+		GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0_EXT};
+		glDrawBuffers(1, DrawBuffers);
+
+		LOG_GL_ERROR( "glDrawBuffers() failed." );
+
+		GLenum fb_status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+		if( fb_status != GL_FRAMEBUFFER_COMPLETE_EXT )
+			LOG_PRINT_ERROR( "The FBO is not framebuffer complete." );
+
+		LOG_GL_ERROR( "glCheckFramebufferStatusEXT() failed." );
 
 		return Result::SUCCESS;
 	}
@@ -79,12 +95,14 @@ void CGLTextureRenderTarget::Release()
 	// Delete resources
 //	glDeleteTextures(1, &color_tex);
 	glDeleteRenderbuffersEXT(1, &m_DepthRenderBuffer);
+	m_DepthRenderBuffer = 0;
 
 	// Bind 0, which means render to back buffer.
 	// As a result, m_Framebuffer is unbound
 //	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 	glDeleteFramebuffersEXT(1, &m_Framebuffer );
+	m_Framebuffer = 0;
 }
 
 
@@ -144,7 +162,7 @@ bool CGLTextureRenderTarget::LoadTextures()
 	}
 
 //	GLuint m_Framebuffer;  // color render target
-	GLuint depth_rb = m_DepthRenderBuffer; // depth render target
+//	GLuint depth_rb = m_DepthRenderBuffer; // depth render target
 //	GLuint stencil_rb; // depth render target
 
 //	m_TextureDesc = ...;
@@ -154,7 +172,12 @@ bool CGLTextureRenderTarget::LoadTextures()
 	GLenum type = GL_FLOAT;
 	GLenum texInternalFormat = GL_RGBA8;
 
-	m_RenderTargetTexture.Load( m_TextureDesc );
+	bool texture_created = m_RenderTargetTexture.Load( m_TextureDesc );
+	if( !texture_created )
+	{
+		LOG_PRINT_ERROR( " Failed to create the render target texture." );
+		return false;
+	}
 
 	GLenum texTarget = GL_TEXTURE_2D;
 	GLenum filter_mode = (texTarget == GL_TEXTURE_RECTANGLE) ? GL_NEAREST : GL_LINEAR;
@@ -173,17 +196,25 @@ bool CGLTextureRenderTarget::LoadTextures()
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 	glGenFramebuffersEXT(1, &m_Framebuffer);
+
+	LOG_GL_ERROR( "glGenFramebuffersEXT() failed." );
 
 	//	glGenTextures(1, &tex);
 //	GLuint tex = m_RenderTargetTexture.GetGLTextureID();
 
-	glGenRenderbuffersEXT(1, &depth_rb);
+	glGenRenderbuffersEXT(1, &m_DepthRenderBuffer);
+
+	LOG_GL_ERROR( "glGenRenderbuffersEXT() failed." );
 
 	int tex_width  = m_TextureDesc.Width;
 	int tex_height = m_TextureDesc.Height;
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer);
+
+	LOG_GL_ERROR( "glBindFramebufferEXT() failed." );
 
 	// (A) init texture
 	//	glBindTexture(texTarget, tex);
@@ -203,18 +234,25 @@ bool CGLTextureRenderTarget::LoadTextures()
 	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
 
 //	GET_GLERROR(0);
-	LOG_GL_ERROR( " glFramebufferTexture2DEXT() returned error(s)" );
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	// initialize depth renderbuffer
-	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depth_rb);
+	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
 
+	LOG_GL_ERROR( " glBindRenderbufferEXT() failed." );
+
+	// Before we can bind a renderbuffer to a framebuffer object,
+	// we must allocate storage for the renderbuffer.
 	glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, tex_width, tex_height);
 
+	LOG_GL_ERROR( " glRenderbufferStorageEXT() failed." );
+
+	// Attach the renderbuffer object to the framebuffer object
 	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, 
-		GL_RENDERBUFFER_EXT, depth_rb);
+		GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
 
 //	GET_GLERROR(0);
-	LOG_GL_ERROR( " gl***EXT() returned error(s)" );
+	LOG_GL_ERROR( " glFramebufferRenderbufferEXT() failed." );
 
 //	CheckFramebufferStatus();
 
@@ -273,53 +311,37 @@ void CGLTextureRenderTarget::CopyRenderTarget()
 
 void CGLTextureRenderTarget::SetRenderTarget()
 {
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 	// save the current framebuffer
 
 	GLenum texTarget = GL_TEXTURE_2D;
 	glBindTexture(texTarget, 0);
 
+	LOG_GL_ERROR( " glBindTexture() failed." );
+
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer );
 
+	LOG_GL_ERROR( " glBindFramebufferEXT() failed." );
+
 //	glPushAttrib( GL_VIEWPORT_BIT );
-//	glViewport( 0, 0, m_TextureDesc.Width, m_TextureDesc.Height );
+
+	glViewport( 0, 0, m_TextureDesc.Width, m_TextureDesc.Height );
+
+	LOG_GL_ERROR( " glViewport() failed." );
 }
 
 
 void CGLTextureRenderTarget::ResetRenderTarget()
 {
-	glPopAttrib();
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
+//	glPopAttrib();
 
 	// Bind 0, which means render to back buffer
 	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 
-/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
-
-	//	MessageBox(NULL, "point 3","texture render target", MB_OK);
-
-	// restore original render target
-
-	pd3dDev->SetViewport( &m_OriginalViewport );
-
-	hr = pd3dDev->SetRenderTarget( 0, m_pOriginalSurface );
-
-	if( FAILED(hr) )
-		return;
-
-	// decrement the reference count
-	///	SAFE_RELEASE( m_pOriginalSurface );
-
-	// restore the original depth stencil surface
-	hr = pd3dDev->SetDepthStencilSurface( m_pOriginalDepthSurface );
-
-	if( FAILED(hr) )
-		return;
-
-	///	SAFE_RELEASE( m_pOriginalDepthSurface );
-
-	m_pOriginalSurface = NULL;
-	m_pOriginalDepthSurface = NULL;
-	memset( &m_OriginalViewport, 0, sizeof(D3DVIEWPORT9) );*/
+	LOG_GL_ERROR( " glBindFramebufferEXT() failed." );
 }
 
 
