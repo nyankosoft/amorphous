@@ -184,6 +184,8 @@ Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const Texture
 	LOG_PRINT_ERROR( " Not implemented yet." );
 //	return Result::UNKNOWN_ERROR;
 
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 	if( stage == 0 )
 	{
 //		glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE,   GL_COMBINE);
@@ -197,6 +199,8 @@ Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const Texture
 //		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND0_ALPHA_ARB, GL_SRC_ALPHA); // vertex alpha
 //		glTexEnvi(GL_TEXTURE_2D, GL_SOURCE1_ALPHA_ARB,  GL_TEXTURE);
 //		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_ALPHA_ARB, GL_SRC_ALPHA); // this texture's alpha (stage 0)
+
+		LOG_GL_ERROR( " glTexEnvi() failed." );
 	}
 	return Result::SUCCESS;
 /*
