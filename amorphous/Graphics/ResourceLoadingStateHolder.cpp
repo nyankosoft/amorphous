@@ -1,5 +1,5 @@
 #include "ResourceLoadingStateHolder.hpp"
-#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
+//#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/GraphicsResourceEntries.hpp"
 #include "Graphics/TextureHandle.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
