@@ -22,9 +22,6 @@
     <Filter Include="Graphics\Font">
       <UniqueIdentifier>{439b37dc-0cda-4eea-b19a-95f8f1583a0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Debug">
-      <UniqueIdentifier>{9a100c4b-56e1-4080-b9e7-5881829420ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Graphics\2D">
       <UniqueIdentifier>{d600d349-d133-4c05-b50d-49b5e0a0849c}</UniqueIdentifier>
     </Filter>
@@ -377,9 +374,6 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp">
       <Filter>Graphics\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\LinePrimitives.cpp">
-      <Filter>Graphics\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp">
       <Filter>Graphics\2D</Filter>
@@ -1141,9 +1135,6 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Font\UTFFont.hpp">
       <Filter>Graphics\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\LinePrimitives.hpp">
-      <Filter>Graphics\Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Point.hpp">
       <Filter>Graphics\2D</Filter>
