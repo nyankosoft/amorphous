@@ -130,12 +130,12 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 	static float fYaw = 0.0f;	// turn right / left	(unit: radian)
 	static float fPitch = 0.0f;	// look up / down		(unit: radian)
 	static float fRoll = 0.0f;	// bank right /left		(unit: radian)
-
+	const float pi = (float)PI;
 
 	// measure yaw -  difficult for control but seems more appropriate for a space ship
 //	fYawSpeedGain
-//		= ActionInput.GetAction(ACTION_MOV_TURN_R) * fFrameTime * D3DX_PI
-//		- ActionInput.GetAction(ACTION_MOV_TURN_L) * fFrameTime * D3DX_PI
+//		= ActionInput.GetAction(ACTION_MOV_TURN_R) * fFrameTime * pi
+//		- ActionInput.GetAction(ACTION_MOV_TURN_L) * fFrameTime * pi
 //		+ ActionInput.GetAction(ACTION_MOV_ABS_YAW) / 40.0f;
 
 //	fYawSpeedGain = m_pInput->GetActionState(ACTION_MOV_ABS_YAW) / 40.0f;
@@ -153,12 +153,12 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 
 	// measure yaw - easier control but seems less like a space ship
 /*	fYaw = fYaw
-		+ ActionInput.GetAction(ACTION_MOV_TURN_R) * fFrameTime * D3DX_PI
-		- ActionInput.GetAction(ACTION_MOV_TURN_L) * fFrameTime * D3DX_PI
-		+ ActionInput.GetAction(ACTION_MOV_ABS_YAW) / 750.0f * D3DX_PI;*/
+		+ ActionInput.GetAction(ACTION_MOV_TURN_R) * fFrameTime * pi
+		- ActionInput.GetAction(ACTION_MOV_TURN_L) * fFrameTime * pi
+		+ ActionInput.GetAction(ACTION_MOV_ABS_YAW) / 750.0f * pi;*/
 
-	if( 2.0f * D3DX_PI < fYaw )			fYaw -= 2.0f * D3DX_PI;
-	else if( fYaw < -2.0f * D3DX_PI )	fYaw += 2.0f * D3DX_PI;
+	if( 2.0f * pi < fYaw )			fYaw -= 2.0f * pi;
+	else if( fYaw < -2.0f * pi )	fYaw += 2.0f * pi;
 
 	// measure roll - tilt a little when player turn right /left
 	fRollSpeed -= fYawSpeedGain / 4.0f;
@@ -171,13 +171,13 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 
 	float fAbsRoll = fabsf(fRoll);
 	fSign = 0 < fRoll ? 1.0f : -1.0f;
-	if( fAbsYawSpeed < D3DX_PI / 3.0f )
+	if( fAbsYawSpeed < pi / 3.0f )
 	{	// back to the horizontal position
 		ApplyFriction( fAbsRoll, fAbsRoll * 2.2f );
 		fRoll = fSign * fAbsRoll;
 	}
 
-	float fMaxRollAngle = D3DX_PI / 9.0f;
+	float fMaxRollAngle = pi / 9.0f;
 	if( fMaxRollAngle < fRoll )
 		fRoll = fMaxRollAngle;
 	else if( fRoll < -fMaxRollAngle )
@@ -186,8 +186,8 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 
 	// measure pitch -  difficult for control but seems more appropriate for a space ship
 //	fPitchSpeed = fPitchSpeed
-//		- ActionInput.GetAction(ACTION_MOV_LOOK_UP) * fFrameTime * D3DX_PI
-//		+ ActionInput.GetAction(ACTION_MOV_LOOK_DOWN) * fFrameTime * D3DX_PI
+//		- ActionInput.GetAction(ACTION_MOV_LOOK_UP) * fFrameTime * pi
+//		+ ActionInput.GetAction(ACTION_MOV_LOOK_DOWN) * fFrameTime * pi
 //		- ActionInput.GetAction(ACTION_MOV_ABS_PITCH) / 40.0f;
 
 //	fPitchSpeed = m_pInput->GetActionState(ACTION_MOV_ABS_PITCH) / 40.0f;
@@ -203,12 +203,12 @@ void CBE_PlayerShip::Move( CCopyEntity *pCopyEnt )
 
 	// measure pitch - easier control but seems less like a space ship
 /*	fPitch = fPitch
-		- ActionInput.GetAction(ACTION_MOV_LOOK_UP  ) * fFrameTime * D3DX_PI
-		+ ActionInput.GetAction(ACTION_MOV_LOOK_DOWN) * fFrameTime * D3DX_PI
-		- ActionInput.GetAction(ACTION_MOV_ABS_PITCH) / 750.0f * D3DX_PI;	*/
+		- ActionInput.GetAction(ACTION_MOV_LOOK_UP  ) * fFrameTime * pi
+		+ ActionInput.GetAction(ACTION_MOV_LOOK_DOWN) * fFrameTime * pi
+		- ActionInput.GetAction(ACTION_MOV_ABS_PITCH) / 750.0f * pi;	*/
 
-	if( D3DX_PI / 2.1f < fPitch )	 fPitch = D3DX_PI / 2.1f;
-	if( fPitch < -(D3DX_PI / 2.1f) ) fPitch = -( D3DX_PI / 2.1f );
+	if( pi / 2.1f < fPitch )	fPitch = pi / 2.1f;
+	if( fPitch < -(pi / 2.1f) ) fPitch = -( pi / 2.1f );
 
 	// change the direction of the ship based on the 'fYaw' and 'fPitch' we have just measured
 
