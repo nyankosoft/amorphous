@@ -388,10 +388,8 @@ void HUD_PlayerAircraft::RenderImpl()
 	Vector2 focus_indicator_offset = Vector2(0,-120*scale);
 	Vector2 screen_center = m_HUD.GetScreenCenter();
 	Vector3 pos;
-	D3DXMATRIX matCamera;
 	Matrix44 view;
 	pCamera->GetCameraMatrix( view );
-//	view.GetRowMajorMatrix44( (float *)&matCamera );
 
 	const HUD_TargetInfo* pTarget = radar_info.GetFocusedTarget();
 	if( pTarget )
@@ -404,7 +402,6 @@ void HUD_PlayerAircraft::RenderImpl()
 
 		focus_indicator[0].y = - arrow_length;
 
-//		D3DXVec3TransformCoord( &pos, &pTarget->position, &matCamera );
 		pos = view * pTarget->position;
 		if( pos.z < 0 ||	// target is behind the player
 			15.0f < fabsf(pos.x) && 15.0f < fabsf(pos.y) )	// target is not in the center area of the HUD
@@ -471,14 +468,10 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 
 //	float scale = GetScreenWidth() / 800.0f;
 
-//	D3DXMATRIX matCamera, matProj, matCameraProj;
 	Matrix44 view, proj;
 	pCamera->GetCameraMatrix( view );
 	pCamera->GetProjectionMatrix( proj );
-//	view.GetRowMajorMatrix44( (float *)&matCamera );
-//	proj.GetRowMajorMatrix44( (float *)&matProj );
 	Matrix44 proj_view = proj * view;
-//	matCameraProj = matCamera * matProj;
 
 	const RadarInfo& radar_info = pShortRangeRadar->RadarInfo();
 
@@ -516,7 +509,6 @@ void HUD_PlayerAircraft::RenderTargetContainerRects( CBE_PlayerPseudoAircraft *p
 		 || target.type & HUD_TargetInfo::PLAYER )
 			continue;
 
-//		D3DXVec3TransformCoord( &pos, &vWorldPos, &matCameraProj );
 		pos = proj_view * vWorldPos;
 
 		x = (  pos.x + 1.0f ) * 0.5f * GetReferenceScreenWidth();// screen_width;
