@@ -1,9 +1,9 @@
 #include "GameTaskManager.hpp"
 #include "GameTask.hpp"
 
-#include "Graphics/RenderTask.hpp"
-#include "Graphics/RenderTaskProcessor.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
+//#include "Graphics/RenderTask.hpp"
+//#include "Graphics/RenderTaskProcessor.hpp"
+#include "Graphics/GraphicsDevice.hpp"
 #include "GameTask.hpp"
 #include "GameTaskFactoryBase.hpp"
 #include "Support/SafeDelete.hpp"
@@ -136,14 +136,14 @@ void GameTaskManager::Render()
 		else
 		{
 			// BeginScene() here if render task system is NOT used
-			HRESULT hr = DIRECT3D9.GetDevice()->BeginScene();
+			HRESULT hr = GraphicsDevice().BeginScene();
 
 			m_pCurrentTask->RenderBase();
 
 			// EndScene() and Present() here if render task system is NOT used
-			hr = DIRECT3D9.GetDevice()->EndScene();
+			hr = GraphicsDevice().EndScene();
 
-			hr = DIRECT3D9.GetDevice()->Present( NULL, NULL, NULL, NULL );
+			hr = GraphicsDevice().Present();
 		}
 	}
 }
