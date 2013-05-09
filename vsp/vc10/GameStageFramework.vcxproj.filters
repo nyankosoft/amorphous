@@ -69,9 +69,6 @@
     <ClInclude Include="..\..\amorphous\Stage\BinaryNode.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Stage\bsptree.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
@@ -834,12 +831,12 @@
     <ClInclude Include="..\..\amorphous\Script\PythonCommon.hpp">
       <Filter>Source Files\Script</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\Stage\BSPMapFileExporter.cpp">
-      <Filter>Source Files\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\bsptree.cpp">
@@ -1480,6 +1477,9 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Script\PythonCommon.cpp">
       <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
+      <Filter>Source Files\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

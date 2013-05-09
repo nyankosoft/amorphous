@@ -97,7 +97,9 @@
     <ClInclude Include="..\..\amorphous\Stage\BSPMap.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\Stage\bsptree.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\EnemyState.hpp" />
@@ -358,7 +360,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\bsptree.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\EnemyState.cpp" />
