@@ -5,7 +5,7 @@
 #include "../TextureResourceVisitor.hpp"
 #include "GLGraphicsResources.hpp"
 #include "GLGraphicsDevice.hpp"
-#include "glext.h"
+#include "GLExtensions.hpp"
 #include <gl/gl.h>
 
 
@@ -24,6 +24,8 @@ public:
 
 	Result::Name Visit( CGLTextureResource& texture_resource )
 	{
+		LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 		glBindTexture( GL_TEXTURE_2D, texture_resource.GetGLTextureID() );
 
 		LOG_GL_ERROR( "glBindTexture() failed." );
@@ -49,6 +51,28 @@ public:
 
 			LOG_GL_ERROR( "glBindTexture() failed." );
 		}
+
+		return Result::SUCCESS;
+	}
+};
+
+
+class GLSLTextureResourceVisitor : public TextureResourceVisitor
+{
+	uint m_Stage;
+
+public:
+
+	GLSLTextureResourceVisitor(uint stage) : m_Stage(stage) {}
+	~GLSLTextureResourceVisitor(){}
+
+	Result::Name Visit( CGLTextureResource& texture_resource )
+	{
+//		glActiveTexture( GL_TEXTURE0 + m_Stage );
+
+		glBindTexture( GL_TEXTURE_2D, texture_resource.GetGLTextureID() );
+
+		LOG_GL_ERROR( "glBindTexture() failed." );
 
 		return Result::SUCCESS;
 	}
