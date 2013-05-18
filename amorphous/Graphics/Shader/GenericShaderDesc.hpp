@@ -147,7 +147,8 @@ public:
 
 	bool operator==( const GenericShaderDesc& rhs ) const
 	{
-		if( LightingTechnique    == rhs.LightingTechnique
+		if( Lighting             == rhs.Lighting
+		 && LightingTechnique    == rhs.LightingTechnique
 		 && LightingType         == rhs.LightingType
 		 && Specular             == rhs.Specular
 		 && VertexBlendType      == rhs.VertexBlendType
