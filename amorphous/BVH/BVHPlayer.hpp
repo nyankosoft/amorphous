@@ -1,8 +1,7 @@
 #ifndef  __BVHPLAYER_H__
 #define  __BVHPLAYER_H__
 
-#include <vector>
-#include <string>
+
 #include "BVHBone.hpp"
 
 

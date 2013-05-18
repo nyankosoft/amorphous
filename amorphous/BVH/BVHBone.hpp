@@ -1,14 +1,12 @@
 #ifndef  __BVHBONE_H__
 #define  __BVHBONE_H__
 
-#include "../Support/StringAux.hpp"
-#include <vector>
-#include <string>
+
 #include "fwd.hpp"
+#include "../Support/StringAux.hpp"
 #include "../3DMath/Matrix34.hpp"
 #include "../3DMath/Matrix44.hpp"
 #include "../3DMath/Quaternion.hpp"
-#include "../Graphics/fwd.hpp"
 #include "../Graphics/FloatRGBAColor.hpp"
 #include "../Graphics/MeshObjectHandle.hpp"
 
