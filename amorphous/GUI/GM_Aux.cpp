@@ -1,5 +1,7 @@
-#include "GUI.hpp"
 #include "GM_Aux.hpp"
+#include "GM_DialogDesc.hpp"
+#include "GM_Dialog.hpp"
+#include "GM_DialogManager.hpp"
 
 
 namespace amorphous

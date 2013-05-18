@@ -4,7 +4,7 @@
 
 #include "fwd.hpp"
 #include "GM_ControlDescBase.hpp"
-#include "Graphics/Rect.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 
 
 namespace amorphous

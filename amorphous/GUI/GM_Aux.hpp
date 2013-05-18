@@ -1,11 +1,10 @@
-
 #ifndef  __GM_AUXILIARY_H__
 #define  __GM_AUXILIARY_H__
 
-#include <string>
 
-#include "Graphics/Rect.hpp"
+#include <string>
 #include "fwd.hpp"
+#include "../Graphics/Rect.hpp"
 
 
 namespace amorphous
