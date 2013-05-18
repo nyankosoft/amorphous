@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\src\GraphicsElementsTest.hpp" />
     <ClInclude Include="..\..\src\HLSLEffectTest.hpp" />
     <ClInclude Include="..\..\src\LensFlareTest.hpp" />
+    <ClInclude Include="..\..\src\LightingTest.hpp" />
     <ClInclude Include="..\..\src\MeshSplitterTest.hpp" />
     <ClInclude Include="..\..\src\MultibyteFontTest.hpp" />
     <ClInclude Include="..\..\src\OBBTreeTest.hpp" />
@@ -130,6 +131,7 @@
     <ClCompile Include="..\..\src\GraphicsElementsTest.cpp" />
     <ClCompile Include="..\..\src\HLSLEffectTest.cpp" />
     <ClCompile Include="..\..\src\LensFlareTest.cpp" />
+    <ClCompile Include="..\..\src\LightingTest.cpp" />
     <ClCompile Include="..\..\src\MeshSplitterTest.cpp" />
     <ClCompile Include="..\..\src\MultibyteFontTest.cpp" />
     <ClCompile Include="..\..\src\OBBTreeTest.cpp" />

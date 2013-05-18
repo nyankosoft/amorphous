@@ -10,6 +10,7 @@
 #include "GraphicsElementsTest.hpp"
 #include "HLSLEffectTest.hpp"
 #include "LensFlareTest.hpp"
+#include "LightingTest.hpp"
 #include "MeshSplitterTest.hpp"
 #include "MultibyteFontTest.hpp"
 #include "OBBTreeTest.hpp"
@@ -44,6 +45,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 	else if( demo_name == "GraphicsElementsTest" )            return new CGraphicsElementsTest;
 	else if( demo_name == "HLSLEffectTest" )                  return new CHLSLEffectTest;
 	else if( demo_name == "LensFlareTest" )                   return new CLensFlareTest;
+	else if( demo_name == "LightingTest" )                    return new CLightingTest;
 	else if( demo_name == "MeshSplitterTest" )                return new CMeshSplitterTest;
 	else if( demo_name == "MultibyteFontTest" )               return new CMultibyteFontTest;
 	else if( demo_name == "OBBTreeTest" )                     return new OBBTreeTest;
