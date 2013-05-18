@@ -5,9 +5,9 @@
 #include <string>
 
 #include "../base.hpp"
-#include "Support/Log/LogOutputBase.hpp"
-#include "Support/array2d.hpp"
-#include "3DMath/Vector2.hpp"
+#include "../Support/Log/LogOutputBase.hpp"
+#include "../Support/array2d.hpp"
+#include "../3DMath/Vector2.hpp"
 
 
 namespace amorphous
