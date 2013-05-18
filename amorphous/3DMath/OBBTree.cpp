@@ -1,6 +1,6 @@
 #include "OBBTree.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "Matrix34.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <float.h>
 
 

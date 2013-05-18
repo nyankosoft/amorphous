@@ -1,7 +1,7 @@
 #include "BSPTreeForTriangleMesh.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous
