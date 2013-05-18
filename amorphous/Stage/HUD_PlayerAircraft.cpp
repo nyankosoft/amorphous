@@ -614,7 +614,6 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 	const Vector2 base_pos[4] = { Vector2(-1,-1), Vector2(1,-1), Vector2(1,1), Vector2(-1,1) };
 	Vector3 vPlayerPos = plane->GetPlayerCopyEntity()->GetWorldPosition();
 	r = 12;
-//	DWORD color;
 	Matrix22 matTgtOrient;
 	int i, num_tgts = (int)vecTargetInfo.size();
 	int num_icons_to_render = 0;
@@ -624,7 +623,7 @@ void HUD_PlayerAircraft::RenderLocalRadar( CBE_PlayerPseudoAircraft *plane )
 		if( NUM_MAX_ICONS_ON_LOCAL_RADAR <= num_icons_to_render )
 			break;
 
-        DWORD color = 0xFFFFFFFF;
+        U32 color = 0xFFFFFFFF;
 
 		// position measured from player's origin
 		Vector3 local_pos = (vecTargetInfo[i].position - vPlayerPos);
@@ -744,7 +743,7 @@ void HUD_PlayerAircraft::RenderGlobalRadar( CBE_PlayerPseudoAircraft *plane )
 	// draw icons on local radar
 	//
 	const Vector2 base_pos[4] = {  Vector2(-1,-1), Vector2(1,-1), Vector2(1,1), Vector2(-1,1) };
-	DWORD color = 0x00000000;
+	U32 color = 0x00000000;
 	Matrix22 matTgtOrient;
 	size_t i, num_tgts = vecTargetInfo.size();
 	int num_icons_to_render = 0;
@@ -862,7 +861,7 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 
 	int current_weapon_index = weapon_system.GetPrimaryWeaponSlotIndex();
 	const int weapon_slot_offset = 0;	// 0: gun / 1: missile / 2: special weapon
-	DWORD color = 0xFFFFFFFF;
+	U32 color = 0xFFFFFFFF;
 	int i, num = 3;//vec.size();
 	for( i=0; i<num; i++ )
 	{
@@ -895,14 +894,19 @@ void HUD_PlayerAircraft::RenderPlaneAndWeaponStatus( CBE_PlayerPseudoAircraft *p
 		else if( fLife < 0.0f )
 			fLife = 0.0f;
 
-		DWORD dwColor = D3DCOLOR_XRGB( 250 - (int)(250*fLife/fMaxGreenLife),	// red
-									(int)(250*fLife/fMaxGreenLife),			// green
-									0 );
+//		DWORD dwColor = D3DCOLOR_XRGB( 250 - (int)(250*fLife/fMaxGreenLife),	// red
+//									(int)(250*fLife/fMaxGreenLife),			// green
+//									0 );
+		SFloatRGBAColor color;
+		color.red   = 1.0f - fLife/fMaxGreenLife;
+		color.green = fLife/fMaxGreenLife;
+		color.blue  = 0.0f;
+		color.alpha = 1.0f;
 
 		pFont->SetFontSize( (int)(24*scale), (int)(40*scale) );
 
 //		m_pAircraftSetText( 
-		pFont->DrawText( to_string(fLife, 0, 3).c_str(), Vector2( 1260*scale, 944*scale ), dwColor );
+		pFont->DrawText( to_string(fLife, 0, 3).c_str(), Vector2( 1260*scale, 944*scale ), color.GetARGB32() );
 	}
 
 	// debug - display current position
