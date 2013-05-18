@@ -17,21 +17,38 @@ public:
 
 	GLint m_DiffuseColors[3];
 
-	GLint m_Position; ///< for point lights
-
-	GLint m_Attenuation;
-
-	GLint m_Direction; ///< for directional lights
-
 	GLSLLight()
-		:
-	m_Position(-1),
-	m_Attenuation(-1),
-	m_Direction(-1)
 	{
 		for( int i=0; i<numof(m_DiffuseColors); i++ )
 			m_DiffuseColors[i] = -1;
 	}
+};
+
+
+class GLSLDirectionalLight : public GLSLLight
+{
+public:
+	GLint m_Direction;
+
+	GLSLDirectionalLight()
+		:
+	m_Direction(-1)
+	{}
+};
+
+
+class GLSLPointLight : public GLSLLight
+{
+public:
+	GLint m_Position;
+
+	GLint m_Attenuation;
+
+	GLSLPointLight()
+		:
+	m_Position(-1),
+	m_Attenuation(-1)
+	{}
 };
 
 
@@ -47,19 +64,52 @@ class CGLSLShaderLightManager : public CGLFixedPipelineLightManager
 
 	HemisphericDirectionalLight m_HSDirLight;
 
-	GLSLLight m_HSDirLightUniforms;
+	std::vector<GLSLDirectionalLight> m_HSDirLightUniforms;
 
-	HemisphericPointLight m_HSPointLights[4];
+	std::vector<GLSLPointLight> m_HSPointLightUniforms;
 
-	GLSLLight m_HSPointLightUniforms[4];
+	std::vector<HemisphericDirectionalLight> m_HSDirectionalLights;
+	std::vector<HemisphericPointLight> m_HSPointLights;
+	std::vector<HemisphericSpotlight> m_HSSpotlights;
 
-	uint m_NumCurrentHSPointLights;
+//	std::vector<Vector3> m_HSDL_Directions;
+//	std::vector<SFloatRGBAColor> m_HSDL_UpperDiffuseColors;
+//	std::vector<SFloatRGBAColor> m_HSDL_LowerDiffuseColors;
+
+//	std::vector<Vector3> m_HSPL_Positions;
+//	std::vector<SFloatRGBAColor> m_HSPL_UpperDiffuseColors;
+//	std::vector<SFloatRGBAColor> m_HSPL_LowerDiffuseColors;
+//	std::vector<Vector3> m_HSPL_Attenuations;
+
+//	std::vector<Vector3> m_HSSL_Directions;
+//	std::vector<SFloatRGBAColor> m_HSSL_UpperDiffuseColors;
+//	std::vector<SFloatRGBAColor> m_HSSL_LowerDiffuseColors;
+
+	uint m_NumMaxHSDirectionalLights;
+	uint m_NumMaxHSPointLights;
+	uint m_NumMaxHSSpotlights;
+
+	enum MiscUniforms
+	{
+		NUM_HS_DIRECTIONAL_LIGHTS,
+		NUM_HS_POINT_LIGHTS,
+		NUM_HS_SPOTLIGHTS,
+		NUM_MISC_UNIFORMS
+	};
+
+	GLint m_MiscUniforms[NUM_MISC_UNIFORMS];
+
+//	uint m_NumCurrentHSDirectionalLights;
+//	uint m_NumCurrentHSPointLights;
+//	uint m_NumCurrentHSSpotlights;
+
+	Matrix44 m_ViewMatrix;
 
 private:
 
 	void SetHSDiffuseColors( const HemisphericLightAttribute& hs_light, GLenum light_id );
 
-	void UpdateHSDirLightUniformVariables( const HemisphericDirectionalLight& light, const GLSLLight& glsl_light );
+	void UpdateHSDirLightUniformVariables( const HemisphericDirectionalLight& light, const GLSLDirectionalLight& glsl_light );
 
 	void UpdateHSPointLightUniformVariables( const HemisphericPointLight& light, const GLSLLight& glsl_light );
 
@@ -90,6 +140,7 @@ public:
 
 	virtual void CommitChanges();
 
+	void SetViewTransform( const Matrix44& view ) { m_ViewMatrix = view; }
 };
 
 

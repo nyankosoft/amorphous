@@ -9,6 +9,7 @@
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/3DMath/Transform.hpp"
+#include "GLSLShaderLightManager.hpp"
 
 
 namespace amorphous
@@ -272,6 +273,9 @@ inline void CGLProgram::SetViewTransform( const Matrix44& view )
 	// Update cache
 	m_ViewMatrix = view;
 
+	if( m_pLightManager )
+		m_pLightManager->SetViewTransform( view );
+
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_VIEW] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_VIEW], 1, GL_FALSE, (GLfloat *)view.GetData() );
 
@@ -321,6 +325,9 @@ inline void CGLProgram::SetWorldViewTransform( const Matrix44& world, const Matr
 	m_WorldMatrix = world;
 	m_ViewMatrix  = view;
 
+	if( m_pLightManager )
+		m_pLightManager->SetViewTransform( view );
+
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_WORLD], 1, GL_FALSE, (GLfloat *)world.GetData() );
 
@@ -351,6 +358,9 @@ inline void CGLProgram::SetWorldViewProjectionTransform( const Matrix44& world, 
 	m_WorldMatrix      = world;
 	m_ViewMatrix       = view;
 	m_ProjectionMatrix = proj;
+
+	if( m_pLightManager )
+		m_pLightManager->SetViewTransform( view );
 
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_WORLD], 1, GL_FALSE, (GLfloat *)world.GetData() );
