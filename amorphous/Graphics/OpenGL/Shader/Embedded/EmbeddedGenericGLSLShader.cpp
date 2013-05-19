@@ -152,11 +152,32 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		const char *non_specular_hsdl_calc =
 		"	for(int i=0;i<NumHSDLs;i++)"\
 		"	{"\
-		"		vec3 dir_vs = mat3(View) * HSDL_Dirs[i];"\
-		"		float hsd = (dot(normal_vs,-dir_vs)+1)*0.5;"\
+		"		vec3 dir_to_light = -HSDL_Dirs[i];"\
+		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
 		"		br += HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd);"\
 		"	}\n";
-		hsdl_calc = non_specular_hsdl_calc;
+
+		const char *specular_hsdl_calc =
+		"	vec3 dir_to_viewer_vs = -normalize(pos_vs);"\
+		"	for(int i=0;i<NumHSDLs;i++)"\
+		"	{"\
+		"		vec3 dir_to_light = -HSDL_Dirs[i];"\
+		"		float cos_angle_incidence = dot(normal_vs,dir_to_light);"\
+		"		cos_angle_incidence = clamp(cos_angle_incidence,0,1);"\
+		"		vec3 half_angle = normalize(dir_to_viewer_vs+dir_to_light);"\
+		/* Calculate the Blinn term */
+		"		float bt = clamp(dot(half_angle,normal_vs),0,1);"\
+		/* Clamp the Blinn term to 0 if the angle between the surface normal and the light direction is wider than 90 [deg] */
+		"		bt = cos_angle_incidence != 0.0 ? bt : 0.0;"\
+		/*"		bt = pow(bt,HSPL_ShininessFactors[i]);"\*/
+		"		bt = pow(bt,3);"\
+		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
+		"		br += ( HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd) );"\
+		/*"		br += HSPL_SCs[i] * bt;"\*/
+		"		br += vec4(1,1,1,1) * bt;"\
+		"	};\n";
+
+		hsdl_calc = (desc.Specular == SpecularSource::NONE) ? non_specular_hsdl_calc : specular_hsdl_calc;
 	}
 
 	if( desc.NumPointLights != 0 )
@@ -187,7 +208,6 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
 		"		br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1-hsd) ) * att;"\
 		"	}\n";
-		hspl_calc = non_specular_hspl_calc;
 
 		const char *specular_hspl_calc =
 		"	vec3 dir_vs = normalize(pos_vs);"\
@@ -195,21 +215,25 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		"	{"\
 		"		vec3 to_light = HSPL_Positions[i] - pos_vs;"\
 		"		float dist = length(to_light);"\
+		"		vec3 dir_to_light = to_light / dist;"\
 		"		float cos_angle_incidence = dot(normal_vs,dir_to_light);"\
 		"		cos_angle_incidence = clamp(cos_angle_incidence,0,1);"\
-		"		vec3 half_angle = normalize(dir_vs,dir_to_light);"\
+		"		vec3 half_angle = normalize(dir_vs+dir_to_light);"\
 		/* Calculate the Blinn term */
 		"		float bt = clamp(dot(half_angle,normal_vs),0,1);"\
 		/* Clamp the Blinn term to 0 if the angle between the surface normal and the light direction is wider than 90 [deg] */
 		"		bt = cos_angle_incidence != 0.0 ? bt : 0.0;"\
-		"		bt = pow(bt,HSPL_ShininessFactors[i]);"\
-		"		vec3 dir_to_light = to_light / dist;"\
+		/*"		bt = pow(bt,HSPL_ShininessFactors[i]);"\*/
+		"		bt = pow(bt,3);"\
 		"		float att = 1.0f / (HSPL_Atts[i].x + HSPL_Atts[i].y*dist + HSPL_Atts[i].z*dist*dist);"\
 		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
 		"		br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1-hsd) ) * att;"\
-		"		br += HSPL_SCs[i] * bt * att;"\
+		/*"		br += HSPL_SCs[i] * bt * att;"\*/
+		"		br += vec4(1,1,1,1) * bt * att;"\
 		"	}\n";
+
 //		hspl_calc = specular_hspl_calc;
+		hspl_calc = (desc.Specular == SpecularSource::NONE) ? non_specular_hspl_calc : specular_hspl_calc;
 	}
 
 //	if( desc.NumSpotLights != 0 )

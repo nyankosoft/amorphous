@@ -23,6 +23,10 @@ m_FragmentShader(0)
 
 	for( int i=0; i<NUM_MISC_UNIFORMS; i++ )
 		m_MiscUniforms[i] = -1;
+
+	m_NumMaxHSDirectionalLights = 0xFF;
+	m_NumMaxHSPointLights       = 0xFF;
+	m_NumMaxHSSpotlights        = 0xFF;
 }
 
 
@@ -173,6 +177,7 @@ void CGLSLShaderLightManager::ClearLights()
 {
 	m_HSDirectionalLights.resize( 0 );
 	m_HSPointLights.resize( 0 );
+	m_HSSpotlights.resize( 0 );
 
 //	m_NumCurrentHSPointLights = 0;
 
@@ -205,7 +210,11 @@ void CGLSLShaderLightManager::CommitChanges()
 //		const SFloatRGBAColor& lc = src.Attribute.LowerDiffuseColor;
 		glUniform4fv( dest.m_DiffuseColors[0], 1, (GLfloat *)&(src.Attribute.UpperDiffuseColor) );
 		glUniform4fv( dest.m_DiffuseColors[1], 1, (GLfloat *)&(src.Attribute.LowerDiffuseColor) );
-		glUniform3fv( dest.m_Direction,        1, (GLfloat *)&(src.vDirection) );
+
+		Matrix44 view_orientation = m_ViewMatrix;
+		view_orientation.SetColumn( 3, Vector4(0,0,0,1) );
+		Vector3 view_space_dir = view_orientation * src.vDirection;
+		glUniform3fv( dest.m_Direction,        1, (GLfloat *)&(view_space_dir) );
 	}
 
 	for( size_t i=0; i<m_HSPointLights.size(); i++ )
