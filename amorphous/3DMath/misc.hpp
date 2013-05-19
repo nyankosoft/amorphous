@@ -70,6 +70,12 @@ T square(T val)
   return val * val;
 }
 
+// Note: returns true for 0
+inline bool is_power_of_2(const int x)
+{
+	return (x & (x - 1)) == 0;
+}
+
 #if 0
 
 #if defined(__APPLE__) || defined(MACOSX) || defined(unix) || defined(linux)

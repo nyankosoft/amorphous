@@ -86,11 +86,6 @@ typedef ptrdiff_t intptr;
 #define alignment(x) __attribute__ ((aligned(x)))
 #endif
 
-// Note: returns true for 0
-inline bool isPowerOf2(const int x){
-	return (x & (x - 1)) == 0;
-}
-
 
 #ifdef _WIN32
 
@@ -109,17 +104,6 @@ inline bool isPowerOf2(const int x){
 #define stricmp(a, b) strcasecmp(a, b)
 
 #endif // LINUX
-
-
-#ifdef DEBUG
-void outputDebugString(const char *str);
-extern void failedAssert(char *file, int line, char *statement);
-#define ASSERT(b) if (!(b)) failedAssert(__FILE__, __LINE__, #b)
-#else
-#define outputDebugString(str)
-#define ASSERT(b) assume(b)
-#endif // DEBUG
-
 
 
 // Platform independent key codes
