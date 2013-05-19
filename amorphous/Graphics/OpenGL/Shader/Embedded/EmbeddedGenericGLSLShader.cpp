@@ -150,12 +150,12 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		fragment_shader += hsdl_vars;
 
 		const char *non_specular_hsdl_calc =
-		"	for(int i=0;i<NumHSDLs;i++)"\
-		"	{"\
-		"		vec3 dir_to_light = -HSDL_Dirs[i];"\
-		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
-		"		br += HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd);"\
-		"	}\n";
+			"for(int i=0;i<NumHSDLs;i++)"\
+			"{"\
+				"vec3 dir_to_light = -HSDL_Dirs[i];"\
+				"float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
+				"br += HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd);"\
+			"}\n";
 
 		const char *specular_hsdl_calc =
 		"	vec3 dir_to_viewer_vs = -normalize(pos_vs);"\
@@ -169,8 +169,8 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		"		float bt = clamp(dot(half_angle,normal_vs),0,1);"\
 		/* Clamp the Blinn term to 0 if the angle between the surface normal and the light direction is wider than 90 [deg] */
 		"		bt = cos_angle_incidence != 0.0 ? bt : 0.0;"\
-		/*"		bt = pow(bt,HSPL_ShininessFactors[i]);"\*/
-		"		bt = pow(bt,3);"\
+		/*"		bt = pow(bt,HSDL_Gs[i]);"\*/
+		"		bt = pow(bt,25);"\
 		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
 		"		br += ( HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd) );"\
 		/*"		br += HSPL_SCs[i] * bt;"\*/
@@ -199,15 +199,15 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		fragment_shader += hspl_vars;
 
 		const char *non_specular_hspl_calc =
-		"	for(int i=0;i<NumHSPLs;i++)"\
-		"	{"\
-		"		vec3 to_light = HSPL_Positions[i] - pos_vs;"\
-		"		float dist = length(to_light);"\
-		"		vec3 dir_to_light = to_light / dist;"\
-		"		float att = 1.0f / (HSPL_Atts[i].x + HSPL_Atts[i].y*dist + HSPL_Atts[i].z*dist*dist);"\
-		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
-		"		br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1-hsd) ) * att;"\
-		"	}\n";
+			"for(int i=0;i<NumHSPLs;i++)"\
+			"{"\
+				"vec3 to_light = HSPL_Positions[i] - pos_vs;"\
+				"float dist = length(to_light);"\
+				"vec3 dir_to_light = to_light / dist;"\
+				"float att = 1.0f / (HSPL_Atts[i].x + HSPL_Atts[i].y*dist + HSPL_Atts[i].z*dist*dist);"\
+				"float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
+				"br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1-hsd) ) * att;"\
+			"}\n";
 
 		const char *specular_hspl_calc =
 		"	vec3 dir_vs = normalize(pos_vs);"\
@@ -254,7 +254,7 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		const char *non_specular_hssl_calc =
 		"	for(int i=0;i<NumHSSLs;i++)"\
 		"	{"\
-		"		vec3 dir_vs = mat3(View) * HSSL_Dirs[i];"\
+		"		vec3 dir_vs = HSSL_Dirs[i];"\
 		"		float hsd = (dot(normal_vs,-dir_vs)+1)*0.5;"\
 		"		br += HSSL_UDCs[i] * hsd + HSSL_LDCs[i] * (1-hsd);"\
 		"	}\n";
