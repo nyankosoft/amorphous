@@ -4,8 +4,6 @@
 
 namespace amorphous
 {
-//#include "Support/BMPImageExporter.hpp"
-
 
 boost::shared_ptr<TextureRenderTarget> (*TextureRenderTarget::ms_pCreateTextureRenderTarget)(void);
 
