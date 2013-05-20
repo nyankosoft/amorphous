@@ -118,7 +118,11 @@ inline bool stream_buffer::LoadTextFile( const std::string& filepath )
 
 	// Get the length of the file
 	testfile.seekg( 0, std::ios::end );
-	int nLength = testfile.tellg();
+	int nLength = (int)testfile.tellg();
+	if( nLength < 0 )
+		return false;
+
+	// Reset the position
 	testfile.seekg( 0, std::ios::beg );
 
 	m_buffer.resize( nLength + 1, 0 );
