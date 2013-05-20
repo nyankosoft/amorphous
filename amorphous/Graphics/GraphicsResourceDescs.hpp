@@ -343,6 +343,24 @@ VertexFormatFlags(0),
 VertexSize(0)
 {}
 
+
+//-------------------------------------- inline global functions --------------------------------------
+
+inline const char *GetGraphicsResourceTypeText( GraphicsResourceType::Name type )
+{
+	switch( type )
+	{
+	case GraphicsResourceType::Texture: return "texture";
+	case GraphicsResourceType::Mesh:    return "mesh";
+	case GraphicsResourceType::Shader:  return "shader";
+	default:
+		return "(unkonwn)";
+	}
+
+	return "(unkonwn)";
+}
+
+
 } // namespace amorphous
 
 
