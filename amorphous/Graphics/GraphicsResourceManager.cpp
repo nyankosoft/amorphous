@@ -317,7 +317,10 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 
 //	if( desc.ResourcePath.length() == 0 )
 	if( !desc.IsValid() )
+	{
+		LOG_PRINT_ERROR(( " An invalid resource desc (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
 		return shared_ptr<GraphicsResourceEntry>();	// invalid filename
+	}
 
 	// search if a same resource has been already loaded or is being loaded
 	int shared_index = -1;
@@ -326,7 +329,10 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 	// found a resource to share
 	// just return the index to the entry
 	if( 0 <= shared_index )
+	{
+		LOG_PRINTF_VERBOSE(( " Found a sharable resource (index: %d).", shared_index ));
 		return m_vecpResourceEntry[shared_index];
+	}
 
 	// not found in the list - need to load as a new resource
 
@@ -334,7 +340,10 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 	shared_ptr<GraphicsResourceEntry> pResourceEntry = CreateGraphicsResourceEntry();
 
 	if( !pResourceEntry )
+	{
+		LOG_PRINT_ERROR( " CreateGraphicsResourceEntry() failed." );
 		return shared_ptr<GraphicsResourceEntry>();
+	}
 
 	// save copy of the resource desc
 	pResourceEntry->m_pDesc = desc.GetCopy();
@@ -343,7 +352,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 
 	if( !pResource )
 	{
-		LOG_PRINT_ERROR( " Failed to create a graphics resource." );
+		LOG_PRINTF_ERROR(( " Failed to create a graphics resource (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
 		return shared_ptr<GraphicsResourceEntry>();
 	}
 
@@ -370,7 +379,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 	}
 	else
 	{
-		LOG_PRINT_WARNING( " Failed to create a graphics resource: " + desc.ResourcePath );
+		LOG_PRINTF_WARNING(( " Failed to create a graphics resource (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
 
 		// decrement ref count
 		// - This will make the ref count zero and release the non-cachecd resource
