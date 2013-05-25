@@ -8,6 +8,93 @@ namespace amorphous
 {
 
 
+bool sg_use_grm = false;
+
+
+bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum src_format, GLenum src_type, const std::string& image_filepath );
+
+
+void CheckFramebufferStatus( GLenum target )
+{
+	GLenum ret = glCheckFramebufferStatusEXT( target );
+	switch( ret )
+	{
+//		case GL_FRAMEBUFFER_UNDEFINED:
+//			LOG_PRINT_ERROR("FBO undefined.");
+//			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+			LOG_PRINT_ERROR("FBO incomplete attachment.");
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+			LOG_PRINT_ERROR("FBO missing attachment.");
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+			LOG_PRINT_ERROR("FBO incomplete draw buffer.");
+			break;
+		case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+			LOG_PRINT_ERROR("FBO unsupported.");
+			break;
+		case GL_FRAMEBUFFER_COMPLETE_EXT:
+			LOG_PRINT_VERBOSE("FBO is complete.");
+			break;
+		default:
+			printf("An unknown FBO Problem.");
+	}
+}
+
+
+void PrintFramebufferInfo(GLenum target, GLuint fbo)
+{
+	glBindFramebufferEXT(target,fbo);
+
+	int res;
+
+	GLint buffer;
+	int i = 0;
+	do
+	{
+		glGetIntegerv(GL_DRAW_BUFFER0_ARB+i, &buffer);
+
+		if( buffer != GL_NONE )
+		{
+			LOG_PRINTF(("Shader Output Location %d - color attachment %d\n", i, buffer - GL_COLOR_ATTACHMENT0_EXT));
+			
+			glGetFramebufferAttachmentParameterivEXT(target, buffer, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE_EXT, &res);
+			LOG_PRINTF(("  Attachment type: %s\n", res==GL_TEXTURE?"Texture":"Render Buffer"));
+			glGetFramebufferAttachmentParameterivEXT(target, buffer, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME_EXT, &res);
+			LOG_PRINTF(("  Attachment object name: %d\n",res));
+		}
+		++i;
+
+	}
+	while( buffer != GL_NONE );
+
+	glBindFramebufferEXT(target,0);
+}
+
+
+class GLFramebufferTextureAttachmentVisitor : public TextureResourceVisitor
+{
+public:
+	Result::Name Visit( CGLTextureResource& texture_resource )
+	{
+		LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
+		GLuint texture = texture_resource.GetGLTextureID();
+		if( texture == 0 )
+		{
+			LOG_PRINT_ERROR( " No texture loaded." );
+			return Result::UNKNOWN_ERROR;
+		}
+
+		glFramebufferTexture2DEXT(GL_DRAW_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, texture, 0);
+
+		LOG_GL_ERROR( "glFramebufferTexture2DEXT() failed." );
+		return Result::SUCCESS;
+	}
+};
+
+
 class GLFramebufferTextureResourceVisitor : public TextureResourceVisitor
 {
 	GLenum m_Target;
@@ -23,7 +110,7 @@ public:
 
 		// Attach a level of a texture object as a logical buffer to the currently bound framebuffer object
 		GLuint texture = texture_resource.GetGLTextureID();
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_Target, texture, 0);
+//		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_Target, texture, 0);
 
 		LOG_GL_ERROR( "glFramebufferTexture2DEXT() failed." );
 
@@ -90,7 +177,7 @@ CGLTextureRenderTarget::~CGLTextureRenderTarget()
 }
 
 
-void CGLTextureRenderTarget::Release()
+void CGLTextureRenderTarget::ReleaseTextures()
 {
 	// Delete resources
 //	glDeleteTextures(1, &color_tex);
@@ -137,13 +224,6 @@ bool CGLTextureRenderTarget::InitScreenSizeRenderTarget()
 }
 
 
-void CGLTextureRenderTarget::ReleaseTextures()
-{
-//	SAFE_RELEASE( m_RenderTargetTexture );
-}
-
-
-
 bool CGLTextureRenderTarget::LoadTextures()
 {
 	ReleaseTextures();
@@ -172,11 +252,44 @@ bool CGLTextureRenderTarget::LoadTextures()
 	GLenum type = GL_FLOAT;
 	GLenum texInternalFormat = GL_RGBA8;
 
-	bool texture_created = m_RenderTargetTexture.Load( m_TextureDesc );
-	if( !texture_created )
+	if( sg_use_grm )
 	{
-		LOG_PRINT_ERROR( " Failed to create the render target texture." );
-		return false;
+		bool texture_created = m_RenderTargetTexture.Load( m_TextureDesc );
+		if( !texture_created )
+		{
+			LOG_PRINT_ERROR( " Failed to create the render target texture." );
+			return false;
+		}
+	}
+	else
+	{
+		LOG_GL_ERROR( " Clearing OpenGL errors (creating a texture without using GRM)..." );
+
+		GLuint tex = 0;
+
+		glGenTextures(1, &tex);
+		LOG_GL_ERROR( "glGenTextures() failed." );
+
+		glBindTexture(GL_TEXTURE_2D, tex);
+		LOG_GL_ERROR( "glBindTexture() failed." );
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		LOG_GL_ERROR( "One of glTexParameteri() calls failed." );
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
+							m_TextureDesc.Width,
+							m_TextureDesc.Height, 
+							0, GL_RGBA, GL_UNSIGNED_BYTE,
+							NULL); 
+		LOG_GL_ERROR( "glTexImage2D() failed." );
+
+		m_RenderTargetTextureID = tex;
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		LOG_GL_ERROR( "glBindTexture() failed." );
 	}
 
 	GLenum texTarget = GL_TEXTURE_2D;
@@ -193,10 +306,15 @@ bool CGLTextureRenderTarget::LoadTextures()
 //		quitapp(-1);
 	}
 */
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 	glEnable(GL_DEPTH_TEST);
+
+	LOG_GL_ERROR( "glEnable(GL_DEPTH_TEST) failed." );
+
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+	LOG_GL_ERROR( "glClearColor() failed." );
 
 	glGenFramebuffersEXT(1, &m_Framebuffer);
 
@@ -205,14 +323,13 @@ bool CGLTextureRenderTarget::LoadTextures()
 	//	glGenTextures(1, &tex);
 //	GLuint tex = m_RenderTargetTexture.GetGLTextureID();
 
-	glGenRenderbuffersEXT(1, &m_DepthRenderBuffer);
+//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer);
+	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer);
 
 	LOG_GL_ERROR( "glGenRenderbuffersEXT() failed." );
 
 	int tex_width  = m_TextureDesc.Width;
 	int tex_height = m_TextureDesc.Height;
-
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer);
 
 	LOG_GL_ERROR( "glBindFramebufferEXT() failed." );
 
@@ -221,6 +338,21 @@ bool CGLTextureRenderTarget::LoadTextures()
 	//	glTexImage2D(texTarget, 0, texInternalFormat, tex_width, tex_height, 0, 
 	//				 GL_RGBA, GL_FLOAT, NULL);
 
+	if( sg_use_grm )
+	{
+		GLFramebufferTextureAttachmentVisitor fbo_visitor;
+		m_RenderTargetTexture.AcceptTextureResourceVisitor( fbo_visitor );
+	}
+	else
+	{
+		glFramebufferTexture2DEXT(GL_DRAW_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, m_RenderTargetTextureID, 0);
+		LOG_GL_ERROR( " glFramebufferTexture2DEXT() failed." );
+	}
+
+	glGenRenderbuffersEXT(1, &m_DepthRenderBuffer);
+
+	LOG_GL_ERROR( " glGenRenderbuffersEXT() failed." );
+
 //	GET_GLERROR(NULL);
 
 	glTexParameteri(texTarget, GL_TEXTURE_MIN_FILTER, filter_mode);
@@ -228,10 +360,10 @@ bool CGLTextureRenderTarget::LoadTextures()
 	glTexParameteri(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-//	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
-//		texTarget, tex, 0);
-	GLFramebufferTextureResourceVisitor visitor(texTarget);
-	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
+	LOG_GL_ERROR( " One or more glTexParameteri() call(s) failed." );
+
+//	GLFramebufferTextureResourceVisitor visitor(texTarget);
+//	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
 
 //	GET_GLERROR(0);
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
@@ -254,12 +386,16 @@ bool CGLTextureRenderTarget::LoadTextures()
 //	GET_GLERROR(0);
 	LOG_GL_ERROR( " glFramebufferRenderbufferEXT() failed." );
 
+	CheckFramebufferStatus( GL_DRAW_FRAMEBUFFER_EXT );
+
 //	CheckFramebufferStatus();
 
 	// Bind 0, which means render to back buffer
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
 
 	LOG_GL_ERROR( " glBindFramebufferEXT() returned error(s)" );
+
+//	PrintFramebufferInfo( GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer );
 
 	/*
 	// load fragment programs
@@ -309,6 +445,19 @@ void CGLTextureRenderTarget::CopyRenderTarget()
 }
 
 
+void CGLTextureRenderTarget::SetBackgroundColor( const SFloatRGBAColor& bg_color )
+{
+	TextureRenderTarget::SetBackgroundColor( bg_color );
+
+	glClearColor(
+		bg_color.red,
+		bg_color.green,
+		bg_color.blue,
+		bg_color.alpha
+		);
+}
+
+
 void CGLTextureRenderTarget::SetRenderTarget()
 {
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
@@ -320,11 +469,25 @@ void CGLTextureRenderTarget::SetRenderTarget()
 
 	LOG_GL_ERROR( " glBindTexture() failed." );
 
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer );
+//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer );
+	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer );
 
 	LOG_GL_ERROR( " glBindFramebufferEXT() failed." );
 
 //	glPushAttrib( GL_VIEWPORT_BIT );
+
+//	GLFramebufferTextureResourceVisitor visitor(texTarget);
+//	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
+
+	// Set Drawing buffers
+	GLuint attachments[1] = {GL_COLOR_ATTACHMENT0_EXT};
+	glDrawBuffers(1, attachments);
+
+	LOG_GL_ERROR( " glDrawBuffers() failed." );
+
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+	LOG_GL_ERROR( " glClear() failed." );
 
 	glViewport( 0, 0, m_TextureDesc.Width, m_TextureDesc.Height );
 
@@ -339,7 +502,11 @@ void CGLTextureRenderTarget::ResetRenderTarget()
 //	glPopAttrib();
 
 	// Bind 0, which means render to back buffer
-	glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+	glBindFramebufferEXT( GL_DRAW_FRAMEBUFFER_EXT, 0 );
+
+	bool save_rt_texture = true;
+	if( save_rt_texture )
+		SaveGL2DTextureToImageFile( m_RenderTargetTextureID, m_TextureDesc.Width, m_TextureDesc.Height, GL_RGBA, GL_UNSIGNED_BYTE, "rt_tex.png" );
 
 	LOG_GL_ERROR( " glBindFramebufferEXT() failed." );
 }

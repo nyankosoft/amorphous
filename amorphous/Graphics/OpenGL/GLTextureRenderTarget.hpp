@@ -28,10 +28,6 @@ private:
 	// in LoadGraphicsResources()
 	bool m_bScreenSizeRenderTarget;
 
-private:
-
-	void Release();
-	
 public:
 
 	CGLTextureRenderTarget();
@@ -58,7 +54,7 @@ public:
 
 //	void SetTextureWidth( const int width, const int height );
 
-	void SetBackgroundColor( const SFloatRGBAColor bg_color ) { m_BackgroundColor = bg_color; }
+	void SetBackgroundColor( const SFloatRGBAColor& bg_color );
 
 	void SetRenderTarget();
 
