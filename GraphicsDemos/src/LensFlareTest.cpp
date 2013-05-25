@@ -8,6 +8,8 @@
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/TextureGenerators/GradationTextureGenerators.hpp"
 #include "amorphous/Graphics/TextureGenerators/TCBSplineGradationTextureGenerators.hpp"
@@ -88,7 +90,11 @@ int CLensFlareTest::Init()
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
 
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/CLensFlareTest.fx" );
+//	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/CLensFlareTest.fx" );
+
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(GenericShaderDesc()) );
+	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "LensFlareDemo/textures/skygrad_slim_01.jpg" );
