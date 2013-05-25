@@ -22,10 +22,14 @@ using namespace serialization;
 
 class GLTextureResourceBase : public TextureResource
 {
+protected:
+
+	GLenum m_SourceFormat;
+	GLenum m_SourceType;
 
 public:
 
-	GLTextureResourceBase( const TextureResourceDesc *pDesc ) : TextureResource(pDesc) {}
+	GLTextureResourceBase( const TextureResourceDesc *pDesc );
 
 	virtual ~GLTextureResourceBase() {}
 

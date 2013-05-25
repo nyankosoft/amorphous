@@ -1,5 +1,5 @@
 #include "GLGraphicsResources.hpp"
-
+#include "GLTextureUtilities.hpp"
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Graphics/TextureGenerators/TextureFilter.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -98,7 +98,10 @@ bool CGLTextureResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std
 
 bool CGLTextureResource::SaveTextureToImageFile( const std::string& image_filepath )
 {
-	return false;
+	if( !m_TextureDesc.IsValid() )
+		return false;
+
+	return SaveGL2DTextureToImageFile( m_TextureID, m_TextureDesc.Width, m_TextureDesc.Height, m_SourceFormat, m_SourceType, image_filepath );
 }
 
 
@@ -144,6 +147,9 @@ Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLe
 		switch( bpp )
 		{
 		case 24:
+			src_type = GL_UNSIGNED_BYTE;
+			break;
+		case 32:
 			src_type = GL_UNSIGNED_BYTE;
 			break;
 		default:
@@ -196,7 +202,13 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 	GLenum src_type   = GL_UNSIGNED_BYTE;
 	Result::Name res = GetSrcPixelTypeAndFormat( src_image, src_format, src_type );
 	if( res != Result::SUCCESS )
+	{
+		LOG_PRINT_ERROR( " GetSrcPixelTypeAndFormat() failed." );
 		return false;
+	}
+
+	m_SourceFormat = src_format;
+	m_SourceType   = src_type;
 
 	int num_mipmaps = GetNumMipmaps( m_TextureDesc );
 
@@ -269,6 +281,14 @@ bool CGLTextureResource::Create()
 }
 
 
+GLTextureResourceBase::GLTextureResourceBase( const TextureResourceDesc *pDesc )
+:
+TextureResource(pDesc),
+m_SourceFormat(GL_RGB),
+m_SourceType(GL_UNSIGNED_BYTE)
+{}
+
+
 bool GLTextureResourceBase::UpdateGLTextureImage(
 	GLenum target,
 	int level,
@@ -297,7 +317,8 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 //	GLint level = (0 < desc.MipLevels) ? (desc.MipLevels - 1) : min( mip_level_calc(desc.Width), mip_level_calc(desc.Height) );
 
 	GLint internal_format = ToGLInternalFormat( desc.Format );
-	internal_format = GL_RGBA8;
+//	internal_format = GL_RGBA8;
+	internal_format = GL_RGBA;
 
 	LOG_GL_ERROR( "Clearing error before glTexImage2D()" );
 
