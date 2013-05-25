@@ -28,6 +28,8 @@ class CLightingTest : public CGraphicsTestBase
 
 	MeshHandle m_RegularMesh;
 
+	bool m_RandomLightColors;
+
 private:
 
 	bool InitShader();
@@ -36,11 +38,11 @@ private:
 
 	void SetLights( bool use_hemespheric_light );
 
-	void SetHSDirectionalLights( ShaderLightManager& shader_light_mgr );
+	void SetHSDirectionalLights( ShaderLightManager& shader_light_mgr, bool random_color );
 
-	void SetHSPointLights( ShaderLightManager& shader_light_mgr );
+	void SetHSPointLights( ShaderLightManager& shader_light_mgr, bool random_color );
 
-	void SetHSSpotights( ShaderLightManager& shader_light_mgr );
+	void SetHSSpotights( ShaderLightManager& shader_light_mgr, bool random_color );
 
 public:
 

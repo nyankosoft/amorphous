@@ -21,6 +21,8 @@ using namespace boost;
 
 
 CLightingTest::CLightingTest()
+:
+m_RandomLightColors(true)
 {
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
@@ -57,7 +59,7 @@ static const SFloatRGBAColor s_rand_colors[] = {
 };
 
 
-void CLightingTest::SetHSDirectionalLights( ShaderLightManager& shader_light_mgr )
+void CLightingTest::SetHSDirectionalLights( ShaderLightManager& shader_light_mgr, bool random_color )
 {
 	// Always use hemispheric lights
 	const bool use_hemespheric_light = true;
@@ -87,14 +89,12 @@ void CLightingTest::SetHSDirectionalLights( ShaderLightManager& shader_light_mgr
 }
 
 
-void CLightingTest::SetHSPointLights( ShaderLightManager& shader_light_mgr )
+void CLightingTest::SetHSPointLights( ShaderLightManager& shader_light_mgr, bool random_color )
 {
-	bool random_color = false;
-
 	int x = 4;
 	int z = 3;
-	float span_x = 20.0f;
-	float span_z = 20.0f;
+	float span_x = 32.0f;
+	float span_z = 32.0f;
 //	int num_point_lights = 4;
 //	for( int i=0; i<num_point_lights; i++ )
 	float interval_x = (2 <= x) ? span_x / (float)(x-1) : 0.0f;
@@ -115,7 +115,7 @@ void CLightingTest::SetHSPointLights( ShaderLightManager& shader_light_mgr )
 				(float)j * interval_x - span_x * 0.5f,
 				1.0f,
 				(float)i * interval_z - span_z * 0.5f );
-			light.fAttenuation[0] = 0.1f;
+			light.fAttenuation[0] = 0.2f;
 			light.fAttenuation[1] = 0.1f;
 			light.fAttenuation[2] = 0.1f;
 			shader_light_mgr.SetHemisphericPointLight( light );
@@ -124,12 +124,12 @@ void CLightingTest::SetHSPointLights( ShaderLightManager& shader_light_mgr )
 }
 
 
-void CLightingTest::SetHSSpotights( ShaderLightManager& shader_light_mgr )
+void CLightingTest::SetHSSpotights( ShaderLightManager& shader_light_mgr, bool random_color )
 {
 	int x = 4;
 	int z = 3;
-	float span_x = 20.0f;
-	float span_z = 20.0f;
+	float span_x = 32.0f;
+	float span_z = 32.0f;
 //	int num_point_lights = 4;
 //	for( int i=0; i<num_point_lights; i++ )
 	float interval_x = (2 <= x) ? span_x / (float)(x-1) : 0.0f;
@@ -176,11 +176,20 @@ void CLightingTest::SetLights( bool use_hemespheric_light )
 
 	shader_light_mgr.ClearLights();
 
-//	SetHSDirectionalLights( shader_light_mgr );
+	bool random_color = m_RandomLightColors;
 
-	SetHSPointLights( shader_light_mgr );
+	bool hs_directinal_lights = true;
+	bool hs_point_lights = true;
+	LoadParamFromFile( "LightingDemo/params.txt", "hs_directinal_lights", hs_directinal_lights );
+	LoadParamFromFile( "LightingDemo/params.txt", "hs_point_lights",      hs_point_lights );
 
-//	SetHSSpotights( shader_light_mgr );
+	if( hs_directinal_lights )
+		SetHSDirectionalLights( shader_light_mgr, random_color );
+
+	if( hs_point_lights )
+		SetHSPointLights( shader_light_mgr, random_color );
+
+//	SetHSSpotights( shader_light_mgr, random_color );
 
 	shader_light_mgr.CommitChanges();
 }
@@ -188,11 +197,14 @@ void CLightingTest::SetLights( bool use_hemespheric_light )
 
 bool CLightingTest::InitShader()
 {
+	bool specular = true;
+	LoadParamFromFile( "LightingDemo/params.txt", "specular", specular );
+
 	ShaderResourceDesc shader_desc;
 	GenericShaderDesc gen_shader_desc;
 	gen_shader_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
 	gen_shader_desc.NumPointLights = 16;
-//	gen_shader_desc.Specular = SpecularSource::NONE;
+	gen_shader_desc.Specular = specular ? SpecularSource::UNIFORM : SpecularSource::NONE;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
@@ -226,16 +238,18 @@ int CLightingTest::Init()
 		BoxMeshGenerator box_mesh_generator;
 //		box_mesh_generator.Generate( Vector3(1,1,1) );
 		box_mesh_generator.SetPolygonDirection( MeshPolygonDirection::INWARD );
-		box_mesh_generator.Generate( Vector3(40,4,40), MeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
+		box_mesh_generator.Generate( Vector3(50,4,50), MeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
 		C3DMeshModelArchive ar = box_mesh_generator.GetMeshArchive();
 		loaded = m_Mesh.LoadFromArchive( ar );
 	}
 
 	InitShader();
 
-	MeshResourceDesc mesh_desc;
-	mesh_desc.pMeshGenerator.reset( new BoxMeshGenerator );
-	m_RegularMesh.Load( mesh_desc );
+	LoadParamFromFile( "LightingDemo/params.txt", "random_light_colors", m_RandomLightColors );
+
+//	MeshResourceDesc mesh_desc;
+//	mesh_desc.pMeshGenerator.reset( new BoxMeshGenerator );
+//	m_RegularMesh.Load( mesh_desc );
 
 //	SetLights();
 
