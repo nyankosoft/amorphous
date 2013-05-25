@@ -819,6 +819,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1898,6 +1901,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
       <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp">
+      <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
