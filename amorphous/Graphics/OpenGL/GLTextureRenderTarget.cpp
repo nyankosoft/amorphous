@@ -294,18 +294,7 @@ bool CGLTextureRenderTarget::LoadTextures()
 
 	GLenum texTarget = GL_TEXTURE_2D;
 	GLenum filter_mode = (texTarget == GL_TEXTURE_RECTANGLE) ? GL_NEAREST : GL_LINEAR;
-/*
-	if (!glh_init_extensions("GL_ARB_fragment_program "
-		"GL_ARB_vertex_program "
-		"GL_NV_float_buffer "
-		"GL_EXT_framebuffer_object "))
-	{
-		printf("Unable to load the following extension(s): %s\n\nExiting...\n", 
-			glh_get_unsupported_extensions());
-		return false;
-//		quitapp(-1);
-	}
-*/
+
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	glEnable(GL_DEPTH_TEST);
@@ -396,44 +385,6 @@ bool CGLTextureRenderTarget::LoadTextures()
 	LOG_GL_ERROR( " glBindFramebufferEXT() returned error(s)" );
 
 //	PrintFramebufferInfo( GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer );
-
-	/*
-	// load fragment programs
-	const char* strTextureProgram2D = 
-	"!!ARBfp1.0\n"
-	"TEX result.color, fragment.texcoord[0], texture[0], 2D;\n"
-	"END\n";
-
-	const char* strTextureProgramRECT = 
-	"!!ARBfp1.0\n"
-	"TEX result.color, fragment.texcoord[0], texture[0], RECT;\n"
-	"END\n";
-
-	glGenProgramsARB(1, &textureProgram);
-	glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, textureProgram);
-	// load correct program based on texture target
-	if (texTarget == GL_TEXTURE_RECTANGLE_NV) {
-	glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-	(GLsizei)strlen(strTextureProgramRECT), strTextureProgramRECT);
-	} else {
-	glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-	(GLsizei)strlen(strTextureProgram2D), strTextureProgram2D);
-	}
-
-	GET_GLERROR(0);
-
-	const char* strRenderProgram = 
-	"!!ARBfp1.0\n"
-	"MOV result.color, fragment.color;\n"
-	"END\n";
-
-	glGenProgramsARB(1, &renderProgram);
-	glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, renderProgram);
-	glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, 
-	GL_PROGRAM_FORMAT_ASCII_ARB,
-	(GLsizei)strlen(strRenderProgram), strRenderProgram);
-	*/
-//	GET_GLERROR(0);
 
 	return true;
 }
