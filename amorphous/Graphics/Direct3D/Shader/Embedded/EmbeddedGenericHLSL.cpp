@@ -966,14 +966,14 @@ static void LoadHSLightingShader( const GenericShaderDesc& desc, EmbeddedHLSLEff
 }
 
 
-Result::Name EmbeddedGenericHLSL::GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect )
+Result::Name EmbeddedGenericHLSL::GenerateLightingShader( const GenericShaderDesc& desc, std::string& hlsl_effect )
 {
 	LOG_FUNCTION_SCOPE();
 
 	EmbeddedHLSLEffectDesc hlsl_desc;
 
-//	LoadShader( desc, hlsl_desc );
 	LoadHSLightingShader( desc, hlsl_desc );
+//	LoadShader( desc, hlsl_effect );
 
 	if( !hlsl_desc.IsValid() )
 		return Result::UNKNOWN_ERROR;
@@ -1043,6 +1043,55 @@ Result::Name EmbeddedGenericHLSL::GenerateShader( const GenericShaderDesc& desc,
 	return Result::SUCCESS;
 }
 
+
+Result::Name EmbeddedGenericHLSL::GenerateNoLightingShader( const GenericShaderDesc& desc, std::string& hlsl_effect )
+{
+	const char *no_lighting_shader =
+	"void vs("\
+		"float3 Pos  : POSITION,"\
+		"float4 Diffuse : COLOR0,"\
+		"float2 Tex0 : TEXCOORD0,"\
+		"out float4 oPos : POSITION,"\
+		"out float4 oDiffuse : COLOR0,"\
+		"out float2 oTex : TEXCOORD0)\n"\
+	"{"\
+		"oPos = mul( float4(Pos,1), WorldViewProj );"\
+		"oTex = Tex0;"\
+		"oDiffuse = Diffuse;"\
+	"}\n"\
+	"float4 ps("\
+		   "float4 Diffuse : COLOR0,"\
+		   "float2 Tex0 : TEXCOORD0):COLOR\n"\
+	"{"\
+		"return Diffuse * tex2D(Sampler0, Tex0);"\
+	"}\n"\
+	"technique Default"\
+	"{"\
+		"pass P0"\
+		"{"\
+			"VertexShader = compile vs_2_0 vs();"\
+			"PixelShader  = compile ps_2_0 ps();"\
+		"}"\
+	"}\n";
+
+	hlsl_effect.clear();
+	hlsl_effect += ms_pMatrix;
+	hlsl_effect += ms_pTexDef;
+	hlsl_effect += no_lighting_shader;
+
+	return Result::SUCCESS;
+}
+
+
+Result::Name EmbeddedGenericHLSL::GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect )
+{
+	if( desc.Lighting )
+		return GenerateLightingShader( desc, hlsl_effect );
+	else
+		return GenerateNoLightingShader( desc, hlsl_effect );
+}
+
+
 /*
 ShaderHandle GetGenericShader( GenericShaderDesc& desc )
 {
@@ -1056,8 +1105,6 @@ ShaderHandle GetGenericShader( GenericShaderDesc& desc )
 	return handle;
 }
 */
-
-#include "Graphics/Direct3D/Direct3D9.hpp"
 
 void ConfigureShader()
 {

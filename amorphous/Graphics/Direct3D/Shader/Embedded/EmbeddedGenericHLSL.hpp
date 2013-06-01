@@ -37,6 +37,10 @@ class EmbeddedGenericHLSL : public EmbeddedGenericShader
 
 	static const char *ms_pTechniqueTemplate;
 
+	Result::Name GenerateLightingShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
+
+	Result::Name GenerateNoLightingShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
+
 public:
 
 	EmbeddedGenericHLSL() {}
