@@ -57,6 +57,7 @@ class ShaderManager;
 class ShaderLightManager;
 
 class TextureRenderTarget;
+class CubeTextureRenderTarget;
 
 class SimpleMotionBlur;
 class CubeMapManager;

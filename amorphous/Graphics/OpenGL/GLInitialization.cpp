@@ -5,6 +5,7 @@
 #include "PrimitiveRenderer_GL.hpp"
 #include "GLGraphicsResources.hpp"
 #include "GLTextureRenderTarget.hpp"
+#include "GLCubeTextureRenderTarget.hpp"
 #include "Mesh/GL2BasicMeshImpl.hpp"
 #include "Mesh/GLCustomMeshRenderer.hpp"
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
@@ -88,6 +89,7 @@ Result::Name InitializeOpenGLClasses()
 	GetMeshImplFactory().reset( new CGLMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
 	TextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
+	CubeTextureRenderTarget::SetInstanceCreationFunction( GLCubeTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
 	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_FRGBA );
 	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericGLSLShader( new EmbeddedGenericGLSLShader );

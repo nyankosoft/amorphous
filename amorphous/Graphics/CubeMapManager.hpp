@@ -2,7 +2,6 @@
 #define  __CubeMapManager_H__
 
 
-#include <d3dx9.h>
 #include "GraphicsComponentCollector.hpp"
 #include "Camera.hpp"
 #include "SurfaceFormat.hpp"
@@ -34,28 +33,14 @@ public:
 };
 
 
-class CubeMapManager : public GraphicsComponent
+class CubeMapManager// : public GraphicsComponent
 {
-	int m_CubeTextureSize;
-
-	TextureFormat::Format m_TextureFormat;
-
-	LPDIRECT3DCUBETEXTURE9       m_apCubeMapFp[2];  ///< Floating point format cube map
-	LPDIRECT3DCUBETEXTURE9       m_pCubeMap32;      ///< 32-bit cube map (for fallback)
-	LPDIRECT3DSURFACE9           m_pDepthCube;      ///< Depth-stencil buffer for rendering to cube texture
-
-	LPDIRECT3DCUBETEXTURE9       m_pCurrentCubeMap; ///< Cube map(s) to use based on current cubemap format
-
-	/// temporarily hold the original render target
-	LPDIRECT3DSURFACE9 m_pOrigRenderTarget;
-	LPDIRECT3DSURFACE9 m_pOrigDepthStencilSurface;
-
-	int m_NumCubes;
-
 	Camera m_Camera;
 
 	/// borrowed reference
 	CCubeMapSceneRenderer *m_pCubeMapSceneRenderer;
+
+	boost::shared_ptr<CubeTextureRenderTarget> m_pCubeTextureRenderTarget;
 
 private:
 
@@ -71,24 +56,13 @@ public:
 	void Init( int tex_edge_length = 256,
 		       TextureFormat::Format tex_format = TextureFormat::A8R8G8B8 );
 
-	bool IsReady();
-
 	void RenderToCubeMap();
 //	void BeginRenderToCubeMap( int face );
 //	void EndRenderToCubeMap();
 
-	inline int GetCubeTextureSize() const { return m_CubeTextureSize; }
-
-	inline void SetCubeTextureSize( const int edge_length ) { m_CubeTextureSize = edge_length; }
-
-	LPDIRECT3DCUBETEXTURE9 GetCubeTexture() { return m_pCurrentCubeMap; }
-
 	void SaveCubeTextureToFile( const std::string& output_filename );
 
 	inline void SetCubeMapSceneRenderer( CCubeMapSceneRenderer *pSceneRenderer ) { m_pCubeMapSceneRenderer = pSceneRenderer; }
-
-	void LoadGraphicsResources( const GraphicsParameters& rParam );
-	void ReleaseGraphicsResources();
 };
 
 

@@ -4,6 +4,7 @@
 #include "PrimitiveRenderer_D3D.hpp"
 #include "D3DGraphicsResources.hpp"
 #include "D3DTextureRenderTarget.hpp"
+#include "D3DCubeTextureRenderTarget.hpp"
 #include "Mesh/D3DXMeshObjectBase.hpp"
 #include "Mesh/D3DCustomMeshRenderer.hpp"
 #include "Shader/D3DFixedFunctionPipelineManager.hpp"
@@ -89,6 +90,7 @@ Result::Name InitializeDirect3DClasses()
 	GetMeshImplFactory().reset( new CD3DMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &D3DFixedFunctionPipelineManager() );
 	TextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
+	CubeTextureRenderTarget::SetInstanceCreationFunction( D3DCubeTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
 	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericHLSL( new EmbeddedGenericHLSL );
 	SetEmbeddedGenericShader( pEmbeddedGenericHLSL );

@@ -822,6 +822,15 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1903,6 +1912,15 @@
       <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp">
       <Filter>Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>

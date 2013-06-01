@@ -85,7 +85,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\BuiltinSkyTextures.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\CubeMapManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp" />
@@ -102,6 +104,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp" />
@@ -340,8 +343,10 @@
     <ClInclude Include="..\..\amorphous\Graphics\BuiltinSkyTextures.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\D3DMisc.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp" />
@@ -367,6 +372,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp" />
