@@ -56,6 +56,8 @@ public:
 	void Init( int tex_edge_length = 256,
 		       TextureFormat::Format tex_format = TextureFormat::A8R8G8B8 );
 
+	bool IsReady();
+
 	void RenderToCubeMap();
 //	void BeginRenderToCubeMap( int face );
 //	void EndRenderToCubeMap();

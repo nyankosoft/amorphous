@@ -33,6 +33,20 @@ void CubeMapManager::Init( int tex_edge_length, TextureFormat::Format tex_format
 }
 
 
+bool CubeMapManager::IsReady()
+{
+	if( m_pCubeTextureRenderTarget
+	 && m_pCubeTextureRenderTarget->IsReady() )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 /// \param tex_format [in] TextureFormat::A8R8G8B8 if cube map is used to render the scene
 void CubeMapManager::CreateTextures( int tex_edge_length, TextureFormat::Format tex_format )
 {

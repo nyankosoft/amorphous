@@ -31,6 +31,8 @@ public:
 
 	virtual bool CreateTextures( unsigned int texture_size, TextureFormat::Format texture_format ) { return false; }
 
+	virtual bool IsReady() = 0;
+
 	virtual void Begin() {}
 	virtual void SetRenderTarget( int face_index ) {}
 	virtual void End() {}
