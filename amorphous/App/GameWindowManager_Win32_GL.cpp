@@ -90,6 +90,9 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 {
 	LOG_FUNCTION_SCOPE();
 
+	// Commented out: glGetString() returns NULL for all the four arguments when it is called at this point.
+//	LogGLInfo();
+
 	int bits = 16;
 
 	const int width  = iScreenWidth;
@@ -234,6 +237,12 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 		LOG_PRINT_ERROR( "Can't activate the GL Rendering Context." );
 		return FALSE;								// Return FALSE
 	}
+
+	// Called from here, glGetString() returns valid string values...
+	// but decided to call LogGLInfo() at the beginning of CGLGraphicsDevice::Init()
+	// because most of the gl*() functions are called inside CGLGraphicsDevice's
+	// member functions.
+//	LogGLInfo();
 
 	ShowWindow(m_hWnd,SW_SHOW);						// Show The Window
 	SetForegroundWindow(m_hWnd);						// Slightly Higher Priority
