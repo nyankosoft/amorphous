@@ -77,7 +77,7 @@ GameWindowManager_Win32_GL::~GameWindowManager_Win32_GL()
 }
 
 
-/*	This Code Creates Our OpenGL Window.  Parameters Are:
+/*	This code creates our OpenGL window.  Parameters are:
  *	title			- Title To Appear At The Top Of The Window
  *	width			- Width Of The GL Window Or Fullscreen Mode
  *	height			- Height Of The GL Window Or Fullscreen Mode
@@ -98,35 +98,35 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 	const int width  = iScreenWidth;
 	const int height = iScreenHeight;
 
-	GLuint		PixelFormat;		        // Holds The Results After Searching For A Match
+	GLuint		PixelFormat;		        // Holds the results after searching for a match
 	WNDCLASS	wc;					        // Windows Class Structure
 	DWORD		dwExStyle;			        // Window Extended Style
 	DWORD		dwStyle;			        // Window Style
-	RECT		WindowRect;			        // Grabs Rectangle Upper Left / Lower Right Values
-	WindowRect.left   =(long)0;		        // Set Left Value To 0
-	WindowRect.right  =(long)width;	        // Set Right Value To Requested Width
-	WindowRect.top    =(long)0;	            // Set Top Value To 0
-	WindowRect.bottom =(long)height;        // Set Bottom Value To Requested Height
+	RECT		WindowRect;			        // Grabs rectangle upper left / lower right values
+	WindowRect.left   =(long)0;
+	WindowRect.right  =(long)width;
+	WindowRect.top    =(long)0;
+	WindowRect.bottom =(long)height;
 
 	string class_name = "[[" + app_title + "]]";
 	m_ClassName = class_name;
 
-	m_hInstance			= GetModuleHandle(NULL);				// Grab An Instance For Our Window
-	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw On Size, And Own DC For Window.
+	m_hInstance			= GetModuleHandle(NULL);				// Grab an instance for our window
+	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw on size, and own DC for window.
 	wc.lpfnWndProc		= (WNDPROC) g_pMessageProcedureForGameWindow;//_Win32_GL;					// WndProc Handles Messages
 	wc.cbClsExtra		= 0;                                    // No Extra Window Data
 	wc.cbWndExtra		= 0;                                    // No Extra Window Data
-	wc.hInstance		= m_hInstance;                          // Set The Instance
-	wc.hIcon			= LoadIcon(NULL, IDI_WINLOGO);          // Load The Default Icon
-	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);          // Load The Arrow Pointer
+	wc.hInstance		= m_hInstance;                          // Set the instance
+	wc.hIcon			= LoadIcon(NULL, IDI_WINLOGO);          // Load the default icon
+	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);          // Load the arrow pointer
 	wc.hbrBackground	= NULL;                                 // No Background Required For GL
-	wc.lpszMenuName		= NULL;                                 // We Don't Want A Menu
-	wc.lpszClassName	= class_name.c_str();                   // Set The Class Name
+	wc.lpszMenuName		= NULL;                                 // We don't want a menu
+	wc.lpszClassName	= class_name.c_str();                   // Set the class name
 
 	if( !RegisterClass(&wc) )									// Attempt To Register The Window Class
 	{
 		LOG_PRINT_ERROR( "RegisterClass() failed. Failed to register the window class." );
-		return FALSE;											// Return FALSE
+		return FALSE;
 	}
 	
 	if( screen_mode == GameWindow::FULLSCREEN )												// Attempt Fullscreen Mode?
@@ -147,7 +147,7 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 		}
 	}
 
-	if( screen_mode == GameWindow::FULLSCREEN )						// Are We Still In Fullscreen Mode?
+	if( screen_mode == GameWindow::FULLSCREEN )						// Are we still in fullscreen mode?
 	{
 		dwExStyle = WS_EX_APPWINDOW;                                // Window Extended Style
 		dwStyle   = WS_POPUP;		                                // Windows Style
@@ -205,37 +205,37 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 
 	if( !(m_hDC=GetDC(m_hWnd)) )                    // Did we get a Device Context?
 	{
-		KillGLWindow();								// Reset The Display
+		KillGLWindow();								// Reset the display
 		LOG_PRINT_ERROR( "Can't create a GL Device Context." );
-		return FALSE;								// Return FALSE
+		return FALSE;
 	}
 
 	if( !(PixelFormat=ChoosePixelFormat(m_hDC,&pfd)) )	// Did Windows find a matching pixel format?
 	{
-		KillGLWindow(); // Reset The Display
+		KillGLWindow(); // Reset the display
 		LOG_PRINT_ERROR( "Can't find a suitable PixelFormat." );
-		return FALSE;								// Return FALSE
+		return FALSE;
 	}
 
-	if( !SetPixelFormat(m_hDC,PixelFormat,&pfd) )     // Are We Able To Set The Pixel Format?
+	if( !SetPixelFormat(m_hDC,PixelFormat,&pfd) )     // Are we able to set the pixel format?
 	{
 		KillGLWindow(); // Reset The Display
 		LOG_PRINT_ERROR( "Can't set the PixelFormat." );
-		return FALSE;								// Return FALSE
+		return FALSE;
 	}
 
-	if (!(m_hRC=wglCreateContext(m_hDC)))           // Are We Able To Get A Rendering Context?
+	if (!(m_hRC=wglCreateContext(m_hDC)))           // Are we able to get a rendering context?
 	{
 		KillGLWindow();								// Reset The Display
 		LOG_PRINT_ERROR( "Can't create a GL Rendering Context." );
-		return FALSE;								// Return FALSE
+		return FALSE;
 	}
 
-	if(!wglMakeCurrent(m_hDC,m_hRC))					// Try To Activate The Rendering Context
+	if(!wglMakeCurrent(m_hDC,m_hRC))					// Try to activate the rendering Context
 	{
-		KillGLWindow();								// Reset The Display
+		KillGLWindow();								// Reset the display
 		LOG_PRINT_ERROR( "Can't activate the GL Rendering Context." );
-		return FALSE;								// Return FALSE
+		return FALSE;
 	}
 
 	// Called from here, glGetString() returns valid string values...
@@ -244,16 +244,15 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 	// member functions.
 //	LogGLInfo();
 
-	ShowWindow(m_hWnd,SW_SHOW);						// Show The Window
-	SetForegroundWindow(m_hWnd);						// Slightly Higher Priority
-	SetFocus(m_hWnd);									// Sets Keyboard Focus To The Window
-	ReSizeGLScene(width, height);					// Set Up Our Perspective GL Screen
+	ShowWindow(m_hWnd,SW_SHOW);						// Show the window
+	SetForegroundWindow(m_hWnd);						// Slightly higher priority
+	SetFocus(m_hWnd);									// Sets keyboard focus to the window
+	ReSizeGLScene(width, height);					// Set up our perspective GL screen
 
-//	if (!InitGL())									// Initialize Our Newly Created GL Window
 	if( !GLGraphicsDevice().Init( iScreenWidth, iScreenHeight, (screen_mode == ScreenMode::WINDOWED) ? ScreenMode::WINDOWED : ScreenMode::FULLSCREEN ) )
 	{
-		KillGLWindow();								// Reset The Display
-		LOG_PRINT_ERROR( "InitGL() failed." );
+		KillGLWindow();								// Reset the display
+		LOG_PRINT_ERROR( "GLGraphicsDevice::Init() failed." );
 		return FALSE;								// Return FALSE
 	}
 
