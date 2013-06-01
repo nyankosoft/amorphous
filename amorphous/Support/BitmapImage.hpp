@@ -410,6 +410,9 @@ inline void BitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b )
 
 inline void BitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
 {
+	if( !m_pFreeImageBitMap )
+		return;
+
 	if( m_BitsPerPixel == 24 )
 	{
 		SetPixel( x, y, r, g, b );
@@ -419,6 +422,8 @@ inline void BitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
 		// This code causes crash when the bpp is 32. Why?
 
 		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
+
+		int bytespp = FreeImage_GetLine(m_pFreeImageBitMap) / FreeImage_GetWidth(m_pFreeImageBitMap);
 
 		bits[FI_RGBA_RED]   = r;
 		bits[FI_RGBA_GREEN] = g;
@@ -540,6 +545,8 @@ inline const char *BitmapImage::GetColorTypeName() const
 */
 inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
 {
+	Release();
+
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 
 	// check the file signature and deduce its format
