@@ -109,17 +109,23 @@ int CCustomMeshTest::Init()
 	bool loaded = false;
 	string mesh_file_pathname;
 	LoadParamFromFile( "CustomMeshDemo/params.txt", "model", mesh_file_pathname );
-	mesh_file_pathname = "CustomMeshDemo/" + mesh_file_pathname;
 	if( 0 < mesh_file_pathname.length() )
 	{
+		mesh_file_pathname = "CustomMeshDemo/" + mesh_file_pathname;
 		loaded = m_Mesh.LoadFromFile( mesh_file_pathname );
 	}
 	else
 	{
-		BoxMeshGenerator box_mesh_generator;
+/*		BoxMeshGenerator box_mesh_generator;
 //		box_mesh_generator.Generate( Vector3(1,1,1) );
 		box_mesh_generator.Generate( Vector3(1,1,1), MeshGenerator::DEFAULT_VERTEX_FLAGS, SFloatRGBAColor::White() );
-		C3DMeshModelArchive ar = box_mesh_generator.GetMeshArchive();
+		C3DMeshModelArchive ar = box_mesh_generator.GetMeshArchive();*/
+		SphereDesc sphere_desc;
+		sphere_desc.num_segments = 12;
+		sphere_desc.num_sides    = 36;
+		SphereMeshGenerator sphere_mesh_generator(sphere_desc);;
+		sphere_mesh_generator.Generate();
+		C3DMeshModelArchive ar = sphere_mesh_generator.GetMeshArchive();
 		loaded = m_Mesh.LoadFromArchive( ar );
 	}
 /*
@@ -164,6 +170,8 @@ void CCustomMeshTest::RenderMeshes()
 	SetLights( pShaderMgr ? true : false );
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+
+	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 //	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
