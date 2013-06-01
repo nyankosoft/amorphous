@@ -8,7 +8,7 @@ namespace amorphous
 {
 
 
-bool sg_use_grm = false;
+bool sg_use_grm = true;
 
 
 bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum src_format, GLenum src_type, const std::string& image_filepath );
@@ -455,7 +455,7 @@ void CGLTextureRenderTarget::ResetRenderTarget()
 	// Bind 0, which means render to back buffer
 	glBindFramebufferEXT( GL_DRAW_FRAMEBUFFER_EXT, 0 );
 
-	bool save_rt_texture = true;
+	bool save_rt_texture = false;
 	if( save_rt_texture )
 		SaveGL2DTextureToImageFile( m_RenderTargetTextureID, m_TextureDesc.Width, m_TextureDesc.Height, GL_RGBA, GL_UNSIGNED_BYTE, "rt_tex.png" );
 
