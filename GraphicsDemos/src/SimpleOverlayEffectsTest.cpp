@@ -4,6 +4,8 @@
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
@@ -37,37 +39,52 @@ CSimpleOverlayEffectsTest::~CSimpleOverlayEffectsTest()
 }
 
 
-void CSimpleOverlayEffectsTest::CreateSampleUI()
-{
-}
+void CSimpleOverlayEffectsTest::SetLights()
+{	
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
+	if( !pShaderMgr )
+		return;
 
-bool CSimpleOverlayEffectsTest::InitShader()
-{
-	// initialize shader
-	bool shader_loaded = m_Shader.Load( "./shaders/SimpleOverlayEffectsTest.fx" );
-	
-	ShaderManager& shader_mgr
-		= (shader_loaded && m_Shader.GetShaderManager()) ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 //	if( !shader_loaded )
 //		return false;
 
 	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 	if( !pShaderLightMgr )
-		return false;
+		return;
+
+	pShaderLightMgr->ClearLights();
 
 	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
-	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
+	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, 0.9f ) );
 
 //	pShaderLightMgr->SetLight( 0, light );
 //	pShaderLightMgr->SetDirectionalLightOffset( 0 );
 //	pShaderLightMgr->SetNumDirectionalLights( 1 );
 	pShaderLightMgr->SetHemisphericDirectionalLight( light );
 
-	return true;
+	pShaderLightMgr->CommitChanges();
+}
+
+
+bool CSimpleOverlayEffectsTest::InitShader()
+{
+	// initialize shader
+//	bool shader_loaded = m_Shader.Load( "./shaders/SimpleOverlayEffectsTest.fx" );
+
+	ShaderResourceDesc shader_desc;
+	GenericShaderDesc gen_shader_desc;
+//	gen_shader_desc.Lighting = false;
+	gen_shader_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
+//	gen_shader_desc.Specular = SpecularSource::NONE;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
+	bool shader_loaded = m_Shader.Load( shader_desc );
+
+	return shader_loaded;
 }
 
 
@@ -168,6 +185,8 @@ void CSimpleOverlayEffectsTest::DisplayResourceInfo()
 void CSimpleOverlayEffectsTest::Render()
 {
 	PROFILE_FUNCTION();
+
+	SetLights();
 
 	RenderMeshes();
 

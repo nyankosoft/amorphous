@@ -37,7 +37,7 @@ class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public GraphicsCompo
 
 private:
 
-	void CreateSampleUI();
+	void SetLights();
 
 	bool InitShader();
 
