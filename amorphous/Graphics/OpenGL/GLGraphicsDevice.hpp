@@ -118,6 +118,8 @@ public:
 	Result::Name UpdateViewProjectionTransformsForClipPlane( uint index, const Matrix44& view_transform, const Matrix44& proj_transform ) { return Result::SUCCESS; }
 
 	Result::Name SetScissorRect( const SRect& rect );
+
+	Result::Name SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value );
 };
 
 

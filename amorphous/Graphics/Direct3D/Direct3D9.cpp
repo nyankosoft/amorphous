@@ -839,4 +839,46 @@ Result::Name CDirect3D9::SetScissorRect( const SRect& rect )
 }
 
 
+Result::Name CDirect3D9::SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value )
+{
+	HRESULT hr = S_OK;
+
+
+	D3DSAMPLERSTATETYPE dest_type = D3DSAMP_MIPFILTER;
+
+	switch(param)
+	{
+	case SamplerParameter::TEXTURE_WRAP_AXIS_0: dest_type = D3DSAMP_ADDRESSU;  break;
+	case SamplerParameter::TEXTURE_WRAP_AXIS_1: dest_type = D3DSAMP_ADDRESSV;  break;
+	case SamplerParameter::TEXTURE_WRAP_AXIS_2: dest_type = D3DSAMP_ADDRESSW;  break;
+	case SamplerParameter::MIN_FILTER:          dest_type = D3DSAMP_MINFILTER; break;
+	case SamplerParameter::MAG_FILTER:          dest_type = D3DSAMP_MAGFILTER; break;
+	default:
+		LOG_PRINTF_ERROR(( " An unsupported sampler parameter (%d)", (int)param ));
+		break;
+	}
+
+	DWORD dest_value = 0;
+	if( dest_type == D3DSAMP_ADDRESSU
+	 || dest_type == D3DSAMP_ADDRESSV
+	 || dest_type == D3DSAMP_ADDRESSW )
+	{
+		switch(value)
+		{
+		case TextureAddressMode::REPEAT:          dest_value = D3DTADDRESS_WRAP;   break;
+		case TextureAddressMode::MIRRORED_REPEAT: dest_value = D3DTADDRESS_MIRROR; break;
+		case TextureAddressMode::CLAMP_TO_BORDER: dest_value = D3DTADDRESS_BORDER; break;
+		case TextureAddressMode::CLAMP_TO_EDGE:   dest_value = D3DTADDRESS_CLAMP;  break;
+		default:
+			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
+			break;
+		}
+	}
+	
+	hr = m_pD3DDevice->SetSamplerState( sampler_index, dest_type, dest_value );
+
+	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
 } // namespace amorphous

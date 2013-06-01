@@ -181,12 +181,12 @@ GLint ToGLOperand( int src )
 
 Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const TextureStage& params )
 {
-	LOG_PRINT_ERROR( " Not implemented yet." );
+//	LOG_PRINT_ERROR( " Not implemented yet." );
 //	return Result::UNKNOWN_ERROR;
 
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
-	if( stage == 0 )
+/*	if( stage == 0 )
 	{
 //		glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_ENV_MODE,   GL_COMBINE);
 		glTexEnvi(GL_TEXTURE_2D, GL_COMBINE_RGB_ARB,    GL_MODULATE);
@@ -201,7 +201,7 @@ Result::Name CGLGraphicsDevice::SetTextureStageParams( uint stage, const Texture
 //		glTexEnvi(GL_TEXTURE_2D, GL_OPERAND1_ALPHA_ARB, GL_SRC_ALPHA); // this texture's alpha (stage 0)
 
 		LOG_GL_ERROR( " glTexEnvi() failed." );
-	}
+	}*/
 	return Result::SUCCESS;
 /*
 	glActiveTextureARB( GL_TEXTURE0_ARB + stage );	 // start populating the stage
@@ -480,5 +480,39 @@ Result::Name CGLGraphicsDevice::SetScissorRect( const SRect& rect )
 	return Result::SUCCESS;
 }
 
+
+Result::Name CGLGraphicsDevice::SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value )
+{
+	GLenum pname;
+	switch( param )
+	{
+	case SamplerParameter::TEXTURE_WRAP_AXIS_0: pname = GL_TEXTURE_WRAP_S; break;
+	case SamplerParameter::TEXTURE_WRAP_AXIS_1: pname = GL_TEXTURE_WRAP_T; break;
+	case SamplerParameter::TEXTURE_WRAP_AXIS_2: pname = GL_TEXTURE_WRAP_R; break;
+	default:
+		return Result::UNKNOWN_ERROR;
+	}
+
+	DWORD dest_value = 0;
+	if( pname == GL_TEXTURE_WRAP_S
+	 || pname == GL_TEXTURE_WRAP_T
+	 || pname == GL_TEXTURE_WRAP_R )
+	{
+		switch(value)
+		{
+		case TextureAddressMode::REPEAT:          dest_value = D3DTADDRESS_WRAP;   break;
+		case TextureAddressMode::MIRRORED_REPEAT: dest_value = D3DTADDRESS_MIRROR; break;
+		case TextureAddressMode::CLAMP_TO_BORDER: dest_value = D3DTADDRESS_BORDER; break;
+		case TextureAddressMode::CLAMP_TO_EDGE:   dest_value = D3DTADDRESS_CLAMP;  break;
+		default:
+			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
+			break;
+		}
+	}
+
+	glTexParameteri( GL_TEXTURE_2D, pname, dest_value );
+
+	return Result::SUCCESS;
+}
 
 } // namespace amorphous
