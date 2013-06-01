@@ -50,6 +50,18 @@ void LogGLError( const char *fname, const char *msg )
 }
 
 
+void LogGLInfo()
+{
+	const GLubyte *version  = glGetString( GL_VERSION );
+	const GLubyte *vendor   = glGetString( GL_VENDOR );
+	const GLubyte *renderer = glGetString( GL_RENDERER );
+	const GLubyte *shader   = glGetString( GL_SHADING_LANGUAGE_VERSION );
+
+	LOG_PRINTF(( "OpenGL version: %s / vendor: %s / renderer: %s / shading language version: %s",
+		version, vendor, renderer, shader ));
+}
+
+
 static inline GLenum ToGLAlphaFunc( CompareFunc::Name alpha_func )
 {
 	switch( alpha_func )
@@ -86,6 +98,8 @@ m_fReferenceAlphaValue(0.0f)
 
 bool CGLGraphicsDevice::Init( int iWindowWidth, int iWindowHeight, ScreenMode::Name screen_mode )
 {
+	LogGLInfo();
+
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup

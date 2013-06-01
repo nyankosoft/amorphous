@@ -16,10 +16,11 @@ namespace amorphous
 
 
 //------------------------------------------------------------------------------
-// Function Externs
+// Global functions
 //------------------------------------------------------------------------------
 
-extern void LogGLError( const char *fname, const char *msg );
+void LogGLError( const char *fname, const char *msg );
+void LogGLInfo();
 
 
 
