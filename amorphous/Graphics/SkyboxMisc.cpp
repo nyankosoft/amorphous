@@ -4,7 +4,9 @@
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/MeshObjectHandle.hpp"
+#include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/GenericShaderGenerator.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/TextureGenerators/GradationTextureGenerators.hpp"
 
@@ -65,6 +67,20 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 {
 	Result::Name res;
 
+	static ShaderHandle s_Shader;
+	if( !s_Shader.IsLoaded() )
+	{
+		ShaderResourceDesc desc;
+		GenericShaderDesc gs_desc;
+		gs_desc.Lighting = false;
+		boost::shared_ptr<GenericShaderGenerator> pGenerator( new GenericShaderGenerator(gs_desc) );
+		desc.pShaderGenerator = pGenerator;
+		bool shader_loaded = s_Shader.Load( desc );
+		if( !shader_loaded )
+			LOG_PRINT_ERROR( " Failed to load the shader for rendering skyboxes." );
+	}
+
+
 	res = GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 	res = GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
 	res = GraphicsDevice().Disable( RenderStateType::LIGHTING );
@@ -76,7 +92,12 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 	// Commented out: don't change the "CullingMode::CLOCKWISE" mode when rendering the scene for a planar reflection texture.
 //	res = GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
-	ShaderManager& ffp_mgr = FixedFunctionPipelineManager();
+//	ShaderManager& ffp_mgr = FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = s_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	const Vector3 vCamPos = vCamPose.vPosition;
 
@@ -100,9 +121,9 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 		matWorld = matWorld * ToMatrix44(skybox_orientation) * Matrix44Scaling( 2.0f, 1.0f, 1.0f );
 	}
 
-	ffp_mgr.SetWorldTransform( matWorld );
+	shader_mgr.SetWorldTransform( matWorld );
 
-	mesh.Render();
+	mesh.Render( shader_mgr );
 
 	res = GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 	res = GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
