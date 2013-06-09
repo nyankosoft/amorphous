@@ -184,6 +184,8 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 
 static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::string& error_info )
 {
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
 	GLint status = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	LOG_GL_ERROR( " glGetShaderiv() failed." );
@@ -214,27 +216,27 @@ static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::strin
 
 bool CGLShader::CreateShader( const char *source )
 {
-	LOG_GL_ERROR( " Entered." );
+	if( !source || strlen(source) == 0 )
+		return false;
+
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	Release();
 
 	m_Shader = glCreateShader( GetShaderType() );
 
-	if( !source || strlen(source) == 0 )
-		return false;
-
-//	const char * vv = vs;
+	LOG_GL_ERROR( "glCreateShader() failed." );
 
 	string error_info;
 
 	const char *pBuffer = source;
 	glShaderSource( m_Shader, 1, &pBuffer, NULL );
 
-	LOG_GL_ERROR( "glShaderSourceARB() failed." );
+	LOG_GL_ERROR( "glShaderSource() failed." );
 
 	glCompileShader( m_Shader );
 
-	LOG_GL_ERROR( "glCompileShaderARB() failed. Failed to compile a shader" );
+	LOG_GL_ERROR( "glCompileShader() failed. Failed to compile a shader" );
 
 	GetCompileStatus( GetShaderType(), m_Shader, error_info );
 
@@ -536,7 +538,10 @@ Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& text
 	// glMultiTexCoord2fARB
 
 //	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
-	SetTextureGL_FFP( iStage, texture );
+	if( texture.IsLoaded() )
+		SetTextureGL_FFP( iStage, texture );
+	else
+		glBindTexture( GL_TEXTURE_2D, 0 );
 
 	return Result::UNKNOWN_ERROR;
 }
