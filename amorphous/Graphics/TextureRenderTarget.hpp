@@ -65,7 +65,7 @@ public:
 
 //	void SetTextureWidth( const int width, const int height );
 
-	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
+	virtual void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
 
 	virtual void SetRenderTarget() {}
 
