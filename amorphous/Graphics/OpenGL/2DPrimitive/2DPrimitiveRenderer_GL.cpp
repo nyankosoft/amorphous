@@ -1,12 +1,71 @@
 #include "2DPrimitiveRenderer_GL.hpp"
+#include "../GLGraphicsDevice.hpp"
 //#include "App/GameWindowManager_Win32_GL.hpp"
 #include "3DMath/Matrix44.hpp"
 #include "Graphics/OpenGL/GLExtensions.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Support/Profile.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
 {
+
+
+void RenderViaVertexAttribArray( const General2DVertex *pVertices, uint num_vertices, GLenum primitive_type )
+{
+	const uint vertex_size = sizeof(General2DVertex);
+
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
+	// Unbind GL_ARRAY_BUFFER and GL_ELEMENT_ARRAY_BUFFER to source a standard memory location (RAM).
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
+	// position
+	const uchar *pV = (uchar *)pVertices;
+	const uchar *pPos = pV + 0;//mesh.GetVertexElementOffset( VEE::POSITION );
+	glEnableVertexAttribArray( 0 );
+	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, vertex_size, pPos );
+
+	// diffuse color
+	glEnableVertexAttribArray( 1 );
+	glVertexAttribPointer( 1, 4, GL_FLOAT, GL_FALSE, vertex_size, pV + sizeof(float) * 4 );
+
+	// 2D texture coordinates
+	glEnableVertexAttribArray( 2 );
+	glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, vertex_size, pV + sizeof(float) * 8 );
+
+	uchar *pI = NULL;
+	ushort triangle_fan[] = {0,1,2,3};
+	GLsizei num_indices = 4;
+	switch( primitive_type )
+	{
+	case GL_TRIANGLE_STRIP:
+		pI = (uchar *)triangle_fan;
+		break;
+	case GL_TRIANGLE_FAN:
+		pI = (uchar *)triangle_fan;
+		break;
+	case GL_TRIANGLES:
+		break;
+	default:
+		break;
+	}
+
+	if( !pI )
+		return;
+
+	GLenum index_type = GL_UNSIGNED_SHORT;
+
+	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
+	glDrawElements( GL_TRIANGLE_FAN, num_indices, index_type, pI );
+//	glDrawArrays( GL_TRIANGLE_FAN, 0, 2 );
+
+	LOG_GL_ERROR( "glDrawElements() failed." );
+}
 
 
 GLenum ToGLPrimitiveType( PrimitiveType::Name pt )
@@ -44,8 +103,15 @@ void C2DPrimitiveRenderer_GL::Render( ShaderManager& rShaderManager, General2DVe
 }
 
 
-void C2DPrimitiveRenderer_GL::RenderRect( ShaderManager& rShaderManager, const C2DRect& rect )
+void C2DPrimitiveRenderer_GL::RenderRect( ShaderManager& rShaderManager, C2DRect& rect )
 {
+	rShaderManager.Begin();
+//	glUseProgram( 0 );
+
+	glDisable( GL_CULL_FACE );
+
+	RenderViaVertexAttribArray( &(rect.GetVertex(0)), 4, GL_TRIANGLE_FAN );
+//	rect.draw();
 }
 
 

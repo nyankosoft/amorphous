@@ -103,7 +103,7 @@ int GetNumPrimitivesToDraw( PrimitiveType::Name pt, int num_vertices )
 }
 
 
-inline void C2DPrimitiveRenderer_D3D::CopyVertices( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
+inline void C2DPrimitiveRenderer_D3D::CopyVertices( const General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
 	if( (int)m_vecTLVertex.size() < num_vertices )
 		m_vecTLVertex.resize( num_vertices );
@@ -222,7 +222,7 @@ void C2DPrimitiveRenderer_D3D::Render( ShaderManager& rShaderManager, General2DV
 }
 
 
-void C2DPrimitiveRenderer_D3D::RenderRect( ShaderManager& rShaderManager, const C2DRect& rect )
+void C2DPrimitiveRenderer_D3D::RenderRect( ShaderManager& rShaderManager, C2DRect& rect )
 {
 	General2DVertex verts[4];
 	for( int i=0; i<4; i++ )

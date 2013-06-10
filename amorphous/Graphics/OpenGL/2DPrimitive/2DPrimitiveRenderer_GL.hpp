@@ -30,7 +30,7 @@ public:
 
 	void Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
-	void RenderRect( ShaderManager& rShaderManager, const C2DRect& rect );
+	void RenderRect( ShaderManager& rShaderManager, C2DRect& rect );
 };
 
 

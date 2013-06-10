@@ -24,7 +24,7 @@ private:
 
 	/// copy general 2D vertices to the internal buffer which stores vertices
 	/// with an FVF format to render them with DrawPrimitiveUP().
-	inline void CopyVertices( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+	inline void CopyVertices( const General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
 public:
 
@@ -43,7 +43,7 @@ public:
 
 	void Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 
-	void RenderRect( ShaderManager& rShaderManager, const C2DRect& rect );
+	void RenderRect( ShaderManager& rShaderManager, C2DRect& rect );
 };
 
 
