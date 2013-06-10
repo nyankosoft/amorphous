@@ -1,5 +1,6 @@
 #include "EmbeddedGenericGLSLShader.hpp"
 #include "Graphics/Shader/GenericShaderDesc.hpp"
+#include "Graphics/Shader/Generic2DShaderDesc.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
 using std::string;
@@ -317,6 +318,132 @@ Result::Name EmbeddedGenericGLSLShader::GenerateFragmentShader( const GenericSha
 	}
 
 	return Result::UNKNOWN_ERROR;
+}
+
+
+static const char *sg_2d_glsl_vs =
+	"#version 330\n"\
+	"layout(location = 0) in vec4 position;\n"\
+	"layout(location = 1) in vec4 diffuse_color;\n"\
+	"layout(location = 2) in vec2 tex0;\n"\
+	"layout(location = 3) in vec2 tex1;\n"\
+	"layout(location = 4) in vec2 tex2;\n"\
+	"layout(location = 5) in vec2 tex3;\n"\
+	"out vec4 dc;\n"\
+	"out vec2 t0;\n"\
+	"out vec2 t1;\n"\
+	"out vec2 t2;\n"\
+	"out vec2 t3;\n"\
+	"void main(){"\
+		/*"gl_Position = position;"\*/
+		"float vpw = 1280;"\
+		"float vph =  720;"\
+		"float x = ( position.x / vpw - 0.5) * 2.0;"\
+		"float y = (-position.y / vph + 0.5) * 2.0;"\
+		"gl_Position = vec4(x,y,position.z,1);"\
+		"dc = diffuse_color;"\
+		"t0 = tex0;"\
+		"t1 = tex1;"\
+		"t2 = tex2;"\
+		"t3 = tex3;"\
+	"}\n";
+
+static const char *sg_2d_glsl_fs =
+	"#version 330\n"\
+	"in vec4 dc;\n"\
+	"in vec2 t0;\n"\
+	"in vec2 t1;\n"\
+	"in vec2 t2;\n"\
+	"in vec2 t3;\n"\
+	/*"layout(location = 0) out vec4 fc;\n"\*/
+	"out vec4 fc;\n"\
+	"uniform sampler2D T0;\n"\
+	"uniform sampler2D T1;\n"\
+	"uniform sampler2D T2;\n"\
+	"uniform sampler2D T3;\n"\
+	"void main(){"\
+		/*"vec4 tc = texture(T0,t0);"\*/
+		/*"vec4 tc = texture(T0,t0) * texture(T1,t0);"\*/
+		/*"fc = dc * tc;"\*/
+		"vec3 trgb = texture(T0,t0).rgb * texture(T1,t0).rgb;"\
+		"fc.rgb = dc.rgb * trgb;"\
+		"fc.a = dc.a;"\
+		/*"fc = vec4(1,1,0,1);"\*/
+	"}\n";
+
+
+Result::Name EmbeddedGenericGLSLShader::Generate2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader )
+{
+	shader = sg_2d_glsl_vs;
+	return Result::SUCCESS;
+}
+
+
+Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2DShaderDesc& desc, std::string& shader )
+{
+//	shader = sg_2d_glsl_fs;
+
+	string& fs = shader;
+
+	fs =
+	"#version 330\n"\
+	"in vec4 dc;\n"\
+	"in vec2 t0;\n"\
+	"in vec2 t1;\n"\
+	"in vec2 t2;\n"\
+	"in vec2 t3;\n"\
+	/*"layout(location = 0) out vec4 fc;\n"\*/
+	"out vec4 fc;\n"\
+	"uniform sampler2D T0;\n"\
+	"uniform sampler2D T1;\n"\
+	"uniform sampler2D T2;\n"\
+	"uniform sampler2D T3;\n"\
+	"void main(){";
+
+	for( int i=0; i<numof(desc.textures); i++ )
+	{
+		const texture_sample_params& sample_params = desc.textures[i];
+
+		if( !sample_params.is_valid() )
+			break;
+
+		fs += fmt_string( "float4y tc%d = texture(T%d,t%d);\n", i, sample_params.sampler, sample_params.coord );
+	}
+
+	fs += "vec3 rgb=";
+	AppendBlendCalculations(
+		desc,
+		"rgb",
+		desc.diffuse_color_and_tex0_blend.rgb,
+		desc.tex0_and_tex1_blend.rgb,
+		desc.tex1_and_tex2_blend.rgb,
+		desc.tex2_and_tex3_blend.rgb,
+		fs
+		);
+	fs += ";\n";
+
+	fs += "float a=";
+	AppendBlendCalculations(
+		desc,
+		"a",
+		desc.diffuse_color_and_tex0_blend.alpha,
+		desc.tex0_and_tex1_blend.alpha,
+		desc.tex1_and_tex2_blend.alpha,
+		desc.tex2_and_tex3_blend.alpha,
+		fs
+		);
+	fs += ";\n";
+
+	fs += "fc = vec4(rgb,a);}\n";
+
+	FILE *fp = fopen("tl_fragment_shader.txt","w");
+	if(fp)
+	{
+		fprintf(fp,fs.c_str());
+		fclose(fp);
+	}
+
+	return Result::SUCCESS;
 }
 
 

@@ -20,6 +20,10 @@ public:
 	Result::Name GenerateVertexShader( const GenericShaderDesc& desc, std::string& vertex_shader );
 
 	Result::Name GenerateFragmentShader( const GenericShaderDesc& desc, std::string& fragment_shader );
+
+	Result::Name Generate2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader );
+
+	Result::Name Generate2DFragmentShader( const Generic2DShaderDesc& desc, std::string& shader );
 };
 
 

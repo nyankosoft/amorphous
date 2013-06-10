@@ -1,6 +1,7 @@
 #include "EmbeddedGenericHLSL.hpp"
 #include "EmbeddedHLSLShader.hpp"
 #include "Graphics/Shader/GenericShaderDesc.hpp"
+#include "Graphics/Shader/Generic2DShaderDesc.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/algorithm/string/replace.hpp>
@@ -1089,6 +1090,139 @@ Result::Name EmbeddedGenericHLSL::GenerateShader( const GenericShaderDesc& desc,
 		return GenerateLightingShader( desc, hlsl_effect );
 	else
 		return GenerateNoLightingShader( desc, hlsl_effect );
+}
+
+
+static void AppendBlendCalculations(
+	const Generic2DShaderDesc& desc,
+	const std::string& channels,
+//	const rgba_blend_operation& blend_ops,
+	const blend_op& dc_and_tex0_blend,
+	const blend_op& tex0_and_tex1_blend,
+	const blend_op& tex1_and_tex2_blend,
+	const blend_op& tex2_and_tex3_blend,
+	std::string& blend
+	)
+{
+//		if( m_Desc.diffuse_color_and_tex0.rgb.is_valid() )
+	if( dc_and_tex0_blend.is_valid() )
+	{
+		if( desc.textures[0].is_valid() )
+		{
+			// blend dc rgb & tex0 rgb
+//				blend += "dc.rgb" + char_to_string(m_Desc.diffuse_color_and_tex0.rgb.op) + "tc0.rgb";
+			blend += "dc." + channels + dc_and_tex0_blend.to_string() + "tc0." + channels;
+		}
+	}
+	else
+	{
+		if( desc.diffuse_color_rgb )
+		{
+			// diffuse rgb only
+//			blend += "dc.rgb";
+			blend += "dc." + channels;
+			return;
+		}
+		else
+		{
+			// no diffuse rgb
+			if( desc.textures[0].is_valid() )
+//				blend += "tc0.rgb";
+				blend += "tc0." + channels;
+			else
+				return;
+		}
+	}
+
+	if( tex0_and_tex1_blend.is_valid() )
+	{
+		if( desc.textures[1].is_valid() )
+		{
+			blend += tex0_and_tex1_blend.to_string() + "tc1." + channels;
+		}
+	}
+
+	if( tex1_and_tex2_blend.is_valid() )
+	{
+		if( desc.textures[2].is_valid() )
+		{
+			blend += tex1_and_tex2_blend.to_string() + "tc2." + channels;
+		}
+	}
+
+	if( tex2_and_tex3_blend.is_valid() )
+	{
+		if( desc.textures[3].is_valid() )
+		{
+			blend += tex2_and_tex3_blend.to_string() + "tc3." + channels;
+		}
+	}
+}
+
+
+void EmbeddedGenericHLSL::Add2DPixelShader( const Generic2DShaderDesc& desc, std::string& shader )
+{
+//	shader = sg_2d_glsl_fs;
+
+	string& fs = shader;
+
+	for( int i=0; i<numof(desc.textures); i++ )
+	{
+		const texture_sample_params& sample_params = desc.textures[i];
+
+		if( !sample_params.is_valid() )
+			break;
+
+		fs += fmt_string( "float4 tc%d = tex2D(T%d,t%d);\n", i, sample_params.sampler, sample_params.coord );
+	}
+
+	fs += "float3 rgb=";
+	AppendBlendCalculations(
+		desc,
+		"rgb",
+		desc.diffuse_color_and_tex0_blend.rgb,
+		desc.tex0_and_tex1_blend.rgb,
+		desc.tex1_and_tex2_blend.rgb,
+		desc.tex2_and_tex3_blend.rgb,
+		fs
+		);
+	fs += ";\n";
+
+	fs += "float a=";
+	AppendBlendCalculations(
+		desc,
+		"a",
+		desc.diffuse_color_and_tex0_blend.alpha,
+		desc.tex0_and_tex1_blend.alpha,
+		desc.tex1_and_tex2_blend.alpha,
+		desc.tex2_and_tex3_blend.alpha,
+		fs
+		);
+	fs += ";\n";
+
+	fs += "fc = float4(rgb,a);}\n";
+};
+
+
+Result::Name EmbeddedGenericHLSL::Generate2DShader( const Generic2DShaderDesc& desc, std::string& shader )
+{
+	const char *src =
+	"technique Default"\
+	"{"\
+		"pass P0"\
+		"{"\
+			"VertexShader = NULL;"\
+			"PixelShader  = NULL;"\
+		"}"\
+	"}";
+
+	shader = ms_pTexDef;
+
+	Add2DPixelShader( desc, shader );
+
+	LOG_PRINT_ERROR( " Not implemented yet." );
+
+	return Result::UNKNOWN_ERROR;
 }
 
 
