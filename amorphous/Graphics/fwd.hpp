@@ -33,6 +33,7 @@ class BoxMeshGenerator;
 class ResourceLoadingStateHolder;
 class ShaderGenerator;
 class GenericShaderDesc;
+class Generic2DShaderDesc;
 
 class Light;
 class AmbientLight;
