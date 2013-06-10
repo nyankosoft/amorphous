@@ -166,9 +166,6 @@ inline Vector2 C2DRect::GetPosition2D( int vert_index ) const
 /// Draws the rect without any render state changes
 inline void C2DRect::draw()
 {
-//	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
-//	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLEFAN, 2, m_avRectVertex, sizeof(TLVERTEX) );
-
 	Get2DPrimitiveRenderer().Render( m_avRectVertex, 4, PrimitiveType::TRIANGLE_FAN );
 }
 
