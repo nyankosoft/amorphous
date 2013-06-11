@@ -104,6 +104,18 @@ bool TextureHandle::SaveTextureToImageFile( const std::string& image_filepath )
 }
 
 
+SRectangular TextureHandle::GetSize2D( unsigned int level )
+{
+	if( GetEntry()
+	 && GetEntry()->GetTextureResource() )
+	{
+		return GetEntry()->GetTextureResource()->GetSize2D( level );
+	}
+	else
+		return SRectangular(0,0);
+}
+
+
 
 /*
 bool TextureHandle::Load( ImageArchive& img_archive )

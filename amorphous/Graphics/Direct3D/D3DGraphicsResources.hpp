@@ -38,6 +38,9 @@ protected:
 
 	virtual LPDIRECT3DSURFACE9 GetPrimaryTextureSurface();
 
+	/// Returns true on success.
+	bool GetD3DSurfaceDesc( UINT level, D3DSURFACE_DESC& dest );
+
 	virtual HRESULT CreateD3DTexture( const TextureResourceDesc& desc, DWORD usage, D3DPOOL pool );
 
 public:
@@ -69,6 +72,8 @@ public:
 	/// - NOTE: image_filepath should be different from GetDesc().ResourcePath,
 	///         or it will overwrite the original image file
 	bool SaveTextureToImageFile( const std::string& image_filepath );
+
+	SDim2 GetSize2D( unsigned int level );
 
 	bool Lock( uint mip_level );
 

@@ -98,6 +98,8 @@ public:
 	///         or it will overwrite the original image file
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 
+	SDim2 GetSize2D( unsigned int level );
+
 	/// TODO: support mip level
 	bool Lock( uint mip_level );
 

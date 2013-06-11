@@ -105,6 +105,26 @@ bool CGLTextureResource::SaveTextureToImageFile( const std::string& image_filepa
 }
 
 
+SDim2 CGLTextureResource::GetSize2D( unsigned int level )
+{
+	if( m_TextureID == 0 )
+		return SDim2(0,0);
+
+	glBindTexture( GL_TEXTURE_2D, m_TextureID );
+	LOG_GL_ERROR( "glBindTexture() returned an error." );
+
+	GLint width = 0, height = 0;
+
+	glGetTexLevelParameteriv( GL_TEXTURE_2D, (GLint)level, GL_TEXTURE_WIDTH,  &width );
+	LOG_GL_ERROR( fmt_string("glGetTexLevelParameteriv() returned an error (level: %u, called to retrieve width).", level).c_str() );
+
+	glGetTexLevelParameteriv( GL_TEXTURE_2D, (GLint)level, GL_TEXTURE_HEIGHT, &height );
+	LOG_GL_ERROR( fmt_string("glGetTexLevelParameteriv() returned an error (level: %u, called to retrieve height).", level).c_str() );
+
+	return SDim2( (int)width, (int)height );
+}
+
+
 GLint ToGLInternalFormat( TextureFormat::Format fmt )
 {
 	switch( fmt )

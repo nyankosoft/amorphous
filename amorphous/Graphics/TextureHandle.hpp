@@ -71,6 +71,8 @@ public:
 
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 
+	SRectangular GetSize2D( unsigned int level = 0 );
+
 	/// loads texture from memory in the form of image archive
 //	bool Load( ImageArchive& img_archive );
 

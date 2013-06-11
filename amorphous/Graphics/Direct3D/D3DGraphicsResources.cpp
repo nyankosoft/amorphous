@@ -214,6 +214,17 @@ bool CD3DTextureResource::SaveTextureToImageFile( const std::string& image_filep
 }
 
 
+SDim2 CD3DTextureResource::GetSize2D( unsigned int level )
+{
+	D3DSURFACE_DESC surf_desc;
+	bool res = GetD3DSurfaceDesc( level, surf_desc );
+	if( res )
+		return SDim2( (int)surf_desc.Width, (int)surf_desc.Height );
+	else
+		return SDim2(0,0);
+}
+
+
 HRESULT CD3DTextureResource::CreateD3DTextureFromFile( const std::string& filepath )
 {
 	SAFE_RELEASE( m_pTexture );
@@ -230,6 +241,27 @@ LPDIRECT3DSURFACE9 CD3DTextureResource::GetPrimaryTextureSurface()
 	HRESULT surf_hr = m_pTexture->GetSurfaceLevel( 0, &pSurfaceLevel );
 
 	return pSurfaceLevel;
+}
+
+
+bool CD3DTextureResource::GetD3DSurfaceDesc( UINT level, D3DSURFACE_DESC& dest )
+{
+	if( !m_pTexture )
+		return false;
+
+	memset( &dest, 0, sizeof(D3DSURFACE_DESC) );
+
+	LPDIRECT3DSURFACE9 pSurfaceLevel = NULL;
+	HRESULT surf_hr = m_pTexture->GetSurfaceLevel( level, &pSurfaceLevel );
+
+	if( !pSurfaceLevel )
+		return false;
+
+	HRESULT desc_hr = pSurfaceLevel->GetDesc( &dest );
+	pSurfaceLevel->Release();
+
+	if( SUCCEEDED(desc_hr) )
+		return true;
 }
 
 
@@ -278,14 +310,23 @@ bool CD3DTextureResource::LoadFromFile( const std::string& filepath )
 	// Retrieve the width and hight of the top level texture, and set them to the desc
 	if( SUCCEEDED(hr) )
 	{
-		LPDIRECT3DSURFACE9 pSurfaceLevel = GetPrimaryTextureSurface();
-		if( /*SUCCEEDED(surf_hr) &&*/ pSurfaceLevel )
+//		LPDIRECT3DSURFACE9 pSurfaceLevel = GetPrimaryTextureSurface();
+//		if( /*SUCCEEDED(surf_hr) &&*/ pSurfaceLevel )
+//		{
+//			D3DSURFACE_DESC surf_desc;
+//			pSurfaceLevel->GetDesc( &surf_desc );
+//			pSurfaceLevel->Release();
+//			m_TextureDesc.Width  = (int)surf_desc.Width;
+//			m_TextureDesc.Height = (int)surf_desc.Height;
+//		}
+
+		D3DSURFACE_DESC surf_desc;
+		bool res = GetD3DSurfaceDesc( 0, surf_desc );
+		if( res )
 		{
-			D3DSURFACE_DESC surf_desc;
-			pSurfaceLevel->GetDesc( &surf_desc );
-			pSurfaceLevel->Release();
 			m_TextureDesc.Width  = (int)surf_desc.Width;
 			m_TextureDesc.Height = (int)surf_desc.Height;
+			m_TextureDesc.Format = FromD3DSurfaceFormat( surf_desc.Format );
 		}
 	}
 

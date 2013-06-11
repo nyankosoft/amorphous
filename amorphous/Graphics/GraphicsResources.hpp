@@ -9,11 +9,14 @@
 #include "TextureResourceVisitor.hpp"
 #include "../Support/Serialization/BinaryDatabase.hpp"
 #include "../Support/fwd.hpp"
+#include "../3DMath/Rectangular.hpp"
 #include <gl/gl.h>
 
 
 namespace amorphous
 {
+
+typedef SRectangular SDim2;
 
 
 class GraphicsResourceState
@@ -194,6 +197,8 @@ public:
 	/// - NOTE: image_filepath should be different from GetDesc().ResourcePath,
 	///         or it will overwrite the original image file
 	virtual bool SaveTextureToImageFile( const std::string& image_filepath ) { return false; }
+
+	virtual SDim2 GetSize2D( unsigned int level = 0 ) { return SDim2(0,0); }
 
 	virtual bool Lock() { return Lock( 0 ); }
 
