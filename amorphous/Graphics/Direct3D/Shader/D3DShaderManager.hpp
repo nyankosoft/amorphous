@@ -281,6 +281,8 @@ public:
 	// Sets a column-major 4x4 matrix
 	void SetParam( const char *parameter_name, const Matrix44& mat44_param );
 
+	void SetBool( const char *parameter_name, bool bool_param );
+
 //	void SetTextureParam()
 
 	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();

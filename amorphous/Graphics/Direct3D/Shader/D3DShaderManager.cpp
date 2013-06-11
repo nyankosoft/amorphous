@@ -413,6 +413,12 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const Matrix44& m
 }
 
 
+void CHLSLShaderManager::SetBool( const char *parameter_name, bool bool_param )
+{
+	m_pEffect->SetBool( parameter_name, (BOOL)bool_param );
+}
+
+
 boost::shared_ptr<ShaderLightManager> CHLSLShaderManager::GetShaderLightManager()
 {
 	return m_pHLSLShaderLightManager;

@@ -185,6 +185,8 @@ public:
 	// Sets a column-major 4x4 matrix
 	virtual void SetParam( const char *parameter_name, const Matrix44& mat44_param ) {}
 
+	virtual void SetBool( const char *parameter_name, bool bool_param ) {}
+
 //	void SetParam( ShaderParameter< std::vector<int> >& integer_param );
 
 //	void SetTextureParam()
