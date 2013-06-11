@@ -165,7 +165,7 @@ protected:
 	/// The specification of the render target.
 	TextureResourceDesc m_Desc;
 
-	RECT m_SourceRect;
+	SRect m_SourceRect;
 
 	/// default: false
 	bool m_UseTextureSizeDivisibleBy8;
@@ -194,8 +194,6 @@ private:
 protected:
 
 	virtual bool GetRenderTarget( PostProcessEffectFilter& prev_filter );
-
-//	LPD3DXEFFECT GetD3DXEffect();
 
 public:
 
@@ -246,7 +244,7 @@ public:
 
 //	void SetScalingFactor( int scaling_factor ) { m_fScalingFactor = scaling_factor; }
 
-	void SetSourceRect( RECT rect ) { m_SourceRect = rect; }
+	void SetSourceRect( SRect rect ) { m_SourceRect = rect; }
 
 //	void Render( PostProcessEffectFilter& prev_filter );
 

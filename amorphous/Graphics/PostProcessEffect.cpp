@@ -68,17 +68,21 @@ SRectangular GetCropWidthAndHeight()
 }
 
 
-void GetTextureRect( shared_ptr<CRenderTargetTextureHolder>& pSrc, RECT *pDest )
+void GetTextureRect( shared_ptr<CRenderTargetTextureHolder>& pSrc, SRect *pDest )
 {
 	pDest->left   = 0;
 	pDest->top    = 0;
 //	pDest->right  = pSrc->m_Desc.Width;
 //	pDest->bottom = pSrc->m_Desc.Height;
 
-	D3DSURFACE_DESC desc;
-	pSrc->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
-	pDest->right  = desc.Width;
-	pDest->bottom = desc.Height;
+//	D3DSURFACE_DESC desc;
+//	pSrc->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
+//	pDest->right  = desc.Width;
+//	pDest->bottom = desc.Height;
+
+	SRectangular tex_size = pSrc->m_Texture.GetSize2D(0);
+	pDest->right  = tex_size.width;
+	pDest->bottom = tex_size.height;
 }
 
 
@@ -420,8 +424,8 @@ Result::Name GetSampleOffsets_Star( unsigned int dwD3DTexSize,
  Get the texture coordinates to use when rendering into the destination
  texture, given the source and destination rectangles
 */
-HRESULT GetTextureCoords( TextureHandle& tex_src, RECT* pRectSrc,
-						  TextureHandle& tex_dest, RECT* pRectDest, CoordRect* pCoords )
+HRESULT GetTextureCoords( TextureHandle& tex_src, SRect* pRectSrc,
+						  TextureHandle& tex_dest, SRect* pRectDest, CoordRect* pCoords )
 {
 	LPDIRECT3DTEXTURE9 pTexSrc  = tex_src.GetTexture();
 	LPDIRECT3DTEXTURE9 pTexDest = tex_dest.GetTexture();
@@ -574,7 +578,7 @@ void DownScale4x4Filter::Render()
 //	pEffect->SetTechnique( "DownScale4x4" ); // set in RenderBase()
 
 	// Place the rectangle in the center of the back buffer surface
-	RECT rectSrc;
+	SRect rectSrc;
 //	rectSrc.left = ( pBackBufferDesc->Width  - dwCropWidth )  / 2;
 //	rectSrc.top  = ( pBackBufferDesc->Height - dwCropHeight ) / 2;
 //	rectSrc.right = rectSrc.left + dwCropWidth;
@@ -1469,7 +1473,7 @@ void HDRLightingFinalPassFilter::StorePrevFilterResults( PostProcessEffectFilter
 void HDRLightingFinalPassFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
+//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -1492,7 +1496,8 @@ void HDRLightingFinalPassFilter::Render()
 
 //	V( pEffect->SetTechnique( "FinalScenePass" ) );
 	shader_mgr.SetParam( "g_fMiddleGray", m_fKeyValue );
-	V( pEffect->SetBool( "g_bEnableToneMap", m_ToneMappingEnabled ) );
+//	V( pEffect->SetBool( "g_bEnableToneMap", m_ToneMappingEnabled ) );
+	shader_mgr.SetBool( "g_bEnableToneMap", m_ToneMappingEnabled );
 
 //	V( pd3dDevice->SetRenderTarget( 0, pSurfLDR ) );
 	V( pd3dDevice->SetTexture( 0, m_pPrevResult->m_Texture.GetTexture() ) );
