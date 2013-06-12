@@ -86,6 +86,17 @@ void GetTextureRect( shared_ptr<CRenderTargetTextureHolder>& pSrc, SRect *pDest 
 }
 
 
+inline static RECT ToRECT( const SRect& src )
+{
+	RECT dest;
+	dest.left   = src.left;
+	dest.right  = src.right;
+	dest.top    = src.top;
+	dest.bottom = src.bottom;
+	return dest;
+}
+
+
 //-----------------------------------------------------------------------------
 // Name: GetSampleOffsets_DownScale4x4
 // Desc: Get the texture coordinate offsets to be used inside the DownScale4x4
@@ -583,7 +594,7 @@ void DownScale4x4Filter::Render()
 //	rectSrc.top  = ( pBackBufferDesc->Height - dwCropHeight ) / 2;
 //	rectSrc.right = rectSrc.left + dwCropWidth;
 //	rectSrc.bottom = rectSrc.top + dwCropHeight;
-//	RECT rectSrc = m_SourceRect;
+//	SRect rectSrc = m_SourceRect;
 	GetTextureRect( m_pPrevScene, &rectSrc );
 
 	// rectSrc(l,t,r,b) = ( 0, 0, pBackBufferDesc->Width, pBackBufferDesc->Height ), when m_dwCropWidth and m_dwCropHeight are
@@ -659,17 +670,20 @@ void DownScale2x2Filter::Render()
 
 	// Get the rectangle describing the sampled portion of the source texture.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectSrc;
+	SRect rectSrc;
 //	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
-	InflateRect( &rectSrc, -1, -1 );
+	rectSrc.Inflate( -1, -1 );
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDest;
+	RECT rectDestPrev;
+	SRect rectDest;
 //	GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 	GetTextureRect( m_pDest, &rectDest );
-	InflateRect( &rectDest, -1, -1 );
+	rectDestPrev = ToRECT( rectDest );
+	InflateRect( &rectDestPrev, -1, -1 );
+	rectDest.Inflate( -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order
 	// to sample from the source rectangle and render into the destination rectangle
@@ -690,7 +704,7 @@ void DownScale2x2Filter::Render()
 	//pEffect->SetTechnique( "DownScale2x2" );
 
 //	pd3dDevice->SetTexture( 0, m_pTexStarSource );
-	hr = pd3dDevice->SetScissorRect( &rectDest );
+	hr = pd3dDevice->SetScissorRect( &rectDestPrev );
 //	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 
@@ -741,17 +755,20 @@ void HDRBrightPassFilter::Render()
 
 	// Get the rectangle describing the sampled portion of the source texture.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectSrc;
+	SRect rectSrc;
 //	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
-	InflateRect( &rectSrc, -1, -1 );
+	rectSrc.Inflate( -1, -1 );
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDest;
+	RECT rectDestPrev;
+	SRect rectDest;
 //	GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 	GetTextureRect( m_pDest, &rectDest );
-	InflateRect( &rectDest, -1, -1 );
+	rectDestPrev = ToRECT( rectDest );
+	InflateRect( &rectDestPrev, -1, -1 );
+	rectDest.Inflate( -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order 
 	// to sample from the source rectangle and render into the destination rectangle
@@ -771,7 +788,7 @@ void HDRBrightPassFilter::Render()
 
 //	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
-	hr = pd3dDevice->SetScissorRect( &rectDest );
+	hr = pd3dDevice->SetScissorRect( &rectDestPrev );
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
@@ -822,14 +839,18 @@ void GaussianBlurFilter::Render()
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDest;
+	RECT rectDestPrev;
+	SRect rectDest;
 //	GetTextureRect( m_pDest->m_Texture, &rectDest );
 	if( m_pDest )
 		GetTextureRect( m_pDest, &rectDest );
 	else
 		GetTextureRect( m_pCache->m_pOrigSceneHolder, &rectDest );
 
-	InflateRect( &rectDest, -1, -1 );
+	rectDestPrev = ToRECT( rectDest );
+
+	InflateRect( &rectDestPrev, -1, -1 );
+	rectDest.Inflate( -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order 
 	// to sample from the source rectangle and render into the destination rectangle
@@ -862,7 +883,7 @@ void GaussianBlurFilter::Render()
 
 //	pd3dDevice->SetRenderTarget( 0, m_pDest->pTexSurf );
 	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() );
-	hr = pd3dDevice->SetScissorRect( &rectDest );
+	hr = pd3dDevice->SetScissorRect( &rectDestPrev );
 //	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 
@@ -940,13 +961,17 @@ void BloomFilter::Render()
 	// horizontal & vertical sets the tex coords differently
 	// because the latter writes the scene texture that has not extra border texels
 
-	RECT rectSrc;
+	RECT restSrcPrev;
+	SRect rectSrc;
 //	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
-	InflateRect( &rectSrc, -1, -1 );
+	restSrcPrev = ToRECT( rectSrc );
+	InflateRect( &restSrcPrev, -1, -1 );
+	rectSrc.Inflate( -1, -1 );
 
 	CoordRect coords;
-	RECT rectDest;
+	RECT rectDestPrev;
+	SRect rectDest;
 	bool writing_to_texture_with_border_texels = m_DoScissorTesting;
 
 	if( !m_pDest )
@@ -955,14 +980,16 @@ void BloomFilter::Render()
 		coords.fTopV    = 0.0f;
 		coords.fRightU  = 1.0f;
 		coords.fBottomV = 1.0f;
-		memset( &rectDest, 0, sizeof(RECT) );
+		memset( &rectDest, 0, sizeof(SRect) );
 	}
 	else if( writing_to_texture_with_border_texels )
 	{
 		// horizontal blur
 //		GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 		GetTextureRect( m_pDest, &rectDest );
-		InflateRect( &rectDest, -1, -1 );
+		rectDestPrev = ToRECT( rectDest );
+		InflateRect( &rectDestPrev, -1, -1 );
+		rectDest.Inflate( -1, -1 );
 
 		GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, &rectDest, &coords );
 	}
@@ -975,7 +1002,7 @@ void BloomFilter::Render()
 
 	if( m_DoScissorTesting )
 	{
-		pd3dDevice->SetScissorRect( &rectDest );
+		pd3dDevice->SetScissorRect( &rectDestPrev );
 //		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE );
 		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 	}
@@ -1887,14 +1914,14 @@ void MonochromeColorFilter::Render()
 
 	// Get the rectangle describing the sampled portion of the source texture.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectSrc;
+	SRect rectSrc;
 //	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
 	InflateRect( &rectSrc, -1, -1 );
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDest;
+	SRect rectDest;
 //	GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 	GetTextureRect( m_pDest, &rectDest );
 	InflateRect( &rectDest, -1, -1 );
