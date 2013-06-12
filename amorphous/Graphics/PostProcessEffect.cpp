@@ -435,8 +435,8 @@ Result::Name GetSampleOffsets_Star( unsigned int dwD3DTexSize,
  Get the texture coordinates to use when rendering into the destination
  texture, given the source and destination rectangles
 */
-HRESULT GetTextureCoords( TextureHandle& tex_src, SRect* pRectSrc,
-						  TextureHandle& tex_dest, SRect* pRectDest, CoordRect* pCoords )
+HRESULT GetTextureCoords( TextureHandle& tex_src,  const SRect* pRectSrc,
+						  TextureHandle& tex_dest, const SRect* pRectDest, CoordRect* pCoords )
 {
 	LPDIRECT3DTEXTURE9 pTexSrc  = tex_src.GetTexture();
 	LPDIRECT3DTEXTURE9 pTexDest = tex_dest.GetTexture();
@@ -671,7 +671,6 @@ void DownScale2x2Filter::Render()
 	// Get the rectangle describing the sampled portion of the source texture.
 	// Decrease the rectangle to adjust for the single pixel black border.
 	SRect rectSrc;
-//	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
 	rectSrc.Inflate( -1, -1 );
 
@@ -764,7 +763,6 @@ void HDRBrightPassFilter::Render()
 	// Decrease the rectangle to adjust for the single pixel black border.
 	RECT rectDestPrev;
 	SRect rectDest;
-//	GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 	GetTextureRect( m_pDest, &rectDest );
 	rectDestPrev = ToRECT( rectDest );
 	InflateRect( &rectDestPrev, -1, -1 );
@@ -962,7 +960,6 @@ void BloomFilter::Render()
 	// because the latter writes the scene texture that has not extra border texels
 
 	SRect rectSrc;
-//	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
 	rectSrc.Inflate( -1, -1 );
 
