@@ -1160,11 +1160,52 @@ static void AppendBlendCalculations(
 }
 
 
+void EmbeddedGenericHLSL::Add2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader )
+{
+	const char *vs =
+	"void vs("\
+		"float4 Pos : POSITION, "\
+		"float4 Diffuse : COLOR0,"\
+		"float2 Tex0 : TEXCOORD0,"\
+		"float2 Tex1 : TEXCOORD1,"\
+		"float2 Tex2 : TEXCOORD2,"\
+		"float2 Tex3 : TEXCOORD3,"\
+		"out float4 oPos : POSITION,"\
+		"out float4 oDiffuse : COLOR0,"\
+		"out float2 oTex0 : TEXCOORD0,"\
+		"out float2 oTex1 : TEXCOORD1,"\
+		"out float2 oTex2 : TEXCOORD2,"\
+		"out float2 oTex3 : TEXCOORD3"\
+		")"\
+	"{"\
+		"oPos = Pos;"\
+		"oDiffuse = Diffuse;"\
+		"oTex0 = Tex0;"\
+		"oTex1 = Tex1;"\
+		"oTex2 = Tex2;"\
+		"oTex3 = Tex3;"\
+	"}\n";
+
+	shader += vs;
+}
+
+
 void EmbeddedGenericHLSL::Add2DPixelShader( const Generic2DShaderDesc& desc, std::string& shader )
 {
 //	shader = sg_2d_glsl_fs;
 
+	const char *ps =
+		"float4 ps("\
+			"float4 dc : COLOR0,"\
+			"float2 Tex0 : TEXCOORD0,"\
+			"float2 Tex1 : TEXCOORD1,"\
+			"float2 Tex2 : TEXCOORD2,"\
+			"float2 Tex3 : TEXCOORD3"\
+			") : COLOR\n{\n";
+
 	string& fs = shader;
+
+	fs += ps;
 
 	for( int i=0; i<numof(desc.textures); i++ )
 	{
@@ -1173,7 +1214,7 @@ void EmbeddedGenericHLSL::Add2DPixelShader( const Generic2DShaderDesc& desc, std
 		if( !sample_params.is_valid() )
 			break;
 
-		fs += fmt_string( "float4 tc%d = tex2D(T%d,t%d);\n", i, sample_params.sampler, sample_params.coord );
+		fs += fmt_string( "float4 tc%d = tex2D(Sampler%d,Tex%d);\n", i, sample_params.sampler, sample_params.coord );
 	}
 
 	fs += "float3 rgb=";
@@ -1200,7 +1241,7 @@ void EmbeddedGenericHLSL::Add2DPixelShader( const Generic2DShaderDesc& desc, std
 		);
 	fs += ";\n";
 
-	fs += "fc = float4(rgb,a);}\n";
+	fs += "return float4(rgb,a);}\n";
 };
 
 
@@ -1211,16 +1252,18 @@ Result::Name EmbeddedGenericHLSL::Generate2DShader( const Generic2DShaderDesc& d
 	"{"\
 		"pass P0"\
 		"{"\
-			"VertexShader = NULL;"\
-			"PixelShader  = NULL;"\
+			"VertexShader = compile vs_2_0 vs();"\
+			"PixelShader  = compile ps_2_0 ps();"\
 		"}"\
-	"}";
+	"}\n";
 
 	shader = ms_pTexDef;
 
+	Add2DVertexShader( desc, shader );
+
 	Add2DPixelShader( desc, shader );
 
-	LOG_PRINT_ERROR( " Not implemented yet." );
+	shader += src;
 
 	return Result::UNKNOWN_ERROR;
 }

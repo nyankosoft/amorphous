@@ -41,6 +41,8 @@ class EmbeddedGenericHLSL : public EmbeddedGenericShader
 
 	Result::Name GenerateNoLightingShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
 
+	void Add2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader );
+
 	void Add2DPixelShader( const Generic2DShaderDesc& desc, std::string& shader );
 
 public:
