@@ -67,7 +67,7 @@ public:
 };
 
 
-ShaderHandle CreateGeneric2DShader( const Generic2DShaderDesc& desc )
+inline ShaderHandle CreateGeneric2DShader( const Generic2DShaderDesc& desc )
 {
 	ShaderResourceDesc sr_desc;
 	sr_desc.pShaderGenerator.reset( new Generic2DShaderGenerator(desc) );
