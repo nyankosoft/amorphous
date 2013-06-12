@@ -678,7 +678,6 @@ void DownScale2x2Filter::Render()
 	// Decrease the rectangle to adjust for the single pixel black border.
 	RECT rectDestPrev;
 	SRect rectDest;
-//	GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 	GetTextureRect( m_pDest, &rectDest );
 	rectDestPrev = ToRECT( rectDest );
 	InflateRect( &rectDestPrev, -1, -1 );
@@ -979,7 +978,6 @@ void BloomFilter::Render()
 	else if( writing_to_texture_with_border_texels )
 	{
 		// horizontal blur
-//		GetTextureRect( m_pDest->m_Texture.GetTexture(), &rectDest );
 		GetTextureRect( m_pDest, &rectDest );
 		rectDestPrev = ToRECT( rectDest );
 		InflateRect( &rectDestPrev, -1, -1 );
