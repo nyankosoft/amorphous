@@ -961,12 +961,9 @@ void BloomFilter::Render()
 	// horizontal & vertical sets the tex coords differently
 	// because the latter writes the scene texture that has not extra border texels
 
-	RECT restSrcPrev;
 	SRect rectSrc;
 //	GetTextureRect( m_pPrevScene->m_Texture.GetTexture(), &rectSrc );
 	GetTextureRect( m_pPrevScene, &rectSrc );
-	restSrcPrev = ToRECT( rectSrc );
-	InflateRect( &restSrcPrev, -1, -1 );
 	rectSrc.Inflate( -1, -1 );
 
 	CoordRect coords;
