@@ -345,9 +345,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTexRect.cpp">
-      <Filter>Graphics\2DPrimitives</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
@@ -1101,9 +1098,6 @@
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp">
-      <Filter>Graphics\2DPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTexRect.hpp">
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp">

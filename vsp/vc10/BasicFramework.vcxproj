@@ -171,7 +171,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTexRect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsEffectManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsElementManager.cpp" />
@@ -457,7 +456,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTexRect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectHandle.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectManager.hpp" />
