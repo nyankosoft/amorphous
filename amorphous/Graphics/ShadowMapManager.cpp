@@ -1,8 +1,9 @@
 #include "ShadowMapManager.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
-#include "Graphics/Shader/ShaderManagerHub.hpp"
-#include "Graphics/2DPrimitive/2DTexRect.hpp"
+#include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/Generic2DShaderGenerator.hpp"
+//#include "Graphics/2DPrimitive/2DTexRect.hpp"
 #include "Graphics/LightStructs.hpp"
 #include "Graphics/HemisphericLight.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -134,11 +135,28 @@ bool ShadowMapManager::Init()
 //	if( FAILED(hr) )
 //		LOG_PRINT_ERROR( "Failed to create shadow map texture" );
 
-	bool c = CreateSceneShadowMapTextures();
+	bool textures_created = CreateSceneShadowMapTextures();
 
 	m_pSceneRenderTarget->InitScreenSizeRenderTarget();
 
-	if( shader_loaded && c )//&& SUCCEEDED(hr) )
+	Generic2DShaderDesc shader_desc;
+	// rgb = diffuse_color.rgb * tex0.rgb * tex1.rgb
+	shader_desc.diffuse_color_rgb = true;
+	shader_desc.diffuse_color_and_tex0_blend.rgb.op = '*';
+	shader_desc.tex0_and_tex1_blend.rgb.op = '*';
+	shader_desc.textures[0].sampler = 0;
+	shader_desc.textures[0].coord   = 0;
+	// a = diffuse_color.a
+	shader_desc.diffuse_color_alpha = true;
+	shader_desc.diffuse_color_and_tex0_blend.alpha.op = 0;
+	shader_desc.tex0_and_tex1_blend.alpha.op = 0;
+	shader_desc.textures[1].sampler = 1;
+	shader_desc.textures[1].coord   = 0;
+	m_RectDrawShader = CreateGeneric2DShader( shader_desc );
+	if( !m_RectDrawShader.IsLoaded() )
+		LOG_PRINT_ERROR(( "Failed to create the 2D shader for drawing fullscreeen quads." ));
+
+	if( shader_loaded && textures_created && m_RectDrawShader.IsLoaded() )
 		return true;
 	else
 		return false;
@@ -452,6 +470,12 @@ void ShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
 
+	ShaderManager *p2DRectShader = m_RectDrawShader.GetShaderManager();
+	if( !p2DRectShader )
+		return;
+
+	ShaderManager& rect_shader = *p2DRectShader;
+
 	if( ShadowMap::ms_DebugShadowMap )
 	{
 		static int display_shadowmap_tex = 0;
@@ -482,10 +506,14 @@ void ShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 
 //			ShaderManager *pShaderMgr = 
 //			Get2DPrimitiveRenderer().RenderRect( *pShaderMgr, scree_rect );
-			C2DTexRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
+			C2DRect tex_rect( sx + w, sy + h, sx + w*2 - 1, sy + h*2 - 1, 0xFFFFFFFF );
 			tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-			tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
+/*			tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );*/
 //			tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
+
+			rect_shader.SetTexture( 0, m_pSceneRenderTarget->GetRenderTargetTexture() );
+			rect_shader.SetTexture( 1, m_apShadowTexture[0]->GetRenderTargetTexture() );
+			Get2DPrimitiveRenderer().RenderRect( rect_shader, tex_rect );
 		}
 	}
 	else
@@ -493,10 +521,14 @@ void ShadowMapManager::RenderSceneWithShadow( int sx, int sy, int ex, int ey )
 		// Render the fullscreen rect with 2 textures
 		// - The original scene texture
 		// - The shadow overlay texture
-		C2DTexRect tex_rect( sx, sy, ex, ey, 0xFFFFFFFF );
+		C2DRect tex_rect( sx, sy, ex, ey, 0xFFFFFFFF );
 		tex_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
-		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );
+/*		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture().GetTexture(), m_apShadowTexture[0]->GetRenderTargetTexture().GetTexture() );*/
 //		tex_rect.Draw( m_pSceneRenderTarget->GetRenderTargetTexture(), m_pShadowedView );
+
+		rect_shader.SetTexture( 0, m_pSceneRenderTarget->GetRenderTargetTexture() );
+		rect_shader.SetTexture( 1, m_apShadowTexture[0]->GetRenderTargetTexture() );
+		Get2DPrimitiveRenderer().RenderRect( rect_shader, tex_rect );
 	}
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );

@@ -89,6 +89,8 @@ protected:
 
 	bool m_DisplayShadowMapTexturesForDebugging;
 
+	ShaderHandle m_RectDrawShader;
+
 protected:
 
 	void SetDefault();
@@ -146,7 +148,7 @@ public:
 	void BeginSceneShadowMap();
 
 	/// why virtual?
-	/// - See CVarianceShadowMapManager
+	/// - See VarianceShadowMapManager
 	virtual void EndSceneShadowMap();
 
 	virtual void PostProcessShadowMap( ShadowMap& shadow_map ) {}
