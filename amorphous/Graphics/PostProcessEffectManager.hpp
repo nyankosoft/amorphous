@@ -57,7 +57,7 @@ public:
 // A struct that encapsulates aspects of a render target postprocess
 // technique.
 //--------------------------------------------------------------------------------------
-class CPostProcessFilterShader
+class PostProcessFilterShader
 {
 	enum eParam
 	{
@@ -102,9 +102,9 @@ class CPostProcessFilterShader
 
 public:
 
-	CPostProcessFilterShader();
+	PostProcessFilterShader();
 
-	inline ~CPostProcessFilterShader() {}//{ Cleanup(); }
+	inline ~PostProcessFilterShader() {}//{ Cleanup(); }
 
 	Result::Name Init( const ShaderResourceDesc& shader_desc );
 
@@ -122,9 +122,9 @@ public:
 };
 
 
-class CFilterShaderContainer
+class FilterShaderContainer
 {
-	std::vector< boost::shared_ptr<CPostProcessFilterShader> > m_vecpShader;
+	std::vector< boost::shared_ptr<PostProcessFilterShader> > m_vecpShader;
 
 public:
 
@@ -132,11 +132,11 @@ public:
 
 	Result::Name AddShader( const std::string& name );
 
-	boost::shared_ptr<CPostProcessFilterShader> GetFilterShader( const std::string& name );
+	boost::shared_ptr<PostProcessFilterShader> GetFilterShader( const std::string& name );
 
-	boost::shared_ptr<CPostProcessFilterShader> GetShader( const std::string& technique_name );
+	boost::shared_ptr<PostProcessFilterShader> GetShader( const std::string& technique_name );
 
-//	boost::shared_ptr<CPostProcessFilterShader> GetShaderFromFilename( const std::string& filename );
+//	boost::shared_ptr<PostProcessFilterShader> GetShaderFromFilename( const std::string& filename );
 };
 
 
@@ -164,7 +164,7 @@ class PostProcessEffectManager : public GraphicsComponent
 
 	boost::shared_ptr<RenderTargetTextureCache> m_pTextureCache;
 
-	CFilterShaderContainer m_FilterShaderContainer;
+	FilterShaderContainer m_FilterShaderContainer;
 
 	/// render target to render the scene
 	TextureHandle m_SceneRenderTarget;
@@ -173,7 +173,7 @@ class PostProcessEffectManager : public GraphicsComponent
 
 	boost::shared_ptr<PostProcessEffectFilter> m_pFilter;
 
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pOrigSceneHolder;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
 
 
 	U32 m_EnabledEffectFlags;

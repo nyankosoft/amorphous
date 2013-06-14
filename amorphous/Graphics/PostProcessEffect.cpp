@@ -68,7 +68,7 @@ SRectangular GetCropWidthAndHeight()
 }
 
 
-void GetTextureRect( shared_ptr<CRenderTargetTextureHolder>& pSrc, SRect *pDest )
+void GetTextureRect( shared_ptr<RenderTargetTextureHolder>& pSrc, SRect *pDest )
 {
 	pDest->left   = 0;
 	pDest->top    = 0;
@@ -500,7 +500,7 @@ HRESULT GetTextureCoords( TextureHandle& tex_src,  const SRect* pRectSrc,
 
 ShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
 {
-	boost::shared_ptr<CPostProcessFilterShader> pFilterShader = filter.GetFilterShader();
+	boost::shared_ptr<PostProcessFilterShader> pFilterShader = filter.GetFilterShader();
 	if( !pFilterShader )
 		return NULL;
 
@@ -530,7 +530,7 @@ DownScale4x4Filter::DownScale4x4Filter()
 }
 
 
-Result::Name DownScale4x4Filter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name DownScale4x4Filter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -539,7 +539,7 @@ Result::Name DownScale4x4Filter::Init( RenderTargetTextureCache& cache, CFilterS
 
 
 /*
-bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<CRenderTargetTextureHolder>& pDest )
+bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<RenderTargetTextureHolder>& pDest )
 {
 	int src_w = prev_filter.pDest->m_Desc.Width;
 	int src_h = prev_filter.pDest->m_Desc.Height;
@@ -641,7 +641,7 @@ DownScale2x2Filter::DownScale2x2Filter()
 }
 
 
-Result::Name DownScale2x2Filter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name DownScale2x2Filter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -727,7 +727,7 @@ HDRBrightPassFilter::HDRBrightPassFilter()
 }
 
 
-Result::Name HDRBrightPassFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name HDRBrightPassFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1059,7 +1059,7 @@ CombinedBloomFilter::CombinedBloomFilter()
 }
 
 
-Result::Name CombinedBloomFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name CombinedBloomFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1203,7 +1203,7 @@ LuminanceCalcFilter::LuminanceCalcFilter( const std::string& technique_name, int
 }
 
 
-Result::Name LuminanceCalcFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name LuminanceCalcFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1339,7 +1339,7 @@ Result::Name AdaptationCalcFilter::SetRenderTarget( PostProcessEffectFilter& pre
 }
 
 
-Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1349,7 +1349,7 @@ Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, CFilte
 
 	int num_cached_texes = cache.GetNumTextures( m_Desc );
 
-//	shared_ptr<CRenderTargetTextureHolder> apHolder[2];
+//	shared_ptr<RenderTargetTextureHolder> apHolder[2];
 //	for( int i=num_cached_texes; i<2; i++ )
 	for( int i=0; i<2; i++ )
 	{
@@ -1392,7 +1392,7 @@ void AdaptationCalcFilter::Render()
 //	UINT uiPass, uiPassCount;
 
 	// Swap current & last luminance
-	shared_ptr<CRenderTargetTextureHolder> pTexSwap = m_pTexAdaptedLuminanceLast;
+	shared_ptr<RenderTargetTextureHolder> pTexSwap = m_pTexAdaptedLuminanceLast;
 	m_pTexAdaptedLuminanceLast = m_pTexAdaptedLuminanceCur;
 	m_pTexAdaptedLuminanceCur = pTexSwap;
 
@@ -1562,9 +1562,9 @@ void HDRLightingFinalPassFilter::Render()
 	if( m_pStar )
 		m_pStar->DecrementLockCount();
 
-	m_pBloom = shared_ptr<CRenderTargetTextureHolder>();
-	m_pStar = shared_ptr<CRenderTargetTextureHolder>();
-	m_pAdaptedLuminance = shared_ptr<CRenderTargetTextureHolder>();
+	m_pBloom = shared_ptr<RenderTargetTextureHolder>();
+	m_pStar = shared_ptr<RenderTargetTextureHolder>();
+	m_pAdaptedLuminance = shared_ptr<RenderTargetTextureHolder>();
 }
 
 
@@ -1581,7 +1581,7 @@ m_EnableStarFilter(false)
 }
 
 
-Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1737,7 +1737,7 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, CFilterSh
 	m_pLastFilter = m_pFinalPassFilter;
 
 	// set shader params
-	shared_ptr<CPostProcessFilterShader> pShader = filter_shader_container.GetFilterShader( "HDRPostProcessor" );
+	shared_ptr<PostProcessFilterShader> pShader = filter_shader_container.GetFilterShader( "HDRPostProcessor" );
 	if( pShader && pShader->GetShader().GetShaderManager() )
 	{
 		ShaderManager *pShaderMgr = pShader->GetShader().GetShaderManager();
@@ -1781,7 +1781,7 @@ m_fBlurStrength(1.0f)
 }
 
 
-Result::Name FullScreenBlurFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name FullScreenBlurFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
@@ -1868,7 +1868,7 @@ MonochromeColorFilter::MonochromeColorFilter()
 }
 
 
-Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container )
+Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
 	SetFilterShader( filter_shader_container.GetShader( "HDRPostProcessor" ) );

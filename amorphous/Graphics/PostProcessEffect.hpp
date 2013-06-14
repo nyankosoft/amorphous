@@ -17,12 +17,12 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_ORIGINAL_SCENE; }
 
-	OriginalSceneFilter( boost::shared_ptr<CRenderTargetTextureHolder> pHolder )
+	OriginalSceneFilter( boost::shared_ptr<RenderTargetTextureHolder> pHolder )
 	{
 		m_pDest = pHolder;
 	}
 
-	void SetSceneRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder )
+	void SetSceneRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder )
 	{
 		m_pDest = pHolder;
 	}
@@ -147,7 +147,7 @@ public:
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_COMBINED_BLOOM; }
 
 //	Result::Name Init( RenderTargetTextureCache& cache );
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void RenderBase( PostProcessEffectFilter& prev_filter );
 
@@ -186,7 +186,7 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_DOWN_SCALE_4x4; }
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 //	void Update();
 
@@ -207,7 +207,7 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_DOWN_SCALE_2x2; }
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 //	void Update();
 
@@ -237,7 +237,7 @@ public:
 
 	LuminanceCalcFilter( const std::string& technique_name, int num_samples, int render_target_size );
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_LUMINANCE_CALC; }
 
@@ -247,8 +247,8 @@ public:
 
 class AdaptationCalcFilter : public PostProcessEffectFilter
 {
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pTexAdaptedLuminanceLast;
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pTexAdaptedLuminanceCur;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pTexAdaptedLuminanceLast;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pTexAdaptedLuminanceCur;
 
 	float m_fElapsedTime;
 
@@ -266,7 +266,7 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_ADAPTATION_CALC; }
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void Render();
 
@@ -274,25 +274,25 @@ public:
 
 	void SetLuminanceAdaptationRate( float fRate ) { m_fLuminanceAdaptationRate = fRate; }
 
-	boost::shared_ptr<CRenderTargetTextureHolder> GetAdaptedLuminanceTexture() { return m_pTexAdaptedLuminanceCur; }
+	boost::shared_ptr<RenderTargetTextureHolder> GetAdaptedLuminanceTexture() { return m_pTexAdaptedLuminanceCur; }
 };
 
 
 class HDRBrightPassFilter : public PostProcessEffectFilter
 {
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pAdaptedLuminanceTexture;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pAdaptedLuminanceTexture;
 
 public:
 
 	HDRBrightPassFilter();
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HDR_BRIGHT_PASS; }
 
 	void Render();
 
-	void SetAdaptedLuminanceTexture( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { m_pAdaptedLuminanceTexture = pHolder; }
+	void SetAdaptedLuminanceTexture( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { m_pAdaptedLuminanceTexture = pHolder; }
 };
 
 
@@ -300,10 +300,10 @@ class HDRLightingFinalPassFilter : public PostProcessEffectFilter
 {
 public:
 
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pBloom;
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pStar;
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pAdaptedLuminance;
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pPrevResult;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pBloom;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pStar;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pAdaptedLuminance;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pPrevResult;
 
 	float m_fKeyValue;
 
@@ -368,7 +368,7 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HDR_LIGHTING; }
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void RenderBase( PostProcessEffectFilter& prev_filter );
 
@@ -378,9 +378,9 @@ public:
 
 	void SetLuminanceAdaptationRate( float fRate ) { if(m_pAdaptationCalcFilter) m_pAdaptationCalcFilter->SetLuminanceAdaptationRate(fRate); }
 
-	void LockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
+	void LockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
-	void UnlockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
+	void UnlockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
 
 	/// used to display adapted luminance for debugging
 	boost::shared_ptr<AdaptationCalcFilter> GetAdaptationCalcFilter() { return m_pAdaptationCalcFilter; }
@@ -404,7 +404,7 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_FULL_SCREEN_BLUR; }
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void RenderBase( PostProcessEffectFilter& prev_filter );
 
@@ -422,7 +422,7 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_MONOCHROME_COLOR; }
 
-	Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void SetColorOffset( float* pafRGB ) {}
 

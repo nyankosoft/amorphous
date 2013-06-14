@@ -60,10 +60,10 @@ public:
 
 
 //========================================================================
-// CPostProcessFilterShader
+// PostProcessFilterShader
 //========================================================================
 
-CPostProcessFilterShader::CPostProcessFilterShader()
+PostProcessFilterShader::PostProcessFilterShader()
 //:
 //m_hTPostProcess(NULL),
 //m_nRenderTarget(0)
@@ -77,7 +77,7 @@ CPostProcessFilterShader::CPostProcessFilterShader()
 }
 
 
-Result::Name CPostProcessFilterShader::Init( const ShaderResourceDesc& shader_desc )
+Result::Name PostProcessFilterShader::Init( const ShaderResourceDesc& shader_desc )
 {
 	m_ShaderDesc = shader_desc;
 	bool loaded = m_Shader.Load( m_ShaderDesc );
@@ -86,7 +86,7 @@ Result::Name CPostProcessFilterShader::Init( const ShaderResourceDesc& shader_de
 }
 
 
-Result::Name CPostProcessFilterShader::Init( const std::string& filename )
+Result::Name PostProcessFilterShader::Init( const std::string& filename )
 {
 	m_ShaderDesc.ResourcePath = filename;
 	bool loaded = m_Shader.Load( m_ShaderDesc );
@@ -95,16 +95,16 @@ Result::Name CPostProcessFilterShader::Init( const std::string& filename )
 }
 
 
-Result::Name CFilterShaderContainer::AddShader( const ShaderResourceDesc& shader_desc )
+Result::Name FilterShaderContainer::AddShader( const ShaderResourceDesc& shader_desc )
 {
 	m_vecpShader.resize( 1 );
-	m_vecpShader[0].reset( new CPostProcessFilterShader );
+	m_vecpShader[0].reset( new PostProcessFilterShader );
 
 	return m_vecpShader[0]->Init( shader_desc );
 }
 
 
-Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
+Result::Name FilterShaderContainer::AddShader( const std::string& filepath )
 {
 	ShaderResourceDesc shader_desc;
 	shader_desc.ResourcePath = filepath;
@@ -112,21 +112,21 @@ Result::Name CFilterShaderContainer::AddShader( const std::string& filepath )
 }
 
 
-boost::shared_ptr<CPostProcessFilterShader> CFilterShaderContainer::GetFilterShader( const std::string& name )
+boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetFilterShader( const std::string& name )
 {
 	if( 0 < m_vecpShader.size() )
 		return m_vecpShader[0];
 	else
-		return shared_ptr<CPostProcessFilterShader>();
+		return shared_ptr<PostProcessFilterShader>();
 }
 
 
-boost::shared_ptr<CPostProcessFilterShader> CFilterShaderContainer::GetShader( const std::string& technique_name )
+boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetShader( const std::string& technique_name )
 {
 	if( 0 < m_vecpShader.size() )
 		return m_vecpShader[0];
 	else
-		return shared_ptr<CPostProcessFilterShader>();
+		return shared_ptr<PostProcessFilterShader>();
 
 /*	for( i=0; i<; i++ )
 	{
@@ -136,11 +136,11 @@ boost::shared_ptr<CPostProcessFilterShader> CFilterShaderContainer::GetShader( c
 		}
 	}
 
-	return shared_ptr<CPostProcessFilterShader>();*/
+	return shared_ptr<PostProcessFilterShader>();*/
 }
 
 /*
-boost::shared_ptr<CPostProcessFilterShader> GetShaderFromFilename( const std::string& filename )
+boost::shared_ptr<PostProcessFilterShader> GetShaderFromFilename( const std::string& filename )
 {
 	for( i=0; i<; i++ )
 	{
@@ -151,7 +151,7 @@ boost::shared_ptr<CPostProcessFilterShader> GetShaderFromFilename( const std::st
 		}
 	}
 
-	return shared_ptr<CPostProcessFilterShader>();
+	return shared_ptr<PostProcessFilterShader>();
 }
 */
 
@@ -205,7 +205,7 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 /*
 	m_FilterShaderContainer.m_vecpShader.resize( 1 );
 	m_FilterShaderContainer.m_vecpShader[0]
-	= shared_ptr<CPostProcessFilterShader>( new CPostProcessFilterShader );
+	= shared_ptr<PostProcessFilterShader>( new PostProcessFilterShader );
 
 	m_FilterShaderContainer.m_vecpShader[0]->Init( "HDRPostProcessor.fx" );
 */
@@ -248,7 +248,7 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A8R8G8B8;
 
 	SRectangular bb = GetBackBufferWidthAndHeight();
-	m_pOrigSceneHolder.reset( new CRenderTargetTextureHolder() );
+	m_pOrigSceneHolder.reset( new RenderTargetTextureHolder() );
 	m_pOrigSceneHolder->m_Desc.Width  = bb.width;
 	m_pOrigSceneHolder->m_Desc.Height = bb.height;
 	m_pOrigSceneHolder->m_Desc.Format = orig_scene_buffer_format;
@@ -663,10 +663,10 @@ void PostProcessEffectManager::LoadGraphicsResources( const GraphicsParameters& 
 void PostProcessEffectManager::DisplayAdaptedLuminance()
 {
 	// TODO: implement the feature to render 2D rects with programmable shader
-	shared_ptr<CRenderTargetTextureHolder> pRTTexHolder
+	shared_ptr<RenderTargetTextureHolder> pRTTexHolder
 		= m_pHDRLightingFilter->GetAdaptationCalcFilter()->GetAdaptedLuminanceTexture();
 
-	shared_ptr<CPostProcessFilterShader> pFilterShader
+	shared_ptr<PostProcessFilterShader> pFilterShader
 		= m_FilterShaderContainer.GetShader( "AdaptedLuminanceDisplay" );
 
 	if( pRTTexHolder && pFilterShader )

@@ -18,8 +18,8 @@ namespace amorphous
 {
 
 
-class CPostProcessFilterShader;
-class CFilterShaderContainer;
+class PostProcessFilterShader;
+class FilterShaderContainer;
 
 
 const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc();
@@ -62,7 +62,7 @@ enum eRT_TYPE
 };
 
 
-class CRenderTargetTextureHolder
+class RenderTargetTextureHolder
 {
 	int m_NumLocks;
 
@@ -71,7 +71,7 @@ public:
 	TextureHandle m_Texture;
 	TextureResourceDesc m_Desc;
 
-	CRenderTargetTextureHolder()
+	RenderTargetTextureHolder()
 		:
 	m_pTexSurf(NULL),
 //	m_pTexture(NULL),
@@ -108,11 +108,11 @@ class RenderTargetTextureCache
 {
 public:
 
-	std::vector< boost::shared_ptr<CRenderTargetTextureHolder> > m_vecpHolder;
+	std::vector< boost::shared_ptr<RenderTargetTextureHolder> > m_vecpHolder;
 
 	LPDIRECT3DSURFACE9 m_pOrigRenderTarget;
 
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pOrigSceneHolder;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
 
 	boost::weak_ptr<RenderTargetTextureCache> m_pSelf;
 
@@ -132,7 +132,7 @@ public:
 
 	Result::Name AddTexture( int width, int height, TextureFormat::Format format );
 
-	boost::shared_ptr<CRenderTargetTextureHolder> GetTexture( const TextureResourceDesc& desc );
+	boost::shared_ptr<RenderTargetTextureHolder> GetTexture( const TextureResourceDesc& desc );
 
 	void SetSelfPtr( boost::weak_ptr<RenderTargetTextureCache> pSelf ) { m_pSelf = pSelf; }
 
@@ -150,7 +150,7 @@ class PostProcessEffectFilter
 {
 protected:
 
-	boost::shared_ptr<CPostProcessFilterShader> m_pFilterShader;
+	boost::shared_ptr<PostProcessFilterShader> m_pFilterShader;
 
 //    int m_nFxIndex;
 
@@ -158,9 +158,9 @@ protected:
 
 	float m_fScaleX, m_fScaleY;
 
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pDest;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pDest;
 
-	boost::shared_ptr<CRenderTargetTextureHolder> m_pPrevScene;
+	boost::shared_ptr<RenderTargetTextureHolder> m_pPrevScene;
 
 	/// The specification of the render target.
 	TextureResourceDesc m_Desc;
@@ -234,7 +234,7 @@ public:
 
 	virtual FilterType GetFilterType() const = 0;
 
-	virtual Result::Name Init( RenderTargetTextureCache& cache, CFilterShaderContainer& filter_shader_container );
+	virtual Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void SetTextureCache( boost::shared_ptr<RenderTargetTextureCache> pCache ) { m_pCache = pCache; }
 
@@ -269,16 +269,16 @@ public:
 
 	virtual void ClearNextFilters() { m_vecpNextFilter.resize( 0 ); }
 
-	void SetFilterShader(  boost::shared_ptr<CPostProcessFilterShader> pFilterShader ) { m_pFilterShader = pFilterShader; }
+	void SetFilterShader(  boost::shared_ptr<PostProcessFilterShader> pFilterShader ) { m_pFilterShader = pFilterShader; }
 
-	boost::shared_ptr<CPostProcessFilterShader> GetFilterShader() { return m_pFilterShader; }
+	boost::shared_ptr<PostProcessFilterShader> GetFilterShader() { return m_pFilterShader; }
 
-	boost::shared_ptr<CRenderTargetTextureHolder> GetDestRenderTarget() { return m_pDest; }
+	boost::shared_ptr<RenderTargetTextureHolder> GetDestRenderTarget() { return m_pDest; }
 
 	/// rationale to make this virtual: combined filters may not need to lock prev render target
-	virtual void LockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
+	virtual void LockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
-	virtual void UnlockPrevRenderTarget( boost::shared_ptr<CRenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
+	virtual void UnlockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
 
 	const std::string& GetDebugImageFilenameExtraString() { return m_DebugImageFilenameExtraString; }
 
