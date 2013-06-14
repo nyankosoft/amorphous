@@ -159,10 +159,16 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 			hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pDest->m_pTexSurf );
 
 			// set viewport
-			D3DSURFACE_DESC surf_desc;
-			hr = m_pDest->m_pTexSurf->GetDesc( &surf_desc );
-			D3DVIEWPORT9 viewport = { 0, 0, surf_desc.Width, surf_desc.Height, 0.0f, 1.0f };
-			hr = DIRECT3D9.GetDevice()->SetViewport( &viewport );
+//			D3DSURFACE_DESC surf_desc;
+//			hr = m_pDest->m_pTexSurf->GetDesc( &surf_desc );
+//			D3DVIEWPORT9 viewport = { 0, 0, surf_desc.Width, surf_desc.Height, 0.0f, 1.0f };
+//			hr = DIRECT3D9.GetDevice()->SetViewport( &viewport );
+			Viewport vp;
+			vp.UpperLeftX = 0;
+			vp.UpperLeftY = 0;
+			vp.Width = m_pDest->m_Desc.Width;
+			vp.Height = m_pDest->m_Desc.Height;
+			GraphicsDevice().SetViewport( vp );
 		}
 		else
 		{
