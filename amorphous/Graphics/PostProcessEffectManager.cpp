@@ -275,7 +275,7 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 }
 
 
-// Save the current render target.
+// Save the current render target to m_pSurfLDR & m_pTextureCache->m_pOrigRenderTarget.
 // Set a render target on which client renders the scene.
 Result::Name PostProcessEffectManager::BeginRender()
 {
@@ -348,6 +348,10 @@ Result::Name PostProcessEffectManager::EndRender()
 // Run post process effect filters.
 // Renders the final post process effects to the original render target
 // saved in PostProcessEffectManager::BeginRender().
+// The order in which the filters are applied is predetermined as follows.
+// 1. HRD lighting
+// 2. Monochrome
+// 3. Fullscreen blur
 Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 {
 	if( m_EnabledEffectFlags == 0 )
