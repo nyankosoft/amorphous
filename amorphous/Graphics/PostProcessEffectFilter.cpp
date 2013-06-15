@@ -140,7 +140,10 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 	if( 0 < m_vecpNextFilter.size() )
 	{
 		// Find a texture render target currently available, and set it to m_pDest
-		/*bool found = */GetRenderTarget( prev_filter );
+		bool found = GetRenderTarget( prev_filter );
+
+		// Commented out: not necessarily an error for the adaptation calc filter
+		// See the else block of if( m_pDest ) for more details.
 //		if( !found )
 //			return Result::UNKNOWN_ERROR;
 
