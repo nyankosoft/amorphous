@@ -748,8 +748,8 @@ void HDRBrightPassFilter::Render()
 
 	HRESULT hr = S_OK;
 
-	D3DSURFACE_DESC desc;
-	m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
+//	D3DSURFACE_DESC desc;
+//	m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
 
 	// Get the rectangle describing the sampled portion of the source texture.
 	// Decrease the rectangle to adjust for the single pixel black border.
@@ -863,13 +863,15 @@ void GaussianBlurFilter::Render()
 	}
 
 	// Get the sample offsets used within the pixel shader
-	D3DSURFACE_DESC desc;
-	hr = m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
-	if( FAILED( hr ) )
-		return;// hr;
+//	D3DSURFACE_DESC desc;
+//	hr = m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
+//	if( FAILED( hr ) )
+//		return;// hr;
 
+	const uint tex_width  = (uint)m_pPrevScene->m_Desc.Width;
+	const uint tex_height = (uint)m_pPrevScene->m_Desc.Height;
 
-	GetSampleOffsets_GaussBlur5x5( desc.Width, desc.Height, avSampleOffsets, avSampleWeights );
+	GetSampleOffsets_GaussBlur5x5( tex_width, tex_height, avSampleOffsets, avSampleWeights );
 
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof( avSampleOffsets ) * 2 );
 	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, numof( avSampleWeights ) * 4 );
