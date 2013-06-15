@@ -689,13 +689,12 @@ void DownScale2x2Filter::Render()
 	GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, &rectDest, &coords );
 
 	// Get the sample offsets used within the pixel shader
-	D3DSURFACE_DESC desc;
-//	hr = m_pTexBrightPass->GetLevelDesc( 0, &desc );
-	hr = m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
-	if( FAILED( hr ) )
-		return;// hr;
 
-	GetSampleOffsets_DownScale2x2( (unsigned int)desc.Width, (unsigned int)desc.Height, avSampleOffsets );
+	// Get the width and height of the first texture in the mipmap chain.
+	const uint tex_width  = (uint)m_pPrevScene->m_Desc.Width;
+	const uint tex_height = (uint)m_pPrevScene->m_Desc.Height;
+
+	GetSampleOffsets_DownScale2x2( tex_width, tex_height, avSampleOffsets );
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
 
 	// Create an exact 1/2 x 1/2 copy of the source texture
@@ -863,10 +862,6 @@ void GaussianBlurFilter::Render()
 	}
 
 	// Get the sample offsets used within the pixel shader
-//	D3DSURFACE_DESC desc;
-//	hr = m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
-//	if( FAILED( hr ) )
-//		return;// hr;
 
 	const uint tex_width  = (uint)m_pPrevScene->m_Desc.Width;
 	const uint tex_height = (uint)m_pPrevScene->m_Desc.Height;
