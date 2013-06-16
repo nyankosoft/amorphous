@@ -22,7 +22,7 @@ class PostProcessFilterShader;
 class FilterShaderContainer;
 
 
-const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc();
+//const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc();
 SRectangular GetBackBufferWidthAndHeight();
 SRectangular GetCropWidthAndHeight();
 

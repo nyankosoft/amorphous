@@ -186,7 +186,7 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
-    const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
+//	const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
 
 	ShaderResourceDesc shader_desc;
 	if( base_shader_directory_path.length() == 0 )
