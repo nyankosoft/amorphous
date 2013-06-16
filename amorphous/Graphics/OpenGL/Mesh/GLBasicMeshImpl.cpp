@@ -134,6 +134,18 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( C3DMeshModelArchive& archi
 		return Result::INVALID_ARGS;
 	}
 
+	if( vertex_flags & VFF::BLEND_WEIGHTS )
+	{
+		m_VertexElementOffsets[VEE::BLEND_WEIGHTS] = (uint)cm.GetVertexElementOffset( VEE::BLEND_WEIGHTS );
+		m_VertexElementStreamIndices[VEE::BLEND_WEIGHTS] = vertex_element_index++;
+	}
+
+	if( vertex_flags & VFF::BLEND_INDICES )
+	{
+		m_VertexElementOffsets[VEE::BLEND_INDICES] = (uint)cm.GetVertexElementOffset( VEE::BLEND_INDICES );
+		m_VertexElementStreamIndices[VEE::BLEND_INDICES] = vertex_element_index++;
+	}
+
 	if( vertex_flags & VFF::NORMAL )
 	{
 		m_VertexElementOffsets[VEE::NORMAL] = (uint)cm.GetVertexElementOffset( VEE::NORMAL );
@@ -265,6 +277,18 @@ void GLBasicMeshImpl::Render()
 	{
 		LOG_PRINT_ERROR( " A vertex must at least have a position." );
 		return;
+	}
+
+	if( vertex_flags & VFF::BLEND_WEIGHTS )
+	{
+		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::BLEND_WEIGHTS] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::BLEND_WEIGHTS], 4, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::BLEND_WEIGHTS] );
+	}
+
+	if( vertex_flags & VFF::BLEND_INDICES )
+	{
+		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::BLEND_INDICES] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::BLEND_INDICES], 4, GL_BYTE, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::BLEND_INDICES] );
 	}
 
 	if( vertex_flags & VFF::NORMAL )
