@@ -735,8 +735,8 @@ void DownScale2x2Filter::Render()
 
 //	pd3dDevice->SetTexture( 0, m_pTexStarSource );
 	GraphicsDevice().SetScissorRect( rectDest );
-//	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
@@ -744,7 +744,7 @@ void DownScale2x2Filter::Render()
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 }
 
 
@@ -812,8 +812,8 @@ void HDRBrightPassFilter::Render()
 
 	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_Texture.GetTexture() );
 
-//	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+//	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 	GraphicsDevice().SetScissorRect( rectDest );
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
@@ -823,7 +823,7 @@ void HDRBrightPassFilter::Render()
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 	return;
 }
@@ -904,8 +904,8 @@ void GaussianBlurFilter::Render()
 //	pd3dDevice->SetRenderTarget( 0, m_pDest->pTexSurf );
 	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() );
 	GraphicsDevice().SetScissorRect( rectDest );
-//	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+//	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
@@ -913,7 +913,7 @@ void GaussianBlurFilter::Render()
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 	return;
 }
@@ -1015,8 +1015,8 @@ void BloomFilter::Render()
 	if( m_DoScissorTesting )
 	{
 		GraphicsDevice().SetScissorRect( rectDest );
-//		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE );
-		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+//		GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
+		GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 	}
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
@@ -1025,7 +1025,7 @@ void BloomFilter::Render()
 	RenderFullScreenQuad( shader_mgr, coords );
 
 	if( m_DoScissorTesting )
-		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+		GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 }
 
 
@@ -1949,7 +1949,7 @@ void MonochromeColorFilter::Render()
 	coords.fRightU  = 1.0f;
 	coords.fBottomV = 1.0f;
 
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 //	hr = pd3dDevice->SetScissorRect( &rectDest );
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
@@ -1959,7 +1959,7 @@ void MonochromeColorFilter::Render()
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
-	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
+	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 	return;
 }
