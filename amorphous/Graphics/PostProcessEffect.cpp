@@ -31,10 +31,11 @@ struct CoordRect
 
 
 // Screen quad vertex format
-struct ScreenVertex
+class ScreenVertex
 {
-    D3DXVECTOR4 p; // position
-    D3DXVECTOR2 t; // texture coordinate
+public:
+    Vector4 p; // position
+    TEXCOORD2 t; // texture coordinate
 
     static const DWORD FVF;
 };
@@ -171,34 +172,42 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 {
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 
-	D3DSURFACE_DESC dtdsdRT;
-	PDIRECT3DSURFACE9 pSurfRT;
+//	D3DSURFACE_DESC dtdsdRT;
+//	PDIRECT3DSURFACE9 pSurfRT;
 	HRESULT hr = S_OK;
 
 	// Acquire render target width and height
-	hr = pd3dDevice->GetRenderTarget( 0, &pSurfRT );
-	hr = pSurfRT->GetDesc( &dtdsdRT );
-	ULONG ref_count = pSurfRT->Release();
+	// Commented out: changed to retrieve the dimensions from viewports
+	// beacuse OpenGL does not have a GetRenderTarget() equivalent,
+	// but both Direct3D and OpenGL have APIs to retrieve viewport dimensions.
+//	hr = pd3dDevice->GetRenderTarget( 0, &pSurfRT );
+//	hr = pSurfRT->GetDesc( &dtdsdRT );
+//	ULONG ref_count = pSurfRT->Release();
+
+	Viewport vp;
+	GraphicsDevice().GetViewport( vp );
 
 	// Ensure that we're directly mapping texels to pixels by offset by 0.5
 	// For more info see the doc page titled "Directly Mapping Texels to Pixels"
-	float fWidth5 = ( float )dtdsdRT.Width - 0.5f;
-	float fHeight5 = ( float )dtdsdRT.Height - 0.5f;
+//	float fWidth5 = ( float )dtdsdRT.Width - 0.5f;
+//	float fHeight5 = ( float )dtdsdRT.Height - 0.5f;
+	float fWidth5  = (float)vp.Width  - 0.5f;
+	float fHeight5 = (float)vp.Height - 0.5f;
 
 	// Draw the quad
 	ScreenVertex svQuad[4];
 
-	svQuad[0].p = D3DXVECTOR4( -0.5f, -0.5f, 0.5f, 1.0f );
-	svQuad[0].t = D3DXVECTOR2( fLeftU, fTopV );
+	svQuad[0].p = Vector4( -0.5f, -0.5f, 0.5f, 1.0f );
+	svQuad[0].t = TEXCOORD2( fLeftU, fTopV );
 
-	svQuad[1].p = D3DXVECTOR4( fWidth5, -0.5f, 0.5f, 1.0f );
-	svQuad[1].t = D3DXVECTOR2( fRightU, fTopV );
+	svQuad[1].p = Vector4( fWidth5, -0.5f, 0.5f, 1.0f );
+	svQuad[1].t = TEXCOORD2( fRightU, fTopV );
 
-	svQuad[2].p = D3DXVECTOR4( -0.5f, fHeight5, 0.5f, 1.0f );
-	svQuad[2].t = D3DXVECTOR2( fLeftU, fBottomV );
+	svQuad[2].p = Vector4( -0.5f, fHeight5, 0.5f, 1.0f );
+	svQuad[2].t = TEXCOORD2( fLeftU, fBottomV );
 
-	svQuad[3].p = D3DXVECTOR4( fWidth5, fHeight5, 0.5f, 1.0f );
-	svQuad[3].t = D3DXVECTOR2( fRightU, fBottomV );
+	svQuad[3].p = Vector4( fWidth5, fHeight5, 0.5f, 1.0f );
+	svQuad[3].t = TEXCOORD2( fRightU, fBottomV );
 
 	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
 	pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
@@ -215,6 +224,40 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 	hr = pd3dDevice->SetFVF( ScreenVertex::FVF );
 	hr = pd3dDevice->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, svQuad, sizeof( ScreenVertex ) );
 	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
+}
+
+
+void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
+{
+	Viewport vp;
+	GraphicsDevice().GetViewport( vp );
+
+	// Ensure that we're directly mapping texels to pixels by offset by 0.5
+	// For more info see the doc page titled "Directly Mapping Texels to Pixels"
+	float fWidth5  = (float)vp.Width  - 0.5f;
+	float fHeight5 = (float)vp.Height - 0.5f;
+
+	// TODO: support vertices with different elements, such as ScreenVertex
+	// defined in this file.
+	// C2DRect includes elements unnecessary for drawing fullscreen rects
+	// in order to render post process effects.
+	C2DRect quad;
+	quad.SetPositionLTRB( -0.5f, -0.5f, fWidth5, fHeight5 );
+	quad.SetTextureUV( TEXCOORD2( fLeftU, fTopV ), TEXCOORD2( fRightU, fBottomV ) );
+	quad.SetZDepth( 0.5f );
+
+	// shader_mgr should have texture blend settings suitable for drawing the specified rects
+
+	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
+//	hr = pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
+	GraphicsDevice().Enable( RenderStateType::FACE_CULLING );
+	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
+	GraphicsDevice().Disable( RenderStateType::DEPTH_TEST );
+
+	Get2DPrimitiveRenderer().RenderRect( shader_mgr, quad );
+
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 }
 
 
@@ -259,17 +302,21 @@ void RenderFullScreenQuad( LPD3DXEFFECT pEffect, float fLeftU, float fTopV, floa
 
 void RenderFullScreenQuad( ShaderManager& shader_mgr, const CoordRect& c )
 {
-	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
-	if( pEffect )
-		RenderFullScreenQuad( pEffect, c );
+//	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
+//	if( pEffect )
+//		amorphous::RenderFullScreenQuad( pEffect, c );
+
+	DrawFullScreenQuad( shader_mgr, c.fLeftU, c.fTopV, c.fRightU, c.fBottomV );
 }
 
 
 void RenderFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
 {
-	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
-	if( pEffect )
-		RenderFullScreenQuad( pEffect, fLeftU, fTopV, fRightU, fBottomV );
+//	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
+//	if( pEffect )
+//		amorphous::RenderFullScreenQuad( pEffect, fLeftU, fTopV, fRightU, fBottomV );
+
+	DrawFullScreenQuad( shader_mgr, fLeftU, fTopV, fRightU, fBottomV );
 }
 
 
