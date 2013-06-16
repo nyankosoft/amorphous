@@ -89,7 +89,7 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( C3DMeshModelArchive& archi
 	Release();
 
 	CustomMesh cm;
-	bool cm_loaded = cm.LoadFromArchive( archive );
+	bool cm_loaded = cm.LoadFromArchive( archive, m_strFilename, MeshLoadOption::DO_NOT_LOAD_TEXTURES );
 
 	if( !cm_loaded )
 	{
