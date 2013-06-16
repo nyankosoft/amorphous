@@ -87,17 +87,6 @@ void GetTextureRect( shared_ptr<RenderTargetTextureHolder>& pSrc, SRect *pDest )
 }
 
 
-inline static RECT ToRECT( const SRect& src )
-{
-	RECT dest;
-	dest.left   = src.left;
-	dest.right  = src.right;
-	dest.top    = src.top;
-	dest.bottom = src.bottom;
-	return dest;
-}
-
-
 //-----------------------------------------------------------------------------
 // Name: GetSampleOffsets_DownScale4x4
 // Desc: Get the texture coordinate offsets to be used inside the DownScale4x4
@@ -723,11 +712,8 @@ void DownScale2x2Filter::Render()
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDestPrev;
 	SRect rectDest;
 	GetTextureRect( m_pDest, &rectDest );
-	rectDestPrev = ToRECT( rectDest );
-	InflateRect( &rectDestPrev, -1, -1 );
 	rectDest.Inflate( -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order
@@ -748,7 +734,7 @@ void DownScale2x2Filter::Render()
 	//pEffect->SetTechnique( "DownScale2x2" );
 
 //	pd3dDevice->SetTexture( 0, m_pTexStarSource );
-	hr = pd3dDevice->SetScissorRect( &rectDestPrev );
+	GraphicsDevice().SetScissorRect( rectDest );
 //	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 
@@ -806,11 +792,8 @@ void HDRBrightPassFilter::Render()
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDestPrev;
 	SRect rectDest;
 	GetTextureRect( m_pDest, &rectDest );
-	rectDestPrev = ToRECT( rectDest );
-	InflateRect( &rectDestPrev, -1, -1 );
 	rectDest.Inflate( -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order 
@@ -831,7 +814,7 @@ void HDRBrightPassFilter::Render()
 
 //	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
-	hr = pd3dDevice->SetScissorRect( &rectDestPrev );
+	GraphicsDevice().SetScissorRect( rectDest );
 
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
@@ -882,7 +865,6 @@ void GaussianBlurFilter::Render()
 
 	// Get the destination rectangle.
 	// Decrease the rectangle to adjust for the single pixel black border.
-	RECT rectDestPrev;
 	SRect rectDest;
 //	GetTextureRect( m_pDest->m_Texture, &rectDest );
 	if( m_pDest )
@@ -890,9 +872,6 @@ void GaussianBlurFilter::Render()
 	else
 		GetTextureRect( m_pCache->m_pOrigSceneHolder, &rectDest );
 
-	rectDestPrev = ToRECT( rectDest );
-
-	InflateRect( &rectDestPrev, -1, -1 );
 	rectDest.Inflate( -1, -1 );
 
 	// Get the correct texture coordinates to apply to the rendered quad in order 
@@ -924,7 +903,7 @@ void GaussianBlurFilter::Render()
 
 //	pd3dDevice->SetRenderTarget( 0, m_pDest->pTexSurf );
 	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() );
-	hr = pd3dDevice->SetScissorRect( &rectDestPrev );
+	GraphicsDevice().SetScissorRect( rectDest );
 //	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE ); // original D3D sample
 	hr = pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 
@@ -1007,7 +986,6 @@ void BloomFilter::Render()
 	rectSrc.Inflate( -1, -1 );
 
 	CoordRect coords;
-	RECT rectDestPrev;
 	SRect rectDest;
 	bool writing_to_texture_with_border_texels = m_DoScissorTesting;
 
@@ -1023,8 +1001,6 @@ void BloomFilter::Render()
 	{
 		// horizontal blur
 		GetTextureRect( m_pDest, &rectDest );
-		rectDestPrev = ToRECT( rectDest );
-		InflateRect( &rectDestPrev, -1, -1 );
 		rectDest.Inflate( -1, -1 );
 
 		GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, &rectDest, &coords );
@@ -1038,7 +1014,7 @@ void BloomFilter::Render()
 
 	if( m_DoScissorTesting )
 	{
-		pd3dDevice->SetScissorRect( &rectDestPrev );
+		GraphicsDevice().SetScissorRect( rectDest );
 //		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, TRUE );
 		pd3dDevice->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE );
 	}
