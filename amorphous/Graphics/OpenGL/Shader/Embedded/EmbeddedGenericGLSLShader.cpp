@@ -407,7 +407,7 @@ Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2
 		if( !sample_params.is_valid() )
 			break;
 
-		fs += fmt_string( "float4y tc%d = texture(T%d,t%d);\n", i, sample_params.sampler, sample_params.coord );
+		fs += fmt_string( "vec4 tc%d = texture(T%d,t%d);\n", i, sample_params.sampler, sample_params.coord );
 	}
 
 	fs += "vec3 rgb=";
