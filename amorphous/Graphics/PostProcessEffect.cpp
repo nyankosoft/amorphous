@@ -256,37 +256,37 @@ void DrawFullScreenQuad( const CoordRect& c )
 }
 
 
-void RenderFullScreenQuad( LPD3DXEFFECT pEffect, const CoordRect& c )
-{
-	HRESULT hr;
-	UINT uiPassCount, uiPass;
+//void RenderFullScreenQuad( LPD3DXEFFECT pEffect, const CoordRect& c )
+//{
+//	HRESULT hr;
+//	UINT uiPassCount, uiPass;
+//
+//	V( pEffect->Begin( &uiPassCount, 0 ) );
+//
+//	for( uiPass = 0; uiPass < uiPassCount; uiPass++ )
+//	{
+//		hr = pEffect->BeginPass( uiPass );
+//
+//		// Draw a fullscreen quad to sample the RT
+//		DrawFullScreenQuad( 0.0f, 0.0f, 1.0f, 1.0f );
+//
+//		hr = pEffect->EndPass();
+//	}
+//
+//	hr = pEffect->End();
+//}
 
-	V( pEffect->Begin( &uiPassCount, 0 ) );
 
-	for( uiPass = 0; uiPass < uiPassCount; uiPass++ )
-	{
-		hr = pEffect->BeginPass( uiPass );
-
-		// Draw a fullscreen quad to sample the RT
-		DrawFullScreenQuad( 0.0f, 0.0f, 1.0f, 1.0f );
-
-		hr = pEffect->EndPass();
-	}
-
-	hr = pEffect->End();
-}
-
-
-void RenderFullScreenQuad( LPD3DXEFFECT pEffect, float fLeftU, float fTopV, float fRightU, float fBottomV )
-{
-	CoordRect c;
-	c.fLeftU   = fLeftU;
-	c.fTopV    = fTopV;
-	c.fRightU  = fRightU;
-	c.fBottomV = fBottomV;
-
-    RenderFullScreenQuad( pEffect, c );
-}
+//void RenderFullScreenQuad( LPD3DXEFFECT pEffect, float fLeftU, float fTopV, float fRightU, float fBottomV )
+//{
+//	CoordRect c;
+//	c.fLeftU   = fLeftU;
+//	c.fTopV    = fTopV;
+//	c.fRightU  = fRightU;
+//	c.fBottomV = fBottomV;
+//
+//    RenderFullScreenQuad( pEffect, c );
+//}
 
 
 void RenderFullScreenQuad( ShaderManager& shader_mgr, const CoordRect& c )
