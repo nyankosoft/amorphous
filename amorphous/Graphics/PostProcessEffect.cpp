@@ -544,16 +544,6 @@ ShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
 }
 
 
-LPD3DXEFFECT GetD3DXEffect(PostProcessEffectFilter& filter)
-{
-	ShaderManager *pShaderMgr = GetShaderManager(filter);
-	if( !pShaderMgr )
-		return NULL;
-
-	return pShaderMgr->GetEffect();
-}
-
-
 //============================================================================
 // DownScale4x4Filter
 //============================================================================
@@ -1512,7 +1502,6 @@ void HDRLightingFinalPassFilter::StorePrevFilterResults( PostProcessEffectFilter
 void HDRLightingFinalPassFilter::Render()
 {
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-//	LPD3DXEFFECT pEffect = GetD3DXEffect(*this);
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
