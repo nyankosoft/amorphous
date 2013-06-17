@@ -296,6 +296,9 @@ bool CGLGraphicsDevice::GetRenderState( RenderStateType::Name type )
 
 	if( res )
 	{
+		// GLboolean param = false;
+		// glGetBooleanv( ???, &param );
+		// The state of GL_ALPHA_TEST, GL_LIGHTING, etc. cannot be retrieved with glGet()
 		return false;
 	}
 
