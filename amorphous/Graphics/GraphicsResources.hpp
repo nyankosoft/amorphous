@@ -7,6 +7,7 @@
 #include "fwd.hpp"
 #include "GraphicsResourceDescs.hpp"
 #include "TextureResourceVisitor.hpp"
+#include "SamplingParameter.hpp"
 #include "../Support/Serialization/BinaryDatabase.hpp"
 #include "../Support/fwd.hpp"
 #include "../3DMath/Rectangular.hpp"
@@ -199,6 +200,8 @@ public:
 	virtual bool SaveTextureToImageFile( const std::string& image_filepath ) { return false; }
 
 	virtual SDim2 GetSize2D( unsigned int level = 0 ) { return SDim2(0,0); }
+
+	virtual Result::Name SetSamplingParameter( SamplingParameter::Name param, uint value ) { return Result::UNKNOWN_ERROR; }
 
 	virtual bool Lock() { return Lock( 0 ); }
 

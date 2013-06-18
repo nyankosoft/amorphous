@@ -73,6 +73,8 @@ public:
 
 	SRectangular GetSize2D( unsigned int level = 0 );
 
+	Result::Name SetSamplingParameter( SamplingParameter::Name param, uint value );
+
 	/// loads texture from memory in the form of image archive
 //	bool Load( ImageArchive& img_archive );
 

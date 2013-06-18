@@ -116,6 +116,17 @@ SRectangular TextureHandle::GetSize2D( unsigned int level )
 }
 
 
+Result::Name TextureHandle::SetSamplingParameter( SamplingParameter::Name param, uint value )
+{
+	if( GetEntry()
+	 && GetEntry()->GetTextureResource() )
+	{
+		return GetEntry()->GetTextureResource()->SetSamplingParameter( param, value );
+	}
+	else
+		return Result::UNKNOWN_ERROR;
+}
+
 
 /*
 bool TextureHandle::Load( ImageArchive& img_archive )
