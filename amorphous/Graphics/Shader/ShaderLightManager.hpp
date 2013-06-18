@@ -2,9 +2,9 @@
 #define  __ShaderLightManager_H__
 
 
+#include <vector>
 #include "../fwd.hpp"
 #include "../HemisphericLight.hpp"
-#include "../../Support/FixedVector.hpp"
 
 
 namespace amorphous
@@ -14,12 +14,12 @@ namespace amorphous
 class CLightCache
 {
 public:
-	fixed_vector<DirectionalLight,8> vecDirecitonalLight;
-	fixed_vector<PointLight,8> vecPointLight;
-	fixed_vector<Spotlight,8> vecSpotlight;
-	fixed_vector<HemisphericDirectionalLight,8> vecHSDirecitonalLight;
-	fixed_vector<HemisphericPointLight,8> vecHSPointLight;
-	fixed_vector<HemisphericSpotlight,8> vecHSSpotlight;
+	std::vector<DirectionalLight> vecDirecitonalLight;
+	std::vector<PointLight> vecPointLight;
+	std::vector<Spotlight> vecSpotlight;
+	std::vector<HemisphericDirectionalLight> vecHSDirecitonalLight;
+	std::vector<HemisphericPointLight> vecHSPointLight;
+	std::vector<HemisphericSpotlight> vecHSSpotlight;
 
 public:
 
