@@ -66,6 +66,13 @@ public:
 };
 
 
+inline Result::Name SetTextureD3D_FFP( uint stage, const TextureHandle& texture )
+{
+	D3D_FFP_TextureResourceVisitor visitor( stage );
+	return texture.AcceptTextureResourceVisitor( visitor );
+}
+
+
 } // namespace amorphous
 
 
