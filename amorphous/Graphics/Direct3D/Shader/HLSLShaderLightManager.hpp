@@ -3,17 +3,64 @@
 
 
 #include <d3dx9.h>
-#include "Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous
 {
 
 
+class HLSLLight
+{
+public:
+
+	D3DXHANDLE m_DiffuseColors[3];
+
+	D3DXHANDLE m_AmbientColor;
+
+	HLSLLight()
+		:
+	m_AmbientColor(0)
+	{
+		for( int i=0; i<numof(m_DiffuseColors); i++ )
+			m_DiffuseColors[i] = 0;
+	}
+
+	virtual ~HLSLLight() {}
+};
+
+
+class HLSLDirectionalLight : public HLSLLight
+{
+public:
+	D3DXHANDLE m_Direction;
+
+	HLSLDirectionalLight()
+		:
+	m_Direction(0)
+	{}
+};
+
+
+class HLSLPointLight : public HLSLLight
+{
+public:
+	D3DXHANDLE m_Position;
+
+	D3DXHANDLE m_Attenuation;
+
+	HLSLPointLight()
+		:
+	m_Position(0),
+	m_Attenuation(0)
+	{}
+};
+
+
 class CHLSLShaderLightManager : public ShaderLightManager
 {
-//	static const int m_iNumMaxLights = 6;	error
-
 	enum eHandleType
 	{
 		LIGHT_POSITION = 0,
@@ -41,11 +88,6 @@ class CHLSLShaderLightManager : public ShaderLightManager
 		LPH_NUM_SPOTLIGHTS,
 		LPH_SPOTLIGHT_OFFSET,
 		NUM_LIGHTING_PROPERTIES
-	};
-
-	enum eNumLights
-	{
-		NUM_MAX_LIGHTS = 8
 	};
 
 public:
@@ -109,8 +151,13 @@ private:
 	/// controls overall configurations of lights (e.g. the number of directional/point lights)
 	D3DXHANDLE m_aPropertyHandle[NUM_LIGHTING_PROPERTIES];
 
-	/// controls properties of each light
-	D3DXHANDLE m_aHandle[NUM_MAX_LIGHTS][NUM_LIGHT_PROPERTY_HANDLES];
+	/// \brief controls properties of each light
+	/// e.g. m_aHandle[i][LIGHT_POSITION] == the position of the i-th light.
+//	std::vector<D3DXHANDLE> m_aHandle[NUM_LIGHT_PROPERTY_HANDLES];
+
+	std::vector<HLSLDirectionalLight> m_HSDirectionalLights;
+
+	std::vector<HLSLPointLight> m_HSPointLights;
 
 	/// copied from shader manager
 	/// must be updated when the shader is reloaded
@@ -125,7 +172,7 @@ private:
 
 inline void CHLSLShaderLightManager::SetLight( const int index, const D3DLIGHT9& rLight )
 {
-	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.Ambient, sizeof(D3DCOLORVALUE) );
+/*	m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.Ambient, sizeof(D3DCOLORVALUE) );
 	m_pEffect->SetValue( m_aHandle[index][LIGHT_DIFFUSE_COLOR], &rLight.Diffuse, sizeof(D3DCOLORVALUE) );
 
 	if( rLight.Type == D3DLIGHT_POINT )
@@ -147,7 +194,7 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const D3DLIGHT9&
 	{
 		m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.Direction, sizeof(D3DVECTOR) );
 	}
-
+*/
 }
 
 
@@ -181,48 +228,60 @@ inline void CHLSLShaderLightManager::SetPointLightOffset( const int iPointLightO
 
 inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericPointLight& rLight )
 {
+	if( (int)m_HSPointLights.size() <= index )
+		return;
+
 	HRESULT hr;
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_HSPointLights[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_HSPointLights[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
 
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_POSITION], &rLight.vPosition, sizeof(float) * 3 );
+	hr = m_pEffect->SetValue( m_HSPointLights[index].m_Position, &rLight.vPosition, sizeof(float) * 3 );
 
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_ATTENUATION], rLight.fAttenuation, sizeof(float) * 3 );
+	hr = m_pEffect->SetValue( m_HSPointLights[index].m_Attenuation, rLight.fAttenuation, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetFloatArray( m_aHandle[index][LIGHT_AMBIENT_COLOR], ambient, 4 );
+	hr = m_pEffect->SetFloatArray( m_HSPointLights[index].m_AmbientColor, ambient, 4 );
 //	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
 
-	float range = 100.0f;
-	hr = m_pEffect->SetFloat( m_aHandle[index][LIGHT_RANGE], range );
+//	float range = 100.0f;
+//	hr = m_pEffect->SetFloat( m_HSPointLights[index][LIGHT_RANGE], range );
 }
 
 
 inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericDirectionalLight& rLight )
 {
-	HRESULT hr;
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+	if( (int)m_HSDirectionalLights.size() <= index )
+		return;
 
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
+	HRESULT hr;
+	hr = m_pEffect->SetValue( m_HSDirectionalLights[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_HSDirectionalLights[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+
+	hr = m_pEffect->SetValue( m_HSDirectionalLights[index].m_Direction, &rLight.vDirection, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetFloatArray( m_aHandle[index][LIGHT_AMBIENT_COLOR], ambient, 4 );
+	hr = m_pEffect->SetFloatArray( m_HSDirectionalLights[index].m_AmbientColor, ambient, 4 );
 //	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
 }
 
 
 inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericSpotlight& rLight )
 {
-	HRESULT hr;
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_UPPER_DIFFUSE_COLOR], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_LOWER_DIFFUSE_COLOR], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+	LOG_PRINT_ERROR( " Not implemented yet." );
 
-	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
+/*	if( (int)m_HSSpotlight.size() <= index )
+		return;
+
+	HRESULT hr;
+	hr = m_pEffect->SetValue( m_HSSpotlight[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_HSSpotlight[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+
+	hr = m_pEffect->SetValue( m_HSSpotlight[index][LIGHT_DIRECTION], &rLight.vDirection, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetFloatArray( m_aHandle[index][LIGHT_AMBIENT_COLOR], ambient, 4 );
-//	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetFloatArray( m_HSSpotlight[index].m_AmbientColor, ambient, 4 );
+//	hr = m_pEffect->SetValue( m_HSSpotlight[index].m_AmbientColor, &rLight.LowerColor, sizeof(float) * 4 );
+*/
 }
 
 

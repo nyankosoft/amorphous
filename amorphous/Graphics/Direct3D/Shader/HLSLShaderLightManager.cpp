@@ -12,7 +12,6 @@ CHLSLShaderLightManager::CHLSLShaderLightManager()
 m_pEffect(NULL)
 {
 	memset( m_aPropertyHandle, 0, sizeof(m_aPropertyHandle) );
-	memset( m_aHandle,         0, sizeof(m_aHandle) );
 }
 
 
@@ -21,7 +20,6 @@ CHLSLShaderLightManager::CHLSLShaderLightManager( LPD3DXEFFECT pEffect )
 m_pEffect(pEffect)
 {
 	memset( m_aPropertyHandle, 0, sizeof(m_aPropertyHandle) );
-	memset( m_aHandle,         0, sizeof(m_aHandle) );
 }
 
 
@@ -67,11 +65,11 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 	light1 = m_pEffect->GetParameterByName( NULL, "g_aLight[1]" );
 
 	D3DXHANDLE hLight = NULL;
-
+/*
 	char acLight[256];
 	char acStr[256];
 //	int i;
-	for( i=0; i<NUM_MAX_LIGHTS; i++ )
+	for( i=0; i<m_aHandle.; i++ )
 	{
 		sprintf( acLight, "g_aLight[%d]", i );
 		hLight = m_pEffect->GetParameterByName( NULL, acLight );
@@ -120,6 +118,73 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 
 //		sprintf( acStr, "g_aLight[%d].vPos", i );
 //		m_aHandle[i][LIGHT_POSITION] = m_pEffect->GetParameterByName( NULL, acStr );
+	}
+*/
+
+	char acLight[256];
+	char acStr[256];
+//	int i;
+//	for( i=0; i<m_HSDirectionalLights..; i++ )
+	m_HSDirectionalLights.reserve( 2 );
+	while(true)
+	{
+		sprintf( acLight, "g_aLight[%d]", i );
+		hLight = m_pEffect->GetParameterByName( NULL, acLight );
+
+		if( hLight == NULL )
+			break;
+
+		m_HSDirectionalLights.push_back( HLSLDirectionalLight() );
+		HLSLDirectionalLight& dir_light = m_HSDirectionalLights.back();
+
+		dir_light.m_Direction        = m_pEffect->GetParameterByName( hLight, "vDir" );
+		dir_light.m_AmbientColor     = m_pEffect->GetParameterByName( hLight, "vAmbient" );
+		dir_light.m_DiffuseColors[0] = m_pEffect->GetParameterByName( hLight, "vDiffuseUpper" );
+		dir_light.m_DiffuseColors[1] = m_pEffect->GetParameterByName( hLight, "vDiffuseLower" );
+
+//		sprintf( acStr, "fRange" );
+//		m_aHandle[i][LIGHT_RANGE] = m_pEffect->GetParameterByName( hLight, acStr );
+//
+//		sprintf( acStr, "vAttenuation" );
+//		m_aHandle[i][LIGHT_ATTENUATION] = m_pEffect->GetParameterByName( hLight, acStr );
+//
+//		sprintf( acStr, "vAttenuation[0]" );
+//		m_aHandle[i][LIGHT_ATTENUATION0] = m_pEffect->GetParameterByName( hLight, acStr );
+//
+//		sprintf( acStr, "vAttenuation[1]" );
+//		m_aHandle[i][LIGHT_ATTENUATION1] = m_pEffect->GetParameterByName( hLight, acStr );
+//
+//		sprintf( acStr, "vAttenuation[2]" );
+//		m_aHandle[i][LIGHT_ATTENUATION2] = m_pEffect->GetParameterByName( hLight, acStr );
+
+//		if( !m_aHandle[i][LIGHT_DIFFUSE_COLOR] )
+//		{
+//			// use the upper hemisphere color if it is available
+//			m_aHandle[i][LIGHT_DIFFUSE_COLOR] = m_aHandle[i][LIGHT_UPPER_DIFFUSE_COLOR];
+//		}
+
+
+//		sprintf( acStr, "g_aLight[%d].vPos", i );
+//		m_aHandle[i][LIGHT_POSITION] = m_pEffect->GetParameterByName( NULL, acStr );
+	}
+
+	m_HSPointLights.reserve( 8 );
+	while(true)
+	{
+		sprintf( acLight, "g_aLight[%d]", i );
+		hLight = m_pEffect->GetParameterByName( NULL, acLight );
+
+		if( hLight == NULL )
+			break;
+
+		m_HSPointLights.push_back( HLSLPointLight() );
+		HLSLPointLight& pnt_light = m_HSPointLights.back();
+
+		pnt_light.m_Position         = m_pEffect->GetParameterByName( hLight, "vPos" );
+		pnt_light.m_AmbientColor     = m_pEffect->GetParameterByName( hLight, "vAmbient" );
+		pnt_light.m_DiffuseColors[0] = m_pEffect->GetParameterByName( hLight, "vDiffuseUpper" );
+		pnt_light.m_DiffuseColors[1] = m_pEffect->GetParameterByName( hLight, "vDiffuseLower" );
+		pnt_light.m_Attenuation      = m_pEffect->GetParameterByName( hLight, "vAttenuation" );
 	}
 
 	return true;
