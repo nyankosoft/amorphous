@@ -27,7 +27,7 @@ class GraphicsResourceManager;
 class GraphicsResourceCacheManager;
 class LockedTexture;
 class TextureFillingAlgorithm;
-class TextureFilter;
+class TextureImageFilter;
 class MeshGenerator;
 class BoxMeshGenerator;
 class ResourceLoadingStateHolder;

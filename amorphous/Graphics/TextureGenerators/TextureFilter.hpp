@@ -1,5 +1,5 @@
-#ifndef __TextureFilter_HPP__
-#define __TextureFilter_HPP__
+#ifndef __TextureImageFilter_HPP__
+#define __TextureImageFilter_HPP__
 
 
 #include "TextureFillingAlgorithm.hpp"
@@ -14,19 +14,19 @@ namespace amorphous
 using namespace serialization;
 
 
-class TextureFilter : public IArchiveObjectBase
+class TextureImageFilter : public IArchiveObjectBase
 {
 public:
 
-	TextureFilter(){}
+	TextureImageFilter(){}
 
-	virtual ~TextureFilter(){}
+	virtual ~TextureImageFilter(){}
 
 	virtual void ApplyFilter( LockedTexture& texture ) = 0;
 };
 
 
-//class ContrastFilter : public TextureFilter
+//class ContrastFilter : public TextureImageFilter
 //{
 //public:
 //
@@ -38,7 +38,7 @@ public:
 //};
 
 
-class ContrastBrightnessFilter : public TextureFilter
+class ContrastBrightnessFilter : public TextureImageFilter
 {
 	float m_ContrastFactor;
 	float m_BrightnessShift;
@@ -71,4 +71,4 @@ public:
 
 
 
-#endif /* __TextureFilter_HPP__ */
+#endif /* __TextureImageFilter_HPP__ */
