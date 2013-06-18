@@ -186,36 +186,6 @@ public:
 };
 
 
-class SamplerParameter
-{
-public:
-	enum Name
-	{
-		TEXTURE_WRAP_AXIS_0, // U in Direct3D, or S in OpenGL
-		TEXTURE_WRAP_AXIS_1, // V in Direct3D, or T in OpenGL
-		TEXTURE_WRAP_AXIS_2,
-		MIN_FILTER,
-		MAG_FILTER,
-		NUM_SAMPLER_PARAMETERS
-	};
-};
-
-
-class TextureAddressMode
-{
-public:
-	enum Name
-	{
-		REPEAT,
-		MIRRORED_REPEAT,
-		CLAMP_TO_EDGE,
-		CLAMP_TO_BORDER,
-		MIRROR_ONCE,
-		NUM_TEXTURE_ADDRESSING_MODES
-	};
-};
-
-
 class CGraphicsDevice
 {
 public:
@@ -329,7 +299,7 @@ public:
 
 	inline Result::Name SetTextureAddressModes2D( uint sampler_index, TextureAddressMode::Name mode_axis_0, TextureAddressMode::Name mode_axis_1 );
 
-	virtual Result::Name SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value ) = 0;
+	virtual Result::Name SetSamplingParameter( uint sampler_index, SamplingParameter::Name param, uint value ) = 0;
 
 	State GetState() const { return m_State; }
 };
@@ -348,8 +318,8 @@ inline Result::Name CGraphicsDevice::GetViewportSize( uint& width, uint& height 
 
 inline Result::Name CGraphicsDevice::SetTextureAddressModes2D( uint sampler_index, TextureAddressMode::Name mode_axis_0, TextureAddressMode::Name mode_axis_1 )
 {
-	Result::Name res0 = SetSamplerParameter( sampler_index, SamplerParameter::TEXTURE_WRAP_AXIS_0, mode_axis_0 );
-	Result::Name res1 = SetSamplerParameter( sampler_index, SamplerParameter::TEXTURE_WRAP_AXIS_1, mode_axis_1 );
+	Result::Name res0 = SetSamplingParameter( sampler_index, SamplingParameter::TEXTURE_WRAP_AXIS_0, mode_axis_0 );
+	Result::Name res1 = SetSamplingParameter( sampler_index, SamplingParameter::TEXTURE_WRAP_AXIS_1, mode_axis_1 );
 
 	return (res0 == Result::SUCCESS && res1 == Result::SUCCESS) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }

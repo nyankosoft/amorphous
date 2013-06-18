@@ -838,7 +838,7 @@ Result::Name CDirect3D9::SetScissorRect( const SRect& rect )
 }
 
 
-Result::Name CDirect3D9::SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value )
+Result::Name CDirect3D9::SetSamplingParameter( uint sampler_index, SamplingParameter::Name param, uint value )
 {
 	HRESULT hr = S_OK;
 
@@ -847,11 +847,11 @@ Result::Name CDirect3D9::SetSamplerParameter( uint sampler_index, SamplerParamet
 
 	switch(param)
 	{
-	case SamplerParameter::TEXTURE_WRAP_AXIS_0: dest_type = D3DSAMP_ADDRESSU;  break;
-	case SamplerParameter::TEXTURE_WRAP_AXIS_1: dest_type = D3DSAMP_ADDRESSV;  break;
-	case SamplerParameter::TEXTURE_WRAP_AXIS_2: dest_type = D3DSAMP_ADDRESSW;  break;
-	case SamplerParameter::MIN_FILTER:          dest_type = D3DSAMP_MINFILTER; break;
-	case SamplerParameter::MAG_FILTER:          dest_type = D3DSAMP_MAGFILTER; break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_0: dest_type = D3DSAMP_ADDRESSU;  break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_1: dest_type = D3DSAMP_ADDRESSV;  break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_2: dest_type = D3DSAMP_ADDRESSW;  break;
+	case SamplingParameter::MIN_FILTER:          dest_type = D3DSAMP_MINFILTER; break;
+	case SamplingParameter::MAG_FILTER:          dest_type = D3DSAMP_MAGFILTER; break;
 	default:
 		LOG_PRINTF_ERROR(( " An unsupported sampler parameter (%d)", (int)param ));
 		break;

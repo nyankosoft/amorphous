@@ -498,38 +498,40 @@ Result::Name CGLGraphicsDevice::SetScissorRect( const SRect& rect )
 }
 
 
-Result::Name CGLGraphicsDevice::SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value )
+Result::Name CGLGraphicsDevice::SetSamplingParameter( uint sampler_index, SamplingParameter::Name param, uint value )
 {
-	GLenum pname;
-	switch( param )
-	{
-	case SamplerParameter::TEXTURE_WRAP_AXIS_0: pname = GL_TEXTURE_WRAP_S; break;
-	case SamplerParameter::TEXTURE_WRAP_AXIS_1: pname = GL_TEXTURE_WRAP_T; break;
-	case SamplerParameter::TEXTURE_WRAP_AXIS_2: pname = GL_TEXTURE_WRAP_R; break;
-	default:
-		return Result::UNKNOWN_ERROR;
-	}
+	return Result::UNKNOWN_ERROR;
 
-	DWORD dest_value = 0;
-	if( pname == GL_TEXTURE_WRAP_S
-	 || pname == GL_TEXTURE_WRAP_T
-	 || pname == GL_TEXTURE_WRAP_R )
-	{
-		switch(value)
-		{
-		case TextureAddressMode::REPEAT:          dest_value = D3DTADDRESS_WRAP;   break;
-		case TextureAddressMode::MIRRORED_REPEAT: dest_value = D3DTADDRESS_MIRROR; break;
-		case TextureAddressMode::CLAMP_TO_BORDER: dest_value = D3DTADDRESS_BORDER; break;
-		case TextureAddressMode::CLAMP_TO_EDGE:   dest_value = D3DTADDRESS_CLAMP;  break;
-		default:
-			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
-			break;
-		}
-	}
-
-	glTexParameteri( GL_TEXTURE_2D, pname, dest_value );
-
-	return Result::SUCCESS;
+//	GLenum pname;
+//	switch( param )
+//	{
+//	case SamplingParameter::TEXTURE_WRAP_AXIS_0: pname = GL_TEXTURE_WRAP_S; break;
+//	case SamplingParameter::TEXTURE_WRAP_AXIS_1: pname = GL_TEXTURE_WRAP_T; break;
+//	case SamplingParameter::TEXTURE_WRAP_AXIS_2: pname = GL_TEXTURE_WRAP_R; break;
+//	default:
+//		return Result::UNKNOWN_ERROR;
+//	}
+//
+//	DWORD dest_value = 0;
+//	if( pname == GL_TEXTURE_WRAP_S
+//	 || pname == GL_TEXTURE_WRAP_T
+//	 || pname == GL_TEXTURE_WRAP_R )
+//	{
+//		switch(value)
+//		{
+//		case TextureAddressMode::REPEAT:          dest_value = D3DTADDRESS_WRAP;   break;
+//		case TextureAddressMode::MIRRORED_REPEAT: dest_value = D3DTADDRESS_MIRROR; break;
+//		case TextureAddressMode::CLAMP_TO_BORDER: dest_value = D3DTADDRESS_BORDER; break;
+//		case TextureAddressMode::CLAMP_TO_EDGE:   dest_value = D3DTADDRESS_CLAMP;  break;
+//		default:
+//			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
+//			break;
+//		}
+//	}
+//
+//	glTexParameteri( GL_TEXTURE_2D, pname, dest_value );
+//
+//	return Result::SUCCESS;
 }
 
 } // namespace amorphous

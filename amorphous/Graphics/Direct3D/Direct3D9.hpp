@@ -135,7 +135,7 @@ public:
 
 	Result::Name SetScissorRect( const SRect& rect );
 
-	Result::Name SetSamplerParameter( uint sampler_index, SamplerParameter::Name param, uint value );
+	Result::Name SetSamplingParameter( uint sampler_index, SamplingParameter::Name param, uint value );
 
 	enum mode
 	{
