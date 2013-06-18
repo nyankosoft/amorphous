@@ -188,8 +188,7 @@ inline HRESULT CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, c
 
 inline Result::Name CD3DFixedFunctionPipelineManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
-	D3D_FFP_TextureResourceVisitor visitor(iStage);
-	return texture.AcceptTextureResourceVisitor( visitor );
+	return SetTextureD3D_FFP( (uint)iStage, texture );
 }
 
 

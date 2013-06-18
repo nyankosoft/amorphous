@@ -179,8 +179,7 @@ void CD3DCustomMeshRenderer::RenderMesh( CustomMesh& mesh, const int *subsets_to
 		const int num_textures = mesh.GetNumTextures(i);
 		for( int j=0; j<num_textures; j++ )
 		{
-			D3D_FFP_TextureResourceVisitor tex_resource_visitor( (uint)j );
-			res = mesh.GetTexture(i,j).AcceptTextureResourceVisitor( tex_resource_visitor );
+			res = SetTextureD3D_FFP( (uint)j, mesh.GetTexture(i,j) );
 		}
 
 		DrawPrimitives( mesh, i, use_zsorted_indices );

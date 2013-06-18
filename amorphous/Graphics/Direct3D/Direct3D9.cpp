@@ -3,6 +3,7 @@
 #include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/Direct3D/D3DAlphaBlend.hpp"
+#include "Graphics/Direct3D/D3DTextureResourceVisitor.hpp"
 #include "Graphics/FogParams.hpp"
 #include "Graphics/TextureStage.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -376,9 +377,7 @@ Result::Name CDirect3D9::SetTexture( int stage, const TextureHandle& texture )
 	if( !m_pD3DDevice )
 		return Result::UNKNOWN_ERROR;
 
-	HRESULT hr = m_pD3DDevice->SetTexture( stage, texture.GetTexture() );
-
-	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	return SetTextureD3D_FFP( (uint)stage, texture );
 }
 
 
