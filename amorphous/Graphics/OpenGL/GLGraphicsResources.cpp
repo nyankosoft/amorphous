@@ -125,6 +125,80 @@ SDim2 CGLTextureResource::GetSize2D( unsigned int level )
 }
 
 
+Result::Name CGLTextureResource::SetSamplingParameter( SamplingParameter::Name param, uint value )
+{
+	if( m_TextureID == 0 )
+		return Result::UNKNOWN_ERROR;
+
+	LOG_GL_ERROR( "Clearing OpenGL error(s)..." );
+
+	glBindTexture( GL_TEXTURE_2D, m_TextureID );
+	LOG_GL_ERROR( "glBindTexture() returned an error." );
+
+	GLenum pname;
+	switch( param )
+	{
+	case SamplingParameter::TEXTURE_WRAP_AXIS_0: pname = GL_TEXTURE_WRAP_S; break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_1: pname = GL_TEXTURE_WRAP_T; break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_2: pname = GL_TEXTURE_WRAP_R; break;
+	case SamplingParameter::MIN_FILTER:          pname = GL_TEXTURE_MIN_FILTER; break;
+	case SamplingParameter::MAG_FILTER:          pname = GL_TEXTURE_MAG_FILTER; break;
+	default:
+		LOG_PRINTF_ERROR(( " An unknown sampling parameter (%d)", (int)param ));
+		return Result::UNKNOWN_ERROR;
+	}
+
+	GLint dest_value = 0;
+	if( pname == GL_TEXTURE_WRAP_S
+	 || pname == GL_TEXTURE_WRAP_T
+	 || pname == GL_TEXTURE_WRAP_R )
+	{
+		switch(value)
+		{
+		case TextureAddressMode::REPEAT:          dest_value = GL_REPEAT;   break;
+//		case TextureAddressMode::MIRRORED_REPEAT: dest_value = D3DTADDRESS_MIRROR; break;
+		case TextureAddressMode::CLAMP_TO_BORDER: dest_value = GL_CLAMP; break;
+		case TextureAddressMode::CLAMP_TO_EDGE:   dest_value = GL_CLAMP_TO_EDGE;  break;
+		default:
+			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
+			return Result::UNKNOWN_ERROR;
+		}
+	}
+	else if( pname == GL_TEXTURE_MAG_FILTER )
+	{
+		switch(value)
+		{
+		case TextureFilter::NEAREST:          dest_value = GL_NEAREST;  break;
+		case TextureFilter::LINEAR:           dest_value = GL_LINEAR;   break;
+		default:
+			LOG_PRINTF_ERROR(( " An unsupported texture mag filter (%d)", (int)value ));
+			return Result::UNKNOWN_ERROR;
+		}
+	}
+	else if( pname == GL_TEXTURE_MIN_FILTER )
+	{
+		switch(value)
+		{
+		case TextureFilter::NEAREST:          dest_value = GL_NEAREST; break;
+		case TextureFilter::LINEAR:           dest_value = GL_LINEAR;  break;
+		default:
+			LOG_PRINTF_ERROR(( " An unsupported texture min filter (%d)", (int)value ));
+			return Result::UNKNOWN_ERROR;
+		}
+	}
+	else
+	{
+		LOG_PRINTF_ERROR(( " An unsupported parameter name (%d)", (int)pname ));
+		return Result::UNKNOWN_ERROR;
+	}
+
+	glTexParameteri( GL_TEXTURE_2D, pname, dest_value );
+	LOG_GL_ERROR( "glTexParameteri() returned an error." );
+
+	return Result::SUCCESS;
+}
+
+
 GLint ToGLInternalFormat( TextureFormat::Format fmt )
 {
 	switch( fmt )

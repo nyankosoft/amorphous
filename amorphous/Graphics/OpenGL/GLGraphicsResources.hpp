@@ -100,6 +100,8 @@ public:
 
 	SDim2 GetSize2D( unsigned int level );
 
+	Result::Name SetSamplingParameter( SamplingParameter::Name param, uint value );
+
 	/// TODO: support mip level
 	bool Lock( uint mip_level );
 
