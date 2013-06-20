@@ -654,7 +654,7 @@ void DownScale4x4Filter::Render()
 	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
-	hr = pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
+	Result::Name res = GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 
 	RenderFullScreenQuad( shader_mgr, coords );
 }
