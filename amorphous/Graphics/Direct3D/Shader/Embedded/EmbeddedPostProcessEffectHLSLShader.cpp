@@ -454,13 +454,6 @@ const char *CEmbeddedPostProcessEffectHLSLShader::m_pHDR =
 "}\n";
 
 
-void InitPPEffectShader()
-{
-	ShaderResourceDesc shader_desc;
-	shader_desc.pShaderGenerator.reset( new CPostProcessEffectFilterShaderGenerator("monochrome") );
-}
-
-
 void CPostProcessEffectFilterShaderGenerator::GetCombinedShader( std::string& shader )
 {
 	shader += CEmbeddedPostProcessEffectHLSLShader::m_pMonochrome;   // "monochrome"
