@@ -22,6 +22,8 @@ public:
 		for( int i=0; i<numof(m_DiffuseColors); i++ )
 			m_DiffuseColors[i] = -1;
 	}
+
+	virtual ~GLSLLight() {}
 };
 
 
