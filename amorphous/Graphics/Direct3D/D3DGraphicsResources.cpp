@@ -112,7 +112,9 @@ public:
 CD3DTextureResource::CD3DTextureResource( const TextureResourceDesc *pDesc )
 :
 TextureResource(pDesc),
-m_pTexture(NULL)
+m_pTexture(NULL),
+m_MagFilter(D3DTEXF_LINEAR),
+m_MinFilter(D3DTEXF_LINEAR)
 {
 }
 
@@ -222,6 +224,12 @@ SDim2 CD3DTextureResource::GetSize2D( unsigned int level )
 		return SDim2( (int)surf_desc.Width, (int)surf_desc.Height );
 	else
 		return SDim2(0,0);
+}
+
+
+Result::Name CD3DTextureResource::SetSamplingParameter( SamplingParameter::Name param, uint value )
+{
+	return Result::UNKNOWN_ERROR;
 }
 
 

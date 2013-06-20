@@ -14,6 +14,9 @@ class CD3DTextureResource : public TextureResource
 {
 	LPDIRECT3DTEXTURE9 m_pTexture;
 
+	D3DTEXTUREFILTERTYPE m_MagFilter;
+	D3DTEXTUREFILTERTYPE m_MinFilter;
+
 //	boost::shared_ptr<LockedTexture> m_pLockedTexture;
 
 protected:
@@ -61,6 +64,9 @@ public:
 
 	inline LPDIRECT3DTEXTURE9 GetTexture();
 
+	D3DTEXTUREFILTERTYPE GetMagFilter() const { return m_MagFilter; }
+	D3DTEXTUREFILTERTYPE GetMinFilter() const { return m_MinFilter; }
+
 	/// Save the texture to disk as an image file
 	/// - For debugging
 	/// - Use this if the texture is loaded from file and filename is stored in GetDesc().ResourcePath
@@ -74,6 +80,8 @@ public:
 	bool SaveTextureToImageFile( const std::string& image_filepath );
 
 	SDim2 GetSize2D( unsigned int level );
+
+	Result::Name SetSamplingParameter( SamplingParameter::Name param, uint value );
 
 	bool Lock( uint mip_level );
 
