@@ -39,10 +39,6 @@ public:
 };
 
 
-/// the vertex format used with the quad during post-process.
-struct PPVERT;
-
-
 //#define DEBUG_VS   // Uncomment this line to debug vertex shaders 
 //#define DEBUG_PS   // Uncomment this line to debug pixel shaders 
 
@@ -174,6 +170,11 @@ protected:
 	/// default: 0
 	int m_ExtraTexelBorderWidth;
 
+	char m_SetSamplerParameters[4];
+	uint m_MaxInputTextureIndex;
+	TextureFilter::Name m_MagFilters[4];
+	TextureFilter::Name m_MinFilters[4];
+
 	ShaderTechniqueHandle m_Technique;
 
 	float m_fScalingFactor;
@@ -227,6 +228,18 @@ public:
 	{
 		m_Desc.MipLevels = 1;
 //		ZeroMemory( m_avParam, sizeof( m_avParam ) );
+
+		for( int i=0; i<numof(m_MagFilters); i++ )
+		{
+			m_MagFilters[i] = TextureFilter::LINEAR;
+			m_MinFilters[i] = TextureFilter::LINEAR;
+		}
+
+		// Mag & min filters for the texture 0 are set by default.
+		m_SetSamplerParameters[0] = 1;
+		for( int i=1; i<numof(m_SetSamplerParameters); i++ )
+			m_SetSamplerParameters[i] = 0;
+		m_MaxInputTextureIndex = 0;
 	}
 
 	virtual ~PostProcessEffectFilter()

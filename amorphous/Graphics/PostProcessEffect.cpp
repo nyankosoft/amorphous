@@ -553,6 +553,11 @@ DownScale4x4Filter::DownScale4x4Filter()
 	m_Technique.SetTechniqueName( "DownScale4x4" );
 
 //	m_ScalingFactor = 0.25f;
+
+	m_SetSamplerParameters[0] = 1;
+	m_MaxInputTextureIndex = 0;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
 }
 
 
@@ -645,7 +650,7 @@ void DownScale4x4Filter::Render()
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
 
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
-	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
+/*	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );*/
 	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
@@ -664,6 +669,11 @@ DownScale2x2Filter::DownScale2x2Filter()
 	m_Technique.SetTechniqueName( "DownScale2x2" );
 
 //	m_ScalingFactor = 0.50f;
+
+	m_SetSamplerParameters[0] = 1;
+	m_MaxInputTextureIndex = 0;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
 }
 
 
@@ -728,7 +738,7 @@ void DownScale2x2Filter::Render()
 	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
@@ -830,6 +840,11 @@ GaussianBlurFilter::GaussianBlurFilter()
 
 	m_ExtraTexelBorderWidth = 1;
 	m_UseTextureSizeDivisibleBy8 = true;
+
+	m_SetSamplerParameters[0] = 1;
+	m_MaxInputTextureIndex = 0;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
 }
 
 
@@ -897,7 +912,7 @@ void GaussianBlurFilter::Render()
 //	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
@@ -931,12 +946,17 @@ BloomFilter::BloomFilter()
 	m_fBloomFactor = 1.0f;
 
 	m_UseForBlurFilter = false;
+
+	// Shouldn't these be LINEAR instead of NEAREST
+	m_SetSamplerParameters[0] = 1;
+	m_MaxInputTextureIndex = 0;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
 }
 
 
 void BloomFilter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -1009,8 +1029,8 @@ void BloomFilter::Render()
 		GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 	}
 
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
@@ -1210,6 +1230,14 @@ LuminanceCalcFilter::LuminanceCalcFilter( const std::string& technique_name, int
 	GetLuminanceTextureDesc( m_Desc );
 	m_Desc.Width  = m_RenderTargetSize;
 	m_Desc.Height = m_RenderTargetSize;
+
+	m_SetSamplerParameters[0] = 1;
+	m_SetSamplerParameters[1] = 1;
+	m_MaxInputTextureIndex = 1;
+	m_MagFilters[0] = TextureFilter::LINEAR;
+	m_MinFilters[0] = TextureFilter::LINEAR;
+	m_MagFilters[1] = TextureFilter::LINEAR;
+	m_MinFilters[1] = TextureFilter::LINEAR;
 }
 
 
@@ -1329,6 +1357,14 @@ m_fElapsedTime(0.01666666667f),
 m_fLuminanceAdaptationRate(0.02f)
 {
 	m_Technique.SetTechniqueName( "CalculateAdaptedLum" );
+
+	m_SetSamplerParameters[0] = 1;
+	m_SetSamplerParameters[1] = 1;
+	m_MaxInputTextureIndex = 1;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
+	m_MagFilters[1] = TextureFilter::NEAREST;
+	m_MinFilters[1] = TextureFilter::NEAREST;
 }
 
 
@@ -1462,6 +1498,20 @@ m_StarEffectEnabled(false)
 	desc.Format = TextureFormat::A8R8G8B8;
 	desc.pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor::Black() ) );
 	m_BlancTextureForDisabledStarEffect.Load( desc );
+
+	m_SetSamplerParameters[0] = 1;
+	m_SetSamplerParameters[1] = 1;
+	m_SetSamplerParameters[2] = 1;
+	m_SetSamplerParameters[3] = 1;
+	m_MaxInputTextureIndex = 3;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
+	m_MagFilters[1] = TextureFilter::LINEAR;
+	m_MinFilters[1] = TextureFilter::LINEAR;
+	m_MagFilters[2] = TextureFilter::LINEAR;
+	m_MinFilters[2] = TextureFilter::LINEAR;
+	m_MagFilters[3] = TextureFilter::NEAREST;
+	m_MinFilters[3] = TextureFilter::NEAREST;
 }
 
 
@@ -1527,11 +1577,24 @@ void HDRLightingFinalPassFilter::Render()
 //	V( pEffect->SetBool( "g_bEnableToneMap", m_ToneMappingEnabled ) );
 	shader_mgr.SetBool( "g_bEnableToneMap", m_ToneMappingEnabled );
 
+	m_pPrevResult->m_Texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::NEAREST );
+	m_pPrevResult->m_Texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::NEAREST );
+	m_pBloom->m_Texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
+	m_pBloom->m_Texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
+//	???.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
+//	???.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
+	m_pAdaptedLuminance->m_Texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::NEAREST );
+	m_pAdaptedLuminance->m_Texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::NEAREST );
+
+	GraphicsDevice().SetTexture( 0, m_pPrevResult->m_Texture );
+	GraphicsDevice().SetTexture( 1, m_pBloom->m_Texture );
+	GraphicsDevice().SetTexture( 3, m_pAdaptedLuminance->m_Texture );
+/*
 //	V( pd3dDevice->SetRenderTarget( 0, pSurfLDR ) );
 	V( pd3dDevice->SetTexture( 0, m_pPrevResult->m_Texture.GetTexture() ) );
 	V( pd3dDevice->SetTexture( 1, m_pBloom->m_Texture.GetTexture() ) );
 	V( pd3dDevice->SetTexture( 3, m_pAdaptedLuminance->m_Texture.GetTexture() ) );
-
+*/
 	if( m_pStar )
 	{
 		V( pd3dDevice->SetTexture( 2, m_pStar->m_Texture.GetTexture() ) );
@@ -1561,9 +1624,13 @@ void HDRLightingFinalPassFilter::Render()
 
 	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 
-	V( pd3dDevice->SetTexture( 1, NULL ) );
-	V( pd3dDevice->SetTexture( 2, NULL ) );
-	V( pd3dDevice->SetTexture( 3, NULL ) );
+//	V( pd3dDevice->SetTexture( 1, NULL ) );
+//	V( pd3dDevice->SetTexture( 2, NULL ) );
+//	V( pd3dDevice->SetTexture( 3, NULL ) );
+
+	GraphicsDevice().SetTexture( 0, TextureHandle() );
+	GraphicsDevice().SetTexture( 1, TextureHandle() );
+	GraphicsDevice().SetTexture( 3, TextureHandle() );
 
 	m_pBloom->DecrementLockCount();
 	m_pAdaptedLuminance->DecrementLockCount();
@@ -1874,6 +1941,14 @@ MonochromeColorFilter::MonochromeColorFilter()
 	SetRenderTargetSize( cbb.width, cbb.height );
 
 	SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
+
+	m_SetSamplerParameters[0] = 1;
+	m_SetSamplerParameters[1] = 1;
+	m_MaxInputTextureIndex = 1;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
+	m_MagFilters[1] = TextureFilter::NEAREST;
+	m_MinFilters[1] = TextureFilter::NEAREST;
 }
 
 
@@ -1901,7 +1976,6 @@ Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, Filte
 
 void MonochromeColorFilter::Render()
 {
-	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -1940,11 +2014,6 @@ void MonochromeColorFilter::Render()
 
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 //	hr = pd3dDevice->SetScissorRect( &rectDest );
-
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 1, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 
 	RenderFullScreenQuad( shader_mgr, coords );
 

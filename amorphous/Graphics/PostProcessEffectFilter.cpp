@@ -45,6 +45,10 @@ Result::Name RenderTargetTextureCache::AddTexture( const TextureResourceDesc& de
 	if( !created )
 		return Result::UNKNOWN_ERROR;
 
+	// Assume that all the render target textures use the "clamp" mode
+	new_tex.SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_0, TextureAddressMode::CLAMP_TO_EDGE );
+	new_tex.SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_1, TextureAddressMode::CLAMP_TO_EDGE );
+
 	shared_ptr<RenderTargetTextureHolder> pHolder( new RenderTargetTextureHolder );
 	m_vecpHolder.push_back( pHolder );
 	m_vecpHolder.back()->m_Desc    = desc;
@@ -249,14 +253,25 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 		int failed_to_set_technique = 1;
 
 	HRESULT hr;
-	LPDIRECT3DTEXTURE9 pTexture = m_pPrevScene->m_Texture.GetTexture();
-	if( !pTexture )
+	TextureHandle& prev_scene_texture = m_pPrevScene->m_Texture;
+	if( !prev_scene_texture.IsLoaded() )
 		int texture_is_not_loaded = 1;
 
-	hr = pd3dDevice->SetTexture( 0, pTexture );
-	if( FAILED(hr) )
+	uint num_loops = take_min( m_MaxInputTextureIndex + 1, numof(m_SetSamplerParameters) );
+	for( uint i=0; i<num_loops; i++ )
+	{
+		if( m_SetSamplerParameters[i] )
+		{
+			prev_scene_texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, m_MagFilters[i] );
+			prev_scene_texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, m_MinFilters[i] );
+		}
+	}
+
+	res = GraphicsDevice().SetTexture( 0, prev_scene_texture );
+	if( res != Result::SUCCESS )
 		int failed_to_set_texture = 1;
-	hr = pd3dDevice->SetTexture( 1, pTexture );
+
+	res = GraphicsDevice().SetTexture( 1, prev_scene_texture );
 
 	hr = pShaderMgr->GetEffect()->CommitChanges();
 
