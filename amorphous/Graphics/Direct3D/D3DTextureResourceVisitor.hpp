@@ -21,7 +21,10 @@ public:
 
 	Result::Name Visit( CD3DTextureResource& texture_resource )
 	{
-		HRESULT hr = DIRECT3D9.GetDevice()->SetTexture( m_Stage, texture_resource.GetTexture() );
+		HRESULT hr = S_OK;
+		hr = DIRECT3D9.GetDevice()->SetSamplerState( m_Stage, D3DSAMP_MAGFILTER, texture_resource.GetMagFilter() );
+		hr = DIRECT3D9.GetDevice()->SetSamplerState( m_Stage, D3DSAMP_MINFILTER, texture_resource.GetMinFilter() );
+		hr = DIRECT3D9.GetDevice()->SetTexture( m_Stage, texture_resource.GetTexture() );
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
 
