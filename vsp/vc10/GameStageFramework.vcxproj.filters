@@ -828,9 +828,6 @@
     <ClInclude Include="..\..\amorphous\Script\BoostPythonScriptManager.hpp">
       <Filter>Source Files\Script\BoostPython</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Script\PythonCommon.hpp">
-      <Filter>Source Files\Script</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
@@ -1474,9 +1471,6 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Script\BoostPythonScriptManager.cpp">
       <Filter>Source Files\Script\BoostPython</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Script\PythonCommon.cpp">
-      <Filter>Source Files\Script</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
       <Filter>Source Files\Stage</Filter>
