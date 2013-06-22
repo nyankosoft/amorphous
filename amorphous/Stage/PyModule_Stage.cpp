@@ -5,7 +5,7 @@
 
 #include "Stage.hpp"
 #include "CopyEntityDesc.hpp"
-#include "StaticGeometryFG.hpp"	// used by SetFogColor()
+#include "StaticGeometryBase.hpp"	// used by SetFogColor()
 #include "BE_Skybox.hpp"	// used by SetFogColor()
 #include "StageUtility.hpp"
 #include "../Script/convert_python_to_x.hpp"
