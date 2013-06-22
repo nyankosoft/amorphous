@@ -1020,7 +1020,8 @@ void EntityRenderManager::RenderMirroredScene()
 LPDIRECT3DCUBETEXTURE9 EntityRenderManager::GetEnvMapTexture( U32 entity_id )
 {
 	if( m_pCubeMapManager )
-		return m_pCubeMapManager->GetCubeTexture();
+//		return m_pCubeMapManager->GetCubeTexture();
+		return NULL;
 	else
 		return NULL;
 
