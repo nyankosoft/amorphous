@@ -133,7 +133,6 @@
     <ClInclude Include="..\..\amorphous\Stage\StaticGeometry.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StaticGeometryBase.hpp" />
-    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryFG.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\SubDisplay.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterial.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterialManager.hpp" />
@@ -383,7 +382,6 @@
     <ClCompile Include="..\..\amorphous\Stage\StageUtility.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StaticGeometry.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.cpp" />
-    <ClCompile Include="..\..\amorphous\Stage\StaticGeometryFG.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\SubDisplay.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterial.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterialManager.cpp" />
