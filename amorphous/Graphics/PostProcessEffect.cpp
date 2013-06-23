@@ -556,8 +556,8 @@ DownScale4x4Filter::DownScale4x4Filter()
 
 	m_SetSamplerParameters[0] = 1;
 	m_MaxInputTextureIndex = 0;
-	m_MagFilters[0] = TextureFilter::NEAREST;
-	m_MinFilters[0] = TextureFilter::NEAREST;
+	m_MagFilters[0] = TextureFilter::LINEAR;
+	m_MinFilters[0] = TextureFilter::LINEAR;
 }
 
 
@@ -950,8 +950,8 @@ BloomFilter::BloomFilter()
 	// Shouldn't these be LINEAR instead of NEAREST
 	m_SetSamplerParameters[0] = 1;
 	m_MaxInputTextureIndex = 0;
-	m_MagFilters[0] = TextureFilter::NEAREST;
-	m_MinFilters[0] = TextureFilter::NEAREST;
+	m_MagFilters[0] = TextureFilter::LINEAR;
+	m_MinFilters[0] = TextureFilter::LINEAR;
 }
 
 
@@ -1906,12 +1906,12 @@ Result::Name FullScreenBlurFilter::Init( RenderTargetTextureCache& cache, Filter
 	for( int i=num; i<2; i++ )
 		m_pCache->AddTexture( tex_desc );
 
-//	m_pDownScale4x4Filter->AddNextFilter( m_pBloomFilter );
+	m_pDownScale4x4Filter->AddNextFilter( m_pBloomFilter );
 
 	m_pLastFilter = m_pBloomFilter;
 
 	// test the 4x4 down scale filter
-	m_pLastFilter = m_pDownScale4x4Filter;
+//	m_pLastFilter = m_pDownScale4x4Filter;
 
 	return Result::SUCCESS;
 }
