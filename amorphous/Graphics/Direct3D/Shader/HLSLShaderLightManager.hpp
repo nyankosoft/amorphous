@@ -17,45 +17,23 @@ class HLSLLight
 public:
 
 	D3DXHANDLE m_DiffuseColors[3];
-
 	D3DXHANDLE m_AmbientColor;
+	D3DXHANDLE m_Direction;
+	D3DXHANDLE m_Position;
+	D3DXHANDLE m_Attenuation;
 
 	HLSLLight()
 		:
-	m_AmbientColor(0)
+	m_AmbientColor(0),
+	m_Direction(0),
+	m_Position(0),
+	m_Attenuation(0)
 	{
 		for( int i=0; i<numof(m_DiffuseColors); i++ )
 			m_DiffuseColors[i] = 0;
 	}
 
 	virtual ~HLSLLight() {}
-};
-
-
-class HLSLDirectionalLight : public HLSLLight
-{
-public:
-	D3DXHANDLE m_Direction;
-
-	HLSLDirectionalLight()
-		:
-	m_Direction(0)
-	{}
-};
-
-
-class HLSLPointLight : public HLSLLight
-{
-public:
-	D3DXHANDLE m_Position;
-
-	D3DXHANDLE m_Attenuation;
-
-	HLSLPointLight()
-		:
-	m_Position(0),
-	m_Attenuation(0)
-	{}
 };
 
 
@@ -155,9 +133,7 @@ private:
 	/// e.g. m_aHandle[i][LIGHT_POSITION] == the position of the i-th light.
 //	std::vector<D3DXHANDLE> m_aHandle[NUM_LIGHT_PROPERTY_HANDLES];
 
-	std::vector<HLSLDirectionalLight> m_HSDirectionalLights;
-
-	std::vector<HLSLPointLight> m_HSPointLights;
+	std::vector<HLSLLight> m_Handles;
 
 	/// copied from shader manager
 	/// must be updated when the shader is reloaded
@@ -228,19 +204,19 @@ inline void CHLSLShaderLightManager::SetPointLightOffset( const int iPointLightO
 
 inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericPointLight& rLight )
 {
-	if( (int)m_HSPointLights.size() <= index )
+	if( (int)m_Handles.size() <= index )
 		return;
 
 	HRESULT hr;
-	hr = m_pEffect->SetValue( m_HSPointLights[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
-	hr = m_pEffect->SetValue( m_HSPointLights[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
 
-	hr = m_pEffect->SetValue( m_HSPointLights[index].m_Position, &rLight.vPosition, sizeof(float) * 3 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_Position, &rLight.vPosition, sizeof(float) * 3 );
 
-	hr = m_pEffect->SetValue( m_HSPointLights[index].m_Attenuation, rLight.fAttenuation, sizeof(float) * 3 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_Attenuation, rLight.fAttenuation, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetFloatArray( m_HSPointLights[index].m_AmbientColor, ambient, 4 );
+	hr = m_pEffect->SetFloatArray( m_Handles[index].m_AmbientColor, ambient, 4 );
 //	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
 
 //	float range = 100.0f;
@@ -250,17 +226,17 @@ inline void CHLSLShaderLightManager::SetLight( const int index, const Hemispheri
 
 inline void CHLSLShaderLightManager::SetLight( const int index, const HemisphericDirectionalLight& rLight )
 {
-	if( (int)m_HSDirectionalLights.size() <= index )
+	if( (int)m_Handles.size() <= index )
 		return;
 
 	HRESULT hr;
-	hr = m_pEffect->SetValue( m_HSDirectionalLights[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
-	hr = m_pEffect->SetValue( m_HSDirectionalLights[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_DiffuseColors[0], &rLight.Attribute.UpperDiffuseColor, sizeof(float) * 4 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_DiffuseColors[1], &rLight.Attribute.LowerDiffuseColor, sizeof(float) * 4 );
 
-	hr = m_pEffect->SetValue( m_HSDirectionalLights[index].m_Direction, &rLight.vDirection, sizeof(float) * 3 );
+	hr = m_pEffect->SetValue( m_Handles[index].m_Direction, &rLight.vDirection, sizeof(float) * 3 );
 
 	float ambient[4] = {0.02f, 0.02f, 0.02f, 1.00f};
-	hr = m_pEffect->SetFloatArray( m_HSDirectionalLights[index].m_AmbientColor, ambient, 4 );
+	hr = m_pEffect->SetFloatArray( m_Handles[index].m_AmbientColor, ambient, 4 );
 //	hr = m_pEffect->SetValue( m_aHandle[index][LIGHT_AMBIENT_COLOR], &rLight.LowerColor, sizeof(float) * 4 );
 }
 

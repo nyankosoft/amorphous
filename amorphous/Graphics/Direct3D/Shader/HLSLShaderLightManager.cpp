@@ -31,6 +31,9 @@ CHLSLShaderLightManager::~CHLSLShaderLightManager()
 bool CHLSLShaderLightManager::Init()
 {
 	return SetShaderHandles();
+
+	std::vector<int> ints[3];
+	ints[0].resize( 0 );
 }
 
 
@@ -49,8 +52,7 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 	m_aPropertyHandle[LPH_NUM_SPOTLIGHTS]			= m_pEffect->GetParameterByName( NULL, "iSpotlightNum" );
 	m_aPropertyHandle[LPH_SPOTLIGHT_OFFSET]			= m_pEffect->GetParameterByName( NULL, "iSpotlightIni" );
 
-	int i;
-	for( i=0; i<NUM_LIGHTING_PROPERTIES; i++ )
+	for( int i=0; i<NUM_LIGHTING_PROPERTIES; i++ )
 	{
 //		assert( m_aPropertyHandle[i] != 0 );
 		if( m_aPropertyHandle[i] == 0 )
@@ -122,11 +124,11 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 */
 
 	char acLight[256];
-	char acStr[256];
-//	int i;
-//	for( i=0; i<m_HSDirectionalLights..; i++ )
-	m_HSDirectionalLights.reserve( 2 );
-	while(true)
+//	char acStr[256];
+	int index = 0;
+	m_Handles.reserve( 8 );
+	const int num_max_lights = 256;
+	for( int i=0; i<num_max_lights; i++ )
 	{
 		sprintf( acLight, "g_aLight[%d]", i );
 		hLight = m_pEffect->GetParameterByName( NULL, acLight );
@@ -134,19 +136,18 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 		if( hLight == NULL )
 			break;
 
-		m_HSDirectionalLights.push_back( HLSLDirectionalLight() );
-		HLSLDirectionalLight& dir_light = m_HSDirectionalLights.back();
+		m_Handles.push_back( HLSLLight() );
+		HLSLLight& light = m_Handles.back();
 
-		dir_light.m_Direction        = m_pEffect->GetParameterByName( hLight, "vDir" );
-		dir_light.m_AmbientColor     = m_pEffect->GetParameterByName( hLight, "vAmbient" );
-		dir_light.m_DiffuseColors[0] = m_pEffect->GetParameterByName( hLight, "vDiffuseUpper" );
-		dir_light.m_DiffuseColors[1] = m_pEffect->GetParameterByName( hLight, "vDiffuseLower" );
+		light.m_Direction        = m_pEffect->GetParameterByName( hLight, "vDir" );
+		light.m_Position         = m_pEffect->GetParameterByName( hLight, "vPos" );
+		light.m_AmbientColor     = m_pEffect->GetParameterByName( hLight, "vAmbient" );
+		light.m_DiffuseColors[0] = m_pEffect->GetParameterByName( hLight, "vDiffuseUpper" );
+		light.m_DiffuseColors[1] = m_pEffect->GetParameterByName( hLight, "vDiffuseLower" );
+		light.m_Attenuation      = m_pEffect->GetParameterByName( hLight, "vAttenuation" );
 
 //		sprintf( acStr, "fRange" );
 //		m_aHandle[i][LIGHT_RANGE] = m_pEffect->GetParameterByName( hLight, acStr );
-//
-//		sprintf( acStr, "vAttenuation" );
-//		m_aHandle[i][LIGHT_ATTENUATION] = m_pEffect->GetParameterByName( hLight, acStr );
 //
 //		sprintf( acStr, "vAttenuation[0]" );
 //		m_aHandle[i][LIGHT_ATTENUATION0] = m_pEffect->GetParameterByName( hLight, acStr );
@@ -166,25 +167,6 @@ bool CHLSLShaderLightManager::SetShaderHandles()
 
 //		sprintf( acStr, "g_aLight[%d].vPos", i );
 //		m_aHandle[i][LIGHT_POSITION] = m_pEffect->GetParameterByName( NULL, acStr );
-	}
-
-	m_HSPointLights.reserve( 8 );
-	while(true)
-	{
-		sprintf( acLight, "g_aLight[%d]", i );
-		hLight = m_pEffect->GetParameterByName( NULL, acLight );
-
-		if( hLight == NULL )
-			break;
-
-		m_HSPointLights.push_back( HLSLPointLight() );
-		HLSLPointLight& pnt_light = m_HSPointLights.back();
-
-		pnt_light.m_Position         = m_pEffect->GetParameterByName( hLight, "vPos" );
-		pnt_light.m_AmbientColor     = m_pEffect->GetParameterByName( hLight, "vAmbient" );
-		pnt_light.m_DiffuseColors[0] = m_pEffect->GetParameterByName( hLight, "vDiffuseUpper" );
-		pnt_light.m_DiffuseColors[1] = m_pEffect->GetParameterByName( hLight, "vDiffuseLower" );
-		pnt_light.m_Attenuation      = m_pEffect->GetParameterByName( hLight, "vAttenuation" );
 	}
 
 	return true;
