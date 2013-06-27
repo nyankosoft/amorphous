@@ -269,9 +269,10 @@ void CMassSpringExporter_LW::SetFixedGroupIndex( LWO2_Layer& rLayer,
 }
 
 
-inline float GetEdgeLength( LWO2_Face& rPolygon, vector<Vector3>& rvecVertex )
+/// \pre rTwoPointPolygon is a 2-point polygon
+inline float GetEdgeLength( LWO2_Face& rTwoPointPolygon, vector<Vector3>& rvecVertex )
 {
-	return Vec3Length( rvecVertex[ rPolygon.GetVertexIndex()[1] ] - rvecVertex[ rPolygon.GetVertexIndex()[0] ] );
+	return Vec3Length( rvecVertex[ rTwoPointPolygon.GetVertexIndex()[1] ] - rvecVertex[ rTwoPointPolygon.GetVertexIndex()[0] ] );
 }
 
 

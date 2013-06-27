@@ -13,7 +13,43 @@ namespace amorphous
 //==========================================================================
 // CMassSpringExporter_LW
 //==========================================================================
+/**
 
+  Fixed (i.e. pinned) points
+  -------------------------------
+  The points with any of the following properties are saved as "fixed points"
+  1. Points which belong to a point set named "FixedPoints"
+    - These are all saved as the group 0 of fixed points.
+  2. Points with the weightmaps which are mapped to skelegon bones.
+    - Bone indices are used as groups of the points
+	- Points are not saved as fixed points if their weightmaps are not mapped to skelegon bones.
+
+  Point masses
+  -------------------------------
+  - All points have the mass of 0.1[kg] by default.
+  - If a point has a verex weightmap or a vertex color map with the name "CPMass",
+    the vertex map value is saved as the mass of the point.
+    - In the case of a color map, value of alpha channel is used.
+
+  Connections between control points
+  -------------------------------
+  - 2-piont polygons are detected as springs between control points,
+    i.e. all the control points must be connected by 2 point polys
+	in order for the input model to be compiled as a valid mass spring model.
+
+  Springs
+  -------------------------------
+  2-point polygon with tags that contain the string "Spring" are assigned
+  spring prpperties encoded in the tag name.
+  The tag named "Spring 100.0 abc 10.0" is interpreted as the spring with
+  the strength of 100.0.
+
+  Collision shapes
+  -------------------------------
+  - Each conneced set of polygons is detected as a collision shape.
+  - Shpere is the only support shape.
+
+*/
 class CMassSpringExporter_LW : public CMassSpringExporter
 {
 	struct STempPointInfo
