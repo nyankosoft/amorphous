@@ -420,8 +420,8 @@ void TerrainMeshTree::ScaleTexCoords_r( TerrainMeshNode& node )
 		const double num_segs_x = exp( (double)(m_TargetDepth - 1) / 2.0 * log(2.0) );
 		size_t i, num_pols = node.m_vecPolygonIndex.size();
 		size_t j, num_verts;
-		ONCE( g_Log.Print( "mesh_side_length: %f, root_aabb.vMin.x: %f, root_aabb.vMax.x: %f, num_segs_x: %f",
-			mesh_length_x, root_aabb.vMin.x, root_aabb.vMax.x, num_segs_x ) );
+		ONCE( LOG_PRINTF(( "mesh_side_length: %f, root_aabb.vMin.x: %f, root_aabb.vMax.x: %f, num_segs_x: %f",
+			mesh_length_x, root_aabb.vMin.x, root_aabb.vMax.x, num_segs_x )) );
 		for( i=0; i<num_pols; i++ )
 		{
 			IndexedPolygon& polygon = vecPolygonBuffer[node.m_vecPolygonIndex[i]];
