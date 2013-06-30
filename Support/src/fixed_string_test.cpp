@@ -133,7 +133,7 @@ void compare_performances_of_operator_plus()
 }
 
 
-int main( int argc, char *argv[] )
+int test_fixed_string( int argc, char *argv[] )
 {
 	fixed_string<16> src( "src string" );
 	fixed_string<12> dest;

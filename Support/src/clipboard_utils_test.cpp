@@ -1,7 +1,9 @@
-#include "../../../Project1/amorphous/Support/clipboard_utils.hpp"
+#include "amorphous/Support/clipboard_utils.hpp"
+
+using namespace amorphous;
 
 
-int main( int argc, char *argv[] )
+int test_clipboard_utils( int argc, char *argv[] )
 {
 	std::string buffer;
 	get_from_clipboard( buffer );

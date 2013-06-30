@@ -1,17 +1,18 @@
-#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/MiscAux.hpp"
 #include "amorphous/base.hpp"
 
 using namespace std;
+using namespace amorphous;
 
 
 void LoadImageForTest( const std::string& image_filepath )
 {
 	LOG_SCOPE( image_filepath.c_str() );
 
-	CBitmapImage img;
+	BitmapImage img;
 	img.LoadFromFile( image_filepath );
 }
 
@@ -39,12 +40,12 @@ void TestPerformanceToOpenImageFiles()
 
 int TestImageArchive()
 {
-	CImageArchive img_archive( "./images/src.bmp" );
+	ImageArchive img_archive( "./images/src.bmp" );
 
 	if( !img_archive.IsValid() )
 		return -1;
 
-	CBitmapImage img( img_archive );
+	BitmapImage img( img_archive );
 
 	bool saved = img.SaveToFile( "./images/dest.jpg" );
 	if( saved )
@@ -64,13 +65,13 @@ int RunTests()
 }
 
 
-int main( int argc, char *argv[] )
+int test_BitmapImage( int argc, char *argv[] )
 {
 	InitFreeImage();
 
 	string log_filepath = "BitmapImageTest-" + string(GetBuildInfo()) + ".html";
 	boost::shared_ptr<LogOutput_HTML> pLog( new LogOutput_HTML(log_filepath) );
-	g_Log.AddLogOutput( pLog.get() );
+	GlobalLog().AddLogOutput( pLog.get() );
 
 	return RunTests();
 }
