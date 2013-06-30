@@ -152,17 +152,17 @@ bool BSPTreeForTriangleMesh::CreateMesh( vector<Vector3>& rvecVertex,
 	// set vertex / edge flags for collision
 //	SetCollisionFlags();
 
-	g_Log.Print( "building a bsp tree for a triangle mesh - %d vectices, %d triangles",
+	LOG_PRINTF(( "building a bsp tree for a triangle mesh - %d vectices, %d triangles",
 		m_vecVertex.size(),
-		rvecIndexedTriangle.size() );
+		rvecIndexedTriangle.size() ));
 
 	// build bsp-tree
 	Build( m_vecVertex, rvecIndexedTriangle );
 
-	g_Log.Print( "built a triangle mesh with bsp tree - %d vectices, %d triangles, %d nodes",
+	LOG_PRINTF(( "built a triangle mesh with bsp tree - %d vectices, %d triangles, %d nodes",
 		m_vecVertex.size(),
 		rvecIndexedTriangle.size(),
-		this->GetNumNodes() );
+		this->GetNumNodes() ));
 
 	return true;
 }
