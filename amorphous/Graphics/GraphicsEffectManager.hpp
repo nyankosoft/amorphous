@@ -19,6 +19,7 @@
 #include "../Graphics/TextureHandle.hpp"
 #include "../GameCommon/fwd.hpp"
 #include "../GameCommon/CriticalDamping.hpp"
+#include "../Support/fwd.hpp"
 #include "../Support/memory_helpers.hpp"
 #include <list>
 
