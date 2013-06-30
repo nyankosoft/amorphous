@@ -1,4 +1,4 @@
-#include "LogOutputBase.hpp"
+#include "LogOutput.hpp"
 #include "../../base.hpp"
 #include <boost/algorithm/string/replace.hpp>
 
@@ -7,21 +7,6 @@ namespace amorphous
 {
 
 using namespace std;
-
-
-//=================================================================================
-// LogOutputBase
-//=================================================================================
-
-LogOutputBase::LogOutputBase()
-{
-}
-
-
-LogOutputBase::~LogOutputBase()
-{
-}
-
 
 
 //=================================================================================

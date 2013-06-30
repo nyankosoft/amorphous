@@ -1,5 +1,5 @@
-#ifndef  __DEFAULTLOG_H__
-#define  __DEFAULTLOG_H__
+#ifndef  __amorphous_DefaultLog_HPP__
+#define  __amorphous_DefaultLog_HPP__
 
 
 #ifdef DISABLE_DEFAULT_LOG
@@ -8,22 +8,26 @@
 
 #else  /*  DISABLE_DEFAULT_LOG  */
 
-#include <string>
-#include "Log.hpp"
+
+#include "LogInputBase.hpp"
 
 
 namespace amorphous
 {
 
-extern LogInput_Default g_Log;
+inline LogInput_Default& GlobalLog()
+{
+	static LogInput_Default s_Log;
+	return s_Log;
+}
 
 #define PrintLog(n)	g_Log.Print(n)
 
-#define LOG_PRINT_VERBOSE( text ) g_Log.Print( WL_VERBOSE, std::string(__FUNCTION__) + " " + std::string(text) )
-#define LOG_PRINT_CAUTION( text ) g_Log.Print( WL_CAUTION, std::string(__FUNCTION__) + " " + std::string(text) )
-#define LOG_PRINT_WARNING( text ) g_Log.Print( WL_WARNING, std::string(__FUNCTION__) + " " + std::string(text) )
-#define LOG_PRINT_ERROR( text )   g_Log.Print( WL_ERROR,   std::string(__FUNCTION__) + " " + std::string(text) )
-#define LOG_PRINT( text )         g_Log.Print( WL_INFO,    std::string(__FUNCTION__) + " " + std::string(text) )
+#define LOG_PRINT_VERBOSE( text ) GlobalLog().Print( WL_VERBOSE, std::string(__FUNCTION__) + " " + std::string(text) )
+#define LOG_PRINT_CAUTION( text ) GlobalLog().Print( WL_CAUTION, std::string(__FUNCTION__) + " " + std::string(text) )
+#define LOG_PRINT_WARNING( text ) GlobalLog().Print( WL_WARNING, std::string(__FUNCTION__) + " " + std::string(text) )
+#define LOG_PRINT_ERROR( text )   GlobalLog().Print( WL_ERROR,   std::string(__FUNCTION__) + " " + std::string(text) )
+#define LOG_PRINT( text )         GlobalLog().Print( WL_INFO,    std::string(__FUNCTION__) + " " + std::string(text) )
 
 #define LOG_PRINTF_VERBOSE(x) LOG_PRINT_VERBOSE( std::string(" ") + fmt_string x )
 #define LOG_PRINTF_CAUTION(x) LOG_PRINT_CAUTION( std::string(" ") + fmt_string x )
@@ -41,4 +45,4 @@ extern LogInput_Default g_Log;
 
 
 
-#endif  /*  __DEFAULTLOG_H__  */
+#endif  /*  __amorphous_DefaultLog_HPP__  */

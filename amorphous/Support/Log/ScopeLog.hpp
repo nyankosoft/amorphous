@@ -2,7 +2,6 @@
 #define  __ScopeLog_H__
 
 
-#include <string>
 #include "../../base.hpp"
 #include "../time_string.hpp"
 #include "DefaultLog.hpp"
@@ -28,19 +27,19 @@ public:
 inline CScopeLog::CScopeLog( const char *pText )
 :
 m_pText(pText),
-m_StartTimeMS(g_Log.GetCurrentTimeMS())
+m_StartTimeMS(GlobalLog().GetCurrentTimeMS())
 {
-	g_Log.Print( std::string("Entered: ") + m_pText );
+	GlobalLog().Print( std::string("Entered: ") + m_pText );
 }
 
 
 inline CScopeLog::~CScopeLog()
 {
-	g_Log.Print( std::string("Leaving: ") + m_pText );
+	GlobalLog().Print( std::string("Leaving: ") + m_pText );
 
-	U32 time_spent_ms = g_Log.GetCurrentTimeMS() - m_StartTimeMS;
+	U32 time_spent_ms = GlobalLog().GetCurrentTimeMS() - m_StartTimeMS;
 
-	g_Log.Print( m_pText + std::string(" - Total Time: ") + ms_to_hhmmssms(time_spent_ms) );
+	GlobalLog().Print( m_pText + std::string(" - Total Time: ") + ms_to_hhmmssms(time_spent_ms) );
 }
 
 
