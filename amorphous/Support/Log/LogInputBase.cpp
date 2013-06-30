@@ -7,7 +7,7 @@
 #include "LogOutputBase.hpp"
 
 #include "../../Platform.hpp"
-#include "../../Support/Timer.hpp"
+//#include "../../Support/Timer.hpp"
 #include "../../Support/SafeDelete.hpp"
 #include "../../Support/time_string.hpp"
 
@@ -35,15 +35,15 @@ m_TimeStampFormat(TimeFormat::HHMMSSMS)
 	m_pBuffer	 = new char [buffer_size];
 	m_BufferSize = buffer_size;
 
-	m_pTimer = new Timer;
-	m_pTimer->Start();
+//	m_pTimer = new Timer;
+//	m_pTimer->Start();
 }
 
 
 LogInputBase::~LogInputBase()
 {
 	SafeDelete( m_pBuffer );
-	SafeDelete( m_pTimer );
+//	SafeDelete( m_pTimer );
 }
 
 
@@ -134,7 +134,7 @@ void LogInputBase::PrintInternal( int filter_val, const char *format,... )
 
 void LogInputBase::GetTimeStampString( string& strTime )
 {
-	unsigned long time_ms = (unsigned long)( m_pTimer->GetTime() * 1000 );
+	unsigned long time_ms = GetCurrentTimeMS();
 
 	strTime = get_time_stamp_string( time_ms, m_TimeStampFormat );
 }
@@ -172,7 +172,9 @@ bool LogInputBase::RemoveLogOutputDevice( LogOutputBase *pLogOutput )
 
 unsigned long LogInputBase::GetCurrentTimeMS() const
 {
-	return (unsigned long)(m_pTimer->GetTime() * 1000.0f);
+//	return (unsigned long)(m_pTimer->GetTime() * 1000.0f);
+	boost::timer::cpu_times elapsed = m_Timer.elapsed();
+	return (unsigned long)(elapsed.system / 1000);
 }
 
 

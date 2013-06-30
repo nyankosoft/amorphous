@@ -1,9 +1,10 @@
-#ifndef  __LOGINPUTBASE_H__
-#define  __LOGINPUTBASE_H__
+#ifndef  __amorphous_LogInputBase_HPP__
+#define  __amorphous_LogInputBase_HPP__
 
 
 #include <vector>
 #include <string>
+#include <boost/timer/timer.hpp>
 
 #include "LogOutputBase.hpp"
 #include "../TimeFormats.hpp"
@@ -14,7 +15,6 @@ namespace amorphous
 
 
 class LogOutputBase;
-class Timer;
 
 
 class LogInputBase
@@ -24,7 +24,7 @@ class LogInputBase
 
 	TimeFormat::Format m_TimeStampFormat;
 
-	Timer *m_pTimer;
+	boost::timer::cpu_timer m_Timer;
 
 	/// holds pointers to output device (borrowed reference)
 	/// NOTE: user is responsible for releasing these instances
@@ -121,4 +121,4 @@ public:
 
 
 
-#endif		/*  __LOGINPUTBASE_H__  */
+#endif		/*  __amorphous_LogInputBase_HPP__  */
