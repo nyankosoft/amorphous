@@ -1,12 +1,10 @@
 #ifndef  __LogOutput_ScrolledTextBuffer_H__
 #define  __LogOutput_ScrolledTextBuffer_H__
 
-#include <vector>
-#include <string>
 
+#include <vector>
 #include "../base.hpp"
 #include "../Support/Log/LogOutputBase.hpp"
-#include "../Support/array2d.hpp"
 #include "../3DMath/Vector2.hpp"
 
 

@@ -1,8 +1,5 @@
 #include "LogOutput_OnScreen.hpp"
-
-#include "Support/SafeDelete.hpp"
 #include "Support/StringAux.hpp"
-#include "3DMath/MathMisc.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 
@@ -69,7 +66,7 @@ void LogOutput_ScrolledTextBuffer::Print( const LogMessage& msg )
 	m_TextBuffer[m_EndRowIndex] = fmt_string( "[%s] %s", msg.m_Time.c_str(), msg.m_Text.c_str() );
 
 	int color_index = msg.m_FilterVal & 0x000000FF;	// take out the warning level index from the lowest 8-bits
-	Limit( color_index, 0, NUM_LOGWARNINGLEVELS - 1 );
+	clamp( color_index, 0, NUM_LOGWARNINGLEVELS - 1 );
 	m_TextColor[m_EndRowIndex] = s_LogTextColor[color_index];
 
 	// wrap the row index if it goes over the last row
