@@ -222,7 +222,7 @@ inline BitmapImage::BitmapImage( const array2d<SFloatRGBColor>& texel_buffer, in
 
 inline void LogFreeImageError( FREE_IMAGE_FORMAT fif, const char *message )
 {
-	g_Log.Print( WL_ERROR, "FreeImage: %s (image format: %s).",
+	GlobalLog().Print( WL_ERROR, "FreeImage: %s (image format: %s).",
 		message,
 		(fif != FIF_UNKNOWN) ? FreeImage_GetFormatFromFIF(fif) : "unknown"
 		);
