@@ -132,7 +132,7 @@ void CHLSLShaderManager::PrintCompilerErrors( LPD3DXBUFFER pCompileErrors )
 	if( pCompileErrors )
 	{
 		char *pBuffer = (char *)pCompileErrors->GetBufferPointer();
-		g_Log.Print( WL_ERROR, "CHLSLShaderManager::LoadShaderFromFile() - %s", pBuffer );
+		LOG_PRINTF_ERROR(( "CHLSLShaderManager::LoadShaderFromFile() - %s", pBuffer ));
 		pCompileErrors->Release();
 	}
 /*
