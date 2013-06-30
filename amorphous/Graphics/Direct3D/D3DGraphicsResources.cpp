@@ -227,9 +227,70 @@ SDim2 CD3DTextureResource::GetSize2D( unsigned int level )
 }
 
 
+D3DTEXTUREFILTERTYPE ToD3DTEXTUREFILTERTYPE( uint value )
+{
+	switch(value)
+	{
+	case TextureFilter::NEAREST: return D3DTEXF_POINT;  break;
+	case TextureFilter::LINEAR:  return D3DTEXF_LINEAR; break;
+	default:
+		LOG_PRINTF_ERROR(( " An unsupported sampler parameter (%d)", (int)value ));
+		return D3DTEXF_NONE;
+	}
+
+	return D3DTEXF_NONE;
+}
+
+
 Result::Name CD3DTextureResource::SetSamplingParameter( SamplingParameter::Name param, uint value )
 {
-	return Result::UNKNOWN_ERROR;
+	HRESULT hr = S_OK;
+
+	D3DSAMPLERSTATETYPE dest_type = D3DSAMP_MIPFILTER;
+
+	switch(param)
+	{
+	case SamplingParameter::TEXTURE_WRAP_AXIS_0: dest_type = D3DSAMP_ADDRESSU;  break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_1: dest_type = D3DSAMP_ADDRESSV;  break;
+	case SamplingParameter::TEXTURE_WRAP_AXIS_2: dest_type = D3DSAMP_ADDRESSW;  break;
+	case SamplingParameter::MIN_FILTER:          dest_type = D3DSAMP_MINFILTER; break;
+	case SamplingParameter::MAG_FILTER:          dest_type = D3DSAMP_MAGFILTER; break;
+	default:
+		LOG_PRINTF_ERROR(( " An unsupported sampler parameter (%d)", (int)param ));
+		return Result::INVALID_ARGS;
+	}
+
+	DWORD dest_value = 0;
+	if( dest_type == D3DSAMP_ADDRESSU
+	 || dest_type == D3DSAMP_ADDRESSV
+	 || dest_type == D3DSAMP_ADDRESSW )
+	{
+//		switch(value)
+//		{
+//		case TextureAddressMode::REPEAT:          dest_value = D3DTADDRESS_WRAP;   break;
+//		case TextureAddressMode::MIRRORED_REPEAT: dest_value = D3DTADDRESS_MIRROR; break;
+//		case TextureAddressMode::CLAMP_TO_BORDER: dest_value = D3DTADDRESS_BORDER; break;
+//		case TextureAddressMode::CLAMP_TO_EDGE:   dest_value = D3DTADDRESS_CLAMP;  break;
+//		default:
+//			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
+//			break;
+//		}
+	}
+	else if( dest_type == D3DSAMP_MAGFILTER )
+	{
+		m_MagFilter = ToD3DTEXTUREFILTERTYPE( value );
+	}
+	else if( dest_type == D3DSAMP_MINFILTER )
+	{
+		m_MinFilter = ToD3DTEXTUREFILTERTYPE( value );
+	}
+	else
+	{
+		LOG_PRINTF_ERROR(( " An unsupported sampler parameter type (%d)", (int)dest_type ));
+		return Result::INVALID_ARGS;
+	}
+
+	return Result::SUCCESS;
 }
 
 
