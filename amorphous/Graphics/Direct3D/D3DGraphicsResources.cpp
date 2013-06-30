@@ -3,7 +3,7 @@
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
 #include "Graphics/Direct3D/Shader/D3DShaderManager.hpp"
-#include "Graphics/Direct3D/Shader/D3DCgEffect.hpp"
+//#include "Graphics/Direct3D/Shader/D3DCgEffect.hpp"
 #include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Graphics/TextureGenerators/TextureFilter.hpp"
@@ -661,10 +661,15 @@ ShaderManager *CD3DShaderResource::CreateShaderManager()
 	{
 		if( resource_path.find(".fx") == resource_path.length() - 3 )
 			return new CHLSLShaderManager;
-		else if( resource_path.find(".cgfx") == resource_path.length() - 5 )
-			return new CD3DCgEffect;
+//		else if( resource_path.find(".cgfx") == resource_path.length() - 5 )
+//			return new CD3DCgEffect;
+//		else
+//			return new CD3DCgEffect;
 		else
-			return new CD3DCgEffect;
+		{
+			LOG_PRINT_ERROR( " An unsupported shader type:" + resource_path );
+			return NULL;
+		}
 	}
 	else
 		return new CHLSLShaderManager; // generic shaders are implemented in HLSL

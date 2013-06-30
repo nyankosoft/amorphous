@@ -4,7 +4,7 @@
 #include "Graphics/TextureGenerators/TextureFilter.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
-#include "Graphics/OpenGL/Shader/GLCgEffect.hpp"
+//#include "Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "Graphics/OpenGL/Shader/GLShader.hpp"
 #include "Support/ImageArchive.hpp"
 #include "Support/BitmapImage.hpp"
@@ -655,13 +655,15 @@ ShaderManager *CGLShaderResource::CreateShaderManager()
 	case ShaderType::NON_PROGRAMMABLE:
 		return NULL;//CGLFixedFunctionPipelineManager;
 	case ShaderType::PROGRAMMABLE:
-		{
-			const string& resource_path = m_ShaderDesc.ResourcePath;
-			if( resource_path.find(".cgfx") == resource_path.length() - 5 )
-				return new CGLCgEffect;
-			else
-				return new CGLProgram;
-		}
+//		{
+//			const string& resource_path = m_ShaderDesc.ResourcePath;
+//			if( resource_path.find(".cgfx") == resource_path.length() - 5 )
+//				return new CGLCgEffect;
+//			else
+//				return new CGLProgram;
+//		}
+		LOG_PRINT_ERROR( " An unsupported shader type: " + to_string((int)m_ShaderDesc.ShaderType) );
+		return NULL;
 	default:
 		LOG_PRINT_ERROR( "An invalid shader type: " + to_string( (int)m_ShaderDesc.ShaderType ) );
 		return NULL;

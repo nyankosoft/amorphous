@@ -3,7 +3,7 @@
 #include "amorphous/base.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/CgEffectBase.hpp"
+//#include "Graphics/Shader/CgEffectBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Graphics/Direct3D/Conversions.hpp"
 
@@ -813,7 +813,7 @@ void CD3DXMeshObjectBase::RenderSubsetsCg( LPD3DXBASEMESH pMesh,
 										   // Also need MeshMaterial *pMaterials = NULL?
 										   // rationale: render the same model with different materials
 {
-	bool single_shader_technique = ( paShaderTechnique == NULL ) ? true : false;
+/*	bool single_shader_technique = ( paShaderTechnique == NULL ) ? true : false;
 
 	HRESULT hr;
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
@@ -863,7 +863,7 @@ void CD3DXMeshObjectBase::RenderSubsetsCg( LPD3DXBASEMESH pMesh,
 
 			cgResetPassState(pass);
 		}
-	}
+	}*/
 }
 
 //-----------------------------------------------------------------------------
