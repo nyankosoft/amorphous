@@ -1028,7 +1028,7 @@ void CGM_Dialog::SetDepth( int depth )
 {
 	if( MAX_UI_LAYER_DEPTH <= depth )
 	{
-		g_Log.Print( WL_WARNING, "%s depth = %d", __FUNCTION__, depth );
+		LOG_PRINT_WARNING( " depth = ", to_string(depth) );
 		return; // no more recursive calls
 	}
 

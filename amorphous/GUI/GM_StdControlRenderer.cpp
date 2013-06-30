@@ -90,7 +90,7 @@ void CGM_StdControlRenderer::OnFocused( CGM_Control& control )
 
 void CGM_StdControlRenderer::OnFocusCleared( CGM_Control& control )
 {
-	g_Log.Print( "%s", __FUNCTION__ );
+	LOG_PRINT( " Entered." );
 
 	ChangeColorToCurrentState();
 }
