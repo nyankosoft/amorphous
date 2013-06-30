@@ -7,6 +7,7 @@
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/WindowMisc_Win32.hpp"
+#include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Input/InputHub.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -181,7 +182,7 @@ void GraphicsApplicationBase::Run()
 		return;
 
 	LogOutput_HTML html_log( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
-	g_Log.AddLogOutput( &html_log );
+	GlobalLog().AddLogOutput( &html_log );
 
 	InitFreeImage();
 
@@ -220,7 +221,7 @@ void GraphicsApplicationBase::Run()
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_WARNING, "exception: %s", e.what() );
+		GlobalLog().Print( WL_WARNING, "exception: %s", e.what() );
 	}
 
 
