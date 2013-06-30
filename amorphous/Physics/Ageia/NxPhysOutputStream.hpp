@@ -41,7 +41,7 @@ class CNxPhysOutputStream : public NxUserOutputStream
 		// then you are in most cases using the SDK wrong and you need to debug your code!
 		// however, code may just be a warning or information.
 		if ( code < NXE_DB_INFO )
-			g_Log.Print( WL_ERROR, "AGEIA PhysX Error: [%s(%d)] %s (NxErrorCode: %s)", file, line, message, NxErrorCodeString(code) );
+			GlobalLog().Print( WL_ERROR, "AGEIA PhysX Error: [%s(%d)] %s (NxErrorCode: %s)", file, line, message, NxErrorCodeString(code) );
 
 //		exit(1);
 	}
@@ -56,7 +56,7 @@ class CNxPhysOutputStream : public NxUserOutputStream
 
 	void print (const char *message)
 	{
-		g_Log.Print( WL_INFO, "AGEIA PhysX: %s", message );
+		GlobalLog().Print( WL_INFO, "AGEIA PhysX: %s", message );
 //		printf(gSDK says: %s\nh, message);
 //		MessageBox( NULL, "SDK Error", message, MB_OK|MB_ICONWARNING);
 	}
