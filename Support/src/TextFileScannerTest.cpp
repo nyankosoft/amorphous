@@ -3,7 +3,7 @@
 #include <ostream>
 
 using namespace std;
-//using namespace morph;
+using namespace amorphous;
 
 
 //#include "3DMath/Vector3.hpp"
@@ -43,7 +43,7 @@ int TestExtensions()
 	return 0;
 }
 
-int Test()
+static int Test()
 {
 	CTextFileScanner scanner( "data/text_file_scanner_test.txt" );
 
@@ -100,7 +100,7 @@ int Test()
 }
 
 
-int main( int argc, char *argv[] )
+int test_TextFileScanner( int argc, char *argv[] )
 {
 	Test();
 

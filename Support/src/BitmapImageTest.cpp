@@ -55,11 +55,45 @@ int TestImageArchive()
 }
 
 
+void RunImageSaveTest()
+{
+	const SFloatRGBAColor colors[] = {
+		SFloatRGBAColor::White(),
+		SFloatRGBAColor::Red(),
+		SFloatRGBAColor::Green(),
+		SFloatRGBAColor::Blue(),
+		SFloatRGBAColor::Black()
+	};
+
+	const char *basenames[] = {
+		"white",
+		"red",
+		"green",
+		"blue",
+		"black"
+	};
+
+	const int bpps[] = { 24, 32 };
+	for( int i=0; i<numof(bpps); i++ )
+	{
+		for( int j=0; j<numof(colors); j++ )
+		{
+			BitmapImage img( 64, 64, bpps[i] );
+			img.FillColor( colors[j] );
+
+			img.SaveToFile( string(basenames[j]) + "_bpp" + to_string(bpps[i]) + string(".png") );
+		}
+	}
+}
+
+
 int RunTests()
 {
-	TestImageArchive();
+	RunImageSaveTest();
 
-	TestPerformanceToOpenImageFiles();
+//	TestImageArchive();
+
+//	TestPerformanceToOpenImageFiles();
 
 	return 0;
 }
