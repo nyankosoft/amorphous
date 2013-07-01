@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Support">
+      <UniqueIdentifier>{ae48f11e-54f4-453a-bc41-f0a089bc8d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Support\Log">
+      <UniqueIdentifier>{0ec51d7f-2d19-44a5-84f8-1775bbe05877}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BitmapImageTest.cpp">
@@ -27,5 +33,28 @@
     <ClCompile Include="..\src\SupportDemos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\TextFileScannerTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ImageSplitterTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutput.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutput.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

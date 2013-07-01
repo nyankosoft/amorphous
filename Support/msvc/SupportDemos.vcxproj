@@ -39,9 +39,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>../app</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>../app</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -66,6 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../../Project1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,10 +79,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp" />
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutput.cpp" />
     <ClCompile Include="..\src\BitmapImageTest.cpp" />
     <ClCompile Include="..\src\clipboard_utils_test.cpp" />
     <ClCompile Include="..\src\fixed_string_test.cpp" />
+    <ClCompile Include="..\src\ImageSplitterTest.cpp" />
     <ClCompile Include="..\src\SupportDemos.cpp" />
+    <ClCompile Include="..\src\TextFileScannerTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutput.hpp" />
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
