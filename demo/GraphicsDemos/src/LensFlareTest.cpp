@@ -93,7 +93,9 @@ int CLensFlareTest::Init()
 //	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/CLensFlareTest.fx" );
 
 	ShaderResourceDesc shader_desc;
-	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(GenericShaderDesc()) );
+	GenericShaderDesc gs_desc;
+	gs_desc.Lighting = false;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	// load skybox mesh
