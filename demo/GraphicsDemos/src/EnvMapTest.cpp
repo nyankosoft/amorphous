@@ -252,7 +252,9 @@ void CEnvMapTest::RenderBase()
 		if( !pMesh )
 			continue;
 
-		HRESULT hr = shader_mgr.SetCubeTexture( 0, m_pCubeMapManager->GetCubeTexture() );
+//		HRESULT hr = shader_mgr.SetCubeTexture( 0, m_pCubeMapManager->GetCubeTexture() );
+		TextureHandle tex;
+		HRESULT hr = shader_mgr.SetCubeTexture( 0, tex );
 
 		shader_mgr.SetWorldTransform( Matrix34( positions[(i++)%numof(positions)], Matrix33Identity() ) );
 
