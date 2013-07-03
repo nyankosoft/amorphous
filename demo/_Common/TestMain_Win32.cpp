@@ -1,24 +1,22 @@
-//-----------------------------------------------------------------------------
-// File: D3DAppTestMain.cpp
-//-----------------------------------------------------------------------------
-
 #include <boost/foreach.hpp>
-
-#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 #include "amorphous/Support/MiscAux.hpp"
-#include "amorphous/Support/WindowMisc_Win32.hpp"
 #include "amorphous/Support/CameraController_Win32.hpp"
+#include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/BitmapImage.hpp" // For InitFreeImage()
 #include "amorphous/Support/lfs.hpp"
-#include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/Log/LogOutput.hpp"
-#include "amorphous/Input.hpp"
 #include "amorphous/Input/StdMouseInput.hpp"
+#include "amorphous/Input/StdKeyboard.hpp"
 //#include "amorphous/XML.hpp"
 #include "amorphous/App/GameWindowManager_Win32.hpp"
 //#include <gl/gl.h>
