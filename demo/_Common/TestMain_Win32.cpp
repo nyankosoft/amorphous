@@ -16,6 +16,7 @@
 #include "amorphous/Support/BitmapImage.hpp" // For InitFreeImage()
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/CameraController.hpp"
+#include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Input.hpp"
 #include "amorphous/Input/StdMouseInput.hpp"
 //#include "amorphous/XML.hpp"
@@ -296,7 +297,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 		return 0;
 
 	LogOutput_HTML html_log( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
-	g_Log.AddLogOutput( &html_log );
+	GlobalLog().AddLogOutput( &html_log );
 
 	InitFreeImage();
 
@@ -322,7 +323,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_WARNING, "exception: %s", e.what() );
+		GlobalLog().Print( WL_WARNING, "exception: %s", e.what() );
 	}
 
 
