@@ -22,7 +22,9 @@ using namespace boost;
 
 CLightingTest::CLightingTest()
 :
-m_RandomLightColors(true)
+m_RandomLightColors(true),
+m_NumLightsX(4),
+m_NumLightsZ(3)
 {
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
@@ -91,8 +93,8 @@ void CLightingTest::SetHSDirectionalLights( ShaderLightManager& shader_light_mgr
 
 void CLightingTest::SetHSPointLights( ShaderLightManager& shader_light_mgr, bool random_color )
 {
-	int x = 4;
-	int z = 3;
+	int x = m_NumLightsX;
+	int z = m_NumLightsZ;
 	float span_x = 32.0f;
 	float span_z = 32.0f;
 //	int num_point_lights = 4;
@@ -126,8 +128,8 @@ void CLightingTest::SetHSPointLights( ShaderLightManager& shader_light_mgr, bool
 
 void CLightingTest::SetHSSpotights( ShaderLightManager& shader_light_mgr, bool random_color )
 {
-	int x = 4;
-	int z = 3;
+	int x = m_NumLightsX;
+	int z = m_NumLightsZ;
 	float span_x = 32.0f;
 	float span_z = 32.0f;
 //	int num_point_lights = 4;
@@ -182,6 +184,8 @@ void CLightingTest::SetLights( bool use_hemespheric_light )
 	bool hs_point_lights = true;
 	LoadParamFromFile( "LightingDemo/params.txt", "hs_directinal_lights", hs_directinal_lights );
 	LoadParamFromFile( "LightingDemo/params.txt", "hs_point_lights",      hs_point_lights );
+
+	LoadParamFromFile( "LightingDemo/params.txt", "num_lights_x_z",       m_NumLightsX, m_NumLightsZ );
 
 	if( hs_directinal_lights )
 		SetHSDirectionalLights( shader_light_mgr, random_color );

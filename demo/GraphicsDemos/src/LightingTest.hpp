@@ -30,6 +30,10 @@ class CLightingTest : public CGraphicsTestBase
 
 	bool m_RandomLightColors;
 
+	int m_NumLightsX;
+
+	int m_NumLightsZ;
+
 private:
 
 	bool InitShader();
