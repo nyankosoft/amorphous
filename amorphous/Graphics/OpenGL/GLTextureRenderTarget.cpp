@@ -2,6 +2,7 @@
 #include "GLExtensions.hpp"
 #include "GLGraphicsDevice.hpp" // LOG_GL_ERROR macro
 #include "GLGraphicsResources.hpp"
+#include "GLTextureUtilities.hpp"
 
 
 namespace amorphous
@@ -9,9 +10,6 @@ namespace amorphous
 
 
 bool sg_use_grm = true;
-
-
-bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum src_format, GLenum src_type, const std::string& image_filepath );
 
 
 void CheckFramebufferStatus( GLenum target )
@@ -137,7 +135,7 @@ CGLTextureRenderTarget::CGLTextureRenderTarget()
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
 	m_RenderTargetTextureID = 0;
-
+	m_OrigFrameBuffer = 0;
 
 //	m_RenderTargetTexture      = 0;
 }
@@ -150,6 +148,7 @@ TextureRenderTarget( texture_width, texture_height, texture_format )
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
 	m_RenderTargetTextureID = 0;
+	m_OrigFrameBuffer = 0;
 
 //	m_RenderTargetTexture      = 0;
 
@@ -164,6 +163,7 @@ TextureRenderTarget(texture_desc)
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
 	m_RenderTargetTextureID = 0;
+	m_OrigFrameBuffer = 0;
 
 //	m_RenderTargetTexture      = 0;
 
@@ -414,6 +414,9 @@ void CGLTextureRenderTarget::SetRenderTarget()
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	// save the current framebuffer
+	glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &m_OrigFrameBuffer );
+
+	LOG_GL_ERROR( " glGetIntegerv() failed. Failed to get the original frame buffer." );
 
 	GLenum texTarget = GL_TEXTURE_2D;
 	glBindTexture(texTarget, 0);
@@ -452,8 +455,8 @@ void CGLTextureRenderTarget::ResetRenderTarget()
 
 //	glPopAttrib();
 
-	// Bind 0, which means render to back buffer
-	glBindFramebufferEXT( GL_DRAW_FRAMEBUFFER_EXT, 0 );
+	// Bind the original frame buffer. 0 if it's the back buffer.
+	glBindFramebufferEXT( GL_DRAW_FRAMEBUFFER_EXT, m_OrigFrameBuffer );
 
 	bool save_rt_texture = false;
 	if( save_rt_texture )

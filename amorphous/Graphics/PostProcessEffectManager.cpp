@@ -248,6 +248,11 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 	TextureFormat::Format orig_scene_buffer_format = TextureFormat::A8R8G8B8;
 
 	SRectangular bb = GetBackBufferWidthAndHeight();
+
+	uint vp_width = 0, vp_height = 0;
+	GraphicsDevice().GetViewportSize( vp_width, vp_height );
+	SRectangular vp( (int)vp_width, (int)vp_height );
+
 	m_pOrigSceneHolder.reset( new RenderTargetTextureHolder() );
 	m_pOrigSceneHolder->m_Desc.Width  = bb.width;
 	m_pOrigSceneHolder->m_Desc.Height = bb.height;

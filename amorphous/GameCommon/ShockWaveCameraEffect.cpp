@@ -1,6 +1,4 @@
 #include "ShockWaveCameraEffect.hpp"
-
-#include "3DMath/Vector3.hpp"
 #include "Support/VectorRand.hpp"
 #include "Support/MTRand.hpp"
 

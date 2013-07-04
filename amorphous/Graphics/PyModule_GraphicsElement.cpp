@@ -28,7 +28,7 @@ static GraphicsElementManager *gs_pGraphicsElementManager = &gs_NullGraphicsElem
 static GraphicsElementManager& GetGraphicsElementManager()
 {
 	if( gs_pGraphicsElementManager == &gs_NullGraphicsElementManager )
-		g_Log.Print( WL_WARNING, "using NullGraphicsElementManager" );
+		LOG_PRINT_WARNING( "using NullGraphicsElementManager" );
 
 	return *gs_pGraphicsElementManager;
 }

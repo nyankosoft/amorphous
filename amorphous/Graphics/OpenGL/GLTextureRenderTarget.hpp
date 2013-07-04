@@ -20,6 +20,8 @@ private:
 
 	GLuint m_RenderTargetTextureID;
 
+	GLint m_OrigFrameBuffer;
+
 //	D3DVIEWPORT9 m_OriginalViewport;
 
 
