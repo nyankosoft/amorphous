@@ -396,17 +396,17 @@ CGM_Dialog *GameTask_MainMenu::CreatePhysicsDebugSubDialog()
 //	CGM_RadioButtonDesc radio_btn[8];
 	int btn_width = 100, btn_wmargin = 8;
 
-	// jiglib config dialog
+	// Physics engine config dialog
 	CGM_DialogDesc subdlg_desc;
-	subdlg_desc.strTitle = "Jiggle Physics Engine";
+	subdlg_desc.strTitle = "Physics Engine";
 	subdlg_desc.Rect.SetPositionLTWH( 200, 100, 300, 400 );
-//	subdlg_desc.pEventHandler = Config_JigLib;
+//	subdlg_desc.pEventHandler = Config_PhysicsEngine;
 	subdlg_desc.bRootDialog = false;
 	CGM_Dialog *pPhysDebugDlg = m_pDialogManager->AddDialog( subdlg_desc );
 
 	// =============== controls for jiggle config dialog ===============
 
-	// JigLib visualization controls
+	// Physics visualization controls
 	bool phys_checked[4] = { false, false, false, false };
 	int phys_id[4];
 	string phys_title[4];
