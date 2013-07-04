@@ -22,7 +22,7 @@ class CJL_PhysicsManager;
 
 /**
  * CJL_PhysicsVisualizer
- *  - used for visual debugging of JigLib physics library
+ *  - used for visual debugging of physics engines
  *  - displays physics-related information such as velocities,
  *    bounding boxes, contact points, etc.
 */
