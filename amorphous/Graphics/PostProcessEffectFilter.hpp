@@ -89,7 +89,7 @@ public:
 	{
 		if( m_NumLocks <= 0 )
 		{
-			LOG_PRINT_WARNING( "Redundant calls. m_NumLocks is already 0." );
+//			LOG_PRINT_WARNING( "Redundant calls. m_NumLocks is already 0." );
 			return;
 		}
 
