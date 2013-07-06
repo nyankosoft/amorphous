@@ -37,8 +37,6 @@ class GridMeshGenerator : public MeshGenerator
 	int m_Sign;
 	bool m_DoubleSided;
 
-	void SetPose( unsigned int axis, int sign );
-
 public:
 
 	/// \param axis [in] [0,2]
@@ -61,7 +59,6 @@ public:
 	m_Sign(sign),
 	m_DoubleSided(double_sided)
 	{
-		SetPose( axis, sign );
 	}
 
 	~GridMeshGenerator(){}
@@ -75,13 +72,16 @@ public:
 		vector<TEXCOORD2> tex_uvs;
 		vector< std::vector<unsigned int> > polygons;
 
-		Result::Name res = GenerateGridMesh( positions, normals, diffuse_colors, tex_uvs, polygons, 0 );
+		int side = 0;
+		Result::Name res = GenerateGridMesh( positions, normals, diffuse_colors, tex_uvs, polygons, side );
 		if( res != Result::SUCCESS )
 			return res;
 
 		if( m_DoubleSided )
 		{
-			return GenerateGridMesh( positions, normals, diffuse_colors, tex_uvs, polygons, 1 );
+			// Create vertices and polygon on the other side.
+			side = 1;
+			return GenerateGridMesh( positions, normals, diffuse_colors, tex_uvs, polygons, side );
 		}
 
 		CreateSingleSubsetMeshArchive(
@@ -102,7 +102,7 @@ public:
 		std::vector<Vector3>& normals,
 		std::vector<SFloatRGBAColor>& diffuse_colors,
 		std::vector<TEXCOORD2>& tex_uvs,
-		std::vector< std::vector<unsigned int> > polygons,
+		std::vector< std::vector<unsigned int> >& polygons,
 		unsigned int side
 		)
 	{
@@ -136,18 +136,21 @@ public:
 		polygons.reserve( polygons.size() + num_divisions_x * num_divisions_y );
 		int i0=0, i1=1, i2=2, i3=3;
 		if( side == 1 ) { i0=3; i1=2; i2=1; i3=0; } // Invert the order of vertex indices to flip polygons.
+		const uint num_vertices_x = num_divisions_x + 1;
 		for( uint y=0; y<num_divisions_y; y++ )
 		{
 			for( uint x=0; x<num_divisions_x; x++ )
 			{
 				polygons.push_back( vector<unsigned int>() );
 				polygons.back().resize( 4 );
-				polygons.back()[i0] = vertex_offset + num_divisions_x * y + x;
-				polygons.back()[i1] = vertex_offset + num_divisions_x * y + x + 1;
-				polygons.back()[i2] = vertex_offset + num_divisions_x * (y+1) + x + 1;
-				polygons.back()[i3] = vertex_offset + num_divisions_x * (y+1) + x;
+				polygons.back()[i0] = vertex_offset + num_vertices_x * y + x;
+				polygons.back()[i1] = vertex_offset + num_vertices_x * y + x + 1;
+				polygons.back()[i2] = vertex_offset + num_vertices_x * (y+1) + x + 1;
+				polygons.back()[i3] = vertex_offset + num_vertices_x * (y+1) + x;
 			}
 		}
+
+		return Result::SUCCESS;
 	}
 };
 
