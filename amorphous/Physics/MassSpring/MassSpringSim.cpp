@@ -1,6 +1,6 @@
 #include "MassSpringSim.hpp"
-#include "../Support/memory_helpers.hpp"
-#include "../Support/FixedVector.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
 using namespace std;
 

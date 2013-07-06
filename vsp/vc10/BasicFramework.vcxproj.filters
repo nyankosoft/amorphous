@@ -139,6 +139,9 @@
     <Filter Include="Graphics\Shader\Embedded">
       <UniqueIdentifier>{be190979-2f97-4b8e-9fb3-601dd4e79099}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics\MassSpring">
+      <UniqueIdentifier>{93fe21c3-c9ad-4daf-bc32-05e8d9fa2d6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\Graphics\BillboardArrayMesh.cpp">
@@ -824,6 +827,12 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\Log\LogOutput.cpp">
       <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.cpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.cpp">
+      <Filter>Physics\MassSpring</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1913,6 +1922,12 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Support\Log\LogOutput.hpp">
       <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.hpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.hpp">
+      <Filter>Physics\MassSpring</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
