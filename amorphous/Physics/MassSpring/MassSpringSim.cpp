@@ -267,9 +267,9 @@ void CMS_MassSpringSim::UpdateForce( CMS_PointState *paPoint )
 		if( 0 <= rProperty.iFixedPointGroup )
 			continue;
 
-		// •—‚Ì‚æ‚¤‚È‚à‚Ì
-/*		float r = g_Counter / 70.0f; // “K“–
-		float r2 = g_Counter / 13.0f; // “K“–
+		// Simulated wind
+/*		float r = g_Counter / 70.0f; // Not very accurate
+		float r2 = g_Counter / 13.0f; // Not very accurate
 
 		rPoint.vForce.x += cosf( r ) * sinf( r2 ) * WINDFORCE;
 		rPoint.vForce.z += sinf( r ) * sinf( r2 ) * WINDFORCE;
@@ -278,7 +278,7 @@ void CMS_MassSpringSim::UpdateForce( CMS_PointState *paPoint )
 
 		rPoint.vForce += Vector3( rand() * 0.01f / (float)RAND_MAX, 0, rand() * 0.01f / (float)RAND_MAX );
 
-		// ‹ó‹C’ïR
+		// Drag (air resistance)
 		rPoint.vForce -= rPoint.vVelocity * AIRDAMPING;
 
 
