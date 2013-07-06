@@ -70,7 +70,7 @@ inline void CreateGridPoints(
 			p.x = width  * (float)j / div_x - width  * 0.5f;
 			p.y = 0;
 			p.z = height * (float)i / div_y - height * 0.5f;
-			points[i * num_divisions_x + j] = pose.matOrient * p;
+			points[i * (num_divisions_x+1) + j] = pose.matOrient * p;
 		}
 	}
 }
