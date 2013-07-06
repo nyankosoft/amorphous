@@ -834,6 +834,9 @@
     <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.cpp">
       <Filter>Physics\MassSpring</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.cpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1927,6 +1930,9 @@
       <Filter>Physics\MassSpring</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.hpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.hpp">
       <Filter>Physics\MassSpring</Filter>
     </ClInclude>
   </ItemGroup>
