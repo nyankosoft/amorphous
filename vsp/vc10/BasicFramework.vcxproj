@@ -130,8 +130,12 @@
     <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\VarianceShadowMapManager.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectBase.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManager.cpp" />
@@ -204,7 +208,9 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.cpp" />
@@ -219,7 +225,9 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DShaderManager.cpp" />
@@ -277,12 +285,12 @@
     <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\DebugOutput.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Log\LogOutput.cpp" />
     <ClCompile Include="..\..\amorphous\Support\MTRand.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Profile.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Timer_Win32.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\DefaultLog.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp" />
-    <ClCompile Include="..\..\amorphous\Support\Log\LogOutputBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.cpp" />
@@ -406,8 +414,12 @@
     <ClInclude Include="..\..\amorphous\Graphics\TextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\VarianceShadowMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\BlendTransformsLoader.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectBase.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectBase.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderDesc.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderGenerator.hpp" />
@@ -483,7 +495,9 @@
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.hpp" />
@@ -507,7 +521,9 @@
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\TextureTool.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DRectSetImpl_D3D.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DShaderManager.hpp" />
@@ -610,6 +626,7 @@
     <ClInclude Include="..\..\amorphous\Support\DebugOutput.hpp" />
     <ClInclude Include="..\..\amorphous\Support\ImageArchive.hpp" />
     <ClInclude Include="..\..\amorphous\Support\lfs.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutput.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Macro.hpp" />
     <ClInclude Include="..\..\amorphous\Support\MTRand.hpp" />
     <ClInclude Include="..\..\amorphous\Support\ParamLoader.hpp" />

@@ -618,9 +618,6 @@
     <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Support\Log\LogOutputBase.cpp">
-      <Filter>Support\Log</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
@@ -827,6 +824,9 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp">
       <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Log\LogOutput.cpp">
+      <Filter>Support\Log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1916,6 +1916,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp">
       <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutput.hpp">
+      <Filter>Support\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
