@@ -280,7 +280,6 @@
     <ClCompile Include="..\..\amorphous\GUI\GM_SubDialogButton.cpp" />
     <ClCompile Include="..\..\amorphous\GUI\GM_XMLParser.cpp" />
     <ClCompile Include="..\..\amorphous\GUI\InputHandler_Dialog.cpp" />
-    <ClCompile Include="..\..\amorphous\Support\BMPImageExporter.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraController.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp" />
@@ -618,7 +617,6 @@
     <ClInclude Include="..\..\amorphous\GUI\ui_fwd.hpp" />
     <ClInclude Include="..\..\amorphous\Support\array2d.hpp" />
     <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp" />
-    <ClInclude Include="..\..\amorphous\Support\BMPImageExporter.hpp" />
     <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp" />
     <ClInclude Include="..\..\amorphous\Support\CameraController.hpp" />
     <ClInclude Include="..\..\amorphous\Support\CameraController_Win32.hpp" />

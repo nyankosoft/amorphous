@@ -588,9 +588,6 @@
     <ClCompile Include="..\..\amorphous\GUI\InputHandler_Dialog.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Support\BMPImageExporter.cpp">
-      <Filter>Support</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\CameraController.cpp">
       <Filter>Support</Filter>
     </ClCompile>
@@ -1533,9 +1530,6 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp">
-      <Filter>Support</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Support\BMPImageExporter.hpp">
       <Filter>Support</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp">
