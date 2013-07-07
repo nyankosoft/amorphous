@@ -501,88 +501,88 @@
     <ClInclude Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.hpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\fwd.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\fwd.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\GravityFunction.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JigLib.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JigLib.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_CollisionDetect.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_CollisionFunctor.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionFunctor.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ContactInfo.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ContactInfo.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ContactPair.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ContactPair.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_LineSegment.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_LineSegment.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_PhysicsActor.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_PhysicsActorDesc.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActorDesc.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_PhysicsManager.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsManager.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_Shape_Box.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Box.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_Shape_Capsule.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Capsule.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_Shape_Sphere.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Sphere.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeBase.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeBase.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeDesc.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeDesc_Box.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Box.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeDesc_Capsule.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Capsule.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeDesc_Sphere.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Sphere.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeDesc_TriangleMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_TriangleMesh.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_ShapeDescFactory.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDescFactory.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_SurfaceMaterial.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_SurfaceMaterial.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\rand_util.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\rand_util.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\TriangleMesh.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\TriangleMesh.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\Geometry\Box.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\Box.hpp">
       <Filter>Source Files\JigLib\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\Geometry\distance.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\distance.hpp">
       <Filter>Source Files\JigLib\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\Geometry\JL_Box.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\JL_Box.hpp">
       <Filter>Source Files\JigLib\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\Geometry\line.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\line.hpp">
       <Filter>Source Files\JigLib\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\App\GameApplicationBase.hpp">
@@ -813,7 +813,7 @@
     <ClInclude Include="..\..\amorphous\Script\gfx_py.hpp">
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\JigLib\JL_PhysicsVisualizer.hpp">
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsVisualizer.hpp">
       <Filter>Source Files\JigLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Task\fwd.hpp">
@@ -1199,61 +1199,61 @@
     <ClCompile Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.cpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\GravityFunction.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect_Box_Box.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Box.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect_Box_Capsule.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Capsule.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect_Box_Triangle.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Triangle.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect_Capsule_Capsule.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Capsule_Capsule.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect_Capsule_TriangleMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Capsule_TriangleMesh.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_CollisionDetect_Sphere_TriangleMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Sphere_TriangleMesh.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_PhysicsActor.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_PhysicsActorDesc.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActorDesc.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_PhysicsManager.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsManager.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_Shape_Box.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Box.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_Shape_Capsule.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Capsule.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_Shape_Sphere.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Sphere.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_ShapeBase.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeBase.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_ShapeDescFactory.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDescFactory.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\TriangleMesh.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\TriangleMesh.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\Geometry\distance.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\distance.cpp">
       <Filter>Source Files\JigLib\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\Geometry\overlap.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\overlap.cpp">
       <Filter>Source Files\JigLib\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\App\GameApplicationBase.cpp">
@@ -1457,7 +1457,7 @@
     <ClCompile Include="..\..\amorphous\Script\gfx_py.cpp">
       <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\JigLib\JL_PhysicsVisualizer.cpp">
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsVisualizer.cpp">
       <Filter>Source Files\JigLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Script\PythonScriptManager.cpp">
@@ -1474,7 +1474,7 @@
     <None Include="..\..\amorphous\Stage\CopyEntity.inl">
       <Filter>Source Files\Stage\Entity</Filter>
     </None>
-    <None Include="..\..\amorphous\JigLib\JL_PhysicsActor.inl">
+    <None Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.inl">
       <Filter>Source Files\JigLib</Filter>
     </None>
   </ItemGroup>
