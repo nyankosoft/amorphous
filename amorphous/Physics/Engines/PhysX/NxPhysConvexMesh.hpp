@@ -2,11 +2,11 @@
 #define __NxPhysConvexMesh_H__
 
 
-#include "fwd.hpp"
-#include "3DMath.hpp"
+#include "amorphous/fwd.hpp"
+#include "amorphous/3DMath.hpp"
 
 //#include "NxPhysConvexMeshDesc.hpp"
-#include "../ConvexMesh.hpp"
+#include "amorphous/Physics/ConvexMesh.hpp"
 
 
 namespace amorphous

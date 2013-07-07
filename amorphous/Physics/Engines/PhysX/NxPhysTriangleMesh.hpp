@@ -6,7 +6,7 @@
 #include "3DMath.hpp"
 
 //#include "NxPhysTriangleMeshDesc.hpp"
-#include "../TriangleMesh.hpp"
+#include "amorphous/Physics/TriangleMesh.hpp"
 
 
 namespace amorphous

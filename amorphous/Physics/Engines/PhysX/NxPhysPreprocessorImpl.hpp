@@ -11,7 +11,7 @@
 
 #include "fwd.hpp"
 #include "NxPhysOutputStream.hpp"
-#include "../Preprocessor.hpp"
+#include "amorphous/Physics/Preprocessor.hpp"
 
 
 namespace amorphous

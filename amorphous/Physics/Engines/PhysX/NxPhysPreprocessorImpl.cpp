@@ -1,13 +1,11 @@
 #include "NxPhysPreprocessorImpl.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysStream.hpp"
-#include "../TriangleMeshDesc.hpp"
-#include "../ClothMeshDesc.hpp"
+#include "amorphous/Physics/TriangleMeshDesc.hpp"
+#include "amorphous/Physics/ClothMeshDesc.hpp"
 
 // PhysX header
 #include "NxCooking.h"
-
-#include "Support/SafeDelete.hpp"
 
 
 namespace amorphous

@@ -3,10 +3,10 @@
 
 
 #include "NxJoint.h"
-#include "../JointDesc.hpp"
-#include "../FixedJointDesc.hpp"
-#include "../RevoluteJointDesc.hpp"
-#include "../SphericalJointDesc.hpp"
+#include "amorphous/Physics/JointDesc.hpp"
+#include "amorphous/Physics/FixedJointDesc.hpp"
+#include "amorphous/Physics/RevoluteJointDesc.hpp"
+#include "amorphous/Physics/SphericalJointDesc.hpp"
 
 
 namespace amorphous

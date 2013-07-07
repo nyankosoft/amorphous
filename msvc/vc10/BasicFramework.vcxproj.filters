@@ -106,9 +106,6 @@
     <Filter Include="Physics\engines">
       <UniqueIdentifier>{8582a8d0-1e0e-4763-9dea-7462d008c0ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physics\engines\Ageia">
-      <UniqueIdentifier>{3566b202-88ab-4c4e-a0f8-14b1b081ca62}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics\engines\JigLib">
       <UniqueIdentifier>{625663b8-3d0a-4c99-891b-f92365af3fed}</UniqueIdentifier>
     </Filter>
@@ -141,6 +138,9 @@
     </Filter>
     <Filter Include="Physics\MassSpring">
       <UniqueIdentifier>{93fe21c3-c9ad-4daf-bc32-05e8d9fa2d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\engines\PhysX">
+      <UniqueIdentifier>{3566b202-88ab-4c4e-a0f8-14b1b081ca62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -714,20 +714,20 @@
     <ClCompile Include="..\..\amorphous\Physics\SceneUtility.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysActor.cpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysActor.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysicsEngine.cpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysicsEngine.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysPreprocessorImpl.cpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysPreprocessorImpl.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysScene.cpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysScene.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Physics\Ageia\NxPhysShapeDescFactory.cpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeDescFactory.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\App\ApplicationBase.cpp">
       <Filter>BasicFramework</Filter>
@@ -1775,8 +1775,8 @@
     <ClInclude Include="..\..\amorphous\Physics\SceneUtility.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Physics\Ageia\NxPhysContactStreamIterator.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysContactStreamIterator.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\App\ApplicationBase.hpp">
       <Filter>BasicFramework</Filter>
@@ -2080,59 +2080,59 @@
     <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMeshShapeDesc.hpp">
       <Filter>Physics</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\fwd.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\fwd.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxMathConv.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxMathConv.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysActor.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysActor.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysCloth.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysCloth.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysConv.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysConv.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysicsEngine.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysicsEngine.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysJoint.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysJoint.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysMaterial.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysMaterial.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysOutputStream.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysOutputStream.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysPreprocessorImpl.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysPreprocessorImpl.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysScene.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysScene.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShape.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShape.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShapeDescFactory.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeDescFactory.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShapeFactory.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeFactory.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysShapeImpl.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeImpl.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysStream.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysStream.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxPhysTriangleMesh.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysTriangleMesh.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\..\amorphous\Physics\Ageia\NxShapeDescImplFactory.hpp">
-      <Filter>Physics\engines\Ageia</Filter>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxShapeDescImplFactory.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
     </CustomBuildStep>
   </ItemGroup>
 </Project>

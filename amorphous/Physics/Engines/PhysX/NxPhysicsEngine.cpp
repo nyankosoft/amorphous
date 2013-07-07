@@ -4,8 +4,8 @@
 #include "NxPhysTriangleMesh.hpp"
 #include "NxPhysConvexMesh.hpp"
 #include "NxPhysClothMesh.hpp"
-#include "../Stream.hpp"
-#include "../SceneDesc.hpp"
+#include "amorphous/Physics/Stream.hpp"
+#include "amorphous/Physics/SceneDesc.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"

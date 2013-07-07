@@ -3,7 +3,7 @@
 
 
 #include "fwd.hpp"
-#include "../ShapeImpl.hpp"
+#include "amorphous/Physics/ShapeImpl.hpp"
 #include "NxPhysics.h"
 
 

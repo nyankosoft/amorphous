@@ -2,7 +2,7 @@
 #define __NxPhysJointImpls_HPP__
 
 
-#include "../Joint.hpp"
+#include "amorphous/Physics/Joint.hpp"
 #include "NxJoint.h"
 
 

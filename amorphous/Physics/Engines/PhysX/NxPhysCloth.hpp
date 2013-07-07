@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-#include "../Cloth.hpp"
+#include "amorphous/Physics/Cloth.hpp"
 #include "fwd.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysConv.hpp"

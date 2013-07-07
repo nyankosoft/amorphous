@@ -2,8 +2,8 @@
 #define  __NxPhysicsEngine_H__
 
 
-#include "../PhysicsEngine.hpp"
-#include "../fwd.hpp"
+#include "amorphous/Physics/PhysicsEngine.hpp"
+#include "amorphous/Physics/fwd.hpp"
 #include "fwd.hpp"
 #include "NxPhysOutputStream.hpp"
 

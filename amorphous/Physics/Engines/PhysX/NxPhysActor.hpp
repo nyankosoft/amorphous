@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-#include "../Actor.hpp"
+#include "amorphous/Physics/Actor.hpp"
 #include "fwd.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysConv.hpp"

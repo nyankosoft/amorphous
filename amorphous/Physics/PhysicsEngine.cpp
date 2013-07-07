@@ -1,4 +1,4 @@
-#include "Ageia/NxPhysicsEngine.hpp"
+#include "Engines/PhysX/NxPhysicsEngine.hpp"
 #include "PhysicsEngine.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/SafeDelete.hpp"

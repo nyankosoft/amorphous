@@ -4,7 +4,7 @@
 
 #include "NxContactStreamIterator.h" // PhysX header
 #include "NxMathConv.hpp" // header of this framework
-#include "../ContactStreamIterator.hpp" // header of this framework
+#include "amorphous/Physics/ContactStreamIterator.hpp" // header of this framework
 
 
 namespace amorphous

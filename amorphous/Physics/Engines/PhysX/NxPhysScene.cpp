@@ -9,12 +9,12 @@
 #include "NxPhysShapeFactory.hpp"
 #include "NxPhysClothMesh.hpp"
 
-#include "../FixedJoint.hpp"
-#include "../RevoluteJoint.hpp"
-#include "../SphericalJoint.hpp"
-#include "../MaterialDesc.hpp"
-#include "../ClothDesc.hpp"
-#include "../RaycastHit.hpp"
+#include "amorphous/Physics/FixedJoint.hpp"
+#include "amorphous/Physics/RevoluteJoint.hpp"
+#include "amorphous/Physics/SphericalJoint.hpp"
+#include "amorphous/Physics/MaterialDesc.hpp"
+#include "amorphous/Physics/ClothDesc.hpp"
+#include "amorphous/Physics/RaycastHit.hpp"
 
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"

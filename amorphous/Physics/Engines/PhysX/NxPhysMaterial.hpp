@@ -1,8 +1,8 @@
 #ifndef  __NxPhysMaterial_H__
 #define  __NxPhysMaterial_H__
 
-#include "3DMath/precision.h"
-#include "../Material.hpp"
+#include "amorphous/3DMath/precision.h"
+#include "amorphous/Physics/Material.hpp"
 #include "NxPhysics.h"
 
 

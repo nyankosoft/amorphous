@@ -6,8 +6,8 @@
 #include "NxPhysics.h"
 
 // wrapper headers
-#include "../fwd.hpp"
-#include "../ShapeDesc.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/Physics/ShapeDesc.hpp"
 #include "fwd.hpp"
 
 

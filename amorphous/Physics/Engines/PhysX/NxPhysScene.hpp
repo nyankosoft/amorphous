@@ -6,7 +6,7 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "../Scene.hpp"
+#include "amorphous/Physics/Scene.hpp"
 #include "fwd.hpp"
 #include "NxMathConv.hpp"
 #include "NxPhysContactStreamIterator.hpp"
