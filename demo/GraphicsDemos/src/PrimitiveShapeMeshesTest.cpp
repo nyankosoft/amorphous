@@ -1,6 +1,7 @@
 #include "PrimitiveShapeMeshesTest.hpp"
 #include "amorphous/Graphics.hpp"
 #include "amorphous/Graphics/Meshgenerators/PipeMeshGenerator.hpp"
+#include "amorphous/Graphics/Meshgenerators/GridMeshGenerator.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Support/Timer.hpp"
@@ -82,7 +83,7 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	string texture_file_pathname = show_texture ? "AshySandstone.jpg" : "white.png";
 	string texture_pathname = "PrimitiveShapeMeshesDemo/textures/" + texture_file_pathname;
 
-	MeshResourceDesc mesh_desc[6];
+	MeshResourceDesc mesh_desc[7];
 	m_vecMesh.resize( numof(mesh_desc) );
 
 	shared_ptr<BoxMeshGenerator> pBoxGenerator( new BoxMeshGenerator() );
@@ -131,7 +132,14 @@ int CPrimitiveShapeMeshesTest::CreatePrimitiveShapeMeshes()
 	mesh_desc[5].ResourcePath = "PipeMesh";
 	m_vecMesh[5].Load( mesh_desc[5] );
 
-	m_NumPrimitiveMeshes = 6;
+	shared_ptr<GridMeshGenerator> pGMGenerator( new GridMeshGenerator(
+		1, 1, 10, 10, 1, 1, false ) );
+	mesh_desc[6].pMeshGenerator = pGMGenerator;
+	mesh_desc[6].pMeshGenerator->SetTexturePath( texture_pathname );
+	mesh_desc[6].ResourcePath = "GridMesh";
+	m_vecMesh[6].Load( mesh_desc[6] );
+
+	m_NumPrimitiveMeshes = 7;
 
 	return 0;
 }
