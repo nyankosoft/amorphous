@@ -28,6 +28,8 @@ public:
 
 class GridMeshGenerator : public MeshGenerator
 {
+protected:
+
 //	Matrix34 m_Pose;
 	float m_fWidth;
 	float m_fHeight;
@@ -63,7 +65,7 @@ public:
 
 	~GridMeshGenerator(){}
 
-	Result::Name Generate()
+	virtual Result::Name Generate()
 	{
 		using std::vector;
 

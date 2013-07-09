@@ -837,6 +837,9 @@
     <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.cpp">
       <Filter>Physics\MassSpring</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1934,6 +1937,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.hpp">
       <Filter>Physics\MassSpring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

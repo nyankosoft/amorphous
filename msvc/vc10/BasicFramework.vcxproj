@@ -102,6 +102,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
