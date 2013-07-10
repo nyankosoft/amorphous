@@ -1941,6 +1941,9 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\HelixMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">

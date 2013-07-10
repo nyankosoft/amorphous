@@ -376,6 +376,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\HelixMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.hpp" />
