@@ -59,19 +59,25 @@ void CreateUniformCylindricalHelix(
 	const T tilt_angle = atan( single_helix_length / ((T)2.0 * (T)PI * helix_radius) );
 	const tMatrix33<T> face_tilt( Matrix33RotationZ( tilt_angle ) );
 
-	std::vector< tVector3<T> > face_vertices;
+	std::vector< tVector3<T> > face_vertices, face_normals;
 	face_vertices.resize( num_cord_sides );
+	face_normals.resize( num_cord_sides );
 	for( unsigned int i=0; i<num_cord_sides; i++ )
 	{
 		T angle = (T)i / (T)num_cord_sides * (T)2.0 * (T)PI;
-		face_vertices[i] = tVector3<T>( cos(angle), sin(angle), 0.0f ) * cord_radius;
+		T c = cos(angle);
+		T s = sin(angle);
+		face_vertices[i] = tVector3<T>( c, s, 0.0f ) * cord_radius;
 		face_vertices[i].x += (helix_radius - cord_radius);
 
 		face_vertices[i] = face_tilt * face_vertices[i];
+
+		face_normals[i]  = tVector3<T>( c, s, 0.0f );
 	}
 
-	std::vector< tVector3<T> > single_helix_face_vertices;
+	std::vector< tVector3<T> > single_helix_face_vertices, single_helix_face_normals;
 	single_helix_face_vertices.resize( num_cord_sides * num_helix_sides );
+	single_helix_face_normals.resize(  num_cord_sides * num_helix_sides );
 
 	// Create vertices of the single coil
 	T step_height = single_helix_length / (T)num_helix_sides;
@@ -86,6 +92,9 @@ void CreateUniformCylindricalHelix(
 			tVector3<T>& pos = single_helix_face_vertices[num_cord_sides*i+j];
 			pos = face_heading * face_vertices[j];
 			pos.y += height_offset;
+
+			tVector3<T>& normal = single_helix_face_normals[num_cord_sides*i+j];
+			normal = face_heading * face_normals[j];
 		}
 	}
 
@@ -104,13 +113,23 @@ void CreateUniformCylindricalHelix(
 
 		for( unsigned int j=helix_start_offset; j<positions.size(); j++ )
 			positions[j].y += helix_start_height;
+
+		normals.insert(
+			normals.end(),
+			single_helix_face_normals.begin(),
+			single_helix_face_normals.end()
+			); 
 	}
 
-	// add face for the top of the coil
+	// Add a face for the top of the coil
 	unsigned int last_face_vertices_offset = (unsigned int)positions.size();
 	positions.insert( positions.end(), face_vertices.begin(), face_vertices.end() );
 	for( unsigned int i=last_face_vertices_offset; i<positions.size(); i++ )
 		positions[i].y += helix_length;
+
+	normals.insert( normals.end(), face_normals.begin(), face_normals.end() );
+
+	// Create polygons
 
 	polygons.reserve( polygons.size() + num_helix_sides * num_cord_sides * num_coils );
 
@@ -141,6 +160,7 @@ void CreateUniformCylindricalHelix(
 			size_t bottom_face_vertices_offset = positions.size();
 			positions.insert( positions.end(), face_vertices.begin(), face_vertices.end() );
 			CreateHelix_AddCordFacePolygon( bottom_face_vertices_offset, num_cord_sides, false, polygons );
+			normals.insert( normals.end(), num_cord_sides, tVector3<T>(0,0,1) );
 		}
 	}
 
@@ -159,6 +179,8 @@ void CreateUniformCylindricalHelix(
 			positions.insert( positions.end(), face_vertices.begin(), face_vertices.end() );
 			for( size_t i=top_face_vertices_offset; i<positions.size(); i++ )
 				positions[i].y += helix_length;
+
+			normals.insert( normals.end(), num_cord_sides, tVector3<T>(0,0,-1) );
 
 			CreateHelix_AddCordFacePolygon( (unsigned int)top_face_vertices_offset, num_cord_sides, true, polygons );
 		}
