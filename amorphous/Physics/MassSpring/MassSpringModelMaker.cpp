@@ -61,13 +61,61 @@ Result::Name MassSpringModelMaker::SetFixedPoints( const std::vector< std::vecto
 }
 
 
+void SetFixedPointsOfRectangularModel(
+	U32 flags,
+	uint num_divisionis0,
+	uint num_divisionis1,
+	std::vector<CMS_PointProperty>& control_points
+	)
+{
+	int group = 0;
+
+	if( flags & FixedPointFlags::FPF_TOP_EDGE )
+	{
+		for( uint i=0; i<num_divisionis0 + 1; i++ )
+			control_points[i].iFixedPointGroup = group;
+	}
+
+	if( flags & FixedPointFlags::FPF_RIGHT_EDGE )
+	{
+		for( uint i=0; i<num_divisionis1 + 1; i++ )
+			control_points[(num_divisionis0+1)*i + num_divisionis0].iFixedPointGroup = group;
+	}
+
+	if( flags & FixedPointFlags::FPF_BOTTOM_EDGE )
+	{
+		for( uint i=0; i<num_divisionis0 + 1; i++ )
+			control_points[(num_divisionis0+1)*num_divisionis1 + i].iFixedPointGroup = group;
+	}
+
+	if( flags & FixedPointFlags::FPF_LEFT_EDGE )
+	{
+		for( uint i=0; i<num_divisionis1 + 1; i++ )
+			control_points[(num_divisionis0+1)*i].iFixedPointGroup = group;
+	}
+
+	if( flags & FixedPointFlags::FPF_TOP_LEFT_CORNER )
+		control_points[0].iFixedPointGroup = group;
+
+	if( flags & FixedPointFlags::FPF_TOP_RIGHT_CORNER )
+		control_points[num_divisionis0].iFixedPointGroup = group;
+
+	if( flags & FixedPointFlags::FPF_BOTTOM_RIGHT_CORNER )
+		control_points[(num_divisionis0+1)*num_divisionis1+num_divisionis1].iFixedPointGroup = group;
+
+	if( flags & FixedPointFlags::FPF_BOTTOM_LEFT_CORNER )
+		control_points[(num_divisionis0+1)*num_divisionis1].iFixedPointGroup = group;
+}
+
+
 Result::Name MassSpringModelMaker::MakeRectangularModel(
 	float width,
 	float height,
 	unsigned int num_horizontal_divisions,
 	unsigned int num_vertical_divisions,
 	float spring_const,
-	const vector< vector<unsigned int> >& fixed_points
+//	const vector< vector<unsigned int> >& fixed_points
+	U32 fixed_point_flags
 	)
 {
 	unsigned int axis = 0;
@@ -114,7 +162,13 @@ Result::Name MassSpringModelMaker::MakeRectangularModel(
 	UpdateControlPoints( points, edges, spring_const, control_points );
 
 	// Fixed points
-	SetFixedPoints( fixed_points );
+//	SetFixedPoints( fixed_points );
+	SetFixedPointsOfRectangularModel(
+		fixed_point_flags,
+		num_horizontal_divisions,
+		num_vertical_divisions,
+		control_points
+		);
 
 	return Result::UNKNOWN_ERROR;
 }
