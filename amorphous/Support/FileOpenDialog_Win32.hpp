@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <windows.h>
 #include <commdlg.h>
+#include <string>
+#include <vector>
 
 
 namespace amorphous
@@ -50,11 +52,6 @@ inline bool GetFilename( char* pcDestFilename, char* pcFilterString = NULL )
 }
 
 
-
-#include <string>
-#include <vector>
-
-
 inline bool GetFilename( std::string& strDestFilename, char* pcFilterString = NULL )
 {
 	char acTempFilename[FILE_OPEN_DIALOG_MAX_FILENAMES_LENGTH];
@@ -70,14 +67,12 @@ inline bool GetFilename( std::string& strDestFilename, char* pcFilterString = NU
 }
 
 
-
 // returns selected filenames
 // - when a single file is selected
 //   - the first string (vecstrDestFilename[0]) contains path & filename
 // - when multiple files are selected
 //   - the first string (vecstrDestFilename[0]) holds the path
 //   - the subsequent strings (vecstrDestFilename[1] ... [n]) hold filenames
-
 inline bool GetFilenames( std::vector<std::string>& vecstrDestFilename, char* pcFilterString = NULL )
 {
 	char *pcFileNameBuffer = new char [4096];
@@ -129,8 +124,8 @@ inline bool GetFilenames( std::vector<std::string>& vecstrDestFilename, char* pc
 	return true;
 }
 
-} // amorphous
 
+} // amorphous
 
 
 #endif  /*  __FILE_OPEN_DIALOG_WIN32_H__  */
