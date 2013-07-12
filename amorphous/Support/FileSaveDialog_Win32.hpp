@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <commdlg.h>
+#include <string>
 
 
 namespace amorphous
@@ -46,10 +47,6 @@ inline bool GetSaveFileName( char* pcDestFilename, char* pcFilterString = NULL )
 
 	return true;
 }
-
-
-
-#include <string>
 
 
 inline bool GetSaveFileName( std::string strDestFilename, char* pcFilterString = NULL )
