@@ -2,8 +2,8 @@
 #include "JL_Shape_Capsule.hpp"
 #include "JL_CollisionFunctor.hpp"
 
-#include "JigLib/Geometry/line.hpp"
-#include "JigLib/Geometry/distance.hpp"
+#include "Geometry/line.hpp"
+#include "Geometry/distance.hpp"
 
 
 namespace amorphous
