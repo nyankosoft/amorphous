@@ -43,7 +43,7 @@ bool CItemDatabaseManager::LoadFromFile( const std::string& filename )
 	if( !db_loaded )
 	{
 //		assert( !"unable to load the item database" );
-		g_Log.Print( WL_WARNING, "unable to load the item database" );
+		LOG_PRINT_WARNING( " Unable to load the item database: " + filename );
 		SafeDelete( m_pItemDatabase );
 		return false;
 	}

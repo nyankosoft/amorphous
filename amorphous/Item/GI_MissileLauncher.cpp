@@ -397,7 +397,7 @@ void MissileLauncher::UpdateAmmunitions( CStage *pStage )
 
 			pMissile = pStage->CreateEntity( missile_entity );
 
-			ONCE( g_Log.Print( "MissileLauncher::Update() - loaded a missile" ) );
+			ONCE( LOG_PRINT( "MissileLauncher::Update() - loaded a missile" ) );
 
 			if( pMissile )
 			{
@@ -440,7 +440,7 @@ void MissileLauncher::Update( float dt )
 		UpdateAmmunitions( pStage.get() );
 	}
 	else
-		ONCE( g_Log.Print( "MissileLauncher::Update() - invalid launcher type" ) );
+		ONCE( LOG_PRINT( "MissileLauncher::Update() - invalid launcher type" ) );
 
 }
 
@@ -453,7 +453,7 @@ bool MissileLauncher::ReleaseAmmo()
 	if( !pStage )
 		return false;
 
-	ONCE( g_Log.Print( "MissileLauncher::ReleaseAmmo() - releasing the ammo" ) );
+	ONCE( LOG_PRINT( "MissileLauncher::ReleaseAmmo() - releasing the ammo" ) );
 
 	const size_t num_release_positions = m_vecMissileHolder.size();
 	for( size_t i=0; i<num_release_positions; i++ )
