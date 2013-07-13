@@ -840,6 +840,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp">
       <Filter>Graphics\MeshGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1943,6 +1946,15 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\HelixMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\DebugInfo.hpp">
+      <Filter>Support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

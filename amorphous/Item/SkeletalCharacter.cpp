@@ -35,7 +35,7 @@ using namespace msynth;
 
 static int sg_DisplayCharacterPosition = 0;
 
-class CDebugItem_MotionFSM : public CDebugItem_ResourceManager
+class CDebugItem_MotionFSM : public DebugInfo
 {
 public:
 	boost::shared_ptr<msynth::CMotionFSMManager> m_pMotionFSMManager;
@@ -43,9 +43,10 @@ public:
 
 	CDebugItem_MotionFSM() {}
 
-	void GetTextInfo()
+	void UpdateDebugInfoText()
 	{
-		m_pMotionFSMManager->GetDebugInfo( m_TextBuffer );
+		if( m_pMotionFSMManager )
+			m_pMotionFSMManager->GetDebugInfo( m_TextBuffer );
 	}
 };
 

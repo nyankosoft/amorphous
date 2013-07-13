@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\D3DMisc.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.hpp" />
@@ -384,6 +386,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp" />
@@ -630,6 +633,7 @@
     <ClInclude Include="..\..\amorphous\Support\CameraController.hpp" />
     <ClInclude Include="..\..\amorphous\Support\CameraController_Win32.hpp" />
     <ClInclude Include="..\..\amorphous\Support\CameraControllerBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\DebugInfo.hpp" />
     <ClInclude Include="..\..\amorphous\Support\DebugOutput.hpp" />
     <ClInclude Include="..\..\amorphous\Support\ImageArchive.hpp" />
     <ClInclude Include="..\..\amorphous\Support\lfs.hpp" />

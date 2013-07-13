@@ -2,16 +2,23 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/exception/get_error_info.hpp>
-#include "Support.hpp"
 #include "Support/MiscAux.hpp"
 #include "Support/MTRand.hpp"
 #include "Support/single_instance.hpp"
+#include "Support/Log/DefaultLog.hpp"
+#include "Support/Log/LogOutput.hpp"
+#include "Support/DebugOutput.hpp"
+#include "Support/Profile.hpp"
+#include "Support/BitmapImage.hpp"
 #include "XML/XMLDocumentLoader.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
+#include "Graphics/DebugInfo_GraphicsResourceManager.hpp"
 #include "Input.hpp"
+#include "Input/DebugInfo_InputDevice.hpp"
 #include "Sound/SoundManager.hpp"
+#include "Sound/DebugInfo_SoundManager.hpp"
 #include "Physics/PhysicsEngine.hpp"
 
 #include "GameCommon/GlobalInputHandler.hpp"
@@ -123,20 +130,17 @@ void GameApplicationBase::InitDebugItems()
 	// (graphics component)
 	GlobalDebugOutput.Init( font_name, 6, 14 );
 
-	DebugOutput.AddDebugItem( "perf", new CDebugItem_Profile() );
+	DebugOutput.AddDebugItem( "perf", new DebugInfo_Profile() );
 
 	m_pOnScreenLog = new LogOutput_ScrolledTextBuffer( font_name, 6, 12, 16, 95 );
-	g_Log.AddLogOutput( m_pOnScreenLog );
+	GlobalLog().AddLogOutput( m_pOnScreenLog );
 
-	DebugOutput.AddDebugItem( "log",  new CDebugItem_Log(m_pOnScreenLog) );
+	DebugOutput.AddDebugItem( "log",                       new DebugInfo_Log(m_pOnScreenLog) );
+	DebugOutput.AddDebugItem( "graphics_resource_manager", new DebugInfo_GraphicsResourceManager() );
+	DebugOutput.AddDebugItem( "sound_manager",             new DebugInfo_SoundManager() );
+	DebugOutput.AddDebugItem( "input_device",              new DebugInfo_InputDevice() );
 
-	DebugOutput.AddDebugItem( "graphics_resource_manager", new CDebugItem_GraphicsResourceManager() );
-
-	DebugOutput.AddDebugItem( "sound_manager", new CDebugItem_SoundManager() );
-
-	DebugOutput.AddDebugItem( "input_device", new CDebugItem_InputDevice() );
-
-	DebugOutput.SetTopLeftPos( Vector2(16,32) );
+//	DebugOutput.SetTopLeftPos( Vector2(16,32) );
 
 	DebugOutput.Hide();
 
@@ -162,7 +166,7 @@ void GameApplicationBase::ReleaseDebugItems()
 
 	DebugOutput.ReleaseDebugItem( "log" );
 
-	g_Log.RemoveLogOutput( m_pOnScreenLog );
+	GlobalLog().RemoveLogOutput( m_pOnScreenLog );
 	SafeDelete( m_pOnScreenLog );
 
 	DebugOutput.ReleaseDebugItem( "perf" );
@@ -259,7 +263,7 @@ bool GameApplicationBase::InitBase()
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_WARNING, "std::exception: %s", e.what() );
+		GlobalLog().Print( WL_WARNING, "std::exception: %s", e.what() );
 	}
 	catch( boost::exception& e )
 	{
@@ -454,7 +458,7 @@ void GameApplicationBase::Run()
 	// set log output device
 //	boost::filesystem::complete( "./debug" );
 	LogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );
-	g_Log.AddLogOutput( &html_log );
+	GlobalLog().AddLogOutput( &html_log );
 
 	{
 		// mutex - lock
@@ -467,19 +471,19 @@ void GameApplicationBase::Run()
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_ERROR, "exception: %s", e.what() );
+		GlobalLog().Print( WL_ERROR, "exception: %s", e.what() );
 	}
 	catch( boost::exception& e )
 	{
 		const int * const line       = get_error_info<throw_line>(e);
 		const char * const* file     = get_error_info<throw_file>(e);
 		const char * const* function = get_error_info<throw_function>(e);
-		g_Log.Print( WL_ERROR, "exception: at %s (%s, L%d)", function, file, line );
+		GlobalLog().Print( WL_ERROR, "exception: at %s (%s, L%d)", function, file, line );
 	}
 
 	GameTask::ReleaseAnimatedGraphicsManager();
 
-	g_Log.RemoveLogOutput( &html_log );
+	GlobalLog().RemoveLogOutput( &html_log );
 }
 
 

@@ -2,16 +2,10 @@
 #define  __DEBUGOUTPUT_H__
 
 
-#include <vector>
-#include <string>
-
-#include "../base.hpp"
-#include "../Graphics/fwd.hpp"
-#include "../Graphics/2DPrimitive/2DRect.hpp"
-#include "../Graphics/GraphicsComponentCollector.hpp"
-
-#include "SafeDelete.hpp" // Used by CGlobalDebugOutput
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 #include "singleton.hpp"  // Used by CGlobalDebugOutput
+#include "DebugInfo.hpp"
 
 
 namespace amorphous
@@ -81,34 +75,39 @@ public:
 */
 
 
-class CDebugItemBase;
+/// A concrete class in Graphics module
+class OnScreenDebugInfoRendererBase
+{
+public:
+	OnScreenDebugInfoRendererBase(){}
+	virtual ~OnScreenDebugInfoRendererBase(){}
+
+	virtual void RenderDebugInfo( const std::string& debug_info_text ) = 0;
+
+	virtual void RenderDebugInfo(
+		const std::vector<std::string>& debug_info_texts,
+		const std::vector<SFloatRGBAColor> text_colors
+		) = 0;
+};
 
 
-class CDebugOutput : public GraphicsComponent
+class CDebugOutput
 {
 	int m_ItemIndex;
 
 	/// owned reference
-	std::vector<CDebugItemBase *> m_vecpDebugItem;
-
-	/// owned reference
-	FontBase* m_pFont;
+	std::vector<DebugInfo *> m_vecpDebugItem;
 
 	bool m_bDisplay;
 
-	C2DRect m_BackgroundRect;
-
 	/// top left corner position of the text
-	Vector2 m_vTopLeftPos;
+//	Vector2 m_vTopLeftPos;
 
-private:
-
-	void RenderFPS();
+	std::unique_ptr<OnScreenDebugInfoRendererBase> m_pRenderer;
 
 public:
 
-	CDebugOutput( const std::string& font_name, int w, int h, U32 color = 0xFFFFFFFF );
-//	CDebugOutput();
+	CDebugOutput();
 
 	~CDebugOutput();
 
@@ -116,7 +115,7 @@ public:
 
 	void Render();
 
-	void AddDebugItem( const std::string& item_name, CDebugItemBase *pDebugItem );
+	void AddDebugItem( const std::string& item_name, DebugInfo *pDebugItem );
 	bool ReleaseDebugItem( const std::string& item_name );
 
 	void SetDebugItemIndex( int index );
@@ -130,125 +129,47 @@ public:
 	void Hide() { m_bDisplay = false; }
 	void ToggleDisplay() { m_bDisplay = !m_bDisplay; }
 
-	void SetBackgroundRect( const C2DRect& bg_rect ) { m_BackgroundRect = bg_rect; }
-	void SetTopLeftPos( Vector2& vTopLeftPos );
+//	void SetTopLeftPos( Vector2& vTopLeftPos );
 
-	virtual void ReleaseGraphicsResources();
-	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
-};
-
-
-class CDebugItemBase
-{
-protected:
-
-	std::string m_Name;
-
-	/// borrowed reference
-	FontBase* m_pFont;
-
-	Vector2 m_vTopLeftPos;
-
-public:
-
-	CDebugItemBase() : m_pFont(NULL), m_vTopLeftPos(Vector2(0,0)) {}
-
-	virtual ~CDebugItemBase() {}
-
-	virtual void SetFont( FontBase* pFont ) { m_pFont = pFont; }
-	virtual void SetName( std::string name ) { m_Name = name; }
-	virtual void SetTopLeftPos( Vector2& pos ) { m_vTopLeftPos = pos; }
-	const std::string& GetName() const { return m_Name; }
-
-	virtual void Render() = 0;
+	void SetOnScreenDebugInfoRendererBase( OnScreenDebugInfoRendererBase *pRenderer ) { m_pRenderer.reset( pRenderer ); }
 };
 
 
 class LogOutput_ScrolledTextBuffer;
 
 
-class CDebugItem_Log : public CDebugItemBase
+class DebugInfo_Log : public DebugInfo
 {
 	/// borrowed reference
 	LogOutput_ScrolledTextBuffer *m_pLogOutput;
 
 public:
 
-//	CDebugItem_Log() {}
+//	DebugInfo_Log() {}
 
-	CDebugItem_Log( LogOutput_ScrolledTextBuffer* pLogOutput );
+	DebugInfo_Log( LogOutput_ScrolledTextBuffer* pLogOutput );
 
-	virtual void Render();
+	void UpdateDebugInfoText();
 };
 
 
-class CDebugItem_Profile : public CDebugItemBase
+class DebugInfo_Profile : public DebugInfo
 {
 public:
 
-	CDebugItem_Profile() {}
+	DebugInfo_Profile() {}
 
-	virtual void Render();
+	void UpdateDebugInfoText();
 };
 
 
-class CDebugItem_StateLog : public CDebugItemBase
+class DebugInfo_StateLog : public DebugInfo
 {
 public:
 
-	CDebugItem_StateLog() {}
+	DebugInfo_StateLog() {}
 
-	virtual void Render();
-};
-
-
-class CDebugItem_ResourceManager : public CDebugItemBase
-{
-protected:
-
-	std::string m_TextBuffer;
-
-public:
-
-	CDebugItem_ResourceManager();
-
-	virtual ~CDebugItem_ResourceManager() {}
-
-	void Render();
-
-	virtual void GetTextInfo() = 0;
-};
-
-
-class CDebugItem_GraphicsResourceManager : public CDebugItem_ResourceManager
-{
-public:
-
-	CDebugItem_GraphicsResourceManager() {}
-
-	void GetTextInfo();
-};
-
-
-class CDebugItem_SoundManager : public CDebugItem_ResourceManager
-{
-public:
-
-	CDebugItem_SoundManager() {}
-
-	void GetTextInfo();
-};
-
-
-class CDebugItem_InputDevice : public CDebugItem_ResourceManager
-{
-	std::vector<std::string> m_vecTextBuffer;
-
-public:
-
-	CDebugItem_InputDevice() {}
-
-	void GetTextInfo();
+	void UpdateDebugInfoText();
 };
 
 
@@ -259,31 +180,29 @@ class CGlobalDebugOutput
 {
 	static singleton<CGlobalDebugOutput> m_obj;	///< singleton instance
 
-	CDebugOutput *m_pDebugOutput;
+	std::unique_ptr<CDebugOutput> m_pDebugOutput;
 
 public:
 
 	static CGlobalDebugOutput* Get() { return m_obj.get(); }
 
 	CGlobalDebugOutput()	///< ctor needs to be public?
-		:
-	m_pDebugOutput(NULL)
 	{
 	}
 
 	void Init( const std::string& font_name, int w, int h )
 	{
-		m_pDebugOutput = new CDebugOutput( font_name, w, h );
+		m_pDebugOutput.reset( new CDebugOutput() );
 	}
 
 	void Release()
 	{
-		SafeDelete( m_pDebugOutput );
+		m_pDebugOutput.reset();
 	}
 
 	CDebugOutput *GetGlobalInstance()
 	{
-		return m_pDebugOutput;
+		return m_pDebugOutput.get();
 	}
 };
 

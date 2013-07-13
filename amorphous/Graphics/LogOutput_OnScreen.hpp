@@ -13,7 +13,7 @@ namespace amorphous
 
 
 /**
- * displays log texts on screen using D3D
+ * Stores log texts temporarily
  *
  */
 class LogOutput_ScrolledTextBuffer : public LogOutputBase
