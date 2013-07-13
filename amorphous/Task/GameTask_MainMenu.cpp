@@ -337,7 +337,7 @@ void GameTask_MainMenu::InitFont()
 */
 ///	if( !m_pUIRenderManager->AddFont( 0, font_desc ) )
 	if( !m_pUIRenderManager->GetGraphicsElementManager()->LoadFont( 0, "Texture\\HGGE_16x8_256.dds", FontBase::FONTTYPE_TEXTURE, 12, 24 )  )
-		PrintLog( "cannot create a font. GameTask_MainMenu::InitFont()" );
+		LOG_PRINT_ERROR( "cannot create a font." );
 }
 
 

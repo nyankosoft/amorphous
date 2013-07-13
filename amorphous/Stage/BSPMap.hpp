@@ -226,7 +226,7 @@ inline bool CBSPMap::LockVertexBuffer()
 		VOID* pVBData;
 		if( FAILED( m_pVB->Lock( 0, 0, (VOID**)&pVBData, 0 ) ) )
 		{
-			ONCE( g_Log.Print( WL_WARNING, "failed to lock the vertex buffer" ) );
+			ONCE( LOG_PRINT_WARNING( " Failed to lock the vertex buffer." ) );
 			return false;
 		}
 		m_pVertex = (MAPVERTEX *)pVBData;

@@ -304,7 +304,7 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 	if( pCopyEnt->bInSolid
 	|| m_fMaximumRange < TraveledDist(pCopyEnt) )
 	{
-		g_Log.Print( "CBE_HomingMissile::UpdateMissile() - calling Explode() (case 1)" );
+		LOG_PRINT( " Calling Explode() (case 1)" );
 		Explode(pCopyEnt);
 		return;
 	}
@@ -320,7 +320,7 @@ void CBE_HomingMissile::UpdateMissile( CCopyEntity* pCopyEnt, float frametime )
 		 && /* m_CheckCollisionGroup == false  || */ m_pStage->GetEntitySet()->IsCollisionEnabled( pCopyEnt->GroupIndex, pTarget->GroupIndex ) )
 		 
 		{
-			g_Log.Print( "CBE_HomingMissile::UpdateMissile() - calling Explode() (case 2)" );
+			LOG_PRINT( " Calling Explode() (case 2)" );
 			Explode(pCopyEnt);
 			return;
 		}

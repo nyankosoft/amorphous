@@ -128,7 +128,7 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	CCopyEntity *pCameraController = GetEntityByName( camera_controller_name );
 	if( !IsValidEntity(pCameraController) )
 	{
-		g_Log.Print( "CreateCamera() - cannot find camera controller entity: '%s'", camera_controller_name );
+		LOG_PRINT( " Cannot find camera controller entity: " + string(camera_controller_name) );
 		return Py_None;
 	}
 
@@ -137,7 +137,7 @@ PyObject* CreateCamera( PyObject* self, PyObject* args )
 	CCopyEntity* pEntity = CreateEntity( desc );
 	if( !pEntity )
 	{
-		g_Log.Print( "CreateCamera() - cannot create camera entity: '%s'", camera_entity_name );
+		LOG_PRINT( " Cannot create camera entity: " + string(camera_entity_name) );
 		return Py_None;
 	}
 
@@ -161,7 +161,7 @@ PyObject* StartCameraScript( PyObject* self, PyObject* args )
 	int path_track_mode = EntityMotionPathRequest::SET_POSITION;
 	int result = PyArg_ParseTuple( args, "s|i", &camera_entity_name, &path_track_mode );
 
-	g_Log.Print( "StartCameraScript() - acquiring target camera entity: %s", camera_entity_name );
+	LOG_PRINT( " Acquiring target camera entity:" + string(camera_entity_name) );
 
 	CCopyEntity *pCameraEntity = GetEntityByName( camera_entity_name );
 
@@ -170,7 +170,7 @@ PyObject* StartCameraScript( PyObject* self, PyObject* args )
 		return Py_None;
 	}
 
-	g_Log.Print( "StartCameraScript() - acquired target camera entity: %s", camera_entity_name );
+	LOG_PRINT( " Acquired target camera entity: " + string(camera_entity_name));
 
 	g_EntityMotionPathRequest.Clear();
 	g_EntityMotionPathRequest.pTargetEntity = pCameraEntity;
@@ -277,7 +277,7 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 	GameMessage msg( GM_SET_MOTION_PATH );
 	msg.pUserData = &g_EntityMotionPathRequest;
 
-	g_Log.Print( "EndCameraScript() - sending motion path to camera entity (%d key poses)", (int)g_EntityMotionPathRequest.vecKeyPose.size() );
+	LOG_PRINTF(( "EndCameraScript() - sending motion path to camera entity (%d key poses)", (int)g_EntityMotionPathRequest.vecKeyPose.size() ));
 
 	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
 
@@ -287,7 +287,7 @@ PyObject* EndCameraScript( PyObject* self, PyObject* args )
 	msg = GameMessage( GM_SET_SCRIPTCAMERAKEYFRAMES );
 	msg.pUserData = &gs_ScriptCameraKeyFrames;
 
-	g_Log.Print( "EndCameraScript() - sending camera effects to script camera entity" );
+	LOG_PRINT( " Sending camera effects to script camera entity" );
 
 	SendGameMessageTo( msg, g_EntityMotionPathRequest.pTargetEntity );
 
@@ -339,7 +339,7 @@ PyObject* py::cam::SetTimeOffset( PyObject* self, PyObject* args )
 
 PyObject* SetTarget( PyObject* self, PyObject* args )
 {
-	g_Log.Print( "cam.SetTarget() - called" );
+	LOG_PRINT( " cam.SetTarget() - called" );
 
 	Py_INCREF( Py_None );
 

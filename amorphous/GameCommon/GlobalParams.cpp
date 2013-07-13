@@ -24,7 +24,7 @@ void GlobalParams::LoadLogVerbosity( ParamLoader& loader )
 	else if( verbosity_title == "warning" ) verbosity = WL_WARNING;
 	else if( verbosity_title == "error" )   verbosity = WL_ERROR;
 
-	g_Log.SetRefVal( verbosity );
+	GlobalLog().SetRefVal( verbosity );
 }
 
 

@@ -47,11 +47,11 @@ CStageSharedPtr StageLoader::LoadStage( const std::string& script_name )
 
 	if( res )
 	{
-		g_Log.Print( "%s - loaded a stage: %s", __FUNCTION__, script_name.c_str() );
+		LOG_PRINT( " Loaded a stage: " + script_name );
 	}
 	else
 	{
-		g_Log.Print( "%s - unable to load a stage: %s", __FUNCTION__, script_name.c_str() );
+		LOG_PRINT( " Unable to load a stage: " + script_name );
 		pStage.reset();
 		stage_util::UnregisterStageForScript();
 	}
@@ -160,7 +160,7 @@ void CASyncStageLoaderThread::operator()()
 
 		if( !m_pStageLoader->m_bIsLoaded )
 		{
-			g_Log.Print( "'m_bIsLoaded' changed to false" );
+			LOG_PRINT( " 'm_bIsLoaded' changed to false" );
 		}
 
 		sleep_milliseonds( 10 );

@@ -606,7 +606,7 @@ void CBE_Enemy::OnDestroyed( CCopyEntity* pCopyEnt )
 	// avoid overlaps with fragment entities
 	pCopyEnt->bNoClip = true;
 
-	g_Log.Print( "An enemy entity destroyed - vel%s", to_string(pCopyEnt->Velocity()).c_str() );
+	LOG_PRINT( " An enemy entity destroyed - velocity: " + to_string(pCopyEnt->Velocity()) );
 
 	CCopyEntity* pFragEntity;
 //	MsgBoxFmt( "%s destroyed - creating %d fragments", pCopyEnt->GetName().c_str(), m_iNumFragments );
@@ -678,7 +678,7 @@ void CBE_Enemy::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCopyEn
 		float prev_life = rfLife;
 		rfLife -= rGameMessage.fParam1;
 
-		g_Log.Print( " An enemy entity (id: %d) took damage - life: %f -> %f", pCopyEnt_Self->GetID(), prev_life, rfLife );
+		LOG_PRINTF(( " An enemy entity (id: %d) took damage - life: %f -> %f", pCopyEnt_Self->GetID(), prev_life, rfLife ));
 
 		pSenderEntity = rGameMessage.sender.Get();
 		if( pSenderEntity )

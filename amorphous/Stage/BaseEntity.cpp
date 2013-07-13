@@ -189,7 +189,7 @@ void BaseEntity::SetStagePtr( CStageWeakPtr pStage )
 	if( stage_shared_ptr.get() )
 		m_pStage = stage_shared_ptr.get();
 	else
-		g_Log.Print( WL_ERROR, "%s - error: invalid stage ptr", __FUNCTION__ );
+		LOG_PRINT_ERROR( "Error: invalid stage ptr" );
 }
 
 

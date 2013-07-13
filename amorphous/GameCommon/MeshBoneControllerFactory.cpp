@@ -30,7 +30,7 @@ IArchiveObjectBase *MeshBoneControllerFactory::CreateObject( const unsigned int 
 //		case MeshBoneControllerBase::ID_AIRCRAFT_:           return new ;
 
 		default:
-			g_Log.Print( "MeshBoneControllerFactory::CreateObject() - invalid base id or mesh controller" );
+			LOG_PRINT_ERROR( " An invalid base id or mesh controller: " + to_string(id) );
 			return NULL;
 	}
 }

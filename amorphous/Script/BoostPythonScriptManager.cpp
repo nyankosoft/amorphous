@@ -49,7 +49,7 @@ bool BoostPythonScriptManager::LoadScript( const stream_buffer& buffer, PythonEv
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_WARNING, "std::exception: %s", e.what() );
+		LOG_PRINTF_WARNING(( "std::exception: %s", e.what() ));
 	}
 	catch( boost::exception& e )
 	{

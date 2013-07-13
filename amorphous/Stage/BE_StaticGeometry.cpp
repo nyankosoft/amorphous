@@ -73,7 +73,7 @@ void CBE_StaticGeometry::Draw(CCopyEntity* pCopyEnt)
 	Camera* pCamera = m_pStage->GetCurrentCamera();
 	if( !pCamera )
 	{
-		ONCE( g_Log.Print( "CBE_StaticGeometry::Draw() - cannot find a camera for the stage" ) );
+		ONCE( LOG_PRINT( " - cannot find a camera for the stage" ) );
 		return;
 	}
 

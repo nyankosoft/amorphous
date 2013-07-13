@@ -48,7 +48,7 @@ void ScriptedCameraEntity::Update( float dt )
 
 		pBaseEntity->UpdateScriptedMotionPath( this, m_Path );
 
-		PERIODICAL( 100, g_Log.Print( "ScriptedCameraEntity::Update() - updated motion path ... pos: " +
+		PERIODICAL( 100, LOG_PRINT( "ScriptedCameraEntity::Update() - updated motion path ... pos: " +
 			to_string(this->GetWorldPosition(), 2) ) );
 
 		m_Camera.SetPose( this->GetWorldPose() );

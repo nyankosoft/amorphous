@@ -40,7 +40,7 @@ void CBE_FixedTurretPod::Init()
 {
 	LoadGraphicsResources( GraphicsParameters() );
 
-	PrintLog( " CBE_FixedTurretPod::Init() - loaded the graphics resources" );
+	LOG_PRINT( " Loaded the graphics resources" );
 
 	// turret pod does not use 'm_pMeshObject', which is the standard
 	// mesh object for base entity
@@ -50,7 +50,7 @@ void CBE_FixedTurretPod::Init()
 		m_MeshProperty.m_SpecTex.Load( m_MeshProperty.m_SpecTexFilepath );
 	}*/
 
-	PrintLog( " CBE_FixedTurretPod::Init() - loaded a texture" );
+//	LOG_PRINT( " Loaded a texture" );
 
 	LoadBaseEntity( m_TurretGun );
 }

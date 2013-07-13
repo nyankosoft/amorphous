@@ -79,7 +79,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	BasicMesh* pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
 	if( !pMeshObject )
 	{
-		ONCE( g_Log.Print( "CBE_Skybox::Draw() - invlid mesh object: base entity '%s'", m_strName.c_str() ) );
+		ONCE( LOG_PRINT_WARNING( " An invlid mesh object: base entity '%s'", m_strName.c_str() ) );
 		return;
 	}
 

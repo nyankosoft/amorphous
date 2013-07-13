@@ -117,7 +117,7 @@ GameTask_Stage::~GameTask_Stage()
 
 int GameTask_Stage::FrameMove( float dt )
 {
-	ONCE( g_Log.Print( "GameTask_Stage::FrameMove()" ) );
+	ONCE( LOG_PRINT( " - entered." ) );
 
 	int ret = GameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
@@ -158,7 +158,7 @@ int GameTask_Stage::FrameMove( float dt )
 //		return GameTaskFG::ID_MAINMENU;
 */
 	default:
-		ONCE( g_Log.Print( WL_WARNING, "GameTask_Stage::FrameMove() - unsupported stage state" ) );
+		LOG_PRINT_WARNING( " An unsupported stage state: " + to_string(state) );
 		return GameTask::ID_INVALID;
 
 	}
@@ -166,7 +166,7 @@ int GameTask_Stage::FrameMove( float dt )
 	// update player info (includes update routines for items)
 	SinglePlayerInfo().Update( dt );
 
-	ONCE( g_Log.Print( "GameTask_Stage::FrameMove() - updated player info" ) );
+	ONCE( LOG_PRINT( " - updated player info" ) );
 
 	// update text message
 	// 0:40 2007/05/06 - moved to CStage::Update()
@@ -190,7 +190,7 @@ int GameTask_Stage::FrameMove( float dt )
 
 void GameTask_Stage::Render()
 {
-	ONCE( g_Log.Print( "GameTask_Stage::Render() - rendering the stage" ) );
+	ONCE( LOG_PRINT( " - rendering the stage" ) );
 
 	// set the camera and draw the scene
 	if( g_pStage )

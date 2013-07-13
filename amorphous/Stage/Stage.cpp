@@ -519,18 +519,15 @@ void CStage::Update( float dt )
 {
 	PROFILE_FUNCTION();
 
-//	ONCE( MsgBoxFmt( "CStage::Update() - 0x%x", this ) );
-	ONCE( g_Log.Print( "CStage::Update() - 0x%x", this ) );
-
 	// update timer for frame time (delta time)
 	m_pTimer->UpdateFrameTime();
 
-	ONCE( g_Log.Print( "CStage::Update() - updating all entities" ) );
+	ONCE( LOG_PRINT( " - updating all entities" ) );
 
 	// update states of entities
 	m_pEntitySet->UpdateAllEntities( dt );
 
-	ONCE( g_Log.Print( "CStage::Update() - updated all entities" ) );
+	ONCE( LOG_PRINT( " - updated all entities" ) );
 
 	// event script
 	SetStageForScriptCallback( this );

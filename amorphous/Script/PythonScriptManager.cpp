@@ -29,7 +29,7 @@ static PyObject *SetScriptUpdateCallback( PyObject *dummy, PyObject *args )
 		{
 			// PyCallable_Check does not necessarily return 0 for an invalid script
 			PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-			PrintLog( "an invalid event callback" );
+			LOG_PRINT( " An invalid event callback" );
 //			return NULL;
 			Py_INCREF(Py_None);
 			result = Py_None;
@@ -64,7 +64,7 @@ static PyObject *SetScriptInitCallback( PyObject *dummy, PyObject *args )
 			{
 				// PyCallable_Check does not necessarily return 0 for an invalid script
 				PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-				PrintLog( "an invalid init callback" );
+				LOG_PRINT( " An invalid init callback" );
 //				return NULL;
 				Py_INCREF(Py_None);
 				result = Py_None;
@@ -86,7 +86,7 @@ static PyObject *SetScriptInitCallback( PyObject *dummy, PyObject *args )
 	}
 	catch( std::exception& e )
 	{
-		g_Log.Print( WL_ERROR, "SetInitCallback() failed - exception: %s", e.what() );
+		LOG_PRINTF_ERROR(( " SetInitCallback() failed - exception: %s", e.what() ));
 	}
 
 	return result;

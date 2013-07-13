@@ -1083,7 +1083,7 @@ void EntityManager::UpdateAllEntities( float dt )
 	CCopyEntity *pPrevEntity = NULL;
 	CCopyEntity *pTouchedEnt = NULL;
 
-	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - updating base entities" ) );
+	ONCE( LOG_PRINT( " - updating base entities" ) );
 
 	size_t i, num_base_entities = m_vecpBaseEntity.size();
 	for( i=0; i<num_base_entities; i++ )
@@ -1103,12 +1103,12 @@ void EntityManager::UpdateAllEntities( float dt )
 	// entity position may be modified in this call
 	UpdatePhysics( dt );
 
-	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - updated physics" ) );
+	ONCE( LOG_PRINT( " - updated physics" ) );
 
 	// remove terminated entities from the active entity list
 	ReleaseTerminatedEntities();
 
-	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - removed terminated entities from the active entity list" ) );
+	ONCE( LOG_PRINT( " - removed terminated entities from the active entity list" ) );
 
 	// update active entities
 	for( pEntity = this->m_pEntityInUse.get(), pPrevEntity = NULL;
@@ -1153,7 +1153,7 @@ void EntityManager::UpdateAllEntities( float dt )
 		pEntity->vecpTouchedEntity.clear();
 	}
 
-	ONCE( g_Log.Print( "EntityManager::UpdateAllEntities() - updated active entities" ) );
+	ONCE( LOG_PRINT( " - updated active entities" ) );
 
 	// unlink and link the entity in the entity tree if it changed its position
 /*

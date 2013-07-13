@@ -291,7 +291,7 @@ void CBE_EnemyShip::OnDestroyed( CCopyEntity* pCopyEnt )
 
 	if( 0 < strlen(m_Wreck.GetBaseEntityName()) )
 	{
-		g_Log.Print( "creating a shipwreck" );
+		LOG_PRINT( " creating a shipwreck" );
 		CCopyEntityDesc wreck;
 		wreck.pBaseEntityHandle = &m_Wreck;
 		wreck.SetWorldPose( pCopyEnt->GetWorldPose() );

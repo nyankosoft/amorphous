@@ -518,7 +518,7 @@ void CBE_EnemyAircraft::OnDestroyed( CCopyEntity* pCopyEnt )
 
 	if( 0 < strlen(m_Wreck.GetBaseEntityName()) )
 	{
-		g_Log.Print( "creating a aircraft wreck" );
+		LOG_PRINT( " Creating an aircraft wreck" );
 		CCopyEntityDesc wreck;
 		wreck.pBaseEntityHandle = &m_Wreck;
 		wreck.SetWorldPose( pCopyEnt->GetWorldPose() );
