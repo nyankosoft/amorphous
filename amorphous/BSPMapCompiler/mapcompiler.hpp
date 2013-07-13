@@ -10,7 +10,7 @@
 
 #include "../LightWave/LWO2_Object.hpp"
 
-#include "JigLib/TriangleMesh.hpp"
+#include "../Physics/Engines/JigLib/TriangleMesh.hpp"
 
 #include "Support/Vec3_StringAux.hpp"
 
