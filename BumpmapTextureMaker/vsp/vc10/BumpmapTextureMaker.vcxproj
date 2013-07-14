@@ -145,11 +145,11 @@
     <ClInclude Include="..\..\src\BumpmapTextureMaker2_LWO2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Project1\vsp\vc10\LW_FrameworkEx.vcxproj">
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\LW_FrameworkEx.vcxproj">
       <Project>{ffcfeada-bfd4-4aeb-bf0e-9400918b4b46}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

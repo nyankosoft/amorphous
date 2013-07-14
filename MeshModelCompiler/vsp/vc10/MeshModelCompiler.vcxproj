@@ -90,15 +90,15 @@
     <ClCompile Include="..\..\src\MeshModelCompiler_Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Project1\vsp\vc10\LW_Framework.vcxproj">
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\LW_Framework.vcxproj">
       <Project>{f9ca35b1-066f-49de-8228-20e959f55651}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Project1\vsp\vc10\LW_FrameworkEx.vcxproj">
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\LW_FrameworkEx.vcxproj">
       <Project>{ffcfeada-bfd4-4aeb-bf0e-9400918b4b46}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

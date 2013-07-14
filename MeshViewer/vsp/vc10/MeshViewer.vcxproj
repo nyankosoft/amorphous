@@ -92,7 +92,7 @@
     <ClInclude Include="..\..\src\MeshViewer.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
