@@ -2,13 +2,13 @@
 #define  __MeshViewer_HPP__
 
 
-#include "gds/App/GraphicsApplicationBase.hpp"
-#include "gds/Graphics/Camera.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/TextureHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Input/fwd.hpp"
+#include "amorphous/App/GraphicsApplicationBase.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 using namespace amorphous;
 
