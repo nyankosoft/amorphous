@@ -7,6 +7,13 @@
 #include "ApplicationBase.hpp"
 
 
+#ifdef _DEBUG
+#pragma comment ( lib, "GameStageFramework_d.lib" )
+#else
+#pragma comment ( lib, "GameStageFramework.lib" )
+#endif
+
+
 namespace amorphous
 {
 
