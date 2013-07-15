@@ -414,7 +414,7 @@ bool CLightingForLightmap_SimpleRaytrace<T>::Calculate( vector<CLightmap>& rvecL
 		}
 	}
 
-	CStatusDisplay::Get()->RegisterTask( "Lightmap Raytrace" );
+//	CStatusDisplay::Get()->RegisterTask( "Lightmap Raytrace" );
 
 	for( i=0; i<num_lightmaps; i++ )
 	{
@@ -422,7 +422,7 @@ bool CLightingForLightmap_SimpleRaytrace<T>::Calculate( vector<CLightmap>& rvecL
 
 		CalculateLightmapTexelIntensityDL( rvecLightmap[i], rMesh );
 
-		CStatusDisplay::Get()->UpdateProgress( "Lightmap Raytrace", (float)(i+1) / (float)num_lightmaps );
+//		CStatusDisplay::Get()->UpdateProgress( "Lightmap Raytrace", (float)(i+1) / (float)num_lightmaps );
 	}
 
 	ScaleIntensityAndAddAmbientLight(rvecLightmap);

@@ -21,7 +21,7 @@ namespace amorphous
 void CBSPMapFileExporter::OutputBSPFile( const string filename )
 {
 
-	CStatusDisplay::Get()->RegisterTask( "Stage File Export" );
+//	CStatusDisplay::Get()->RegisterTask( "Stage File Export" );
 
 
 	FILE *fp;
@@ -146,7 +146,7 @@ void CBSPMapFileExporter::OutputBSPFile( const string filename )
 	}
 */
 
-	CStatusDisplay::Get()->UpdateProgress( "Stage File Export", 0.5f );
+//	CStatusDisplay::Get()->UpdateProgress( "Stage File Export", 0.5f );
 
 
 	// set BSPTree collision model and save to file as a data chunk
@@ -164,7 +164,7 @@ void CBSPMapFileExporter::OutputBSPFile( const string filename )
 	fclose(fp);
 
 
-	CStatusDisplay::Get()->UpdateProgress( "Stage File Export", 1.0f );
+//	CStatusDisplay::Get()->UpdateProgress( "Stage File Export", 1.0f );
 
 }
 
