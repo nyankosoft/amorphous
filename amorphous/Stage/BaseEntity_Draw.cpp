@@ -181,7 +181,7 @@ void BaseEntity::SetAsEnvMapTarget( CCopyEntity& entity )
 {
 	if( entity.GetEntityFlags() & BETYPE_ENVMAPTARGET )
 	{
-//		shared_ptr<CCubeTextureParamsLoader> pCubeTexLoader( new CCubeTextureParamsLoader() );
+//		shared_ptr<CubeTextureParamsLoader> pCubeTexLoader( new CCubeTextureParamsLoader() );
 //		pCubeTexLoader->SetCubeTexture( 0, m_pStage->GetEntitySet()->GetRenderManager()->GetEnvMapTexture(entity.GetID()) );
 
 //		entity.m_pMeshRenderMethod->AddShaderParamsLoaderToAllRenderMethods( pCubeTexLoader );

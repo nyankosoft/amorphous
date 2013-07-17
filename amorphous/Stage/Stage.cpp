@@ -464,7 +464,7 @@ void CStage::CheckCollision(CTrace& tr)
 }
 
 
-void CStage::GetVisibleEntities( CViewFrustumTest& vf_test )
+void CStage::GetVisibleEntities( ViewFrustumTest& vf_test )
 {
 	static vector<CCopyEntity *> s_vecpTempVisibleEntityBuffer;
 	s_vecpTempVisibleEntityBuffer.resize(0);

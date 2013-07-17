@@ -1,5 +1,5 @@
-#ifndef  __OverlapTestAABB__H__
-#define  __OverlapTestAABB__H__
+#ifndef  __amorphous_OverlapTestAABB_HPP__
+#define  __amorphous_OverlapTestAABB_HPP__
 
 
 #include <vector>
@@ -11,14 +11,14 @@ namespace amorphous
 {
 
 
-class COverlapTestAABB
+class OverlapTestAABB
 {
 public:
 
-	COverlapTestAABB( const AABB3& _aabb, std::vector<CCopyEntity *> *buffer )
+	OverlapTestAABB( const AABB3& _aabb, std::vector<CCopyEntity *> *buffer )
 		: aabb(_aabb), pvecBuffer(buffer), TargetEntityTypeID(-1) { GroupIndex = 0; }
 
-	COverlapTestAABB( const AABB3& _aabb, std::vector<CCopyEntity *> *buffer, short group_index )
+	OverlapTestAABB( const AABB3& _aabb, std::vector<CCopyEntity *> *buffer, short group_index )
 		: aabb(_aabb), pvecBuffer(buffer), GroupIndex(group_index), TargetEntityTypeID(-1) {}
 
 	AABB3 aabb;	///< [in] bounding box to test
@@ -36,4 +36,4 @@ public:
 
 
 
-#endif  /*  __OverlapTestAABB__H__  */
+#endif  /*  __amorphous_OverlapTestAABB_HPP__  */

@@ -84,7 +84,7 @@ void Radar::UpdateEntitiesList()
 		Vector3(-1,-1,-1) * effective_radar_radius + radar_world_pose.vPosition,
 		Vector3( 1, 1, 1) * effective_radar_radius + radar_world_pose.vPosition );	// m_pStage->GetAABB();
 
-	COverlapTestAABB overlap_test( aabb, &m_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
+	OverlapTestAABB overlap_test( aabb, &m_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
 
 	pStage->GetEntitySet()->GetOverlappingEntities( overlap_test );
 

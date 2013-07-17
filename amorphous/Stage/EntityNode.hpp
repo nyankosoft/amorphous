@@ -56,8 +56,8 @@ public:
 
 	void CheckPosition_r(STrace& tr, EntityNode* paEntTree);
 	void CheckPosition_r(CTrace& tr, EntityNode* paEntTree);
-	void GetVisibleEntities_r(CViewFrustumTest& vf_test, EntityNode* paEntTree);
-	void GetOverlappingEntities( COverlapTestAABB& overlap_test, EntityNode* paEntTree );
+	void GetVisibleEntities_r(ViewFrustumTest& vf_test, EntityNode* paEntTree);
+	void GetOverlappingEntities( OverlapTestAABB& overlap_test, EntityNode* paEntTree );
 	void ClipTrace_r(STrace& tr, EntityNode* paEntTree);
 
 	/// Link 'pEntity' to this entity node.

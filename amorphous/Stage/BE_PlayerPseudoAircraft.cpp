@@ -656,7 +656,7 @@ void CBE_PlayerPseudoAircraft::UpdateRadarInfo( CCopyEntity* pCopyEnt, float dt 
 		Vector3(-1,-1,-1) * effective_radar_radius + pCopyEnt->GetWorldPosition(),
 		Vector3( 1, 1, 1) * effective_radar_radius + pCopyEnt->GetWorldPosition() );	// m_pStage->GetAABB();
 
-	COverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
+	OverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, ENTITY_GROUP_MIN_ID );
 
 	m_pStage->GetEntitySet()->GetOverlappingEntities( overlap_test );
 */

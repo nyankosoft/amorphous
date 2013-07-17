@@ -115,8 +115,8 @@ public:
 	//============ functions for collision checks ============
 	void CheckPosition( STrace& tr );
 	void CheckPosition( CTrace& tr );
-	void GetVisibleEntities( CViewFrustumTest& vf_test );
-	void GetOverlappingEntities( COverlapTestAABB& COverlapTestAABB );
+	void GetVisibleEntities( ViewFrustumTest& vf_test );
+	void GetOverlappingEntities( OverlapTestAABB& OverlapTestAABB );
 	void ClipTrace( STrace& tr );
 
 

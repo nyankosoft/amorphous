@@ -214,7 +214,7 @@ void EntityManager::CheckPosition(CTrace& tr)
 }
 
 
-void EntityManager::GetVisibleEntities(CViewFrustumTest& vf_test)
+void EntityManager::GetVisibleEntities(ViewFrustumTest& vf_test)
 {
 	EntityNode* pHeadNode = m_paEntityTree; /* pointer to the first entity-node */
 	
@@ -235,7 +235,7 @@ void EntityManager::ClipTrace(STrace& tr)
 }
 
 
-void EntityManager::GetOverlappingEntities( COverlapTestAABB& overlap_test )
+void EntityManager::GetOverlappingEntities( OverlapTestAABB& overlap_test )
 {
 	m_paEntityTree->GetOverlappingEntities( overlap_test, m_paEntityTree );
 }

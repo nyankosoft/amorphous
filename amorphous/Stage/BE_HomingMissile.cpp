@@ -103,7 +103,7 @@ void CBE_HomingMissile::FindTarget( CCopyEntity* pCopyEnt )
 
 
 	// check visible entities
-	CViewFrustumTest vf_test;
+	ViewFrustumTest vf_test;
 //	vf_test.m_Flag = VFT_IGNORE_NOCLIP_ENTITIES;
 	vf_test.SetCamera( &m_InitSensorCamera );
 	vf_test.SetBuffer( s_vecpVisibleEntity );

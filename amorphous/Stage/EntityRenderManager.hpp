@@ -19,16 +19,16 @@ namespace amorphous
 
 class CEntityEnvMapRenderTask;
 class CEntitySceneRenderTask;
-class CCubeTextureParamsLoader;
+class CubeTextureParamsLoader;
 class CEntityShadowMapRenderer;
-class CPlanarReflectionGroup;
+class PlanarReflectionGroup;
 
 
-class CEnvMapTarget
+class EnvMapTarget
 {
 public:
 
-	CEnvMapTarget() : m_CubeMapTextureSize(128), m_EntityID(0) {}
+	EnvMapTarget() : m_CubeMapTextureSize(128), m_EntityID(0) {}
 
 public:
 
@@ -40,7 +40,7 @@ public:
 
 	TextureHandle m_Texture; ///< stores env map texture
 
-	boost::shared_ptr<CCubeTextureParamsLoader> m_pCubeMapTextureLoader;
+	boost::shared_ptr<CubeTextureParamsLoader> m_pCubeMapTextureLoader;
 };
 
 
@@ -115,7 +115,7 @@ private:
 	CubeMapManager *m_pCubeMapManager;
 
 	// stores enitities which need env map texture
-	std::vector<CEnvMapTarget> m_vecEnvMapTarget;
+	std::vector<EnvMapTarget> m_vecEnvMapTarget;
 
 	U32 m_CurrentEnvMapTargetEntityID;
 
@@ -234,7 +234,7 @@ public:
 
 	Result::Name AddPlanarReflector( EntityHandle<>& entity, const SPlane& plane = Plane(Vector3(0,0,0),0) );
 	Result::Name RemovePlanarReflector( EntityHandle<>& entity, bool remove_planar_refelection_group );
-	void UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group );
+	void UpdatePlanarReflectionTexture( Camera& rCam, PlanarReflectionGroup& group );
 	void UpdatePlanarReflectionTextures( Camera& rCam );
 	TextureHandle GetPlanarReflectionTexture( CCopyEntity& entity );
 	int GetCurrentlyRenderedPlanarReflectionSceneID() const;

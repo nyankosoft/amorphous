@@ -30,7 +30,7 @@ class CMeshBonesUpdateCallback;
 class BSPTree;
 struct STrace;
 class CTrace;
-class CViewFrustumTest;
+class ViewFrustumTest;
 class ScreenEffectManager;
 class CSurfaceMaterial;
 class CSurfaceMaterialManager;

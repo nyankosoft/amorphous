@@ -123,7 +123,7 @@ public:
 //	void ClipTrace( CJL_LineSegment& segment );
 	void CheckPosition( STrace& tr );
 	void CheckCollision( CTrace& tr );
-	void GetVisibleEntities( CViewFrustumTest& vf_test );
+	void GetVisibleEntities( ViewFrustumTest& vf_test );
 
 
 	//

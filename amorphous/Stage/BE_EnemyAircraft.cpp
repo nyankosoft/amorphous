@@ -179,7 +179,7 @@ void CBE_EnemyAircraft::SelectTarget( CCopyEntity* pCopyEnt )
 	// - Entities that can be hit by a projectile of this entity will be collected
 	int entity_group_id = GetEntityGroupID( m_ProjectileEntityGroup );
 //	int entity_group_id = GetEntityGroupID( m_TargetFilter );
-	COverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, entity_group_id );
+	OverlapTestAABB overlap_test( aabb, &s_vecpEntityBuffer, entity_group_id );
 
 	m_pStage->GetEntitySet()->GetOverlappingEntities( overlap_test );
 

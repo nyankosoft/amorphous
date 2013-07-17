@@ -258,7 +258,7 @@ void EntityNode::CheckPosition_r(CTrace& tr, EntityNode* paEntTree)
 }
 
 
-void EntityNode::GetVisibleEntities_r(CViewFrustumTest& vf_test, EntityNode* paEntTree)
+void EntityNode::GetVisibleEntities_r(ViewFrustumTest& vf_test, EntityNode* paEntTree)
 {
 
 	// Set the first copy entity on this entity node and cycle through all the copy entities
@@ -401,7 +401,7 @@ void EntityNode::ClipTrace_r(STrace& tr, EntityNode* paEntTree)
 }
 
 
-void EntityNode::GetOverlappingEntities( COverlapTestAABB& overlap_test, EntityNode* paEntTree )
+void EntityNode::GetOverlappingEntities( OverlapTestAABB& overlap_test, EntityNode* paEntTree )
 {
 	float d, fRadius;
 	Vector3 vEnd;

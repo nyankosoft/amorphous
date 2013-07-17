@@ -50,7 +50,7 @@ bool IsValidPlane( const Plane& plane )
 }
 
 
-class CPlanarReflectionGroup
+class PlanarReflectionGroup
 {
 	SPlane m_Plane;
 
@@ -81,7 +81,7 @@ class CPlanarReflectionGroup
 
 public:
 
-	CPlanarReflectionGroup()
+	PlanarReflectionGroup()
 		:
 	m_Plane( SPlane(Vector3(0,1,0),0) ),
 	m_TextureUpdated(false)
@@ -125,11 +125,11 @@ public:
 	friend class EntityRenderManager;
 };
 
-std::vector<CPlanarReflectionGroup> s_PlanarReflectionGroups;
+std::vector<PlanarReflectionGroup> s_PlanarReflectionGroups;
 
 
 
-class CCubeTextureParamsLoader : public ShaderParamsLoader
+class CubeTextureParamsLoader : public ShaderParamsLoader
 {
 	int m_CubeTexIndex;
 //	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture;
@@ -140,7 +140,7 @@ class CCubeTextureParamsLoader : public ShaderParamsLoader
 
 public:
 
-	CCubeTextureParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>(),
+	CubeTextureParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>(),
 		                      EntityRenderManager *pEntityRenderMgr = NULL,
 							  int cube_tex_index = 0 )
 		:
@@ -725,7 +725,7 @@ void EntityRenderManager::UpdateEnvironmentMapTargets()
 		return;
 
 	// remove entities from target list if it has been already destroyed
-	vector<CEnvMapTarget>::iterator itr = m_vecEnvMapTarget.begin();
+	vector<EnvMapTarget>::iterator itr = m_vecEnvMapTarget.begin();
 	while( itr != m_vecEnvMapTarget.end() )
 	{
 		if( !IsValidEntity(itr->m_pEntity)
@@ -787,7 +787,7 @@ Result::Name EntityRenderManager::AddPlanarReflector( EntityHandle<>& entity, co
 
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
-		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		PlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 		if( AlmostSamePlanes( group.m_Plane, plane ) )
 		{
 			// Found a group with almost the same plane
@@ -837,7 +837,7 @@ Result::Name EntityRenderManager::AddPlanarReflector( EntityHandle<>& entity, co
 		reflection_plane = Plane( Vector3(0,1,0), 0 );
 
 	pEntity->s1 = (short)s_PlanarReflectionGroups.size();
-	s_PlanarReflectionGroups.push_back( CPlanarReflectionGroup() );
+	s_PlanarReflectionGroups.push_back( PlanarReflectionGroup() );
 	s_PlanarReflectionGroups.back().Init();
 	s_PlanarReflectionGroups.back().m_Plane = reflection_plane;
 	s_PlanarReflectionGroups.back().AddEntity( entity );
@@ -850,7 +850,7 @@ Result::Name EntityRenderManager::RemovePlanarReflector( EntityHandle<>& entity,
 {
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
-		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		PlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 		Result::Name res = group.RemoveEntity( entity );
 		if( res == Result::SUCCESS )
 		{
@@ -870,7 +870,7 @@ Result::Name EntityRenderManager::RemovePlanarReflector( EntityHandle<>& entity,
 }
 
 
-void EntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, CPlanarReflectionGroup& group )
+void EntityRenderManager::UpdatePlanarReflectionTexture( Camera& rCam, PlanarReflectionGroup& group )
 {
 	if( !group.m_pReflectionRenderTarget )
 //	if( !m_pMirroredScene )
@@ -942,7 +942,7 @@ TextureHandle EntityRenderManager::GetPlanarReflectionTexture( CCopyEntity& enti
 {
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
-		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		PlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 		if( !group.m_pReflectionRenderTarget )
 			continue;
 
@@ -987,7 +987,7 @@ void EntityRenderManager::RenderMirroredScene()
 	int num_planer_reflection_groups = (int)s_PlanarReflectionGroups.size();
 	for( int i=0; i<num_planer_reflection_groups; i++ )
 	{
-		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		PlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 
 		Plane reflection_plane = group.m_Plane;
 //		Plane reflection_plane( Vector3(0,1,0), 0 );
@@ -1040,13 +1040,12 @@ bool EntityRenderManager::AddEnvMapTarget( CCopyEntity *pEntity )
 		return false;
 	}
 
-	m_vecEnvMapTarget.push_back( CEnvMapTarget() );
-	CEnvMapTarget& target = m_vecEnvMapTarget.back();
+	m_vecEnvMapTarget.push_back( EnvMapTarget() );
+	EnvMapTarget& target = m_vecEnvMapTarget.back();
 	target.m_pEntity  = pEntity;
 	target.m_EntityID = pEntity->GetID();
 	int cube_tex_index = 0;
-	target.m_pCubeMapTextureLoader
-		= shared_ptr<CCubeTextureParamsLoader>( new CCubeTextureParamsLoader( pEntity->Self().lock(), this, cube_tex_index ) );
+	target.m_pCubeMapTextureLoader.reset( new CubeTextureParamsLoader( pEntity->Self().lock(), this, cube_tex_index ) );
 
 	if( pEntity->m_pMeshRenderMethod )
 		pEntity->m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( target.m_pCubeMapTextureLoader );
@@ -1164,7 +1163,7 @@ void EntityRenderManager::UpdateLightsForShadow()
 	AABB3 aabb;
 	aabb.vMin = vCamCenter - Vector3(r,r,r);
 	aabb.vMax = vCamCenter + Vector3(r,r,r);
-	COverlapTestAABB aabb_test( aabb, &m_vecpEntityBuffer );
+	OverlapTestAABB aabb_test( aabb, &m_vecpEntityBuffer );
 
 	/// collect only the light entities
 	aabb_test.TargetEntityTypeID = CCopyEntityTypeID::LIGHT_ENTITY;
@@ -1467,7 +1466,7 @@ void EntityRenderManager::Render( Camera& rCam )
 	// >>> experiment - render planar reflectors
 	for( int i=0; i<(int)s_PlanarReflectionGroups.size(); i++ )
 	{
-		CPlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
+		PlanarReflectionGroup& group = s_PlanarReflectionGroups[i];
 		for( int j=0; j<(int)group.m_Entities.size(); j++ )
 		{
 			shared_ptr<CCopyEntity> pEntity = group.m_Entities[j].Get();

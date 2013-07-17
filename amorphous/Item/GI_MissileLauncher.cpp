@@ -254,7 +254,7 @@ void MissileLauncher::UpdateTargets()
 	// For launchers that can lock on only one target at a time,
 	// this is almost always unnecessary, since the focused entity
 	// is selected by the player
-	CViewFrustumTest vf_test;
+	ViewFrustumTest vf_test;
 	vf_test.m_Flag = VFT_IGNORE_NOCLIP_ENTITIES;
 	vf_test.SetCamera( &m_SensorCamera );
 	vf_test.SetBuffer( m_vecpVisibleEntity );

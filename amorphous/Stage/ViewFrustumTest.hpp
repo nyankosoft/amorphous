@@ -1,5 +1,5 @@
-#ifndef __VIEWFRUSTUMTEST_H__
-#define __VIEWFRUSTUMTEST_H__
+#ifndef __amorphous_ViewFrustumTest_HPP__
+#define __amorphous_ViewFrustumTest_HPP__
 
 #include <vector>
 #include "../Graphics/fwd.hpp"
@@ -15,10 +15,10 @@ namespace amorphous
 #define VFT_IGNORE_NOCLIP_ENTITIES	1
 
 
-// used to call CStage::GetVisibleEntities(CViewFrustumTest& vf_test);
+// used to call CStage::GetVisibleEntities(ViewFrustumTest& vf_test);
 // in order to collect entites in the view frustum
 
-class CViewFrustumTest
+class ViewFrustumTest
 {
 public:
 	Camera *m_pCamera;
@@ -29,7 +29,7 @@ public:
 
 public:
 
-	inline CViewFrustumTest()
+	inline ViewFrustumTest()
 	{
 		m_pCamera = NULL;
 		m_Flag = 0;
@@ -59,4 +59,4 @@ public:
 
 
 
-#endif  /* __VIEWFRUSTUMTEST_H__ */
+#endif  /* __amorphous_ViewFrustumTest_HPP__ */
