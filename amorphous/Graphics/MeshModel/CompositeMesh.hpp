@@ -3,7 +3,7 @@
 
 #include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
-#include "amorphous/PhysicsSim/MassSpringSim.hpp"
+#include "amorphous/Physics/MassSpring/MassSpringSim.hpp"
 
 
 namespace amorphous

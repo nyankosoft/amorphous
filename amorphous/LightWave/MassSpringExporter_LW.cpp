@@ -1,6 +1,6 @@
 #include "MassSpringExporter_LW.hpp"
 #include "amorphous/LightWave/3DMeshModelBuilder_LW.hpp"
-#include "amorphous/PhysicsSim/MassSpringSim.hpp"
+#include "amorphous/Physics/MassSpring/MassSpringSim.hpp"
 //#include "assert.h"
 
 

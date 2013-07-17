@@ -2,7 +2,7 @@
 #define  __MASSSPRINGEXPORTER_LW_H__
 
 
-#include "amorphous/PhysicsSim/MassSpringExporter.hpp"
+#include "amorphous/Physics/MassSpring/MassSpringExporter.hpp"
 #include "amorphous/LightWave/LightWaveObject.hpp"
 
 
