@@ -122,12 +122,6 @@ public:
 		}
 	}
 
-	/// D3D mesh access
-
-	virtual LPD3DXBASEMESH GetBaseMesh() { return NULL; }
-
-	virtual LPD3DXMESH GetMesh() { return NULL; }
-
 	/// rendering
 
 	/// render object by using the fixed function pipeline
@@ -267,12 +261,6 @@ public:
 
 //	bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes ) { return m_pImpl->LoadFromArchive( archive, filename, option_flags, num_pmeshes ); }
 
-	/// D3D mesh access
-
-	LPD3DXBASEMESH GetBaseMesh() { return m_pImpl->GetBaseMesh(); }
-
-	LPD3DXMESH GetMesh() { return m_pImpl->GetMesh(); }
-
 	/// rendering
 
 	/// render object by using the fixed function pipeline
@@ -354,6 +342,7 @@ public:
 	// Access GetImpl() and dynamic_cast the returned pointer to lock/unlock vertex/index buffer, and to do other operations on mesh
 	friend class CD3DXMeshVerticesLoader;
 	friend class CD3DXMeshIndicesLoader;
+	friend class CD3DXMeshAttributeTableLoader;
 };
 
 

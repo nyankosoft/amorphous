@@ -283,7 +283,18 @@ bool CD3DXMeshAttributeTableLoader::Lock()
 {
 	LOG_PRINT( "" );
 
-	HRESULT hr = GetMesh()->GetMesh()->SetAttributeTable(
+	shared_ptr<CD3DXMeshObjectBase> pMesh
+		= boost::dynamic_pointer_cast<CD3DXMeshObjectBase,MeshImpl>( GetMesh()->m_pImpl );
+
+	if( !pMesh )
+		return false;
+
+	LPD3DXMESH pD3DXMesh = pMesh->GetMesh();
+
+	if( !pD3DXMesh )
+		return false;
+
+	HRESULT hr = pD3DXMesh->SetAttributeTable(
 		&(m_pMeshLoader->AttributeTable()[0]),
 		(DWORD)(m_pMeshLoader->AttributeTable().size()) );
 

@@ -17,8 +17,6 @@
 
 typedef void* LPDIRECT3DDEVICE9;
 typedef void* LPDIRECT3DTEXTURE9;
-typedef void* LPD3DXBASEMESH;
-typedef void* LPD3DXMESH;
 typedef void* LPD3DXEFFECT;
 
 #endif /* BUILD_WITH_DIRECT3D */
