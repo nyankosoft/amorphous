@@ -162,11 +162,12 @@ public:
 		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 		if( pEntity && m_pEntityRenderManager )
 		{
-			LPDIRECT3DCUBETEXTURE9 pCubeTex
+			TextureHandle cube_map_texture
 				= m_pEntityRenderManager->GetEnvMapTexture(pEntity->GetID());
 
 			LOG_PRINT_ERROR( " ShaderManager::SetCubeTexture() has not been implemented yet." );
-//			rShaderMgr.SetCubeTexture( m_CubeTexIndex, pCubeTex );
+
+			rShaderMgr.SetCubeTexture( m_CubeTexIndex, cube_map_texture );
 		}
 	}
 };
@@ -1016,14 +1017,13 @@ void EntityRenderManager::RenderMirroredScene()
 }
 
 
-//TextureHandle EntityRenderManager::GetEnvMapTexture( U32 entity_id )
-LPDIRECT3DCUBETEXTURE9 EntityRenderManager::GetEnvMapTexture( U32 entity_id )
+TextureHandle EntityRenderManager::GetEnvMapTexture( U32 entity_id )
 {
 	if( m_pCubeMapManager )
 //		return m_pCubeMapManager->GetCubeTexture();
-		return NULL;
+		return TextureHandle();
 	else
-		return NULL;
+		return TextureHandle();
 
 //	return TextureHandle();
 }

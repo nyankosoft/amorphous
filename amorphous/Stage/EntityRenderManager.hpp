@@ -203,8 +203,7 @@ public:
 	void EnableEnvironmentMap() { m_bEnableEnvironmentMap = true; }
 	void DisableEnvironmentMap() { m_bEnableEnvironmentMap = false; }
 
-//	TextureHandle GetEnvMapTexture( U32 entity_id );
-	LPDIRECT3DCUBETEXTURE9 GetEnvMapTexture( U32 entity_id );
+	TextureHandle GetEnvMapTexture( U32 entity_id );
 
 	bool AddEnvMapTarget( CCopyEntity *pEntity );
 
