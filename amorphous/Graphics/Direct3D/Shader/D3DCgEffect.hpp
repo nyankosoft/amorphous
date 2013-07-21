@@ -54,8 +54,6 @@ public:
 
 //	inline void End();
 
-//	inline void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture );
-
 //	inline Result::Name SetTechnique( const unsigned int id );
 
 //	inline Result::Name SetTechnique( ShaderTechniqueHandle& tech_handle );

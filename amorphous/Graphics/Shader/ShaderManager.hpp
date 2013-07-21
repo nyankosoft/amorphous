@@ -125,8 +125,6 @@ public:
 	virtual void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms ) {}
 
 
-//	virtual HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture ) { return E_FAIL; }
-
 	virtual Result::Name SetTexture( const int iStage, const TextureHandle& texture ) { return Result::UNKNOWN_ERROR; }
 
 	virtual Result::Name SetCubeTexture( const int index, const TextureHandle& cube_texture ) { return Result::UNKNOWN_ERROR; }
@@ -134,8 +132,6 @@ public:
 	virtual void Begin() {}
 
 	virtual void End() {}
-
-//	virtual void SetTexture( const char *pName, const LPDIRECT3DTEXTURE9 pTexture ) {}
 
 	virtual Result::Name SetTechnique( const unsigned int id ) { return Result::UNKNOWN_ERROR; }
 
