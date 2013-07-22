@@ -57,7 +57,7 @@ CBSPMapData* CBSPMapCompiler::GenerateMapdataContainer( const char* filename )
 		return new CBSPMapData_LW;
 	else
 	{
-		g_Log.Print( WL_ERROR, "file type must be *.lws ", "Error: unexpected file type" );
+		LOG_PRINT_ERROR( "file type must be *.lws ", "Error: unexpected file type" );
 		return NULL;
 	}
 }
@@ -74,7 +74,7 @@ int CBSPMapCompiler::Compile( const string& desc_filename )
 	if(!m_pMapData)
 		return 0;
 
-	g_Log.Print( "start loading map data" );
+	LOG_PRINT( "start loading map data" );
 
 	// load map data to 'm_pMapData'
 	if( m_pMapData->LoadMapDataFromFile( m_CompileOption.SrcFilename.c_str() ) == 0 )
@@ -83,7 +83,7 @@ int CBSPMapCompiler::Compile( const string& desc_filename )
 		return 0;
 	}
 
-	g_Log.Print( "map data file has been loaded" );
+	LOG_PRINT( "map data file has been loaded" );
 
 
 	// create polygon mesh from main faces and interior faces
@@ -95,7 +95,7 @@ int CBSPMapCompiler::Compile( const string& desc_filename )
 	// i.e. lightmap textures can be created without using BSP-Tree for ray clipping
 	CreateLightmapTextures();
 
-	g_Log.Print( "lightmaps have been created" );
+	LOG_PRINT( "lightmaps have been created" );
 
 
 	// Build BSPTree and make the level from m_pMapData
@@ -104,7 +104,7 @@ int CBSPMapCompiler::Compile( const string& desc_filename )
 
 	m_pBSPTreeBuilder->WriteBSPTree( MakeFilenameForDebugFile(" - bsp-tree.txt") );
 
-	g_Log.Print( "bsp-tree has been constructed" );
+	LOG_PRINT( "bsp-tree has been constructed" );
 
 	//Create cells from the BSP-Tree
 	m_pCellBuilder = new CCellBuilder( m_pBSPTreeBuilder );
@@ -229,7 +229,7 @@ void CBSPMapCompiler::CreateLightmapTextures()
 
 //	m_pLightmapBuilder->ScaleIntensityAndAddAmbientLight();
 
-	g_Log.Print( "Lightmaps have been created." );
+	LOG_PRINT( "Lightmaps have been created." );
 
 	// output lightmaps as .bmp files so that they can be previewed with graphics applications
 	m_pLightmapBuilder->OutputLightmapTexturesToBMPFiles( MakeFilenameForDebugFile("_lightmap").c_str() );

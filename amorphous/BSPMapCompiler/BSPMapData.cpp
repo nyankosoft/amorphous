@@ -176,7 +176,7 @@ bool CBSPMapData::LoadLightPresetsFromFile( const char* pcFilename )
 	FILE* fp = fopen( pcFilename, "r" );
 	if(!fp)
 	{
-		g_Log.Print( WL_WARNING, "couldn't find light presets file" );
+		LOG_PRINT_WARNING( "couldn't find light presets file" );
 		return false;
 	}
 
