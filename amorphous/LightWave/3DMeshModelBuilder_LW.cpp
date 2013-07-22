@@ -551,7 +551,7 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 		pos = comment.find( tex_option );
 		if( pos != string::npos )
 		{
-			g_Log.Print( "C3DMeshModelBuilder_LW - found '-t' option in the comment of surface[%d]", i );
+			LOG_PRINTF(( "C3DMeshModelBuilder_LW - found '-t' option in the comment of surface[%d]", i ));
 
 			// overwrite texture filename
 			string tex_filename = comment.substr( pos + tex_option.length(), 1024 );
@@ -559,7 +559,7 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 			if( pos != string::npos )
 				tex_filename = tex_filename.substr(0,pos);
 
-			g_Log.Print( "C3DMeshModelBuilder_LW - texture filename for surface[%d]: %s", i, tex_filename.c_str() );
+			LOG_PRINTF(( "C3DMeshModelBuilder_LW - texture filename for surface[%d]: %s", i, tex_filename.c_str() ));
 
 //			vecMaterial[i].SurfaceTexture.strFilename = tex_filename;
 
