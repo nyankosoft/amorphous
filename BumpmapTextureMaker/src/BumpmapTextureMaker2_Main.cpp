@@ -10,6 +10,7 @@
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/MiscAux.hpp"
 #include "amorphous/Support/SafeDelete.hpp"
 //#include <vld.h>
@@ -209,7 +210,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	dirstack.push_cwd_and_chdir( lfs::get_parent_path(exe_filename) );
 
 	LogOutput_HTML html_log( "BumpmpaTextureMaker2_" + string(GetBuildInfo()) + ".html" );
-	g_Log.AddLogOutput( &html_log );
+	GlobalLog().AddLogOutput( &html_log );
 
 	g_pBumpTexMaker = new CBumpmapTextureMaker2_LWO2;
 
