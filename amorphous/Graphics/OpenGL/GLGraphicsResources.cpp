@@ -545,6 +545,8 @@ void CGLTextureResource::Release()
 
 	glDeleteTextures( 1, &m_TextureID );
 
+	m_TextureID = 0;
+
 	SetState( GraphicsResourceState::RELEASED );
 }
 

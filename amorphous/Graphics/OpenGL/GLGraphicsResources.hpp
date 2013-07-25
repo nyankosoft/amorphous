@@ -144,6 +144,8 @@ public:
 	:
 	GLTextureResourceBase(pDesc)
 	{
+		for( int i=0; i<numof(m_TextureIDs); i++ )
+			m_TextureIDs[i] = 0;
 	}
 
 	~CGLCubeTextureResource(){}
