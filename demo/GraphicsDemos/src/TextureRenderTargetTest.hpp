@@ -18,6 +18,8 @@ class CTextureRenderTargetTest : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
+	ShaderHandle m_NoLightingShader;
+
 	ShaderTechniqueHandle m_MeshTechnique;
 
 	boost::shared_ptr<FontBase> m_pFont;

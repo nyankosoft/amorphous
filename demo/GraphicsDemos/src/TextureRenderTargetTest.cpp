@@ -10,6 +10,7 @@
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderHelpers.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
@@ -49,6 +50,8 @@ bool CTextureRenderTargetTest::InitShader()
 	gen_shader_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
+
+	m_NoLightingShader = CreateNoLightingShader();
 	
 //	if( !shader_loaded )
 //		return false;
@@ -182,6 +185,7 @@ void CTextureRenderTargetTest::RenderTexturedRect()
 	float height = 0.72f * 2.0f;
 
 	PrimitiveShapeRenderer renderer;
+	renderer.SetShader( m_NoLightingShader );
 	renderer.RenderPlane( pose, width, height, SFloatRGBAColor::White(), render_target_texture );
 }
 
@@ -194,6 +198,8 @@ void CTextureRenderTargetTest::Render()
 
 	if( m_pTextureRenderTarget )
 	{
+		m_pTextureRenderTarget->SetBackgroundColor( SFloatRGBAColor( 0.5f, 0.6f, 0.9f, 1.0f ) );
+
 		m_pTextureRenderTarget->SetRenderTarget();
 
 		RenderMeshes();
