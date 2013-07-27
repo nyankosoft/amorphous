@@ -11,6 +11,10 @@
     <ClCompile Include="..\..\src\ConvexTest.cpp">
       <Filter>Demos</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\PhysicsDemos.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\_Common\KeyState.hpp" />
@@ -27,6 +31,7 @@
     <ClInclude Include="..\..\src\SceneUtility.hpp">
       <Filter>Demos</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Demos">

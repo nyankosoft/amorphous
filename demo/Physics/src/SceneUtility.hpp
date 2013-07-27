@@ -2,7 +2,7 @@
 #define __SceneUtility_HPP__
 
 
-#include "gds/Physics.hpp"
+#include "amorphous/Physics.hpp"
 using namespace physics;
 
 
@@ -33,7 +33,7 @@ public:
 
 	CCloth *CreateClothFromMeshFile( const std::string& filepath, const Matrix34& world_pose );
 
-	CCloth *CreateClothFromMesh( CCustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data );
+	CCloth *CreateClothFromMesh( CustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data );
 };
 
 
@@ -105,7 +105,7 @@ CActor *CSceneUtility::CreateStaticCapsuleActor( float radius, float length, con
 
 U16 g_mesh_indices[0xFFFF];
 
-CCloth *CSceneUtility::CreateClothFromMesh( CCustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data )
+CCloth *CSceneUtility::CreateClothFromMesh( CustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data )
 {
 	CClothMeshDesc cloth_mesh_desc;
 	const uint num_vertices = mesh.GetNumVertices();

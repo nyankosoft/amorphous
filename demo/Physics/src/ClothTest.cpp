@@ -1,36 +1,25 @@
 #include "ClothTest.hpp"
 #include <boost/foreach.hpp>
-#include "gds/Graphics.hpp"
-#include "gds/Graphics/Font/BuiltinFonts.hpp"
-#include "gds/Graphics/VertexFormat.hpp"
-#include "gds/Graphics/Mesh/CustomMeshRenderer.hpp"
-#include "gds/Support/Timer.hpp"
-#include "gds/Support/Profile.hpp"
-#include "gds/Support/ParamLoader.hpp"
-#include "gds/Support/Macro.h"
-#include "gds/Support/MTRand.hpp"
-#include "gds/GUI.hpp"
-#include "gds/Physics.hpp"
+#include "amorphous/Graphics.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/VertexFormat.hpp"
+#include "amorphous/Graphics/Mesh/CustomMeshRenderer.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/Physics.hpp"
 #include "SceneUtility.hpp"
 
-using namespace std;
-using namespace boost;
+using std::string;
+using std::vector;
+using boost::shared_ptr;
 using namespace physics;
 
 
 static int gs_TextureMipLevels = 1;
-
-
-extern CGraphicsTestBase *CreateTestInstance()
-{
-	return new CClothTest();
-}
-
-
-extern const std::string GetAppTitle()
-{
-	return string("ClothTest");
-}
 
 
 void CRigidBodyObject::Release()
@@ -40,13 +29,13 @@ void CRigidBodyObject::Release()
 }
 
 
-CMeshResourceDesc CreateBoxMeshDesc( Vector3 edge_lengths, const SFloatRGBAColor& color )
+MeshResourceDesc CreateBoxMeshDesc( Vector3 edge_lengths, const SFloatRGBAColor& color )
 {
 	// mesh
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( edge_lengths );
 	pBoxMeshGenerator->SetDiffuseColor( color );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 //	m_vecMesh.back().m_MeshDesc.OptionFlags |= GraphicsResourceOption::DONT_SHARE;
 	return mesh_desc;
@@ -57,7 +46,7 @@ void CRigidBodyObject::InitStaticBox( CScene *pScene, Vector3 edge_lengths, cons
 {
 	m_pScene = pScene;
 
-	CMeshResourceDesc mesh_desc( CreateBoxMeshDesc( edge_lengths, color ) );
+	MeshResourceDesc mesh_desc( CreateBoxMeshDesc( edge_lengths, color ) );
 	m_Mesh.Load( mesh_desc );
 
 	// actor
@@ -70,7 +59,7 @@ void CRigidBodyObject::InitKinematicBox( CScene *pScene, Vector3 edge_lengths, c
 {
 	m_pScene = pScene;
 
-	CMeshResourceDesc mesh_desc( CreateBoxMeshDesc( edge_lengths, color ) );
+	MeshResourceDesc mesh_desc( CreateBoxMeshDesc( edge_lengths, color ) );
 	m_Mesh.Load( mesh_desc );
 
 	// actor
@@ -83,7 +72,7 @@ void CRigidBodyObject::InitStaticCapsule( CScene *pScene, float radius, float le
 {
 	m_pScene = pScene;
 
-//	CMeshResourceDesc mesh_desc( CreateCapsuleMeshDesc( edge_lengths, color ) );
+//	MeshResourceDesc mesh_desc( CreateCapsuleMeshDesc( edge_lengths, color ) );
 //	m_Mesh.Load( mesh_desc );
 
 	// actor
@@ -96,7 +85,7 @@ void CRigidBodyObject::InitBox( CScene *pScene, Vector3 edge_lengths, const Matr
 {
 	m_pScene = pScene;
 
-	CMeshResourceDesc mesh_desc( CreateBoxMeshDesc( edge_lengths, color ) );
+	MeshResourceDesc mesh_desc( CreateBoxMeshDesc( edge_lengths, color ) );
 	m_Mesh.Load( mesh_desc );
 
 	// actor
@@ -114,7 +103,7 @@ void CRigidBodyObject::Render()
 
 	FixedFunctionPipelineManager().SetWorldTransform( pose );
 
-	shared_ptr<CBasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 		pMesh->Render();
 }
@@ -242,18 +231,18 @@ void CClothTest::CreateSampleUI()
 
 void CClothTest::SetLights()
 {
-//	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	CShaderManager *pShaderMgr = &FixedFunctionPipelineManager();
+//	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = &FixedFunctionPipelineManager();
 	if( !pShaderMgr )
 		return;
 
-	CShaderLightManager *pShaderLightMgr = pShaderMgr->GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = pShaderMgr->GetShaderLightManager().get();
 	if( !pShaderLightMgr )
 		return;
 
 	pShaderLightMgr->ClearLights();
 
-	CDirectionalLight dir_light;
+	DirectionalLight dir_light;
 	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
 	dir_light.fIntensity = 1.0f;
 	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -2.5f, -0.9f ) );
@@ -263,7 +252,7 @@ void CClothTest::SetLights()
 	bool set_pnt_light = true;
 	if( set_pnt_light )
 	{
-		CPointLight pnt_light;
+		PointLight pnt_light;
 		pnt_light.DiffuseColor = SFloatRGBColor(1,1,1);
 		pnt_light.fIntensity = 1.0f;
 		pnt_light.vPosition = Vector3( 0.3f, 3.5f, -1.9f );
@@ -274,7 +263,7 @@ void CClothTest::SetLights()
 		pShaderLightMgr->CommitChanges();
 	}
 
-/*	CHemisphericDirectionalLight light;
+/*	HemisphericDirectionalLight light;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.8f, -0.9f ) );
@@ -430,13 +419,13 @@ void CClothTest::InitPhysicsEngine()
 int CClothTest::Init()
 {
 //	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
-	shared_ptr<CTextureFont> pTexFont( new CTextureFont );
+	shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 8, 16 );
 	m_pFont = pTexFont;
 
 	m_vecMesh.push_back( CTestMeshHolder() );
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
 	m_vecMesh.back().m_MeshDesc.pMeshGenerator = pBoxMeshGenerator;
@@ -459,9 +448,9 @@ int CClothTest::Init()
 
 	BOOST_FOREACH( const string& filepath, mesh_file )
 	{
-		m_vecMesh.push_back( CMeshObjectHandle() );
+		m_vecMesh.push_back( MeshHandle() );
 
-		CMeshResourceDesc desc;
+		MeshResourceDesc desc;
 		desc.ResourcePath = filepath;
 
 		if( m_TestAsyncLoading )
@@ -573,11 +562,9 @@ void CClothTest::Update( float dt )
 
 void CClothTest::RenderMeshes()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 /*
-//	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
+//	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return;
 
@@ -585,7 +572,7 @@ void CClothTest::RenderMeshes()
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 */
-	ShaderManagerHub.PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
 	for( size_t i=0; i<m_RigidBodies.size(); i++ )
 		m_RigidBodies[i].Render();
@@ -594,7 +581,7 @@ void CClothTest::RenderMeshes()
 
 /*
 	pShaderManager->SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( CMeshObjectHandle& mesh, m_vecMesh )
+//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
 	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
 	{
 		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
@@ -604,14 +591,14 @@ void CClothTest::RenderMeshes()
 //			FixedPipelineManager().SetWorldTransform( mesh_world_pose );
 			pShaderManager->SetWorldTransform( mesh_world_pose );
 
-			shared_ptr<CBasicMesh> pMesh = holder.m_Handle.GetMesh();
+			shared_ptr<BasicMesh> pMesh = holder.m_Handle.GetMesh();
 
 			if( pMesh )
 				pMesh->Render( *pShaderManager );
 		}
 	}
 */
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -652,7 +639,7 @@ void CClothTest::MoveClothHolderActor( const Vector3& dist )
 }
 
 
-void CClothTest::HandleInput( const SInputData& input )
+void CClothTest::HandleInput( const InputData& input )
 {
 /*	if( m_pUIInputHandler )
 	{
@@ -748,7 +735,7 @@ void CClothTest::ReleaseGraphicsResources()
 }
 
 
-void CClothTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CClothTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	CreateSampleUI();
 }

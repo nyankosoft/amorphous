@@ -11,7 +11,7 @@
 #include "amorphous/Input/fwd.hpp"
 #include "amorphous/Physics/fwd.hpp"
 
-#include "../../../_Common/GraphicsTestBase.hpp"
+#include "../../_Common/GraphicsTestBase.hpp"
 
 
 class CActorHolder
@@ -60,6 +60,8 @@ public:
 	CConvexTest();
 
 	~CConvexTest();
+
+	const char *GetAppTitle() const { return "ConvexTest"; }
 
 	int Init();
 

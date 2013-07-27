@@ -25,18 +25,6 @@ using namespace boost::filesystem;
 using namespace physics;
 
 
-extern CGraphicsTestBase *CreateTestInstance()
-{
-	return new CMultiShapeActorsTest();
-}
-
-
-extern const std::string GetAppTitle()
-{
-	return string("MultiShapeActorsTest");
-}
-
-
 const float CMultiShapeActorsTest::ms_fActorStartInitHeight = 10.0f;
 
 CMultiShapeActorsTest::CMultiShapeActorsTest()
@@ -82,16 +70,16 @@ void CMultiShapeActorsTest::CreateSampleUI()
 
 void CMultiShapeActorsTest::SetLights()
 {
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 
-	CShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 	if( !pShaderLightMgr )
 		return;
 
 	pShaderLightMgr->ClearLights();
 
-//	CDirectionalLight dir_light;
+//	DirectionalLight dir_light;
 //	dir_light.DiffuseColor = SFloatRGBColor(1,1,1);
 //	dir_light.fIntensity = 1.0f;
 //	dir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -2.5f, -0.9f ) );
@@ -100,7 +88,7 @@ void CMultiShapeActorsTest::SetLights()
 	bool set_pnt_light = false;
 	if( set_pnt_light )
 	{
-		CPointLight pnt_light;
+		PointLight pnt_light;
 		pnt_light.DiffuseColor = SFloatRGBColor(1,1,1);
 		pnt_light.fIntensity = 1.0f;
 		pnt_light.vPosition = Vector3( 0.3f, 3.5f, -1.9f );
@@ -110,7 +98,7 @@ void CMultiShapeActorsTest::SetLights()
 		pShaderLightMgr->SetPointLight( pnt_light );
 	}
 
-	CHemisphericDirectionalLight hdir_light;
+	HemisphericDirectionalLight hdir_light;
 	hdir_light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	hdir_light.Attribute.LowerDiffuseColor.SetRGBA( 0.3f, 0.3f, 0.3f, 1.0f );
 	hdir_light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -2.5f, -0.9f ) );
@@ -123,10 +111,10 @@ void CMultiShapeActorsTest::SetLights()
 bool CMultiShapeActorsTest::InitShader()
 {
 	// initialize shader
-	CGenericShaderDesc gsd;
-	CShaderResourceDesc sd;
-	gsd.Specular = CSpecularSource::NONE;
-	sd.pShaderGenerator.reset( new CGenericShaderGenerator(gsd) );
+	GenericShaderDesc gsd;
+	ShaderResourceDesc sd;
+	gsd.Specular = SpecularSource::NONE;
+	sd.pShaderGenerator.reset( new GenericShaderGenerator(gsd) );
 	bool shader_loaded = m_Shader.Load( sd );
 	if( !shader_loaded )
 		return false;
@@ -159,7 +147,7 @@ void CMultiShapeActorsTest::CreateActors( const std::string& model, int quantity
 	lfs::change_ext( shape_descs_file, "sd" );
 	if( exists( shape_descs_file ) )
 	{
-		CShapeContainerSet shape_containers;
+		ShapeContainerSet shape_containers;
 		shape_containers.LoadFromFile( shape_descs_file );
 
 		for( int i=0; i<(int)shape_containers.m_pShapes.size(); i++ )
@@ -228,7 +216,7 @@ void CMultiShapeActorsTest::InitPhysicsEngine()
 		{
 			size_t num_prev_actors = m_pActors.size();
 			uint mesh_id = (uint)m_Meshes.size();
-			m_Meshes.push_back( CMeshObjectHandle() );
+			m_Meshes.push_back( MeshHandle() );
 			bool mesh_loaded = m_Meshes.back().Load( model );
 			if( !mesh_loaded )
 				continue;
@@ -266,11 +254,11 @@ int CMultiShapeActorsTest::Init()
 {
 	m_pFont = CreateDefaultBuiltinFont();
 
-	m_Meshes.push_back( CMeshObjectHandle() );
-	shared_ptr<CBoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
+	m_Meshes.push_back( MeshHandle() );
+	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetDiffuseColor( SFloatRGBAColor::White() );
-	CMeshResourceDesc mesh_desc;
+	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 //	m_Meshes.back().m_MeshDesc.OptionFlags |= GraphicsResourceOption::DONT_SHARE;
 	m_Meshes.back().Load( mesh_desc );
@@ -364,14 +352,14 @@ void CMultiShapeActorsTest::Update( float dt )
 
 void CMultiShapeActorsTest::RenderMeshes()
 {
-	CShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	CShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
+	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
 
 	// render the scene
 /*
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 */
-	ShaderManagerHub.PushViewAndProjectionMatrices( GetCurrentCamera() );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetWorldTransform( ToMatrix44( Matrix34(Vector3(0.0f,0.05f,0.0f),Matrix33Identity()) ) * Matrix44Scaling( 100.0f, 100.0f, 0.1f ) );
 
@@ -389,7 +377,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 		if( (uint)m_Meshes.size() <= m_ActorMeshIDs[i] )
 			continue;
 
-		boost::shared_ptr<CBasicMesh> pMesh = m_Meshes[ m_ActorMeshIDs[i] ].GetMesh();
+		boost::shared_ptr<BasicMesh> pMesh = m_Meshes[ m_ActorMeshIDs[i] ].GetMesh();
 		if( !pMesh )
 			continue;
 
@@ -398,7 +386,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 		shader_mgr.SetWorldTransform( Matrix44Identity() );
 		const int num_shapes = m_pActors[i]->GetNumShapes();
 		const Matrix34 actor_world_pose = m_pActors[i]->GetWorldPose();
-		CPrimitiveShapeRenderer renderer;
+		PrimitiveShapeRenderer renderer;
 		renderer.SetShader( m_Shader );
 		for( int j=0; j<num_shapes; j++ )
 		{
@@ -414,7 +402,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 
 	}
 
-	ShaderManagerHub.PopViewAndProjectionMatrices_NoRestore();
+	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
@@ -429,11 +417,11 @@ void CMultiShapeActorsTest::Render()
 	SetLights();
 
 	Result::Name res = Result::SUCCESS;
-	CShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( pShaderMgr )
 		res = pShaderMgr->SetTechnique( m_MeshTechnique );
 
-	CPrimitiveShapeRenderer renderer;
+	PrimitiveShapeRenderer renderer;
 	renderer.SetShader( m_Shader );
 	renderer.RenderAxisAlignedPlane();
 
@@ -450,7 +438,7 @@ void CMultiShapeActorsTest::Render()
 
 void CMultiShapeActorsTest::MoveClothHolderActor( const Vector3& dist )
 {
-/*	CActor *pActor = m_RigidBodies[0].m_pActor;
+/*	Actor *pActor = m_RigidBodies[0].m_pActor;
 	if( !pActor )
 		return;s
 
@@ -460,7 +448,7 @@ void CMultiShapeActorsTest::MoveClothHolderActor( const Vector3& dist )
 }
 
 
-void CMultiShapeActorsTest::HandleInput( const SInputData& input )
+void CMultiShapeActorsTest::HandleInput( const InputData& input )
 {
 /*	if( m_pUIInputHandler )
 	{
@@ -573,7 +561,7 @@ void CMultiShapeActorsTest::ReleaseGraphicsResources()
 }
 
 
-void CMultiShapeActorsTest::LoadGraphicsResources( const CGraphicsParameters& rParam )
+void CMultiShapeActorsTest::LoadGraphicsResources( const GraphicsParameters& rParam )
 {
 //	CreateSampleUI();
 }

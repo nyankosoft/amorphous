@@ -3,19 +3,19 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Input/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
-#include "gds/GameCommon/CriticalDamping.hpp"
-#include "gds/Physics/fwd.hpp"
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/GUI/fwd.hpp"
+#include "amorphous/GameCommon/CriticalDamping.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
 
-#include "../../../_Common/GraphicsTestBase.hpp"
+#include "../../_Common/GraphicsTestBase.hpp"
 
 
 class CRigidBodyObject
@@ -24,7 +24,7 @@ class CRigidBodyObject
 
 public:
 	physics::CActor *m_pActor;
-	CMeshObjectHandle m_Mesh;
+	MeshHandle m_Mesh;
 
 	CRigidBodyObject() : m_pScene(NULL), m_pActor(NULL) {}
 
@@ -46,7 +46,7 @@ class CClothObject
 
 public:
 	physics::CCloth *m_pCloth;
-	CCustomMesh m_Mesh;
+	CustomMesh m_Mesh;
 
 	CClothObject() : m_pScene(NULL), m_pCloth(NULL) {}
 
@@ -61,10 +61,10 @@ public:
 class CTestMeshHolder
 {
 public:
-	CMeshObjectHandle m_Handle;
+	MeshHandle m_Handle;
 	Matrix34 m_Pose;
 
-	CMeshResourceDesc m_MeshDesc;
+	MeshResourceDesc m_MeshDesc;
 
 	enum LoadingStyleName
 	{
@@ -84,23 +84,23 @@ public:
 };
 
 
-class CClothTest : public CGraphicsTestBase, public CGraphicsComponent
+class CClothTest : public CGraphicsTestBase, public GraphicsComponent
 {
 	enum Params
 	{
 		TEXT_BUFFER_SIZE = 4096
 	};
 
-//	std::vector<CMeshObjectHandle> m_vecMesh;
+//	std::vector<MeshHandle> m_vecMesh;
 	std::vector<CTestMeshHolder> m_vecMesh;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
 //	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
@@ -115,7 +115,7 @@ class CClothTest : public CGraphicsTestBase, public CGraphicsComponent
 	CClothObject m_Cloth;
 //	std::vector<physics::CCloth *> m_pCloths;
 
-//	CCustomMesh m_ClothMesh;
+//	CustomMesh m_ClothMesh;
 
 	char m_TextBuffer[TEXT_BUFFER_SIZE];
 
@@ -147,6 +147,8 @@ public:
 
 	~CClothTest();
 
+	const char *GetAppTitle() const { return "ClothTest"; }
+
 	int Init();
 
 	void Release() {};
@@ -157,10 +159,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

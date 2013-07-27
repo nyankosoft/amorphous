@@ -33,19 +33,6 @@ using namespace boost;
 using namespace physics;
 
 
-
-extern CGraphicsTestBase *CreateTestInstance()
-{
-	return new CConvexTest();
-}
-
-
-extern const std::string GetAppTitle()
-{
-	return string("ConvexTest");
-}
-
-
 CConvexTest::CConvexTest()
 :
 m_pPhysicsScene(NULL)

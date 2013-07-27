@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp" />
     <ClInclude Include="..\..\..\_Common\KeyState.hpp" />
     <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp" />
     <ClInclude Include="..\..\src\ClothTest.hpp" />
@@ -91,10 +92,12 @@
     <ClInclude Include="..\..\src\SceneUtility.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp" />
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp" />
     <ClCompile Include="..\..\src\ClothTest.cpp" />
     <ClCompile Include="..\..\src\ConvexTest.cpp" />
     <ClCompile Include="..\..\src\MultiShapeActorsTest.cpp" />
+    <ClCompile Include="..\..\src\PhysicsDemos.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

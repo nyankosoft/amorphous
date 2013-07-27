@@ -3,37 +3,37 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "gds/3DMath/Matrix34.hpp"
-#include "gds/Graphics/fwd.hpp"
-#include "gds/Graphics/GraphicsComponentCollector.hpp"
-#include "gds/Graphics/MeshObjectHandle.hpp"
-#include "gds/Graphics/ShaderHandle.hpp"
-#include "gds/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "gds/Input/fwd.hpp"
-#include "gds/GUI/fwd.hpp"
-#include "gds/GameCommon/CriticalDamping.hpp"
-#include "gds/Physics/fwd.hpp"
-#include "gds/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/GUI/fwd.hpp"
+#include "amorphous/GameCommon/CriticalDamping.hpp"
+#include "amorphous/Physics/fwd.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
 
-#include "../../../_Common/GraphicsTestBase.hpp"
+#include "../../_Common/GraphicsTestBase.hpp"
 
 
-class CMultiShapeActorsTest : public CGraphicsTestBase, public CGraphicsComponent
+class CMultiShapeActorsTest : public CGraphicsTestBase, public GraphicsComponent
 {
-//	std::vector<CTestMeshHolder> m_vecMesh;
-	std::vector<CMeshObjectHandle> m_Meshes;
+//	std::vector<TestMeshHolder> m_vecMesh;
+	std::vector<MeshHandle> m_Meshes;
 
 	std::vector<physics::CActor *> m_pActors;
 
 	std::vector<uint> m_ActorMeshIDs;
 
-	CShaderHandle m_Shader;
+	ShaderHandle m_Shader;
 
-	CShaderTechniqueHandle m_MeshTechnique;
+	ShaderTechniqueHandle m_MeshTechnique;
 
 //	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<CFontBase> m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
@@ -80,6 +80,8 @@ public:
 
 	~CMultiShapeActorsTest();
 
+	const char *GetAppTitle() const { return "MultiShapeActorsTest"; }
+
 	int Init();
 
 	void Release() {};
@@ -90,10 +92,10 @@ public:
 
 //	virtual void RenderBase();
 
-	virtual void HandleInput( const SInputData& input );
+	virtual void HandleInput( const InputData& input );
 
 	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const CGraphicsParameters& rParam );
+	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 
