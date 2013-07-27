@@ -155,7 +155,7 @@ int CConvexTest::Init()
 	m_pFont->SetFontSize( 6, 12 );
 
 	vector< pair<string,int> > mesh_and_quantity_pairs;
-	CTextFileScanner scanner( "params.txt" );
+	CTextFileScanner scanner( "ConvexDemo/params.txt" );
 	if( scanner.IsReady() )
 	{
 		string mesh;
@@ -163,7 +163,7 @@ int CConvexTest::Init()
 		for( ; !scanner.End(); scanner.NextLine() )
 		{
 			if( scanner.TryScanLine( "mesh", mesh, quantity ) )
-				mesh_and_quantity_pairs.push_back( pair<string,int>( mesh, quantity ) );
+				mesh_and_quantity_pairs.push_back( pair<string,int>( "ConvexDemo/" + mesh, quantity ) );
 		}
 	}
 

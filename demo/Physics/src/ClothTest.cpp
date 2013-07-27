@@ -394,8 +394,8 @@ void CClothTest::InitPhysicsEngine()
 		* Matrix34( Vector3(0,-0.5f,0), Matrix33Identity() );
 
 	// cloth and box to attach the cloth to
-	string mesh_filepath = LoadParamFromFile<string>( "params.txt", "ClothMesh" );
-	m_Cloth.CreateFromMesh( m_pPhysScene, "models/tex_cloth-10x10.msh", cloth_pose );
+	string mesh_filepath = LoadParamFromFile<string>( "ClothDemo/params.txt", "ClothMesh" );
+	m_Cloth.CreateFromMesh( m_pPhysScene, "ClothDemo/models/tex_cloth-10x10.msh", cloth_pose );
 	m_RigidBodies[0].InitKinematicBox( m_pPhysScene, box_edges, box_pose );
 	m_RigidBodies[0].m_pActor->SetCollisionGroup( 2 );
 

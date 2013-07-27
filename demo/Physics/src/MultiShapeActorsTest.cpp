@@ -204,7 +204,7 @@ void CMultiShapeActorsTest::InitPhysicsEngine()
 
 	m_pPhysScene->SetGravity( Vector3(  0.0f, -9.8f, 0.0f ) );
 
-	CTextFileScanner scanner( "params.txt" );
+	CTextFileScanner scanner( "MultiShapeActorsDemo/params.txt" );
 	if( !scanner.IsReady() )
 		return;
 
@@ -214,6 +214,8 @@ void CMultiShapeActorsTest::InitPhysicsEngine()
 		int quantity = 0;
 		if( scanner.TryScanLine( "model", model, quantity ) )
 		{
+			model = "MultiShapeActorsDemo/" + model;
+
 			size_t num_prev_actors = m_pActors.size();
 			uint mesh_id = (uint)m_Meshes.size();
 			m_Meshes.push_back( MeshHandle() );
