@@ -2,7 +2,9 @@
 // File: MeshModelCompiler_Main.cpp
 //-----------------------------------------------------------------------------
 
-#include <boost/progress.hpp>
+// Commented out because boost/progress is incompatible with boost/timer usd by LogInputBase.
+//#include <boost/progress.hpp>
+
 #include <boost/filesystem.hpp>
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "amorphous/Support/progress_display.hpp"
@@ -10,7 +12,6 @@
 #include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/thread_starter.hpp"
-#include "amorphous/Support/Timer.hpp"
 
 #include "amorphous/Graphics/MeshModel/3DMeshModelBuilder.hpp"
 #include "amorphous/LightWave/3DMeshModelExportManager_LW.hpp"
@@ -136,7 +137,7 @@ int main( int argc, char *argv[] )
 	}
 
 	const progress_display& loading_progress = mesh_compiler.m_Exporter.GetSourceObjectLoadingProgress();
-	boost::progress_display progress_bar( loading_progress.get_total_units() );
+//	boost::progress_display progress_bar( loading_progress.get_total_units() );
 	int last_units = 0;//pLoadingProgress->get_num_current_units();
 	int added = 0;
 
@@ -146,8 +147,8 @@ int main( int argc, char *argv[] )
 
 		int current_units = loading_progress.get_current_units();
 		added += (current_units - last_units);
-		if( last_units < current_units )
-			progress_bar += (current_units - last_units);
+//		if( last_units < current_units )
+//			progress_bar += (current_units - last_units);
 		last_units = current_units;
 
 		if( mesh_compiler.m_CompilationFinished
