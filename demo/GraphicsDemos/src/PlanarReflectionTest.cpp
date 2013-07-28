@@ -12,6 +12,9 @@
 #include "amorphous/Support/CameraController_Win32.hpp"
 #include "amorphous/Support/Timer.hpp"
 
+// TODO: make the source code graphics-library independent.
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+
 using std::string;
 using std::vector;
 using namespace boost;
@@ -35,8 +38,6 @@ public:
 	ColorType color;
 };
 
-
-#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 
 namespace amorphous {
 extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in amorphous/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
