@@ -555,15 +555,3 @@ void CMultiShapeActorsTest::HandleInput( const InputData& input )
 		break;
 	}
 }
-
-
-void CMultiShapeActorsTest::ReleaseGraphicsResources()
-{
-//	m_pSampleUI.reset();
-}
-
-
-void CMultiShapeActorsTest::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
-//	CreateSampleUI();
-}

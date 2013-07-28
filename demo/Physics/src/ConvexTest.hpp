@@ -2,8 +2,6 @@
 #define  __ConvexTest_HPP__
 
 
-#include "amorphous/3DMath/Quaternion.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"

@@ -2,10 +2,6 @@
 #define  __MultiShapeActorsTest_HPP__
 
 
-#include <boost/shared_ptr.hpp>
-#include "amorphous/3DMath/Matrix34.hpp"
-#include "amorphous/Graphics/fwd.hpp"
-#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
@@ -18,7 +14,7 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class CMultiShapeActorsTest : public CGraphicsTestBase, public GraphicsComponent
+class CMultiShapeActorsTest : public CGraphicsTestBase
 {
 //	std::vector<TestMeshHolder> m_vecMesh;
 	std::vector<MeshHandle> m_Meshes;
@@ -93,9 +89,6 @@ public:
 //	virtual void RenderBase();
 
 	virtual void HandleInput( const InputData& input );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 

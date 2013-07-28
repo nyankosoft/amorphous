@@ -4,7 +4,6 @@
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/VertexFormat.hpp"
 #include "amorphous/Graphics/Mesh/CustomMeshRenderer.hpp"
-#include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
@@ -616,13 +615,6 @@ void CClothTest::Render()
 /*	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
 	rect.Draw();
 */
-	memset( m_TextBuffer, 0, sizeof(m_TextBuffer) );
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-	Vector3 vCamPos = g_Camera.GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
 }
 
 
@@ -726,16 +718,4 @@ void CClothTest::HandleInput( const InputData& input )
 	default:
 		break;
 	}
-}
-
-
-void CClothTest::ReleaseGraphicsResources()
-{
-//	m_pSampleUI.reset();
-}
-
-
-void CClothTest::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
-//	CreateSampleUI();
 }

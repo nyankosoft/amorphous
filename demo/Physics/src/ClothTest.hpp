@@ -2,10 +2,6 @@
 #define  __ClothTest_HPP__
 
 
-#include <boost/shared_ptr.hpp>
-#include "amorphous/3DMath/Matrix34.hpp"
-#include "amorphous/Graphics/fwd.hpp"
-#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
@@ -84,13 +80,8 @@ public:
 };
 
 
-class CClothTest : public CGraphicsTestBase, public GraphicsComponent
+class CClothTest : public CGraphicsTestBase
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
-
 //	std::vector<MeshHandle> m_vecMesh;
 	std::vector<CTestMeshHolder> m_vecMesh;
 
@@ -116,8 +107,6 @@ class CClothTest : public CGraphicsTestBase, public GraphicsComponent
 //	std::vector<physics::CCloth *> m_pCloths;
 
 //	CustomMesh m_ClothMesh;
-
-	char m_TextBuffer[TEXT_BUFFER_SIZE];
 
 	cdv<Vector3> m_vWindForce;
 
@@ -160,9 +149,6 @@ public:
 //	virtual void RenderBase();
 
 	virtual void HandleInput( const InputData& input );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 
