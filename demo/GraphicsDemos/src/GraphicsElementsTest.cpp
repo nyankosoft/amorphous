@@ -64,7 +64,7 @@ void CGraphicsElementsTest::CreateGraphicsElements()
 	for( int i=0; i<numof(border_widths); i++ )
 	{
 		int y = 50 + (grof(w) + 20) * i;
-		int border_width = border_widths[i];
+		float border_width = (float)border_widths[i];
 		m_pRects[index++] = pMgr->CreateRect( gc::RectAtLeftTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),    border_width );
 		m_pRects[index++] = pMgr->CreateRect( gc::RectAtLeftTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), border_width );
 		m_pRects[index++] = pMgr->CreateRect( gc::RectAtLeftTop( w, grof(w), 50 + 400, y ), FRGBA::Blue(),  FRGBA::Yellow(),  border_width );
@@ -75,7 +75,7 @@ void CGraphicsElementsTest::CreateGraphicsElements()
 	for( int i=0; i<numof(border_widths); i++ )
 	{
 		int y = 50 + (grof(w) + 20) * i;
-		int border_width = border_widths[i];
+		float border_width = (float)border_widths[i];
 //		float corner_radius = 10;
 		m_pRoundRects[index++] = pMgr->CreateRoundRect( gc::RectAtRightTop( w, grof(w), 50,       y ), FRGBA::Red(),   FRGBA::Aqua(),     5, border_width );
 		m_pRoundRects[index++] = pMgr->CreateRoundRect( gc::RectAtRightTop( w, grof(w), 50 + 200, y ), FRGBA::Green(), FRGBA::Magenta(), 10, border_width );
