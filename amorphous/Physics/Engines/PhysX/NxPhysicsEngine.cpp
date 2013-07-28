@@ -43,7 +43,10 @@ bool CNxPhysicsEngine::Init()
 	m_pPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION, 0, &NxPhysOutputStream() );
 
 	if(!m_pPhysicsSDK)
+	{
+		LOG_PRINT_ERROR( "NxCreatePhysicsSDK() returned a NULL pointer. If the application is running on a Windows, see if you have all the necessary DLL files (PhysXCore.dll, PhysXLoader.dll, PhysXCooking.dll, etc.)" );
 		return false;
+	}
 
 	return true;
 }
