@@ -20,12 +20,6 @@ public:
 
 	~SkeletalMesh() {}
 
-//	virtual void Release();
-
-//	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags );
-
-//	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes );
-
 	inline int GetNumBones() const { return m_pImpl->GetNumBones(); }
 
 	inline int GetBoneMatrixIndexByName( const std::string& bone_name ) const { return m_pImpl->GetBoneMatrixIndexByName( bone_name ); }
@@ -38,23 +32,21 @@ public:
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
 
-	/// calculate hierarchical transforms by handiing an array of matrices
-	/// that represents local transformations at each bone
-	inline void SetLocalTransforms( Matrix34 *paLocalTransform );
-
-	/// set local transformation for a bone to a cache
-	/// NOTE: do not updates transformation for the bone
-	/// use is responsible for calling SetLocalTransformsFromCache() later to updates the transformations for bones
+	/// \brief Sets a local transform for a bone to a cache
+	/// NOTE: this does not update the transform for the bone.
+	/// The user is responsible for calling SetLocalTransformsFromCache() later to update the transforms for bones.
 	inline void SetLocalTransformToCache( int index, const Matrix34& local_transform ) { m_pImpl->SetLocalTransformToCache(index,local_transform); }
 
 	inline void CalculateBlendTransformsFromCachedLocalTransforms() { m_pImpl->CalculateBlendTransformsFromCachedLocalTransforms(); }
 
 	inline void ResetLocalTransformsCache() { m_pImpl->ResetLocalTransformsCache(); }
 
+	/// \param[in] src_local_transforms   The Local transforms for bones. These represent, in the case of a humanoid character,
+	///                                   how many degrees hands, arms, legs, etc. joints are bent
+	/// \param[out] dest_blend_transforms The transforms which are usually set to the vertex shader.
 	inline void CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms ) { m_pImpl->CalculateBlendTransforms( src_local_transforms, dest_blend_transforms ); }
 
-	/// returns the pointer to the array of vertex blend matrices (world transforms)
-//	inline void GetBlendMatrices( D3DXMATRIX* paDestMatrix ) { paDestMatrix = m_paBoneMatrix; }
+	/// \brief Returns the pointer to the array of vertex blend matrices (world transforms)
 	inline Transform* GetBlendTransforms() { return m_pImpl->GetBlendTransforms(); }
 
 	/// Get vertex blend transforms

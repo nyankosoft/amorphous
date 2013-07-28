@@ -2,14 +2,12 @@
 #define __BasicMesh_HPP__
 
 
-#include "../../base.hpp"
 #include "../../3DMath/AABB3.hpp"
 #include "../../3DMath/Transform.hpp"
-//#include "MeshImpl.hpp"
-#include "BasicMaterialParams.hpp"
-#include "../../Graphics/fwd.hpp"
 #include "../../Graphics/TextureHandle.hpp"
 #include "../../Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "BasicMaterialParams.hpp"
+//#include "MeshImpl.hpp"
 
 
 namespace amorphous
@@ -209,9 +207,7 @@ public:
 	virtual const MeshBone& GetRootBone() const;
 
 //	inline void SetLocalTransform( int matrix_index, const Matrix34 *local_transform );
-	/// calculate hierarchical transforms by handiing an array of matrices
-	/// that represents local transformations at each bone
-	virtual void SetLocalTransforms( Matrix34 *paLocalTransform ) {}
+
 	/// set local transformation for a bone to a cache
 	/// NOTE: do not updates transformation for the bone
 	/// use is responsible for calling SetLocalTransformsFromCache() later to updates the transformations for bones
