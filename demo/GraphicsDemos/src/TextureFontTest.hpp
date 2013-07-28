@@ -2,9 +2,6 @@
 #define  __TextureFontTest_HPP__
 
 
-#include <boost/shared_ptr.hpp>
-#include "amorphous/base.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Support/indexed_vector.hpp"
 

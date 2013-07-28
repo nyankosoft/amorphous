@@ -2,9 +2,7 @@
 #define  __GraphicsElementsTest_H__
 
 
-#include <vector>
 #include "amorphous/Graphics/GraphicsElementManager.hpp"
-#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"

@@ -2,8 +2,6 @@
 #define  __LensFlareTest_HPP__
 
 
-#include "amorphous/3DMath/Vector3.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
