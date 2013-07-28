@@ -33,13 +33,15 @@ private:
 
 	Result::Name LoadShader();
 
-	Result::Name InitLight( ShaderManager& shader_mgr );
+	Result::Name SetLight( ShaderManager& shader_mgr );
 
 	void RenderMesh();
 
 	Result::Name UpdateVertexBlendTransformsFromLocalTransforms( SkeletalMesh& skeletal_mesh, const std::vector<Transform>& local_transforms );
 
 	Result::Name SetUniformRotations( float angle, unsigned int axis );
+
+	int GetRotationAxis();
 
 public:
 
@@ -56,8 +58,6 @@ public:
 	void Update( float dt );
 
 	void Render();
-
-	void RenderScene();
 
 	void HandleInput( const InputData& input );
 };

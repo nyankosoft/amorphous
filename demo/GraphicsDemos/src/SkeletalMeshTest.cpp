@@ -28,9 +28,11 @@ using boost::shared_ptr;
 CSkeletalMeshTest::CSkeletalMeshTest()
 {
 //	m_fDetailLevel = 1.0f;
-//	m_vLightDir = Vector3(0,0,0);
 
 //	m_MeshFilepath = "???.msh";
+
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 1, -5 ) );
 }
 
 
@@ -42,8 +44,11 @@ CSkeletalMeshTest::~CSkeletalMeshTest()
 Result::Name CSkeletalMeshTest::LoadShader()
 {
 	GenericShaderDesc gsd;
-	gsd.Specular = SpecularSource::DECAL_TEX_ALPHA;
-	gsd.VertexBlendType = VertexBlendType::QUATERNION_AND_VECTOR3;
+	gsd.Specular = SpecularSource::NONE;
+//	gsd.NumDirectionalLights = 1;
+//	gsd.NumPointLights       = 0;
+//	gsd.NumSpotLights        = 0;
+//	gsd.VertexBlendType = VertexBlendType::QUATERNION_AND_VECTOR3;
 
 	ShaderResourceDesc sd;
 	sd.pShaderGenerator.reset( new GenericShaderGenerator( gsd ) );
@@ -54,20 +59,25 @@ Result::Name CSkeletalMeshTest::LoadShader()
 }
 
 
-Result::Name CSkeletalMeshTest::InitLight( ShaderManager& shader_mgr )
+Result::Name CSkeletalMeshTest::SetLight( ShaderManager& shader_mgr )
 {
 	shared_ptr<ShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
 
 	if( !pShaderLightMgr )
 		return Result::UNKNOWN_ERROR;
 
+	pShaderLightMgr->ClearLights();
+
 	Vector3 vLightDir = Vector3(-0.5f, -1.0f, 0.8f);
+	vLightDir.Normalize();
 	HemisphericDirectionalLight light;
 	light.vDirection = vLightDir;
 	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 1.0f, 1.0f );
 	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.1f, 1.0f );
 
 	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+
+	pShaderLightMgr->CommitChanges();
 
 	return Result::SUCCESS;
 }
@@ -78,20 +88,15 @@ int CSkeletalMeshTest::Init()
 	m_pFont = CreateDefaultBuiltinFont();
 
 	Result::Name res = LoadShader();
-//
-//	if( !shader_loaded )
-//		return -1;
 
-	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	if( pShaderMgr )
-		InitLight( *pShaderMgr );
-
-	string mesh_pathname = "models/skeletal_mesh.msh";//m_MeshFilepath;
+	string mesh_pathname = "models/human.msh";//m_MeshFilepath;
 
 	LoadParamFromFile( "params.txt", "mesh", mesh_pathname );
 
 	if( 0 < mesh_pathname.length() )
 	{
+		mesh_pathname = "SkeletalMeshDemo/" + mesh_pathname;
+
 		MeshResourceDesc mrd;
 		mrd.ResourcePath = mesh_pathname;
 //		mrd.MeshType = CMeshType::SKELETAL;
@@ -130,6 +135,8 @@ void CSkeletalMeshTest::RenderMesh()
 
 	shader_mgr.SetParam( "g_vEyePos", GetCurrentCamera().GetPosition() );
 
+	SetLight( shader_mgr );
+
 	// alpha-blending settings 
 	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, false );
 
@@ -137,6 +144,8 @@ void CSkeletalMeshTest::RenderMesh()
 	tech.SetTechniqueName( "Default" );
 
 	Result::Name res = shader_mgr.SetTechnique( tech );
+
+	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 	boost::shared_ptr<BasicMesh> pBasicMesh = m_Mesh.GetMesh();
 
@@ -146,33 +155,21 @@ void CSkeletalMeshTest::RenderMesh()
 	shared_ptr<SkeletalMesh> pSMesh
 		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pBasicMesh );
 
-	if( !pSMesh )
+	if( pSMesh )
 	{
-		pBasicMesh->Render();
-		return;
+		pSMesh->Render( shader_mgr );
+	}
+	else
+	{
+		pBasicMesh->Render( shader_mgr );
 	}
 
-	pSMesh->Render( shader_mgr );
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: Render()
-// Desc: Draws the scene
-//-----------------------------------------------------------------------------
 void CSkeletalMeshTest::Render()
 {
-//	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-//	if( pShaderMgr )
-//	{
-//		pShaderMgr->SetViewTransform( g_CameraController.GetCameraMatrix() );
-//		RenderMesh();
-//		pShaderMgr->SetWorldTransform( Matrix44Identity() );
-//	}
-
 	RenderMesh();
-
-//	CLineSegmentRenderer::Draw( -m_vLightDir * 5.0f, -m_vLightDir * 3.0f, 0xFFF0F0F0 );
 
 	// rendering
 
@@ -246,12 +243,7 @@ Result::Name CSkeletalMeshTest::SetUniformRotations( float angle, unsigned int a
 }
 
 
-void CSkeletalMeshTest::RenderScene()
-{
-}
-
-
-int GetRotationAxis()
+int CSkeletalMeshTest::GetRotationAxis()
 {
 	CInputState::Name st0 = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( 'Z' );
 	CInputState::Name st1 = InputDeviceHub().GetInputDeviceGroup(0)->GetInputState( 'X' );
@@ -272,9 +264,13 @@ void CSkeletalMeshTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case 'Z':
+	case 'R':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+			// Set the angles to 0 on all axes
+			SetUniformRotations( 0.0f, 0 );
+			SetUniformRotations( 0.0f, 1 );
+			SetUniformRotations( 0.0f, 2 );
 		}
 		break;
 
@@ -289,6 +285,7 @@ void CSkeletalMeshTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
