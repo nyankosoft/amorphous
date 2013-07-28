@@ -469,9 +469,6 @@ int CClothTest::Init()
 	// init shader
 	InitShader();
 
-//	if( m_TestAsyncLoading )
-//		CreateCachedResources();
-
 	InitPhysicsEngine();
 
 	return 0;
@@ -537,25 +534,6 @@ void CClothTest::Update( float dt )
 		m_Cloth.m_pCloth->SetWindAcceleration( m_vWindForce.current );
 
 	UpdatePhysics( dt );
-
-/*
-	if( true //m_TestAsyncLoading/ )
-	{
-//		LoadTexturesAsync();
-
-		BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
-		{
-			//if( holder.m_LoadingStyle != CTestMeshHolder::LOAD_SYNCHRONOUSLY )
-				LoadResourcesAsync( holder );
-		}
-	}
-
-	if( !GraphicsResourceManager().IsAsyncLoadingAllowed() )
-	{
-		// async loading is not enabled
-		// - The primary thread (this thread) loads the resources from the disk/memory.
-		AsyncResourceLoader().ProcessResourceLoadRequest();
-	}*/
 }
 
 
@@ -633,16 +611,6 @@ void CClothTest::MoveClothHolderActor( const Vector3& dist )
 
 void CClothTest::HandleInput( const InputData& input )
 {
-/*	if( m_pUIInputHandler )
-	{
-//		CInputHandler::ProcessInput() does not take const SInputData&
-		SInputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}*/
-
 	static int m_CurrentMouseX = -1;
 	static int m_CurrentMouseY = -1;
 	static bool m_MouseLButtonPressed = false;
