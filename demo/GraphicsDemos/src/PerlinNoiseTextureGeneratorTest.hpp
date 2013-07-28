@@ -14,8 +14,6 @@ class CPerlinNoiseTextureGeneratorTest : public CGraphicsTestBase
 {
 //	ShaderHandle m_Shader;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	boost::shared_ptr<Timer> m_pTimer;
 
 	TextureHandle m_PerlinNoiseTexture;

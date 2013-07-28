@@ -32,8 +32,6 @@ class CSimpleMotionBlurTest : public CGraphicsTestBase
 
 //	float m_FOV;// = PI / 4.0f;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 protected:
 
 	void RenderScene();

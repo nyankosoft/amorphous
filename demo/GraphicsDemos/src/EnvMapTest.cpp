@@ -52,9 +52,6 @@ CEnvMapTest::~CEnvMapTest()
 
 int CEnvMapTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 	// initialize shader
 	bool loaded = false;
 	if( m_UseEmbeddedShader )

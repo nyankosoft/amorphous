@@ -34,8 +34,6 @@ class OBBTreeTest : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 private:
 
 	void InitOBBTree( C3DMeshModelArchive& mesh_archive );

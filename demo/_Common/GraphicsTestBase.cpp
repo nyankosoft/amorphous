@@ -1,4 +1,5 @@
 #include "GraphicsTestBase.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/App/GameWindowManager.hpp"
 #include <boost/filesystem.hpp>
@@ -102,6 +103,22 @@ m_UseRenderBase(false),
 m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) )
 {
 	m_pCameraController.reset( new amorphous::CameraController( ms_CameraControllerInputHandlerIndex ) );
+}
+
+
+Result::Name CGraphicsTestBase::InitBase()
+{
+	m_pFont = CreateDefaultBuiltinFont();
+	m_pFont->SetFontSize( 8, 16 );
+//	m_pFont->SetFontSize( 6, 12 );
+
+	// You can also specify the font with a name.
+//	shared_ptr<TextureFont> pTexFont( new TextureFont );
+//	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
+//	pTexFont->SetFontSize( 8, 16 );
+//	m_pFont = pTexFont;
+
+	return Result::SUCCESS;
 }
 
 

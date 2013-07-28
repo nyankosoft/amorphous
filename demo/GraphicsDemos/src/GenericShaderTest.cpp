@@ -1,6 +1,7 @@
 #include "GenericShaderTest.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
@@ -8,7 +9,7 @@
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/CameraController.hpp"
@@ -100,9 +101,6 @@ bool CGenericShaderTest::InitShader()
 
 int CGenericShaderTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 /*
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );

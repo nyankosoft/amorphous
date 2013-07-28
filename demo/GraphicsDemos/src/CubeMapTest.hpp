@@ -33,8 +33,6 @@ class CCubeMapTest : public CGraphicsTestBase
 
 	bool m_UseEmbeddedShader;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 public:
 
 	CCubeMapTest();

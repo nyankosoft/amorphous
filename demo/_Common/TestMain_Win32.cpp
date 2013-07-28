@@ -314,6 +314,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
 	g_Camera.SetAspectRatio( (float)w / (float)h );
 
+	g_pTest->InitBase();
+
 	try
 	{
 		if( !Init() )

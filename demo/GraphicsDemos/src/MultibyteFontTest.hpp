@@ -18,8 +18,6 @@ class CMultibyteFontTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	boost::shared_ptr<UTFFont> m_pUTFFont;
 
 	CGM_DialogManagerSharedPtr m_pSampleUI;

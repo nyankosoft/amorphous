@@ -9,7 +9,7 @@
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
@@ -218,8 +218,6 @@ bool CLightingTest::InitShader()
 
 int CLightingTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 8, 16 );
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );

@@ -3,7 +3,6 @@
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/LensFlare.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -82,8 +81,6 @@ void CLensFlareTest::InitLensFlare( const string& strPath )
 int CLensFlareTest::Init()
 {
 	InitLensFlare( "" );
-
-	m_pFont = CreateDefaultBuiltinFont();
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );

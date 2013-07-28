@@ -1,5 +1,6 @@
 #include "SimpleOverlayEffectsTest.hpp"
 #include <boost/foreach.hpp>
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
@@ -7,7 +8,6 @@
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
@@ -90,9 +90,6 @@ bool CSimpleOverlayEffectsTest::InitShader()
 
 int CSimpleOverlayEffectsTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 	m_PseudoNoiseEffect.Init( 0.5f, 2 );
 
 	// stripe texture

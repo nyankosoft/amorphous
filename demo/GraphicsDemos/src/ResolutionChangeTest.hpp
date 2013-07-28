@@ -40,8 +40,6 @@ class CResolutionChangeTest : public CGraphicsTestBase
 
 	std::vector<TextureHandle> m_TestTextures;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	int m_CurrentlyEnteredDigits;
 
 private:

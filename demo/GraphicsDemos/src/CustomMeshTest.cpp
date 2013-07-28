@@ -95,8 +95,6 @@ bool CCustomMeshTest::InitShader()
 
 int CCustomMeshTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 8, 16 );
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );

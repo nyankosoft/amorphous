@@ -1,6 +1,5 @@
 #include "ShadowMapTest.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -38,8 +37,6 @@ CShadowMapTest::~CShadowMapTest()
 
 int CShadowMapTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "Default" );
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );

@@ -4,7 +4,7 @@
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Input.hpp"
@@ -106,11 +106,6 @@ bool CGLSLTest::InitShader()
 
 int CGLSLTest::Init()
 {
-	shared_ptr<TextureFont> pTexFont( new TextureFont );
-	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
-	pTexFont->SetFontSize( 8, 16 );
-	m_pFont = pTexFont;
-
 	m_Meshes.push_back( MeshHandle() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
@@ -218,7 +213,7 @@ void CGLSLTest::Render()
 
 	RenderMeshes();
 
-	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
+//	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
 
 //	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
 

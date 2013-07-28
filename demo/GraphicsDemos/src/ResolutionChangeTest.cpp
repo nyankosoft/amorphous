@@ -1,7 +1,7 @@
 #include "ResolutionChangeTest.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
@@ -55,8 +55,6 @@ int CResolutionChangeTest::Init()
 		}
 	}
 
-
-	m_pFont = CreateDefaultBuiltinFont();
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 //	m_DefaultTechnique.SetTechniqueName( "NullShader" );

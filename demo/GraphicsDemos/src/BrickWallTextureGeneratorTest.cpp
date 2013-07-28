@@ -100,9 +100,6 @@ bool CBrickWallTextureGeneratorTest::InitShader()
 
 int CBrickWallTextureGeneratorTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 8, 16 );
-
 	bool loaded = false;
 	string mesh_file_pathname;
 	LoadParamFromFile( "BrickWallTextureGeneratorDemo/params.txt", "model", mesh_file_pathname );

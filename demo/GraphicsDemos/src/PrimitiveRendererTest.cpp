@@ -5,7 +5,6 @@
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 //#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
@@ -64,10 +63,6 @@ bool CPrimitiveRendererTest::InitShader()
 
 int CPrimitiveRendererTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	if( m_pFont )
-		m_pFont->SetFontSize( 6, 12 );
-
 //	InitShader();
 
 	return 0;

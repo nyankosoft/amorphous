@@ -1,7 +1,6 @@
 #include "SimpleMotionBlurTest.hpp"
 #include "amorphous/Graphics/SimpleMotionBlur.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -25,8 +24,6 @@ CSimpleMotionBlurTest::~CSimpleMotionBlurTest()
 
 int CSimpleMotionBlurTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );

@@ -49,8 +49,6 @@ class CAsyncLoadingTest : public CGraphicsTestBase, public GraphicsComponent
 
 	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	bool m_TestAsyncLoading;

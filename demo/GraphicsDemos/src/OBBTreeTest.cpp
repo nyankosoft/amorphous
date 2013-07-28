@@ -4,7 +4,6 @@
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
@@ -33,8 +32,6 @@ int OBBTreeTest::Init()
 {
 	if( CameraController() )
 		CameraController()->SetPosition( Vector3(0,1,-3) );
-
-	m_pFont = CreateDefaultBuiltinFont();
 
 	const string dir_path = "OBBTreeDemo/";
 

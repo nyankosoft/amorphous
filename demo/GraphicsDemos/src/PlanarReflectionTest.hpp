@@ -34,8 +34,6 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 	TextureHandle m_PerturbationTexture;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 protected:

@@ -49,8 +49,6 @@ class CMeshSplitterTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	bool m_ControlSplitPlane;
 
 	boost::shared_ptr<amorphous::CameraController> m_pSplitPlaneController;

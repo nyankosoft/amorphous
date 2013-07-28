@@ -20,8 +20,6 @@ class CCustomMeshTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	std::string m_TextBuffer;
 
 	CustomMesh m_Mesh;

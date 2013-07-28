@@ -38,6 +38,8 @@ class CGraphicsTestBase
 
 protected:
 
+	boost::shared_ptr<FontBase> m_pFont;
+
 	static const int ms_CameraControllerInputHandlerIndex = 0;
 
 protected:
@@ -55,6 +57,8 @@ public:
 	virtual ~CGraphicsTestBase() {}
 
 	virtual const char *GetAppTitle() const { return ""; }
+
+	Result::Name InitBase();
 
 	/// returns 0 on success
 	virtual int Init() { return 0; }

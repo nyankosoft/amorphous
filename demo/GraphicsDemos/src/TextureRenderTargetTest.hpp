@@ -22,8 +22,6 @@ class CTextureRenderTargetTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	std::string m_TextBuffer;
 
 	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;

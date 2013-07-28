@@ -39,8 +39,6 @@ class CLensFlareTest : public CGraphicsTestBase
 
 	Vector3 m_vLightPosition;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 protected:
 
 	void RenderFloor();

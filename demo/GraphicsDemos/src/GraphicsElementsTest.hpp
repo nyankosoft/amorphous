@@ -14,8 +14,6 @@ class CGraphicsElementsTest : public CGraphicsTestBase//, public GraphicsCompone
 {
 	boost::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 //	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	std::vector< boost::shared_ptr<CombinedRectElement> > m_pRects;

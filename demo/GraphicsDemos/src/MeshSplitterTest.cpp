@@ -7,7 +7,7 @@
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Mesh/ConvexMeshSplitter.hpp"
@@ -117,9 +117,6 @@ void CMeshSplitterTest::Reset()
 
 int CMeshSplitterTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 	InitShader();
 
 	m_pSplitPlaneController.reset( new amorphous::CameraController( 3 ) );

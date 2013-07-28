@@ -27,8 +27,6 @@ class CSkeletalMeshTest : public CGraphicsTestBase
 
 //	boost::shared_ptr<CVehicleController> m_pVehicleController;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 private:
 
 	Result::Name LoadShader();

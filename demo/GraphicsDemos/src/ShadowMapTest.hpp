@@ -33,8 +33,6 @@ class CShadowMapTest : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	boost::shared_ptr<ShadowMapManager> m_pShadowMapManager;
 
 	boost::shared_ptr<Light> m_pLight;

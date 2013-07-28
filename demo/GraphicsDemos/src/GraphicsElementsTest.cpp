@@ -1,5 +1,4 @@
 #include "GraphicsElementsTest.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Input.hpp"
@@ -28,8 +27,6 @@ void CGraphicsElementsTest::CreateSampleUI()
 
 int CGraphicsElementsTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-
 /*
 	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );

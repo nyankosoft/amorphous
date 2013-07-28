@@ -2,7 +2,6 @@
 //#include "VehicleController.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Graphics/Camera.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
@@ -85,8 +84,6 @@ Result::Name CSkeletalMeshTest::SetLight( ShaderManager& shader_mgr )
 
 int CSkeletalMeshTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-
 	Result::Name res = LoadShader();
 
 	string mesh_pathname = "models/human.msh";//m_MeshFilepath;

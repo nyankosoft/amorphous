@@ -1,7 +1,7 @@
 #include "PerlinNoiseTextureGeneratorTest.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Camera.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.hpp" //<<< This header contains the classes to test
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
@@ -79,9 +79,6 @@ void CPerlinNoiseTextureGeneratorTest::CreatePerlinNoiseTexture()
 
 int CPerlinNoiseTextureGeneratorTest::Init()
 {
-	shared_ptr<FontBase> pFont( CreateDefaultBuiltinFont() );
-	pFont->SetFontSize( 6, 12 );
-
 	CreatePerlinNoiseTexture();
 
 	return 0;

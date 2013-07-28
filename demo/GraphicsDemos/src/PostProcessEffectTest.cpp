@@ -4,7 +4,7 @@
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
@@ -443,8 +443,6 @@ int CPostProcessEffectTest::Init()
 
 	// load models
 	loaded = LoadModels();
-
-	m_pFont = CreateDefaultBuiltinFont();
 
 	return 0;
 }

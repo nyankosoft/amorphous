@@ -42,9 +42,6 @@ CCubeMapTest::~CCubeMapTest()
 
 int CCubeMapTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 	// Load 6 image files as a cubemap texture
 	TextureResourceDesc tex_desc;
 	tex_desc.TypeFlags += TextureTypeFlag::CUBE_MAP;

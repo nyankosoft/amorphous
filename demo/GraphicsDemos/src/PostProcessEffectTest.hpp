@@ -75,8 +75,6 @@ class CPostProcessEffectTest : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 //	float m_fKeyValue;
 
 	HDRLightingParams m_HDRLightingParams;

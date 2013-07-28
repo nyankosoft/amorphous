@@ -143,11 +143,6 @@ bool CHLSLEffectTest::InitShaders()
 
 int CHLSLEffectTest::Init()
 {
-//	shared_ptr<TextureFont> pTexFont( new TextureFont );
-//	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 /*
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 	m_DefaultTechnique.SetTechniqueName( "NoShader" );

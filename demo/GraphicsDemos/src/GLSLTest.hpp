@@ -25,8 +25,6 @@ class CGLSLTest : public CGraphicsTestBase, public GraphicsComponent
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	boost::shared_ptr<CGLProgram> m_pGLProgram;
 
 	std::string m_TextBuffer;

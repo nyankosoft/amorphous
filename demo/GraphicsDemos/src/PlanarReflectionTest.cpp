@@ -1,7 +1,6 @@
 #include "PlanarReflectionTest.hpp"
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
@@ -106,8 +105,6 @@ CPlanarReflectionTest::~CPlanarReflectionTest()
 
 int CPlanarReflectionTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-
 	string directory_path = "PlanarReflectionDemo/";
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );

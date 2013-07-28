@@ -29,8 +29,6 @@ class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public GraphicsCompo
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	std::string m_TextBuffer;
 
 	bool m_DisplayResourceInfo;

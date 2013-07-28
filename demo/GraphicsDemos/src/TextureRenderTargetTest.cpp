@@ -1,4 +1,5 @@
 #include "TextureRenderTargetTest.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
@@ -11,7 +12,6 @@
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderHelpers.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
@@ -79,9 +79,6 @@ bool CTextureRenderTargetTest::InitShader()
 
 int CTextureRenderTargetTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 	InitShader();
 
 	TextureResourceDesc tex_desc;

@@ -16,8 +16,6 @@ class CBrickWallTextureGeneratorTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	std::string m_TextBuffer;
 
 	MeshHandle m_BrickWallMesh;
