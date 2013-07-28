@@ -99,7 +99,7 @@ int CSkeletalMeshTest::Init()
 
 		MeshResourceDesc mrd;
 		mrd.ResourcePath = mesh_pathname;
-//		mrd.MeshType = CMeshType::SKELETAL;
+		mrd.MeshType = MeshType::SKELETAL;
 
 //		bool loaded = m_Mesh.Load( mesh_pathname );
 		bool loaded = m_Mesh.Load( mrd );
