@@ -261,13 +261,3 @@ void CGLSLTest::HandleInput( const InputData& input )
 		break;
 	}
 }
-
-
-void CGLSLTest::ReleaseGraphicsResources()
-{
-}
-
-
-void CGLSLTest::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
-}

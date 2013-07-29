@@ -2,8 +2,6 @@
 #define  __AsyncLoadingTest_H__
 
 
-#include "amorphous/3DMath/Matrix34.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"

@@ -6,7 +6,6 @@
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"
-#include "amorphous/GUI/fwd.hpp"
 #include "amorphous/Graphics/Mesh/CustomMesh.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"

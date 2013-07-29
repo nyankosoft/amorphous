@@ -2,7 +2,6 @@
 #define  __EnvMapTest_HPP__
 
 
-#include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/CubeMapManager.hpp"

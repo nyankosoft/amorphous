@@ -107,10 +107,6 @@ public:
 
 	void RenderScene();
 
-//	void UpdateViewTransform( const D3DXMATRIX& matView );
-
-//	void UpdateProjectionTransform( const D3DXMATRIX& matProj );
-
 	void HandleInput( const InputData& input );
 
 	void LoadHDRParamValues();
