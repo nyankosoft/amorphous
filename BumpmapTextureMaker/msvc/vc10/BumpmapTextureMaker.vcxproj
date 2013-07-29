@@ -84,7 +84,7 @@
       <ProgramDatabaseFile>./BumpmapTextureMaker2.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>../../../../Project1/vsp/vc10/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../../Project1/msvc/vc10/lib</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -130,7 +130,7 @@
       <ProgramDatabaseFile>../app/BumpmapTextureMaker2_Debug.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>../../../../Project1/vsp/vc10/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../../Project1/msvc/vc10/lib</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
