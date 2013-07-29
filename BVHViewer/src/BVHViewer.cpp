@@ -121,7 +121,7 @@ void CBVHViewer::LoadBlankTextures( BasicMesh& mesh )
 	int num_subsets = mesh.GetNumMaterials();
 	for( int i=0; i<num_subsets; i++ )
 	{
-		CMeshMaterial& mat = mesh.Material(i);
+		MeshMaterial& mat = mesh.Material(i);
 		if( mat.Texture.empty() )
 		{
 			mat.Texture.resize( 1 );
