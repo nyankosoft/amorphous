@@ -2,15 +2,10 @@
 #define  __GLGraphicsResources_HPP__
 
 
-#include "fwd.hpp"
-#include "Graphics/GraphicsResources.hpp"
-#include "Graphics/GraphicsResourceDescs.hpp"
-#include "Graphics/TextureResourceVisitor.hpp"
+#include "amorphous/Graphics/GraphicsResources.hpp"
+#include "amorphous/Graphics/TextureResourceVisitor.hpp"
+#include "amorphous/Support/fwd.hpp"
 #include <gl/gl.h>
-
-//#include "Support/array2d.hpp"
-#include "Support/BitmapImage.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous
