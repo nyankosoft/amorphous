@@ -2,7 +2,6 @@
 #include "WeaponSystem.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "Input/InputHandler.hpp"
-#include "GameCommon/CriticalDamping.hpp"
 #include "Stage/trace.hpp"
 #include "Stage/Stage.hpp"
 #include "XML/XMLNodeReader.hpp"
