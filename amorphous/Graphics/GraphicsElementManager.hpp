@@ -11,7 +11,6 @@
 #include "../Graphics/2DPrimitive/2DTriangle.hpp"
 #include "../Graphics/GraphicsComponentCollector.hpp"
 #include "../Graphics/TextureHandle.hpp"
-#include "../GameCommon/CriticalDamping.hpp"
 #include "../Support/FixedVector.hpp"
 
 #include <list>

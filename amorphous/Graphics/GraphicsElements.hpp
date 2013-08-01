@@ -15,7 +15,6 @@
 #include "../Graphics/FloatRGBAColor.hpp"
 #include "../Graphics/GraphicsComponentCollector.hpp"
 #include "../Graphics/TextureHandle.hpp"
-#include "../GameCommon/CriticalDamping.hpp"
 #include "../Support/Vec3_StringAux.hpp"
 #include "../Support/memory_helpers.hpp"
 
