@@ -2,14 +2,14 @@
 #define  __FirearmsAppBase_HPP__
 
 
-#include "gds/App/GameApplicationBase.hpp"
-#include "gds/Task/StageViewerGameTask.hpp"
-#include "gds/Task/GameTaskFactoryBase.hpp"
-#include "gds/Stage.hpp"
-#include "gds/GameCommon/fwd.hpp"
-#include "gds/GameCommon/KeyBind.hpp"
-#include "gds/Item/ItemEntity.hpp"
-#include "gds/Graphics/DoubleConeScrollEffect.hpp"
+#include "amorphous/App/GameApplicationBase.hpp"
+#include "amorphous/Task/StageViewerGameTask.hpp"
+#include "amorphous/Task/GameTaskFactoryBase.hpp"
+#include "amorphous/Stage.hpp"
+#include "amorphous/GameCommon/fwd.hpp"
+#include "amorphous/GameCommon/KeyBind.hpp"
+#include "amorphous/Item/ItemEntity.hpp"
+#include "amorphous/Graphics/DoubleConeScrollEffect.hpp"
 using namespace amorphous;
 
 

@@ -2,16 +2,16 @@
 #define  __CharacterMotionControlAppBase_HPP__
 
 
-#include "gds/App/GameApplicationBase.hpp"
-#include "gds/Task/StageViewerGameTask.hpp"
-#include "gds/Task/GameTaskFactoryBase.hpp"
-#include "gds/Stage.hpp"
-#include "gds/GameCommon/KeyBind.hpp"
-#include "gds/GameCommon/ThirdPersonCameraController.hpp"
-#include "gds/GameCommon/ThirdPersonMotionController.hpp"
-#include "gds/Item/ItemEntity.hpp"
-#include "gds/Item/SkeletalCharacter.hpp"
-#include "gds/Graphics/DoubleConeScrollEffect.hpp"
+#include "amorphous/App/GameApplicationBase.hpp"
+#include "amorphous/Task/StageViewerGameTask.hpp"
+#include "amorphous/Task/GameTaskFactoryBase.hpp"
+#include "amorphous/Stage.hpp"
+#include "amorphous/GameCommon/KeyBind.hpp"
+#include "amorphous/GameCommon/ThirdPersonCameraController.hpp"
+#include "amorphous/GameCommon/ThirdPersonMotionController.hpp"
+#include "amorphous/Item/ItemEntity.hpp"
+#include "amorphous/Item/SkeletalCharacter.hpp"
+#include "amorphous/Graphics/DoubleConeScrollEffect.hpp"
 
 using namespace amorphous;
 

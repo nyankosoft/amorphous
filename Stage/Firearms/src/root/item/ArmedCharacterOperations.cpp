@@ -1,7 +1,7 @@
 #include "ArmedCharacterOperations.hpp"
-#include "gds/GameCommon/3DActionCode.hpp"
-#include "gds/Stage/Stage.hpp"
-#include "gds/Item/ItemEntity.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Item/ItemEntity.hpp"
 
 using std::string;
 using std::vector;

@@ -89,7 +89,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\root\app\FirearmsAppBase.cpp" />
     <ClCompile Include="..\..\root\item\ArmedCharacterOperations.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\Project1\gds\App\AppMain.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Project1\amorphous\App\AppMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\root\app\FirearmsAppBase.hpp" />

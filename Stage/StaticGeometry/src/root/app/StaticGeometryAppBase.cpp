@@ -1,14 +1,14 @@
 #include "StaticGeometryAppBase.hpp"
 
-#include "gds/Graphics/GraphicsElementManager.hpp"
-#include "gds/Support.hpp"
-#include "gds/Input.hpp"
-#include "gds/Stage.hpp"
-#include "gds/Task.hpp"
-#include "gds/Script.hpp"
-#include "gds/GUI.hpp"
-#include "gds/GameCommon/MouseCursor.hpp"
-#include "gds/App/GameWindowManager_Win32.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Support.hpp"
+#include "amorphous/Input.hpp"
+#include "amorphous/Stage.hpp"
+#include "amorphous/Task.hpp"
+#include "amorphous/Script.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/GameCommon/MouseCursor.hpp"
+#include "amorphous/App/GameWindowManager_Win32.hpp"
 
 
 using namespace std;

@@ -2,10 +2,10 @@
 #define __ArmedCharacterOperations_HPP__
 
 
-#include "gds/Item/SkeletalCharacter.hpp"
-#include "gds/Item/Cartridge.hpp"
-#include "gds/Item/Magazine.hpp"
-#include "gds/Item/Firearm.hpp"
+#include "amorphous/Item/SkeletalCharacter.hpp"
+#include "amorphous/Item/Cartridge.hpp"
+#include "amorphous/Item/Magazine.hpp"
+#include "amorphous/Item/Firearm.hpp"
 using namespace amorphous;
 
 

@@ -1,16 +1,16 @@
 #include "LightingAppBase.hpp"
 
-#include "gds/Graphics/GraphicsElementManager.hpp"
-#include "gds/Graphics/GraphicsEffectManager.hpp"
-#include "gds/Graphics/3DtoScreenSpaceConversions.hpp"
-#include "gds/Support.hpp"
-#include "gds/Input.hpp"
-#include "gds/Stage.hpp"
-#include "gds/Task.hpp"
-#include "gds/Script.hpp"
-#include "gds/GUI.hpp"
-#include "gds/GameCommon/MouseCursor.hpp"
-#include "gds/App/GameWindowManager.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Graphics/3DtoScreenSpaceConversions.hpp"
+#include "amorphous/Support.hpp"
+#include "amorphous/Input.hpp"
+#include "amorphous/Stage.hpp"
+#include "amorphous/Task.hpp"
+#include "amorphous/Script.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/GameCommon/MouseCursor.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
 
 using std::string;
 using std::vector;

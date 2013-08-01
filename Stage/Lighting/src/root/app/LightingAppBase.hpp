@@ -2,9 +2,9 @@
 #define  __LightingAppBase_HPP__
 
 
-#include "gds/App/GameApplicationBase.hpp"
-#include "gds/Task/StageViewerGameTask.hpp"
-#include "gds/Task/GameTaskFactoryBase.hpp"
+#include "amorphous/App/GameApplicationBase.hpp"
+#include "amorphous/Task/StageViewerGameTask.hpp"
+#include "amorphous/Task/GameTaskFactoryBase.hpp"
 
 using namespace amorphous;
 

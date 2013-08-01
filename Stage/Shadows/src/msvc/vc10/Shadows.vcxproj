@@ -87,7 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\root\app\ShadowsAppBase.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\Project1\gds\App\AppMain.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Project1\amorphous\App\AppMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\root\app\ShadowsAppBase.hpp" />
