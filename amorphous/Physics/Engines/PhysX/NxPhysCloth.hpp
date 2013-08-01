@@ -25,6 +25,10 @@ class CNxPhysCloth : public CCloth
 {
 	NxCloth *m_pCloth;
 
+private:
+
+	inline NxShape *GetNxShape( const CShape *pShape );
+
 public:
 
 	CNxPhysCloth( NxCloth *pCloth )
@@ -227,13 +231,13 @@ public:
 
 //================================= inline implementations =================================
 
-inline NxShape *GetNxShape( const CShape *pShape )
+inline NxShape *CNxPhysCloth::GetNxShape( const CShape *pShape )
 {
 	switch( pShape->GetType() )
 	{
-	case PhysShape::Sphere:  { const CNxPhysSphereShape *pNxSphere   = dynamic_cast<const CNxPhysSphereShape *>(pShape);  return pNxSphere ?  pNxSphere->GetNxShape() : NULL; }
-	case PhysShape::Capsule: { const CNxPhysCapsuleShape *pNxCapsule = dynamic_cast<const CNxPhysCapsuleShape *>(pShape); return pNxCapsule ? pNxCapsule->GetNxShape() : NULL; }
-	case PhysShape::Box:     { const CNxPhysBoxShape    *pNxBox      = dynamic_cast<const CNxPhysBoxShape *>(pShape);     return pNxBox ?     pNxBox->GetNxShape() : NULL; }
+	case PhysShape::Sphere:  { const CNxPhysSphereShape *pNxSphere   = dynamic_cast<const CNxPhysSphereShape *>(pShape->GetImpl());  return pNxSphere ?  pNxSphere->GetNxShape() : NULL; }
+	case PhysShape::Capsule: { const CNxPhysCapsuleShape *pNxCapsule = dynamic_cast<const CNxPhysCapsuleShape *>(pShape->GetImpl()); return pNxCapsule ? pNxCapsule->GetNxShape() : NULL; }
+	case PhysShape::Box:     { const CNxPhysBoxShape    *pNxBox      = dynamic_cast<const CNxPhysBoxShape *>(pShape->GetImpl());     return pNxBox ?     pNxBox->GetNxShape() : NULL; }
 //	case PhysShape::TriangleMesh: { CNxTriangleMeshShapeImpl *pNxBox     = dynamic_cast<CNxPhysBoxShape *>(pShape);     return pNxBox ?     pNxBox->GetNxShape() : NULL; }
 	default:
 		return NULL;
