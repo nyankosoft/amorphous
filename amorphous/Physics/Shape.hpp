@@ -283,6 +283,9 @@ public:
 	/// Checks whether the shape overlaps a world-space capsule or not. 
 //	virtual bool  checkOverlapCapsule (const NxCapsule &worldCapsule) const =0
 
+	/// TODO: Allow only physics classes to access impl. Example: CCloth
+	const CShapeImpl *GetImpl() const { return m_pImpl; }
+
 	friend class CActor;
 };
 
