@@ -4,7 +4,7 @@
 
 #include "../Stage/EntityHandle.hpp"
 #include "../3DMath/Quaternion.hpp"
-#include "../GameCommon/CriticalDamping.hpp"
+#include "../3DMath/CriticalDamping.hpp"
 
 
 namespace amorphous

@@ -12,8 +12,7 @@
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/3DMath/Vector2.hpp"
 #include "amorphous/3DMath/Quaternion.hpp"
-
-#include "amorphous/GameCommon/CriticalDamping.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 
 
 namespace amorphous

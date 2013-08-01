@@ -1,7 +1,7 @@
 #include "MiscGameItems.hpp"
 #include "3DMath/MathMisc.hpp"
+#include "3DMath/CriticalDamping.hpp"
 #include "Graphics/Camera.hpp"
-#include "GameCommon/CriticalDamping.hpp"
 #include "Stage/PlayerInfo.hpp"
 #include "Stage/Stage.hpp"
 #include "Stage/ScreenEffectManager.hpp"

@@ -2,9 +2,7 @@
 #define  __AircraftCapsDisplay_H__
 
 
-#include <vector>
-#include <string>
-#include "CriticalDamping.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 #include "amorphous/GUI/GM_StdControlRendererManager.hpp"
 
 

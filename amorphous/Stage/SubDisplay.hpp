@@ -8,10 +8,10 @@
 
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
-#include "amorphous/GameCommon/CriticalDamping.hpp"
 //#include "Graphics/GraphicsComponentCollector.hpp"
 
 #include "fwd.hpp"

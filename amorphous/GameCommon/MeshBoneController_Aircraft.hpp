@@ -3,8 +3,8 @@
 
 
 #include "MeshBoneControllerBase.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 #include "amorphous/GameCommon/RangedSet.hpp"
-#include "amorphous/GameCommon/CriticalDamping.hpp"
 
 
 namespace amorphous

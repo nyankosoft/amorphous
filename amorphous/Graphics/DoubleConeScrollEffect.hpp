@@ -6,8 +6,8 @@
 #include "fwd.hpp"
 #include "TextureHandle.hpp"
 #include "MeshObjectHandle.hpp"
-#include "../3DMath/Matrix34.hpp"
-#include "../GameCommon/CriticalDamping.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 
 
 namespace amorphous

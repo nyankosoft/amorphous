@@ -3,10 +3,8 @@
 
 
 #include "GameItem.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "GameCommon/CriticalDamping.hpp"
-#include "../base.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 
 
 namespace amorphous

@@ -6,7 +6,7 @@
 #include <string>
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/MathMisc.hpp"
-#include "amorphous/GameCommon/CriticalDamping.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
 
 
 namespace amorphous
