@@ -9,10 +9,10 @@
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/AABB3.hpp"
 
-// for CStageCameraUtility
+// for StageCameraUtility
 #include "amorphous/Stage/BE_ScriptedCamera.hpp"
 
-// for CStageLightUtility
+// for StageLightUtility
 #include "amorphous/Stage/LightEntity.hpp"
 
 
@@ -20,7 +20,7 @@ namespace amorphous
 {
 
 
-class CStageUtility
+class StageUtility
 {
 protected:
 
@@ -28,16 +28,16 @@ protected:
 
 public:
 
-	CStageUtility() {}
+	StageUtility() {}
 
-	virtual ~CStageUtility() {}
+	virtual ~StageUtility() {}
 
-	CStageUtility( boost::weak_ptr<CStage> pStage )
+	StageUtility( boost::weak_ptr<CStage> pStage )
 		:
 	m_pStage(pStage)
 	{}
 
-	EntityHandle<> CStageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
+	EntityHandle<> StageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 									const std::string& base_name );
 
 	EntityHandle<> CreateNamedEntity( const std::string& entity_name,
@@ -49,15 +49,15 @@ public:
 };
 
 
-class CStageCameraUtility : public CStageUtility
+class StageCameraUtility : public StageUtility
 {
 public:
 
-	CStageCameraUtility() {}
+	StageCameraUtility() {}
 
-	CStageCameraUtility( boost::weak_ptr<CStage> pStage )
+	StageCameraUtility( boost::weak_ptr<CStage> pStage )
 		:
-	CStageUtility(pStage)
+	StageUtility(pStage)
 	{}
 
 	/// \param cutscene_input_handler_index input index of the handler during cutscene.
@@ -72,18 +72,18 @@ public:
 };
 
 
-class CStageLightUtility : public CStageUtility
+class StageLightUtility : public StageUtility
 {
 //...
 
 public:
 
 	/// default ctor. Added to compile this code with boost::python.
-	CStageLightUtility() {}
+	StageLightUtility() {}
 
-	CStageLightUtility( boost::shared_ptr<CStage> pStage )
+	StageLightUtility( boost::shared_ptr<CStage> pStage )
 		:
-	CStageUtility(pStage)
+	StageUtility(pStage)
 	{}
 
 	LightEntityHandle CreateHSPointLightEntity( const std::string& name,
@@ -102,7 +102,7 @@ public:
 };
 
 
-class CStageMiscUtility : public CStageUtility
+class StageMiscUtility : public StageUtility
 {
 	EntityHandle<> CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
@@ -168,11 +168,11 @@ class CStageMiscUtility : public CStageUtility
 public:
 
 	/// default ctor. Added to compile this code with boost::python.
-	CStageMiscUtility() {}
+	StageMiscUtility() {}
 
-	CStageMiscUtility( boost::shared_ptr<CStage> pStage )
+	StageMiscUtility( boost::shared_ptr<CStage> pStage )
 		:
-	CStageUtility(pStage)
+	StageUtility(pStage)
 	{}
 
 	EntityHandle<> CreateBox( Vector3 edge_lengths,
@@ -320,15 +320,15 @@ public:
 };
 
 
-class CStageEntityUtility : public CStageUtility
+class StageEntityUtility : public StageUtility
 {
 public:
 
-	CStageEntityUtility() {}
+	StageEntityUtility() {}
 
-	CStageEntityUtility( boost::shared_ptr<CStage> pStage )
+	StageEntityUtility( boost::shared_ptr<CStage> pStage )
 		:
-	CStageUtility(pStage)
+	StageUtility(pStage)
 	{}
 
 	Result::Name SetShader( EntityHandle<>& entity, const std::string& shader, const std::string& technique, const std::string& subset, int lod = 0 );
@@ -338,7 +338,7 @@ public:
 
 
 /*
-class CStageEffectUtility : public CStageUtility
+class CStageEffectUtility : public StageUtility
 {
 public:
 
@@ -347,7 +347,7 @@ public:
 
 	CStageEffectUtility( boost::shared_ptr<CStage> pStage )
 		:
-	CStageUtility(pStage)
+	StageUtility(pStage)
 
 	void Rain( float fall_speed ) {}
 

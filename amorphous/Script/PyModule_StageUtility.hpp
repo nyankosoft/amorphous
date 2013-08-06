@@ -63,30 +63,30 @@ inline void UnregisterStageForScript()
 
 
 
-inline boost::shared_ptr<CStageCameraUtility> CreateStageCameraUtility()
+inline boost::shared_ptr<StageCameraUtility> CreateStageCameraUtility()
 {
-	boost::shared_ptr<CStageCameraUtility> pUtil( new CStageCameraUtility( GetStageForScript() ) );
+	boost::shared_ptr<StageCameraUtility> pUtil( new StageCameraUtility( GetStageForScript() ) );
 	return pUtil;
 }
 
 
-inline boost::shared_ptr<CStageLightUtility> CreateStageLightUtility()
+inline boost::shared_ptr<StageLightUtility> CreateStageLightUtility()
 {
-	boost::shared_ptr<CStageLightUtility> pUtil( new CStageLightUtility( GetStageForScript() ) );
+	boost::shared_ptr<StageLightUtility> pUtil( new StageLightUtility( GetStageForScript() ) );
 	return pUtil;
 }
 
 
-inline boost::shared_ptr<CStageMiscUtility> CreateStageMiscUtility()
+inline boost::shared_ptr<StageMiscUtility> CreateStageMiscUtility()
 {
-	boost::shared_ptr<CStageMiscUtility> pUtil( new CStageMiscUtility( GetStageForScript() ) );
+	boost::shared_ptr<StageMiscUtility> pUtil( new StageMiscUtility( GetStageForScript() ) );
 	return pUtil;
 }
 
 
-inline boost::shared_ptr<CStageEntityUtility> CreateStageEntityUtility()
+inline boost::shared_ptr<StageEntityUtility> CreateStageEntityUtility()
 {
-	boost::shared_ptr<CStageEntityUtility> pUtil( new CStageEntityUtility( GetStageForScript() ) );
+	boost::shared_ptr<StageEntityUtility> pUtil( new StageEntityUtility( GetStageForScript() ) );
 	return pUtil;
 }
 

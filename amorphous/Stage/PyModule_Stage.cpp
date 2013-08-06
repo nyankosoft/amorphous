@@ -147,7 +147,7 @@ PyObject* CreateStaticEntityFromMesh( PyObject* self, PyObject* args, PyObject *
 	if( !pStage )
 		return Py_None;
 
-	CStageMiscUtility util( pStage );
+	StageMiscUtility util( pStage );
 	EntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
 
 	return Py_None;
@@ -182,7 +182,7 @@ PyObject* CreateEntity( PyObject* self, PyObject* args, PyObject *keywords )
 	if( !pStage )
 		return Py_None;
 
-//	CStageMiscUtility util( pStage );
+//	StageMiscUtility util( pStage );
 //	EntityHandle<> entity = util.CreateStaticTriangleMeshFromMesh( mesh_pathname, mesh_pathname, pose, "default", entity_name );
 
 	return Py_None;
