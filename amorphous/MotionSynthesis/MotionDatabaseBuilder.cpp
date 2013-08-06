@@ -28,10 +28,10 @@ inline bool to_bool( const std::string& src, const char *true_str = "true", cons
 }
 
 
-static std::vector< boost::shared_ptr<CMotionPrimitiveCompilerCreator> > sg_vecpExtAndMotionPrimitiveCompiler;
+static std::vector< boost::shared_ptr<MotionPrimitiveCompilerCreator> > sg_vecpExtAndMotionPrimitiveCompiler;
 
 
-void msynth::RegisterMotionPrimitiveCompilerCreator( shared_ptr<CMotionPrimitiveCompilerCreator> pCreator )
+void msynth::RegisterMotionPrimitiveCompilerCreator( shared_ptr<MotionPrimitiveCompilerCreator> pCreator )
 {
 	if( !pCreator )
 		return;
@@ -40,20 +40,20 @@ void msynth::RegisterMotionPrimitiveCompilerCreator( shared_ptr<CMotionPrimitive
 }
 
 
-shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::string& filepath )
+shared_ptr<MotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::string& filepath )
 {
 	// The extension returned by boost::filesystem::path::extension() includes "."
 	// before the extension.
 	string ext = path(filepath).extension().string();
 
-	BOOST_FOREACH( shared_ptr<CMotionPrimitiveCompilerCreator>& pCreator, sg_vecpExtAndMotionPrimitiveCompiler )
+	BOOST_FOREACH( shared_ptr<MotionPrimitiveCompilerCreator>& pCreator, sg_vecpExtAndMotionPrimitiveCompiler )
 	{
 		if( string(".") + pCreator->Extension() == ext )
 			return pCreator->Create();
 	}
 
 	LOG_PRINT_ERROR( "No motion compiler for the motion file: " + filepath );
-	return shared_ptr<CMotionDatabaseCompiler>();
+	return shared_ptr<MotionDatabaseCompiler>();
 /*
 	sg_vecpExtAndMotionPrimitiveCompiler;
 
@@ -63,11 +63,11 @@ shared_ptr<CMotionDatabaseCompiler> CreateMotionPrimitiveCompiler( const std::st
 	}
 	else if( ext == "lws" )
 	{
-		return shared_ptr<CMotionDatabaseCompiler>();
+		return shared_ptr<MotionDatabaseCompiler>();
 //		return new BVHMotionDatabaseCompiler;
 	}
 	else
-		return shared_ptr<CMotionDatabaseCompiler>();
+		return shared_ptr<MotionDatabaseCompiler>();
 */
 }
 
@@ -97,12 +97,12 @@ Matrix33 msynth::CalculateHorizontalOrientation( const Matrix34& pose )
 }
 
 
-void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
+void msynth::AlignLastKeyframe( std::vector<Keyframe>& vecKeyframe )
 {
 	if( vecKeyframe.size() == 0 )
 		return;
 
-	CKeyframe& last_keyframe = vecKeyframe.back();
+	Keyframe& last_keyframe = vecKeyframe.back();
 
 	float heading = CalculateHeading( last_keyframe.GetRootPose() );
 
@@ -118,7 +118,7 @@ void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 
 	Matrix33 rotation_y = Matrix33RotationY( heading );
 */
-	BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
+	BOOST_FOREACH( Keyframe& keyframe, vecKeyframe )
 	{
 		keyframe.SetRootPose(
 			Matrix34(
@@ -150,10 +150,10 @@ void msynth::AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe )
 
 
 //==============================================================================
-// CMotionDatabaseCompiler
+// MotionDatabaseCompiler
 //==============================================================================
 
-int CMotionDatabaseCompiler::GetAnnotationIndex( const std::string& annotation_name )
+int MotionDatabaseCompiler::GetAnnotationIndex( const std::string& annotation_name )
 {
 	return get_str_index( annotation_name, *m_vecpAnnotationName );
 }
@@ -161,10 +161,10 @@ int CMotionDatabaseCompiler::GetAnnotationIndex( const std::string& annotation_n
 
 
 //==============================================================================
-// CMotionDatabaseBuilder
+// MotionDatabaseBuilder
 //==============================================================================
 
-bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_node )
+bool MotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_node )
 {
 	vector<CXMLNodeReader> vecChild = annot_table_node.GetImmediateChildren( "Annotation" );
 	for( size_t i=0; i<vecChild.size(); i++ )
@@ -183,12 +183,12 @@ bool CMotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_
 
 void CopyTransformNodesOfBone(
 	const vector<int>& src_locator,
-	const vector<CKeyframe>& src_keyframes,
-//	CSkeleton& src_skeleton,
+	const vector<Keyframe>& src_keyframes,
+//	Skeleton& src_skeleton,
 //	pSrcSkeleton->GetRootBone(),
 	const vector<int>& dest_locator,
-	vector<CKeyframe>& dest_keyframes
-//	CSkeleton& dest_skeleton,
+	vector<Keyframe>& dest_keyframes
+//	Skeleton& dest_skeleton,
 //	pDestSkeleton->GetRootBone()
 )
 {
@@ -201,23 +201,23 @@ void CopyTransformNodesOfBone(
 }
 
 
-Result::Name CMotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<CMotionPrimitive>& pSrcMotion,
-																		  boost::shared_ptr<CSkeleton>& pDestSkeleton )
+Result::Name MotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<MotionPrimitive>& pSrcMotion,
+																		  boost::shared_ptr<Skeleton>& pDestSkeleton )
 {
 	CMotionMapTarget& tgt = m_MotionMapTarget;
 
-//	shared_ptr<CSkeleton> pSrcSkeleton = m_vecpMotionPrimitive.front()->GetSkeleton();
-	shared_ptr<CSkeleton> pSrcSkeleton = pSrcMotion->GetSkeleton();
+//	shared_ptr<Skeleton> pSrcSkeleton = m_vecpMotionPrimitive.front()->GetSkeleton();
+	shared_ptr<Skeleton> pSrcSkeleton = pSrcMotion->GetSkeleton();
 
 //	const size_t num_motion_primitives = m_vecpMotionPrimitive.size();
 
 	const map<string,string>& bone_maps = tgt.m_BoneMaps;
 
-	CMotionPrimitive& src_motion = *pSrcMotion;//m_vecpMotionPrimitive[i];
-	vector<CKeyframe>& src_keyframes = src_motion.GetKeyframeBuffer();
+	MotionPrimitive& src_motion = *pSrcMotion;//m_vecpMotionPrimitive[i];
+	vector<Keyframe>& src_keyframes = src_motion.GetKeyframeBuffer();
 
-	shared_ptr<CMotionPrimitive> pDestMotion( new CMotionPrimitive );
-	vector<CKeyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
+	shared_ptr<MotionPrimitive> pDestMotion( new MotionPrimitive );
+	vector<Keyframe>& dest_keyframes = pDestMotion->GetKeyframeBuffer();
 	dest_keyframes.resize( src_keyframes.size() );
 
 	(*pDestMotion) = src_motion;
@@ -301,22 +301,22 @@ Result::Name CMotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( boost:
 }
 
 
-Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
+Result::Name MotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
 {
 	CMotionMapTarget& tgt = m_MotionMapTarget;
 
 	path mdb_path = path(m_SourceXMLFilename).parent_path() / tgt.m_DestSkeletonMDB;
-	CMotionDatabase dest_skeleton_src_mdb( mdb_path.string() );
-	shared_ptr<CMotionPrimitive> pMotion = dest_skeleton_src_mdb.GetMotionPrimitive( tgt.m_DestSkeletonMotion );
+	MotionDatabase dest_skeleton_src_mdb( mdb_path.string() );
+	shared_ptr<MotionPrimitive> pMotion = dest_skeleton_src_mdb.GetMotionPrimitive( tgt.m_DestSkeletonMotion );
 	if( !pMotion )
 		return Result::UNKNOWN_ERROR;
 
-	shared_ptr<CSkeleton> pDestSkeleton = pMotion->GetSkeleton();
+	shared_ptr<Skeleton> pDestSkeleton = pMotion->GetSkeleton();
 
 	Result::Name res = Result::SUCCESS;
-	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	BOOST_FOREACH( MotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
 	{
-		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
+		BOOST_FOREACH( MotionPrimitiveDesc& desc, desc_group.m_Desc )
 		{
 			if( !desc.m_pMotionPrimitive )
 				continue;
@@ -336,7 +336,7 @@ Result::Name CMotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
 }
 
 
-bool CMotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
+bool MotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
 {
 	string bone_mapping_file;
 	mapping.GetChildElementTextContent( "BoneMapping", bone_mapping_file );
@@ -373,7 +373,7 @@ bool CMotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
 }
 
 
-void CMotionDatabaseBuilder::ProcessGlobalModificationOptions( CXMLNodeReader& node )
+void MotionDatabaseBuilder::ProcessGlobalModificationOptions( CXMLNodeReader& node )
 {
 	vector<CXMLNodeReader> children = node.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
@@ -409,7 +409,7 @@ void CMotionDatabaseBuilder::ProcessGlobalModificationOptions( CXMLNodeReader& n
 }
 
 
-void CMotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc )
+void MotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, MotionPrimitiveDesc& desc )
 {
 	vector<CXMLNodeReader> children = root_joint_node.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
@@ -436,7 +436,7 @@ void CMotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeRe
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_reader )
+void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_reader )
 {
 	// found <MotionPrimitive> element
 
@@ -450,9 +450,9 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 	string root_bone_name = node_reader.GetAttributeText( "root_bone" );
 
 	// get the current desc group
-	CMotionPrimitiveDescGroup& desc_group = m_vecDescGroup.back();
+	MotionPrimitiveDescGroup& desc_group = m_vecDescGroup.back();
 
-	CMotionPrimitiveDesc desc;
+	MotionPrimitiveDesc desc;
 
 	// save the name of the motion primitive
 	desc.m_Name = motion_primitive_name;
@@ -526,7 +526,7 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_rea
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& input_file_node_reader )
+void MotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& input_file_node_reader )
 {
 	// found a <File> element
 	// - element that contains a bvh file
@@ -539,7 +539,7 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& inp
 	}
 
 	// add a new desc group
-	m_vecDescGroup.push_back( CMotionPrimitiveDescGroup() );
+	m_vecDescGroup.push_back( MotionPrimitiveDescGroup() );
 
 	string src_filename = input_filepath;
 
@@ -576,7 +576,7 @@ void CMotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& inp
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry )
+void MotionDatabaseBuilder::CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry )
 {
 	CXMLNodeReader node( pMotionEntryNode );
 	vector<CXMLNodeReader> children = node.GetImmediateChildren( "MotionPrimitive" );
@@ -594,7 +594,7 @@ void CMotionDatabaseBuilder::CreateMotionTableEntry( xercesc::DOMNode *pMotionEn
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNode )
+void MotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNode )
 {
 	const xercesc::DOMNamedNodeMap *pTableAttrib = pMotionTableNode->getAttributes();
 
@@ -644,7 +644,7 @@ void CMotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNo
 }
 
 
-void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
+void MotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 {
 	string output_filename;
 	root_node.GetChildElementTextContent( "Output", output_filename );
@@ -684,7 +684,7 @@ void CMotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 }
 
 
-void RecursivelyApplyPrePostTransforms( CTransformNode& node,
+void RecursivelyApplyPrePostTransforms( TransformNode& node,
 										const Transform& pre,
 										const Transform& post )
 {
@@ -702,14 +702,14 @@ void RecursivelyApplyPrePostTransforms( CTransformNode& node,
 }
 
 
-void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc& desc )
+void MotionDatabaseBuilder::ProcessCreatedMotionPrimitive( MotionPrimitiveDesc& desc )
 {
-	shared_ptr<CMotionPrimitive>& pMotion = desc.m_pMotionPrimitive;
+	shared_ptr<MotionPrimitive>& pMotion = desc.m_pMotionPrimitive;
 
 	if( !pMotion )
 		return;
 
-	std::vector<CKeyframe>& keyframes = pMotion->GetKeyframeBuffer();
+	std::vector<Keyframe>& keyframes = pMotion->GetKeyframeBuffer();
 	int num_keyframes = (int)keyframes.size();
 
 	if( 0.001 <= fabs(desc.m_fRootNodeHeightShift) )
@@ -718,7 +718,7 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 //		ShiftRootNodeHeight( vecKeyframe, desc.m_fRootNodeHeightShift );
 		for( int i=0; i<num_keyframes; i++ )
 		{
-			const CTransformNode& root_node = keyframes[i].GetRootNode();
+			const TransformNode& root_node = keyframes[i].GetRootNode();
 			Transform local_transform = root_node.GetLocalTransform();
 			local_transform.vTranslation.y += height_shift;
 
@@ -733,7 +733,7 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 	{
 		CJointModification& joint_mod = m_vecJointModification[i];
 
-		shared_ptr<CSkeleton> pSkeleton = pMotion->GetSkeleton();
+		shared_ptr<Skeleton> pSkeleton = pMotion->GetSkeleton();
 		if( !pSkeleton )
 			continue;
 
@@ -746,7 +746,7 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 			bool located = pSkeleton->CreateLocator( joint_mod.m_Name, locator );
 			for( int j=0; j<num_keyframes; j++ )
 			{
-				CTransformNode *pNode = keyframes[j].GetTransformNode( locator );
+				TransformNode *pNode = keyframes[j].GetTransformNode( locator );
 				if( !pNode )
 					continue;
 
@@ -769,7 +769,7 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 		int num_descs = (int)m_vecDescGroup[i].m_Desc.size();
 		for( int j=0; j<num_descs; j++ )
 		{
-			CMotionPrimitiveDesc& desc = m_vecDescGroup[i].m_Desc[j];
+			MotionPrimitiveDesc& desc = m_vecDescGroup[i].m_Desc[j];
 			if( !desc.m_pMotionPrimitive )
 				continue;
 
@@ -780,13 +780,13 @@ void CMotionDatabaseBuilder::ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc
 }
 
 
-void CMotionDatabaseBuilder::CreateMotionPrimitives()
+void MotionDatabaseBuilder::CreateMotionPrimitives()
 {
 	m_vecpMotionPrimitive.reserve( 256 );
 
-	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	BOOST_FOREACH( MotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
 	{
-		shared_ptr<CMotionDatabaseCompiler> pCompiler = CreateMotionPrimitiveCompiler( desc_group.m_Filename );
+		shared_ptr<MotionDatabaseCompiler> pCompiler = CreateMotionPrimitiveCompiler( desc_group.m_Filename );
 
 		if( !pCompiler )
 		{
@@ -802,14 +802,14 @@ void CMotionDatabaseBuilder::CreateMotionPrimitives()
 }
 
 
-void CMotionDatabaseBuilder::ApplyJointModification( const CJointModification& mod )
+void MotionDatabaseBuilder::ApplyJointModification( const CJointModification& mod )
 {
 	const int num_motions = (int)m_vecpMotionPrimitive.size();
 	for( int i=0; i<num_motions; i++ )
 	{
-		CMotionPrimitive& motion = *m_vecpMotionPrimitive[i];
+		MotionPrimitive& motion = *m_vecpMotionPrimitive[i];
 
-		shared_ptr<CSkeleton> pSkeleton = motion.GetSkeleton();
+		shared_ptr<Skeleton> pSkeleton = motion.GetSkeleton();
 		if( !pSkeleton )
 			continue;
 
@@ -818,12 +818,12 @@ void CMotionDatabaseBuilder::ApplyJointModification( const CJointModification& m
 
 		if( mod.m_ApplyPreRotation )
 		{
-			vector<CKeyframe>& keyframes = motion.GetKeyframeBuffer();
+			vector<Keyframe>& keyframes = motion.GetKeyframeBuffer();
 			const int num_keyframes = (int)keyframes.size();
 			for( int kf=0; kf<num_keyframes; kf++ )
 			{
-				CKeyframe& keyframe = keyframes[kf];
-				CTransformNode *pNode = keyframe.GetTransformNode(locator);
+				Keyframe& keyframe = keyframes[kf];
+				TransformNode *pNode = keyframe.GetTransformNode(locator);
 				if( !pNode )
 					break;
 
@@ -840,12 +840,12 @@ void CMotionDatabaseBuilder::ApplyJointModification( const CJointModification& m
 }
 
 
-void CMotionDatabaseBuilder::ApplyJointFixModification( const std::vector<CJointFixMod>& mods, CMotionPrimitive& target_motion )
+void MotionDatabaseBuilder::ApplyJointFixModification( const std::vector<CJointFixMod>& mods, MotionPrimitive& target_motion )
 {
 	if( mods.empty() )
 		return;
 
-	shared_ptr<CSkeleton> pSkeleton = target_motion.GetSkeleton();
+	shared_ptr<Skeleton> pSkeleton = target_motion.GetSkeleton();
 	if( !pSkeleton )
 		return;
 
@@ -859,12 +859,12 @@ void CMotionDatabaseBuilder::ApplyJointFixModification( const std::vector<CJoint
 //		if( locator.empty() )
 //			continue;
 
-		vector<CKeyframe>& keyframes = target_motion.GetKeyframeBuffer();
+		vector<Keyframe>& keyframes = target_motion.GetKeyframeBuffer();
 		int num_keyframes = (int)keyframes.size();
 		for( int j=0; j<num_keyframes; j++ )
 		{
-			CKeyframe& keyframe = keyframes[j];
-			CTransformNode *pNode = keyframe.GetTransformNode( locator );
+			Keyframe& keyframe = keyframes[j];
+			TransformNode *pNode = keyframe.GetTransformNode( locator );
 
 			Transform transform = pNode->GetLocalTransform();
 			if( mod.m_TargetFlags & CJointFixMod::TX ) transform.vTranslation.x = mod.m_Fixed.vPosition.x;
@@ -877,7 +877,7 @@ void CMotionDatabaseBuilder::ApplyJointFixModification( const std::vector<CJoint
 }
 
 
-bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
+bool MotionDatabaseBuilder::Build( const std::string& source_script_filename )
 {
 	m_SourceXMLFilename = source_script_filename;
 
@@ -913,9 +913,9 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 		Result::Name res = MapMotionPrimitivesToAnotherSkeleton();
 	}
 
-	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	BOOST_FOREACH( MotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
 	{
-		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
+		BOOST_FOREACH( MotionPrimitiveDesc& desc, desc_group.m_Desc )
 		{
 			ProcessCreatedMotionPrimitive( desc );
 		}
@@ -932,9 +932,9 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 	// Copy motion primitives to a single array
 	m_vecpMotionPrimitive.resize( 0 );
 	m_vecpMotionPrimitive.reserve( 0xFF );
-	BOOST_FOREACH( CMotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
+	BOOST_FOREACH( MotionPrimitiveDescGroup& desc_group, m_vecDescGroup )
 	{
-		BOOST_FOREACH( CMotionPrimitiveDesc& desc, desc_group.m_Desc )
+		BOOST_FOREACH( MotionPrimitiveDesc& desc, desc_group.m_Desc )
 		{
 			m_vecpMotionPrimitive.push_back( desc.m_pMotionPrimitive );
 		}
@@ -950,7 +950,7 @@ bool CMotionDatabaseBuilder::Build( const std::string& source_script_filename )
 }
 
 
-bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_filename )
+bool MotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_filename )
 {
 	if( db_filename.length() == 0 )
 		return false;
@@ -959,7 +959,7 @@ bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_fil
 	if( !exists(parent_path) )
 		create_directories(parent_path);
 
-	CMotionDatabase db;
+	MotionDatabase db;
 	bool success = db.m_DB.Open( db_filename, CBinaryDatabase<string>::DB_MODE_NEW );
 
 	if( !success )
@@ -973,7 +973,7 @@ bool CMotionDatabaseBuilder::SaveMotionDatabaseToFile( const std::string& db_fil
 	if( 0 < m_MotionTable.m_Name.length() )
 		db.m_DB.AddData( m_MotionTable.m_Name, m_MotionTable );
 
-	BOOST_FOREACH( shared_ptr<CMotionPrimitive>& pMotion, m_vecpMotionPrimitive )
+	BOOST_FOREACH( shared_ptr<MotionPrimitive>& pMotion, m_vecpMotionPrimitive )
 	{
 		if( !pMotion )
 			continue;

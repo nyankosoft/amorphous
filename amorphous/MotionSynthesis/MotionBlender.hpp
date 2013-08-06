@@ -16,7 +16,7 @@ namespace msynth
 {
 
 
-class CMotionBlender
+class MotionBlender
 {
 public:
 
@@ -30,13 +30,13 @@ public:
 
 public:
 
-	CMotionBlender();
-	virtual ~CMotionBlender();
+	MotionBlender();
+	virtual ~MotionBlender();
 
 	virtual void Update( float dt ) {}
 
-	virtual void CalculateKeyframe( CKeyframe& dest_keyframe ) = 0;
-//	virtual void Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt ) = 0;
+	virtual void CalculateKeyframe( Keyframe& dest_keyframe ) = 0;
+//	virtual void Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt ) = 0;
 };
 
 
@@ -57,16 +57,16 @@ class CSourceMotionBlender
 	};
 
 	/// holds borrowed references to motion primitives
-	boost::array<CMotionPrimitive *, NUM_MAX_SIMULTANEOUS_MOTIONS_TO_BLEND> m_vecpCurrentMotionPrimitive;
+	boost::array<MotionPrimitive *, NUM_MAX_SIMULTANEOUS_MOTIONS_TO_BLEND> m_vecpCurrentMotionPrimitive;
 
 public:
 
 	/// create a source keyframe ?
-	virtual void Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt );
+	virtual void Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt );
 };
 
 
-void CSourceMotionBlender::Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt )
+void CSourceMotionBlender::Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt )
 {
 	num_motions_to_blend
 	if( num_motions_to_blend == 0 )
@@ -89,7 +89,7 @@ void CSourceMotionBlender::Update( const CMotionPrimitive& motion, CKeyframe& cu
 }
 */
 
-class CSteeringMotionBlender : public CMotionBlender
+class SteeringMotionBlender : public MotionBlender
 {
 	/// TODO: what about steering of non-horizontal motions?
 	Vector3 m_vDestDir;
@@ -97,22 +97,22 @@ class CSteeringMotionBlender : public CMotionBlender
 	/// rad per sec
 	float m_fSteeringSpeed;
 
-	boost::shared_ptr<CMotionPrimitiveBlender> m_pMotionPrimitiveBlender;
+	boost::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitiveBlender;
 
 public:
 
-	inline Vector3 GetRootPoseHorizontalDirection( const CKeyframe& keyframe );
+	inline Vector3 GetRootPoseHorizontalDirection( const Keyframe& keyframe );
 
 public:
 
-//	CSteeringMotionBlender() : m_fSteeringSpeed(0.1f), m_vDestDir(Vector3(0,0,1)) {}
-	CSteeringMotionBlender( boost::shared_ptr<CMotionPrimitiveBlender> pMotionPrimitiveBlender )
+//	SteeringMotionBlender() : m_fSteeringSpeed(0.1f), m_vDestDir(Vector3(0,0,1)) {}
+	SteeringMotionBlender( boost::shared_ptr<MotionPrimitiveBlender> pMotionPrimitiveBlender )
 		:
 	m_pMotionPrimitiveBlender(pMotionPrimitiveBlender),
 	m_fSteeringSpeed(0.0f),
 	m_vDestDir(Vector3(0,0,0))
 	{}
-	virtual ~CSteeringMotionBlender() {}
+	virtual ~SteeringMotionBlender() {}
 
 	float GetSteeringSpeed() const { return m_fSteeringSpeed; }
 
@@ -125,12 +125,12 @@ public:
 
 	virtual void Update( float dt );
 
-	virtual void CalculateKeyframe( CKeyframe& dest_keyframe );
-//	virtual void Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt );
+	virtual void CalculateKeyframe( Keyframe& dest_keyframe );
+//	virtual void Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt );
 };
 
 
-inline Vector3 CSteeringMotionBlender::GetRootPoseHorizontalDirection( const CKeyframe& keyframe )
+inline Vector3 SteeringMotionBlender::GetRootPoseHorizontalDirection( const Keyframe& keyframe )
 {
 	const Vector3 vDir = keyframe.GetRootPose().vPosition;
 //	const Vector3 vDir = keyframe.GetMotionDirection().vPosition;
@@ -143,7 +143,7 @@ inline Vector3 CSteeringMotionBlender::GetRootPoseHorizontalDirection( const CKe
 }
 
 
-class CIKMotionBlender : public CMotionBlender
+class CIKMotionBlender : public MotionBlender
 {
 	// target joint
 
@@ -163,17 +163,17 @@ public:
 
 */
 /*
-class CScalingMotionBlender : public CMotionBlender
+class CScalingMotionBlender : public MotionBlender
 {
 	float m_fFactor;
 
 public:
 
-	virtual void Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt );
+	virtual void Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt );
 };
 
 
-void CScalingMotionBlender::Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt )
+void CScalingMotionBlender::Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt )
 {
 	current_keyframe.GetRootPose().vPosition * m_fFactor;
 }

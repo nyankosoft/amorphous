@@ -20,8 +20,8 @@ namespace msynth
 {
 
 // forward declarations of private classes
-class CMotionFSMCallback;
-class CMotionNodeAlgorithm;
+class MotionFSMCallback;
+class MotionNodeAlgorithm;
 
 
 /// motion transition (used for setup of motion primitive nodes)
@@ -55,8 +55,8 @@ class MotionNodeTrans : public IArchiveObjectBase
 public:
 
 	float interpolation_time;
-	std::string name; ///< name of a CMotionPrimitiveNode object, not the name of motion primitive stored in a CMotionPrimitiveNode object.
-	boost::shared_ptr<CMotionPrimitiveNode> pNode;
+	std::string name; ///< name of a MotionPrimitiveNode object, not the name of motion primitive stored in a MotionPrimitiveNode object.
+	boost::shared_ptr<MotionPrimitiveNode> pNode;
 
 public:
 
@@ -81,15 +81,15 @@ public:
 
 /// Defines how the root node of a character move in differnt motion primitives
 /// Also control skeletal animations of motion primitives
-class CMotionPrimitiveNode : public IArchiveObjectBase
+class MotionPrimitiveNode : public IArchiveObjectBase
 {
 	std::string m_Name;
 
 	std::string m_MotionName;
 
-	boost::shared_ptr<CMotionPrimitive> m_pMotionPrimitive; /// single motion primitive
+	boost::shared_ptr<MotionPrimitive> m_pMotionPrimitive; /// single motion primitive
 
-//	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpMotionPrimitive; /// holds multiple motion primitives to represent randomness
+//	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpMotionPrimitive; /// holds multiple motion primitives to represent randomness
 
 //	typedef std::map< std::string, std::vector<MotionNodeTrans> > name_trans_map;
 	typedef std::map< std::string, boost::shared_ptr< std::vector<MotionNodeTrans> > > name_trans_map;
@@ -100,13 +100,13 @@ class CMotionPrimitiveNode : public IArchiveObjectBase
 //	boost::shared_ptr< std::vector<MotionNodeTrans> > m_pTransToProcess;
 
 	/// borrowed reference
-	CMotionFSM *m_pFSM;
+	MotionFSM *m_pFSM;
 
 	/// borrowed reference
-	CMotionPrimitiveBlender *m_pBlender;
+	MotionPrimitiveBlender *m_pBlender;
 
 	/// algorithm for state transitions
-	boost::shared_ptr<CMotionNodeAlgorithm> m_pAlgorithm;
+	boost::shared_ptr<MotionNodeAlgorithm> m_pAlgorithm;
 
 	float m_fMotionPlaySpeedFactor;
 
@@ -114,19 +114,19 @@ class CMotionPrimitiveNode : public IArchiveObjectBase
 
 public:
 
-	CMotionPrimitiveNode( const std::string& name = "" );
+	MotionPrimitiveNode( const std::string& name = "" );
 
-/*	CMotionPrimitiveNode( CMotionFSM *pFSM = NULL )
+/*	MotionPrimitiveNode( MotionFSM *pFSM = NULL )
 		:
 	m_pFSM(pFSM),
 	m_pBlender(NULL)
 	{}*/
 
-	virtual ~CMotionPrimitiveNode() {}
+	virtual ~MotionPrimitiveNode() {}
 
 	const std::string& GetName() const { return m_Name; }
 
-	void SetFSM( CMotionFSM *pFSM );
+	void SetFSM( MotionFSM *pFSM );
 
 	void SetMotionName( const std::string& motion_name ) { m_MotionName = motion_name; }
 
@@ -190,15 +190,15 @@ public:
 			m_pTransToProcess->*/
 	}
 
-	void LoadMotion( CMotionDatabase& db );
+	void LoadMotion( MotionDatabase& db );
 
-	void SetStartBlendNode( boost::shared_ptr<CBlendNode> pRootBlendNode );
+	void SetStartBlendNode( boost::shared_ptr<BlendNode> pRootBlendNode );
 
 	void CalculateKeyframe();
 
-	void SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm> pAlgorithm );
+	void SetAlgorithm( boost::shared_ptr<MotionNodeAlgorithm> pAlgorithm );
 
-	boost::shared_ptr<CMotionNodeAlgorithm>& GetAlgorithm() { return m_pAlgorithm; }
+	boost::shared_ptr<MotionNodeAlgorithm>& GetAlgorithm() { return m_pAlgorithm; }
 
 	float GetMotionPlaySpeedFactor() const { return m_fMotionPlaySpeedFactor; }
 
@@ -208,7 +208,7 @@ public:
 
 	void SetExtraSpeedFactor( float factor ) { m_fExtraSpeedFactor = factor; }
 
-	boost::shared_ptr<CMotionPrimitive>& MotionPrimitive() { return m_pMotionPrimitive; }
+	boost::shared_ptr<MotionPrimitive>& MotionPrimitive() { return m_pMotionPrimitive; }
 
 	void LoadFromXMLDocument( CXMLNodeReader& node );
 
@@ -220,19 +220,19 @@ public:
  Base class of motion node algorithm
  - Also used to create instances of null objects.
 */
-class CMotionNodeAlgorithm
+class MotionNodeAlgorithm
 {
 protected:
 
-	CMotionPrimitiveNode *m_pNode;
+	MotionPrimitiveNode *m_pNode;
 
 	static const std::string ms_NullString;
 
 public:
 
-	CMotionNodeAlgorithm() : m_pNode(NULL) {}
+	MotionNodeAlgorithm() : m_pNode(NULL) {}
 
-	virtual ~CMotionNodeAlgorithm() {}
+	virtual ~MotionNodeAlgorithm() {}
 
 	const std::string& GetNodeName() const { return m_pNode ? m_pNode->GetName() : ms_NullString; }
 
@@ -252,38 +252,38 @@ public:
 
 	virtual void ExitState() {}
 
-	friend class CMotionPrimitiveNode;
+	friend class MotionPrimitiveNode;
 };
 
 
 
-class CMotionFSM : public IArchiveObjectBase
+class MotionFSM : public IArchiveObjectBase
 {
 	std::string m_Name;
 
-	typedef std::map< std::string, boost::shared_ptr<CMotionPrimitiveNode> > name_motionnode_map;
+	typedef std::map< std::string, boost::shared_ptr<MotionPrimitiveNode> > name_motionnode_map;
 
 	name_motionnode_map m_mapNameToMotionNode;
 
-	boost::shared_ptr<CMotionPrimitiveNode> m_pCurrent;
+	boost::shared_ptr<MotionPrimitiveNode> m_pCurrent;
 
 	/// An array of motion primitives nodes are placed here when transition is requested.
 	/// - Stores the incoming transitions in motion primitive graph
-//	std::vector< boost::shared_ptr<CMotionPrimitiveNode> > m_vecpNodesToProcess;
+//	std::vector< boost::shared_ptr<MotionPrimitiveNode> > m_vecpNodesToProcess;
 
 	int m_TransIndex;
 
 	boost::shared_ptr< std::vector<MotionNodeTrans> > m_pvecTransToProcess;
 
-	boost::shared_ptr<CMotionPrimitiveBlender> m_pMotionPrimitivePlayer;
+	boost::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitivePlayer;
 
 	std::string m_MotionDatabaseFilepath;
 
 public:
 
-	CMotionFSM( const std::string& name = "" );
+	MotionFSM( const std::string& name = "" );
 
-	~CMotionFSM();
+	~MotionFSM();
 
 	const std::string& GetName() const { return m_Name; }
 
@@ -311,27 +311,27 @@ public:
 	// Start playing the motion managed by the motion node indexed by m_TransIndex
 	void StartNextMotion();
 
-//	void AddNodeToProcess( boost::shared_ptr<CMotionPrimitiveNode> pNode ) { m_vecpNodesToProcess.push_back( pNode ); }
+//	void AddNodeToProcess( boost::shared_ptr<MotionPrimitiveNode> pNode ) { m_vecpNodesToProcess.push_back( pNode ); }
 
-	void AddNode( boost::shared_ptr<CMotionPrimitiveNode> pNode );
+	void AddNode( boost::shared_ptr<MotionPrimitiveNode> pNode );
 
-	boost::shared_ptr<CMotionPrimitiveNode> AddNode( const std::string& node_name );
+	boost::shared_ptr<MotionPrimitiveNode> AddNode( const std::string& node_name );
 
-	boost::shared_ptr<CMotionPrimitiveNode> GetNode( const std::string& name )
+	boost::shared_ptr<MotionPrimitiveNode> GetNode( const std::string& name )
 	{
 		name_motionnode_map::iterator itr = m_mapNameToMotionNode.find( name );
-		return itr != m_mapNameToMotionNode.end() ? itr->second : boost::shared_ptr<CMotionPrimitiveNode>();
+		return itr != m_mapNameToMotionNode.end() ? itr->second : boost::shared_ptr<MotionPrimitiveNode>();
 	}
 
-	boost::shared_ptr<CMotionPrimitiveBlender>& Player() { return m_pMotionPrimitivePlayer; }
+	boost::shared_ptr<MotionPrimitiveBlender>& Player() { return m_pMotionPrimitivePlayer; }
 
-	void LoadMotions( CMotionDatabase& db );
+	void LoadMotions( MotionDatabase& db );
 
 	void LoadMotions();
 
 	void SetMotionDatabaseFilepath( const std::string& filepath ) { m_MotionDatabaseFilepath = filepath; }
 
-	void SetStartBlendNodeToMotionPrimitives( boost::shared_ptr<CBlendNode> pRootBlendNode );
+	void SetStartBlendNodeToMotionPrimitives( boost::shared_ptr<BlendNode> pRootBlendNode );
 
 	// Calculate the current keyframe of the currently played motion primitive,
 	// and store the result to blend node tree
@@ -349,16 +349,16 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CMotionFSMCallback;
+	friend class MotionFSMCallback;
 };
 
 
-class CMotionFSMManager : public IArchiveObjectBase
+class MotionFSMManager : public IArchiveObjectBase
 {
-	std::vector< boost::shared_ptr<CMotionFSM> > m_vecpMotionFSM;
+	std::vector< boost::shared_ptr<MotionFSM> > m_vecpMotionFSM;
 
 	/// Stores the root node of the blend node tree
-	boost::shared_ptr<CBlendNode> m_pBlendNodeRoot;
+	boost::shared_ptr<BlendNode> m_pBlendNodeRoot;
 
 	// Name of complete skeleton used by this motion synthesizer.
 	// The blend node tree is created from the skeleton.
@@ -376,16 +376,16 @@ private:
 
 public:
 
-	CMotionFSMManager();
+	MotionFSMManager();
 
 	void LoadFromDatabase();
 
-	void AddFSM( boost::shared_ptr<CMotionFSM> pFSM )
+	void AddFSM( boost::shared_ptr<MotionFSM> pFSM )
 	{
 		m_vecpMotionFSM.push_back( pFSM );
 	}
 
-	boost::shared_ptr<CMotionFSM> GetMotionFSM( const std::string& name )
+	boost::shared_ptr<MotionFSM> GetMotionFSM( const std::string& name )
 	{
 		for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		{
@@ -393,31 +393,31 @@ public:
 				return m_vecpMotionFSM[i];
 		}
 
-		return boost::shared_ptr<CMotionFSM>();
+		return boost::shared_ptr<MotionFSM>();
 	}
 
-	const std::vector< boost::shared_ptr<CMotionFSM> >& GetMotionFSMs() const { return m_vecpMotionFSM; }
+	const std::vector< boost::shared_ptr<MotionFSM> >& GetMotionFSMs() const { return m_vecpMotionFSM; }
 
-	std::vector< boost::shared_ptr<CMotionFSM> >& MotionFSMs() { return m_vecpMotionFSM; }
+	std::vector< boost::shared_ptr<MotionFSM> >& MotionFSMs() { return m_vecpMotionFSM; }
 
 	inline void Update( float dt );
 
 	// Transformations are stored in m_pBlendNodeRoot
 	inline void CalculateKeyframe();
 
-	inline void GetCurrentKeyframe( CKeyframe& dest );
+	inline void GetCurrentKeyframe( Keyframe& dest );
 
 	void SetMotionDatabaseFilepath( const std::string& filepath ) { m_MotionDatabaseFilepath = filepath; }
 
 	inline void SetStartBlendNodeToMotionPrimitives();
 
 	// Calls SetStartBlendNodeToMotionPrimitives() inside the function.
-	void LoadMotions( CMotionDatabase& mdb );
+	void LoadMotions( MotionDatabase& mdb );
 
 	// Open the motion database specified by m_MotionDatabaseFilepath and load motions.
 	Result::Name LoadMotions();
 
-	boost::shared_ptr<CMotionPrimitive> GetCompleteSkeletonSourceMotion();
+	boost::shared_ptr<MotionPrimitive> GetCompleteSkeletonSourceMotion();
 
 	inline void HandleInput( const InputData& input );
 
@@ -435,7 +435,7 @@ public:
 
 //================================ inline implementations ================================
 
-inline void CMotionFSMManager::Update( float dt )
+inline void MotionFSMManager::Update( float dt )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->Update( dt );
@@ -444,7 +444,7 @@ inline void CMotionFSMManager::Update( float dt )
 
 /// Combine different keyframes of motions currenltly being played in each FSM
 /// Store the resuts to ???
-inline void CMotionFSMManager::CalculateKeyframe()
+inline void MotionFSMManager::CalculateKeyframe()
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->CalculateKeyframe();
@@ -453,7 +453,7 @@ inline void CMotionFSMManager::CalculateKeyframe()
 }
 
 
-inline void CMotionFSMManager::GetCurrentKeyframe( CKeyframe& dest )
+inline void MotionFSMManager::GetCurrentKeyframe( Keyframe& dest )
 {
 	if( m_vecpMotionFSM.empty() )
 		return;
@@ -482,7 +482,7 @@ inline void CMotionFSMManager::GetCurrentKeyframe( CKeyframe& dest )
 /*
 	// Overwrite the pose of the root node.
 	// The motions of first FSM controls the root node pose.
-	CTransformNode root_node;
+	TransformNode root_node;
 	Matrix34 root_pose( m_vecpMotionFSM.front()->Player()->GetCurrentRootPose() );
 	root_node.SetRotation( Quaternion( root_pose.matOrient ) );
 	root_node.SetTranslation( root_pose.vPosition );
@@ -490,34 +490,34 @@ inline void CMotionFSMManager::GetCurrentKeyframe( CKeyframe& dest )
 }
 
 
-inline void CMotionFSMManager::SetStartBlendNodeToMotionPrimitives()
+inline void MotionFSMManager::SetStartBlendNodeToMotionPrimitives()
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->SetStartBlendNodeToMotionPrimitives( m_pBlendNodeRoot );
 }
 
 
-inline void CMotionFSMManager::HandleInput( const InputData& input )
+inline void MotionFSMManager::HandleInput( const InputData& input )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->HandleInput( input );
 }
 
 
-class CMotionFSMInputHandler : public InputHandler
+class MotionFSMInputHandler : public InputHandler
 {
-//	CMotionFSM *m_pFSM;
-	boost::shared_ptr<CMotionFSMManager> m_pMotionGraphManager;
+//	MotionFSM *m_pFSM;
+	boost::shared_ptr<MotionFSMManager> m_pMotionGraphManager;
 
 public:
 
-	CMotionFSMInputHandler(boost::shared_ptr<CMotionFSMManager>& pMgr) : m_pMotionGraphManager(pMgr) {}
+	MotionFSMInputHandler(boost::shared_ptr<MotionFSMManager>& pMgr) : m_pMotionGraphManager(pMgr) {}
 
 	inline void ProcessInput(InputData& input);
 };
 
 
-inline void CMotionFSMInputHandler::ProcessInput(InputData& input)
+inline void MotionFSMInputHandler::ProcessInput(InputData& input)
 {
 	m_pMotionGraphManager->HandleInput( input );
 }

@@ -10,11 +10,11 @@ using namespace msynth;
 
 
 //==================================================================
-// CBone
+// Bone
 //==================================================================
 
 
-void CBone::Scale_r( float factor )
+void Bone::Scale_r( float factor )
 {
 	m_vOffset *= factor;
 
@@ -26,7 +26,7 @@ void CBone::Scale_r( float factor )
 }
 
 
-bool CBone::CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const
+bool Bone::CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const
 {
 	const size_t num_children = m_vecChild.size();
 
@@ -61,7 +61,7 @@ bool CBone::CreateLocator( const std::string& bone_name, std::vector<int>& locat
 }
 
 
-void CBone::CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node )
+void Bone::CreateEmptyTransformNodeTree( TransformNode& parent_transform_node )
 {
 	const size_t num_children = m_vecChild.size();
 	parent_transform_node.m_vecChildNode.resize( 0 );
@@ -73,11 +73,11 @@ void CBone::CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node 
 }
 
 
-Vector3 CBone::CalculateNodePositionInSkeletonSpace(
+Vector3 Bone::CalculateNodePositionInSkeletonSpace(
 	const std::vector<int>& node_locator,
 	uint& index,
 	const Transform& parent_transform,
-	const CTransformNode& parent_transform_node
+	const TransformNode& parent_transform_node
 	) const
 {
 	if( (uint)node_locator.size() == index )
@@ -95,7 +95,7 @@ Vector3 CBone::CalculateNodePositionInSkeletonSpace(
 
 	index++;
 
-	const CTransformNode& child_transform_node = parent_transform_node.GetChildNode(bone_and_node_index);
+	const TransformNode& child_transform_node = parent_transform_node.GetChildNode(bone_and_node_index);
 	Transform offset_transform = Transform( Quaternion().FromRotationMatrix(Matrix33Identity()), m_vOffset );
 	Matrix34 transform;
 	CalculateWorldTransform( transform, parent_transform.ToMatrix34(), child_transform_node );
@@ -108,7 +108,7 @@ Vector3 CBone::CalculateNodePositionInSkeletonSpace(
 }
 
 
-void CBone::DumpToTextFile( FILE* fp, int depth )
+void Bone::DumpToTextFile( FILE* fp, int depth )
 {
 	for( int i=0; i<depth; i++ ) fprintf( fp, "  " );
 	fprintf( fp, "%s: t%s, q%s\n", m_Name.c_str(), to_string(m_vOffset).c_str(), to_string(Quaternion(m_matOrient)).c_str() );
@@ -118,7 +118,7 @@ void CBone::DumpToTextFile( FILE* fp, int depth )
 }
 
 
-void CBone::Serialize( IArchive & ar, const unsigned int version )
+void Bone::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_Name;
 	ar & m_vOffset;
@@ -131,7 +131,7 @@ void CBone::Serialize( IArchive & ar, const unsigned int version )
 
 static int g_htrans_rev = 3;
 
-void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
+void Bone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const TransformNode& input_node ) const
 {
   if( g_htrans_rev == 3 )
   {
@@ -175,7 +175,7 @@ void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& p
 }
 
 
-int CBone::get_htrans_rev()
+int Bone::get_htrans_rev()
 {
 	return g_htrans_rev;
 }
@@ -183,10 +183,10 @@ int CBone::get_htrans_rev()
 
 
 //==================================================================
-// CSkeleton
+// Skeleton
 //==================================================================
 
-bool CSkeleton::CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const
+bool Skeleton::CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const
 {
 	locator.resize( 0 );
 
@@ -201,7 +201,7 @@ bool CSkeleton::CreateLocator( const std::string& bone_name, std::vector<int>& l
 }
 
 
-void CSkeleton::DumpToTextFile( const std::string& output_filepath )
+void Skeleton::DumpToTextFile( const std::string& output_filepath )
 {
 	FILE *fp = fopen( output_filepath.c_str(), "w" );
 	if( !fp )
@@ -213,7 +213,7 @@ void CSkeleton::DumpToTextFile( const std::string& output_filepath )
 }
 
 
-Vector3 CSkeleton::CalculateNodePositionInSkeletonSpace( const std::vector<int> node_locator, const CKeyframe& keyframe ) const
+Vector3 Skeleton::CalculateNodePositionInSkeletonSpace( const std::vector<int> node_locator, const Keyframe& keyframe ) const
 {
 	unsigned int index = 0;
 	Transform transform = Transform( Matrix34Identity() );

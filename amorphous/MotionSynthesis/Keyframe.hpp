@@ -16,21 +16,21 @@ namespace msynth
 /**
  Stores hierarchical transformations of a particular time
 */
-class CKeyframe : public IArchiveObjectBase
+class Keyframe : public IArchiveObjectBase
 {
-	CTransformNode m_RootNode;
+	TransformNode m_RootNode;
 
 	float m_fTime;
 
 public:
 
-	CKeyframe() : m_fTime(0) {}
+	Keyframe() : m_fTime(0) {}
 
-	CKeyframe( float time, const CTransformNode& root_node = CTransformNode() ) : m_fTime(time), m_RootNode(root_node) {}
+	Keyframe( float time, const TransformNode& root_node = TransformNode() ) : m_fTime(time), m_RootNode(root_node) {}
 
-	const CTransformNode& GetRootNode() const { return  m_RootNode; }
+	const TransformNode& GetRootNode() const { return  m_RootNode; }
 
-	CTransformNode& RootNode() { return m_RootNode; }
+	TransformNode& RootNode() { return m_RootNode; }
 
 	float GetTime() const { return m_fTime; }
 
@@ -42,9 +42,9 @@ public:
 
 	inline void SetRootPose( const Matrix34& src );
 
-	inline void SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1 );
+	inline void SetInterpolatedKeyframe( float frac, const Keyframe& keyframe0, const Keyframe& keyframe1 );
 
-	inline void SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1, const CKeyframe& keyframe2, const CKeyframe& keyframe3 );
+	inline void SetInterpolatedKeyframe( float frac, const Keyframe& keyframe0, const Keyframe& keyframe1, const Keyframe& keyframe2, const Keyframe& keyframe3 );
 
 	void Scale( float scaling_factor ) { m_RootNode.Scale_r( scaling_factor ); }
 
@@ -52,17 +52,17 @@ public:
 
 	inline void SetTransform( const Transform& pose, const std::vector<int>& locator );
 
-	inline CTransformNode *GetTransformNode( const std::vector<int>& locator );
+	inline TransformNode *GetTransformNode( const std::vector<int>& locator );
 
 	inline Result::Name SetBoneLocalRotation( const std::vector<int>& locator, float heading, float pitch, float bank );
 
 	inline virtual void Serialize( IArchive & ar, const unsigned int version );
 
-	friend class CMotionPrimitive;
+	friend class MotionPrimitive;
 };
 
 
-inline Matrix34 CKeyframe::GetRootPose() const
+inline Matrix34 Keyframe::GetRootPose() const
 {
 	Matrix34 root_pose;
 	GetRootPose( root_pose );
@@ -71,31 +71,31 @@ inline Matrix34 CKeyframe::GetRootPose() const
 }
 
 
-inline void CKeyframe::SetRootPose( const Matrix34& src )
+inline void Keyframe::SetRootPose( const Matrix34& src )
 {
 	m_RootNode.m_vTranslation = src.vPosition;
 	m_RootNode.m_Rotation.FromRotationMatrix( src.matOrient );
 }
 
 
-inline void CKeyframe::GetRootPose( Matrix34& dest ) const
+inline void Keyframe::GetRootPose( Matrix34& dest ) const
 {
 	dest.vPosition = m_RootNode.m_vTranslation;
 	m_RootNode.m_Rotation.ToRotationMatrix( dest.matOrient );
 }
 
-inline void CKeyframe::SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1 )
+inline void Keyframe::SetInterpolatedKeyframe( float frac, const Keyframe& keyframe0, const Keyframe& keyframe1 )
 {
 	m_RootNode.SetInterpolatedTransform_r( frac, keyframe0.m_RootNode, keyframe1.m_RootNode );
 }
 
-inline void CKeyframe::SetInterpolatedKeyframe( float frac, const CKeyframe& keyframe0, const CKeyframe& keyframe1, const CKeyframe& keyframe2, const CKeyframe& keyframe3 )
+inline void Keyframe::SetInterpolatedKeyframe( float frac, const Keyframe& keyframe0, const Keyframe& keyframe1, const Keyframe& keyframe2, const Keyframe& keyframe3 )
 {
 	m_RootNode.SetInterpolatedTransform_r( frac, keyframe0.m_RootNode, keyframe1.m_RootNode, keyframe2.m_RootNode, keyframe3.m_RootNode );
 }
 
 
-inline Transform CKeyframe::GetTransform( const std::vector<int>& locator ) const
+inline Transform Keyframe::GetTransform( const std::vector<int>& locator ) const
 {
 	if( locator.empty() )
 		return m_RootNode.GetTransform();
@@ -107,7 +107,7 @@ inline Transform CKeyframe::GetTransform( const std::vector<int>& locator ) cons
 }
 
 
-inline void CKeyframe::SetTransform( const Transform& pose, const std::vector<int>& locator )
+inline void Keyframe::SetTransform( const Transform& pose, const std::vector<int>& locator )
 {
 	if( locator.empty() )
 	{
@@ -120,7 +120,7 @@ inline void CKeyframe::SetTransform( const Transform& pose, const std::vector<in
 }
 
 
-inline CTransformNode *CKeyframe::GetTransformNode( const std::vector<int>& locator )
+inline TransformNode *Keyframe::GetTransformNode( const std::vector<int>& locator )
 {
 	if( locator.empty() )
 		return &m_RootNode;
@@ -130,7 +130,7 @@ inline CTransformNode *CKeyframe::GetTransformNode( const std::vector<int>& loca
 }
 
 
-inline Result::Name CKeyframe::SetBoneLocalRotation( const std::vector<int>& locator, float heading, float pitch, float bank )
+inline Result::Name Keyframe::SetBoneLocalRotation( const std::vector<int>& locator, float heading, float pitch, float bank )
 {
 	const Quaternion rotation(
 		  Matrix33RotationY( heading )
@@ -145,7 +145,7 @@ inline Result::Name CKeyframe::SetBoneLocalRotation( const std::vector<int>& loc
 	}
 
 	uint index = 0;
-	CTransformNode *pNode = m_RootNode.GetNode( locator, index );
+	TransformNode *pNode = m_RootNode.GetNode( locator, index );
 	if( pNode )
 	{
 		pNode->SetRotation( rotation );
@@ -156,7 +156,7 @@ inline Result::Name CKeyframe::SetBoneLocalRotation( const std::vector<int>& loc
 }
 
 
-inline void CKeyframe::Serialize( IArchive & ar, const unsigned int version )
+inline void Keyframe::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_RootNode;
 	ar & m_fTime;

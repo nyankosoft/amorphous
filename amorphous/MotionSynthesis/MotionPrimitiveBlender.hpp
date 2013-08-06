@@ -21,19 +21,19 @@ namespace msynth
 #define VCM_PLAY_NEXT		3
 
 
-class CMotionPrimitivePlayCallback
+class MotionPrimitivePlayCallback
 {
 public:
 
 	/// Called when a motion primitive is finished playing and a new primitive is being started playing
-	virtual void OnMotionPrimitiveChanged( boost::shared_ptr<CMotionPrimitive>& pPrev, boost::shared_ptr<CMotionPrimitive>& pNew ) {}
+	virtual void OnMotionPrimitiveChanged( boost::shared_ptr<MotionPrimitive>& pPrev, boost::shared_ptr<MotionPrimitive>& pNew ) {}
 
 	/// Called when a motion primitive is finished playing and queue does not have any more primitive to play
-	virtual void OnMotionPrimitiveFinished( boost::shared_ptr<CMotionPrimitive>& pPrev ) {}
+	virtual void OnMotionPrimitiveFinished( boost::shared_ptr<MotionPrimitive>& pPrev ) {}
 };
 
 
-class CMotionPrimitiveBlender : public CMotionBlender
+class MotionPrimitiveBlender : public MotionBlender
 {
 //	CVirtualCharacter *m_pCharacter;
 
@@ -45,7 +45,7 @@ class CMotionPrimitiveBlender : public CMotionBlender
 	float m_fFloorHeight;
 
 	/// stores pointers to motion primitives to play
-	std::list< boost::shared_ptr<CMotionPrimitive> > m_MotionPrimitiveQueue;
+	std::list< boost::shared_ptr<MotionPrimitive> > m_MotionPrimitiveQueue;
 
 	/// root pose at the beginning of the current motion primitive
 	Matrix34 m_RootWorldPoseOffset;
@@ -67,21 +67,21 @@ class CMotionPrimitiveBlender : public CMotionBlender
 	/// root pose of the last keyframe
 	Matrix34 m_LastOriginalRootPose;
 
-	CKeyframe m_InterpolatedKeyframe[2];
+	Keyframe m_InterpolatedKeyframe[2];
 
 	unsigned int m_FlipVal;
 	
 	/// stock of temporary motion primitives created for interpolation
-	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpInterpolationMotion;
-//	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpInterpolationMotionInUse;
+	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpInterpolationMotion;
+//	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpInterpolationMotionInUse;
 
 	/// used by GetCurrentMotionPrimitive() to return an empty motion primitive when
 	/// no motion in the queue
-	boost::shared_ptr<CMotionPrimitive> m_pNullMotionPrimitive;
+	boost::shared_ptr<MotionPrimitive> m_pNullMotionPrimitive;
 
-//	boost::shared_ptr<CMotionPrimitive> m_pCurrentMotion;
+//	boost::shared_ptr<MotionPrimitive> m_pCurrentMotion;
 
-	boost::shared_ptr<CMotionPrimitivePlayCallback> m_pCallback;
+	boost::shared_ptr<MotionPrimitivePlayCallback> m_pCallback;
 
 	static const char *ms_pInterpolationMotionName;
 
@@ -94,23 +94,23 @@ private:
 	/// calculate interpolation motion between two motion primitives
 	void PlayInterpolaitonMotion( float dt );
 
-	void SetInterpolationMotion( boost::shared_ptr<CMotionPrimitive> pCurrentMotion,
-								 boost::shared_ptr<CMotionPrimitive> pNextMotion );
+	void SetInterpolationMotion( boost::shared_ptr<MotionPrimitive> pCurrentMotion,
+								 boost::shared_ptr<MotionPrimitive> pNextMotion );
 
 	/// Modifies m_CurrentRootPose
-	void UpdatePoseAndRootNodePose( boost::shared_ptr<CMotionPrimitive>& pMotion, float time_0, float time_1 );
+	void UpdatePoseAndRootNodePose( boost::shared_ptr<MotionPrimitive>& pMotion, float time_0, float time_1 );
 
-	void PushInterpolationMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pCurrentMotion,
-		                                   boost::shared_ptr<CMotionPrimitive> pNewMotion,
+	void PushInterpolationMotionPrimitive( boost::shared_ptr<MotionPrimitive> pCurrentMotion,
+		                                   boost::shared_ptr<MotionPrimitive> pNewMotion,
 										   float interpolation_time );
 
 	void ClearMotionPrimitiveQueue();
 
 public:
 
-	CMotionPrimitiveBlender();
+	MotionPrimitiveBlender();
 
-	~CMotionPrimitiveBlender();
+	~MotionPrimitiveBlender();
 
 	void Init();
 	void Release();
@@ -118,28 +118,28 @@ public:
 	/// called by the client to update the pose of root node of the character
 	virtual void Update( float dt );
 
-	virtual void CalculateKeyframe( CKeyframe& dest_keyframe );
+	virtual void CalculateKeyframe( Keyframe& dest_keyframe );
 
 	void CalculateKeyframe();
 
 	/// play a new motion primitive
 	///  - if a motion primitive is currently being played, it will be overridden
-//	void StartMotion( boost::shared_ptr<CMotionPrimitive> ptr, float delay );
+//	void StartMotion( boost::shared_ptr<MotionPrimitive> ptr, float delay );
 
-	void AddMotionPrimitive( float interpolation_motion_length, boost::shared_ptr<CMotionPrimitive> pMotionPrimitive, int iFlag );
+	void AddMotionPrimitive( float interpolation_motion_length, boost::shared_ptr<MotionPrimitive> pMotionPrimitive, int iFlag );
 
 	void StartNewMotionPrimitive( float interpolation_motion_length,
-		                          boost::shared_ptr<CMotionPrimitive> pNewMotion );
+		                          boost::shared_ptr<MotionPrimitive> pNewMotion );
 
-	void StartNewMotionPrimitive( boost::shared_ptr<CMotionPrimitive> pNewMotion );
+	void StartNewMotionPrimitive( boost::shared_ptr<MotionPrimitive> pNewMotion );
 
 	/// returns the motion at the front of the queue
 	/// - Does not remove it from queue. Only returns a reference
-	inline boost::shared_ptr<CMotionPrimitive> GetCurrentMotionPrimitive();
+	inline boost::shared_ptr<MotionPrimitive> GetCurrentMotionPrimitive();
 
-	const std::list< boost::shared_ptr<CMotionPrimitive> >& GetMotionPrimitiveList() const { return m_MotionPrimitiveQueue; }
+	const std::list< boost::shared_ptr<MotionPrimitive> >& GetMotionPrimitiveList() const { return m_MotionPrimitiveQueue; }
 
-	void SetDefaultKeyframe( const CKeyframe& keyframe );
+	void SetDefaultKeyframe( const Keyframe& keyframe );
 
 	void SetRootPose( const Matrix34& pose );
 
@@ -149,15 +149,15 @@ public:
 
 	inline void RotateCurrentPoseHorizontally( Scalar angle_in_radian );
 
-	void SetCallback( boost::shared_ptr<CMotionPrimitivePlayCallback>& pCallback ) { m_pCallback = pCallback; }
+	void SetCallback( boost::shared_ptr<MotionPrimitivePlayCallback>& pCallback ) { m_pCallback = pCallback; }
 
 	void SetCurrentHorizontalPose( const Matrix34& pose ) { m_CurrentHorizontalPose = pose; }
 
 	const Matrix34& GetCurrentHorizontalPose() const { return m_CurrentHorizontalPose; }
 
-	static bool IsInterpolationMotion( boost::shared_ptr<CMotionPrimitive> pMotion ) { return pMotion && (pMotion->GetName() == "__InterpolationMotion__"); }
+	static bool IsInterpolationMotion( boost::shared_ptr<MotionPrimitive> pMotion ) { return pMotion && (pMotion->GetName() == "__InterpolationMotion__"); }
 
-	friend CMotionPrimitiveBlenderStatistics;
+	friend MotionPrimitiveBlenderStatistics;
 
 	/*
 	enum eMotionPrimitivePlayMode
@@ -169,7 +169,7 @@ public:
 };
 
 
-inline void CMotionPrimitiveBlender::RotateCurrentPoseHorizontally( Scalar angle_in_radian )
+inline void MotionPrimitiveBlender::RotateCurrentPoseHorizontally( Scalar angle_in_radian )
 {
 	Matrix33 matRotationY = Matrix33RotationY( angle_in_radian );
 
@@ -181,7 +181,7 @@ inline void CMotionPrimitiveBlender::RotateCurrentPoseHorizontally( Scalar angle
 }
 
 
-inline boost::shared_ptr<CMotionPrimitive> CMotionPrimitiveBlender::GetCurrentMotionPrimitive()
+inline boost::shared_ptr<MotionPrimitive> MotionPrimitiveBlender::GetCurrentMotionPrimitive()
 {
 	if( 0 < m_MotionPrimitiveQueue.size() )
 	{
@@ -195,15 +195,15 @@ inline boost::shared_ptr<CMotionPrimitive> CMotionPrimitiveBlender::GetCurrentMo
 
 
 
-class CMotionPrimitiveBlenderStatistics
+class MotionPrimitiveBlenderStatistics
 {
-	CMotionPrimitiveBlender *m_pTarget;
+	MotionPrimitiveBlender *m_pTarget;
 
 	std::vector<std::string> m_Buffer;
 
 public:
 
-	CMotionPrimitiveBlenderStatistics( CMotionPrimitiveBlender *pTarget ) : m_pTarget(pTarget) {}
+	MotionPrimitiveBlenderStatistics( MotionPrimitiveBlender *pTarget ) : m_pTarget(pTarget) {}
 
 	const std::vector<std::string>& GetStatistics() const { return m_Buffer; }
 
@@ -224,11 +224,11 @@ public:
 
 //	virtual void Update( float dt );
 
-	virtual void CalculateKeyframe( float dt, CKeyframe& dest_keyframe );
+	virtual void CalculateKeyframe( float dt, Keyframe& dest_keyframe );
 };
 
 
-void CMotionSynthesizer::CalculateKeyframe( float dt, CKeyframe& dest_keyframe )
+void CMotionSynthesizer::CalculateKeyframe( float dt, Keyframe& dest_keyframe )
 {
 	motion = current_motion_primitive;
 
@@ -272,11 +272,11 @@ public:
 	float m_fTime_In;
 
 	/// cache calculated keyframes
-	CKeyframe m_KeyFrame_Out;
-	CKeyframe m_KeyFrame_In;
+	Keyframe m_KeyFrame_Out;
+	Keyframe m_KeyFrame_In;
 
 	/// moition primitives to interpolate
-	CMotionPrimitive *m_apInterpolatePrimitive[2];
+	MotionPrimitive *m_apInterpolatePrimitive[2];
 
 public:
 

@@ -19,7 +19,7 @@ namespace msynth
 
 
 /**
- used by CHumanoidMotionTable
+ used by HumanoidMotionTable
 
 */
 class CHumanoidMotionEntry : public IArchiveObjectBase
@@ -39,7 +39,7 @@ public:
 };
 
 
-class CHumanoidMotionTable : public IArchiveObjectBase
+class HumanoidMotionTable : public IArchiveObjectBase
 {
 public:
 

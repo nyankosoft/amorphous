@@ -12,11 +12,11 @@ namespace amorphous
 {
 
 
-void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::CSkeleton& target );
+void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::Skeleton& target );
 
-Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::CSkeleton& dest_skeleton );
+Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::Skeleton& dest_skeleton );
 
-boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname );
+boost::shared_ptr<msynth::Skeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname );
 
 
 } // namespace amorphous

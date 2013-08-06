@@ -18,9 +18,9 @@ namespace msynth
 {
 
 
-class CSkeletonRenderer
+class SkeletonRenderer
 {
-	boost::weak_ptr<CSkeleton> m_pSkeleton;
+	boost::weak_ptr<Skeleton> m_pSkeleton;
 
 	std::vector<Matrix34> m_vecBonePose;
 
@@ -36,7 +36,7 @@ class CSkeletonRenderer
 
 private:
 
-	void StoreBonePose_r( const CBone& bone, const CTransformNode& node, const Matrix34& parent_transform, int depth = 0 );
+	void StoreBonePose_r( const Bone& bone, const TransformNode& node, const Matrix34& parent_transform, int depth = 0 );
 
 	void RenderSkeletonAsLines();
 
@@ -44,15 +44,15 @@ private:
 
 public:
 
-	CSkeletonRenderer();
+	SkeletonRenderer();
 
-	~CSkeletonRenderer();
+	~SkeletonRenderer();
 
-	void UpdateBonePoses( const CKeyframe& keyframe );
+	void UpdateBonePoses( const Keyframe& keyframe );
 
-	void SetSkeleton( boost::weak_ptr<CSkeleton> pSkeleton ) { m_pSkeleton = pSkeleton; }
+	void SetSkeleton( boost::weak_ptr<Skeleton> pSkeleton ) { m_pSkeleton = pSkeleton; }
 
-//	void SetSkeleton( const CSkeleton& skeleton ) { m_pSkeleton = skeleton; }
+//	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = skeleton; }
 
 	void Render();
 

@@ -182,7 +182,7 @@ void CClothCollisionObject::Reset()
 }
 
 
-void CClothCollisionObject::InitTransformNode( const msynth::CTransformCacheTree& tree )
+void CClothCollisionObject::InitTransformNode( const msynth::TransformCacheTree& tree )
 {
 	m_pTransformNode = tree.GetNode( m_BoneName );
 }
@@ -309,12 +309,12 @@ m_PhysOverlapTime(0.0f)
 {}
 
 
-Result::Name CClothSystem::InitMotionSystem( boost::shared_ptr<msynth::CSkeleton> pSkeleton )
+Result::Name CClothSystem::InitMotionSystem( boost::shared_ptr<msynth::Skeleton> pSkeleton )
 {
 	if( !pSkeleton )
 		return Result::INVALID_ARGS;
 
-	msynth::CSkeleton& skeleton = *pSkeleton;
+	msynth::Skeleton& skeleton = *pSkeleton;
 
 	m_pSkeleton = pSkeleton;
 
@@ -425,7 +425,7 @@ void CClothSystem::SetBlendNodes( msynth::CMotionFSM& motion_fsm )
 }
 */
 
-void CClothSystem::UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe, const Matrix34& world_pose )
+void CClothSystem::UpdateCollisionObjectPoses( const msynth::Keyframe& keyframe, const Matrix34& world_pose )
 {
 	if( !m_pSkeleton )
 		return;

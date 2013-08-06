@@ -38,7 +38,7 @@ static int sg_DisplayCharacterPosition = 0;
 class CDebugItem_MotionFSM : public DebugInfo
 {
 public:
-	boost::shared_ptr<msynth::CMotionFSMManager> m_pMotionFSMManager;
+	boost::shared_ptr<msynth::MotionFSMManager> m_pMotionFSMManager;
 public:
 
 	CDebugItem_MotionFSM() {}
@@ -198,7 +198,7 @@ void SkeletalCharacter::InitInputHandler( int input_handler_index )
 
 Result::Name SkeletalCharacter::InitMotionFSMs( const std::string& motion_fsm_file )
 {
-	m_pMotionFSMManager.reset( new CMotionFSMManager );
+	m_pMotionFSMManager.reset( new MotionFSMManager );
 
 	// Load from the binary archive
 	bool loaded_from_archive = m_pMotionFSMManager->LoadFromFile( motion_fsm_file );
@@ -215,18 +215,18 @@ Result::Name SkeletalCharacter::InitMotionFSMs( const std::string& motion_fsm_fi
 	m_pLowerLimbsMotionsFSM = m_pMotionFSMManager->GetMotionFSM( "lower_limbs" );
 
 	if( !m_pLowerLimbsMotionsFSM )
-		m_pLowerLimbsMotionsFSM.reset( new CMotionFSM ); // avoid NULL checking
+		m_pLowerLimbsMotionsFSM.reset( new MotionFSM ); // avoid NULL checking
 
 	// Init input handler
 	if( !m_pInputHandler )
 		InitInputHandler( ms_DefaultInputHandlerIndex );
 
-	m_pMotionFSMInputHandler.reset( new CMotionFSMInputHandler(m_pMotionFSMManager) );
+	m_pMotionFSMInputHandler.reset( new MotionFSMInputHandler(m_pMotionFSMManager) );
 	m_pInputHandler->AddChild( m_pMotionFSMInputHandler.get() );
 
 	// save a motion primitive to get skeleton info in Render()
 //	string mdb_filepath = "motions/lws-fwd.mdb";
-//	CMotionDatabase mdb( mdb_filepath );
+//	MotionDatabase mdb( mdb_filepath );
 //	m_pSkeletonSrcMotion = mdb.GetMotionPrimitive("standing");
 	m_pSkeletonSrcMotion = m_pMotionFSMManager->GetCompleteSkeletonSourceMotion();
 
@@ -271,10 +271,10 @@ static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& worl
 }
 /*
 static void UpdatePoseStoredInMotionPrimitivePlayer(
-	boost::shared_ptr<msynth::CMotionFSMManager>& pMotionFSMManager,
+	boost::shared_ptr<msynth::MotionFSMManager>& pMotionFSMManager,
 	const Matrix34& pose )
 {
-	shared_ptr<CMotionFSM> pFSM = pMotionFSMManager->GetMotionFSM("lower_limbs");
+	shared_ptr<MotionFSM> pFSM = pMotionFSMManager->GetMotionFSM("lower_limbs");
 	if( !pFSM )
 		return;
 
@@ -284,7 +284,7 @@ static void UpdatePoseStoredInMotionPrimitivePlayer(
 
 void SkeletalCharacter::Update( float dt )
 {
-	shared_ptr<CMotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
+	shared_ptr<MotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
 	if( !pFSM )
 		return;
 
@@ -397,7 +397,7 @@ void SkeletalCharacter::Render()
 		DisplayCharacterPosition( pEntity->GetWorldPosition() );
 
 	// Get the hierarchical transforms for the current pose of the character
-	CKeyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
+	Keyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
 
 	// The previous version of the mesh bone update routine
 	// - Blend transforms are now calculated in UpdateGraphics()
@@ -489,7 +489,7 @@ void SkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_n
 	if( !m_pLowerLimbsMotionsFSM )
 		return;
 
-	shared_ptr<CMotionPrimitiveNode> pNode = m_pLowerLimbsMotionsFSM->GetNode( motion_node_name );
+	shared_ptr<MotionPrimitiveNode> pNode = m_pLowerLimbsMotionsFSM->GetNode( motion_node_name );
 	if( !pNode )
 		return;
 
@@ -575,7 +575,7 @@ void SkeletalCharacter::SetCharacterWorldPose( const Matrix34& world_pose, CCopy
 	UpdatePhysicsActorPose( actor, world_pose );
 
 	// also revert the pose stored in the motion FSM
-	shared_ptr<CMotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
+	shared_ptr<MotionFSM> pFSM = m_pLowerLimbsMotionsFSM;
 	if( !pFSM )
 		return;
 	Vector3& vFwd = new_pose.matOrient.GetColumn(2);
@@ -759,7 +759,7 @@ void SkeletalCharacter::UpdateGraphics()
 		return;
 
 	// Update the hierarchical transforms for the current pose of the character
-	CKeyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
+	Keyframe& current_keyframe = m_CurrentInterpolatedKeyframe;
 	m_pMotionFSMManager->GetCurrentKeyframe( current_keyframe );
 
 	shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
@@ -1001,7 +1001,7 @@ void SkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 /*	int num_motion_fsms = (int)m_pMotionFSMManager->GetMotionFSMs.size();
 	for( int i=0; i<num_motion_fsms; i++ )
 	{
-		shared_ptr<CMotionFSM>& pFSM = m_pMotionFSMManager->MotionFSMs()[i];
+		shared_ptr<MotionFSM>& pFSM = m_pMotionFSMManager->MotionFSMs()[i];
 		if( !pFSM )
 			continue;
 

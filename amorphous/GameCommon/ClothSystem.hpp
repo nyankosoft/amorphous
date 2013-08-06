@@ -131,7 +131,7 @@ public:
 	std::string m_BoneName;
 
 //	boost::shared_ptr<msynth::CBlendNode> m_pBlendNode;
-	const msynth::CTransformCacheNode *m_pTransformNode;
+	const msynth::TransformCacheNode *m_pTransformNode;
 
 	/// -2: not initialized / -1: invalid index (searched once, but the bone was not found. Used to avoid searching a mesh skeleton with an invalid bone name more than once)
 	int m_MeshBoneIndex;
@@ -157,7 +157,7 @@ public:
 
 	const std::string& GetName() const { return m_Name; }
 
-	void InitTransformNode( const msynth::CTransformCacheTree& tree );
+	void InitTransformNode( const msynth::TransformCacheTree& tree );
 
 	void InitPhysics( physics::CScene& scene );
 
@@ -198,9 +198,9 @@ public:
 
 	std::vector<CClothCollisionObject> m_ClothCollisionObjects;
 
-	msynth::CTransformCacheTree m_TransformCacheTree;
+	msynth::TransformCacheTree m_TransformCacheTree;
 
-	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
+	boost::shared_ptr<msynth::Skeleton> m_pSkeleton;
 
 public:
 
@@ -208,7 +208,7 @@ public:
 
 	virtual ~CClothSystem() { ReleasePhysics(); }
 
-	Result::Name InitMotionSystem( boost::shared_ptr<msynth::CSkeleton> pSkeleton );
+	Result::Name InitMotionSystem( boost::shared_ptr<msynth::Skeleton> pSkeleton );
 
 	/**
 	When called without arguments, the cloth system creates a new scene for physics objects.
@@ -218,7 +218,7 @@ public:
 
 	void ReleasePhysics();
 
-	void UpdateCollisionObjectPoses( const msynth::CKeyframe& keyframe, const Matrix34& world_pose = Matrix34Identity() );
+	void UpdateCollisionObjectPoses( const msynth::Keyframe& keyframe, const Matrix34& world_pose = Matrix34Identity() );
 
 	void UpdateCollisionObjectPoses( SkeletalMesh& skeletal_mesh, const Matrix34& world_pose = Matrix34Identity() );
 

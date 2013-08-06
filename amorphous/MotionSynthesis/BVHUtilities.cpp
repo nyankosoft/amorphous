@@ -10,7 +10,7 @@ using boost::shared_ptr;
 using namespace msynth;
 
 
-static void CopyBonesFromBVH_r( const BVHBone& src_bone, msynth::CBone& dest )
+static void CopyBonesFromBVH_r( const BVHBone& src_bone, msynth::Bone& dest )
 {
 	dest.SetOffset( src_bone.GetLocalOffset() );
 
@@ -26,20 +26,20 @@ static void CopyBonesFromBVH_r( const BVHBone& src_bone, msynth::CBone& dest )
 }
 
 
-void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::CSkeleton& target )
+void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::Skeleton& target )
 {
 	const BVHBone *pBone = src_bvh.GetRootBone();
 	if( !pBone )
 		return;
 
-	CBone root_bone;
+	Bone root_bone;
 	CopyBonesFromBVH_r( *pBone, root_bone );
 
 	target.SetBones( root_bone );
 }
 
 
-Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::CSkeleton& dest_skeleton )
+Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::Skeleton& dest_skeleton )
 {
 	BVHPlayer bvh_player;
 	bvh_player.LoadBVHFile( bvh_file_pathname );
@@ -47,8 +47,8 @@ Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, ms
 	if( !bvh_player.GetRootBone() )
 		return Result::UNKNOWN_ERROR;
 
-	CBone root_bone;
-//	CBone& root_bone = pSkeleton->RootBone;
+	Bone root_bone;
+//	Bone& root_bone = pSkeleton->RootBone;
 
 	CopyBonesFromBVH_r( *bvh_player.GetRootBone(), root_bone );
 
@@ -58,16 +58,16 @@ Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, ms
 }
 
 
-boost::shared_ptr<msynth::CSkeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname )
+boost::shared_ptr<msynth::Skeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname )
 {
-	shared_ptr<CSkeleton> pSkeleton( new CSkeleton );
+	shared_ptr<Skeleton> pSkeleton( new Skeleton );
 
 	Result::Name res = CreateSkeletonFromBVHFile( bvh_file_pathname, *pSkeleton );
 
 	if( res == Result::SUCCESS )
 		return pSkeleton;
 	else
-		return shared_ptr<CSkeleton>();
+		return shared_ptr<Skeleton>();
 }
 
 

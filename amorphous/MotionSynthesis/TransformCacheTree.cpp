@@ -15,17 +15,17 @@ namespace msynth
 
 
 //=====================================================================
-// CTransformCacheNode
+// TransformCacheNode
 //=====================================================================
 
-CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name )
+TransformCacheNode *TransformCacheNode::GetNode( const std::string& name )
 {
 	if( m_Name == name )
 		return this;
 
 	for( int i=0; i<m_NumChildren; i++ )
 	{
-		CTransformCacheNode *pNode = m_pChildren[i].GetNode( name );
+		TransformCacheNode *pNode = m_pChildren[i].GetNode( name );
 		if( pNode )
 			return pNode;
 	}
@@ -34,14 +34,14 @@ CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name )
 }
 
 
-const CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name ) const
+const TransformCacheNode *TransformCacheNode::GetNode( const std::string& name ) const
 {
 	if( m_Name == name )
 		return this;
 
 	for( int i=0; i<m_NumChildren; i++ )
 	{
-		const CTransformCacheNode *pNode = m_pChildren[i].GetNode( name );
+		const TransformCacheNode *pNode = m_pChildren[i].GetNode( name );
 		if( pNode )
 			return pNode;
 	}
@@ -50,7 +50,7 @@ const CTransformCacheNode *CTransformCacheNode::GetNode( const std::string& name
 }
 
 
-void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone )
+void TransformCacheNode::CreateTransformCacheNodeTree_r( const Bone& bone )
 {
 	ReleaseChildren();
 
@@ -64,7 +64,7 @@ void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone )
 	if( m_NumChildren == 0 )
 		return;
 
-	m_pChildren = new CTransformCacheNode [m_NumChildren];
+	m_pChildren = new TransformCacheNode [m_NumChildren];
 //	children.resize( bone.GetNumChildren() );
 
 	for( int i=0; i<m_NumChildren; i++ )
@@ -74,7 +74,7 @@ void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone )
 }
 
 
-bool CTransformCacheNode::AreAllChildrenInactive() const
+bool TransformCacheNode::AreAllChildrenInactive() const
 {
 	if( m_NumChildren == 0 && !m_Active )
 		return true;
@@ -92,7 +92,7 @@ bool CTransformCacheNode::AreAllChildrenInactive() const
 }
 
 
-bool CTransformCacheNode::AreAllChildrenLeafAndInactive() const
+bool TransformCacheNode::AreAllChildrenLeafAndInactive() const
 {
 	for( int i=0; i<m_NumChildren; i++ )
 	{
@@ -107,7 +107,7 @@ bool CTransformCacheNode::AreAllChildrenLeafAndInactive() const
 
 
 /// Does not deactivate already active nodes
-bool CTransformCacheNode::UpdateActiveNodes( const std::set<std::string>& target_bone_names )
+bool TransformCacheNode::UpdateActiveNodes( const std::set<std::string>& target_bone_names )
 {
 //	m_Active = true;
 
@@ -137,7 +137,7 @@ bool CTransformCacheNode::UpdateActiveNodes( const std::set<std::string>& target
 }
 
 
-void CTransformCacheNode::RemoveInactiveNodes( const std::set<std::string>& target_bone_names )
+void TransformCacheNode::RemoveInactiveNodes( const std::set<std::string>& target_bone_names )
 {
 	for( int i=0; i<m_NumChildren; i++ )
 	{
@@ -158,7 +158,7 @@ void CTransformCacheNode::RemoveInactiveNodes( const std::set<std::string>& targ
 }
 
 
-void CTransformCacheNode::CalculateWorldTransforms( const Matrix34& parent_transform, const CBone& bone, const CTransformNode& transform_node )
+void TransformCacheNode::CalculateWorldTransforms( const Matrix34& parent_transform, const Bone& bone, const TransformNode& transform_node )
 {
 //	if( !cache_node.m_Active )
 //		return;
@@ -176,28 +176,28 @@ void CTransformCacheNode::CalculateWorldTransforms( const Matrix34& parent_trans
 
 
 //=====================================================================
-// CTransformCacheTree
+// TransformCacheTree
 //=====================================================================
 
-void CTransformCacheTree::UpdateActiveNodes( const std::set<std::string>& target_bone_names )
+void TransformCacheTree::UpdateActiveNodes( const std::set<std::string>& target_bone_names )
 {
 	m_pRootNode->UpdateActiveNodes( target_bone_names );
 }
 
 
-void CTransformCacheTree::RemoveInactiveNodes( const std::set<std::string>& target_bone_names )
+void TransformCacheTree::RemoveInactiveNodes( const std::set<std::string>& target_bone_names )
 {
 	m_pRootNode->RemoveInactiveNodes( target_bone_names );
 }
 
 
-void CTransformCacheTree::Create( const CSkeleton& skeleton )
+void TransformCacheTree::Create( const Skeleton& skeleton )
 {
 	m_pRootNode->CreateTransformCacheNodeTree_r( skeleton.GetRootBone() );
 }
 
 
-void CTransformCacheTree::CalculateWorldTransforms( const CSkeleton& skeleton, const CKeyframe& keyframe, const Matrix34& parent_transform )
+void TransformCacheTree::CalculateWorldTransforms( const Skeleton& skeleton, const Keyframe& keyframe, const Matrix34& parent_transform )
 {
 	m_pRootNode->CalculateWorldTransforms( parent_transform, skeleton.GetRootBone(), keyframe.GetRootNode() );
 }
@@ -206,7 +206,7 @@ void CTransformCacheTree::CalculateWorldTransforms( const CSkeleton& skeleton, c
 } // namespace msynth
 
 /*
-void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone, const std::set<std::string>& target_bone_names )
+void TransformCacheNode::CreateTransformCacheNodeTree_r( const Bone& bone, const std::set<std::string>& target_bone_names )
 {
 	set<string>::const_iterator itr = target_bone_names.find( bone.GetName() );
 	if( target_bone_names.end() == itr )
@@ -222,7 +222,7 @@ void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone, con
 	if( m_NumChildren == 0 )
 		return;
 
-	m_pChildren = new CTransformCacheNode [m_NumChildren];
+	m_pChildren = new TransformCacheNode [m_NumChildren];
 //	children.resize( bone.GetNumChildren() );
 
 	for( int i=0; i<m_NumChildren; i++ )
@@ -233,7 +233,7 @@ void CTransformCacheNode::CreateTransformCacheNodeTree_r( const CBone& bone, con
 */
 
 /*
-void CTransformCacheTree::Create( CSkeleton& skeleton, const std::set<std::string>& target_bone_names )
+void TransformCacheTree::Create( Skeleton& skeleton, const std::set<std::string>& target_bone_names )
 {
 	m_pRootNode->CreateTransformCacheNodeTree_r( skeleton.GetRootBone(), target_bone_names );
 }

@@ -18,7 +18,7 @@ namespace msynth
 {
 
 
-class CMotionDatabase// : public IArchiveObjectBase
+class MotionDatabase// : public IArchiveObjectBase
 {
 	CBinaryDatabase<std::string> m_DB;
 
@@ -35,16 +35,16 @@ private:
 
 public:
 
-	CMotionDatabase() {}
+	MotionDatabase() {}
 
-	CMotionDatabase( const std::string& database_filename );
+	MotionDatabase( const std::string& database_filename );
 
-	~CMotionDatabase() {}
+	~MotionDatabase() {}
 
-	boost::shared_ptr<CMotionPrimitive> GetMotionPrimitive( const std::string& name );
+	boost::shared_ptr<MotionPrimitive> GetMotionPrimitive( const std::string& name );
 
 	/// returns true on success
-	bool GetHumanoidMotionTable( const std::string& table_name, CHumanoidMotionTable& dest );
+	bool GetHumanoidMotionTable( const std::string& table_name, HumanoidMotionTable& dest );
 
 	CAnnotation GetAnnotation( const std::string& annot_name );
 
@@ -58,7 +58,7 @@ public:
 //	{
 //	}
 
-	friend class CMotionDatabaseBuilder;
+	friend class MotionDatabaseBuilder;
 };
 
 
@@ -73,7 +73,7 @@ public:
 
 
 /*
-bool CMotionDatabase::CreateMotionPrimitivesFromScriptFile( const std::string& script_filename )
+bool MotionDatabase::CreateMotionPrimitivesFromScriptFile( const std::string& script_filename )
 {
 	CTextFileScanner scanner;
 	if( !scanner.OpenFile( script_filename ) )
@@ -87,7 +87,7 @@ bool CMotionDatabase::CreateMotionPrimitivesFromScriptFile( const std::string& s
 }
 
 
-bool CMotionDatabase::Build( const std::string& source_script_filename )
+bool MotionDatabase::Build( const std::string& source_script_filename )
 {
 	CTextFileScanner scanner;
 	if( !scanner.OpenFile( source_script_filename ) )

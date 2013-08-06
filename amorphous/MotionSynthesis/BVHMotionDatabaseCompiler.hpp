@@ -13,30 +13,30 @@ namespace msynth
 {
 
 
-class BVHMotionDatabaseCompiler : public CMotionDatabaseCompiler
+class BVHMotionDatabaseCompiler : public MotionDatabaseCompiler
 {
-	std::vector<CMotionPrimitiveDescGroup> m_vecDescGroup;
+	std::vector<MotionPrimitiveDescGroup> m_vecDescGroup;
 
 private:
 
 	bool IsValidMotionFile( const std::string& src_filepath );
 
-	void CreateMotionPrimitive( CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, BVHPlayer& bvh_player );
+	void CreateMotionPrimitive( MotionPrimitiveDesc& desc, const MotionPrimitiveDescGroup& desc_group, BVHPlayer& bvh_player );
 
-	void CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group );
+	void CreateMotionPrimitives( MotionPrimitiveDescGroup& desc_group );
 
 public:
 
 };
 
 
-class BVHMotionPrimitiveCompilerCreator : public CMotionPrimitiveCompilerCreator
+class BVHMotionPrimitiveCompilerCreator : public MotionPrimitiveCompilerCreator
 {
 public:
 
 	const char *Extension() const { return "bvh"; }
 
-	boost::shared_ptr<CMotionDatabaseCompiler> Create() const
+	boost::shared_ptr<MotionDatabaseCompiler> Create() const
 	{
 		boost::shared_ptr<BVHMotionDatabaseCompiler> pCompiler( new BVHMotionDatabaseCompiler );
 		return pCompiler;

@@ -12,7 +12,7 @@ using namespace std;
 using namespace msynth;
 
 
-CMotionDatabase::CMotionDatabase( const std::string& database_filename )
+MotionDatabase::MotionDatabase( const std::string& database_filename )
 :
 m_DatabaseFilepath(database_filename)
 {
@@ -20,9 +20,9 @@ m_DatabaseFilepath(database_filename)
 }
 
 
-boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const std::string& name )
+boost::shared_ptr<MotionPrimitive> MotionDatabase::GetMotionPrimitive( const std::string& name )
 {
-	boost::shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive() );
+	boost::shared_ptr<MotionPrimitive> pMotion( new MotionPrimitive() );
 
 	bool success = m_DB.GetData( name, *(pMotion.get()) );
 
@@ -36,12 +36,12 @@ boost::shared_ptr<CMotionPrimitive> CMotionDatabase::GetMotionPrimitive( const s
 		string msg = fmt_string( " Failed to get the motion primitive '%s' from database '%s'", name.c_str(), m_DatabaseFilepath.c_str() );
 		LOG_PRINT_WARNING( msg );
 
-		return boost::shared_ptr<CMotionPrimitive>();
+		return boost::shared_ptr<MotionPrimitive>();
 	}
 }
 
 
-bool CMotionDatabase::LoadFromFile( const std::string& filepath )
+bool MotionDatabase::LoadFromFile( const std::string& filepath )
 {
 	m_DatabaseFilepath = filepath;
 
@@ -63,18 +63,18 @@ bool CMotionDatabase::LoadFromFile( const std::string& filepath )
 }
 
 
-void CMotionDatabase::SaveToFile( const std::string& filepath )
+void MotionDatabase::SaveToFile( const std::string& filepath )
 {
 }
 
 
-bool CMotionDatabase::GetHumanoidMotionTable( const std::string& table_name, CHumanoidMotionTable& dest )
+bool MotionDatabase::GetHumanoidMotionTable( const std::string& table_name, HumanoidMotionTable& dest )
 {
 	return m_DB.GetData( table_name, dest );
 }
 
 
-CAnnotation CMotionDatabase::GetAnnotation( const std::string& annot_name )
+CAnnotation MotionDatabase::GetAnnotation( const std::string& annot_name )
 {
 	for( size_t i=0; i<m_vecAnnotationName.size(); i++ )
 	{

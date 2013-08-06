@@ -171,7 +171,7 @@ Blending
   - e.g.) When a character is aiming while walking, upper body motions
     of base walk motions are replaced with aiming pose
   - The pose of root node, however, should be determined by lower body motion
-- Add CMotionPrimitive::m_UpdateRootPose?
+- Add MotionPrimitive::m_UpdateRootPose?
   - fwd motion: true
   - aim motions: false
   - Aim motions can skip calculation of root node pose
@@ -192,7 +192,7 @@ Keyframe Calculation
   - When graphics engine needs to render the skeletal mesh which is animated by the motion
     controlled by the current motion FSMs
 - Preconditions
-  - The motion players have been updated by CMotionPrimitiveBlender::Update(),
+  - The motion players have been updated by MotionPrimitiveBlender::Update(),
     and its queue is up to date
 - Steps
   1) Calculate interpolated keyframe of each motion FSM
@@ -231,20 +231,20 @@ Support text/XML file that describes transition rules
 static int sg_OutputSkeletonAfterLoadingMotion = 0;
 
 
-class CMotionFSMCallback : public CMotionPrimitivePlayCallback
+class MotionFSMCallback : public MotionPrimitivePlayCallback
 {
-	CMotionFSM *m_pFSM;
+	MotionFSM *m_pFSM;
 
 public:
 
-	CMotionFSMCallback( CMotionFSM *pFSM ) : m_pFSM(pFSM) {}
+	MotionFSMCallback( MotionFSM *pFSM ) : m_pFSM(pFSM) {}
 /*
-	virtual void OnNewMotionPrimitiveStarted( boost::shared_ptr<CMotionPrimitiveNode>& pNew )
+	virtual void OnNewMotionPrimitiveStarted( boost::shared_ptr<MotionPrimitiveNode>& pNew )
 	{
 	}
 */
 	/// Called when a motion primitive is finished playing and a new primitive is being started playing
-	void OnMotionPrimitiveChanged( boost::shared_ptr<CMotionPrimitive>& pPrev, boost::shared_ptr<CMotionPrimitive>& pNew )
+	void OnMotionPrimitiveChanged( boost::shared_ptr<MotionPrimitive>& pPrev, boost::shared_ptr<MotionPrimitive>& pNew )
 	{
 		if( pPrev->IsLoopedMotion() )
 			return;
@@ -253,19 +253,19 @@ public:
 			return;
 
 		// Do not proceed to the next motion primitive node until the motion primitive of the actual motion is finished.
-		if( CMotionPrimitiveBlender::IsInterpolationMotion( pPrev ) )
+		if( MotionPrimitiveBlender::IsInterpolationMotion( pPrev ) )
 			return;
 
 		m_pFSM->StartNextMotion();
 	}
 
-	void OnMotionPrimitiveFinished( boost::shared_ptr<CMotionPrimitive>& pPrev )
+	void OnMotionPrimitiveFinished( boost::shared_ptr<MotionPrimitive>& pPrev )
 	{
 		if( !m_pFSM )
 			return;
 
 		// Do not proceed to the next motion primitive node until the motion primitive of the actual motion is finished.
-		if( CMotionPrimitiveBlender::IsInterpolationMotion( pPrev ) )
+		if( MotionPrimitiveBlender::IsInterpolationMotion( pPrev ) )
 			return;
 
 		m_pFSM->StartNextMotion();
@@ -274,10 +274,10 @@ public:
 
 
 //======================================================================================
-// CMotionPrimitiveNode
+// MotionPrimitiveNode
 //======================================================================================
 
-CMotionPrimitiveNode::CMotionPrimitiveNode( const std::string& name )
+MotionPrimitiveNode::MotionPrimitiveNode( const std::string& name )
 :
 m_Name(name),
 m_pFSM(NULL),
@@ -288,10 +288,10 @@ m_fExtraSpeedFactor(1.0f)
 	m_MotionName = name;
 
 	// Set a null object to skip NULL checks.
-	m_pAlgorithm.reset( new CMotionNodeAlgorithm );
+	m_pAlgorithm.reset( new MotionNodeAlgorithm );
 }
 
-void CMotionPrimitiveNode::SetFSM( CMotionFSM *pFSM )
+void MotionPrimitiveNode::SetFSM( MotionFSM *pFSM )
 {
 	m_pFSM = pFSM;
 	m_pBlender = m_pFSM->Player().get();
@@ -299,7 +299,7 @@ void CMotionPrimitiveNode::SetFSM( CMotionFSM *pFSM )
 
 
 // Add a transition path from this node to another node.
-void CMotionPrimitiveNode::AddTransPath( const std::string& dest_motion_name, const mt& trans )
+void MotionPrimitiveNode::AddTransPath( const std::string& dest_motion_name, const mt& trans )
 {
 	if( !m_pFSM )
 	{
@@ -338,7 +338,7 @@ void CMotionPrimitiveNode::AddTransPath( const std::string& dest_motion_name, co
 }
 
 
-void CMotionPrimitiveNode::RequestTransition( const std::string& dest_motion_name )
+void MotionPrimitiveNode::RequestTransition( const std::string& dest_motion_name )
 {
 	name_trans_map::iterator itr = m_mapTrans.find( dest_motion_name );
 	if( itr == m_mapTrans.end() )
@@ -363,7 +363,7 @@ void CMotionPrimitiveNode::RequestTransition( const std::string& dest_motion_nam
 }
 
 
-void CMotionPrimitiveNode::EnterState( /*vector<MotionNodeTrans>& reqs*/ )
+void MotionPrimitiveNode::EnterState( /*vector<MotionNodeTrans>& reqs*/ )
 {
 	if( m_pAlgorithm )
 		m_pAlgorithm->EnterState();
@@ -373,7 +373,7 @@ void CMotionPrimitiveNode::EnterState( /*vector<MotionNodeTrans>& reqs*/ )
 }
 
 
-void CMotionPrimitiveNode::ExitState()
+void MotionPrimitiveNode::ExitState()
 {
 	if( m_pAlgorithm )
 		m_pAlgorithm->ExitState();
@@ -383,7 +383,7 @@ void CMotionPrimitiveNode::ExitState()
 }
 
 
-void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
+void MotionPrimitiveNode::LoadMotion( MotionDatabase& db )
 {
 	if( 0 < m_MotionName.length() )
 		m_pMotionPrimitive = db.GetMotionPrimitive( m_MotionName );
@@ -436,14 +436,14 @@ void CMotionPrimitiveNode::LoadMotion( CMotionDatabase& db )
 }
 
 
-void CMotionPrimitiveNode::SetStartBlendNode( boost::shared_ptr<CBlendNode> pRootBlendNode )
+void MotionPrimitiveNode::SetStartBlendNode( boost::shared_ptr<BlendNode> pRootBlendNode )
 {
 	if( m_pMotionPrimitive )
 		m_pMotionPrimitive->SearchAndSetStartBlendNode( pRootBlendNode );
 }
 
 
-void CMotionPrimitiveNode::CalculateKeyframe()
+void MotionPrimitiveNode::CalculateKeyframe()
 {
 	if( !m_pMotionPrimitive )
 		return;
@@ -453,17 +453,17 @@ void CMotionPrimitiveNode::CalculateKeyframe()
 }
 
 
-void CMotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<CMotionNodeAlgorithm> pAlgorithm )
+void MotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<MotionNodeAlgorithm> pAlgorithm )
 {
 	if( !pAlgorithm )
-		pAlgorithm.reset( new CMotionNodeAlgorithm );
+		pAlgorithm.reset( new MotionNodeAlgorithm );
 
 	m_pAlgorithm = pAlgorithm;
 	m_pAlgorithm->m_pNode = this;
 }
 
 
-void CMotionPrimitiveNode::LoadFromXMLDocument( CXMLNodeReader& node )
+void MotionPrimitiveNode::LoadFromXMLDocument( CXMLNodeReader& node )
 {
 	m_Name = node.GetAttributeText( "name" );
 
@@ -479,7 +479,7 @@ void CMotionPrimitiveNode::LoadFromXMLDocument( CXMLNodeReader& node )
 }
 
 
-void CMotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
+void MotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_Name;
 
@@ -494,28 +494,28 @@ void CMotionPrimitiveNode::Serialize( IArchive& ar, const unsigned int version )
 	ar & m_fExtraSpeedFactor;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
-		m_pAlgorithm.reset( new CMotionNodeAlgorithm );
+		m_pAlgorithm.reset( new MotionNodeAlgorithm );
 }
 
 
-const string CMotionNodeAlgorithm::ms_NullString;
+const string MotionNodeAlgorithm::ms_NullString;
 
 
 
 //===========================================================================
-// CMotionFSM
+// MotionFSM
 //===========================================================================
 
-CMotionFSM::CMotionFSM( const string& name )
+MotionFSM::MotionFSM( const string& name )
 :
 m_Name(name),
 m_TransIndex(0)
 {
-	m_pMotionPrimitivePlayer = shared_ptr<CMotionPrimitiveBlender>( new CMotionPrimitiveBlender() );
+	m_pMotionPrimitivePlayer = shared_ptr<MotionPrimitiveBlender>( new MotionPrimitiveBlender() );
 
 	// Set a callback to notify this FSM of changes in motion primitives
 	// when the player finished playing one and moving on to another
-	shared_ptr<CMotionPrimitivePlayCallback> pCallback( new CMotionFSMCallback(this) );
+	shared_ptr<MotionPrimitivePlayCallback> pCallback( new MotionFSMCallback(this) );
 	m_pMotionPrimitivePlayer->SetCallback( pCallback );
 
 	LoadParamFromFile( "./.debug/MotionSynthesis.txt", "MotionPrimitiveNode.OutputSkeletonAfterLoadingMotion", sg_OutputSkeletonAfterLoadingMotion );
@@ -524,16 +524,16 @@ m_TransIndex(0)
 }
 
 
-CMotionFSM::~CMotionFSM()
+MotionFSM::~MotionFSM()
 {
 	// Unregister callback - the callback will be a dangling pointer if this is not done
 	// && m_pMotionPrimitivePlayer is held by other object.
 	// m_pMotionPrimitivePlayer is not meant be shared by other objects, though.
-	m_pMotionPrimitivePlayer->SetCallback( shared_ptr<CMotionPrimitivePlayCallback>() );
+	m_pMotionPrimitivePlayer->SetCallback( shared_ptr<MotionPrimitivePlayCallback>() );
 }
 
 
-void CMotionFSM::StartMotion( const std::string& motion_node_name )
+void MotionFSM::StartMotion( const std::string& motion_node_name )
 {
 	name_motionnode_map::iterator itr
 		= m_mapNameToMotionNode.find( motion_node_name );
@@ -543,7 +543,7 @@ void CMotionFSM::StartMotion( const std::string& motion_node_name )
 
 	m_pCurrent = itr->second;
 
-	CMotionPrimitiveNode& node = *(itr->second);
+	MotionPrimitiveNode& node = *(itr->second);
 	node.EnterState(  );
 
 	float interpolation_motion_length = 0.1f;
@@ -553,7 +553,7 @@ void CMotionFSM::StartMotion( const std::string& motion_node_name )
 
 
 /// Checks the motion curently being played.
-void CMotionFSM::Update( float dt )
+void MotionFSM::Update( float dt )
 {
 	const float factor = m_pCurrent ? m_pCurrent->GetMotionPlaySpeedFactor() * m_pCurrent->GetExtraSpeedFactor(): 1.0f;
 	m_pMotionPrimitivePlayer->Update( dt * factor );
@@ -568,7 +568,7 @@ void CMotionFSM::Update( float dt )
 
 	// get the motion currently being played
 	int id = -1;
-	shared_ptr<CMotionPrimitive> pCurrentMotion = m_pMotionPrimitivePlayer->GetCurrentMotion();
+	shared_ptr<MotionPrimitive> pCurrentMotion = m_pMotionPrimitivePlayer->GetCurrentMotion();
 	if( pCurrentMotion )
 		id = pCurrentMotion->GetUserID();
 
@@ -591,21 +591,21 @@ void CMotionFSM::Update( float dt )
 	}*/
 }
 
-void CMotionFSM::ClearNodesToProcess()
+void MotionFSM::ClearNodesToProcess()
 {
 //	m_vecpNodesToProcess.resize( 0 );
 	m_pvecTransToProcess = shared_ptr< vector<MotionNodeTrans> >();
 	m_TransIndex = 0;
 }
 
-void CMotionFSM::SetTransitions( shared_ptr< vector<MotionNodeTrans> > pvecTrans )
+void MotionFSM::SetTransitions( shared_ptr< vector<MotionNodeTrans> > pvecTrans )
 {
 	m_pvecTransToProcess = pvecTrans;
 	m_TransIndex = 0;
 }
 
 
-void CMotionFSM::StartNextMotion()
+void MotionFSM::StartNextMotion()
 {
 	if( !m_pvecTransToProcess )
 		return;
@@ -637,22 +637,22 @@ void CMotionFSM::StartNextMotion()
 }
 
 
-void CMotionFSM::AddNode( shared_ptr<CMotionPrimitiveNode> pNode )
+void MotionFSM::AddNode( shared_ptr<MotionPrimitiveNode> pNode )
 {
 	pNode->SetFSM( this );
 	m_mapNameToMotionNode[pNode->GetName()] = pNode;
 }
 
 
-shared_ptr<CMotionPrimitiveNode> CMotionFSM::AddNode( const string& node_name )
+shared_ptr<MotionPrimitiveNode> MotionFSM::AddNode( const string& node_name )
 {
-	shared_ptr<CMotionPrimitiveNode> pNode( new CMotionPrimitiveNode(node_name) );
+	shared_ptr<MotionPrimitiveNode> pNode( new MotionPrimitiveNode(node_name) );
 	AddNode( pNode );
 	return pNode;
 }
 
 
-void CMotionFSM::CalculateKeyframe()
+void MotionFSM::CalculateKeyframe()
 {
 	if( !m_pCurrent )
 		return;
@@ -661,7 +661,7 @@ void CMotionFSM::CalculateKeyframe()
 }
 
 
-void CMotionFSM::GetDebugInfo( std::string& dest_text_buffer )
+void MotionFSM::GetDebugInfo( std::string& dest_text_buffer )
 {
 	if( !m_pCurrent )
 	{
@@ -673,14 +673,14 @@ void CMotionFSM::GetDebugInfo( std::string& dest_text_buffer )
 }
 
 
-void CMotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
+void MotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
 {
 	m_Name = node.GetAttributeText( "name" );
 
 	vector<CXMLNodeReader> nodes = node.GetChild( "nodes" ).GetImmediateChildren( "node" );
 	for( size_t i=0; i<nodes.size(); i++ )
 	{
-		shared_ptr<CMotionPrimitiveNode> pNode( new CMotionPrimitiveNode("") );
+		shared_ptr<MotionPrimitiveNode> pNode( new MotionPrimitiveNode("") );
 		pNode->LoadFromXMLDocument( nodes[i] );
 		AddNode( pNode );
 	}
@@ -699,7 +699,7 @@ void CMotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
 			continue;
 		}
 
-		shared_ptr<CMotionPrimitiveNode> pStartNode = GetNode( start_motion_name );
+		shared_ptr<MotionPrimitiveNode> pStartNode = GetNode( start_motion_name );
 		if( !pStartNode )
 			continue;
 
@@ -722,7 +722,7 @@ void CMotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
 }
 
 
-void CMotionFSM::Serialize( IArchive& ar, const unsigned int version )
+void MotionFSM::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_Name;
 
@@ -741,7 +741,7 @@ void CMotionFSM::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CMotionFSM::LoadMotions( CMotionDatabase& db )
+void MotionFSM::LoadMotions( MotionDatabase& db )
 {
 	name_motionnode_map::iterator itr;
 	for( itr = m_mapNameToMotionNode.begin();
@@ -753,9 +753,9 @@ void CMotionFSM::LoadMotions( CMotionDatabase& db )
 }
 
 
-void CMotionFSM::LoadMotions()
+void MotionFSM::LoadMotions()
 {
-	CMotionDatabase db;
+	MotionDatabase db;
 	bool db_ready = db.LoadFromFile( m_MotionDatabaseFilepath );
 	if( !db_ready )
 		return;
@@ -764,7 +764,7 @@ void CMotionFSM::LoadMotions()
 }
 
 
-void CMotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<CBlendNode> pRootBlendNode )
+void MotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<BlendNode> pRootBlendNode )
 {
 	name_motionnode_map::iterator itr;
 	for( itr = m_mapNameToMotionNode.begin();
@@ -777,23 +777,23 @@ void CMotionFSM::SetStartBlendNodeToMotionPrimitives( shared_ptr<CBlendNode> pRo
 
 
 //=======================================================================================
-// CMotionFSMManager
+// MotionFSMManager
 //=======================================================================================
 
-CMotionFSMManager::CMotionFSMManager()
+MotionFSMManager::MotionFSMManager()
 {
 	ResetBlendNodeRoot();
 }
 
 
-void CMotionFSMManager::ResetBlendNodeRoot()
+void MotionFSMManager::ResetBlendNodeRoot()
 {
-	m_pBlendNodeRoot = shared_ptr<CBlendNode>( new CBlendNode );
+	m_pBlendNodeRoot = shared_ptr<BlendNode>( new BlendNode );
 	m_pBlendNodeRoot->SetSelf( m_pBlendNodeRoot );
 }
 
 
-void CMotionFSMManager::LoadMotions( CMotionDatabase& mdb )
+void MotionFSMManager::LoadMotions( MotionDatabase& mdb )
 {
 	for( size_t i=0; i<m_vecpMotionFSM.size(); i++ )
 		m_vecpMotionFSM[i]->LoadMotions( mdb );
@@ -801,7 +801,7 @@ void CMotionFSMManager::LoadMotions( CMotionDatabase& mdb )
 	if( 0 < m_CompleteSkeletonSourceMotionName.length() )
 	{
 		// create blend node tree from the skeleton of the specified motion primitive
-		shared_ptr<CMotionPrimitive> pMotion
+		shared_ptr<MotionPrimitive> pMotion
 			= mdb.GetMotionPrimitive( m_CompleteSkeletonSourceMotionName );
 
 		if( pMotion )
@@ -814,29 +814,29 @@ void CMotionFSMManager::LoadMotions( CMotionDatabase& mdb )
 
 	SetStartBlendNodeToMotionPrimitives();
 
-//	shared_ptr<CMotionPrimitive> pMotion = mdb.GetMotionPrimitive( m_CompleteSkeletonName );
+//	shared_ptr<MotionPrimitive> pMotion = mdb.GetMotionPrimitive( m_CompleteSkeletonName );
 //	if( pMotion )
 //		m_pBlendNodeRoot->CreateFromSkeleton( pMotion->GetSkeleton()->GetRootBone() );
 }
 
 
-shared_ptr<CMotionPrimitive> CMotionFSMManager::GetCompleteSkeletonSourceMotion()
+shared_ptr<MotionPrimitive> MotionFSMManager::GetCompleteSkeletonSourceMotion()
 {
 	if( m_CompleteSkeletonSourceMotionName.length() == 0 )
-		return shared_ptr<CMotionPrimitive>();
+		return shared_ptr<MotionPrimitive>();
 
-	CMotionDatabase mdb;
+	MotionDatabase mdb;
 	bool loaded = mdb.LoadFromFile( m_MotionDatabaseFilepath );
 	if( !loaded )
-		return shared_ptr<CMotionPrimitive>();
+		return shared_ptr<MotionPrimitive>();
 
 	return mdb.GetMotionPrimitive( m_CompleteSkeletonSourceMotionName );
 }
 
 
-Result::Name CMotionFSMManager::LoadMotions()
+Result::Name MotionFSMManager::LoadMotions()
 {
-	CMotionDatabase mdb;
+	MotionDatabase mdb;
 	bool loaded = mdb.LoadFromFile( m_MotionDatabaseFilepath );
 	if( !loaded )
 		return Result::UNKNOWN_ERROR;
@@ -847,7 +847,7 @@ Result::Name CMotionFSMManager::LoadMotions()
 }
 
 
-void CMotionFSMManager::GetDebugInfo( std::string& dest_text_buffer )
+void MotionFSMManager::GetDebugInfo( std::string& dest_text_buffer )
 {
 	dest_text_buffer = "motion graph manager\n";
 	dest_text_buffer += "-------------------------\n";
@@ -860,7 +860,7 @@ void CMotionFSMManager::GetDebugInfo( std::string& dest_text_buffer )
 }
 
 
-void CMotionFSMManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
+void MotionFSMManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
 {
 	m_MotionDatabaseFilepath = root_node.GetChild( "motion_database" ).GetAttributeText( "file" );
 	m_CompleteSkeletonName = root_node.GetChild( "complete_skeleton" ).GetAttributeText( "name" );
@@ -870,13 +870,13 @@ void CMotionFSMManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
 	m_vecpMotionFSM.resize( fsms.size() );
 	for( size_t i=0; i<fsms.size(); i++ )
 	{
-		m_vecpMotionFSM[i].reset( new CMotionFSM );
+		m_vecpMotionFSM[i].reset( new MotionFSM );
 		m_vecpMotionFSM[i]->LoadFromXMLDocument( fsms[i] );
 	}
 }
 
 
-void CMotionFSMManager::LoadFromXMLFile( const string& xml_file_path )
+void MotionFSMManager::LoadFromXMLFile( const string& xml_file_path )
 {
 	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( xml_file_path );
 	if( !pDoc )
@@ -886,7 +886,7 @@ void CMotionFSMManager::LoadFromXMLFile( const string& xml_file_path )
 }
 
 
-void CMotionFSMManager::Serialize( IArchive& ar, const unsigned int version )
+void MotionFSMManager::Serialize( IArchive& ar, const unsigned int version )
 {
 	ar & m_vecpMotionFSM;
 
@@ -905,14 +905,14 @@ void CMotionFSMManager::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CMotionFSMManager::InitForTest( const string& motion_db_filepath )
+void MotionFSMManager::InitForTest( const string& motion_db_filepath )
 {
-	shared_ptr<CMotionFSM> pFSM( new CMotionFSM("lower_limbs") );
+	shared_ptr<MotionFSM> pFSM( new MotionFSM("lower_limbs") );
 
 	AddFSM( pFSM );
 	pFSM->SetMotionDatabaseFilepath( motion_db_filepath );
 
-	shared_ptr<CMotionPrimitiveNode> pNodes[16];
+	shared_ptr<MotionPrimitiveNode> pNodes[16];
 	pNodes[0] = pFSM->AddNode("fwd");
 	pNodes[1] = pFSM->AddNode("standing");
 	pNodes[2] = pFSM->AddNode("crouch");
@@ -943,7 +943,7 @@ void CMotionFSMManager::InitForTest( const string& motion_db_filepath )
 	pNodes[3]->AddTransPath( "standing", mt( 0.1, "stand" ) );
 	pNodes[3]->AddTransPath( "crouch",   mt( 0.1, "crouch" ) );
 
-	CMotionDatabase mdb( motion_db_filepath );
+	MotionDatabase mdb( motion_db_filepath );
 	m_pBlendNodeRoot->CreateFromSkeleton( mdb.GetMotionPrimitive( "standing" )->GetSkeleton()->GetRootBone() );
 
 	SetMotionDatabaseFilepath( motion_db_filepath );
@@ -953,12 +953,12 @@ void CMotionFSMManager::InitForTest( const string& motion_db_filepath )
 
 	if( pNodes[0]->MotionPrimitive() )
 	{
-		vector<CKeyframe>& keyframes = pNodes[0]->MotionPrimitive()->GetKeyframeBuffer();
+		vector<Keyframe>& keyframes = pNodes[0]->MotionPrimitive()->GetKeyframeBuffer();
 		size_t num_keyframes = keyframes.size();
 		keyframes.erase( keyframes.begin() + num_keyframes * 3 / 4, keyframes.end() );
 	}
 
-	pFSM.reset( new CMotionFSM("upper_body") );
+	pFSM.reset( new MotionFSM("upper_body") );
 
 	AddFSM( pFSM );
 	pFSM->SetMotionDatabaseFilepath( motion_db_filepath );
@@ -985,9 +985,9 @@ void CMotionFSMManager::InitForTest( const string& motion_db_filepath )
 }
 
 
-void CMotionFSMManager::LoadFromDatabase()
+void MotionFSMManager::LoadFromDatabase()
 {
-	CMotionDatabase db;
+	MotionDatabase db;
 	bool db_ready = db.LoadFromFile( m_MotionDatabaseFilepath );
 	if( !db_ready )
 		return;
@@ -996,7 +996,7 @@ void CMotionFSMManager::LoadFromDatabase()
 
 	LOG_PRINT_WARNING( "Need to initialize m_pBlendNodeRoot with a complete skeleton" );
 
-//	shared_ptr<CSkeleton> pSkeleton;// = db.GetSkeleton( m_CompleteSkeletonName );
+//	shared_ptr<Skeleton> pSkeleton;// = db.GetSkeleton( m_CompleteSkeletonName );
 //	m_pBlendNodeRoot->CreateFromSkeleton( pSkeleton->GetRootBone() );
 }
 

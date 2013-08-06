@@ -36,14 +36,14 @@ static const char *bone_names[] =
 
 
 void CreateMirroredKeyframe(
-	const msynth::CSkeleton& skeleton,
+	const msynth::Skeleton& skeleton,
 	std::vector< std::vector<int> > locators,
 	std::vector< std::pair<int,int> >& bone_lr_pairs,
-	const msynth::CKeyframe& original,
-	msynth::CKeyframe& mirrored
+	const msynth::Keyframe& original,
+	msynth::Keyframe& mirrored
 	)
 {
-//	const msynth::CSkeleton& skeleton = ???;
+//	const msynth::Skeleton& skeleton = ???;
 
 //	std::vector< std::string > bone_names;
 
@@ -64,19 +64,19 @@ void CreateMirroredKeyframe(
 		if( num_locators <= index_0 || num_locators <= index_1 )
 			continue;
 
-		CTransformNode *pNode0 = mirrored.GetTransformNode( locators[index_0] );
-		CTransformNode *pNode1 = mirrored.GetTransformNode( locators[index_1] );
+		TransformNode *pNode0 = mirrored.GetTransformNode( locators[index_0] );
+		TransformNode *pNode1 = mirrored.GetTransformNode( locators[index_1] );
 		if( !pNode0 || !pNode1 )
 			continue;
 
-		CTransformNode to_swap = *pNode0;
+		TransformNode to_swap = *pNode0;
 		mirrored.SetTransform( pNode1->GetTransform(), locators[index_0] );
 		mirrored.SetTransform( to_swap.GetTransform(), locators[index_1] );
 	}
 }
 
 
-void ShiftNodePosition( const CSkeleton& skeleton, const vector<int>& node_locator, const Vector3& dest_pos, CKeyframe& target )
+void ShiftNodePosition( const Skeleton& skeleton, const vector<int>& node_locator, const Vector3& dest_pos, Keyframe& target )
 {
 	Vector3 shift = skeleton.CalculateNodePositionInSkeletonSpace( node_locator, target );
 
@@ -86,7 +86,7 @@ void ShiftNodePosition( const CSkeleton& skeleton, const vector<int>& node_locat
 }
 
 
-void ShiftRootNodePosition( const Vector3& shift, CKeyframe& target )
+void ShiftRootNodePosition( const Vector3& shift, Keyframe& target )
 {
 	Matrix34 root_pose = target.GetRootPose();
 	root_pose.vPosition += shift;
@@ -94,7 +94,7 @@ void ShiftRootNodePosition( const Vector3& shift, CKeyframe& target )
 }
 
 
-void SetLeftAndRightArmsRotationsForWalkMotion( vector< vector<int> >& locators, CKeyframe& dest_keyframe )
+void SetLeftAndRightArmsRotationsForWalkMotion( vector< vector<int> >& locators, Keyframe& dest_keyframe )
 {
 	typedef vector<int> bone_locator;
 	const bone_locator& l_clavicle  = locators[8];
@@ -136,7 +136,7 @@ void SetLeftAndRightArmsRotationsForWalkMotion( vector< vector<int> >& locators,
 }
 
 
-shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton )
+shared_ptr<MotionPrimitive> CreateWalkMotion( const msynth::Skeleton& skeleton )
 {
 	const int num_bone_names = numof(bone_names);
 	vector< vector<int> > locators;
@@ -197,18 +197,18 @@ shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton
 
 	// Create a motion primitive object for walk motion.
 
-	shared_ptr<CMotionPrimitive> pWalkMotion( new CMotionPrimitive );
-	CMotionPrimitive& walk_motion = *pWalkMotion;
+	shared_ptr<MotionPrimitive> pWalkMotion( new MotionPrimitive );
+	MotionPrimitive& walk_motion = *pWalkMotion;
 	walk_motion.SetLoopedMotion( true );
 	walk_motion.SetSkeleton( skeleton );
 	walk_motion.CreateEmptyKeyframes( 4 );
-	vector<CKeyframe>& keyframes = pWalkMotion->GetKeyframeBuffer();
-	CKeyframe& on_right          = keyframes[0];
-	CKeyframe& full_stride_left  = keyframes[1];
-	CKeyframe& on_left           = keyframes[2];
-	CKeyframe& full_stride_right = keyframes[3];
+	vector<Keyframe>& keyframes = pWalkMotion->GetKeyframeBuffer();
+	Keyframe& on_right          = keyframes[0];
+	Keyframe& full_stride_left  = keyframes[1];
+	Keyframe& on_left           = keyframes[2];
+	Keyframe& full_stride_right = keyframes[3];
 
-//	CKeyframe on_right(0.0f), full_stride_left(0.5f), on_left(1.0f), full_stride_right(1.5f);
+//	Keyframe on_right(0.0f), full_stride_left(0.5f), on_left(1.0f), full_stride_right(1.5f);
 
 	// full stride (the left leg forward)
 	full_stride_left.SetBoneLocalRotation(  l_hip,       0.0f, -0.15f,  0.0f );
@@ -302,10 +302,10 @@ shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton
 
 	ShiftRootNodePosition( Vector3(0,0,-l_foot_pos.z-r_foot_pos.z), full_stride_right );
 
-	shared_ptr<CMotionPrimitive> pNoMotion( new CMotionPrimitive );
+	shared_ptr<MotionPrimitive> pNoMotion( new MotionPrimitive );
 	pNoMotion->SetSkeleton( skeleton );
 	pNoMotion->CreateEmptyKeyframes( 1 );
-	vector<CKeyframe>& kf = pNoMotion->GetKeyframeBuffer();
+	vector<Keyframe>& kf = pNoMotion->GetKeyframeBuffer();
 	Vector3 default_r_foot_pos = skeleton.CalculateNodePositionInSkeletonSpace( r_foot, kf[0] );
 
 //	Vector3 r_foot_pos_diff = 

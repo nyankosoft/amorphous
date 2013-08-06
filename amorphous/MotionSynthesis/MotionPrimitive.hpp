@@ -37,13 +37,13 @@ public:
 
 	void SetName( const std::string& name ) { m_Name = name; }
 
-	friend class CMotionPrimitive;
-	friend class CMotionDatabase;
+	friend class MotionPrimitive;
+	friend class MotionDatabase;
 };
 
 
 //=======================================================================================
-// CMotionPrimitive
+// MotionPrimitive
 //   used to store segmented motions
 //=======================================================================================
 
@@ -69,19 +69,19 @@ public:
  - Terms
  -- complete motion primitive: a motion primitive that has the transforms for all the bones
 */
-class CMotionPrimitive : public IArchiveObjectBase
+class MotionPrimitive : public IArchiveObjectBase
 {
 	std::string m_Name;
 
 	/// motion segment data
-	std::vector<CKeyframe> m_vecKeyframe;
+	std::vector<Keyframe> m_vecKeyframe;
 
 	/// offset of the root node at the start of the motion primitive in world coordinates
 	/// transform the original motion data into the body center space
 //	Matrix34 m_WorldOffset;
 
-	boost::shared_ptr<CSkeleton> m_pSkeleton;
-//	CSkeleton m_pSkeleton;
+	boost::shared_ptr<Skeleton> m_pSkeleton;
+//	Skeleton m_pSkeleton;
 
 	bool m_bIsLoopedMotion;
 
@@ -96,15 +96,15 @@ class CMotionPrimitive : public IArchiveObjectBase
 	std::string m_StartBoneName;
 
 	/// Used at runtime
-	boost::shared_ptr<CBlendNode> m_pStartBlendNode;
+	boost::shared_ptr<BlendNode> m_pStartBlendNode;
 
 public:
 
-	CMotionPrimitive() : m_bIsLoopedMotion(false) {}
+	MotionPrimitive() : m_bIsLoopedMotion(false) {}
 
-	CMotionPrimitive( const std::string& name ) : m_bIsLoopedMotion(false) { m_Name = name; }
+	MotionPrimitive( const std::string& name ) : m_bIsLoopedMotion(false) { m_Name = name; }
 
-	~CMotionPrimitive() {}
+	~MotionPrimitive() {}
 
 	bool IsEmpty() const { return m_vecKeyframe.size() == 0; }
 
@@ -112,17 +112,17 @@ public:
 
 	void SetName( const std::string& name ) { m_Name = name; }
 
-	void SetKeyframes( const std::vector<CKeyframe> &rvecKeyframe ) { m_vecKeyframe = rvecKeyframe; }
+	void SetKeyframes( const std::vector<Keyframe> &rvecKeyframe ) { m_vecKeyframe = rvecKeyframe; }
 
-	void InsertKeyframe( const CKeyframe& keyframe );
+	void InsertKeyframe( const Keyframe& keyframe );
 
-	const CKeyframe& GetFirstKeyframe() const { return m_vecKeyframe.front(); }
+	const Keyframe& GetFirstKeyframe() const { return m_vecKeyframe.front(); }
 
-	const CKeyframe& GetLastKeyframe() const { return m_vecKeyframe.back(); }
+	const Keyframe& GetLastKeyframe() const { return m_vecKeyframe.back(); }
 
-	inline void GetFirstKeyframe( CKeyframe& dest );
+	inline void GetFirstKeyframe( Keyframe& dest );
 
-	inline void GetLastKeyframe( CKeyframe& dest );
+	inline void GetLastKeyframe( Keyframe& dest );
 
 	inline float GetTotalTime() const;
 
@@ -134,32 +134,32 @@ public:
 
 	Result::Name GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3, float& frac, fixed_vector<Vector3,4>& root_position_offsets );
 
-	Result::Name GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
+	Result::Name GetInterpolatedKeyframe( Keyframe& dest_interpolated_keyframe, float time, Interpolation::Mode mode = Interpolation::Linear );
 
 	void CalculateInterpolatedKeyframe( float time );
 
 //	void ResizeKeyframeBuffer( int num_keyframes );
 
 	/// let the user directly modify keyframe data
-	std::vector<CKeyframe>& GetKeyframeBuffer() { return m_vecKeyframe; }
+	std::vector<Keyframe>& GetKeyframeBuffer() { return m_vecKeyframe; }
 
 	Result::Name CreateEmptyKeyframes( uint num_keyframes );
 
-//	void SetSkeleton( const CSkeleton& skeleton ) { m_pSkeleton = skeleton; }
-	void SetSkeleton( const CSkeleton& skeleton ) { m_pSkeleton = boost::shared_ptr<CSkeleton>( new CSkeleton(skeleton) ); }
+//	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = skeleton; }
+	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = boost::shared_ptr<Skeleton>( new Skeleton(skeleton) ); }
 
-//	const CSkeleton& GetSkeleton() const { return m_pSkeleton; }
-	const boost::shared_ptr<CSkeleton> GetSkeleton() const { return m_pSkeleton; }
+//	const Skeleton& GetSkeleton() const { return m_pSkeleton; }
+	const boost::shared_ptr<Skeleton> GetSkeleton() const { return m_pSkeleton; }
 
 	const std::string& GetStartBoneName() const { return m_StartBoneName; }
 
 	void SetStartsBoneName( const std::string& start_bone_name ) { m_StartBoneName = start_bone_name; }
 
-	void SearchAndSetStartBlendNode( boost::shared_ptr<CBlendNode>& pRootBlendNode );
+	void SearchAndSetStartBlendNode( boost::shared_ptr<BlendNode>& pRootBlendNode );
 
-	boost::shared_ptr<CBlendNode> GetStartBlendNode() { return m_pStartBlendNode; }
+	boost::shared_ptr<BlendNode> GetStartBlendNode() { return m_pStartBlendNode; }
 
-	void SetStartBlendNode( boost::shared_ptr<CBlendNode>& pBlendNode ) { m_pStartBlendNode = pBlendNode; }
+	void SetStartBlendNode( boost::shared_ptr<BlendNode>& pBlendNode ) { m_pStartBlendNode = pBlendNode; }
 
 	void Serialize( IArchive & ar, const unsigned int version );
 
@@ -177,26 +177,26 @@ public:
 
 	int GetUserID() const { return m_UserID; }
 
-	friend class CMotionDatabaseCompiler;
-	friend class CMotionDatabaseBuilder;
+	friend class MotionDatabaseCompiler;
+	friend class MotionDatabaseBuilder;
 };
 
 
-inline void CMotionPrimitive::GetFirstKeyframe( CKeyframe& dest )
+inline void MotionPrimitive::GetFirstKeyframe( Keyframe& dest )
 {
 	if( 0 < m_vecKeyframe.size() )
 		dest = m_vecKeyframe.front();
 }
 
 
-inline void CMotionPrimitive::GetLastKeyframe( CKeyframe& dest )
+inline void MotionPrimitive::GetLastKeyframe( Keyframe& dest )
 {
 	if( 0 < m_vecKeyframe.size() )
 		dest = m_vecKeyframe.back();
 }
 
 
-inline float CMotionPrimitive::GetTotalTime() const
+inline float MotionPrimitive::GetTotalTime() const
 {
 	if( 0 < m_vecKeyframe.size() )
 		return m_vecKeyframe.back().GetTime();

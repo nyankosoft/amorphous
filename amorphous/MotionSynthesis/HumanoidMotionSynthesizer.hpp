@@ -42,26 +42,26 @@ class CHumanoidMotionHolder
 {
 public:
 	
-	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpMotion;
+	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpMotion;
 };
 
 
 class CHumanoidMotionSynthesizer
 {
-	std::vector< boost::shared_ptr<CMotionBlender> > m_vecpMotionBlender;
+	std::vector< boost::shared_ptr<MotionBlender> > m_vecpMotionBlender;
 
-	boost::shared_ptr<CSteeringMotionBlender> m_pSteeringMotionBlender;
+	boost::shared_ptr<SteeringMotionBlender> m_pSteeringMotionBlender;
 
-	boost::shared_ptr<CMotionPrimitiveBlender> m_pMotionPrimitiveBlender;
+	boost::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitiveBlender;
 
 	CHumanoidMotionHolder m_aMotion[HumanoidMotion::NumActions];
 
 	CAnnotation m_aAnnotation[HumanoidMotion::NumActions];
 
-	CKeyframe m_CurrentKeyframe;
+	Keyframe m_CurrentKeyframe;
 
 
-	boost::shared_ptr<CMotionPrimitiveBlenderStatistics> m_pMotionPrimitiveBlenderStatics;
+	boost::shared_ptr<MotionPrimitiveBlenderStatistics> m_pMotionPrimitiveBlenderStatics;
 
 
 private:
@@ -89,25 +89,25 @@ public:
 	void Turn( Scalar turn_speed );
 
 //	void LoadMotions( CBinaryDatabase<std::string>& db, const std::string& motion_table_key_name );
-	void LoadMotions( CMotionDatabase& mdb, const std::string& motion_table_key_name );
+	void LoadMotions( MotionDatabase& mdb, const std::string& motion_table_key_name );
 
 //	void CalculateNodePoses();
 
 	/// \param dest_keyframe [out] hierarchical transformations
-//	void CalculateKeyframe( CKeyframe& dest_keyframe );
+//	void CalculateKeyframe( Keyframe& dest_keyframe );
 	void UpdateKeyframe();
 
-	const CKeyframe& GetCurrentKeyframe() const { return m_CurrentKeyframe; }
+	const Keyframe& GetCurrentKeyframe() const { return m_CurrentKeyframe; }
 
 	void Update( float dt );
 
-//	const CSkeleton& GetSkeleton();
-	const boost::shared_ptr<CSkeleton> GetSkeleton();
+//	const Skeleton& GetSkeleton();
+	const boost::shared_ptr<Skeleton> GetSkeleton();
 
-	const boost::shared_ptr<CMotionPrimitiveBlender> GetMotionPrimitiveBlender() const { return m_pMotionPrimitiveBlender; }
+	const boost::shared_ptr<MotionPrimitiveBlender> GetMotionPrimitiveBlender() const { return m_pMotionPrimitiveBlender; }
 
 
-	const boost::shared_ptr<CMotionPrimitiveBlenderStatistics>
+	const boost::shared_ptr<MotionPrimitiveBlenderStatistics>
 		GetStatistics() const { return m_pMotionPrimitiveBlenderStatics; }
 
 	/// set the pose of the root node of the character

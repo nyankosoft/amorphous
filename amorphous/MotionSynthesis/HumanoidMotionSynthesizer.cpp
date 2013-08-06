@@ -21,17 +21,17 @@ using namespace msynth;
 CHumanoidMotionSynthesizer::CHumanoidMotionSynthesizer()
 {
 	m_pMotionPrimitiveBlender
-		= boost::shared_ptr<CMotionPrimitiveBlender>( new CMotionPrimitiveBlender() );
+		= boost::shared_ptr<MotionPrimitiveBlender>( new MotionPrimitiveBlender() );
 
 	m_pSteeringMotionBlender
-		= boost::shared_ptr<CSteeringMotionBlender>( new CSteeringMotionBlender( m_pMotionPrimitiveBlender ) );
+		= boost::shared_ptr<SteeringMotionBlender>( new SteeringMotionBlender( m_pMotionPrimitiveBlender ) );
 
 	m_vecpMotionBlender.push_back( m_pSteeringMotionBlender );
 	m_vecpMotionBlender.push_back( m_pMotionPrimitiveBlender );
 
 
 	m_pMotionPrimitiveBlenderStatics
-		= boost::shared_ptr<CMotionPrimitiveBlenderStatistics>( new CMotionPrimitiveBlenderStatistics( m_pMotionPrimitiveBlender.get() ) );
+		= boost::shared_ptr<MotionPrimitiveBlenderStatistics>( new MotionPrimitiveBlenderStatistics( m_pMotionPrimitiveBlender.get() ) );
 }
 
 
@@ -47,12 +47,12 @@ void CHumanoidMotionSynthesizer::ProcessMotionTransitionRequest( HumanoidMotion:
 	if( motion_holder.m_vecpMotion.size() == 0 )
 		return;
 
-	shared_ptr<CMotionPrimitive> pTargetMotion = motion_holder.m_vecpMotion[0];
+	shared_ptr<MotionPrimitive> pTargetMotion = motion_holder.m_vecpMotion[0];
 
 	if( pTargetMotion )
 	{
 		// peek the current motion
-		shared_ptr<CMotionPrimitive> pCurrentMotion
+		shared_ptr<MotionPrimitive> pCurrentMotion
 			= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 		if( !pCurrentMotion->IsEmpty() &&
@@ -113,9 +113,9 @@ void CHumanoidMotionSynthesizer::Turn( Scalar turn_speed )
 }
 
 
-void CHumanoidMotionSynthesizer::LoadMotions( CMotionDatabase& mdb, const std::string& motion_table_key_name )
+void CHumanoidMotionSynthesizer::LoadMotions( MotionDatabase& mdb, const std::string& motion_table_key_name )
 {
-	CHumanoidMotionTable tbl;
+	HumanoidMotionTable tbl;
 
 	bool retrieved = mdb.GetHumanoidMotionTable( motion_table_key_name, tbl );
 
@@ -143,7 +143,7 @@ void CHumanoidMotionSynthesizer::LoadMotions( CMotionDatabase& mdb, const std::s
 			
 			BOOST_FOREACH( const std::string& motion_primitive_name, entry.m_vecMotionPrimitiveName )
 			{
-				shared_ptr<CMotionPrimitive> pMotion = mdb.GetMotionPrimitive( motion_primitive_name );
+				shared_ptr<MotionPrimitive> pMotion = mdb.GetMotionPrimitive( motion_primitive_name );
 				if( pMotion )
 					m_aMotion[type_index].m_vecpMotion.push_back( pMotion );
 			}
@@ -163,7 +163,7 @@ void CHumanoidMotionSynthesizer::LoadMotions( CMotionDatabase& mdb, const std::s
 
 	// copy transform node tree structure to m_CurrentKeyframe
 	// - This has to be a motion primitive that holds the complete tree of skeleton structure
-	CKeyframe default_keyframe;
+	Keyframe default_keyframe;
 	size_t i;
 	for( i=0; i<HumanoidMotion::NumActions; i++ )
 	{
@@ -190,13 +190,13 @@ void CHumanoidMotionSynthesizer::LoadMotions( CMotionDatabase& mdb, const std::s
 
 void CHumanoidMotionSynthesizer::Update( float dt )
 {
-	BOOST_FOREACH( boost::shared_ptr<CMotionBlender>& pMotionBlender, m_vecpMotionBlender )
+	BOOST_FOREACH( boost::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
 	{
 		pMotionBlender->Update( dt );
 //		pMotionBlender->CalculateKeyframe( dt, m_CurrentKeyframe );
 	}
 
-	const boost::shared_ptr<CMotionPrimitive>& pCurrentMotion = m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
+	const boost::shared_ptr<MotionPrimitive>& pCurrentMotion = m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 	if( pCurrentMotion->IsEmpty() )
 	{
@@ -210,9 +210,9 @@ void CHumanoidMotionSynthesizer::Update( float dt )
 
 
 /*
-void CHumanoidMotionSynthesizer::CalculateKeyframe( CKeyframe& dest_keyframe )
+void CHumanoidMotionSynthesizer::CalculateKeyframe( Keyframe& dest_keyframe )
 {
-	BOOST_FOREACH( boost::shared_ptr<CMotionBlender>& pMotionBlender, m_vecpMotionBlender )
+	BOOST_FOREACH( boost::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
 	{
 		pMotionBlender->CalculateKeyframe( dest_keyframe );
 	}
@@ -223,17 +223,17 @@ void CHumanoidMotionSynthesizer::CalculateKeyframe( CKeyframe& dest_keyframe )
 
 void CHumanoidMotionSynthesizer::UpdateKeyframe()
 {
-	BOOST_FOREACH( boost::shared_ptr<CMotionBlender>& pMotionBlender, m_vecpMotionBlender )
+	BOOST_FOREACH( boost::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
 	{
 		pMotionBlender->CalculateKeyframe( m_CurrentKeyframe );
 	}
 }
 
 
-// const CSkeleton& CHumanoidMotionSynthesizer::GetSkeleton()
-const boost::shared_ptr<CSkeleton> CHumanoidMotionSynthesizer::GetSkeleton()
+// const Skeleton& CHumanoidMotionSynthesizer::GetSkeleton()
+const boost::shared_ptr<Skeleton> CHumanoidMotionSynthesizer::GetSkeleton()
 {
-	shared_ptr<CMotionPrimitive> pCurrentMotion
+	shared_ptr<MotionPrimitive> pCurrentMotion
 		= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 	// GetCurrentMotionPrimitive() returns an empty motion primitive
@@ -261,12 +261,12 @@ void CHumanoidMotionSynthesizer::Walk()
 	if( motion_holder.m_vecpMotion.size() == 0 )
 		return;
 
-	shared_ptr<CMotionPrimitive> pWalkMotion = motion_holder.m_vecpMotion[0];
+	shared_ptr<MotionPrimitive> pWalkMotion = motion_holder.m_vecpMotion[0];
 
 	if( pWalkMotion )
 	{
 		// peek the current motion
-		shared_ptr<CMotionPrimitive> pCurrentMotion
+		shared_ptr<MotionPrimitive> pCurrentMotion
 			= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 		if( !pCurrentMotion->IsEmpty() &&

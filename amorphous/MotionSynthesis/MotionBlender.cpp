@@ -13,17 +13,17 @@ using namespace std;
 using namespace msynth;
 
 
-CMotionBlender::CMotionBlender()
+MotionBlender::MotionBlender()
 {
 }
 
 
-CMotionBlender::~CMotionBlender()
+MotionBlender::~MotionBlender()
 {
 }
 
 
-void CSteeringMotionBlender::SetDestDirection( Vector3 vDestDir )
+void SteeringMotionBlender::SetDestDirection( Vector3 vDestDir )
 {
 	m_vDestDir = vDestDir;
 
@@ -41,7 +41,7 @@ static inline Scalar Vec3GetSignedAngleBetween( const Vector3& a, const Vector3&
 }
 */
 
-void CSteeringMotionBlender::Update( float dt )
+void SteeringMotionBlender::Update( float dt )
 {
 	if( fabs(m_fSteeringSpeed) < 0.001 )
 		return;
@@ -79,8 +79,8 @@ void CSteeringMotionBlender::Update( float dt )
 }
 
 
-void CSteeringMotionBlender::CalculateKeyframe( CKeyframe& dest_keyframe )
-//void CSteeringMotionBlender::Update( const CMotionPrimitive& motion, CKeyframe& current_keyframe, float current_time, float dt )
+void SteeringMotionBlender::CalculateKeyframe( Keyframe& dest_keyframe )
+//void SteeringMotionBlender::Update( const MotionPrimitive& motion, Keyframe& current_keyframe, float current_time, float dt )
 {
 /*
 	Vector3 vCurrentHorizontalDir = GetRootPoseHorizontalDirection( dest_keyframe );

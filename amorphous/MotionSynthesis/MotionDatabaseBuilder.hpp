@@ -47,7 +47,7 @@ public:
 };
 
 
-class CMotionPrimitiveDesc
+class MotionPrimitiveDesc
 {
 public:
 
@@ -79,11 +79,11 @@ public:
 	std::vector<CJointFixMod> m_vecFixMod;
 
 	/// output
-	boost::shared_ptr<CMotionPrimitive> m_pMotionPrimitive;
+	boost::shared_ptr<MotionPrimitive> m_pMotionPrimitive;
 
 public:
 
-	CMotionPrimitiveDesc()
+	MotionPrimitiveDesc()
 		:
 	m_StartFrame(0),
 	m_EndFrame(0),
@@ -92,7 +92,7 @@ public:
 	m_fRootNodeHeightShift(0.0f)
 	{}
 
-	CMotionPrimitiveDesc( int sf, int ef )
+	MotionPrimitiveDesc( int sf, int ef )
 		:
 	m_StartFrame(sf),
 	m_EndFrame(ef),
@@ -104,7 +104,7 @@ public:
 
 
 /// created for each bvh file
-class CMotionPrimitiveDescGroup
+class MotionPrimitiveDescGroup
 {
 public:
 
@@ -117,74 +117,74 @@ public:
 	///   from motion data store it here.
 	/// - BVH file: create a skeleton from the HIERARCHY section of BVH file
 	/// - LWS file: create a skeleton from bones in LWS file
-	CSkeleton m_Skeleton;
+	Skeleton m_Skeleton;
 
 	/// scaling factor applied to skeleton and all the motion primitives
 	/// created from file
 	float m_fScalingFactor;
 
-	std::vector<CMotionPrimitiveDesc> m_Desc;
+	std::vector<MotionPrimitiveDesc> m_Desc;
 
 public:
 
-	CMotionPrimitiveDescGroup()
+	MotionPrimitiveDescGroup()
 		:
 	m_fScalingFactor(1.0f)
 	{}
 };
 
 
-class CMotionDatabaseCompiler
+class MotionDatabaseCompiler
 {
 protected:
 
-	/// Borrowed reference set by CMotionDatabaseBuilder and available to derived class
+	/// Borrowed reference set by MotionDatabaseBuilder and available to derived class
 	/// derived classes are responsible for storing created motion primitives to this variable
-	std::vector< boost::shared_ptr<CMotionPrimitive> > *m_pvecpMotionPrimitive;
+	std::vector< boost::shared_ptr<MotionPrimitive> > *m_pvecpMotionPrimitive;
 
 	std::vector<std::string> *m_vecpAnnotationName;
 
-	CHumanoidMotionTable *m_pMotionTable;
+	HumanoidMotionTable *m_pMotionTable;
 
 protected:
 
-	/// Allows derived class to access private member of 'CMotionPrimitive'
-	std::vector<char>& AnnotationArray( CMotionPrimitive& motion ) { return motion.m_vecAnnotation; }
+	/// Allows derived class to access private member of 'MotionPrimitive'
+	std::vector<char>& AnnotationArray( MotionPrimitive& motion ) { return motion.m_vecAnnotation; }
 
 	int GetAnnotationIndex( const std::string& annotation_name );
 
 public:
 
-	CMotionDatabaseCompiler()
+	MotionDatabaseCompiler()
 		:
 	m_pvecpMotionPrimitive(NULL),
 	m_vecpAnnotationName(NULL),
 	m_pMotionTable(NULL)
 	{}
 
-	virtual ~CMotionDatabaseCompiler() {}
+	virtual ~MotionDatabaseCompiler() {}
 
 	/// Create motion data from descs
 	/// - Each derived class is responsible for implementing this method
 	///   to create motion primitives from 'm_vecDescGroup' and store
 	///   them to 'm_vecMotionPrimitive'
-	virtual void CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group ) = 0;
+	virtual void CreateMotionPrimitives( MotionPrimitiveDescGroup& desc_group ) = 0;
 
-	friend CMotionDatabaseBuilder;
+	friend MotionDatabaseBuilder;
 };
 
 
-class CMotionPrimitiveCompilerCreator
+class MotionPrimitiveCompilerCreator
 {
 public:
 
-	CMotionPrimitiveCompilerCreator() {}
+	MotionPrimitiveCompilerCreator() {}
 
-	virtual ~CMotionPrimitiveCompilerCreator() {}
+	virtual ~MotionPrimitiveCompilerCreator() {}
 
 	virtual const char *Extension() const = 0;
 
-	virtual boost::shared_ptr<CMotionDatabaseCompiler> Create() const = 0;
+	virtual boost::shared_ptr<MotionDatabaseCompiler> Create() const = 0;
 };
 
 
@@ -244,19 +244,19 @@ public:
 
 
 */
-class CMotionDatabaseBuilder
+class MotionDatabaseBuilder
 {
 protected:
 
-	std::vector<CMotionPrimitiveDescGroup> m_vecDescGroup;
+	std::vector<MotionPrimitiveDescGroup> m_vecDescGroup;
 
 	/// stores motion primitives created from descs above
-//	std::vector<CMotionPrimitive> m_vecMotionPrimitive;
-	std::vector< boost::shared_ptr<CMotionPrimitive> > m_vecpMotionPrimitive;
+//	std::vector<MotionPrimitive> m_vecMotionPrimitive;
+	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpMotionPrimitive;
 
 	std::vector<std::string> m_vecAnnotationName;
 
-	CHumanoidMotionTable m_MotionTable;
+	HumanoidMotionTable m_MotionTable;
 
 	CMotionMapTarget m_MotionMapTarget;
 
@@ -275,7 +275,7 @@ protected:
 	/// called once for every bvh file
 	void CreateMotionPrimitiveDescGroup( CXMLNodeReader& bvh_file_node_reader );
 
-//	void CreateMotionPrimitive( const CMotionPrimitiveDesc& desc, const CMotionPrimitiveDescGroup& desc_group, BVHPlayer& bvh_player );
+//	void CreateMotionPrimitive( const MotionPrimitiveDesc& desc, const MotionPrimitiveDescGroup& desc_group, BVHPlayer& bvh_player );
 
 	void CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry );
 
@@ -293,14 +293,14 @@ protected:
 
 	void ApplyJointModification( const CJointModification& mod );
 
-	void ApplyJointFixModification( const std::vector<CJointFixMod>& mods, CMotionPrimitive& target_motion );
+	void ApplyJointFixModification( const std::vector<CJointFixMod>& mods, MotionPrimitive& target_motion );
 
-	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, CMotionPrimitiveDesc& desc );
+	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, MotionPrimitiveDesc& desc );
 
-	void ProcessCreatedMotionPrimitive( CMotionPrimitiveDesc& desc ); 
+	void ProcessCreatedMotionPrimitive( MotionPrimitiveDesc& desc ); 
 
-	Result::Name MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<CMotionPrimitive>& pSrcMotion,
-													  boost::shared_ptr<CSkeleton>& pDestSkeleton );
+	Result::Name MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<MotionPrimitive>& pSrcMotion,
+													  boost::shared_ptr<Skeleton>& pDestSkeleton );
 
 	Result::Name MapMotionPrimitivesToAnotherSkeleton();
 
@@ -310,9 +310,9 @@ protected:
 
 public:
 
-	CMotionDatabaseBuilder() {}
+	MotionDatabaseBuilder() {}
 
-	~CMotionDatabaseBuilder() {}
+	~MotionDatabaseBuilder() {}
 
 	bool Build( const std::string& source_script_filename );
 
@@ -325,11 +325,11 @@ public:
 
 
 /// Used by derived classes
-extern void AlignLastKeyframe( std::vector<CKeyframe>& vecKeyframe );
+extern void AlignLastKeyframe( std::vector<Keyframe>& vecKeyframe );
 extern Matrix33 CalculateHorizontalOrientation( const Matrix34& pose );
 
 
-extern void RegisterMotionPrimitiveCompilerCreator( boost::shared_ptr<CMotionPrimitiveCompilerCreator> pCreator );
+extern void RegisterMotionPrimitiveCompilerCreator( boost::shared_ptr<MotionPrimitiveCompilerCreator> pCreator );
 
 
 } // namespace msynth

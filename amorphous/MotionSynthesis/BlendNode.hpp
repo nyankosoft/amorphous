@@ -20,22 +20,22 @@ namespace msynth
 
 
 /// Need to share the same hiearchy with the skeleton which uses keyframes blended on this tree
-class CBlendNode
+class BlendNode
 {
 	enum Params
 	{
 		NUM_MAX_BLENDS = 4,
 	};
 
-	boost::weak_ptr<CBlendNode> m_pSelf;
+	boost::weak_ptr<BlendNode> m_pSelf;
 
 	std::string m_Name;
 
-//	std::vector<CBlendNode> m_vecChild;
+//	std::vector<BlendNode> m_vecChild;
 
 	/// Stores children as shared pointers to let motion primitives hold a pointer
 	/// to a blend node as an entry point
-	std::vector< boost::shared_ptr<CBlendNode> > m_vecpChild;
+	std::vector< boost::shared_ptr<BlendNode> > m_vecpChild;
 
 	// -1: no transform has been set.
 	int m_Priority;
@@ -44,14 +44,14 @@ class CBlendNode
 
 public:
 
-	CBlendNode();
+	BlendNode();
 
-	void SetSelf( boost::weak_ptr<CBlendNode> pSelf ) { m_pSelf = pSelf; }
+	void SetSelf( boost::weak_ptr<BlendNode> pSelf ) { m_pSelf = pSelf; }
 
-	void CreateFromSkeleton( const CBone& src_bone );
+	void CreateFromSkeleton( const Bone& src_bone );
 
 	/// Recursively sets transform nodes from src_node
-	void SetTransformNodes( const CTransformNode& src_node )
+	void SetTransformNodes( const TransformNode& src_node )
 	{
 		if( m_vecTransformNode.size() < NUM_MAX_BLENDS )
 		{
@@ -68,11 +68,11 @@ public:
 			m_vecpChild[i]->SetTransformNodes( src_node.GetChildNode(i) );
 	}
 
-	boost::shared_ptr<CBlendNode> GetBlendNodeByName( const std::string& name );
+	boost::shared_ptr<BlendNode> GetBlendNodeByName( const std::string& name );
 
 	/// Recursively sets the transforms to a tree of transform nodes.
 	/// Resizes the child buffers of dest nodes if necessary
-	void GetTransformNode( CTransformNode& dest ) const
+	void GetTransformNode( TransformNode& dest ) const
 	{
 		// blend transforms?
 /*		for( int i=0; i<m_vecTransformNode.size(); i++ )
@@ -94,7 +94,7 @@ public:
 	}
 
 	/// Extract keyframe
-	void GetKeyframe( CKeyframe& dest ) const
+	void GetKeyframe( Keyframe& dest ) const
 	{
 		GetTransformNode( dest.RootNode() );
 	}

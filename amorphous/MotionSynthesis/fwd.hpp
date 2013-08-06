@@ -10,39 +10,39 @@ namespace msynth
 
 
 // motion primitive and its components
-class CTransformNode;
-class CKeyframe;
-class CBone;
-class CSkeleton;
-class CMotionPrimitive;
+class TransformNode;
+class Keyframe;
+class Bone;
+class Skeleton;
+class MotionPrimitive;
 
 // motion blenders
-class CMotionBlender;
-class CSteeringMotionBlender;
-class CMotionPrimitiveBlender;
-class CMotionPrimitiveBlenderStatistics;
+class MotionBlender;
+class SteeringMotionBlender;
+class MotionPrimitiveBlender;
+class MotionPrimitiveBlenderStatistics;
 
 // db and its builder
-class CMotionDatabase;
-class CMotionDatabaseBuilder;
-class CMotionDatabaseCompiler;
+class MotionDatabase;
+class MotionDatabaseBuilder;
+class MotionDatabaseCompiler;
 
-class CHumanoidMotionTable;
+class HumanoidMotionTable;
 
 //#include <boost/shared_ptr.hpp>
-//typedef boost::shared_ptr<CMotionPrimitive> CMotionPrimitiveSharedPtr;
+//typedef boost::shared_ptr<MotionPrimitive> MotionPrimitiveSharedPtr;
 
 
 // later added classes
-class CBlendNode;
-class CMotionPrimitiveNode;
-class CMotionFSM;
-class CMotionFSMManager;
-class CMotionFSMInputHandler;
+class BlendNode;
+class MotionPrimitiveNode;
+class MotionFSM;
+class MotionFSMManager;
+class MotionFSMInputHandler;
 
 // more classes
-class CTransformCacheNode;
-class CTransformCacheTree;
+class TransformCacheNode;
+class TransformCacheTree;
 
 
 } // namespace msynth

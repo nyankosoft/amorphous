@@ -22,7 +22,7 @@ namespace msynth
 {
 
 
-class CBone : public IArchiveObjectBase
+class Bone : public IArchiveObjectBase
 {
 	std::string m_Name;
 
@@ -32,11 +32,11 @@ class CBone : public IArchiveObjectBase
 	/// - Bones taken from LightWave scene file use this to store rest direction of bone
 	Matrix33 m_matOrient;
 
-	std::vector<CBone> m_vecChild;
+	std::vector<Bone> m_vecChild;
 
 public:
 
-	CBone() : m_vOffset(Vector3(0,0,0)), m_matOrient(Matrix33Identity()) {}
+	Bone() : m_vOffset(Vector3(0,0,0)), m_matOrient(Matrix33Identity()) {}
 
 	const std::string& GetName() const { return m_Name; }
 
@@ -52,27 +52,27 @@ public:
 
 	int GetNumChildren() const { return (int)m_vecChild.size(); }
 
-	const CBone& GetChild( int index ) const { return m_vecChild[index]; }
+	const Bone& GetChild( int index ) const { return m_vecChild[index]; }
 
-	CBone& Child( int index ) { return m_vecChild[index]; }
+	Bone& Child( int index ) { return m_vecChild[index]; }
 
-	std::vector<CBone>& Children() { return m_vecChild; }
+	std::vector<Bone>& Children() { return m_vecChild; }
 
-	void AddChildBone( CBone& bone ) { m_vecChild.push_back( bone ); }
+	void AddChildBone( Bone& bone ) { m_vecChild.push_back( bone ); }
 
 	void Scale_r( float factor );
 
-	/*inline*/ void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const;
+	/*inline*/ void CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const TransformNode& input_node ) const;
 
 	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const;
 
-	void CreateEmptyTransformNodeTree( CTransformNode& parent_transform_node );
+	void CreateEmptyTransformNodeTree( TransformNode& parent_transform_node );
 
 	Vector3 CalculateNodePositionInSkeletonSpace(
 		const std::vector<int>& node_locator,
 		uint& index,
 		const Transform& parent_transform,
-		const CTransformNode& parent_transform_node
+		const TransformNode& parent_transform_node
 		) const;
 
 	void DumpToTextFile( FILE* fp, int depth );
@@ -85,50 +85,50 @@ public:
 };
 
 /*
-inline void CBone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const CTransformNode& input_node ) const
+inline void Bone::CalculateWorldTransform( Matrix34& dest_transform, const Matrix34& parent_transform, const TransformNode& input_node ) const
 {
 	...
 }
 */
 
 
-class CSkeleton : public IArchiveObjectBase
+class Skeleton : public IArchiveObjectBase
 {
-	CBone m_RootBone;
+	Bone m_RootBone;
 
-	static const CSkeleton m_Null;
+	static const Skeleton m_Null;
 
 public:
 
-	const CBone& GetRootBone() const { return m_RootBone; }
+	const Bone& GetRootBone() const { return m_RootBone; }
 
-	CBone& RootBone() { return m_RootBone; }
+	Bone& RootBone() { return m_RootBone; }
 
-	void SetBones( const CBone& root_bone ) { m_RootBone = root_bone; }
+	void SetBones( const Bone& root_bone ) { m_RootBone = root_bone; }
 
 	void Scale( float scaling_factor ) { m_RootBone.Scale_r( scaling_factor ); }
 
 	bool CreateLocator( const std::string& bone_name, std::vector<int>& locator ) const;
 
-	void CreateEmptyTransformNodeTree( CTransformNode& root_transform_node ) { m_RootBone.CreateEmptyTransformNodeTree( root_transform_node ); }
+	void CreateEmptyTransformNodeTree( TransformNode& root_transform_node ) { m_RootBone.CreateEmptyTransformNodeTree( root_transform_node ); }
 
-	Vector3 CalculateNodePositionInSkeletonSpace( const std::vector<int> node_locator, const CKeyframe& keyframe ) const;
+	Vector3 CalculateNodePositionInSkeletonSpace( const std::vector<int> node_locator, const Keyframe& keyframe ) const;
 
 	void DumpToTextFile( const std::string& output_filepath );
 
 	void Serialize( IArchive & ar, const unsigned int version ) { ar & m_RootBone; }
 
-	static const CSkeleton& GetNull() { return m_Null; }
+	static const Skeleton& GetNull() { return m_Null; }
 };
 
 
 /// created per target skeletal mesh ?
-class CWeightBlendSkeleton
+class WeightBlendSkeleton
 {
 public:
 };
 
-class CWeightBlendBone
+class WeightBlendBone
 {
 public:
 	Vector3 m_vOffset;

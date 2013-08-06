@@ -14,14 +14,14 @@ namespace amorphous
 using namespace msynth;
 
 
-//void InitBoneLocators( const msynth::CSkeleton& skeleton, const char *names[], int num_bone_names );
+//void InitBoneLocators( const msynth::Skeleton& skeleton, const char *names[], int num_bone_names );
 
 //void CreateBuiltinMotions(
-//	const msynth::CSkeleton& skeleton,
-//	std::vector< boost::shared_ptr<CMotionPrimitive> >& pMotions );
+//	const msynth::Skeleton& skeleton,
+//	std::vector< boost::shared_ptr<MotionPrimitive> >& pMotions );
 
 
-boost::shared_ptr<CMotionPrimitive> CreateWalkMotion( const msynth::CSkeleton& skeleton );
+boost::shared_ptr<MotionPrimitive> CreateWalkMotion( const msynth::Skeleton& skeleton );
 
 
 } // amorphous

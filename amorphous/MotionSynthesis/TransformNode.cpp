@@ -52,7 +52,7 @@ inline Transform TCBSplineMultiply( const Transform& p1, const Transform& p2, co
 }
 
 
-CTransformNode::CTransformNode( BVHBone& bvh_bone )
+TransformNode::TransformNode( BVHBone& bvh_bone )
 :
 m_Rotation(Quaternion(0,0,0,0)),
 m_vTranslation(Vector3(0,0,0))
@@ -61,7 +61,7 @@ m_vTranslation(Vector3(0,0,0))
 }
 
 
-void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1 )
+void TransformNode::SetInterpolatedTransform_r( float frac, const TransformNode& node0, const TransformNode& node1 )
 {
 	m_vTranslation = node0.m_vTranslation * ( 1.0f - frac ) + node1.m_vTranslation * frac;
 
@@ -84,11 +84,11 @@ void CTransformNode::SetInterpolatedTransform_r( float frac, const CTransformNod
 }
 
 
-void CTransformNode::SetInterpolatedTransform_r( float frac,
-	const CTransformNode& node0,
-	const CTransformNode& node1,
-	const CTransformNode& node2,
-	const CTransformNode& node3
+void TransformNode::SetInterpolatedTransform_r( float frac,
+	const TransformNode& node0,
+	const TransformNode& node1,
+	const TransformNode& node2,
+	const TransformNode& node3
 	)
 {
 //	SetInterpolatedTransform_r( frac, node1, node2 );
@@ -126,7 +126,7 @@ void CTransformNode::SetInterpolatedTransform_r( float frac,
 
 
 
-void CTransformNode::CopyFrame_r( BVHBone& src_bone )
+void TransformNode::CopyFrame_r( BVHBone& src_bone )
 {
 	const Matrix34& src_local_trans = src_bone.GetTransformationMatrix();
 
@@ -148,7 +148,7 @@ void CTransformNode::CopyFrame_r( BVHBone& src_bone )
 }
 
 
-void CTransformNode::Scale_r( float factor )
+void TransformNode::Scale_r( float factor )
 {
 	m_vTranslation *= factor;
 
@@ -161,7 +161,7 @@ void CTransformNode::Scale_r( float factor )
 }
 
 
-void CTransformNode::GetTransform( Transform& pose, const std::vector<int>& node_locator, uint& index ) const
+void TransformNode::GetTransform( Transform& pose, const std::vector<int>& node_locator, uint& index ) const
 {
 	if( (uint)node_locator.size() == index )
 	{
@@ -179,7 +179,7 @@ void CTransformNode::GetTransform( Transform& pose, const std::vector<int>& node
 }
 
 
-void CTransformNode::SetTransform( const Transform& pose, const std::vector<int>& node_locator, uint& index )
+void TransformNode::SetTransform( const Transform& pose, const std::vector<int>& node_locator, uint& index )
 {
 	if( (uint)node_locator.size() == index )
 	{
@@ -197,7 +197,7 @@ void CTransformNode::SetTransform( const Transform& pose, const std::vector<int>
 }
 
 
-CTransformNode *CTransformNode::GetNode( const std::vector<int>& node_locator, uint& index )
+TransformNode *TransformNode::GetNode( const std::vector<int>& node_locator, uint& index )
 {
 	if( (uint)node_locator.size() == index )
 		return this;

@@ -62,11 +62,11 @@ public:
 */
 class SkeletalCharacter : public GameItem
 {
-	boost::shared_ptr<msynth::CMotionFSMManager> m_pMotionFSMManager;
+	boost::shared_ptr<msynth::MotionFSMManager> m_pMotionFSMManager;
 
 	boost::shared_ptr<MeshContainerRenderMethod> m_pRenderMethod;
 
-	boost::shared_ptr<msynth::CMotionFSM> m_pLowerLimbsMotionsFSM;
+	boost::shared_ptr<msynth::MotionFSM> m_pLowerLimbsMotionsFSM;
 
 	float m_fFwdSpeed;
 	float m_fTurnSpeed;
@@ -80,7 +80,7 @@ class SkeletalCharacter : public GameItem
 
 	bool m_FeetOnGround;
 
-	boost::shared_ptr<msynth::CMotionFSMInputHandler> m_pMotionFSMInputHandler;
+	boost::shared_ptr<msynth::MotionFSMInputHandler> m_pMotionFSMInputHandler;
 
 	boost::shared_ptr<InputHandler> m_pInputHandler;
 
@@ -94,9 +94,9 @@ class SkeletalCharacter : public GameItem
 
 	std::vector<SPlane> m_Walls;
 
-	boost::shared_ptr<msynth::CMotionPrimitive> m_pSkeletonSrcMotion;
+	boost::shared_ptr<msynth::MotionPrimitive> m_pSkeletonSrcMotion;
 
-	CTransformNodeMap m_RootTransformNodeMap;
+	TransformNodeMap m_RootTransformNodeMap;
 
 	CActionCodeToGICodesMap m_ACtoGICs;
 
@@ -105,7 +105,7 @@ class SkeletalCharacter : public GameItem
 	boost::shared_ptr<CClothSystem> m_pClothSystem;
 
 	/// The hierarchical transforms of the character's current pose updated in the last call of UpdateGraphics()
-	CKeyframe m_CurrentInterpolatedKeyframe;
+	Keyframe m_CurrentInterpolatedKeyframe;
 
 	std::vector< boost::shared_ptr<GameItem> > m_pProperty;
 
@@ -210,7 +210,7 @@ public:
 
 
 
-class CCharacterMotionNodeAlgorithm : public CMotionNodeAlgorithm
+class CCharacterMotionNodeAlgorithm : public MotionNodeAlgorithm
 {
 protected:
 

@@ -19,17 +19,17 @@ namespace msynth
 
 
 //=======================================================================================
-// CTransformNode
+// TransformNode
 //   used to keep a pose of a joint
 //=======================================================================================
 
-class CTransformNode : public IArchiveObjectBase
+class TransformNode : public IArchiveObjectBase
 {
 	Quaternion m_Rotation;
 
 	Vector3 m_vTranslation;
 
-	std::vector<CTransformNode> m_vecChildNode;
+	std::vector<TransformNode> m_vecChildNode;
 
 	/// used during runtime to blend motions of particular parts of the body
 //	float m_fBlendWeight;
@@ -37,18 +37,18 @@ class CTransformNode : public IArchiveObjectBase
 public:
 
 
-	CTransformNode() : m_Rotation(Quaternion(0,0,0,0)), m_vTranslation(Vector3(0,0,0))// {}
+	TransformNode() : m_Rotation(Quaternion(0,0,0,0)), m_vTranslation(Vector3(0,0,0))// {}
 	{
 		m_Rotation.FromRotationMatrix( Matrix33Identity() );
 	}
 
-	CTransformNode( BVHBone& bvh_bone );
+	TransformNode( BVHBone& bvh_bone );
 
-	~CTransformNode() {}
+	~TransformNode() {}
 
-	void SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1 );
+	void SetInterpolatedTransform_r( float frac, const TransformNode& node0, const TransformNode& node1 );
 
-	void SetInterpolatedTransform_r( float frac, const CTransformNode& node0, const CTransformNode& node1, const CTransformNode& node2, const CTransformNode& node3 );
+	void SetInterpolatedTransform_r( float frac, const TransformNode& node0, const TransformNode& node1, const TransformNode& node2, const TransformNode& node3 );
 
 	void CopyFrame_r( BVHBone& src_bone );
 
@@ -58,9 +58,9 @@ public:
 
 	int GetNumChildren() const { return (int)m_vecChildNode.size(); }
 
-	const CTransformNode& GetChildNode(int index) const { return m_vecChildNode[index]; }
+	const TransformNode& GetChildNode(int index) const { return m_vecChildNode[index]; }
 
-	CTransformNode& ChildNode(int index) { return m_vecChildNode[index]; }
+	TransformNode& ChildNode(int index) { return m_vecChildNode[index]; }
 
 	Quaternion GetLocalRotationQuaternion() const { return m_Rotation; }
 
@@ -78,7 +78,7 @@ public:
 
 	void SetNumChildren( int num_children ) { m_vecChildNode.resize( num_children ); }
 
-	std::vector<CTransformNode>& Child() { return m_vecChildNode; }
+	std::vector<TransformNode>& Child() { return m_vecChildNode; }
 
 	Transform GetTransform() const { return Transform( m_Rotation, m_vTranslation ); }
 
@@ -88,17 +88,17 @@ public:
 
 	void SetTransform( const Transform& pose, const std::vector<int>& node_locator, uint& index );
 
-	CTransformNode *GetNode( const std::vector<int>& node_locator, uint& index );
+	TransformNode *GetNode( const std::vector<int>& node_locator, uint& index );
 
-	friend class CKeyframe;
-	friend class CMotionPrimitive;
-	friend class CBone;
+	friend class Keyframe;
+	friend class MotionPrimitive;
+	friend class Bone;
 };
 
 
 //========================== inline implementations ==========================
 
-inline void CTransformNode::Serialize( IArchive & ar, const unsigned int version )
+inline void TransformNode::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_Rotation;
 	ar & m_vTranslation;

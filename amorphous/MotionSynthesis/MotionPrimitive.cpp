@@ -14,10 +14,10 @@ using namespace boost;
 
 
 //==========================================================================
-// CMotionPrimitive
+// MotionPrimitive
 //==========================================================================
 
-void CMotionPrimitive::InsertKeyframe( const CKeyframe& keyframe )
+void MotionPrimitive::InsertKeyframe( const Keyframe& keyframe )
 {
 	if( m_vecKeyframe.empty() )
 	{
@@ -40,7 +40,7 @@ void CMotionPrimitive::InsertKeyframe( const CKeyframe& keyframe )
 }
 
 
-Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, int& i1 )
+Result::Name MotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, int& i1 )
 {
 	if( time < 0 )
 		return Result::INVALID_ARGS;
@@ -91,12 +91,12 @@ Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, i
 // 0     1     2     3     4  |  5  i2=n-1 -> i0=n-3, i1=n-2, i2=0, i3=1
 // 2-----3-----|-----0-----1-----|
 
-Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3, float& frac, fixed_vector<Vector3,4>& root_position_offsets )
+Result::Name MotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, int& i1, int& i2, int& i3, float& frac, fixed_vector<Vector3,4>& root_position_offsets )
 {
 	if( time < 0 )
 		return Result::INVALID_ARGS;
 
-	const std::vector<CKeyframe>& keyframes = m_vecKeyframe;
+	const std::vector<Keyframe>& keyframes = m_vecKeyframe;
 
 	// find the adjacent two frames which are closest to 'time'
 	int i, iNumFrames = (int)m_vecKeyframe.size();
@@ -203,7 +203,7 @@ Result::Name CMotionPrimitive::GetNearestKeyframeIndices( float time, int& i0, i
 }
 
 
-Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpolated_keyframe,
+Result::Name MotionPrimitive::GetInterpolatedKeyframe( Keyframe& dest_interpolated_keyframe,
 												  float time,
 												  Interpolation::Mode mode )
 {
@@ -269,9 +269,9 @@ Result::Name CMotionPrimitive::GetInterpolatedKeyframe( CKeyframe& dest_interpol
 }
 
 
-void CMotionPrimitive::CalculateInterpolatedKeyframe( float time )
+void MotionPrimitive::CalculateInterpolatedKeyframe( float time )
 {
-	CKeyframe m_KeyframeBuffer;
+	Keyframe m_KeyframeBuffer;
 	GetInterpolatedKeyframe( m_KeyframeBuffer, time );
 
 	if( m_pStartBlendNode )
@@ -283,12 +283,12 @@ void CMotionPrimitive::CalculateInterpolatedKeyframe( float time )
 }
 
 
-Result::Name CMotionPrimitive::CreateEmptyKeyframes( uint num_keyframes )
+Result::Name MotionPrimitive::CreateEmptyKeyframes( uint num_keyframes )
 {
 	if( !m_pSkeleton )
 		return Result::UNKNOWN_ERROR;
 
-	CTransformNode root_node;
+	TransformNode root_node;
 
 	m_pSkeleton->CreateEmptyTransformNodeTree( root_node );
 
@@ -303,7 +303,7 @@ Result::Name CMotionPrimitive::CreateEmptyKeyframes( uint num_keyframes )
 }
 
 
-void CMotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
+void MotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
 {
 	ar & m_Name;
 	ar & m_vecKeyframe;
@@ -319,7 +319,7 @@ void CMotionPrimitive::Serialize( IArchive & ar, const unsigned int version )
 }
 
 
-void CMotionPrimitive::SearchAndSetStartBlendNode( shared_ptr<CBlendNode>& pRootBlendNode )
+void MotionPrimitive::SearchAndSetStartBlendNode( shared_ptr<BlendNode>& pRootBlendNode )
 {
 	m_pStartBlendNode = pRootBlendNode->GetBlendNodeByName( m_StartBoneName );
 

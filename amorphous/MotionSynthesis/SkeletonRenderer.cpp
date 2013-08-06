@@ -15,7 +15,7 @@ namespace amorphous
 using namespace msynth;
 
 
-CSkeletonRenderer::CSkeletonRenderer()
+SkeletonRenderer::SkeletonRenderer()
 :
 m_DisplayBoneNames(false)
 {/*
@@ -24,7 +24,7 @@ m_DisplayBoneNames(false)
 }
 
 
-CSkeletonRenderer::~CSkeletonRenderer()
+SkeletonRenderer::~SkeletonRenderer()
 {
 }
 
@@ -44,7 +44,7 @@ inline Vector3 GetBoneSize( const Vector3& vOffset )
 }
 
 
-void CSkeletonRenderer::RenderSkeletonAsLines()
+void SkeletonRenderer::RenderSkeletonAsLines()
 {
 	SFloatRGBAColor start_color = SFloatRGBAColor::Aqua(), end_color = SFloatRGBAColor::White();
 	for( size_t i=0; i<m_vecLineSegment.size(); i++ )
@@ -68,7 +68,7 @@ void CSkeletonRenderer::RenderSkeletonAsLines()
 }
 
 
-void CSkeletonRenderer::StoreBonePose_r( const CBone& bone, const CTransformNode& node, const Matrix34& parent_transform, int depth )
+void SkeletonRenderer::StoreBonePose_r( const Bone& bone, const TransformNode& node, const Matrix34& parent_transform, int depth )
 {
 	Matrix34 dest_transform;
 	bone.CalculateWorldTransform( dest_transform, parent_transform, node );
@@ -93,12 +93,12 @@ void CSkeletonRenderer::StoreBonePose_r( const CBone& bone, const CTransformNode
 }
 
 
-void CSkeletonRenderer::UpdateBonePoses( const CKeyframe& keyframe )
+void SkeletonRenderer::UpdateBonePoses( const Keyframe& keyframe )
 {
 	if( keyframe.GetRootNode().GetNumChildren() == 0 )
 		return;
 
-	boost::shared_ptr<CSkeleton> pSkeleton = m_pSkeleton.lock();
+	boost::shared_ptr<Skeleton> pSkeleton = m_pSkeleton.lock();
 
 	if( pSkeleton )
 	{
@@ -117,7 +117,7 @@ void CSkeletonRenderer::UpdateBonePoses( const CKeyframe& keyframe )
 }
 
 
-void CSkeletonRenderer::RenderSkeletonAsBoxes()
+void SkeletonRenderer::RenderSkeletonAsBoxes()
 {
 //	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	Matrix44 matWorld, matScaling;
@@ -146,7 +146,7 @@ void CSkeletonRenderer::RenderSkeletonAsBoxes()
 }
 
 
-void CSkeletonRenderer::Render()
+void SkeletonRenderer::Render()
 {
 //	RenderSkeletonAsBoxes();
 	RenderSkeletonAsLines();
