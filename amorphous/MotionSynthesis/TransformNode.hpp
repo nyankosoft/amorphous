@@ -50,7 +50,7 @@ public:
 
 	void SetInterpolatedTransform_r( float frac, const TransformNode& node0, const TransformNode& node1, const TransformNode& node2, const TransformNode& node3 );
 
-	void CopyFrame_r( BVHBone& src_bone );
+	void CopyFrame_r( const BVHBone& src_bone );
 
 	void Scale_r( float factor );
 

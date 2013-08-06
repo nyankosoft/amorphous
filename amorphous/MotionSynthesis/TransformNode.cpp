@@ -126,7 +126,7 @@ void TransformNode::SetInterpolatedTransform_r( float frac,
 
 
 
-void TransformNode::CopyFrame_r( BVHBone& src_bone )
+void TransformNode::CopyFrame_r( const BVHBone& src_bone )
 {
 	const Matrix34& src_local_trans = src_bone.GetTransformationMatrix();
 
