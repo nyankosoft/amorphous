@@ -42,6 +42,16 @@ public:
 
 	void SetBaseNxJointDesc( const CJointDesc& src, NxJointDesc& dest )
 	{
+		CNxPhysActor *pActor0 = dynamic_cast<CNxPhysActor *>(src.pActor[0]);
+		CNxPhysActor *pActor1 = dynamic_cast<CNxPhysActor *>(src.pActor[1]);
+		if( !(pActor0 || pActor1) )
+			return;
+
+		dest.actor[0] = pActor0 ? pActor0->GetNxActor() : NULL;
+		dest.actor[1] = pActor1 ? pActor1->GetNxActor() : NULL;
+		if( !(dest.actor[0] || dest.actor[1]) )
+			return;
+
 		dest.maxForce   = src.MaxForce;
 		dest.maxTorque  = src.MaxTorque;
 		dest.jointFlags = 0;//ToNxJointFlags( src.JointFlags );
