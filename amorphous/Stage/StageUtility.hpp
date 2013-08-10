@@ -290,6 +290,17 @@ public:
 		const char *shape = "",
 		bool is_static = false);
 
+	Result::Name FixEntity(
+		EntityHandle<>& entity,
+		float max_force  = FLT_MAX,
+		float max_torque = FLT_MAX );
+
+	Result::Name GlueEntities(
+		EntityHandle<>& entity0,
+		EntityHandle<>& entity1,
+		float max_force  = FLT_MAX,
+		float max_torque = FLT_MAX );
+
 	Result::Name GlueEntities(
 		const char *entity0_name,
 		const char *entity1_name,
