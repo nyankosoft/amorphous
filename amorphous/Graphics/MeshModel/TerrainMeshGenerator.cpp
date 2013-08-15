@@ -539,7 +539,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 {
 	LOG_FUNCTION_SCOPE();
 
-//	g_Log.Print( "splitting texture image (src filename: %s)", src_tex_filename.c_str() );
+//	LOG_PRINTF(( "splitting texture image (src filename: %s)", src_tex_filename.c_str() ));
 
 	if( !lfs::path_exists(src_tex_filename) )
 	{
@@ -577,7 +577,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 
 	LOG_PRINT( fmt_string( " - src_tex_width: %d, dest_tex_width: %d", src_tex_width, dest_tex_width ) );
 
-//	g_Log.Print( "texture has been split into %d files", num_edge_splits*num_edge_splits );
+//	LOG_PRINTF(( "texture has been split into %d files", num_edge_splits*num_edge_splits ));
 
 	return true;
 }

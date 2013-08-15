@@ -446,7 +446,7 @@ void GraphicsResourceManager::AddCache( GraphicsResourceDesc& desc )
 
 void GraphicsResourceManager::ReleaseGraphicsResources()
 {
-//	g_Log.Print( "GraphicsResourceManager::ReleaseGraphicsResources()" );
+//	LOG_PRINT( "GraphicsResourceManager::ReleaseGraphicsResources()" );
 
 	// load the resources
 	// - Note that reference count is not changed

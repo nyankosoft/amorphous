@@ -420,7 +420,7 @@ static void SetLightColor( int index, const SFloatRGBColor& color )
 	case 1: GetEntityForLight()->v2 = vColor; break;
 	case 2: GetEntityForLight()->v3 = vColor; break;
 	default:
-		g_Log.Print( WL_ERROR, "SetLightColor() - invalid light color index: %d. Must be [0,2]" );
+		LOG_PRINTF_ERROR(( "An invalid light color index: %d. Must be [0,2]", index ));
 	}*/
 }
 

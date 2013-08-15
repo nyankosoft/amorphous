@@ -418,7 +418,7 @@ short EntityManager::MakeEntityNode_r(short sNodeIndex, BSPTree* pSrcBSPTree,
 	short sFrontChild = rThisNode.sFrontChild;
 	short sBackChild = rThisNode.sBackChild;
 
-//	g_Log.Print( "NODE: %d / FC: %d / BC: %d", sNodeIndex, sFrontChild, sBackChild );
+//	LOG_PRINTF(( "NODE: %d / FC: %d / BC: %d", sNodeIndex, sFrontChild, sBackChild ));
 
 	if( 0 <= sFrontChild && sBackChild < 0 )	//case (1)
 		return MakeEntityNode_r(sFrontChild, pSrcBSPTree, pDestEntityTree);  //recurse down to front
@@ -728,7 +728,7 @@ CCopyEntity *EntityManager::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 //		}
 	}
 
-//	g_Log.Print( "the copy entity of " + rBaseEntity.GetNameString() + " is in a valid position" );
+//	LOG_PRINT( "the copy entity of " + rBaseEntity.GetNameString() + " is in a valid position" );
 
 	// create an entity
 	shared_ptr<CCopyEntity> pNewEntitySharedPtr = m_pEntityFactory->CreateEntity( rCopyEntityDesc.TypeID );

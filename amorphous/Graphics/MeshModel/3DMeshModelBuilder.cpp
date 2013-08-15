@@ -703,8 +703,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 	strSrcFilename = m_strSrcFilename;
 	strDestFilename = m_strDestFilename;
 
-	g_Log.Print( "C3DMeshModelBuilder::ProcessTextureFilenames() - tex filename option: %s",
-		GetTexFilenameOptionTitle(m_TextureFilenameOption) );
+	LOG_PRINTF(( "texture filename option: %s", GetTexFilenameOptionTitle(m_TextureFilenameOption) ));
 
 	int i;
 	for( i=0; i<m_iNumMaterials; i++ )

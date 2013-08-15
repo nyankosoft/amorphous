@@ -363,7 +363,7 @@ PyObject* SetTarget( PyObject* self, PyObject* args )
 	else
 	{
 		gs_ScriptCameraKeyFrames.Camera.FocusTarget.AddKeyFrame( time, CameraTargetHolder(focus_target_entity_name) );
-//		g_Log.Print( "cam.SetTarget() - unable to find the target entity: %s", focus_target_entity_name );
+//		LOG_PRINTF(( "cam.SetTarget() - unable to find the target entity: %s", focus_target_entity_name ));
 //		Py_INCREF( Py_None );
 //		return Py_None;
 	}

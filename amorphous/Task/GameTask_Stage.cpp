@@ -128,7 +128,7 @@ int GameTask_Stage::FrameMove( float dt )
 
 	ProfileBegin( "Main Loop" );
 
-//	ONCE( g_Log.Print( "GameTask_Stage::FrameMove() - stage state: %d", g_pStage->GetState() ) );
+//	ONCE( LOG_PRINTF(( "stage state: %d", g_pStage->GetState() )) );
 
 	int state = STATE_PLAYER_IN_STAGE;//this->GetState();
 

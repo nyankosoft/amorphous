@@ -271,13 +271,13 @@ void CBE_EnemyShip::AddExtraData()
 
 	if( !pItem )
 	{
-		g_Log.Print( WL_ERROR, "CBE_EnemyShip::AddExtraData() - cannot find the aircraft item: %s", m_strShipItemName.c_str() );
+		LOG_PRINT_ERROR( "Cannot find the aircraft item: " + m_strShipItemName );
 		return;
 	}
 
 	if( pItem->GetArchiveObjectID() != GameItem::ID_AIRCRAFT )
 	{
-		g_Log.Print( WL_ERROR, "CBE_EnemyShip::AddExtraData() - the item '%s' is not an aircraft", m_strShipItemName.c_str() );
+		LOG_PRINT_ERROR( "The item '" + m_strShipItemName + "' is not an aircraft." );
 		return;
 	}
 */

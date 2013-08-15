@@ -30,14 +30,14 @@ void BSPTreeForTriangleMesh::Release()
 inline void RecordNode( const STMBinNode& node, const char* text )
 {
 	const static char s_Axis[3] = { 'x', 'y', 'z' };
-	g_Log.Print( "%s: (tris: %d / %s / volume: %f / axis: %c / depth: %d / children %d, %d )",
+	LOG_PRINTF(( "%s: (tris: %d / %s / volume: %f / axis: %c / depth: %d / children %d, %d )",
 		text,
 		node.veciTriangleIndex.size(),
 		to_string(node.aabb).c_str(),
 		node.aabb.GetVolume(),
 		s_Axis[node.iAxis],
 		node.depth,
-		node.child[0], node.child[1] );
+		node.child[0], node.child[1] ));
 }
 */
 
