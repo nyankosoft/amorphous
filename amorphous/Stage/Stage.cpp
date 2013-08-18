@@ -10,6 +10,7 @@
 #include "Stage/ScreenEffectManager.hpp"
 #include "Stage/SurfaceMaterialManager.hpp"
 #include "Stage/Input/InputHandler_StageDebug.hpp"
+#include "Script/PyModule_amorphous.hpp"
 #include "Script/PyModule_3DMath.hpp"
 #include "Script/PyModule_Graphics.hpp"
 #include "Script/PyModule_sound.hpp"
@@ -677,6 +678,7 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 
 	if( ScriptManager::ms_UseBoostPythonModules )
 	{
+		RegisterPythonModule_amorphous();
 		RegisterPythonModule_math3d();
 		RegisterPythonModule_gfx();
 		RegisterPythonModule_sound();

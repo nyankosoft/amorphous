@@ -85,6 +85,7 @@
     <ClInclude Include="..\..\amorphous\Script\EmbeddedPythonModule.hpp" />
     <ClInclude Include="..\..\amorphous\Script\gfx_py.hpp" />
     <ClInclude Include="..\..\amorphous\Script\math3d_py.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_amorphous.hpp" />
     <ClInclude Include="..\..\amorphous\Script\PythonScriptManager.hpp" />
     <ClInclude Include="..\..\amorphous\Stage.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\BE_StaticLiquid.hpp" />
@@ -349,6 +350,7 @@
     <ClCompile Include="..\..\amorphous\Script\EmbeddedPythonModule.cpp" />
     <ClCompile Include="..\..\amorphous\Script\gfx_py.cpp" />
     <ClCompile Include="..\..\amorphous\Script\math3d_py.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_amorphous.cpp" />
     <ClCompile Include="..\..\amorphous\Script\PythonScriptManager.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\BE_StaticLiquid.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\BSPMap.cpp">
