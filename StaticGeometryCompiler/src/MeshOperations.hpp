@@ -4,8 +4,8 @@
 
 
 #include <vector>
-#include "gds/Graphics/fwd.hpp"
-#include "gds/3DMath/Sphere.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/3DMath/Sphere.hpp"
 
 using namespace amorphous;
 

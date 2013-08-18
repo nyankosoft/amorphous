@@ -7,7 +7,7 @@
 #include "LightWave/LightWaveObject.hpp"
 #include "LightWave/3DMeshModelBuilder_LW.hpp"
 
-#include "JigLib/TriangleMesh.hpp"
+#include "Physics/Engines/JigLib/TriangleMesh.hpp"
 
 using std::string;
 using std::vector;
@@ -116,7 +116,7 @@ const string gs_TempTextureDirectory = "temp";
 
 bool CStaticGeometryCompilerFG::CreateTerrainMesh( int split_tex_width, double tex_coord_shift_u, double tex_coord_shift_v )
 {
-	g_Log.Print( "CStaticGeometryCompilerFG::CreateTerrainMesh()" );
+	LOG_PRINT( "Entered." );
 
 	C3DMeshModelArchive src_mesh;
 	bool loaded = CreateMeshArchive( "Terrain", src_mesh );

@@ -10,6 +10,7 @@
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "amorphous/Support/MiscAux.hpp"
 #include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Stage/StaticGeometry.hpp"
 #include "amorphous/XML/XMLDocumentLoader.hpp"
 
@@ -73,7 +74,7 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 {
 	// output log text on the screen
 //	g_pLogOutput = new LogOutput_ScrolledTextBuffer( "Arial", 6, 12, 24, 120 );
-//	g_Log.AddLogOutput( g_pLogOutput );
+//	GlobalLog().AddLogOutput( g_pLogOutput );
 //	g_pLogOutput->SetTopLeftPos( Vector2(8,16) );
 
 //	SetDefaultSkyboxMesh( compiler_fg );
@@ -143,22 +144,22 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 	//   
 	string log_filename = string("log_") + GetBuildInfo();
 	LogOutput_HTML html_log( log_filename + ".html" );
-	g_Log.AddLogOutput( &html_log );
+	GlobalLog().AddLogOutput( &html_log );
 
 	LogOutput_TextFile textfile_log( log_filename + ".txt" );
-	g_Log.AddLogOutput( &textfile_log );
+	GlobalLog().AddLogOutput( &textfile_log );
 
-	g_Log.Print( "initial working directory: " + initial_working_directory );
+	LOG_PRINT( "initial working directory: " + initial_working_directory );
 
-	g_Log.Print( "current working directory: " + lfs::get_cwd() );
+	LOG_PRINT( "current working directory: " + lfs::get_cwd() );
 
-	g_Log.Print( "command line argument string: " + cmd_line );
+	LOG_PRINT( "command line argument string: " + cmd_line );
 
-	g_Log.Print( "Compiling a static geometry from the following desc file: '%s'", filename.c_str() );
+	LOG_PRINTF(( "Compiling a static geometry from the following desc file: '%s'", filename.c_str() ));
 
-//	g_Log.Print( "directory path of exe file: " + lfs::get_path(get_exe_filepath()) );
+//	GlobalLog().Print( "directory path of exe file: " + lfs::get_path(get_exe_filepath()) );
 
-//	g_Log.Print( "_fullpath( dest, '.', MAX_PATH ) > dest: '%s'", full_path );
+//	GlobalLog().Print( "_fullpath( dest, '.', MAX_PATH ) > dest: '%s'", full_path );
 
 //	filename = "./testdata/static_geometry_desc_draft.xml";
 
@@ -173,7 +174,7 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 		}
 		catch( std::exception& e )
 		{
-			g_Log.Print( WL_ERROR, "exception: %s", e.what() );
+			GlobalLog().Print( WL_ERROR, "exception: %s", e.what() );
 		}
 	}
 
@@ -188,8 +189,8 @@ bool RunStaticGeometryCompiler( const std::string& cmd_line,
 		ret = false;
 	}
 
-	g_Log.RemoveLogOutput( &html_log );
-	g_Log.RemoveLogOutput( &textfile_log );
+	GlobalLog().RemoveLogOutput( &html_log );
+	GlobalLog().RemoveLogOutput( &textfile_log );
 
 	return ret;
 }

@@ -59,7 +59,7 @@ int main( int argc, char *argv[] )
 	}
 	catch( exception& e )
 	{
-		g_Log.Print( WL_ERROR, "exception: %s", e.what() );
+		GlobalLog().Print( WL_ERROR, "exception: %s", e.what() );
 	}
 
 //	g_Log.RemoveLogOutput( g_pLogOutput );
