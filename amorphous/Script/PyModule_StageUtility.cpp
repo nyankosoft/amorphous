@@ -13,6 +13,8 @@ using namespace physics;
 
 EntityHandle<> (StageMiscUtility::*CreateBox_Pose)  ( Vector3 edge_lengths, SFloatRGBAColor diffuse_color, const Matrix34& pose,                                       float mass, const std::string& material_name, const std::string& entity_name, const std::string& entity_attributes_name ) = &StageMiscUtility::CreateBox;
 EntityHandle<> (StageMiscUtility::*CreateBox_PosHPB)( Vector3 edge_lengths, SFloatRGBAColor diffuse_color, const Vector3& pos, float heading, float pitch, float bank, float mass, const std::string& material_name, const std::string& entity_name, const std::string& entity_attributes_name ) = &StageMiscUtility::CreateBox;
+Result::Name (StageMiscUtility::*GlueEntitiesEH)  ( EntityHandle<>& entity0, EntityHandle<>& entity1, float max_force, float max_torque ) = &StageMiscUtility::GlueEntities;
+Result::Name (StageMiscUtility::*GlueEntitiesEN)  ( const char *entity0_name, const char *entity1_name, float max_force, float max_torque ) = &StageMiscUtility::GlueEntities;
 
 
 namespace stage_util
@@ -54,6 +56,9 @@ BOOST_PYTHON_MODULE(stage_util)
 		.def( "CreateSkybox",                      &StageMiscUtility::CreateSkybox, ( py::arg("mesh_path")="", py::arg("texture_path")="" ) )
 		.def( "CreateStaticGeometry",              &StageMiscUtility::CreateStaticGeometry, ( py::arg("resource_path") ) )
 		.def( "CreateStaticWater",                 &StageMiscUtility::CreateStaticWater,    ( py::arg("model"), py::arg("name")="", py::arg("position") = Vector3(0,0,0) ) )
+		.def( "FixEntity",                         &StageMiscUtility::FixEntity,            ( py::arg("entity"), py::arg("max_force") = FLT_MAX, py::arg("max_torque") = FLT_MAX ) )
+		.def( "GlueEntities",                      GlueEntitiesEH,                          ( py::arg("entity0"), py::arg("entity1"), py::arg("max_force") = FLT_MAX, py::arg("max_torque") = FLT_MAX ) )
+		.def( "GlueEntities",                      GlueEntitiesEN,                          ( py::arg("entity0_name"), py::arg("entity1_name"), py::arg("max_force") = FLT_MAX, py::arg("max_torque") = FLT_MAX ) )
 	;
 
 	class_< StageEntityUtility, shared_ptr<StageEntityUtility> >("StageEntityUtility")
