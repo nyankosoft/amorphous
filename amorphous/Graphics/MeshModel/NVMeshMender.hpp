@@ -325,15 +325,15 @@ class MeshMender
 										Triangle* triB,
 						std::vector< Vertex >& theVerts);
 
-		//calculates the tangent and binormal per face
+		/// \brief Calculates the tangent and binormal per face
 		void GetGradients( const MeshMender::Vertex& v0,
                            const MeshMender::Vertex& v1,
                            const MeshMender::Vertex& v2,
                            Vector3& tangent,
                            Vector3& binormal) const;
 
-		void OrthogonalizeTangentsAndBinormals( 
-						std::vector< Vertex >&   theVerts );
+		/// \return true on success, false on failure
+		bool OrthogonalizeTangentsAndBinormals( std::vector<Vertex>& theVerts );
 
 		void UpdateTheIndicesWithFinalIndices(std::vector< unsigned int >& theIndices );
 

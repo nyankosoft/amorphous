@@ -526,9 +526,9 @@ bool MeshMender::Mend(
 	}
 
 	UpdateTheIndicesWithFinalIndices(theIndices );
-	OrthogonalizeTangentsAndBinormals(theVerts);
+	bool res = OrthogonalizeTangentsAndBinormals(theVerts);
 		
-	return true;
+	return res;
 }
 
 void MeshMender::BuildGroups(	Triangle* tri, //the tri of interest
@@ -827,8 +827,7 @@ void MeshMender::SetUpFaceVectors(Triangle& t,
                    t.binormal);
 }
 
-void MeshMender::OrthogonalizeTangentsAndBinormals( 
-						std::vector< Vertex >&   theVerts )
+bool MeshMender::OrthogonalizeTangentsAndBinormals( std::vector<Vertex>& theVerts )
 {
 	//put our tangents and binormals through the final orthogonalization
 	//with the final processed normals
@@ -842,6 +841,11 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 			must still pass in valid normals to be used when calculating\
 			tangents and binormals.");
 
+		if( !(Vec3Length(theVerts[i].normal) > 0.00001f) )
+		{
+//			LOG_PRINT_ERROR( "Found a zero length normal." );
+			return false;
+		}
 
 		//now with T and B and N we can get from tangent space to object space
 		//but we want to go the other way, so we need the inverse
@@ -929,6 +933,7 @@ void MeshMender::OrthogonalizeTangentsAndBinormals(
 
 	}
 	
+	return true;
 }
 
 void MeshMender::GetGradients( const MeshMender::Vertex& v0,
