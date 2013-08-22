@@ -50,7 +50,7 @@ C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW()
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
 m_UseBoneStartAsBoneLocalOrigin(false)
 {
-	m_pMesh = shared_ptr<General3DMesh>( new General3DMesh() );
+	m_pMesh.reset( new General3DMesh() );
 
 //	IndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
@@ -62,7 +62,7 @@ m_pSrcObject(pSrcObject),
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
 m_UseBoneStartAsBoneLocalOrigin(false)
 {
-	m_pMesh = shared_ptr<General3DMesh>( new General3DMesh() );
+	m_pMesh.reset( new General3DMesh() );
 
 //	IndexedPolygon::SetVertexBuffer( &m_pMesh->GetVertexBuffer() );
 }
@@ -162,6 +162,8 @@ int GetAnyPolygonGroup( const LWO2_Layer& rLayer, int polygon_index )
 
 void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFilter& filter )
 {
+	LOG_PRINT( "Processing a layer: " + rLayer.GetName() );
+
 	if( !m_pSrcObject )
 	{
 		LOG_PRINT_ERROR( " m_pSrcObject == NULL" );
@@ -175,8 +177,8 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 
 	// =============== load vertices ===============
 
-	vector<Vector3> rvecVertex = rLayer.GetVertex();
-	vector<Vector3> rvecNormal = rLayer.GetVertexNormal();
+	const vector<Vector3>& rvecVertex = rLayer.GetVertex();
+	const vector<Vector3>& rvecNormal = rLayer.GetVertexNormal();
 
 	int i, j;
 	const int iNumVertices = (int)rvecVertex.size();
@@ -192,7 +194,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 		TempVertexBuffer[i].m_DiffuseColor = default_color;
 
 	// check if there are any texture uv mappings
-	vector<LWO2_TextureUVMap>& rTexUVMap = rLayer.GetTextureUVMap();
+	const vector<LWO2_TextureUVMap>& rTexUVMap = rLayer.GetTextureUVMap();
 	if( 0 < rTexUVMap.size() )
 		RaiseVertexFormatFlags( CMMA_VertexSet::VF_2D_TEXCOORD );
 
@@ -216,7 +218,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 	// =============== load polygons ===============
 
 	// get surface info
-	vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
+	const vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	const int iNumSurfaces = (int)rvecSurface.size();
 
 	// surfaces in LightWave are used as materials
@@ -226,17 +228,16 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 	vector<LWO2_Face>& rvecPolygon = rLayer.GetFace();
 
 	const int iNumPolygons = (int)rvecPolygon.size();
-	int iNumPolVerts;
 
 	vector<IndexedPolygon>& polygon_buffer = m_pMesh->GetPolygonBuffer();
 	for( i=0; i<iNumPolygons; i++ )
 	{
-		LWO2_Face& rPolygon = rvecPolygon[i];
+		const LWO2_Face& rPolygon = rvecPolygon[i];
 
 		const int surface_index = rPolygon.GetSurfaceIndex();
 
 
-		LWO2_Surface *pSurf = m_pSrcObject->FindSurfaceFromTAG( surface_index );
+		const LWO2_Surface *pSurf = m_pSrcObject->FindSurfaceFromTAG( surface_index );
 
 		if( !pSurf )
 		{
@@ -262,8 +263,8 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 		}
 
 		// set indexed polygons
-		vector<UINT4>& rvecIndex = rPolygon.GetVertexIndex();
-		iNumPolVerts = (int)rvecIndex.size();
+		const vector<UINT4>& rvecIndex = rPolygon.GetVertexIndex();
+		const int iNumPolVerts = (int)rvecIndex.size();
 
 		polygon_buffer.push_back( IndexedPolygon( m_pMesh->GetVertexBuffer() ) );
 		polygon_buffer.back().m_MaterialIndex = iMatIndex;
@@ -277,7 +278,7 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 
 		// set texture uv
 		// right now, only a single texture uvmap is supported
-		LWO2_TextureUVMap* pUVMap = m_pSrcObject->FindTextureUVMapFromSurface( rSurf, ID_COLR, rLayer );
+		const LWO2_TextureUVMap* pUVMap = m_pSrcObject->FindTextureUVMapFromSurface( rSurf, ID_COLR, rLayer );
 		float u,v;
 		int vert_index;
 
@@ -287,7 +288,8 @@ void C3DMeshModelBuilder_LW::ProcessLayer( LWO2_Layer& rLayer, const GeometryFil
 			vert_index = rvecIndex[j];
 
 			if( rLayer.GetUV(u, v, vert_index, pUVMap) )
-			{	// found a corresponding set of uv coord
+			{
+				// found a corresponding set of uv coord
 				TempVertexBuffer[vert_index].m_TextureCoord[0].u = u;
 				TempVertexBuffer[vert_index].m_TextureCoord[0].v = v;
 			}
@@ -411,13 +413,15 @@ void C3DMeshModelBuilder_LW::BreakPolygonsIntoSubsetsByPolygonGroups()
 
 void C3DMeshModelBuilder_LW::SetMaterials()
 {
+	LOG_PRINT( "Setting materials..." );
+
 	if( !m_pSrcObject )
 	{
 		LOG_PRINT_ERROR( " m_pSrcObject == NULL" );
 		return;
 	}
 
-	vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
+	const vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	size_t i, iNumSurfaces = rvecSurface.size();
 
 //	CMMA_Material material;
@@ -425,7 +429,7 @@ void C3DMeshModelBuilder_LW::SetMaterials()
 
 	size_t j = 0;
 
-	vector<LWO2_StillClip>& rvecClip = m_pSrcObject->GetStillClip();
+	const vector<LWO2_StillClip>& rvecClip = m_pSrcObject->GetStillClip();
 	size_t k, iNumClips = rvecClip.size();
 
 	vecMaterial.resize( iNumSurfaces );
@@ -535,7 +539,7 @@ void C3DMeshModelBuilder_LW::LoadSurfaceCommentOptions()
 		return;
 	}
 
-	vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
+	const vector<LWO2_Surface>& rvecSurface = m_pSrcObject->GetSurface();
 	size_t i, num_surfaces = rvecSurface.size();
 	size_t pos;
 	const string tex_option = "-t ";
