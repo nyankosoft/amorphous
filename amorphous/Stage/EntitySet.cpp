@@ -680,7 +680,7 @@ CCopyEntity *EntityManager::CreateEntity( CCopyEntityDesc& rCopyEntityDesc )
 
 	BaseEntityHandle& rBaseEntityHandle = *(rCopyEntityDesc.pBaseEntityHandle);
 
-//	PrintLog( "creating a copy entity of " + string(rBaseEntityHandle.GetBaseEntityName()) );
+//	LOG_PRINT( "creating a copy entity of " + string(rBaseEntityHandle.GetBaseEntityName()) );
 
 	BaseEntity *pBaseEntity = GetBaseEntity( rBaseEntityHandle );
 	if( !pBaseEntity )
