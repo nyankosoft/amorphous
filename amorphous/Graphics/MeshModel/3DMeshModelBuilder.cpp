@@ -266,7 +266,8 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 	size_t iNumIndices = theIndices.size();
 
     // pass it in to the mender to do it's stuff
-	mender.Mend( theVerts,
+	bool res = mender.Mend(
+		         theVerts,
 		         theIndices,
 				 mappingNewToOld,
 				 -1.0f,						// minNormalCreaseCos
@@ -275,6 +276,9 @@ void C3DMeshModelBuilder::CalculateTangentSpace()
 				 0.0f,						// weightNormalsByArea
 		         MeshMender::DONT_CALCULATE_NORMALS,
 				 MeshMender::RESPECT_SPLITS );
+
+	if( !res )
+		LOG_PRINT_WARNING( "MeshMender::Mend() failed." );
 
 
 	// check indices
