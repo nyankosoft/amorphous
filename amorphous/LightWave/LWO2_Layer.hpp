@@ -172,7 +172,7 @@ public:
 
 	inline int GetNumPoints() const { return (int)m_vecPointIndex.size(); }
 
-	inline std::vector<UINT4>& GetVertexIndex() { return m_vecPointIndex; }
+	inline const std::vector<UINT4>& GetVertexIndex() const { return m_vecPointIndex; }
 
 	inline UINT4 GetVertexIndex( int i ) const { return m_vecPointIndex[i]; }
 
@@ -304,7 +304,7 @@ public:
 
 	void ReadPTAG(UINT4& ptagsize, LWO2_Object& rObject, FILE* fp);
 
-	bool GetUV( float& u, float& v, int iPointIndex, LWO2_TextureUVMap *pTexUVMap );
+	bool GetUV( float& u, float& v, int iPointIndex, const LWO2_TextureUVMap *pTexUVMap );
 
 	Vector3 GetInterpolatedNormal( LWO2_Face& rFace, int iPntIndex );
 

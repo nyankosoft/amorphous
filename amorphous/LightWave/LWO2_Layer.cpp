@@ -709,7 +709,7 @@ Vector3 LWO2_Layer::GetInterpolatedNormal( LWO2_Face& rFace, int iPntIndex )
  * \return false if the texture uv is not found for the vertex of the specified index
  * \param [out] uv texture u & v
  */
-bool LWO2_Layer::GetUV( float& u, float& v, int iPointIndex, LWO2_TextureUVMap *pTexUVMap )
+bool LWO2_Layer::GetUV( float& u, float& v, int iPointIndex, const LWO2_TextureUVMap *pTexUVMap )
 {
 	if( !pTexUVMap )
 		return false;
