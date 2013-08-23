@@ -297,7 +297,6 @@
     <ClCompile Include="..\..\amorphous\Support\MTRand.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Profile.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Timer_Win32.cpp" />
-    <ClCompile Include="..\..\amorphous\Support\Log\DefaultLog.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.cpp" />

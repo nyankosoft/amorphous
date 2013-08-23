@@ -612,9 +612,6 @@
     <ClCompile Include="..\..\amorphous\Support\Timer_Win32.cpp">
       <Filter>Support</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Support\Log\DefaultLog.cpp">
-      <Filter>Support\Log</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp">
       <Filter>Support\Log</Filter>
     </ClCompile>
