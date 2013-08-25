@@ -23,17 +23,6 @@ namespace serialization
 static const char s_acBinaryArchiveString[BA_STRING_LENGTH] = "_BINARYARCHIVE_";
 
 
-/*
-enum eArchiveFlag
-{
-	ARCHIVE_FLAG1 = (1 << 0),
-	ARCHIVE_FLAG2 = (1 << 1),
-	ARCHIVE_FLAG3 = (1 << 2),
-	ARCHIVE_FLAG4 = (1 << 3),
-};
-*/
-
-
 class IArchiveObjectBase;
 
 
