@@ -6,10 +6,7 @@ using namespace amorphous::serialization;
 
 using namespace std;
 
-/*
-CBinaryArchive_Input::CBinaryArchive_Input( const char *pcFilename,
-											const unsigned long archive_id,
-										    unsigned int flag )*/
+
 CBinaryArchive_Input::CBinaryArchive_Input( const string& filename,
 											const char *pStringID,
 										    unsigned int flag )
@@ -30,11 +27,6 @@ CBinaryArchive_Input::CBinaryArchive_Input( const string& filename,
 }
 
 
-static bool s_bOldArchive = false;
-
-//#define __ARCHIVE_VERSION_2__
-
-
 bool CBinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 {
 	if( !m_InputFileStream.is_open() )
@@ -47,30 +39,9 @@ bool CBinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 		HandleData( &c, sizeof(char) );
 		acStr[i] = ~c;
 	}
+
 	if( strcmp(s_acBinaryArchiveString,acStr) != 0 )
-	{
-		return false;	// invalid archive
-
-		// load as an old archive
-/*		streampos pos = m_InputFileStream.tellg();
-		pos -= BA_STRING_LENGTH;
-		m_InputFileStream.seekg( pos );
-		s_bOldArchive = true;
-		(*this) & obj;
-		return true;*/
-	}
-
-	s_bOldArchive = false;
-
-#ifdef  __ARCHIVE_VERSION_2__
-
-	// test if the archive has the same id defined by the user
-	unsigned long id;
-	HandleData( &id, sizeof(long) );
-//	if( id != m_UserDefinedArchiveID )
-//		return false;	// user defined IDs does not match
-
-#else
+		return false;	// An invalid archive
 
 	string strID;
 	size_t len = m_strUserDefinedID.length();
@@ -87,8 +58,6 @@ bool CBinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 	if( m_strUserDefinedID != strID )
 		return false;
 
-#endif  /*  __ARCHIVE_VERSION_2__  */
-
 	// load binary archive data
 	(*this) & obj;
 
@@ -101,11 +70,8 @@ IArchive& CBinaryArchive_Input::operator & (IArchiveObjectBase& rData)
 {
 	unsigned int uiVersion = 0;
 
-	if( !s_bOldArchive )					///
-	{										///
 	// read the version info
 	HandleData( &uiVersion, sizeof(int) );
-	}										///
 
 	rData.Serialize( *this, uiVersion );
 
