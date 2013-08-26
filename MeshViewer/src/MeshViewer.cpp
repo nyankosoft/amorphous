@@ -277,15 +277,14 @@ void CMeshViewer::LoadShaders()
 
 void CMeshViewer::RenderMeshes()
 {
-	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+	Result::Name res = Result::SUCCESS;
 
 	for( int i=0; i<4; i++ )
 	{
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSU,  D3DTADDRESS_WRAP );
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSV,  D3DTADDRESS_WRAP );
+		res = GraphicsDevice().SetSamplingParameter( i, SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
+		res = GraphicsDevice().SetSamplingParameter( i, SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
+		res = GraphicsDevice().SetSamplingParameter( i, SamplingParameter::TEXTURE_WRAP_AXIS_0, TextureAddressMode::MIRRORED_REPEAT );
+		res = GraphicsDevice().SetSamplingParameter( i, SamplingParameter::TEXTURE_WRAP_AXIS_1, TextureAddressMode::MIRRORED_REPEAT );
 	}
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
@@ -296,10 +295,11 @@ void CMeshViewer::RenderMeshes()
 //	pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
 //	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
-	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
-	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
-	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
+//	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
+//	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
+//	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
+	GraphicsDevice().Enable( RenderStateType::FACE_CULLING );
+	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
 //	ShaderManager *pShaderManager = m_Shaders[ m_CurrentShaderIndex ].GetShaderManager();
 	ShaderManager *pShaderManager
