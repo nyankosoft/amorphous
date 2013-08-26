@@ -5,8 +5,7 @@
 #include "Support/MiscAux.hpp"
 #include "Support/MTRand.hpp"
 #include "Support/single_instance.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Log/LogOutput.hpp"
+#include "Support/Log/DefaultLogAux.hpp"
 #include "Support/DebugOutput.hpp"
 #include "Support/Profile.hpp"
 #include "Support/BitmapImage.hpp"
@@ -457,8 +456,7 @@ void GameApplicationBase::Run()
 
 	// set log output device
 //	boost::filesystem::complete( "./debug" );
-	LogOutput_HTML html_log( "./debug/log_" + string(GetBuildInfo()) + ".html" );
-	GlobalLog().AddLogOutput( &html_log );
+	InitHTMLLog( "./debug/log_" + string(GetBuildInfo()) + ".html" );
 
 	{
 		// mutex - lock
@@ -482,8 +480,6 @@ void GameApplicationBase::Run()
 	}
 
 	GameTask::ReleaseAnimatedGraphicsManager();
-
-	GlobalLog().RemoveLogOutput( &html_log );
 }
 
 

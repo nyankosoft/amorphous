@@ -7,7 +7,7 @@
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/WindowMisc_Win32.hpp"
-#include "amorphous/Support/Log/LogOutput.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 #include "amorphous/Input/InputHub.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -181,8 +181,7 @@ void GraphicsApplicationBase::Run()
 	if( res != Result::SUCCESS )
 		return;
 
-	LogOutput_HTML html_log( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
-	GlobalLog().AddLogOutput( &html_log );
+	InitHTMLLog( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
 
 	InitFreeImage();
 
