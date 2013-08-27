@@ -1,6 +1,7 @@
 #include "LogOutput.hpp"
 #include "../../base.hpp"
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -88,22 +89,42 @@ void LogOutput_Console::Print( const LogMessage& msg )
 // LogOutput_HTML
 //=================================================================================
 
-#define NUM_TEMPLATE_LINES	10
-#define NUM_BEGINNING_LINES	7
+static const char *sg_forms =
+	"	<form>\n"\
+	"	<input id=\"I\" type=\"checkbox\" onclick='handleClick(this);' name=\"level\" value=\"i\" checked>Information\n"\
+	"	<input id=\"E\" type=\"checkbox\" onclick='handleClick(this);' name=\"level\" value=\"e\" checked>Error\n"\
+	"	<input id=\"W\" type=\"checkbox\" onclick='handleClick(this);' name=\"level\" value=\"w\" checked>Warning\n"\
+	"	<input id=\"C\" type=\"checkbox\" onclick='handleClick(this);' name=\"level\" value=\"c\" checked>Caution\n"\
+	"	<input id=\"V\" type=\"checkbox\" onclick='handleClick(this);' name=\"level\" value=\"v\" checked>Verbose\n"\
+	"	</form>\n";
 
-const char s_HTMLTemplate[NUM_TEMPLATE_LINES][256] = 
-{
-	"<html>",
-	"	<head>",
-	"		<title></title>",
-	"	</head>",
-	"	<body text=\"#F0F0F0\" bgcolor=\"#080808\">",
-	"	<table width=\"90%\" align=\"center\" border=\"1\" bordercolor=\"#CCCCCC\" cellpadding=\"3\" cellspacing=\"1\">",
-	"	<tr><td width=\"15%\" align=\"center\">TIME</td><td>Message</td></tr>",
-	"	</table>",
-	"	</body>",
-	"</html>"
-};
+static const char *sg_body_and_table_end =
+	"	</table>\n"\
+	"	</body>\n";
+
+static const char *js_source =
+	"	<script>\n"\
+	"	function getCheckedClasses()\n"\
+	"	{\n"\
+	"		var text = \"\";\n"\
+	"		if( document.getElementById(\"I\").checked ) text += \"I\";\n"\
+	"		if( document.getElementById(\"E\").checked ) text += \"E\";\n"\
+	"		if( document.getElementById(\"W\").checked ) text += \"W\";\n"\
+	"		if( document.getElementById(\"C\").checked ) text += \"C\";\n"\
+	"		if( document.getElementById(\"V\").checked ) text += \"V\";\n"\
+	"		return text;\n"\
+	"	}\n"\
+	"	function handleClick(arg)\n"\
+	"	{\n"\
+	"		var enabled_classes = getCheckedClasses();\n"\
+	"		var rows = document.getElementsByTagName(\"tr\");\n"\
+	"		for( var i=0; i<rows.length; i++ )\n"\
+	"		{\n"\
+	"			var index = enabled_classes.indexOf( rows[i].className );\n"\
+	"			rows[i].style.display = (index == -1) ? \"none\" : \"table-row\"\n"\
+	"		}\n"\
+	"	}\n"\
+	"	</script>\n";
 
 static const char *s_LogTextColor[] =
 {
@@ -118,17 +139,56 @@ static const char *s_LogTextColor[] =
 LogOutput_HTML::LogOutput_HTML( const std::string& filename )
 : LogOutput_TextFile( filename )
 {
-	for( int i=0; i<NUM_BEGINNING_LINES; i++ )
-		m_OutputFileStream << s_HTMLTemplate[i];
+	using namespace boost::filesystem;
 
-	m_OutputFileStream.flush();
+	bool support_filtering = true;
+
+	std::ofstream& ofs = m_OutputFileStream;
+
+	ofs << "<html>\n";
+	ofs << "	<head>\n";
+	ofs << "	<title>" << path(filename).leaf().stem().string() << "</title>\n";
+
+	if( support_filtering )
+		ofs << js_source;
+
+	ofs << "	</head>\n";
+	ofs << "	<body text=\"#F0F0F0\" bgcolor=\"#080808\">\n";
+
+	if( support_filtering )
+		ofs << sg_forms;
+
+	ofs << "	<table width=\"90%\" align=\"center\" border=\"1\" bordercolor=\"#CCCCCC\" cellpadding=\"3\" cellspacing=\"1\">\n";
+	ofs << "	<tr><td width=\"15%\" align=\"center\">TIME</td><td>Message</td></tr>\n";
+
+	ofs.flush();
 }
 
 
 LogOutput_HTML::~LogOutput_HTML()
 {
-	for( int i=NUM_BEGINNING_LINES; i<NUM_TEMPLATE_LINES; i++ )
-		m_OutputFileStream << s_HTMLTemplate[i];
+	std::ofstream& ofs = m_OutputFileStream;
+
+	ofs << sg_body_and_table_end;
+
+	ofs << "</html>\n";
+}
+
+
+static const char *get_row_class( int warning_level )
+{
+	switch( warning_level )
+	{
+	case 0: return "V";
+	case 1: return "C";
+	case 2: return "W";
+	case 3: return "E";
+	case 4: return "I";
+	default:
+		return "";
+	}
+
+	return "";
 }
 
 
@@ -148,7 +208,7 @@ void LogOutput_HTML::Print( const LogMessage& msg )
 	string font_tag = "<font color=\"#" + string(text_color) + "\">";
 
 	m_OutputFileStream <<
-		"	<tr><td align=\"center\">" + font_tag + msg.m_Time
+		"	<tr class=\"" + string(get_row_class(color_index)) + "\"><td align=\"center\">" + font_tag + msg.m_Time
 		+ "</font></td><td>" + font_tag + text_in_html + "</font></td></tr>\n";
 
 	m_OutputFileStream.flush();
