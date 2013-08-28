@@ -12,7 +12,7 @@ using namespace std;
 
 CBinaryArchive_Output::CBinaryArchive_Output( const string& filename,
 											  const char *pStringID,
-											  unsigned int flag )
+											  unsigned int archive_option_flags )
 {
 	if( filename.length() == 0 )
 		return;
@@ -20,6 +20,8 @@ CBinaryArchive_Output::CBinaryArchive_Output( const string& filename,
 	m_OutputFileStream.open( filename.c_str(), ios::out|ios::binary );
 
 	m_Mode = MODE_OUTPUT;
+
+	m_OptionFlags = archive_option_flags;
 
 	if( pStringID )
         m_strUserDefinedID = pStringID;
@@ -30,20 +32,37 @@ CBinaryArchive_Output::CBinaryArchive_Output( const string& filename,
 }
 
 
+// Output binary archive
+// The following content is saved to a binary achive.
+// 1. The binary archive string ("BinaryArchive??", where ?? is a version number)
+// 2. Option flags (a single unsigned int type value)
+// 3. (Optional) a user defined string
+// 4. Archive content
 bool CBinaryArchive_Output::operator<< ( IArchiveObjectBase& obj )
 {
 	if( !m_OutputFileStream.is_open() )
 		return false;
 
 	// write a predefined string so that an input archive can verify the data
-	char c;
-	for( int i=0; i<BA_STRING_LENGTH; i++ )
+	const int archive_string_data_length
+		= strlen(sg_pBinaryArchiveIdentifierString)
+		+ strlen(sg_pBinaryArchiveVersionString)
+		+ 1;
+	char c = 0;
+	char archive_string[0xFF];
+	memset( archive_string, 0, sizeof(archive_string) );
+	strcat( archive_string, sg_pBinaryArchiveIdentifierString);
+	strcat( archive_string, sg_pBinaryArchiveVersionString);
+	for( int i=0; i<archive_string_data_length; i++ )
 	{
-		c = ~s_acBinaryArchiveString[i];
+		c = ~archive_string[i];
 		HandleData( &c, sizeof(char) );
 	}
 
-	// write a user defined string for archive id
+	// Save the archive option flags
+	(*this) & m_OptionFlags;
+
+	// Write a user defined string for archive id
 	size_t len = m_strUserDefinedID.length();
 	if( 0 < len )
 	{
@@ -168,5 +187,16 @@ IArchive& CBinaryArchive_Output::operator & (string& strData)
 
 void CBinaryArchive_Output::HandleData( void *pData, const int size )
 {
-	m_OutputFileStream.write( (char *)pData, size );
+	if( m_OptionFlags & ArchiveOptionFlags::AOF_OBFUSCATE )
+	{
+		char to_write = 0;
+		for( int i=0; i<size; i++ )
+		{
+			to_write = ((char *)pData)[i] ^ ms_ObfucationBits[m_ObfucationBitIndex];
+			m_OutputFileStream.write( &to_write, 1 );
+			m_ObfucationBitIndex = (m_ObfucationBitIndex+1) % NUM_OBFUSCATION_BYTES;
+		}
+	}
+	else
+		m_OutputFileStream.write( (char *)pData, size );
 }

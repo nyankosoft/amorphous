@@ -9,9 +9,9 @@ using namespace amorphous::serialization;
 using namespace std;
 
 
-bool IArchiveObjectBase::SaveToFile( const string& filename )
+bool IArchiveObjectBase::SaveToFile( const string& filename, unsigned int archive_option_flags )
 {
-	CBinaryArchive_Output archive( filename );
+	CBinaryArchive_Output archive( filename, "", archive_option_flags );
 	return ( archive << *this );
 
 //	return true;

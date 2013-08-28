@@ -1,12 +1,10 @@
 #ifndef  __ARCHIVE_OUTPUT_H__
 #define  __ARCHIVE_OUTPUT_H__
 
-#include <vector>
+
 #include <iostream>
 #include <fstream>
-
-#include "Archive.hpp"
-#include "ArchiveObjectBase.hpp"
+#include "BinaryArchive.hpp"
 
 
 namespace amorphous
@@ -16,13 +14,16 @@ namespace serialization
 {
 
 
-class CBinaryArchive_Output : public IArchive
+class CBinaryArchive_Output : public BinaryArchive
 {
 public:
 
 //	CBinaryArchive_Output( const char *pcFilename, const unsigned long archive_id = 0, unsigned int flag = 0 );
 
-	CBinaryArchive_Output( const std::string& filename, const char *pStringID = NULL, unsigned int flag = 0 );
+	CBinaryArchive_Output(
+		const std::string& filename,
+		const char *pStringID = NULL,
+		unsigned int archive_option_flags = 0 );
 
 	virtual ~CBinaryArchive_Output() { m_OutputFileStream.close(); }
 

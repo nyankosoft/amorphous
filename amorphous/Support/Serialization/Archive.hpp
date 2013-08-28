@@ -19,9 +19,6 @@ namespace amorphous
 namespace serialization
 {
 
-#define BA_STRING_LENGTH	16
-static const char s_acBinaryArchiveString[BA_STRING_LENGTH] = "_BINARYARCHIVE_";
-
 
 class IArchiveObjectBase;
 
@@ -31,6 +28,8 @@ class IArchive
 protected:
 
 	int m_Mode;
+
+	unsigned int m_OptionFlags;
 
 //	unsigned long m_UserDefinedArchiveID;
 

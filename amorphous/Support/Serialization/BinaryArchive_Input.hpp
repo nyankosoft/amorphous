@@ -1,12 +1,9 @@
 #ifndef  __BINARYARCHIVE_INPUT_H__
 #define  __BINARYARCHIVE_INPUT_H__
 
-#include <vector>
 #include <iostream>
 #include <fstream>
-
-#include "Archive.hpp"
-#include "ArchiveObjectBase.hpp"
+#include "BinaryArchive.hpp"
 
 
 namespace amorphous
@@ -16,14 +13,14 @@ namespace serialization
 {
 
 
-class CBinaryArchive_Input : public IArchive
+class CBinaryArchive_Input : public BinaryArchive
 {
 public:
 
 	/// constructor
 	CBinaryArchive_Input( const std::string& filename,
 		                  const char *pcStringID = NULL,
-						  unsigned int flag = 0 );
+						  unsigned int archive_option_flags = 0 );
 
 	virtual ~CBinaryArchive_Input() { m_InputFileStream.close(); }
 

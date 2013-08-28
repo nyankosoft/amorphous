@@ -16,6 +16,18 @@ namespace serialization
 class IArchive;
 
 
+class ArchiveOptionFlags
+{
+public:
+	enum Flag
+	{
+		AOF_OBFUSCATE = (1 << 0),
+		AOF_COMPRESS  = (1 << 1),
+//		AOF_ENCRYPT   = (1 << 2),
+	};
+};
+
+
 class IArchiveObjectBase
 {
 
@@ -51,7 +63,7 @@ public:
 
 	virtual unsigned int GetVersion() const { return 0; }
 
-	bool SaveToFile( const std::string& filename );
+	bool SaveToFile( const std::string& filename, unsigned int archive_option_flags = 0 );
 
 	bool LoadFromFile( const std::string& filename );
 

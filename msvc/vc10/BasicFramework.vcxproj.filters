@@ -840,6 +840,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive.cpp">
+      <Filter>Support\Serialization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
@@ -1952,6 +1955,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Support\DebugInfo.hpp">
       <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive.hpp">
+      <Filter>Support\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
