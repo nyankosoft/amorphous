@@ -8,7 +8,7 @@
 #include <boost/filesystem.hpp>
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "amorphous/Support/progress_display.hpp"
-#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 #include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/thread_starter.hpp"
@@ -112,8 +112,7 @@ int main( int argc, char *argv[] )
 	path logfile_dirpath = path(src_filepath).parent_path();
 	path logfile_basepath = logfile_dirpath / ("mesh_model_compiler-" + path(src_filepath).leaf().string());
 
-	LogOutput_HTML html_log( logfile_basepath.string() + ".html" );
-	GlobalLog().AddLogOutput( &html_log );
+	InitHTMLLog( logfile_basepath.string() + ".html" );
 
 	if( src_filepath.length() == 0 )
 		return 0;
