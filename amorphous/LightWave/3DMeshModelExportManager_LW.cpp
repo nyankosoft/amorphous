@@ -68,47 +68,47 @@ void C3DMeshModelExportManager_LW::GetOutputFilename( string& dest_filename, con
 }
 
 
-void C3DMeshModelExportManager_LW::FindMeshLayers( vector<LWO2_Layer *>& vecpMeshLayer, vector<SLayerSet>& vecLayerSet )
+void C3DMeshModelExportManager_LW::FindMeshLayers( vector<LWO2_Layer *>& mesh_layers, vector<SLayerSet>& layer_sets )
 {
 	string mesh_tag = "CreateMesh";
 	size_t i, j, num_layer_sets = 0;
 
-	vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", LWO2_NameMatchCond::START_WITH );
-	size_t num_tgt_layers = vecpMeshLayer.size();
+	mesh_layers = m_pObject->GetLayersWithKeyword( "CreateMesh", LWO2_NameMatchCond::START_WITH );
+	size_t num_tgt_layers = mesh_layers.size();
 	vector<string> words;
 
 	// layers with names that start with "CreateMesh" - registered as mesh layers
 	for( i=0; i<num_tgt_layers; i++ )
 	{
-		LWO2_Layer *layer = vecpMeshLayer[i];
+		LWO2_Layer *layer = mesh_layers[i];
 
 		words.resize( 0 );
 		SeparateStrings( words, layer->GetName().c_str(), " \t" );
 
-		string strOutFilename;
-		GetOutputFilename( strOutFilename, layer->GetName() );
+		string out_filename;
+		GetOutputFilename( out_filename, layer->GetName() );
 
 		int group_number = GetGroupNumber( words );
 
 		for( j=0; j<num_layer_sets; j++ )
 		{
-			if( vecLayerSet[j].strOutputFilename == strOutFilename )
+			if( layer_sets[j].strOutputFilename == out_filename )
 			{
 				// A layer set with the same output filepath already exists
 				// - add the layer to this layer set.
-				vecLayerSet[j].vecpMeshLayer.push_back( layer );
+				layer_sets[j].vecpMeshLayer.push_back( layer );
 				break;
 			}
 			else if( group_number != -1
-			 && vecLayerSet[j].GroupNumber == group_number )
+			 && layer_sets[j].GroupNumber == group_number )
 			{
 				// A valid group number has been specified
 				// && a layer with the same group number already exists.
 				// - add the layer to this layer set.
-				vecLayerSet[j].vecpMeshLayer.push_back( layer );
+				layer_sets[j].vecpMeshLayer.push_back( layer );
 
-				if( vecLayerSet[j].strOutputFilename == "" )
-					vecLayerSet[j].strOutputFilename = strOutFilename;
+				if( layer_sets[j].strOutputFilename == "" )
+					layer_sets[j].strOutputFilename = out_filename;
 
 				break;
 			}
@@ -117,22 +117,22 @@ void C3DMeshModelExportManager_LW::FindMeshLayers( vector<LWO2_Layer *>& vecpMes
 		if( j == num_layer_sets )
 		{
 			// create a new layer set for an output mesh file
-			vecLayerSet.push_back( SLayerSet(strOutFilename) );
-			vecLayerSet.back().vecpMeshLayer.push_back( layer );
-			vecLayerSet.back().GroupNumber = group_number;
+			layer_sets.push_back( SLayerSet(out_filename) );
+			layer_sets.back().vecpMeshLayer.push_back( layer );
+			layer_sets.back().GroupNumber = group_number;
 			num_layer_sets++;
 		}
 	}
 
-	if( vecLayerSet.size() == 1 && vecLayerSet[0].strOutputFilename == "" )
+	if( layer_sets.size() == 1 && layer_sets[0].strOutputFilename == "" )
 	{
-		vecLayerSet[0].strOutputFilename = m_strBaseOutFilename;
+		layer_sets[0].strOutputFilename = m_strBaseOutFilename;
 	}
 
 	// This ensures that the output filepaths stored in m_OutputFilepaths are in the same orders
 	// as the group numbers.
-	if( 1 < vecLayerSet.size() )
-		std::sort( vecLayerSet.begin(), vecLayerSet.end(), sort_by_group_number() );
+	if( 1 < layer_sets.size() )
+		std::sort( layer_sets.begin(), layer_sets.end(), sort_by_group_number() );
 }
 
 
@@ -140,7 +140,8 @@ void C3DMeshModelExportManager_LW::FindSkeletonLayersAndSetToLayerSets( vector<L
 {
 	vector<LWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", LWO2_NameMatchCond::START_WITH );
 
-	// if a layer with the name that begins with "Skeleton" was not found, for skeletons, target the layers named with either "CreateMesh" or "Skeleton"
+	// if a layer with the name that begins with "Skeleton" was not found, for skeletons,
+	// target the layers named with either "CreateMesh" or "Skeleton"
 	vecpSkeletonLayer.insert( vecpSkeletonLayer.end(), vecpMeshLayer.begin(), vecpMeshLayer.end() );
 
 //	num_tgt_layers = vecpSkeletonLayer.size();
@@ -164,10 +165,10 @@ void C3DMeshModelExportManager_LW::FindSkeletonLayersAndSetToLayerSets( vector<L
 		for( size_t j=0; j<num_skeleton_layers; j++ )
 		{
 			LWO2_Layer *pSkeletonLayer = vecpSkeletonLayer[j];
-			string strOutFilename;
-			GetOutputFilename( strOutFilename, pSkeletonLayer->GetName() );
+			string out_filename;
+			GetOutputFilename( out_filename, pSkeletonLayer->GetName() );
 
-			if( layer_set.strOutputFilename == strOutFilename )
+			if( layer_set.strOutputFilename == out_filename )
 			{
 				// Found a skeleton layer that has the same output pathname
 				// as that of the current layer set, layer_set
@@ -203,8 +204,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_
 
 //		m_vecpModelBuilder.back()->BuildMeshModel( vecLayerSet[i] );
 
-		shared_ptr<C3DMeshModelBuilder_LW> pModelLoader
-			= shared_ptr<C3DMeshModelBuilder_LW>( new C3DMeshModelBuilder_LW( m_pObject ) );
+		shared_ptr<C3DMeshModelBuilder_LW> pModelLoader;
+		pModelLoader.reset( new C3DMeshModelBuilder_LW( m_pObject ) );
 
 		pModelLoader->SetTexturePathnameOption( TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME );
 
@@ -234,7 +235,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	Release();
 
 	// load light wave model data
-	m_pObject = shared_ptr<LWO2_Object>( new LWO2_Object() );
+	m_pObject.reset( new LWO2_Object() );
 
 	if( !m_pObject->LoadLWO2Object( lwo_filename.c_str() ) )
 	{
@@ -255,12 +256,12 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	// layers whose names begin with "CreateMesh..." are the target layers.
 	// they are processed into mesh models
 
-	vector<SLayerSet> vecLayerSet;
-	vector<LWO2_Layer *> vecpMeshLayer;
+	vector<SLayerSet> layer_sets;
+	vector<LWO2_Layer *> mesh_layers;
 
-	FindMeshLayers( vecpMeshLayer, vecLayerSet );
+	FindMeshLayers( mesh_layers, layer_sets );
 
-	FindSkeletonLayersAndSetToLayerSets( vecpMeshLayer, vecLayerSet );
+	FindSkeletonLayersAndSetToLayerSets( mesh_layers, layer_sets );
 
 /*	for(itrLayer = rlstLayer.begin();
 		itrLayer != rlstLayer.end();
@@ -278,7 +279,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 	}*/
 
-	return BuildMeshesAndSaveToFiles( lwo_filename, build_option_flags, vecLayerSet );
+	return BuildMeshesAndSaveToFiles( lwo_filename, build_option_flags, layer_sets );
 }
 
 
