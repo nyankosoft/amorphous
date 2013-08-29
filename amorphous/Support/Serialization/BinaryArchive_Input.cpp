@@ -7,7 +7,7 @@ using namespace amorphous::serialization;
 using namespace std;
 
 
-CBinaryArchive_Input::CBinaryArchive_Input( const string& filename,
+BinaryArchive_Input::BinaryArchive_Input( const string& filename,
 											const char *pStringID,
 										    unsigned int flag )
 {
@@ -30,7 +30,7 @@ CBinaryArchive_Input::CBinaryArchive_Input( const string& filename,
 }
 
 
-bool CBinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
+bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 {
 	if( !m_InputFileStream.is_open() )
 		return false;
@@ -99,7 +99,7 @@ bool CBinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (IArchiveObjectBase& rData)
+IArchive& BinaryArchive_Input::operator & (IArchiveObjectBase& rData)
 {
 	unsigned int uiVersion = 0;
 
@@ -114,84 +114,84 @@ IArchive& CBinaryArchive_Input::operator & (IArchiveObjectBase& rData)
 
 //	--- for loading primitive data
 
-IArchive& CBinaryArchive_Input::operator & (int& nData)
+IArchive& BinaryArchive_Input::operator & (int& nData)
 {
 	HandleData( &nData, sizeof(int) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (unsigned int& nData)
+IArchive& BinaryArchive_Input::operator & (unsigned int& nData)
 {
 	HandleData( &nData, sizeof(unsigned int) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (short& sData)
+IArchive& BinaryArchive_Input::operator & (short& sData)
 {
 	HandleData( &sData, sizeof(short) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (unsigned short& usData)
+IArchive& BinaryArchive_Input::operator & (unsigned short& usData)
 {
 	HandleData( &usData, sizeof(unsigned short) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (char& cData)
+IArchive& BinaryArchive_Input::operator & (char& cData)
 {
 	HandleData( &cData, sizeof(char) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (unsigned char& cData)
+IArchive& BinaryArchive_Input::operator & (unsigned char& cData)
 {
 	HandleData( &cData, sizeof(unsigned char) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (bool& bData)
+IArchive& BinaryArchive_Input::operator & (bool& bData)
 {
 	HandleData( &bData, sizeof(bool) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (long& ulData)
+IArchive& BinaryArchive_Input::operator & (long& ulData)
 {
 	HandleData( &ulData, sizeof(long) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (unsigned long& ulData)
+IArchive& BinaryArchive_Input::operator & (unsigned long& ulData)
 {
 	HandleData( &ulData, sizeof(unsigned long) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (float& fData)
+IArchive& BinaryArchive_Input::operator & (float& fData)
 {
 	HandleData( &fData, sizeof(float) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (double& fData)
+IArchive& BinaryArchive_Input::operator & (double& fData)
 {
 	HandleData( &fData, sizeof(double) );
 	return (*this);
 }
 
 
-IArchive& CBinaryArchive_Input::operator & (string& strData)
+IArchive& BinaryArchive_Input::operator & (string& strData)
 {
 	int i, iNumChars;
 	HandleData( &iNumChars, sizeof(int) );
@@ -211,7 +211,7 @@ IArchive& CBinaryArchive_Input::operator & (string& strData)
 }
 
 
-void CBinaryArchive_Input::HandleData( void *pData, const int size )
+void BinaryArchive_Input::HandleData( void *pData, const int size )
 {
 	if( m_OptionFlags & ArchiveOptionFlags::AOF_OBFUSCATE )
 	{

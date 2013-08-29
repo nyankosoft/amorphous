@@ -130,7 +130,7 @@ void CMS_MassSpringSim::Release()
 bool CMS_MassSpringSim::LoadFromFile( const char *pcFilename )
 {
 	// load archive
-	CBinaryArchive_Input archive( pcFilename );
+	BinaryArchive_Input archive( pcFilename );
 
 	CMS_MassSpringArchive mass_spring_model;
 

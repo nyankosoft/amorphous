@@ -14,18 +14,18 @@ namespace serialization
 {
 
 
-class CBinaryArchive_Output : public BinaryArchive
+class BinaryArchive_Output : public BinaryArchive
 {
 public:
 
-//	CBinaryArchive_Output( const char *pcFilename, const unsigned long archive_id = 0, unsigned int flag = 0 );
+//	BinaryArchive_Output( const char *pcFilename, const unsigned long archive_id = 0, unsigned int flag = 0 );
 
-	CBinaryArchive_Output(
+	BinaryArchive_Output(
 		const std::string& filename,
 		const char *pStringID = NULL,
 		unsigned int archive_option_flags = 0 );
 
-	virtual ~CBinaryArchive_Output() { m_OutputFileStream.close(); }
+	virtual ~BinaryArchive_Output() { m_OutputFileStream.close(); }
 
 	/// load archive objects saved in binary format file
 	bool operator<< ( IArchiveObjectBase& obj );

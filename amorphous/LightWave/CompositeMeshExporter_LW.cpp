@@ -265,7 +265,7 @@ bool CCompositeMeshExporter_LW::Compile( const char *pcFilename )
 
 bool CCompositeMeshExporter_LW::SaveToFile( const char *pcFilename )
 {
-	CBinaryArchive_Output output_archive( pcFilename );
+	BinaryArchive_Output output_archive( pcFilename );
 
 	if( !(output_archive << m_CompositeMeshArchive ) )
 		return false;

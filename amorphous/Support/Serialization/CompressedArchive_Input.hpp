@@ -19,21 +19,21 @@ namespace serialization
 {
 
 
-class CCompressedArchive_Input : public CBinaryArchive_Input
+class CompressedArchive_Input : public BinaryArchive_Input
 {
 public:
 
 	/// constructor
-	CCompressedArchive_Input( const std::string& filename,
+	CompressedArchive_Input( const std::string& filename,
 		                  const char *pcStringID = NULL,
 						  unsigned int flag = 0 )
 						  :
-	CBinaryArchive_Input(filename,pcStringID,flag),
+	BinaryArchive_Input(filename,pcStringID,flag),
 	m_Filename(filename)
 	{
 	}
 
-	virtual ~CCompressedArchive_Input() {}
+	virtual ~CompressedArchive_Input() {}
 
 	/// load archive objects saved in binary format file
 	bool operator>> ( IArchiveObjectBase& obj )
@@ -41,7 +41,7 @@ public:
 		SerializableStream compressed_buffer;
 
 		// load compressed data
-		CBinaryArchive_Input archive( m_Filename );
+		BinaryArchive_Input archive( m_Filename );
 		bool res = archive >> compressed_buffer;
 
 		if( !res )

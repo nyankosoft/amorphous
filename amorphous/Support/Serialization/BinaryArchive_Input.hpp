@@ -13,16 +13,16 @@ namespace serialization
 {
 
 
-class CBinaryArchive_Input : public BinaryArchive
+class BinaryArchive_Input : public BinaryArchive
 {
 public:
 
 	/// constructor
-	CBinaryArchive_Input( const std::string& filename,
+	BinaryArchive_Input( const std::string& filename,
 		                  const char *pcStringID = NULL,
 						  unsigned int archive_option_flags = 0 );
 
-	virtual ~CBinaryArchive_Input() { m_InputFileStream.close(); }
+	virtual ~BinaryArchive_Input() { m_InputFileStream.close(); }
 
 	/// load archive objects saved in binary format file
 	bool operator>> ( IArchiveObjectBase& obj );

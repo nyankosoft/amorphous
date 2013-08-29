@@ -18,22 +18,22 @@ namespace serialization
 {
 
 
-class CCompressedArchive_Output : public CBinaryArchive_Output
+class CompressedArchive_Output : public BinaryArchive_Output
 {
 public:
 
-//	CCompressedArchive_Output( const char *pcFilename, const unsigned long archive_id = 0, unsigned int flag = 0 );
+//	CompressedArchive_Output( const char *pcFilename, const unsigned long archive_id = 0, unsigned int flag = 0 );
 
-	CCompressedArchive_Output( const std::string& filename,
+	CompressedArchive_Output( const std::string& filename,
 		                       const char *pStringID = NULL,
 							   unsigned int flag = 0 )
                                :
-	CBinaryArchive_Output(filename,pStringID,flag),
+	BinaryArchive_Output(filename,pStringID,flag),
 	m_Filename(filename)
 	{
 	}
 
-	virtual ~CCompressedArchive_Output() {}
+	virtual ~CompressedArchive_Output() {}
 
 	/// load archive objects saved in binary format file
 	bool operator<< ( IArchiveObjectBase& obj )
@@ -54,7 +54,7 @@ public:
 		z_def( m_Stream.m_Buffer, compressed_buffer.m_Buffer );
 
 		// save compressed data as a binary archive
-		CBinaryArchive_Output archive( m_Filename );
+		BinaryArchive_Output archive( m_Filename );
 		return archive << compressed_buffer;
 	}
 
