@@ -190,8 +190,8 @@ m_vPrevCamPos( Vector3(0,0,0) )
 //	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
 	actor_desc.vecpShapeDesc.push_back( &sphere_desc );
 
-	boost::shared_ptr<msynth::CMotionFSMManager> pMotionFSMManager;
-	pMotionFSMManager.reset( new msynth::CMotionFSMManager );
+	boost::shared_ptr<msynth::MotionFSMManager> pMotionFSMManager;
+	pMotionFSMManager.reset( new msynth::MotionFSMManager );
 
 	string motion_fsm_filepath = "motions/test_motion_fsm.bin";
 
