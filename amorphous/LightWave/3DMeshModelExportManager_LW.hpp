@@ -7,7 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
-#include "amorphous/LightWave/fwd.hpp"
+#include "3DMeshModelBuilder_LW.hpp"
 
 
 namespace amorphous
@@ -36,6 +36,12 @@ class C3DMeshModelExportManager_LW
 	std::vector<std::string> m_OutputFilepaths;
 
 	void GetOutputFilename( std::string& dest_filename, const std::string& src_layer_name );
+
+	void FindMeshLayers( std::vector<LWO2_Layer *>& vecpMeshLayer, std::vector<SLayerSet>& vecLayerSet );
+
+	void FindSkeletonLayersAndSetToLayerSets( std::vector<LWO2_Layer *>& vecpMeshLayer, std::vector<SLayerSet>& layer_sets );
+
+	bool BuildMeshesAndSaveToFiles( const std::string& lwo_filename, U32 build_option_flags, std::vector<SLayerSet>& layer_sets );
 
 public:
 

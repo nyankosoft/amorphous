@@ -17,6 +17,13 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
+class sort_by_group_number
+{
+public:
+	bool operator()( const SLayerSet& lhs, const SLayerSet& rhs ) const { return lhs.GroupNumber < rhs.GroupNumber; }
+};
+
+
 void C3DMeshModelExportManager_LW::Release()
 {
 	m_pObject.reset();
@@ -61,45 +68,12 @@ void C3DMeshModelExportManager_LW::GetOutputFilename( string& dest_filename, con
 }
 
 
-class sort_by_group_number
+void C3DMeshModelExportManager_LW::FindMeshLayers( vector<LWO2_Layer *>& vecpMeshLayer, vector<SLayerSet>& vecLayerSet )
 {
-public:
-	bool operator()( const SLayerSet& lhs, const SLayerSet& rhs ) const { return lhs.GroupNumber < rhs.GroupNumber; }
-};
-
-
-bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, U32 build_option_flags )
-{
-	Release();
-
-	// load light wave model data
-	m_pObject = shared_ptr<LWO2_Object>( new LWO2_Object() );
-
-	if( !m_pObject->LoadLWO2Object( lwo_filename.c_str() ) )
-	{
-		Release();
-		return false;
-	}
-
-	string strOutFilename, strBaseOutFilename = lwo_filename;
-
-	// set the default output filename
-	// if no output filename is specified for the mesh, the original filename
-	// will be used as the body filename
-	lfs::change_ext( strBaseOutFilename, "msh" );
-
-	m_strBaseOutFilename = strBaseOutFilename;
-
-	// search through layers.
-	// layers whose names begin with "CreateMesh..." are the target layers.
-	// they are processed into mesh models
-
-	vector<SLayerSet> vecLayerSet;
-
 	string mesh_tag = "CreateMesh";
 	size_t i, j, num_layer_sets = 0;
 
-	vector<LWO2_Layer *> vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", LWO2_NameMatchCond::START_WITH );
+	vecpMeshLayer = m_pObject->GetLayersWithKeyword( "CreateMesh", LWO2_NameMatchCond::START_WITH );
 	size_t num_tgt_layers = vecpMeshLayer.size();
 	vector<string> words;
 
@@ -111,6 +85,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 		words.resize( 0 );
 		SeparateStrings( words, layer->GetName().c_str(), " \t" );
 
+		string strOutFilename;
 		GetOutputFilename( strOutFilename, layer->GetName() );
 
 		int group_number = GetGroupNumber( words );
@@ -158,7 +133,11 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	// as the group numbers.
 	if( 1 < vecLayerSet.size() )
 		std::sort( vecLayerSet.begin(), vecLayerSet.end(), sort_by_group_number() );
+}
 
+
+void C3DMeshModelExportManager_LW::FindSkeletonLayersAndSetToLayerSets( vector<LWO2_Layer *>& vecpMeshLayer, vector<SLayerSet>& layer_sets )
+{
 	vector<LWO2_Layer *> vecpSkeletonLayer = m_pObject->GetLayersWithKeyword( "Skeleton", LWO2_NameMatchCond::START_WITH );
 
 	// if a layer with the name that begins with "Skeleton" was not found, for skeletons, target the layers named with either "CreateMesh" or "Skeleton"
@@ -167,10 +146,10 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 //	num_tgt_layers = vecpSkeletonLayer.size();
 
 	const size_t num_skeleton_layers = vecpSkeletonLayer.size();
-	num_layer_sets = vecLayerSet.size();
-	for( i=0; i<num_layer_sets; i++ )
+	const size_t num_layer_sets = layer_sets.size();
+	for( size_t i=0; i<num_layer_sets; i++ )
 	{
-		SLayerSet& layer_set = vecLayerSet[i];
+		SLayerSet& layer_set = layer_sets[i];
 
 		if( layer_set.vecpMeshLayer.empty() )
 			continue; // No mesh data for skeleton: skip this set
@@ -182,9 +161,10 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 			continue;
 		}
 
-		for( j=0; j<num_skeleton_layers; j++ )
+		for( size_t j=0; j<num_skeleton_layers; j++ )
 		{
 			LWO2_Layer *pSkeletonLayer = vecpSkeletonLayer[j];
+			string strOutFilename;
 			GetOutputFilename( strOutFilename, pSkeletonLayer->GetName() );
 
 			if( layer_set.strOutputFilename == strOutFilename )
@@ -204,28 +184,16 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 			layer_set.pSkelegonLayer = layer_set.vecpMeshLayer.front();
 		}
 	}
+}
 
-/*	for(itrLayer = rlstLayer.begin();
-		itrLayer != rlstLayer.end();
-		itrLayer++)
-	{
-		num_layer_sets = vecLayerSet.size();
 
-//		pos = itrLayer->GetName().find( "MassSpringCollisionShape" );
-//		if( pos != string::npos )
-//			itrMSpringCollision = itrLayer;
-
-//		pos = itrLayer->GetName().find( "ShadowVolume" );
-//		if( pos != string::npos )
-//			itrShadowMeshLayer = itrLayer;
-
-	}*/
-
-	num_layer_sets = vecLayerSet.size();
+bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_filename, U32 build_option_flags, vector<SLayerSet>& layer_sets )
+{
+	const size_t num_layer_sets = layer_sets.size();
 
 	m_OutputFilepaths.clear();
 	m_OutputFilepaths.resize( num_layer_sets );
-	for( i=0; i<num_layer_sets; i++ )
+	for( size_t i=0; i<num_layer_sets; i++ )
 	{
 //		m_vecpModelBuilder.push_back( new C3DMeshModelBuilder_LW( m_pObject ) );
 
@@ -240,7 +208,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 		pModelLoader->SetTexturePathnameOption( TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME );
 
-		pModelLoader->BuildMeshModel( vecLayerSet[i] );
+		pModelLoader->BuildMeshModel( layer_sets[i] );
 
 		m_vecpModelBuilder.push_back( new C3DMeshModelBuilder() );
 
@@ -258,6 +226,59 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 	}
 
 	return true;
+}
+
+
+bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, U32 build_option_flags )
+{
+	Release();
+
+	// load light wave model data
+	m_pObject = shared_ptr<LWO2_Object>( new LWO2_Object() );
+
+	if( !m_pObject->LoadLWO2Object( lwo_filename.c_str() ) )
+	{
+		Release();
+		return false;
+	}
+
+	string strBaseOutFilename = lwo_filename;
+
+	// set the default output filename
+	// if no output filename is specified for the mesh, the original filename
+	// will be used as the body filename
+	lfs::change_ext( strBaseOutFilename, "msh" );
+
+	m_strBaseOutFilename = strBaseOutFilename;
+
+	// search through layers.
+	// layers whose names begin with "CreateMesh..." are the target layers.
+	// they are processed into mesh models
+
+	vector<SLayerSet> vecLayerSet;
+	vector<LWO2_Layer *> vecpMeshLayer;
+
+	FindMeshLayers( vecpMeshLayer, vecLayerSet );
+
+	FindSkeletonLayersAndSetToLayerSets( vecpMeshLayer, vecLayerSet );
+
+/*	for(itrLayer = rlstLayer.begin();
+		itrLayer != rlstLayer.end();
+		itrLayer++)
+	{
+		num_layer_sets = vecLayerSet.size();
+
+//		pos = itrLayer->GetName().find( "MassSpringCollisionShape" );
+//		if( pos != string::npos )
+//			itrMSpringCollision = itrLayer;
+
+//		pos = itrLayer->GetName().find( "ShadowVolume" );
+//		if( pos != string::npos )
+//			itrShadowMeshLayer = itrLayer;
+
+	}*/
+
+	return BuildMeshesAndSaveToFiles( lwo_filename, build_option_flags, vecLayerSet );
 }
 
 
