@@ -38,7 +38,7 @@ void CGameEventManager::Serialize( IArchive& ar, const unsigned int version )
 
 bool CGameEventManager::SaveToFile( const char *pcFilename )
 {
-	CBinaryArchive_Output archive( pcFilename );
+	BinaryArchive_Output archive( pcFilename );
 
 	archive << (*this);
 
@@ -48,7 +48,7 @@ bool CGameEventManager::SaveToFile( const char *pcFilename )
 
 bool CGameEventManager::LoadFromFile( const char *pcFilename )
 {
-	CBinaryArchive_Input archive( pcFilename );
+	BinaryArchive_Input archive( pcFilename );
 
 	archive >> (*this);
 

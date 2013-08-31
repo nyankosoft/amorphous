@@ -34,7 +34,7 @@ GameItem *GameItemInfo::GetItem( const int quantity )
 {
 //	if( !pItem )
 //	{
-		CBinaryArchive_Input archive( strFilename.c_str() );
+		BinaryArchive_Input archive( strFilename.c_str() );
 //		GameItemObjectFactory factory;
 		GameItemSerializer temp_serializer;
 		if( !(archive >> temp_serializer) )
@@ -95,7 +95,7 @@ void GameItemDatabase::SortItemsInAlphabeticalOrder()
 
 bool GameItemDatabase::LoadFromFile( const char *pcFilename )
 {
-	CBinaryArchive_Input archive( pcFilename );
+	BinaryArchive_Input archive( pcFilename );
 	
 	return archive >> (*this);
 }
@@ -106,7 +106,7 @@ bool GameItemDatabase::SaveToFile( const char *pcFilename )
 	// sort items in the alphabetical order before saving them
 	SortItemsInAlphabeticalOrder();
 
-	CBinaryArchive_Output archive( pcFilename );
+	BinaryArchive_Output archive( pcFilename );
 
 	return archive << (*this);
 }
@@ -157,7 +157,7 @@ GameItem *GameItemDatabase::GetItem( const char *pItemName, int quantity )
 void GameItemDatabase::SaveItem( const char *pFilename, GameItem *pItem )
 {
 	GameItemSerializer temp_serializer;
-	CBinaryArchive_Output archive( pFilename );
+	BinaryArchive_Output archive( pFilename );
 	temp_serializer.pItem = pItem;
 	archive << temp_serializer;
 }

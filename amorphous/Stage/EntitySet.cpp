@@ -822,7 +822,7 @@ bool EntityManager::LoadCopyEntitiesFromDescFile( char* pcFilename )
 {
 	CCopyEntityDescFileArchive entity_desc_archive;
 
-	CBinaryArchive_Input input_archive( pcFilename );
+	BinaryArchive_Input input_archive( pcFilename );
 
 	if( !(input_archive >> entity_desc_archive) )
 	{
