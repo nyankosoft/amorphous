@@ -1,7 +1,6 @@
 #ifndef __HUD_PLAYERBASE_H__
 #define __HUD_PLAYERBASE_H__
 
-#include <string>
 
 #include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/GraphicsEffectManager.hpp"
@@ -77,6 +76,9 @@ public:
 	void SetGraphicsEffectManager( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr ) { m_pGraphicsEffectManager = pEffectMgr; }
 
 	virtual void CreateRenderTasks() {}
+
+	virtual void ReleaseGraphicsResources() {}
+	virtual void LoadGraphicsResources( const GraphicsParameters& rParam ) {}
 };
 
 

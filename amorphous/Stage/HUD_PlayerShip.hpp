@@ -42,9 +42,6 @@ public:
 
 	virtual int GetType() const { return TYPE_GENERAL; }
 
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const GraphicsParameters& rParam );
-
 	void UpdateScreenSize();
 
 	void Init();

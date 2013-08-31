@@ -3,8 +3,6 @@
 
 
 #include "HUD_PlayerBase.hpp"
-
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/FloatRGBAColor.hpp"
 #include "amorphous/GameTextSystem/fwd.hpp"
@@ -149,9 +147,6 @@ public:
 	bool OpenTextWindow( CGameTextSet *pTextSet );
 
 	virtual bool LoadGlobalMapTexture( const std::string& texture_filename );
-
-	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
-	virtual void ReleaseGraphicsResources();
 
 	virtual void CreateRenderTasks();
 

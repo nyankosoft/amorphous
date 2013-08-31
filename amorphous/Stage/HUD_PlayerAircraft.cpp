@@ -210,16 +210,6 @@ bool HUD_PlayerAircraft::LoadGlobalMapTexture( const std::string& texture_filena
 }
 
 
-void HUD_PlayerAircraft::ReleaseGraphicsResources()
-{
-}
-
-
-void HUD_PlayerAircraft::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
-}
-
-
 class FlipVariable
 {
 	float accumulated_time;

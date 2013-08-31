@@ -9,7 +9,7 @@
 #include "GameTextSystem/GameTextWindow.hpp"
 #include "Support/memory_helpers.hpp"
 
-#include "App/GameWindowManager_Win32.hpp"
+#include "App/GameWindowManager.hpp"
 
 
 namespace amorphous
@@ -66,22 +66,6 @@ void HUD_PlayerShip::Init()
 	m_pTextWindow->InitFont( "ÇlÇr ÉSÉVÉbÉN", 0.018f, 0.036f );
 
 	UpdateScreenSize();
-}
-
-
-void HUD_PlayerShip::ReleaseGraphicsResources()
-{
-	m_ShipIcon.Release();
-	m_Crosshair.Release();
-	m_StatusBackGround.Release();
-	m_StatusFont.Release();
-}
-
-
-void HUD_PlayerShip::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
-	LoadTextures();
-	m_StatusFont.Reload();
 }
 
 
