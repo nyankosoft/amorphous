@@ -68,7 +68,7 @@ public:
 };
 
 
-class CShadowsAppBase : public CGameApplicationBase
+class CShadowsAppBase : public GameApplicationBase
 {
 public:
 

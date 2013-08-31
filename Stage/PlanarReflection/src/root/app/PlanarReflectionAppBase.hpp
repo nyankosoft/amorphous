@@ -64,7 +64,7 @@ public:
 };
 
 
-class CPlanarReflectionAppBase : public CGameApplicationBase
+class CPlanarReflectionAppBase : public GameApplicationBase
 {
 public:
 

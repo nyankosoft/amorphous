@@ -41,7 +41,7 @@ void CLightingAppTask::DisplayEntityPositions( GraphicsElementAnimationManager& 
 	aabb.vMin = Vector3(1,1,1) * (-100.0f);
 	aabb.vMax = Vector3(1,1,1) * (100.0f);
 	vector<CCopyEntity *> pEntities;
-	COverlapTestAABB aabb_test( aabb, &pEntities );
+	OverlapTestAABB aabb_test( aabb, &pEntities );
 	m_pStage->GetEntitySet()->GetOverlappingEntities( aabb_test );
 
 	shared_ptr<GraphicsElementManager> pElementMgr = animated_graphics_manager.GetGraphicsElementManager();

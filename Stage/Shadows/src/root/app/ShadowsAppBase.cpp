@@ -19,7 +19,7 @@ using boost::shared_ptr;
 static string sg_TestStageScriptToLoad;
 
 
-extern CApplicationBase *amorphous::CreateApplicationInstance() { return new CShadowsAppBase(); }
+extern ApplicationBase *amorphous::CreateApplicationInstance() { return new CShadowsAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -163,7 +163,7 @@ bool CShadowsAppBase::Init()
 
 	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CGameApplicationBase::Init();
+	bool base_init = GameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
