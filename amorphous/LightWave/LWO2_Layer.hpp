@@ -2,17 +2,16 @@
 #define __LWO2_LAYER_H__
 
 
+#include <vector>
+#include <list>
+#include <string>
 #include "fwd.hpp"
-#include "LWO2_Surface.hpp"
-
+#include "LWO2_Common.hpp"
 #include "amorphous/3DMath/Vector3.hpp"
 #include "amorphous/Graphics/FloatRGBAColor.hpp"
 #include "amorphous/Support/memory_helpers.hpp"
 
 
-#include <vector>
-#include <list>
-#include <string>
 
 
 namespace amorphous

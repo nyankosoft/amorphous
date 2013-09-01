@@ -1,5 +1,6 @@
 #include "LWO2_Layer.hpp"
 #include "LWO2_Object.hpp"
+#include "LWO2_Surface.hpp"
 #include "amorphous/3DMath/Vector2.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 

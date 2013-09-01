@@ -14,7 +14,6 @@ namespace amorphous
 {
 
 class progress_display;
-class C3DMeshModelBuilder;
 
 /**
  * creates mesh file(s) from an .lwo model file
