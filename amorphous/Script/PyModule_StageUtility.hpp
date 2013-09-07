@@ -2,7 +2,8 @@
 #define __PyModule_StageUtility_HPP__
 
 #include "amorphous/Support/Vec3_StringAux.hpp"
-#include "amorphous/Stage/StageUtility.hpp"
+#include "amorphous/Stage/StageCameraUtility.hpp"
+#include "amorphous/Stage/StageLightUtility.hpp"
 #include <boost/thread.hpp>
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>

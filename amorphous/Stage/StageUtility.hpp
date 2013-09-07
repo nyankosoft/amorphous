@@ -9,12 +9,6 @@
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/AABB3.hpp"
 
-// for StageCameraUtility
-#include "amorphous/Stage/BE_ScriptedCamera.hpp"
-
-// for StageLightUtility
-#include "amorphous/Stage/LightEntity.hpp"
-
 
 namespace amorphous
 {
@@ -46,59 +40,6 @@ public:
 								const Vector3& vel,
 								physics::CActorDesc *pPhysActorDesc,
 								MeshHandle& mesh );
-};
-
-
-class StageCameraUtility : public StageUtility
-{
-public:
-
-	StageCameraUtility() {}
-
-	StageCameraUtility( boost::weak_ptr<CStage> pStage )
-		:
-	StageUtility(pStage)
-	{}
-
-	/// \param cutscene_input_handler_index input index of the handler during cutscene.
-	///        Set a navative value to create camera controller not for cutscene.
-	///        default: -1 (Don't create the camera controller for cutscene)
-	EntityHandle<> CreateCameraController( const std::string& camera_controller_name,
-		                                    int cutscene_input_handler_index = -1 );
-
-	ScriptedCameraEntity *CreateScriptedCamera( const std::string& camera_name,
-		                                         const std::string& camera_controller_name,
-												 CameraParam default_camera_param = CameraParam() );
-};
-
-
-class StageLightUtility : public StageUtility
-{
-//...
-
-public:
-
-	/// default ctor. Added to compile this code with boost::python.
-	StageLightUtility() {}
-
-	StageLightUtility( boost::shared_ptr<CStage> pStage )
-		:
-	StageUtility(pStage)
-	{}
-
-	LightEntityHandle CreateHSPointLightEntity( const std::string& name,
-		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
-		float intensity, Vector3& pos, float attenu0, float attenu1, float attenu2 );
-
-	LightEntityHandle CreateHSDirectionalLightEntity( const std::string& name,
-		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
-		float intensity, const Vector3& dir );
-
-	LightEntityHandle CreateHSSpotlightEntity( const std::string& name,
-		const SFloatRGBAColor& upper_color, const SFloatRGBAColor& lower_color,
-		float intensity, const Vector3& pos, const Vector3& dir,
-		float attenu0, float attenu1, float attenu2,
-		float inner_cone_angle = (float)PI * 0.25f, float outer_cone_angle = -1.0f );
 };
 
 

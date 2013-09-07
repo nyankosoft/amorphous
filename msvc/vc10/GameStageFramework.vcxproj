@@ -128,8 +128,10 @@
     <ClInclude Include="..\..\amorphous\Stage\Serialization_BaseEntityHandle.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\SoundEntity.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\Stage.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageCameraUtility.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StageEntryPoint.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StageGraph.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageLightUtility.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StageLoader.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StageUtility.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StaticGeometry.hpp" />
@@ -380,8 +382,10 @@
     <ClCompile Include="..\..\amorphous\Stage\ScreenEffectManager.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\SoundEntity.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\Stage.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageCameraUtility.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StageEntryPoint.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StageGraph.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageLightUtility.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StageLoader.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StageUtility.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StaticGeometry.cpp" />

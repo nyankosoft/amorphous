@@ -831,6 +831,12 @@
     <ClInclude Include="..\..\amorphous\Script\PyModule_amorphous.hpp">
       <Filter>Source Files\Script\BoostPython\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageCameraUtility.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageLightUtility.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\Stage\BSPMapFileExporter.cpp">
@@ -1474,6 +1480,12 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Script\PyModule_amorphous.cpp">
       <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageCameraUtility.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageLightUtility.cpp">
+      <Filter>Source Files\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
