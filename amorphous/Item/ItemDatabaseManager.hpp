@@ -5,7 +5,6 @@
 #include "fwd.hpp"
 #include "GameItem.hpp"
 #include "amorphous/Support/singleton.hpp"
-#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
 #include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 #include <boost/shared_ptr.hpp>
 
