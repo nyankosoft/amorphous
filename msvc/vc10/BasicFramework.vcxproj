@@ -632,6 +632,7 @@
     <ClInclude Include="..\..\amorphous\GUI\InputHandler_Dialog.hpp" />
     <ClInclude Include="..\..\amorphous\GUI\ui.hpp" />
     <ClInclude Include="..\..\amorphous\GUI\ui_fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\ConvexShapeDesc.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.hpp" />

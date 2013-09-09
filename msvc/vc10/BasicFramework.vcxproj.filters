@@ -1959,6 +1959,9 @@
     <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive.hpp">
       <Filter>Support\Serialization</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\ConvexShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">
