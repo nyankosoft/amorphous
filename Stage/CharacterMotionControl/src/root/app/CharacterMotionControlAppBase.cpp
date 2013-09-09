@@ -40,7 +40,7 @@ void CCharacterMotionInputHandler::ProcessInput( InputData& input )
 */
 
 
-CApplicationBase *amorphous::CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new CCharacterMotionControlAppBase(); }
 
 /*
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
@@ -84,7 +84,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 {
 	ScriptManager::ms_UseBoostPythonModules = true;
 
-	m_pKeyBind.reset( new CKeyBind );
+	m_pKeyBind.reset( new KeyBind );
 
 	// keyboad & mouse keybinds
 	m_pKeyBind->Assign( GIC_UP,              ACTION_MOV_FORWARD );
@@ -124,9 +124,9 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 	GetCameraController()->SetPose( Matrix34( Vector3(0.8f,1.9f,-3.5f), Matrix33Identity() ) );
 
-	m_pThirdPersonCameraController.reset( new CThirdPersonCameraController );
+	m_pThirdPersonCameraController.reset( new ThirdPersonCameraController );
 
-	m_pThirdPersonMotionController.reset( new CThirdPersonMotionController );
+	m_pThirdPersonMotionController.reset( new ThirdPersonMotionController );
 
 	// trigger shape that detects collision of the character and other objects
 	physics::CCapsuleShapeDesc cap_desc;
@@ -460,7 +460,7 @@ bool CCharacterMotionControlAppBase::Init()
 
 	BaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
 */
-	bool base_init = CGameApplicationBase::Init();
+	bool base_init = GameApplicationBase::Init();
 	if( !base_init )
 		return false;
 
@@ -469,7 +469,7 @@ bool CCharacterMotionControlAppBase::Init()
 	// Do initial settings using scripts
 	//
 
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GameWindowManager().GetScreenWidth()) / 800.0f;
+	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
 	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
 /*

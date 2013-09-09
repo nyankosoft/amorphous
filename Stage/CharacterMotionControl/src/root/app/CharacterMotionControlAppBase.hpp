@@ -26,7 +26,7 @@ enum ShadowAppTaskID
 
 class CCharacterMotionControlAppTask : public StageViewerGameTask
 {
-	boost::shared_ptr<CKeyBind> m_pKeyBind;
+	boost::shared_ptr<KeyBind> m_pKeyBind;
 
 
 	boost::shared_ptr< CInputDataDelegate<CCharacterMotionControlAppTask> > m_pInputHandler;
@@ -37,9 +37,9 @@ class CCharacterMotionControlAppTask : public StageViewerGameTask
 
 	std::vector< boost::shared_ptr<SkeletalCharacter> > m_pCharacterItems;
 
-	boost::shared_ptr<CThirdPersonCameraController> m_pThirdPersonCameraController;
+	boost::shared_ptr<ThirdPersonCameraController> m_pThirdPersonCameraController;
 
-	boost::shared_ptr<CThirdPersonMotionController> m_pThirdPersonMotionController;
+	boost::shared_ptr<ThirdPersonMotionController> m_pThirdPersonMotionController;
 
 	DoubleConeScrollEffect m_ScrollEffect;
 
@@ -103,7 +103,7 @@ public:
 };
 
 
-class CCharacterMotionControlAppBase : public CGameApplicationBase
+class CCharacterMotionControlAppBase : public GameApplicationBase
 {
 public:
 
