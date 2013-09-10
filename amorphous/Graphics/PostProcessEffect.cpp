@@ -477,19 +477,17 @@ Result::Name GetSampleOffsets_Star( unsigned int dwD3DTexSize,
  Get the texture coordinates to use when rendering into the destination
  texture, given the source and destination rectangles
 */
-HRESULT GetTextureCoords( TextureHandle& tex_src,  const SRect* pRectSrc,
-						  TextureHandle& tex_dest, const SRect* pRectDest, CoordRect* pCoords )
+Result::Name GetTextureCoords(
+	TextureHandle& tex_src,  const SRect* pRectSrc,
+	TextureHandle& tex_dest, const SRect* pRectDest, CoordRect* pCoords
+	)
 {
-	LPDIRECT3DTEXTURE9 pTexSrc  = tex_src.GetTexture();
-	LPDIRECT3DTEXTURE9 pTexDest = tex_dest.GetTexture();
-
 	HRESULT hr = S_OK;
-	D3DSURFACE_DESC desc;
 	float tU, tV;
 
 	// Validate arguments
-	if( pTexSrc == NULL || pTexDest == NULL || pCoords == NULL )
-		return E_INVALIDARG;
+	if( pCoords == NULL )
+		return Result::INVALID_ARGS;
 
 	// Start with a default mapping of the complete source surface to complete 
 	// destination surface
@@ -502,41 +500,43 @@ HRESULT GetTextureCoords( TextureHandle& tex_src,  const SRect* pRectSrc,
 	if( pRectSrc != NULL )
 	{
 		// Get destination texture description
-		hr = pTexSrc->GetLevelDesc( 0, &desc );
-		if( FAILED( hr ) )
-			return hr;
+		const SRectangular src_tex_size = tex_src.GetSize2D( 0 );
+
+		if( src_tex_size.width == 0 || src_tex_size.height )
+			return Result::UNKNOWN_ERROR;
 
 		// These delta values are the distance between source texel centers in 
 		// texture address space
-		tU = 1.0f / desc.Width;
-		tV = 1.0f / desc.Height;
+		tU = 1.0f / src_tex_size.width;
+		tV = 1.0f / src_tex_size.height;
 
 		pCoords->fLeftU += pRectSrc->left * tU;
 		pCoords->fTopV += pRectSrc->top * tV;
-		pCoords->fRightU -= ( desc.Width - pRectSrc->right ) * tU;
-		pCoords->fBottomV -= ( desc.Height - pRectSrc->bottom ) * tV;
+		pCoords->fRightU -= ( src_tex_size.width - pRectSrc->right ) * tU;
+		pCoords->fBottomV -= ( src_tex_size.height - pRectSrc->bottom ) * tV;
 	}
 
 	// If not drawing to the complete destination surface, adjust the coordinates
 	if( pRectDest != NULL )
 	{
 		// Get source texture description
-		hr = pTexDest->GetLevelDesc( 0, &desc );
-		if( FAILED( hr ) )
-			return hr;
+		const SRectangular dest_tex_size = tex_dest.GetSize2D();
+
+		if( dest_tex_size.width == 0 || dest_tex_size.height )
+			return Result::UNKNOWN_ERROR;
 
 		// These delta values are the distance between source texel centers in 
 		// texture address space
-		tU = 1.0f / desc.Width;
-		tV = 1.0f / desc.Height;
+		tU = 1.0f / dest_tex_size.width;
+		tV = 1.0f / dest_tex_size.height;
 
 		pCoords->fLeftU -= pRectDest->left * tU;
 		pCoords->fTopV -= pRectDest->top * tV;
-		pCoords->fRightU += ( desc.Width - pRectDest->right ) * tU;
-		pCoords->fBottomV += ( desc.Height - pRectDest->bottom ) * tV;
+		pCoords->fRightU += ( dest_tex_size.width - pRectDest->right ) * tU;
+		pCoords->fBottomV += ( dest_tex_size.height - pRectDest->bottom ) * tV;
 	}
 
-	return S_OK;
+	return Result::SUCCESS;
 }
 
 
