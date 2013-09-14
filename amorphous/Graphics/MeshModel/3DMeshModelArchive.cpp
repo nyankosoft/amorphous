@@ -358,7 +358,7 @@ void AddTexturesToBinaryDatabase( C3DMeshModelArchive& mesh_archive,
 				continue;
 			}
 
-			ImageArchive img_archive = ImageArchive( tex_filename );
+			ImageArchive img_archive( tex_filename );
 
 			if( img_archive.IsValid() )
 			{
