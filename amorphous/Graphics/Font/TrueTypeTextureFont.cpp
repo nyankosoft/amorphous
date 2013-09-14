@@ -388,7 +388,7 @@ bool TrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
 		return false;
 
 	ImageArchive ia;
-	bool image_loaded = ia.LoadFromFile( temporary_texture_pathname );
+	bool image_loaded = ia.LoadImageFile( temporary_texture_pathname );
 	if( !image_loaded )
 		return false;
 

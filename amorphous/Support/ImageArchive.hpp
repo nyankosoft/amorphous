@@ -48,7 +48,7 @@ public:
 
 //	bool LoadImage_FloatRGBA( vector<SFloatRGBAColor>& dest_buffer );
 
-	inline bool LoadFromFile( const std::string& image_filename );
+	inline bool LoadImageFile( const std::string& image_filename );
 
 	/// returns true on success
 	inline bool SetFormatFromFileExtension( const std::string& image_ext );
@@ -71,11 +71,11 @@ inline ImageArchive::ImageArchive( const std::string& image_filename )
 :
 m_Format(IMGFMT_INVALID)
 {
-	LoadFromFile( image_filename );
+	LoadImageFile( image_filename );
 }
 
 
-inline bool ImageArchive::LoadFromFile( const std::string& image_filename )
+inline bool ImageArchive::LoadImageFile( const std::string& image_filename )
 {
 	// get the suffix from the filename
 	size_t dot_pos = image_filename.rfind(".");
