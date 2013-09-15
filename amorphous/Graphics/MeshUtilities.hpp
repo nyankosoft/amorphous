@@ -18,7 +18,7 @@ inline MeshHandle CreateBoxMesh( const Vector3& whd,
 								const std::string& texture_pathname = "" )
 {
 	boost::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
-	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
+	pBoxMeshGenerator->SetEdgeLengths( whd );
 	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	mesh_desc.pMeshGenerator->SetDiffuseColor( diffuse_color );
