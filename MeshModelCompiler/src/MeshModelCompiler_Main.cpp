@@ -12,6 +12,7 @@
 #include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/thread_starter.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 #include "amorphous/Graphics/MeshModel/3DMeshModelBuilder.hpp"
 #include "amorphous/LightWave/3DMeshModelExportManager_LW.hpp"
@@ -77,8 +78,16 @@ public:
 
 	void run()
 	{
+		U32 build_option_flags = C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE;
+
+		// Save the texture as image archive files or not (false by default).
+		int save_textures_as_ia = 0;
+		LoadParamFromFile( "params.txt", "SAVE_TEXTURES_AS_IMAGE_ARCHIVES", save_textures_as_ia );
+		if( save_textures_as_ia )
+			build_option_flags |= C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES;
+
 		// Build mesh archive(s) and save to disk
-		m_Exporter.BuildMeshModels( m_TargetFilepath, C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE );
+		m_Exporter.BuildMeshModels( m_TargetFilepath, build_option_flags );
 
 		bool res = MakeShapesFile();
 
