@@ -14,7 +14,7 @@
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/BitmapImage.hpp" // For InitFreeImage()
 #include "amorphous/Support/lfs.hpp"
-#include "amorphous/Support/Log/LogOutput.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 #include "amorphous/Input/StdMouseInput.hpp"
 #include "amorphous/Input/StdKeyboard.hpp"
 //#include "amorphous/XML.hpp"
@@ -294,8 +294,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 	if( res != Result::SUCCESS )
 		return 0;
 
-	LogOutput_HTML html_log( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
-	GlobalLog().AddLogOutput( &html_log );
+	InitHTMLLog( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
 
 	InitFreeImage();
 
