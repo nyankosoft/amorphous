@@ -101,7 +101,8 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh
 //		m_MeshModelArchive.SaveToFile( dest_filepath );
 
 	// Commented out: decided to do this with AutoResourceArchiver.
-/*	if( build_option_flags && C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES )
+	const path dest_dir_path = path(dest_filepath).parent_path();
+	if( build_option_flags & C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES )
 	{
 //		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
 		const int num_materials = (int)m_OrigTextureFilepaths.size();
@@ -111,22 +112,35 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh
 			const int num_textures = (int)m_OrigTextureFilepaths[i].size();
 			for( int j=0; j<num_textures; j++ )
 			{
-				const CMMA_Texture& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
-				if( tex.type != CMMA_Texture::FILENAME )
+				TextureResourceDesc& tex = m_MeshModelArchive.GetMaterial()[i].vecTexture[j];
+				if( tex.ResourcePath.length() == 0 )
 					continue;
 
 //				path src_tex_path = path(src_dirpath) / tex.strFilename;
-				path src_tex_path = path(src_dirpath) / m_OrigTextureFilepaths[i][j];
+				path src_tex_path = m_OrigTextureFilepaths[i][j];
+				path dest_tex_filepath = dest_dir_path / path(m_OrigTextureFilepaths[i][j]);
 				ImageArchive ia( src_tex_path.string() );
 				if( !ia.IsValid() )
+				{
+					LOG_PRINT_ERROR( "Failed to load'" + src_tex_path.string() + "' as an image archive." );
 					continue;
+				}
 
-				path dest_tex_path = path(dest_filepath).parent_path() / tex.strFilename;
+				path dest_tex_path = path(dest_filepath).parent_path() / tex.ResourcePath;
 				create_directories( dest_tex_path.parent_path() );
-				ia.SaveToFile( dest_tex_path.string() );
+				path dest_ia_path = change_extension( dest_tex_path, ".ia" );;
+				LOG_PRINT( "Saving an image as an image archive file: " + dest_ia_path.string() );
+				bool ia_saved = ia.SaveToFile( dest_ia_path.string(), ArchiveOptionFlags::AOF_OBFUSCATE );
+				if( ia_saved )
+				{
+					path tex_path = path(tex.ResourcePath).parent_path() / dest_ia_path.leaf();
+					tex.ResourcePath = tex_path.string();
+				}
+				else
+					LOG_PRINT_ERROR( "Failed to save'" + dest_ia_path.string() + "' as an image archive." );
 			}
 		}
-	}*/
+	}
 
 	// debug - output text file
 	if( build_option_flags & BOF_OUTPUT_AS_TEXTFILE )
