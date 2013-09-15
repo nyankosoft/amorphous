@@ -232,6 +232,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_
 
 bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, U32 build_option_flags )
 {
+	LOG_PRINTF(( "lwo_filename: %s, build_option_flags: %u", lwo_filename.c_str(), (unsigned int)build_option_flags ));
+
 	Release();
 
 	// load light wave model data
