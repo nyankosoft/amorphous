@@ -259,7 +259,7 @@ void CResolutionChangeTest::HandleInput( const InputData& input )
 
 				GetGameWindowManager().ChangeScreenSize( display_mode.Width, display_mode.Height, false );
 
-				g_Camera.SetAspectRatio( (float)display_mode.Width / (float)display_mode.Height );
+				Camera().SetAspectRatio( (float)display_mode.Width / (float)display_mode.Height );
 			}
 			m_CurrentlyEnteredDigits = -1;
 		}
