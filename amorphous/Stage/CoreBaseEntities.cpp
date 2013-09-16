@@ -182,6 +182,19 @@ void CoreBaseEntitiesLoader::LoadCoreBaseEntities( std::vector<BaseEntity *>& pB
 	AddPhysicsBaseEntity( "__BoxFromMesh__",          pBaseEntities );
 	AddPhysicsBaseEntity( "__TriangleMeshFromMesh__", pBaseEntities );
 
+	CBE_GeneralEntity *pNCBaseEntity = CreateBaseEntity<CBE_GeneralEntity>( BaseEntity::BE_GENERALENTITY );
+	pNCBaseEntity->m_strName         = "__NonCollidable__";
+	pNCBaseEntity->m_aabb.vMin = Vector3(1,1,1) * -0.001f;
+	pNCBaseEntity->m_aabb.vMax = Vector3(1,1,1) *  0.001f;
+	pNCBaseEntity->ClearEntityFlag( BETYPE_RIGIDBODY ); // Do not register as a physics base entity
+	pNCBaseEntity->RaiseEntityFlag( BETYPE_NOCLIP );
+
+	// Shader techniques are not set up here.
+	// By default, generic shader is used for the mesh, and the shader technique "Default" is set.
+//	pNCBaseEntity->m_MeshProperty.m_ShaderTechnique
+
+	pBaseEntities.push_back( pNCBaseEntity );
+
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;
 //	BE_GeneralEntity *pBox = new BE_GeneralEntity;
