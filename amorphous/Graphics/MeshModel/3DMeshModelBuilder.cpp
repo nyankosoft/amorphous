@@ -148,8 +148,7 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh
 		string strTextFile;
 		if( 0 < dest_filepath.length() )
 		{
-			strTextFile = dest_filepath;
-			lfs::change_ext( strTextFile, "txt" );
+			strTextFile = dest_filepath + ".txt";
 
 			if( src_dirpath.length() )
 			{
