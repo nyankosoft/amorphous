@@ -45,6 +45,15 @@ public:
 
 class StageMiscUtility : public StageUtility
 {
+	EntityHandle<> CreatePhysicsEntity( MeshHandle& mesh_handle,
+								  const std::string& entity_name,
+								  const std::string& entity_attributes_name,
+								  const Matrix34& pose,
+								  const Vector3& vel,
+								  std::vector<physics::CShapeDesc *>& vecpShapeDesc,
+								  float mass,
+								  bool static_actor );
+
 	EntityHandle<> CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
 								  const std::string& entity_name,
 								  const std::string& entity_attributes_name,
@@ -220,6 +229,13 @@ public:
 							const std::string& entity_name = "",
 							const std::string& entity_attributes_name = "" );
 
+	EntityHandle<> CreateEntityFromConvexMesh( MeshHandle& convex_mesh,
+							const Matrix34& pose = Matrix34Identity(),
+							float mass = 1.0f,
+							const std::string& material_name = "default",
+							const std::string& entity_name = "",
+							const std::string& entity_attributes_name = "" );
+
 	EntityHandle<> CreateEntity(
 		const char *model,
 		const char *name = "",
@@ -269,6 +285,18 @@ public:
 			const std::string& entity_attributes_name = "" );
 
 //	void CreateSmokeTrailSource( const SFloatRGBAColor& color, const string& target_entity_name );
+
+	EntityHandle<> CreateNonCollidableEntityFromMesh(
+		MeshHandle& mesh,
+		const Matrix34& pose,
+		const std::string& entity_name
+		);
+
+	EntityHandle<> CreateNonCollidableEntityFromMesh(
+		const char *mesh_resource_path,
+		const Matrix34& pose,
+		const std::string& entity_name
+		);
 };
 
 

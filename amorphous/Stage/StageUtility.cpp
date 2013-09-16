@@ -227,25 +227,15 @@ Result::Name SetSphereShapeDesc( MeshHandle& mesh_handle, CSphereShapeDesc& sphe
 }
 
 
-EntityHandle<> StageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
-						      //CActorDesc& actor_desc,
+EntityHandle<> StageMiscUtility::CreatePhysicsEntity( MeshHandle& mesh_handle,
 							  const std::string& entity_name,
 							  const std::string& entity_attributes_name,
 							  const Matrix34& pose,
 							  const Vector3& vel,
 							  vector<CShapeDesc *>& vecpShapeDesc,
 							  float mass,
-//							  const std::string& material_name,
 							  bool static_actor )
 {
-	MeshHandle mesh_handle;
-	bool mesh_loaded = mesh_handle.Load( mesh_desc );
-	if( !mesh_loaded )
-	{
-		LOG_PRINT_ERROR( " Failed to load the mesh." );
-		return EntityHandle<>();
-	}
-
 	shared_ptr<BasicMesh> pMesh = mesh_handle.GetMesh();
 	if( !pMesh || pMesh->GetNumMaterials() == 0 )
 		return EntityHandle<>();
@@ -276,6 +266,29 @@ EntityHandle<> StageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_des
 	pEntityRawPtr->world_aabb.TransformCoord( aabb, pEntityRawPtr->GetWorldPose().vPosition );
 
 	return entity;
+}
+
+
+EntityHandle<> StageMiscUtility::CreatePhysicsEntity( MeshResourceDesc& mesh_desc,
+						      //CActorDesc& actor_desc,
+							  const std::string& entity_name,
+							  const std::string& entity_attributes_name,
+							  const Matrix34& pose,
+							  const Vector3& vel,
+							  vector<CShapeDesc *>& vecpShapeDesc,
+							  float mass,
+//							  const std::string& material_name,
+							  bool static_actor )
+{
+	MeshHandle mesh_handle;
+	bool mesh_loaded = mesh_handle.Load( mesh_desc );
+	if( !mesh_loaded )
+	{
+		LOG_PRINT_ERROR( " Failed to load the mesh." );
+		return EntityHandle<>();
+	}
+
+	return CreatePhysicsEntity( mesh_handle, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
 }
 
 
@@ -732,6 +745,65 @@ EntityHandle<> StageMiscUtility::CreateTriangleMeshFromMesh( const char *mesh_re
 }
 
 
+EntityHandle<> StageMiscUtility::CreateEntityFromConvexMesh(
+	MeshHandle& convex_mesh,
+	const Matrix34& pose,
+	float mass,
+	const std::string& material_name,
+	const std::string& entity_name,
+	const std::string& entity_attributes_name
+	)
+{
+	shared_ptr<BasicMesh> pMesh = convex_mesh.GetMesh();
+	if( !pMesh || pMesh->GetNumMaterials() == 0 )
+	{
+		LOG_PRINT_ERROR( "An invalid mesh."  );
+		return EntityHandle<>();
+	}
+
+	BasicMesh& mesh = *pMesh;
+
+	CConvexShapeDesc convex_shape_desc;
+
+	// Fill out the convex mesh desc
+	CTriangleMeshDesc convex_mesh_desc;
+	mesh.GetVertexPositions( convex_mesh_desc.m_vecVertex );
+	vector<uint> vertex_indices;
+	mesh.GetVertexIndices( vertex_indices );
+
+	convex_mesh_desc.m_vecIndex.resize( vertex_indices.size() );
+	for( size_t i=0; i<vertex_indices.size(); i++ )
+		convex_mesh_desc.m_vecIndex[i] = (uint)vertex_indices[i];
+
+	convex_mesh_desc.m_vecMaterialIndex.resize( vertex_indices.size() / 3 );
+
+	// Create convex mesh
+	physics::CStream convex_mesh_stream;
+	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( convex_mesh_desc, convex_mesh_stream );
+
+	CConvexMesh *pConvexMesh = physics::PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
+	if( !pConvexMesh )
+	{
+		LOG_PRINT_ERROR( "Failed to create a convex mesh."  );
+		return EntityHandle<>();
+	}
+
+	convex_shape_desc.pConvexMesh = pConvexMesh;
+
+	convex_shape_desc.MaterialIndex = 1;
+
+	vector<CShapeDesc *> vecpShapeDesc;
+	vecpShapeDesc.push_back( &convex_shape_desc );
+
+//	actor_desc.BodyDesc.Flags |= static_actor ? BodyFlag::Static : 0;
+//	actor_desc.BodyDesc.fMass = mass;
+
+	bool static_actor = false;
+	Vector3 vel = Vector3(0,0,0);
+	return CreatePhysicsEntity( convex_mesh, entity_name, entity_attributes_name, pose, vel, vecpShapeDesc, mass, static_actor );
+}
+
+
 EntityHandle<> StageMiscUtility::CreateEntityFromBaseEntity( 
 	const char *model,
 	const char *name,
@@ -1144,6 +1216,58 @@ EntityHandle<> StageMiscUtility::CreateStaticSmokeSource( const Vector3& pos,
 	else*/
 		return EntityHandle<>();
 }
+
+
+EntityHandle<> StageMiscUtility::CreateNonCollidableEntityFromMesh(
+	MeshHandle& mesh,
+	const Matrix34& pose,
+	const std::string& entity_name
+	)
+{
+	const char *entity_attributes_name = "__NonCollidable__";
+
+	Vector3 vel = Vector3(0,0,0);
+
+	EntityHandle<> entity = CreateNamedEntity( entity_name, entity_attributes_name, pose, vel, NULL, mesh );
+	CCopyEntity *pEntityRawPtr = entity.GetRawPtr();
+	if( !pEntityRawPtr )
+		return EntityHandle<>();
+
+	const boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
+	if( !pMesh )
+	{
+		return EntityHandle<>();
+	}
+
+	AABB3 aabb = pMesh->GetAABB();
+
+	pEntityRawPtr->m_MeshHandle = mesh;
+	pEntityRawPtr->local_aabb = aabb;
+	pEntityRawPtr->world_aabb.TransformCoord( aabb, pEntityRawPtr->GetWorldPose().vPosition );
+
+	return entity;
+}
+
+
+EntityHandle<> StageMiscUtility::CreateNonCollidableEntityFromMesh(
+	const char *mesh_resource_path,
+	const Matrix34& pose,
+	const std::string& entity_name
+	)
+{
+	MeshHandle mesh;
+	bool mesh_loaded = mesh.Load( mesh_resource_path );
+
+	if( !mesh_resource_path )
+		return EntityHandle<>();
+
+	return CreateNonCollidableEntityFromMesh(
+		mesh,
+		pose,
+		entity_name
+		);
+}
+
 
 } // namespace amorphous
 
