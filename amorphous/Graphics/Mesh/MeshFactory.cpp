@@ -20,6 +20,19 @@ void SetCustomMesh( BasicMesh& src_mesh )
 // MeshFactory
 //=============================================================================
 
+BasicMesh *MeshFactory::InitMeshInstance( MeshType::Name mesh_type, U32 load_option_flags )
+{
+	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
+	if( !pMesh )
+		return NULL;
+
+	if( load_option_flags & MeshLoadOption::CUSTOM_MESH )
+		SetCustomMesh( *pMesh );
+
+	return pMesh;
+}
+
+
 BasicMesh *MeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
 {
 	switch( mesh_type )
@@ -57,12 +70,7 @@ BasicMesh* MeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 												  U32 load_option_flags,
 												  MeshType::Name mesh_type )
 {
-	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
-	if( !pMesh )
-		return NULL;
-
-	if( load_option_flags & MeshLoadOption::CUSTOM_MESH )
-		SetCustomMesh( *pMesh );
+	BasicMesh* pMesh = InitMeshInstance( mesh_type, load_option_flags );
 
 	bool loaded = pMesh->LoadFromFile( filepath, load_option_flags );
 
@@ -81,7 +89,7 @@ BasicMesh* MeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_arc
 																    U32 load_option_flags,
 																	MeshType::Name mesh_type )
 {
-	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
+	BasicMesh* pMesh = InitMeshInstance( mesh_type, load_option_flags );
 
 	bool loaded = pMesh->LoadFromArchive( mesh_archive, filepath, load_option_flags );
 

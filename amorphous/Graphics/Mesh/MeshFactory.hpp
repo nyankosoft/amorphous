@@ -47,6 +47,8 @@ inline boost::shared_ptr<MeshImplFactory>& GetMeshImplFactory()
 
 class MeshFactory
 {
+	BasicMesh *InitMeshInstance( MeshType::Name mesh_type, U32 load_option_flags );
+
 public:
 
 //	virtual boost::shared_ptr<BasicMesh> CreateBasicMeshImpl() = 0;
