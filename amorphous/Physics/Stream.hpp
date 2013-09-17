@@ -2,10 +2,8 @@
 #define  __PhysStream_H__
 
 
-#include <string>
-#include "3DMath/Matrix34.hpp"
-#include "Support/SerializableStream.hpp"
-
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Support/SerializableStream.hpp"
 #include "fwd.hpp"
 
 

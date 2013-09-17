@@ -2,10 +2,9 @@
 #define  __Physics_PhysPreprocessor_H__
 
 
-#include <string>
-#include "../base.hpp"
-#include "3DMath/precision.h"
-#include "Support/singleton.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/precision.h"
+#include "amorphous/Support/singleton.hpp"
 #include "fwd.hpp"
 #include "Stream.hpp"
 
