@@ -199,7 +199,10 @@ m_StartPhysicsSimulation(false)
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_Camera.SetPosition( Vector3( 0, 2, -120 ) );
+	if( CameraController() )
+	{
+		CameraController()->SetPosition( Vector3( 0, 2, -120 ) );
+	}
 //	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
 
 	m_vWindForce.current = Vector3(0,0,0);
@@ -549,7 +552,7 @@ void CClothTest::RenderMeshes()
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 */
-	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	for( size_t i=0; i<m_RigidBodies.size(); i++ )
 		m_RigidBodies[i].Render();

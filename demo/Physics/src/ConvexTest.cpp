@@ -39,8 +39,11 @@ m_pPhysicsScene(NULL)
 {
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_Camera.SetPosition( Vector3( 0, 1, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( GetCameraController() )
+	{
+		GetCameraController()->SetPosition( Vector3( 0, 2, -20 ) );
+//		GetCameraController()->SetPosition( Vector3( 0, 520, 120 ) );
+	}
 }
 
 
@@ -204,9 +207,9 @@ void CConvexTest::RenderMeshes()
 
 	// render the scene
 
-	shader_mgr.SetViewerPosition( g_Camera.GetPosition() );
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
+	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 

@@ -40,8 +40,9 @@ m_fActorInitHeight( ms_fActorStartInitHeight )
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	g_Camera.SetPosition( Vector3( 0, 2, -120 ) );
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 2, -120 ) );
+//		CameraController()->SetPosition( Vector3( 0, 520, 120 ) );
 
 	m_vWindForce.current = Vector3(0,0,0);
 	m_vWindForce.target  = Vector3(0,0,0);
@@ -538,8 +539,8 @@ void CMultiShapeActorsTest::HandleInput( const InputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			physics::CRay ray;
-			ray.Direction = g_Camera.GetPose().matOrient.GetColumn(2);
-			ray.Origin    = g_Camera.GetPose().vPosition;
+			ray.Direction = GetCurrentCamera().GetPose().matOrient.GetColumn(2);
+			ray.Origin    = GetCurrentCamera().GetPose().vPosition;
 			if( !m_pPhysScene )
 				return;
 			
