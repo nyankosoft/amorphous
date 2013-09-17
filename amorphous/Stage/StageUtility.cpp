@@ -616,6 +616,11 @@ Result::Name StageMiscUtility::SetTriangleMeshShapeDesc( const char *collision_m
 		int mat_index = 0;
 		trimeshdesc.m_vecMaterialIndex.resize( num_indices / 3, mat_index );
 	}
+	else
+	{
+		LOG_PRINTF_WARNING(( "Failed to load the collision mesh: %s", collision_mesh_name ));
+		return Result::UNKNOWN_ERROR;
+	}
 
 	shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
