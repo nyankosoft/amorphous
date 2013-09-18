@@ -7,6 +7,7 @@
 #include "../../Physics/BoxShapeDesc.hpp"
 #include "../../Physics/SphereShapeDesc.hpp"
 #include "../../Physics/CapsuleShapeDesc.hpp"
+#include "../../Physics/MeshConvenienceFunctions.hpp"
 #include "../../Support/Log/DefaultLog.hpp"
 #include "../../Support/SafeDeleteVector.hpp"
 
@@ -75,8 +76,25 @@ public:
 
 	void VisitConvexContainer( ConvexContainer& convex_container )
 	{ 
-		LOG_PRINT_ERROR( " Not implemented yet." );
-//		m_pShapeDescs.push_back( pConvex );
+		using namespace physics;
+
+		physics::CTriangleMeshDesc convex_mesh_desc;
+		convex_mesh_desc.m_vecVertex = convex_container.points;
+		convex_mesh_desc.m_vecIndex  = convex_container.indices;
+
+		const int default_material_index = 0;
+		convex_mesh_desc.m_vecMaterialIndex.resize( convex_container.indices.size() / 3, default_material_index );
+
+		CConvexShapeDesc *pConvex = new CConvexShapeDesc;
+
+		bool res = SetConvexShapeDesc( convex_mesh_desc, *pConvex );
+		if( !res )
+		{
+			LOG_PRINT_ERROR( "SetConvexShapeDesc() failed." );
+			return;
+		}
+
+		m_pShapeDescs.push_back( pConvex );
 	}
 };
 
