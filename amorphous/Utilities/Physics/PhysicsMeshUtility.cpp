@@ -8,6 +8,7 @@
 #include "amorphous/Physics/Scene.hpp"
 #include "amorphous/Physics/ClothMeshDesc.hpp"
 #include "amorphous/Physics/Cloth.hpp"
+#include "amorphous/Physics/MeshConvenienceFunctions.hpp"
 #include "amorphous/3DMath/PrimitivePolygonModelMaker.hpp"
 
 
@@ -40,15 +41,9 @@ CActor *CPhysicsMeshUtility::CreateConvexActorFromMesh( const CustomMesh& src_me
 
 	trimeshdesc.m_vecMaterialIndex.resize( num_indices / 3, material_index );
 
-	physics::CStream convex_mesh_stream;
-	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( trimeshdesc, convex_mesh_stream );
-	convex_mesh_stream.m_Buffer.reset_pos();
-
-	CConvexMesh *pConvexMesh = PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
-	if( !pConvexMesh )
+	bool res = SetConvexShapeDesc( trimeshdesc, convex_shape_desc );
+	if( !res )
 		return NULL;
-
-	convex_shape_desc.pConvexMesh = pConvexMesh;
 
 	CActorDesc actor_desc;
 	actor_desc.vecpShapeDesc.push_back( &convex_shape_desc );

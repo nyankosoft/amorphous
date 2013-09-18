@@ -84,21 +84,11 @@ void CBE_PhysicsBaseEntity::Init()
 
 	if( m_ConvexMeshDesc.IsValid() )
 	{
-		physics::CStream convex_mesh_stream;
-		Result::Name res = physics::Preprocessor().CreateConvexMeshStream( m_ConvexMeshDesc, convex_mesh_stream );
-
-		if( convex_mesh_stream.m_Buffer.buffer().empty() )
-			return;
-
-		convex_mesh_stream.m_Buffer.reset_pos();
-
-		CConvexMesh *pConvexMesh = physics::PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
-		if( !pConvexMesh )
-			return;
-
 		CConvexShapeDesc *pConvexDesc = new CConvexShapeDesc;
-		pConvexDesc->pConvexMesh = pConvexMesh;
-//		convex_desc.pConvexMesh = pConvexMesh;
+		bool res = SetConvexShapeDesc( m_ConvexMeshDesc, *pConvexDesc );
+		if( !res )
+			return;
+
 		m_ActorDesc.vecpShapeDesc.push_back( pConvexDesc );
 	}
 }
