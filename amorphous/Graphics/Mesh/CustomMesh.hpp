@@ -132,6 +132,8 @@ public:
 
 	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
 
+	void GetVertexPositions( std::vector<Vector3>& dest_vertices ) const { GetPositions( dest_vertices ); }
+
 	uint GetNumTriangles() const { return GetNumIndices() / 3; }
 
 	uint GetNumIndices() const { return (uint)m_IndexBuffer.size() / sizeof(U16); }

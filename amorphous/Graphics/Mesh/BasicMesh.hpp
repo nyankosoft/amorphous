@@ -187,6 +187,8 @@ public:
 
 	virtual unsigned int GetNumVertices() const { return 0; }
 
+	virtual void GetVertexPositions( std::vector<Vector3>& dest_vertices ) const {}
+
 	virtual unsigned int GetNumTriangles() const { return 0; }
 
 	virtual unsigned int GetNumIndices() const { return 0; }
@@ -318,6 +320,8 @@ public:
 	const AABB3& GetAABB( int material_index ) const { return m_pImpl->GetAABB( material_index ); }
 
 	unsigned int GetNumVertices() const { return m_pImpl->GetNumVertices(); }
+
+	void GetVertexPositions( std::vector<Vector3>& dest_vertices ) const { return m_pImpl->GetVertexPositions( dest_vertices ); }
 
 	unsigned int GetNumTriangles() const { return m_pImpl->GetNumTriangles(); }
 
