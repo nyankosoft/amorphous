@@ -80,7 +80,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\BillboardArrayMesh.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\BuiltinSkyTextures.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp" />
@@ -353,7 +352,6 @@
     <ClInclude Include="..\..\amorphous\3DMath\fwd.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\Vector4.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\BuiltinSkyTextures.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp" />

@@ -144,9 +144,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\amorphous\Graphics\BillboardArrayMesh.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -845,9 +842,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\amorphous\Graphics\BillboardArrayMesh.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
