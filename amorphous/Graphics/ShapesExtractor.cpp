@@ -1,11 +1,9 @@
 #include "ShapesExtractor.hpp"
 #include "ShapeDetector.hpp"
 #include "ShapeContainers.hpp"
-#include "Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
 #include "MeshModel/General3DMesh.hpp"
 #include "MeshModel/General3DMeshFunctions.hpp"
 #include "MeshModel/PrimitiveShapeMeshes.hpp"
-#include "Support/memory_helpers.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
 
 
