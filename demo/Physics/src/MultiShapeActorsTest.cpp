@@ -41,8 +41,7 @@ m_fActorInitHeight( ms_fActorStartInitHeight )
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
 	if( CameraController() )
-		CameraController()->SetPosition( Vector3( 0, 2, -120 ) );
-//		CameraController()->SetPosition( Vector3( 0, 520, 120 ) );
+		CameraController()->SetPosition( Vector3( 0, 2, -30 ) );
 
 	m_vWindForce.current = Vector3(0,0,0);
 	m_vWindForce.target  = Vector3(0,0,0);
