@@ -141,7 +141,7 @@ void CMultiShapeActorsTest::CreateActors( const std::string& model, int quantity
 
 	CActorDesc actor_desc;
 
-	CPhysicsShapeMakerVisitor visitor( actor_desc.vecpShapeDesc );
+	PhysicsShapeMakerVisitor visitor( actor_desc.vecpShapeDesc );
 	visitor;
 	string shape_descs_file( model );
 	lfs::change_ext( shape_descs_file, "sd" );

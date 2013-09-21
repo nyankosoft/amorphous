@@ -125,7 +125,7 @@ int CConvexTest::InitPhysics( const vector< pair<string,int> >& mesh_and_quantit
 	CActor *pPlaneActor = scene_utility.CreateStaticPlaneActor( Plane( Vector3(0,1,0), 0 ), mat_id );
 
 	float y = 0;
-	physics::CPhysicsMeshUtility mesh_utility( m_pPhysicsScene );
+	physics::PhysicsMeshUtility mesh_utility( m_pPhysicsScene );
 	for( size_t i=0; i<mesh_and_quantity_pairs.size(); i++ )
 	{
 		string pathname = mesh_and_quantity_pairs[i].first;
@@ -152,7 +152,7 @@ int CConvexTest::InitPhysics( const vector< pair<string,int> >& mesh_and_quantit
 					continue;
 				CActorDesc actor_desc;
 				actor_desc.WorldPose = pose;
-				CPhysicsShapeMakerVisitor shape_maker( actor_desc.vecpShapeDesc );
+				PhysicsShapeMakerVisitor shape_maker( actor_desc.vecpShapeDesc );
 				for( size_t i=0; i<shape_set.m_pShapes.size(); i++ )
 					shape_set.m_pShapes[i]->Accept( shape_maker );
 
