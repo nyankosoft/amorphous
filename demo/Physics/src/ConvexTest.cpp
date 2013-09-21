@@ -13,11 +13,13 @@
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
+#include "amorphous/Graphics/ShapeContainers.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Support/MTRand.hpp"
 #include "amorphous/Utilities/Physics/PhysicsMeshUtility.hpp"
+#include "amorphous/Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
 #include "amorphous/Physics/SceneDesc.hpp"
 #include "amorphous/Physics/Scene.hpp"
 #include "amorphous/Physics/PhysicsEngine.hpp"
@@ -138,11 +140,31 @@ int CConvexTest::InitPhysics( const vector< pair<string,int> >& mesh_and_quantit
 
 			float x = RangedRand( -mesh_aabb.GetExtents().x, mesh_aabb.GetExtents().x );
 			float z = RangedRand( -mesh_aabb.GetExtents().z, mesh_aabb.GetExtents().z );
+			Matrix34 pose = Matrix34( Vector3(x,2+y,z), Matrix33Identity() );
 
-			m_Actors.back().pActor = mesh_utility.CreateConvexActorFromMesh(
-				m_Actors.back().mesh,
-				Matrix34( Vector3(x,2+y,z), Matrix33Identity() )
-				);
+			string shape_file_pathname = pathname;
+			lfs::change_ext( shape_file_pathname, "sd" );
+			if( lfs::path_exists( shape_file_pathname ) )
+			{
+				ShapeContainerSet shape_set;
+				bool res = shape_set.LoadFromFile( shape_file_pathname );
+				if( !res )
+					continue;
+				CActorDesc actor_desc;
+				actor_desc.WorldPose = pose;
+				CPhysicsShapeMakerVisitor shape_maker( actor_desc.vecpShapeDesc );
+				for( size_t i=0; i<shape_set.m_pShapes.size(); i++ )
+					shape_set.m_pShapes[i]->Accept( shape_maker );
+
+				m_Actors.back().pActor = m_pPhysicsScene->CreateActor( actor_desc );
+			}
+			else
+			{
+				m_Actors.back().pActor = mesh_utility.CreateConvexActorFromMesh(
+					m_Actors.back().mesh,
+					pose
+					);
+			}
 
 			y += mesh_aabb.GetExtents().y * 2.05f;
 		}
