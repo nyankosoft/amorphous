@@ -138,6 +138,14 @@ public:
 
 	inline void UpdatePolygonBuffer();
 
+	inline void GetVertexPositions( std::vector<Vector3>& points ) const;
+
+	inline void GetTriangleIndices( std::vector<int>& triangle_indices, std::vector<int>& material_indices ) const;
+
+	inline void GetTriangleIndices( std::vector<int>& triangle_indices ) const;
+
+	inline void GetTriangleIndices( std::vector<unsigned int>& triangle_indices ) const;
+
 	inline void GetIndexedTriangles( std::vector<Vector3>& vecVertex,
 		                             std::vector<int>& vecIndex,
 		                             std::vector<int>& vecMaterialIndex );
@@ -197,34 +205,65 @@ inline void General3DMesh::UpdatePolygonBuffer()
 }
 
 
-inline void General3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex,
-		                                         std::vector<int>& vecIndex,
-		                                         std::vector<int>& vecMaterialIndex )
+inline void General3DMesh::GetVertexPositions( std::vector<Vector3>& points ) const
+{
+	const size_t num_vertices = m_pVertexBuffer->size();
+	points.resize( num_vertices );
+	for( size_t i=0; i<num_vertices; i++ )
+	{
+		points[i] = (*m_pVertexBuffer)[i].m_vPosition;
+	}
+}
+
+
+inline void General3DMesh::GetTriangleIndices( std::vector<int>& triangle_indices, std::vector<int>& material_indices ) const
 {
 	std::vector<IndexedPolygon> triangulated_polygon_buffer;
 	Triangulate( triangulated_polygon_buffer, m_vecPolygon );
 
-	// copy vertices
-	const size_t num_vertices = m_pVertexBuffer->size();
-	vecVertex.resize( num_vertices );
-	for( size_t i=0; i<num_vertices; i++ )
-	{
-		vecVertex[i] = (*m_pVertexBuffer)[i].m_vPosition;
-	}
-
-	// copy triangle and material indices
 	const size_t num_triangles = triangulated_polygon_buffer.size();
-	vecIndex.resize( num_triangles * 3 );
-	vecMaterialIndex.resize( num_triangles );
+	triangle_indices.resize( num_triangles * 3 );
+	material_indices.resize( num_triangles );
 	for( size_t i=0; i<num_triangles; i++ )
 	{
 		IndexedPolygon& triangle = triangulated_polygon_buffer[i];
-		vecIndex[i*3  ] = triangle.m_index[0];
-		vecIndex[i*3+1] = triangle.m_index[1];
-		vecIndex[i*3+2] = triangle.m_index[2];
+		triangle_indices[i*3  ] = triangle.m_index[0];
+		triangle_indices[i*3+1] = triangle.m_index[1];
+		triangle_indices[i*3+2] = triangle.m_index[2];
 
-		vecMaterialIndex[i] = triangle.m_MaterialIndex;
+		material_indices[i] = triangle.m_MaterialIndex;
 	}
+
+}
+
+
+inline void General3DMesh::GetTriangleIndices( std::vector<int>& triangle_indices ) const
+{
+	std::vector<int> material_indices;
+	GetTriangleIndices( triangle_indices, material_indices );
+}
+
+
+inline void General3DMesh::GetTriangleIndices( std::vector<unsigned int>& triangle_indices ) const
+{
+	std::vector<int> int_triangle_indices;
+	std::vector<int> material_indices;
+	GetTriangleIndices( int_triangle_indices, material_indices );
+
+	for( size_t i=0; i<int_triangle_indices.size(); i++ )
+		triangle_indices[i] = (unsigned int)int_triangle_indices[i];
+}
+
+
+inline void General3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex,
+		                                         std::vector<int>& vecIndex,
+		                                         std::vector<int>& vecMaterialIndex )
+{
+	// copy vertices
+	GetVertexPositions( vecVertex );
+
+	// copy triangle and material indices
+	GetTriangleIndices( vecIndex, vecMaterialIndex );
 }
 
 
