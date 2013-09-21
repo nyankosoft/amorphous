@@ -80,7 +80,12 @@ public:
 
 		physics::CTriangleMeshDesc convex_mesh_desc;
 		convex_mesh_desc.m_vecVertex = convex_container.points;
-		convex_mesh_desc.m_vecIndex  = convex_container.indices;
+//		convex_mesh_desc.m_vecIndex  = convex_container.indices;
+		convex_mesh_desc.m_vecIndex.resize( 0 );
+		convex_mesh_desc.m_vecIndex.resize( convex_container.indices.size() );
+		for( size_t i=0; i<convex_container.indices.size(); i++ )
+			convex_mesh_desc.m_vecIndex[i] = (int)convex_container.indices[i];
+
 
 		const int default_material_index = 0;
 		convex_mesh_desc.m_vecMaterialIndex.resize( convex_container.indices.size() / 3, default_material_index );

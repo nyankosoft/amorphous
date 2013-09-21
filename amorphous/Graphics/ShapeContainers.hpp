@@ -127,7 +127,14 @@ class ConvexContainer : public ShapeContainer
 {
 public:
 	std::vector<Vector3> points;
-	std::vector<int> indices;
+	std::vector<unsigned int> indices;
+
+	ConvexContainer() {}
+
+	ConvexContainer( const std::vector<Vector3>& _points, const std::vector<unsigned int>& _indices )
+	:
+	points(_points), indices(_indices)
+	{}
 
 	void Serialize( IArchive& ar, const unsigned int version ) { ar & points & indices; }
 
