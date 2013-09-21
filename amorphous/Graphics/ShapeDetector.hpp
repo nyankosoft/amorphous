@@ -2,6 +2,7 @@
 #define  __ShapeDetector_HPP__
 
 
+#include <vector>
 #include "../3DMath/fwd.hpp"
 #include "../3DMath/AABB3.hpp"
 #include "../3DMath/Transform.hpp"
@@ -19,8 +20,9 @@ class MeshShape
 public:
 	enum Name
 	{
-		AXIS_ALIGNED_BOX, // Axis-aligned box. Can be represented with AABB3 class
-		ORIENTED_BOX,  // Non-axis-aligned bounding box. Can be represented with OBB3 class
+		INVALID,
+		AXIS_ALIGNED_BOX,  ///< Axis-aligned box. Can be represented with AABB3 class
+		ORIENTED_BOX,      ///< Non-axis-aligned bounding box. Can be represented with OBB3 class
 		SPHERE,
 		CAPSULE,
 		CONVEX,
@@ -43,8 +45,13 @@ public:
 
 	Capsule capsule; ///< Stores the detected capsule
 
+	/// Stores the detected convex shape
+	std::vector<Vector3> points;
+	std::vector<unsigned int> triangle_indices;
+
 	ShapeDetectionResults()
 		:
+	shape(MeshShape::INVALID),
 	radii(Vector3(0,0,0))
 	{}
 };

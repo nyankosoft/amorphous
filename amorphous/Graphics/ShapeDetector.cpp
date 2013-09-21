@@ -420,7 +420,7 @@ bool ShapeDetector::DetectShape( const General3DMesh& src_mesh, ShapeDetectionRe
 	}
 	else if( IsSphere( src_mesh, sphere ) )
 	{
-		LOG_PRINT( " Detected a sphere." );
+		LOG_PRINT( " Detected a sphere: " + to_string(sphere) );
 		results.shape = MeshShape::SPHERE;
 		return true;
 	}
@@ -434,6 +434,9 @@ bool ShapeDetector::DetectShape( const General3DMesh& src_mesh, ShapeDetectionRe
 	else if( IsConvex( src_mesh ) )
 	{
 		results.shape = MeshShape::CONVEX;
+		src_mesh.GetVertexPositions( results.points );
+		src_mesh.GetTriangleIndices( results.triangle_indices );
+		LOG_PRINTF(( " Detected a convex (%d points, %d triangles).", (int)results.points.size(), (int)results.triangle_indices.size() ));
 		return true;
 	}
 

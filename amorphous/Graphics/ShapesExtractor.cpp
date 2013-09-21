@@ -45,8 +45,7 @@ void ShapesExtractor::AddShapeContainer( General3DMesh& connected_mesh,
 		break;
 
 	case MeshShape::CONVEX:
-		LOG_PRINT( " The convex shape is not supported yet." );
-//		shape_set.m_pShapes.push_back( new CConvexContainer() );
+		shape_set.m_pShapes.push_back( new ConvexContainer( results.points, results.triangle_indices ) );
 		break;
 
 	default:
