@@ -39,6 +39,12 @@ inline std::string to_string( const SPlane& plane )
 }
 
 
+inline std::string to_string( const Sphere& sphere )
+{
+	return std::string( "[sphere] c" + to_string(sphere.center) + ", r: " + to_string(sphere.radius) );
+}
+
+
 inline std::string to_string( const Vector2& v, int precision = 3, int num_zfills = 0 )
 {
 	std::string fmt_float = "%" + to_string(num_zfills) + "." + to_string(precision) + "f";
