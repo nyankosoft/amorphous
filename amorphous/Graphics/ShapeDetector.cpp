@@ -221,7 +221,8 @@ bool ShapeDetector::IsConvex( const General3DMesh& src_mesh )
 	const int num_polygons = (int)polygons.size();
 	for( int i=0; i<num_polygons; i++ )
 	{
-		float convex_normal_tolerance = 0.000001f;
+//		float convex_normal_tolerance = 0.000001f;  // This turned out to be a bit too tight
+		float convex_normal_tolerance = 0.00001f;
 		const Plane& plane = polygons[i].GetPlane();
 		for( int j=i+1; j<num_polygons; j++ )
 		{
@@ -239,7 +240,8 @@ bool ShapeDetector::IsConvex( const General3DMesh& src_mesh )
 			for( int k=0; k<num_verts; k++ )
 			{
 				const Vector3& pos = vert_buffer[ polygons[j].m_index[k] ].m_vPosition;
-				if( convex_normal_tolerance < Vec3Dot( plane.normal, pos ) - plane.dist )
+				const float dist = plane.GetDistanceFromPoint( pos );
+				if( convex_normal_tolerance < dist )
 					return false; // Found concave polygons.
 			}
 		}
@@ -436,7 +438,7 @@ bool ShapeDetector::DetectShape( const General3DMesh& src_mesh, ShapeDetectionRe
 		results.shape = MeshShape::CONVEX;
 		src_mesh.GetVertexPositions( results.points );
 		src_mesh.GetTriangleIndices( results.triangle_indices );
-		LOG_PRINTF(( " Detected a convex (%d points, %d triangles).", (int)results.points.size(), (int)results.triangle_indices.size() ));
+		LOG_PRINTF(( " Detected a convex (%d points, %d triangles).", (int)results.points.size(), (int)results.triangle_indices.size() / 3 ));
 		return true;
 	}
 
