@@ -22,7 +22,7 @@ using namespace physics;
 static U16 g_mesh_indices[0xFFFF];
 
 
-CActor *CPhysicsMeshUtility::CreateConvexActorFromMesh( const CustomMesh& src_mesh, const Matrix34& world_pose, Vector3 linear_velocity, float mass, int material_index )
+CActor *PhysicsMeshUtility::CreateConvexActorFromMesh( const CustomMesh& src_mesh, const Matrix34& world_pose, Vector3 linear_velocity, float mass, int material_index )
 {
 	CConvexShapeDesc convex_shape_desc;
 	CTriangleMeshDesc trimeshdesc;
@@ -55,7 +55,7 @@ CActor *CPhysicsMeshUtility::CreateConvexActorFromMesh( const CustomMesh& src_me
 }
 
 
-CCloth *CPhysicsMeshUtility::CreateClothFromMesh( CustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data )
+CCloth *PhysicsMeshUtility::CreateClothFromMesh( CustomMesh& mesh, const Matrix34& world_pose, bool set_mesh_data )
 {
 	CClothMeshDesc cloth_mesh_desc;
 	const uint num_vertices = mesh.GetNumVertices();
@@ -108,7 +108,7 @@ CCloth *CPhysicsMeshUtility::CreateClothFromMesh( CustomMesh& mesh, const Matrix
 }
 
 
-CCloth *CPhysicsMeshUtility::CreateClothFromMeshFile( const std::string& filepath, const Matrix34& world_pose )
+CCloth *PhysicsMeshUtility::CreateClothFromMeshFile( const std::string& filepath, const Matrix34& world_pose )
 {/*
 	C3DMeshModelArchive archive;
 	bool loaded = archive.LoadFromFile( filepath );

@@ -15,11 +15,11 @@ namespace physics
 {
 
 
-class CPhysicsMeshUtility : public CSceneUtility
+class PhysicsMeshUtility : public CSceneUtility
 {
 public:
 
-	CPhysicsMeshUtility( CScene *pScene )
+	PhysicsMeshUtility( CScene *pScene )
 		:
 	CSceneUtility(pScene)
 	{}

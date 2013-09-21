@@ -16,12 +16,12 @@ namespace amorphous
 {
 
 
-class CPhysicsShapeMakerVisitor : public ShapeContainerVisitor
+class PhysicsShapeMakerVisitor : public ShapeContainerVisitor
 {
 public:
 	std::vector<physics::CShapeDesc *>& m_pShapeDescs;
 
-	CPhysicsShapeMakerVisitor( std::vector<physics::CShapeDesc *>& pShapeDescs )
+	PhysicsShapeMakerVisitor( std::vector<physics::CShapeDesc *>& pShapeDescs )
 		:
 	m_pShapeDescs(pShapeDescs)
 	{}

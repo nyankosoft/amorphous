@@ -68,7 +68,7 @@ void CBE_PhysicsBaseEntity::Init()
 
 			for( size_t i=0; i<containers.m_pShapes.size(); i++ )
 			{
-				CPhysicsShapeMakerVisitor shape_descs_maker( m_ActorDesc.vecpShapeDesc );
+				PhysicsShapeMakerVisitor shape_descs_maker( m_ActorDesc.vecpShapeDesc );
 				if( !containers.m_pShapes[i] )
 					continue;
 
