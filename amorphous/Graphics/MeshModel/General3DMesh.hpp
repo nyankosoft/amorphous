@@ -140,14 +140,12 @@ public:
 
 	inline void GetVertexPositions( std::vector<Vector3>& points ) const;
 
-	inline void GetTriangleIndices( std::vector<int>& triangle_indices, std::vector<int>& material_indices ) const;
-
-	inline void GetTriangleIndices( std::vector<int>& triangle_indices ) const;
+	inline void GetTriangleIndices( std::vector<unsigned int>& triangle_indices, std::vector<int>& material_indices ) const;
 
 	inline void GetTriangleIndices( std::vector<unsigned int>& triangle_indices ) const;
 
 	inline void GetIndexedTriangles( std::vector<Vector3>& vecVertex,
-		                             std::vector<int>& vecIndex,
+		                             std::vector<unsigned int>& vecIndex,
 		                             std::vector<int>& vecMaterialIndex );
 
 	inline void FlipPolygons();
@@ -216,7 +214,7 @@ inline void General3DMesh::GetVertexPositions( std::vector<Vector3>& points ) co
 }
 
 
-inline void General3DMesh::GetTriangleIndices( std::vector<int>& triangle_indices, std::vector<int>& material_indices ) const
+inline void General3DMesh::GetTriangleIndices( std::vector<unsigned int>& triangle_indices, std::vector<int>& material_indices ) const
 {
 	std::vector<IndexedPolygon> triangulated_polygon_buffer;
 	Triangulate( triangulated_polygon_buffer, m_vecPolygon );
@@ -227,36 +225,24 @@ inline void General3DMesh::GetTriangleIndices( std::vector<int>& triangle_indice
 	for( size_t i=0; i<num_triangles; i++ )
 	{
 		IndexedPolygon& triangle = triangulated_polygon_buffer[i];
-		triangle_indices[i*3  ] = triangle.m_index[0];
-		triangle_indices[i*3+1] = triangle.m_index[1];
-		triangle_indices[i*3+2] = triangle.m_index[2];
+		triangle_indices[i*3  ] = (unsigned int)triangle.m_index[0];
+		triangle_indices[i*3+1] = (unsigned int)triangle.m_index[1];
+		triangle_indices[i*3+2] = (unsigned int)triangle.m_index[2];
 
 		material_indices[i] = triangle.m_MaterialIndex;
 	}
-
 }
 
 
-inline void General3DMesh::GetTriangleIndices( std::vector<int>& triangle_indices ) const
+inline void General3DMesh::GetTriangleIndices( std::vector<unsigned int>& triangle_indices ) const
 {
 	std::vector<int> material_indices;
 	GetTriangleIndices( triangle_indices, material_indices );
 }
 
 
-inline void General3DMesh::GetTriangleIndices( std::vector<unsigned int>& triangle_indices ) const
-{
-	std::vector<int> int_triangle_indices;
-	std::vector<int> material_indices;
-	GetTriangleIndices( int_triangle_indices, material_indices );
-
-	for( size_t i=0; i<int_triangle_indices.size(); i++ )
-		triangle_indices[i] = (unsigned int)int_triangle_indices[i];
-}
-
-
 inline void General3DMesh::GetIndexedTriangles( std::vector<Vector3>& vecVertex,
-		                                         std::vector<int>& vecIndex,
+		                                         std::vector<unsigned int>& vecIndex,
 		                                         std::vector<int>& vecMaterialIndex )
 {
 	// copy vertices
