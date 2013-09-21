@@ -1,12 +1,17 @@
 #include "MultiShapeActorsTest.hpp"
 #include <boost/filesystem.hpp>
-#include "amorphous/Graphics.hpp"
-#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Graphics/VertexFormat.hpp"
 #include "amorphous/Graphics/ShapesExtractor.hpp"
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
@@ -254,8 +259,6 @@ void CMultiShapeActorsTest::InitPhysicsEngine()
 
 int CMultiShapeActorsTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-
 	m_Meshes.push_back( MeshHandle() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
@@ -431,9 +434,6 @@ void CMultiShapeActorsTest::Render()
 
 	if( m_pSampleUI )
 		m_pSampleUI->Render();
-
-	Vector3 vCamPos = GetCurrentCamera().GetPosition();
-	m_pFont->DrawText( to_string( vCamPos ), Vector2( 20, 300 ) );
 }
 
 
@@ -518,12 +518,6 @@ void CMultiShapeActorsTest::HandleInput( const InputData& input )
 			m_CurrentMouseY = y;
 		}
 		break;
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-//			SaveTexturesAsImageFiles();
-		}
-		break;
 	case GIC_SPACE:
 		if( input.iType == ITYPE_KEY_PRESSED )
 			m_StartPhysicsSimulation = true;
@@ -552,6 +546,7 @@ void CMultiShapeActorsTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

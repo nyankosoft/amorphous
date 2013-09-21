@@ -420,11 +420,7 @@ void CClothTest::InitPhysicsEngine()
 
 int CClothTest::Init()
 {
-//	m_pFont = shared_ptr<CFontBase>( new CFont( "Bitstream Vera Sans Mono", 16, 16 ) );
-	shared_ptr<TextureFont> pTexFont( new TextureFont );
-	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
-	pTexFont->SetFontSize( 8, 16 );
-	m_pFont = pTexFont;
+//	m_pFont->SetFontSize( 8, 16 );
 
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
@@ -670,12 +666,6 @@ void CClothTest::HandleInput( const InputData& input )
 			m_CurrentMouseY = y;
 		}
 		break;
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-//			SaveTexturesAsImageFiles();
-		}
-		break;
 	case GIC_SPACE:
 		if( input.iType == ITYPE_KEY_PRESSED )
 			m_StartPhysicsSimulation = true;
@@ -687,6 +677,7 @@ void CClothTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }

@@ -33,8 +33,6 @@ class CConvexTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 //	boost::shared_ptr<CCameraController> m_pSplitPlaneController;
 
 	std::string m_TextBuffer;

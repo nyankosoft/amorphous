@@ -27,8 +27,6 @@ class CMultiShapeActorsTest : public CGraphicsTestBase
 
 //	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	boost::shared_ptr<FontBase> m_pFont;
-
 	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	physics::CScene *m_pPhysScene;

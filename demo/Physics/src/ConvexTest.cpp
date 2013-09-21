@@ -176,9 +176,6 @@ int CConvexTest::InitPhysics( const vector< pair<string,int> >& mesh_and_quantit
 
 int CConvexTest::Init()
 {
-	m_pFont = CreateDefaultBuiltinFont();
-	m_pFont->SetFontSize( 6, 12 );
-
 	vector< pair<string,int> > mesh_and_quantity_pairs;
 	CTextFileScanner scanner( "ConvexDemo/params.txt" );
 	if( scanner.IsReady() )
@@ -282,12 +279,6 @@ void CConvexTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}
-		break;
-
 	case GIC_SPACE:
 //		if( input.iType == ITYPE_KEY_PRESSED )
 //			OnSpacePressed();
@@ -305,6 +296,7 @@ void CConvexTest::HandleInput( const InputData& input )
 		break;
 
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
