@@ -200,10 +200,7 @@ m_StartPhysicsSimulation(false)
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
 	if( CameraController() )
-	{
-		CameraController()->SetPosition( Vector3( 0, 2, -120 ) );
-	}
-//	g_Camera.SetPosition( Vector3( 0, 520, 120 ) );
+		CameraController()->SetPosition( Vector3( 0, 2, -20 ) );
 
 	m_vWindForce.current = Vector3(0,0,0);
 	m_vWindForce.target  = Vector3(0,0,0);
@@ -284,12 +281,6 @@ bool CClothTest::InitShader()
 //	string shader_filepath = LoadParamFromFile<string>( "config", "Shader" );
 
 	SetLights();
-
-	Matrix44 matProj
-		= Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-
-	if( m_Shader.GetShaderManager() )
-		m_Shader.GetShaderManager()->SetProjectionTransform( matProj );
 
 	return true;
 }
@@ -398,7 +389,7 @@ void CClothTest::InitPhysicsEngine()
 	// cloth and box to attach the cloth to
 	string mesh_filepath = LoadParamFromFile<string>( "ClothDemo/params.txt", "ClothMesh" );
 	m_Cloth.CreateFromMesh( m_pPhysScene, "ClothDemo/models/tex_cloth-10x10.msh", cloth_pose );
-	m_RigidBodies[0].InitKinematicBox( m_pPhysScene, box_edges, box_pose );
+	m_RigidBodies[0].InitKinematicBox( m_pPhysScene, box_edges, box_pose, SFloatRGBAColor(0.8f,0.8f,0.8f,1.0f) );
 	m_RigidBodies[0].m_pActor->SetCollisionGroup( 2 );
 
 	if( m_Cloth.m_pCloth )
