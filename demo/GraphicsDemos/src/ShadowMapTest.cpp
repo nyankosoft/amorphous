@@ -12,7 +12,7 @@
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
-#include "amorphous/Support/CameraController_Win32.hpp"
+#include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 
 using std::string;
