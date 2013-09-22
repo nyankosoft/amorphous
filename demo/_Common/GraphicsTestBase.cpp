@@ -5,6 +5,9 @@
 #include <boost/filesystem.hpp>
 
 
+extern Camera g_Camera;
+
+
 class ScreenshotRenderer
 {
 public:
@@ -140,4 +143,10 @@ void CGraphicsTestBase::HandleInput( const InputData& input )
 	default:
 		break;
 	}
+}
+
+
+const Camera& CGraphicsTestBase::GetCurrentCamera() const
+{
+	return g_Camera;
 }

@@ -20,8 +20,6 @@ using namespace amorphous;
 class CGraphicsTestBase;
 
 
-extern Camera g_Camera;
-
 inline std::string GetCommonShadersDirectoryPath() { return "../../../Shaders/"; }
 
 
@@ -48,7 +46,7 @@ protected:
 
 	void SetBackgroundColor( const SFloatRGBAColor& color ) { m_BackgroundColor = color; }
 
-	const Camera& GetCurrentCamera() const { return g_Camera; };
+	const Camera& GetCurrentCamera() const;
 
 public:
 
