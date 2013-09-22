@@ -1,5 +1,4 @@
 #include "LensFlareTest.hpp"
-#include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/LensFlare.hpp"
@@ -36,8 +35,8 @@ void CLensFlareTest::InitSkyTexture()
 	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_mid",    mid_color );
 	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_bottom", bottom_color );
 
-//	m_SkyTexture = CreateHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
-	m_SkyTexture = CreateTCBSplineHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
+	m_SkyTexture = CreateHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
+//	m_SkyTexture = CreateTCBSplineHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
 
 	m_SkyTexture.SaveTextureToImageFile( "sky_texture.png" );
 }
@@ -83,8 +82,8 @@ int CLensFlareTest::Init()
 	InitLensFlare( "" );
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
-	m_MeshTechnique.SetTechniqueName( "NoLighting" );
-	m_DefaultTechnique.SetTechniqueName( "NullShader" );
+	m_MeshTechnique.SetTechniqueName( "Default" );
+	m_DefaultTechnique.SetTechniqueName( "Default" );
 
 	// initialize shader
 //	bool shader_loaded = m_Shader.Load( "LensFlareDemo/shaders/CLensFlareTest.fx" );
