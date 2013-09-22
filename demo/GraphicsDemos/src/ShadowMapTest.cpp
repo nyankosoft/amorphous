@@ -153,9 +153,9 @@ void CShadowMapTest::Render()
 
 	m_pShadowMapManager->SetSceneCamera( GetCurrentCamera() );
 
-	m_pShadowMapManager->RenderShadowCasters( g_Camera );
+	m_pShadowMapManager->RenderShadowCasters( Camera() );
 
-	m_pShadowMapManager->RenderShadowReceivers( g_Camera );
+	m_pShadowMapManager->RenderShadowReceivers( Camera() );
 
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
