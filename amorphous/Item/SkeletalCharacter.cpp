@@ -754,6 +754,9 @@ void SkeletalCharacter::UpdateGraphics()
 	if( !m_pMotionFSMManager )
 		return;
 
+	if( !m_pSkeletonSrcMotion )
+		return;
+
 	boost::shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( !pSkeletalMesh )
 		return;
