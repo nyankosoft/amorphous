@@ -76,6 +76,14 @@ public:
 };
 
 
+inline void RenderFloorPlane( ShaderHandle& shader, const Vector3& vCenter = Vector3(0,0,0), float width = 100.0f, float depth = 100.0f, const SFloatRGBAColor& color = SFloatRGBAColor::White() )
+{
+	PrimitiveShapeRenderer renderer;
+	renderer.SetShader( shader );
+	renderer.RenderFloorPlane( vCenter, width, depth, color );
+}
+
+
 } // namespace amorphous
 
 
