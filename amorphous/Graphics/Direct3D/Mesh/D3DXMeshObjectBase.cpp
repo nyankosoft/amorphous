@@ -529,8 +529,11 @@ HRESULT CD3DXMeshObjectBase::LoadMaterials( D3DXMATERIAL* d3dxMaterials, int num
 void CD3DXMeshObjectBase::PeekAttribTables( LPD3DXBASEMESH pMesh )
 {
 	D3DXATTRIBUTERANGE attrib_table[128];
-	DWORD attrib_table_size;
-	pMesh->GetAttributeTable( attrib_table, &attrib_table_size );
+	memset( &attrib_table, 0, sizeof(attrib_table) );
+	DWORD attrib_table_size = 0;
+	HRESULT hr = pMesh->GetAttributeTable( attrib_table, &attrib_table_size );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(( "GetAttributeTable() failed (file: %s)", m_strFilename.c_str() ));
 }
 
 

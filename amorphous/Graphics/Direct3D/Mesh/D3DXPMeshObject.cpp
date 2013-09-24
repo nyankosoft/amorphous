@@ -135,20 +135,24 @@ bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	HRESULT hr;
-
 	LPD3DXMESH pMesh = LoadD3DXMeshFromArchive( archive );
 
 	Result::Name res = LoadMaterialsFromArchive( archive, option_flags );
 
-	hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
+	HRESULT hr = SetAttributeTable( pMesh, archive.GetTriangleSet() );
 
 	LPD3DXBUFFER pAdjacencyBuffer = NULL;
 
 	// get adjacency info
 	DWORD buffer_size_factor = 300;	// 3 at least
 	DWORD num_faces = pMesh->GetNumFaces();
-	D3DXCreateBuffer( sizeof(DWORD) * pMesh->GetNumFaces() * buffer_size_factor, &pAdjacencyBuffer );
+	hr = D3DXCreateBuffer( sizeof(DWORD) * pMesh->GetNumFaces() * buffer_size_factor, &pAdjacencyBuffer );
+	if( FAILED(hr) )
+	{
+		LOG_PRINT_WARNING( "D3DXCreateBuffer() failed for " + filename );
+		return false;
+	}
+
 	DWORD *pBufferPtr = (DWORD *)pAdjacencyBuffer->GetBufferPointer();
 
 	memset( pBufferPtr, 0, sizeof(DWORD) * pMesh->GetNumFaces() * buffer_size_factor );
@@ -212,13 +216,15 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 
 	dw32BitFlag = ( pMesh->GetOptions() & D3DXMESH_32BIT );
 
+	LPVOID pAdjacencyBufferPtr = pAdjacencyBuffer->GetBufferPointer();
+
 	// Perform simple cleansing operations on mesh
 	LPD3DXMESH pTempMesh;
 	hr = D3DXCleanMesh( D3DXCLEAN_SIMPLIFICATION,
 		                pMesh,
-						(DWORD*)pAdjacencyBuffer->GetBufferPointer(),
+						(DWORD*)pAdjacencyBufferPtr,
 						&pTempMesh,
-                        (DWORD*)pAdjacencyBuffer->GetBufferPointer(),
+                        (DWORD*)pAdjacencyBufferPtr,
 						NULL );
 	if( FAILED(hr) )
 	{
@@ -246,7 +252,7 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 	*/
 
 	// Verify validity of mesh for simplification
-	if( FAILED( hr = D3DXValidMesh( pMesh, (DWORD*)pAdjacencyBuffer->GetBufferPointer(), NULL ) ) )
+	if( FAILED( hr = D3DXValidMesh( pMesh, (DWORD*)pAdjacencyBufferPtr, NULL ) ) )
 	{
 		goto End;
 	}
@@ -313,7 +319,7 @@ HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
 	// - The two attribute tables of the original mesh gets reduced to only one
 	//   in the created mesh...
 	// Fixed: Added code to set attribute IDs for each face in SetAttributeTable()
-	hr = D3DXGeneratePMesh( pMesh, (DWORD*)pAdjacencyBuffer->GetBufferPointer(),
+	hr = D3DXGeneratePMesh( pMesh, (DWORD*)pAdjacencyBufferPtr,
 							NULL, NULL, 1, D3DXMESHSIMP_VERTEX, &pPMesh );
 	if( FAILED(hr) )
 		goto End;
