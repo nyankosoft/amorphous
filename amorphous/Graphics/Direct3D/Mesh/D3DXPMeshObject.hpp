@@ -2,17 +2,15 @@
 #define  __D3DXPMESHOBJECT_H__
 
 
-#include "Support/FixedVector.hpp"
-
-//#include "Graphics/GraphicsResourceHandles.h"
-#include "D3DXMeshObjectBase.hpp"
+#include "D3DXMeshObject.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
 
 namespace amorphous
 {
 
 
-class CD3DXPMeshObject : public CD3DXMeshObjectBase
+class CD3DXPMeshObject : public CD3DXMeshObject
 {
 protected:
 
@@ -55,7 +53,7 @@ public:
 
 	virtual bool LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes );
 
-	virtual LPD3DXBASEMESH GetBaseMesh() { return GetPMesh(); }
+	virtual LPD3DXBASEMESH GetBaseMesh();
 
 	virtual LPD3DXMESH GetMesh() { return NULL; }
 

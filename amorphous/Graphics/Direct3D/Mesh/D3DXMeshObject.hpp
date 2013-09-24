@@ -3,7 +3,6 @@
 
 
 #include "amorphous/base.hpp"
-#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 #include "D3DXMeshObjectBase.hpp"
 
 
@@ -13,7 +12,7 @@ namespace amorphous
 
 class CD3DXMeshObject : public CD3DXMeshObjectBase
 {
-private:
+protected:
 
 	LPD3DXMESH m_pMesh;
 

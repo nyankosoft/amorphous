@@ -1,4 +1,5 @@
 #include "D3DXSMeshObject.hpp"
+#include "D3DXMeshObject.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/memory_helpers.hpp"
@@ -83,18 +84,27 @@ bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 {
 	// create mesh from archive
 	// - turn off mulitple progress meshes by default
-	return LoadFromArchive( archive, filename, option_flags, 1 ); 
+	return LoadFromArchive( archive, filename, option_flags, 1 );
 }
 
 
 bool CD3DXSMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags, int num_pmeshes )
 {
-	bool pmesh_loaded = CD3DXPMeshObject::LoadFromArchive( archive, filename, option_flags, num_pmeshes );
+	bool mesh_loaded = false;
+
+	if( 1 < num_pmeshes )
+		mesh_loaded = CD3DXPMeshObject::LoadFromArchive( archive, filename, option_flags, num_pmeshes );
+	else
+	{
+		// The skeletal mesh cannot be loaded as a single, non-progressive mesh because CD3DXPMeshObject is
+		// derived from CD3DXMeshObjectBase and stores the mesh as LPD3DXPMESH
+		mesh_loaded = CD3DXMeshObject::LoadFromArchive( archive, filename, option_flags );
+	}
 
 	// load skeleton hierarchy
-	LoadSkeletonFromArchive( archive );
+	bool skeleton_loaded = LoadSkeletonFromArchive( archive );
 
-	return pmesh_loaded;
+	return (mesh_loaded && skeleton_loaded);
 }
 
 

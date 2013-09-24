@@ -193,6 +193,16 @@ bool CD3DXPMeshObject::LoadFromArchive( C3DMeshModelArchive& archive, const std:
 }
 
 
+LPD3DXBASEMESH CD3DXPMeshObject::GetBaseMesh()
+{
+	LPD3DXBASEMESH pMesh = GetPMesh();
+	if( pMesh )
+		return pMesh;
+	else
+		return m_pMesh;
+}
+
+
 HRESULT CD3DXPMeshObject::CreatePMeshFromMesh( LPD3DXMESH pMesh,
                                                LPD3DXBUFFER pAdjacencyBuffer,
 											   int num_mesh_divisions )
