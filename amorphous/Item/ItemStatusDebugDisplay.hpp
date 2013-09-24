@@ -4,28 +4,28 @@
 
 #include <boost/weak_ptr.hpp>
 #include "GameItem.hpp"
-#include "../Support/DebugOutput.hpp"
+#include "amorphous/Support/DebugOutput.hpp"
 
 
 namespace amorphous
 {
 
 
-class CItemStatusDebugDisplay : public CDebugItem_ResourceManager
+class ItemStatusDebugDisplay : public DebugInfo
 {
 	boost::weak_ptr<GameItem> m_pItem;
 
 public:
 
-	CItemStatusDebugDisplay(){}
+	ItemStatusDebugDisplay(){}
 
-	CItemStatusDebugDisplay( boost::weak_ptr<GameItem> pItem ) : m_pItem(pItem) {}
+	ItemStatusDebugDisplay( boost::weak_ptr<GameItem> pItem ) : m_pItem(pItem) {}
 
-	~CItemStatusDebugDisplay(){}
+	~ItemStatusDebugDisplay(){}
 
 	void SetItem( boost::weak_ptr<GameItem> pItem ) { m_pItem = pItem; }
 
-	void GetTextInfo()
+	void UpdateDebugInfoText()
 	{
 		m_TextBuffer.resize( 0 );
 
