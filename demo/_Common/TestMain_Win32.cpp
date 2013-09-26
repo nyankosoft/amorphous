@@ -29,7 +29,14 @@ using namespace std;
 using namespace boost;
 
 
-extern CGraphicsTestBase *CreateTestInstance();
+// >>> Implemented by demo app
+unsigned int GetNumDemos();
+const char **GetDemoNames();
+CGraphicsTestBase *CreateDemoInstance( unsigned int index );
+// >>> Implemented by demo app
+
+
+class AppDemoFrameworkInputHandler;
 
 
 // global variable
@@ -66,6 +73,7 @@ static boost::shared_ptr<CGraphicsTestBase> g_pTest;
 static Win32StdKeyboard g_StdKeyboard;
 
 static boost::shared_ptr<InputHandler> g_pInputHandler;
+static boost::shared_ptr<AppDemoFrameworkInputHandler> g_pDemoAppInputHandler;
 
 static boost::shared_ptr<FontBase> g_pFont;
 
@@ -75,6 +83,36 @@ Camera g_Camera;
 
 static const int sg_CameraControllerInputHandlerIndex = 0;
 static const int sg_GraphicsTestInputHandlerIndex = 1;
+
+static int sg_DemoAppIndex = -1;
+
+static void NextDemo();
+static void PrevDemo();
+
+
+class AppDemoFrameworkInputHandler : public InputHandler
+{
+
+public:
+	void ProcessInput( InputData& input )
+	{
+		switch( input.iGICode )
+		{
+		case GIC_PAGE_DOWN:
+			if( input.iType == ITYPE_KEY_PRESSED )
+				NextDemo();
+			break;
+
+		case GIC_PAGE_UP:
+			if( input.iType == ITYPE_KEY_PRESSED )
+				PrevDemo();
+			break;
+
+		default:
+			break;
+		}
+	}
+};
 
 
 void ReleaseGraphicsResources()
@@ -240,26 +278,94 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 }
 
 
-bool Init()
+bool InitDemo( int index )
 {
+	if( index < 0 )
+		return false;
+
+	// Create the instance of the test class
+	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateDemoInstance(index) );
+	if( !g_pTest )
+		return false;
+
+	const std::string app_title = g_pTest->GetAppTitle();
+	const std::string app_class_name = app_title;
+
+	static bool window_created = false;
+	if( !window_created )
+	{
+		int w = g_pTest->GetWindowWidth();  // 1280;
+		int h = g_pTest->GetWindowHeight(); //  720;
+//		param_loader.LoadParam( "ScreenResolution", w, h );
+		GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
+		GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
+		g_Camera.SetAspectRatio( (float)w / (float)h );
+
+		window_created = true;
+	}
+	else
+	{
+		GetGameWindowManager().SetWindowTitleText( app_title );
+	}
+
+	g_pTest->InitBase();
+
 	g_pTest->Init();
 
 	g_pInputHandler.reset( new CGraphicsTestInputHandler(g_pTest) );
 
-	GetInputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pInputHandler.get() );
+	g_pDemoAppInputHandler.reset( new AppDemoFrameworkInputHandler );
+
+	g_pDemoAppInputHandler->AddChild( g_pInputHandler.get() );
+
+	GetInputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pDemoAppInputHandler.get() );
 
 //	g_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
+
+	return true;
 
 	return true;
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: WinMain()
-// Desc: The application's entry point
-//-----------------------------------------------------------------------------
+bool InitDemo()
+{
+//	if( index == -1 )
+//	{
+		// Load the demo name from file
+		std::string demo_name;
+		LoadParamFromFile( "params.txt", "demo", demo_name );
+		for( unsigned int i=0; i<GetNumDemos(); i++ )
+		{
+			if( GetDemoNames()[i] == demo_name )
+			{
+				sg_DemoAppIndex = i;
+				break;
+			}
+		}
 
-INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
+		return InitDemo( sg_DemoAppIndex );
+//	}
+}
+
+
+void NextDemo()
+{
+	sg_DemoAppIndex = (sg_DemoAppIndex + 1) % GetNumDemos();
+
+	InitDemo( sg_DemoAppIndex );
+}
+
+
+void PrevDemo()
+{
+	sg_DemoAppIndex = (sg_DemoAppIndex + GetNumDemos() - 1) % GetNumDemos();
+
+	InitDemo( sg_DemoAppIndex );
+}
+
+
+int Run( LPSTR lpCmdLine )
 {
 	g_CmdLine = lpCmdLine;
 
@@ -298,33 +404,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	InitFreeImage();
 
-	// Create the instance of the test class
-	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );
-	if( !g_pTest )
+	bool initialized = InitDemo();
+	if( !initialized )
 		return 0;
-
-	const std::string app_title = g_pTest->GetAppTitle();
-	const std::string app_class_name = app_title;
-
-	int w = g_pTest->GetWindowWidth();  // 1280;
-	int h = g_pTest->GetWindowHeight(); //  720;
-	param_loader.LoadParam( "ScreenResolution", w, h );
-	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
-	GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
-	g_Camera.SetAspectRatio( (float)w / (float)h );
-
-	g_pTest->InitBase();
-
-	try
-	{
-		if( !Init() )
-			return 0;
-	}
-	catch( std::exception& e )
-	{
-		GlobalLog().Print( WL_WARNING, "exception: %s", e.what() );
-	}
-
 
 //	ChangeClientAreaSize( hWnd, g_pTest->GetWindowWidth(), g_pTest->GetWindowHeight() );
 
@@ -382,4 +464,22 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
     // Clean up everything and exit the app
 //	UnregisterClass( app_class_name.c_str(), wc.hInstance );
     return 0;
+}
+
+
+/// \brief The application's entry point
+INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
+{
+	int ret = 0;
+
+	try
+	{
+		ret = Run( lpCmdLine );
+	}
+	catch( std::exception& e )
+	{
+		GlobalLog().Print( WL_WARNING, "exception: %s", e.what() );
+	}
+
+	return ret;
 }

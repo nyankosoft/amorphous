@@ -29,6 +29,51 @@
 #include "amorphous/Support/ParamLoader.hpp"
 
 
+static const char *sg_demos[] =
+{
+	"2DPrimitivesTest",
+	"AsyncLoadingTest",
+	"BrickWallTextureGeneratorTest",
+	"CustomMeshTest",
+	"CubeMapTest",
+	"EnvMapTest",
+	"GenericShaderTest",
+	"GLSLTest",
+	"GraphicsElementEffectTest",
+	"GraphicsElementsTest",
+	"HLSLEffectTest",
+	"LensFlareTest",
+	"LightingTest",
+	"MeshSplitterTest",
+	"MultibyteFontTest",
+	"OBBTreeTest",
+	"PerlinNoiseTextureGeneratorTest",
+	"PlanarReflectionTest",
+	"PostProcessEffectTest",
+	"PrimitiveRendererTest",
+	"PrimitiveShapeMeshesTest",
+	"ResolutionChangeTest",
+	"ShadowMapTest",
+	"SimpleMotionBlurTest",
+	"SimpleOverlayEffectsTest",
+	"SkeletalMeshTest",
+	"TextureFontTest",
+	"TextureRenderTargetTest"
+};
+
+
+unsigned int GetNumDemos()
+{
+	return sizeof(sg_demos) / sizeof(sg_demos[0]);
+}
+
+
+const char **GetDemoNames()
+{
+	return sg_demos;
+}
+
+
 CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 {
 	if( demo_name == "" )
@@ -66,9 +111,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 }
 
 
-CGraphicsTestBase *CreateTestInstance()
+CGraphicsTestBase *CreateDemoInstance( unsigned int index )
 {
-	std::string demo_name;
-	LoadParamFromFile( "params.txt", "demo", demo_name );
-	return CreateTestInstance( demo_name );
+	return CreateTestInstance( GetDemoNames()[index] );
 }
