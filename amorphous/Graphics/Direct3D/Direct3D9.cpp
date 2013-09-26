@@ -296,8 +296,8 @@ void CDirect3D9::SetDefaultRenderStates()
 
 void CDirect3D9::Release()
 {
-	if( m_pD3DDevice ) m_pD3DDevice->Release();
-	if( m_pD3D ) m_pD3D->Release();
+	SAFE_RELEASE( m_pD3DDevice );
+	SAFE_RELEASE( m_pD3D );
 }
 
 
