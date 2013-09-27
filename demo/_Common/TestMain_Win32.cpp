@@ -115,7 +115,7 @@ public:
 };
 
 
-void ReleaseGraphicsResources()
+static void ReleaseGraphicsResources()
 {
 	// Detach the GraphicsResourceManager(GRM) from the list of graphics components
 	// managed by CGraphicsComponentCollector(GCC)
@@ -132,11 +132,7 @@ void ReleaseGraphicsResources()
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: Update( float frametime )
-// Desc: 
-//-----------------------------------------------------------------------------
-void Update( float frametime )
+static void Update( float frametime )
 {
 	PROFILE_FUNCTION();
 
@@ -150,12 +146,7 @@ void Update( float frametime )
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: Update( float frametime )
-// Desc: 
-//-----------------------------------------------------------------------------
-
-void UpdateCameraMatrices()
+static void UpdateCameraMatrices()
 {
 	Matrix44 matView;
 	g_Camera.GetCameraMatrix( matView );
@@ -166,11 +157,8 @@ void UpdateCameraMatrices()
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: Render()
-// Desc: Draws the scene
-//-----------------------------------------------------------------------------
-VOID Render()
+/// \brief Draws the scene
+static void Render()
 {
 	PROFILE_FUNCTION();
 
@@ -237,10 +225,7 @@ VOID Render()
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: MsgProc()
-// Desc: The window's message handler
-//-----------------------------------------------------------------------------
+/// \brief The window's message handler
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	static Win32StdMouseInput s_Mouse;
@@ -278,13 +263,13 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 }
 
 
-bool InitDemo( int index )
+static bool InitDemo( int index )
 {
 	if( index < 0 )
 		return false;
 
 	// Create the instance of the test class
-	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateDemoInstance(index) );
+	g_pTest.reset( CreateDemoInstance(index) );
 	if( !g_pTest )
 		return false;
 
@@ -328,28 +313,25 @@ bool InitDemo( int index )
 }
 
 
-bool InitDemo()
+static bool InitDemo()
 {
-//	if( index == -1 )
-//	{
-		// Load the demo name from file
-		std::string demo_name;
-		LoadParamFromFile( "params.txt", "demo", demo_name );
-		for( unsigned int i=0; i<GetNumDemos(); i++ )
+	// Load the demo name from file
+	std::string demo_name;
+	LoadParamFromFile( "params.txt", "demo", demo_name );
+	for( unsigned int i=0; i<GetNumDemos(); i++ )
+	{
+		if( GetDemoNames()[i] == demo_name )
 		{
-			if( GetDemoNames()[i] == demo_name )
-			{
-				sg_DemoAppIndex = i;
-				break;
-			}
+			sg_DemoAppIndex = i;
+			break;
 		}
+	}
 
-		return InitDemo( sg_DemoAppIndex );
-//	}
+	return InitDemo( sg_DemoAppIndex );
 }
 
 
-void NextDemo()
+static void NextDemo()
 {
 	sg_DemoAppIndex = (sg_DemoAppIndex + 1) % GetNumDemos();
 
@@ -357,7 +339,7 @@ void NextDemo()
 }
 
 
-void PrevDemo()
+static void PrevDemo()
 {
 	sg_DemoAppIndex = (sg_DemoAppIndex + GetNumDemos() - 1) % GetNumDemos();
 
@@ -365,7 +347,7 @@ void PrevDemo()
 }
 
 
-int Run( LPSTR lpCmdLine )
+static int Run( LPSTR lpCmdLine )
 {
 	g_CmdLine = lpCmdLine;
 
