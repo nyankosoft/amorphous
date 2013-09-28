@@ -4,6 +4,7 @@
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Rect.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
+#include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -231,6 +232,8 @@ void CConvexTest::RenderMeshes()
 	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
+
+	RenderFloorPlane( m_Shader, Vector3(0,0,0), 100.0f, 100.0f, SFloatRGBAColor(0.5f,0.7f,0.5f,1.0f) );
 
 //	RenderMeshes( m_RootMeshNode, shader_mgr, Matrix34Identity() );
 	for( size_t i=0; i<m_Actors.size(); i++ )
