@@ -21,8 +21,10 @@ struct SFloatRGBColor
 	inline SFloatRGBColor operator -(const SFloatRGBColor& rColor) const;
 	inline SFloatRGBColor operator +=(const SFloatRGBColor& rColor);
 	inline SFloatRGBColor operator -=(const SFloatRGBColor& rColor);
+	inline bool operator==( const SFloatRGBColor& rhs ) const;
+	inline bool operator!=( const SFloatRGBColor& rhs ) const;
 
-	/// do multiplication operations for each component
+	/// \brief Do multiplication operations for each component
 	/// - same as '*' in programmable shader
 	inline SFloatRGBColor operator *(const SFloatRGBColor& rColor) const;
 

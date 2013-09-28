@@ -141,6 +141,21 @@ inline SFloatRGBAColor SFloatRGBAColor::operator -=( const SFloatRGBAColor& rCol
 }
 
 
+bool SFloatRGBAColor::operator==( const SFloatRGBAColor& rhs ) const
+{
+	return( red   == rhs.red
+		 && green == rhs.green
+		 && blue  == rhs.blue
+		 && alpha == rhs.alpha );
+}
+
+
+bool SFloatRGBAColor::operator!=( const SFloatRGBAColor& rhs ) const
+{
+	return !(*this == rhs);
+}
+
+
 inline SFloatRGBAColor SFloatRGBAColor::operator *(const SFloatRGBAColor& rColor) const
 {
 	return SFloatRGBAColor(
