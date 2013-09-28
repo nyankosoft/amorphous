@@ -32,6 +32,8 @@ public:
 
 	virtual ~GameWindowManager_Win32() {}
 
+	virtual void Release();
+
 //	bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title );
 
 //	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );

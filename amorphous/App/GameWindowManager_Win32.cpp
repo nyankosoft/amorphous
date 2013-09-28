@@ -26,6 +26,16 @@ m_hWnd(NULL)
 }
 
 
+void GameWindowManager_Win32::Release()
+{
+	if( 0 < m_ApplicationClassName.length() )
+	{
+	   UnregisterClass( m_ApplicationClassName.c_str(), m_WindowClassEx.hInstance );
+	   m_ApplicationClassName = "";
+	}
+}
+
+
 void GameWindowManager_Win32::SetWindowTitleText( const std::string& text )
 {
 	BOOL res = SetWindowText( m_hWnd, text.c_str() );

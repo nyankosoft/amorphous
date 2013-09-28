@@ -29,6 +29,8 @@ public:
 
 	~GameWindowManager_Win32_D3D();
 
+	void Release();
+
 	bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title );
 
 	void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen );

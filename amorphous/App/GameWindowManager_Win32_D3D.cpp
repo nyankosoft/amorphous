@@ -27,8 +27,15 @@ GameWindowManager_Win32_D3D::GameWindowManager_Win32_D3D()
 
 GameWindowManager_Win32_D3D::~GameWindowManager_Win32_D3D()
 {
+	Release();
+}
+
+
+void GameWindowManager_Win32_D3D::Release()
+{
 	DIRECT3D9.Release();
-    UnregisterClass( m_ApplicationClassName.c_str(), m_WindowClassEx.hInstance );
+
+	GameWindowManager_Win32::Release();
 }
 
 
@@ -47,6 +54,8 @@ void GetCurrentResolution(int* piDesktopWidth, int* piDesktopHeight)
 bool GameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode, const std::string& app_title )
 {
 	LOG_FUNCTION_SCOPE();
+
+	Release();
 
 	// detemine the specification of the window class
 	m_WindowClassEx.cbSize		= sizeof(WNDCLASSEX); 
@@ -70,7 +79,7 @@ bool GameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScree
     // register the window class
     ATOM atom = RegisterClassEx( &m_WindowClassEx );
 
-	int iDesktopWidth, iDesktopHeight;
+	int iDesktopWidth = 0, iDesktopHeight = 0;
 	GetCurrentResolution( &iDesktopWidth, &iDesktopHeight );
 
     // create the application's window
