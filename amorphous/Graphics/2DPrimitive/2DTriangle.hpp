@@ -65,7 +65,9 @@ public:
 	void SetColor( U32 color ) { C2DPrimitive::SetColor(color); }
 
 	/// sets a single color to all the 3 vertices
-	inline virtual void SetColor( const SFloatRGBAColor& color );
+	inline void SetColor( const SFloatRGBAColor& color );
+
+	inline void SetCornerColor( int corner, const SFloatRGBAColor& color );
 
 	inline void SetZDepth(float fZValue);
 
@@ -207,7 +209,7 @@ inline void C2DTriangle::SetPositionCC( int x0, int y0, int x1, int y1, int x2, 
 }
 
 
-void C2DTriangle::SetVertexColor( U32 color, int vert_num )
+inline void C2DTriangle::SetVertexColor( U32 color, int vert_num )
 {
 	if( 0 <= vert_num && vert_num < 3 )
 	{
@@ -217,10 +219,17 @@ void C2DTriangle::SetVertexColor( U32 color, int vert_num )
 }
 
 
-void C2DTriangle::SetColor( const SFloatRGBAColor& color )
+inline void C2DTriangle::SetColor( const SFloatRGBAColor& color )
 {
 	for(int i=0; i<3; i++)
 		m_avVertex[i].m_DiffuseColor = color;
+}
+
+
+inline void C2DTriangle::SetCornerColor( int corner, const SFloatRGBAColor& color )
+{
+	if( 0 <= corner && corner < 3 )
+		m_avVertex[corner].m_DiffuseColor = color;
 }
 
 
