@@ -26,7 +26,7 @@ enum ShadowAppTaskID
 
 class FirearmsAppTask : public StageViewerGameTask
 {
-	boost::shared_ptr<CKeyBind> m_pKeyBind;
+	boost::shared_ptr<KeyBind> m_pKeyBind;
 
 
 	boost::shared_ptr< CInputDataDelegate<FirearmsAppTask> > m_pInputHandler;
@@ -35,9 +35,9 @@ class FirearmsAppTask : public StageViewerGameTask
 
 	std::vector< boost::shared_ptr<SkeletalCharacter> > m_pCharacterItems;
 
-	boost::shared_ptr<CThirdPersonCameraController> m_pThirdPersonCameraController;
+	boost::shared_ptr<ThirdPersonCameraController> m_pThirdPersonCameraController;
 
-	boost::shared_ptr<CThirdPersonMotionController> m_pThirdPersonMotionController;
+	boost::shared_ptr<ThirdPersonMotionController> m_pThirdPersonMotionController;
 
 //	boost::shared_ptr<CArmedCharacterOperations> m_pArmedCharacterOperations;
 
@@ -51,7 +51,7 @@ private:
 
 	void ArmCharacter( SkeletalCharacter& character );
 
-	void InitKeybind( CKeyBind& keybind );
+	void InitKeybind( KeyBind& keybind );
 
 public:
 

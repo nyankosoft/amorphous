@@ -82,9 +82,9 @@ public:
 		EntityHandle<ItemEntity> m_pFirearmEntity;
 //		std::vector< EntityHandle<ItemEntity> > m_pMagazineEntities;
 
-		boost::shared_ptr<CMotionPrimitive> m_pFireMotion;
-		boost::shared_ptr<CMotionPrimitive> m_pFiredToAimingMotion;
-		boost::shared_ptr<CMotionPrimitive> m_pReloadMotion;
+		boost::shared_ptr<MotionPrimitive> m_pFireMotion;
+		boost::shared_ptr<MotionPrimitive> m_pFiredToAimingMotion;
+		boost::shared_ptr<MotionPrimitive> m_pReloadMotion;
 
 		FirearmUnit()
 			:

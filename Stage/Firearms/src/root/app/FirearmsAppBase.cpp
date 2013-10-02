@@ -107,7 +107,7 @@ void FirearmsAppTask::ArmCharacter( SkeletalCharacter& character )
 }
 
 
-void FirearmsAppTask::InitKeybind( CKeyBind& keybind )
+void FirearmsAppTask::InitKeybind( KeyBind& keybind )
 {
 	// keyboad & mouse keybinds
 	keybind.Assign( GIC_UP,              ACTION_MOV_FORWARD );
@@ -149,7 +149,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 {
 	ScriptManager::ms_UseBoostPythonModules = true;
 
-	m_pKeyBind.reset( new CKeyBind );
+	m_pKeyBind.reset( new KeyBind );
 
 	InitKeybind( *m_pKeyBind );
 
@@ -159,9 +159,9 @@ m_vPrevCamPos( Vector3(0,0,0) )
 
 	SetCameraPose( Matrix34( Vector3(0.8f,1.9f,-3.5f), Matrix33Identity() ) );
 
-	m_pThirdPersonCameraController.reset( new CThirdPersonCameraController );
+	m_pThirdPersonCameraController.reset( new ThirdPersonCameraController );
 
-	m_pThirdPersonMotionController.reset( new CThirdPersonMotionController );
+	m_pThirdPersonMotionController.reset( new ThirdPersonMotionController );
 
 	// trigger shape that detects collision of the character and other objects
 	physics::CCapsuleShapeDesc cap_desc;
