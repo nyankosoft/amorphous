@@ -432,12 +432,25 @@ void RoundFrameRectElement::SetFrameWidth( int width )
 TriangleElement::TriangleElement( const SRect& non_scaled_rect, float fScale )
 {
 	ChangeScale( m_fScale );
+
+	for( int i=0; i<numof(m_CornerColors); i++ )
+		m_CornerColors[i] = SFloatRGBAColor::White();
+
 }
 
 
 void TriangleElement::Draw()
 {
-	SetBlendedColorToPrimitive();
+	if( HasDifferentCornerColors() )
+	{
+		const SFloatRGBAColor blended_color = GetBlendedColor();
+		for( int i=0; i<numof(m_CornerColors); i++ )
+			m_pPrimitive->SetCornerColor( i, blended_color * m_CornerColors[i] );
+	}
+	else
+	{
+		SetBlendedColorToPrimitive();
+	}
 
 	DrawPrimitive();
 }
@@ -480,6 +493,26 @@ TriangleElement(non_scaled_rect,fScale)
 }
 
 
+FillTriangleElement::FillTriangleElement( const Vector2& v0, const Vector2& v1, const Vector2& v2, const SRect& non_scaled_rect, float fScale )
+:
+TriangleElement(non_scaled_rect,fScale)
+{
+	m_pFillTriangle = new C2DTriangle();
+	m_pFillTriangle->SetPosition( 0, v0 * fScale );
+	m_pFillTriangle->SetPosition( 1, v1 * fScale );
+	m_pFillTriangle->SetPosition( 2, v2 * fScale );
+
+	m_LocalAABB = AABB2( Vector2((float)non_scaled_rect.left,(float)non_scaled_rect.top), Vector2((float)non_scaled_rect.right,(float)non_scaled_rect.bottom) );
+
+	m_pPrimitive = m_pFillTriangle;
+
+	InitPrimitive();
+
+//	m_aColor[0] = color0;
+	ChangeScale( fScale );
+}
+
+
 FillTriangleElement::~FillTriangleElement()
 {
 	SafeDelete( m_pFillTriangle );
@@ -489,7 +522,6 @@ FillTriangleElement::~FillTriangleElement()
 void FillTriangleElement::UpdatePositionsInternal( const Matrix23& global_transform )
 {
 }
-
 
 
 FrameTriangleElement::FrameTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale )

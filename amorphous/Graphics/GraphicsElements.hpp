@@ -515,6 +515,8 @@ protected:
 	/// non-scaled vertex positions in local coord
 	Vector2 m_avVertexPosition[3];
 
+	SFloatRGBAColor m_CornerColors[3];
+
 public:
 
 	TriangleElement( const SRect& non_scaled_rect, float fScale );
@@ -526,6 +528,19 @@ public:
 	virtual void SetVertexPosition( int index, const Vector2& vPos );
 
 	void UpdatePositionsInternal( const Matrix23& global_transform );
+
+	void SetCornerColor( unsigned int corner_index, const SFloatRGBAColor& color ) { m_CornerColors[corner_index] = color; }
+
+	bool HasDifferentCornerColors() const
+	{
+		for( int i=0; i<3; i++ )
+		{
+			if( m_CornerColors[i] != SFloatRGBAColor::White() )
+				return true;
+		}
+
+		return false;
+	}
 };
 
 
@@ -541,6 +556,8 @@ public:
 
 //	FillTriangleElement( const SFloatRGBAColor& color0, C2DPrimitive *pPrimitive, const SRect& non_scaled_rect );
 	FillTriangleElement( C2DTriangle::Direction dir, const SRect& non_scaled_rect, float fScale );
+
+	FillTriangleElement( const Vector2& v0, const Vector2& v1, const Vector2& v2, const SRect& non_scaled_rect, float fScale );
 
 	~FillTriangleElement();
 
