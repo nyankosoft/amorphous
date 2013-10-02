@@ -492,6 +492,69 @@ shared_ptr<GraphicsElement> GraphicsElementManager::CreateTriangle( Vector2 *pVe
 }
 
 
+shared_ptr<FillTriangleElement> GraphicsElementManager::CreateFillTriangle(
+	Vector2 v0, Vector2 v1, Vector2 v2,
+	const SFloatRGBAColor& color0,
+	const SFloatRGBAColor& color1,
+	const SFloatRGBAColor& color2,
+	int layer,
+	bool store_colors_for_each_vertex
+	)
+{
+	AABB2 aabb;
+	aabb.Nullify();
+	aabb.AddPoint( v0 );
+	aabb.AddPoint( v1 );
+	aabb.AddPoint( v2 );
+
+	SRect rect;
+	rect.left   = (int)aabb.vMin.x;
+	rect.top    = (int)aabb.vMin.y;
+	rect.right  = (int)aabb.vMax.x;
+	rect.bottom = (int)aabb.vMax.y;
+
+	shared_ptr<FillTriangleElement> pFillTriangleElement( new FillTriangleElement( v0, v1, v2, rect, m_fScale ) );
+
+	bool res = InitPrimitiveElement( pFillTriangleElement, rect, SFloatRGBAColor::White(), layer );
+
+	if( !res )
+		return shared_ptr<FillTriangleElement>();
+
+	if( store_colors_for_each_vertex )
+	{
+		pFillTriangleElement->SetCornerColor( 0, color0 );
+		pFillTriangleElement->SetCornerColor( 1, color1 );
+		pFillTriangleElement->SetCornerColor( 2, color2 );
+	}
+	else
+	{
+		// Assumes all the colors are the same.
+		int color_index = 0;
+		pFillTriangleElement->SetColor( color_index, color0 );
+	}
+
+	return pFillTriangleElement;
+}
+
+
+shared_ptr<FillTriangleElement> GraphicsElementManager::CreateFillTriangle(
+	Vector2 v0, Vector2 v1, Vector2 v2,
+	const SFloatRGBAColor& vertex0_color,
+	const SFloatRGBAColor& vertex1_color,
+	const SFloatRGBAColor& vertex2_color,
+	int layer
+	)
+{
+	return CreateFillTriangle( v0, v1, v2, vertex0_color, vertex1_color, vertex2_color, layer, true );
+}
+
+
+shared_ptr<FillTriangleElement> GraphicsElementManager::CreateFillTriangle( Vector2 v0, Vector2 v1, Vector2 v2, const SFloatRGBAColor& color, int layer )
+{
+	return CreateFillTriangle( v0, v1, v2, color, color, color, layer, false );
+}
+
+
 shared_ptr<GraphicsElementGroup> GraphicsElementManager::CreateGroup( shared_ptr<GraphicsElement> *apElement, int num_elements, const SPoint& local_origin )
 {
 	vector< shared_ptr<GraphicsElement> > vecpElement;

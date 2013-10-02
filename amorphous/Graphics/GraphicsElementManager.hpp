@@ -136,6 +136,15 @@ private:
 
 	bool InitPrimitiveElement( boost::shared_ptr<PrimitiveElement>, const SRect& non_scaled_rect, const SFloatRGBAColor& color, int layer_index );
 
+	boost::shared_ptr<FillTriangleElement> CreateFillTriangle(
+		Vector2 v0, Vector2 v1, Vector2 v2,
+		const SFloatRGBAColor& color0,
+		const SFloatRGBAColor& color1,
+		const SFloatRGBAColor& color2,
+		int layer,
+		bool store_colors_for_each_vertex
+		);
+
 public:
 
 	GraphicsElementManager();
@@ -171,6 +180,19 @@ public:
 	///  NOT IMPLEMENTED
 	/// - Does CreatePolygon() suffice or CreateTriangle() should be available?
 	boost::shared_ptr<GraphicsElement> CreateTriangle( Vector2 *pVertex, const SFloatRGBAColor& color, int layer = 0 );
+
+	/**
+	  Note that the colors are stored separately for each vertex
+	*/
+	boost::shared_ptr<FillTriangleElement> CreateFillTriangle(
+		Vector2 v0, Vector2 v1, Vector2 v2,
+		const SFloatRGBAColor& vertex0_color,
+		const SFloatRGBAColor& vertex1_color,
+		const SFloatRGBAColor& vertex2_color,
+		int layer = 0
+		);
+
+	boost::shared_ptr<FillTriangleElement> CreateFillTriangle( Vector2 v0, Vector2 v1, Vector2 v2, const SFloatRGBAColor& color = SFloatRGBAColor::White(), int layer = 0 );
 
 	boost::shared_ptr<FillPolygonElement> CreateRegularPolygon( int num_polygon_vertices, int x, int y, int radius, CRegularPolygonStyle::Name style, const SFloatRGBAColor& color, int layer = 0 );
 
