@@ -204,6 +204,9 @@ public:
 	void SetDefaultFadeInTimeMS( unsigned int time )	{ m_DefaultFadeinTimeMS = time;	if(time==0) m_DefaultFadeinTimeMS = 1; }
 	void SetDefaultFadeOutTimeMS( unsigned int time )	{ m_DefaultFadeoutTimeMS = time;	if(time==0) m_DefaultFadeoutTimeMS = 1; }
 
+	void ShowMouseCursor();
+	void HideMouseCursor();
+
 	void GetCurrentMousePosition( int& x, int& y );
 	void DrawMouseCursor();
 

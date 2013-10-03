@@ -324,7 +324,9 @@ void GameTask::RenderBase()
 
 	// render the mouse cursor
 	if( m_bShowMouseCursor )
-		DrawMouseCursor();
+		GetMouseCursor().Show();
+	else
+		GetMouseCursor().Hide();
 
 	// render fade-out effect if the task is starting / terminating
 	RenderFadeEffect();
@@ -336,6 +338,18 @@ void GameTask::RenderBase()
 void GameTask::CreateRenderTasks()
 {
 	RenderTaskProcessor.AddRenderTask( new GameTaskRenderTask( this ) );
+}
+
+
+void GameTask::ShowMouseCursor()
+{
+	GetMouseCursor().Show();
+}
+
+
+void GameTask::HideMouseCursor()
+{
+	GetMouseCursor().Hide();
 }
 
 
@@ -357,7 +371,7 @@ void GameTask::GetCurrentMousePosition( int& x, int& y )
 ///     - height: [900,1280]
 void GameTask::DrawMouseCursor()
 {
-	GetMouseCursor().Draw();
+//	GetMouseCursor().Draw();
 }
 
 
