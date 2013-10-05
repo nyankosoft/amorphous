@@ -175,6 +175,9 @@ Result::Name CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDes
 Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc& mesh_desc,
 															  CStream& phys_stream )
 {
+	if( !mesh_desc.IsValid() )
+		return Result::INVALID_ARGS;
+
 	LOG_FUNCTION_SCOPE();
 
 //	if( !m_pCooking )
