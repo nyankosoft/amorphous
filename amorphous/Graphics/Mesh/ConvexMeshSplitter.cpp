@@ -465,17 +465,17 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const
 	{
 		// The whole mesh is on the plane
 //		return 0;
-		Result::UNKNOWN_ERROR;
+		return Result::UNKNOWN_ERROR;
 	}
 	else if( num_front_vertices == 0 )
 	{
 //		return -1;
-		Result::UNKNOWN_ERROR;
+		return Result::UNKNOWN_ERROR;
 	}
 	else if( num_back_vertices == 0 )
 	{
 //		return 1;
-		Result::UNKNOWN_ERROR;
+		return Result::UNKNOWN_ERROR;
 	}
 
 	// The mesh 'src' is crossing 'split_plane'
