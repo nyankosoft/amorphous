@@ -175,15 +175,13 @@ Result::Name CNxPhysPreprocessorImpl::CreateTriangleMeshStream( CTriangleMeshDes
 Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc& mesh_desc,
 															  CStream& phys_stream )
 {
+	LOG_FUNCTION_SCOPE();
+
 	if( !mesh_desc.IsValid() )
 		return Result::INVALID_ARGS;
 
-	LOG_FUNCTION_SCOPE();
-
 //	if( !m_pCooking )
 //		return;
-
-	size_t i;
 
 	SetPhysicsEngineName( phys_stream );
 
@@ -201,7 +199,7 @@ Result::Name CNxPhysPreprocessorImpl::CreateConvexMeshStream( CTriangleMeshDesc&
 	size_t num_triangles = num_indices / 3;
 	vector<NxU32> vecMatIndex;
 	vecMatIndex.resize( num_triangles );
-	for( i=0; i<num_triangles; i++ )
+	for( size_t i=0; i<num_triangles; i++ )
 		vecMatIndex[i] = (NxU32)mesh_desc.m_vecMaterialIndex[i];
 
 //	meshDesc.materialIndexStride        = sizeof(NxU32);
