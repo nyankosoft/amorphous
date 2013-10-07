@@ -305,6 +305,27 @@ bool CustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::strin
 }
 
 
+void CustomMesh::UpdateAABBs()
+{
+	m_vecAABB.resize( m_TriangleSets.size() );
+	m_AABB.Nullify();
+
+	for( size_t i=0; i<m_TriangleSets.size(); i++ )
+	{
+		AABB3 aabb;
+		aabb.Nullify();
+		int start = m_TriangleSets[i].m_iStartIndex;
+		int end = m_TriangleSets[i].m_iStartIndex + m_TriangleSets[i].m_iNumTriangles;
+		for( int j=start; j<=end; j++ )
+			aabb.AddPoint( GetPosition(j) );
+
+		m_TriangleSets[i].m_AABB = aabb;
+		m_vecAABB[i] = aabb;
+		m_AABB.MergeAABB( aabb );
+	}
+}
+
+
 bool CustomMesh::LoadFromFile( const std::string& mesh_archive_filepath )
 {
 	C3DMeshModelArchive archive;

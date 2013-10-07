@@ -162,6 +162,8 @@ public:
 
 //	void SetIndices( const std::vector<U32>& src );
 
+	void UpdateAABBs();
+
 	/// Returns true on success
 	bool LoadFromFile( const std::string& mesh_archive_filepath );
 
