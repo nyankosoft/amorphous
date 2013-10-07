@@ -126,9 +126,16 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh
 					continue;
 				}
 
+				LOG_PRINT( "dest_filepath: " + dest_filepath );
+
 				path dest_tex_path = path(dest_filepath).parent_path() / tex.ResourcePath;
-				create_directories( dest_tex_path.parent_path() );
-				path dest_ia_path = change_extension( dest_tex_path, ".ia" );;
+				LOG_PRINT( "dest_tex_path: " + dest_tex_path.string() );
+
+				// Create the directory/directories for the texture if they do not exist.
+				boost::system::error_code ec;
+				create_directories( dest_tex_path.parent_path(), ec );
+
+				path dest_ia_path = change_extension( dest_tex_path, ".ia" );
 				LOG_PRINT( "Saving an image as an image archive file: " + dest_ia_path.string() );
 				bool ia_saved = ia.SaveToFile( dest_ia_path.string(), ArchiveOptionFlags::AOF_OBFUSCATE );
 				if( ia_saved )
