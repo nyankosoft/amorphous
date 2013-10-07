@@ -11,6 +11,25 @@ using namespace std;
 //using namespace boost;
 
 
+template<typename IndexType>
+inline static void copy_indices(
+	const vector<uchar>& src_index_buffer,
+	const uint num_src_indices,
+	vector<unsigned int>& dest
+	)
+{
+	dest.resize( 0 );
+	dest.resize( num_src_indices, 0 );
+
+	vector<IndexType> copied_indices;
+	copied_indices.resize( num_src_indices, 0 );
+	memcpy( &(copied_indices[0]), &(src_index_buffer[0]), sizeof(U16) * num_src_indices );
+
+	for( uint i=0; i<num_src_indices; i++ )
+		dest[i] = (uint)copied_indices[i];
+}
+
+
 CustomMesh::VertexColorFormat CustomMesh::ms_DefaultVertexDiffuseColorFormat = CustomMesh::VCF_FRGBA;
 
 
@@ -213,15 +232,18 @@ void CustomMesh::GetVertexIndices( std::vector<unsigned int>& dest )
 
 	const uint num_indices = GetNumIndices();
 
-	vector<U16> copied_indices;
-	copied_indices.resize( num_indices );
-
-	memcpy( &(copied_indices[0]), &(m_IndexBuffer[0]), sizeof(U16) );
-
-	dest.resize( 0 );
-	dest.resize( num_indices );
-	for( uint i=0; i<num_indices; i++ )
-		dest[i] = (uint)copied_indices[i];
+	if( m_IndexSize == sizeof(U16) )
+	{
+		copy_indices<U16>( m_IndexBuffer, num_indices, dest );
+	}
+	else if( m_IndexSize == sizeof(U16) )
+	{
+		copy_indices<U32>( m_IndexBuffer, num_indices, dest );
+	}
+	else
+	{
+		// LOG_PRINT_ERROR( "An unsupported index size: " + to_string(m_IndexSize) );
+	}
 }
 
 
