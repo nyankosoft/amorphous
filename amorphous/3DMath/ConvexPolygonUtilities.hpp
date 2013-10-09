@@ -92,6 +92,7 @@ inline void CalculateConvexPolygonIndices( const std::vector<Vector3>& points, s
 
 //void TriangulateConvexPolygon( const std::vector<Vector3>& points, std::vector<int>& triangle_indices )
 
+/// This function is designed to work even if some point are on a straight line
 inline void TriangulateConvexPolygon(
 	const std::vector<Vector3>& points,
 	const std::vector<int> point_indices,
@@ -120,7 +121,7 @@ inline void TriangulateConvexPolygon(
 				points[indices[i+2]] - points[indices[i+1]]
 			);
 
-			if( cross.GetLengthSq() < 0.000001f )
+			if( cross.GetLengthSq() < 0.000000000001f )
 				continue;
 
 			triangle_indices.push_back( indices[i] );
