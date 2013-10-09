@@ -672,7 +672,7 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const
 }
 
 
-Result::Name CConvexMeshSplitter::SplitMesh( const CustomMesh& src, const Plane& split_plane )
+Result::Name CConvexMeshSplitter::SplitMesh( const CustomMesh& src, const Matrix34& src_mesh_pose, const Plane& split_plane )
 {
 	m_EdgeToEdgeSplitInfo.clear();
 	m_SplitSurfacePoints.clear();
@@ -680,9 +680,17 @@ Result::Name CConvexMeshSplitter::SplitMesh( const CustomMesh& src, const Plane&
 	m_MeshSplitResults.m_pBackMesh.reset(  new CustomMesh );
 	m_MeshSplitResults.m_pFrontMesh.reset( new CustomMesh );
 
+	Vector3 point_on_split_plane = split_plane.dist * split_plane.normal;
+	Vector3 point_on_inv_split_plane( Vector3(0,0,0) );
+	src_mesh_pose.InvTransform( point_on_inv_split_plane, point_on_split_plane );
+
+	Plane inv_split_plane;
+	src_mesh_pose.matOrient.TransformByTranspose( inv_split_plane.normal, split_plane.normal );
+	inv_split_plane.dist = Vec3Dot( point_on_inv_split_plane, inv_split_plane.normal );
+
 	return SplitMeshByPlane(
 		src,
-		split_plane,
+		inv_split_plane,
 		*(m_MeshSplitResults.m_pFrontMesh),
 		*(m_MeshSplitResults.m_pBackMesh)
 		);

@@ -4,6 +4,7 @@
 
 #include "../../base.hpp"
 #include "../../3DMath/Plane.hpp"
+#include "../../3DMath/Matrix34.hpp"
 #include "../fwd.hpp"
 #include <vector>
 #include <map>
@@ -81,7 +82,7 @@ public:
 
 //	Result::Name SplitMesh( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
-	Result::Name SplitMesh( const CustomMesh& src, const Plane& split_plane );
+	Result::Name SplitMesh( const CustomMesh& src, const Matrix34& src_mesh_pose, const Plane& split_plane );
 
 	const CMeshSplitResults& GetSplitResults() const { return m_MeshSplitResults; }
 
