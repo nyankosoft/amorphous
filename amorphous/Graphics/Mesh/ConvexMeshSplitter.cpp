@@ -640,6 +640,30 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const
 //		}
 //	}
 
+	bool merge_duplicate_points = true;
+	if( merge_duplicate_points )
+	{
+		vector<Vector3> non_duplicate_points;
+		for( size_t i=0; i<m_SplitSurfacePoints.size(); i++ )
+		{
+			bool found_same_point = false;
+			for( size_t j=0; j<non_duplicate_points.size(); j++ )
+			{
+				if( Vec3LengthSq( m_SplitSurfacePoints[i] - non_duplicate_points[j] ) < 0.000001 )
+				{
+					found_same_point = true;
+					break;
+				}
+			}
+
+			if( !found_same_point )
+				non_duplicate_points.push_back( m_SplitSurfacePoints[i] );
+		}
+
+		m_SplitSurfacePoints.resize( 0 );
+		m_SplitSurfacePoints.insert( m_SplitSurfacePoints.begin(), non_duplicate_points.begin(), non_duplicate_points.end() );
+	}
+
 	bool create_single_convex_polygon_on_split_surface = true;
 	if( create_single_convex_polygon_on_split_surface )
 	{
