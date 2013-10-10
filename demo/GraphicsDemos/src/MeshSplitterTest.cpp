@@ -24,6 +24,8 @@ using namespace boost;
 
 
 CMeshSplitterTest::CMeshSplitterTest()
+:
+m_MeshPose( Matrix34Identity() )
 {
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
@@ -181,7 +183,7 @@ void CMeshSplitterTest::RenderMeshes()
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-	RenderMeshes( m_RootMeshNode, shader_mgr, Matrix34Identity() );
+	RenderMeshes( m_RootMeshNode, shader_mgr, m_MeshPose );
 
 	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
@@ -241,7 +243,7 @@ void CMeshSplitterTest::SplitMeshesAtLeafNodes( CMeshNode& node, const Plane& sp
 	}
 
 	CConvexMeshSplitter splitter;
-	splitter.SplitMesh( *(node.object.pMesh), split_plane );
+	splitter.SplitMesh( *(node.object.pMesh), m_MeshPose, split_plane );
 
 	CMeshSplitResults results;
 	splitter.GetSplitResults( results );
@@ -305,6 +307,31 @@ void CMeshSplitterTest::HandleInput( const InputData& input )
 			m_ControlSplitPlane = !m_ControlSplitPlane;
 			UpdateSplitPlaneControllerState();
 		}
+		break;
+
+	case 'I':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_MeshPose = Matrix34Identity();
+		break;
+
+	case GIC_RIGHT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_MeshPose.vPosition.x += 0.1f;
+		break;
+
+	case GIC_LEFT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_MeshPose.vPosition.x -= 0.1f;
+		break;
+
+	case GIC_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_MeshPose.vPosition.y += 0.1f;
+		break;
+
+	case GIC_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_MeshPose.vPosition.y -= 0.1f;
 		break;
 
 	default:

@@ -43,6 +43,7 @@ class CMeshSplitterTest : public CGraphicsTestBase
 //	binary_node<CustomMesh> m_RootMeshNode;
 	CMeshNode m_RootMeshNode;
 
+	Matrix34 m_MeshPose;
 
 	ShaderHandle m_Shader;
 
