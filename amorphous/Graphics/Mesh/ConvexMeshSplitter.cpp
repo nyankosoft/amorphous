@@ -26,7 +26,7 @@ public:
 	}
 };
 
-Result::Name CConvexMeshSplitter::CreateTrianglesOnSplitSurface(
+Result::Name ConvexMeshSplitter::CreateTrianglesOnSplitSurface(
 	CustomMesh& dest_front,
 	CustomMesh& dest_back,
 	std::vector<U16>& front_mesh_indices,
@@ -264,7 +264,7 @@ void TriangulateIndices( std::vector<U16>& indices )
 
 
 /// Called when a triangle is crossing the split planne and needs to be split.
-void CConvexMeshSplitter::SplitTriangle(
+void ConvexMeshSplitter::SplitTriangle(
 	const CustomMesh& src,
 	const vector<char>& vertex_sides,
 	const vector< std::pair<uint,uint> >& new_vertex_indices,
@@ -281,7 +281,7 @@ void CConvexMeshSplitter::SplitTriangle(
 	// These should be member variables because they are accessed from multiple functions?
 	vector<U16> front_split_indices, back_split_indices;
 
-//	map< u16_pair, CEdgeSplitInfo >& edge_split_info = m_EdgeToEdgeSplitInfo;
+//	map< u16_pair, EdgeSplitInfo >& edge_split_info = m_EdgeToEdgeSplitInfo;
 
 	using std::map;
 	using std::pair;
@@ -324,7 +324,7 @@ void CConvexMeshSplitter::SplitTriangle(
 			std::pair<U16,U16> front_and_back_indices;
 
 			u16_pair edge( u16_pair(vertex_index0,vertex_index1) );
-			map< u16_pair, CEdgeSplitInfo >::iterator itr
+			map< u16_pair, EdgeSplitInfo >::iterator itr
 				= m_EdgeToEdgeSplitInfo.find( edge );
 
 			if( itr != m_EdgeToEdgeSplitInfo.end() )
@@ -337,7 +337,7 @@ void CConvexMeshSplitter::SplitTriangle(
 			else
 			{
 				// This edge crossing the split plane and it has not been split yet.
-//				m_EdgeToEdgeSplitInfo[edge] = CEdgeSplitInfo();
+//				m_EdgeToEdgeSplitInfo[edge] = EdgeSplitInfo();
 
 				// Calculate the split point on the edge
 				Vector3 p0 = src.GetPosition( src.GetIndex( i0 ) );
@@ -444,7 +444,7 @@ void CalculateVertexSides(
 }
 
 
-Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back )
+Result::Name ConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back )
 {
 	const int num_vertices = src.GetNumVertices();
 	vector<char> vertex_sides;
@@ -696,7 +696,7 @@ Result::Name CConvexMeshSplitter::SplitMeshByPlane( const CustomMesh& src, const
 }
 
 
-Result::Name CConvexMeshSplitter::SplitMesh( const CustomMesh& src, const Matrix34& src_mesh_pose, const Plane& split_plane )
+Result::Name ConvexMeshSplitter::SplitMesh( const CustomMesh& src, const Matrix34& src_mesh_pose, const Plane& split_plane )
 {
 	m_EdgeToEdgeSplitInfo.clear();
 	m_SplitSurfacePoints.clear();

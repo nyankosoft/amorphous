@@ -17,7 +17,7 @@ namespace amorphous
 Result::Name SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
 
-class CMeshSplitResults
+class MeshSplitResults
 {
 public:
 
@@ -27,14 +27,14 @@ public:
 };
 
 
-class CEdgeSplitInfo
+class EdgeSplitInfo
 {
 public:
 	Vector3 pos;
 	U16 front_vertex_index;
 	U16 back_vertex_index;
 
-	CEdgeSplitInfo()
+	EdgeSplitInfo()
 		:
 	pos(Vector3(0,0,0)),
 	front_vertex_index(0),
@@ -43,13 +43,13 @@ public:
 };
 
 
-class CConvexMeshSplitter
+class ConvexMeshSplitter
 {
-	std::map< std::pair<U16,U16>, CEdgeSplitInfo > m_EdgeToEdgeSplitInfo;
+	std::map< std::pair<U16,U16>, EdgeSplitInfo > m_EdgeToEdgeSplitInfo;
 
 	std::vector<Vector3> m_SplitSurfacePoints;
 
-	CMeshSplitResults m_MeshSplitResults;
+	MeshSplitResults m_MeshSplitResults;
 
 	Result::Name SplitMeshByPlane( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
@@ -76,17 +76,17 @@ class CConvexMeshSplitter
 
 public:
 
-	CConvexMeshSplitter(){}
+	ConvexMeshSplitter(){}
 
-	~CConvexMeshSplitter(){}
+	~ConvexMeshSplitter(){}
 
 //	Result::Name SplitMesh( const CustomMesh& src, const Plane& split_plane, CustomMesh& dest_front, CustomMesh& dest_back );
 
 	Result::Name SplitMesh( const CustomMesh& src, const Matrix34& src_mesh_pose, const Plane& split_plane );
 
-	const CMeshSplitResults& GetSplitResults() const { return m_MeshSplitResults; }
+	const MeshSplitResults& GetSplitResults() const { return m_MeshSplitResults; }
 
-	void GetSplitResults( CMeshSplitResults& dest ) const { dest = m_MeshSplitResults; }
+	void GetSplitResults( MeshSplitResults& dest ) const { dest = m_MeshSplitResults; }
 };
 
 
