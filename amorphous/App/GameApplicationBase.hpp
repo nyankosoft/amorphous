@@ -2,6 +2,7 @@
 #define  __GameApplicationBase_HPP__
 
 
+#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Input/fwd.hpp"
 #include "amorphous/Task/fwd.hpp"
 #include "ApplicationBase.hpp"
@@ -86,6 +87,8 @@ private:
 	void InitDebugItems();
 
 	void ReleaseDebugItems();
+
+	bool CreateDefaultMouseCursor( GraphicsElementManager& mgr );
 
 	void UpdateFrame();
 

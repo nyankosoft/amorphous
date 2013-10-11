@@ -173,6 +173,14 @@ void GameApplicationBase::ReleaseDebugItems()
 }
 
 
+bool GameApplicationBase::CreateDefaultMouseCursor( GraphicsElementManager& mgr )
+{
+	GetMouseCursor().CreateDefault( mgr );
+
+	return true;
+}
+
+
 bool GameApplicationBase::InitBase()
 {
 	LOG_FUNCTION_SCOPE();
@@ -280,6 +288,12 @@ bool GameApplicationBase::InitBase()
 
 	// Create a graphics effect manager used by all game tasks
 	GameTask::InitAnimatedGraphicsManager();
+
+	if( GameTask::GetAnimatedGraphicsManager()
+	 && GameTask::GetAnimatedGraphicsManager()->GetGraphicsElementManager() )
+	{
+		CreateDefaultMouseCursor( *(GameTask::GetAnimatedGraphicsManager()->GetGraphicsElementManager()) );
+	}
 
 	shared_ptr<CStdInputDeviceStateCallback> pDeviceStateCallback( new CStdInputDeviceStateCallback(GameTask::GetAnimatedGraphicsManager()) );
 	pDeviceStateCallback->Init();
