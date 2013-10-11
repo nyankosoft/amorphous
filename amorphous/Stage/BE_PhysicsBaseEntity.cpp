@@ -191,7 +191,7 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 {
 	Vector3 vBoxSideLength = Vector3(0,0,0), vLocalPos = Vector3(0,0,0);
 	float fAngle=0;
-	float fRadius=0, fLength=0;
+	float fRadius=0, fDiameter = 0, fLength=0;
 	bool enable_physics_sim = true;
 	string coll_group;
 
@@ -222,18 +222,18 @@ bool CBE_PhysicsBaseEntity::LoadSpecificPropertiesFromFile( CTextFileScanner& sc
 		return true;
 	}
 
-	if( scanner.TryScanLine( "SHAPE_CAPSULE", fRadius, fLength ) )
+	if( scanner.TryScanLine( "SHAPE_CAPSULE", fDiameter, fLength ) )
 	{
 		CCapsuleShapeDesc *pCapsuleDesc = new CCapsuleShapeDesc;
 		pCapsuleDesc->fLength = fLength;
-		pCapsuleDesc->fRadius = fRadius;
+		pCapsuleDesc->fRadius = fDiameter * 0.5f;
 		m_ActorDesc.vecpShapeDesc.push_back( pCapsuleDesc );
 		return true;
 	}
 
-	if( scanner.TryScanLine( "SHAPE_CYLINDER", fRadius, fLength ) )
+	if( scanner.TryScanLine( "SHAPE_CYLINDER", fDiameter, fLength ) )
 	{
-		CreatePseudoCylinderMeshDesc( fRadius, fLength );
+		CreatePseudoCylinderMeshDesc( fDiameter * 0.5f, fLength );
 //		CreatePseudoCylinderDescFromBoxes( fRadius, fLength );
 		return true;
 	}
