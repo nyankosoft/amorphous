@@ -26,13 +26,19 @@ inline bool SetConvexShapeDesc( CTriangleMeshDesc& src_convex_mesh_desc, CConvex
 		return false;
 
 	if( convex_mesh_stream.m_Buffer.buffer().empty() )
+	{
+		LOG_PRINT_ERROR( "Failed to create a convex mesh stream."  );
 		return false;
+	}
 
 	convex_mesh_stream.m_Buffer.reset_pos();
 
 	CConvexMesh *pConvexMesh = PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
 	if( !pConvexMesh )
+	{
+		LOG_PRINT_ERROR( "Failed to create a convex mesh."  );
 		return false;
+	}
 
 	dest_convex_shape_desc.pConvexMesh = pConvexMesh;
 
