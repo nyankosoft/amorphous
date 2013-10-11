@@ -218,9 +218,17 @@ bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_
 
 		string loader_output_filepath = pModelLoader->GetOutputFilePath();
 		path output_path = path(lwo_filename).parent_path() / loader_output_filepath;
+
+		// Create output directory/directories if they are not present.
+		path output_directory = output_path.parent_path();
+		if( !exists(output_directory) )
+			create_directories( output_directory );
+
 		if( 0 < loader_output_filepath.length() )
 		{
 			bool saved = m_vecpModelBuilder.back()->GetArchive().SaveToFile( output_path.string() );
+			if( !saved )
+				LOG_PRINT_ERROR( "Failed to save the mesh archive to the file: " + output_path.string() );
 		}
 
 		m_OutputFilepaths[i] = output_path.string();
