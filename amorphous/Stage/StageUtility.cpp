@@ -13,6 +13,7 @@
 #include "Physics/Preprocessor.hpp"
 #include "Physics/Enums.hpp"
 #include "Physics/FixedJointDesc.hpp"
+#include "Physics/MeshConvenienceFunctions.hpp"
 #include "Stage/CopyEntityDesc.hpp"
 #include "Stage/GameMessage.hpp"
 #include "Stage/Stage.hpp"
@@ -183,14 +184,14 @@ Result::Name SetCylinderConvexShapeDesc( MeshHandle& mesh_handle, CConvexShapeDe
 	convex_mesh_desc.m_vecIndex;
 	convex_mesh_desc.m_vecVertex;
 	General3DMeshToTriangleMeshDesc( *pCylinderMesh, convex_mesh_desc );
-	physics::CStream convex_mesh_stream;
-	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( convex_mesh_desc, convex_mesh_stream );
 
-	CConvexMesh *pConvexMesh = physics::PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
-	if( !pConvexMesh )
+	bool res = SetConvexShapeDesc( convex_mesh_desc, convex_desc );
+
+	if( !res )
+	{
+		LOG_PRINT_ERROR( "SetConvexShapeDesc() failed."  );
 		return Result::UNKNOWN_ERROR;
-
-	convex_desc.pConvexMesh = pConvexMesh;
+	}
 
 	// Where can I release pConvexMesh?
 
@@ -782,18 +783,13 @@ EntityHandle<> StageMiscUtility::CreateEntityFromConvexMesh(
 
 	convex_mesh_desc.m_vecMaterialIndex.resize( vertex_indices.size() / 3 );
 
-	// Create convex mesh
-	physics::CStream convex_mesh_stream;
-	Result::Name res = physics::Preprocessor().CreateConvexMeshStream( convex_mesh_desc, convex_mesh_stream );
+	bool res = SetConvexShapeDesc( convex_mesh_desc, convex_shape_desc );
 
-	CConvexMesh *pConvexMesh = physics::PhysicsEngine().CreateConvexMesh( convex_mesh_stream );
-	if( !pConvexMesh )
+	if( !res )
 	{
-		LOG_PRINT_ERROR( "Failed to create a convex mesh."  );
+		LOG_PRINT_ERROR( "SetConvexShapeDesc() failed."  );
 		return EntityHandle<>();
 	}
-
-	convex_shape_desc.pConvexMesh = pConvexMesh;
 
 	convex_shape_desc.MaterialIndex = 1;
 
