@@ -106,6 +106,30 @@ void CGraphicsElementsTest::CreateGraphicsElements()
 	m_apTriangle[1] = pMgr->CreateTriangle( C2DTriangle::DIR_RIGHT, RectLTWH( left + (w+20) * 1, top, w, h ), FRGBA::Green(),  white,  3 );
 	m_apTriangle[2] = pMgr->CreateTriangle( C2DTriangle::DIR_DOWN,  RectLTWH( left + (w+20) * 2, top, w, h ), FRGBA::Blue(),   white,  3 );
 	m_apTriangle[3] = pMgr->CreateTriangle( C2DTriangle::DIR_LEFT,  RectLTWH( left + (w+20) * 3, top, w, h ), FRGBA::Yellow(), white,  3 );
+
+	// Fill triangles
+
+	left = 500; top = 1000;
+	m_pFillTriangles.resize( 6 );
+	SFloatRGBAColor colors[] = { FRGBA::Red(), FRGBA::Green(), FRGBA::Blue() };
+	w = 100;
+	for( int i=0; i<3; i++ )
+	{
+		int sx = left + (w+20) * i;
+		int sy = top;
+		m_pFillTriangles[i]   = pMgr->CreateFillTriangle( Vector2(sx, sy), Vector2(sx+50,sy+87), Vector2(sx-50,sy+87), colors[i] );
+
+		sx += (w+20) * 3 + 20;
+		m_pFillTriangles[i+3] = pMgr->CreateFillTriangle( Vector2(sx, sy), Vector2(sx+50,sy+87), Vector2(sx-50,sy+87), colors[i], colors[(i+1)%3], colors[(i+2)%3] );
+	}
+
+	// Check corner positions
+	const int max_x = GraphicsComponent::GetReferenceScreenWidth()  - 1;
+	const int max_y = GraphicsComponent::GetReferenceScreenHeight() - 1;
+	m_pCornerIndicators[0] = pMgr->CreateFillTriangle( Vector2(0,0),         Vector2(20,10),             Vector2(10,20),             white ); // top left
+	m_pCornerIndicators[1] = pMgr->CreateFillTriangle( Vector2(max_x,0),     Vector2(max_x-10,20),       Vector2(max_x-20,10),       white ); // top right
+	m_pCornerIndicators[2] = pMgr->CreateFillTriangle( Vector2(max_x,max_y), Vector2(max_x-20,max_y-10), Vector2(max_x-10,max_y-20), white ); // bottom right
+	m_pCornerIndicators[3] = pMgr->CreateFillTriangle( Vector2(0,max_y),     Vector2(10,max_y-20),       Vector2(20,max_y-10),       white ); // bottom left
 }
 
 

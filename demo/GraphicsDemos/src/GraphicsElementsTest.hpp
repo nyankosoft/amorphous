@@ -22,6 +22,10 @@ class CGraphicsElementsTest : public CGraphicsTestBase//, public GraphicsCompone
 
 	boost::shared_ptr<CombinedTriangleElement> m_apTriangle[0xFF];
 
+	std::vector< boost::shared_ptr<FillTriangleElement> > m_pFillTriangles;
+
+	boost::shared_ptr<FillTriangleElement> m_pCornerIndicators[4];
+
 	std::string m_TextBuffer;
 
 private:
