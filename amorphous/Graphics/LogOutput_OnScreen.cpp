@@ -1,7 +1,5 @@
 #include "LogOutput_OnScreen.hpp"
 #include "Support/StringAux.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
 
 
 namespace amorphous
@@ -51,7 +49,7 @@ void LogOutput_ScrolledTextBuffer::Init( int num_rows )
 }
 
 
-static const DWORD s_LogTextColor[5] =
+static const U32 s_LogTextColor[5] =
 {
 	0xFFE8E8E8,	///< normal
 	0xFFF8F808,	///< caution

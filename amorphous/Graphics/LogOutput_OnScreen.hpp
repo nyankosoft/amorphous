@@ -5,7 +5,6 @@
 #include <vector>
 #include "../base.hpp"
 #include "../Support/Log/LogOutputBase.hpp"
-#include "../3DMath/Vector2.hpp"
 
 
 namespace amorphous
