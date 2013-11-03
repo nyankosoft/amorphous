@@ -213,8 +213,6 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
-
-	friend class CItemDatabaseBuilder;
 };
 
 
