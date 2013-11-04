@@ -107,6 +107,16 @@ void CMeshSplitterTest::Reset()
 			m_RootMeshNode.object.pMesh.reset( new CustomMesh );
 			m_RootMeshNode.object.pMesh->LoadFromArchive( box_generator.MeshArchive() );
 		}
+		else if( builtin_mesh_name == "sphere" )
+		{
+			SphereDesc sphere_desc;
+			sphere_desc.num_sides = 24;
+			sphere_desc.num_segments = 16;
+			SphereMeshGenerator sphere_generator(sphere_desc);
+			sphere_generator.Generate();
+			m_RootMeshNode.object.pMesh.reset( new CustomMesh );
+			m_RootMeshNode.object.pMesh->LoadFromArchive( sphere_generator.MeshArchive() );
+		}
 	}
 	else
 	{
