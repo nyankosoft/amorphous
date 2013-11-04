@@ -242,10 +242,10 @@ void CMeshSplitterTest::SplitMeshesAtLeafNodes( CMeshNode& node, const Plane& sp
 		return;
 	}
 
-	CConvexMeshSplitter splitter;
+	ConvexMeshSplitter splitter;
 	splitter.SplitMesh( *(node.object.pMesh), m_MeshPose, split_plane );
 
-	CMeshSplitResults results;
+	MeshSplitResults results;
 	splitter.GetSplitResults( results );
 	node.child0.reset( new CMeshNode );
 	node.child0->object.pMesh = results.m_pFrontMesh;
