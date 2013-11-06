@@ -15,6 +15,7 @@
 #include "Graphics/LogOutput_OnScreen.hpp"
 #include "Graphics/DebugInfo_GraphicsResourceManager.hpp"
 #include "Input.hpp"
+#include "Input/InputDeviceInitializer.hpp"
 #include "Input/DebugInfo_InputDevice.hpp"
 #include "Sound/SoundManager.hpp"
 #include "Sound/DebugInfo_SoundManager.hpp"
@@ -215,7 +216,7 @@ bool GameApplicationBase::InitBase()
 		GetGameWindowManager().SetWindowLeftTopCornerPosition( global_params.WindowLeftPos, global_params.WindowTopPos );
 
 	// create DirectInput mouse device
-	m_pMouse.reset( new DirectInputMouse );
+	m_pMouse.reset( CreateMouseInputDevice() );
 	m_pMouse->Init();
 
 	GameTask::SetMouseInputDevice( m_pMouse );
@@ -223,7 +224,7 @@ bool GameApplicationBase::InitBase()
 	LOG_PRINT( " - Initialized the direct input mouse device." );
 
 	// initialize keyboard (DirectInput)
-	m_pDIKeyboard = new DIKeyboard;
+	m_pDIKeyboard = CreateKeyboardInputDevice();
 	m_pDIKeyboard->Init();
 
 //	LOG_PRINT( " - Initialized the direct input keyboard device." );
