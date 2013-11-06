@@ -2,7 +2,7 @@
 #define  __STDKEYBOARD_H__
 
 
-#include "InputDevice.hpp"
+#include "KeyboardInputDevice.hpp"
 
 
 namespace amorphous
@@ -15,15 +15,13 @@ namespace amorphous
    and reports it as general input code
 
 */
-class Win32StdKeyboard : public InputDevice
+class Win32StdKeyboard : public KeyboardInputDevice
 {
 	int m_aiGICodeForVKCode[NUM_GENERAL_INPUT_CODES];
 
 public:
 	Win32StdKeyboard();
 	~Win32StdKeyboard() {}
-
-	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
 
 	Result::Name SendBufferedInputToInputHandlers();
 

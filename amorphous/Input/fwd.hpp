@@ -13,6 +13,7 @@ class InputHandler;
 
 class InputDevice;
 class MouseInputDevice;
+class KeyboardInputDevice;
 class InputDeviceStateCallback;
 class Win32StdKeyboard;        /// for Windows platform
 class Win32StdMouseInput;      /// for Windows platform

@@ -3,7 +3,7 @@
 
 #include "DirectInput.hpp"
 #include "InputHandler.hpp"
-#include "InputDevice.hpp"
+#include "KeyboardInputDevice.hpp"
 #include "../base.hpp"
 
 #include <dinput.h>
@@ -16,7 +16,7 @@ namespace amorphous
 #pragma comment( lib, "dinput8.lib" )
 
 
-class DIKeyboard : public InputDevice
+class DIKeyboard : public KeyboardInputDevice
 {
 	LPDIRECTINPUTDEVICE8 m_pKeyboard; ///< The DirectX Input keyboard device
 
@@ -47,8 +47,6 @@ public:
 	DIKeyboard();
 
 	~DIKeyboard();
-
-	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_KEYBOARD; }
 
 	Result::Name Init();
 
