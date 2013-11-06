@@ -1,6 +1,5 @@
 #include "DIKeyboard.hpp"
 
-#include "../base.hpp"
 #include "DirectInput.hpp"
 #include "InputHub.hpp"
 #include "App/GameWindowManager_Win32.hpp"
@@ -16,6 +15,8 @@ namespace amorphous
 DIKeyboard::DIKeyboard()
 : m_pKeyboard(NULL)
 {
+	memset( m_DIKs, 0, sizeof(m_DIKs) );
+
 	InitKeyCodeMap();
 
 	GetInputDeviceHub().RegisterInputDeviceToGroup( this );
