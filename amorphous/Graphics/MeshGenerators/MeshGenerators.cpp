@@ -4,6 +4,7 @@
 #include "../MeshModel/General3DMesh.hpp"
 #include "../MeshModel/3DMeshModelBuilder.hpp"
 #include "../TextureUtilities.hpp"
+#include "../Graphics_StringAux.hpp"
 
 
 namespace amorphous
@@ -11,19 +12,6 @@ namespace amorphous
 
 using std::vector;
 using boost::shared_ptr;
-
-
-inline std::string to_string( const SFloatRGBAColor& c, int precision = 3, int num_zfills = 0 )
-{
-	std::string fmt_float = "%" + to_string(num_zfills) + "." + to_string(precision) + "f";
-	std::string fmt_buffer = "( " + fmt_float + ", " + fmt_float + ", " + fmt_float + ", " + fmt_float + " )";
-
-	char buffer[80];
-	memset( buffer, 0, sizeof(buffer) );
-	snprintf( buffer, numof(buffer)-1, fmt_buffer.c_str(), c.red, c.green, c.blue, c.alpha );
-
-	return std::string(buffer);
-}
 
 
 
