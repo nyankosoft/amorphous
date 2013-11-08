@@ -431,12 +431,17 @@ BOOL CALLBACK EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi,
 }
 
 
-HRESULT DirectInputGamepad::Acquire()
+Result::Name DirectInputGamepad::Acquire()
 {
 	if( m_pDIJoystick )
-		return m_pDIJoystick->Acquire();
+	{
+		HRESULT hr = m_pDIJoystick->Acquire();
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	}
 	else
-		return E_FAIL;
+	{
+		return Result::UNKNOWN_ERROR;
+	}
 }
 
 

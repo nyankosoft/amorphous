@@ -7,7 +7,7 @@
 #include <dinput.h>
 #include "../base.hpp"
 
-#include "InputDevice.hpp"
+#include "GamepadInputDevice.hpp"
 
 
 namespace amorphous
@@ -31,24 +31,8 @@ public:
  * - customizable threshold for analog to digital conversion
  *
  */
-class DirectInputGamepad : public InputDevice
+class DirectInputGamepad : public GamepadInputDevice
 {
-public:
-
-	/// NOTE: update s_GICodeForBinarizedAnalogInput in DirectInputGamepad.cpp when these enums are modified
-	enum Axis
-	{
-		AXIS_X,
-		AXIS_Y,
-		AXIS_Z,
-		ROTATION_X,
-		ROTATION_Y,
-		ROTATION_Z,
-		NUM_ANALOG_CONTROLS
-	};
-
-private:
-
 	LPDIRECTINPUTDEVICE8 m_pDIJoystick;
 
 	DIJOYSTATE2 m_InputState;
@@ -116,8 +100,6 @@ public:
 
 	~DirectInputGamepad();
 
-	InputDevice::InputDeviceType GetInputDeviceType() const { return TYPE_GAMEPAD; }
-
 	Result::Name Init();
 
 	Result::Name InitDevice( const DIDEVICEINSTANCE& di );
@@ -126,7 +108,7 @@ public:
 
 	void Release();
 
-	HRESULT Acquire();
+	Result::Name Acquire();
 
 	void Unacquire() { m_pDIJoystick->Unacquire(); }
 
@@ -140,8 +122,9 @@ public:
 
 	void GetStatus( std::vector<std::string>& buffer );
 };
-} // namespace amorphous
 
+
+} // namespace amorphous
 
 
 #endif		/*  __DIRECTINPUTGAMEPAD_H__  */
