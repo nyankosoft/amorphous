@@ -2,6 +2,8 @@
 #include "CustomMeshRenderer.hpp"
 #include "../PrimitiveRenderer.hpp"
 #include "../Shader/ShaderManager.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Graphics/Graphics_StringAux.hpp"
 
 
 namespace amorphous
@@ -429,6 +431,85 @@ void CustomMesh::RenderZSorted( ShaderManager& rShaderMgr )
 void CustomMesh::RenderSubset( ShaderManager& rShaderMgr, int material_index )
 {
 	GetCustomMeshRenderer().RenderSubset( *this, rShaderMgr, material_index );
+}
+
+
+void CustomMesh::DumpToTextFile( const std::string& output_pathname )
+{
+	FILE *fp = fopen( output_pathname.c_str(), "w" );
+	if( !fp )
+		return;
+
+	const uint num_vertices = GetNumVertices();
+
+	fprintf( fp, "num vertices: %u\n", num_vertices );
+	fprintf( fp, "vertex size: %u\n", GetVertexSize() );
+
+	U32 vf_flags = GetVertexFormatFlags();
+	string flags;
+	if( vf_flags & VFF::POSITION )      flags += "POSITION";
+	if( vf_flags & VFF::NORMAL )        flags += " | NORMAL";
+	if( vf_flags & VFF::DIFFUSE_COLOR ) flags += " | DIFFUSE_COLOR";
+	if( vf_flags & VFF::TEXCOORD2_0 )   flags += " | TEXCOORD2_0";
+	if( vf_flags & VFF::TEXCOORD2_1 )   flags += " | TEXCOORD2_1";
+	if( vf_flags & VFF::TEXCOORD2_2 )   flags += " | TEXCOORD2_2";
+	if( vf_flags & VFF::TEXCOORD2_3 )   flags += " | TEXCOORD2_3";
+
+	fprintf( fp, "vertex format flags: %s\n\n", flags.c_str() );
+
+
+	const uint num_indices = GetNumIndices();
+	fprintf( fp, "num indices: %u\n", num_indices );
+	fprintf( fp, "index size: %u\n", GetIndexSize() );
+
+	uint i=0;
+
+	vector<Vector3> positions;
+	GetVertexPositions( positions );
+	fprintf( fp, "\npositions:\n" );
+	for( i=0; i<num_vertices; i++ )
+		fprintf( fp, "[%06u] %s\n", (int)i, to_string(positions[i]).c_str() );
+
+	if( vf_flags & VFF::NORMAL )
+	{
+		fprintf( fp, "\nnormals:\n" );
+		for( i=0; i<num_vertices; i++ )
+			fprintf( fp, "[%06u] %s\n", (int)i, to_string(GetNormal(i)).c_str() );
+	}
+
+	U32 tex2_flags[] = { VFF::TEXCOORD2_0, VFF::TEXCOORD2_1, VFF::TEXCOORD2_2, VFF::TEXCOORD2_3 };
+	for( int t=0; t<4; t++ )
+	{
+		if( vf_flags & tex2_flags[t] )
+		{
+			fprintf( fp, "\ntexture coordinates[%d]:\n", t );
+			for( i=0; i<num_vertices; i++ )
+				fprintf( fp, "[%06u] %s\n", (int)i, to_string(Get2DTexCoord(i,t)).c_str() );
+		}
+	}
+
+	if( vf_flags & VFF::DIFFUSE_COLOR )
+	{
+		fprintf( fp, "\ndiffuse colors:\n" );
+		for( i=0; i<num_vertices; i++ )
+			fprintf( fp, "[%06u] %s\n", i, to_string(GetDiffuseColor(i)).c_str() );
+	}
+
+	fprintf( fp, "\ntriangle indices:\n" );
+	vector<uint> indices;
+	GetVertexIndices( indices );
+	uint num_triangles = num_indices / 3;
+	for( i=0; i<num_triangles; i++ )
+	{
+		fprintf( fp, "[%06u] %u %u %u\n",
+			i,
+			indices[i * 3 + 0],
+			indices[i * 3 + 1],
+			indices[i * 3 + 2]
+		);
+	}
+
+	int ret = fclose( fp );
 }
 
 
