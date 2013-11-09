@@ -4,6 +4,7 @@
 
 #include "DirectInputMouse.hpp"
 #include "DIKeyboard.hpp"
+#include "DirectInputGamepad.hpp"
 
 
 namespace amorphous
@@ -19,6 +20,12 @@ inline MouseInputDevice *CreateMouseInputDevice()
 inline KeyboardInputDevice *CreateKeyboardInputDevice()
 {
 	return new DIKeyboard;
+}
+
+
+inline GamepadInputDevice *CreateGamepadInputDevice()
+{
+	return new DirectInputGamepad;
 }
 
 

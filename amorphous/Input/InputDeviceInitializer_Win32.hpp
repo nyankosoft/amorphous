@@ -22,6 +22,12 @@ inline KeyboardInputDevice *CreateKeyboardInputDevice()
 }
 
 
+inline GamepadInputDevice *CreateGamepadInputDevice()
+{
+	return NULL;
+}
+
+
 } // namespace amorphous
 
 
