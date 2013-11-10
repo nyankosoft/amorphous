@@ -74,8 +74,8 @@ void CNxPhysicsUserContactReport::onContactNotify(NxContactPair& pair, NxU32 eve
 	CNxPhysContactStreamIterator itr( nx_itr );
 	CContactPair cp(itr);
 
-	CNxPhysActor *pActor0 = (CNxPhysActor *)pair.actors[0]->userData;
-	CNxPhysActor *pActor1 = (CNxPhysActor *)pair.actors[1]->userData;
+	CNxPhysActor *pActor0 = pair.isDeletedActor[0] ? NULL : ((CNxPhysActor *)pair.actors[0]->userData);
+	CNxPhysActor *pActor1 = pair.isDeletedActor[1] ? NULL : ((CNxPhysActor *)pair.actors[1]->userData);
 
 	cp.pActors[0] = pActor0;
 	cp.pActors[1] = pActor1;
