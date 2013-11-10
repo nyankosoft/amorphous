@@ -837,6 +837,9 @@
     <ClInclude Include="..\..\amorphous\Stage\StageLightUtility.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntitySplitter.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\Stage\BSPMapFileExporter.cpp">
@@ -1485,6 +1488,9 @@
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\StageLightUtility.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntitySplitter.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
   </ItemGroup>

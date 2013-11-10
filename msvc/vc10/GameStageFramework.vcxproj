@@ -113,6 +113,7 @@
     <ClInclude Include="..\..\amorphous\Stage\EntityRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\EntityRenderManager.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\EntitySet.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntitySplitter.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\fwd.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\GameMessage.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerAircraft.hpp" />
@@ -373,6 +374,7 @@
     <ClCompile Include="..\..\amorphous\Stage\EntityNode.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\EntityRenderManager.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\EntitySet.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\EntitySplitter.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\GameMessage.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerAircraft.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerShip.cpp" />
