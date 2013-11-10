@@ -457,10 +457,20 @@ void CustomMesh::DumpToTextFile( const std::string& output_pathname )
 
 	fprintf( fp, "vertex format flags: %s\n\n", flags.c_str() );
 
-
 	const uint num_indices = GetNumIndices();
 	fprintf( fp, "num indices: %u\n", num_indices );
-	fprintf( fp, "index size: %u\n", GetIndexSize() );
+	fprintf( fp, "index size: %u\n\n", GetIndexSize() );
+
+	const size_t num_triangle_sets = m_TriangleSets.size();
+	fprintf( fp, "num triangle sets: %u\n\n", num_triangle_sets );
+	for( size_t i=0; i<num_triangle_sets; i++ )
+	{
+		fprintf( fp, "triangle set [%d]\n", (int)i );
+
+		string buffer;
+		m_TriangleSets[i].DumpToText( buffer );
+		fprintf( fp, "%s", buffer.c_str() );
+	}
 
 	uint i=0;
 
