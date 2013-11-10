@@ -216,6 +216,16 @@ void CMMA_TriangleSet::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
+
+void CMMA_TriangleSet::DumpToText( std::string& dest ) const
+{
+	dest += fmt_string( "start index: %d\n",   m_iStartIndex );
+	dest += fmt_string( "min index: %d\n",     m_iMinIndex );
+	dest += fmt_string( "num triangles: %d\n", m_iNumTriangles );
+	dest += fmt_string( "num vertex blocks to cover: %d\n", m_iNumVertexBlocksToCover );
+	dest += fmt_string( "aabb: %s", to_string(m_AABB).c_str() );
+}
+
 //=========================================================================================
 // CMMA_Texture
 //=========================================================================================

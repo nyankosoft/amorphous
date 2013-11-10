@@ -160,6 +160,8 @@ public:
 	void Serialize( IArchive& ar, const unsigned int version );
 
 	virtual unsigned int GetVersion() const { return 1; }
+
+	void DumpToText( std::string& dest ) const;
 };
 
 
