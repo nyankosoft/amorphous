@@ -1421,9 +1421,6 @@
     <ClInclude Include="..\..\amorphous\Input\fwd.hpp">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\GameInput.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Input\GICodeTitle.hpp">
       <Filter>Input</Filter>
     </ClInclude>

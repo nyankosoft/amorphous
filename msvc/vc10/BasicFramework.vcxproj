@@ -590,7 +590,6 @@
     <ClInclude Include="..\..\amorphous\Input\DirectInputGamepad.hpp" />
     <ClInclude Include="..\..\amorphous\Input\DirectInputMouse.hpp" />
     <ClInclude Include="..\..\amorphous\Input\fwd.hpp" />
-    <ClInclude Include="..\..\amorphous\Input\GameInput.hpp" />
     <ClInclude Include="..\..\amorphous\Input\GICodeTitle.hpp" />
     <ClInclude Include="..\..\amorphous\Input\InputDevice.hpp" />
     <ClInclude Include="..\..\amorphous\Input\InputDeviceGroup.hpp" />
