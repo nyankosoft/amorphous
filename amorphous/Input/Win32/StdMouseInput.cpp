@@ -1,5 +1,5 @@
 #include "StdMouseInput.hpp"
-#include "Input/InputHub.hpp"
+#include "amorphous/Input/InputHub.hpp"
 
 
 namespace amorphous

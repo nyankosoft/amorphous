@@ -1,7 +1,7 @@
 #ifndef  __STDMOUSEINPUT_H__
 #define  __STDMOUSEINPUT_H__
 
-#include "MouseInputDevice.hpp"
+#include "../MouseInputDevice.hpp"
 #include <windows.h>
 
 

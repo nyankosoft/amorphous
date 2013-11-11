@@ -142,6 +142,9 @@
     <Filter Include="Physics\engines\PhysX">
       <UniqueIdentifier>{3566b202-88ab-4c4e-a0f8-14b1b081ca62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input\Win32">
+      <UniqueIdentifier>{fca6d22b-ab7e-4290-93d0-d86a0254f325}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp">
@@ -492,31 +495,10 @@
     <ClCompile Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.cpp">
       <Filter>3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\DIInputDeviceMonitor.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\DIKeyboard.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\DirectInput.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\DirectInputGamepad.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\DirectInputMouse.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Input\InputDevice.cpp">
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Input\InputHub.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\StdKeyboard.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Input\StdMouseInput.cpp">
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Input\ForceFeedback\DIForceFeedbackEffectImpl.cpp">
@@ -839,6 +821,27 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive.cpp">
       <Filter>Support\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DIInputDeviceMonitor.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DIKeyboard.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DirectInput.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DirectInputGamepad.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DirectInputMouse.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\StdKeyboard.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\StdMouseInput.cpp">
+      <Filter>Input\Win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1403,21 +1406,6 @@
     <ClInclude Include="..\..\amorphous\3DMath\Vector3_Gen.hpp">
       <Filter>3DMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\DIInputDeviceMonitor.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\DIKeyboard.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\DirectInput.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\DirectInputGamepad.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\DirectInputMouse.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Input\fwd.hpp">
       <Filter>Input</Filter>
     </ClInclude>
@@ -1434,12 +1422,6 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Input\InputHub.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\StdKeyboard.hpp">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Input\StdMouseInput.hpp">
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Input\ForceFeedback\DIForceFeedbackEffectImpl.hpp">
@@ -1952,6 +1934,33 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Physics\ConvexShapeDesc.hpp">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DIInputDeviceMonitor.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DIKeyboard.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DirectInput.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DirectInputGamepad.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DirectInputMouse.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\InputDeviceInitializer_DirectInput.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\InputDeviceInitializer_Win32.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\StdKeyboard.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\StdMouseInput.hpp">
+      <Filter>Input\Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

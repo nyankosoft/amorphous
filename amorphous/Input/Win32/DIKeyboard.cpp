@@ -1,8 +1,6 @@
 #include "DIKeyboard.hpp"
-
-#include "DirectInput.hpp"
-#include "InputHub.hpp"
-#include "App/GameWindowManager_Win32.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/App/GameWindowManager_Win32.hpp"
 
 
 namespace amorphous

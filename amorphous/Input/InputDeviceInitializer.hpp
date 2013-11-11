@@ -3,7 +3,7 @@
 
 
 #ifdef _MSC_VER
-#include "InputDeviceInitializer_DirectInput.hpp"
+#include "Win32/InputDeviceInitializer_DirectInput.hpp"
 #else
 #include "InputDeviceInitializer_GLUT.hpp"
 #endif

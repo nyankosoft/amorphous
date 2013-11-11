@@ -2,7 +2,7 @@
 #define  __StdInputDeviceStateCallback_HPP__
 
 #include <boost/shared_ptr.hpp>
-#include "Input/DIInputDeviceMonitor.hpp"
+#include "Input/Win32/DIInputDeviceMonitor.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 
 

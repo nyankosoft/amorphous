@@ -3,9 +3,9 @@
 
 
 #include <boost/weak_ptr.hpp>
-#include "../../base.hpp"
-#include "Input/DirectInput.hpp"
-#include "Input/DirectInputGamepad.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Input/Win32/DirectInput.hpp"
+#include "amorphous/Input/Win32/DirectInputGamepad.hpp"
 #include "ForceFeedbackEffect.hpp"
 #include "ForceFeedbackTargetDevice.hpp"
 

@@ -2,7 +2,7 @@
 #define  __STDKEYBOARD_H__
 
 
-#include "KeyboardInputDevice.hpp"
+#include "../KeyboardInputDevice.hpp"
 
 
 namespace amorphous

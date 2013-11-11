@@ -5,9 +5,8 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
-#include "../base.hpp"
-
-#include "GamepadInputDevice.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Input/GamepadInputDevice.hpp"
 
 
 namespace amorphous

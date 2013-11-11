@@ -5,8 +5,8 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
-#include "../base.hpp"
-#include "MouseInputDevice.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Input/MouseInputDevice.hpp"
 
 
 namespace amorphous

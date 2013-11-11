@@ -1,12 +1,11 @@
 #ifndef  __DIKEYBOARD_H__
 #define  __DIKEYBOARD_H__
 
+#include "amorphous/base.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Input/KeyboardInputDevice.hpp"
 #include "DirectInput.hpp"
-#include "InputHandler.hpp"
-#include "KeyboardInputDevice.hpp"
-#include "../base.hpp"
 
-#include <dinput.h>
 #include <windows.h>
 
 

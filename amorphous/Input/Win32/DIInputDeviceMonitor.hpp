@@ -1,7 +1,7 @@
 #ifndef  __DIInputDeviceMonitor_HPP__
 #define  __DIInputDeviceMonitor_HPP__
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 #include <vector>
 #include <map>
@@ -9,7 +9,7 @@
 #include <tbb/concurrent_queue.h>
 #include <tbb/mutex.h>
 #include "Input/fwd.hpp"
-#include "Input/DirectInput.hpp"
+#include "Input/Win32/DirectInput.hpp"
 #include "Support/thread_starter.hpp"
 #include "Support/singleton.hpp"
 

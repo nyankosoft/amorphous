@@ -3,7 +3,7 @@
 #include "App/GameApplicationBase.hpp"
 #include "Input/InputHub.hpp"
 #include "Input/InputHandler.hpp"
-#include "Input/DirectInputMouse.hpp"
+#include "Input/MouseInputDevice.hpp"
 #include "GameCommon/MouseCursor.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 #include "Graphics/PyModule_GraphicsElement.hpp"

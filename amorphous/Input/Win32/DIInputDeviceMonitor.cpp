@@ -1,5 +1,5 @@
 #include "DIInputDeviceMonitor.hpp"
-#include "Input/DirectInputGamepad.hpp"
+#include "DirectInputGamepad.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/thread/xtime.hpp>
 

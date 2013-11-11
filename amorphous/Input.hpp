@@ -3,10 +3,10 @@
 
 #ifdef _MSC_VER
 // for Windows platform
-#include "Input/StdKeyboard.hpp"
-#include "Input/DirectInput.hpp"
-#include "Input/DIKeyboard.hpp"
-#include "Input/DirectInputMouse.hpp"
-#include "Input/DirectInputGamepad.hpp"
-#include "Input/DIInputDeviceMonitor.hpp"
+#include "Input/Win32/StdKeyboard.hpp"
+#include "Input/Win32/DirectInput.hpp"
+#include "Input/Win32/DIKeyboard.hpp"
+#include "Input/Win32/DirectInputMouse.hpp"
+#include "Input/Win32/DirectInputGamepad.hpp"
+#include "Input/Win32/DIInputDeviceMonitor.hpp"
 #endif

@@ -2,8 +2,8 @@
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Profile.hpp"
-#include "amorphous/Input/StdKeyboard.hpp"
-#include "amorphous/Input/StdMouseInput.hpp"
+#include "amorphous/Input/Win32/StdKeyboard.hpp"
+#include "amorphous/Input/Win32/StdMouseInput.hpp"
 
 // Windows headers
 #include <windows.h>

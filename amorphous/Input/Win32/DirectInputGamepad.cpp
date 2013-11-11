@@ -1,14 +1,11 @@
 #include "DirectInputGamepad.hpp"
 #include "DirectInput.hpp"
-#include "InputHub.hpp"
-#include "ForceFeedback/DIForceFeedbackEffectImpl.hpp"
-#include "App/GameWindowManager_Win32.hpp"
-
-#include "Support/StringAux.hpp"
-//#include "Support/Log/StateLog.hpp"
-#include "Support/Log/DefaultLog.hpp"
-
-#include "../base.hpp"
+#include "../InputHub.hpp"
+#include "../ForceFeedback/DIForceFeedbackEffectImpl.hpp"
+#include "amorphous/App/GameWindowManager_Win32.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+//#include "amorphous/Support/Log/StateLog.hpp"
 
 #include <math.h>
 
