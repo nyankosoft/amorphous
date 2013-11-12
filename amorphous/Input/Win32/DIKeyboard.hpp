@@ -6,13 +6,9 @@
 #include "amorphous/Input/KeyboardInputDevice.hpp"
 #include "DirectInput.hpp"
 
-#include <windows.h>
-
 
 namespace amorphous
 {
-
-#pragma comment( lib, "dinput8.lib" )
 
 
 class DIKeyboard : public KeyboardInputDevice

@@ -2,18 +2,13 @@
 #define  __DIRECTINPUTGAMEPAD_H__
 
 
-#define DIRECTINPUT_VERSION 0x0800
-
-#include <dinput.h>
+#include "DirectInput.hpp"
 #include "amorphous/base.hpp"
 #include "amorphous/Input/GamepadInputDevice.hpp"
 
 
 namespace amorphous
 {
-
-
-#pragma comment( lib, "dinput8.lib" )
 
 
 /// direct input force feedback params

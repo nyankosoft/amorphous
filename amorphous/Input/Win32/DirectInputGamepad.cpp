@@ -1,5 +1,4 @@
 #include "DirectInputGamepad.hpp"
-#include "DirectInput.hpp"
 #include "../InputHub.hpp"
 #include "../ForceFeedback/DIForceFeedbackEffectImpl.hpp"
 #include "amorphous/App/GameWindowManager_Win32.hpp"
