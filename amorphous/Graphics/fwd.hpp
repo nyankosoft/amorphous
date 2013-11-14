@@ -138,14 +138,6 @@ class GraphicsElementAnimationManagerBase;
 class GraphicsElementAnimationManager;
 
 
-// D3D Implementation
-class CDirect3D9;
-class CD3DXMeshObjectBase;
-class CD3DXMeshObject;
-class CD3DXPMeshObject; // progressive mesh
-class CD3DXSMeshObject; // skeletal mesh
-
-
 class MeshType
 {
 public:
