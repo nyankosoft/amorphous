@@ -131,10 +131,6 @@ bool ShadowMapManager::Init()
 		return false;
 	}
 
-//	HRESULT hr = CreateShadowMapTextures();
-//	if( FAILED(hr) )
-//		LOG_PRINT_ERROR( "Failed to create shadow map texture" );
-
 	bool textures_created = CreateSceneShadowMapTextures();
 
 	m_pSceneRenderTarget->InitScreenSizeRenderTarget();

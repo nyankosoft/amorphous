@@ -193,8 +193,6 @@ bool FlatShadowMap::CreateShadowMapTextures()
 		return false;
 	}
 */
-	// Initialize the shadow projection matrix
-//	D3DXMatrixPerspectiveFovLH( &m_mShadowProj, g_fLightFov, 1, 0.01f, 100.0f);
 
 	uint option_flags = 0;
 	m_pShadowmapRenderTarget = TextureRenderTarget::Create();
@@ -258,50 +256,28 @@ static float sg_fOrigFarClip = 0;
 
 void FlatShadowMap::BeginSceneShadowMap()
 {
-/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr;
-
-	// set shadow map texture as a render target
-
-	LPDIRECT3DSURFACE9 pShadowSurf;
-	if( SUCCEEDED( m_pShadowMap->GetSurfaceLevel( 0, &pShadowSurf ) ) )
-	{
-		hr = pd3dDev->SetRenderTarget( 0, pShadowSurf );
-		SAFE_RELEASE( pShadowSurf );
-	}
-
-	hr = pd3dDev->SetDepthStencilSurface( m_pShadowMapDepthBuffer );
-*/
 	m_pShadowmapRenderTarget->SetBackgroundColor( SFloatRGBAColor( 0.5f, 1.0f, 0.5f, 1.0f ) );
 
+	// Sets the depth stencil surface as well?
 	m_pShadowmapRenderTarget->SetRenderTarget();
 
 	UpdateShadowMapSettings();
 
-//	hr = pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0xFF80FF80, 1.0f, 0 );
-
-
-/*	shared_ptr<BasicMesh> pMesh = m_ShadowCasterBoundingBox.GetMesh();
-	if( pMesh )
+/*	if( render_shadow_caster_bounding_box )
 	{
 		const float far_clip = 100.0f;//m_LightCamera.GetFarClip();
-		Matrix44 local( Matrix44Scaling( 1000.0f, 1000.0f, far_clip ) );
-//		local(2,3) = far_clip * 0.5f - 5.0f;
+		Matrix44 scaling( Matrix44Scaling( 1000.0f, 1000.0f, far_clip ) );
+//		scaling(2,3) = far_clip * 0.5f - 5.0f;
 
-		Matrix44 world = ToMatrix44( m_LightCamera.GetPose() ) * local;
+		Matrix44 world = ToMatrix44( m_LightCamera.GetPose() ) * scaling;
 
-		FixedFunctionPipelineManager().SetWorldTransform( world );
-		pMesh->Render();
+		RenderBox( world, MeshPolygonDirection::INWARD );
 	}*/
-
-//	pd3dDev->BeginScene();
 }
 
 
 void FlatShadowMap::EndSceneShadowMap()
 {
-//	pd3dDev->EndScene();
-
 	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	if( m_pShadowmapRenderTarget )
@@ -441,7 +417,6 @@ void OrthoShadowMap::SetWorldToLightSpaceTransformMatrix()
 	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
 	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
 
-	HRESULT hr = S_OK;
 	const Matrix44 proj_view
 		= Matrix44OrthoLH( 50.0f, 50.0f, 1.0f, 150.0f )
 		* m_LightCamera.GetCameraMatrix();
@@ -533,14 +508,10 @@ void SpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 	m_LightCamera.SetNearClip( g_fShadowMapNearClip );
 	m_LightCamera.SetFarClip( g_fShadowMapFarClip );
 
-	HRESULT hr = S_OK;
-//	LPD3DXEFFECT pEffect = m_Shader.GetShaderManager()->GetEffect();
 	const Matrix44 proj_view
 		= m_LightCamera.GetProjectionMatrix()
 		* m_LightCamera.GetCameraMatrix();
-//	D3DXMATRIX matWorldToLightProj;
-//	proj_view.GetRowMajorMatrix44( (float *)&matWorldToLightProj );
-//	hr = pEffect->SetMatrix( "g_mWorldToLightProj", &matWorldToLightProj );
+
 	m_Shader.GetShaderManager()->SetParam( "g_mWorldToLightProj", proj_view );
 
 	// debug - wanted to check the relations of viewport, FOV, projection matrix, etc.

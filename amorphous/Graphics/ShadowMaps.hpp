@@ -1,7 +1,7 @@
 #ifndef  __ShadowMaps_H__
 #define  __ShadowMaps_H__
 
-#include "fwd.hpp"
+
 #include "ShaderHandle.hpp"
 #include "GraphicsComponentCollector.hpp"
 #include "Shader/ShaderTechniqueHandle.hpp"
@@ -9,8 +9,6 @@
 #include "Camera.hpp"
 #include "CubeMapManager.hpp"
 #include "MeshObjectHandle.hpp"
-
-#include <assert.h>
 
 
 namespace amorphous
@@ -102,7 +100,6 @@ protected:
 //	void SetDefault();
 
 //	bool CreateSceneShadowMapTextures();
-//	virtual D3DFORMAT GetShadowMapTextureFormat() { return D3DFMT_R32F; }
 
 	virtual void BeginSceneShadowReceivers() {}
 
@@ -179,7 +176,7 @@ public:
 	virtual ShaderTechniqueHandle& ShadowMapTechnique( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE ) = 0;
 	virtual ShaderTechniqueHandle& DepthTestTechnique( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE ) = 0;
 
-	virtual LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return NULL; }
+//	virtual TextureHandle GetShadowMapTexture() { return TextureHandle(); }
 
 	/// For debugging.
 	/// Strings that end with '/' are treated as directory paths
@@ -210,13 +207,10 @@ protected:
 	ShaderTechniqueHandle m_VertexBlendShadowMapTechnique;
 	ShaderTechniqueHandle m_VertexBlendDepthTestTechnique;
 
-	/// Texture to which the shadow map is rendered.
+	/// Stores the texture to which the shadow map is rendered.
 	/// Geometries that cast shadows to others (=shadow casters)
 	/// are rendered to this texture.
-//	LPDIRECT3DTEXTURE9 m_pShadowMap;
-
-//	LPDIRECT3DSURFACE9 m_pShadowMapDepthBuffer; ///< Depth-stencil buffer for rendering to shadow map
-
+	/// a depth-stencil buffer for rendering to shadow map is also created and stored.
 	boost::shared_ptr<TextureRenderTarget> m_pShadowmapRenderTarget;
 
 	MeshHandle m_ShadowCasterBoundingBox;
@@ -252,13 +246,20 @@ public:
 
 	std::string CreateTextureFilename();
 
-//	LPDIRECT3DTEXTURE9 GetShadowMapTexture() { return m_pShadowMap; }
+//	TextureHandle GetShadowMapTexture() { return m_pShadowMap; }
 
 	virtual void SaveShadowMapTextureToFileInternal( const std::string& filepath );
 };
 
 
-/// Use this for directional light?
+/// Used this for directional lights.
+/// The shadow map texture stores the distance from the light plane
+/// to the surface of the object.
+/// A light plane is the plane defined by shifting the plane perpendicular
+/// to the light direction back from the scene.
+/// This means that if the scene is objects on the ground and the light
+/// is the sunlight, the light plane is defined by shifting the plane
+/// perpendicular to the sunlight' direction toward the sky.
 class OrthoShadowMap : public FlatShadowMap
 {
 	void UpdateShadowMapSettings();
@@ -362,11 +363,11 @@ public:
 
 	std::string CreateTextureFilename();
 
-	LPDIRECT3DTEXTURE9 GetShadowMapTexture()
-	{
-		assert( !"How to set the cube shadowmap texture?" );
-		return NULL;
-	}
+//	LPDIRECT3DTEXTURE9 GetShadowMapTexture()
+//	{
+//		assert( !"How to set the cube shadowmap texture?" );
+//		return NULL;
+//	}
 
 	void SaveShadowMapTextureToFileInternal( const std::string& filepath );
 
