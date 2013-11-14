@@ -100,7 +100,9 @@ bool CD3DTextureRenderTarget::LoadTextures()
 //	hr = m_pRenderTargetTexture->GetSurfaceLevel(0, &m_pRenderTargetSurface);
 
 //	m_TextureDesc.ResourcePath = fmt_string("<TextureRenderTarget width=%d height=%d>", m_TextureDesc.Width, m_TextureDesc.Height );
-	m_RenderTargetTexture.Load( m_TextureDesc );
+	bool res = m_RenderTargetTexture.Load( m_TextureDesc );
+	if( !res )
+		LOG_PRINT_ERROR( "Failed to create a texture for render target." );
 
 	if( m_RenderTargetTexture.GetTexture() )
 		hr = m_RenderTargetTexture.GetTexture()->GetSurfaceLevel(0, &m_pRenderTargetSurface);
