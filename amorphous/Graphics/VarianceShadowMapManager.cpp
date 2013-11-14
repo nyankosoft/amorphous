@@ -161,8 +161,7 @@ bool VarianceShadowMapManager::Init()
 		m_SampleOffsetsV.Parameter()[i*2+1] = m_avSampleOffsetV[i].y;
 	}
 
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-//	HRESULT hr;
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	TextureResourceDesc desc;
 	desc.Width  = m_ShadowMapSize;
