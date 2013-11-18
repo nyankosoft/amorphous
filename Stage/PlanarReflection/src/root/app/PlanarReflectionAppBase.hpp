@@ -9,10 +9,10 @@
 using namespace amorphous;
 
 
-enum ShadowAppTaskID
+enum PlanarReflectionAppTaskID
 {
 //	GAMETASK_ID_SHADOWS_TEST_STAGE,
-	GAMETASK_ID_BASIC_PHYSICS,
+	GAMETASK_ID_PLANAR_REFLECTION_DEMO,
 	NUM_SHADOW_APP_GAMETASK_IDS
 };
 
@@ -53,7 +53,7 @@ public:
 	{
 		switch( iTaskID )
 		{
-		case GAMETASK_ID_BASIC_PHYSICS:
+		case GAMETASK_ID_PLANAR_REFLECTION_DEMO:
 			return new CPlanarReflectionAppTask();
 //		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
 //			return new CPlanarReflectionAppGUITask();
@@ -72,19 +72,13 @@ public:
 
 	virtual ~CPlanarReflectionAppBase();
 
-	virtual bool Init();
-
 	// virtual function implementations
 
 	const std::string GetApplicationTitle() { return "PlanarReflection"; }
 
-	const std::string GetStartTaskName() const;
-
 	int GetStartTaskID() const;
 
 	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CPlanarReflectionAppTaskFactory(); }
-
-	void Release();
 };
 
 

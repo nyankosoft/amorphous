@@ -8,8 +8,6 @@
 #include "amorphous/Task.hpp"
 #include "amorphous/Script.hpp"
 #include "amorphous/GUI.hpp"
-#include "amorphous/GameCommon/MouseCursor.hpp"
-#include "amorphous/App/GameWindowManager.hpp"
 
 
 using namespace std;
@@ -120,58 +118,10 @@ CPlanarReflectionAppBase::CPlanarReflectionAppBase()
 
 CPlanarReflectionAppBase::~CPlanarReflectionAppBase()
 {
-//	Release();
-}
-
-/*
-void CPlanarReflectionAppBase::Release()
-{
-}*/
-
-
-const std::string CPlanarReflectionAppBase::GetStartTaskName() const
-{
-	return string("");
 }
 
 
 int CPlanarReflectionAppBase::GetStartTaskID() const
 {
-//	return CGameTask::ID_STAGE_VIEWER_TASK;
-	return GAMETASK_ID_BASIC_PHYSICS;
-}
-
-
-bool CPlanarReflectionAppBase::Init()
-{
-	//
-	// Register base entity factory
-	//
-/*
-	GetBaseEntityManager().RegisterBaseEntityFactory( BaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
-
-	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
-*/
-	bool base_init = GameApplicationBase::Init();
-	if( !base_init )
-		return false;
-
-
-	//
-	// Do initial settings using scripts
-	//
-
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
-	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
-
-/*
-	//
-	// Register (task name) : (task ID) maps
-	//
-
-	CGameTask::AddTaskNameToTaskIDMap( "TitleFG",           CGameTaskFG::ID_TITLE_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "MainMenuFG",        CGameTaskFG::ID_MAINMENU_FG );
-	CGameTask::AddTaskNameToTaskIDMap( "ControlCustomizer", CGameTaskFG::ID_CONTROLCUSTOMIZER_FG );
-*/
-	return true;
+	return GAMETASK_ID_PLANAR_REFLECTION_DEMO;
 }
