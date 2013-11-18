@@ -95,11 +95,11 @@
     <ClInclude Include="..\..\root\app\BillboardAnimationAppBase.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Project1\vsp\vc10\GameStageFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\Project1\msvc\vc10\GameStageFramework.vcxproj">
       <Project>{a647f5c6-e14d-408f-8d01-ad55a86772b3}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
