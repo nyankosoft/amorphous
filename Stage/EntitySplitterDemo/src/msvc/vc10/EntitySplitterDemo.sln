@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicFramework", "..\..\..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj", "{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameStageFramework", "..\..\..\..\..\..\Project1\msvc\vc10\GameStageFramework.vcxproj", "{A647F5C6-E14D-408F-8D01-AD55A86772B3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntitySplitterDemo", "EntitySplitterDemo.vcxproj", "{73C251DF-E7C1-4C07-8EE2-34050075DB91}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Debug|Win32.Build.0 = Debug|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Release|Win32.ActiveCfg = Release|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Release|Win32.Build.0 = Release|Win32
+		{A647F5C6-E14D-408F-8D01-AD55A86772B3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A647F5C6-E14D-408F-8D01-AD55A86772B3}.Debug|Win32.Build.0 = Debug|Win32
+		{A647F5C6-E14D-408F-8D01-AD55A86772B3}.Release|Win32.ActiveCfg = Release|Win32
+		{A647F5C6-E14D-408F-8D01-AD55A86772B3}.Release|Win32.Build.0 = Release|Win32
+		{73C251DF-E7C1-4C07-8EE2-34050075DB91}.Debug|Win32.ActiveCfg = Debug|Win32
+		{73C251DF-E7C1-4C07-8EE2-34050075DB91}.Debug|Win32.Build.0 = Debug|Win32
+		{73C251DF-E7C1-4C07-8EE2-34050075DB91}.Release|Win32.ActiveCfg = Release|Win32
+		{73C251DF-E7C1-4C07-8EE2-34050075DB91}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
