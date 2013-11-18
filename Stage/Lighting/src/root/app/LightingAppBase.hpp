@@ -55,19 +55,13 @@ public:
 
 	virtual ~CLightingAppBase();
 
-	virtual bool Init();
-
 	// virtual function implementations
 
 	const std::string GetApplicationTitle() { return "Lighting"; }
 
-	const std::string GetStartTaskName() const;
-
 	int GetStartTaskID() const;
 
 	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CLightingAppTaskFactory(); }
-
-	void Release();
 };
 
 

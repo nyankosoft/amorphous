@@ -8,9 +8,6 @@
 #include "amorphous/Stage.hpp"
 #include "amorphous/Task.hpp"
 #include "amorphous/Script.hpp"
-#include "amorphous/GUI.hpp"
-#include "amorphous/GameCommon/MouseCursor.hpp"
-#include "amorphous/App/GameWindowManager.hpp"
 
 using std::string;
 using std::vector;
@@ -145,33 +142,9 @@ CLightingAppBase::~CLightingAppBase()
 //	Release();
 }
 
-/*
-void CLightingAppBase::Release()
-{
-}*/
-
-
-const std::string CLightingAppBase::GetStartTaskName() const
-{
-	return string("");
-}
-
 
 int CLightingAppBase::GetStartTaskID() const
 {
 //	return GameTask::ID_STAGE_VIEWER_TASK;
 	return GAMETASK_ID_LIGHTING;
-}
-
-
-bool CLightingAppBase::Init()
-{
-	bool base_init = GameApplicationBase::Init();
-	if( !base_init )
-		return false;
-
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
-	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
-
-	return true;
 }
