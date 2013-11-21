@@ -15,8 +15,8 @@
 #include "amorphous/Support/BitmapImage.hpp" // For InitFreeImage()
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
-#include "amorphous/Input/StdMouseInput.hpp"
-#include "amorphous/Input/StdKeyboard.hpp"
+#include "amorphous/Input/Win32/StdMouseInput.hpp"
+#include "amorphous/Input/Win32/StdKeyboard.hpp"
 //#include "amorphous/XML.hpp"
 #include "amorphous/App/GameWindowManager_Win32.hpp"
 //#include <gl/gl.h>
