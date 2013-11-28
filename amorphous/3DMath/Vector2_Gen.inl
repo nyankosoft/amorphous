@@ -36,7 +36,7 @@ inline TVector2<TScalar> operator-( const TVector2<TScalar>& v )
 // global functions
 
 template<class TScalar>
-inline TScalar Vec2Dot( TVector2<TScalar>& v0, TVector2<TScalar>& v1 )
+inline TScalar Vec2Dot( const TVector2<TScalar>& v0, const TVector2<TScalar>& v1 )
 {
 	return (v0.x * v1.x + v0.y * v1.y);
 }
