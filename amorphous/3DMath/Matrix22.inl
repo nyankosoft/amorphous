@@ -160,23 +160,12 @@ inline void Matrix22::SetIdentity()
 	*this = Matrix22Identity();
 }
 
-/*
-inline void Matrix22::SetRotationX( const Scalar angle )
+
+inline void Matrix22::SetRotation( const Scalar angle )
 {
-	*this = Matrix22RotationX( angle );
+	*this = Matrix22Rotation( angle );
 }
 
-
-inline void Matrix22::SetRotationY( const Scalar angle )
-{
-	*this = Matrix22RotationY( angle );
-}
-
-
-inline void Matrix22::SetRotationZ( const Scalar angle )
-{
-	*this = Matrix22RotationZ( angle );
-}*/
 
 /*
 inline void Matrix22::Orthonormalize()

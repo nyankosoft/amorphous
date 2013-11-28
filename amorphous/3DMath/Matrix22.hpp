@@ -71,16 +71,10 @@ public:
 	inline bool operator==(const Matrix22 & rhs) const;
 
 	inline void SetIdentity();
-/*
-	/// sets a rotation matrix that rotates a point around x-axis
-	inline void SetRotationX( const Scalar angle );
 
-	/// sets a rotation matrix that rotates a point around y-axis
-	inline void SetRotationY( const Scalar angle );
+	/// sets a rotation matrix that rotates a 2D point
+	inline void SetRotation( const Scalar angle );
 
-	/// sets a rotation matrix that rotates a point around z-axis
-	inline void SetRotationZ( const Scalar angle );
-*/
 	friend Matrix22 operator*(const Matrix22 & lhs, const Scalar rhs);
 	friend Matrix22 operator*(const Scalar lhs, const Matrix22 & rhs);
 	friend Matrix22 operator*(const Matrix22 & lhs, const Matrix22 & rhs);
@@ -109,20 +103,7 @@ inline Matrix22 Matrix22Transpose(const Matrix22 & rhs);
 // matrix * vector
 inline Vector2 operator*(const Matrix22 & lhs, const Vector2 & rhs);
 
-
-// Some useful rotation Matrix22's
-// alpha returns a matrix that wil rotate alpha around the x axis (etc)
-//inline Matrix22 m3alpha(Scalar alpha);
-//inline Matrix22 m3beta(Scalar beta);
-//inline Matrix22 m3gamma(Scalar gamma);
-
 inline Matrix22 Matrix22Rotation( Scalar theta );
-//inline Matrix22 Matrix22RotationX( Scalar alpha );
-//inline Matrix22 Matrix22RotationY( Scalar beta );
-//inline Matrix22 Matrix22RotationZ( Scalar gamma );
-
-/// returns the matrix that rotates a vertex around an axis
-inline Matrix22 Matrix22RotationAxis( Scalar angle, const Vector2& axis );
 
 
 inline const Matrix22 & Matrix22Identity()
