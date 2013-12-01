@@ -86,6 +86,22 @@ inline std::string to_string( float num, int precision = 3, int num_zfills = 0 )
 }
 
 
+template<typename T>
+inline std::string to_string( const std::vector<T>& src, const char *delimiter = ", " )
+{
+	std::string dest;
+	const size_t num_elements = src.size();
+	for( size_t i=0; i<num_elements; i++ )
+	{
+		dest += to_string(src[i]);
+		if( i < num_elements - 1 )
+			dest += delimiter;
+	}
+
+	return dest;
+}
+
+
 /// Converts a text that represents hexadecimal integer into int type value.
 /// - example: hex_int = "0x000000FF" -> return value = 255
 inline int from_hex_to_int( const std::string& hex_int )
