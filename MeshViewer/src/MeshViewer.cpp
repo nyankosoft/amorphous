@@ -462,7 +462,7 @@ bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
 	MeshResourceDesc desc;
 	desc.ResourcePath = mesh_filepath;
 	desc.LoadOptionFlags |= MeshLoadOption::CUSTOM_MESH;
-//	desc.MeshType = CMeshType::SKELETAL;
+//	desc.MeshType = MeshType::SKELETAL;
 	bool loaded = m_Mesh.Load( desc );
 
 	if( loaded && m_Mesh.GetMesh() )
