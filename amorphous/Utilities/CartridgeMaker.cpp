@@ -3,6 +3,7 @@
 #include "../3DMath/TCBSpline.hpp"
 #include "../Graphics/MeshModel/General3DMesh.hpp"
 #include "../Graphics/TextureCoord.hpp"
+#include "../Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous
@@ -50,6 +51,68 @@ static float CalculateNormalAngle( const vector< pair<float,float> >& diameter_a
 		float upper_normal_angle = -atan( (next_radius - radius) / (next_height-height) );
 		return (lower_normal_angle + upper_normal_angle) * 0.5f;
 	}
+}
+
+
+/**
+  \param[out] points_at_curved_slice has (num_curve_segments+1) elements upon success
+*/
+static void CalculatePointsAtCurvedSlice(
+	const Vector2& current_point,
+	const Vector2& prev_point,
+	const Vector2& next_point,
+	float curvature_radius,
+	unsigned int num_curve_segments,
+	vector<Vector2>& points_at_curved_slice
+	)
+{
+	if( num_curve_segments < 2 )
+		return;
+
+	// Clear the destination buffer
+	points_at_curved_slice.resize( 0 );
+
+	const Vector2 to_prev = prev_point - current_point;
+	const Vector2 to_next = next_point - current_point;
+	//LOG_PRINT( "to_prev: " + to_string(to_prev) );
+	//LOG_PRINT( "to_next: " + to_string(to_next) );
+
+	const Vector2 dir_to_prev = Vec2GetNormalized(to_prev);
+	const Vector2 dir_to_next = Vec2GetNormalized(to_next);
+	const Vector2 dir_to_fit_circle_center = Vec2GetNormalized(dir_to_prev + dir_to_next);
+	//LOG_PRINT( "dir_to_fit_circle_center: " + to_string(dir_to_fit_circle_center) );
+
+	const float a = Vec2GetAngleBetween(dir_to_prev,dir_to_next) * 0.5f;
+	//LOG_PRINT( "angle a: " + to_string(rad_to_deg(a)) );
+	const float b = (float)PI * 0.5f - a;
+	const float dist_from_current_point_to_fit_circle_center = curvature_radius / cos(b);
+	//LOG_PRINT( "dist_from_current_point_to_fit_circle_center: " + to_string(dist_from_current_point_to_fit_circle_center,6) );
+
+	const Vector2 fit_circle_center = current_point + dir_to_fit_circle_center * dist_from_current_point_to_fit_circle_center; 
+	//LOG_PRINT( "fit_circle_center: " + to_string(fit_circle_center) );
+	float d = Vec2Dot(to_prev,to_next);
+
+	const float angle_sign = (dir_to_fit_circle_center.x < 0) ? 1 : -1;
+
+	const float angles_to_cover = b * 2.0f * angle_sign;
+	Vector2 lower_tangent_point = current_point + dir_to_prev * dist_from_current_point_to_fit_circle_center * sin(b);
+	Vector2 upper_tangent_point = current_point + dir_to_next * dist_from_current_point_to_fit_circle_center * sin(b);
+	Vector2 fit_circle_center_to_lower_tangent = lower_tangent_point - fit_circle_center;
+
+	points_at_curved_slice.reserve( num_curve_segments + 1 );
+
+	points_at_curved_slice.push_back( lower_tangent_point );
+
+	for( unsigned int i=1; i<num_curve_segments; i++ )
+	{
+		float current_angle = angles_to_cover * (float)i / (float)num_curve_segments;
+		Vector2 point_on_curve = fit_circle_center + Matrix22Rotation(current_angle) * fit_circle_center_to_lower_tangent;
+		points_at_curved_slice.push_back( point_on_curve );
+	}
+
+	points_at_curved_slice.push_back( upper_tangent_point );
+
+	//LOG_PRINT( "points_at_curved_slice: " + to_string(points_at_curved_slice) );
 }
 
 
@@ -424,6 +487,9 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 //	float height = 0;
 	while(1)
 	{
+		// Each iteration of this loop represent one continuous segment
+		// Not necessarily a segment of a case.
+
 		int num_segments = 1;
 		int start_segment_index = current_segment_index;
 		int end_segment_index = current_segment_index;
@@ -461,12 +527,24 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 				if( current_segment_index == 0 || current_segment_index == CaseDesc::MAX_NUM_CASE_SLICES - 1 )
 					break;
 
-				num_segments += 5;
-//				const CaseSlice& prev_slice = src_desc.case_slices[current_segment_index-1];
-//				const CaseSlice& next_slice = src_desc.case_slices[current_segment_index+1];
-//				diameter_and_height_pairs.push_back( CalculateInetrpolatedDiameterAndHeight( src_desc.case_slices, current_segment_index-1, current_segment_index, 0 ) );
-				diameter_and_height_pairs.push_back( pair<float,float>( current_slice.diameter, current_slice.height ) );
-//				diameter_and_height_pairs.push_back( CalculateInetrpolatedDiameterAndHeight( src_desc.case_slices, current_segment_index-1, current_segment_index, 1 ) );
+				vector<Vector2> points_at_curved_slice;
+
+				const CaseSlice& prev_slice = src_desc.case_slices[current_segment_index-1];
+				const CaseSlice& next_slice = src_desc.case_slices[current_segment_index+1];
+				const Vector2 current_point = Vector2(current_slice.diameter*0.5f, current_slice.height);
+				const Vector2 prev_point    = Vector2(prev_slice.diameter*0.5f, prev_slice.height);
+				const Vector2 next_point    = Vector2(next_slice.diameter*0.5f, next_slice.height);
+
+				unsigned int num_curve_segments = 3;
+				CalculatePointsAtCurvedSlice( current_point, prev_point, next_point, current_slice.curvature_radius, num_curve_segments, points_at_curved_slice );
+
+				for( size_t i=0; i<points_at_curved_slice.size(); i++ )
+				{
+					Vector2 point = points_at_curved_slice[i];
+					diameter_and_height_pairs.push_back( pair<float,float>(point.x*2.0f,point.y) );
+				}
+
+				// Do not break the loop because the segments are continuous.
 			}
 		}
 		
