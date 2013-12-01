@@ -13,7 +13,7 @@
 using namespace amorphous;
 
 
-class CMeshViewer : public GraphicsApplicationBase
+class MeshViewer : public GraphicsApplicationBase
 {
 	std::vector<MeshHandle> m_vecMesh;
 
@@ -94,9 +94,9 @@ protected:
 
 public:
 
-	CMeshViewer();
+	MeshViewer();
 
-	~CMeshViewer();
+	~MeshViewer();
 
 	int Init();
 

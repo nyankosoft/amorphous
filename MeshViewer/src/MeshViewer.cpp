@@ -30,11 +30,11 @@ using namespace boost;
 using namespace boost::filesystem;
 
 
-ApplicationBase *amorphous::CreateApplicationInstance() { return new CMeshViewer; }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new MeshViewer; }
 
 
 
-CMeshViewer::CMeshViewer()
+MeshViewer::MeshViewer()
 :
 m_CurrentFileIndex(-1),
 m_CurrentMouseX(0),
@@ -60,12 +60,12 @@ m_RenderZSorted(false)
 }
 
 
-CMeshViewer::~CMeshViewer()
+MeshViewer::~MeshViewer()
 {
 }
 
 
-void CMeshViewer::RefreshFileList( const std::string& directory_path )
+void MeshViewer::RefreshFileList( const std::string& directory_path )
 {
 	m_vecMeshFilepath.resize( 0 );
 
@@ -87,7 +87,7 @@ void CMeshViewer::RefreshFileList( const std::string& directory_path )
 }
 
 
-void CMeshViewer::SetLights( ShaderManager& shader_mgr )
+void MeshViewer::SetLights( ShaderManager& shader_mgr )
 {
 	// change lighting render state
 	// - Needed when fixed function pipeline is used
@@ -123,7 +123,7 @@ void CMeshViewer::SetLights( ShaderManager& shader_mgr )
 }
 
 
-void CMeshViewer::LoadBlankTextures( BasicMesh& mesh )
+void MeshViewer::LoadBlankTextures( BasicMesh& mesh )
 {
 	int num_subsets = mesh.GetNumMaterials();
 	for( int i=0; i<num_subsets; i++ )
@@ -143,7 +143,7 @@ void CMeshViewer::LoadBlankTextures( BasicMesh& mesh )
 }
 
 
-void CMeshViewer::RenderSubsetsInformation( BasicMesh& mesh )
+void MeshViewer::RenderSubsetsInformation( BasicMesh& mesh )
 {
 	const int screen_width  = GraphicsComponent::GetScreenWidth();
 	const int screen_height = GraphicsComponent::GetScreenWidth();
@@ -198,7 +198,7 @@ void CMeshViewer::RenderSubsetsInformation( BasicMesh& mesh )
 }
 
 
-void CMeshViewer::LoadShaders()
+void MeshViewer::LoadShaders()
 {
 	// Clear all the shaders
 	m_Shaders.resize( 0 );
@@ -275,7 +275,7 @@ void CMeshViewer::LoadShaders()
 }
 
 
-void CMeshViewer::RenderMeshes()
+void MeshViewer::RenderMeshes()
 {
 	Result::Name res = Result::SUCCESS;
 
@@ -379,18 +379,18 @@ void CMeshViewer::RenderMeshes()
 }
 
 
-void CMeshViewer::UpdateShaderParams()
+void MeshViewer::UpdateShaderParams()
 {
 }
 
 
-void CMeshViewer::RenderScene()
+void MeshViewer::RenderScene()
 {
 	RenderMeshes();
 }
 
 
-void CMeshViewer::Update( float dt )
+void MeshViewer::Update( float dt )
 {
 	// update world pose for the mesh
 	int entered = 1;
@@ -409,7 +409,7 @@ void CMeshViewer::Update( float dt )
 // Name: Render()
 // Desc: Draws the scene
 //-----------------------------------------------------------------------------
-void CMeshViewer::Render()
+void MeshViewer::Render()
 {
 	UpdateShaderParams();
 
@@ -454,7 +454,7 @@ void CMeshViewer::Render()
 }
 
 
-bool CMeshViewer::LoadModel( const std::string& mesh_filepath )
+bool MeshViewer::LoadModel( const std::string& mesh_filepath )
 {
 	LOG_PRINT( " Opening a mesh file: " + mesh_filepath );
 
@@ -510,7 +510,7 @@ void SetDefaultLinearFog()
 }
 
 
-int CMeshViewer::Init()
+int MeshViewer::Init()
 {
 	GetCameraController()->SetPosition( Vector3(0,0,-10) );
 
@@ -547,7 +547,7 @@ int CMeshViewer::Init()
 }
 
 
-void CMeshViewer::HandleInput( const InputData& input )
+void MeshViewer::HandleInput( const InputData& input )
 {
 	shared_ptr<InputDeviceGroup> pDeviceGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 	int new_x = 0, new_y = 0;
