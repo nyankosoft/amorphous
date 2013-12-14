@@ -189,6 +189,8 @@ public:
 
 	virtual void GetVertexPositions( std::vector<Vector3>& dest_vertices ) const {}
 
+	virtual void GetVertexNormals( std::vector<Vector3>& dest_normals ) const {}
+
 	virtual unsigned int GetNumTriangles() const { return 0; }
 
 	virtual unsigned int GetNumIndices() const { return 0; }
@@ -322,6 +324,8 @@ public:
 	unsigned int GetNumVertices() const { return m_pImpl->GetNumVertices(); }
 
 	void GetVertexPositions( std::vector<Vector3>& dest_vertices ) const { return m_pImpl->GetVertexPositions( dest_vertices ); }
+
+	void GetVertexNormals( std::vector<Vector3>& dest_normals ) const { return m_pImpl->GetVertexNormals( dest_normals ); }
 
 	unsigned int GetNumTriangles() const { return m_pImpl->GetNumTriangles(); }
 
