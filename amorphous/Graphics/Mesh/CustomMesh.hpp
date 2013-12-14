@@ -46,6 +46,8 @@ public:
 
 	inline Vector3 GetVec3Element( unsigned int vertex_index, VEE::ElementName element ) const;
 
+	inline void GetVec3Elements( VEE::ElementName element, std::vector<Vector3>& dest ) const;
+
 	inline void SetVec3Elements( const Vector3 *src, const unsigned int num_src_elements, VEE::ElementName element, U32 flag );
 
 	inline void SetVec3Elements( const std::vector<Vector3>& src, VEE::ElementName element, U32 flag );
@@ -76,6 +78,11 @@ public:
 	void SetVertices( const std::vector<General3DVertex>& vertices, U32 vertex_format_flags );
 
 	inline void AddVertices( const unsigned int num_vertices );
+
+	void GetVertexPositions( std::vector<Vector3>& dest_positions ) const { GetVec3Elements( VEE::POSITION, dest_positions ); }
+	void GetVertexNormals( std::vector<Vector3>& dest_normals )     const { GetVec3Elements( VEE::NORMAL, dest_normals ); }
+//	void GetVertex2DTexCoords( int tex_coord_index, std::vector<TEXCOORD2>& tex_coords ) const;
+//	void GetVertexDiffuseColors( std::vector<SFloatRGBAColor>& dest_diffuse_colors ) const;
 
 	inline Vector3 GetPosition( uint vertex_index ) const { return GetVec3Element( vertex_index, VEE::POSITION ); }
 	inline Vector3 GetNormal(   uint vertex_index ) const { return GetVec3Element( vertex_index, VEE::NORMAL ); }
@@ -114,8 +121,6 @@ public:
 
 	void SetBlendIndices( const std::vector< TCFixedVector<int,CMMA_VertexSet::NUM_MAX_BLEND_MATRICES_PER_VERTEX> >& veciMatrixIndex );
 
-	inline void GetPositions( std::vector<Vector3>& dest ) const;
-
 	void InitVertexBuffer( int num_vertices, U32 vertex_format_flags );
 
 	inline void InitIndexBuffer( int num_indices, uint index_size = sizeof(U16) );
@@ -131,8 +136,6 @@ public:
 	const uchar *GetZSortedIndexBufferPtr() const { return (0 < m_ZSortedIndexBuffer.size()) ? &(m_ZSortedIndexBuffer[0]) : NULL; }
 
 	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
-
-	void GetVertexPositions( std::vector<Vector3>& dest_vertices ) const { GetPositions( dest_vertices ); }
 
 	uint GetNumTriangles() const { return GetNumIndices() / 3; }
 
@@ -338,11 +341,11 @@ inline void CustomMesh::SetDiffuseColor( uint vertex_index, const SFloatRGBAColo
 }
 
 
-inline void CustomMesh::GetPositions( std::vector<Vector3>& dest ) const
+inline void CustomMesh::GetVec3Elements( VEE::ElementName element, std::vector<Vector3>& dest ) const
 {
 	const uint num_verts = GetNumVertices();
 	dest.resize( num_verts );
-	const uint offset = m_ElementOffsets[VEE::POSITION];
+	const uint offset = m_ElementOffsets[element];
 	for( uint i=0; i<num_verts; i++ )
 		memcpy( &(dest[i]), &(m_VertexBuffer[0]) + m_VertexSize * i + offset, sizeof(Vector3) );
 }
