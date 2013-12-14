@@ -1,6 +1,7 @@
 #include "MeshViewer.hpp"
 #include "amorphous/3DMath/MatrixConversions.hpp"
 #include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/Graphics/Mesh/MeshInfoRenderer.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
@@ -52,7 +53,8 @@ m_UseSingleDiffuseColorShader(false),
 m_NormalMapTextureIndex(-1),
 m_CurrentSDCShaderIndex(0),
 m_RenderSubsetsInformation(false),
-m_RenderZSorted(false)
+m_RenderZSorted(false),
+m_NormalLengthFactor(0)
 {
 	m_UseCameraController = false;
 
@@ -376,6 +378,13 @@ void MeshViewer::RenderMeshes()
 		else
 			pMesh->Render( mesh_shader );
 	}
+
+	if( 0 < m_NormalLengthFactor )
+	{
+		MeshInfoRenderer renderer;
+		float normal_length = pow( 2.0f, m_NormalLengthFactor ) * 0.001f;
+		renderer.RenderNormals( *pMesh, world, normal_length );
+	}
 }
 
 
@@ -657,6 +666,13 @@ void MeshViewer::HandleInput( const InputData& input )
 			color_index = (color_index+1) % numof(bg_colors);
 
 			SetBackgroundColor( bg_colors[color_index] );
+		}
+		break;
+
+	case 'F':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_NormalLengthFactor = (m_NormalLengthFactor + 1) % 8;
 		}
 		break;
 
