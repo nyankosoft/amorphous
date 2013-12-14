@@ -4,17 +4,16 @@
 //===============================================================================
 
 #include "2DGraph.hpp"
-#include "Graphics/Direct3D9.hpp"
 #include "Graphics/Font/TextureFont.hpp"
 #include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
-
-#include "Support/memory_helpers.hpp"
+#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 
 
 namespace amorphous
 {
 
 using namespace std;
+using boost::shared_ptr;
 
 
 //================================================================================
@@ -23,7 +22,6 @@ using namespace std;
 
 C2DGraph::C2DGraph()
 {
-	m_paVertex = NULL;
 	m_fMaxValue = -FLT_MAX;
 	m_fMinValue =  FLT_MAX;
 	m_iMaxNumData = 0;
@@ -34,89 +32,22 @@ C2DGraph::C2DGraph()
 	m_BackGroundRect.SetZDepth( 0.1f );
 
 	m_iIndicatorPosition = 0;
-	ZeroMemory(m_avIndicator, sizeof(TLVERTEX) * 2);
-	m_avIndicator[0].color = 0xBB202020;	// light gray
-	m_avIndicator[1].color = 0xBB202020;
-	m_avIndicator[0].rhw = 1.0f;
-	m_avIndicator[1].rhw = 1.0f;
+//	ZeroMemory(m_avIndicator, sizeof(TLVERTEX) * 2);
+	m_avIndicator[0].m_DiffuseColor.SetARGB32( 0xBB202020 );	// light gray
+	m_avIndicator[1].m_DiffuseColor.SetARGB32( 0xBB202020 );
+	m_avIndicator[0].m_fRHW = 1.0f;
+	m_avIndicator[1].m_fRHW = 1.0f;
 
 	// create the font object that is shared by all the graph segments in this graph
-	CTextureFont *pFont = new CTextureFont;
+	TextureFont *pFont = new TextureFont;
 	pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
 	pFont->SetFontSize( 8, 12 );
-	m_pGraphSegmentIDFont = pFont;
+	m_pGraphSegmentIDFont.reset( pFont );
 }
 
 C2DGraph::~C2DGraph()
 {
-	SafeDeleteArray( m_paVertex );
 	m_pGraphSegmentIDFont->Release();
-	SafeDelete( m_pGraphSegmentIDFont );
-}
-
-C2DGraph::C2DGraph(const C2DGraph& r2DGraph)
-{
-	m_vecGraphData.assign( r2DGraph.m_vecGraphData.begin(), r2DGraph.m_vecGraphData.end() );
-
-	m_fMaxValue = r2DGraph.m_fMaxValue;
-	m_fMinValue = r2DGraph.m_fMinValue;
-
-	m_iMaxNumData = r2DGraph.m_iMaxNumData;
-
-	m_vMin = r2DGraph.m_vMin;
-	m_vMax = r2DGraph.m_vMax;
-
-	// SafeDeleteArray( m_paVertex );	//Do not "SafeDelete" this pointer. (Remember 'm_paVertex' hasn't been initialized yet)
-	m_paVertex = new TLVERTEX [r2DGraph.m_iMaxNumData];
-	for(int i=0; i<r2DGraph.m_iMaxNumData; i++)
-		m_paVertex[i] = r2DGraph.m_paVertex[i];
-
-	m_BackGroundRect = r2DGraph.m_BackGroundRect;
-
-	m_avIndicator[0] = r2DGraph.m_avIndicator[0];
-	m_avIndicator[1] = r2DGraph.m_avIndicator[1];
-	m_iIndicatorPosition = r2DGraph.m_iIndicatorPosition;
-
-	m_vecGraphSegment.assign( r2DGraph.m_vecGraphSegment.begin(), r2DGraph.m_vecGraphSegment.end() );
-
-	CTextureFont *pFont = new CTextureFont;
-	pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
-	pFont->SetFontSize( 8, 12 );
-	m_pGraphSegmentIDFont = pFont;
-}
-
-C2DGraph C2DGraph::operator=(C2DGraph r2DGraph)
-{
-	m_vecGraphData.assign( r2DGraph.m_vecGraphData.begin(), r2DGraph.m_vecGraphData.end() );
-
-	m_fMaxValue = r2DGraph.m_fMaxValue;
-	m_fMinValue = r2DGraph.m_fMinValue;
-
-	m_iMaxNumData = r2DGraph.m_iMaxNumData;
-
-	m_vMin = r2DGraph.m_vMin;
-	m_vMax = r2DGraph.m_vMax;
-
-	SafeDeleteArray( m_paVertex );
-	m_paVertex = new TLVERTEX [r2DGraph.m_iMaxNumData];
-	for(int i=0; i<r2DGraph.m_iMaxNumData; i++)
-		m_paVertex[i] = r2DGraph.m_paVertex[i];
-
-	m_BackGroundRect = r2DGraph.m_BackGroundRect;
-
-	m_avIndicator[0] = r2DGraph.m_avIndicator[0];
-	m_avIndicator[1] = r2DGraph.m_avIndicator[1];
-	m_iIndicatorPosition = r2DGraph.m_iIndicatorPosition;
-
-	m_vecGraphSegment.assign( r2DGraph.m_vecGraphSegment.begin(), r2DGraph.m_vecGraphSegment.end() );
-
-	SafeDelete( m_pGraphSegmentIDFont );
-	CTextureFont *pFont = new CTextureFont;
-	pFont->InitFont( g_BitstreamVeraSansMono_Bold_256 );
-	pFont->SetFontSize( 8, 12 );
-	m_pGraphSegmentIDFont = pFont;
-
-	return *this;
 }
 
 
@@ -157,11 +88,8 @@ void C2DGraph::SetData(vector<float> *pvecfData, U32 dwColor)
 	if( m_iMaxNumData < num_data )
 	{
 		m_iMaxNumData = num_data;
-		SafeDeleteArray( m_paVertex );
-		m_paVertex = new TLVERTEX [num_data];
-		ZeroMemory(m_paVertex, sizeof(TLVERTEX) * num_data);
-		for(int j=0; j<num_data; j++)
-			m_paVertex[j].rhw = 1.0f;
+		m_Vertices.resize( 0 );
+		m_Vertices.resize( num_data );
 	}
 }
 
@@ -207,11 +135,11 @@ void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 	for(i=0; i<iMaxNumData; i++)
 	{
 		// local position
-		m_paVertex[i].vPosition.x
+		m_Vertices[i].m_vPosition.x
 			= ( ((float)i / (float)iMaxNumData) * 0.9f + 0.05f ) * fWidth;
 
 		// global position
-		m_paVertex[i].vPosition.x += sx;
+		m_Vertices[i].m_vPosition.x += sx;
 		
 	}
 
@@ -227,8 +155,8 @@ void C2DGraph::SetPosition(float sx, float ex, float sy, float ey)
 	m_BackGroundRect.SetPosition( m_vMin, m_vMax );
 
 	// set the VERTICAL length of the indicator
-	m_avIndicator[0].vPosition.y = sy + fHeight * 0.1f;
-	m_avIndicator[1].vPosition.y = ey - fHeight * 0.1f;
+	m_avIndicator[0].m_vPosition.y = sy + fHeight * 0.1f;
+	m_avIndicator[1].m_vPosition.y = ey - fHeight * 0.1f;
 }
 
 
@@ -248,15 +176,18 @@ void C2DGraph::SetIndicatorPosition(int iIndex)
 	// update the HORIZONTAL position of the indicator in the graph
 	int iMaxNumData = m_iMaxNumData;
 	float fWidth = m_vMax.x - m_vMin.x;
-	m_avIndicator[0].vPosition.x
+	m_avIndicator[0].m_vPosition.x
 		= ( ((float)m_iIndicatorPosition / (float)iMaxNumData) * 0.9f + 0.05f ) * fWidth;
-	m_avIndicator[0].vPosition.x += m_vMin.x;
-	m_avIndicator[1].vPosition.x = m_avIndicator[0].vPosition.x;
+	m_avIndicator[0].m_vPosition.x += m_vMin.x;
+	m_avIndicator[1].m_vPosition.x = m_avIndicator[0].m_vPosition.x;
 
 }
 
 void C2DGraph::Draw()
 {
+//	ShaderManager *pShaderMgr = GetNoLightingShader().GetShaderManager();
+//	Get2DPrimitiveRenderer().Render( ?, &(m_Vertices[0]), m_Vertices.size(), PrimitiveType::CONNECTED_LINES );
+
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	// draw rectangle as background
@@ -287,18 +218,18 @@ void C2DGraph::Draw()
 		for(size_t j=0; j<num_data; j++)
 		{
 			// local position
-			m_paVertex[j].vPosition.y
+			m_Vertices[j].m_vPosition.y
 				= ( ((m_vecGraphData[i].m_vecfData[j] - fOffsetY) / fDataScale) * 0.8f + 0.1f ) * fHeight;
 
 			// global position
-			m_paVertex[j].vPosition.y = fMaxY - m_paVertex[j].vPosition.y;
+			m_Vertices[j].m_vPosition.y = fMaxY - m_Vertices[j].m_vPosition.y;
 
 			// set color
-			m_paVertex[j].color = dwColor;
+			m_Vertices[j].color = dwColor;
 		}
 
 		// draw graph data
-		pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, (int)num_data - 1, m_paVertex, sizeof(TLVERTEX) );
+		pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, (int)num_data - 1, m_Vertices, sizeof(TLVERTEX) );
 
 		// draw indicator
 		pd3dDev->DrawPrimitiveUP( D3DPT_LINESTRIP, 1, m_avIndicator, sizeof(TLVERTEX) );
@@ -363,19 +294,18 @@ void CGraphSegment::UpdatePosition(int iNumData, float sx, float ex, float sy, f
 }
 
 
-void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor, CFontBase* pFont)
+void CGraphSegment::SetSegment(int iSegmentID, int iStart, int iEnd, U32 dwColor, shared_ptr<FontBase> pFont)
 {
 	m_iSegmentID = iSegmentID;
 	m_iStart     = iStart;
 	m_iEnd       = iEnd;
 //	m_SegmentRect.SetColor( dwColor );
 	m_SegmentRect.SetZDepth(0.05f);
-	m_SegmentRect.SetCornerColor( 0, D3DCOLOR_ARGB(255, 240, 240, 240) );
-	m_SegmentRect.SetCornerColor( 1, D3DCOLOR_ARGB(255, 200, 200, 200) );
-	m_SegmentRect.SetCornerColor( 2, D3DCOLOR_ARGB(255, 160, 160, 160) );
-	m_SegmentRect.SetCornerColor( 3, D3DCOLOR_ARGB(255, 200, 200, 200) );
+	m_SegmentRect.SetCornerColor( 0, SFloatRGBAColor( 240.0f / 255.0f, 240.0f / 255.0f, 240.0f / 255.0f, 1.0f ) );
+	m_SegmentRect.SetCornerColor( 1, SFloatRGBAColor( 200.0f / 255.0f, 200.0f / 255.0f, 200.0f / 255.0f, 1.0f ) );
+	m_SegmentRect.SetCornerColor( 2, SFloatRGBAColor( 160.0f / 255.0f, 160.0f / 255.0f, 160.0f / 255.0f, 1.0f ) );
+	m_SegmentRect.SetCornerColor( 3, SFloatRGBAColor( 200.0f / 255.0f, 200.0f / 255.0f, 200.0f / 255.0f, 1.0f ) );
 	m_pFont = pFont;
-
 }
 
 

@@ -4,7 +4,8 @@
 #include <vector>
 #include "3DMath/AABB2.hpp"
 #include "Graphics/fwd.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
+#include "2DPrimitive/2DRect.hpp"
+#include "General2DVertex.hpp"
 
 
 namespace amorphous
@@ -39,8 +40,10 @@ struct SGraphData
 // - used to highlight a portion of the graph
 //==============================================================================
 
-struct CGraphSegment
+class CGraphSegment
 {
+public:
+
 	int m_iSegmentID;
 	int m_iStart;
 	int m_iEnd;
@@ -51,7 +54,7 @@ struct CGraphSegment
 	Vector2 m_vIDPosition;
 
     /// font to display the ID (shared by all the segments under the same parent graph)
-	CFontBase* m_pFont;
+	boost::shared_ptr<FontBase> m_pFont;
 
 public:
 
@@ -60,11 +63,10 @@ public:
 		m_iSegmentID = 0;
 		m_iStart = 0;
 		m_iEnd = 0;
-		m_pFont = NULL;
 	}
 
 	void SetSegmentID( int iNewSegmentID ) { m_iSegmentID = iNewSegmentID; }
-	void SetSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor, CFontBase* pFont );
+	void SetSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor, boost::shared_ptr<FontBase> pFont );
 	void UpdatePosition(int iNumData, float sx, float ex, float sy, float ey);
 	void Draw();
 
@@ -89,28 +91,24 @@ protected:
 	Vector2 m_vMin;
 	Vector2 m_vMax;
 
-	TLVERTEX* m_paVertex;
+	std::vector<General2DVertex> m_Vertices;
 	C2DRect m_BackGroundRect;
 
 	int m_iGraphType;
 
-	TLVERTEX m_avIndicator[2];
+	General2DVertex m_avIndicator[2];
 	int m_iIndicatorPosition;
 
 	// used to hightlight particular portions of the graph
 	std::vector<CGraphSegment> m_vecGraphSegment;
 
-	CFontBase* m_pGraphSegmentIDFont;
+	boost::shared_ptr<FontBase> m_pGraphSegmentIDFont;
 
 public:
 
 	C2DGraph();
 
-	C2DGraph(const C2DGraph& r2DGraph);	//copy constructor
-
 	~C2DGraph();
-
-	C2DGraph operator=(C2DGraph r2DGraph);
 
 	virtual void Draw();
 
