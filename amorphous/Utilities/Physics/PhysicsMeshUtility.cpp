@@ -37,7 +37,7 @@ CActor *PhysicsMeshUtility::CreateConvexActorFromMesh( const CustomMesh& src_mes
 		trimeshdesc.m_vecIndex[i] = (int)src_mesh.GetIndex(i);
 
 	// copy vertices
-	src_mesh.GetPositions( trimeshdesc.m_vecVertex );
+	src_mesh.GetVertexPositions( trimeshdesc.m_vecVertex );
 
 	trimeshdesc.m_vecMaterialIndex.resize( num_indices / 3, material_index );
 
