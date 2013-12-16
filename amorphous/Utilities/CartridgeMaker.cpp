@@ -176,10 +176,10 @@ void CartridgeMaker::AddSegments(
 		for( int j=0; j<num_sides+1; j++ )
 		{
 			const float angle = (float)(j%num_sides) / (float)num_sides * 2.0f * (float)PI;
-			const Vector2 vDir = Matrix22Rotation( angle ) * Vector2(1,0);
-			Vector2 vLocalPos = vDir * radius;
+			const Vector3 vDir = Matrix33RotationY( angle ) * Vector3(1,0,0);
+			Vector3 vLocalPos = vDir * radius;
 //			Vector3 vPos = pose * Vector3( vLocalPos.x, 0, vLocalPos.y );
-			Vector3 vPos = Vector3( vLocalPos.x, height, vLocalPos.y );
+			Vector3 vPos = Vector3( vLocalPos.x, height, vLocalPos.z );
 
 //			LOG_PRINT( "cylinder vertex: " + to_string( vPos ) );
 
@@ -340,10 +340,10 @@ void CartridgeMaker::AddSegments(
 		{
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 4 );
-			vecDestPoly.back()[0] = side_vertex_index_offset + upper_start  + j;
-			vecDestPoly.back()[1] = side_vertex_index_offset + upper_start  + j + 1;
-			vecDestPoly.back()[2] = side_vertex_index_offset + lower_start  + j + 1;
-			vecDestPoly.back()[3] = side_vertex_index_offset + lower_start  + j;
+			vecDestPoly.back()[0] = side_vertex_index_offset + upper_start  + j + 1;
+			vecDestPoly.back()[1] = side_vertex_index_offset + upper_start  + j;
+			vecDestPoly.back()[2] = side_vertex_index_offset + lower_start  + j;
+			vecDestPoly.back()[3] = side_vertex_index_offset + lower_start  + j + 1;
 		}
 	}
 
@@ -356,8 +356,8 @@ void CartridgeMaker::AddSegments(
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 3 );
 			vecDestPoly.back()[0] = top_center_vertex_index;
-			vecDestPoly.back()[1] = global_rim_vertex_offset + (i+1) % num_sides;
-			vecDestPoly.back()[2] = global_rim_vertex_offset + i;
+			vecDestPoly.back()[1] = global_rim_vertex_offset + i;
+			vecDestPoly.back()[2] = global_rim_vertex_offset + (i+1) % num_sides;
 		}
 	}
 
@@ -370,8 +370,8 @@ void CartridgeMaker::AddSegments(
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 3 );
 			vecDestPoly.back()[0] = vertex_index_offset + bottom_center_vertex_index;
-			vecDestPoly.back()[1] = vertex_index_offset + rim_vertex_offset + i;
-			vecDestPoly.back()[2] = vertex_index_offset + rim_vertex_offset + (i+1) % num_sides;
+			vecDestPoly.back()[1] = vertex_index_offset + rim_vertex_offset + (i+1) % num_sides;
+			vecDestPoly.back()[2] = vertex_index_offset + rim_vertex_offset + i;
 		}
 	}
 }
