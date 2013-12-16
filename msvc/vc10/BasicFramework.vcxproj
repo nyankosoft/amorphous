@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
@@ -388,6 +389,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp" />

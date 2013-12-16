@@ -843,6 +843,9 @@
     <ClCompile Include="..\..\amorphous\Input\Win32\StdMouseInput.cpp">
       <Filter>Input\Win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -1961,6 +1964,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Input\Win32\StdMouseInput.hpp">
       <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.hpp">
+      <Filter>Graphics\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
