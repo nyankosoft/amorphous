@@ -3,7 +3,6 @@
 
 
 #include "amorphous/App/GraphicsApplicationBase.hpp"
-#include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"

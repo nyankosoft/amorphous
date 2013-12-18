@@ -9,7 +9,6 @@
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
-#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
 #include "amorphous/Graphics/FogParams.hpp"
@@ -22,7 +21,6 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
-#include "amorphous/Support/WindowMisc_Win32.hpp"
 #include <boost/filesystem.hpp>
 
 using std::string;
