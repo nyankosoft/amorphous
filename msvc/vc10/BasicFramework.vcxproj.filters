@@ -1968,6 +1968,12 @@
     <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.hpp">
       <Filter>Graphics\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\recursive_directory_processor.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\recursive_file_finder.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">

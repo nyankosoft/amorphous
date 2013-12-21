@@ -652,6 +652,8 @@
     <ClInclude Include="..\..\amorphous\Support\MTRand.hpp" />
     <ClInclude Include="..\..\amorphous\Support\ParamLoader.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Profile.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\recursive_directory_processor.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\recursive_file_finder.hpp" />
     <ClInclude Include="..\..\amorphous\Support\ResourceArchiver.hpp" />
     <ClInclude Include="..\..\amorphous\Support\SafeDelete.hpp" />
     <ClInclude Include="..\..\amorphous\Support\SafeDeleteVector.hpp" />
