@@ -18,7 +18,7 @@ class MeshViewer : public GraphicsApplicationBase
 
 	MeshHandle m_Mesh;
 
-	std::vector<std::string> m_vecMeshFilepath;
+	std::vector<std::string> m_MeshFilepaths;
 
 	int m_CurrentFileIndex;
 

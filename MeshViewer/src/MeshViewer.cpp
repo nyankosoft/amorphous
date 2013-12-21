@@ -68,16 +68,16 @@ MeshViewer::~MeshViewer()
 
 void MeshViewer::RefreshFileList( const std::string& directory_path )
 {
-	m_vecMeshFilepath.resize( 0 );
+	m_MeshFilepaths.resize( 0 );
 
 	recursive_file_finder rff;
 	rff.m_include_extensions.push_back( ".msh" );
 	rff.process( directory_path );
 
 	const size_t num_mesh_files = rff.m_found_file_pathnames.size();
-	m_vecMeshFilepath.resize( num_mesh_files );
+	m_MeshFilepaths.resize( num_mesh_files );
 	for( size_t i=0; i<num_mesh_files; i++ )
-		m_vecMeshFilepath[i] = rff.m_found_file_pathnames[i].string();
+		m_MeshFilepaths[i] = rff.m_found_file_pathnames[i].string();
 
 	LOG_PRINT( to_string((int)num_mesh_files) + " .msh files were found." );
 
@@ -93,7 +93,7 @@ void MeshViewer::RefreshFileList( const std::string& directory_path )
 //		else if ( IsMeshFile( itr ) )
 		else if ( itr->path().extension() == ".msh" )
 		{
-			m_vecMeshFilepath.push_back( itr->path().string() );
+			m_MeshFilepaths.push_back( itr->path().string() );
 		}
 	}
 }
@@ -492,9 +492,9 @@ bool MeshViewer::LoadModel( const std::string& mesh_filepath )
 	const path current_mesh_filepath = mesh_filepath;
 
 	m_CurrentFileIndex = -1;
-	for( int i=0; i<(int)m_vecMeshFilepath.size(); i++ )
+	for( int i=0; i<(int)m_MeshFilepaths.size(); i++ )
 	{
-		if( current_mesh_filepath == m_vecMeshFilepath[i] )
+		if( current_mesh_filepath == m_MeshFilepaths[i] )
 		{
 			m_CurrentFileIndex = i;
 			break;
@@ -553,8 +553,8 @@ int MeshViewer::Init()
 		RefreshFileList( input_pathname );
 
 		// Load the first file if any were found in RefreshFileList().
-		if( 0 < m_vecMeshFilepath.size() )
-			mesh_loaded = LoadModel( m_vecMeshFilepath.front() );
+		if( 0 < m_MeshFilepaths.size() )
+			mesh_loaded = LoadModel( m_MeshFilepaths.front() );
 	}
 	else
 	{
@@ -606,24 +606,24 @@ void MeshViewer::HandleInput( const InputData& input )
 	case GIC_RIGHT:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			if( m_CurrentFileIndex == -1 || m_vecMeshFilepath.empty() )
+			if( m_CurrentFileIndex == -1 || m_MeshFilepaths.empty() )
 				break;
 
-			m_CurrentFileIndex = (m_CurrentFileIndex + 1) % (int)m_vecMeshFilepath.size();
+			m_CurrentFileIndex = (m_CurrentFileIndex + 1) % (int)m_MeshFilepaths.size();
 
-			LoadModel( m_vecMeshFilepath[m_CurrentFileIndex] );
+			LoadModel( m_MeshFilepaths[m_CurrentFileIndex] );
 		}
 		break;
 
 	case GIC_LEFT:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			if( m_CurrentFileIndex == -1 || m_vecMeshFilepath.empty() )
+			if( m_CurrentFileIndex == -1 || m_MeshFilepaths.empty() )
 				break;
 
-			m_CurrentFileIndex = (m_CurrentFileIndex + (int)m_vecMeshFilepath.size() - 1) % (int)m_vecMeshFilepath.size();
+			m_CurrentFileIndex = (m_CurrentFileIndex + (int)m_MeshFilepaths.size() - 1) % (int)m_MeshFilepaths.size();
 
-			LoadModel( m_vecMeshFilepath[m_CurrentFileIndex] );
+			LoadModel( m_MeshFilepaths[m_CurrentFileIndex] );
 		}
 		break;
 
