@@ -2,21 +2,12 @@
 #define  __3DMESHMODELARCHIVE_H__
 
 
-#include <string>
-#include <vector>
-
-#include "../../3DMath/Vector3.hpp"
-#include "../fwd.hpp"
-#include "../TextureCoord.hpp"
-#include "../FloatRGBAColor.hpp"
-#include "../32BitColor.hpp"
-#include "../VertexFormat.hpp"
-#include "../Mesh/BasicMaterialParams.hpp"
-#include "../GraphicsResourceDescs.hpp"
-
-#include "../../Support/array2d.hpp"
-#include "../../Support/Serialization/SerializationEx.hpp"
-#include "../../Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Graphics/VertexFormat.hpp"
+#include "amorphous/Graphics/Mesh/BasicMaterialParams.hpp"
+#include "amorphous/Graphics/GraphicsResourceDescs.hpp"
+#include "amorphous/Support/array2d.hpp"
+#include "amorphous/Support/Serialization/SerializationEx.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous
