@@ -21,6 +21,7 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Support/recursive_file_finder.hpp"
 #include <boost/filesystem.hpp>
 
 using std::string;
@@ -68,6 +69,17 @@ MeshViewer::~MeshViewer()
 void MeshViewer::RefreshFileList( const std::string& directory_path )
 {
 	m_vecMeshFilepath.resize( 0 );
+
+	recursive_file_finder rff;
+	rff.m_include_extensions.push_back( ".msh" );
+	rff.process( directory_path );
+
+	const size_t num_mesh_files = rff.m_found_file_pathnames.size();
+	m_vecMeshFilepath.resize( num_mesh_files );
+	for( size_t i=0; i<num_mesh_files; i++ )
+		m_vecMeshFilepath[i] = rff.m_found_file_pathnames[i].string();
+
+	LOG_PRINT( to_string((int)num_mesh_files) + " .msh files were found." );
 
 	directory_iterator end_itr; // default construction yields past-the-end
 	for ( directory_iterator itr( directory_path );
@@ -523,27 +535,39 @@ int MeshViewer::Init()
 
 	LoadShaders();
 
-	string input_filepath;// = g_CmdLine;
+	string input_pathname;// = g_CmdLine;
+	bool mesh_loaded = false;
 
 	if( 0 < ms_CommandLineArguments.size() )
-		input_filepath = ms_CommandLineArguments[0];
+		input_pathname = ms_CommandLineArguments[0];
 
-	string mesh_filepath;
-	if( 0 < input_filepath.length() )
-		mesh_filepath = input_filepath;
-	else
-		GetFilename( mesh_filepath );
+	if( input_pathname.length() == 0 )
+		GetFilename( input_pathname );
 
-	if( mesh_filepath.length() == 0 )
+	if( input_pathname.length() == 0 )
 		return -1;
+
+	if( is_directory(input_pathname) )
+	{
+		// A directory
+		RefreshFileList( input_pathname );
+
+		// Load the first file if any were found in RefreshFileList().
+		if( 0 < m_vecMeshFilepath.size() )
+			mesh_loaded = LoadModel( m_vecMeshFilepath.front() );
+	}
 	else
 	{
+		const string mesh_filepath = input_pathname;
+
+		// A file pathname
 		const path parent_directory = path(mesh_filepath).parent_path();
 		RefreshFileList( parent_directory.string() );
 
 		// load models
-		bool loaded = LoadModel( mesh_filepath );
+		mesh_loaded = LoadModel( mesh_filepath );
 	}
+	
 
 	SetDefaultLinearFog();
 
