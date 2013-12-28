@@ -2,7 +2,8 @@
 #define  __CubeMapManager_H__
 
 
-#include "GraphicsComponentCollector.hpp"
+#include <boost/shared_ptr.hpp>
+#include "fwd.hpp"
 #include "Camera.hpp"
 #include "SurfaceFormat.hpp"
 
