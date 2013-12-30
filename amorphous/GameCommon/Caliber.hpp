@@ -19,15 +19,19 @@ public:
 		_22_LR,             ///< .22 Long Rifle
 		_22_WMR,            ///< .22 Winchester Magnum Rimfire
 		_25_ACP,            ///< .25 ACP
+		_7_62X25MM_TOKAREV, ///< 7.62x25mm Tokarev
 		_32_ACP,            ///< .32 ACP
 		_380_ACP,           ///< .380 ACP
+		_9X18MM_MAKAROV,    ///< 9x18mm Makarov
 		_9MM,               ///< 9x19mm Luger Parabellum
 		_357_SIG,           ///< .357 SIG
 		_45_ACP,            ///< .45 ACP
 		_40_SW,             ///< .40 S&W (10x22mm)
 		_10MM_AUTO,         ///< 10mm Auto
+		_38_SPECIAL,        ///< .38 Smith & Wesson Special
 		_357_MAGNUM,        ///< .357 Magnum
 		_45_COLT,           ///< .45 Colt
+		_44_SPECIAL,        ///< .44 S&W Special
 		_44_MAGNUM,         ///< .44 Magnum
 		_500_SW_MAGNUM,     ///< .500 S&W Magnum
 		_50_AE,             ///< .50 Action Express
@@ -38,9 +42,12 @@ public:
 		_12_GAUGE,          ///< 12 gauge shotgun shell
 
 		// rifle cartridges
+		_17_HMR,            ///< .17 Hornady Magnum Rimfire
 		HK_4_6X30,          ///< HK 4.6x30mm
 		_5_7X28,            ///< 5.7x28mm
 		_5_56X45,           ///< 5.56x45mm
+		_6_8MM_REMINGTON_SPC, /// < 6.8 mm Remington SPC
+		_30_CARBINE,        ///< .30 Carbine (7.62×33mm)
 		_300_AAC_BLACKOUT,  ///< 300 AAC Blackout (7.62×35mm)
 		_7_62X51,           ///< 7.62x51mm
 //		_380_WINCHESTER,    ///< 
@@ -70,15 +77,19 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_22_LR:             return ".22 Long Rifle";
 	case Caliber::_22_WMR:            return ".22 Winchester Magnum Rimfire";
 	case Caliber::_25_ACP:            return ".25 ACP";
+	case Caliber::_7_62X25MM_TOKAREV: return "7.62x25mm Tokarev";
 	case Caliber::_32_ACP:            return ".32 ACP";
 	case Caliber::_380_ACP:           return ".380 ACP";
+	case Caliber::_9X18MM_MAKAROV:    return "9x18mm Makarov";
 	case Caliber::_9MM:               return "9x19mm Parabellum";
 	case Caliber::_357_SIG:           return ".357 SIG";
 	case Caliber::_45_ACP:            return ".45 ACP";
 	case Caliber::_40_SW:             return ".40 S&W";
 	case Caliber::_10MM_AUTO:         return "10mm Auto";
+	case Caliber::_38_SPECIAL:        return ".38 Smith & Wesson Special";
 	case Caliber::_357_MAGNUM:        return ".357 S&W Magnum";
 	case Caliber::_45_COLT:           return ".45 Colt";
+	case Caliber::_44_SPECIAL:        return ".44 S&W Special";
 	case Caliber::_44_MAGNUM:         return ".44 Remington Magnum";
 	case Caliber::_500_SW_MAGNUM:     return ".500 S&W Magnum";
 	case Caliber::_50_AE:             return ".50 Action Express";
@@ -89,9 +100,12 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::_12_GAUGE:          return "12 gauge shell";
 
 	// rifle cartridge
+	case Caliber::_17_HMR:            return ".17 Hornady Magnum Rimfire";
 	case Caliber::HK_4_6X30:          return "HK 4.6x30mm";
 	case Caliber::_5_7X28:            return "5.7x28mm";
 	case Caliber::_5_56X45:           return "5.56x45mm NATO";
+	case Caliber::_6_8MM_REMINGTON_SPC:return "6.8 mm Remington SPC";
+	case Caliber::_30_CARBINE:        return ".30 Carbine";
 	case Caliber::_300_AAC_BLACKOUT:  return "300 AAC Blackout";
 	case Caliber::_7_62X51:           return "7.62x51mm NATO";
 //	case Caliber::_380_WINCHESTER:    return "";
@@ -122,8 +136,13 @@ inline const char *GetAbbreviatedCaliberName( Caliber::Name cal )
 	case Caliber::_22_LR:             return ".22 LR";
 	case Caliber::_22_WMR:            return ".22 WMR";
 	case Caliber::_9MM:               return "9x19mm";
+	case Caliber::_38_SPECIAL:        return ".38 Special";
+	case Caliber::_357_MAGNUM:        return ".357 Magnum";
+	case Caliber::_44_SPECIAL:        return ".44 Special";
 	case Caliber::_44_MAGNUM:         return ".44 Magnum";
+	case Caliber::_17_HMR:            return ".17 HMR";
 	case Caliber::_5_56X45:           return "5.56x45mm";
+	case Caliber::_6_8MM_REMINGTON_SPC:return "6.8 SPC";
 	case Caliber::_300_AAC_BLACKOUT:  return "300 BLK";
 	case Caliber::_7_62X51:           return "7.62x51mm";
 	default:
