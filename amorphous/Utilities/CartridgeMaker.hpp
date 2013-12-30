@@ -115,6 +115,15 @@ public:
 		MAX_NUM_CASE_SLICES = 16,
 	};
 
+
+	enum PrimerModel
+	{
+		PM_POLYGON_MESH,
+		PM_NORMAL_MAP,
+		PM_NONE,
+		NUM_PRIMER_MODELS
+	};
+
 	CaseSlice case_slices[MAX_NUM_CASE_SLICES];
 
 	int num_case_slices;
@@ -131,6 +140,10 @@ public:
 	/// to create simple internal models.
 	float top_internal_diameter;
 
+	float primer_diameter;
+
+	PrimerModel primer_model;
+
 public:
 
 	CaseDesc()
@@ -138,7 +151,10 @@ public:
 	num_case_slices(0),
 	top_outer_slice_index(0),
 	create_internal_polygons(true),
-	num_sides(16)
+	num_sides(16),
+	top_internal_diameter(0.01f),
+	primer_model(PM_NONE),
+	primer_diameter(0.0053f) // default primer diameter: 5.3mm
 	{}
 
 	~CaseDesc(){}
@@ -200,6 +216,8 @@ class CartridgeMaker
                      std::vector<Vector3>& vecDestNormal,
                      std::vector<TEXCOORD2>& vecDestTexUV,
 					 std::vector< std::vector<int> >& vecDestPoly );
+
+	Result::Name AddPrimerAndPrimerWell( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, std::vector<TEXCOORD2>& tex_uvs, std::vector< std::vector<int> >& polygons );
 
 public:
 

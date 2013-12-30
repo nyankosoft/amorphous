@@ -47,9 +47,12 @@ static float CalculateNormalAngle( const vector< pair<float,float> >& diameter_a
 		float prev_height = diameter_and_height[i-1].second;
 		float next_radius = diameter_and_height[i+1].first * 0.5f;
 		float next_height = diameter_and_height[i+1].second;
-		float lower_normal_angle = -atan( (radius - prev_radius) / (height-prev_height) );
-		float upper_normal_angle = -atan( (next_radius - radius) / (next_height-height) );
-		return (lower_normal_angle + upper_normal_angle) * 0.5f;
+//		float lower_normal_angle = -atan( (radius - prev_radius) / (height-prev_height) );
+//		float upper_normal_angle = -atan( (next_radius - radius) / (next_height-height) );
+		float lower_normal_angle = (0.000001f<abs(height-prev_height)) ? -atan( (radius - prev_radius) / (height-prev_height) ) : (float)PI * 0.5f;
+		float upper_normal_angle = (0.000001f<abs(next_height-height)) ? -atan( (next_radius - radius) / (next_height-height) ) : (float)PI * 0.5f;
+		float normal_angle = (lower_normal_angle + upper_normal_angle) * 0.5f;
+		return normal_angle;
 	}
 }
 
@@ -106,6 +109,8 @@ static void CalculatePointsAtCurvedSlice(
 	for( unsigned int i=1; i<num_curve_segments; i++ )
 	{
 		float current_angle = angles_to_cover * (float)i / (float)num_curve_segments;
+		if( next_point.y < prev_point.y )
+			current_angle *= -1.0f;
 		Vector2 point_on_curve = fit_circle_center + Matrix22Rotation(current_angle) * fit_circle_center_to_lower_tangent;
 		points_at_curved_slice.push_back( point_on_curve );
 	}
@@ -113,6 +118,40 @@ static void CalculatePointsAtCurvedSlice(
 	points_at_curved_slice.push_back( upper_tangent_point );
 
 	//LOG_PRINT( "points_at_curved_slice: " + to_string(points_at_curved_slice) );
+}
+
+
+static void CorrectNormals(
+	const vector<Vector3>& points,
+	vector<Vector3>& normals,
+	const vector< vector<int> >& polygons )
+{
+	for( size_t i=0; i<normals.size(); i++ )
+	{
+		bool processed = false;
+
+		for( size_t j=0; j<polygons.size(); j++ )
+		{
+			const vector<int>& polygon = polygons[j];
+			size_t num_points = polygon.size();
+			for( size_t k=0; k<num_points; k++ )
+			{
+				if( polygon[k] == i )
+				{
+					Vector3 to_next = points[ polygon[(k+1)%num_points] ]            - points[ polygon[k] ];
+					Vector3 to_prev = points[ polygon[(k+num_points-1)%num_points] ] - points[ polygon[k] ];
+					Vector3 normal_from_polygon = Vec3Cross( to_next, to_prev );
+					if( Vec3Dot( normals[i], normal_from_polygon ) < 0 )
+						normals[i] *= -1.0f;
+					processed = true;
+					break;
+				}
+
+				if( processed )
+					break;
+			}
+		}
+	}
 }
 
 
@@ -471,6 +510,59 @@ pair<float,float> CalculateInetrpolatedDiameterAndHeight( const pair<float,float
 }
 
 
+Result::Name CartridgeMaker::AddPrimerAndPrimerWell( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, vector<TEXCOORD2>& tex_uvs, vector< vector<int> >& polygons )
+{
+	vector< pair<float,float> > diameter_and_height_pairs;
+	diameter_and_height_pairs.reserve( 6 );
+
+	diameter_and_height_pairs.resize( 0 );
+
+	float bottom_plate_diameter = src_desc.case_slices[0].diameter;
+	float primer_depth = 2.0f * 0.001f; // 2mm
+	float primer_diameter = 5.0f * 0.001f; // 5mm
+	vector<Vector2> dest_points;
+	// create polygons by descending
+	const Vector2 prev_point    = Vector2(primer_diameter       * 0.5f, primer_depth);
+	const Vector2 current_point = Vector2(primer_diameter       * 0.5f, 0.0f);
+	const Vector2 next_point    = Vector2(bottom_plate_diameter * 0.5f, 0.0f);
+	// create polygons by ascending
+//	const Vector2 prev_point    = Vector2(bottom_plate_diameter * 0.5f, 0.0f);
+//	const Vector2 current_point = Vector2(primer_diameter       * 0.5f, 0.0f);
+//	const Vector2 next_point    = Vector2(primer_diameter       * 0.5f, primer_depth);
+	uint num_curve_segments = 3;
+	CalculatePointsAtCurvedSlice( current_point, prev_point, next_point, 0.0005f, num_curve_segments, dest_points );
+
+	diameter_and_height_pairs.push_back( pair<float,float>(primer_diameter,primer_depth) ); // descend
+//	diameter_and_height_pairs.push_back( pair<float,float>(bottom_plate_diameter,0.0f) ); // ascend
+
+	for( size_t i=0; i<dest_points.size(); i++ )
+	{
+		Vector2 point = dest_points[i];
+		diameter_and_height_pairs.push_back( pair<float,float>(point.x*2.0f,point.y) );
+	}
+
+	diameter_and_height_pairs.push_back( pair<float,float>(bottom_plate_diameter,0.0f) ); // descend
+//	diameter_and_height_pairs.push_back( pair<float,float>(primer_diameter,primer_depth) ); // ascend
+
+	AddSegments(
+		diameter_and_height_pairs,
+		num_sides,
+		false,//create_top_polygons,
+//		top_style,
+		false,//create_bottom_polygons,
+//		bottom_style,
+		points,
+		normals,
+		tex_uvs,
+		polygons
+		);
+
+	diameter_and_height_pairs.resize( 0 );
+
+	return Result::SUCCESS;
+}
+
+
 Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, vector<TEXCOORD2>& tex_uvs, vector< vector<int> >& polygons )
 {
 //	vector<Vector3> points, normals;
@@ -483,6 +575,11 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 	int current_segment_index = 0;
 	vector< pair<float,float> > diameter_and_height_pairs;
 	diameter_and_height_pairs.reserve( 6 );
+
+	if( src_desc.primer_model == CaseDesc::PM_POLYGON_MESH )
+	{
+		AddPrimerAndPrimerWell(src_desc,num_sides,points,normals,tex_uvs,polygons);
+	}
 
 //	float height = 0;
 	while(1)
@@ -557,7 +654,7 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 			= (end_segment_index == src_desc.num_case_slices-1)
 			|| (end_segment_index == src_desc.top_outer_slice_index && src_desc.create_internal_polygons == false);
 
-		bool create_bottom_polygons = (start_segment_index == 0) ? true : false;
+		bool create_bottom_polygons = (start_segment_index == 0 && src_desc.primer_model != CaseDesc::PM_POLYGON_MESH) ? true : false;
 
 		AddSegments(
 			diameter_and_height_pairs,
@@ -574,6 +671,8 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 
 		start_segment_index = end_segment_index;
 	}
+
+	CorrectNormals( points, normals, polygons );
 
 	return Result::SUCCESS;
 }
