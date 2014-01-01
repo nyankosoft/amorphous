@@ -166,16 +166,15 @@ void CartridgeMaker::AddSegments(
                      const vector< pair<float,float> >& diameter_and_height,
                      int num_sides,
                      bool create_top_polygons,
-                     //PrimitiveModelStyle::Name top_style,
+					 bool weld_top_rim_vertices,
                      bool create_bottom_polygons,
-                     //PrimitiveModelStyle::Name bottom_style,
+                     bool weld_bottom_rim_vertices,
                      vector<Vector3>& vecDestPos,
                      vector<Vector3>& vecDestNormal,
                      vector<TEXCOORD2>& vecDestTexUV,
 					 vector< vector<int> >& vecDestPoly )
 {
-	Vector3 vUp = Vector3(0,1,0);//vDirFromBottomToTop = Vec3GetNormalized( vCore );
-//	vector<Vector3> vecNormal;
+	Vector3 vUp = Vector3(0,1,0);
 
 	if( diameter_and_height.size() < 2 )
 		return;
@@ -229,8 +228,6 @@ void CartridgeMaker::AddSegments(
 				const_normal // vertical up/down
 				: Matrix33RotationY(angle) * Matrix33RotationZ(normal_angle) * Vector3(1,0,0);
 
-//			vecNormal.push_back( Vec3GetNormalized( vPos - pose.vPosition ) );
-//			vecNormal.push_back( Vec3GetNormalized( Vector3( vDir.x, 0, vDir.y ) ) );
 			vecDestNormal.push_back( normal );
 
 //			float u = circumfirence * ( angle / (2.0f * (float)PI) );
@@ -239,35 +236,49 @@ void CartridgeMaker::AddSegments(
 		}
 	}
 
-	int top_center_vertex_index    = 0;
 	int bottom_center_vertex_index = 0;
+	int bottom_rim_vertex_indices_offset = 0;
+	int top_center_vertex_index    = 0;
+	int top_rim_vertex_indices_offset = 0;
 //	Vector3 top_center    = vUp * diameter_and_height.back().second;
-	Vector3 bottom_center = Vector3(0,0,0);//vUp * diameter_and_height.front().second;
+	float bottom_y = vecDestPos[vertex_index_offset].y;
+	Vector3 bottom_center = Vector3(0,bottom_y,0);//vUp * diameter_and_height.front().second;
 
 	if( create_bottom_polygons )
 	{
-		// Bottom polygons are added before all the rest of the wall polygons are created,
-		// so they are inserted to the front.
-		bottom_center_vertex_index = 0;
-//		vecDestPos.push_back( bottom_center );
-//		if( bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
-		bool weld_bottom_rim_vertices = false;
+		/// Bottom polygons are added before all the rest of the wall polygons are created,
+		/// so they are inserted to the front.
+
+		bottom_center_vertex_index = (int)vecDestPos.size();
+
+		// center vertex
+		vecDestPos.push_back( bottom_center );
+
 		if( weld_bottom_rim_vertices )
 		{
+			bottom_rim_vertex_indices_offset = vertex_index_offset;
 		}
 		else
 		{
 			// Duplicate the points on the rims (bottom)
 			vector<Vector3> bottom_vertices;
-			bottom_vertices.reserve( num_sides + 1 ); // rims + center
-			bottom_vertices.push_back( bottom_center ); // center vertex
-			bottom_vertices.insert( bottom_vertices.end(), vecDestPos.begin(), vecDestPos.begin() + num_sides ); // rim vertices
-//			vector<Vector3>::iterator start = vecDestPos.begin() + num_sides * num_divisions;
-//			vecDestPos.insert( vecDestPos.end(), start, start + num_sides );
-			vecDestPos.insert( vecDestPos.begin(), bottom_vertices.begin(), bottom_vertices.end() ); // insert to the head of the destination vector
+			bottom_vertices.reserve( num_sides ); // reserve for the rims vertices
+
+			// rim vertices
+			bottom_vertices.insert(
+				bottom_vertices.end(),
+				vecDestPos.begin() + vertex_index_offset,
+				vecDestPos.begin() + vertex_index_offset + num_sides
+				);
+
+			bottom_rim_vertex_indices_offset = (int)vecDestPos.size();
+
+			// Append the duplicated vertices to the head of the destination vector
+			vecDestPos.insert( vecDestPos.end(), bottom_vertices.begin(), bottom_vertices.end() );
+
 			// Copy normals as well (all the normals points down)
 			Vector3 bottom_normal( Vector3(0,-1,0) );
-			vecDestNormal.insert( vecDestNormal.begin(), num_sides + 1, bottom_normal );
+			vecDestNormal.insert( vecDestNormal.end(), num_sides + 1, bottom_normal );
 
 			vector<TEXCOORD2> bottom_uvs;
 			TEXCOORD2 bottom_uv_offset = TEXCOORD2(1,1);
@@ -286,20 +297,32 @@ void CartridgeMaker::AddSegments(
 	if( create_top_polygons )
 	{
 		top_center_vertex_index = (int)vecDestPos.size();
+		const Vector3 top_center = Vector3( 0, vecDestPos.back().y, 0 );
+		vecDestPos.push_back( top_center ); // center vertex
 
-		bool weld_top_rim_vertices = false;
 		if( weld_top_rim_vertices )
 		{
+			top_rim_vertex_indices_offset = vecDestPos.size() - num_sides - 1;
+
+			// No need to add more vertices
 		}
 		else
 		{
-			Vector3 top_center = Vector3( 0, vecDestPos.back().y, 0 );
 			// Duplicate the points on the rims (top)
 			vector<Vector3> top_vertices;
-			top_vertices.reserve( num_sides + 1 ); // rims + center
-			top_vertices.push_back( top_center ); // center vertex
-			top_vertices.insert( top_vertices.end(), vecDestPos.end() - num_sides - 1, vecDestPos.end() - 1 ); // rim vertices
+			top_vertices.reserve( num_sides );
+
+			// Copy the rim vertices to top_vertices (-1 to skip the center vertex we just added above).
+			top_vertices.insert(
+				top_vertices.end(),
+				vecDestPos.end() - 1 - num_sides,
+				vecDestPos.end() - 1 );
+
+			top_rim_vertex_indices_offset = (int)vecDestPos.size();
+
 			vecDestPos.insert( vecDestPos.end(), top_vertices.begin(), top_vertices.end() ); // append to the destination vector
+
+			// Add normals (all the normals point up).
 			Vector3 top_normal( Vector3(0,1,0) );
 			vecDestNormal.insert( vecDestNormal.end(), num_sides + 1, top_normal );
 
@@ -313,48 +336,7 @@ void CartridgeMaker::AddSegments(
 				vecDestTexUV.push_back( t * top_uv_scale );
 			}
 		}
-//		top_center_vertex_index    = vecDestPos.size();
-//		vecDestPos.push_back( top_center );
-//		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
-//		{
-//			// Duplicate the points on the rims (top)
-//			// Note that the duplicated vertex position is copied
-//			vecDestPos.insert( vecDestPos.end(), vecDestPos.begin(), vecDestPos.begin() + num_sides );
-//		}
-////		else // i.e. style == PrimitiveModelStyle::EDGE_VERTICES_WELDED
-//			// No need to duplicate points on the top and bottom rims
 	}
-
-	// Add normals
-
-	// side vertices
-//	vector<Vector3> rim_normals;
-//	rim_normals.resize( num_sides );
-//	for( int i=0; i<num_sides; i++ )
-//	{
-//		Vector3 pos = vecDestPos[i];
-//		rim_normals[i] = Vec3GetNormalized( Vector3( pos.x, 0, pos.z ) );
-//	}
-//
-//	vecDestNormal.resize( 0 );
-//	for( int i=0; i<num_divisions+1; i++ )
-//		vecDestNormal.insert( vecDestNormal.end(), rim_normals.begin(), rim_normals.end() );
-
-//	if( create_top_polygons )
-//	{
-//		if( top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
-//			vecDestNormal.insert( vecDestNormal.end(), num_sides+1,  vUp ); // top
-//		else
-//			vecDestNormal.push_back(  vUp );
-//	}
-//
-//	if( create_bottom_polygons )
-//	{
-//		if( bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED )
-//			vecDestNormal.insert( vecDestNormal.end(), num_sides+1, -vUp ); // bottom
-//		else
-//			vecDestNormal.push_back( -vUp );
-//	}
 
 	// create polygon indices
 
@@ -389,28 +371,26 @@ void CartridgeMaker::AddSegments(
 	// top (triangles)
 	if( create_top_polygons )
 	{
-		int global_rim_vertex_offset  = (int)vecDestPos.size() - num_sides;//(top_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? top_center_vertex_index + 1 : 0;
 		for( int i=0; i<num_sides; i++ )
 		{
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 3 );
 			vecDestPoly.back()[0] = top_center_vertex_index;
-			vecDestPoly.back()[1] = global_rim_vertex_offset + i;
-			vecDestPoly.back()[2] = global_rim_vertex_offset + (i+1) % num_sides;
+			vecDestPoly.back()[1] = top_rim_vertex_indices_offset + i;
+			vecDestPoly.back()[2] = top_rim_vertex_indices_offset + (i+1) % num_sides;
 		}
 	}
 
 	// bottom (triangles)
 	if( create_bottom_polygons )
 	{
-		int rim_vertex_offset  = 1;//(bottom_style == PrimitiveModelStyle::EDGE_VERTICES_UNWELDED) ? bottom_center_vertex_index + 1 : num_segments * num_divisions;
 		for( int i=0; i<num_sides; i++ )
 		{
 			vecDestPoly.push_back( vector<int>() );
 			vecDestPoly.back().resize( 3 );
-			vecDestPoly.back()[0] = vertex_index_offset + bottom_center_vertex_index;
-			vecDestPoly.back()[1] = vertex_index_offset + rim_vertex_offset + (i+1) % num_sides;
-			vecDestPoly.back()[2] = vertex_index_offset + rim_vertex_offset + i;
+			vecDestPoly.back()[0] = bottom_center_vertex_index;
+			vecDestPoly.back()[1] = bottom_rim_vertex_indices_offset + (i+1) % num_sides;
+			vecDestPoly.back()[2] = bottom_rim_vertex_indices_offset + i;
 		}
 	}
 }
@@ -483,8 +463,10 @@ Result::Name CartridgeMaker::MakeBullet(
 
 	AddSegments( d_and_h_pairs,
 		num_sides,
-		true,
-		false,
+		true,  // create_top_polygons
+		true,  // weld_top_rim_vertices
+		false, // create_bottom_polygons
+		false, // weld_bottom_rim_vertices
 		points,
 		normals,
 		tex_uvs,
@@ -547,10 +529,10 @@ Result::Name CartridgeMaker::AddPrimerAndPrimerWell( const CaseDesc& src_desc, u
 	AddSegments(
 		diameter_and_height_pairs,
 		num_sides,
-		false,//create_top_polygons,
-//		top_style,
-		false,//create_bottom_polygons,
-//		bottom_style,
+		false, // create_top_polygons,
+		false,
+		false, // create_bottom_polygons,
+		false,
 		points,
 		normals,
 		tex_uvs,
@@ -660,9 +642,9 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 			diameter_and_height_pairs,
 			num_sides,
 			create_top_polygons,
-//			top_style,
+			false, // weld_top_rim_vertices
 			create_bottom_polygons,
-//			bottom_style,
+			false, // weld_bottom_rim_vertices
 			points,
 			normals,
 			tex_uvs,
