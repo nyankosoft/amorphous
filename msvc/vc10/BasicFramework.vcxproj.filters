@@ -860,9 +860,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\D3DMisc.hpp">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp">
       <Filter>Graphics</Filter>
     </ClInclude>

@@ -358,7 +358,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\D3DMisc.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.hpp" />
