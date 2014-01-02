@@ -121,6 +121,26 @@ static void CalculatePointsAtCurvedSlice(
 }
 
 
+static void CalculateDiametersAndHeightsAtCurvedSlice(
+	const Vector2& current_point,
+	const Vector2& prev_point,
+	const Vector2& next_point,
+	float curvature_radius,
+	unsigned int num_curve_segments,
+	vector< pair<float,float> >& diameter_and_height_pairs
+	)
+{
+	vector<Vector2> dest_points;
+
+	CalculatePointsAtCurvedSlice( current_point, prev_point, next_point, curvature_radius, num_curve_segments, dest_points );
+
+	for( size_t i=0; i<dest_points.size(); i++ )
+	{
+		Vector2 point = dest_points[i];
+		diameter_and_height_pairs.push_back( pair<float,float>(point.x*2.0f,point.y) );
+	}
+}
+
 static void CorrectNormals(
 	const vector<Vector3>& points,
 	vector<Vector3>& normals,
@@ -254,6 +274,9 @@ void CartridgeMaker::AddSegments(
 		// center vertex
 		vecDestPos.push_back( bottom_center );
 
+		Vector3 bottom_normal( Vector3(0,-1,0) );
+		vecDestNormal.push_back( bottom_normal );
+
 		if( weld_bottom_rim_vertices )
 		{
 			bottom_rim_vertex_indices_offset = vertex_index_offset;
@@ -276,9 +299,8 @@ void CartridgeMaker::AddSegments(
 			// Append the duplicated vertices to the head of the destination vector
 			vecDestPos.insert( vecDestPos.end(), bottom_vertices.begin(), bottom_vertices.end() );
 
-			// Copy normals as well (all the normals points down)
-			Vector3 bottom_normal( Vector3(0,-1,0) );
-			vecDestNormal.insert( vecDestNormal.end(), num_sides + 1, bottom_normal );
+			// Copy normals for the duplicated vertices (all the normals points down)
+			vecDestNormal.insert( vecDestNormal.end(), num_sides, bottom_normal );
 
 			vector<TEXCOORD2> bottom_uvs;
 			TEXCOORD2 bottom_uv_offset = TEXCOORD2(1,1);
@@ -349,8 +371,6 @@ void CartridgeMaker::AddSegments(
 
 	// side (quads)
 	int side_vertex_index_offset = vertex_index_offset;
-	if( create_bottom_polygons )
-		side_vertex_index_offset += (num_sides + 1);
 
 	for( int i=0; i<num_divisions; i++ )
 	{
@@ -501,7 +521,7 @@ Result::Name CartridgeMaker::AddPrimerAndPrimerWell( const CaseDesc& src_desc, u
 
 	float bottom_plate_diameter = src_desc.case_slices[0].diameter;
 	float primer_depth = 2.0f * 0.001f; // 2mm
-	float primer_diameter = 5.0f * 0.001f; // 5mm
+	float primer_diameter = 4.5f * 0.001f; // 4.5mm
 	vector<Vector2> dest_points;
 	// create polygons by descending
 	const Vector2 prev_point    = Vector2(primer_diameter       * 0.5f, primer_depth);
@@ -512,16 +532,19 @@ Result::Name CartridgeMaker::AddPrimerAndPrimerWell( const CaseDesc& src_desc, u
 //	const Vector2 current_point = Vector2(primer_diameter       * 0.5f, 0.0f);
 //	const Vector2 next_point    = Vector2(primer_diameter       * 0.5f, primer_depth);
 	uint num_curve_segments = 3;
-	CalculatePointsAtCurvedSlice( current_point, prev_point, next_point, 0.0005f, num_curve_segments, dest_points );
+//	CalculatePointsAtCurvedSlice( current_point, prev_point, next_point, 0.0005f, num_curve_segments, dest_points );
 
 	diameter_and_height_pairs.push_back( pair<float,float>(primer_diameter,primer_depth) ); // descend
 //	diameter_and_height_pairs.push_back( pair<float,float>(bottom_plate_diameter,0.0f) ); // ascend
 
-	for( size_t i=0; i<dest_points.size(); i++ )
-	{
-		Vector2 point = dest_points[i];
-		diameter_and_height_pairs.push_back( pair<float,float>(point.x*2.0f,point.y) );
-	}
+	CalculateDiametersAndHeightsAtCurvedSlice(
+		current_point,
+		prev_point,
+		next_point,
+		0.0005f,
+		num_curve_segments,
+		diameter_and_height_pairs
+		);
 
 	diameter_and_height_pairs.push_back( pair<float,float>(bottom_plate_diameter,0.0f) ); // descend
 //	diameter_and_height_pairs.push_back( pair<float,float>(primer_diameter,primer_depth) ); // ascend
@@ -533,6 +556,40 @@ Result::Name CartridgeMaker::AddPrimerAndPrimerWell( const CaseDesc& src_desc, u
 		false,
 		false, // create_bottom_polygons,
 		false,
+		points,
+		normals,
+		tex_uvs,
+		polygons
+		);
+
+	diameter_and_height_pairs.resize( 0 );
+
+	// Primer
+
+	// Go up from the bottom
+	dest_points.resize( 0 );
+	const Vector2 primer_prev_point    = Vector2(primer_diameter * 0.5f * 0.8f, 0.0f);
+	const Vector2 primer_current_point = Vector2(primer_diameter * 0.5f,        0.0f);
+	const Vector2 primer_next_point    = Vector2(primer_diameter * 0.5f,        primer_depth);
+
+	diameter_and_height_pairs.push_back( pair<float,float>(primer_diameter * 0.7f, 0.0f) );
+
+	CalculateDiametersAndHeightsAtCurvedSlice(
+		primer_current_point,
+		primer_prev_point,
+		primer_next_point,
+		0.0005f,
+		num_curve_segments,
+		diameter_and_height_pairs
+		);
+
+	AddSegments(
+		diameter_and_height_pairs,
+		num_sides,
+		false, // create_top_polygons,
+		false, // weld_top_rim_vertices
+		true,  // create_bottom_polygons,
+		true,  // weld_bottom_rim_vertices
 		points,
 		normals,
 		tex_uvs,
