@@ -16,6 +16,48 @@ namespace firearm
 {
 
 
+static Vector3 CalculateNormal( const vector< pair<float,float> >& diameter_and_height, int i )
+{
+	const float radius = diameter_and_height[i].first * 0.5f;
+	const float height = diameter_and_height[i].second;
+
+	const Vector3 z_dir( Vector3(0,0,1) );
+
+	if( diameter_and_height.size() == 1 )
+		return Vector3(0,0,0); // No way to calculate a normal out of a single slice
+
+	if( i==0 )
+	{
+		float next_radius = diameter_and_height[1].first * 0.5f;
+		float next_height = diameter_and_height[1].second;
+		Vector3 extrude_dir = Vector3( next_radius - radius, next_height-height, 0 );
+		return Vec3GetNormalized( Vec3Cross( extrude_dir, z_dir ) );
+	}
+	else if( i==diameter_and_height.size()-1 )
+	{
+		float prev_radius = diameter_and_height[i-1].first * 0.5f;
+		float prev_height = diameter_and_height[i-1].second;
+		Vector3 extrude_dir = Vector3( radius - prev_radius, height-prev_height, 0 );
+		return Vec3GetNormalized( Vec3Cross( extrude_dir, z_dir ) );
+	}
+	else
+	{
+		// Has 3 or more segments
+		float prev_radius = diameter_and_height[i-1].first * 0.5f;
+		float prev_height = diameter_and_height[i-1].second;
+		float next_radius = diameter_and_height[i+1].first * 0.5f;
+		float next_height = diameter_and_height[i+1].second;
+		Vector3 prev_extrude_dir = Vector3( radius - prev_radius, height-prev_height, 0 );
+		Vector3 next_extrude_dir = Vector3( next_radius - radius, next_height-height, 0 );
+		Vector3 prev_normal = Vec3GetNormalized( Vec3Cross( prev_extrude_dir, z_dir ) );
+		Vector3 next_normal = Vec3GetNormalized( Vec3Cross( next_extrude_dir, z_dir ) );
+		return Vec3GetNormalized( prev_normal + next_normal );
+	}
+
+	return Vector3(0,0,0);
+}
+
+
 static float CalculateNormalAngle( const vector< pair<float,float> >& diameter_and_height, int i )
 {
 	if( diameter_and_height.size() == 2
@@ -228,6 +270,7 @@ void CartridgeMaker::AddSegments(
 //		const Matrix34 pose = Matrix34( -vUp * height * ( (float)i / (float)num_divisions - 0.5f ), Matrix33Identity() );
 
 		const float normal_angle = is_normal_const ? 0 : CalculateNormalAngle( diameter_and_height, i );
+		const Vector3 base_normal = CalculateNormal( diameter_and_height, i );
 
 //		const float circumfirence = 2.0f * (float)PI * radius;
 
@@ -246,7 +289,8 @@ void CartridgeMaker::AddSegments(
 			Vector3 normal
 				= is_normal_const ?
 				const_normal // vertical up/down
-				: Matrix33RotationY(angle) * Matrix33RotationZ(normal_angle) * Vector3(1,0,0);
+//				: Matrix33RotationY(angle) * Matrix33RotationZ(normal_angle) * Vector3(1,0,0);
+				: Matrix33RotationY(angle) * base_normal;
 
 			vecDestNormal.push_back( normal );
 
