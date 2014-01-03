@@ -659,7 +659,10 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 	vector< pair<float,float> > diameter_and_height_pairs;
 	diameter_and_height_pairs.reserve( 6 );
 
-	if( src_desc.primer_model == CaseDesc::PM_POLYGON_MESH )
+	const bool create_polygon_mesh_for_primer
+		= (src_desc.primer_model == CaseDesc::PM_POLYGON_MESH) && IsCenterfireCartridge(src_desc.caliber);
+
+	if( create_polygon_mesh_for_primer )
 	{
 		AddPrimerAndPrimerWell(src_desc,num_sides,points,normals,tex_uvs,polygons);
 	}
@@ -737,7 +740,7 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 			= (end_segment_index == src_desc.num_case_slices-1)
 			|| (end_segment_index == src_desc.top_outer_slice_index && src_desc.create_internal_polygons == false);
 
-		bool create_bottom_polygons = (start_segment_index == 0 && src_desc.primer_model != CaseDesc::PM_POLYGON_MESH) ? true : false;
+		bool create_bottom_polygons = (start_segment_index == 0 && !create_polygon_mesh_for_primer) ? true : false;
 
 		AddSegments(
 			diameter_and_height_pairs,

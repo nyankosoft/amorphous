@@ -7,6 +7,7 @@
 #include "../3DMath/Vector2.hpp"
 #include "../3DMath/Vector3.hpp"
 #include "../Graphics/fwd.hpp"
+#include "../GameCommon/Caliber.hpp"
 
 
 namespace amorphous
@@ -124,6 +125,8 @@ public:
 		NUM_PRIMER_MODELS
 	};
 
+	Caliber::Name caliber;
+
 	CaseSlice case_slices[MAX_NUM_CASE_SLICES];
 
 	int num_case_slices;
@@ -148,6 +151,7 @@ public:
 
 	CaseDesc()
 		:
+	caliber(Caliber::OTHER),
 	num_case_slices(0),
 	top_outer_slice_index(0),
 	create_internal_polygons(true),
