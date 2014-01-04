@@ -125,6 +125,13 @@ public:
 		NUM_PRIMER_MODELS
 	};
 
+	enum DrillStyle
+	{
+		DS_SIMPLIFIED,
+		DS_CLOSED,
+		NUM_DRILL_STYLES
+	};
+
 	Caliber::Name caliber;
 
 	CaseSlice case_slices[MAX_NUM_CASE_SLICES];
@@ -147,6 +154,8 @@ public:
 
 	PrimerModel primer_model;
 
+	DrillStyle drill_style;
+
 public:
 
 	CaseDesc()
@@ -158,6 +167,7 @@ public:
 	num_sides(16),
 	top_internal_diameter(0.01f),
 	primer_model(PM_NONE),
+	drill_style(DS_SIMPLIFIED),
 	primer_diameter(0.0053f) // default primer diameter: 5.3mm
 	{}
 
@@ -222,6 +232,9 @@ class CartridgeMaker
 					 std::vector< std::vector<int> >& vecDestPoly );
 
 	Result::Name AddPrimerAndPrimerWell( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, std::vector<TEXCOORD2>& tex_uvs, std::vector< std::vector<int> >& polygons );
+
+	Result::Name MakeCaseInternals( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, std::vector<TEXCOORD2>& tex_uvs, std::vector< std::vector<int> >& polygons );
+
 
 public:
 

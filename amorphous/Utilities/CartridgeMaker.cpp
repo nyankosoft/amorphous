@@ -646,6 +646,67 @@ Result::Name CartridgeMaker::AddPrimerAndPrimerWell( const CaseDesc& src_desc, u
 }
 
 
+Result::Name CartridgeMaker::MakeCaseInternals(
+	const CaseDesc& src_desc,
+	unsigned int num_sides,
+	std::vector<Vector3>& points,
+	std::vector<Vector3>& normals,
+	vector<TEXCOORD2>& tex_uvs,
+	vector< vector<int> >& polygons )
+{
+	vector< pair<float,float> > diameter_and_height_pairs;
+
+	if( src_desc.drill_style == CaseDesc::DS_SIMPLIFIED )
+	{
+		if( 0 <= src_desc.top_outer_slice_index )
+		{
+			diameter_and_height_pairs.resize( 0 );
+
+			float wall_thickness = 0.0004f;
+//			float wall_thickness = 0.001;
+			const CaseSlice& top_outer_slice = src_desc.case_slices[src_desc.top_outer_slice_index];
+			pair<float,float> top_outer( top_outer_slice.diameter, top_outer_slice.height );
+			diameter_and_height_pairs.push_back( top_outer );
+
+			pair<float,float> top_inner( top_outer_slice.diameter - wall_thickness * 2.0f, top_outer_slice.height );
+			diameter_and_height_pairs.push_back( top_inner );
+
+			AddSegments(
+				diameter_and_height_pairs,
+				num_sides,
+				false, // create_top_polygons,
+				false, // weld_top_rim_vertices
+				false, // create_bottom_polygons,
+				false, // weld_bottom_rim_vertices
+				points,
+				normals,
+				tex_uvs,
+				polygons
+				);
+
+			diameter_and_height_pairs.resize( 0 );
+			diameter_and_height_pairs.push_back( top_inner );
+			diameter_and_height_pairs.push_back( pair<float,float>(top_outer_slice.diameter - wall_thickness * 2.0f, 0.006f) );
+
+			AddSegments(
+				diameter_and_height_pairs,
+				num_sides,
+				true,  // create_top_polygons,
+				false, // weld_top_rim_vertices
+				false, // create_bottom_polygons,
+				false, // weld_bottom_rim_vertices
+				points,
+				normals,
+				tex_uvs,
+				polygons
+				);
+		}
+	}
+
+	return Result::SUCCESS;
+}
+
+
 Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, vector<TEXCOORD2>& tex_uvs, vector< vector<int> >& polygons )
 {
 //	vector<Vector3> points, normals;
@@ -736,9 +797,12 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 		// Close the top if
 		// - reached the bottom of the inside,
 		// - or reached the top and the client code has specified to close the top.
+//		bool create_top_polygons
+//			= (end_segment_index == src_desc.num_case_slices-1)
+//			|| (end_segment_index == src_desc.top_outer_slice_index && src_desc.create_internal_polygons == false);
+
 		bool create_top_polygons
-			= (end_segment_index == src_desc.num_case_slices-1)
-			|| (end_segment_index == src_desc.top_outer_slice_index && src_desc.create_internal_polygons == false);
+			= (end_segment_index == src_desc.top_outer_slice_index && src_desc.drill_style == CaseDesc::DS_CLOSED);
 
 		bool create_bottom_polygons = (start_segment_index == 0 && !create_polygon_mesh_for_primer) ? true : false;
 
@@ -757,6 +821,8 @@ Result::Name CartridgeMaker::MakeCase( const CaseDesc& src_desc, unsigned int nu
 
 		start_segment_index = end_segment_index;
 	}
+
+	MakeCaseInternals( src_desc, num_sides, points, normals, tex_uvs, polygons );
 
 	CorrectNormals( points, normals, polygons );
 
