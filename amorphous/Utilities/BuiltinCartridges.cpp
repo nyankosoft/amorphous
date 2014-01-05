@@ -72,6 +72,7 @@ static std::pair<int,CaseDesc> cd(
 	)
 {
 	CaseDesc desc;
+	desc.caliber = (Caliber::Name)cal;
 	desc.top_outer_slice_index = top_outer_slice_index;
 	desc.case_slices[ 0].diameter = d0  * 0.001f; desc.case_slices[ 0].height = l0  * 0.001f; desc.case_slices[ 0].curvature_radius = r0  * 0.001f;
 	desc.case_slices[ 1].diameter = d1  * 0.001f; desc.case_slices[ 1].height = l1  * 0.001f; desc.case_slices[ 1].curvature_radius = r1  * 0.001f;
