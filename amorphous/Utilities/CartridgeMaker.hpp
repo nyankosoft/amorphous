@@ -47,13 +47,15 @@ public:
 	float tension;
 	float continuity;
 	float bias;
+	unsigned int num_segments; ///< the number of points between this control point and the next control point.
 
 	BulletSliceControlPoint()
 		:
 	position(Vector2(0,0)),
 	tension(0),
 	continuity(0),
-	bias(0)
+	bias(0),
+	num_segments(4)
 	{}
 
 	~BulletSliceControlPoint(){}
@@ -92,6 +94,8 @@ public:
 
 	unsigned int num_control_points;
 
+	unsigned int exposed_part_cp_start_index;
+
 	unsigned int num_segments;
 
 //	float hollow_piont_cavity_diameter; ///< diameter of the hollow point cavity. If this is 0, the bullet will have no hollow point cavity, i.e. the bullet is created as a FMJ
@@ -104,6 +108,7 @@ public:
 	exposed_length(0),
 	num_sides(0),
 	num_control_points(0),
+	exposed_part_cp_start_index(0),
 	num_segments(0)
 	{}
 

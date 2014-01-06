@@ -499,14 +499,25 @@ Result::Name CartridgeMaker::MakeBullet(
 
 	vector< pair<float,float> > d_and_h_pairs;
 
+	int cp_index_offset = bullet_desc.create_model_only_for_exposed_part ?
+		bullet_desc.exposed_part_cp_start_index : 0;
+
 	const int num_control_points = (bullet_desc.num_control_points < BulletDesc::NUM_MAX_BULLET_SLICES) ?
 		bullet_desc.num_control_points : BulletDesc::NUM_MAX_BULLET_SLICES;
 
 	const float bullet_length
 		= bullet_desc.bullet_slice_control_points[num_control_points].position.y
 		- bullet_desc.bullet_slice_control_points[0].position.y;
-	float height_offset = case_top_height - (bullet_length - bullet_desc.exposed_length);
-	for( int i=0; i<num_control_points-1; i++ )
+
+	float height_offset = 0;
+	if( bullet_desc.create_model_only_for_exposed_part )
+	{
+		height_offset = case_top_height - bullet_desc.bullet_slice_control_points[cp_index_offset].position.y;
+	}
+
+//	height_offset = case_top_height - (bullet_length - bullet_desc.exposed_length);
+
+	for( int i=cp_index_offset; i<num_control_points-1; i++ )
 	{
 //		if( bullet_desc.create_model_only_for_exposed_part
 //		 &&  )
@@ -519,7 +530,7 @@ Result::Name CartridgeMaker::MakeBullet(
 		const BulletSliceControlPoint& cp_after_next = (i<num_control_points-2) ? bullet_desc.bullet_slice_control_points[i+2] : bullet_desc.bullet_slice_control_points[num_control_points-1];
 //		if( cp.position == Vector2(0,0) )
 //			break;
-		int num_sub_segs_per_segment = 4;
+		int num_sub_segs_per_segment = bullet_desc.bullet_slice_control_points[i].num_segments;
 		for( int j=0; j<num_sub_segs_per_segment; j++ )
 		{
 			const Vector2& p0 = prev_cp.position;
