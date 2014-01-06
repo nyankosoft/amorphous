@@ -102,8 +102,20 @@ public:
 	diameter(0),
 	length(0),
 	exposed_length(0),
-	num_sides(0)
+	num_sides(0),
+	num_control_points(0),
+	num_segments(0)
 	{}
+
+	bool IsValid() const
+	{
+		return 0.0f < diameter
+//			&& 0.0f < length
+			&& 0.0f < exposed_length
+//			&& 0 < num_sides // Use CartridgeDesc::num_sides if BulletDesc::num_sides is 0
+			&& 0 < num_control_points;
+//			&& 0 < num_segments
+	}
 };
 
 
@@ -128,7 +140,13 @@ public:
 	enum DrillStyle
 	{
 		DS_SIMPLIFIED,
+
 		DS_CLOSED,
+
+		/// Creates faces for the top of the wall, but does not create faces for the inside wall.
+		/// Used when the bullet model is created and the inside of the case is not visible.
+		DS_OPEN,
+
 		NUM_DRILL_STYLES
 	};
 
@@ -172,6 +190,11 @@ public:
 	{}
 
 	~CaseDesc(){}
+
+	bool IsValid() const
+	{
+		return 0 < num_case_slices;
+	}
 	
 	float GetTopHeight() const { return case_slices[top_outer_slice_index].height; };
 
@@ -212,6 +235,11 @@ public:
 		:
 	num_sides(16)
 	{}
+
+	bool IsValid() const
+	{
+		return ( bullet_desc.IsValid() && case_desc.IsValid() );
+	}
 };
 
 
@@ -234,7 +262,6 @@ class CartridgeMaker
 	Result::Name AddPrimerAndPrimerWell( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, std::vector<TEXCOORD2>& tex_uvs, std::vector< std::vector<int> >& polygons );
 
 	Result::Name MakeCaseInternals( const CaseDesc& src_desc, unsigned int num_sides, std::vector<Vector3>& points, std::vector<Vector3>& normals, std::vector<TEXCOORD2>& tex_uvs, std::vector< std::vector<int> >& polygons );
-
 
 public:
 

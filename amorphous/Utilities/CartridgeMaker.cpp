@@ -1,4 +1,5 @@
 #include "CartridgeMaker.hpp"
+#include "BuiltinCartridges.hpp"
 #include "../3DMath/PrimitivePolygonModelMaker.hpp"
 #include "../3DMath/TCBSpline.hpp"
 #include "../Graphics/MeshModel/General3DMesh.hpp"
@@ -324,6 +325,8 @@ void CartridgeMaker::AddSegments(
 		if( weld_bottom_rim_vertices )
 		{
 			bottom_rim_vertex_indices_offset = vertex_index_offset;
+
+			vecDestTexUV.push_back( TEXCOORD2(0,0) );
 		}
 		else
 		{
@@ -364,11 +367,18 @@ void CartridgeMaker::AddSegments(
 	{
 		top_center_vertex_index = (int)vecDestPos.size();
 		const Vector3 top_center = Vector3( 0, vecDestPos.back().y, 0 );
-		vecDestPos.push_back( top_center ); // center vertex
+
+		// center vertex
+		vecDestPos.push_back( top_center );
+
+		Vector3 top_normal( Vector3(0,1,0) );
+		vecDestNormal.push_back( top_normal );
 
 		if( weld_top_rim_vertices )
 		{
 			top_rim_vertex_indices_offset = vecDestPos.size() - num_sides - 1;
+
+			vecDestTexUV.push_back( TEXCOORD2(0,0) );
 
 			// No need to add more vertices
 		}
@@ -389,8 +399,7 @@ void CartridgeMaker::AddSegments(
 			vecDestPos.insert( vecDestPos.end(), top_vertices.begin(), top_vertices.end() ); // append to the destination vector
 
 			// Add normals (all the normals point up).
-			Vector3 top_normal( Vector3(0,1,0) );
-			vecDestNormal.insert( vecDestNormal.end(), num_sides + 1, top_normal );
+			vecDestNormal.insert( vecDestNormal.end(), num_sides, top_normal );
 
 			TEXCOORD2 top_uv_offset = TEXCOORD2(1,1);
 			float top_uv_scale = 0.125f;
@@ -652,9 +661,15 @@ Result::Name CartridgeMaker::MakeCaseInternals(
 	std::vector<Vector3>& points,
 	std::vector<Vector3>& normals,
 	vector<TEXCOORD2>& tex_uvs,
-	vector< vector<int> >& polygons )
+	vector< vector<int> >& polygons
+	)
 {
 	vector< pair<float,float> > diameter_and_height_pairs;
+
+	BulletDesc bd;
+	bool bullet_desc_found = GetFMJBulletDesc( src_desc.caliber, bd );
+
+	const float bullet_diameter = bd.diameter;
 
 	if( src_desc.drill_style == CaseDesc::DS_SIMPLIFIED )
 	{
@@ -701,6 +716,37 @@ Result::Name CartridgeMaker::MakeCaseInternals(
 				polygons
 				);
 		}
+	}
+	else if( src_desc.drill_style == CaseDesc::DS_OPEN )
+	{
+		if( !bullet_desc_found )
+			return Result::UNKNOWN_ERROR;
+
+		if( src_desc.top_outer_slice_index < 0 )
+			return Result::INVALID_ARGS;
+		
+//		float wall_thickness = 0.0004f;
+//		float wall_thickness = 0.001;
+		const CaseSlice& top_outer_slice = src_desc.case_slices[src_desc.top_outer_slice_index];
+		pair<float,float> top_outer( top_outer_slice.diameter, top_outer_slice.height );
+		pair<float,float> top_inner( bullet_diameter,          top_outer_slice.height );
+
+		diameter_and_height_pairs.resize( 0 );
+		diameter_and_height_pairs.push_back( top_outer );
+		diameter_and_height_pairs.push_back( top_inner );
+
+		AddSegments(
+			diameter_and_height_pairs,
+			num_sides,
+			false, // create_top_polygons,
+			false, // weld_top_rim_vertices
+			false, // create_bottom_polygons,
+			false, // weld_bottom_rim_vertices
+			points,
+			normals,
+			tex_uvs,
+			polygons
+			);
 	}
 
 	return Result::SUCCESS;
@@ -839,6 +885,9 @@ Result::Name CartridgeMaker::Make(
 		std::vector< std::vector<int> >& polygons
 		)
 {
+	if( !src_desc.IsValid() )
+		return Result::INVALID_ARGS;
+
 	Result::Name case_res   = MakeCase( src_desc.case_desc, num_sides, points, normals, tex_uvs, polygons );
 
 	if( case_res != Result::SUCCESS )
