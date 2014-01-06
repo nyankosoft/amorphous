@@ -11,13 +11,15 @@ using std::pair;
 namespace firearm
 {
 
-// Client code is responsible for explicitly specify the number of control points,
+// Client code is responsible for explicitly specify the number of control points via num_control_points,
 // i.e. the system does not detect the end of the array by checking (d,h) == (0,0).
 // Rationale: (d,h) == (0,0) could be a valid position in case of a hollow point bullet.
 static std::pair<int,BulletDesc> bd(
 	int cal,
-	float exposed_part_length,
+	double diameter,
+	double exposed_part_length,
 	int num_control_points,
+	int exposed_part_cp_start_index,
 	float d0,     float h0,     float t0,     float c0,     float b0,
 	float d1,     float h1,     float t1,	  float c1,     float b1,
 	float d2 = 0, float h2 = 0, float t2 = 0, float c2 = 0, float b2 = 0,
@@ -31,8 +33,11 @@ static std::pair<int,BulletDesc> bd(
 	)
 {
 	BulletDesc desc;
-	desc.exposed_length = exposed_part_length * 0.001f;
+	desc.diameter           = (float)diameter              * 0.001f;
+//	desc.length             = (float)???                   * 0.001f;
+	desc.exposed_length     = (float)exposed_part_length   * 0.001f;
 	desc.num_control_points = num_control_points;
+	desc.exposed_part_cp_start_index = exposed_part_cp_start_index;
 
 	typedef BulletSliceControlPoint bscp;
 	bscp& cp0 = desc.bullet_slice_control_points[0]; cp0.position.x = d0 * 0.5f * 0.001f; cp0.position.y = h0 * 0.001f; cp0.tension = t0; cp0.continuity = c0; cp0.bias = b0;
@@ -108,15 +113,35 @@ static std::pair<int,CaseDesc> cd(
 
 // unit: millimeters (mm)
 // each 2 digits represent the diameter and the height
+// EPO: Exposed Portion Offset: the index of the control point above which bullet is exposed outside the case.
 static std::pair<int,BulletDesc> sg_FMJBulletDimensions[] =
 {
-//	bd( Caliber::_9MM,      0.00, 0.00,   0.00, 0.00,   0.00, 0.00,   0.00, 0.00,   0.00, 0.00,   0.00, 0.00,   0.00, 0.00  ),
+	// [template]
+//	bd( Caliber::OTHER,                 0.000,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
 
-	//             exposed part     [0]          T    C    B    [1]                           [2]                          [3]
-//	bd( Caliber::_9MM,    10.54, 3,  9.03, 0.00, 0.0, 0.0, 1.0,  6.00, 10.00, 0.0, 0.0, 0.0,  0.00, 12.54, 0.0, 0.0, 0.0 ),
-	bd( Caliber::_9MM,    10.54, 4,  9.03, 0.00, 0.0, 0.0, 1.0,  9.03,  3.50, 0.0, 0.0, 1.0,  6.00, 10.00, 0.0, 0.0, 0.0,  0.00, 12.54, 0.0, 0.0, 0.0 ),
-	bd( Caliber::_40_SW,   7.24, 4, 10.17, 0.00, 1.0, 0.0, 0.0, 10.17,  4.00, 0.0, 0.0, 0.0,  6.00, 10.00, 0.0, 0.0, 0.0,  0.00, 12.24, 0.0, 0.0, 0.0 ),
-	bd( Caliber::_45_ACP,  9.58, 4, 11.48, 0.00, 1.0, 0.0, 0.0, 11.48,  3.00, 0.0, 0.0, 0.0,  9.50, 11.00, 0.0, 0.0, 0.0,  0.00, 14.58, 0.0, 0.0, 0.0 ),
+	//  caliber                                                     [0]                           [1]                          [2]                          [3]                          [4]
+	//  caliber                        diameter  E.P.L.   #CPs  EPO D       H      T    C    B    D      H      T    C    B    D      H      T    C    B    D      H      T    C    B    D      H      T    C    B
+//	bd( Caliber::_9MM,                  0.000,   10.54,   3,    0,   9.03,  00.00, 0.0, 0.0, 1.0,  6.00, 10.00, 0.0, 0.0, 0.0,  0.00, 12.54, 0.0, 0.0, 0.0 ),
+//	bd( Caliber::_9MM,                  9.017,   10.54,   4,    1,   9.03,  00.00, 0.0, 0.0, 1.0,  9.03,  3.00,-1.0, 1.0, 1.0,  7.20,  9.00, 0.0, 1.0, 1.0,  0.00, 13.54, 0.0, 0.0, 0.0 ),
+	bd( Caliber::_9MM,                  9.017,   10.54,   5,    1,   9.03,  00.00, 0.0, 0.0, 0.0,  9.03,  3.00, 0.0, 0.0, 0.0,  8.10,  7.60, 0.0, 0.0, 0.0,  5.30, 11.50, 0.0, 0.0, 0.0,  0.00, 13.54, 0.0, 0.0, 0.0 ),
+	bd( Caliber::_40_SW,               10.170,    7.24,   4,    0,  10.17,  00.00, 1.0, 0.0, 0.0, 10.17,  4.00, 0.0, 0.0, 0.0,  6.00, 10.00, 0.0, 0.0, 0.0,  0.00, 12.24, 0.0, 0.0, 0.0 ),
+//	bd( Caliber::_45_ACP,              11.480,    9.58,   4,    0,  11.48,  00.00, 1.0, 0.0, 0.0, 11.48,  3.00, 0.0, 0.0, 0.0,  9.50, 11.00, 0.0, 0.0, 0.0,  0.00, 14.58, 0.0, 0.0, 0.0 ),
+	bd( Caliber::_45_ACP,              11.480,    9.58,   5,    1,  11.48,  00.00, 0.0, 0.0, 0.0, 11.48,  3.00, 0.0, 0.0, 0.0, 10.10,  7.60, 0.0, 0.0, 0.0,  6.50, 11.00, 0.0, 0.0, 0.0,  0.00, 12.58, 0.0, 0.0, 0.0 ),
+	bd( Caliber::_10MM_AUTO,           10.170,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_500_SW_MAGNUM,       12.700,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+
+	bd( Caliber::HK_4_6X30,             4.650,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_7_62X25MM_TOKAREV,    7.870,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_357_SIG,              9.020,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_5_7X28,               5.700,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_5_56X45,              5.700,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_5_45X39,              5.600,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_6_8MM_REMINGTON_SPC,  7.000,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_7_62X39,              7.920,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+//	bd( Caliber::_308_WINCHESTER,       0.000,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_30_06_SPRINGFIELD,    7.850,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_338_LAPUA_MAGNUM,     8.580,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
+	bd( Caliber::_50BMG,               12.950,    0.00,   0,    0,   0.00,  00.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00,  0.00, 0.0, 0.0, 0.0,  0.00, 0.0, 0.0, 0.0  ),
 };
 
 
