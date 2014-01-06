@@ -16,6 +16,16 @@ using namespace std;
 using namespace boost::filesystem;
 using namespace amorphous;
 
+
+enum ModelType
+{
+	MT_CASE,
+	MT_BULLET,
+	MT_CARTRIDGE,
+	NUM_MODEL_TYPES
+};
+
+
 // declaration
 Result::Name CreateMesh(
 	const std::vector<Vector3>& points,
@@ -161,6 +171,92 @@ static Caliber::Name sg_cases_to_create[] =
 };
 
 
+void Create(
+	firearm::CartridgeDesc& src_cartridge_desc,
+	const string& output_model_basename,
+	ModelType model_type
+//	bool create_case,
+//	const std::string& case_suffix,
+//	bool create_bullet,
+//	const std::string& bullet_suffix,
+//	bool create_cartridge
+	)
+{
+	vector<Vector3> points, normals;
+	vector<SFloatRGBAColor> diffuse_colors;
+	vector< vector<int> > polygons;
+	vector<TEXCOORD2> tex_uvs;
+//	firearm::CaseDesc cd;// = ref_case_desc; firearm::GetCaseDesc() overwrites all the fields
+//	bool obtained = firearm::GetCaseDesc( sg_cases_to_create[i], cd );
+//	if( !obtained )
+//		return;
+
+//	cd.num_sides    = src_case_desc.num_sides;
+//	cd.primer_model = src_case_desc.primer_model;
+
+//	const string caliber_name = std::string(GetCaliberName(sg_cases_to_create[i]));
+
+	// Reserve the dest buffers
+	int num_vertices_to_reserve = src_cartridge_desc.num_sides * 10;
+	points.reserve(   num_vertices_to_reserve );
+	normals.reserve(  num_vertices_to_reserve );
+	tex_uvs.reserve(  num_vertices_to_reserve );
+	polygons.reserve( num_vertices_to_reserve );
+
+	firearm::CartridgeMaker cm;
+
+	Result::Name res = Result::SUCCESS;
+
+	float case_top_height = 0.0f;
+
+	switch( model_type )
+	{
+	case MT_CASE:
+		res = cm.MakeCase( src_cartridge_desc.case_desc, 16, points, normals, tex_uvs, polygons );
+		break;
+	case MT_BULLET:
+		res = cm.MakeBullet( src_cartridge_desc.bullet_desc, 16, case_top_height, points, normals, tex_uvs, polygons );
+		break;
+	case MT_CARTRIDGE:
+		res = cm.Make( src_cartridge_desc, 16, points, normals, tex_uvs, polygons );
+		break;
+	default:
+		break;
+	}
+
+	boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
+
+	res = CreateMesh( points, normals, polygons, *pMesh );
+
+//	diffuse_colors.resize( points.size(), SFloatRGBAColor::White() );
+//	C3DMeshModelArchive dest_mesh_archive;
+//	vector< vector<uint> > uint_polygons;
+//	Result::Name res = CreateSingleSubsetMeshArchive(
+//		points,
+//		normals,
+//		diffuse_colors,
+//		tex_uvs,
+//		uint_polygons,
+//		dest_mesh_archive
+//		);
+
+	// Do not re-calculate the normals.
+//	pMesh->CalculateVertexNormalsFromPolygonPlanes();
+
+	// msh
+
+	C3DMeshModelBuilder builder;
+	builder.BuildMeshModelArchive( pMesh );
+	builder.GetArchive().SaveToFile( output_model_basename + ".msh" );
+
+	// obj
+
+	tex_uvs.resize( points.size(), TEXCOORD2(0,0) );
+	const string obj_pathname = output_model_basename + ".obj";
+	wavefront_obj::write_to_obj_file( obj_pathname, points, tex_uvs, normals, polygons );
+}
+
+
 void CreateBullets( const string& output_model_directory )
 {
 	vector<Vector3> points, normals;
@@ -177,6 +273,12 @@ void CreateBullets( const string& output_model_directory )
 			continue;
 
 		const string caliber_name = std::string(GetCaliberName(sg_cases_to_create[i]));
+
+//		string output_model_basename = output_model_directory + caliber_name + "-bullet";
+
+//		firearm::CartridgeDesc src_cartridge_desc;
+//		src_cartridge_desc.bullet_desc = bd;
+//		Create( src_cartridge_desc, output_model_basename, MT_BULLET );
 
 		// obj
 
@@ -223,6 +325,85 @@ void CreateBullets( const string& output_model_directory )
 }
 
 
+void CreateCartridges( const firearm::CartridgeDesc& ref_cartridge_desc, const string& output_model_directory )
+{
+	for( int i=0; i<numof(sg_cases_to_create); i++ )
+	{
+		firearm::CartridgeDesc cartridge_desc;// = ref_case_desc; firearm::GetCaseDesc() overwrites all the fields
+
+		bool cd_obtained = firearm::GetCaseDesc( sg_cases_to_create[i], cartridge_desc.case_desc );
+		if( !cd_obtained )
+			continue;
+
+		bool bd_obtained = firearm::GetFMJBulletDesc( sg_cases_to_create[i], cartridge_desc.bullet_desc );
+		if( !bd_obtained )
+			continue;
+
+//		cartridge_desc.case_desc.num_sides   = ref_cartridge_desc.num_sides;
+//		cartridge_desc.bullet_desc.num_sides = ref_cartridge_desc.num_sides;
+
+		cartridge_desc.num_sides              = ref_cartridge_desc.num_sides;
+//		cartridge_desc.case_desc.num_sides    = ref_cartridge_desc.num_sides;
+		cartridge_desc.case_desc.primer_model = ref_cartridge_desc.case_desc.primer_model;
+
+		cartridge_desc.case_desc.drill_style = firearm::CaseDesc::DS_OPEN;
+
+		const string caliber_name = std::string(GetCaliberName(sg_cases_to_create[i]));
+
+		path output_model_pathname = path(output_model_directory) / path(caliber_name);
+
+		Create( cartridge_desc, output_model_pathname.string(), MT_CARTRIDGE );
+	}
+}
+
+/*
+void CreateCase( const firearm::CaseDesc& src_case_desc, const string& output_model_basename )
+{
+	vector<Vector3> points, normals;
+	vector< vector<int> > polygons;
+	vector<TEXCOORD2> tex_uvs;
+	firearm::CaseDesc cd;// = ref_case_desc; firearm::GetCaseDesc() overwrites all the fields
+	bool obtained = firearm::GetCaseDesc( src_case_desc.caliber, cd );
+	if( !obtained )
+		return;
+
+	cd.num_sides    = src_case_desc.num_sides;
+	cd.primer_model = src_case_desc.primer_model;
+
+	const string caliber_name = std::string(GetCaliberName(sg_cases_to_create[i]));
+
+	// Clear the dest buffers
+	points.resize( 0 );
+	normals.resize( 0 );
+	tex_uvs.resize( 0 );
+	polygons.resize( 0 );
+
+	firearm::CartridgeMaker cm;
+
+	Result::Name res = cm.MakeCase( cd, 16, points, normals, tex_uvs, polygons );
+
+	boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
+//	MakeCase( cd, cd.num_sides, *pMesh );
+
+	CreateMesh( points, normals, polygons, *pMesh );
+
+	// Do not re-calculate the normals.
+//	pMesh->CalculateVertexNormalsFromPolygonPlanes();
+
+	// msh
+
+	C3DMeshModelBuilder builder;
+	builder.BuildMeshModelArchive( pMesh );
+	builder.GetArchive().SaveToFile( output_model_basename + ".msh" );
+
+	// obj
+
+	tex_uvs.resize( points.size(), TEXCOORD2(0,0) );
+	const string obj_pathname = output_model_basename + ".obj";
+	wavefront_obj::write_to_obj_file( obj_pathname, points, tex_uvs, normals, polygons );
+}
+*/
+
 void CreateCases( firearm::CaseDesc& ref_case_desc, const string& output_model_directory )
 {
 	vector<Vector3> points, normals;
@@ -241,8 +422,26 @@ void CreateCases( firearm::CaseDesc& ref_case_desc, const string& output_model_d
 
 		const string caliber_name = std::string(GetCaliberName(sg_cases_to_create[i]));
 
+		path output_model_pathname = path(output_model_directory) / path( caliber_name + "-case" );
+
+		firearm::CartridgeDesc cartridge_desc;
+		cartridge_desc.case_desc = cd;
+		cartridge_desc.num_sides = cd.num_sides;
+		Create( cartridge_desc, output_model_pathname.string(), MT_CASE );
+
+		// Clear the dest buffers
+/*		points.resize( 0 );
+		normals.resize( 0 );
+		tex_uvs.resize( 0 );
+		polygons.resize( 0 );
+
+		firearm::CartridgeMaker cm;
+		cm.MakeCase( cd, 16, points, normals, tex_uvs, polygons );
+
 		boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
-		MakeCase( cd, cd.num_sides, *pMesh );
+//		MakeCase( cd, cd.num_sides, *pMesh );
+
+		CreateMesh( points, normals, polygons, *pMesh );
 
 		// Do not re-calculate the normals.
 //		pMesh->CalculateVertexNormalsFromPolygonPlanes();
@@ -255,16 +454,10 @@ void CreateCases( firearm::CaseDesc& ref_case_desc, const string& output_model_d
 
 		// obj
 
-		points.resize( 0 );
-		normals.resize( 0 );
-		tex_uvs.resize( 0 );
-		polygons.resize( 0 );
-		firearm::CartridgeMaker cm;
-		cm.MakeCase( cd, 16, points, normals, tex_uvs, polygons );
 		tex_uvs.resize( points.size(), TEXCOORD2(0,0) );
 		const string obj_pathname = output_model_directory + caliber_name + "-case.obj";
 		wavefront_obj::write_to_obj_file( obj_pathname, points, tex_uvs, normals, polygons );
-	}
+*/	}
 }
 
 
@@ -383,8 +576,10 @@ int run( int argc, const char *argv[] )
 	if( create_all )
 	{
 		CreateCases( cartridge_desc.case_desc, output_model_directory );
+
 		CreateBullets( output_model_directory );
-		CreateCartridges( output_model_directory );
+
+		CreateCartridges( cartridge_desc, output_model_directory );
 	}
 	else
 	{
