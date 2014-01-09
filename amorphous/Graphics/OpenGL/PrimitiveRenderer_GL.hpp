@@ -62,6 +62,20 @@ public:
 		return Result::SUCCESS;
 	}
 
+	Result::Name DrawLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		LOG_PRINT_ERROR( "Not implemented yet." );
+
+		return Result::UNKNOWN_ERROR;
+	}
+
+	Result::Name DrawLines( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors )
+	{
+		LOG_PRINT_ERROR( "Not implemented yet." );
+
+		return Result::UNKNOWN_ERROR;
+	}
+
 	Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
 	{
 		if( points.size() < 2 )

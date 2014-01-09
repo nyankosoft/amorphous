@@ -64,6 +64,33 @@ private:
 		return hr;
 	}
 
+	void CopyPoints( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		const size_t num_points = points.size();
+
+		const D3DCOLOR d3d_color = color.GetARGB32();
+		m_ColorVertices.resize( 0 );
+		m_ColorVertices.resize( num_points );
+		for( size_t i=0; i<num_points; i++ )
+		{
+			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
+			m_ColorVertices[i].color     = d3d_color;
+		}
+	}
+
+	void CopyPoints( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors )
+	{
+		const size_t num_points = points.size();
+
+		m_ColorVertices.resize( 0 );
+		m_ColorVertices.resize( num_points );
+		for( size_t i=0; i<num_points; i++ )
+		{
+			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
+			m_ColorVertices[i].color     = colors[i].GetARGB32();
+		}
+	}
+
 public:
 
 	CPrimitiveRenderer_D3D(){}
@@ -123,23 +150,38 @@ public:
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
 
+	Result::Name DrawLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
+	{
+		if( points.size() < 2 )
+			return Result::INVALID_ARGS;
+
+		CopyPoints( points, color );
+
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINELIST, (int)points.size() / 2, NULL );
+
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	}
+
+	Result::Name DrawLines( const std::vector<Vector3>& points, const std::vector<SFloatRGBAColor>& colors )
+	{
+		if( points.size() < 2 )
+			return Result::INVALID_ARGS;
+
+		CopyPoints( points, colors );
+
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINELIST, (int)points.size() / 2, NULL );
+
+		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	}
+
 	Result::Name DrawConnectedLines( const std::vector<Vector3>& points, const SFloatRGBAColor& color )
 	{
 		if( points.size() < 2 )
 			return Result::INVALID_ARGS;
 
-		const size_t num_points = points.size();
+		CopyPoints( points, color );
 
-		const D3DCOLOR d3d_color = color.GetARGB32();
-		m_ColorVertices.resize( 0 );
-		m_ColorVertices.resize( num_points );
-		for( size_t i=0; i<num_points; i++ )
-		{
-			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
-			m_ColorVertices[i].color     = d3d_color;
-		}
-
-		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1, NULL );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, (int)points.size() - 1, NULL );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
@@ -149,17 +191,7 @@ public:
 		if( points.size() < 2 || points.size() != colors.size() )
 			return Result::INVALID_ARGS;
 
-		const size_t num_points = points.size();
-
-		m_ColorVertices.resize( 0 );
-		m_ColorVertices.resize( num_points );
-		for( size_t i=0; i<num_points; i++ )
-		{
-			m_ColorVertices[i].vPosition = ToD3DXVECTOR3( points[i] );
-			m_ColorVertices[i].color     = colors[i].GetARGB32();
-		}
-
-		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, num_points - 1, NULL );
+		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, (int)points.size() - 1, NULL );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 	}
