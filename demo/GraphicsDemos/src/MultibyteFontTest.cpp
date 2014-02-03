@@ -8,7 +8,6 @@
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Support/FreeTypeAux.hpp"
 #include "amorphous/Support/UTF8/utf8.h"
-#include "amorphous/GUI.hpp"
 
 using std::string;
 using std::vector;
@@ -342,8 +341,8 @@ int CMultibyteFontTest::Init()
 
 void CMultibyteFontTest::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
+//	if( m_pSampleUI )
+//		m_pSampleUI->Update( dt );
 }
 
 
@@ -353,8 +352,8 @@ void CMultibyteFontTest::Render()
 
 //	RenderMeshes();
 
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
+//	if( m_pSampleUI )
+//		m_pSampleUI->Render();
 
 	bool display_graphics_resources_status = false;
 	if( display_graphics_resources_status )

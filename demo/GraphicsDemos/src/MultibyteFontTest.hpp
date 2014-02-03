@@ -7,7 +7,6 @@
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"
-#include "amorphous/GUI/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
@@ -20,7 +19,7 @@ class CMultibyteFontTest : public CGraphicsTestBase
 
 	boost::shared_ptr<UTFFont> m_pUTFFont;
 
-	CGM_DialogManagerSharedPtr m_pSampleUI;
+//	CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	TextureHandle m_TextBufferTexture;
 
