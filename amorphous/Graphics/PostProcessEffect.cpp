@@ -18,8 +18,8 @@ using std::vector;
 using namespace boost;
 
 
-#define V(x) { hr = x; if( FAILED(hr) ) { LOG_PRINT_ERROR( string(#x) + " failed." ); } }
-#define V_RETURN(x) { hr = x; if(FAILED(hr)) return hr; }
+//#define V(x) { hr = x; if( FAILED(hr) ) { LOG_PRINT_ERROR( string(#x) + " failed." ); } }
+//#define V_RETURN(x) { hr = x; if(FAILED(hr)) return hr; }
 
 
 // Texture coordinate rectangle
@@ -1625,11 +1625,13 @@ void HDRLightingFinalPassFilter::Render()
 */
 	if( m_pStar )
 	{
-		V( pd3dDevice->SetTexture( 2, m_pStar->m_Texture.GetTexture() ) );
+//		V( pd3dDevice->SetTexture( 2, m_pStar->m_Texture.GetTexture() ) );
+		GraphicsDevice().SetTexture( 2, m_pStar->m_Texture );
 	}
 	else
 	{
-		V( pd3dDevice->SetTexture( 2, m_BlancTextureForDisabledStarEffect.GetTexture() ) );
+//		V( pd3dDevice->SetTexture( 2, m_BlancTextureForDisabledStarEffect.GetTexture() ) );
+		GraphicsDevice().SetTexture( 2, m_BlancTextureForDisabledStarEffect );
 	}
 /*
 	V( pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT ) );

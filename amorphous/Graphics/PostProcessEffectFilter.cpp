@@ -233,7 +233,6 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	if( !m_pFilterShader )
 		return;
 
-	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 
 	// find render target
 //	bool found = GetRenderTarget( prev_filter, m_pDest );
@@ -252,7 +251,6 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	if( res != Result::SUCCESS )
 		int failed_to_set_technique = 1;
 
-	HRESULT hr;
 	TextureHandle& prev_scene_texture = m_pPrevScene->m_Texture;
 	if( !prev_scene_texture.IsLoaded() )
 		int texture_is_not_loaded = 1;
@@ -273,7 +271,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 
 	res = GraphicsDevice().SetTexture( 1, prev_scene_texture );
 
-	hr = pShaderMgr->GetEffect()->CommitChanges();
+	HRESULT hr = pShaderMgr->GetEffect()->CommitChanges();
 
 	if( GetDebugImageFilenameExtraString() == "-for-gaussblur" )
 	{
@@ -283,6 +281,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 		ONCE( tex_loaded = test_tex.Load( "debug/post-process_effect/test_tex.png" ) );
 		C2DRect test_rect( 0, 0, 199, 149, SFloatRGBAColor::White().GetARGB32() );
 		test_rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+		IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 		pd3dDevice->SetVertexShader( NULL );
 		pd3dDevice->SetPixelShader( NULL );
 		pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
