@@ -1,14 +1,19 @@
 #include "HLSLEffectTest.hpp"
 #include "amorphous/3DMath/MatrixConversions.hpp"
-#include "amorphous/Graphics.hpp"
-#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
+#include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
-#include "amorphous/Support/CameraController_Win32.hpp"
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 #include "amorphous/Input.hpp"
-#include "amorphous/GUI.hpp"
 
 using std::string;
 using std::vector;
@@ -34,11 +39,6 @@ m_DisplayDebugInfo(false)
 
 
 CHLSLEffectTest::~CHLSLEffectTest()
-{
-}
-
-
-void CHLSLEffectTest::CreateSampleUI()
 {
 }
 
@@ -99,9 +99,6 @@ bool CHLSLEffectTest::SetShader( int index )
 
 	pShaderLightMgr->CommitChanges();
 
-	Matrix44 proj = Matrix44PerspectiveFoV_LH( (float)PI / 4, 640.0f / 480.0f, 0.1f, 500.0f );
-	m_Shaders[index].GetShaderManager()->SetProjectionTransform( proj );
-
 //	shader_mgr.SetParam( "g_vEyeVS", GetCurrentCamera().GetCameraMatrix() * GetCurrentCamera().GetPosition() );
 	shader_mgr.SetParam( "g_vEyePos", GetCurrentCamera().GetPosition() );
 
@@ -143,43 +140,15 @@ bool CHLSLEffectTest::InitShaders()
 
 int CHLSLEffectTest::Init()
 {
-/*
-	m_MeshTechnique.SetTechniqueName( "NoLighting" );
-	m_DefaultTechnique.SetTechniqueName( "NoShader" );
-*/
+	m_Meshes.resize( 6 );
+	m_MeshScales.resize( m_Meshes.size() );
 
-/*	string mesh_file[] =
-	{
-		"./models/sample_level_00.msh", // manually load textures
-		"./models/FlakySlate.msh",      // load mesh and texture asnchronously
-		"./models/HighAltitude.msh",
-		"./models/RustPeel.msh",
-		"./models/SmashedGrayMarble.msh"
-	};
-
-	BOOST_FOREACH( const string& filepath, mesh_file )
-	{
-		m_vecMesh.push_back( MeshHandle() );
-
-		MeshResourceDesc desc;
-		desc.ResourcePath = filepath;
-
-		if( m_TestAsyncLoading )
-			desc.LoadOptionFlags = MeshLoadOption::DO_NOT_LOAD_TEXTURES;
-
-		m_vecMesh.back().Load( desc );
-	}
-*/
-
-	m_vecMesh.push_back( CTestMeshHolder( "./models/fw43.msh",              CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( "./models/primitive_meshes.msh",  CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.push_back( CTestMeshHolder( "./models/9x19mm.msh",            CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.back().m_fScale = 20.0f;
-	m_vecMesh.push_back( CTestMeshHolder( "./models/5.56x45mm.msh",         CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.back().m_fScale = 20.0f;
-	m_vecMesh.push_back( CTestMeshHolder( "./models/cz75-1st.msh",          CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
-	m_vecMesh.back().m_fScale = 20.0f;
-	m_vecMesh.push_back( CTestMeshHolder( "./models/male.msh",              CTestMeshHolder::LOAD_SYNCHRONOUSLY, Matrix34( Vector3(0,0,0), Matrix33Identity() ) ) );
+	m_Meshes[0].Load( "./models/fw43.msh" );             m_MeshScales[0] =  0.0f;
+	m_Meshes[1].Load( "./models/primitive_meshes.msh" ); m_MeshScales[1] =  0.0f;
+	m_Meshes[2].Load( "./models/9x19mm.msh" );           m_MeshScales[2] = 20.0f;
+	m_Meshes[3].Load( "./models/5.56x45mm.msh" );        m_MeshScales[3] = 20.0f;
+	m_Meshes[4].Load( "./models/cz75-1st.msh" );         m_MeshScales[4] = 20.0f;
+	m_Meshes[5].Load( "./models/male.msh" );             m_MeshScales[5] =  0.0f;
 
 	InitShaders();
 
@@ -194,8 +163,6 @@ int CHLSLEffectTest::Init()
 
 void CHLSLEffectTest::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
 }
 
 
@@ -222,22 +189,23 @@ void CHLSLEffectTest::RenderMesh()
 
 	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
-	if( m_CurrentMeshIndex < 0 || (int)m_vecMesh.size() <= m_CurrentMeshIndex )
+	if( m_CurrentMeshIndex < 0 || (int)m_Meshes.size() <= m_CurrentMeshIndex )
 		return;
 
 	Result::Name res = pShaderManager->SetTechnique( m_Techniques[m_CurrentShaderIndex] );
 
-	CTestMeshHolder& holder = m_vecMesh[m_CurrentMeshIndex];
+	MeshHandle& holder = m_Meshes[m_CurrentMeshIndex];
 
-	if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
+	if( holder.GetEntryState() == GraphicsResourceState::LOADED )
 	{
-		float s = holder.m_fScale;
-		Matrix44 world = ToMatrix44(holder.m_Pose) * Matrix44Scaling(s,s,s);
+		float s = m_MeshScales[m_CurrentMeshIndex];
+//		Matrix44 world = ToMatrix44(holder.m_Pose) * Matrix44Scaling(s,s,s);
+		Matrix44 world = Matrix44Identity() * Matrix44Scaling(s,s,s);
 		// set world transform
 		FixedFunctionPipelineManager().SetWorldTransform( world );
 		pShaderManager->SetWorldTransform( world );
 
-		BasicMesh *pMesh = holder.m_Handle.GetMesh().get();
+		BasicMesh *pMesh = holder.GetMesh().get();
 
 		if( pMesh )
 			pMesh->Render( *pShaderManager );
@@ -284,11 +252,6 @@ void CHLSLEffectTest::Render()
 
 	RenderMesh();
 
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
-
-//	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
-
 	if( m_DisplayDebugInfo )
 		RenderDebugInfo();
 }
@@ -296,16 +259,6 @@ void CHLSLEffectTest::Render()
 
 void CHLSLEffectTest::HandleInput( const InputData& input )
 {
-	if( m_pUIInputHandler )
-	{
-//		InputHandler::ProcessInput() does not take const InputData&
-		InputData input_copy = input;
-		m_pUIInputHandler->ProcessInput( input_copy );
-
-		if( m_pUIInputHandler->PrevInputProcessed() )
-			return;
-	}
-
 	switch( input.iGICode )
 	{
 	case GIC_DOWN:
@@ -327,17 +280,17 @@ void CHLSLEffectTest::HandleInput( const InputData& input )
 	case GIC_PAGE_DOWN:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			if( m_vecMesh.empty() )
+			if( m_Meshes.empty() )
 				return;
 
-			m_CurrentMeshIndex = (m_CurrentMeshIndex+1) % (int)m_vecMesh.size();
+			m_CurrentMeshIndex = (m_CurrentMeshIndex+1) % (int)m_Meshes.size();
 		}
 		break;
 
 	case GIC_PAGE_UP:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			m_CurrentMeshIndex = (m_CurrentMeshIndex + (int)m_vecMesh.size() - 1) % (int)m_vecMesh.size(); 
+			m_CurrentMeshIndex = (m_CurrentMeshIndex + (int)m_Meshes.size() - 1) % (int)m_Meshes.size(); 
 		}
 		break;
 
@@ -377,16 +330,4 @@ void CHLSLEffectTest::HandleInput( const InputData& input )
 	default:
 		break;
 	}
-}
-
-
-void CHLSLEffectTest::ReleaseGraphicsResources()
-{
-//	m_pSampleUI.reset();
-}
-
-
-void CHLSLEffectTest::LoadGraphicsResources( const GraphicsParameters& rParam )
-{
-//	CreateSampleUI();
 }

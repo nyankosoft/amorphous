@@ -2,28 +2,19 @@
 #define  __HLSLEffectTest_H__
 
 
-#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
-#include "amorphous/Input/fwd.hpp"
-#include "amorphous/GUI/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
-#include "AsyncLoadingTest.hpp"
 
-
-class CHLSLEffectTest : public CGraphicsTestBase, public GraphicsComponent
+class CHLSLEffectTest : public CGraphicsTestBase
 {
-	enum Params
-	{
-		TEXT_BUFFER_SIZE = 4096
-	};
+	std::vector<MeshHandle> m_Meshes;
 
-//	std::vector<MeshHandle> m_vecMesh;
-	std::vector<CTestMeshHolder> m_vecMesh;
+	std::vector<float> m_MeshScales;
 
 	std::vector<ShaderHandle> m_Shaders;
 
@@ -35,10 +26,6 @@ class CHLSLEffectTest : public CGraphicsTestBase, public GraphicsComponent
 
 	bool m_EnableLight[2];
 
-	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
-
-	CGM_DialogManagerSharedPtr m_pSampleUI;
-
 	std::string m_TextBuffer;
 
 	bool m_DisplayDebugInfo;
@@ -49,13 +36,9 @@ class CHLSLEffectTest : public CGraphicsTestBase, public GraphicsComponent
 
 private:
 
-	void CreateSampleUI();
-
 	bool SetShader( int index );
 
 	bool InitShaders();
-
-	void CreateCachedResources();
 
 	void RenderMesh();
 
@@ -80,9 +63,6 @@ public:
 //	virtual void RenderBase();
 
 	virtual void HandleInput( const InputData& input );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 
