@@ -179,7 +179,9 @@ inline Caliber::Name GetCaliberFromName( const char *caliber_name )
 
 inline bool IsCenterfireCartridge( Caliber::Name cal )
 {
-	if( cal == Caliber::_22_LR
+	if( cal == Caliber::_17_HMR
+	 || cal == Caliber::_22_SHORT
+	 || cal == Caliber::_22_LR
 	 || cal == Caliber::_22_WMR
 	 || cal == Caliber::_7_62X54R )
 	{
