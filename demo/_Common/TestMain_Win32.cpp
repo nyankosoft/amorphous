@@ -200,19 +200,7 @@ static void Render()
 
 	g_pTest->Render();
 
-	GraphicsDevice().Enable(  RenderStateType::ALPHA_BLEND );
-	GraphicsDevice().Disable( RenderStateType::LIGHTING );
-
-	// display fps
-	g_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), Vector2(20,20), 0xFFFFFFFF );
-
-	int i=0;
-	const vector<string>& vecProfileResults = GetProfileText();
-	BOOST_FOREACH( const string& text, vecProfileResults )
-	{
-		g_pFont->DrawText( text.c_str(), Vector2( 20, 40 + i*16 ), 0xF0F0F0FF );
-		i++;
-	}
+	g_pTest->DisplayDebugInfo();
 
 	if( pd3dDevice )
 	{

@@ -17,8 +17,6 @@ class CPrimitiveRendererTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	std::string m_TextBuffer;
-
 private:
 
 //	bool InitShader();

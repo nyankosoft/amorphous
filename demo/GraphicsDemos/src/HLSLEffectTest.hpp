@@ -26,8 +26,6 @@ class CHLSLEffectTest : public CGraphicsTestBase
 
 	bool m_EnableLight[2];
 
-	std::string m_TextBuffer;
-
 	bool m_DisplayDebugInfo;
 
 	int m_CurrentMeshIndex;

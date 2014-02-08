@@ -1,6 +1,5 @@
 #include "MultibyteFontTest.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
-#include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/Font/TrueTypeTextureFont.hpp"
 #include "amorphous/Graphics/Font/UTFFont.hpp"
@@ -358,18 +357,6 @@ void CMultibyteFontTest::Render()
 //	if( m_pSampleUI )
 //		m_pSampleUI->Render();
 
-	bool display_graphics_resources_status = false;
-	if( display_graphics_resources_status )
-	{
-		GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-		Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-		Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-		C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-		rect.Draw();
-
-		m_pFont->DrawText( m_TextBuffer, vTopLeft );
-	}
 /*
 	int ch = m_pFont->GetFontHeight();
 	for( size_t i=0; i<g_rec.size(); i++ )

@@ -1,7 +1,6 @@
 #include "MeshSplitterTest.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
-#include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
@@ -224,22 +223,6 @@ void CMeshSplitterTest::Render()
 	RenderMeshes();
 
 	RenderSplitPlane();
-
-	m_TextBuffer.resize( 0 );
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-//	rect.Draw();
-
-	if( m_pFont )
-	{
-		m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-		string cam_pos_text = to_string( GetCurrentCamera().GetPosition() );
-		m_pFont->DrawText( string("camera position: ") + cam_pos_text, Vector2( 20, 300 ) );
-	}
 }
 
 

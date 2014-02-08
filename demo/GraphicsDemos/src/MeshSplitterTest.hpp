@@ -53,8 +53,6 @@ class CMeshSplitterTest : public CGraphicsTestBase
 
 	boost::shared_ptr<amorphous::CameraController> m_pSplitPlaneController;
 
-	std::string m_TextBuffer;
-
 private:
 
 	bool InitShader();

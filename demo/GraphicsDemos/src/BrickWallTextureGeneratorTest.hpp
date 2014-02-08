@@ -16,8 +16,6 @@ class CBrickWallTextureGeneratorTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	std::string m_TextBuffer;
-
 	MeshHandle m_BrickWallMesh;
 
 	unsigned int m_PresetIndex;

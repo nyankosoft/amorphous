@@ -19,8 +19,6 @@ class CCustomMeshTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	std::string m_TextBuffer;
-
 	CustomMesh m_Mesh;
 
 	MeshHandle m_RegularMesh;

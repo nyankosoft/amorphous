@@ -24,8 +24,6 @@ class CPerlinNoiseTextureGeneratorTest : public CGraphicsTestBase
 
 	float m_fTextureRepeats;
 
-	std::string m_TextBuffer;
-
 private:
 
 	void CreateSampleUI();

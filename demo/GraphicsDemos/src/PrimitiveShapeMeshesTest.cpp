@@ -229,20 +229,6 @@ void CPrimitiveShapeMeshesTest::Render()
 	PROFILE_FUNCTION();
 
 	RenderMeshes();
-
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-	Vector2 vTopLeft(     640,       16 );
-	Vector2 vBottomRight( 640 + 256, 16 + 400 );
-/*	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-	rect.Draw();
-*/
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-	Vector3 vCamPos = GetCurrentCamera().GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
 }
 
 

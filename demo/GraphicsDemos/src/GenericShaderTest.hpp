@@ -27,8 +27,6 @@ class CGenericShaderTest : public CGraphicsTestBase
 
 //	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	std::string m_TextBuffer;
-
 	bool m_DisplayDebugInfo;
 
 private:

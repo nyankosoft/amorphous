@@ -21,8 +21,6 @@ class CGLSLTest : public CGraphicsTestBase
 
 	boost::shared_ptr<CGLProgram> m_pGLProgram;
 
-	std::string m_TextBuffer;
-
 private:
 
 	bool InitShader();

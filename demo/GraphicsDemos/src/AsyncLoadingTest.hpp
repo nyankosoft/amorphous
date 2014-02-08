@@ -55,7 +55,7 @@ class CAsyncLoadingTest : public CGraphicsTestBase, public GraphicsComponent
 
 	int m_NumTextureMipmaps;
 
-	std::string m_TextBuffer;
+//	std::string m_TextBuffer;
 
 private:
 

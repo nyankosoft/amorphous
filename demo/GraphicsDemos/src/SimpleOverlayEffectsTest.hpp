@@ -29,10 +29,6 @@ class CSimpleOverlayEffectsTest : public CGraphicsTestBase, public GraphicsCompo
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	std::string m_TextBuffer;
-
-	bool m_DisplayResourceInfo;
-
 private:
 
 	void SetLights();
@@ -40,8 +36,6 @@ private:
 	bool InitShader();
 
 	void RenderMeshes();
-
-	void DisplayResourceInfo();
 
 public:
 

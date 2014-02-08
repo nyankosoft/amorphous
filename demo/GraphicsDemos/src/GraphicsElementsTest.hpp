@@ -26,8 +26,6 @@ class CGraphicsElementsTest : public CGraphicsTestBase//, public GraphicsCompone
 
 	boost::shared_ptr<FillTriangleElement> m_pCornerIndicators[4];
 
-	std::string m_TextBuffer;
-
 private:
 
 	void CreateSampleUI();

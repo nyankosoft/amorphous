@@ -34,6 +34,10 @@ class CGraphicsTestBase
 
 	boost::shared_ptr<CameraController> m_pCameraController;
 
+	std::string m_TextBuffer;
+
+	bool m_DisplayDebugInfo;
+
 protected:
 
 	boost::shared_ptr<FontBase> m_pFont;
@@ -57,6 +61,8 @@ public:
 	virtual const char *GetAppTitle() const { return ""; }
 
 	Result::Name InitBase();
+
+	void DisplayDebugInfo();
 
 	/// returns 0 on success
 	virtual int Init() { return 0; }

@@ -180,17 +180,7 @@ void CBrickWallTextureGeneratorTest::Render()
 
 	RenderMeshes();
 
-//	m_TextBuffer.clear();
-//	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
-
-	Vector2 vTopLeft(     (float)GetWindowWidth() / 4,  (float)16 );
-//	Vector2 vBottomRight( (float)GetWindowWidth() - 16, (float)GetWindowHeight() * 3 / 2 );
-//	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-//	rect.Draw();
-
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 }
 
 

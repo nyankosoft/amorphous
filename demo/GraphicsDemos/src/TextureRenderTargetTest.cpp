@@ -207,17 +207,6 @@ void CTextureRenderTargetTest::Render()
 	// The mesh was rendered to the render target texture of m_pTextureRenderTarget
 
 	RenderTexturedRect();
-
-
-//	m_TextBuffer.resize( 0 );
-//	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-//
-//	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-//	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-//	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-//	rect.Draw();
-//
-//	m_pFont->DrawText( m_TextBuffer, vTopLeft );
 }
 
 

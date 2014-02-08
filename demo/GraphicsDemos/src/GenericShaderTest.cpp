@@ -159,22 +159,6 @@ void CGenericShaderTest::RenderMeshes()
 
 void CGenericShaderTest::RenderDebugInfo()
 {
-//	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-//	Vector2 vTopLeft(     (float)GetWindowWidth() / 4.0f,  16.0f );
-//	Vector2 vBottomRight( (float)GetWindowWidth() - 16.0f, (float)GetWindowHeight() * 3.0f / 2.0f );
-//	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-//	rect.Draw();
-
-//	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-	int ch = m_pFont->GetFontHeight();
-	int rh = (int)(ch * 1.2);// row height
-
-	Vector3 vCamPos = GetCurrentCamera().GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
 }
 
 

@@ -2,7 +2,6 @@
 #include <boost/foreach.hpp>
 #include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
-#include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
@@ -22,8 +21,7 @@ using namespace boost;
 CSimpleOverlayEffectsTest::CSimpleOverlayEffectsTest()
 :
 m_EnableNoiseEffect(true),
-m_EnableStripeEffect(true),
-m_DisplayResourceInfo(false)
+m_EnableStripeEffect(true)
 {
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
@@ -161,24 +159,6 @@ void CSimpleOverlayEffectsTest::RenderMeshes()
 }
 
 
-void CSimpleOverlayEffectsTest::DisplayResourceInfo()
-{
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-	rect.Draw();
-
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-
-	Vector3 vCamPos = GetCurrentCamera().GetPosition();
-	m_pFont->DrawText(
-		fmt_string( "x: %f\ny: %f\nz: %f\n", vCamPos.x, vCamPos.y, vCamPos.z ),
-		Vector2( 20, 300 ) );
-}
-
-
 void CSimpleOverlayEffectsTest::Render()
 {
 	PROFILE_FUNCTION();
@@ -205,9 +185,6 @@ void CSimpleOverlayEffectsTest::Render()
 		rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2((float)vp.Width/(float)16,(float)vp.Height/(float)16) );
 		rect.Draw( m_StripeTexture );
 	}
-
-	if( m_DisplayResourceInfo )
-		DisplayResourceInfo();
 }
 
 

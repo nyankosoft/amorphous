@@ -112,16 +112,6 @@ void CPerlinNoiseTextureGeneratorTest::Render()
 
 	rect.SetPositionLTWH( w, 0, w, w );
 	rect.Draw( m_PerlinNoiseNormalMap );
-
-/*	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-	rect.Draw();
-
-	m_pFont->DrawText( m_TextBuffer, vTopLeft );
-*/
 }
 
 

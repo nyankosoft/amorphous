@@ -22,8 +22,6 @@ class CPrimitiveShapeMeshesTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	std::string m_TextBuffer;
-
 	int m_MeshIndex;
 
 	int m_NumPrimitiveMeshes;

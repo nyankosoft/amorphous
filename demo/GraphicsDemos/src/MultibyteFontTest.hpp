@@ -25,8 +25,6 @@ class CMultibyteFontTest : public CGraphicsTestBase
 
 	std::string m_UTFText;
 
-	std::string m_TextBuffer;
-
 private:
 
 	void CreateSampleUI();
