@@ -75,6 +75,8 @@ class MeshViewer : public GraphicsApplicationBase
 	/// 7 length options: 0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128[m]
 	int m_NormalLengthFactor;
 
+	bool m_DisplayHelp;
+
 	const std::string GetApplicationTitle() { return "MeshViewer"; }
 
 protected:

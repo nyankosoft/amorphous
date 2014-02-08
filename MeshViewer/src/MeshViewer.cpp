@@ -33,6 +33,26 @@ using namespace boost::filesystem;
 ApplicationBase *amorphous::CreateApplicationInstance() { return new MeshViewer; }
 
 
+static const char *sg_help[] = {
+	"[Keyboard]",
+	"  F: Show/hide vertex normals",
+	"  S: Cycle shaders",
+	"  B: Cycle background colors",
+	"  T: Display subset information",
+	"  A: Z-sort polygons to render",
+	"  L: Turn on/off lighting",
+	"  N: Enable/disable bump mapping",
+	"  F9: Reload graphics resources",
+	"  Right: Load the next mesh file in the current directory",
+	"  Left: Load the previous mesh file in the current directory",
+	"",
+	"[Mouse]",
+	"  Drag with left button: Move (x/y)",
+	"  Drag with right button: Rotate (heading/pitch)",
+	"  Wheel: Zoom in/out",
+	""
+};
+
 
 MeshViewer::MeshViewer()
 :
@@ -53,7 +73,8 @@ m_NormalMapTextureIndex(-1),
 m_CurrentSDCShaderIndex(0),
 m_RenderSubsetsInformation(false),
 m_RenderZSorted(false),
-m_NormalLengthFactor(0)
+m_NormalLengthFactor(0),
+m_DisplayHelp(false)
 {
 	m_UseCameraController = false;
 
@@ -461,6 +482,9 @@ void MeshViewer::Render()
 		m_pFont->DrawText( text, Vector2( 20, screen_h - 20 ) );
 	}
 
+	const char *help_instruction = "Press 'H' to display help.";
+	m_pFont->DrawText( help_instruction, Vector2( screen_w - m_pFont->GetTextWidth(help_instruction) - 10, screen_h - 20 ) );
+
 	// render the text info
 //	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
 //	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
@@ -469,6 +493,23 @@ void MeshViewer::Render()
 	 && pMesh )
 	{
 		RenderSubsetsInformation( *pMesh );
+	}
+
+	if( m_DisplayHelp )
+	{
+		int num_help_rows = numof(sg_help);
+		C2DRect help_bg_rect;
+		help_bg_rect.SetPositionLTWH( 40, 40, 500, num_help_rows * m_pFont->GetFontHeight() );
+		help_bg_rect.SetColor( SFloatRGBAColor(0.0f,0.0f,0.0f,0.5f) );
+		help_bg_rect.Draw();
+
+		for( int i=0; i<num_help_rows; i++ )
+		{
+			Vector2 pos;
+			pos.x = 50;
+			pos.y = 50 + i * m_pFont->GetFontHeight();
+			m_pFont->DrawText( sg_help[i], pos );
+		}
 	}
 }
 
@@ -695,6 +736,13 @@ void MeshViewer::HandleInput( const InputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_NormalLengthFactor = (m_NormalLengthFactor + 1) % 8;
+		}
+		break;
+
+	case 'H':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_DisplayHelp = !m_DisplayHelp;
 		}
 		break;
 
