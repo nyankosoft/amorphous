@@ -329,21 +329,6 @@ Vector3 BVHPlayer::GetBodyCenterPosition( int iFrame )
 }
 
 
-void BVHPlayer::CopyFramesTo( int iStartFrame, int iEndFrame, BVHPlayer* pDestBVHPlayer )
-{
-	if( iStartFrame < 0 ) iStartFrame = 0;
-	if( iEndFrame < 0 ) iEndFrame = 0;
-	if( GetNumTotalFrames() <= iStartFrame ) iStartFrame = GetNumTotalFrames() - 1;
-	if( GetNumTotalFrames() <= iEndFrame ) iEndFrame = GetNumTotalFrames() - 1;
-
-	int iFrame;
-	for(iFrame=iStartFrame; iFrame<=iEndFrame; iFrame++)
-	{
-		pDestBVHPlayer->m_vecFrame.push_back( this->m_vecFrame[iFrame] );
-	}
-}
-
-
 // translate the player's position to make a motion between 'iStartFrame' and 'iEndFrame' start from
 // the origin of the world coordinate
 void BVHPlayer::ClearStartPositionOffset( int iStartFrame, int iEndFrame )
@@ -377,9 +362,24 @@ void BVHPlayer::ClearStartPositionOffset( int iStartFrame, int iEndFrame )
 }
 
 
-void BVHPlayer::CopySkeletonTo(BVHPlayer* pDestBVHPlayer)
+void BVHPlayer::CopyFramesTo( int iStartFrame, int iEndFrame, BVHPlayer& dest_bvh_player ) const
 {
-	pDestBVHPlayer->m_RootBone = this->m_RootBone;
+	if( iStartFrame < 0 ) iStartFrame = 0;
+	if( iEndFrame < 0 ) iEndFrame = 0;
+	if( GetNumTotalFrames() <= iStartFrame ) iStartFrame = GetNumTotalFrames() - 1;
+	if( GetNumTotalFrames() <= iEndFrame ) iEndFrame = GetNumTotalFrames() - 1;
+
+	int iFrame;
+	for(iFrame=iStartFrame; iFrame<=iEndFrame; iFrame++)
+	{
+		dest_bvh_player.m_vecFrame.push_back( this->m_vecFrame[iFrame] );
+	}
+}
+
+
+void BVHPlayer::CopySkeletonTo( BVHPlayer& dest_bvh_player ) const
+{
+	dest_bvh_player.m_RootBone = this->m_RootBone;
 }
 
 

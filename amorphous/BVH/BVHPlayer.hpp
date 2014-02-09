@@ -94,13 +94,15 @@ public:
 	SBVHFrameData& GetFrameData( int iFrame ) { return m_vecFrame[iFrame]; }
 	std::vector<SBVHFrameData>& GetFrameData() { return m_vecFrame; }
 
-	virtual void CopyFramesTo( int iStartFrame, int iEndFrame, BVHPlayer* pDestBVHPlayer );
 	void DeleteFrames( int iStartFrame, int iEndFrame );
 	virtual void DeleteAllFrames() { m_vecFrame.clear(); }
 	void ClearStartPositionOffset( int iStartFrame, int iEndFrame );
 	void MoveOffset( int iFrame, Vector3 vOffset,
 		float fRotAngleZ = 0, float fRotAngleX = 0, float fRotAngleY = 0 );
-	void CopySkeletonTo(BVHPlayer* pDestBVHPlayer);
+
+	void CopyFramesTo( int iStartFrame, int iEndFrame, BVHPlayer& dest_bvh_player ) const;
+
+	void CopySkeletonTo( BVHPlayer& dest_bvh_player ) const;
 
 	/// returns transforms at each joint
 	void GetLocalTransforms( Matrix34* paDestTransform ) const ;
