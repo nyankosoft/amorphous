@@ -17,6 +17,7 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
+#include "amorphous/Input.hpp"
 #include <boost/filesystem.hpp>
 
 using std::string;

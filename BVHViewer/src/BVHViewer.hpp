@@ -2,16 +2,13 @@
 #define  __BVHViewer_HPP__
 
 
-#include <boost/shared_ptr.hpp>
 #include "amorphous/App/GraphicsApplicationBase.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"
-#include "amorphous/Input.hpp"
 #include "amorphous/BVH/BVHPlayer.hpp"
 
 using namespace amorphous;
