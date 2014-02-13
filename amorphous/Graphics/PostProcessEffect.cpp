@@ -1324,7 +1324,6 @@ void LuminanceCalcFilter::GetSampleOffsets_DownScale4x4( int width, int height, 
 
 void LuminanceCalcFilter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -1357,11 +1356,12 @@ void LuminanceCalcFilter::Render()
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
 */
 	// Check the current states: should all be D3DTEXF_LINEAR. See above.
-	DWORD mag0=0, min0=0, mag1=0, min1=0;
-	pd3dDevice->GetSamplerState( 0, D3DSAMP_MAGFILTER, &mag0 );
-	pd3dDevice->GetSamplerState( 0, D3DSAMP_MINFILTER, &min0 );
-	pd3dDevice->GetSamplerState( 1, D3DSAMP_MAGFILTER, &mag1 );
-	pd3dDevice->GetSamplerState( 1, D3DSAMP_MINFILTER, &min1 );
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	DWORD mag0=0, min0=0, mag1=0, min1=0;
+//	pd3dDevice->GetSamplerState( 0, D3DSAMP_MAGFILTER, &mag0 );
+//	pd3dDevice->GetSamplerState( 0, D3DSAMP_MINFILTER, &min0 );
+//	pd3dDevice->GetSamplerState( 1, D3DSAMP_MAGFILTER, &mag1 );
+//	pd3dDevice->GetSamplerState( 1, D3DSAMP_MINFILTER, &min1 );
 
 	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 }
