@@ -17,6 +17,9 @@ class CD3DTextureResource : public TextureResource
 	D3DTEXTUREFILTERTYPE m_MagFilter;
 	D3DTEXTUREFILTERTYPE m_MinFilter;
 
+	D3DTEXTUREADDRESS m_TextureAddressU;
+	D3DTEXTUREADDRESS m_TextureAddressV;
+
 //	boost::shared_ptr<LockedTexture> m_pLockedTexture;
 
 protected:
@@ -66,6 +69,9 @@ public:
 
 	D3DTEXTUREFILTERTYPE GetMagFilter() const { return m_MagFilter; }
 	D3DTEXTUREFILTERTYPE GetMinFilter() const { return m_MinFilter; }
+
+	D3DTEXTUREADDRESS GetTextureAddressU() const { return m_TextureAddressU; }
+	D3DTEXTUREADDRESS GetTextureAddressV() const { return m_TextureAddressV; }
 
 	/// Save the texture to disk as an image file
 	/// - For debugging

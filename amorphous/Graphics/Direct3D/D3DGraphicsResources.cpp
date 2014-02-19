@@ -114,7 +114,9 @@ CD3DTextureResource::CD3DTextureResource( const TextureResourceDesc *pDesc )
 TextureResource(pDesc),
 m_pTexture(NULL),
 m_MagFilter(D3DTEXF_LINEAR),
-m_MinFilter(D3DTEXF_LINEAR)
+m_MinFilter(D3DTEXF_LINEAR),
+m_TextureAddressU(D3DTADDRESS_WRAP),
+m_TextureAddressV(D3DTADDRESS_WRAP)
 {
 }
 
@@ -242,6 +244,23 @@ D3DTEXTUREFILTERTYPE ToD3DTEXTUREFILTERTYPE( uint value )
 }
 
 
+D3DTEXTUREADDRESS ToD3DTEXTUREADDRESS( uint value )
+{
+	switch(value)
+	{
+	case TextureAddressMode::REPEAT:          return D3DTADDRESS_WRAP;
+	case TextureAddressMode::MIRRORED_REPEAT: return D3DTADDRESS_MIRROR;
+	case TextureAddressMode::CLAMP_TO_BORDER: return D3DTADDRESS_BORDER;
+	case TextureAddressMode::CLAMP_TO_EDGE:   return D3DTADDRESS_CLAMP;
+	default:
+		LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
+		return D3DTADDRESS_WRAP;
+	}
+
+	return D3DTADDRESS_WRAP;
+}
+
+
 Result::Name CD3DTextureResource::SetSamplingParameter( SamplingParameter::Name param, uint value )
 {
 	HRESULT hr = S_OK;
@@ -261,10 +280,13 @@ Result::Name CD3DTextureResource::SetSamplingParameter( SamplingParameter::Name 
 	}
 
 	DWORD dest_value = 0;
-	if( dest_type == D3DSAMP_ADDRESSU
-	 || dest_type == D3DSAMP_ADDRESSV
-	 || dest_type == D3DSAMP_ADDRESSW )
-	{
+	if( dest_type == D3DSAMP_ADDRESSU )
+		m_TextureAddressU = ToD3DTEXTUREADDRESS(value);
+	else if( dest_type == D3DSAMP_ADDRESSV )
+		m_TextureAddressV = ToD3DTEXTUREADDRESS(value);
+//	else if( dest_type == D3DSAMP_ADDRESSW )
+//		m_TextureAddressW = ToD3DTEXTUREADDRESS(value);
+//	{
 //		switch(value)
 //		{
 //		case TextureAddressMode::REPEAT:          dest_value = D3DTADDRESS_WRAP;   break;
@@ -275,7 +297,7 @@ Result::Name CD3DTextureResource::SetSamplingParameter( SamplingParameter::Name 
 //			LOG_PRINTF_ERROR(( " An unsupported texture address mode (%d)", (int)value ));
 //			break;
 //		}
-	}
+//	}
 	else if( dest_type == D3DSAMP_MAGFILTER )
 	{
 		m_MagFilter = ToD3DTEXTUREFILTERTYPE( value );
