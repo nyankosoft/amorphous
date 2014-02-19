@@ -362,6 +362,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DTextureResourceVisitor.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp" />

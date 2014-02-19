@@ -1971,6 +1971,9 @@
     <ClInclude Include="..\..\amorphous\Support\recursive_file_finder.hpp">
       <Filter>Support</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DTextureResourceVisitor.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">
