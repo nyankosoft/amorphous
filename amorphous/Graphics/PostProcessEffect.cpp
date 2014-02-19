@@ -560,10 +560,15 @@ DownScale4x4Filter::DownScale4x4Filter()
 
 //	m_ScalingFactor = 0.25f;
 
-	m_SetSamplerParameters[0] = 1;
 	m_MaxInputTextureIndex = 0;
+
+	m_SetSamplerParameters[0] = 1;
 	m_MagFilters[0] = TextureFilter::LINEAR;
 	m_MinFilters[0] = TextureFilter::LINEAR;
+
+	m_SetTextureWrapParameters[0] = 1;
+	m_TextureWrapAxis0[0] = TextureAddressMode::CLAMP_TO_EDGE;
+	m_TextureWrapAxis1[0] = TextureAddressMode::CLAMP_TO_EDGE;
 }
 
 
@@ -657,8 +662,8 @@ void DownScale4x4Filter::Render()
 
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
 /*	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );*/
-	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
 	Result::Name res = GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 
@@ -676,10 +681,15 @@ DownScale2x2Filter::DownScale2x2Filter()
 
 //	m_ScalingFactor = 0.50f;
 
-	m_SetSamplerParameters[0] = 1;
 	m_MaxInputTextureIndex = 0;
+
+	m_SetSamplerParameters[0] = 1;
 	m_MagFilters[0] = TextureFilter::NEAREST;
 	m_MinFilters[0] = TextureFilter::NEAREST;
+
+	m_SetTextureWrapParameters[0] = 1;
+	m_TextureWrapAxis0[0] = TextureAddressMode::CLAMP_TO_EDGE;
+	m_TextureWrapAxis1[0] = TextureAddressMode::CLAMP_TO_EDGE;
 }
 
 
@@ -745,8 +755,8 @@ void DownScale2x2Filter::Render()
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
@@ -847,10 +857,15 @@ GaussianBlurFilter::GaussianBlurFilter()
 	m_ExtraTexelBorderWidth = 1;
 	m_UseTextureSizeDivisibleBy8 = true;
 
-	m_SetSamplerParameters[0] = 1;
 	m_MaxInputTextureIndex = 0;
+
+	m_SetSamplerParameters[0] = 1;
 	m_MagFilters[0] = TextureFilter::NEAREST;
 	m_MinFilters[0] = TextureFilter::NEAREST;
+
+	m_SetTextureWrapParameters[0] = 1;
+	m_TextureWrapAxis0[0] = TextureAddressMode::CLAMP_TO_EDGE;
+	m_TextureWrapAxis1[0] = TextureAddressMode::CLAMP_TO_EDGE;
 }
 
 
@@ -919,8 +934,8 @@ void GaussianBlurFilter::Render()
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
 	RenderFullScreenQuad( shader_mgr, coords );
 
@@ -1527,11 +1542,12 @@ m_StarEffectEnabled(false)
 	desc.pLoader.reset( new SingleColorTextureGenerator( SFloatRGBAColor::Black() ) );
 	m_BlancTextureForDisabledStarEffect.Load( desc );
 
+	m_MaxInputTextureIndex = 3;
+
 	m_SetSamplerParameters[0] = 1;
 	m_SetSamplerParameters[1] = 1;
 	m_SetSamplerParameters[2] = 1;
 	m_SetSamplerParameters[3] = 1;
-	m_MaxInputTextureIndex = 3;
 	m_MagFilters[0] = TextureFilter::NEAREST;
 	m_MinFilters[0] = TextureFilter::NEAREST;
 	m_MagFilters[1] = TextureFilter::LINEAR;
@@ -1540,6 +1556,13 @@ m_StarEffectEnabled(false)
 	m_MinFilters[2] = TextureFilter::LINEAR;
 	m_MagFilters[3] = TextureFilter::NEAREST;
 	m_MinFilters[3] = TextureFilter::NEAREST;
+
+	for( int i=0; i<4; i++ )
+	{
+		m_SetTextureWrapParameters[i] = 1;
+		m_TextureWrapAxis0[i] = TextureAddressMode::CLAMP_TO_EDGE;
+		m_TextureWrapAxis1[i] = TextureAddressMode::CLAMP_TO_EDGE;
+	}
 }
 
 
@@ -1655,14 +1678,14 @@ void HDRLightingFinalPassFilter::Render()
 	pd3dDevice->GetSamplerState( 3, D3DSAMP_MAGFILTER, &mag3 );
 	pd3dDevice->GetSamplerState( 3, D3DSAMP_MINFILTER, &min3 );
 
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 1, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 1, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 2, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 2, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 3, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
-	pd3dDevice->SetSamplerState( 3, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 1, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 1, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 2, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 2, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 3, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
+//	pd3dDevice->SetSamplerState( 3, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
 
 	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 

@@ -175,6 +175,10 @@ protected:
 	TextureFilter::Name m_MagFilters[4];
 	TextureFilter::Name m_MinFilters[4];
 
+	char m_SetTextureWrapParameters[4];
+	TextureAddressMode::Name m_TextureWrapAxis0[4];
+	TextureAddressMode::Name m_TextureWrapAxis1[4];
+
 	ShaderTechniqueHandle m_Technique;
 
 	float m_fScalingFactor;
@@ -235,10 +239,17 @@ public:
 			m_MinFilters[i] = TextureFilter::LINEAR;
 		}
 
+		for( int i=0; i<numof(m_TextureWrapAxis0); i++ ) m_TextureWrapAxis0[i] = TextureAddressMode::CLAMP_TO_EDGE;
+		for( int i=0; i<numof(m_TextureWrapAxis1); i++ ) m_TextureWrapAxis1[i] = TextureAddressMode::CLAMP_TO_EDGE;
+
 		// Mag & min filters for the texture 0 are set by default.
 		m_SetSamplerParameters[0] = 1;
 		for( int i=1; i<numof(m_SetSamplerParameters); i++ )
 			m_SetSamplerParameters[i] = 0;
+
+		for( int i=0; i<numof(m_SetTextureWrapParameters); i++ )
+			m_SetTextureWrapParameters[i] = 0;
+
 		m_MaxInputTextureIndex = 0;
 	}
 

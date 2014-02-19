@@ -265,6 +265,16 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 		}
 	}
 
+	num_loops = take_min( m_MaxInputTextureIndex + 1, numof(m_SetTextureWrapParameters) );
+	for( uint i=0; i<num_loops; i++ )
+	{
+		if( m_SetTextureWrapParameters[i] )
+		{
+			prev_scene_texture.SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_0, m_TextureWrapAxis0[i] );
+			prev_scene_texture.SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_1, m_TextureWrapAxis1[i] );
+		}
+	}
+
 	res = GraphicsDevice().SetTexture( 0, prev_scene_texture );
 	if( res != Result::SUCCESS )
 		int failed_to_set_texture = 1;
