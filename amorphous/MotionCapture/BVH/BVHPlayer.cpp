@@ -1,6 +1,6 @@
 #include "BVHPlayer.hpp"
-#include "../Graphics/TextureStage.hpp"
-#include "../Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/TextureStage.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
 
 
 namespace amorphous

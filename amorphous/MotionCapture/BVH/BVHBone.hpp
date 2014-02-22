@@ -3,12 +3,12 @@
 
 
 #include "fwd.hpp"
-#include "../Support/StringAux.hpp"
-#include "../3DMath/Matrix34.hpp"
-#include "../3DMath/Matrix44.hpp"
-#include "../3DMath/Quaternion.hpp"
-#include "../Graphics/FloatRGBAColor.hpp"
-#include "../Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
 
 
 namespace amorphous

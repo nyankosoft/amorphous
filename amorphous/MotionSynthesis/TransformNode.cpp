@@ -1,5 +1,5 @@
 #include "TransformNode.hpp"
-#include "amorphous/BVH/BVHBone.hpp"
+#include "amorphous/MotionCapture/BVH/BVHBone.hpp"
 #include "amorphous/3DMath/TCBSpline.hpp"
 
 

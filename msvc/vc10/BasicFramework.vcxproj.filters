@@ -85,9 +85,6 @@
     <Filter Include="Sound">
       <UniqueIdentifier>{0235667a-d3b1-4fe4-95c7-7acb7a10e3cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BVH">
-      <UniqueIdentifier>{01c14dff-8847-4da7-b62c-fde5eef60113}</UniqueIdentifier>
-    </Filter>
     <Filter Include="XML">
       <UniqueIdentifier>{ea1f1c87-6c60-4f7b-a953-b1157cb69e8b}</UniqueIdentifier>
     </Filter>
@@ -144,6 +141,12 @@
     </Filter>
     <Filter Include="Input\Win32">
       <UniqueIdentifier>{fca6d22b-ab7e-4290-93d0-d86a0254f325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MotionCapture">
+      <UniqueIdentifier>{031094c4-ee09-4c98-83ae-12e5563bdb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MotionCapture\BVH">
+      <UniqueIdentifier>{01c14dff-8847-4da7-b62c-fde5eef60113}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -663,12 +666,6 @@
     <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\BVH\BVHBone.cpp">
-      <Filter>BVH</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\BVH\BVHPlayer.cpp">
-      <Filter>BVH</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
       <Filter>XML</Filter>
     </ClCompile>
@@ -845,6 +842,12 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.cpp">
       <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHBone.cpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.cpp">
+      <Filter>MotionCapture\BVH</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1724,15 +1727,6 @@
     <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\BVH\BVHBone.hpp">
-      <Filter>BVH</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\BVH\BVHPlayer.hpp">
-      <Filter>BVH</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\BVH\fwd.hpp">
-      <Filter>BVH</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\XML\XercesString.hpp">
       <Filter>XML</Filter>
     </ClInclude>
@@ -1973,6 +1967,15 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DTextureResourceVisitor.hpp">
       <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\fwd.hpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHBone.hpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.hpp">
+      <Filter>MotionCapture\BVH</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -286,6 +286,8 @@
     <ClCompile Include="..\..\amorphous\Input\Win32\DirectInputMouse.cpp" />
     <ClCompile Include="..\..\amorphous\Input\Win32\StdKeyboard.cpp" />
     <ClCompile Include="..\..\amorphous\Input\Win32\StdMouseInput.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHBone.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.cpp" />
     <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.cpp" />
     <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.cpp" />
     <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.cpp" />
@@ -322,8 +324,6 @@
     <ClCompile Include="..\..\amorphous\Sound\PyModule_SoundMethods.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\SoundManager.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp" />
-    <ClCompile Include="..\..\amorphous\BVH\BVHBone.cpp" />
-    <ClCompile Include="..\..\amorphous\BVH\BVHPlayer.cpp" />
     <ClCompile Include="..\..\amorphous\XML\XercesString.cpp" />
     <ClCompile Include="..\..\amorphous\XML\XMLDocumentLoader.cpp" />
     <ClCompile Include="..\..\amorphous\Physics\Actor.cpp">
@@ -633,6 +633,9 @@
     <ClInclude Include="..\..\amorphous\Input\Win32\InputDeviceInitializer_Win32.hpp" />
     <ClInclude Include="..\..\amorphous\Input\Win32\StdKeyboard.hpp" />
     <ClInclude Include="..\..\amorphous\Input\Win32\StdMouseInput.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHBone.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\fwd.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\ConvexShapeDesc.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.hpp" />
@@ -712,9 +715,6 @@
     <ClInclude Include="..\..\amorphous\Sound\SoundManagerImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\SoundSource.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp" />
-    <ClInclude Include="..\..\amorphous\BVH\BVHBone.hpp" />
-    <ClInclude Include="..\..\amorphous\BVH\BVHPlayer.hpp" />
-    <ClInclude Include="..\..\amorphous\BVH\fwd.hpp" />
     <ClInclude Include="..\..\amorphous\XML\XercesString.hpp" />
     <ClInclude Include="..\..\amorphous\XML\xmlch2x.hpp" />
     <ClInclude Include="..\..\amorphous\XML\XMLDocumentLoader.hpp" />

@@ -4,7 +4,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "../base.hpp"
-#include "../BVH/fwd.hpp"
+#include "../MotionCapture/BVH/fwd.hpp"
 #include "fwd.hpp"
 
 

@@ -4,7 +4,7 @@
 
 #include "amorphous/3DMath/Quaternion.hpp"
 #include "amorphous/3DMath/Transform.hpp"
-#include "amorphous/BVH/fwd.hpp"
+#include "amorphous/MotionCapture/BVH/fwd.hpp"
 #include "amorphous/Support/Serialization/Serialization.hpp"
 #include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 

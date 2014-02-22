@@ -1,10 +1,10 @@
 #include "BVHBone.hpp"
-#include "../3DMath/MatrixConversions.hpp"
-#include "../Graphics/Shader/ShaderManager.hpp"
-#include "../Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "../Graphics/GraphicsDevice.hpp"
-#include "../Graphics/PrimitiveRenderer.hpp"
-#include "../Graphics/PrimitiveShapeRenderer.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/PrimitiveRenderer.hpp"
+#include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 
 
 namespace amorphous

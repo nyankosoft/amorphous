@@ -1,5 +1,5 @@
 #include "3DMath/fwd.hpp"
-#include "BVH/fwd.hpp"
+#include "MotionCapture/BVH/fwd.hpp"
 #include "GameCommon/fwd.hpp"
 #include "Graphics/fwd.hpp"
 #include "GUI/fwd.hpp"
