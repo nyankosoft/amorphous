@@ -145,110 +145,110 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BaseFace.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BaseFace.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BaseFace.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BaseFace.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BSPMapCompiler.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BSPMapCompiler.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BSPMapCompiler_Gen.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BSPMapCompiler_Gen.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BSPMapData.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BSPMapData.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BSPMapData.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BSPMapData.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BSPTreeBuilder.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BSPTreeBuilder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\BSPTreeBuilder.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\BSPTreeBuilder.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\CellBuilder.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\CellBuilder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\CellBuilder.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\CellBuilder.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\mapcompiler.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\mapcompiler.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\MapFace.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\MapFace.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\MapFace.h"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\MapFace.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\PortalBuilder.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\PortalBuilder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\BSPMapCompiler\PVSBuilders.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\PVSBuilders.cpp"
 				>
 			</File>
 			<Filter
 				Name="Static Lightmap"
 				>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\AmbientOcclusionLightmapBuilder.cpp"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\AmbientOcclusionLightmapBuilder.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\AmbientOcclusionLightmapBuilder.h"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\AmbientOcclusionLightmapBuilder.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\LightingForLightmap.h"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightingForLightmap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\LightingForLightmap_SimpleRaytrace.cpp"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightingForLightmap_SimpleRaytrace.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\LightingForLightmap_SimpleRaytrace.h"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightingForLightmap_SimpleRaytrace.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\Lightmap.cpp"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\Lightmap.h"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\LightmapBuilder.cpp"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\lightmapbuilder.h"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\lightmapbuilder.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\LightmapTexture.cpp"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\BSPMapCompiler\LightmapTexture.h"
+					RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.h"
 					>
 				</File>
 			</Filter>

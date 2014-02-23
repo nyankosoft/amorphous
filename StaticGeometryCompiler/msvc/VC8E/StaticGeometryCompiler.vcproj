@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../Project1;../../../../Project1/gds"
+				AdditionalIncludeDirectories="../../../../Project1;../../../../Project1/amorphous"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -102,7 +102,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../../Project1;../../../../Project1/gds"
+				AdditionalIncludeDirectories="../../../../Project1;../../../../Project1/amorphous"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;DOM_DYNAMIC"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -154,11 +154,11 @@
 				Name="StaticGeometryCompiler"
 				>
 				<File
-					RelativePath="..\..\..\..\Project1\gds\Stage\bsptree.cpp"
+					RelativePath="..\..\..\..\Project1\amorphous\Stage\bsptree.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\Project1\gds\Stage\bsptree.hpp"
+					RelativePath="..\..\..\..\Project1\amorphous\Stage\bsptree.hpp"
 					>
 				</File>
 				<File
@@ -212,39 +212,39 @@
 					Name="BSPMapCompiler"
 					>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\fwd.hpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\fwd.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\Lightmap.cpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\Lightmap.hpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.cpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapBuilder.hpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapLightingManager.cpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapLightingManager.hpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.cpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\Project1\gds\BSPMapCompiler\LightmapTexture.hpp"
+						RelativePath="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.hpp"
 						>
 					</File>
 				</Filter>
@@ -294,19 +294,19 @@
 			Name="Stage"
 			>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometry.hpp"
+				RelativePath="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.cpp"
+				RelativePath="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Project1\gds\Stage\StaticGeometryArchiveFG.hpp"
+				RelativePath="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.hpp"
 				>
 			</File>
 		</Filter>
