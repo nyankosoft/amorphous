@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<GeometryFilter>
+	<Include>
+		<!-- layers, surfaces, and polygon groups for collision triangle mesh -->
+		<!-- If nothing is specified, all the layers, surfaces, or polygon groups are used as collision mesh -->
+		<Layer>Collision</Layer>
+		<Layer>Graphics</Layer>
+		<Layer>Terrain</Layer>
+		<!-- Not implemented yet
+		<Surface>
+		</Surface>
+		<PolygonGroup>
+		</PolygonGroup>
+		-->
+	</Include>
+	<Exclude>
+		<Layer>Lights</Layer>
+	</Exclude>
+</GeometryFilter>

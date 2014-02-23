@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Root>
+	<Input>
+		<LightWave>
+			<File>./models/hall.lwo</File>
+		</LightWave>
+	</Input>
+	<Output>
+		<File>./compiled/hall.sga</File>
+	</Output>
+	<Collision>
+		<GeometryFilterFile>./collision_geometry_filter.xml</GeometryFilterFile>
+	</Collision>
+	<Graphics>
+		<GeometryFilterFile>./graphics_geometry_filter.xml</GeometryFilterFile>
+		<Surface>
+			<SurfaceDescFile>./surface_desc.xml</SurfaceDescFile>
+		</Surface>
+		<Lighting>
+			<LightFile>./hall_lights.xml</LightFile>
+		</Lighting>
+		<Lightmap>
+			<TexelSize>0.2</TexelSize>
+			<Texture>
+				<Width>512</Width>
+				<Height>512</Height>
+			</Texture>
+		</Lightmap>
+	</Graphics>
+</Root>

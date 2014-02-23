@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+	<Output>bvh_tests.mdb</Output>
+	<AnnotationTable>
+		<Annotation>Forward</Annotation>
+		<Annotation>Backward</Annotation>
+		<Annotation>Neutral</Annotation>
+		<Annotation>Walk</Annotation>
+		<Annotation>Run</Annotation>
+		<Annotation>Stop</Annotation>
+		<Annotation>Jump</Annotation>
+		<Annotation>Turn</Annotation>
+		<Annotation>TurnRight</Annotation>
+		<Annotation>TurnLeft</Annotation>
+		<Annotation>Crouch</Annotation>
+		<Annotation>Standing</Annotation>
+		<Annotation>Prone</Annotation>
+	</AnnotationTable>
+	<HumanoidMotionTable name="std">
+		<Motion type="Walk">
+			<!-- walking motion - right now, only the first motion will be actually used by motion synthesizer -->
+			<MotionPrimitive name="motion0"></MotionPrimitive>
+			<MotionPrimitive name="motion1"></MotionPrimitive>
+			<MotionPrimitive name="motion2"></MotionPrimitive>
+		</Motion>
+		<Motion type="Stop">
+			<MotionPrimitive name="default"></MotionPrimitive>
+		</Motion>
+	</HumanoidMotionTable>
+	<File filepath="./mod/ordinary/default_w_r00.bvh" scaling="0.0254">
+		<MotionPrimitive name="default">
+			<AnnotationList>
+				<Annotation>Stop</Annotation>
+				<Annotation>Standing</Annotation>
+			</AnnotationList>
+			<Frame start="0" end="1"></Frame>
+			<RootJoint>
+				<HorizontalElement>
+					<ResetPos>yes</ResetPos>
+					<NormalizeOrientation>AlignLastKeyframe</NormalizeOrientation>
+				</HorizontalElement>
+				<Height>1.0</Height>
+			</RootJoint>
+			<Loop loop="true">
+				<Interpolation>0.1</Interpolation>
+			</Loop>
+		</MotionPrimitive>
+	</File>
+	<File filepath="./mod/ordinary/ip008m_r00.bvh" scaling="0.0254">
+		<MotionPrimitive name="motion0">
+			<AnnotationList>
+				<Annotation>Forward</Annotation>
+				<Annotation>Walk</Annotation>
+			</AnnotationList>
+			<Frame start="64" end="98"></Frame>
+			<RootJoint>
+				<HorizontalElement>
+					<ResetPos>yes</ResetPos>
+					<NormalizeOrientation>AlignLastKeyframe</NormalizeOrientation>
+				</HorizontalElement>
+				<Height>1.0</Height>
+			</RootJoint>
+			<Loop loop="true">
+				<Interpolation>0.1</Interpolation>
+			</Loop>
+		</MotionPrimitive>
+	</File>
+	<File filepath="./mod/ordinary/ip001w_r01.bvh" scaling="0.0254">
+		<MotionPrimitive name="motion1">
+			<AnnotationList>
+				<Annotation>Forward</Annotation>
+				<Annotation>Walk</Annotation>
+			</AnnotationList>
+			<Frame start="0" end="60"></Frame>
+			<RootJoint>
+				<HorizontalElement>
+					<ResetPos>yes</ResetPos>
+					<NormalizeOrientation>AlignLastKeyframe</NormalizeOrientation>
+				</HorizontalElement>
+				<Height>1.0</Height>
+			</RootJoint>
+			<Loop loop="true">
+				<Interpolation>0.1</Interpolation>
+			</Loop>
+		</MotionPrimitive>
+	</File>
+	<File filepath="./mod/ordinary/ip003w_r00.bvh" scaling="0.0254">
+		<MotionPrimitive name="motion2">
+			<AnnotationList>
+				<Annotation>Forward</Annotation>
+				<Annotation>Walk</Annotation>
+			</AnnotationList>
+			<Frame start="0" end="60"></Frame>
+			<RootJoint>
+				<HorizontalElement>
+					<ResetPos>yes</ResetPos>
+					<NormalizeOrientation>AlignLastKeyframe</NormalizeOrientation>
+				</HorizontalElement>
+				<Height>1.0</Height>
+			</RootJoint>
+			<Loop loop="true">
+				<Interpolation>0.1</Interpolation>
+			</Loop>
+		</MotionPrimitive>
+	</File>
+</root>

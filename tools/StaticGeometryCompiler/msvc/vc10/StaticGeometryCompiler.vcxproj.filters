@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\BSPMapCompiler">
+      <UniqueIdentifier>{ad42b7da-5715-4c15-986e-bb2612fae909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage">
+      <UniqueIdentifier>{cc9db6fb-d548-45c0-981c-de0480de26d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\StaticGeometryCompiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StaticGeometryCompiler_Console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StaticGeometryCompilerAppBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StaticGeometryCompilerFG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StaticGeometryDesc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MeshOperations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.cpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.cpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.cpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.cpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\bsptree.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\StaticGeometryCompiler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\StaticGeometryCompilerFG.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\StaticGeometryDesc.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\MeshOperations.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.hpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.hpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.hpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.hpp">
+      <Filter>Source Files\BSPMapCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\bsptree.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

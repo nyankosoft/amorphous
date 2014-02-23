@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Root>
+	<Input>
+		<LightWave>
+			<File>./models/room.lwo</File>
+		</LightWave>
+	</Input>
+	<Output>
+		<File>./compiled/room.sga</File>
+	</Output>
+	<Collision>
+		<GeometryFilterFile>./collision_geometry_filter.xml</GeometryFilterFile>
+	</Collision>
+	<Graphics>
+		<GeometryFilterFile>./graphics_geometry_filter.xml</GeometryFilterFile>
+		<Surface>
+			<SurfaceDescFile>./surface_desc.xml</SurfaceDescFile>
+		</Surface>
+		<Lighting>
+			<LightFile>./room_lights.xml</LightFile>
+			<!--<DAEFile>./room_lights.dae</DAEFile>-->
+		</Lighting>
+	</Graphics>
+	<Lightmap>
+		<TexelSize>0.2</TexelSize>
+	</Lightmap>
+</Root>

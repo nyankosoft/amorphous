@@ -1,0 +1,1 @@
+input    ../../../GameProjects/FlightGame/resources/sg/mountainssnowy/desc.xml

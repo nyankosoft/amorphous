@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BF068AE8-C0C9-406D-A268-66584CA4F167}</ProjectGuid>
+    <RootNamespace>LWSMotionCompiler</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../app</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.vc/$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.vc/$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../../../Project1;../../../../Project1/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>../../app/$(ProjectName)_d.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OutputFile>../../app/$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\app\LWSMotionCompiler.exe ..\..\..\bin\mdb.exe</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.cpp" />
+    <ClCompile Include="..\..\src\LWSMotionCompiler.cpp" />
+    <ClCompile Include="..\..\src\LWSMotionCompilerMain.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\App\GameWindowManager_Win32.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.hpp" />
+    <ClInclude Include="..\..\src\LWSMotionCompiler.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\App\GameWindowManager.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\App\GameWindowManager_Win32.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\fwd.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\HumanoidMotionTable.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.hpp" />
+    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\app\params.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
+      <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\LW_Framework.vcxproj">
+      <Project>{f9ca35b1-066f-49de-8228-20e959f55651}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

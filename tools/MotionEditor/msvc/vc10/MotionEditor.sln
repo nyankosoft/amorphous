@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionEditor", "MotionEditor.vcxproj", "{097E0194-CB42-4BB5-ACE7-75E8CB9DED64}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicFramework", "..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj", "{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{097E0194-CB42-4BB5-ACE7-75E8CB9DED64}.Debug|Win32.ActiveCfg = Debug|Win32
+		{097E0194-CB42-4BB5-ACE7-75E8CB9DED64}.Debug|Win32.Build.0 = Debug|Win32
+		{097E0194-CB42-4BB5-ACE7-75E8CB9DED64}.Release|Win32.ActiveCfg = Release|Win32
+		{097E0194-CB42-4BB5-ACE7-75E8CB9DED64}.Release|Win32.Build.0 = Release|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Debug|Win32.Build.0 = Debug|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Release|Win32.ActiveCfg = Release|Win32
+		{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
