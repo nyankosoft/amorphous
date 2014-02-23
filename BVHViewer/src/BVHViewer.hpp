@@ -9,7 +9,7 @@
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"
-#include "amorphous/BVH/BVHPlayer.hpp"
+#include "amorphous/MotionCapture/BVH/BVHPlayer.hpp"
 
 using namespace amorphous;
 
