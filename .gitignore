@@ -13,5 +13,5 @@
 .[vV][cC]
 *[lL][oO][gG].[hH][tT][mM][lL]
 *params.txt
-MeshViewer/app
-CartridgeMaker/app
+*/MeshViewer/app
+*/CartridgeMaker/app
