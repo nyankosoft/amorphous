@@ -37,13 +37,16 @@ public:
 
 	bool m_CompilationFinished;
 
+	bool m_ObfuscateTexture;
+
 	std::string m_TargetFilepath;
 
 public:
 
-	CLWO2MeshModelCompilerTask( const std::string& target_filepath )
+	CLWO2MeshModelCompilerTask( const std::string& target_filepath, bool obfuscate_texture )
 		:
 	m_TargetFilepath(target_filepath),
+	m_ObfuscateTexture(obfuscate_texture),
 	m_CompilationFinished(false)
 	{}
 
@@ -80,10 +83,17 @@ public:
 	{
 		U32 build_option_flags = C3DMeshModelBuilder::BOF_OUTPUT_AS_TEXTFILE;
 
-		// Save the texture as image archive files or not (false by default).
-		int save_textures_as_ia = 0;
-		LoadParamFromFile( "params.txt", "SAVE_TEXTURES_AS_IMAGE_ARCHIVES", save_textures_as_ia );
-		if( save_textures_as_ia )
+		// Ignored if the file named "params.txt" does not exist
+		if( lfs::path_exists( "params.txt" ) )
+		{
+			// Save the texture as image archive files or not (false by default).
+			int save_textures_as_ia = 0;
+			LoadParamFromFile( "params.txt", "SAVE_TEXTURES_AS_IMAGE_ARCHIVES", save_textures_as_ia );
+
+			m_ObfuscateTexture = save_textures_as_ia ? true :false;
+		}
+
+		if( m_ObfuscateTexture )
 			build_option_flags |= C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES;
 
 		// Build mesh archive(s) and save to disk
@@ -106,10 +116,29 @@ int main( int argc, char *argv[] )
 		lfs::set_wd( "../../app" );
 	}
 
+	bool obfuscate_texture = true;
 	string src_filepath;
 	if( 2 <= argc )
 	{
-		src_filepath = argv[1];
+		// Take the first command argument as the pathname of the input model file
+		// Commented out in order to support the -b (obfuscate texture) option.
+//		src_filepath = argv[1];
+
+		for( int i=1; i<argc; i++ )
+		{
+			if( string(argv[i]) == "-b" )
+				obfuscate_texture = true;
+			else
+			{
+				// Anything other than "-b" is interpreted as a pathname of the input model file.
+				src_filepath = argv[i];
+			}
+		}
+
+		using namespace boost::filesystem;
+		path src_directory_path = path(src_filepath).parent_path();
+		if( 0 < src_directory_path.string().length() )
+			lfs::set_wd( src_directory_path.string() );
 	}
 	else
 	{
@@ -123,10 +152,12 @@ int main( int argc, char *argv[] )
 
 	InitHTMLLog( logfile_basepath.string() + ".html" );
 
+	LOG_PRINT( "cwd: " + lfs::get_cwd() );
+
 	if( src_filepath.length() == 0 )
 		return 0;
 
-	CLWO2MeshModelCompilerTask mesh_compiler(src_filepath);
+	CLWO2MeshModelCompilerTask mesh_compiler(src_filepath,obfuscate_texture);
 
 	mesh_compiler.start_thread();
 
