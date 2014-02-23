@@ -48,7 +48,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../../Project1;../../../../Project1/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../framework;../../../../framework/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -68,7 +68,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -89,50 +89,50 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\BVHUtilities.cpp" />
     <ClCompile Include="..\..\src\LWSMotionCompiler.cpp" />
     <ClCompile Include="..\..\src\LWSMotionCompilerMain.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\App\GameWindowManager_Win32.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\App\GameWindowManager_Win32.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\BlendNode.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionBlender.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabase.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitive.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\Skeleton.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\SkeletonRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\MotionSynthesis\TransformNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\BVHUtilities.hpp" />
     <ClInclude Include="..\..\src\LWSMotionCompiler.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\App\GameWindowManager.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\App\GameWindowManager_Win32.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\fwd.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\HumanoidMotionTable.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\App\GameWindowManager.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\App\GameWindowManager_Win32.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\BlendNode.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\fwd.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\HumanoidMotionTable.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionBlender.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabase.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitive.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\Skeleton.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\SkeletonRenderer.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\MotionSynthesis\TransformNode.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\app\params.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\framework\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\LW_Framework.vcxproj">
+    <ProjectReference Include="..\..\..\..\framework\msvc\vc10\LW_Framework.vcxproj">
       <Project>{f9ca35b1-066f-49de-8228-20e959f55651}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

@@ -59,7 +59,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;USE_D3DXVECTOR3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -84,7 +84,7 @@
       <ProgramDatabaseFile>./BumpmapTextureMaker2.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>../../../../Project1/msvc/vc10/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../../framework/msvc/vc10/lib</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -103,7 +103,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;USE_D3DXVECTOR3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -130,7 +130,7 @@
       <ProgramDatabaseFile>../app/BumpmapTextureMaker2_Debug.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>../../../../Project1/msvc/vc10/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../../framework/msvc/vc10/lib</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -145,11 +145,11 @@
     <ClInclude Include="..\..\src\BumpmapTextureMaker2_LWO2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\framework\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Project1\msvc\vc10\LW_FrameworkEx.vcxproj">
+    <ProjectReference Include="..\..\..\..\framework\msvc\vc10\LW_FrameworkEx.vcxproj">
       <Project>{ffcfeada-bfd4-4aeb-bf0e-9400918b4b46}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

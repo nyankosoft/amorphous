@@ -31,25 +31,25 @@
     <ClCompile Include="..\..\src\MeshOperations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapTexture.cpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\Lightmap.cpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapBuilder.cpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapLightingManager.cpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\Stage\StaticGeometryArchiveFG.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\Stage\StaticGeometry.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\bsptree.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\Stage\bsptree.cpp">
       <Filter>Source Files\Stage</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,25 +66,25 @@
     <ClInclude Include="..\..\src\MeshOperations.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\Lightmap.hpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapTexture.hpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapBuilder.hpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapLightingManager.hpp">
       <Filter>Source Files\BSPMapCompiler</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\Stage\StaticGeometryArchiveFG.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\Stage\StaticGeometry.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\bsptree.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\Stage\bsptree.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
   </ItemGroup>

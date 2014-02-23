@@ -53,12 +53,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../../Project1;../../../../Project1/amorphous</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../framework;../../../../framework/amorphous</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../../../Project1/msvc/vc10/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../../framework/msvc/vc10/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,24 +70,24 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../../Project1;../../../../Project1/amorphous</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../framework;../../../../framework/amorphous</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../../../Project1/msvc/vc10/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../../framework/msvc/vc10/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\bsptree.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\Lightmap.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapBuilder.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapLightingManager.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapTexture.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\Stage\bsptree.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\Stage\StaticGeometry.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\Stage\StaticGeometryArchiveFG.cpp" />
     <ClCompile Include="..\..\src\MeshOperations.cpp" />
     <ClCompile Include="..\..\src\StaticGeometryCompiler.cpp" />
     <ClCompile Include="..\..\src\StaticGeometryCompilerAppBase.cpp" />
@@ -96,13 +96,13 @@
     <ClCompile Include="..\..\src\StaticGeometryDesc.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\Lightmap.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapBuilder.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapLightingManager.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\BSPMapCompiler\LightmapTexture.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\bsptree.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometry.hpp" />
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Stage\StaticGeometryArchiveFG.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\Lightmap.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapBuilder.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapLightingManager.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\BSPMapCompiler\LightmapTexture.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\Stage\bsptree.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\Stage\StaticGeometry.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\Stage\StaticGeometryArchiveFG.hpp" />
     <ClInclude Include="..\..\src\MeshOperations.hpp" />
     <ClInclude Include="..\..\src\StaticGeometryCompiler.h" />
     <ClInclude Include="..\..\src\StaticGeometryCompilerFG.h" />

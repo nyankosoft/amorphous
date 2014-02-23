@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\CartridgeMaker_Main.cpp" />
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Utilities\CartridgeMaker.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\Utilities\CartridgeMaker.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Project1\amorphous\Utilities\BuiltinCartridges.cpp">
+    <ClCompile Include="..\..\..\..\framework\amorphous\Utilities\BuiltinCartridges.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Utilities\CartridgeMaker.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\Utilities\CartridgeMaker.hpp">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Project1\amorphous\Utilities\BuiltinCartridges.hpp">
+    <ClInclude Include="..\..\..\..\framework\amorphous\Utilities\BuiltinCartridges.hpp">
       <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
