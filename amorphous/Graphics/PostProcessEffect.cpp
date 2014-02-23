@@ -31,15 +31,15 @@ struct CoordRect
 
 
 // Screen quad vertex format
-class ScreenVertex
-{
-public:
-    Vector4 p; // position
-    TEXCOORD2 t; // texture coordinate
-
-    static const DWORD FVF;
-};
-const DWORD                 ScreenVertex::FVF = D3DFVF_XYZRHW | D3DFVF_TEX1;
+//class ScreenVertex
+//{
+//public:
+//    Vector4 p; // position
+//    TEXCOORD2 t; // texture coordinate
+//
+//    static const DWORD FVF;
+//};
+//const DWORD                 ScreenVertex::FVF = D3DFVF_XYZRHW | D3DFVF_TEX1;
 
 
 const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc()
@@ -163,7 +163,7 @@ Result::Name GetSampleOffsets_DownScale2x2( unsigned int width, unsigned int hei
  Calculates the size of the rect to draw from the surface
  of the current render target.
 */
-void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottomV )
+/*void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottomV )
 {
 	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -220,7 +220,7 @@ void DrawFullScreenQuad( float fLeftU, float fTopV, float fRightU, float fBottom
 	hr = pd3dDevice->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, svQuad, sizeof( ScreenVertex ) );
 	hr = pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
 }
-
+*/
 
 void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
 {
@@ -256,10 +256,10 @@ void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, f
 }
 
 
-void DrawFullScreenQuad( const CoordRect& c )
-{
-    DrawFullScreenQuad( c.fLeftU, c.fTopV, c.fRightU, c.fBottomV );
-}
+//void DrawFullScreenQuad( const CoordRect& c )
+//{
+//    DrawFullScreenQuad( c.fLeftU, c.fTopV, c.fRightU, c.fBottomV );
+//}
 
 
 //void RenderFullScreenQuad( LPD3DXEFFECT pEffect, const CoordRect& c )
@@ -599,14 +599,11 @@ bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, 
 
 void DownScale4x4Filter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
 	ShaderManager& shader_mgr = *pShaderMgr;
-
-	HRESULT hr = S_OK;
 
 	Vector2 avSampleOffsets[MAX_SAMPLES];
 	memset( avSampleOffsets, 0, sizeof(avSampleOffsets) );
@@ -660,6 +657,8 @@ void DownScale4x4Filter::Render()
 	GetSampleOffsets_DownScale4x4( (unsigned int)prev_scene_width, (unsigned int)prev_scene_height, avSampleOffsets );
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
 
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	HRESULT hr = S_OK;
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
 /*	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );*/
 //	hr = pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
@@ -708,14 +707,11 @@ Result::Name DownScale2x2Filter::Init( RenderTargetTextureCache& cache, FilterSh
 //-----------------------------------------------------------------------------
 void DownScale2x2Filter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
 	ShaderManager& shader_mgr = *pShaderMgr;
-
-	HRESULT hr = S_OK;
 
 	Vector2 avSampleOffsets[MAX_SAMPLES];
 	memset( avSampleOffsets, 0, sizeof(avSampleOffsets) );
@@ -754,6 +750,7 @@ void DownScale2x2Filter::Render()
 	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
@@ -1345,8 +1342,6 @@ void LuminanceCalcFilter::Render()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
-	HRESULT hr = S_OK;
-
 	Vector2 avSampleOffsets[MAX_SAMPLES];
 	memset( avSampleOffsets, 0, sizeof(avSampleOffsets) );
 
@@ -1602,14 +1597,11 @@ void HDRLightingFinalPassFilter::StorePrevFilterResults( PostProcessEffectFilter
 
 void HDRLightingFinalPassFilter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
 	ShaderManager& shader_mgr = *pShaderMgr;
-
-	HRESULT hr = S_OK;
 
 //	m_pLumCalcFilter->RenderBase();
 
@@ -1667,16 +1659,17 @@ void HDRLightingFinalPassFilter::Render()
 	V( pd3dDevice->SetSamplerState( 3, D3DSAMP_MINFILTER, D3DTEXF_POINT ) );
 */
 	// Check the current states; should return the values set above.
-	DWORD mag0=0, min0=0, mag1=0, min1=0;
-	DWORD mag2=0, min2=0, mag3=0, min3=0;
-	pd3dDevice->GetSamplerState( 0, D3DSAMP_MAGFILTER, &mag0 );
-	pd3dDevice->GetSamplerState( 0, D3DSAMP_MINFILTER, &min0 );
-	pd3dDevice->GetSamplerState( 1, D3DSAMP_MAGFILTER, &mag1 );
-	pd3dDevice->GetSamplerState( 1, D3DSAMP_MINFILTER, &min1 );
-	pd3dDevice->GetSamplerState( 2, D3DSAMP_MAGFILTER, &mag2 );
-	pd3dDevice->GetSamplerState( 2, D3DSAMP_MINFILTER, &min2 );
-	pd3dDevice->GetSamplerState( 3, D3DSAMP_MAGFILTER, &mag3 );
-	pd3dDevice->GetSamplerState( 3, D3DSAMP_MINFILTER, &min3 );
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	DWORD mag0=0, min0=0, mag1=0, min1=0;
+//	DWORD mag2=0, min2=0, mag3=0, min3=0;
+//	pd3dDevice->GetSamplerState( 0, D3DSAMP_MAGFILTER, &mag0 );
+//	pd3dDevice->GetSamplerState( 0, D3DSAMP_MINFILTER, &min0 );
+//	pd3dDevice->GetSamplerState( 1, D3DSAMP_MAGFILTER, &mag1 );
+//	pd3dDevice->GetSamplerState( 1, D3DSAMP_MINFILTER, &min1 );
+//	pd3dDevice->GetSamplerState( 2, D3DSAMP_MAGFILTER, &mag2 );
+//	pd3dDevice->GetSamplerState( 2, D3DSAMP_MINFILTER, &min2 );
+//	pd3dDevice->GetSamplerState( 3, D3DSAMP_MAGFILTER, &mag3 );
+//	pd3dDevice->GetSamplerState( 3, D3DSAMP_MINFILTER, &min3 );
 
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP );
 //	pd3dDevice->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP );
@@ -2056,7 +2049,6 @@ void MonochromeColorFilter::Render()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
-//	HRESULT hr = S_OK;
 /*
 	D3DSURFACE_DESC desc;
 	m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
