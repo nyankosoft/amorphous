@@ -218,7 +218,7 @@ void Create(
 		res = cm.MakeBullet( src_cartridge_desc.bullet_desc, 16, case_top_height, points, normals, tex_uvs, polygons );
 		break;
 	case MT_CARTRIDGE:
-		res = cm.Make( src_cartridge_desc, 16, points, normals, tex_uvs, polygons );
+		res = cm.Make( src_cartridge_desc, src_cartridge_desc.num_sides, points, normals, tex_uvs, polygons );
 		break;
 	default:
 		break;
