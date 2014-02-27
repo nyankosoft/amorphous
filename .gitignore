@@ -11,6 +11,7 @@
 *.[dD][lL][lL]
 *.[eE][xX][eE]
 .[vV][cC]
+*/[vV][cC]10/[lL][iI][bB]
 *[lL][oO][gG].[hH][tT][mM][lL]
 *.msh.txt
-params.txt
+*params.txt
