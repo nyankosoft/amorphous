@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Support">
+      <UniqueIdentifier>{b00560d9-2414-4308-9cf5-cf5ebbc093f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Support\Log">
+      <UniqueIdentifier>{8c340e10-9335-4c51-8456-64c6f8eef6d5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.cpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Project1\amorphous\Support\Timer_Win32.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="TCBSplineTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\Log.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp">
+      <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer_Win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\Perlin.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Project1\amorphous\Support\BitmapImage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="params.txt" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp" />
+    <ClCompile Include="..\..\src\MultiShapeActorsTest.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ClothTest.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ConvexTest.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PhysicsDemos.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\_Common\KeyState.hpp" />
+    <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp" />
+    <ClInclude Include="..\..\src\MultiShapeActorsTest.hpp">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ClothTest.hpp">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ConvexTest.hpp">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\SceneUtility.hpp">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{09aaf892-71bb-4004-8300-e6ca63cbd285}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

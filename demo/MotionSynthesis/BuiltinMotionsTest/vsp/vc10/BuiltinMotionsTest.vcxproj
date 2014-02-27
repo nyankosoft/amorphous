@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A7752DBC-03A1-433E-8ACD-FED55BBA6B02}</ProjectGuid>
+    <RootNamespace>BuiltinMotionsTest</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../app\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.vc/$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.vc/$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>user32.lib %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>../../app/$(ProjectName)_d.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BuiltinMotions.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionFSM.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletalMeshTransform.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformCacheTree.cpp" />
+    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.cpp" />
+    <ClCompile Include="..\..\src\BuiltinMotionsTest.cpp" />
+    <ClCompile Include="..\..\..\..\_Common\TestMain_Win32.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BuiltinMotions.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\fwd.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\Keyframe.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionFSM.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletalMeshTransform.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformCacheTree.hpp" />
+    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.hpp" />
+    <ClInclude Include="..\..\src\BuiltinMotionsTest.hpp" />
+    <ClInclude Include="..\..\..\..\_Common\GraphicsTestBase.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj">
+      <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

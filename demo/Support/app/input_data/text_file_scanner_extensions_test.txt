@@ -1,0 +1,9 @@
+# single parameters
+VECTOR2   10.0 -25.0
+VECTOR3   10.0 -25.0 -0.001
+RGBA   0.5  0.2  0.7  1.0
+
+# multiple parameters
+2_VEC2S   10.0 -25.0 -90.0 0.03
+2_VEC3S   10.0 -25.0 -0.001    -90.0 0.03 1000.0
+2_RGBAS   0.5  0.2  0.7  1.0  0.15  0.25  0.75  0.95 

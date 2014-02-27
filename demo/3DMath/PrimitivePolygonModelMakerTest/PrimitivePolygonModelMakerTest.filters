@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Project1\amorphous\3DMath\HelixPolygonModelMaker.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimitivePolygonModelMakerTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="3DMath">
+      <UniqueIdentifier>{e9d6eedb-d169-4704-a72f-2acc5df34ed1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\HelixPolygonModelMaker.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
