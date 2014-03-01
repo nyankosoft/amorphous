@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../Project1;../../../Project1/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../framework;../../../framework/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -65,7 +65,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../Project1;../../../Project1/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../framework;../../../framework/gds;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -83,20 +83,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="TCBSplineTest.cpp" />
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Timer_Win32.cpp" />
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.cpp" />
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp" />
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.cpp" />
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Timer_Win32.cpp" />
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\DefaultLog.cpp" />
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.cpp" />
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\Perlin.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\BitmapImage.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer_Win32.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\Log.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp" />
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\3DMath\Perlin.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\BitmapImage.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Timer.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Timer_Win32.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\DefaultLog.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\Log.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="params.txt" />

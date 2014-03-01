@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../Project1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../framework</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,11 +75,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Project1\amorphous\3DMath\PrimitivePolygonModelMaker.cpp" />
+    <ClCompile Include="..\..\..\framework\amorphous\3DMath\PrimitivePolygonModelMaker.cpp" />
     <ClCompile Include="PrimitivePolygonModelMakerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\PrimitivePolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\3DMath\PrimitivePolygonModelMaker.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

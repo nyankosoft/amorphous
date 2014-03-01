@@ -21,16 +21,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.cpp">
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\DefaultLog.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp">
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.cpp">
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Timer_Win32.cpp">
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Timer_Win32.cpp">
       <Filter>Source Files\Support</Filter>
     </ClCompile>
     <ClCompile Include="TCBSplineTest.cpp">
@@ -38,28 +38,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\DefaultLog.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\DefaultLog.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\Log.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\Log.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Timer.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Timer_Win32.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Timer_Win32.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\3DMath\Perlin.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\3DMath\Perlin.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\BitmapImage.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\BitmapImage.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

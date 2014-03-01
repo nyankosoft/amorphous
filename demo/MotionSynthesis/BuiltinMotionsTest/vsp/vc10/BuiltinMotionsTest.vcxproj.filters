@@ -3,104 +3,104 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\BuiltinMotionsTest.cpp" />
     <ClCompile Include="..\..\..\..\_Common\TestMain_Win32.cpp" />
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BlendNode.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionBlender.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabase.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionFSM.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionFSM.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitive.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletalMeshTransform.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\SkeletalMeshTransform.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\Skeleton.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\SkeletonRenderer.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformCacheTree.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\TransformCacheTree.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\TransformNode.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BuiltinMotions.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BuiltinMotions.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.cpp">
+    <ClCompile Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BVHUtilities.cpp">
       <Filter>MotionSynthesis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\BuiltinMotionsTest.hpp" />
     <ClInclude Include="..\..\..\..\_Common\GraphicsTestBase.hpp" />
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BlendNode.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BlendNode.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BuiltinMotions.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BuiltinMotions.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\fwd.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\fwd.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionBlender.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionBlender.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabase.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabase.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionFSM.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionFSM.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitive.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitive.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletalMeshTransform.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\SkeletalMeshTransform.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\Skeleton.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\Skeleton.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\SkeletonRenderer.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\SkeletonRenderer.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformCacheTree.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\TransformCacheTree.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\TransformNode.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\TransformNode.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\BVHUtilities.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\BVHUtilities.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Project1\amorphous\MotionSynthesis\Keyframe.hpp">
+    <ClInclude Include="..\..\..\..\..\framework\amorphous\MotionSynthesis\Keyframe.hpp">
       <Filter>MotionSynthesis</Filter>
     </ClInclude>
   </ItemGroup>

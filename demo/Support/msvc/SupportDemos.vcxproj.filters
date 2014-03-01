@@ -39,21 +39,21 @@
     <ClCompile Include="..\src\ImageSplitterTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.cpp">
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Project1\amorphous\Support\Log\LogOutput.cpp">
+    <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogOutput.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogInputBase.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutput.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutput.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Project1\amorphous\Support\Log\LogOutputBase.hpp">
+    <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClInclude>
   </ItemGroup>

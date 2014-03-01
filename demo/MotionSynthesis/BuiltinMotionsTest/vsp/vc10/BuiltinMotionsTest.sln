@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuiltinMotionsTest", "BuiltinMotionsTest.vcxproj", "{A7752DBC-03A1-433E-8ACD-FED55BBA6B02}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicFramework", "..\..\..\..\..\Project1\vsp\vc10\BasicFramework.vcxproj", "{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicFramework", "..\..\..\..\framework\msvc\vc10\BasicFramework.vcxproj", "{0A3DC23B-9508-4F65-8492-4B122F2DEF7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
