@@ -79,9 +79,9 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../../app/BumpmapTextureMaker.exe</OutputFile>
+      <OutputFile>../../app/$(TargetName).exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>./BumpmapTextureMaker2.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../app/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>../../../../framework/msvc/vc10/lib</AdditionalLibraryDirectories>
@@ -124,10 +124,10 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;winmm.lib;d3d9.lib;d3dx9.lib;LW_Framework_d.lib;LW_FrameworkEx_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../../app/BumpmapTextureMaker_d.exe</OutputFile>
+      <OutputFile>../../app/$(TargetName).exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>../app/BumpmapTextureMaker2_Debug.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../app/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>../../../../framework/msvc/vc10/lib</AdditionalLibraryDirectories>
