@@ -92,7 +92,7 @@ void FirearmsAppTask::ArmCharacter( SkeletalCharacter& character )
 	if( !pMag )
 		return;
 
-	DebugOutput.AddDebugItem( "firearm", new CItemStatusDebugDisplay(pUSP) );
+	DebugOutput.AddDebugItem( "firearm", new ItemStatusDebugDisplay(pUSP) );
 
 
 	// Need to create separate instances for magazines
@@ -536,7 +536,7 @@ bool FirearmsAppBase::Init()
 	//
 
 	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
-	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
+//	GetMouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
 
 /*
 	//
