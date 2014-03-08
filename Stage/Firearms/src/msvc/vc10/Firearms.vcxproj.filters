@@ -45,7 +45,7 @@
     <ClCompile Include="..\..\root\item\ArmedCharacterOperations.cpp">
       <Filter>Source Files\Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Project1\amorphous\App\AppMain.cpp">
+    <ClCompile Include="..\..\..\..\..\..\Project1\framework\amorphous\App\AppMain.cpp">
       <Filter>GameStageFrameworkAppMain</Filter>
     </ClCompile>
   </ItemGroup>

@@ -48,7 +48,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../../../../Project1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../../../Project1/framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -75,7 +75,7 @@
       <ProgramDataBaseFileName>$(IntDir)vc80.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../../../../../Project1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../../../Project1/framework</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>../../../app/$(ProjectName).exe</OutputFile>
@@ -89,7 +89,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\root\app\FirearmsAppBase.cpp" />
     <ClCompile Include="..\..\root\item\ArmedCharacterOperations.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\Project1\amorphous\App\AppMain.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Project1\framework\amorphous\App\AppMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\root\app\FirearmsAppBase.hpp" />
@@ -106,11 +106,11 @@
     <None Include="..\..\..\resources\entity\light.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Project1\msvc\vc10\BasicFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\Project1\framework\msvc\vc10\BasicFramework.vcxproj">
       <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Project1\msvc\vc10\GameStageFramework.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\..\Project1\framework\msvc\vc10\GameStageFramework.vcxproj">
       <Project>{a647f5c6-e14d-408f-8d01-ad55a86772b3}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
