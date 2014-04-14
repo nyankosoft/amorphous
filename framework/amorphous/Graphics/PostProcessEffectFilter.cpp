@@ -1,7 +1,6 @@
 #include "PostProcessEffectFilter.hpp"
 #include "PostProcessEffectManager.hpp"
 #include "Graphics/SurfaceFormat.hpp"
-#include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"

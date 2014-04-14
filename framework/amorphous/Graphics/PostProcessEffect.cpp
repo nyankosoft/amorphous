@@ -331,7 +331,7 @@ float GaussianDistribution( float x, float y, float rho )
 /**
  Get the texture coordinate offsets to be used inside the GaussBlur5x5 pixel shader.
 */
-HRESULT GetSampleOffsets_GaussBlur5x5( unsigned int dwD3DTexWidth,
+Result::Name GetSampleOffsets_GaussBlur5x5( unsigned int dwD3DTexWidth,
                                        unsigned int dwD3DTexHeight,
                                        Vector2* avTexCoordOffset,
                                        Vector4* avSampleWeight,
@@ -374,7 +374,7 @@ HRESULT GetSampleOffsets_GaussBlur5x5( unsigned int dwD3DTexWidth,
         avSampleWeight[i] *= fMultiplier;
     }
 
-    return S_OK;
+    return Result::SUCCESS;
 }
 
 
@@ -482,7 +482,6 @@ Result::Name GetTextureCoords(
 	TextureHandle& tex_dest, const SRect* pRectDest, CoordRect* pCoords
 	)
 {
-	HRESULT hr = S_OK;
 	float tU, tV;
 
 	// Validate arguments
