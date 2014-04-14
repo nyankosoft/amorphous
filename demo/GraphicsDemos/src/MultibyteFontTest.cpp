@@ -375,11 +375,6 @@ void CMultibyteFontTest::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}
-		break;
 	case GIC_SPACE:
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
@@ -387,6 +382,7 @@ void CMultibyteFontTest::HandleInput( const InputData& input )
 		}
 		break;
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
