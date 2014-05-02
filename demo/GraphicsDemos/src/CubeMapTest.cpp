@@ -1,7 +1,7 @@
 #include "CubeMapTest.hpp"
-#include "amorphous/Graphics.hpp"
-#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Graphics/OpenGL/GLExtensions.hpp"
 #include "amorphous/Support/Profile.hpp"
@@ -49,6 +49,9 @@ int CCubeMapTest::Init()
 
 	m_CubeMapTextures.resize( 1 );
 	bool texture_loaded = m_CubeMapTextures.back().Load( tex_desc );
+
+	if( !texture_loaded )
+		LOG_PRINT_ERROR( "Failed to load cube map textures: " + tex_desc.ResourcePath );
 
 	m_Mesh = CreateSphereMesh( 0.25f );
 
