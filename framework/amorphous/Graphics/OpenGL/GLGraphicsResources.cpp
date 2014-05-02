@@ -10,6 +10,7 @@
 #include "Support/BitmapImage.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
+#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -343,8 +344,22 @@ FIC_CMYK CMYK bitmap (32 bit only)
 // Used in synchronous loading
 bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 {
+	using namespace boost::filesystem;
+
 	BitmapImage img;
-	bool loaded = img.LoadFromFile( filepath );
+	bool loaded = false;
+
+	if( path(filepath).extension() == ".ia" )
+	{
+		ImageArchive ia;
+		ia.LoadFromFile(filepath);
+		loaded = img.CreateFromImageArchive(ia);
+	}
+	else
+	{
+		loaded = img.LoadFromFile( filepath );
+	}
+
 	if( !loaded )
 		return false;
 
