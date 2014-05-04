@@ -110,7 +110,7 @@ int CTextureRenderTargetTest::Init()
 	}
 	Set6FaceColors( m_BoxMesh );
 
-	m_Mesh.Load( "TextureRenderTargetDemo/models/wc1_1.00.msh" );
+	m_Mesh.Load( "Common/models/wc1_1.00.msh" );
 
 	return 0;
 }
