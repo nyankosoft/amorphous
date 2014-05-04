@@ -44,13 +44,20 @@ public:
 unsigned int GetNextImageFileNumber( const std::string& directory_path, const std::string& basename )
 {
 	using namespace boost::filesystem;
+
+	if( !exists(directory_path) )
+		return 0;
 	
 	unsigned int count = 0;
 
+	boost::system::error_code ec;
+	directory_iterator itr( directory_path, ec );
+
+	if( ec != boost::system::errc::success )
+		return 0;
+
 	directory_iterator end_itr; // default construction yields past-the-end
-	for( directory_iterator itr( directory_path );
-		itr != end_itr;
-		++itr )
+	for( ; itr != end_itr; ++itr )
 	{
 		const path& pathname = *itr;
 
@@ -79,6 +86,17 @@ void TakeScreenshot(
 	pTextureRenderTarget->SetRenderTarget();
 
 	renderer.Render();
+
+	if( !exists(directory_path) )
+	{
+		boost::system::error_code ec;
+		create_directories( directory_path, ec );
+		if( ec.value() != 0 )
+		{
+			LOG_PRINT_ERROR( "create_directories() failed (error: " + ec.message() + ")." );
+			return;
+		}
+	}
 
 	pTextureRenderTarget->ResetRenderTarget();
 	unsigned int count = GetNextImageFileNumber( directory_path, basename );
