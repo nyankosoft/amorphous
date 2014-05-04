@@ -234,6 +234,14 @@ Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLe
 
 	FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( pFIBitmap );
 	unsigned int bpp = FreeImage_GetBPP( pFIBitmap );
+
+	// Consider the format as the RGBA if the BPP is 32
+	// Rationale: FreeImage seems to return FIC_RGB if the all the alpha channel bytes are 0xFFs.
+	// See the definition of FreeImage_GetColorType() in Source/FreeImage/BitmapAccess.cpp
+	// in the source code of FreeImage library.
+	if( bpp == 32 )
+		color_type = FIC_RGBALPHA;
+
 	switch( color_type )
 	{
 	case FIC_RGB:
@@ -253,7 +261,8 @@ Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLe
 		}
 		break;
 	case FIC_RGBALPHA:
-		src_format = GL_RGBA;
+//		src_format = GL_RGBA;
+		src_format = GL_BGRA;
 		switch( bpp )
 		{
 		case 32:
@@ -519,13 +528,19 @@ bool CGLTextureResource::CreateFromDesc()
 			}
 		}
 
-		CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, *m_pLockedImage, m_TextureID );
+		bool res = CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, *m_pLockedImage, m_TextureID );
 
-//		Unlock();
-
-		SetState( GraphicsResourceState::LOADED );
-
-		return true;
+		if( res )
+		{
+//			Unlock();
+			SetState( GraphicsResourceState::LOADED );
+			return true;
+		}
+		else
+		{
+			LOG_PRINT_ERROR( " CreateGLTextureFromBitmapImage() failed (" + desc.ResourcePath + ").");
+			return false;
+		}
 	}
 	else
 	{
