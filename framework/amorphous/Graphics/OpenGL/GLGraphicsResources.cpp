@@ -213,10 +213,12 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
 }
 
 /**
- \param [out] src_format
- \param [out] src_type
+ \param[in]  img
+ \param[in]  is_render_target
+ \param[out] src_format
+ \param[out] src_type
 */
-Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLenum& src_type, bool is_render_target )
+static Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
 {
 	src_format = GL_RGB;
 	src_type   = GL_UNSIGNED_BYTE;
@@ -302,7 +304,7 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 
 	GLenum src_format = GL_RGB;
 	GLenum src_type   = GL_UNSIGNED_BYTE;
-	Result::Name res = GetSrcPixelTypeAndFormat( src_image, src_format, src_type, is_render_target );
+	Result::Name res = GetSrcPixelTypeAndFormat( src_image, is_render_target, src_format, src_type );
 	if( res != Result::SUCCESS )
 	{
 		LOG_PRINT_ERROR( " GetSrcPixelTypeAndFormat() failed." );
