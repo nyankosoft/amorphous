@@ -221,7 +221,7 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
  \param [out] src_format
  \param [out] src_type
 */
-Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLenum& src_type )
+Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLenum& src_type, bool is_render_target )
 {
 	src_format = GL_RGB;
 	src_type   = GL_UNSIGNED_BYTE;
@@ -261,8 +261,9 @@ Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, GLenum& src_format, GLe
 		}
 		break;
 	case FIC_RGBALPHA:
-//		src_format = GL_RGBA;
-		src_format = GL_BGRA;
+//		src_format = GL_RGBA; // Works when the texture is used as a render target.
+//		src_format = GL_BGRA; // Works when an image file is used as a texture.
+		src_format = is_render_target ? GL_RGBA : GL_BGRA;
 		switch( bpp )
 		{
 		case 32:
@@ -302,9 +303,11 @@ inline static int GetNumMipmaps( const TextureResourceDesc& desc )
 // \param src_img [in] the source image. NOTE: the image is altered by one or more scaling operations to create mipmap textures.
 bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, BitmapImage& src_image, GLuint& texture_id )
 {
+	const bool is_render_target = (m_TextureDesc.UsageFlags & UsageFlag::RENDER_TARGET);
+
 	GLenum src_format = GL_RGB;
 	GLenum src_type   = GL_UNSIGNED_BYTE;
-	Result::Name res = GetSrcPixelTypeAndFormat( src_image, src_format, src_type );
+	Result::Name res = GetSrcPixelTypeAndFormat( src_image, src_format, src_type, is_render_target );
 	if( res != Result::SUCCESS )
 	{
 		LOG_PRINT_ERROR( " GetSrcPixelTypeAndFormat() failed." );
