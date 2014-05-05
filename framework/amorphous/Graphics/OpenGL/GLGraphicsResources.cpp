@@ -61,13 +61,8 @@ public:
 //		((U32 *)m_pBits)[ y * m_Width + x ] &= ( (alpha << 24) | 0x00FFFFFF );
 	}
 
-	void Clear( U32 argb_color )
-	{
-		SFloatRGBAColor color;
-		color.SetARGB32( argb_color );
-
-		Clear( color );
-	}
+	// TODO: add FillColorARGB32(), a performance friendly alternative, to BitmapImage
+//	void Clear( U32 argb_color ) { m_pImage->FillColorARGB32( argb_color ); }
 
 	void Clear( const SFloatRGBAColor& color ) { m_pImage->FillColor( color ); }
 };
