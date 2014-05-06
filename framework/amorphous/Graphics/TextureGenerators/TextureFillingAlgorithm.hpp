@@ -42,6 +42,13 @@ public:
 		color.SetARGB32( argb_color );
 		Clear( color );
 	}
+	
+	SFloatRGBAColor GetPixel( int x, int y )
+	{
+		SFloatRGBAColor dest;
+		GetPixel(x,y,dest);
+		return dest;
+	}
 };
 
 
