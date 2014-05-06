@@ -58,8 +58,8 @@ void CLensFlareTest::InitLensFlare( const string& strPath )
 //	m_pLensFlare->AddTexture( texture_directory + "flare00.dds", 0, 1, 1 );
 //	m_pLensFlare->AddTexture( texture_directory + "flare01.dds", 0, 1, 1 );
 	m_pLensFlare->AddTexture( texture_directory + "ring.png",    0, 1, 1 );
-	m_pLensFlare->AddTexture( texture_directory + "flare02.dds", 1, 1, 1 );
-	m_pLensFlare->AddTexture( texture_directory + "flare06.dds", 2, 1, 1 );
+	m_pLensFlare->AddTexture( texture_directory + "flare02.png", 1, 1, 1 );
+	m_pLensFlare->AddTexture( texture_directory + "flare06.png", 2, 1, 1 );
 //	m_pLensFlare->AddTexture( texture_directory + "LensFlareTex/flare07.dds", 2, 1, 1 );
 
 	m_pLensFlare->AddLensFlareRect( 0.09f, 1.0f, 0.70f, ARGB32toFloatRGBA(0x40FF5030), 0 );
@@ -106,7 +106,7 @@ int CLensFlareTest::Init()
 	mesh_desc.MeshType     = MeshType::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
-	m_TestTexture.Load( "LensFlareDemo/textures/flare02.dds" );
+	m_TestTexture.Load( "LensFlareDemo/textures/flare02.png" );
 
 	MeshResourceDesc sphere_mesh_desc;
 	SphereDesc sphere_desc;
