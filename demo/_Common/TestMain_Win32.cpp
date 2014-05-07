@@ -265,20 +265,22 @@ static bool InitDemo( int index )
 	const std::string app_class_name = app_title;
 
 	static bool window_created = false;
+	string window_title = app_title;
+	window_title += " (" + GetGraphicsLibraryName() + ")";
 	if( !window_created )
 	{
 		int w = g_pTest->GetWindowWidth();  // 1280;
 		int h = g_pTest->GetWindowHeight(); //  720;
 //		param_loader.LoadParam( "ScreenResolution", w, h );
 		GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
-		GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
+		GetGameWindowManager().CreateGameWindow( w, h, mode, window_title );
 		g_Camera.SetAspectRatio( (float)w / (float)h );
 
 		window_created = true;
 	}
 	else
 	{
-		GetGameWindowManager().SetWindowTitleText( app_title );
+		GetGameWindowManager().SetWindowTitleText( window_title );
 	}
 
 	g_pTest->InitBase();
