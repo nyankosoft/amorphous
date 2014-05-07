@@ -58,6 +58,8 @@ public:
 
 Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name );
 
+const std::string& GetGraphicsLibraryName();
+
 GameWindowManager& GetGameWindowManager();
 
 

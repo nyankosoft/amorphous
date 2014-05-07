@@ -14,15 +14,27 @@ using namespace std;
 
 
 static GameWindowManager *g_pGameWindowManager = NULL;
+static std::string sg_GraphicsLibraryName;
 
 
 Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 {
 #ifdef _MSC_VER
-	return SelectGraphicsLibrary_Win32( graphics_library_name, g_pGameWindowManager );
+	Result::Name res = SelectGraphicsLibrary_Win32( graphics_library_name, g_pGameWindowManager );
 #else
-//	return SelectGraphicsLibrary_???( graphics_library_name );
+//	Result::Name res = return SelectGraphicsLibrary_???( graphics_library_name );
 #endif
+
+	if( res == Result::SUCCESS )
+		sg_GraphicsLibraryName = graphics_library_name;
+
+	return res;
+}
+
+
+const std::string& GetGraphicsLibraryName()
+{
+	return sg_GraphicsLibraryName;
 }
 
 
