@@ -406,7 +406,9 @@
     <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RenderTask.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RenderTaskProcessor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderHelpers.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShadowMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShadowMaps.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShapeContainers.hpp" />

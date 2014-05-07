@@ -1977,6 +1977,12 @@
     <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.hpp">
       <Filter>MotionCapture\BVH</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderHelpers.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">
