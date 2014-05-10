@@ -12,10 +12,6 @@
 #include "array2d.hpp"
 #include "Macro.h"
 
-
-namespace amorphous
-{
-
 // Comment out this header inclusion and do the following replacings
 // if you want to use BitmapImage class without the log system.
 // 1. Replace 'LOG_PRINT_ERROR(x)' with 'cout << x'.
@@ -24,6 +20,9 @@ namespace amorphous
 
 #pragma comment( lib, "FreeImage.lib" )
 
+
+namespace amorphous
+{
 
 class BitmapImage;
 
