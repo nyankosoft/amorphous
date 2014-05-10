@@ -16,17 +16,17 @@
 namespace amorphous
 {
 using namespace serialization;
-
 using namespace std;
+using boost::shared_ptr;
 
 
 class CGLLockedTexture : public LockedTexture
 {
-	boost::shared_ptr<BitmapImage> m_pImage;
+	shared_ptr<BitmapImage> m_pImage;
 
 public:
 
-	CGLLockedTexture( boost::shared_ptr<BitmapImage>& pImage )
+	CGLLockedTexture( shared_ptr<BitmapImage>& pImage )
 		:
 	m_pImage(pImage)
 	{}
@@ -316,7 +316,7 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 
 	int num_mipmaps = GetNumMipmaps( m_TextureDesc );
 
-	boost::shared_ptr<BitmapImage> pImageCopy = src_image.CreateCopy();
+	shared_ptr<BitmapImage> pImageCopy = src_image.CreateCopy();
 	if( !pImageCopy )
 	{
 		string stat;
@@ -520,13 +520,13 @@ bool CGLTextureResource::CreateFromDesc()
 
 	m_pLockedImage.reset( new BitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
 
-	boost::shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
+	shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
 
 	if( pLockedTex->IsValid() )
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		boost::shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
+		shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
 		if( pLoader )
 		{
 			// Let the user-defined routine to fill the texture
