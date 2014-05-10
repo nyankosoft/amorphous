@@ -316,6 +316,17 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 
 	int num_mipmaps = GetNumMipmaps( m_TextureDesc );
 
+	boost::shared_ptr<BitmapImage> pImageCopy = src_image.CreateCopy();
+	if( !pImageCopy )
+	{
+		string stat;
+		GetStatus(stat);
+		LOG_PRINT_ERROR( " Failed to create a copy of the source image (source: " + stat + ")." );
+		return false;
+	}
+
+	BitmapImage& image_copy = *pImageCopy;
+
 	int next_width  = m_TextureDesc.Width;
 	int next_height = m_TextureDesc.Height;
 	for( int i=0; i<num_mipmaps; i++ )
@@ -325,7 +336,7 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			// Scale the image to the half in width and height to create the mipmap texture(s).
 			next_width  /= 2;
 			next_height /= 2;
-			bool rescaled = src_image.Rescale( next_width, next_height );
+			bool rescaled = image_copy.Rescale( next_width, next_height );
 			if( !rescaled )
 			{
 				LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d, path=%s", i, m_TextureDesc.ResourcePath.c_str() ) );
@@ -334,7 +345,7 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			}
 		}
 
-		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, FreeImage_GetBits(src_image.GetFBITMAP()), texture_id );
+		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, FreeImage_GetBits(image_copy.GetFBITMAP()), texture_id );
 	}
 
 	return true;//CreateGLTexture( GL_TEXTURE_2D, src_format, src_type, FreeImage_GetBits(img.GetFBITMAP()) );
@@ -559,12 +570,22 @@ U32 ARGB32toRGBA32( U32 src )
 
 bool CGLTextureResource::Lock( uint mip_level )
 {
-	return true;
+	if( m_pLockedImage )
+	{
+		int w = m_pLockedImage->GetWidth();
+		int h = m_pLockedImage->GetHeight();
+		m_pLockedTexture.reset( new CGLLockedTexture( m_pLockedImage ) );
+		return true;
+	}
+
+	return false;
 }
 
 
 bool CGLTextureResource::Unlock()
 {
+	m_pLockedTexture.reset();
+
 	return true;
 }
 
@@ -576,6 +597,8 @@ void CGLTextureResource::Release()
 	glDeleteTextures( 1, &m_TextureID );
 
 	m_TextureID = 0;
+
+	m_pLockedImage.reset();
 
 	SetState( GraphicsResourceState::RELEASED );
 }
