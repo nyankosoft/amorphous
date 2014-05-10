@@ -2,7 +2,6 @@
 #define __BitmapImage_H__
 
 
-#include <string>
 #include <boost/shared_ptr.hpp>
 #include "FreeImage.h"
 
@@ -23,6 +22,7 @@
 
 namespace amorphous
 {
+using boost::shared_ptr;
 
 class BitmapImage;
 
@@ -206,9 +206,9 @@ public:
 
 	inline bool FlipVertical();
 
-	inline boost::shared_ptr<BitmapImage> CreateCopy() const;
+	inline shared_ptr<BitmapImage> CreateCopy() const;
 
-	inline boost::shared_ptr<BitmapImage> GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const;
+	inline shared_ptr<BitmapImage> GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const;
 
 	inline const char *GetColorTypeName() const;
 };
@@ -501,12 +501,12 @@ inline bool BitmapImage::FlipVertical()
 }
 
 
-inline boost::shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
+inline shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
 {
 	if( !m_pFreeImageBitMap )
 	{
 		LOG_PRINT_ERROR( " The source bitmap image is not a valid." );
-		return boost::shared_ptr<BitmapImage>();
+		return shared_ptr<BitmapImage>();
 	}
 
 	const int w = GetWidth();
@@ -515,7 +515,7 @@ inline boost::shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
 	if( w <= 0 || h <= 0 )
 	{
 		LOG_PRINT_ERROR( " The source bitmap image does not have a width/height." );
-		return boost::shared_ptr<BitmapImage>();
+		return shared_ptr<BitmapImage>();
 	}
 
 	// FreeImage_Rescale() does not change the image specified as the first argument.
@@ -524,26 +524,26 @@ inline boost::shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
 	if( !pCopiedBitMap )
 	{
 		LOG_PRINT_ERROR( " FreeImage_Copy() returned NULL." );
-		return boost::shared_ptr<BitmapImage>();
+		return shared_ptr<BitmapImage>();
 	}
 
-	boost::shared_ptr<BitmapImage> pScaledImage( new BitmapImage( pCopiedBitMap ) );
+	shared_ptr<BitmapImage> pScaledImage( new BitmapImage( pCopiedBitMap ) );
 	return pScaledImage;
 }
 
 
-inline boost::shared_ptr<BitmapImage> BitmapImage::GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const
+inline shared_ptr<BitmapImage> BitmapImage::GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const
 {
 	if( m_pFreeImageBitMap )
 	{
 		// FreeImage_Rescale() does not change the image specified as the first argument.
 		// It returns the scaled image.
 		FIBITMAP *pScaledBitMap = FreeImage_Rescale( m_pFreeImageBitMap, dest_width, dest_height, FILTER_BILINEAR/*filter*/ );
-		boost::shared_ptr<BitmapImage> pScaledImage( new BitmapImage( pScaledBitMap ) );
+		shared_ptr<BitmapImage> pScaledImage( new BitmapImage( pScaledBitMap ) );
 		return pScaledImage;
 	}
 	else
-		return boost::shared_ptr<BitmapImage>();
+		return shared_ptr<BitmapImage>();
 }
 
 
@@ -708,13 +708,13 @@ inline bool BitmapImage::CreateFromImageArchive( ImageArchive& img_archive )
 // Global Functions
 //
 
-inline boost::shared_ptr<BitmapImage> CreateBitmapImage( const std::string& pathname, int flag = 0 )
+inline shared_ptr<BitmapImage> CreateBitmapImage( const std::string& pathname, int flag = 0 )
 {
-	boost::shared_ptr<BitmapImage> pImage( new BitmapImage() );
+	shared_ptr<BitmapImage> pImage( new BitmapImage() );
 
 	bool bSuccess = pImage->LoadFromFile( pathname, flag );
 
-	return bSuccess ? pImage : boost::shared_ptr<BitmapImage>();
+	return bSuccess ? pImage : shared_ptr<BitmapImage>();
 }
 
 
