@@ -207,6 +207,8 @@ public:
 
 	inline bool FlipVertical();
 
+	inline boost::shared_ptr<BitmapImage> CreateCopy() const;
+
 	inline boost::shared_ptr<BitmapImage> GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const;
 
 	inline const char *GetColorTypeName() const;
@@ -497,6 +499,37 @@ inline bool BitmapImage::FlipVertical()
 	}
 	else
 		return false;
+}
+
+
+inline boost::shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
+{
+	if( !m_pFreeImageBitMap )
+	{
+		LOG_PRINT_ERROR( " The source bitmap image is not a valid." );
+		return boost::shared_ptr<BitmapImage>();
+	}
+
+	const int w = GetWidth();
+	const int h = GetHeight();
+
+	if( w <= 0 || h <= 0 )
+	{
+		LOG_PRINT_ERROR( " The source bitmap image does not have a width/height." );
+		return boost::shared_ptr<BitmapImage>();
+	}
+
+	// FreeImage_Rescale() does not change the image specified as the first argument.
+	// It returns the scaled image.
+	FIBITMAP *pCopiedBitMap = FreeImage_Copy( m_pFreeImageBitMap, 0, 0, w-1, h-1 );
+	if( !pCopiedBitMap )
+	{
+		LOG_PRINT_ERROR( " FreeImage_Copy() returned NULL." );
+		return boost::shared_ptr<BitmapImage>();
+	}
+
+	boost::shared_ptr<BitmapImage> pScaledImage( new BitmapImage( pCopiedBitMap ) );
+	return pScaledImage;
 }
 
 
