@@ -72,7 +72,7 @@ inline bool write_to_obj_file(
 	const size_t num_triangles = triangle_indices.size() / 3;
 	for( size_t i=0; i<num_triangles; i++ )
 	{
-		int start_index = i/3;
+		int start_index = i*3;
 		const int i0 = triangle_indices[start_index  ] + 1;
 		const int i1 = triangle_indices[start_index+1] + 1;
 		const int i2 = triangle_indices[start_index+2] + 1;
