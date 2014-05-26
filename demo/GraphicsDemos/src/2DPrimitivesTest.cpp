@@ -65,8 +65,8 @@ int C2DPrimitivesTest::InitRects()
 int C2DPrimitivesTest::InitFrameRects()
 {
 	m_FrameTextures.resize( 3 );
-	m_FrameTextures[0].Load( "./2DPrimitivesDemo/textures/rect_frame00.bmp" );
-	m_FrameTextures[1].Load( "./2DPrimitivesDemo/textures/rect_frame02.bmp" );
+	m_FrameTextures[0].Load( "./2DPrimitivesDemo/textures/rect_frame00.png" );
+	m_FrameTextures[1].Load( "./2DPrimitivesDemo/textures/rect_frame02.png" );
 	m_FrameTextures[2].Load( "./2DPrimitivesDemo/textures/blue_grad.png" );
 
 	float left = 20;
