@@ -32,7 +32,7 @@ class C2DPrimitivesTest : public CGraphicsTestBase
 
 	std::vector<C2DRoundFrameRect> m_RoundFrameRects;
 
-	ShaderHandle m_Shader;
+	ShaderHandle m_Shaders[2];
 
 	bool m_UseTexture;
 
@@ -43,6 +43,12 @@ private:
 	int InitFrameRects();
 
 	void RenderRects();
+
+	void RenderFrameRects();
+
+	void RenderRoundRects();
+
+	void RenderRoundFrameRects();
 
 public:
 
