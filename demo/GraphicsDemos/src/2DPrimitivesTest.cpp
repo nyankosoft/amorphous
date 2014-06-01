@@ -13,7 +13,8 @@ using namespace boost;
 C2DPrimitivesTest::C2DPrimitivesTest()
 :
 m_Type(0),
-m_UseTexture(true)
+m_UseTexture(true),
+m_RenderWithUserDefinedShader(false)
 {
 	SetWindowSize( 1280, 720 );
 }
@@ -29,9 +30,10 @@ C2DPrimitivesTest::~C2DPrimitivesTest()
 
 int C2DPrimitivesTest::InitRects()
 {
-	m_RectTextures.resize( 2 );
+	m_RectTextures.resize( 3 );
 	m_RectTextures[0].Load( "./2DPrimitivesDemo/textures/SidePanel44b_fb.jpg" );
 	m_RectTextures[1].Load( "./2DPrimitivesDemo/textures/triangle_frame_blue.png" );
+	m_RectTextures[2].Load( "./2DPrimitivesDemo/textures/cyan-magenta-yellow.png" );
 
 	glViewport( 0, 0, 1280, 720 );
 
@@ -121,6 +123,21 @@ int C2DPrimitivesTest::Init()
 
 	InitFrameRects();
 
+	m_RectSet.SetNumRects( 64 );
+	for( int column=0; column<8; column++ )
+	{
+		for( int row=0; row<8; row++ )
+		{
+			int index = column * 8 + row;
+			float sx = 10 + (float)row    * 50;
+			float sy = 10 + (float)column * 50;
+			m_RectSet.SetRectMinMax( index, Vector2(sx,sy), Vector2(sx+40,sy+40) );
+			m_RectSet.SetRectColor( index, 0xFFFFFFFF );
+			m_RectSet.SetTextureCoordMinMax( index, TEXCOORD2(0,0), TEXCOORD2(1,1) );
+		}
+	}
+
+
 	return 0;
 }
 
@@ -172,13 +189,18 @@ void C2DPrimitivesTest::RenderFrameRects()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
+
 	for( size_t i=0; i<m_FrameRects.size(); i++ )
 	{
 //		m_FrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
 
 		shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
 
-		Get2DPrimitiveRenderer().Render( shader_mgr, &(m_FrameRects[i].GetVertex(0)), 10, PrimitiveType::TRIANGLE_STRIP );
+		if( m_RenderWithUserDefinedShader )
+			m_FrameRects[i].Draw( shader_mgr );
+//			Get2DPrimitiveRenderer().Render( shader_mgr, &(m_FrameRects[i].GetVertex(0)), 10, PrimitiveType::TRIANGLE_STRIP );
+		else
+			m_FrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
 	}
 }
 
@@ -199,11 +221,29 @@ void C2DPrimitivesTest::RenderRoundFrameRects()
 	for( size_t i=0; i<m_RoundFrameRects.size(); i++ )
 	{
 //		m_RoundFrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
-		
-		shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
 
-		m_RoundFrameRects[i].Draw( shader_mgr );
+		if( m_RenderWithUserDefinedShader )
+		{
+			shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
+			m_RoundFrameRects[i].Draw( shader_mgr );
+		}
+		else
+			m_RoundFrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
 	}
+}
+
+
+void C2DPrimitivesTest::RenderRectSet()
+{
+	ShaderManager *pShaderMgr = m_Shaders[0].GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
+
+//	shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
+
+	m_RectSet.Draw( m_RectTextures[2] );
 }
 
 
@@ -224,6 +264,9 @@ void C2DPrimitivesTest::Render()
 		break;
 	case 3:
 		RenderRoundFrameRects();
+		break;
+	case 4:
+		RenderRectSet();
 		break;
 	default:
 		break;
