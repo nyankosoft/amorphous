@@ -46,6 +46,8 @@ class HemisphericSpotlight;
 
 class C2DRect;
 class C2DFrameRect;
+class C2DRoundRect;
+class C2DRoundFrameRect;
 class C2DTriangle;
 class C2DRegularPolygon;
 class FontBase;
