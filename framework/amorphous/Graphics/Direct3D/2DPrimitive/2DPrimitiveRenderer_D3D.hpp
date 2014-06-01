@@ -40,6 +40,8 @@ public:
 	void Release();
 
 	void Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
+	
+	void Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type, const TextureHandle& texture );
 
 	void Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type );
 

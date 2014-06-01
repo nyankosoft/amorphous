@@ -4,6 +4,7 @@
 
 #include "../General2DVertex.hpp"
 #include "../GraphicsDevice.hpp"
+#include "../TextureHandle.hpp"
 
 
 namespace amorphous
@@ -23,6 +24,8 @@ public:
 	virtual void Release() {}
 
 	virtual void Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
+
+	virtual void Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type, const TextureHandle& texture ) = 0;
 
 	virtual void Render( ShaderManager& rShaderManager, General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type ) = 0;
 

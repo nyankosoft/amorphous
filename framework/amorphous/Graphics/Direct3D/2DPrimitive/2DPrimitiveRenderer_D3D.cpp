@@ -2,6 +2,7 @@
 #include "Graphics/Direct3D/Conversions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
@@ -179,6 +180,12 @@ void C2DPrimitiveRenderer_D3D::Render( General2DVertex *paVertex, int num_vertic
 //	hr = pd3dDev->SetVertexDeclaration( sg_pTLVertDeclaration );
 
 	hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_vertices - 2, &m_vecTLVertex[0], sizeof(TLVERTEX) );
+}
+
+
+void C2DPrimitiveRenderer_D3D::Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type, const TextureHandle& texture )
+{
+	LOG_PRINT_ERROR( "Not implemented yet." );
 }
 
 
