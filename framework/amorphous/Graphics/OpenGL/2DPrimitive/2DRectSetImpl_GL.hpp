@@ -5,6 +5,9 @@
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRectSet.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/Generic2DShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "2DPrimitiveRenderer_GL.hpp"
 
@@ -268,7 +271,30 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const 
 	GraphicsDevice().SetTexture( 0, texture );
 
 	// draw rectangles
-	draw( start_rect_index, num_rects );
+//	draw( start_rect_index, num_rects );
+
+	CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
+
+	uint num_vertices = (uint)m_vecRectVertex.size();
+
+	uint num_indices = num_rects * 6;
+
+	if( sizeof(ushort) != sizeof(U16) )
+	{
+		LOG_PRINT_ERROR( "Indices are not compatible: sizeof(ushort) != sizeof(U16)." );
+		return;
+	}
+
+	ushort *indices = (ushort *)&(CRectTriListIndexBuffer::GetIndexBuffer()[0]);
+
+	PrimitiveRenderer_GL().Render(
+		&(m_vecRectVertex[0]),
+		num_vertices,
+		indices,
+		num_indices,
+		PrimitiveType::TRIANGLE_LIST,
+		texture
+		);
 }
 
 
@@ -280,7 +306,7 @@ inline void C2DRectSetImpl_GL::draw( int start_rect_index, int num_rects )
 	 || (int)m_vecRectVertex.size() < (start_rect_index + num_rects)*4 )
 		return;
 
-	PrimitiveRenderer_GL().RenderGL( &(m_vecRectVertex[start_rect_index*4]), num_rects * 4, GL_QUADS );
+//	PrimitiveRenderer_GL().RenderGL( &(m_vecRectVertex[start_rect_index*4]), num_rects * 4, GL_QUADS );
 }
 
 
