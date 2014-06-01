@@ -40,7 +40,10 @@ public:
 	/// draw framerect without any render state changes
 	inline virtual void draw();
 
-//	virtual void Draw( const TextureHandle& texture );
+	inline virtual void Draw( const TextureHandle& texture );
+
+	inline virtual void Draw( ShaderManager& shader_mgr );
+
 //	virtual void Draw() { C2DPrimitive::Draw(); }
 
 //	inline Vector2 GetCornerPos2D( int vert_index ) const;
@@ -142,6 +145,18 @@ inline void C2DFrameRect::draw()
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 8, m_avRectVertex, sizeof(TLVERTEX) );
 
 	Get2DPrimitiveRenderer().Render( m_avRectVertex, 10, PrimitiveType::TRIANGLE_STRIP );
+}
+
+
+inline void C2DFrameRect::Draw( const TextureHandle& texture )
+{
+	Get2DPrimitiveRenderer().Render( m_avRectVertex, 10, PrimitiveType::TRIANGLE_STRIP, texture );
+}
+
+
+inline void C2DFrameRect::Draw( ShaderManager& shader_mgr )
+{
+	Get2DPrimitiveRenderer().Render( shader_mgr, m_avRectVertex, 10, PrimitiveType::TRIANGLE_STRIP );
 }
 
 /*

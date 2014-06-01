@@ -430,6 +430,10 @@ public:
 	/// draw rect without any render state changes
 	inline virtual void draw();
 
+	inline void Draw( const TextureHandle& texture );
+
+	inline void Draw( ShaderManager& shader_mgr );
+
 	inline void SetBorderWidth( int border_width );
 
 //	inline void SetPosition( const Vector2& vMin, const Vector2& vMax);
@@ -546,6 +550,18 @@ inline void C2DRoundFrameRect::draw()
 //	DIRECT3D9.GetDevice()->SetFVF( D3DFVF_TLVERTEX );
 //	DIRECT3D9.GetDevice()->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, GetNumVertices() - 2, &m_vecRectVertex[0], sizeof(TLVERTEX) );
 	Get2DPrimitiveRenderer().Render( &m_vecRectVertex[0], GetNumVertices(), PrimitiveType::TRIANGLE_STRIP );
+}
+
+
+inline void C2DRoundFrameRect::Draw( const TextureHandle& texture )
+{
+	Get2DPrimitiveRenderer().Render( &m_vecRectVertex[0], (unsigned int)m_vecRectVertex.size(), PrimitiveType::TRIANGLE_STRIP, texture );
+}
+
+
+inline void C2DRoundFrameRect::Draw( ShaderManager& shader_mgr )
+{
+	Get2DPrimitiveRenderer().Render( shader_mgr, &m_vecRectVertex[0], (unsigned int)m_vecRectVertex.size(), PrimitiveType::TRIANGLE_STRIP );
 }
 
 
