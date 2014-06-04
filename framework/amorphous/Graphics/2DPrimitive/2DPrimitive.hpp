@@ -116,19 +116,6 @@ public:
 
 inline void C2DPrimitive::SetBasicRenderStates()
 {
-/*	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-	// enable alpha blending
-	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//	pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
-	pd3dDev->SetRenderState( D3DRS_DESTBLEND, m_DestAlphaBlend );
-
-	pd3dDev->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
-//	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_NONE );
-	pd3dDev->SetRenderState( D3DRS_CULLMODE,D3DCULL_CCW );
-*/
-
 	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( m_DestAlphaBlend );
@@ -141,25 +128,6 @@ inline void C2DPrimitive::SetBasicRenderStates()
 
 inline void C2DPrimitive::SetStdRenderStates()
 {
-	GraphicsDevice().SetTexture( 0, TextureHandle() );
-
-//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-
-//	if( pd3dDev )
-//	{
-		// no texture
-		// - use only the vertex color & alpha
-//		pd3dDev->SetTexture( 0, NULL );
-
-//		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-//		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-//		pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
-
-//		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );
-//		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-//		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-//	}
-
 	GraphicsDevice().SetTexture( 0, TextureHandle() );
 
 	TextureStage tex_stage_0, tex_stage_1;
@@ -179,25 +147,7 @@ inline void C2DPrimitive::SetStdRenderStates()
 inline void C2DPrimitive::SetStdRenderStatesForTexture( const TextureHandle& texture )
 {
 	GraphicsDevice().SetTexture( 0, texture );
-/*
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
-	if( pd3dDev )
-	{
-//		pd3dDev->SetTexture( 0, texture.GetTexture() );
-
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_MODULATE );
-//		pd3dDev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG2 );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TEXTURE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
-
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_MODULATE );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
-		pd3dDev->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE );
-		pd3dDev->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
-	}
-*/
 	TextureStage tex_stage_0, tex_stage_1;
 
 	tex_stage_0.ColorOp   = TexStageOp::MODULATE;
