@@ -239,12 +239,6 @@ void CGenericShaderTest::HandleInput( const InputData& input )
 		}
 		break;
 
-	case GIC_F12:
-		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}
-		break;
-
 	case GIC_SPACE:
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
@@ -252,7 +246,9 @@ void CGenericShaderTest::HandleInput( const InputData& input )
 //			m_pSampleUI->GetDialog(UIID_DLG_RESOLUTION)->Open();
 		}
 		break;
+
 	default:
+		CGraphicsTestBase::HandleInput( input );
 		break;
 	}
 }
