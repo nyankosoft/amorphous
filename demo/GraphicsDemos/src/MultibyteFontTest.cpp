@@ -10,6 +10,7 @@
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Support/FreeTypeAux.hpp"
 #include "amorphous/Support/UTF8/utf8.h"
+#include "amorphous/Support/clipboard_utils.hpp"
 
 using std::string;
 using std::vector;
@@ -379,6 +380,12 @@ void CMultibyteFontTest::HandleInput( const InputData& input )
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+		}
+		break;
+	case 'V':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_UTFText = get_text_from_clipboard();
 		}
 		break;
 	default:
