@@ -52,6 +52,8 @@ protected:
 
 	const Camera& GetCurrentCamera() const;
 
+	void CreateParamFileIfNotFound( const char *param_file, const char *text );
+
 public:
 
 	CGraphicsTestBase();

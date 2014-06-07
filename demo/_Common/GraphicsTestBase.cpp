@@ -217,3 +217,18 @@ const Camera& CGraphicsTestBase::GetCurrentCamera() const
 {
 	return g_Camera;
 }
+
+
+void CGraphicsTestBase::CreateParamFileIfNotFound( const char *param_file, const char *text )
+{
+	using namespace boost::filesystem;
+	
+	if( exists(param_file) )
+		return;
+
+	std::ofstream ofs( param_file );
+	if( !ofs.is_open() )
+		return;
+
+	ofs << text;
+}
