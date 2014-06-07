@@ -50,7 +50,7 @@ public:
 
 	void Draw() { C2DPrimitive::Draw(); }
 
-	void Draw( const TextureHandle& texture ) { C2DPrimitive::Draw( texture ); }
+	void Draw( const TextureHandle& texture );
 
 	void DrawWireframe();
 
@@ -153,6 +153,12 @@ inline void C2DRect::SetDefault()
 	}
 
 	m_DestAlphaBlend = AlphaBlend::InvSrcAlpha;
+}
+
+
+inline void C2DRect::Draw( const TextureHandle& texture )
+{
+	Get2DPrimitiveRenderer().Render( m_avRectVertex, 4, PrimitiveType::TRIANGLE_FAN, texture );
 }
 
 
