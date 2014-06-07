@@ -5,6 +5,7 @@
 #include "Support/Profile.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/UTF8/utf8.h"
+#include "amorphous/App/GameWindowManager.hpp"
 
 
 namespace amorphous
@@ -289,9 +290,10 @@ bool UTFFont::InitFont( const std::string& font_file_path, int font_pt, int reso
 
 	SetFontSize( font_width, font_height );
 
+	// TODO: support non-square texture sizes for the OpenGL mode
 	TextureResourceDesc tex;
 	tex.Width  = 1024;
-	tex.Height = 512;
+	tex.Height = (GetGraphicsLibraryName() == "OpenGL") ? 1024 : 512;
 	tex.Format = TextureFormat::A8R8G8B8;
 	tex.MipLevels = 0;
 	bool loaded = m_FontTexture.Load( tex );
