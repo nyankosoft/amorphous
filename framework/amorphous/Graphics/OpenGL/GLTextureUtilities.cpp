@@ -1,5 +1,6 @@
 #include "GLTextureUtilities.hpp"
 #include "GLGraphicsDevice.hpp"
+#include "GLExtensions.hpp"
 #include "Support/BitmapImage.hpp"
 
 
@@ -30,8 +31,8 @@ bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum s
 
 	LOG_GL_ERROR( "glGetTexImage() failed." );
 
-	int bpp = (src_format == GL_RGBA) ? 32 : 24;
-	int num_channels = (src_format == GL_RGBA) ? 4 : 3;
+	int bpp          = (src_format == GL_RGBA || src_format == GL_BGRA) ? 32 : 24;
+	int num_channels = (src_format == GL_RGBA || src_format == GL_BGRA) ? 4 : 3;
 //	const int width  = m_TextureDesc.Width;
 //	const int height = m_TextureDesc.Height;
 	BitmapImage img( width, height, bpp );
