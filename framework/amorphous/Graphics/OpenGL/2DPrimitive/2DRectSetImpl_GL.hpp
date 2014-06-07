@@ -268,14 +268,18 @@ inline void C2DRectSetImpl_GL::Draw( int start_rect_index, int num_rects, const 
 {
 	PROFILE_FUNCTION_IF( Get2DPrimitiveRenderer().m_Profile );
 
-	GraphicsDevice().SetTexture( 0, texture );
+	uint num_vertices = (uint)m_vecRectVertex.size();
+
+	if( num_vertices == 0 )
+		return;
+
+	if( num_rects == 0 )
+		return;
 
 	// draw rectangles
 //	draw( start_rect_index, num_rects );
 
 	CRectTriListIndexBuffer::SetNumMaxRects( num_rects );
-
-	uint num_vertices = (uint)m_vecRectVertex.size();
 
 	uint num_indices = num_rects * 6;
 
