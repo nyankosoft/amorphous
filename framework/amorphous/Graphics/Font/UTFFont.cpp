@@ -12,7 +12,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using namespace boost;
+using boost::shared_ptr;
 
 typedef TextureFont ASCIIFont;
 
@@ -132,7 +132,7 @@ static void RenderTextToBufferAndSetUpRects(
 	PROFILE_FUNCTION();
 //	LOG_FUNCTION_SCOPE();
 
-	const std::vector<U32>& text = utf8_code_points;
+	const vector<U32>& text = utf8_code_points;
 
 	float top, left, bottom, right;
 	int _top, _left, _bottom, _right;
@@ -307,7 +307,7 @@ bool UTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2
 	if( !m_FontTexture.GetEntry() )
 		return false;
 
-	boost::shared_ptr<TextureResource> pTexture = m_FontTexture.GetEntry()->GetTextureResource();
+	shared_ptr<TextureResource> pTexture = m_FontTexture.GetEntry()->GetTextureResource();
 	if( !pTexture )
 		return false;
 
@@ -315,7 +315,7 @@ bool UTFFont::DrawTextToTexture( const std::vector<U32>& utf_text, const Vector2
 	if( !locked )
 		return false;
 
-	boost::shared_ptr<LockedTexture> pLockedTexture;
+	shared_ptr<LockedTexture> pLockedTexture;
 	pTexture->GetLockedTexture( pLockedTexture );
 	if( !pLockedTexture )
 		return false;
