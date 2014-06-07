@@ -387,6 +387,11 @@ void SetDefaultLinearFog()
 
 int CPostProcessEffectTest::Init()
 {
+	CreateParamFileIfNotFound( "PostProcessEffectDemo/params.txt",
+		"load_embedded_effect_shader    1\n"\
+		"hdr.tone_mapping_key_value     3.0\n"\
+		"hdr.luminance_adaptation_rate  0.02\n" );
+
 	bool loaded = m_Shader.Load( "PostProcessEffectDemo/shaders/mesh.fx" );
 
 //	if( !m_pShaderManager->LoadShaderFromFile( "shaders/mesh.fx" ) )

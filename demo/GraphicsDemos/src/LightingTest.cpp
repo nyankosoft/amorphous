@@ -218,6 +218,14 @@ bool CLightingTest::InitShader()
 
 int CLightingTest::Init()
 {
+	CreateParamFileIfNotFound( "LightingDemo/params.txt",
+		"model models/shapes.msh\n"\
+		"random_light_colors true\n"\
+		"specular false\n"\
+		"hs_directinal_lights false\n"\
+		"hs_point_lights true\n"\
+		"num_lights_x_z 3 3\n" );
+
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );

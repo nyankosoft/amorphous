@@ -95,6 +95,8 @@ bool CCustomMeshTest::InitShader()
 
 int CCustomMeshTest::Init()
 {
+	CreateParamFileIfNotFound( "LightingDemo/params.txt",
+		"model  ../Common/models/Chevelle.msh\n" );
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
