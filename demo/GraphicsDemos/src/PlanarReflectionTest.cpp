@@ -1,10 +1,10 @@
 #include "PlanarReflectionTest.hpp"
-#include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
@@ -110,11 +110,18 @@ int CPlanarReflectionTest::Init()
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "Default" );
 	m_DefaultTechnique.SetTechniqueName( "NullShader" );
-
+/*
 	// initialize shader
 //	string shader_path = directory_path + "shaders/PlanarReflectionTest.fx";
 	string shader_path = directory_path + "shaders/PerPixelSingleHSDirectionalLight.fx";
 	bool shader_loaded = m_Shader.Load( shader_path );
+*/
+	GenericShaderDesc gs_desc;
+	gs_desc.Specular = SpecularSource::NONE;
+	gs_desc.NumDirectionalLights = 1;
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
+	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	string pr_shader_path = "shaders/PerPixelSingleHSDirectionalLight_PR.fx";
 	LoadParamFromFile( directory_path + "params.txt", "planar_reflection_shader", pr_shader_path );
@@ -151,6 +158,24 @@ void CPlanarReflectionTest::Update( float dt )
 }
 
 
+void CPlanarReflectionTest::UpdateLight( ShaderManager& shader_mgr )
+{
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	if( !pShaderLightMgr )
+		return;
+
+	pShaderLightMgr->ClearLights();
+
+	HemisphericDirectionalLight light;
+	light.Attribute.UpperDiffuseColor.SetRGBA( 1.0f, 1.0f, 0.9f, 1.0f );
+	light.Attribute.LowerDiffuseColor.SetRGBA( 0.1f, 0.1f, 0.2f, 1.0f );
+	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.5f, -0.9f ) );
+	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+
+	pShaderLightMgr->CommitChanges();
+}
+
+
 void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode )
 {
 	C2DRect rect( Vector2( 80, 80 ), Vector2( 100, 100 ), 0xFFFF0000 );
@@ -169,6 +194,8 @@ void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera
 	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetWorldTransform( matWorld );
+
+	UpdateLight( shader_mgr );
 
 	Result::Name res = shader_mgr.SetTechnique( m_MeshTechnique );
 

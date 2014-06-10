@@ -42,6 +42,8 @@ protected:
 
 	void RenderReflectionSurface();
 
+	void UpdateLight( ShaderManager& shader_mgr );
+
 public:
 
 	CPlanarReflectionTest();
