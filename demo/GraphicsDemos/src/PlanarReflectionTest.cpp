@@ -8,7 +8,6 @@
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
-#include "amorphous/Support/CameraController_Win32.hpp"
 #include "amorphous/Support/Timer.hpp"
 
 // TODO: make the source code graphics-library independent.
@@ -26,18 +25,8 @@ Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )
 }
 
 
-void RenderPlane( const Matrix34& plane_pose, float x, float y )
-{
-//	C3DRect rect;
-}
-
-
-
-//extern void InitCg();
-
 CPlanarReflectionTest::CPlanarReflectionTest()
 {
-//	InitCg();
 }
 
 
