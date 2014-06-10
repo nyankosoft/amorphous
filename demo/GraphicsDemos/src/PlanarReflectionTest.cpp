@@ -19,63 +19,6 @@ using std::vector;
 using namespace boost;
 
 
-template<typename ColorType>
-class TLVertex
-{
-public:
-	TLVertex()
-		:
-	Vector3(0,0,0)
-	{}
-
-	TLVertex( const Vector3& _position, const ColorType& _color ) : position(_position), color(_color)
-	{}
-
-	~TLVertex(){}
-
-	Vector3 position;
-	ColorType color;
-};
-
-
-namespace amorphous {
-extern D3DPRIMITIVETYPE ToD3DPrimitiveType( PrimitiveType::Name pt ); // in amorphous/Graphics/Direct3D/2DPrimitive/2DPrimitiveRenderer_D3D.cpp
-}
-
-void DrawPrimitives( PrimitiveType::Name primitive_type, const TLVertex<U32> *vertices, uint num_vertices )//, int u32_color_componets_order == always ARGB )
-{
-	if( !vertices || num_vertices == 0 )
-		return;
-
-	// Support primitives types other than triangle fan and triangle strips
-	uint num_primitives = num_vertices - 2;
-
-	D3DPRIMITIVETYPE d3d_pt = amorphous::ToD3DPrimitiveType( primitive_type );
-
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
-	HRESULT hr = S_OK;
-
-	DWORD fvf = (D3DFVF_XYZRHW|D3DFVF_DIFFUSE);
-
-	hr = pd3dDev->SetVertexShader( NULL );
-	hr = pd3dDev->SetPixelShader( NULL );
-
-	hr = pd3dDev->SetFVF( fvf );
-
-	hr = pd3dDev->DrawPrimitiveUP( d3d_pt, num_primitives, vertices, sizeof(TLVertex<U32>) );
-}
-
-
-void DrawPrimitives( PrimitiveType::Name primitive_type, const std::vector< TLVertex<U32> >& vertices )
-{
-	if( vertices.empty() )
-		return;
-
-	DrawPrimitives( primitive_type, &vertices[0], (uint)vertices.size() );
-}
-
-
-
 Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )
 {
 	float d = plane.GetDistanceFromPoint( pos );
@@ -295,7 +238,7 @@ void SetClipPlaneViaD3DXFunctions( const Camera& camera )// const Plane& reflect
 	hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, D3DCLIPPLANE0 );
 }
 
-
+/*
 void SetClipPlane( const Camera& camera, const Plane& reflection_plane )
 {
 	Plane src_plane( reflection_plane );
@@ -324,20 +267,20 @@ void SetClipPlane( const Camera& camera, const Plane& reflection_plane )
 	};
 
 	// For fixed function pipeline
-/*	float plane_coefficients[] =
-	{
-		reflection_plane.normal.x,
-		reflection_plane.normal.y,
-		reflection_plane.normal.z,
-		reflection_plane.dist * (-1.0f)
-	};*/
+//	float plane_coefficients[] =
+//	{
+//		reflection_plane.normal.x,
+//		reflection_plane.normal.y,
+//		reflection_plane.normal.z,
+//		reflection_plane.dist * (-1.0f)
+//	};
 
 	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 	HRESULT hr = S_OK;
 	hr = pd3dDev->SetClipPlane( 0, plane_coefficients );
 	hr = pd3dDev->SetRenderState( D3DRS_CLIPPLANEENABLE, D3DCLIPPLANE0 );
 }
-
+*/
 
 void CPlanarReflectionTest::Render()
 {
