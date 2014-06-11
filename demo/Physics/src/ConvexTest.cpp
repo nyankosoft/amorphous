@@ -177,6 +177,15 @@ int CConvexTest::InitPhysics( const vector< pair<string,int> >& mesh_and_quantit
 
 int CConvexTest::Init()
 {
+	CreateParamFileIfNotFound( "ConvexDemo/params.txt",
+		"mesh  models/pentagonal_prism.msh  5\n"\
+		"mesh  models/triangular_prism.msh  5\n"\
+		"mesh  models/cylinder.msh  5\n"\
+		"mesh  models/cylinder-slim.msh  5\n"\
+		"mesh  models/cylinder-wide.msh  5\n"\
+		"mesh  models/wb1.msh  25\n"\
+		"mesh  models/cwp.msh  25\n" );
+
 	vector< pair<string,int> > mesh_and_quantity_pairs;
 	CTextFileScanner scanner( "ConvexDemo/params.txt" );
 	if( scanner.IsReady() )

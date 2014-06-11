@@ -259,6 +259,15 @@ void CMultiShapeActorsTest::InitPhysicsEngine()
 
 int CMultiShapeActorsTest::Init()
 {
+	CreateParamFileIfNotFound( "MultiShapeActorsDemo/params.txt",
+		"#model  models/M1911.msh  20\n"\
+		"model  models/table.msh  12\n"\
+		"#model  models/postbox.msh  5\n"\
+		"model  models/framed_wooden_crate.msh  20\n"\
+		"model  models/framed_wooden_crate.msh  20\n"\
+		"model  models/PalletNarrow.msh  20\n"\
+		"mesh  models/cwp.msh  25\n" );
+
 	m_Meshes.push_back( MeshHandle() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );

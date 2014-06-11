@@ -411,7 +411,12 @@ void CClothTest::InitPhysicsEngine()
 
 int CClothTest::Init()
 {
-//	m_pFont->SetFontSize( 8, 16 );
+	CreateParamFileIfNotFound( "ClothDemo/params.txt",
+		"//ClothMesh  models/cloth-10x10.msh\n"\
+		"//ClothMesh  models/tex_cloth-10x10.msh\n"\
+		"ClothMesh  models/tex_cloth-20x20.msh\n" );
+	
+	//	m_pFont->SetFontSize( 8, 16 );
 
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator() );
