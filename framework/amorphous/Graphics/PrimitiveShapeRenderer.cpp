@@ -271,7 +271,10 @@ void PrimitiveShapeRenderer::RenderAxisAlignedPlane(
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 	Result::Name res = shader_mgr.SetTexture( 0, texture_to_set );
-	res = shader_mgr.SetTexture( 1, texture_to_set );
+
+	// Commented out; lighting does not work in the OpenGL mode
+	// when the texture is set to the second stage. 
+//	res = shader_mgr.SetTexture( 1, texture_to_set );
 
 	RenderPlane( corners, normal, color, texture_to_set, top_left, bottom_right, shader_mgr );
 }
