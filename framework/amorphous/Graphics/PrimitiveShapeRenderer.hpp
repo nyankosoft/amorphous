@@ -23,6 +23,8 @@ class PrimitiveShapeRenderer
 	
 private:
 
+	ShaderManager *GetShaderManagerForPrimitiveShape();
+
 	Result::Name RenderPlane(
 		const Vector3 *positions,
 		const Vector3& normal,

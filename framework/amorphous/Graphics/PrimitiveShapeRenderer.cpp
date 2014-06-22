@@ -1,6 +1,6 @@
 #include "PrimitiveShapeRenderer.hpp"
-#include "Shader/FixedFunctionPipelineManager.hpp"
 #include "Shader/ShaderManager.hpp"
+#include "Shader/CommonShaders.hpp"
 #include "TextureUtilities.hpp"
 #include "MeshGenerators/MeshGenerators.hpp"
 #include "PrimitiveRenderer.hpp"
@@ -10,6 +10,9 @@ namespace amorphous
 {
 
 using namespace std;
+
+
+static ShaderHandle sg_NoLightingShader;
 
 
 /// Used when a rectangle in 3D space is rendered via custom mesh
@@ -73,7 +76,12 @@ void PrimitiveShapeRenderer::RenderSphere( const Sphere& sphere, const SFloatRGB
 
 void PrimitiveShapeRenderer::RenderBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
-	ShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = GetShaderManagerForPrimitiveShape();
+
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	Vector3 s( vEdgeLengths );
 	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(s.x,s.y,s.z) );
@@ -99,6 +107,20 @@ void PrimitiveShapeRenderer::RenderCapsule( float radius, float height, const Ma
 
 void PrimitiveShapeRenderer::RenderCylinder( float radius, float height, const Matrix34& world_pose, const SFloatRGBAColor& color )
 {
+}
+
+
+ShaderManager *PrimitiveShapeRenderer::GetShaderManagerForPrimitiveShape()
+{
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+
+	if( pShaderMgr )
+		return pShaderMgr;
+
+	if( !sg_NoLightingShader.IsLoaded() )
+		sg_NoLightingShader = GetNoLightingShader();
+
+	return sg_NoLightingShader.GetShaderManager();
 }
 
 
@@ -159,8 +181,12 @@ void PrimitiveShapeRenderer::RenderPlane(
 	const TEXCOORD2& bottom_right
 	)
 {
-	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = GetShaderManagerForPrimitiveShape();
+
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetWorldTransform( pose );
 
@@ -235,8 +261,12 @@ void PrimitiveShapeRenderer::RenderAxisAlignedPlane(
 		texture_to_set = default_texture;
 	}
 
-	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = GetShaderManagerForPrimitiveShape();
+
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
@@ -255,7 +285,12 @@ void PrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float wid
 
 void PrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color )
 {
-	ShaderManager& shader_mgr = m_Shader.GetShaderManager() ? *(m_Shader.GetShaderManager()) : FixedFunctionPipelineManager();
+	ShaderManager *pShaderMgr = GetShaderManagerForPrimitiveShape();
+
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	Vector3 r( vEdgeLengths * 0.5f );
 	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(r.x,r.y,r.z) );
