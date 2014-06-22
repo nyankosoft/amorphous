@@ -142,6 +142,7 @@ Result::Name PrimitiveShapeRenderer::RenderPlane(
 	// Set the four vertices of the rectangle.
 	const unsigned int num_vertices_to_set = 4;
 	ms_RectMesh.SetPositions( positions, num_vertices_to_set );
+	ms_RectMesh.UpdateAABBs();
 
 	ms_RectMesh.SetNormals( normal );
 
