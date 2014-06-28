@@ -1,5 +1,6 @@
-// PerPixelSingleHSDirectionalLight_PR_PT.fx
-// planer reflection
+// PerPixelSingleHSDirectionalLight_PR_WS.fx
+// planer reflection for water surface
+// - Shift the texture coordinates for perturbation texture to make the planer reflection surface look like waves
 
 float4 g_vAmbientColor = float4(0.1f, 0.1f, 0.1f, 1.f);
 
@@ -22,6 +23,8 @@ float4x4 View			: VIEW;
 float4x4 Proj			: PROJ;
 
 float4x4 WorldView		: WORLDVIEW;
+
+float2 g_vPerturbationTextureUVShift = float2(0,0);
 
 
 //--------------------------------------------------------------------------------
@@ -67,6 +70,7 @@ void VS_PerPixelSingleHSDirectionalLIght_PR(
 /**
 Sampler0: surface color texture
 Sampler1: planer reflection texture
+Sampler2: normal map texture
 */
 float4 PS_PerPixelSingleHSDirectionalLIght_PR(
        float4 Diffuse  : COLOR0,
@@ -86,7 +90,11 @@ float4 PS_PerPixelSingleHSDirectionalLIght_PR(
 		= g_vUpperDiffuseColor * d
 		+ g_vLowerDiffuseColor * (1-d);
 
-	float4 tex_color = tex2D(Sampler0, Tex0);
+	float2 perturbation_tex_coord = Tex0 + g_vPerturbationTextureUVShift;
+	float2 perturbation = ( tex2D(Sampler2, perturbation_tex_coord).xy - float2(0.5,0.5) ) * 0.1;
+	float2 tex = Tex0 + perturbation;
+
+	float4 tex_color = tex2D(Sampler0, tex);
 	float4 surface_color;
 	surface_color.rgb = tex_color.rgb * light_diffuse;
 	surface_color.a   = tex_color.a;
@@ -94,6 +102,7 @@ float4 PS_PerPixelSingleHSDirectionalLIght_PR(
 	float2 pr_tex;
 	pr_tex.x =  (PosPS.x / PosPS.w) * 0.5 + 0.5;
 	pr_tex.y = -(PosPS.y / PosPS.w) * 0.5 + 0.5;
+	pr_tex.xy += perturbation;
 	float4 pr_tex_color = tex2D(Sampler1, pr_tex);
 	pr_tex_color.a = 1.0;
 
