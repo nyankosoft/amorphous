@@ -27,8 +27,12 @@ Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )
 
 CPlanarReflectionTest::CPlanarReflectionTest()
 :
-m_fReflection(0.0f)
+m_fReflection(0.0f),
+m_RenderSkybox(true),
+m_Perturbation(false)
 {
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 1, -1 ) );
 }
 
 
@@ -57,18 +61,37 @@ int CPlanarReflectionTest::Init()
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gs_desc) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
-	string pr_shader_path = "shaders/PerPixelSingleHSDirectionalLight_PR.fx";
-	LoadParamFromFile( directory_path + "params.txt", "planar_reflection_shader", pr_shader_path );
-	shader_loaded = m_PlanarReflectionShader.Load( directory_path + pr_shader_path );
+	bool use_embedded_planar_reflection_shader = false;
+	LoadParamFromFile( directory_path + "params.txt", "use_embedded_planar_reflection_shader", use_embedded_planar_reflection_shader );
+	if( use_embedded_planar_reflection_shader )
+	{
+		GenericShaderDesc prs_desc;
+
+		prs_desc.Specular = SpecularSource::NONE;
+		prs_desc.NumDirectionalLights = 1;
+		prs_desc.PlanarReflection = PlanarReflectionOption::FLAT;
+		ShaderResourceDesc sd;
+		sd.pShaderGenerator.reset( new GenericShaderGenerator(prs_desc) );
+		shader_loaded = m_PlanarReflectionShader.Load( sd );
+	}
+	else
+	{
+		string pr_shader_path = "shaders/PerPixelSingleHSDirectionalLight_PR.fx";
+		LoadParamFromFile( directory_path + "params.txt", "planar_reflection_shader", pr_shader_path );
+		shader_loaded = m_PlanarReflectionShader.Load( directory_path + pr_shader_path );
+
+		if( pr_shader_path.find("WS") != string::npos )
+			m_Perturbation = true; // WS indicates the shader is for water surface
+	}
 	
 	// load skybox mesh
 	m_SkyboxMesh = CreateSkyboxMesh( directory_path + "textures/skygrad_slim_01.jpg" );
 
 	// load the terrain mesh
-	MeshResourceDesc mesh_desc;
-	mesh_desc.ResourcePath = directory_path + "models/terrain06.msh";
-	mesh_desc.MeshType     = MeshType::BASIC;
-	m_TerrainMesh.Load( mesh_desc );
+//	MeshResourceDesc mesh_desc;
+//	mesh_desc.ResourcePath = directory_path + "models/terrain06.msh";
+//	mesh_desc.MeshType     = MeshType::BASIC;
+//	m_TerrainMesh.Load( mesh_desc );
 
 	m_ReflectionSourceMeshes.resize( 1 );
 	m_ReflectionSourceMeshes[0].Load( directory_path + "models/wall_and_ceiling.msh" );
@@ -110,6 +133,24 @@ void CPlanarReflectionTest::UpdateLight( ShaderManager& shader_mgr )
 }
 
 
+void CPlanarReflectionTest::SetLowLight( ShaderManager& shader_mgr )
+{
+	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
+	if( !pShaderLightMgr )
+		return;
+
+	pShaderLightMgr->ClearLights();
+
+	HemisphericDirectionalLight light;
+	light.Attribute.UpperDiffuseColor.SetRGBA( 0.01f, 0.01f, 0.01f, 1.0f );
+	light.Attribute.LowerDiffuseColor.SetRGBA( 0.00f, 0.00f, 0.00f, 1.0f );
+	light.vDirection = Vec3GetNormalized( Vector3( -1.0f, -1.5f, -0.9f ) );
+	pShaderLightMgr->SetHemisphericDirectionalLight( light );
+
+	pShaderLightMgr->CommitChanges();
+}
+
+
 void CPlanarReflectionTest::UpdateReflection()
 {
 	ShaderManager *pShaderMgr = m_PlanarReflectionShader.GetShaderManager();
@@ -122,11 +163,12 @@ void CPlanarReflectionTest::UpdateReflection()
 
 void CPlanarReflectionTest::RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode )
 {
-	C2DRect rect( Vector2( 80, 80 ), Vector2( 100, 100 ), 0xFFFF0000 );
+//	C2DRect rect( Vector2( 80, 80 ), Vector2( 100, 100 ), 0xFFFF0000 );
 
 	GraphicsDevice().SetCullingMode( culling_mode );
 
-	RenderAsSkybox( m_SkyboxMesh, camera_pose );
+	if( m_RenderSkybox )
+		RenderAsSkybox( m_SkyboxMesh, camera_pose );
 
 	GraphicsDevice().SetCullingMode( culling_mode );
 
@@ -178,6 +220,16 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 	uv_shift[1] = 0;
 
 	shader_mgr.SetParam( "g_vPerturbationTextureUVShift", uv_shift );
+
+	if( m_Perturbation )
+	{
+		SetLowLight( shader_mgr ); // Water surface looks better with a reduced light
+	}
+	else
+		UpdateLight( shader_mgr );
+
+	// In Direct3D mode, this makes water surface a lot brighter. Why?
+//	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 	for( size_t i=0; i<m_ReflectiveSurfaceMeshes.size(); i++ )
 	{
@@ -377,6 +429,19 @@ void CPlanarReflectionTest::HandleInput( const InputData& input )
 		{
 			m_fReflection -= 0.05f;
 			UpdateReflection();
+		}
+		break;
+	case 'V':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_RenderSkybox = !m_RenderSkybox;
+		}
+		break;
+	case 'T':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			if( m_pTextureRenderTarget )
+				m_pTextureRenderTarget->GetRenderTargetTexture().SaveTextureToImageFile( ".debug/mirrored_scene.png" );
 		}
 		break;
 	default:

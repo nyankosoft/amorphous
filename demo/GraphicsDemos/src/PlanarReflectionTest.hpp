@@ -16,7 +16,7 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 {
 	MeshHandle m_SkyboxMesh;
 
-	MeshHandle m_TerrainMesh;
+//	MeshHandle m_TerrainMesh;
 
 	std::vector<MeshHandle> m_ReflectionSourceMeshes;
 
@@ -38,6 +38,10 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 	float m_fReflection;
 
+	bool m_Perturbation;
+
+	bool m_RenderSkybox;
+
 protected:
 
 	void RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode );
@@ -45,6 +49,8 @@ protected:
 	void RenderReflectionSurface();
 
 	void UpdateLight( ShaderManager& shader_mgr );
+
+	void SetLowLight( ShaderManager& shader_mgr );
 
 	void UpdateReflection();
 
