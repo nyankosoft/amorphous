@@ -29,7 +29,8 @@ CPlanarReflectionTest::CPlanarReflectionTest()
 :
 m_fReflection(0.0f),
 m_RenderSkybox(true),
-m_Perturbation(false)
+m_Perturbation(false),
+m_RenderMirroredScene(true)
 {
 	if( GetCameraController() )
 		GetCameraController()->SetPosition( Vector3( 0, 1, -1 ) );
@@ -335,10 +336,9 @@ void SetClipPlane( const Camera& camera, const Plane& reflection_plane )
 }
 */
 
-void CPlanarReflectionTest::Render()
-{
-	// Render mirrored scene to the texture render target
 
+void CPlanarReflectionTest::RenderMirroredSceneToTextureRenderTarget()
+{
 	m_pTextureRenderTarget->SetRenderTarget();
 
 	Plane reflection_plane( Vector3(0,1,0), 0 );
@@ -387,6 +387,14 @@ void CPlanarReflectionTest::Render()
 	GetShaderManagerHub().PopViewAndProjectionMatrices();
 
 	m_pTextureRenderTarget->ResetRenderTarget();
+}
+
+
+void CPlanarReflectionTest::Render()
+{
+	// Render mirrored scene to the texture render target
+	if( m_RenderMirroredScene )
+		RenderMirroredSceneToTextureRenderTarget();
 
 	// Render the scene that has planar reflection
 //	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
@@ -429,6 +437,12 @@ void CPlanarReflectionTest::HandleInput( const InputData& input )
 		{
 			m_fReflection -= 0.05f;
 			UpdateReflection();
+		}
+		break;
+	case 'M':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_RenderMirroredScene = !m_RenderMirroredScene;
 		}
 		break;
 	case 'V':

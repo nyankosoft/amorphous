@@ -42,9 +42,13 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 	bool m_RenderSkybox;
 
+	bool m_RenderMirroredScene;
+
 protected:
 
 	void RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode );
+
+	void RenderMirroredSceneToTextureRenderTarget();
 
 	void RenderReflectionSurface();
 
