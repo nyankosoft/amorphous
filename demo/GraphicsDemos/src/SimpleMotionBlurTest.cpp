@@ -34,7 +34,7 @@ int CSimpleMotionBlurTest::Init()
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
 	m_SkyTexture = CreateClearDaySkyTexture();
-	m_SkyTexture.SaveTextureToImageFile( "sky.png" );
+	m_SkyTexture.SaveTextureToImageFile( ".debug/SimpleMotionBlurDemo_sky.png" );
 
 	// load the terrain mesh
 	MeshResourceDesc mesh_desc;

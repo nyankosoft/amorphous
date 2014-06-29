@@ -247,9 +247,9 @@ void CMeshSplitterTest::SplitMeshesAtLeafNodes( CMeshNode& node, const Plane& sp
 	node.child1->object.pMesh = results.m_pBackMesh;
 	node.child1->object.shift = -split_plane.normal * 0.2f;
 
-	node.object.pMesh->DumpToTextFile( "split_mesh_src.txt" );
-	node.child0->object.pMesh->DumpToTextFile( "split_mesh_child0.txt" );
-	node.child1->object.pMesh->DumpToTextFile( "split_mesh_child1.txt" );
+	node.object.pMesh->DumpToTextFile( ".debug/split_mesh_src.txt" );
+	node.child0->object.pMesh->DumpToTextFile( ".debug/split_mesh_child0.txt" );
+	node.child1->object.pMesh->DumpToTextFile( ".debug/split_mesh_child1.txt" );
 }
 
 

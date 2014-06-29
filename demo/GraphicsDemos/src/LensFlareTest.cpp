@@ -38,7 +38,7 @@ void CLensFlareTest::InitSkyTexture()
 	m_SkyTexture = CreateHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
 //	m_SkyTexture = CreateTCBSplineHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
 
-	m_SkyTexture.SaveTextureToImageFile( "sky_texture.png" );
+	m_SkyTexture.SaveTextureToImageFile( ".debug/sky_texture.png" );
 }
 
 
