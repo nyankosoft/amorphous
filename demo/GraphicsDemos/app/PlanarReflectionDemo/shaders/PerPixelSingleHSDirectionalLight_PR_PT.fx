@@ -31,11 +31,9 @@ float4x4 WorldView		: WORLDVIEW;
 #include "TexDef.fxh"
 
 
-//--------------------------------------------------------------------------------
-// Name: VS_NoLighting()
-// Desc: vertex shader
-//--------------------------------------------------------------------------------
-
+/**
+ @brief A vertex shader
+ */
 void VS_PerPixelSingleHSDirectionalLIght_PR(
 	float3 Pos     : POSITION, 
 	float3 Normal  : NORMAL,
@@ -65,10 +63,10 @@ void VS_PerPixelSingleHSDirectionalLIght_PR(
 
 
 /**
-Sampler0: surface color texture
-Sampler1: planer reflection texture
-Sampler2: normal map texture
-*/
+ - Sampler0: surface color texture
+ - Sampler1: planer reflection texture
+ - Sampler2: normal map texture
+ */
 float4 PS_PerPixelSingleHSDirectionalLIght_PR(
        float4 Diffuse  : COLOR0,
        float2 Tex0     : TEXCOORD0,
