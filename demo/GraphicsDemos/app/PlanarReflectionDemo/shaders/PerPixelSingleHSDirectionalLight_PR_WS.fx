@@ -26,6 +26,8 @@ float4x4 WorldView		: WORLDVIEW;
 
 float2 g_vPerturbationTextureUVShift = float2(0,0);
 
+float g_fPlanarReflection = 0.2f;
+
 
 //--------------------------------------------------------------------------------
 // textures
@@ -106,7 +108,7 @@ float4 PS_PerPixelSingleHSDirectionalLIght_PR(
 	float4 pr_tex_color = tex2D(Sampler1, pr_tex);
 	pr_tex_color.a = 1.0;
 
-	float pr_factor = 0.2;
+	float pr_factor = g_fPlanarReflection;
 
 	return surface_color * (1-pr_factor) + pr_tex_color * pr_factor;
 
