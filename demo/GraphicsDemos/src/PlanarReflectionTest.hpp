@@ -36,6 +36,8 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
+	float m_fReflection;
+
 protected:
 
 	void RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode );
@@ -43,6 +45,8 @@ protected:
 	void RenderReflectionSurface();
 
 	void UpdateLight( ShaderManager& shader_mgr );
+
+	void UpdateReflection();
 
 public:
 
@@ -64,7 +68,7 @@ public:
 
 	void UpdateProjectionTransform( const Matrix44& matProj );
 
-//	void OnKeyPressed( KeyCode::Code key_code );
+	void HandleInput( const InputData& input );
 };
 
 

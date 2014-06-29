@@ -26,6 +26,8 @@ Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )
 
 
 CPlanarReflectionTest::CPlanarReflectionTest()
+:
+m_fReflection(0.0f)
 {
 }
 
@@ -105,6 +107,16 @@ void CPlanarReflectionTest::UpdateLight( ShaderManager& shader_mgr )
 	pShaderLightMgr->SetHemisphericDirectionalLight( light );
 
 	pShaderLightMgr->CommitChanges();
+}
+
+
+void CPlanarReflectionTest::UpdateReflection()
+{
+	ShaderManager *pShaderMgr = m_PlanarReflectionShader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	pShaderMgr->SetParam( "g_fPlanarReflection", m_fReflection );
 }
 
 
@@ -346,4 +358,29 @@ void CPlanarReflectionTest::UpdateViewTransform( const Matrix44& matView )
 
 void CPlanarReflectionTest::UpdateProjectionTransform( const Matrix44& matProj )
 {
+}
+
+
+void CPlanarReflectionTest::HandleInput( const InputData& input )
+{
+	switch( input.iGICode )
+	{
+	case GIC_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_fReflection += 0.05f;
+			UpdateReflection();
+		}
+		break;
+	case GIC_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_fReflection -= 0.05f;
+			UpdateReflection();
+		}
+		break;
+	default:
+		CGraphicsTestBase::HandleInput( input );
+		break;
+	}
 }
