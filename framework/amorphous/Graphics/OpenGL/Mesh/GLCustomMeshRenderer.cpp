@@ -113,7 +113,7 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 		const MeshMaterial& mat = mesh.GetMaterial(i);
 		for( size_t j=0; j<mat.Texture.size(); j++ )
 		{
-			SetTextureGL_FFP( j, mat.Texture[j] );
+			SetTextureGL( j, mat.Texture[j] );
 		}
 	}
 

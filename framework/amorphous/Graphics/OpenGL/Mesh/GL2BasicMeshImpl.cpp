@@ -62,7 +62,7 @@ static void SetGLTextures( MeshMaterial& mat )
 	vector<TextureHandle>& vecTex = mat.Texture;
 	for( uint j=0; j<(uint)vecTex.size(); j++ )
 	{
-		SetTextureGL_FFP( j, vecTex[j] );
+		SetTextureGL( j, vecTex[j] );
 	}
 }
 

@@ -68,7 +68,10 @@ public:
 
 	Result::Name Visit( CGLTextureResource& texture_resource )
 	{
-//		glActiveTexture( GL_TEXTURE0 + m_Stage );
+		if( glActiveTexture )
+			glActiveTexture( GL_TEXTURE0 + m_Stage );
+		else
+			LOG_PRINT_ERROR( " You don't have glActiveTexture()?! Seriously?!" );
 
 		glBindTexture( GL_TEXTURE_2D, texture_resource.GetGLTextureID() );
 
@@ -76,12 +79,39 @@ public:
 
 		return Result::SUCCESS;
 	}
+
+	Result::Name Visit( CGLCubeTextureResource& texture_resource )
+	{
+		if( glActiveTexture )
+			glActiveTexture( GL_TEXTURE0 + m_Stage );
+		else
+			LOG_PRINT_ERROR( " You don't have glActiveTexture()?! Seriously?!" );
+
+		static const GLenum cube_map_targets[] =
+		{
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+			GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+			GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+			GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+			GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+			GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+		};
+
+		for( int i=0; i<numof(cube_map_targets); i++ )
+		{
+			glBindTexture( cube_map_targets[i], texture_resource.GetCubeMapTexture(i) );
+
+			LOG_GL_ERROR( "glBindTexture() failed." );
+		}
+
+		return Result::SUCCESS;
+	}
 };
 
 
-inline Result::Name SetTextureGL_FFP( uint stage, const TextureHandle& texture )
+inline Result::Name SetTextureGL( uint stage, const TextureHandle& texture )
 {
-	GL_FFP_TextureResourceVisitor visitor( stage );
+	GLSLTextureResourceVisitor visitor( stage );
 	return texture.AcceptTextureResourceVisitor( visitor );
 }
 

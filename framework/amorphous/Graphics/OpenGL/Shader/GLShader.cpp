@@ -533,13 +533,15 @@ Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& text
 	string error_message = fmt_string( " glActiveTexture() failed (stage: %d).", iStage );
 	LOG_GL_ERROR( error_message.c_str() );
 
+	glUniform1i(m_TextureSamplerUniforms[iStage], iStage);
+
 	glEnable( GL_TEXTURE_2D );
 
 	// glMultiTexCoord2fARB
 
 //	glBindTexture( GL_TEXTURE_2D, texture.GetGLTextureID() );
 	if( texture.IsLoaded() )
-		SetTextureGL_FFP( iStage, texture );
+		SetTextureGL( iStage, texture );
 	else
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
