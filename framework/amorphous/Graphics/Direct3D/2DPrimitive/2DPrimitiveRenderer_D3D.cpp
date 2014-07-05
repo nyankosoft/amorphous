@@ -1,5 +1,6 @@
 #include "2DPrimitiveRenderer_D3D.hpp"
 #include "Graphics/Direct3D/Conversions.hpp"
+#include "Graphics/Direct3D/Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -185,7 +186,10 @@ void C2DPrimitiveRenderer_D3D::Render( General2DVertex *paVertex, int num_vertic
 
 void C2DPrimitiveRenderer_D3D::Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type, const TextureHandle& texture )
 {
-	LOG_PRINT_ERROR( "Not implemented yet." );
+	// Set the sampler states and the texture
+	D3DFixedFunctionPipelineManager().SetTexture( 0, texture );
+
+	Render( paVertex, num_vertices, primitive_type );
 }
 
 
