@@ -34,6 +34,7 @@ static Result::Name GenerateLightingVertexShader( const GenericShaderDesc& desc,
 	"layout(location = 2) in vec4 diffuse_color;\n"\
 	"layout(location = 3) in vec2 tex0;\n"\
 	"out vec3 pos_vs;\n"\
+	"out vec4 pos_ps;\n"\
 	"out vec3 n_vs;\n"\
 	"out vec4 dc;\n"\
 	"out vec2 t0;\n"\
@@ -47,6 +48,7 @@ static Result::Name GenerateLightingVertexShader( const GenericShaderDesc& desc,
 		"n_vs = mat3(ViewWorld) * normal;"\
 		"vec4 pos4_vs = ViewWorld * position;"\
 		"pos_vs = pos4_vs.xyz / pos4_vs.w;"\
+		"pos_ps = ProjViewWorld * position;"\
 		"t0 = tex0;"\
 		"dc = diffuse_color;"\
 	"}\n";
@@ -94,22 +96,67 @@ Result::Name EmbeddedGenericGLSLShader::GenerateVertexShader( const GenericShade
 }
 
 
+static void GeneratePlanarReflectionFragmentShader( const GenericShaderDesc& desc, const char *&planar_reflection_fs_dec, const char *&planar_reflection_fs_code )
+{
+//	static const char *planar_reflection_fs_dec = "";
+//	static const char *planar_reflection_fs_code = "";
+
+	switch( desc.PlanarReflection )
+//	switch( PlanarReflectionOption::NONE )
+	{
+	case PlanarReflectionOption::FLAT:
+		planar_reflection_fs_dec =
+			"uniform sampler2D PlanarMirrorTextureSampler;\n"\
+			"uniform float g_fPlanarReflection = 0.5f;\n";
+		planar_reflection_fs_code =
+			"vec2 pr_tex = vec2( pos_ps.x / pos_ps.w, pos_ps.y / pos_ps.w ) * 0.5 + 0.5;\n"\
+			"vec4 pr_tex_color = vec4( texture(T1/*PlanarMirrorTextureSampler*/, pr_tex).xyz, 1 );\n"\
+			/*"vec4 pr_tex_color = vec4( texture(T1, pr_tex).xyz, 1 );\n"\*/
+			"fc = fc * (1-g_fPlanarReflection) + pr_tex_color * g_fPlanarReflection;\n";
+		break;
+
+	case PlanarReflectionOption::PERTURBED:
+		planar_reflection_fs_dec =
+			"uniform sampler2D PlanarMirrorTextureSampler;\n"\
+			"uniform sampler2D PerturbationTextureSampler;\n"\
+			"uniform float g_fPlanarReflection = 1.0f;\n"\
+			"vec2 g_vPerturbationTextureUVShift = vec2(0,0);\n";
+		planar_reflection_fs_code =
+			"vec2 pr_tex = vec2( pos_ps.x, -pos_ps.y ) * 0.5 + 0.5;"\
+			"vec2 perturbation = ( tex2D(PerturbationTextureSampler, t0 + g_vPerturbationTextureUVShift).xy - vec2(0.5,0.5) ) * 0.1;"\
+			"pr_tex += perturbation;"\
+			"t0 += perturbation;"\
+			"vec4 pr_tex_color = vec4( tex2D(PlanarMirrorTextureSampler, pr_tex).xyz, 1 );\n"\
+			"#define PLANAR_REFLECTION_COLOR_UPDATE color = color * (1-g_fPlanarReflection) + pr_tex_color * g_fPlanarReflection;\n";
+		break;
+
+	case PlanarReflectionOption::NONE:
+	default:
+		break;
+	}
+}
+
+
 static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& desc, std::string& fragment_shader )
 {
-	static const char *fs =
+	static const char *fs_test =
 	"#version 330\n"\
 	"layout(location = 0) out vec4 fc;\n"\
 	"void main(){fc = vec4(0,1,0,1);}\n";
 	/*"out vec4 o_color;\n"\*/
 	/*"void main(){o_color = vec4(1,1,1,1);}\n";*/
 
+	// pos_vc: vertex position in view space
+	// pos_vc: vertex position in projection space
 	static const char *hs_lighting_fs_ins =
 	"#version 330\n"\
 	"in vec3 pos_vs;\n"\
+	"in vec4 pos_ps;\n"\
 	"in vec3 n_vs;\n"\
 	"in vec4 dc;\n"\
 	"in vec2 t0;\n";
 
+	// fc: output fragment color
 	static const char *hs_lighting_fs =
 	"layout(location = 0) out vec4 fc;\n"\
 	"uniform mat4 View;\n"\
@@ -128,9 +175,15 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 
 	/*"	fc = vec4( normal_vs.x, normal_vs.y, normal_vs.z, 1 );"\*/
 
+	const char *planar_reflection_fs_dec = "";
+	const char *planar_reflection_fs_code = "";
+	GeneratePlanarReflectionFragmentShader( desc, planar_reflection_fs_dec, planar_reflection_fs_code );
+
 	fragment_shader += hs_lighting_fs_ins;
 
 	fragment_shader += hs_lighting_fs;
+
+	fragment_shader += planar_reflection_fs_dec;
 
 	const char *hsdl_calc = "";
 	const char *hspl_calc = "";
@@ -270,14 +323,21 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 	fragment_shader += hspl_calc;
 	fragment_shader += hssl_calc;
 
-	const char *fs_end =
+	const char *fs_fragment_color =
 	"	vec4 tc = texture(T0,t0);"\
 	"	fc = br * dc * tc;"\
-	"	fc.a = dc.a * tc.a;"\
+	"	fc.a = dc.a * tc.a;\n";
 	/*"	fc = br;"\*/
 	/*"	fc = vec4(0,1,1,1);"\*/
 	/*"	fc = vec4(normal_vs.x,normal_vs.y,normal_vs.z,1);"*/
-	"}\n";
+
+	fragment_shader += fs_fragment_color;
+
+	// Planar reflection shader (calculations)
+	fragment_shader += planar_reflection_fs_code;
+
+	const char *fs_end = "}\n";
+
 	fragment_shader += fs_end;
 
 	return Result::SUCCESS;
@@ -308,16 +368,29 @@ static Result::Name GenerateNoLightingFragmentShader( const GenericShaderDesc& d
 
 Result::Name EmbeddedGenericGLSLShader::GenerateFragmentShader( const GenericShaderDesc& desc, std::string& fragment_shader )
 {
+	Result::Name res = Result::UNKNOWN_ERROR;
+
 	if( desc.Lighting )
 	{
-		return GenerateLightingFragmentShader( desc, fragment_shader );
+		res = GenerateLightingFragmentShader( desc, fragment_shader );
 	}
 	else
 	{
-		return GenerateNoLightingFragmentShader( desc, fragment_shader );
+		res = GenerateNoLightingFragmentShader( desc, fragment_shader );
 	}
 
-	return Result::UNKNOWN_ERROR;
+	{
+		static int s_counter = 0;
+		FILE *fp = fopen(fmt_string(".debug/fragment_shader_%02d.frag",s_counter).c_str(),"w");
+		s_counter += 1;
+		if(fp)
+		{
+			fprintf(fp,fragment_shader.c_str());
+			fclose(fp);
+		}
+	}
+
+	return res;
 }
 
 
@@ -436,11 +509,15 @@ Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2
 
 	fs += "fc = vec4(rgb,a);}\n";
 
-	FILE *fp = fopen("tl_fragment_shader.txt","w");
-	if(fp)
 	{
-		fprintf(fp,fs.c_str());
-		fclose(fp);
+		static int s_counter = 0;
+		FILE *fp = fopen(fmt_string(".debug/tl_fragment_shader_%02d.frag",s_counter).c_str(),"w");
+		s_counter += 1;
+		if(fp)
+		{
+			fprintf(fp,fs.c_str());
+			fclose(fp);
+		}
 	}
 
 	return Result::SUCCESS;
