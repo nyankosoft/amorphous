@@ -151,7 +151,7 @@ void CTextureFontTest::HandleInput( const InputData& input )
 			m_fRotationAngle -= 0.5f;
 		break;
 
-	case GIC_PAGE_UP:
+	case 'K':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_FontWidth  *= 2;
@@ -161,7 +161,7 @@ void CTextureFontTest::HandleInput( const InputData& input )
 		}
 		break;
 
-	case GIC_PAGE_DOWN:
+	case 'J':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			if( m_pFont && 4 < m_FontWidth )
