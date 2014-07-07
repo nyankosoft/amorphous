@@ -66,12 +66,25 @@ public:
 	GLSLTextureResourceVisitor(uint stage) : m_Stage(stage) {}
 	~GLSLTextureResourceVisitor(){}
 
-	Result::Name Visit( CGLTextureResource& texture_resource )
+	void ActiveTexture()
 	{
+		LOG_GL_ERROR( "Clearing OpenGL error(s)..." );
+
 		if( glActiveTexture )
 			glActiveTexture( GL_TEXTURE0 + m_Stage );
+		else if( glActiveTextureARB )
+			glActiveTextureARB( GL_TEXTURE0_ARB + m_Stage );
 		else
-			LOG_PRINT_ERROR( " You don't have glActiveTexture()?! Seriously?!" );
+			LOG_PRINT_ERROR( " You don't have glActiveTexture()/glActiveTextureARB()?! Seriously?!" );
+
+//		std::string error_message = fmt_string( " glActiveTexture() failed (stage: %d).", m_Stage );
+//		LOG_GL_ERROR( error_message.c_str() );
+		LOG_GL_ERROR( "glActiveTexture() failed." );
+	}
+
+	Result::Name Visit( CGLTextureResource& texture_resource )
+	{
+		ActiveTexture();
 
 		glBindTexture( GL_TEXTURE_2D, texture_resource.GetGLTextureID() );
 
@@ -82,10 +95,7 @@ public:
 
 	Result::Name Visit( CGLCubeTextureResource& texture_resource )
 	{
-		if( glActiveTexture )
-			glActiveTexture( GL_TEXTURE0 + m_Stage );
-		else
-			LOG_PRINT_ERROR( " You don't have glActiveTexture()?! Seriously?!" );
+		ActiveTexture();
 
 		static const GLenum cube_map_targets[] =
 		{
