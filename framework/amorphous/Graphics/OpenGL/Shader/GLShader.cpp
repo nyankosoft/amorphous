@@ -525,15 +525,7 @@ Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& text
 {
 	LOG_GL_ERROR( " Entered." );
 
-	if( glActiveTexture )
-		glActiveTexture( GL_TEXTURE0 + iStage );
-	else if( glActiveTextureARB )
-		glActiveTextureARB( GL_TEXTURE0_ARB + iStage );
-
-	string error_message = fmt_string( " glActiveTexture() failed (stage: %d).", iStage );
-	LOG_GL_ERROR( error_message.c_str() );
-
-	glUniform1i(m_TextureSamplerUniforms[iStage], iStage);
+//	glUniform1i(m_TextureSamplerUniforms[iStage], iStage);
 
 	glEnable( GL_TEXTURE_2D );
 
