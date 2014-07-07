@@ -35,8 +35,8 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 	if( !pI )
 		return;
 
-	const uint num_indices = mesh.GetNumIndices();
-	const uint num_triangles = num_indices / 3;
+//	const uint num_indices   = mesh.GetNumIndices();
+//	const uint num_triangles = num_indices / 3;
 
 	const uint num_verts = mesh.GetNumVertices();
 	const int vertex_size = mesh.GetVertexSize();
@@ -107,16 +107,6 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 		}
 	}
 
-	const int num_mats = mesh.GetNumMaterials();
-	for( int i=0; i<num_mats; i++ )
-	{
-		const MeshMaterial& mat = mesh.GetMaterial(i);
-		for( size_t j=0; j<mat.Texture.size(); j++ )
-		{
-			SetTextureGL( j, mat.Texture[j] );
-		}
-	}
-
 //	if(mTexId)
 	if( vert_flags & VFF::TEXCOORD2_0 )
 	{
@@ -150,14 +140,28 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 		break;
 	}
 
-//	if( use_draw_range_elements )
-//	{
-//		glDrawRangeElements( GL_TRIANGLES, 0, num_verts-1, num_triangles, index_type, pI );
-//	}
-//	else
+	const int num_mats = mesh.GetNumMaterials();
+	for( int i=0; i<num_mats; i++ )
 	{
-		PROFILE_SCOPE( "glDrawElements( GL_TRIANGLES, num_indices, index_type, pI )" );
-		glDrawElements( GL_TRIANGLES, num_indices, index_type, pI );
+		const MeshMaterial& mat = mesh.GetMaterial(i);
+		for( size_t j=0; j<mat.Texture.size(); j++ )
+		{
+			SetTextureGL( j, mat.Texture[j] );
+		}
+
+		int index_offsets_in_bytes        = mesh.GetTriangleSets()[i].m_iStartIndex * index_size;
+		int num_indices_of_current_subset = mesh.GetTriangleSets()[i].m_iNumTriangles * 3;
+
+//		if( use_draw_range_elements )
+//		{
+//			glDrawRangeElements( GL_TRIANGLES, 0, num_verts-1, num_triangles, index_type, pI );
+//		}
+//		else
+		{
+			PROFILE_SCOPE( "glDrawElements( GL_TRIANGLES, num_indices, index_type, pI )" );
+//			glDrawElements( GL_TRIANGLES, num_indices, index_type, pI );
+			glDrawElements( GL_TRIANGLES, num_indices_of_current_subset, index_type, pI + index_offsets_in_bytes );
+		}
 	}
 
 	if( vert_flags & VFF::TEXCOORD2_0 )
