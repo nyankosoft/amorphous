@@ -25,11 +25,19 @@ class CMultibyteFontTest : public CGraphicsTestBase
 
 	std::string m_UTFText;
 
+	std::vector<std::string> m_FontFilePaths;
+
+	unsigned int m_FontIndex;
+
+	unsigned int m_FontSize;
+
 private:
 
 	void CreateSampleUI();
 
 	bool InitShader();
+
+	int InitFont();
 
 //	bool CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer );
 	bool RenderUTF8TextToBufferToImageFile( const std::string& text,

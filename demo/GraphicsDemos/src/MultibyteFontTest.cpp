@@ -47,6 +47,9 @@ bool LoadTextFromFile( const std::string& src_file, std::string& dest )
 
 
 CMultibyteFontTest::CMultibyteFontTest()
+:
+m_FontIndex(0),
+m_FontSize(32)
 {
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
@@ -277,66 +280,31 @@ int CMultibyteFontTest::Init()
 		return -1;
 
 	m_UTFText = text;
-/*
-	const char *fonts[] =
-	{
-		"fonts/ipag.ttf",
-		"fonts/ipagp.ttf",
-//		"fonts/ipam.ttf",
-//		"fonts/ipamp.ttf",
-//		"fonts/cinecaption227.TTF",
-//		"fonts/GDhwGoJA-OTF106b.otf"
-	};
 
-	const int font_sizes[] =
-	{
-		8,
-		12,
-		16,
-		24,
-		32,
-		48
-	};
-	
-	Timer m_Timer;
-	m_Timer.Start();
+	m_FontFilePaths.resize( 0 );
+	m_FontFilePaths.push_back( "fonts/ipag.ttf" );
+	m_FontFilePaths.push_back( "fonts/ipagp.ttf" );
+	m_FontFilePaths.push_back( "fonts/ipam.ttf" );
+	m_FontFilePaths.push_back( "fonts/ipamp.ttf" );
+	m_FontFilePaths.push_back( "fonts/cinecaption227.TTF" );
+	m_FontFilePaths.push_back( "fonts/GDhwGoJA-OTF106b.otf" );
 
-	vector<CPerfRecord>& rec = g_rec;
-	rec.reserve( numof(fonts) * numof(font_sizes) );
-
-	bool res = false;
-	for( int i=0; i<numof(fonts); i++ )
-	{
-		for( int j=0; j<numof(font_sizes); j++ )
-		{
-			double st = m_Timer.GetTime();
-
-			res = RenderUTF8TextToBufferToImageFile(
-				text,
-				fonts[i],
-				font_sizes[j] );
-
-			double t = m_Timer.GetTime() - st;
-
-			rec.push_back( CPerfRecord() );
-			rec.back().name = string(fonts[i]);
-			rec.back().size = font_sizes[j];
-			rec.back().total_time = t;
-		}
-	}
-*/
-	shared_ptr<UTFFont> pUTF8Font( new UTFFont );
-	pUTF8Font->InitFont( "MultibyteFontDemo/fonts/ipagp.ttf", 32 );
-	m_pUTFFont = pUTF8Font;
+	InitFont();
 
 	shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	pTexFont->SetFontSize( 6, 12 );
 	m_pFont = pTexFont;
 
-//	InitShader();
+	return 0;
+}
 
-//	return res ? 0 : -1;
+
+int CMultibyteFontTest::InitFont()
+{
+	shared_ptr<UTFFont> pUTF8Font( new UTFFont );
+	pUTF8Font->InitFont( "MultibyteFontDemo/" + m_FontFilePaths[m_FontIndex], m_FontSize );
+	m_pUTFFont = pUTF8Font;
 
 	return 0;
 }
@@ -368,7 +336,10 @@ void CMultibyteFontTest::Render()
 	}*/
 
 	if( m_pUTFFont )
-		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 180 ), 0xFFFFFFFF );
+	{
+		m_pUTFFont->SetFontSize( 0, m_FontSize );
+		m_pUTFFont->DrawText( m_UTFText.c_str(), Vector2( 20, 80 ), 0xFFFFFFFF );
+	}
 }
 
 
@@ -380,6 +351,36 @@ void CMultibyteFontTest::HandleInput( const InputData& input )
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+		}
+		break;
+	case 'L':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_FontIndex = (m_FontIndex + 1) % m_FontFilePaths.size();
+
+			InitFont();
+		}
+		break;
+	case 'H':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_FontIndex = (m_FontIndex + m_FontFilePaths.size() - 1) % m_FontFilePaths.size();
+
+			InitFont();
+		}
+		break;
+	case 'K':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_FontSize += 4;
+			clamp<unsigned int>( m_FontSize, 5, 100 );
+		}
+		break;
+	case 'J':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_FontSize -= 4;
+			clamp<unsigned int>( m_FontSize, 5, 100 );
 		}
 		break;
 	case 'V':
