@@ -7,6 +7,7 @@
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/CommonShaders.hpp"
 #include "amorphous/Graphics/BoundingVolumeTreeRenderers.hpp"
 //#include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
@@ -36,11 +37,12 @@ int OBBTreeTest::Init()
 	const string dir_path = "OBBTreeDemo/";
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
-	m_MeshTechnique.SetTechniqueName( "NoLighting" );
-	m_DefaultTechnique.SetTechniqueName( "NullShader" );
+	m_MeshTechnique.SetTechniqueName( "Default" );
+	m_DefaultTechnique.SetTechniqueName( "Default" );
 
 	// initialize shader
-	bool shader_loaded = m_Shader.Load( dir_path + "shaders/OBBTreeTest.fx" );
+//	bool shader_loaded = m_Shader.Load( dir_path + "shaders/OBBTreeTest.fx" );
+	m_Shader = GetNoLightingShader();
 
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
@@ -51,7 +53,7 @@ int OBBTreeTest::Init()
 //	mesh_desc.MeshType     = CMeshType::BASIC;
 //	m_Mesh.Load( mesh_desc );
 
-	string relative_model_pathname = "models/Chevelle.msh";
+	string relative_model_pathname = "../Common/models/Chevelle.msh";
 	LoadParamFromFile( dir_path + "params.txt", "model", relative_model_pathname );
 
 	string model_pathname = dir_path + relative_model_pathname;
