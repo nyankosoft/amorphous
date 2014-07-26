@@ -518,9 +518,15 @@ inline shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
 		return shared_ptr<BitmapImage>();
 	}
 
-	// FreeImage_Rescale() does not change the image specified as the first argument.
-	// It returns the scaled image.
-	FIBITMAP *pCopiedBitMap = FreeImage_Copy( m_pFreeImageBitMap, 0, 0, w-1, h-1 );
+	// FreeImage_Rescale() does not change the image specified as the first argument;
+	// it returns the scaled image.
+	// Also note that the right and bottom argument values are set to width and height.
+	// The FreeImage documentation says the arguments are LTRB, but it also says
+	// "the returned bitmap is defined by a width equal to (right - left)
+	// and a height equal to (bottom - top)", and also through the experimentation
+	// it was found that the last two args do actually have to be set to W and H,
+	// so we stick with W and H.
+	FIBITMAP *pCopiedBitMap = FreeImage_Copy( m_pFreeImageBitMap, 0, 0, w, h );
 	if( !pCopiedBitMap )
 	{
 		LOG_PRINT_ERROR( " FreeImage_Copy() returned NULL." );
