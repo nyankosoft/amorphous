@@ -310,8 +310,10 @@ bool CGLGraphicsDevice::GetRenderState( RenderStateType::Name type )
 //	case RenderStateType::UNKNOWN:
 //		break;
 	default:
-		return Result::INVALID_ARGS;
+		return false;
 	}
+
+	return false;
 }
 
 
