@@ -362,13 +362,17 @@ void CHLSLShaderManager::SetParam( ShaderParameter<Matrix44>& mat44_param )
 
 void CHLSLShaderManager::SetParam( const char *parameter_name, int int_param )
 {
-	m_pEffect->SetInt( parameter_name, int_param );
+	HRESULT hr = m_pEffect->SetInt( parameter_name, int_param );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(("Failed to set a integer to a shader: %s",parameter_name));
 }
 
 
 void CHLSLShaderManager::SetParam( const char *parameter_name, float float_param )
 {
-	m_pEffect->SetFloat( parameter_name, float_param );
+	HRESULT hr = m_pEffect->SetFloat( parameter_name, float_param );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(("Failed to set a float value to a shader: %s",parameter_name));
 }
 
 
@@ -376,6 +380,8 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector3& ve
 {
 	const float values[3] = { vec3_param.x, vec3_param.y, vec3_param.z };
 	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, values, 3 );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(("Failed to set a Vector3 value to a shader: %s",parameter_name));
 }
 
 
@@ -385,14 +391,16 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const SFloatRGBAC
 	const SFloatRGBAColor& c = color_param;
 	const float rgba[4] = { c.red, c.green, c.blue, c.alpha };
 	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, rgba, 4 );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(("Failed to set an RGBA color value to a shader: %s",parameter_name));
 }
 
 
 void CHLSLShaderManager::SetParam( const char *parameter_name, const float *float_param, uint num_float_values )
 {
 	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, float_param, (UINT)num_float_values );
-//	if( FAILED(hr) )
-//		LOG_PRINT_WARNING( " failed to set a shader parameter." );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(( "Failed to set float values to a shader: %s",parameter_name));
 }
 
 
