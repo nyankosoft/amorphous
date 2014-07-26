@@ -42,6 +42,24 @@ CPlanarReflectionTest::~CPlanarReflectionTest()
 }
 
 
+PlanarReflectionOption::Name CPlanarReflectionTest::GetReflectionType()
+{
+	string directory_path = "PlanarReflectionDemo/";
+	string reflection_type = "flat";
+	LoadParamFromFile( directory_path + "params.txt", "reflection_type", reflection_type );
+
+	PlanarReflectionOption::Name ret = PlanarReflectionOption::FLAT;
+
+	if( reflection_type == "none" )           ret = PlanarReflectionOption::NONE;
+	else if( reflection_type == "flat" )      ret = PlanarReflectionOption::FLAT;
+	else if( reflection_type == "perturbed" ) ret = PlanarReflectionOption::PERTURBED;
+
+	m_Perturbation = (ret == PlanarReflectionOption::PERTURBED);
+
+	return ret;
+}
+
+
 int CPlanarReflectionTest::Init()
 {
 	string directory_path = "PlanarReflectionDemo/";
@@ -66,11 +84,11 @@ int CPlanarReflectionTest::Init()
 	LoadParamFromFile( directory_path + "params.txt", "use_embedded_planar_reflection_shader", use_embedded_planar_reflection_shader );
 	if( use_embedded_planar_reflection_shader )
 	{
-		GenericShaderDesc prs_desc;
+		GenericShaderDesc prs_desc = m_PlanarReflectionShaderDesc;
 
 		prs_desc.Specular = SpecularSource::NONE;
 		prs_desc.NumDirectionalLights = 1;
-		prs_desc.PlanarReflection = PlanarReflectionOption::FLAT;
+		prs_desc.PlanarReflection = GetReflectionType();
 		ShaderResourceDesc sd;
 		sd.pShaderGenerator.reset( new GenericShaderGenerator(prs_desc) );
 		shader_loaded = m_PlanarReflectionShader.Load( sd );
@@ -206,13 +224,27 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
-	shader_mgr.SetTexture( 2, m_PerturbationTexture );
+	if( m_Perturbation )
+		shader_mgr.SetTexture( 2, m_PerturbationTexture );
 
 	ShaderTechniqueHandle tech;
 	tech.SetTechniqueName( "Default" );
 	shader_mgr.SetTechnique( tech );
 
 	shader_mgr.SetTexture( 1, m_pTextureRenderTarget->GetRenderTargetTexture() );
+
+	bool overwrite_reflection_texture = false;
+	if( overwrite_reflection_texture )
+	{
+		static bool s_init = false;
+		static TextureHandle s_tex;
+		if(!s_init)
+		{
+			bool loaded = s_tex.Load( ".debug/gridsheet_ex.png" );
+			s_init = true;
+		}
+		shader_mgr.SetTexture( 1, s_tex );
+	}
 
 	// shift UV of perturbation texture to make the reflection look like water surface with waves
 	vector<float> uv_shift;
@@ -230,7 +262,9 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 		UpdateLight( shader_mgr );
 
 	// In Direct3D mode, this makes water surface a lot brighter. Why?
-//	shader_mgr.SetWorldTransform( Matrix44Identity() );
+	shader_mgr.SetWorldTransform( Matrix44Identity() );
+
+	shader_mgr.SetTechnique( tech );
 
 	for( size_t i=0; i<m_ReflectiveSurfaceMeshes.size(); i++ )
 	{
@@ -241,6 +275,8 @@ void CPlanarReflectionTest::RenderReflectionSurface()
 		
 		pMesh->Render( shader_mgr );
 	}
+
+//	shader_mgr.SetTexture( 1, TextureHandle() );
 }
 
 /*

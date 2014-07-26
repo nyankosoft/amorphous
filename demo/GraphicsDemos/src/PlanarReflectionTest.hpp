@@ -6,6 +6,7 @@
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Input/fwd.hpp"
 
@@ -30,6 +31,8 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
+	GenericShaderDesc m_PlanarReflectionShaderDesc;
+
 	ShaderHandle m_PlanarReflectionShader;
 
 	TextureHandle m_PerturbationTexture;
@@ -45,6 +48,8 @@ class CPlanarReflectionTest : public CGraphicsTestBase
 	bool m_RenderMirroredScene;
 
 protected:
+
+	PlanarReflectionOption::Name GetReflectionType();
 
 	void RenderReflectionSourceMeshes( const Matrix34& camera_pose, CullingMode::Name culling_mode );
 
