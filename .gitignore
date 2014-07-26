@@ -11,11 +11,11 @@
 *.[dD][lL][lL]
 *.[eE][xX][eE]
 .[vV][cC]
-*/[vV][cC]10/[lL][iI][bB]
-*[lL][oO][gG].[hH][tT][mM][lL]
+*/vc10/lib
+.debug
+*Log.html
 *.msh.txt
 *params.txt
 */MeshViewer/app
 */CartridgeMaker/app
-*/msvc/vc10/lib
 screenshots
