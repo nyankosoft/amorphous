@@ -46,6 +46,7 @@ public:
 		HK_4_6X30,          ///< HK 4.6x30mm
 		_5_7X28,            ///< 5.7x28mm
 		_5_56X45,           ///< 5.56x45mm
+		_6_5MM_CREEDMOOR,   ///< 6.5mm Creedmoor
 		_6_8MM_REMINGTON_SPC, /// < 6.8 mm Remington SPC
 		_30_CARBINE,        ///< .30 Carbine (7.62×33mm)
 		_300_AAC_BLACKOUT,  ///< 300 AAC Blackout (7.62×35mm)
@@ -104,6 +105,7 @@ inline const char *GetCaliberName( Caliber::Name cal )
 	case Caliber::HK_4_6X30:          return "HK 4.6x30mm";
 	case Caliber::_5_7X28:            return "5.7x28mm";
 	case Caliber::_5_56X45:           return "5.56x45mm NATO";
+	case Caliber::_6_5MM_CREEDMOOR:   return "6.5mm Creedmoor";
 	case Caliber::_6_8MM_REMINGTON_SPC:return "6.8 mm Remington SPC";
 	case Caliber::_30_CARBINE:        return ".30 Carbine";
 	case Caliber::_300_AAC_BLACKOUT:  return "300 AAC Blackout";
