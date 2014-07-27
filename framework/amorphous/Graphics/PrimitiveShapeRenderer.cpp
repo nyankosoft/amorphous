@@ -13,6 +13,18 @@ using namespace std;
 
 
 static ShaderHandle sg_NoLightingShader;
+static TextureHandle sg_SingleColorWhiteTexture;
+
+
+static TextureHandle GetSingleColorWhiteTexture()
+{
+	if( !sg_SingleColorWhiteTexture.IsLoaded() )
+	{
+		sg_SingleColorWhiteTexture = CreateSingleColorTexture( SFloatRGBAColor::White(), 1, 1 );
+	}
+
+	return sg_SingleColorWhiteTexture;
+}
 
 
 /// Used when a rectangle in 3D space is rendered via custom mesh
@@ -289,12 +301,21 @@ void PrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float wid
 
 void PrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color )
 {
-	ShaderManager *pShaderMgr = GetShaderManagerForPrimitiveShape();
+	if( !sg_NoLightingShader.IsLoaded() )
+		sg_NoLightingShader = GetNoLightingShader();
+
+	// Wireframes are always rendered without lighting
+	ShaderManager *pShaderMgr = sg_NoLightingShader.GetShaderManager();
+
+//	ShaderManager *pShaderMgr = GetShaderManagerForPrimitiveShape();
 
 	if( !pShaderMgr )
 		return;
 
 	ShaderManager& shader_mgr = *pShaderMgr;
+
+	Result::Name res = shader_mgr.SetTexture( 0, GetSingleColorWhiteTexture() );
+	res = shader_mgr.SetTexture( 1, GetSingleColorWhiteTexture() );
 
 	Vector3 r( vEdgeLengths * 0.5f );
 	shader_mgr.SetWorldTransform( ToMatrix44(world_pose) * Matrix44Scaling(r.x,r.y,r.z) );
@@ -328,6 +349,8 @@ void PrimitiveShapeRenderer::RenderWireframeBox( const Vector3& vEdgeLengths, co
 		v[0], v[4], v[1], v[5], v[2], v[6], v[3], v[7],
 		v[4], v[5], v[5], v[6], v[6], v[7], v[7], v[4],
 	};
+
+	shader_mgr.Begin();
 
 	const int num_edges = 12;
 	for( int i=0; i<num_edges; i++ )
