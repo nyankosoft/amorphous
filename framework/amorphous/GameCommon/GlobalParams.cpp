@@ -28,4 +28,58 @@ void GlobalParams::LoadLogVerbosity( ParamLoader& loader )
 }
 
 
+bool GlobalParams::LoadFromFile( const std::string& filename )
+{
+	ParamLoader loader( filename );
+
+	if( !loader.IsReady() )
+		return false;
+
+	loader.LoadBoolParam( "fullscreen", "yes/no", FullScreen );
+	loader.LoadParam( "screen_resolution",        ScreenWidth, ScreenHeight );
+	loader.LoadParam( "window_pos",               WindowLeftPos, WindowTopPos );
+	loader.LoadParam( "screenshot_format",        ScreenshotImageFormat );
+	loader.LoadParam( "screenshot_resolution",    ScreenshotResolutionWidth, ScreenshotResolutionHeight );
+	loader.LoadParam( "audio_library",            AudioLibraryName );
+
+	LoadLogVerbosity( loader );
+
+	return true;
+}
+
+
+bool GlobalParams::CreateDefaultConfigFile()
+{
+	const char *text =
+		"graphics_library  OpenGL\n"\
+		"screen_resolution  1280 720\n"\
+		"fullscreen  no\n"\
+		"window_pos  50 50\n"\
+		"screenshot_format  png\n"\
+		"screenshot_resolution  1280 720\n"\
+		"audio_library  OpenAL\n";
+
+	FILE *fp = fopen("config","w");
+
+	if( fp )
+	{
+		fprintf( fp, text );
+
+		int ret = fclose(fp);
+		if( ret != 0 )
+		{
+			LOG_PRINT_ERROR( " Failed to close the file.");
+			return false;
+		}
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " Failed to open the file.");
+		return false;
+	}
+
+	return true;
+}
+
+
 } // namespace amorphous

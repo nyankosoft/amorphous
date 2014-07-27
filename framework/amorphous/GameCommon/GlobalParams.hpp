@@ -1,8 +1,7 @@
-#ifndef __GLOBALPARAMS_H__
-#define __GLOBALPARAMS_H__
+#ifndef __amorphous_GlobalParams_HPP__
+#define __amorphous_GlobalParams_HPP__
 
 
-#include <stdio.h>
 #include "Support/ParamLoader.hpp"
 #include "Support/Log/LogOutputBase.hpp"
 
@@ -13,8 +12,13 @@ namespace amorphous
 
 //>>>========================== default config file ==========================
 /*
-resolution 800	600
-fullscreen	yes
+graphics_library  OpenGL
+screen_resolution 1280	720
+fullscreen	no
+window_pos  50 50
+screenshot_format  png
+screenshot_resolution  1280 720
+audio_library  OpenAL
 */
 //<<<========================== default config file ==========================
 
@@ -65,7 +69,7 @@ public:
 	ScreenHeight(720),
 	WindowLeftPos(-1),
 	WindowTopPos(-1),
-	ScreenshotImageFormat( "bmp" ),
+	ScreenshotImageFormat( "png" ),
 	ScreenshotResolutionWidth( -1 ),
 	ScreenshotResolutionHeight( -1 ),
 	LogVerbosity(WL_WARNING),
@@ -73,24 +77,9 @@ public:
 	GraphicsLibraryName("Direct3D")
 	{}
 
-	bool LoadFromFile( const std::string& filename )
-	{
-		ParamLoader loader( filename );
+	bool LoadFromFile( const std::string& filename );
 
-		if( !loader.IsReady() )
-			return false;
-
-		loader.LoadBoolParam( "fullscreen", "yes/no", FullScreen );
-		loader.LoadParam( "resolution",               ScreenWidth, ScreenHeight );
-		loader.LoadParam( "window_pos",               WindowLeftPos, WindowTopPos );
-		loader.LoadParam( "screenshot_format",        ScreenshotImageFormat );
-		loader.LoadParam( "screenshot_resolution",    ScreenshotResolutionWidth, ScreenshotResolutionHeight );
-		loader.LoadParam( "audio_library",            AudioLibraryName );
-
-		LoadLogVerbosity( loader );
-
-		return true;
-	}
+	bool CreateDefaultConfigFile();
 };
 
 
@@ -100,4 +89,4 @@ extern GlobalParams g_GlobalParams;
 
 
 
-#endif  /*  __GLOBALPARAMS_H__  */
+#endif  /*  __amorphous_GlobalParams_HPP__  */
