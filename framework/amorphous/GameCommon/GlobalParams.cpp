@@ -13,6 +13,22 @@ using namespace std;
 GlobalParams g_GlobalParams;
 
 
+GlobalParams::GlobalParams()
+:
+FullScreen(false),
+ScreenWidth(1280),
+ScreenHeight(720),
+WindowLeftPos(-1),
+WindowTopPos(-1),
+ScreenshotImageFormat( "png" ),
+ScreenshotResolutionWidth( -1 ),
+ScreenshotResolutionHeight( -1 ),
+LogVerbosity(WL_WARNING),
+AudioLibraryName("OpenAL"),
+GraphicsLibraryName("OpenGL")
+{}
+
+
 void GlobalParams::LoadLogVerbosity( ParamLoader& loader )
 {
 	string verbosity_title;
@@ -35,6 +51,7 @@ bool GlobalParams::LoadFromFile( const std::string& filename )
 	if( !loader.IsReady() )
 		return false;
 
+	loader.LoadParam( "graphics_library",         GraphicsLibraryName );
 	loader.LoadBoolParam( "fullscreen", "yes/no", FullScreen );
 	loader.LoadParam( "screen_resolution",        ScreenWidth, ScreenHeight );
 	loader.LoadParam( "window_pos",               WindowLeftPos, WindowTopPos );

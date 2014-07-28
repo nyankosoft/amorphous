@@ -62,20 +62,7 @@ private:
 
 public:
 
-	GlobalParams()
-		:
-	FullScreen(false),
-	ScreenWidth(1280),
-	ScreenHeight(720),
-	WindowLeftPos(-1),
-	WindowTopPos(-1),
-	ScreenshotImageFormat( "png" ),
-	ScreenshotResolutionWidth( -1 ),
-	ScreenshotResolutionHeight( -1 ),
-	LogVerbosity(WL_WARNING),
-	AudioLibraryName("OpenAL"),
-	GraphicsLibraryName("Direct3D")
-	{}
+	GlobalParams();
 
 	bool LoadFromFile( const std::string& filename );
 
