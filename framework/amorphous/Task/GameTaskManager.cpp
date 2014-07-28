@@ -1,10 +1,8 @@
 #include "GameTaskManager.hpp"
 #include "GameTask.hpp"
-
 //#include "Graphics/RenderTask.hpp"
 //#include "Graphics/RenderTaskProcessor.hpp"
 #include "Graphics/GraphicsDevice.hpp"
-#include "GameTask.hpp"
 #include "GameTaskFactoryBase.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/Profile.hpp"
@@ -136,14 +134,14 @@ void GameTaskManager::Render()
 		else
 		{
 			// BeginScene() here if render task system is NOT used
-			HRESULT hr = GraphicsDevice().BeginScene();
+			Result::Name res = GraphicsDevice().BeginScene();
 
 			m_pCurrentTask->RenderBase();
 
 			// EndScene() and Present() here if render task system is NOT used
-			hr = GraphicsDevice().EndScene();
+			res = GraphicsDevice().EndScene();
 
-			hr = GraphicsDevice().Present();
+			res = GraphicsDevice().Present();
 		}
 	}
 }
