@@ -63,6 +63,8 @@ void MainLoop( ApplicationBase *pApp )
         else
 		{
 			pApp->UpdateFrame();
+
+			GetGameWindowManager_Win32().OnMainLoopFinished();
 		}
 	}
 }
