@@ -361,11 +361,11 @@ static int Run( LPSTR lpCmdLine )
 //	CXMLParserInitReleaseManager parser_mgr;
 */
 
-	string graphics_library_name = "Direct3D";
+	string graphics_library_name = "OpenGL";
 	ParamLoader param_loader( "config" );
 	if( param_loader.IsReady() )
 	{
-		param_loader.LoadParam( "GraphicsLibrary", graphics_library_name );
+		param_loader.LoadParam( "graphics_library", graphics_library_name );
 	}
 
 	Result::Name res = SelectGraphicsLibrary( graphics_library_name );
