@@ -296,17 +296,13 @@ void GameTask::RenderBase()
 {
 	PROFILE_FUNCTION();
 
-//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	SFloatRGBAColor bg_color = SFloatRGBAColor::Blue();
+///	SFloatRGBAColor bg_color = SFloatRGBAColor::Green();
+///	SFloatRGBAColor bg_color = SFloatRGBAColor::Aqua();
+	SFloatRGBAColor bg_color = SFloatRGBAColor(0.3f,0.3f,0.3f,1.0f);
 
-/*	HRESULT hr;
-	D3DCOLOR color = D3DCOLOR_XRGB(     64, 64, 64);
-//	D3DCOLOR color = D3DCOLOR_XRGB(      0,  0,255);
-///	D3DCOLOR color = D3DCOLOR_XRGB(      0,255,  0);
-///	D3DCOLOR color = D3DCOLOR_ARGB(255,  0,255,255);
-	hr = pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, color, 1.0f, 0 );
-*/
 	Result::Name res = Result::SUCCESS;
-	res = GraphicsDevice().SetClearColor( SFloatRGBAColor(0.3f,0.3f,0.3f,1.0f) );
+	res = GraphicsDevice().SetClearColor( bg_color );
 	res = GraphicsDevice().SetClearDepth( 1.0f );
 	res = GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
 
