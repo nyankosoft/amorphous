@@ -7,8 +7,6 @@
 #include "amorphous/Task.hpp"
 #include "amorphous/Script.hpp"
 #include "amorphous/GUI.hpp"
-#include "amorphous/GameCommon/MouseCursor.hpp"
-#include "amorphous/App/GameWindowManager.hpp"
 
 using std::string;
 using namespace boost;
@@ -17,16 +15,16 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/rigid_bodies.bin";
 
 
-ApplicationBase *amorphous::CreateApplicationInstance() { return new CBasicPhysicsAppBase(); }
+ApplicationBase *amorphous::CreateApplicationInstance() { return new BasicPhysicsAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
 {
-	CBasicPhysicsAppGUITask *m_pTask;
+	BasicPhysicsAppGUITask *m_pTask;
 
 public:
 
-	StageSelectListBoxEventHandler( CBasicPhysicsAppGUITask *pTask )
+	StageSelectListBoxEventHandler( BasicPhysicsAppGUITask *pTask )
 		:
 	m_pTask(pTask)
 	{
@@ -47,7 +45,7 @@ public:
 };
 
 
-CBasicPhysicsAppTask::CBasicPhysicsAppTask()
+BasicPhysicsAppTask::BasicPhysicsAppTask()
 {
 	ScriptManager::ms_UseBoostPythonModules = true;
 
@@ -59,7 +57,7 @@ CBasicPhysicsAppTask::CBasicPhysicsAppTask()
 }
 
 
-CBasicPhysicsAppGUITask::CBasicPhysicsAppGUITask()
+BasicPhysicsAppGUITask::BasicPhysicsAppGUITask()
 {
 /*	int w = 1200, h = 300;
 	SRect root_dlg_rect = RectLTWH( 50, 50, w, h );
@@ -93,13 +91,13 @@ CBasicPhysicsAppGUITask::CBasicPhysicsAppGUITask()
 }
 
 
-void CBasicPhysicsAppGUITask::LoadStage( const std::string& stage_script_name )
+void BasicPhysicsAppGUITask::LoadStage( const std::string& stage_script_name )
 {
 	m_StageScriptToLoad = stage_script_name;
 }
 
 
-int CBasicPhysicsAppGUITask::FrameMove( float dt )
+int BasicPhysicsAppGUITask::FrameMove( float dt )
 {
 	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
@@ -118,55 +116,33 @@ int CBasicPhysicsAppGUITask::FrameMove( float dt )
 
 
 //========================================================================================
-// CBasicPhysicsAppBase
+// BasicPhysicsAppBase
 //========================================================================================
 
-CBasicPhysicsAppBase::CBasicPhysicsAppBase()
+BasicPhysicsAppBase::BasicPhysicsAppBase()
 {
 }
 
 
-CBasicPhysicsAppBase::~CBasicPhysicsAppBase()
+BasicPhysicsAppBase::~BasicPhysicsAppBase()
 {
 //	Release();
 }
 
 /*
-void CBasicPhysicsAppBase::Release()
+void BasicPhysicsAppBase::Release()
 {
 }*/
 
 
-const std::string CBasicPhysicsAppBase::GetStartTaskName() const
+const std::string BasicPhysicsAppBase::GetStartTaskName() const
 {
 	return string("");
 }
 
 
-int CBasicPhysicsAppBase::GetStartTaskID() const
+int BasicPhysicsAppBase::GetStartTaskID() const
 {
 //	return CGameTask::ID_STAGE_VIEWER_TASK;
 	return GAMETASK_ID_BASIC_PHYSICS;
-}
-
-
-bool CBasicPhysicsAppBase::Init()
-{
-	//
-	// Register base entity factory
-	//
-/*
-	GetBaseEntityManager().RegisterBaseEntityFactory( BaseEntityFactorySharedPtr( new CFG_BaseEntityFactory() ) );
-
-	GetBaseEntityManager().AddBaseEntityClassNameToIDMap( "CFG_AIAircraftBaseEntity", CFG_BaseEntityID::BE_AIAIRCRAFTBASEENTITY );
-*/
-	bool base_init = GameApplicationBase::Init();
-	if( !base_init )
-		return false;
-
-
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
-	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
-
-	return true;
 }

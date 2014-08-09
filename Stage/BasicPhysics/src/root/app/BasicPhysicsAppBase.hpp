@@ -11,23 +11,22 @@ using namespace amorphous;
 
 enum ShadowAppTaskID
 {
-//	GAMETASK_ID_SHADOWS_TEST_STAGE,
 	GAMETASK_ID_BASIC_PHYSICS,
 	NUM_SHADOW_APP_GAMETASK_IDS
 };
 
 
-class CBasicPhysicsAppTask : public StageViewerGameTask
+class BasicPhysicsAppTask : public StageViewerGameTask
 {
 public:
 
-	CBasicPhysicsAppTask();
+	BasicPhysicsAppTask();
 
-	~CBasicPhysicsAppTask() {}
+	~BasicPhysicsAppTask() {}
 
 };
 
-class CBasicPhysicsAppGUITask : public GUIGameTask
+class BasicPhysicsAppGUITask : public GUIGameTask
 {
 	enum GUI_ID
 	{
@@ -39,9 +38,9 @@ class CBasicPhysicsAppGUITask : public GUIGameTask
 
 public:
 
-	CBasicPhysicsAppGUITask();
+	BasicPhysicsAppGUITask();
 
-	~CBasicPhysicsAppGUITask() {}
+	~BasicPhysicsAppGUITask() {}
 
 	int FrameMove( float dt );
 
@@ -49,7 +48,7 @@ public:
 };
 
 
-class CBasicPhysicsAppTaskFactory : public GameTaskFactoryBase
+class BasicPhysicsAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
@@ -58,9 +57,9 @@ public:
 		switch( iTaskID )
 		{
 		case GAMETASK_ID_BASIC_PHYSICS:
-			return new CBasicPhysicsAppTask();
+			return new BasicPhysicsAppTask();
 //		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
-//			return new CBasicPhysicsAppGUITask();
+//			return new BasicPhysicsAppGUITask();
 		default:
 			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
@@ -68,15 +67,13 @@ public:
 };
 
 
-class CBasicPhysicsAppBase : public GameApplicationBase
+class BasicPhysicsAppBase : public GameApplicationBase
 {
 public:
 
-	CBasicPhysicsAppBase();
+	BasicPhysicsAppBase();
 
-	virtual ~CBasicPhysicsAppBase();
-
-	virtual bool Init();
+	virtual ~BasicPhysicsAppBase();
 
 	// virtual function implementations
 
@@ -86,7 +83,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CBasicPhysicsAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new BasicPhysicsAppTaskFactory(); }
 
 	void Release();
 };
