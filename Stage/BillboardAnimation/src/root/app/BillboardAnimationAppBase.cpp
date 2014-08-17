@@ -19,16 +19,16 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/explosion.bin";
 
 
-extern ApplicationBase *amorphous::CreateApplicationInstance() { return new CBillboardAnimationAppBase(); }
+extern ApplicationBase *amorphous::CreateApplicationInstance() { return new BillboardAnimationAppBase(); }
 
 
 class StageSelectListBoxEventHandler : public CGM_ListBoxEventHandler
 {
-	CBillboardAnimationAppGUITask *m_pTask;
+	BillboardAnimationAppGUITask *m_pTask;
 
 public:
 
-	StageSelectListBoxEventHandler( CBillboardAnimationAppGUITask *pTask )
+	StageSelectListBoxEventHandler( BillboardAnimationAppGUITask *pTask )
 		:
 	m_pTask(pTask)
 	{
@@ -49,7 +49,7 @@ public:
 };
 
 
-CBillboardAnimationAppTask::CBillboardAnimationAppTask()
+BillboardAnimationAppTask::BillboardAnimationAppTask()
 {
 	ScriptManager::ms_UseBoostPythonModules = true;
 
@@ -61,7 +61,7 @@ CBillboardAnimationAppTask::CBillboardAnimationAppTask()
 }
 
 
-void CBillboardAnimationAppTask::OnTriggerPulled()
+void BillboardAnimationAppTask::OnTriggerPulled()
 {
 	if( !m_pStage )
 		return;
@@ -90,7 +90,7 @@ void CBillboardAnimationAppTask::OnTriggerPulled()
 }
 
 
-void CBillboardAnimationAppTask::HandleInput( const InputData& input )
+void BillboardAnimationAppTask::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
     {
@@ -108,10 +108,10 @@ void CBillboardAnimationAppTask::HandleInput( const InputData& input )
 
 
 //======================================================================
-// CBillboardAnimationAppGUITask
+// BillboardAnimationAppGUITask
 //======================================================================
 
-CBillboardAnimationAppGUITask::CBillboardAnimationAppGUITask()
+BillboardAnimationAppGUITask::BillboardAnimationAppGUITask()
 {
 /*	int w = 1200, h = 300;
 	SRect root_dlg_rect = RectLTWH( 50, 50, w, h );
@@ -145,13 +145,13 @@ CBillboardAnimationAppGUITask::CBillboardAnimationAppGUITask()
 }
 
 
-void CBillboardAnimationAppGUITask::LoadStage( const std::string& stage_script_name )
+void BillboardAnimationAppGUITask::LoadStage( const std::string& stage_script_name )
 {
 	m_StageScriptToLoad = stage_script_name;
 }
 
 
-int CBillboardAnimationAppGUITask::FrameMove( float dt )
+int BillboardAnimationAppGUITask::FrameMove( float dt )
 {
 	int ret = GUIGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
@@ -169,38 +169,38 @@ int CBillboardAnimationAppGUITask::FrameMove( float dt )
 
 
 //========================================================================================
-// CBillboardAnimationAppBase
+// BillboardAnimationAppBase
 //========================================================================================
 
-CBillboardAnimationAppBase::CBillboardAnimationAppBase()
+BillboardAnimationAppBase::BillboardAnimationAppBase()
 {
 }
 
 
-CBillboardAnimationAppBase::~CBillboardAnimationAppBase()
+BillboardAnimationAppBase::~BillboardAnimationAppBase()
 {
 //	Release();
 }
 
 /*
-void CBillboardAnimationAppBase::Release()
+void BillboardAnimationAppBase::Release()
 {
 }*/
 
 
-const std::string CBillboardAnimationAppBase::GetStartTaskName() const
+const std::string BillboardAnimationAppBase::GetStartTaskName() const
 {
 	return string("");
 }
 
 
-int CBillboardAnimationAppBase::GetStartTaskID() const
+int BillboardAnimationAppBase::GetStartTaskID() const
 {
 	return GAMETASK_ID_BILLBOARD_ANIMATION;
 }
 
 
-//bool CBillboardAnimationAppBase::Init()
+//bool BillboardAnimationAppBase::Init()
 //{
 //	bool base_init = GameApplicationBase::Init();
 //	if( !base_init )

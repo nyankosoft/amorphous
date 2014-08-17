@@ -16,21 +16,21 @@ enum ShadowAppTaskID
 };
 
 
-class CBillboardAnimationAppTask : public StageViewerGameTask
+class BillboardAnimationAppTask : public StageViewerGameTask
 {
 	void OnTriggerPulled();
 
 public:
 
-	CBillboardAnimationAppTask();
+	BillboardAnimationAppTask();
 
-	~CBillboardAnimationAppTask() {}
+	~BillboardAnimationAppTask() {}
 
 	void HandleInput( const InputData& input );
 };
 
 
-class CBillboardAnimationAppGUITask : public GUIGameTask
+class BillboardAnimationAppGUITask : public GUIGameTask
 {
 	enum GUI_ID
 	{
@@ -42,9 +42,9 @@ class CBillboardAnimationAppGUITask : public GUIGameTask
 
 public:
 
-	CBillboardAnimationAppGUITask();
+	BillboardAnimationAppGUITask();
 
-	~CBillboardAnimationAppGUITask() {}
+	~BillboardAnimationAppGUITask() {}
 
 	int FrameMove( float dt );
 
@@ -52,7 +52,7 @@ public:
 };
 
 
-class CBillboardAnimationAppTaskFactory : public GameTaskFactoryBase
+class BillboardAnimationAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
@@ -61,7 +61,7 @@ public:
 		switch( iTaskID )
 		{
 		case GAMETASK_ID_BILLBOARD_ANIMATION:
-			return new CBillboardAnimationAppTask();
+			return new BillboardAnimationAppTask();
 		default:
 			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
@@ -69,13 +69,13 @@ public:
 };
 
 
-class CBillboardAnimationAppBase : public GameApplicationBase
+class BillboardAnimationAppBase : public GameApplicationBase
 {
 public:
 
-	CBillboardAnimationAppBase();
+	BillboardAnimationAppBase();
 
-	virtual ~CBillboardAnimationAppBase();
+	virtual ~BillboardAnimationAppBase();
 
 //	virtual bool Init();
 
@@ -87,7 +87,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CBillboardAnimationAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new BillboardAnimationAppTaskFactory(); }
 
 	void Release();
 };
