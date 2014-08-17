@@ -8,8 +8,8 @@
 #include "amorphous/Task.hpp"
 #include "amorphous/Script.hpp"
 #include "amorphous/GUI.hpp"
-#include "amorphous/GameCommon/MouseCursor.hpp"
-#include "amorphous/App/GameWindowManager.hpp"
+//#include "amorphous/GameCommon/MouseCursor.hpp"
+//#include "amorphous/App/GameWindowManager.hpp"
 
 
 using namespace std;
@@ -196,19 +196,18 @@ const std::string CBillboardAnimationAppBase::GetStartTaskName() const
 
 int CBillboardAnimationAppBase::GetStartTaskID() const
 {
-//	return GameTask::ID_STAGE_VIEWER_TASK;
-	return GAMETASK_ID_BASIC_PHYSICS;
+	return GAMETASK_ID_BILLBOARD_ANIMATION;
 }
 
 
-bool CBillboardAnimationAppBase::Init()
-{
-	bool base_init = GameApplicationBase::Init();
-	if( !base_init )
-		return false;
-
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
-	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
-
-	return true;
-}
+//bool CBillboardAnimationAppBase::Init()
+//{
+//	bool base_init = GameApplicationBase::Init();
+//	if( !base_init )
+//		return false;
+//
+//	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
+//	GetMouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
+//
+//	return true;
+//}

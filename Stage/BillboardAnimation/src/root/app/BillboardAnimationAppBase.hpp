@@ -11,8 +11,7 @@ using namespace amorphous;
 
 enum ShadowAppTaskID
 {
-//	GAMETASK_ID_SHADOWS_TEST_STAGE,
-	GAMETASK_ID_BASIC_PHYSICS,
+	GAMETASK_ID_BILLBOARD_ANIMATION,
 	NUM_SHADOW_APP_GAMETASK_IDS
 };
 
@@ -61,10 +60,8 @@ public:
 	{
 		switch( iTaskID )
 		{
-		case GAMETASK_ID_BASIC_PHYSICS:
+		case GAMETASK_ID_BILLBOARD_ANIMATION:
 			return new CBillboardAnimationAppTask();
-//		case GAMETASK_ID_SHADOWS_STAGE_SELECT:
-//			return new CBillboardAnimationAppGUITask();
 		default:
 			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
@@ -80,7 +77,7 @@ public:
 
 	virtual ~CBillboardAnimationAppBase();
 
-	virtual bool Init();
+//	virtual bool Init();
 
 	// virtual function implementations
 
