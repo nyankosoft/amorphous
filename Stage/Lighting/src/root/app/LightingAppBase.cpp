@@ -17,10 +17,10 @@ using namespace boost;
 static string sg_TestStageScriptToLoad = "./Script/hs_lights.bin";
 
 
-extern ApplicationBase *amorphous::CreateApplicationInstance() { return new CLightingAppBase(); }
+extern ApplicationBase *amorphous::CreateApplicationInstance() { return new LightingAppBase(); }
 
 
-CLightingAppTask::CLightingAppTask()
+LightingAppTask::LightingAppTask()
 {
 	ScriptManager::ms_UseBoostPythonModules = true;
 
@@ -32,7 +32,7 @@ CLightingAppTask::CLightingAppTask()
 }
 
 
-void CLightingAppTask::DisplayEntityPositions( GraphicsElementAnimationManager& animated_graphics_manager )
+void LightingAppTask::DisplayEntityPositions( GraphicsElementAnimationManager& animated_graphics_manager )
 {
 	AABB3 aabb;
 	aabb.vMin = Vector3(1,1,1) * (-100.0f);
@@ -112,7 +112,7 @@ void CLightingAppTask::DisplayEntityPositions( GraphicsElementAnimationManager& 
 }
 
 
-int CLightingAppTask::FrameMove( float dt )
+int LightingAppTask::FrameMove( float dt )
 {
 	int ret = StageViewerGameTask::FrameMove(dt);
 	if( ret != ID_INVALID )
@@ -129,21 +129,21 @@ int CLightingAppTask::FrameMove( float dt )
 
 
 //========================================================================================
-// CLightingAppBase
+// LightingAppBase
 //========================================================================================
 
-CLightingAppBase::CLightingAppBase()
+LightingAppBase::LightingAppBase()
 {
 }
 
 
-CLightingAppBase::~CLightingAppBase()
+LightingAppBase::~LightingAppBase()
 {
 //	Release();
 }
 
 
-int CLightingAppBase::GetStartTaskID() const
+int LightingAppBase::GetStartTaskID() const
 {
 //	return GameTask::ID_STAGE_VIEWER_TASK;
 	return GAMETASK_ID_LIGHTING;

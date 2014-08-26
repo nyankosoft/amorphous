@@ -16,21 +16,21 @@ enum ShadowAppTaskID
 };
 
 
-class CLightingAppTask : public StageViewerGameTask
+class LightingAppTask : public StageViewerGameTask
 {
 	void DisplayEntityPositions( GraphicsElementAnimationManager& animated_graphics_manager );
 
 public:
 
-	CLightingAppTask();
+	LightingAppTask();
 
-	~CLightingAppTask() {}
+	~LightingAppTask() {}
 
 	int FrameMove( float dt );
 };
 
 
-class CLightingAppTaskFactory : public GameTaskFactoryBase
+class LightingAppTaskFactory : public GameTaskFactoryBase
 {
 public:
 
@@ -39,7 +39,7 @@ public:
 		switch( iTaskID )
 		{
 		case GAMETASK_ID_LIGHTING:
-			return new CLightingAppTask();
+			return new LightingAppTask();
 		default:
 			return GameTaskFactoryBase::CreateTask( iTaskID );
 		}
@@ -47,13 +47,13 @@ public:
 };
 
 
-class CLightingAppBase : public GameApplicationBase
+class LightingAppBase : public GameApplicationBase
 {
 public:
 
-	CLightingAppBase();
+	LightingAppBase();
 
-	virtual ~CLightingAppBase();
+	virtual ~LightingAppBase();
 
 	// virtual function implementations
 
@@ -61,7 +61,7 @@ public:
 
 	int GetStartTaskID() const;
 
-	GameTaskFactoryBase *CreateGameTaskFactory() const { return new CLightingAppTaskFactory(); }
+	GameTaskFactoryBase *CreateGameTaskFactory() const { return new LightingAppTaskFactory(); }
 };
 
 
