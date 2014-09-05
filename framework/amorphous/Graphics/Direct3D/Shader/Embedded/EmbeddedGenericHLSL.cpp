@@ -1,5 +1,6 @@
 #include "EmbeddedGenericHLSL.hpp"
 #include "EmbeddedHLSLShader.hpp"
+#include "EmbeddedMiscHLSL.hpp"
 #include "Graphics/Shader/GenericShaderDesc.hpp"
 #include "Graphics/Shader/Generic2DShaderDesc.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
@@ -1268,6 +1269,11 @@ Result::Name EmbeddedGenericHLSL::Generate2DShader( const Generic2DShaderDesc& d
 	return Result::UNKNOWN_ERROR;
 }
 
+
+Result::Name EmbeddedGenericHLSL::GenerateMiscShader( MiscShader::ID id, std::string& shader )
+{
+	return EmbeddedMiscHLSL::GetShader( id, shader );
+}
 
 /*
 ShaderHandle GetGenericShader( GenericShaderDesc& desc )

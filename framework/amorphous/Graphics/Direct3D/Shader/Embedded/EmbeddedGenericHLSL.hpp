@@ -54,6 +54,8 @@ public:
 	Result::Name GenerateShader( const GenericShaderDesc& desc, std::string& hlsl_effect );
 
 	Result::Name Generate2DShader( const Generic2DShaderDesc& desc, std::string& shader );
+
+	Result::Name GenerateMiscShader( MiscShader::ID id, std::string& shader );
 };
 
 

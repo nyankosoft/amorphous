@@ -1,8 +1,8 @@
-#ifndef  __EmbeddedMiscShaderGenerator_HPP__
-#define  __EmbeddedMiscShaderGenerator_HPP__
+#ifndef  __MiscEmbeddedShaderGenerator_HPP__
+#define  __MiscEmbeddedShaderGenerator_HPP__
 
 
-#include "ShaderGenerator.hpp"
+#include "MiscEmbeddedShaderGenerator.hpp"
 
 #include "../Direct3D/Shader/Embedded/EmbeddedMiscHLSL.hpp"
 
@@ -11,15 +11,14 @@ namespace amorphous
 {
 
 
-class EmbeddedMiscShaderGenerator : public ShaderGenerator
+class D3DMiscEmbeddedShaderGenerator : public MiscEmbeddedShaderGenerator
 {
-	EmbeddedMiscShader::ID m_ShaderID;
 
 public:
 
-	EmbeddedMiscShaderGenerator( EmbeddedMiscShader::ID shader_id )
+	D3DMiscEmbeddedShaderGenerator( MiscEmbeddedShader::ID shader_id )
 		:
-	m_ShaderID(shader_id)
+	MiscEmbeddedShaderGenerator(shader_id)
 	{}
 
 	void GetShader( std::string& shader )
@@ -33,4 +32,4 @@ public:
 
 
 
-#endif		/*  __EmbeddedMiscShaderGenerator_HPP__  */
+#endif		/*  __MiscEmbeddedShaderGenerator_HPP__  */

@@ -144,32 +144,32 @@ const char *EmbeddedMiscHLSL::ms_pTechniqueTemplate =
 "}\n";
 
 
-Result::Name EmbeddedMiscHLSL::GetShader( EmbeddedMiscShader::ID shader_id, std::string& hlsl_effect )
+Result::Name EmbeddedMiscHLSL::GetShader( MiscShader::ID shader_id, std::string& hlsl_effect )
 {
 	switch( shader_id )
 	{
-	case EmbeddedMiscShader::SINGLE_DIFFUSE_COLOR:
+	case MiscShader::SINGLE_DIFFUSE_COLOR:
 		hlsl_effect = ms_pSingleDiffuseColor;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case EmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
+	case MiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
 		hlsl_effect = ms_pShadedSingleDiffuseColor;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case EmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
+	case MiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
 		hlsl_effect = ms_pVertexWeightMapDisplay;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case EmbeddedMiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
+	case MiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
 		hlsl_effect = ms_pDepthRenderingInViewSpace;
 		hlsl_effect += ms_pDepthRenderingPixelShaderAndTechnique;
 		hlsl_effect += ms_pTechniqueTemplate;
 		return Result::SUCCESS;
 
-	case EmbeddedMiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
+	case MiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
 		hlsl_effect = ms_pDepthRenderingInProjectionSpace;
 		hlsl_effect += ms_pDepthRenderingPixelShaderAndTechnique;
 		hlsl_effect += ms_pTechniqueTemplate;

@@ -1,4 +1,5 @@
 #include "EmbeddedGenericShader.hpp"
+//#include "EmbeddedMiscShader.hpp"
 #include "../Generic2DShaderDesc.hpp"
 
 
@@ -7,6 +8,8 @@ namespace amorphous
 
 
 static boost::shared_ptr<EmbeddedGenericShader> sg_pEmbeddedGenericShader;
+
+//static boost::shared_ptr<EmbeddedMiscShader> sg_pEmbeddedGenericShader;
 
 
 boost::shared_ptr<EmbeddedGenericShader> GetEmbeddedGenericShader()
@@ -20,6 +23,18 @@ void SetEmbeddedGenericShader( boost::shared_ptr<EmbeddedGenericShader> ptr )
 	sg_pEmbeddedGenericShader = ptr;
 }
 
+/*
+boost::shared_ptr<MiscEmbeddedShader> GetMiscEmbeddedShader()
+{
+	return sg_pMiscEmbeddedShader;
+}
+
+
+void SetEmbeddedGenericShader( boost::shared_ptr<MiscEmbeddedShader> ptr )
+{
+	sg_pMiscEmbeddedShader = ptr;
+}
+*/
 
 void EmbeddedGenericShader::AppendBlendCalculations(
 	const Generic2DShaderDesc& desc,

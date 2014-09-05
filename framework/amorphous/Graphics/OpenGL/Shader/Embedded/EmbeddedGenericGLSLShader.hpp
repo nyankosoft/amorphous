@@ -24,6 +24,10 @@ public:
 	Result::Name Generate2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader );
 
 	Result::Name Generate2DFragmentShader( const Generic2DShaderDesc& desc, std::string& shader );
+
+	Result::Name GenerateMiscVertexShader( const MiscShader::ID id, std::string& shader );
+
+	Result::Name GenerateMiscFragmentShader( const MiscShader::ID id, std::string& shader );
 };
 
 

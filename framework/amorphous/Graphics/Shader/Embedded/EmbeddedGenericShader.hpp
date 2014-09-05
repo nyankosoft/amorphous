@@ -6,12 +6,14 @@
 #include <boost/shared_ptr.hpp>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Shader/MiscShader.hpp"
 
 
 namespace amorphous
 {
 
 class blend_op;
+class EmbeddedMiscShader;
 
 
 class EmbeddedGenericShader
@@ -46,17 +48,31 @@ public:
 
 	virtual Result::Name GenerateFragmentShader( const GenericShaderDesc& desc, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 
+	// 2D shaders
+
 	virtual Result::Name Generate2DShader( const Generic2DShaderDesc& desc, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 
 	virtual Result::Name Generate2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 
 	virtual Result::Name Generate2DFragmentShader( const Generic2DShaderDesc& desc, std::string& shader ) { return Result::UNKNOWN_ERROR; }
+
+	// Miscellaneous shaders
+
+	virtual Result::Name GenerateMiscShader( MiscShader::ID id, std::string& shader ) { return Result::UNKNOWN_ERROR; }
+
+	virtual Result::Name GenerateMiscVertexShader( const MiscShader::ID id, std::string& shader ) { return Result::UNKNOWN_ERROR; }
+
+	virtual Result::Name GenerateMiscFragmentShader( const MiscShader::ID id, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 };
 
 
 boost::shared_ptr<EmbeddedGenericShader> GetEmbeddedGenericShader();
 
 void SetEmbeddedGenericShader( boost::shared_ptr<EmbeddedGenericShader> ptr );
+
+boost::shared_ptr<EmbeddedMiscShader> GetEmbeddedMiscShader();
+
+void SetEmbeddedMiscShader( boost::shared_ptr<EmbeddedMiscShader> ptr );
 
 
 } // namespace amorphous

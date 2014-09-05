@@ -1,4 +1,5 @@
 #include "EmbeddedGenericGLSLShader.hpp"
+#include "GLEmbeddedMiscGLSLShader.hpp"
 #include "Graphics/Shader/GenericShaderDesc.hpp"
 #include "Graphics/Shader/Generic2DShaderDesc.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -521,6 +522,18 @@ Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2
 	}
 
 	return Result::SUCCESS;
+}
+
+
+Result::Name EmbeddedGenericGLSLShader::GenerateMiscVertexShader( const MiscShader::ID id, std::string& shader )
+{
+	return GLEmbeddedMiscGLSLShader::GetVertexShader( id, shader );
+}
+
+
+Result::Name EmbeddedGenericGLSLShader::GenerateMiscFragmentShader( const MiscShader::ID id, std::string& shader )
+{
+	return GLEmbeddedMiscGLSLShader::GetFragmentShader( id, shader );
 }
 
 
