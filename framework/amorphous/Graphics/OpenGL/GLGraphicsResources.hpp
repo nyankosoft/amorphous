@@ -22,6 +22,8 @@ protected:
 	GLenum m_SourceFormat;
 	GLenum m_SourceType;
 
+	uint m_NumMipmaps;
+
 public:
 
 	GLTextureResourceBase( const TextureResourceDesc *pDesc );

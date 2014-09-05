@@ -2,6 +2,7 @@
 #include "GLTextureUtilities.hpp"
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Graphics/TextureGenerators/TextureFilter.hpp"
+#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 //#include "Graphics/OpenGL/Shader/GLCgEffect.hpp"
@@ -316,6 +317,8 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 
 	int num_mipmaps = GetNumMipmaps( m_TextureDesc );
 
+	m_NumMipmaps = (uint)num_mipmaps;
+
 	shared_ptr<BitmapImage> pImageCopy = src_image.CreateCopy();
 	if( !pImageCopy )
 	{
@@ -414,7 +417,8 @@ GLTextureResourceBase::GLTextureResourceBase( const TextureResourceDesc *pDesc )
 :
 TextureResource(pDesc),
 m_SourceFormat(GL_RGB),
-m_SourceType(GL_UNSIGNED_BYTE)
+m_SourceType(GL_UNSIGNED_BYTE),
+m_NumMipmaps(0)
 {}
 
 
@@ -450,6 +454,8 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 	internal_format = GL_RGBA;
 
 	LOG_GL_ERROR( "Clearing error before glTexImage2D()" );
+
+	LOG_PRINTF(( "glTexImage2D() level: %d, width: %d, height: %d", level, width, height ));
 
 //	vector<uchar> fake_img_data;
 //	fake_img_data.resize( desc.Width * desc.Height * 3, 0x80 );
@@ -518,6 +524,9 @@ bool CGLTextureResource::CreateFromDesc()
 //	if( desc.Format == TextureFormat::X8R8G8B8 )
 //		bpp = 24;
 
+//	if( m_TextureDesc.Height == 512 )
+//		m_TextureDesc.Height = 1024;
+
 	m_pLockedImage.reset( new BitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
 
 	shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
@@ -527,6 +536,10 @@ bool CGLTextureResource::CreateFromDesc()
 		// An empty texture has been created
 		// - fill the texture if loader was specified
 		shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
+
+		if( !pLoader )
+			pLoader.reset( new SingleColorTextureGenerator );
+
 		if( pLoader )
 		{
 			// Let the user-defined routine to fill the texture
@@ -577,6 +590,12 @@ bool CGLTextureResource::Lock( uint mip_level )
 		m_pLockedTexture.reset( new CGLLockedTexture( m_pLockedImage ) );
 		return true;
 	}
+	else
+	{
+		m_pLockedImage.reset( new BitmapImage(m_TextureDesc.Width,m_TextureDesc.Height,32) );
+		m_pLockedImage->FillColor( SFloatRGBAColor::White() );
+		return true;
+	}
 
 	return false;
 }
@@ -585,6 +604,90 @@ bool CGLTextureResource::Lock( uint mip_level )
 bool CGLTextureResource::Unlock()
 {
 	m_pLockedTexture.reset();
+
+	if( !m_pLockedImage )
+		return false;
+
+	BitmapImage& locked_image = *m_pLockedImage;
+
+//	bool res = CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, *m_pLockedImage, m_TextureID );
+
+//	static int s_count = 0;
+//	if( s_count < 5 )
+//	{
+//		locked_image.SaveToFile( "m_pLockedImage" + to_string(s_count) + ".png" );
+//		SaveTextureToImageFile( "locked_texture_before_update" + to_string(s_count) + ".png" );
+//		s_count += 1;
+//	}
+
+	shared_ptr<BitmapImage> pCopiedImage = locked_image.CreateCopy();
+	if( !pCopiedImage )
+		return false;
+
+	BitmapImage& copied_image = *pCopiedImage;
+
+	for( uint level=0; level<m_NumMipmaps; level++ )
+	{
+		if( 1 <= level )
+		{
+			int next_width  = copied_image.GetWidth()  / 2;
+			int next_height = copied_image.GetHeight() / 2;
+
+			if( next_width <= 0 || next_height <= 0 )
+				return false;
+
+			copied_image.Rescale( next_width, next_height );
+		}
+
+//		int level = 2;
+		int tex_width  = copied_image.GetWidth();  //locked_image.GetWidth();
+		int tex_height = copied_image.GetHeight(); //locked_image.GetHeight();
+		unsigned int bpp = FreeImage_GetBPP( copied_image.GetFBITMAP() );
+		unsigned int num_colors = FreeImage_GetColorsUsed( copied_image.GetFBITMAP() );
+//		GLenum format = GL_RGBA;
+		GLenum format = GL_BGRA; // GL_BGRA is set because is not specified as a render target
+		const GLvoid *data = FreeImage_GetBits(m_pLockedImage->GetFBITMAP());
+
+//		vector<U8> u8buffer;
+//		u8buffer.resize( tex_width * tex_height * 4, 255 );
+//		U8 r=0, g=0, b=0, a=0;
+//		for( int y=0; y<tex_height; y++ )
+//		{
+//			for( int x=0; x<tex_width; x++ )
+//			{
+//				int offset = (y * tex_width + x) * 4;
+//				copied_image.GetPixel(x,y,r,g,b,a);
+//				u8buffer[offset + 0] = b;
+//				u8buffer[offset + 1] = g;
+//				u8buffer[offset + 2] = r;
+//				u8buffer[offset + 3] = a;
+//			}
+//		}
+//		const GLvoid *data = (GLvoid*)&u8buffer[0];
+
+		if( !data )
+			return false;
+
+		LOG_GL_ERROR( "Clearing error before glBindTexture() in CGLTextureResource::Unlock()" );
+
+		glBindTexture( GL_TEXTURE_2D, m_TextureID );
+
+		LOG_GL_ERROR( "Clearing error before glTexSubImage2D() in CGLTextureResource::Unlock()" );
+
+		glTexSubImage2D(
+			GL_TEXTURE_2D,
+			level,            // GLint level
+			0,                // GLint xoffset
+			0,                // GLint yoffset
+			tex_width,        // GLsizei width
+			tex_height,       // GLsizei height
+			format,           // GLenum format
+			GL_UNSIGNED_BYTE, // GLenum type
+			(GLvoid*)data     //const GLvoid * data
+			);
+
+		LOG_GL_ERROR( fmt_string( "glTexSubImage2D() failed: level=%d, width=%d, height=%d", level, tex_width, tex_height ).c_str() );
+	}
 
 	return true;
 }
