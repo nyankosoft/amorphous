@@ -3,6 +3,7 @@
 
 
 #include "../PrimitiveRenderer.hpp"
+#include "GLExtensions.hpp"
 
 
 namespace amorphous
@@ -52,12 +53,34 @@ public:
 	{
 		glBindTexture( GL_TEXTURE_2D, 0 );
 
-		glBegin(GL_LINES);
-		glColor4f( start_color.red, start_color.green, start_color.blue, start_color.alpha );
-		glVertex3f( start.x, start.y, start.z );
-		glColor4f( end_color.red,   end_color.green,   end_color.blue,   end_color.alpha );
-		glVertex3f( end.x,   end.y,   end.z );
-		glEnd();
+		LOG_GL_ERROR( " Clearing OpenGL errors..." );
+
+		// Unbind GL_ARRAY_BUFFER and GL_ELEMENT_ARRAY_BUFFER to source a standard memory location (RAM).
+		glBindBuffer( GL_ARRAY_BUFFER, 0 );
+		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
+		Vector3 points[] = { start, end };
+		glEnableVertexAttribArray( 0 );
+		glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, points );
+
+		SFloatRGBAColor colors[] = { start_color, end_color };
+		glEnableVertexAttribArray( 1 );
+		glVertexAttribPointer( 1, 4, GL_FLOAT, GL_FALSE, 0, colors );
+
+		LOG_GL_ERROR( " Clearing OpenGL errors before glDrawElements()..." );
+
+		const U16 indices[] = {0,1};
+		int num_indices = 2;
+		glDrawElements( GL_LINES, num_indices, GL_UNSIGNED_SHORT, indices );
+
+		LOG_GL_ERROR( " Clearing OpenGL errors after glDrawElements()..." );
+
+//		glBegin(GL_LINES);
+//		glColor4f( start_color.red, start_color.green, start_color.blue, start_color.alpha );
+//		glVertex3f( start.x, start.y, start.z );
+//		glColor4f( end_color.red,   end_color.green,   end_color.blue,   end_color.alpha );
+//		glVertex3f( end.x,   end.y,   end.z );
+//		glEnd();
 
 		return Result::SUCCESS;
 	}
