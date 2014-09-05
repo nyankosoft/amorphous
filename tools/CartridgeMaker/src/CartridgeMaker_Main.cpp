@@ -163,6 +163,7 @@ static Caliber::Name sg_cases_to_create[] =
 	Caliber::HK_4_6X30,
 	Caliber::_5_7X28,
 	Caliber::_5_56X45,
+	Caliber::_6_5MM_CREEDMOOR,
 	Caliber::_5_45X39,
 	Caliber::_7_62X39,
 	Caliber::_7_62X54R,
