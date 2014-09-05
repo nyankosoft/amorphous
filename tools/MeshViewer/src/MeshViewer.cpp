@@ -13,7 +13,7 @@
 #include "amorphous/Graphics/HemisphericLight.hpp"
 #include "amorphous/Graphics/FogParams.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "amorphous/Graphics/Shader/EmbeddedMiscShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/MiscShaderGenerator.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Input.hpp"
@@ -270,16 +270,16 @@ void MeshViewer::LoadShaders()
 	}
 
 	// miscellaneous shaders
-	EmbeddedMiscShader::ID shader_ids[] =
+	MiscShader::ID shader_ids[] =
 	{
-		EmbeddedMiscShader::SINGLE_DIFFUSE_COLOR,
-		EmbeddedMiscShader::SHADED_SINGLE_DIFFUSE_COLOR,
-		EmbeddedMiscShader::VERTEX_WEIGHT_MAP_DISPLAY
+		MiscShader::SINGLE_DIFFUSE_COLOR,
+		MiscShader::SHADED_SINGLE_DIFFUSE_COLOR,
+		MiscShader::VERTEX_WEIGHT_MAP_DISPLAY
 	};
 
 	for( size_t i=0; i<numof(shader_ids); i++ )
 	{
-		shader_desc.pShaderGenerator.reset( new EmbeddedMiscShaderGenerator(shader_ids[i]) );
+		shader_desc.pShaderGenerator.reset( new MiscShaderGenerator(shader_ids[i]) );
 		ShaderHandle shader;
 		bool loaded = shader.Load( shader_desc );
 
