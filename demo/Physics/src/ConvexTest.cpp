@@ -11,6 +11,7 @@
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Graphics/Shader/CommonShaders.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
@@ -62,10 +63,15 @@ bool CConvexTest::InitShader()
 	// initialize shader
 //	bool shader_loaded = m_Shader.Load( "./shaders/MeshSplitterTest.fx" );
 	GenericShaderDesc gs_desc;
-	gs_desc.Specular = SpecularSource::NONE;
+	gs_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
+//	gs_desc.Specular = SpecularSource::NONE;
+//	gs_desc.NumDirectionalLights = 1;
 	ShaderResourceDesc shader_desc;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator( gs_desc ) );
 	bool shader_loaded = m_Shader.Load( shader_desc );
+
+//	m_Shader = GetNoLightingShader();
+//	bool shader_loaded = true;
 	
 	return shader_loaded;
 }
@@ -229,10 +235,11 @@ void CConvexTest::RenderMeshes()
 	GraphicsDevice().SetRenderState( RenderStateType::WRITING_INTO_DEPTH_BUFFER, true );
 
 	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
-//	if( !pShaderManager )
-//		return;
+	if( !pShaderManager )
+		return;
 
-	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderManager;
 
 	// render the scene
 
@@ -243,6 +250,12 @@ void CConvexTest::RenderMeshes()
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
 	RenderFloorPlane( m_Shader, Vector3(0,0,0), 100.0f, 100.0f, SFloatRGBAColor(0.5f,0.7f,0.5f,1.0f) );
+
+	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
+
+	shader_mgr.SetTechnique( m_MeshTechnique );
+
+	SetLight();
 
 //	RenderMeshes( m_RootMeshNode, shader_mgr, Matrix34Identity() );
 	for( size_t i=0; i<m_Actors.size(); i++ )
