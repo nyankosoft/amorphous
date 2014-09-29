@@ -324,8 +324,13 @@
     <ClCompile Include="..\..\amorphous\Sound\PyModule_SoundMethods.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\SoundManager.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp" />
-    <ClCompile Include="..\..\amorphous\XML\XercesString.cpp" />
-    <ClCompile Include="..\..\amorphous\XML\XMLDocumentLoader.cpp" />
+    <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp" />
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentLoader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Physics\Actor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -717,10 +722,19 @@
     <ClInclude Include="..\..\amorphous\Sound\SoundManagerImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\SoundSource.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp" />
-    <ClInclude Include="..\..\amorphous\XML\XercesString.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\XercesString.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\XML\xmlch2x.hpp" />
-    <ClInclude Include="..\..\amorphous\XML\XMLDocumentLoader.hpp" />
-    <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentBase.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentLoader.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <CustomBuildStep Include="..\..\amorphous\Physics\Actor.hpp" />
     <CustomBuildStep Include="..\..\amorphous\Physics\ActorDesc.hpp" />
     <CustomBuildStep Include="..\..\amorphous\Physics\BodyDesc.hpp" />

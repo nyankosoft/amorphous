@@ -849,6 +849,9 @@
     <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.cpp">
       <Filter>MotionCapture\BVH</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -1982,6 +1985,15 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp">
       <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentBase.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp">
+      <Filter>XML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
