@@ -271,7 +271,7 @@ static bool InitDemo( int index )
 	{
 		int w = g_pTest->GetWindowWidth();  // 1280;
 		int h = g_pTest->GetWindowHeight(); //  720;
-//		param_loader.LoadParam( "ScreenResolution", w, h );
+		LoadParamFromFile( "config", "screen_resolution", w, h );
 		GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 		GetGameWindowManager().CreateGameWindow( w, h, mode, window_title );
 		g_Camera.SetAspectRatio( (float)w / (float)h );
