@@ -1,2 +1,2 @@
-#include "XML/XMLNodeReader.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include "XML/XMLNode.hpp"
+#include "XML/XMLDocumentBase.hpp"

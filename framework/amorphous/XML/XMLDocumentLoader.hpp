@@ -1,5 +1,5 @@
-#ifndef __XMLDocumentLoader_H__
-#define __XMLDocumentLoader_H__
+#ifndef __amorphous_XercesXMLDocumentLoader_HPP__
+#define __amorphous_XercesXMLDocumentLoader_HPP__
 
 
 #include <xercesc/dom/DOM.hpp>
@@ -13,10 +13,7 @@
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
-#include <vector>
-#include <string>
-#include <boost/shared_ptr.hpp>
-
+#include "XMLDocumentBase.hpp"
 #include "XMLNodeReader.hpp"
 
 
@@ -45,7 +42,7 @@ public:
 };
 
 
-class CXMLDocument
+class XercesXMLDocument : public XMLDocumentBase
 {
 	xercesc::XercesDOMParser *m_pParser;
 
@@ -55,47 +52,47 @@ class CXMLDocument
 
 public:
 
-	CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::XercesDOMParser *pParser );
+	XercesXMLDocument( xercesc::DOMDocument *pDocument, xercesc::XercesDOMParser *pParser );
 
-	CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser );
+	XercesXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser );
 
-	CXMLDocument();
+	XercesXMLDocument();
 
-	~CXMLDocument();
+	~XercesXMLDocument();
 
 	CXMLNodeReader GetRootNodeReader();
 };
 
 
-class CXMLDocumentLoader
+class XercesXMLDocumentLoader
 {
 	// test
-	boost::shared_ptr<CXMLDocument> LoadWithLSParser( const std::string& filepath );
+	boost::shared_ptr<XercesXMLDocument> LoadWithLSParser( const std::string& filepath );
 
 public:
 
-	CXMLDocumentLoader();
+	XercesXMLDocumentLoader();
 
-	CXMLDocumentLoader( const std::string& src_fileapth,
+	XercesXMLDocumentLoader( const std::string& src_fileapth,
 		xercesc::DOMDocument** ppDoc,
 		xercesc::XercesDOMParser **ppParser = NULL );
 
-	~CXMLDocumentLoader();
+	~XercesXMLDocumentLoader();
 
 	/// Returns true on success
 	bool Load( const std::string& filepath, xercesc::DOMDocument** ppDoc, xercesc::XercesDOMParser **ppParser );
 
 	bool Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc, xercesc::XercesDOMParser **ppParser );
 
-	boost::shared_ptr<CXMLDocument> Load( const std::string& filepath );
+	boost::shared_ptr<XercesXMLDocument> Load( const std::string& filepath );
 
 //	xercesc::DOMNode *GetRootNode();
 };
 
 
-inline boost::shared_ptr<CXMLDocument> CreateXMLDocument( const std::string& filepath )
+inline boost::shared_ptr<XercesXMLDocument> CreateXMLDocument( const std::string& filepath )
 {
-	CXMLDocumentLoader doc_loader;
+	XercesXMLDocumentLoader doc_loader;
 	return doc_loader.Load( filepath );
 }
 
@@ -104,4 +101,4 @@ inline boost::shared_ptr<CXMLDocument> CreateXMLDocument( const std::string& fil
 
 
 
-#endif /* __XMLDocumentLoader_H__ */
+#endif /* __amorphous_XercesXMLDocumentLoader_HPP__ */

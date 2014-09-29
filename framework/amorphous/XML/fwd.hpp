@@ -5,7 +5,9 @@
 namespace amorphous
 {
 
-class CXMLNodeReader;
+class XMLNode;
+class BoostPTreeXMLNode;
+class BoostPTreeXMLDocument;
 
 } // namespace amorphous
 

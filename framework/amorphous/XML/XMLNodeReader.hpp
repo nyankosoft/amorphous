@@ -1,13 +1,6 @@
 #ifndef __XMLNodeReader_H__
 #define __XMLNodeReader_H__
 
-#include <string>
-#include <vector>
-#include "../Support/StringAux.hpp"
-#include "../3DMath/Vector3.hpp"
-#include "../Graphics/FloatRGBColor.hpp"
-#include "../Graphics/FloatRGBAColor.hpp"
-#include "../Graphics/Rect.hpp"
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
@@ -16,6 +9,7 @@
 #include <xercesc/util/XMLString.hpp>
 
 #include "xmlch2x.hpp"
+#include "XMLNode.hpp"
 
 
 namespace amorphous
@@ -71,49 +65,7 @@ extern bool HasAttribute( xercesc::DOMNode *pNode, const std::string& attrib_nam
 extern std::string GetAttributeText( xercesc::DOMNode *pNode, const std::string& attrib_name );
 
 
-//
-// Inline Global Functions (used by CXMLNodeReader::GetAttributeValue())
-//
-inline void conv_to_x( const std::string& src, int& dest )
-{
-	dest = atoi( src.c_str() );
-}
-
-inline void conv_to_x( const std::string& src, uint& dest )
-{
-	dest = (uint)atoi( src.c_str() );
-}
-
-inline void conv_to_x( const std::string& src, short& dest )
-{
-	dest = (short)atoi( src.c_str() );
-}
-
-inline void conv_to_x( const std::string& src, float& dest )
-{
-	dest = (float)atof( src.c_str() );
-}
-
-inline void conv_to_x( const std::string& src, double& dest )
-{
-	dest = atof( src.c_str() );
-}
-
-inline void conv_to_x( const std::string& src, std::string& dest )
-{
-	dest = src;
-}
-
-inline void conv_to_x( const std::string& src, bool& dest )
-{
-	if( src == "true" )
-		dest = true;
-	else if( src == "false" )
-		dest = false;
-}
-
-
-class CXMLNodeReader
+class CXMLNodeReader : public XMLNodeImpl
 {
 	/// borrowed reference
 	xercesc::DOMNode *m_pNode;
@@ -131,8 +83,9 @@ public:
 	inline xercesc::DOMNode *GetTargetElementNode( const std::string& name );
 
 	/// get the text content of a child node
-	template<typename T>
-	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
+//	template<typename T>
+//	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
+	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest );
 	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest );
 	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest );
 	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest );
@@ -141,19 +94,21 @@ public:
 	inline bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest );
 
 	/// get the text content of the current node
-	inline std::string GetTextContent() { std::string dest; GetTextContent(dest); return dest; }
-	template<typename T>
-	inline bool GetTextContent( T& dest )                   { return GetChildElementTextContent( "", dest ); }
-	inline bool GetTextContentLTWH( SRect& dest )           { return GetChildElementTextContentLTWH( "", dest ); }
-	inline bool GetTextContentLTRB( SRect& dest )           { return GetChildElementTextContentLTRB( "", dest ); }
-	inline bool GetTextContentRGB( SFloatRGBColor& dest )   { return GetChildElementTextContentRGB( "", dest ); }
-	inline bool GetTextContentRGB( SFloatRGBAColor& dest )  { return GetChildElementTextContentRGB( "", dest ); }
-	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) { return GetChildElementTextContentRGBA( "", dest ); }
-	inline bool GetTextContent( Vector3& dest )             { return GetChildElementTextContent( "", dest ); }
+//	inline std::string GetTextContent() { std::string dest; GetTextContent(dest); return dest; }
+//	template<typename T>
+//	inline bool GetTextContent( T& dest )                   { return GetChildElementTextContent( "", dest ); }
+//	inline bool GetTextContentLTWH( SRect& dest )           { return GetChildElementTextContentLTWH( "", dest ); }
+//	inline bool GetTextContentLTRB( SRect& dest )           { return GetChildElementTextContentLTRB( "", dest ); }
+//	inline bool GetTextContentRGB( SFloatRGBColor& dest )   { return GetChildElementTextContentRGB( "", dest ); }
+//	inline bool GetTextContentRGB( SFloatRGBAColor& dest )  { return GetChildElementTextContentRGB( "", dest ); }
+//	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) { return GetChildElementTextContentRGBA( "", dest ); }
+//	inline bool GetTextContent( Vector3& dest )             { return GetChildElementTextContent( "", dest ); }
 
 	inline std::string GetName();
 
 	inline CXMLNodeReader GetChild( const std::string& name );
+
+	inline bool GetAttributeText( const std::string& attrib_name, std::string& dest );
 
 	inline std::string GetAttributeText( const std::string& attrib_name );
 
@@ -205,30 +160,26 @@ inline CXMLNodeReader CXMLNodeReader::GetChild( const std::string& name )
 }
 
 
+inline bool CXMLNodeReader::GetAttributeText( const std::string& attrib_name, std::string& dest )
+{
+	if( !m_pNode )
+		return false;
+
+	bool has_attrib = ::amorphous::HasAttribute( m_pNode, attrib_name );
+	if( !has_attrib )
+		return false;
+
+	dest = ::amorphous::GetAttributeText( m_pNode, attrib_name );
+	return true;
+}
+
+
 inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_name )
 {
 	if( m_pNode )
 		return ::amorphous::GetAttributeText( m_pNode, attrib_name );
 	else
 		return std::string();
-}
-
-
-/// Udpates the values of dest if the attribute with the specified name is found in the node.
-/// If the attribute is not found, the value of dest is not changed.
-template<typename T>
-inline void CXMLNodeReader::GetAttributeValue( const std::string& attrib_name, T& dest )
-{
-	if( !m_pNode )
-		return;
-
-	bool has_attrib = ::amorphous::HasAttribute( m_pNode, attrib_name );
-	if( !has_attrib )
-		return;
-
-	std::string text = ::amorphous::GetAttributeText( m_pNode, attrib_name );
-	if( 0 < text.length() )
-		conv_to_x( text, dest );
 }
 
 
@@ -271,6 +222,19 @@ inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren()
 	}
 
 	return children;
+}
+
+
+inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, std::string& dest )
+{
+	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
+	if( pNode )
+	{
+		dest = to_string(pNode->getTextContent());
+		return true;
+	}
+	else
+		return false;
 }
 
 
@@ -351,19 +315,6 @@ inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child
 
 }
 
-
-template<typename T>
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, T& dest )
-{
-	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
-	if( pNode )
-	{
-		conv_to_x( to_string(pNode->getTextContent()), dest );
-		return true;
-	}
-	else
-		return false;
-}
 
 /*
 template<class T>

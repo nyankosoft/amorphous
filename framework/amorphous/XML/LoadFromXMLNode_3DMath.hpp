@@ -3,7 +3,7 @@
 
 
 #include "3DMath/Matrix34.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -21,7 +21,7 @@ goal
 	</Rotation>
 </Pose>
 */
-inline void LoadFromXMLNode( CXMLNodeReader& reader, Vector3& dest )
+inline void LoadFromXMLNode( XMLNode& reader, Vector3& dest )
 {
 	std::string pos_str;
 	dest = Vector3(0,0,0);
@@ -31,7 +31,7 @@ inline void LoadFromXMLNode( CXMLNodeReader& reader, Vector3& dest )
 
 
 // TODO: support rotation orders
-inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix33& dest )
+inline void LoadFromXMLNode( XMLNode& reader, Matrix33& dest )
 {
 	float heading = 0, pitch = 0, bank = 0;
 	Matrix33 matRotation = Matrix33Identity();
@@ -49,7 +49,7 @@ inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix33& dest )
 }
 
 
-inline void LoadFromXMLNode( CXMLNodeReader& reader, Matrix34& dest )
+inline void LoadFromXMLNode( XMLNode& reader, Matrix34& dest )
 {
 	LoadFromXMLNode( reader, dest.vPosition );
 	LoadFromXMLNode( reader.GetChild( "Rotation" ), dest.matOrient );

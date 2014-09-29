@@ -41,10 +41,10 @@ CXMLParserInitReleaseManager::CXMLParserInitReleaseManager()
 
 
 //=======================================================================
-// CXMLDocument
+// XercesXMLDocument
 //=======================================================================
 
-CXMLDocument::CXMLDocument( xercesc::DOMDocument *pDocument,
+XercesXMLDocument::XercesXMLDocument( xercesc::DOMDocument *pDocument,
 						    xercesc::XercesDOMParser *pParser )
 :
 m_pParser(pParser),
@@ -55,7 +55,7 @@ m_pDocument(pDocument)
 //		sg_pXMLParserInitReleaseMgr = shared_ptr<CXMLParserInitReleaseManager>( new CXMLParserInitReleaseManager() );
 }
 
-CXMLDocument::CXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser )
+XercesXMLDocument::XercesXMLDocument( xercesc::DOMDocument *pDocument, xercesc::DOMLSParser *pParser )
 :
 m_pParser(NULL),
 m_pLSParser(pParser),
@@ -65,7 +65,7 @@ m_pDocument(pDocument)
 //		sg_pXMLParserInitReleaseMgr = shared_ptr<CXMLParserInitReleaseManager>( new CXMLParserInitReleaseManager() );
 }
 
-CXMLDocument::CXMLDocument()
+XercesXMLDocument::XercesXMLDocument()
 :
 m_pParser(NULL),
 m_pLSParser(NULL),
@@ -75,7 +75,7 @@ m_pDocument(NULL)
 //		sg_pXMLParserInitReleaseMgr = shared_ptr<CXMLParserInitReleaseManager>( new CXMLParserInitReleaseManager() );
 }
 
-CXMLDocument::~CXMLDocument()
+XercesXMLDocument::~XercesXMLDocument()
 {
 //	SafeDelete( m_pDocument );
 	SafeDelete( m_pParser );
@@ -90,7 +90,7 @@ CXMLDocument::~CXMLDocument()
 }
 
 
-CXMLNodeReader CXMLDocument::GetRootNodeReader()
+CXMLNodeReader XercesXMLDocument::GetRootNodeReader()
 {
 	DOMNode *pRootNode = GetRootNode( m_pDocument );
 
@@ -100,16 +100,16 @@ CXMLNodeReader CXMLDocument::GetRootNodeReader()
 
 
 //=======================================================================
-// CXMLDocumentLoader
+// XercesXMLDocumentLoader
 //=======================================================================
 
-CXMLDocumentLoader::CXMLDocumentLoader()
+XercesXMLDocumentLoader::XercesXMLDocumentLoader()
 {
 }
 
 
-/// Deprecated. Use shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
-CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth,
+/// Deprecated. Use shared_ptr<XercesXMLDocument> XercesXMLDocumentLoader::Load( const std::string& filepath )
+XercesXMLDocumentLoader::XercesXMLDocumentLoader( const std::string& src_fileapth,
 									   xercesc::DOMDocument** ppDoc,
 									   xercesc::XercesDOMParser **ppParser )
 {
@@ -117,13 +117,13 @@ CXMLDocumentLoader::CXMLDocumentLoader( const std::string& src_fileapth,
 }
 
 
-CXMLDocumentLoader::~CXMLDocumentLoader()
+XercesXMLDocumentLoader::~XercesXMLDocumentLoader()
 {
 //	SafeDelete( m_pParser );
 }
 
 
-bool CXMLDocumentLoader::Load( const std::string& src_fileapth,
+bool XercesXMLDocumentLoader::Load( const std::string& src_fileapth,
 							  xercesc::DOMDocument** ppDoc,
 							  xercesc::XercesDOMParser **ppParser )
 {
@@ -131,7 +131,7 @@ bool CXMLDocumentLoader::Load( const std::string& src_fileapth,
 }
 
 
-bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth,
+bool XercesXMLDocumentLoader::Load( const XMLCh *src_fileapth,
 							   xercesc::DOMDocument** ppDoc,
 							   xercesc::XercesDOMParser **pParser )
 {
@@ -217,7 +217,7 @@ bool CXMLDocumentLoader::Load( const XMLCh *src_fileapth,
 }
 
 
-shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
+shared_ptr<XercesXMLDocument> XercesXMLDocumentLoader::Load( const std::string& filepath )
 {
 	// test
 	// - How to use XInclude with Xerces C++ ???
@@ -228,9 +228,9 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::Load( const std::string& filepath )
 	bool loaded = Load( filepath, &pDoc, &pParser );
 
 	if( !loaded )
-		return shared_ptr<CXMLDocument>();
+		return shared_ptr<XercesXMLDocument>();
 
-	shared_ptr<CXMLDocument> pDocument( new CXMLDocument( pDoc, pParser ) );
+	shared_ptr<XercesXMLDocument> pDocument( new XercesXMLDocument( pDoc, pParser ) );
 
 	return pDocument;
 }
@@ -324,7 +324,7 @@ bool XIncludeErrorHandler::getSawErrors() const
 }
 */
 
-shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string& filepath )
+shared_ptr<XercesXMLDocument> XercesXMLDocumentLoader::LoadWithLSParser( const std::string& filepath )
 {
 
 	//============================================================================
@@ -430,9 +430,9 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string
 //	parser->release();
 
 	if( !doc || !parser )
-		return shared_ptr<CXMLDocument>();
+		return shared_ptr<XercesXMLDocument>();
 
-	shared_ptr<CXMLDocument> pDoc = shared_ptr<CXMLDocument>( new CXMLDocument( doc, parser ) );
+	shared_ptr<XercesXMLDocument> pDoc = shared_ptr<XercesXMLDocument>( new XercesXMLDocument( doc, parser ) );
 
 	return pDoc;
 }
@@ -440,13 +440,13 @@ shared_ptr<CXMLDocument> CXMLDocumentLoader::LoadWithLSParser( const std::string
 
 /*
 
-Need to make pXMLDocument a member variable of CXMLDocumentLoader to do this
+Need to make pXMLDocument a member variable of XercesXMLDocumentLoader to do this
 
-xercesc::DOMNode *CXMLDocumentLoader::GetRootNode()
+xercesc::DOMNode *XercesXMLDocumentLoader::GetRootNode()
 {
 	xercesc::DOMDocument *pXMLDocument = NULL;
 
-	CXMLDocumentLoader xml_doc_loader;
+	XercesXMLDocumentLoader xml_doc_loader;
 	xml_doc_loader.Load( source_script_filename, &pXMLDocument );
 
 	xercesc::DOMElement *pElem = pXMLDocument->getDocumentElement();
