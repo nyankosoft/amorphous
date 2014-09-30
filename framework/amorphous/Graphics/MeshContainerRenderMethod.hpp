@@ -46,7 +46,7 @@ public:
 
 	bool Load();
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 };
@@ -160,7 +160,7 @@ public:
 
 	boost::shared_ptr<MeshContainerRenderMethod> CreateCopy();
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 };
@@ -205,7 +205,7 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 
 
 	// 

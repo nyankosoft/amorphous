@@ -6,11 +6,11 @@
 #include <boost/weak_ptr.hpp>
 #include "D3DHeaders.hpp"
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/XML/fwd.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 #include "fwd.hpp"
 #include "SurfaceFormat.hpp"
-#include "../XML/fwd.hpp"
-#include "../Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous
@@ -129,7 +129,7 @@ public:
 		ar & ResourcePath;
 	}
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	friend class GraphicsResourceCacheManager;
 };
@@ -195,7 +195,7 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 };
 
 
@@ -264,7 +264,7 @@ public:
 		ar & NumVertices & NumIndices & VertexFormatFlags;
 	}
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 };
 
 

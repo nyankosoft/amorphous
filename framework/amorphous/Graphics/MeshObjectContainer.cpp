@@ -133,7 +133,7 @@ void MeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void MeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshObjectContainer::LoadFromXMLNode( XMLNode& reader )
 {
 	// A simplified version - load the path from the attribute "path"
 	string mesh_path;
@@ -155,7 +155,7 @@ void MeshObjectContainer::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	// Load path and technique as attributes from a single node
 
-	CXMLNodeReader shader_node = reader.GetChild("Shader");
+	XMLNode shader_node = reader.GetChild("Shader");
 	if( shader_node.IsValid() )
 	{
 		string shader_path( shader_node.GetAttributeText("path") );
@@ -348,12 +348,12 @@ void MeshContainerNode::Serialize( IArchive& ar, const unsigned int version )
 
 
 /// Use "MeshNode" as the element name of the argument 'reader'
-void MeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshContainerNode::LoadFromXMLNode( XMLNode& reader )
 {
 	// local pose of the node
 	amorphous::LoadFromXMLNode( reader.GetChild( "LocalPose" ), m_LocalPose );
 
-	vector<CXMLNodeReader> vecReader = reader.GetImmediateChildren( "MeshUnit" );
+	vector<XMLNode> vecReader = reader.GetImmediateChildren( "MeshUnit" );
 	m_vecpMeshContainer.resize( vecReader.size() );
 	m_vecMeshLocalPose.resize( vecReader.size(), Matrix34Identity() );
 	for( size_t i=0; i<vecReader.size(); i++ )
@@ -363,7 +363,7 @@ void MeshContainerNode::LoadFromXMLNode( CXMLNodeReader& reader )
 		amorphous::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
 	}
 
-	vector<CXMLNodeReader> vecChild = reader.GetImmediateChildren( "MeshNode" );
+	vector<XMLNode> vecChild = reader.GetImmediateChildren( "MeshNode" );
 	m_vecpChild.resize( vecChild.size() );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{

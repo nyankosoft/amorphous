@@ -79,7 +79,7 @@ public:
 
 	virtual unsigned int GetVersion() const { return 1; }
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 };
 
 
@@ -158,7 +158,7 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 };
 
 //=============================== inline implementations ===============================

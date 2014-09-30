@@ -15,7 +15,7 @@ using namespace std;
 // GraphicsResourceDesc
 //================================================================================
 
-void GraphicsResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void GraphicsResourceDesc::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "Path", ResourcePath );
 	reader.GetChildElementTextContent( "File", ResourcePath );
@@ -72,7 +72,7 @@ void TextureResourceDesc::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void TextureResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void TextureResourceDesc::LoadFromXMLNode( XMLNode& reader )
 {
 	GraphicsResourceDesc::LoadFromXMLNode( reader );
 }
@@ -140,7 +140,7 @@ int MeshResourceDesc::CanBeUsedAsMeshCache( const MeshResourceDesc& desc ) const
 }
 
 
-void MeshResourceDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshResourceDesc::LoadFromXMLNode( XMLNode& reader )
 {
 	GraphicsResourceDesc::LoadFromXMLNode( reader );
 

@@ -165,7 +165,7 @@ bool SubsetRenderMethod::Load()
 }
 
 
-void SubsetRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
+void SubsetRenderMethod::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "ShaderFilepath", m_ShaderDesc.ResourcePath );
 
@@ -475,20 +475,20 @@ void MeshContainerRenderMethod::Serialize( IArchive& ar, const unsigned int vers
 }
 
 
-void MeshContainerRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshContainerRenderMethod::LoadFromXMLNode( XMLNode& reader )
 {
 //	m_vecSubsetNameToRenderMethod.resize( 1 );
 
 //	m_MeshRenderMethod.LoadFromXMLNode( reader );
 
-	vector<CXMLNodeReader> vecMeshRenderMethod = reader.GetImmediateChildren( "MeshRenderMethod" );
+	vector<XMLNode> vecMeshRenderMethod = reader.GetImmediateChildren( "MeshRenderMethod" );
 	m_RenderMethodsAndSubsetIndices.resize( vecMeshRenderMethod.size() );
 	for( size_t i=0; i<vecMeshRenderMethod.size(); i++ )
 	{
 		m_RenderMethodsAndSubsetIndices[i].first.LoadFromXMLNode( vecMeshRenderMethod[i] );
 	}
 
-	vector<CXMLNodeReader> vecSubsetRenderMethod = reader.GetImmediateChildren( "SubsetRenderMethod" );
+	vector<XMLNode> vecSubsetRenderMethod = reader.GetImmediateChildren( "SubsetRenderMethod" );
 	for( size_t i=0; i<vecSubsetRenderMethod.size(); i++ )
 	{
 		int lod = 0;
@@ -588,9 +588,9 @@ void MeshContainerNodeRenderMethod::Serialize( IArchive& ar, const unsigned int 
 
 
 /// Use "MeshNode" as the element name of the argument 'reader'
-void MeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshContainerNodeRenderMethod::LoadFromXMLNode( XMLNode& reader )
 {
-	vector<CXMLNodeReader> vecReader = reader.GetImmediateChildren( "MeshContainerRenderMethod" );
+	vector<XMLNode> vecReader = reader.GetImmediateChildren( "MeshContainerRenderMethod" );
 	m_vecpContainerRenderMethod.resize( vecReader.size() );
 	for( size_t i=0; i<vecReader.size(); i++ )
 	{
@@ -598,7 +598,7 @@ void MeshContainerNodeRenderMethod::LoadFromXMLNode( CXMLNodeReader& reader )
 		m_vecpContainerRenderMethod[i]->LoadFromXMLNode( vecReader[i] );
 	}
 
-	vector<CXMLNodeReader> vecChild = reader.GetImmediateChildren( "MeshContainerNodeRenderMethod" );
+	vector<XMLNode> vecChild = reader.GetImmediateChildren( "MeshContainerNodeRenderMethod" );
 	m_vecpChild.resize( vecChild.size() );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{
