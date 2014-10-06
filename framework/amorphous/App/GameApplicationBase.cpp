@@ -9,7 +9,7 @@
 #include "Support/DebugOutput.hpp"
 #include "Support/Profile.hpp"
 #include "Support/BitmapImage.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include "XML/XMLDocumentBase.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
 #include "Graphics/LogOutput_OnScreen.hpp"
@@ -467,7 +467,8 @@ void GameApplicationBase::Run()
 	g_pGameAppBase = dynamic_cast<GameApplicationBase *>( ApplicationBase::GetInstance() );
 
 	// initialize the XML module here and release at the end of this function
-	CXMLParserInitReleaseManager xml_module;
+	// - Necessary when the xerces XML parser is used.
+//	CXMLParserInitReleaseManager xml_module;
 
 	// set log output device
 //	boost::filesystem::complete( "./debug" );
