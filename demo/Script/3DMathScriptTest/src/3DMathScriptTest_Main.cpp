@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace amorphous;
 
 
 void ExecutePythonScript( const std::string& script_filepath )
