@@ -114,8 +114,8 @@ void GameApplicationBase::Release()
 	SafeDelete( m_pDIKeyboard );
 //	SafeDelete( m_pDIGamepad );
 
-	GetInputHub().RemoveInputHandler( 0, m_pGlobalInputHandler );
-	SafeDelete( m_pGlobalInputHandler );
+	GetInputHub().RemoveInputHandler( 0, m_pGlobalInputHandler.get() );
+	m_pGlobalInputHandler.reset();
 
 	// release any singleton class that inherits GraphicsComponent
 	GetGraphicsResourceManager().ReleaseSingleton();
@@ -281,8 +281,8 @@ bool GameApplicationBase::InitBase()
 		printf( "exception: at %s (%s, L%d)\n", *function, *file, *line );
 	}
 
-	m_pGlobalInputHandler = new GlobalInputHandler;
-	GetInputHub().PushInputHandler( 0, m_pGlobalInputHandler );
+	m_pGlobalInputHandler.reset( new GlobalInputHandler );
+	GetInputHub().PushInputHandler( 0, m_pGlobalInputHandler.get() );
 
 	GameTask::AddTaskNameToTaskIDMap( "Stage",             GameTask::ID_STAGE );
 	GameTask::AddTaskNameToTaskIDMap( "GlobalStageLoader", GameTask::ID_GLOBALSTAGELOADER );

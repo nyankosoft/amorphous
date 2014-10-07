@@ -48,7 +48,7 @@ protected:
 	/// handles debug-related input
 	/// - turning on / off logs on the screen
 	/// - taking screen shot (not debug input)
-	GlobalInputHandler *m_pGlobalInputHandler;
+	boost::shared_ptr<GlobalInputHandler> m_pGlobalInputHandler;
 
 	GameTaskManager *m_pTaskManager;
 
