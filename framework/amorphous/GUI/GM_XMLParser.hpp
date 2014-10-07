@@ -2,20 +2,16 @@
 #define  __GM_XMLParser_H__
 
 
-#include "Graphics/Point.hpp"
-#include "Graphics/Rect.hpp"
 #include <string>
 #include <vector>
-
-
+#include "amorphous/Graphics/Point.hpp"
+#include "amorphous/Graphics/Rect.hpp"
+#include "amorphous/XML/fwd.hpp"
 #include "fwd.hpp"
 
 
 namespace amorphous
 {
-
-
-class CXMLNodeReader;
 
 
 /**
@@ -34,21 +30,21 @@ private:
 
 private:
 
-	CGM_Dialog *LoadDialog( CXMLNodeReader& reader, bool root_dialog );
+	CGM_Dialog *LoadDialog( XMLNode& reader, bool root_dialog );
 
 	CGM_Dialog *LoadDialogFromXMLFile( const std::string& xml_filename, bool root_dialog );
 
-	CGM_Dialog *LoadSubDialog( CXMLNodeReader& reader );
+	CGM_Dialog *LoadSubDialog( XMLNode& reader );
 
-	bool LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog );
+	bool LoadControls( XMLNode& reader, CGM_Dialog *pDialog );
 
-	void LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase *pControlDescBase );
-	void LoadStaticDesc( CXMLNodeReader& reader, CGM_StaticDesc *pStaticDesc );
-	void LoadButtonDesc( CXMLNodeReader& reader, CGM_ButtonDesc *pButtonDesc );
-	void LoadCheckBoxDesc( CXMLNodeReader& reader, CGM_CheckBoxDesc *pCheckBoxDesc );
-	void LoadRadioButtonDesc( CXMLNodeReader& reader, CGM_RadioButtonDesc *pRadioButtonDesc );
-	void LoadSliderDesc( CXMLNodeReader& reader, CGM_SliderDesc *pSliderDesc );
-	void LoaListBoxDesc( CXMLNodeReader& reader, CGM_ListBoxDesc *pListBoxDesc );
+	void LoadCommonDesc( XMLNode& reader, CGM_ControlDescBase *pControlDescBase );
+	void LoadStaticDesc( XMLNode& reader, CGM_StaticDesc *pStaticDesc );
+	void LoadButtonDesc( XMLNode& reader, CGM_ButtonDesc *pButtonDesc );
+	void LoadCheckBoxDesc( XMLNode& reader, CGM_CheckBoxDesc *pCheckBoxDesc );
+	void LoadRadioButtonDesc( XMLNode& reader, CGM_RadioButtonDesc *pRadioButtonDesc );
+	void LoadSliderDesc( XMLNode& reader, CGM_SliderDesc *pSliderDesc );
+	void LoaListBoxDesc( XMLNode& reader, CGM_ListBoxDesc *pListBoxDesc );
 
 public:
 

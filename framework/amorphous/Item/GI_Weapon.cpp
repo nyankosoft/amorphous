@@ -6,7 +6,7 @@
 #include "GameCommon/3DActionCode.hpp"
 #include "Support/MTRand.hpp"
 #include "Sound/SoundManager.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntity.hpp"
@@ -97,7 +97,7 @@ void CGI_Weapon::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CGI_Weapon::LoadFromXMLNode( CXMLNodeReader& reader )
+void CGI_Weapon::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 

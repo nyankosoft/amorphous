@@ -44,7 +44,7 @@ protected:
 
 		CBoneControlParam() : vRotationAxis(Vector3(1,0,0)), /*pBone(NULL),*/ MatrixIndex(-1) {}
 
-		void LoadFromXMLNode( CXMLNodeReader& reader );
+		void LoadFromXMLNode( XMLNode& reader );
 
 		virtual void Serialize( IArchive& ar, const unsigned int version )
 		{
@@ -92,7 +92,7 @@ public:
 
 	void UpdateMeshBoneLocalTransforms( std::vector<Transform>& mesh_bone_local_transforms );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	inline virtual void Serialize( IArchive& ar, const unsigned int version )
 	{

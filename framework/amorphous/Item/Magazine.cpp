@@ -1,6 +1,6 @@
 #include "Magazine.hpp"
 #include "Cartridge.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -38,7 +38,7 @@ void Magazine::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void Magazine::LoadFromXMLNode( CXMLNodeReader& reader )
+void Magazine::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 

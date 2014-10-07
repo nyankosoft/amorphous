@@ -175,7 +175,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	/// Sets the focused target
 	/// - The focused target is stored with the FOCUSED flag when it is converted to target info

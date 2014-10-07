@@ -1,5 +1,5 @@
 #include "GameItem.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 #include "Support/memory_helpers.hpp"
 #include "Stage/MeshBonesUpdateCallback.hpp"
 
@@ -10,10 +10,10 @@ namespace amorphous
 using namespace boost;
 
 
-void ItemDesc::LoadFromXMLNode( CXMLNodeReader& reader )
+void ItemDesc::LoadFromXMLNode( XMLNode& reader )
 {
 	int lang_index = 0;
-	CXMLNodeReader text_node_reader = reader.GetChild( "Text" );
+	XMLNode text_node_reader = reader.GetChild( "Text" );
 	text_node_reader.GetChildElementTextContent( "Japanese", text[Lang::Japanese] );
 	text_node_reader.GetChildElementTextContent( "English",  text[Lang::English] );
 }
@@ -88,17 +88,17 @@ void GameItem::GetStatusForDebugging( std::string& dest_buffer ) const
 - model node (detailed version)
 (See Graphics/MeshObjectContainer.cpp)
 */
-void GameItem::LoadFromXMLNode( CXMLNodeReader& reader )
+void GameItem::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "Name",        m_strName );
 	reader.GetChildElementTextContent( "Price",       m_Price );
 	reader.GetChildElementTextContent( "MaxQuantity", m_iMaxQuantity );
 
 //	m_MeshContainerRootNode.LoadFromXMLNode( reader.GetChild( "Model/MeshNode" ) );
-	CXMLNodeReader model_node = reader.GetChild( "Model" );
+	XMLNode model_node = reader.GetChild( "Model" );
 	if( model_node.IsValid() )
 	{
-		CXMLNodeReader meshnode_node = model_node.GetChild( "MeshNode" );
+		XMLNode meshnode_node = model_node.GetChild( "MeshNode" );
 		if( meshnode_node.IsValid() )
 			m_MeshContainerRootNode.LoadFromXMLNode( meshnode_node ); // detailed version
 		else

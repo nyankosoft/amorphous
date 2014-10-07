@@ -11,8 +11,8 @@
 #include "Item/GI_Aircraft.hpp"
 #include "Item/GameItemDatabase.hpp"
 
-#include "XML/XMLDocumentLoader.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLDocumentBase.hpp"
+#include "XML/XMLNode.hpp"
 
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
 #include "Support/TextFileScanner.hpp"
@@ -427,15 +427,15 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 	return true;
 }
 
-void CItemDatabaseBuilder::LoadItems( CXMLNodeReader& items_node_reader )
+void CItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
 {
-	vector<CXMLNodeReader> vecItemNodeReader = items_node_reader.GetImmediateChildren( "Item" );
+	vector<XMLNode> vecItemNodeReader = items_node_reader.GetImmediateChildren( "Item" );
 
 	GameItemObjectFactory factory;
 	string classname;
 	for( size_t i=0; i<vecItemNodeReader.size(); i++ )
 	{
-		CXMLNodeReader item_node_reader = vecItemNodeReader[i];
+		XMLNode item_node_reader = vecItemNodeReader[i];
 
 		classname.clear();
 		item_node_reader.GetChildElementTextContent( "ClassName", classname );
@@ -452,7 +452,7 @@ void CItemDatabaseBuilder::LoadItems( CXMLNodeReader& items_node_reader )
 	}
 
 	// recursively load the items from the child <Items> nodes
-	vector<CXMLNodeReader> vecItemNodesReader = items_node_reader.GetImmediateChildren( "Items" );
+	vector<XMLNode> vecItemNodesReader = items_node_reader.GetImmediateChildren( "Items" );
 	for( size_t i=0; i<vecItemNodesReader.size(); i++ )
 		LoadItems( vecItemNodesReader[i] );
 }
@@ -463,10 +463,9 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 	lfs::dir_stack dirstk( lfs::get_parent_path(filepath) );
 	string base_filepath = lfs::get_leaf(filepath);
 
-	CXMLDocumentLoader doc_loader;
-	shared_ptr<CXMLDocument> pDoc
-//		= doc_loader.Load( filepath );
-		= doc_loader.Load( base_filepath );
+	shared_ptr<XMLDocumentBase> pDoc
+//		= CreateXMLDocument( filepath );
+		= CreateXMLDocument( base_filepath );
 
 	if( !pDoc )
 	{
@@ -474,20 +473,24 @@ bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
 		return false;
 	}
 
-	CXMLNodeReader root_node_reader = pDoc->GetRootNodeReader();
+	XMLNode root_node_reader = pDoc->GetRootNode();
 
 	// The root node may contain <Item> nodes
 	LoadItems( root_node_reader );
 
-//	CXMLNodeReader items_node = root_node_reader.GetChild( "Items" );
-	vector<CXMLNodeReader> vecItemsNodes = root_node_reader.GetImmediateChildren( "Items" );
+//	XMLNode items_node = root_node_reader.GetChild( "Items" );
+	vector<XMLNode> vecItemsNodes = root_node_reader.GetImmediateChildren( "Items" );
 
-	DOMNodeList *pChildNodesList = root_node_reader.GetDOMNode()->getChildNodes();
-	XMLSize_t num_children = pChildNodesList->getLength();
-	for( XMLSize_t i=0; i<num_children; i++ )
+//	DOMNodeList *pChildNodesList = root_node_reader.GetDOMNode()->getChildNodes();
+//	XMLSize_t num_children = pChildNodesList->getLength();
+	vector<XMLNode> children = root_node_reader.GetImmediateChildren();
+	const size_t num_children = children.size();
+	for( size_t i=0; i<num_children; i++ )
 	{
-		string node_name = to_string( pChildNodesList->item(i)->getNodeName() );
-		string text_content = to_string( pChildNodesList->item(i)->getTextContent() );
+//		string node_name = to_string( pChildNodesList->item(i)->getNodeName() );
+//		string text_content = to_string( pChildNodesList->item(i)->getTextContent() );
+		string node_name    = children[i].GetName();
+		string text_content = children[i].GetTextContent();
 	}
 
 	for( size_t i=0; i<vecItemsNodes.size(); i++ )

@@ -46,7 +46,7 @@ Allowed formats
 
 - angles are measured in degrees
 */
-inline Matrix34 GetPose( CXMLNodeReader& parent_node, const std::string& element_name )
+inline Matrix34 GetPose( XMLNode& parent_node, const std::string& element_name )
 {
 	Matrix34 dest( Matrix34Identity() );
 
@@ -79,7 +79,7 @@ inline Matrix34 GetPose( CXMLNodeReader& parent_node, const std::string& element
 	// Support <rotations heading="30" pitch="60" bank="0"></rotations> ?
 //	else
 //	{
-//		CXMLNodeReader r_node = parent_node.GetChild( element_name + "/rotations" );
+//		XMLNode r_node = parent_node.GetChild( element_name + "/rotations" );
 //		h = r_node.GetAttributeText( "heading" );
 //		p = r_node.GetAttributeText( "pitch" );
 //		b = r_node.GetAttributeText( "bank" );
@@ -132,9 +132,9 @@ void CClothObject::Release( physics::CScene *pScene )
 }
 
 
-void CClothObject::LoadFromXMLNode( CXMLNodeReader& node )
+void CClothObject::LoadFromXMLNode( XMLNode& node )
 {
-	CXMLNodeReader cloth_params = node.GetChild( "cloth_params" );
+	XMLNode cloth_params = node.GetChild( "cloth_params" );
 	cloth_params.GetAttributeValue("thickness",            m_Desc.Thickness );
 	cloth_params.GetAttributeValue("density",              m_Desc.Density );
 	cloth_params.GetAttributeValue("stretching_stiffness", m_Desc.StretchingStiffness );
@@ -216,12 +216,12 @@ void CClothCollisionObject::Serialize( IArchive& ar, const unsigned int version 
 }
 
 
-void CClothCollisionObject::LoadFromXMLNode( CXMLNodeReader& node )
+void CClothCollisionObject::LoadFromXMLNode( XMLNode& node )
 {
 	node.GetChildElementTextContent( "name", m_Name );
 	node.GetChildElementTextContent( "bone_name", m_BoneName );
-	CXMLNodeReader shapes_node = node.GetChild( "shapes" );
-	vector<CXMLNodeReader> shapes = shapes_node.GetImmediateChildren( "shape" );
+	XMLNode shapes_node = node.GetChild( "shapes" );
+	vector<XMLNode> shapes = shapes_node.GetImmediateChildren( "shape" );
 	m_pShapeDescs.resize( shapes.size() );
 	for( size_t i=0; i<shapes.size(); i++ )
 	{
@@ -563,29 +563,29 @@ void CClothSystem::Serialize( IArchive& ar, const unsigned int version )
 
 Result::Name CClothSystem::LoadFromXMLFile( const string& xml_filepath )
 {
-	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( xml_filepath );
+	shared_ptr<XMLDocumentBase> pDoc = CreateXMLDocument( xml_filepath );
 	if( !pDoc )
 		return Result::UNKNOWN_ERROR;
 
-	CXMLNodeReader root_node = pDoc->GetRootNodeReader();
+	XMLNode root_node = pDoc->GetRootNode();
 	LoadFromXMLNode( root_node );
 
 	return Result::SUCCESS;
 }
 
 
-void CClothSystem::LoadFromXMLNode( CXMLNodeReader& node )
+void CClothSystem::LoadFromXMLNode( XMLNode& node )
 {
-	CXMLNodeReader cloths_node = node.GetChild( "cloths" );
-	vector<CXMLNodeReader> cloths = cloths_node.GetImmediateChildren( "cloth" );
+	XMLNode cloths_node = node.GetChild( "cloths" );
+	vector<XMLNode> cloths = cloths_node.GetImmediateChildren( "cloth" );
 	m_Cloths.resize( cloths.size() );
 	for( size_t i=0; i<cloths.size(); i++ )
 		m_Cloths[i].LoadFromXMLNode( cloths[i] );
 
 	// cloth attach objects
 
-	CXMLNodeReader attach_objs_node = node.GetChild( "attach_objects" );
-	vector<CXMLNodeReader> attach_objs = attach_objs_node.GetImmediateChildren( "object" );
+	XMLNode attach_objs_node = node.GetChild( "attach_objects" );
+	vector<XMLNode> attach_objs = attach_objs_node.GetImmediateChildren( "object" );
 	m_ClothAttachObjects.resize( attach_objs.size() );
 	for( size_t i=0; i<attach_objs.size(); i++ )
 		m_ClothAttachObjects[i].LoadFromXMLNode( attach_objs[i] );
@@ -620,8 +620,8 @@ void CClothSystem::LoadFromXMLNode( CXMLNodeReader& node )
 
 	// cloth collision objects
 
-	CXMLNodeReader coll_objs_node = node.GetChild( "collision_objects" );
-	vector<CXMLNodeReader> coll_objs = coll_objs_node.GetImmediateChildren( "object" );
+	XMLNode coll_objs_node = node.GetChild( "collision_objects" );
+	vector<XMLNode> coll_objs = coll_objs_node.GetImmediateChildren( "object" );
 	m_ClothCollisionObjects.resize( coll_objs.size() );
 	for( size_t i=0; i<coll_objs.size(); i++ )
 		m_ClothCollisionObjects[i].LoadFromXMLNode( coll_objs[i] );

@@ -5,7 +5,7 @@
 #include "Item/ItemDatabaseManager.hpp"
 #include "Stage/CopyEntity.hpp"
 #include "Stage/Stage.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
@@ -187,7 +187,7 @@ void CRotatableTurret::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
+void CRotatableTurret::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 
@@ -195,7 +195,7 @@ void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	reader.GetChildElementTextContent( "Weapon",      m_WeaponName );
 
-	vector<CXMLNodeReader> vecAmmo = reader.GetImmediateChildren( "Ammunition" );
+	vector<XMLNode> vecAmmo = reader.GetImmediateChildren( "Ammunition" );
 //	m_vecpAmmunition.resize( vecAmmo.size() );
 	m_vecAmmunition.resize( vecAmmo.size() );
 	for( size_t i=0; i<vecAmmo.size(); i++ )
@@ -217,7 +217,7 @@ void CRotatableTurret::LoadFromXMLNode( CXMLNodeReader& reader )
 //		m_vecpAmmunition[i] = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
 	}
 /*
-	vector<CXMLNodeReader> vecAmmoLoading = reader.GetChildElementTextContent( "AmmunitionLoading/Name",  ammo_name );
+	vector<XMLNode> vecAmmoLoading = reader.GetChildElementTextContent( "AmmunitionLoading/Name",  ammo_name );
 	const size_t num_loadings = vecAmmoLoading.size();
 	m_vecpAmmunitionLoading.reserve( 8 );
 	for( size_t i=0; i<num_loadings; i++ )

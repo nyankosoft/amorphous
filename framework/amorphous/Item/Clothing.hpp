@@ -56,7 +56,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 };
 
 

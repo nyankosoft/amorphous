@@ -2,7 +2,7 @@
 #include "MeshBoneControllerFactory.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
 #include "PseudoAircraftSimulator.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -126,7 +126,7 @@ void MeshBoneController_Flap::UpdateTransforms()
 }
 
 
-void MeshBoneController_Flap::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_Flap::LoadFromXMLNode( XMLNode& reader )
 {
 	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
@@ -178,7 +178,7 @@ void MeshBoneController_VFlap::UpdateTransforms()
 }
 
 
-void MeshBoneController_VFlap::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_VFlap::LoadFromXMLNode( XMLNode& reader )
 {
 	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
@@ -259,7 +259,7 @@ void MeshBoneController_Rotor::UpdateTransforms()
 }
 
 
-void MeshBoneController_Rotor::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_Rotor::LoadFromXMLNode( XMLNode& reader )
 {
 	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
@@ -276,7 +276,7 @@ void MeshBoneController_Rotor::LoadFromXMLNode( CXMLNodeReader& reader )
 
 //=====================================================================================
 
-void CConstraintComponent::LoadFromXMLNode( CXMLNodeReader& reader )
+void CConstraintComponent::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "Name", Name );
 	reader.GetChildElementTextContent( "Angle/AllowedRange/Min", AllowedAngleRange.min );
@@ -434,7 +434,7 @@ const string MeshBoneController_Cover::GetName()
 }
 
 
-void MeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_Cover::LoadFromXMLNode( XMLNode& reader )
 {
 	MeshBoneController_AircraftBase::LoadFromXMLNode( reader );
 
@@ -442,7 +442,7 @@ void MeshBoneController_Cover::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "OpenAngle", open_angle_deg );
 	m_fOpenAngle = deg_to_rad( open_angle_deg );
 
-	vector<CXMLNodeReader> vecReader = reader.GetImmediateChildren( "Constraint" );
+	vector<XMLNode> vecReader = reader.GetImmediateChildren( "Constraint" );
 	m_vecConstraint.resize( vecReader.size() );
 	for( size_t i=0; i<vecReader.size(); i++ )
 	{
@@ -575,12 +575,12 @@ shared_ptr<MeshBoneController_Cover> MeshBoneController_GearUnit::GetComponent( 
 }
 
 
-void MeshBoneController_GearUnit::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneController_GearUnit::LoadFromXMLNode( XMLNode& reader )
 {
 	MeshBoneControllerBase::LoadFromXMLNode( reader );
 
-	vector<CXMLNodeReader> vecCover = reader.GetImmediateChildren( "Cover" );
-	vector<CXMLNodeReader> vecShaft = reader.GetImmediateChildren( "Shaft" );
+	vector<XMLNode> vecCover = reader.GetImmediateChildren( "Cover" );
+	vector<XMLNode> vecShaft = reader.GetImmediateChildren( "Shaft" );
 	m_vecpComponent.resize( vecCover.size() + vecShaft.size() );
 
 	for( size_t i=0; i<vecCover.size(); i++ )

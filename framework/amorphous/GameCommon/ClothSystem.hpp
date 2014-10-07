@@ -107,7 +107,7 @@ public:
 
 	const std::vector<std::string>& GetAttachTargetNames() const { return m_AttachTargetNames; }
 
-	void LoadFromXMLNode( CXMLNodeReader& node );
+	void LoadFromXMLNode( XMLNode& node );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 };
@@ -169,7 +169,7 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void LoadFromXMLNode( CXMLNodeReader& node );
+	void LoadFromXMLNode( XMLNode& node );
 };
 
 
@@ -246,7 +246,7 @@ public:
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void LoadFromXMLNode( CXMLNodeReader& node );
+	void LoadFromXMLNode( XMLNode& node );
 
 	Result::Name LoadFromXMLFile( const std::string& xml_filepath );
 

@@ -4,7 +4,7 @@
 #include "Input/InputHandler.hpp"
 #include "Stage/trace.hpp"
 #include "Stage/Stage.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 #include "Physics/Actor.hpp"
 
@@ -165,7 +165,7 @@ void LaserGun::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void LaserGun::LoadFromXMLNode( CXMLNodeReader& reader )
+void LaserGun::LoadFromXMLNode( XMLNode& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 

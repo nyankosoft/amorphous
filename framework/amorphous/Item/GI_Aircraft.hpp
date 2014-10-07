@@ -119,7 +119,7 @@ class CGI_Aircraft : public GameItem
 			ar & AmmoName & WeaponSlot & MaxQuantity;
 		}
 
-		void LoadFromXMLNode( CXMLNodeReader& reader );
+		void LoadFromXMLNode( XMLNode& reader );
 	};
 
 	/// list of ammo that can be fired from this aircraft
@@ -244,7 +244,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	friend class CItemDatabaseBuilder;
 

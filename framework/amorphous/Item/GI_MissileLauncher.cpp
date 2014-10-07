@@ -8,7 +8,7 @@
 #include "Input/InputHandler.hpp"
 #include "Input/ForceFeedback/ForceFeedbackEffect.hpp"
 #include "Sound/SoundManager.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 #include "Stage/Stage.hpp"
 #include "Stage/CopyEntity.hpp"
@@ -56,7 +56,7 @@ void CMissileHolder::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CMissileHolder::LoadFromXMLNode( CXMLNodeReader& reader )
+void CMissileHolder::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "LocalReleasePos", ReleaseLocalPose.vPosition );
 
@@ -156,7 +156,7 @@ void MissileLauncher::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
+void MissileLauncher::LoadFromXMLNode( XMLNode& reader )
 {
 	InitStates();
 
@@ -173,7 +173,7 @@ void MissileLauncher::LoadFromXMLNode( CXMLNodeReader& reader )
 	reader.GetChildElementTextContent( "NumReleasePositions", num_release_positions );
 	SetNumReleasePositions( num_release_positions );
 /*
-	vector<CXMLNodeReader> = reader.GetImmediateChildren( "Holder" );
+	vector<XMLNode> = reader.GetImmediateChildren( "Holder" );
 	for(;;)
 	{
 		child_reader = [i];

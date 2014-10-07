@@ -43,7 +43,7 @@ public:
 			ar & text[i];
 	}
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 };
 
 
@@ -145,7 +145,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	inline int GetCurrentQuantity() const { return m_iCurrentQuantity; }
 	inline int GetMaxQuantity() const { return m_iMaxQuantity; }

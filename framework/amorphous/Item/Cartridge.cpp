@@ -1,5 +1,5 @@
 #include "Cartridge.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -18,7 +18,7 @@ void Cartridge::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void Cartridge::LoadFromXMLNode( CXMLNodeReader& reader )
+void Cartridge::LoadFromXMLNode( XMLNode& reader )
 {
 	CGI_Ammunition::LoadFromXMLNode( reader );
 

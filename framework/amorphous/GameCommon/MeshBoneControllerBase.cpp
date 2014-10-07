@@ -1,6 +1,6 @@
 #include "MeshBoneControllerBase.hpp"
 #include "Graphics/Mesh/SkeletalMesh.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -17,7 +17,7 @@ using namespace boost;
 MeshBoneControllerBase::CBoneControlParam MeshBoneControllerBase::CBoneControlParam::ms_NullObject;
 
 
-void MeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "Name", Name );
 }
@@ -27,9 +27,9 @@ void MeshBoneControllerBase::CBoneControlParam::LoadFromXMLNode( CXMLNodeReader&
 // MeshBoneControllerBase
 //=================================================================================
 
-void MeshBoneControllerBase::LoadFromXMLNode( CXMLNodeReader& reader )
+void MeshBoneControllerBase::LoadFromXMLNode( XMLNode& reader )
 {
-	vector<CXMLNodeReader> param_reader = reader.GetImmediateChildren( "ControlParam" );
+	vector<XMLNode> param_reader = reader.GetImmediateChildren( "ControlParam" );
 
 	for( size_t i=0; i<param_reader.size(); i++ )
 	{

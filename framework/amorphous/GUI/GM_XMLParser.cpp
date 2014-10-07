@@ -5,8 +5,8 @@
 #include "GM_DialogManager.hpp"
 #include "GM_ControlRenderer.hpp"
 #include "GM_ControlRendererManager.hpp"
-#include "XML/XMLDocumentLoader.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLDocumentBase.hpp"
+#include "XML/XMLNode.hpp"
 #include "Support/SafeDelete.hpp"
 #include "Support/lfs.hpp"
 
@@ -45,7 +45,7 @@ CGM_XMLParser::~CGM_XMLParser()
 }
 
 
-void CGM_XMLParser::LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase *pControlDescBase )
+void CGM_XMLParser::LoadCommonDesc( XMLNode& reader, CGM_ControlDescBase *pControlDescBase )
 {
 	pControlDescBase->StringID = reader.GetAttributeText("id");
 	reader.GetChildElementTextContentLTWH( "LTWH", pControlDescBase->Rect );
@@ -54,7 +54,7 @@ void CGM_XMLParser::LoadCommonDesc( CXMLNodeReader& reader, CGM_ControlDescBase 
 }
 
 
-void CGM_XMLParser::LoadStaticDesc( CXMLNodeReader& reader, CGM_StaticDesc *pStaticDesc )
+void CGM_XMLParser::LoadStaticDesc( XMLNode& reader, CGM_StaticDesc *pStaticDesc )
 {
 	LoadCommonDesc( reader, pStaticDesc );
 	reader.GetChildElementTextContent( "Text",  pStaticDesc->strText );
@@ -62,27 +62,27 @@ void CGM_XMLParser::LoadStaticDesc( CXMLNodeReader& reader, CGM_StaticDesc *pSta
 }
 
 
-void CGM_XMLParser::LoadButtonDesc( CXMLNodeReader& reader, CGM_ButtonDesc *pButtonDesc )
+void CGM_XMLParser::LoadButtonDesc( XMLNode& reader, CGM_ButtonDesc *pButtonDesc )
 {
 	LoadStaticDesc( reader, pButtonDesc );
 }
 
 
-void CGM_XMLParser::LoadCheckBoxDesc( CXMLNodeReader& reader, CGM_CheckBoxDesc *pCheckBoxDesc )
+void CGM_XMLParser::LoadCheckBoxDesc( XMLNode& reader, CGM_CheckBoxDesc *pCheckBoxDesc )
 {
 	LoadButtonDesc( reader, pCheckBoxDesc );
 //	reader.Get( "Checked", pStaticDesc->strText );
 }
 
 
-void CGM_XMLParser::LoadRadioButtonDesc( CXMLNodeReader& reader, CGM_RadioButtonDesc *pRadioButtonDesc )
+void CGM_XMLParser::LoadRadioButtonDesc( XMLNode& reader, CGM_RadioButtonDesc *pRadioButtonDesc )
 {
 	LoadCheckBoxDesc( reader, pRadioButtonDesc );
 	reader.GetChildElementTextContent( "Group", pRadioButtonDesc->iButtonGroup );
 }
 
 
-void CGM_XMLParser::LoadSliderDesc( CXMLNodeReader& reader, CGM_SliderDesc *pSliderDesc )
+void CGM_XMLParser::LoadSliderDesc( XMLNode& reader, CGM_SliderDesc *pSliderDesc )
 {
 	LoadCommonDesc( reader, pSliderDesc );
 //	reader.Get( "Title", pSliderDesc->Title );
@@ -92,7 +92,7 @@ void CGM_XMLParser::LoadSliderDesc( CXMLNodeReader& reader, CGM_SliderDesc *pSli
 }
 
 
-void CGM_XMLParser::LoaListBoxDesc( CXMLNodeReader& reader, CGM_ListBoxDesc *pListBoxDesc )
+void CGM_XMLParser::LoaListBoxDesc( XMLNode& reader, CGM_ListBoxDesc *pListBoxDesc )
 {
 	LoadCommonDesc( reader, pListBoxDesc );
 	reader.GetChildElementTextContent( "PageSize",        pListBoxDesc->PageSize );
@@ -100,9 +100,9 @@ void CGM_XMLParser::LoaListBoxDesc( CXMLNodeReader& reader, CGM_ListBoxDesc *pLi
 }
 
 
-CGM_Dialog *CGM_XMLParser::LoadSubDialog( CXMLNodeReader& reader )
+CGM_Dialog *CGM_XMLParser::LoadSubDialog( XMLNode& reader )
 {
-	CXMLNodeReader dlgfile = reader.GetChild( "DialogFile" );
+	XMLNode dlgfile = reader.GetChild( "DialogFile" );
 	if( dlgfile.IsValid() )
 	{
 		// load the subdialog from another xml file
@@ -115,9 +115,9 @@ CGM_Dialog *CGM_XMLParser::LoadSubDialog( CXMLNodeReader& reader )
 }
 
 
-bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
+bool CGM_XMLParser::LoadControls( XMLNode& reader, CGM_Dialog *pDialog )
 {
-	vector<CXMLNodeReader> control_reader = reader.GetImmediateChildren();
+	vector<XMLNode> control_reader = reader.GetImmediateChildren();
 
 	const size_t num = control_reader.size();
 	for( size_t i=0; i<num; i++ )
@@ -187,9 +187,9 @@ bool CGM_XMLParser::LoadControls( CXMLNodeReader& reader, CGM_Dialog *pDialog )
 	return true;
 }
 
-CGM_Dialog *CGM_XMLParser::LoadDialog( CXMLNodeReader& reader, bool root_dialog )
+CGM_Dialog *CGM_XMLParser::LoadDialog( XMLNode& reader, bool root_dialog )
 {
-	xercesc::DOMNode *pDlgNode = reader.GetDOMNode();
+//	xercesc::DOMNode *pDlgNode = reader.GetDOMNode();
 
 	CGM_DialogDesc desc;
 	desc.bRootDialog = root_dialog;
@@ -206,33 +206,32 @@ CGM_Dialog *CGM_XMLParser::LoadDialog( CXMLNodeReader& reader, bool root_dialog 
 
 CGM_Dialog *CGM_XMLParser::LoadDialogFromXMLFile( const std::string& xml_filename, bool root_dialog )
 {
-	CXMLDocumentLoader xml_doc_loader;
-	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( xml_filename );
+//	CXMLDocumentLoader xml_doc_loader;
+//	shared_ptr<CXMLDocument> pXMLDocument = xml_doc_loader.Load( xml_filename );
+	shared_ptr<XMLDocumentBase> pXMLDocument = CreateXMLDocument( xml_filename );
 
 	if( !pXMLDocument )
 		return false;
 
-//	CXMLNodeReader dlgnode = CXMLNodeReader( pXMLDocument->getFirstChild() );
-	CXMLNodeReader dlgnode = pXMLDocument->GetRootNodeReader();
+//	XMLNode dlgnode = XMLNode( pXMLDocument->getFirstChild() );
+	XMLNode dlgnode = pXMLDocument->GetRootNode();
 	return LoadDialog( dlgnode, root_dialog );
 }
 
 
 bool CGM_XMLParser::LoadFromXMLFile( const std::string& xml_filename )
 {
-	CXMLDocumentLoader xml_loader;
-	shared_ptr<CXMLDocument> pXMLDocument = xml_loader.Load( xml_filename );
-//	xercesc::DOMDocument *pXMLDocument = LoadXMLDocument( xml_filename );
+	shared_ptr<XMLDocumentBase> pXMLDocument = CreateXMLDocument( xml_filename );
 
 	if( !pXMLDocument )
 		return false;
 
 	lfs::dir_stack dir_stk( lfs::get_parent_path(xml_filename) );
 
-	CXMLNodeReader rootnode = pXMLDocument->GetRootNodeReader();
+	XMLNode rootnode = pXMLDocument->GetRootNode();
 
 	// get elements for root dialogs
-	vector<CXMLNodeReader> vecRootDlgNodes = rootnode.GetImmediateChildren( "Dialog" );
+	vector<XMLNode> vecRootDlgNodes = rootnode.GetImmediateChildren( "Dialog" );
 	const size_t num = vecRootDlgNodes.size();
 	m_vecpRootDialog.reserve( num );
 	for( size_t i=0; i<num; i++ )

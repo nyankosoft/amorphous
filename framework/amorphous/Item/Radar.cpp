@@ -5,7 +5,7 @@
 #include "Stage/BE_HomingMissile.hpp"
 #include "Stage/OverlapTestAABB.hpp"
 #include "Stage/HUD_PlayerAircraft.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -229,7 +229,7 @@ void Radar::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void Radar::LoadFromXMLNode( CXMLNodeReader& reader )
+void Radar::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 

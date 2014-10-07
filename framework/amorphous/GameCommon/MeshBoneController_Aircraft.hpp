@@ -110,7 +110,7 @@ public:
 
 public:
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 
 	void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -197,7 +197,7 @@ public:
 
 	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_FLAP; }
 
@@ -244,7 +244,7 @@ public:
 
 	virtual void Init( const SkeletalMesh& target_skeletal_mesh );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_VFLAP; }
 
@@ -288,7 +288,7 @@ public:
 
 	void Update( float dt );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_ROTOR; }
 
@@ -379,7 +379,7 @@ public:
 
 	const std::string GetName();
 
-	void LoadFromXMLNode( CXMLNodeReader& reader );
+	void LoadFromXMLNode( XMLNode& reader );
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_COVER; }
 
@@ -464,7 +464,7 @@ public:
 
 	void Update( float dt );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	virtual unsigned int GetArchiveObjectID() const { return ID_AIRCRAFT_GEAR_UNIT; }
 
@@ -492,7 +492,7 @@ public:
 
 	virtual void UpdateTransforms() {}
 
-//	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+//	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{

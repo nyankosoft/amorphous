@@ -3,7 +3,7 @@
 #include "Stage/BaseEntity.hpp"
 #include "Stage/Trace.hpp"
 #include "Stage/Stage.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 #include "XML/LoadFromXMLNode_3DMath.hpp"
 #include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
 #include "Support/Serialization/Serialization_3DMath.hpp"
@@ -119,7 +119,7 @@ void LandVehicle::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void LandVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
+void LandVehicle::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 
@@ -291,7 +291,7 @@ void ArmedVehicle::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void ArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
+void ArmedVehicle::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 
@@ -299,7 +299,7 @@ void ArmedVehicle::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	reader.GetChildElementTextContent( "LandVehicle", m_LandVehicleName );
 
-	vector<CXMLNodeReader> vecTurret = reader.GetImmediateChildren( "Turret" );
+	vector<XMLNode> vecTurret = reader.GetImmediateChildren( "Turret" );
 	m_vecTurret.resize( vecTurret.size() );
 	for( size_t i=0; i<vecTurret.size(); i++ )
 	{

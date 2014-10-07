@@ -1,6 +1,6 @@
 #include "GI_Ammunition.hpp"
 #include "Stage/Serialization_BaseEntityHandle.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -62,7 +62,7 @@ void CGI_Ammunition::OnOwnerLeftStage()
 }
 
 
-void CGI_Ammunition::LoadFromXMLNode( CXMLNodeReader& reader )
+void CGI_Ammunition::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 

@@ -6,7 +6,7 @@
 #include "Stage/CopyEntity.hpp"
 #include "Stage/trace.hpp"
 #include "Stage/Stage.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 
 #include "Physics/Actor.hpp"
 
@@ -278,7 +278,7 @@ bool GravityGun::HandleInput( int input_code, int input_type, float fParam )
 }
 
 
-void GravityGun::LoadFromXMLNode( CXMLNodeReader& reader )
+void GravityGun::LoadFromXMLNode( XMLNode& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 

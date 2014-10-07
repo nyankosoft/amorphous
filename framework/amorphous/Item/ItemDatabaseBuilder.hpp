@@ -56,7 +56,7 @@ class CItemDatabaseBuilder
 		                                   CTextFileScanner& scanner,
 										   std::vector< boost::shared_ptr<MeshBoneController_AircraftBase> >& vecpMeshController );
 
-	void LoadItems( CXMLNodeReader& items_node_reader );
+	void LoadItems( XMLNode& items_node_reader );
 
 	bool LoadFromXMLFile( const std::string& filepath );
 

@@ -8,7 +8,7 @@
 #include "GameCommon/3DActionCode.hpp"
 #include "Support/MTRand.hpp"
 #include "Sound/SoundManager.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 #include "Input/InputHandler.hpp"
 
 #include "Stage/Stage.hpp"
@@ -338,7 +338,7 @@ void Firearm::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void Firearm::LoadFromXMLNode( CXMLNodeReader& reader )
+void Firearm::LoadFromXMLNode( XMLNode& reader )
 {
 	CGI_Weapon::LoadFromXMLNode( reader );
 
@@ -351,7 +351,7 @@ void Firearm::LoadFromXMLNode( CXMLNodeReader& reader )
 //	reader.GetChildElementTextContent( "LocalRecoilForce",         m_vLocalRecoilForce );
 	reader.GetChildElementTextContent( "LocalHammerPivot",         m_vLocalHammerPivot );
 
-	vector<CXMLNodeReader> mags = reader.GetChild( "CompliantMagazines" ).GetImmediateChildren( "Magazine" );
+	vector<XMLNode> mags = reader.GetChild( "CompliantMagazines" ).GetImmediateChildren( "Magazine" );
 	m_ComplientMagazineNames.resize( mags.size() );
 	for( size_t i=0; i<mags.size(); i++ )
 		m_ComplientMagazineNames[i] = mags[i].GetTextContent();

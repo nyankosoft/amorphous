@@ -3,7 +3,7 @@
 #include "Stage/Serialization_BaseEntityHandle.hpp"
 #include "3DMath/MathMisc.hpp"
 #include "Support/memory_helpers.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 #include "Input/InputHandler.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "GameCommon/MeshBoneController_Aircraft.hpp"
@@ -38,14 +38,14 @@ void CBE_PseudoAircraft::Init()
 <Gear00_Tire>,
 */
 /*
-void CPseudoAircraftGear::LoadFromXMLNode( CXMLNodeReader& reader )
+void CPseudoAircraftGear::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "Tire/Pose/Pos", m_TirePose.vPosition );
 	reader.GetChildElementTextContent( "Shaft/Pose/Pos", m_ShaftPose.vPosition );
 }
 */
 
-void CGI_Aircraft::AmmoPayload::LoadFromXMLNode( CXMLNodeReader& reader )
+void CGI_Aircraft::AmmoPayload::LoadFromXMLNode( XMLNode& reader )
 {
 	reader.GetChildElementTextContent( "AmmoName",        AmmoName );
 	reader.GetChildElementTextContent( "WeaponSlotIndex", WeaponSlot );
@@ -525,7 +525,7 @@ void CGI_Aircraft::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
+void CGI_Aircraft::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 
@@ -538,7 +538,7 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 
 //	reader.GetChildElementTextContent( m_vecNozzleFlameParams,  );
 
-	CXMLNodeReader accels_reader = reader.GetChild( "Accel" );
+	XMLNode accels_reader = reader.GetChild( "Accel" );
 	accels_reader.GetChildElementTextContent( "Default",    m_fAccel );
 	accels_reader.GetChildElementTextContent( "Boost",      m_fBoostAccel );
 	accels_reader.GetChildElementTextContent( "Brake",      m_fBrakeAccel );
@@ -551,7 +551,7 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 
 	reader.GetChildElementTextContent( "GunMuzzleEndPos", m_vGunMuzzleEndLocalPos );
 
-	std::vector<CXMLNodeReader> payloads = reader.GetImmediateChildren( "AmmoPayload" );
+	std::vector<XMLNode> payloads = reader.GetImmediateChildren( "AmmoPayload" );
 
 	const size_t num_payload_info = payloads.size();
 	m_vecSupportedAmmo.resize( num_payload_info );
@@ -560,12 +560,12 @@ void CGI_Aircraft::LoadFromXMLNode( CXMLNodeReader& reader )
 		m_vecSupportedAmmo[i].LoadFromXMLNode( payloads[i] );
 	}
 
-	CXMLNodeReader components_reader = reader.GetChild( "Components" );
-	std::vector<CXMLNodeReader> components = components_reader.GetImmediateChildren();
-//	std::vector<CXMLNodeReader> components = reader.GetImmediateChildren( "Components" );
+	XMLNode components_reader = reader.GetChild( "Components" );
+	std::vector<XMLNode> components = components_reader.GetImmediateChildren();
+//	std::vector<XMLNode> components = reader.GetImmediateChildren( "Components" );
 	for( size_t i = 0; i<components.size(); i++ )
 	{
-		CXMLNodeReader& component_reader = components[i];
+		XMLNode& component_reader = components[i];
 		shared_ptr<MeshBoneController_AircraftBase> pComponent;
 		if( component_reader.GetName() == "Flap" )
 		{

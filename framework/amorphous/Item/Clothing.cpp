@@ -4,7 +4,7 @@
 #include "3DMath/3DGameMath.hpp"
 #include "GameCommon/3DActionCode.hpp"
 #include "Support/MTRand.hpp"
-#include "XML/XMLNodeReader.hpp"
+#include "XML/XMLNode.hpp"
 #include "Input/InputHandler.hpp"
 
 #include "Stage/Stage.hpp"
@@ -43,7 +43,7 @@ void Clothing::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void Clothing::LoadFromXMLNode( CXMLNodeReader& reader )
+void Clothing::LoadFromXMLNode( XMLNode& reader )
 {
 	GameItem::LoadFromXMLNode( reader );
 

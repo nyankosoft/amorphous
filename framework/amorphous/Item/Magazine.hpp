@@ -58,7 +58,7 @@ public:
 
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
-	virtual void LoadFromXMLNode( CXMLNodeReader& reader );
+	virtual void LoadFromXMLNode( XMLNode& reader );
 
 	void SetInserted( bool inserted ) { m_IsInserted = inserted; }
 
