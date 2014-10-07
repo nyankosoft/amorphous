@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <boost/shared_ptr.hpp>
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/3DMath/Vector3.hpp"
 #include "amorphous/Graphics/FloatRGBColor.hpp"
