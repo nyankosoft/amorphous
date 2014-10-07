@@ -16,15 +16,16 @@ namespace amorphous
 using namespace std;
 
 
-bool CLightmapDesc::Load( xercesc::DOMNode *pNode )
+bool CLightmapDesc::Load( XMLNode& node )
 {
-	if( !pNode )
-	{
-		m_State = LIGHTMAP_NOT_SPECIFIED;
-		return false;
-	}
+//	if( !pNode )
+//	{
+//		m_State = LIGHTMAP_NOT_SPECIFIED;
+//		return false;
+//	}
 
-	string enabled = GetAttributeText( pNode, "enabled" );
+//	string enabled = GetAttributeText( pNode, "enabled" );
+	string enabled = node.GetAttributeText( "enabled" );
 	if( enabled == "true" )
 		m_State = LIGHTMAP_ENABLED;
 	else if( enabled == "false" )
@@ -38,16 +39,23 @@ bool CLightmapDesc::Load( xercesc::DOMNode *pNode )
 		return false;
 	}
 
-	string texel_size = GetTextContentOfImmediateChildNode( pNode, "TexelSize" );
+//	string texel_size = GetTextContentOfImmediateChildNode( pNode, "TexelSize" );
+	string texel_size;
+	node.GetChildElementTextContent( "TexelSize", texel_size );
 
 	if( 0 < texel_size.length() )
 		m_Option.fTexelSize = to_float( texel_size );
 
-	xercesc::DOMNode *pTexNode = GetChildNode( pNode, "Texture" );
-	if( pTexNode )
+//	xercesc::DOMNode *pTexNode = GetChildNode( pNode, "Texture" );
+	XMLNode texture_node = GetChild( "Texture" );
+//	if( pTexNode )
+	if( texture_node.IsValid() )
 	{
-		string tex_width  = GetTextContentOfImmediateChildNode( pTexNode, "Width" );
-		string tex_height = GetTextContentOfImmediateChildNode( pTexNode, "Height" );
+//		string tex_width  = GetTextContentOfImmediateChildNode( pTexNode, "Width" );
+//		string tex_height = GetTextContentOfImmediateChildNode( pTexNode, "Height" );
+		string tex_width, tex_height;
+		texture_node.GetChildElementTextContent( "Width",  tex_width );
+		texture_node.GetChildElementTextContent( "Height", tex_height );
 
 		if( 0 < tex_width.length() )  m_Option.TextureWidth  = to_int( tex_width );
 		if( 0 < tex_height.length() ) m_Option.TextureHeight = to_int( tex_height );

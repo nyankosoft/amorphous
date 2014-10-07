@@ -8,7 +8,7 @@
 #include "Support/TextFileScanner.hpp"
 #include "Support/FixedVector.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include "XML/XMLNode.hpp"
 
 #include "fwd.hpp"
 #include "LightmapTexture.hpp"
@@ -151,7 +151,7 @@ public:
 	{
 	}
 
-	bool Load( xercesc::DOMNode *pNode );
+	bool Load( XMLNode& node );
 };
 
 
