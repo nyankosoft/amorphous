@@ -91,7 +91,7 @@ void CAutoResourceArchiver::MainLoop( const std::string& desc_filepath )
 
 		// sleep to avoid using too much CPU resources with the loop
 		boost::xtime xt;
-		boost::xtime_get(&xt, boost::TIME_UTC);
+		boost::xtime_get(&xt, boost::TIME_UTC_);
 		xt.sec += 1; // 1 [sec]
 		boost::thread::sleep(xt);
 	}

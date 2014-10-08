@@ -188,7 +188,7 @@ void CDIInputDeviceMonitor::CheckDevices()
 void CDIInputDeviceMonitor::run()
 {
 	boost::xtime xt;
-	boost::xtime_get(&xt, boost::TIME_UTC);
+	boost::xtime_get(&xt, boost::TIME_UTC_);
 
 	while( !m_ExitThread )
 	{

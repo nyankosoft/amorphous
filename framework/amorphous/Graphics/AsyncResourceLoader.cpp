@@ -156,7 +156,7 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 void AsyncResourceLoader::ProcessResourceLoadRequests()
 {
 	boost::xtime xt;
-	boost::xtime_get(&xt, boost::TIME_UTC);
+	boost::xtime_get(&xt, boost::TIME_UTC_);
 	xt.sec += 1; // 1 [sec]
 
 	while( !m_bEndIOThread )
