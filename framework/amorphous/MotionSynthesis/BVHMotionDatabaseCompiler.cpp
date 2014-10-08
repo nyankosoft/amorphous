@@ -1,7 +1,6 @@
 #include "BVHMotionDatabaseCompiler.hpp"
 #include "BVHUtilities.hpp"
 #include "amorphous/MotionCapture/BVH/BVHPlayer.hpp"
-#include "amorphous/XML/XMLDocumentLoader.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Support/StringAux.hpp"
 #include <boost/foreach.hpp>

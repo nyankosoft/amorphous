@@ -3,7 +3,7 @@
 #include <boost/filesystem.hpp>
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Support/StringAux.hpp"
-#include "amorphous/XML/XMLDocumentLoader.hpp"
+#include "amorphous/XML/XMLDocumentBase.hpp"
 
 
 namespace amorphous
@@ -164,12 +164,12 @@ int MotionDatabaseCompiler::GetAnnotationIndex( const std::string& annotation_na
 // MotionDatabaseBuilder
 //==============================================================================
 
-bool MotionDatabaseBuilder::CreateAnnotationTable( CXMLNodeReader& annot_table_node )
+bool MotionDatabaseBuilder::CreateAnnotationTable( XMLNode& annot_table_node )
 {
-	vector<CXMLNodeReader> vecChild = annot_table_node.GetImmediateChildren( "Annotation" );
+	vector<XMLNode> vecChild = annot_table_node.GetImmediateChildren( "Annotation" );
 	for( size_t i=0; i<vecChild.size(); i++ )
 	{
-		CXMLNodeReader& annot_node = vecChild[i];
+		XMLNode& annot_node = vecChild[i];
 		string annot_name = annot_node.GetTextContent();
 
 		LOG_PRINT( " - Found a new annotation: " + annot_name );
@@ -336,7 +336,7 @@ Result::Name MotionDatabaseBuilder::MapMotionPrimitivesToAnotherSkeleton()
 }
 
 
-bool MotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
+bool MotionDatabaseBuilder::SetMotionMapTargets( XMLNode& mapping )
 {
 	string bone_mapping_file;
 	mapping.GetChildElementTextContent( "BoneMapping", bone_mapping_file );
@@ -348,14 +348,14 @@ bool MotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
 	}
 
 	path mapping_file_path = path(m_SourceXMLFilename).parent_path() / bone_mapping_file;
-	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( mapping_file_path.string() );
+	shared_ptr<XMLDocumentBase> pDoc = CreateXMLDocument( mapping_file_path.string() );
 	if( !pDoc )
 		return false;
 
 	CMotionMapTarget& tgt = m_MotionMapTarget;
 	map<string,string>& bone_maps = tgt.m_BoneMaps;
-	CXMLNodeReader maps_root_node = pDoc->GetRootNodeReader();
-	vector<CXMLNodeReader> children = maps_root_node.GetImmediateChildren( "Map" );
+	XMLNode maps_root_node = pDoc->GetRootNode();
+	vector<XMLNode> children = maps_root_node.GetImmediateChildren( "Map" );
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		string from = children[i].GetAttributeText( "from" );
@@ -373,9 +373,9 @@ bool MotionDatabaseBuilder::SetMotionMapTargets( CXMLNodeReader& mapping )
 }
 
 
-void MotionDatabaseBuilder::ProcessGlobalModificationOptions( CXMLNodeReader& node )
+void MotionDatabaseBuilder::ProcessGlobalModificationOptions( XMLNode& node )
 {
-	vector<CXMLNodeReader> children = node.GetImmediateChildren();
+	vector<XMLNode> children = node.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		const string element_name = children[i].GetName();
@@ -409,9 +409,9 @@ void MotionDatabaseBuilder::ProcessGlobalModificationOptions( CXMLNodeReader& no
 }
 
 
-void MotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, MotionPrimitiveDesc& desc )
+void MotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( XMLNode& root_joint_node, MotionPrimitiveDesc& desc )
 {
-	vector<CXMLNodeReader> children = root_joint_node.GetImmediateChildren();
+	vector<XMLNode> children = root_joint_node.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		const string element_name = children[i].GetName();
@@ -436,7 +436,7 @@ void MotionDatabaseBuilder::ProcessRootNodeHorizontalElementOptions( CXMLNodeRea
 }
 
 
-void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_reader )
+void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( XMLNode& node_reader )
 {
 	// found <MotionPrimitive> element
 
@@ -459,7 +459,7 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_read
 
 	desc.m_RootBoneName = root_bone_name;
 
-	vector<CXMLNodeReader> children = node_reader.GetImmediateChildren();
+	vector<XMLNode> children = node_reader.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		const string element_name = children[i].GetName();
@@ -479,7 +479,7 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_read
 		}
 		else if( element_name == "AnnotationList" )
 		{
-			vector<CXMLNodeReader> annotations = children[i].GetImmediateChildren();
+			vector<XMLNode> annotations = children[i].GetImmediateChildren();
 			for( size_t j=0; j<annotations.size(); j++ )
 			{
 				if( annotations[j].GetName() == "Annotation" )
@@ -488,12 +488,12 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_read
 		}
 		else if( element_name == "Modifications" )
 		{
-			vector<CXMLNodeReader> fixes = children[i].GetImmediateChildren( "Fix" );
+			vector<XMLNode> fixes = children[i].GetImmediateChildren( "Fix" );
 			for( size_t j=0; j<fixes.size(); j++ )
 			{
 				CJointFixMod mod;
 				mod.m_JointName = fixes[j].GetAttributeText( "joint_name" );
-				CXMLNodeReader fix_t = fixes[j].GetChild("Translation");
+				XMLNode fix_t = fixes[j].GetChild("Translation");
 				if( fix_t.IsValid() )
 				{
 					string tx,ty,tz;
@@ -506,7 +506,7 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_read
 		}
 		else if( element_name == "RootJoint" )
 		{
-			vector<CXMLNodeReader> root_joints = children[i].GetImmediateChildren();
+			vector<XMLNode> root_joints = children[i].GetImmediateChildren();
 			for( size_t j=0; j<root_joints.size(); j++ )
 			{
 				string node_name( root_joints[j].GetName() );
@@ -526,7 +526,7 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDesc( CXMLNodeReader& node_read
 }
 
 
-void MotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& input_file_node_reader )
+void MotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( XMLNode& input_file_node_reader )
 {
 	// found a <File> element
 	// - element that contains a bvh file
@@ -565,7 +565,7 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& inpu
 
 //	m_vecDescGroup.back().m_fTimeScalingFactor = to_float( input_file_node_reader.GetAttributeText( "time_scaling" ) );
 
-	vector<CXMLNodeReader> children = input_file_node_reader.GetImmediateChildren();
+	vector<XMLNode> children = input_file_node_reader.GetImmediateChildren();
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		if( children[i].GetName() != "MotionPrimitive" )
@@ -576,10 +576,10 @@ void MotionDatabaseBuilder::CreateMotionPrimitiveDescGroup( CXMLNodeReader& inpu
 }
 
 
-void MotionDatabaseBuilder::CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry )
+void MotionDatabaseBuilder::CreateMotionTableEntry( XMLNode& motion_entry_node, CHumanoidMotionEntry& entry )
 {
-	CXMLNodeReader node( pMotionEntryNode );
-	vector<CXMLNodeReader> children = node.GetImmediateChildren( "MotionPrimitive" );
+	XMLNode& node = motion_entry_node;
+	vector<XMLNode> children = node.GetImmediateChildren( "MotionPrimitive" );
 	for( size_t i=0; i<children.size(); i++ )
 	{
 		const string motion_primitive_name = children[i].GetAttributeText( "name" );
@@ -594,49 +594,65 @@ void MotionDatabaseBuilder::CreateMotionTableEntry( xercesc::DOMNode *pMotionEnt
 }
 
 
-void MotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNode )
+void MotionDatabaseBuilder::CreateMotionTable( XMLNode& motion_table_node )
 {
-	const xercesc::DOMNamedNodeMap *pTableAttrib = pMotionTableNode->getAttributes();
+//	const xercesc::DOMNamedNodeMap *pTableAttrib = pMotionTableNode->getAttributes();
 
-	xercesc::DOMNode *pNameAttrib = pTableAttrib->getNamedItem(XercesString("name"));
+//	xercesc::DOMNode *pNameAttrib = pTableAttrib->getNamedItem(XercesString("name"));
 
-	if( !pNameAttrib )
+//	if( !pNameAttrib )
+//	{
+//		LOG_PRINT_ERROR( " - No name attribute for HumanoidMotionTable" );
+//	}
+
+//	m_MotionTable.m_Name = to_string(pNameAttrib->getNodeValue());
+
+	m_MotionTable.m_Name = "";
+	motion_table_node.GetAttributeValue( "name", m_MotionTable.m_Name );
+
+	if( m_MotionTable.m_Name.length() == 0 )
+		LOG_PRINT_ERROR( " - No name or no name attribute for HumanoidMotionTable" );
+
+//	for( DOMNode *pNode = pMotionTableNode->getFirstChild();
+//		 pNode;
+//		 pNode = pNode->getNextSibling() )
+	vector<XMLNode> children = motion_table_node.GetImmediateChildren();
+	for( size_t i=0; i<children.size(); i++ )
 	{
-		LOG_PRINT_ERROR( " - No name attribute for HumanoidMotionTable" );
-	}
-
-	m_MotionTable.m_Name = to_string(pNameAttrib->getNodeValue());
-
-	for( DOMNode *pNode = pMotionTableNode->getFirstChild();
-		 pNode;
-		 pNode = pNode->getNextSibling() )
-	{
-		const string node_name = to_string(pNode->getNodeName());
+		const string node_name = children[i].GetName(); // to_string(pNode->getNodeName());
 		if( node_name == "Motion" )
 		{
-			const xercesc::DOMNamedNodeMap *pAttrib = pNode->getAttributes();
+//			const xercesc::DOMNamedNodeMap *pAttrib = pNode->getAttributes();
+//
+//			if( !pAttrib )
+//			{
+//				LOG_PRINT_ERROR( " - No attribute for motion in HumanoidMotionTable" );
+//				return;
+//			}
+//
+//			xercesc::DOMNode *pAttribNode = pAttrib->getNamedItem( XercesString("type") );
+//
+//			if( !pAttribNode )
+//			{
+//				LOG_PRINT_ERROR( "" );
+//				return;
+//			}
+//
+//			const string motion_type = to_string(pAttribNode->getNodeValue());
 
-			if( !pAttrib )
+			string motion_type;
+			children[i].GetAttributeValue( "type", motion_type );
+			if( motion_type.length() == 0 )
 			{
-				LOG_PRINT_ERROR( " - No attribute for motion in HumanoidMotionTable" );
+				LOG_PRINT_ERROR( " - No attribute or not attribute value for motion in HumanoidMotionTable" );
 				return;
 			}
-
-			xercesc::DOMNode *pAttribNode = pAttrib->getNamedItem( XercesString("type") );
-
-			if( !pAttribNode )
-			{
-				LOG_PRINT_ERROR( "" );
-				return;
-			}
-
-			const string motion_type = to_string(pAttribNode->getNodeValue());
 
 			m_MotionTable.m_vecEntry.push_back( CHumanoidMotionEntry() );
 			CHumanoidMotionEntry& entry = m_MotionTable.m_vecEntry.back();
 			entry.m_MotionType = motion_type;
 
-			CreateMotionTableEntry( pNode, entry );
+			CreateMotionTableEntry( children[i], entry );
 		}
 	}
 
@@ -644,7 +660,7 @@ void MotionDatabaseBuilder::CreateMotionTable( xercesc::DOMNode *pMotionTableNod
 }
 
 
-void MotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
+void MotionDatabaseBuilder::ProcessXMLFile( XMLNode& root_node )
 {
 	string output_filename;
 	root_node.GetChildElementTextContent( "Output", output_filename );
@@ -655,7 +671,7 @@ void MotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 		LOG_PRINT_WARNING( "Output filepath was not found in source XML file. Call SaveMotionDatabaseToFile() to save motion database to disk."  );
 	}
 
-	vector<CXMLNodeReader> file_nodes = root_node.GetImmediateChildren();
+	vector<XMLNode> file_nodes = root_node.GetImmediateChildren();
 	for( size_t i=0; i<file_nodes.size(); i++ )
 	{
 		const string node_name = file_nodes[i].GetName();
@@ -666,7 +682,7 @@ void MotionDatabaseBuilder::ProcessXMLFile( CXMLNodeReader& root_node )
 		}
 		else if( node_name == "HumanoidMotionTable" )
 		{
-			CreateMotionTable( file_nodes[i].GetDOMNode() );
+			CreateMotionTable( file_nodes[i] );
 		}
 		else if( node_name == "AnnotationTable" )
 		{
@@ -881,18 +897,15 @@ bool MotionDatabaseBuilder::Build( const std::string& source_script_filename )
 {
 	m_SourceXMLFilename = source_script_filename;
 
-	shared_ptr<CXMLDocument> pXMLDocument;
-
 	bool file_exists = exists( source_script_filename );
 
 	// (S)
 
-	CXMLDocumentLoader xml_doc_loader;
-	pXMLDocument = xml_doc_loader.Load( source_script_filename );
+	shared_ptr<XMLDocumentBase> pXMLDocument = CreateXMLDocument( source_script_filename );
 	if( !pXMLDocument )
 		return false;
 
-	CXMLNodeReader root_node = pXMLDocument->GetRootNodeReader();
+	XMLNode root_node = pXMLDocument->GetRootNode();
 
 	// (E)
 

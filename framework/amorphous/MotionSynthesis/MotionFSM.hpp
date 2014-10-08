@@ -210,7 +210,7 @@ public:
 
 	boost::shared_ptr<MotionPrimitive>& MotionPrimitive() { return m_pMotionPrimitive; }
 
-	void LoadFromXMLDocument( CXMLNodeReader& node );
+	void LoadFromXMLDocument( XMLNode& node );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 };
@@ -345,7 +345,7 @@ public:
 
 	void GetDebugInfo( std::string& dest_text_buffer );
 
-	void LoadFromXMLDocument( CXMLNodeReader& node );
+	void LoadFromXMLDocument( XMLNode& node );
 
 	void Serialize( IArchive& ar, const unsigned int version );
 
@@ -423,7 +423,7 @@ public:
 
 	void GetDebugInfo( std::string& dest_text_buffer );
 
-	void LoadFromXMLDocument( CXMLNodeReader& node );
+	void LoadFromXMLDocument( XMLNode& node );
 
 	void LoadFromXMLFile( const std::string& xml_file_path );
 

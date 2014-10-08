@@ -2,7 +2,7 @@
 #define  __MotionDatabaseBuilder_H__
 
 
-#include "amorphous/XML/XMLNodeReader.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "fwd.hpp"
@@ -270,32 +270,32 @@ protected:
 
 //	int GetAnnotationIndex( const std::string& annotation_name );
 
-	void CreateMotionPrimitiveDesc( CXMLNodeReader& node_reader );
+	void CreateMotionPrimitiveDesc( XMLNode& node_reader );
 
 	/// called once for every bvh file
-	void CreateMotionPrimitiveDescGroup( CXMLNodeReader& bvh_file_node_reader );
+	void CreateMotionPrimitiveDescGroup( XMLNode& bvh_file_node_reader );
 
 //	void CreateMotionPrimitive( const MotionPrimitiveDesc& desc, const MotionPrimitiveDescGroup& desc_group, BVHPlayer& bvh_player );
 
-	void CreateMotionTableEntry( xercesc::DOMNode *pMotionEntryNode, CHumanoidMotionEntry& entry );
+	void CreateMotionTableEntry( XMLNode& motion_entry_node, CHumanoidMotionEntry& entry );
 
-	void CreateMotionTable( xercesc::DOMNode *pMotionTableNode );
+	void CreateMotionTable( XMLNode& motion_table_node );
 
-	void ProcessXMLFile( CXMLNodeReader& root_node );
+	void ProcessXMLFile( XMLNode& root_node );
 
 	bool CreateMotionPrimitivesFromScriptFile( const std::string& script_filename );
 
-	bool CreateAnnotationTable( CXMLNodeReader& annot_table_node );
+	bool CreateAnnotationTable( XMLNode& annot_table_node );
 
-	bool SetMotionMapTargets( CXMLNodeReader& mapping );
+	bool SetMotionMapTargets( XMLNode& mapping );
 
-	void ProcessGlobalModificationOptions( CXMLNodeReader& node );
+	void ProcessGlobalModificationOptions( XMLNode& node );
 
 	void ApplyJointModification( const CJointModification& mod );
 
 	void ApplyJointFixModification( const std::vector<CJointFixMod>& mods, MotionPrimitive& target_motion );
 
-	void ProcessRootNodeHorizontalElementOptions( CXMLNodeReader& root_joint_node, MotionPrimitiveDesc& desc );
+	void ProcessRootNodeHorizontalElementOptions( XMLNode& root_joint_node, MotionPrimitiveDesc& desc );
 
 	void ProcessCreatedMotionPrimitive( MotionPrimitiveDesc& desc ); 
 

@@ -463,7 +463,7 @@ void MotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<MotionNodeAlgorithm> p
 }
 
 
-void MotionPrimitiveNode::LoadFromXMLDocument( CXMLNodeReader& node )
+void MotionPrimitiveNode::LoadFromXMLDocument( XMLNode& node )
 {
 	m_Name = node.GetAttributeText( "name" );
 
@@ -673,11 +673,11 @@ void MotionFSM::GetDebugInfo( std::string& dest_text_buffer )
 }
 
 
-void MotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
+void MotionFSM::LoadFromXMLDocument( XMLNode& node )
 {
 	m_Name = node.GetAttributeText( "name" );
 
-	vector<CXMLNodeReader> nodes = node.GetChild( "nodes" ).GetImmediateChildren( "node" );
+	vector<XMLNode> nodes = node.GetChild( "nodes" ).GetImmediateChildren( "node" );
 	for( size_t i=0; i<nodes.size(); i++ )
 	{
 		shared_ptr<MotionPrimitiveNode> pNode( new MotionPrimitiveNode("") );
@@ -686,12 +686,12 @@ void MotionFSM::LoadFromXMLDocument( CXMLNodeReader& node )
 	}
 
 	// transitions
-	vector<CXMLNodeReader> transitions = node.GetChild( "transitions" ).GetImmediateChildren( "transition" );
+	vector<XMLNode> transitions = node.GetChild( "transitions" ).GetImmediateChildren( "transition" );
 	for( size_t i=0; i<transitions.size(); i++ )
 	{
 		string start_motion_name = transitions[i].GetAttributeText( "from" );
 		string end_motion_name   = transitions[i].GetAttributeText( "to" );
-		vector<CXMLNodeReader> trans_nodes = transitions[i].GetImmediateChildren( "trans" );
+		vector<XMLNode> trans_nodes = transitions[i].GetImmediateChildren( "trans" );
 
 		if( start_motion_name.length() == 0
 		 || end_motion_name.length() == 0 )
@@ -860,13 +860,13 @@ void MotionFSMManager::GetDebugInfo( std::string& dest_text_buffer )
 }
 
 
-void MotionFSMManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
+void MotionFSMManager::LoadFromXMLDocument( XMLNode& root_node )
 {
 	m_MotionDatabaseFilepath = root_node.GetChild( "motion_database" ).GetAttributeText( "file" );
 	m_CompleteSkeletonName = root_node.GetChild( "complete_skeleton" ).GetAttributeText( "name" );
 	m_CompleteSkeletonSourceMotionName = root_node.GetChild( "complete_skeleton" ).GetAttributeText( "motion_primitive_name" );
 
-	vector<CXMLNodeReader> fsms = root_node.GetChild( "FSMs" ).GetImmediateChildren( "FSM" );
+	vector<XMLNode> fsms = root_node.GetChild( "FSMs" ).GetImmediateChildren( "FSM" );
 	m_vecpMotionFSM.resize( fsms.size() );
 	for( size_t i=0; i<fsms.size(); i++ )
 	{
@@ -878,11 +878,11 @@ void MotionFSMManager::LoadFromXMLDocument( CXMLNodeReader& root_node )
 
 void MotionFSMManager::LoadFromXMLFile( const string& xml_file_path )
 {
-	shared_ptr<CXMLDocument> pDoc = CreateXMLDocument( xml_file_path );
+	shared_ptr<XMLDocumentBase> pDoc = CreateXMLDocument( xml_file_path );
 	if( !pDoc )
 		return;
 
-	LoadFromXMLDocument( pDoc->GetRootNodeReader() );
+	LoadFromXMLDocument( pDoc->GetRootNode() );
 }
 
 
