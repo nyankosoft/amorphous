@@ -162,7 +162,7 @@ int main( int argc, char *argv[] )
 	mesh_compiler.start_thread();
 
 	boost::xtime xt;
-	boost::xtime_get(&xt, boost::TIME_UTC);
+	boost::xtime_get(&xt, boost::TIME_UTC_);
 
 //	const shared_ptr<morph::progress_display> pLoadingProgress;
 //	while( !pLoadingProgress )
