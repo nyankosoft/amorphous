@@ -326,10 +326,12 @@
     <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp" />
     <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp" />
     <ClCompile Include="..\..\amorphous\XML\XMLDocumentLoader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Physics\Actor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -726,14 +728,17 @@
     <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp" />
     <ClInclude Include="..\..\amorphous\XML\XercesString.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\XML\xmlch2x.hpp" />
     <ClInclude Include="..\..\amorphous\XML\XMLDocumentBase.hpp" />
     <ClInclude Include="..\..\amorphous\XML\XMLDocumentLoader.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <CustomBuildStep Include="..\..\amorphous\Physics\Actor.hpp" />
     <CustomBuildStep Include="..\..\amorphous\Physics\ActorDesc.hpp" />
