@@ -38,10 +38,10 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../app</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.vc\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.vc\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
   </PropertyGroup>
@@ -83,9 +83,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\framework\amorphous\Support\Log\DefaultLog.cpp" />
     <ClCompile Include="..\..\..\..\framework\amorphous\Support\Log\LogInputBase.cpp" />
-    <ClCompile Include="..\..\..\..\framework\amorphous\Support\Log\LogOutputBase.cpp" />
+    <ClCompile Include="..\..\..\..\framework\amorphous\Support\Log\LogOutput.cpp" />
     <ClCompile Include="..\..\..\..\framework\amorphous\Support\Timer_Win32.cpp" />
     <ClCompile Include="..\src\3DMathScriptTest_Main.cpp" />
     <ClCompile Include="..\..\..\..\framework\amorphous\Script\PyModule_3DMath.cpp" />
@@ -95,6 +94,7 @@
     <ClInclude Include="..\..\..\..\framework\amorphous\Support\Log\DefaultLog.hpp" />
     <ClInclude Include="..\..\..\..\framework\amorphous\Support\Log\Log.hpp" />
     <ClInclude Include="..\..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp" />
+    <ClInclude Include="..\..\..\..\framework\amorphous\Support\Log\LogOutput.hpp" />
     <ClInclude Include="..\..\..\..\framework\amorphous\Support\Log\LogOutputBase.hpp" />
     <ClInclude Include="..\..\..\..\framework\amorphous\Support\Timer.hpp" />
     <ClInclude Include="..\..\..\..\framework\amorphous\Support\Timer_Win32.hpp" />
