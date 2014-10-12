@@ -192,17 +192,23 @@ void GraphicsApplicationBase::Run()
 	GetCurrentPrimaryDisplayResolution( res_x, res_y );
 
 	int w=0,h=0;
-	if( 1280 < res_x )
+	if( 1920 < res_x )
+	{
+		// A rsolution higher than full HD; make the screen size full HD
+		w = 1920;
+		h = 1080;
+	}
+	else if( 1280 < res_x )
 	{
 		// A rsolution higher than HD 720; An HD 720-sized window should fit.
 		w = 1280;
-		h = 720;
+		h =  720;
 	}
 	else
 	{
 		// Probably an old display or a display on a small laptop; we go with XGA.
 		w = 1024;
-		h = 768;
+		h =  768;
 	}
 
 	m_Camera.SetAspectRatio( (float)w / (float)h );
