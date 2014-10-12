@@ -7,8 +7,7 @@
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 //#include "Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "Graphics/OpenGL/Shader/GLShader.hpp"
-#include "Support/ImageArchive.hpp"
-#include "Support/BitmapImage.hpp"
+#include "Support/ImageArchiveAux.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
 #include <boost/filesystem.hpp>
@@ -376,7 +375,7 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 	{
 		ImageArchive ia;
 		ia.LoadFromFile(filepath);
-		loaded = img.CreateFromImageArchive(ia);
+		loaded = LoadBitmapImageFromImageArchive(ia,img);
 	}
 	else
 	{

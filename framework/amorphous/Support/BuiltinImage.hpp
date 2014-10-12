@@ -3,6 +3,7 @@
 
 
 #include "BitmapImage.hpp"
+#include "ImageArchiveAux.hpp"
 
 
 namespace amorphous
@@ -50,7 +51,7 @@ inline bool LoadBuiltinImage( const CBuiltinImage& src, BitmapImage& dest )
 	img_archive.m_Buffer.buffer().resize( src.data_size );
 	memcpy( &(img_archive.m_Buffer.buffer()[0]), src.data, src.data_size );
 
-	return dest.CreateFromImageArchive( img_archive );
+	return LoadBitmapImageFromImageArchive( img_archive, dest );
 }
 
 

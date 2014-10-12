@@ -6,6 +6,7 @@
 #include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/BitmapImage.hpp"
+#include "Support/ImageArchiveAux.hpp"
 #include "Support/Profile.hpp"
 #include "Support/lfs.hpp"
 #include <boost/filesystem.hpp>
@@ -255,10 +256,9 @@ bool DiskTextureLoader::LoadFromDB( CBinaryDatabase<std::string>& db, const std:
 	bool retrieved = db.GetData( keyname, img_archive );
 	if( retrieved )
 	{
-		shared_ptr<BitmapImage> pBaseImage( new BitmapImage );
-		bool image_loaded = pBaseImage->CreateFromImageArchive( img_archive );
+		shared_ptr<BitmapImage> pBaseImage = CreateBitmapImageFromImageArchive( img_archive );
 
-		if( !image_loaded )
+		if( !pBaseImage )
 			return false;
 
 		bool res = InitImageArray( pBaseImage );

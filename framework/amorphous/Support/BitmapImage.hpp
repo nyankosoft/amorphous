@@ -1,19 +1,21 @@
-#ifndef __BitmapImage_H__
-#define __BitmapImage_H__
+#ifndef __amorphous_BitmapImage_HPP__
+#define __amorphous_BitmapImage_HPP__
 
 
 #include <boost/shared_ptr.hpp>
 #include "FreeImage.h"
 
-#include "../Graphics/FloatRGBColor.hpp"
-#include "../Graphics/FloatRGBAColor.hpp"
-#include "ImageArchive.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "stream_buffer.hpp"
 #include "array2d.hpp"
-#include "Macro.h"
 
 // Comment out this header inclusion and do the following replacings
 // if you want to use BitmapImage class without the log system.
-// 1. Replace 'LOG_PRINT_ERROR(x)' with 'cout << x'.
+// 1. Define the following macros
+//   #define LOG_PRINT(x)         std::cout << x
+//   #define LOG_PRINT_VERBOSE(x) std::cout << x
+//   #define LOG_PRINT_ERROR(x)   std::cout << x
 // 2. Replace 'g_Log.Print(x)' with 'printf(x)'.
 #include "Log/DefaultLog.hpp"
 
@@ -85,22 +87,18 @@ inline long DLL_CALLCONV ImageTellProc( fi_handle handle )
 }
 
 
-inline FREE_IMAGE_FORMAT ToFIF( ImageArchive::ImageFormat img_fmt )
+inline FREE_IMAGE_FORMAT ToFIF( const std::string& image_ext )
 {
-	switch(img_fmt)
-	{
-	case ImageArchive::IMGFMT_BMP24: return FIF_BMP;
-	case ImageArchive::IMGFMT_BMP32: return FIF_BMP;
-	case ImageArchive::IMGFMT_JPEG:  return FIF_JPEG;
-	case ImageArchive::IMGFMT_TGA:   return FIF_TARGA;
-	case ImageArchive::IMGFMT_PNG:   return FIF_PNG;
-//	case ImageArchive::IMGFMT_ : return FIF_DDS,
-//	case ImageArchive::IMGFMT_ : return FIF_PPM,
-//	case ImageArchive::IMGFMT_ : return FIF_DIB,
-//	case ImageArchive::IMGFMT_ : return FIF_HDR,       ///< high dynamic range formats
-//	case ImageArchive::IMGFMT_ : return FIF_PFM,       ///
-	default: return FIF_UNKNOWN;
-	}
+	if( image_ext == "png" )       return FIF_PNG;
+	else if( image_ext == "jpg" )  return FIF_JPEG;
+	else if( image_ext == "tga" )  return FIF_TARGA;
+	else if( image_ext == "tif" )  return FIF_TIFF;
+	else if( image_ext == "tiff" ) return FIF_TIFF;
+	else if( image_ext == "hdr" )  return FIF_HDR;
+	else if( image_ext == "bmp" )  return FIF_BMP;
+	else if( image_ext == "dds" )  return FIF_DDS;
+//	else if( image_ext == "" )    return ;
+//	else if( image_ext == "" )    return ;
 
 	return FIF_UNKNOWN;
 }
@@ -156,9 +154,7 @@ public:
 
 	/// TODO: Make the argument const
 	/// - Need to do sth to CImageStreamBufferHolder. See the function definition
-	inline BitmapImage( ImageArchive& img_archive );
-
-//	inline BitmapImage( const array2d<SFloatRGBColor>& texel_buffer, int bpp );
+	inline BitmapImage( stream_buffer& image_data, const std::string& image_format );
 
 	~BitmapImage() { Release(); }
 
@@ -166,7 +162,7 @@ public:
 
 	inline bool SaveToFile( const std::string& pathname, int flag = 0 );
 
-	inline bool CreateFromImageArchive( ImageArchive& img_archive );
+	inline bool CreateFromImageDataStream( stream_buffer& image_data, const std::string& image_format );
 
 	inline void FillColor( const SFloatRGBAColor& color );
 
@@ -213,20 +209,17 @@ public:
 	inline const char *GetColorTypeName() const;
 };
 
-/*
-inline BitmapImage::BitmapImage( const array2d<SFloatRGBColor>& texel_buffer, int bpp )
-{
-	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
-}
-*/
-
 
 inline void LogFreeImageError( FREE_IMAGE_FORMAT fif, const char *message )
 {
-	GlobalLog().Print( WL_ERROR, "FreeImage: %s (image format: %s).",
-		message,
-		(fif != FIF_UNKNOWN) ? FreeImage_GetFormatFromFIF(fif) : "unknown"
-		);
+	using std::string;
+
+	string error_message = "FreeImage: " + string(message);
+
+	string img_format = (fif != FIF_UNKNOWN) ? FreeImage_GetFormatFromFIF(fif) : "unknown";
+	error_message += " (image format: " + img_format +").";
+
+	LOG_PRINT_ERROR( error_message );
 }
 
 
@@ -257,12 +250,12 @@ m_BitsPerPixel(bpp)
 }
 
 
-inline BitmapImage::BitmapImage( ImageArchive& img_archive )
+inline BitmapImage::BitmapImage( stream_buffer& image_data, const std::string& image_format )
 :
 m_pFreeImageBitMap(NULL),
 m_BitsPerPixel(0)
 {
-	CreateFromImageArchive( img_archive );
+	CreateFromImageDataStream( image_data, image_format );
 }
 
 
@@ -684,12 +677,12 @@ inline bool BitmapImage::SaveToFile( const std::string& pathname, int flag )
 }
 
 
-inline bool BitmapImage::CreateFromImageArchive( ImageArchive& img_archive )
+inline bool BitmapImage::CreateFromImageDataStream( stream_buffer& image_data, const std::string& image_format )
 {
 
 //	lock
 
-	ImageStreamBufferHolder().m_pStreamBuffer = &(img_archive.m_Buffer);
+	ImageStreamBufferHolder().m_pStreamBuffer = &image_data;//(img_archive.m_Buffer);
 	FreeImageIO img_io;
 	img_io.read_proc  = ImageReadProc;
 	img_io.write_proc = ImageWriteProc;
@@ -699,7 +692,7 @@ inline bool BitmapImage::CreateFromImageArchive( ImageArchive& img_archive )
 	int sth = 0;
 
 	int flags = 0;
-	m_pFreeImageBitMap = FreeImage_LoadFromHandle( ToFIF(img_archive.m_Format), &img_io, &sth, flags );
+	m_pFreeImageBitMap = FreeImage_LoadFromHandle( ToFIF(image_format), &img_io, &sth, flags );
 
 	if( m_pFreeImageBitMap )
 	{
@@ -707,7 +700,10 @@ inline bool BitmapImage::CreateFromImageArchive( ImageArchive& img_archive )
 		return true;
 	}
 	else
+	{
+		LOG_PRINT_ERROR( "FreeImage_LoadFromHandle() returned null. Image format: " + image_format );
 		return false;
+	}
 }
 
 //
@@ -786,8 +782,8 @@ inline bool SaveGrayscaleToImageFile( const array2d<U8>& texel, const std::strin
 	return img.SaveToFile( filepath );
 }
 
+
 } // namespace amorphous
 
 
-
-#endif /* __BitmapImage_H__ */
+#endif /* __amorphous_BitmapImage_HPP__ */
