@@ -26,17 +26,22 @@ public:
 
 	CFreeTypeLibrary()
 	{
-		/* handle to face object */
-		int error = FT_Init_FreeType( &m_FTLibrary );
+		FT_Error error = FT_Init_FreeType( &m_FTLibrary );
 
-		if ( error )
+		if( error != 0 )
 		{
+			LOG_PRINTF_ERROR(( "FT_Init_FreeType() returned an error: %d", (int)error ));
 		}
 	}
 
 	~CFreeTypeLibrary()
 	{
-		FT_Done_FreeType( m_FTLibrary );
+		FT_Error error = FT_Done_FreeType( m_FTLibrary );
+
+		if( error != 0 )
+		{
+			LOG_PRINTF_ERROR(( "FT_Done_FreeType() returned an error: %d", (int)error ));
+		}
 	}
 
 	FT_Library GetFTLibrary() { return m_FTLibrary; }
