@@ -28,11 +28,8 @@ using namespace amorphous;
 
 
 //----------------------  Global Variables  -----------------------------------
-//CFont g_Font;
 CBumpmapTextureMaker2_LWO2 *g_pBumpTexMaker = NULL;
 //CCameraController_Win32 g_CameraController;
-
-//----------------------  Forward Declaration  -----------------------------------
 
 
 //-----------------------------------------------------------------------------
@@ -247,10 +244,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	// rotate camera 180 degrees so that it face against positive z direction
 //	g_CameraController.AddYaw( 3.14159265359f );
-
-
-	// initialize font object
-//	g_Font.InitFont( "Arial", 12, 24);
 
     // Enter the message loop
     MSG msg;
