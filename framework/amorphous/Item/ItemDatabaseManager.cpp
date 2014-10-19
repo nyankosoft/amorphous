@@ -13,18 +13,18 @@ namespace amorphous
 using namespace std;
 
 
-singleton<CItemDatabaseManager> CItemDatabaseManager::m_obj;
+singleton<ItemDatabaseManager> ItemDatabaseManager::m_obj;
 
 
-void CItemDatabaseManager::Release()
+void ItemDatabaseManager::Release()
 {
 	SafeDelete( m_pItemDatabase );
 }
 
 
-bool CItemDatabaseManager::Update( const std::string& filename, const std::string& default_output_filename )
+bool ItemDatabaseManager::Update( const std::string& filename, const std::string& default_output_filename )
 {
-	CItemDatabaseBuilder item_db_builder;
+	ItemDatabaseBuilder item_db_builder;
 
 	if( filename.rfind( "xml" ) == filename.length() - 3 )
 		return item_db_builder.CreateItemDatabaseFileFromXMLFile( filename, default_output_filename );
@@ -33,7 +33,7 @@ bool CItemDatabaseManager::Update( const std::string& filename, const std::strin
 }
 
 
-bool CItemDatabaseManager::LoadFromFile( const std::string& filename )
+bool ItemDatabaseManager::LoadFromFile( const std::string& filename )
 {
 	Release();
 	m_pItemDatabase = new CBinaryDatabase<string>;
@@ -52,7 +52,7 @@ bool CItemDatabaseManager::LoadFromFile( const std::string& filename )
 }
 
 
-GameItem *CItemDatabaseManager::GetItemRawPtr( const std::string& item_name, int quantity )
+GameItem *ItemDatabaseManager::GetItemRawPtr( const std::string& item_name, int quantity )
 {
 	if( !m_pItemDatabase )
 		return NULL;

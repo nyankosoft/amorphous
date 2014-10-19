@@ -25,7 +25,7 @@ class CGI_Aircraft;
 class MeshBoneController_AircraftBase;
 
 
-class CItemDatabaseBuilder
+class ItemDatabaseBuilder
 {
 	std::string m_RootXMLFilePathname;
 
@@ -64,9 +64,9 @@ class CItemDatabaseBuilder
 
 public:
 
-	CItemDatabaseBuilder();
+	ItemDatabaseBuilder();
 
-	~CItemDatabaseBuilder();
+	~ItemDatabaseBuilder();
 
 //	void SetOutputPath( const char *pcPath ) { m_strOutputPath = pcPath; }
 //	void SetItemFilePath( const char *pcPath ) { m_strItemFilePath = pcPath; }

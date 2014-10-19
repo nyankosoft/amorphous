@@ -25,7 +25,7 @@ PyObject* AddItem( PyObject* self, PyObject* args )
 
 	if( pShop )
 	{
-		shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( item_name, 1 );
+		shared_ptr<GameItem> pItem = GetItemDatabaseManager().GetItem<GameItem>( item_name, 1 );
 
 		if( pItem )
 			pShop->AddItem( pItem );

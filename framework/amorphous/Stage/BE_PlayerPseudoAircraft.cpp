@@ -204,8 +204,8 @@ void CBE_PlayerPseudoAircraft::Init()
 		}
 	}
 
-	m_pShortRangeRadar = ItemDatabaseManager().GetItem<Radar>( "ShortRangeRadar", 1 );
-	m_pLongRangeRadar  = ItemDatabaseManager().GetItem<Radar>( "LongRangeRadar", 1 );
+	m_pShortRangeRadar = GetItemDatabaseManager().GetItem<Radar>( "ShortRangeRadar", 1 );
+	m_pLongRangeRadar  = GetItemDatabaseManager().GetItem<Radar>( "LongRangeRadar", 1 );
 	if( m_pShortRangeRadar )
 		m_pShortRangeRadar->SetStageWeakPtr( m_pStage->GetWeakPtr() );
 	if( m_pLongRangeRadar )

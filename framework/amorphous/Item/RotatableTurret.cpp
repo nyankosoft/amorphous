@@ -84,12 +84,12 @@ bool CRotatableTurret::LoadMeshObject()
 
 Result::Name CRotatableTurret::OnLoadedFromDatabase()
 {
-	m_pWeapon = ItemDatabaseManager().GetItem<CGI_Weapon>( m_WeaponName, 1 );
+	m_pWeapon = GetItemDatabaseManager().GetItem<CGI_Weapon>( m_WeaponName, 1 );
 
 	for( size_t i=0; i<m_vecAmmunition.size(); i++ )
 	{
 		CAmmunitionAttributes& ammo = m_vecAmmunition[i];
-		ammo.pItem = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo.m_AmmunitionName, ammo.m_InitQuantity );
+		ammo.pItem = GetItemDatabaseManager().GetItem<CGI_Ammunition>( ammo.m_AmmunitionName, ammo.m_InitQuantity );
 	}
 
 	return Result::SUCCESS;
@@ -214,7 +214,7 @@ void CRotatableTurret::LoadFromXMLNode( XMLNode& reader )
 		}
 		m_vecAmmunition[i].m_InitQuantity = to_int(ammo_quantity);
 
-//		m_vecpAmmunition[i] = ItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
+//		m_vecpAmmunition[i] = GetItemDatabaseManager().GetItem<CGI_Ammunition>( ammo_name, to_int(ammo_quantity) );
 	}
 /*
 	vector<XMLNode> vecAmmoLoading = reader.GetChildElementTextContent( "AmmunitionLoading/Name",  ammo_name );

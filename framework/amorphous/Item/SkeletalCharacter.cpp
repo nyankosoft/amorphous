@@ -976,7 +976,9 @@ void SkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 				// fall
 				m_FeetOnGround = false;
 				entity.SetVelocity( Vector3(0,0,0) );
-				m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "falling" );
+//				m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "falling" );
+				if( m_pLowerLimbsMotionsFSM )
+					m_pLowerLimbsMotionsFSM->RequestTransition( "falling" );
 			}
 		}
 	}
@@ -995,7 +997,9 @@ void SkeletalCharacter::UpdateStepHeight( CCopyEntity& entity )
 			// - Request transition to landing motion
 			m_FeetOnGround = true;
 			world_pose.vPosition.y = floor_height;
-			m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "standing" );
+//			m_pMotionFSMManager->GetMotionFSM("lower_limbs")->RequestTransition( "standing" );
+			if( m_pLowerLimbsMotionsFSM )
+				m_pLowerLimbsMotionsFSM->RequestTransition( "standing" );
 //			entity.SetWorldPose( world_pose );
 //			SetCharacterWorldPose( world_pose, entity, *(entity.m_vecpPhysicsActor[0]) );
 		}

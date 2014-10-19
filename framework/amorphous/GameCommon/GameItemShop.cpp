@@ -68,7 +68,7 @@ bool GameItemShop::AddItem( boost::shared_ptr<GameItem> pItem )
 
 int GameItemShop::AddItem( const std::string& item_name, int quantity )
 {
-	shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( item_name, quantity );
+	shared_ptr<GameItem> pItem = GetItemDatabaseManager().GetItem<GameItem>( item_name, quantity );
 	if( !pItem )
 		return 0;
 
@@ -100,7 +100,7 @@ bool GameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
 	if( true/*paid*/ )
 	{
 		boost::shared_ptr<GameItem> pItemCopy
-			= ItemDatabaseManager().GetItem<GameItem>( m_vecpItem[index]->GetName(), quantity );
+			= GetItemDatabaseManager().GetItem<GameItem>( m_vecpItem[index]->GetName(), quantity );
 
 		int num_items_received = customer.AddItem( pItemCopy );
 

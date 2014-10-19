@@ -18,7 +18,7 @@ using namespace serialization;
 /**
  * holds database of items
  */
-class CItemDatabaseManager
+class ItemDatabaseManager
 {
 	CBinaryDatabase<std::string> *m_pItemDatabase;
 
@@ -30,13 +30,13 @@ private:
 
 public:
 
-	static singleton<CItemDatabaseManager> m_obj;
+	static singleton<ItemDatabaseManager> m_obj;
 
-	static CItemDatabaseManager* Get() { return m_obj.get(); }
+	static ItemDatabaseManager* Get() { return m_obj.get(); }
 
-	CItemDatabaseManager() : m_pItemDatabase(NULL) {}
+	ItemDatabaseManager() : m_pItemDatabase(NULL) {}
 
-	~CItemDatabaseManager() { Release(); }
+	~ItemDatabaseManager() { Release(); }
 
 	void Release();
 
@@ -52,7 +52,7 @@ public:
 //--------------------------------- inline implementations ---------------------------------
 
 template<class T>
-inline boost::shared_ptr<T> CItemDatabaseManager::GetItem( const std::string& item_name, int quantity )
+inline boost::shared_ptr<T> ItemDatabaseManager::GetItem( const std::string& item_name, int quantity )
 {
 	GameItem *pRawOwnedPtr = GetItemRawPtr( item_name, quantity );
 	if( !pRawOwnedPtr )
@@ -68,10 +68,10 @@ inline boost::shared_ptr<T> CItemDatabaseManager::GetItem( const std::string& it
 }
 
 
-/// Returns the reference to the singleton instance of CItemDatabaseManager
-inline CItemDatabaseManager& ItemDatabaseManager()
+/// Returns the reference to the singleton instance of ItemDatabaseManager
+inline ItemDatabaseManager& GetItemDatabaseManager()
 {
-	return (*(CItemDatabaseManager::Get()));
+	return (*(ItemDatabaseManager::Get()));
 }
 
 

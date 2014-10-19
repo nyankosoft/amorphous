@@ -90,7 +90,7 @@ public:
 
 	inline void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 
@@ -136,7 +136,7 @@ public:
 
 	inline void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 
@@ -171,7 +171,7 @@ public:
 
 	inline void Serialize( IArchive& ar, const unsigned int version );
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 

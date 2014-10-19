@@ -134,7 +134,7 @@ public:
 
 	virtual void LoadFromXMLNode( XMLNode& reader );
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 

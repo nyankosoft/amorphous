@@ -174,7 +174,7 @@ public:
 		NUM_LAUNCHER_TYPES
 	};
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 

@@ -167,7 +167,7 @@ public:
 
 	void SetCurrentTime( double current_time ) { m_CurrentTime = current_time; }
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 /**
@@ -207,7 +207,7 @@ public:
 		ar & m_fAnglePerPitchAccel & m_fAnglePerRollAccel;
 	}
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 
@@ -254,7 +254,7 @@ public:
 		ar & m_fAnglePerYawAccel & m_Type;
 	}
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 
@@ -302,7 +302,7 @@ public:
 
 	void SetRotationAngle( float angle ) { m_fCurrentRotationAngle = angle; }
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 
@@ -478,7 +478,7 @@ public:
 
 	boost::shared_ptr<MeshBoneController_Cover> GetComponent( const std::string& component_name );
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 
@@ -500,7 +500,7 @@ public:
 //		ar & m_RotationDirection;
 	}
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 } // namespace amorphous

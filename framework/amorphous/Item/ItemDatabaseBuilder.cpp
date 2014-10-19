@@ -31,18 +31,18 @@ using std::vector;
 using boost::shared_ptr;
 
 
-CItemDatabaseBuilder::CItemDatabaseBuilder()
+ItemDatabaseBuilder::ItemDatabaseBuilder()
 {
 }
 
 
-CItemDatabaseBuilder::~CItemDatabaseBuilder()
+ItemDatabaseBuilder::~ItemDatabaseBuilder()
 {
 	SafeDeleteVector( m_vecpItem );
 }
 
 
-void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner, GameItem* pItem )
+void ItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner, GameItem* pItem )
 {
 	LOG_PRINT_ERROR( " Removed." );
 /*
@@ -70,7 +70,7 @@ void CItemDatabaseBuilder::LoadGameItemSharedProperty( CTextFileScanner& scanner
 }
 
 
-void CItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* pWeapon )
+void ItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* pWeapon )
 {
 	LoadGameItemSharedProperty( scanner, pWeapon );
 
@@ -93,7 +93,7 @@ void CItemDatabaseBuilder::LoadFirearms( CTextFileScanner& scanner, CGI_Weapon* 
 }
 
 
-void CItemDatabaseBuilder::LoadGravityGun( CTextFileScanner& scanner, GravityGun* pGravityGun )
+void ItemDatabaseBuilder::LoadGravityGun( CTextFileScanner& scanner, GravityGun* pGravityGun )
 {
 	LoadGameItemSharedProperty( scanner, pGravityGun );
 
@@ -102,7 +102,7 @@ void CItemDatabaseBuilder::LoadGravityGun( CTextFileScanner& scanner, GravityGun
 }
 
 
-void CItemDatabaseBuilder::LoadAmmunition( CTextFileScanner& scanner, CGI_Ammunition* pAmmo )
+void ItemDatabaseBuilder::LoadAmmunition( CTextFileScanner& scanner, CGI_Ammunition* pAmmo )
 {
 	LoadGameItemSharedProperty( scanner, pAmmo );
 
@@ -126,7 +126,7 @@ void CItemDatabaseBuilder::LoadAmmunition( CTextFileScanner& scanner, CGI_Ammuni
 }
 
 
-void CItemDatabaseBuilder::LoadBinocular( CTextFileScanner& scanner, Binocular* pBinocular )
+void ItemDatabaseBuilder::LoadBinocular( CTextFileScanner& scanner, Binocular* pBinocular )
 {
 	LoadGameItemSharedProperty( scanner, pBinocular );
 
@@ -134,7 +134,7 @@ void CItemDatabaseBuilder::LoadBinocular( CTextFileScanner& scanner, Binocular* 
 }
 
 
-void CItemDatabaseBuilder::LoadNightVision( CTextFileScanner& scanner, CGI_NightVision* pNV )
+void ItemDatabaseBuilder::LoadNightVision( CTextFileScanner& scanner, CGI_NightVision* pNV )
 {
 	LoadGameItemSharedProperty( scanner, pNV );
 
@@ -149,7 +149,7 @@ void CItemDatabaseBuilder::LoadNightVision( CTextFileScanner& scanner, CGI_Night
 }
 
 
-void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, MissileLauncher* pItem )
+void ItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, MissileLauncher* pItem )
 {
 	LoadFirearms( scanner, pItem );
 //	LoadGameItemSharedProperty( scanner, pItem );
@@ -173,7 +173,7 @@ void CItemDatabaseBuilder::LoadMissileLauncher( CTextFileScanner& scanner, Missi
 	}
 }
 
-void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft,
+void ItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft,
 															 CTextFileScanner& scanner,
 						                                     vector< shared_ptr<MeshBoneController_AircraftBase> >& vecpMeshController )
 {
@@ -239,7 +239,7 @@ void CItemDatabaseBuilder::AddMeshBoneControllerForAircraft( CGI_Aircraft& aircr
 }
 
 
-void CItemDatabaseBuilder::LoadAircraft( CTextFileScanner& scanner, CGI_Aircraft* pItem )
+void ItemDatabaseBuilder::LoadAircraft( CTextFileScanner& scanner, CGI_Aircraft* pItem )
 {
 	LoadGameItemSharedProperty( scanner, pItem );
 
@@ -332,7 +332,7 @@ void CItemDatabaseBuilder::LoadAircraft( CTextFileScanner& scanner, CGI_Aircraft
 }
 
 
-bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
+bool ItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 {
 	CTextFileScanner scanner;
 
@@ -428,7 +428,7 @@ bool CItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 	return true;
 }
 
-void CItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
+void ItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
 {
 	vector<XMLNode> vecItemNodeReader = items_node_reader.GetImmediateChildren( "Item" );
 
@@ -459,7 +459,7 @@ void CItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
 }
 
 
-bool CItemDatabaseBuilder::LoadItemsFromXMLFile( const string& xml_file_pathname )
+bool ItemDatabaseBuilder::LoadItemsFromXMLFile( const string& xml_file_pathname )
 {
 	using namespace boost::filesystem;
 
@@ -494,7 +494,7 @@ bool CItemDatabaseBuilder::LoadItemsFromXMLFile( const string& xml_file_pathname
 }
 
 
-bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string& filepath, const std::string& output_filepath )
+bool ItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string& filepath, const std::string& output_filepath )
 {
 	m_RootXMLFilePathname = filepath;
 
@@ -509,7 +509,7 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string&
 }
 
 
-int CItemDatabaseBuilder::GetItemID( const string& class_name )
+int ItemDatabaseBuilder::GetItemID( const string& class_name )
 {
 	if( class_name == "Cartridge" )              return GameItem::ID_CARTRIDGE;
 	else if( class_name == "Magazine" )          return GameItem::ID_MAGAZINE;
@@ -538,7 +538,7 @@ int CItemDatabaseBuilder::GetItemID( const string& class_name )
 }	
 
 
-bool CItemDatabaseBuilder::OutputDatabaseFile( const std::string output_filename )
+bool ItemDatabaseBuilder::OutputDatabaseFile( const std::string output_filename )
 {
 ///	string strBodyFilename;
 ///	CFileNameOperation::GetBodyFilename( strBodyFilename, output_filename );
@@ -551,7 +551,7 @@ bool CItemDatabaseBuilder::OutputDatabaseFile( const std::string output_filename
 }
 
 
-bool CItemDatabaseBuilder::OutputSingleDBFile( const string& strDBFilename )
+bool ItemDatabaseBuilder::OutputSingleDBFile( const string& strDBFilename )
 {
 	CBinaryDatabase<string> m_ItemDB;
 
@@ -576,7 +576,7 @@ bool CItemDatabaseBuilder::OutputSingleDBFile( const string& strDBFilename )
 }
 
 
-bool CItemDatabaseBuilder::CreateItemDatabaseFile( const string& src_filename )
+bool ItemDatabaseBuilder::CreateItemDatabaseFile( const string& src_filename )
 {
 	vector<string> input_filename_list;
 	string input_filename;
@@ -636,7 +636,7 @@ bool CItemDatabaseBuilder::CreateItemDatabaseFile( const string& src_filename )
 }
 
 /*
-bool CItemDatabaseBuilder::OutputSeparateFiles( const string& strDBFilename )
+bool ItemDatabaseBuilder::OutputSeparateFiles( const string& strDBFilename )
 {	
 //	CBinaryArchive_Output archive( strDatabaseFilename.c_str() );
 

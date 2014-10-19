@@ -125,7 +125,7 @@ public:
 
 	/// Called right after the item is loaded (serialized in input mode) from the DB.
 	/// Added for init routines that need 'm_pMyself'.
-	/// See CItemDatabaseManager::GetItem() for details.
+	/// See ItemDatabaseManager::GetItem() for details.
 	virtual Result::Name OnLoadedFromDatabase() { return Result::SUCCESS; }
 
 	virtual void OnSelected() {}
@@ -229,9 +229,9 @@ public:
 		NUM_IDS
 	};
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 	friend class GameItemInfo;
-	friend class CItemDatabaseManager;
+	friend class ItemDatabaseManager;
 	template<class T> friend inline boost::shared_ptr<T> CreateGameItem();
 
 };

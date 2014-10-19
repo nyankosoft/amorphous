@@ -99,7 +99,7 @@ public:
 		ar & m_vecBoneControlParam;
 	}
 
-	friend class CItemDatabaseBuilder;
+	friend class ItemDatabaseBuilder;
 };
 
 } // namespace amorphous

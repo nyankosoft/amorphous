@@ -143,15 +143,15 @@ void ArmedVehicle::CTurretHolder::Serialize( IArchive& ar, const unsigned int ve
 
 void ArmedVehicle::Init()
 {
-	m_pRadar = ItemDatabaseManager().GetItem<Radar>( m_RadarName, 1 );
+	m_pRadar = GetItemDatabaseManager().GetItem<Radar>( m_RadarName, 1 );
 
-	m_pLandVehicleItem = ItemDatabaseManager().GetItem<LandVehicle>( m_LandVehicleName, 1 );
+	m_pLandVehicleItem = GetItemDatabaseManager().GetItem<LandVehicle>( m_LandVehicleName, 1 );
 	m_pLandVehicleItem->SetOwner( m_pMyself.lock() );
 
 	for( size_t i=0; i<m_vecTurret.size(); i++ )
 	{
 		m_vecTurret[i].pTurret
-			= ItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
+			= GetItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
 		if( m_vecTurret[i].pTurret )
 		{
 			m_vecTurret[i].pTurret->SetOwner( m_pMyself.lock() );
@@ -304,7 +304,7 @@ void ArmedVehicle::LoadFromXMLNode( XMLNode& reader )
 	for( size_t i=0; i<vecTurret.size(); i++ )
 	{
 		m_vecTurret[i].TurretName = vecTurret[i].GetChild( "Name" ).GetTextContent();
-//		m_vecTurret[i].pTurret = ItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
+//		m_vecTurret[i].pTurret = GetItemDatabaseManager().GetItem<CRotatableTurret>( m_vecTurret[i].TurretName, 1 );
 //		if( !m_vecTurret[i].pTurret )
 //			continue;
 

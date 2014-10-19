@@ -188,7 +188,7 @@ int CSinglePlayerInfo::SupplyItem( const char *pcItemName, const int iSupplyQuan
 	if( i == num_items )
 	{
 		// a new item - needs to be copied from the item database
-		shared_ptr<GameItem> pItem = ItemDatabaseManager().GetItem<GameItem>( pcItemName, iSupplyQuantity );
+		shared_ptr<GameItem> pItem = GetItemDatabaseManager().GetItem<GameItem>( pcItemName, iSupplyQuantity );
 		if( !pItem /*|| !(pItem->GetTypeFlag() & GameItem::TYPE_AMMO)*/ )
 			return 0;	// the item was not found in the database
 

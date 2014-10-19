@@ -259,9 +259,9 @@ bool GameApplicationBase::InitBase()
 	LOG_PRINT( " Physics engine initialization: " + string(phys_init ? "[  OK  ]" : "[FAILED]") );
 
 	// update & load the item database
-//	ItemDatabaseManager().Update( "..." );
-	ItemDatabaseManager().Update( "../resources/items/items.xml", "./Item/item.gid" );
-	ItemDatabaseManager().LoadFromFile( "./Item/item.gid" );
+//	GetItemDatabaseManager().Update( "..." );
+	GetItemDatabaseManager().Update( "../resources/items/items.xml", "./Item/item.gid" );
+	GetItemDatabaseManager().LoadFromFile( "./Item/item.gid" );
 
 	LOG_PRINT( " - Loaded the item database." );
 

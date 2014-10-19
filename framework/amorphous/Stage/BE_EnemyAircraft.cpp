@@ -488,7 +488,7 @@ void CBE_EnemyAircraft::AddExtraData()
 
 	ex.m_bInUse = true;
 
-	shared_ptr<CGI_Aircraft> pItem = ItemDatabaseManager().GetItem<CGI_Aircraft>( m_strAircraftItemName, 1 );
+	shared_ptr<CGI_Aircraft> pItem = GetItemDatabaseManager().GetItem<CGI_Aircraft>( m_strAircraftItemName, 1 );
 
 	if( !pItem )
 	{
