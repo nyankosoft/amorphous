@@ -12,6 +12,8 @@ namespace amorphous
 
 class BoostPTreeXMLNode : public XMLNodeImpl
 {
+	std::string m_NodeName;
+
 	boost::property_tree::ptree m_PropertyTree;
 
 public:
@@ -69,8 +71,7 @@ public:
 
 inline std::string BoostPTreeXMLNode::GetName()
 {
-	return std::string();
-//	return m_NodeName;
+	return m_NodeName;
 }
 
 
@@ -95,17 +96,19 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren( const std::
 {
 	std::vector<XMLNode> children;
 
-//	if( !m_pNode )
-//		return children;
-//
-//	std::vector<xercesc::DOMNode *> vecpChild = GetImmediateChildNodes( m_pNode, name );
-//
-//	const size_t num = vecpChild.size();
-//	children.reserve( num );
-//	for( size_t i=0; i<num; i++ )
-//	{
-//		children.push_back( BoostPTreeXMLNode( vecpChild[i] ) );
-//	}
+	for( auto itr = m_PropertyTree.begin(); itr != m_PropertyTree.end(); itr++ )
+	{
+		std::string node_name = itr->first;
+		if( node_name != name )
+			continue;
+
+		boost::shared_ptr<BoostPTreeXMLNode> pChild( new BoostPTreeXMLNode() );
+		pChild->m_NodeName     = itr->first;
+		pChild->m_PropertyTree = itr->second;
+		XMLNode node( pChild );
+
+		children.push_back( node );
+	}
 
 	return children;
 }
@@ -115,19 +118,15 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren()
 {
 	std::vector<XMLNode> children;
 
-//	if( !m_pNode )
-//		return children;
-//
-//	xercesc::DOMNodeList *pNodeList = m_pNode->getChildNodes();
-//
-//	if( !pNodeList )
-//		return children;
-//
-//	const size_t num = pNodeList->getLength();
-//	for( size_t i=0; i<num; i++ )
-//	{
-//		children.push_back( BoostPTreeXMLNode( pNodeList->item((XMLSize_t)i) ) );
-//	}
+	for( auto itr = m_PropertyTree.begin(); itr != m_PropertyTree.end(); itr++ )
+	{
+		boost::shared_ptr<BoostPTreeXMLNode> pChild( new BoostPTreeXMLNode() );
+		pChild->m_NodeName     = itr->first;
+		pChild->m_PropertyTree = itr->second;
+		XMLNode node( pChild );
+
+		children.push_back( node );
+	}
 
 	return children;
 }

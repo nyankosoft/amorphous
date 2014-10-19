@@ -33,6 +33,7 @@ public:
 		{
 			boost::shared_ptr<BoostPTreeXMLNode> pImpl( new BoostPTreeXMLNode );
 //			boost::property_tree::ptree child = m_PropertyTree.get_child( itr->first );
+			pImpl->m_NodeName = itr->first;
 			pImpl->m_PropertyTree = m_PropertyTree.get_child( itr->first );
 			XMLNode node( pImpl );
 			return node;
