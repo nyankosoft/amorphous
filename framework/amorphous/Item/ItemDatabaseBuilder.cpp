@@ -428,34 +428,39 @@ bool ItemDatabaseBuilder::LoadItemsFromTextFile( const std::string& filepath )
 	return true;
 }
 
-void ItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
-{
-	vector<XMLNode> vecItemNodeReader = items_node_reader.GetImmediateChildren( "Item" );
 
+void ItemDatabaseBuilder::LoadItem( XMLNode& items_node )
+{
 	GameItemObjectFactory factory;
 	string classname;
-	for( size_t i=0; i<vecItemNodeReader.size(); i++ )
+
+	items_node.GetChildElementTextContent( "ClassName", classname );
+
+	int item_id = GetItemID( classname );
+
+	GameItem *pObject = factory.CreateGameItem( item_id );
+
+	if( !pObject )
+		return;
+
+	m_vecpItem.push_back( pObject );
+	m_vecpItem.back()->LoadFromXMLNode( items_node );
+}
+
+
+void ItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
+{
+	vector<XMLNode> item_nodes = items_node_reader.GetImmediateChildren( "Item" );
+
+	for( size_t i=0; i<item_nodes.size(); i++ )
 	{
-		XMLNode item_node_reader = vecItemNodeReader[i];
-
-		classname.clear();
-		item_node_reader.GetChildElementTextContent( "ClassName", classname );
-
-		int id = GetItemID( classname );
-
-		GameItem *pObject = factory.CreateGameItem( id );
-
-		if( !pObject )
-			continue;
-
-		m_vecpItem.push_back( pObject );
-		m_vecpItem.back()->LoadFromXMLNode( item_node_reader );
+		LoadItem( item_nodes[i] );
 	}
 
 	// recursively load the items from the child <Items> nodes
-	vector<XMLNode> vecItemNodesReader = items_node_reader.GetImmediateChildren( "Items" );
-	for( size_t i=0; i<vecItemNodesReader.size(); i++ )
-		LoadItems( vecItemNodesReader[i] );
+	vector<XMLNode> items_nodes = items_node_reader.GetImmediateChildren( "Items" );
+	for( size_t i=0; i<items_nodes.size(); i++ )
+		LoadItems( items_nodes[i] );
 }
 
 
@@ -470,7 +475,7 @@ bool ItemDatabaseBuilder::LoadItemsFromXMLFile( const string& xml_file_pathname 
 	if( !pDoc )
 		return false;
 
-	// The root node is supposed to be named "Root"
+	// The root node is supposed to be named either "Root" or "Items".
 	XMLNode root_node = pDoc->GetRootNode();
 
 	vector<XMLNode> children = root_node.GetImmediateChildren();
@@ -483,6 +488,10 @@ bool ItemDatabaseBuilder::LoadItemsFromXMLFile( const string& xml_file_pathname 
 		{
 			string relative_path = children[i].GetAttributeText("relative_path");
 			LoadItemsFromXMLFile( path(parent_path/relative_path).string() );
+		}
+		else if( node_name == "Item" )
+		{
+			LoadItem( children[i] );
 		}
 		else if( node_name == "Items" )
 		{
