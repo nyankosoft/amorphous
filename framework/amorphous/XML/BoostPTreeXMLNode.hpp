@@ -134,15 +134,12 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren()
 
 inline bool BoostPTreeXMLNode::GetChildElementTextContent( const std::string& child_element_path, std::string& dest )
 {
-	return false;
-//	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
-//	if( pNode )
-//	{
-//		dest = to_string(pNode->getTextContent());
-//		return true;
-//	}
-//	else
-//		return false;
+	if( m_PropertyTree.find( child_element_path ) == m_PropertyTree.not_found() )
+		return false;
+
+	dest = m_PropertyTree.get( child_element_path, std::string("") );
+
+	return true;
 }
 
 
