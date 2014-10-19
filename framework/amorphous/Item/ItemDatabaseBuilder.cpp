@@ -20,6 +20,7 @@
 #include "Support/SafeDeleteVector.hpp"
 #include "Support/lfs.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
+#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -458,54 +459,46 @@ void CItemDatabaseBuilder::LoadItems( XMLNode& items_node_reader )
 }
 
 
-bool CItemDatabaseBuilder::LoadFromXMLFile( const string& filepath )
+bool CItemDatabaseBuilder::LoadItemsFromXMLFile( const string& xml_file_pathname )
 {
-	lfs::dir_stack dirstk( lfs::get_parent_path(filepath) );
-	string base_filepath = lfs::get_leaf(filepath);
+	using namespace boost::filesystem;
 
-	shared_ptr<XMLDocumentBase> pDoc
-//		= CreateXMLDocument( filepath );
-		= CreateXMLDocument( base_filepath );
+	path parent_path = path(m_RootXMLFilePathname).parent_path();
+
+	shared_ptr<XMLDocumentBase> pDoc = CreateXMLDocument( xml_file_pathname );
 
 	if( !pDoc )
-	{
-		dirstk.pop_and_chdir();
 		return false;
-	}
 
-	XMLNode root_node_reader = pDoc->GetRootNode();
+	// The root node is supposed to be named "Root"
+	XMLNode root_node = pDoc->GetRootNode();
 
-	// The root node may contain <Item> nodes
-	LoadItems( root_node_reader );
-
-//	XMLNode items_node = root_node_reader.GetChild( "Items" );
-	vector<XMLNode> vecItemsNodes = root_node_reader.GetImmediateChildren( "Items" );
-
-//	DOMNodeList *pChildNodesList = root_node_reader.GetDOMNode()->getChildNodes();
-//	XMLSize_t num_children = pChildNodesList->getLength();
-	vector<XMLNode> children = root_node_reader.GetImmediateChildren();
+	vector<XMLNode> children = root_node.GetImmediateChildren();
 	const size_t num_children = children.size();
 	for( size_t i=0; i<num_children; i++ )
 	{
-//		string node_name = to_string( pChildNodesList->item(i)->getNodeName() );
-//		string text_content = to_string( pChildNodesList->item(i)->getTextContent() );
-		string node_name    = children[i].GetName();
-		string text_content = children[i].GetTextContent();
+		string node_name = children[i].GetName();
+
+		if( node_name == "Include" )
+		{
+			string relative_path = children[i].GetAttributeText("relative_path");
+			LoadItemsFromXMLFile( path(parent_path/relative_path).string() );
+		}
+		else if( node_name == "Items" )
+		{
+			LoadItems( children[i] );
+		}
 	}
 
-	for( size_t i=0; i<vecItemsNodes.size(); i++ )
-	{
-		LoadItems( vecItemsNodes[i] );
-	}
-
-	dirstk.pop_and_chdir();
 	return true;
 }
 
 
 bool CItemDatabaseBuilder::CreateItemDatabaseFileFromXMLFile( const std::string& filepath, const std::string& output_filepath )
 {
-	bool res = LoadFromXMLFile( filepath );
+	m_RootXMLFilePathname = filepath;
+
+	bool res = LoadItemsFromXMLFile( filepath );
 	if( !res )
 	{
 		LOG_PRINT_ERROR( "Failed to load game items data from the xml file: " + filepath );

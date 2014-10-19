@@ -27,6 +27,8 @@ class MeshBoneController_AircraftBase;
 
 class CItemDatabaseBuilder
 {
+	std::string m_RootXMLFilePathname;
+
 	std::vector<GameItem *> m_vecpItem;
 
 	/// stores the path for the item list file and item files
@@ -58,7 +60,7 @@ class CItemDatabaseBuilder
 
 	void LoadItems( XMLNode& items_node_reader );
 
-	bool LoadFromXMLFile( const std::string& filepath );
+	bool LoadItemsFromXMLFile( const std::string& xml_file_pathname );
 
 public:
 
