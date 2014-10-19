@@ -3,6 +3,7 @@
 
 
 #include "array2d.hpp"
+#include "Log/DefaultLog.hpp"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -18,13 +19,13 @@ namespace amorphous
 #endif
 
 
-class CFreeTypeLibrary
+class FreeTypeLibrary
 {
 	FT_Library m_FTLibrary;
 
 public:
 
-	CFreeTypeLibrary()
+	FreeTypeLibrary()
 	{
 		FT_Error error = FT_Init_FreeType( &m_FTLibrary );
 
@@ -34,7 +35,7 @@ public:
 		}
 	}
 
-	~CFreeTypeLibrary()
+	~FreeTypeLibrary()
 	{
 		FT_Error error = FT_Done_FreeType( m_FTLibrary );
 
@@ -45,6 +46,14 @@ public:
 	}
 
 	FT_Library GetFTLibrary() { return m_FTLibrary; }
+
+	void LogLibraryVersion()
+	{
+		FT_Int major = 0, minor = 0, patch = 0;
+		FT_Library_Version( m_FTLibrary, &major, &minor, &patch );
+
+		LOG_PRINTF(( "FreeType version: %d.%d.%d", major, minor, patch ));
+	}
 };
 
 

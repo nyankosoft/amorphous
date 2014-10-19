@@ -219,7 +219,7 @@ bool TrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_b
 
 	const string& ttf_filepath = m_FontFilepath;
 
-	CFreeTypeLibrary ftlib;
+	FreeTypeLibrary ftlib;
 
 	FT_Face face;
 

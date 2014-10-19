@@ -22,7 +22,7 @@ private:
 
 //	boost::shared_ptr<FontTextureLoader> m_pTextureLoader;
 
-	boost::shared_ptr<CFreeTypeLibrary> m_pFreeTypeLibrary;
+	boost::shared_ptr<FreeTypeLibrary> m_pFreeTypeLibrary;
 
 	FT_Face m_Face;
 

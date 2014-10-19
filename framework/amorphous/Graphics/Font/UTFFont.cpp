@@ -112,7 +112,7 @@ void UTFFont::InitUTFFontInternal()
 
 //	m_pTextureLoader = shared_ptr<FontTextureLoader>( new FontTextureLoader(this) );
 
-	m_pFreeTypeLibrary.reset( new CFreeTypeLibrary );
+	m_pFreeTypeLibrary.reset( new FreeTypeLibrary );
 
 	m_Face = NULL;
 }
@@ -271,7 +271,7 @@ bool UTFFont::InitFont( const std::string& font_file_path, int font_pt, int reso
 
 	string dot_and_3char_suffix = font_file_path.substr( font_file_path.length() - 4 );
 
-	CFreeTypeLibrary& ftlib = *m_pFreeTypeLibrary;
+	FreeTypeLibrary& ftlib = *m_pFreeTypeLibrary;
 
 	FT_Face& face = m_Face;
 
