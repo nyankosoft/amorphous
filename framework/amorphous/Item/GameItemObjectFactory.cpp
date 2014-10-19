@@ -15,6 +15,7 @@
 #include "Firearm.hpp"
 #include "Clothing.hpp"
 #include "SkeletalCharacter.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
@@ -48,7 +49,9 @@ GameItem *GameItemObjectFactory::CreateGameItem( const unsigned int id )
 	case GameItem::ID_CLOTHING:           return new Clothing;
 	case GameItem::ID_SKELETAL_CHARACTER: return new SkeletalCharacter;
 //	case GameItem::ID_:				return new CGI_;
-	default:	return NULL;
+	default:
+		LOG_PRINT_ERROR( "An unsupported item ID: " + to_string(id) );
+		return NULL;
 	}
 }
 
