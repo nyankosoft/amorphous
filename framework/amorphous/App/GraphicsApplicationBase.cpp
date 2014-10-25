@@ -152,22 +152,10 @@ void GraphicsApplicationBase::Run()
 {
 	const std::string app_title = GetApplicationTitle();
 
-//	g_CmdLine = lpCmdLine;
-/*
-	const string iwd = lfs::get_cwd(); // initial working directory
-	if( iwd.substr( iwd.length() - 4 ) != "/_App"
-	 && iwd.substr( iwd.length() - 4 ) != "\\_App" )
-	{
-		// working directory is not set to the directory which contains the application binary
-//		chdir( "../../../_App" );
-		chdir( "../app" );
-	}*/
-
-/*
 	// init xml parser
-	// - released when leaving WinMain()
+	// - released when leaving the scope
 //	CXMLParserInitReleaseManager parser_mgr;
-*/
+
 
 	string graphics_library_name = "OpenGL";
 	ParamLoader param_loader( "config" );
@@ -184,9 +172,6 @@ void GraphicsApplicationBase::Run()
 	InitHTMLLog( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
 
 	InitFreeImage();
-
-	// Create the instance of the test class
-//	g_pTest = boost::shared_ptr<CGraphicsTestBase>( CreateTestInstance() );
 
 	unsigned int res_x = 0, res_y = 0;
 	GetCurrentPrimaryDisplayResolution( res_x, res_y );
