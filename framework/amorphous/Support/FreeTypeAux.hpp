@@ -83,6 +83,13 @@ public:
 };
 
 
+inline void LogFreeTypeLibraryVersion()
+{
+	FreeTypeLibrary ft_library;
+	ft_library.LogLibraryVersion();
+}
+
+
 template<typename BitmapCalc>
 inline void DrawBitmap_Gen( FT_Bitmap *bitmap, int left, int top, array2d<U8>& dest_buffer )
 {
