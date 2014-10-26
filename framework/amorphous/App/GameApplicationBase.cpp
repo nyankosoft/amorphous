@@ -9,6 +9,7 @@
 #include "Support/DebugOutput.hpp"
 #include "Support/Profile.hpp"
 #include "Support/BitmapImage.hpp"
+#include "Support/FreeTypeAux.hpp"
 #include "XML/XMLDocumentBase.hpp"
 #include "Graphics/GraphicsResourceManager.hpp"
 #include "Graphics/AsyncResourceLoader.hpp"
@@ -79,7 +80,6 @@ GameApplicationBase::GameApplicationBase()
 {
 	m_pTaskManager = NULL;
 
-	m_pDIKeyboard = NULL;
 //	m_pDIGamepad = NULL;
 
 	m_UseDefaultMouse = false;
@@ -111,7 +111,7 @@ void GameApplicationBase::Release()
 	GameTask::SetMouseInputDevice( shared_ptr<MouseInputDevice>() );
 
 	m_pMouse.reset();
-	SafeDelete( m_pDIKeyboard );
+	m_pDIKeyboard.reset();
 //	SafeDelete( m_pDIGamepad );
 
 	GetInputHub().RemoveInputHandler( 0, m_pGlobalInputHandler.get() );
@@ -224,7 +224,7 @@ bool GameApplicationBase::InitBase()
 	LOG_PRINT( " - Initialized the direct input mouse device." );
 
 	// initialize keyboard (DirectInput)
-	m_pDIKeyboard = CreateKeyboardInputDevice();
+	m_pDIKeyboard.reset( CreateKeyboardInputDevice() );
 	m_pDIKeyboard->Init();
 
 //	LOG_PRINT( " - Initialized the direct input keyboard device." );
@@ -264,6 +264,13 @@ bool GameApplicationBase::InitBase()
 	GetItemDatabaseManager().LoadFromFile( "./Item/item.gid" );
 
 	LOG_PRINT( " - Loaded the item database." );
+
+
+	//
+	// Log information on other libraries
+	//
+
+	LogFreeTypeLibraryVersion();
 
 	try
 	{

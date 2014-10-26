@@ -40,8 +40,10 @@ extern GameApplicationBase *g_pGameAppBase;
 class GameApplicationBase : public ApplicationBase
 {
 	boost::shared_ptr<MouseInputDevice> m_pMouse;
-	KeyboardInputDevice *m_pDIKeyboard;
-	DirectInputGamepad *m_pDIGamepad;
+
+	boost::shared_ptr<KeyboardInputDevice> m_pDIKeyboard;
+
+//	DirectInputGamepad *m_pDIGamepad;
 
 protected:
 
