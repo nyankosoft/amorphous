@@ -201,6 +201,9 @@ void GraphicsApplicationBase::Run()
 	GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 	GetGameWindowManager().CreateGameWindow( w, h, mode, app_title );
 
+	m_WindowedModeResolution.width  = w;
+	m_WindowedModeResolution.height = h;
+
 	try
 	{
 		if( Init() != 0 )
@@ -223,6 +226,53 @@ void GraphicsApplicationBase::Run()
 	m_pFont = CreateDefaultBuiltinFont();
 
 	MainLoop( this );
+}
+
+
+void GraphicsApplicationBase::HandleInput( const InputData& input )
+{
+	switch( input.iGICode )
+	{
+	case GIC_F11:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			ToggleScreenModes();
+		}
+		break;
+	default:
+		break;
+	}
+
+}
+
+
+void GraphicsApplicationBase::ToggleScreenModes()
+{
+	if( GetGameWindowManager().IsFullscreen() )
+	{
+		if( m_WindowedModeResolution.width == 0 || m_WindowedModeResolution.height == 0 )
+			return;
+
+		// Changed to the windowed mode
+		GetGameWindowManager().ChangeScreenSize( (int)m_WindowedModeResolution.width, (int)m_WindowedModeResolution.height, false );
+	}
+	else
+	{
+		m_WindowedModeResolution.width  = GetGameWindowManager().GetScreenWidth();
+		m_WindowedModeResolution.height = GetGameWindowManager().GetScreenHeight();
+
+		unsigned int width = 0, height = 0;
+
+		GetCurrentPrimaryDisplayResolution( width, height );
+
+		if( width == 0 || height == 0 )
+			return;
+
+		LOG_PRINTF(( "Switching to the fullscreen mode (%dx%d)", width, height ));
+
+		// Changed to the fullscreen mode
+		GetGameWindowManager().ChangeScreenSize( (int)width, (int)height, true );
+	}
 }
 
 

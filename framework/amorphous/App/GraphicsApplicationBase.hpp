@@ -4,6 +4,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "ApplicationBase.hpp"
+#include "amorphous/3DMath/Rectangular.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/FloatRGBAColor.hpp"
@@ -31,6 +32,8 @@ class GraphicsApplicationBase : public ApplicationBase
 
 	SFloatRGBAColor m_BackgroundColor;
 
+	SRectangular m_WindowedModeResolution;
+
 private:
 
 //	void Execute();
@@ -50,9 +53,9 @@ private:
 
 	virtual void Update( float dt ) {}
 
-	virtual void HandleInput( const InputData& input ) {}
-
 	void RenderBase();
+
+	void ToggleScreenModes();
 
 protected:
 
@@ -63,6 +66,8 @@ protected:
 	Camera& Camera() { return m_Camera; }
 
 	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
+
+	virtual void HandleInput( const InputData& input );
 
 public:
 
