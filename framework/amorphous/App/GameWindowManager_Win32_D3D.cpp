@@ -146,17 +146,30 @@ void GameWindowManager_Win32_D3D::ChangeScreenSize( int iNewScreenWidth,
 	// release all the graphic resources ( textures, vertex buffers, mesh models, and so on )
 	GraphicsComponentCollector::Get()->ReleaseGraphicsResources();
 
-	if( !DIRECT3D9.ResetD3DDevice( m_hWnd, iNewScreenWidth, iNewScreenHeight, bFullScreen ) )
+	bool is_new_mode_fullscreen = false;
+	bool res = DIRECT3D9.ResetD3DDevice( m_hWnd, iNewScreenWidth, iNewScreenHeight, bFullScreen );
+	if( res )
 	{
+		is_new_mode_fullscreen = bFullScreen;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( "Failed to change the screen resolution / mode." );
+
 		// the requested resolution is not available - restore the current settings
 		bool bCurrentModeFullScreen = (m_CurrentScreenMode == GameWindow::FULLSCREEN) ? true : false;
-		DIRECT3D9.ResetD3DDevice( m_hWnd, m_iCurrentScreenWidth, m_iCurrentScreenHeight, bCurrentModeFullScreen );
+		res = DIRECT3D9.ResetD3DDevice( m_hWnd, m_iCurrentScreenWidth, m_iCurrentScreenHeight, bCurrentModeFullScreen );
+
+		if( !res )
+			LOG_PRINT_ERROR( "Failed to return to the previous screen settings." );
+
+		is_new_mode_fullscreen = bCurrentModeFullScreen;
 	}
 
 	// update the current resolution and the screen mode
 	m_iCurrentScreenWidth  = iNewScreenWidth;
 	m_iCurrentScreenHeight = iNewScreenHeight;
-	m_CurrentScreenMode   = GameWindow::WINDOWED; // TODO: use the new screen mode
+	m_CurrentScreenMode    = is_new_mode_fullscreen ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
 
 
 	GraphicsParameters param;
