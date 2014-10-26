@@ -791,6 +791,7 @@ void MeshViewer::HandleInput( const InputData& input )
 		break;
 
 	default:
+		GraphicsApplicationBase::HandleInput( input );
 		break;
 	}
 }
