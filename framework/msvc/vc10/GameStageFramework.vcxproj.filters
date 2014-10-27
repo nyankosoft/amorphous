@@ -495,9 +495,6 @@
     <ClInclude Include="..\..\amorphous\GameCommon\SaveDataManager.hpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\GameCommon\ScreenShotManager.hpp">
-      <Filter>Source Files\GameCommon</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.hpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClInclude>
@@ -1203,9 +1200,6 @@
       <Filter>Source Files\GameCommon</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\GameCommon\SaveDataManager.cpp">
-      <Filter>Source Files\GameCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\GameCommon\ScreenShotManager.cpp">
       <Filter>Source Files\GameCommon</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.cpp">

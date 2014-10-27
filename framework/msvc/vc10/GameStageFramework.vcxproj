@@ -255,7 +255,6 @@
     <ClInclude Include="..\..\amorphous\GameCommon\RandomDirectionTable.hpp" />
     <ClInclude Include="..\..\amorphous\GameCommon\RangedSet.hpp" />
     <ClInclude Include="..\..\amorphous\GameCommon\SaveDataManager.hpp" />
-    <ClInclude Include="..\..\amorphous\GameCommon\ScreenShotManager.hpp" />
     <ClInclude Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\fwd.hpp" />
     <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.hpp" />
@@ -497,7 +496,6 @@
     <ClCompile Include="..\..\amorphous\GameCommon\PyModule_ShopMethods.cpp" />
     <ClCompile Include="..\..\amorphous\GameCommon\RandomDirectionTable.cpp" />
     <ClCompile Include="..\..\amorphous\GameCommon\SaveDataManager.cpp" />
-    <ClCompile Include="..\..\amorphous\GameCommon\ScreenShotManager.cpp" />
     <ClCompile Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.cpp" />
     <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.cpp" />
