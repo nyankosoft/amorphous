@@ -40,25 +40,6 @@ void ReSizeGLScene(GLsizei width, GLsizei height)		// Resize and initialize the 
 }
 
 
-// done by CGLGraphicsDevice
-/*
-int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
-{
-	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
-	glClearDepth(1.0f);									// Depth Buffer Setup
-	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
-	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-
-	glEnable(GL_TEXTURE_2D);
-	LOG_GL_ERROR( "glEnable() failed." );
-
-	return TRUE;										// Initialization Went OK
-}
-*/
-
-
 GameWindowManager_Win32_GL::GameWindowManager_Win32_GL()
 {
 	m_CurrentScreenMode = GameWindow::WINDOWED;
@@ -338,15 +319,6 @@ void GameWindowManager_Win32_GL::OnMainLoopFinished()
 
 
 /*
-void GameWindowManager_Win32_GL::SetWindowLeftTopCornerPosition( int left, int top )
-{
-	// set the position
-	// - use SWP_NOSIZE flag to ignore window size parameters
-	::SetWindowPos( m_hWnd, HWND_TOP, left, top, 0, 0, SWP_NOSIZE );
-}
-*/
-
-/*
  *		This Code Was Created By Jeff Molofee 2000
  *		A HUGE Thanks To Fredric Echols For Cleaning Up
  *		And Optimizing The Base Code, Making It More Flexible!
@@ -356,7 +328,6 @@ void GameWindowManager_Win32_GL::SetWindowLeftTopCornerPosition( int left, int t
 
 
 bool	active=TRUE;		// Window Active Flag Set To TRUE By Default
-//LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 
 
 /// Properly Kill The Window
