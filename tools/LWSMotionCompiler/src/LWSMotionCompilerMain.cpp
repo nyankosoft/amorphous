@@ -1,11 +1,11 @@
 #include "LWSMotionCompiler.hpp"
-#include "MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
-#include "XML/XMLDocumentLoader.hpp"
+#include "amorphous/MotionSynthesis/BVHMotionDatabaseCompiler.hpp"
 #include "amorphous/base.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "amorphous/Support/MiscAux.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 
 using std::string;
 using std::vector;
@@ -58,19 +58,18 @@ int main( int argc, char *argv[] )
 	path dirpath = path(filepath).parent_path();
 	string log_filename = "log_" + string(GetBuildInfo()) + "-" + path(filepath).leaf().string() + ".html";
 	path html_log_filepath = dirpath / log_filename;
-	LogOutput_HTML html_log( html_log_filepath.string() );
-	g_Log.AddLogOutput( &html_log );
+	InitHTMLLog( html_log_filepath.string() );
 
 //	shared_ptr<CMotionPrimitiveCompilerCreator> pBVHCompilerCreator( new CBVHMotionPrimitiveCompilerCreator );
 //	RegisterMotionPrimitiveCompilerCreator( pBVHCompilerCreator );
 
-	shared_ptr<CMotionPrimitiveCompilerCreator> pLWSCompilerCreator( new CLWSMotionPrimitiveCompilerCreator );
+	shared_ptr<MotionPrimitiveCompilerCreator> pLWSCompilerCreator( new CLWSMotionPrimitiveCompilerCreator );
 	RegisterMotionPrimitiveCompilerCreator( pLWSCompilerCreator );
 
 	/// init the xml parser (calls Initialize() in ctor)
-	CXMLParserInitReleaseManager xml_parser_mgr;
+//	CXMLParserInitReleaseManager xml_parser_mgr;
 
-	msynth::CMotionDatabaseBuilder mdb;
+	msynth::MotionDatabaseBuilder mdb;
 	mdb.Build( filepath );
 
 //	CLWSMotionCompiler test;

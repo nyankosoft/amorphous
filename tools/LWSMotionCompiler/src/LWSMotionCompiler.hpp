@@ -7,14 +7,14 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/filesystem.hpp>
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "MotionSynthesis/MotionDatabaseBuilder.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/MotionSynthesis/MotionDatabaseBuilder.hpp"
 
 //#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
 //#include "Graphics/MeshModel/General3DMesh.hpp"
 
-#include "LightWave/fwd.hpp"
+#include "amorphous/LightWave/fwd.hpp"
 
 using namespace amorphous;
 
@@ -46,7 +46,7 @@ public:
 };
 
 
-class CLWSMotionDatabaseCompiler : public msynth::CMotionDatabaseCompiler
+class CLWSMotionDatabaseCompiler : public msynth::MotionDatabaseCompiler
 //class CLWSMotionCompiler
 {
 //	boost::filesystem::path m_SceneFilepath;
@@ -55,7 +55,7 @@ class CLWSMotionDatabaseCompiler : public msynth::CMotionDatabaseCompiler
 
 	boost::shared_ptr<LightWaveSceneLoader> m_pScene;
 
-	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
+	boost::shared_ptr<msynth::Skeleton> m_pSkeleton;
 
 //	std::vector<CLWSMotionPrimitiveDesc> m_vecMotionPrimitiveDesc;
 
@@ -69,9 +69,9 @@ private:
 
 	void CollectKeyFrameTimes( LWS_Bone& bone, std::vector<float>& vecKeyframeTime );
 
-	void CreateKeyframe( boost::shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::CTransformNode& dest_node );
+	void CreateKeyframe( boost::shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::TransformNode& dest_node );
 
-	void CreateMotionPrimitive( msynth::CMotionPrimitiveDescGroup& desc_group, msynth::CMotionPrimitiveDesc& desc, std::vector<msynth::CKeyframe>& vecSrcKeyframe );
+	void CreateMotionPrimitive( msynth::MotionPrimitiveDescGroup& desc_group, msynth::MotionPrimitiveDesc& desc, std::vector<msynth::Keyframe>& vecSrcKeyframe );
 
 public:
 
@@ -79,7 +79,7 @@ public:
 
 	~CLWSMotionDatabaseCompiler();
 
-	void CreateMotionPrimitives( msynth::CMotionPrimitiveDescGroup& desc_group );
+	void CreateMotionPrimitives( msynth::MotionPrimitiveDescGroup& desc_group );
 
 //	void LoadMeshModel();
 
@@ -110,13 +110,13 @@ public:
 };
 */
 
-class CLWSMotionPrimitiveCompilerCreator : public msynth::CMotionPrimitiveCompilerCreator
+class CLWSMotionPrimitiveCompilerCreator : public msynth::MotionPrimitiveCompilerCreator
 {
 public:
 
 	const char *Extension() const { return "lws"; }
 
-	boost::shared_ptr<msynth::CMotionDatabaseCompiler> Create() const
+	boost::shared_ptr<msynth::MotionDatabaseCompiler> Create() const
 	{
 		boost::shared_ptr<CLWSMotionDatabaseCompiler> pCompiler( new CLWSMotionDatabaseCompiler );
 		return pCompiler;

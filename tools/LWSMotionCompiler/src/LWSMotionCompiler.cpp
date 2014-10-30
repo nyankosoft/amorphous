@@ -1,5 +1,4 @@
 #include "LWSMotionCompiler.hpp"
-#include "Platform_Win32.hpp"
 #include "amorphous/LightWave/LightWaveSceneLoader.hpp"
 #include "amorphous/MotionSynthesis/MotionPrimitive.hpp"
 #include "amorphous/Support/TextFileScanner.hpp"
@@ -79,18 +78,18 @@ void DumpTransformNodeToTextFile( FILE *fp, const CTransformNode& node )
 }
 
 
-void DumpKeyframeToTextFile( FILE *fp, CKeyframe& kf )
+void DumpKeyframeToTextFile( FILE *fp, Keyframe& kf )
 {
 	fprintf( fp, "%f.3 ", kf.GetTime() );
 	DumpTransformNodeToTextFile( fp, kf.GetRootNode() );
 }
 
 
-void DumpMotionPrimitiveToTextFile( FILE *fp, CMotionPrimitive& motion )
+void DumpMotionPrimitiveToTextFile( FILE *fp, MotionPrimitive& motion )
 {
 	fprintf( fp, "name: %s\n", motion.GetName().c_str() );
 
-	vector<CKeyframe>& keyframes = motion.GetKeyframeBuffer();
+	vector<Keyframe>& keyframes = motion.GetKeyframeBuffer();
 	const int num_keyframes = (int)keyframes.size();
 	fprintf( fp, "%d keyframes:\n", num_keyframes );
 
@@ -133,7 +132,7 @@ CLWSMotionDatabaseCompiler::~CLWSMotionDatabaseCompiler()
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGroup& desc_group )
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( MotionPrimitiveDescGroup& desc_group )
 {
 	bool scene_loaded = LoadLWSceneFile( desc_group.m_Filename );
 	if( !scene_loaded )
@@ -163,14 +162,14 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( CMotionPrimitiveDescGro
 
 	const int num_keyframes = (int)vecfKeyframeTime.size();
 
-	vector<CKeyframe> vecKeyframe;
+	vector<Keyframe> vecKeyframe;
 	vecKeyframe.resize( num_keyframes );
 
 	for( int i=0; i<num_keyframes; i++ )
 	{
 		float fTime = vecfKeyframeTime[i];//(float)i / (float)fps;
 
-		CKeyframe& dest_keyframe = vecKeyframe[i];
+		Keyframe& dest_keyframe = vecKeyframe[i];
 		dest_keyframe.SetTime( fTime );
 		CreateKeyframe( pRootBone, fTime, Matrix34Identity(), dest_keyframe.RootNode() );
 	}
@@ -227,13 +226,13 @@ void CLWSMotionDatabaseCompiler::CollectKeyFrameTimes( LWS_Bone& bone, vector<fl
 }
 
 
-// Recursively copies the bones and creates a tree which has CBone class objects as its nodes
+// Recursively copies the bones and creates a tree which has Bone class objects as its nodes
 /// \param pSrcBone [in] source from which skeletal structure is extracted
 /// \param parent_space [in]
 /// \param dest_bone [out] a destination buffer
 void CopyBones( const shared_ptr<LWS_Bone> pSrcBone,
 			    const Matrix34& parent_space,
-			    CBone& dest_bone )
+			    Bone& dest_bone )
 {
 	const string& bone_name = pSrcBone->GetBoneName();
 	Vector3 vRestPos  = pSrcBone->GetBoneRestPosition();
@@ -295,7 +294,7 @@ void CopyBones( const shared_ptr<LWS_Bone> pSrcBone,
 	for( size_t i=0; i<num_children; i++ )
 	{
 		shared_ptr<LWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
-//		CBone dest_child_bone;
+//		Bone dest_child_bone;
 //		dest_bone.AddChildBone( dest_child_bone );
 
 		// recursively copy the bones
@@ -332,30 +331,30 @@ shared_ptr<LWS_Bone> CLWSMotionDatabaseCompiler::CreateSkeleton()
 		// multiple root bones - add a root bone?
 	}
 
-	CBone root_bone;
+	Bone root_bone;
 
 	// Extract skeletal structure from the LWS data and create a skeletal structure
 	// on root_bone
 	CopyBones( pRootBone, Matrix34Identity(), root_bone );
 
-	m_pSkeleton = shared_ptr<CSkeleton>( new CSkeleton );
+	m_pSkeleton = shared_ptr<Skeleton>( new Skeleton );
 	m_pSkeleton->SetBones( root_bone );
 
 	return pRootBone;
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGroup& desc_group,
-													    CMotionPrimitiveDesc& desc,
-													    vector<CKeyframe>& vecSrcKeyframe )
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( MotionPrimitiveDescGroup& desc_group,
+													    MotionPrimitiveDesc& desc,
+													    vector<Keyframe>& vecSrcKeyframe )
 {
 	// add a new motion primitive and get the reference to it
-//	m_vecpMotionPrimitive->push_back( CMotionPrimitive( desc.m_Name ) );
-	shared_ptr<CMotionPrimitive> pMotion( new CMotionPrimitive( desc.m_Name ) );
+//	m_vecpMotionPrimitive->push_back( MotionPrimitive( desc.m_Name ) );
+	shared_ptr<MotionPrimitive> pMotion( new MotionPrimitive( desc.m_Name ) );
 	m_pvecpMotionPrimitive->push_back( pMotion );
 	desc.m_pMotionPrimitive = pMotion;
 
-	CMotionPrimitive& motion = *(m_pvecpMotionPrimitive->back());
+	MotionPrimitive& motion = *(m_pvecpMotionPrimitive->back());
 
 	if( !m_pSkeleton )
 		return;
@@ -366,7 +365,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 	motion.SetLoopedMotion( desc.m_bIsLoopMotion );
 	motion.SetStartsBoneName( desc.m_StartBoneName );
 
-	vector<CKeyframe> vecKeyframe;
+	vector<Keyframe> vecKeyframe;
 	vecKeyframe.resize(0);
 
 	const int fps = m_pScene ? m_pScene->GetSceneInfo().m_FramesPerSecond : 30;
@@ -391,7 +390,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 			break;
 	}
 
-	CKeyframe start_keyframe;
+	Keyframe start_keyframe;
 	if( i == num_src_keyframes )
 		start_keyframe = vecSrcKeyframe.back();
 	else if( fabs( vecSrcKeyframe[i].GetTime() - fStartTime ) < 0.001 )
@@ -399,7 +398,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 	else
 	{
 		// need to interpolate the keyframes before and after desc.m_StartFrame
-		CMotionPrimitive motion;
+		MotionPrimitive motion;
 		motion.AddKeyframe( 
 		start_keyframe = ;
 	}
@@ -422,21 +421,21 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 	if( vecKeyframe.empty() )
 		return;
 
-	CMotionPrimitive m_SourceMotion;
+	MotionPrimitive m_SourceMotion;
 	for( int i=0; i<num_src_keyframes; i++ )
 		m_SourceMotion.InsertKeyframe( vecSrcKeyframe[i] );
 
 	if( 0.001 < fabs( vecKeyframe.front().GetTime() - fStartTime ) )
 	{
 		// Need to insert an interpolated keyframe at the beginning
-		vecKeyframe.insert( vecKeyframe.begin(), CKeyframe(fStartTime) );
+		vecKeyframe.insert( vecKeyframe.begin(), Keyframe(fStartTime) );
 		m_SourceMotion.GetInterpolatedKeyframe( vecKeyframe.front(), fStartTime );
 	}
 
 	if( 0.001 < fabs( vecKeyframe.front().GetTime() - fEndTime ) )
 	{
 		// Need to insert an interpolated keyframe at the end
-		CKeyframe end_keyframe( fEndTime );
+		Keyframe end_keyframe( fEndTime );
 		Result::Name res = m_SourceMotion.GetInterpolatedKeyframe( end_keyframe, fEndTime );
 		if( res == Result::SUCCESS )
 			vecKeyframe.push_back( end_keyframe );
@@ -457,7 +456,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 		Vector3 vBasePosH = root_pose.vPosition;
 		vBasePosH.y = 0;
 
-		BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
+		BOOST_FOREACH( Keyframe& keyframe, vecKeyframe )
 		{
 			root_pose = keyframe.GetRootPose();
 			root_pose.vPosition = root_pose.vPosition - vBasePosH;
@@ -470,7 +469,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive( CMotionPrimitiveDescGrou
 
 	if( 0.0001 < abs(1.0 - desc_group.m_fScalingFactor) )
 	{
-		BOOST_FOREACH( CKeyframe& keyframe, vecKeyframe )
+		BOOST_FOREACH( Keyframe& keyframe, vecKeyframe )
 		{
 			keyframe.Scale( desc_group.m_fScalingFactor );
 		}
@@ -502,7 +501,7 @@ void CLWSMotionDatabaseCompiler::CreateMotionPrimitive()
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, CTransformNode& dest_node )
+void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, TransformNode& dest_node )
 {
 	if( 3.0f < fTime )
 		int break_here = 1;
@@ -514,7 +513,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, flo
 //	Matrix33 mat1 = pBone->GetOrientationAt( fTime ) * pBone->GetBoneRestOrientation(); // debug
 //	Matrix33 mat2 = pBone->GetOrientationAt( fTime ) * Matrix33Transpose(pBone->GetBoneRestOrientation()); // debug
 
-  if( CBone::get_htrans_rev() == 1 )
+  if( Bone::get_htrans_rev() == 1 )
   {
 	// rotation
 //	Quaternion qRotaiton = Quaternion( pBone->GetOffsetOrientationAt( fTime ) );
@@ -555,7 +554,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, flo
 		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
 	}
   }
-  else if( CBone::get_htrans_rev() == 2 )
+  else if( Bone::get_htrans_rev() == 2 )
   {
 	// rotation
 	const Matrix33 matDeltaRotation = pBone->GetOrientationFromRestOrientationAt( fTime );
@@ -595,7 +594,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, flo
 		CreateKeyframe( pBone->ChildBone()[i], fTime, next_transform, dest_node.Child()[i] );
 	}
   }
-  else if( CBone::get_htrans_rev() == 3 )
+  else if( Bone::get_htrans_rev() == 3 )
   {
 	// rotation
 	const Matrix33 matDeltaRotation = pBone->GetOrientationAt( fTime );// * pBone->GetInvBoneRestOrientation();
@@ -733,16 +732,16 @@ Result::Name CLWSMotionDatabaseCompiler::BuildFromDescFile( const std::string& f
 
 /*
 // Recursively copies the bones and creates a skeleton structure
-// composed of CBone class objects
+// composed of Bone class objects
 void CopyBones( shared_ptr<LWS_Bone> pSrcBone,
 			    const Matrix34& parent_space,
-			    CBone& dest_bone )
+			    Bone& dest_bone )
 {
 	const size_t num_children = pSrcBone->ChildBone().size();
 	for( size_t i=0; i<num_children; i++ )
 	{
 		shared_ptr<LWS_Bone> pSrcChildBone = pSrcBone->ChildBone()[i];
-		CBone dest_child_bone;
+		Bone dest_child_bone;
 
 		string& bone_name = pSrcChildBone->GetBoneName();
 		Vector3 vRestDir  = pSrcChildBone->GetBoneRestDirection();
