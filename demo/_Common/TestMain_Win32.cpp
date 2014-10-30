@@ -15,6 +15,7 @@
 #include "amorphous/Support/BitmapImage.hpp" // For InitFreeImage()
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
+#include "amorphous/Support/FreeTypeAux.hpp"
 #include "amorphous/Input/Win32/StdMouseInput.hpp"
 #include "amorphous/Input/Win32/StdKeyboard.hpp"
 //#include "amorphous/XML.hpp"
@@ -40,7 +41,6 @@ class AppDemoFrameworkInputHandler;
 
 
 // global variable
-std::string g_CmdLine;
 
 
 /**
@@ -339,8 +339,6 @@ static void PrevDemo()
 
 static int Run( LPSTR lpCmdLine )
 {
-	g_CmdLine = lpCmdLine;
-
 	const string iwd = lfs::get_cwd(); // initial working directory
 	if( iwd.substr( iwd.length() - 4 ) != "/app"
 	 && iwd.substr( iwd.length() - 4 ) != "\\app" )
@@ -375,6 +373,8 @@ static int Run( LPSTR lpCmdLine )
 	InitHTMLLog( "app_" + string(GetBuildInfo()) + "-" + graphics_library_name + "_Log.html" );
 
 	InitFreeImage();
+
+	LogFreeTypeLibraryVersion();
 
 	bool initialized = InitDemo();
 	if( !initialized )
