@@ -1,6 +1,6 @@
 #include "amorphous/base.hpp"
 #include "amorphous/Support/lfs.hpp"
-#include "amorphous/Support/Timer.hpp"
+//#include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
 //#include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
@@ -8,8 +8,11 @@
 #include "amorphous/Support/TextFileScanner.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/UTF8/utf8.h"
+#include "amorphous/Support/MiscAux.hpp"
+#include <boost/filesystem.hpp>
 
 using namespace std;
+using namespace amorphous;
 
 
 bool LoadTextFromFile( const std::string& src_file, std::string& dest )
@@ -38,7 +41,7 @@ bool LoadTextFromFile( const std::string& src_file, std::string& dest )
 void RenderUTF8TextToBuffer( FT_Face& face,
 						const std::string &text,
 						int char_height,
-						C2DArray<U8>& dest_bitmap_buffer//,                 ///< [out] buffer to render the text to
+						array2d<U8>& dest_bitmap_buffer//,                 ///< [out] buffer to render the text to
 //						vector<CTrueTypeTextureFont::CharRect>& char_rect
 						)
 {
@@ -149,7 +152,7 @@ bool RenderUTF8TextToBufferToImageFile( const std::string& text,
 
 	const string& ttf_filepath = font_file;//"fonts/ipam.ttf";
 
-	C2DArray<U8> dest_bitmap_buffer;
+	array2d<U8> dest_bitmap_buffer;
 
 	CFreeTypeLibrary ftlib;
 
@@ -194,7 +197,7 @@ bool RenderUTF8TextToBufferToImageFile( const std::string& text,
 //	vector<CTextureFont::CharRect> m_vecCharRect;
 	RenderUTF8TextToBuffer( face, text, base_char_height, dest_bitmap_buffer );//, m_vecCharRect );
 
-	const string img_filepath = "./results/" + lfs::get_leaf(ttf_filepath) + fmt_string("-%02d-",base_char_height) + ".bmp";
+	const string img_filepath = "./results/" + string(GetBuildInfo()) + "/" + lfs::get_leaf(ttf_filepath) + fmt_string("-%02d-",base_char_height) + ".bmp";
 
 	SaveGrayscaleToImageFile( dest_bitmap_buffer, img_filepath );
 
@@ -205,12 +208,15 @@ bool RenderUTF8TextToBufferToImageFile( const std::string& text,
 int StartFreeTypeTests()
 {
 	string text;
-	bool loaded = LoadTextFromFile( "texts/test.txt", text );
+	bool loaded = LoadTextFromFile( "input_data/font_test.txt", text );
 	if( !loaded )
 		return -1;
 
 	if( text.length() == 0 )
 		return -1;
+
+	using namespace boost::filesystem;
+	create_directories( path("results") / GetBuildInfo() );
 
 	const char *fonts[] =
 	{
@@ -264,7 +270,7 @@ int StartFreeTypeTests()
 }
 
 
-int main( int argc, char *argv[] )
+int test_FreeType( int argc, char *argv[] )
 {
 	StartFreeTypeTests();
 
