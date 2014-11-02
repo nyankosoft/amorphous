@@ -1,6 +1,7 @@
 #include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/Support/MiscAux.hpp"
 #include "amorphous/base.hpp"
 
@@ -45,7 +46,8 @@ int TestImageArchive()
 	if( !img_archive.IsValid() )
 		return -1;
 
-	BitmapImage img( img_archive );
+	BitmapImage img;
+	LoadBitmapImageFromImageArchive( img_archive, img );
 
 	bool saved = img.SaveToFile( "./images/dest.jpg" );
 	if( saved )
