@@ -1,13 +1,13 @@
 #include "GameWindowManager_Win32.hpp"
-#include "Support/WindowMisc_Win32.hpp"
 #include "GameWindowManager_Win32_GL.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/OpenGL/GLInitialization.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/OpenGL/GLInitialization.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/WindowMisc_Win32.hpp"
 
 #ifdef BUILD_WITH_DIRECT3D
 #include "GameWindowManager_Win32_D3D.hpp"
-#include "Graphics/Direct3D/D3DInitialization.hpp"
+#include "amorphous/Graphics/Direct3D/D3DInitialization.hpp"
 #endif /* BUILD_WITH_DIRECT3D */
 
 
