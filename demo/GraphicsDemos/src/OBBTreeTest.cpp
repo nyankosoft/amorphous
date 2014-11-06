@@ -102,9 +102,15 @@ void OBBTreeTest::Render()
 	Matrix44 matWorld = Matrix44Identity();
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+
+	if(!pShaderMgr)
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetWorldTransform( matWorld );
+
 /*
 	pShaderMgr->SetTechnique( m_MeshTechnique );
 */
