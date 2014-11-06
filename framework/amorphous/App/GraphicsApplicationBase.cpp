@@ -78,8 +78,6 @@ void GraphicsApplicationBase::UpdateFrame()
 
 	ProfileDumpOutputToBuffer();
 
-	GetGameWindowManager().OnMainLoopFinished();
-
 	boost::this_thread::sleep( boost::posix_time::milliseconds( 2 ) );
 }
 
