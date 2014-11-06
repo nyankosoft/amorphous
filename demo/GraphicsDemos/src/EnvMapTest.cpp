@@ -262,18 +262,7 @@ void CEnvMapTest::RenderBase()
 //	C2DRect rect( 0, 0, GetWindowWidth(), GetWindowHeight(), 0xFFFFFFFF );
 //	rect.Draw( m_pCubeMapManager->GetCubeTexture() );
 
-	// display fps
-	float x = 10, y = 5;
-	m_pFont->DrawText( to_string(GlobalTimer().GetFPS()).c_str(), Vector2(x,y), 0xFFFFFFFF );
-
-	i = 0;
-	const vector<string>& vecProfileResults = GetProfileText();
-	BOOST_FOREACH( const string& text, vecProfileResults )
-	{
-		y = (float)( 25 + i*16 );
-		m_pFont->DrawText( text.c_str(), Vector2(x,y), 0xF0F0F0FF );
-		i++;
-	}
+//	DisplayDebugInfo();
 
     // end the scene
     pd3dDevice->EndScene();
