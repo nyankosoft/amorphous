@@ -71,10 +71,7 @@ void GraphicsApplicationBase::UpdateFrame()
 	if( m_UseCameraController )
 		m_Camera.SetPose( m_pCameraController->GetPose() );
 
-//	if( m_UseRenderBase )
-//		g_pTest->RenderBase();
-//	else
-		RenderBase();
+	RenderBase();
 
 	ProfileDumpOutputToBuffer();
 
@@ -87,8 +84,6 @@ void GraphicsApplicationBase::RenderBase()
 	PROFILE_FUNCTION();
 
 	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-
-//	g_Camera.SetPose( g_CameraController.GetPose() );
 
 	// Set the camera and projection tansforms to
 	// 1. fixed function pipeline
@@ -117,8 +112,6 @@ void GraphicsApplicationBase::RenderBase()
 	GraphicsDevice().SetClearColor( m_BackgroundColor );
 	GraphicsDevice().SetClearDepth( 1.0f );
 	GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
-
-//	g_pTest->RenderScene();
 
     // begin the scene
 	GraphicsDevice().BeginScene();
