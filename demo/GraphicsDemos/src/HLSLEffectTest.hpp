@@ -58,8 +58,6 @@ public:
 
 	void Render();
 
-//	virtual void RenderBase();
-
 	virtual void HandleInput( const InputData& input );
 };
 

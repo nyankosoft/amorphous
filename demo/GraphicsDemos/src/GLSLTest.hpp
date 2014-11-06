@@ -25,8 +25,6 @@ private:
 
 	bool InitShader();
 
-	void CreateCachedResources();
-
 	void RenderMeshes();
 
 	void SetLights();
@@ -47,12 +45,7 @@ public:
 
 	void Render();
 
-//	virtual void RenderBase();
-
 	virtual void HandleInput( const InputData& input );
-
-	void ReleaseGraphicsResources();
-	void LoadGraphicsResources( const GraphicsParameters& rParam );
 };
 
 
