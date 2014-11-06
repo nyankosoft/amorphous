@@ -75,8 +75,6 @@ static Win32StdKeyboard g_StdKeyboard;
 static boost::shared_ptr<InputHandler> g_pInputHandler;
 static boost::shared_ptr<AppDemoFrameworkInputHandler> g_pDemoAppInputHandler;
 
-static boost::shared_ptr<FontBase> g_pFont;
-
 Camera g_Camera;
 
 //float g_FOV = (float)PI / 4.0f;
@@ -298,8 +296,6 @@ static bool InitDemo( int index )
 //	g_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
 
 	return true;
-
-	return true;
 }
 
 
@@ -383,10 +379,6 @@ static int Run( LPSTR lpCmdLine )
 //	ChangeClientAreaSize( hWnd, g_pTest->GetWindowWidth(), g_pTest->GetWindowHeight() );
 
 	ProfileInit();
-
-	// init font
-	g_pFont = CreateDefaultBuiltinFont();
-	g_pFont->SetFontSize( 8, 16 );
 
 	// Enter the message loop
 	MSG msg;

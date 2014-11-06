@@ -17,12 +17,6 @@
 using namespace amorphous;
 
 
-class CGraphicsTestBase;
-
-
-inline std::string GetCommonShadersDirectoryPath() { return "../../../Shaders/"; }
-
-
 class CGraphicsTestBase
 {
 	int m_WindowWidth;
