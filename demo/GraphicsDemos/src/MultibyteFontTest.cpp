@@ -180,7 +180,7 @@ bool CMultibyteFontTest::RenderUTF8TextToBufferToImageFile( const std::string& t
 
 	array2d<U8> dest_bitmap_buffer;
 
-	CFreeTypeLibrary ftlib;
+	FreeTypeLibrary ftlib;
 
 	FT_Face face;
 
