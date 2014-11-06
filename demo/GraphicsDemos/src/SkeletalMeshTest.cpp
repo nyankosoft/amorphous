@@ -4,7 +4,6 @@
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
@@ -125,10 +124,10 @@ int CSkeletalMeshTest::Init()
 void CSkeletalMeshTest::RenderMesh()
 {
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-//	if( !pShaderMgr )
-//		return;
+	if( !pShaderMgr )
+		return;
 
-	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shader_mgr.SetParam( "g_vEyePos", GetCurrentCamera().GetPosition() );
 
