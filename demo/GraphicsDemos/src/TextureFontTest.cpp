@@ -40,20 +40,20 @@ int CTextureFontTest::Init()
 	LoadCurrentFont();
 /*
 	shared_ptr<TrueTypeTextureFont> pFont( new TrueTypeTextureFont() );
-//	m_pFont = shared_ptr<TrueTypeTextureFont>( new CTrueTypeTextureFont() );
+//	m_pDemoFont = shared_ptr<TrueTypeTextureFont>( new CTrueTypeTextureFont() );
 	pFont->InitFont( "fonts/rationalinteger.ttf", 64, 8, 16 );
 */
-	if( m_pFont )
+	if( m_pDemoFont )
 	{
-//		m_pFont = pFont;
-		m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
-		m_pFont->SetFontColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
+//		m_pDemoFont = pFont;
+		m_pDemoFont->SetFontSize( m_FontWidth, m_FontHeight );
+		m_pDemoFont->SetFontColor( SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f ) );
 
 		U32 initial_flags = FontBase::SHADOW;
-		m_pFont->SetFlags( initial_flags );
+		m_pDemoFont->SetFlags( initial_flags );
 		m_FontFlags = initial_flags;
-		m_pFont->SetShadowColor( SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.5f ) );
-//		m_pFont->SetShadowShift( Vector2( 10, 10 ) );
+		m_pDemoFont->SetShadowColor( SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.5f ) );
+//		m_pDemoFont->SetShadowShift( Vector2( 10, 10 ) );
 	}
 
 	string bg_image = "images/bg.jpg";
@@ -80,7 +80,7 @@ void CTextureFontTest::Update( float dt )
 
 void CTextureFontTest::RenderText()
 {
-	if( !m_pFont )
+	if( !m_pDemoFont )
 		return;
 
 //	string text = "abcdefg ABCDEFG 0123456789";
@@ -91,13 +91,16 @@ void CTextureFontTest::RenderText()
 	string text =  font_file_pathname + "\n";
 	text += "Jackdaws love my big sphinx of quartz.\n";
 	text += "12334567890\n";
+	text += "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n";
+	text += "abcdefghijklmnopqrstuvwxyz\n";
 	text += "_+-*/=<>[]{}@#$%^&!?|;:,.\n";
+	text += "✓ ✔ ✕ ✖ ✗ ✘\n"; // 'CHECK MARK' (U+2713) and other special characters
 
 	Vector2 position = Vector2( 10, 120 );
 	if( m_EnableRotation )
-		m_pFont->DrawText( text.c_str(), position, position, m_fRotationAngle, SFloatRGBAColor::White() );
+		m_pDemoFont->DrawText( text.c_str(), position, position, m_fRotationAngle, SFloatRGBAColor::White() );
 	else
-		m_pFont->DrawText( text.c_str(), position, 0xFFFFFFFF );
+		m_pDemoFont->DrawText( text.c_str(), position, 0xFFFFFFFF );
 }
 
 
@@ -110,6 +113,17 @@ void CTextureFontTest::Render()
 	bg_rect.Draw( m_BGTexture );
 
 	SetRenderStatesForTextureFont( AlphaBlend::InvSrcAlpha );
+
+	if( m_pFont )
+	{
+		string font_pathname;
+		bool res = m_FontFilePathnames.get_current(font_pathname);
+		if( res )
+		{
+			m_pFont->SetFontSize( 10, 20 );
+			m_pFont->DrawText( font_pathname, Vector2(10,30) );
+		}
+	}
 
 	RenderText();
 }
@@ -131,8 +145,8 @@ void CTextureFontTest::HandleInput( const InputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_FontFlags ^= FontBase::SHADOW;
-			if( m_pFont )
-				m_pFont->SetFlags( m_FontFlags );
+			if( m_pDemoFont )
+				m_pDemoFont->SetFlags( m_FontFlags );
 		}
 		break;
 
@@ -156,22 +170,22 @@ void CTextureFontTest::HandleInput( const InputData& input )
 		{
 			m_FontWidth  *= 2;
 			m_FontHeight *= 2;
-			if( m_pFont )
-				m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
+			if( m_pDemoFont )
+				m_pDemoFont->SetFontSize( m_FontWidth, m_FontHeight );
 		}
 		break;
 
 	case 'J':
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			if( m_pFont && 4 < m_FontWidth )
+			if( m_pDemoFont && 4 < m_FontWidth )
 			{
 				m_FontWidth  /= 2;
 				m_FontHeight /= 2;
 			}
 
-			if( m_pFont )
-				m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
+			if( m_pDemoFont )
+				m_pDemoFont->SetFontSize( m_FontWidth, m_FontHeight );
 		}
 		break;
 
@@ -205,14 +219,14 @@ void CTextureFontTest::LoadCurrentFont()
 	m_FontFilePathnames.get_current( font_file_pathname );
 
 	shared_ptr<TrueTypeTextureFont> pFont( new TrueTypeTextureFont() );
-//	m_pFont = shared_ptr<TrueTypeTextureFont>( new TrueTypeTextureFont() );
+//	m_pDemoFont = shared_ptr<TrueTypeTextureFont>( new TrueTypeTextureFont() );
 	bool initialized = pFont->InitFont( font_file_pathname, 64, 8, 16 );
 	if( initialized )
 	{
-		m_pFont = pFont;
-		m_pFont->SetFontSize( m_FontWidth, m_FontHeight );
-		m_pFont->SetFlags( m_FontFlags );
+		m_pDemoFont = pFont;
+		m_pDemoFont->SetFontSize( m_FontWidth, m_FontHeight );
+		m_pDemoFont->SetFlags( m_FontFlags );
 	}
 	else
-		m_pFont.reset();
+		m_pDemoFont.reset();
 }
