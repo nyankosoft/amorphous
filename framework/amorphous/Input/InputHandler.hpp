@@ -250,13 +250,17 @@ public:
 
 	virtual ~InputHandler() {}
 
-	void SetActive( bool active ) { m_bActive = active; }
-
 	inline void ProcessInputBase(InputData& input);
 
-	void EnableAutoRepeat( bool enable_auto_repeat ) { m_bAutoRepeat = enable_auto_repeat; }
+	bool IsActive() const { return m_bActive; }
 
 	bool IsAutoRepeatEnabled() const { return m_bAutoRepeat; }
+
+	const std::vector<InputHandler *>& GetChildren() const { return m_vecpChild; }
+
+	void SetActive( bool active ) { m_bActive = active; }
+
+	void EnableAutoRepeat( bool enable_auto_repeat ) { m_bAutoRepeat = enable_auto_repeat; }
 
 	void AddChild( InputHandler *pInputHandler ) { m_vecpChild.push_back( pInputHandler ); }
 

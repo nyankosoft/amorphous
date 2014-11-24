@@ -1,5 +1,6 @@
 #include "InputHub.hpp"
 #include "Support/Timer.hpp"
+#include "Support/StringAux.hpp"
 
 
 namespace amorphous
@@ -30,6 +31,37 @@ m_CurrentMaxIndex(-1)
 InputHub::~InputHub()
 {
 //	ReleaseInputHandlers();
+}
+
+
+void InputHub::PrintInputHandler( InputHandler& input_handler, const std::string& indent, std::string& dest )
+{
+	dest += indent + typeid(input_handler).name();
+	dest += ( input_handler.IsActive() ? " (active)" : " (inactive)" );
+	dest += "\n";
+
+	const std::vector<InputHandler *> children = input_handler.GetChildren();
+	const int num_children = (int)children.size();
+	for( int i=0; i<num_children; i++ )
+	{
+		if( children[i] )
+			PrintInputHandler( *children[i], indent + "  ", dest );
+	}
+}
+
+
+void InputHub::PrintInputHandlers( std::string& dest )
+{
+	for( int i=0; i<=m_CurrentMaxIndex; i++ )
+	{
+		const int num_input_handlers = m_vecpInputHandler[i].size();
+		for( int j=0; j<num_input_handlers; j++ )
+		{
+			dest += fmt_string("[%d][%d]\n",i,j);
+			if( m_vecpInputHandler[i][j] )
+				PrintInputHandler( *m_vecpInputHandler[i][j], "", dest );
+		}
+	}
 }
 
 /*

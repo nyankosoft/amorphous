@@ -123,6 +123,10 @@ public:
 
 	inline void SendAutoRepeatInputToInputHandlers( InputData& input );
 
+	void PrintInputHandlers( std::string& dest );
+
+	void PrintInputHandler( InputHandler& input_handler, const std::string& indent, std::string& dest );
+
 	friend class InputDevice;
 };
 
@@ -229,6 +233,9 @@ inline void InputHub::PushInputHandler( InputHandler *pInputHandler )
 
 inline void InputHub::PushInputHandler( int index, InputHandler *pInputHandler )
 {
+	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
+		return;
+
 	m_vecpInputHandler[index].push_back( pInputHandler );
 
 	if( m_CurrentMaxIndex < index )
