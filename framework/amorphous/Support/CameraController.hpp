@@ -29,6 +29,8 @@ public:
 	~CameraController();
 
 	bool IsKeyPressed( int general_input_code );
+
+	void SetActive( bool active );
 };
 
 

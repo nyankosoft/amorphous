@@ -8,7 +8,8 @@ namespace amorphous
 
 CameraControllerBase::CameraControllerBase()
 :
-m_Pose( Matrix34Identity() )
+m_Pose( Matrix34Identity() ),
+m_Active(true)
 {
 	m_fYaw = 0.0f;
 	m_fPitch = 0.0f;
@@ -37,6 +38,9 @@ CameraControllerBase::~CameraControllerBase()
 
 void CameraControllerBase::UpdateCameraPose( float dt )
 {
+	if( !m_Active )
+		return;
+
 	float forward=0, right=0, up=0, spd;
 //	Matrix33 matRot;
 
@@ -78,12 +82,6 @@ void CameraControllerBase::UpdateCameraPose( float dt )
 }
 
 
-void CameraControllerBase::AddYaw( float fYaw )
-{
-	m_fYaw += fYaw;
-}
-
-
 bool CameraControllerBase::IsKeyPressed( int general_input_code )
 {
 	switch( general_input_code )
@@ -95,6 +93,12 @@ bool CameraControllerBase::IsKeyPressed( int general_input_code )
 	}
 
 	return false;
+}
+
+
+void CameraControllerBase::AddYaw( float fYaw )
+{
+	m_fYaw += fYaw;
 }
 
 

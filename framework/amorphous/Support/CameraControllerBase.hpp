@@ -85,6 +85,8 @@ protected:
 	int m_iPrevMousePosX;
 	int m_iPrevMousePosY;
 
+	bool m_Active;
+
 public:
 
 	CameraControllerBase();
@@ -93,6 +95,8 @@ public:
 
 	/// must be called every frame
 	void UpdateCameraPose( float dt );
+
+	virtual void SetActive( bool active ) { m_Active = active; }
 
 	virtual bool IsKeyPressed( int general_input_code );
 

@@ -50,6 +50,15 @@ bool CameraController::IsKeyPressed( int general_input_code )
 }
 
 
+void CameraController::SetActive( bool active )
+{
+	CameraControllerBase::SetActive( active );
+
+	if( m_pInputDataDelagate )
+		m_pInputDataDelagate->SetActive( active );
+}
+
+
 // Need to avoid calling this when mouse operation is notified by Win32 message
 // - See CameraController_Win32.cpp
 //void CameraControllerInputHandler::HandleInput( const InputData& input )
