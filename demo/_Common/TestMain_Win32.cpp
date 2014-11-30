@@ -64,7 +64,7 @@ class AppDemoFrameworkInputHandler;
 */
 
 
-static boost::shared_ptr<CGraphicsTestBase> g_pTest;
+static boost::shared_ptr<CGraphicsTestBase> m_pDemo;
 
 //-----------------------------------------------------------------------------
 // Global variables
@@ -82,35 +82,10 @@ Camera g_Camera;
 static const int sg_CameraControllerInputHandlerIndex = 0;
 static const int sg_GraphicsTestInputHandlerIndex = 1;
 
-static int sg_DemoAppIndex = -1;
+static int m_DemoIndex = -1;
 
 static void NextDemo();
 static void PrevDemo();
-
-
-class AppDemoFrameworkInputHandler : public InputHandler
-{
-
-public:
-	void ProcessInput( InputData& input )
-	{
-		switch( input.iGICode )
-		{
-		case GIC_PAGE_DOWN:
-			if( input.iType == ITYPE_KEY_PRESSED )
-				NextDemo();
-			break;
-
-		case GIC_PAGE_UP:
-			if( input.iType == ITYPE_KEY_PRESSED )
-				PrevDemo();
-			break;
-
-		default:
-			break;
-		}
-	}
-};
 
 
 static void ReleaseGraphicsResources()
@@ -134,12 +109,12 @@ static void Update( float frametime )
 {
 	PROFILE_FUNCTION();
 
-	if( g_pTest )
+	if( m_pDemo )
 	{
 		// Update the pose stored in the camera controller
-		g_pTest->UpdateCameraController( frametime );
+		m_pDemo->UpdateCameraController( frametime );
 
-		g_pTest->Update( frametime );
+		m_pDemo->Update( frametime );
 	}
 }
 
@@ -167,38 +142,35 @@ static void Render()
 //	g_Camera.SetPose( g_CameraController.GetPose() );
 	GetShaderManagerHub().PushViewAndProjectionMatrices( g_Camera );
 
-	g_pTest->UpdateViewTransform( g_Camera.GetCameraMatrix() );
-	g_pTest->UpdateProjectionTransform( g_Camera.GetProjectionMatrix() );
-
 	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, true );
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
 
     // clear the backbuffer to a blue color
-//	GraphicsDevice().SetClearColor( g_pTest->GetBackgroundColor() );
+//	GraphicsDevice().SetClearColor( m_pDemo->GetBackgroundColor() );
 //	GraphicsDevice().SetClearDepth( 1.0f );
 //	GraphicsDevice().Clear()
 	if( pd3dDevice )
 	{
-		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, g_pTest->GetBackgroundColor().GetARGB32(), 1.0f, 0 );
+		pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, m_pDemo->GetBackgroundColor().GetARGB32(), 1.0f, 0 );
 	}
 	else
 	{
 		PROFILE_SCOPE( "Clear the color and depth buffers" );
-		const SFloatRGBAColor c = g_pTest->GetBackgroundColor();
+		const SFloatRGBAColor c = m_pDemo->GetBackgroundColor();
 		glClearColor( c.red, c.green, c.blue, c.alpha );
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
 	}
 
-	g_pTest->RenderScene();
+	m_pDemo->RenderScene();
 
     // begin the scene
 	if( pd3dDevice )
 		pd3dDevice->BeginScene();
 
-	g_pTest->Render();
+	m_pDemo->Render();
 
-	g_pTest->DisplayDebugInfo();
+	m_pDemo->DisplayDebugInfo();
 
 	if( pd3dDevice )
 	{
@@ -236,8 +208,8 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
         if( WA_INACTIVE != wParam )
         {
             // Make sure the device is acquired, if we are gaining focus.
-			if( g_pTest )
-				g_pTest->AcquireInputDevices();
+			if( m_pDemo )
+				m_pDemo->AcquireInputDevices();
         }
         break;
 
@@ -246,90 +218,6 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 	}
 
 	return DefWindowProc( hWnd, msg, wParam, lParam );
-}
-
-
-static bool InitDemo( int index )
-{
-	if( index < 0 )
-		return false;
-
-	// Create the instance of the test class
-	g_pTest.reset( CreateDemoInstance(index) );
-	if( !g_pTest )
-		return false;
-
-	const std::string app_title = g_pTest->GetAppTitle();
-	const std::string app_class_name = app_title;
-
-	static bool window_created = false;
-	string window_title = app_title;
-	window_title += " (" + GetGraphicsLibraryName() + ")";
-	if( !window_created )
-	{
-		int w = g_pTest->GetWindowWidth();  // 1280;
-		int h = g_pTest->GetWindowHeight(); //  720;
-		LoadParamFromFile( "config", "screen_resolution", w, h );
-		GameWindow::ScreenMode mode = GameWindow::WINDOWED;//g_pTest->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
-		GetGameWindowManager().CreateGameWindow( w, h, mode, window_title );
-		g_Camera.SetAspectRatio( (float)w / (float)h );
-
-		window_created = true;
-	}
-	else
-	{
-		GetGameWindowManager().SetWindowTitleText( window_title );
-	}
-
-	g_pTest->InitBase();
-
-	g_pTest->Init();
-
-	g_pInputHandler.reset( new CGraphicsTestInputHandler(g_pTest) );
-
-	g_pDemoAppInputHandler.reset( new AppDemoFrameworkInputHandler );
-
-	g_pDemoAppInputHandler->AddChild( g_pInputHandler.get() );
-
-	GetInputHub().SetInputHandler( sg_GraphicsTestInputHandlerIndex, g_pDemoAppInputHandler.get() );
-
-//	g_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
-
-	return true;
-}
-
-
-static bool InitDemo()
-{
-	// Load the demo name from file
-	std::string demo_name;
-	LoadParamFromFile( "params.txt", "demo", demo_name );
-	for( unsigned int i=0; i<GetNumDemos(); i++ )
-	{
-		if( GetDemoNames()[i] == demo_name )
-		{
-			sg_DemoAppIndex = i;
-			break;
-		}
-	}
-
-	return InitDemo( sg_DemoAppIndex );
-}
-
-
-static void NextDemo()
-{
-	sg_DemoAppIndex = (sg_DemoAppIndex + 1) % GetNumDemos();
-
-	InitDemo( sg_DemoAppIndex );
-}
-
-
-static void PrevDemo()
-{
-	sg_DemoAppIndex = (sg_DemoAppIndex + GetNumDemos() - 1) % GetNumDemos();
-
-	InitDemo( sg_DemoAppIndex );
 }
 
 
@@ -376,7 +264,7 @@ static int Run( LPSTR lpCmdLine )
 	if( !initialized )
 		return 0;
 
-//	ChangeClientAreaSize( hWnd, g_pTest->GetWindowWidth(), g_pTest->GetWindowHeight() );
+//	ChangeClientAreaSize( hWnd, m_pDemo->GetWindowWidth(), m_pDemo->GetWindowHeight() );
 
 	ProfileInit();
 
@@ -405,11 +293,11 @@ static int Run( LPSTR lpCmdLine )
 
 			Update( frametime );
 
-			if( g_pTest->GetCameraController() )
-				g_Camera.SetPose( g_pTest->GetCameraController()->GetPose() );
+			if( m_pDemo->GetCameraController() )
+				g_Camera.SetPose( m_pDemo->GetCameraController()->GetPose() );
 
-			if( g_pTest->UseRenderBase() )
-				g_pTest->RenderBase();
+			if( m_pDemo->UseRenderBase() )
+				m_pDemo->RenderBase();
 			else
 				Render();
 
@@ -421,7 +309,7 @@ static int Run( LPSTR lpCmdLine )
 		}
     }
 
-	g_pTest.reset();
+	m_pDemo.reset();
 
 	ReleaseGraphicsResources();
 

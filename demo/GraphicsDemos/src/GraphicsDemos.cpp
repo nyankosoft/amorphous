@@ -27,6 +27,9 @@
 #include "TextureFontTest.hpp"
 #include "TextureRenderTargetTest.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
+
+using std::string;
 
 
 static const char *sg_demos[] =
@@ -62,19 +65,19 @@ static const char *sg_demos[] =
 };
 
 
-unsigned int GetNumDemos()
+unsigned int DemoSwitcher::GetNumDemos()
 {
 	return sizeof(sg_demos) / sizeof(sg_demos[0]);
 }
 
 
-const char **GetDemoNames()
+const char **DemoSwitcher::GetDemoNames()
 {
 	return sg_demos;
 }
 
 
-CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
+CGraphicsTestBase *DemoSwitcher::CreateTestInstance( const std::string& demo_name )
 {
 	if( demo_name == "" )
 		return NULL;
@@ -111,7 +114,88 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 }
 
 
-CGraphicsTestBase *CreateDemoInstance( unsigned int index )
+CGraphicsTestBase *DemoSwitcher::CreateDemoInstance( unsigned int index )
 {
 	return CreateTestInstance( GetDemoNames()[index] );
+}
+
+
+bool DemoSwitcher::InitDemo( int index )
+{
+	if( index < 0 )
+		return false;
+
+	// Create the instance of the test class
+	m_pDemo.reset( CreateDemoInstance(index) );
+	if( !m_pDemo )
+		return false;
+
+	m_pDemo->SetCameraController( GetCameraController() );
+
+	const std::string app_title = m_pDemo->GetAppTitle();
+	const std::string app_class_name = app_title;
+
+	static bool window_created = false;
+	string window_title = app_title;
+	window_title += " (" + GetGraphicsLibraryName() + ")";
+	GetGameWindowManager().SetWindowTitleText( window_title );
+//	if( !window_created )
+//	{
+//		int w = m_pDemo->GetWindowWidth();  // 1280;
+//		int h = m_pDemo->GetWindowHeight(); //  720;
+//		LoadParamFromFile( "config", "screen_resolution", w, h );
+//		GameWindow::ScreenMode mode = GameWindow::WINDOWED;//m_pDemo->GetFullscreen() ? GameWindow::FULLSCREEN : GameWindow::WINDOWED;
+//		GetGameWindowManager().CreateGameWindow( w, h, mode, window_title );
+//		Camera().SetAspectRatio( (float)w / (float)h );
+//
+//		window_created = true;
+//	}
+//	else
+//	{
+//		GetGameWindowManager().SetWindowTitleText( window_title );
+//	}
+
+	m_pDemo->InitBase();
+
+	m_pDemo->Init();
+
+//	g_pInputHandler.reset( new CGraphicsTestInputHandler(m_pDemo) );
+
+//	g_pCameraController.reset( new CameraController( sg_CameraControllerInputHandlerIndex ) );
+
+	return true;
+}
+
+
+bool DemoSwitcher::InitDemo()
+{
+	// Load the demo name from file
+	std::string demo_name;
+	LoadParamFromFile( "params.txt", "demo", demo_name );
+	for( unsigned int i=0; i<GetNumDemos(); i++ )
+	{
+		if( GetDemoNames()[i] == demo_name )
+		{
+			m_DemoIndex = i;
+			break;
+		}
+	}
+
+	return InitDemo( m_DemoIndex );
+}
+
+
+void DemoSwitcher::NextDemo()
+{
+	m_DemoIndex = (m_DemoIndex + 1) % GetNumDemos();
+
+	InitDemo( m_DemoIndex );
+}
+
+
+void DemoSwitcher::PrevDemo()
+{
+	m_DemoIndex = (m_DemoIndex + GetNumDemos() - 1) % GetNumDemos();
+
+	InitDemo( m_DemoIndex );
 }

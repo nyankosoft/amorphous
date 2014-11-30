@@ -6,8 +6,7 @@
 #include <string>
 #include <boost/weak_ptr.hpp>
 
-#include "amorphous/Graphics/fwd.hpp"
-#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/App/GraphicsApplicationbase.hpp"
 #include "KeyState.hpp"
 #include "amorphous/3DMath/fwd.hpp"
 #include "amorphous/3DMath/Matrix34.hpp"
@@ -26,17 +25,18 @@ class CGraphicsTestBase
 
 	SFloatRGBAColor m_BackgroundColor;
 
-	boost::shared_ptr<CameraController> m_pCameraController;
+	boost::shared_ptr<CameraControllerBase> m_pCameraController;
 
 	std::string m_TextBuffer;
-
-	bool m_DisplayDebugInfo;
 
 protected:
 
 	boost::shared_ptr<FontBase> m_pFont;
 
-	static const int ms_CameraControllerInputHandlerIndex = 0;
+	bool m_UseCameraControl;
+
+	// The variable is set to 0 even when if it is assigned 1 here, as shown below. Why?
+//	static const int ms_CameraControllerInputHandlerIndex = 1;
 
 protected:
 
@@ -79,9 +79,11 @@ public:
 
 	void UpdateCameraController( float dt ) { if( m_pCameraController ) m_pCameraController->UpdateCameraPose( dt ); }
 
-	const boost::shared_ptr<CameraController> GetCameraController() const { return m_pCameraController; }
+	const boost::shared_ptr<CameraControllerBase> GetCameraController() const { return m_pCameraController; }
 
-	boost::shared_ptr<CameraController> CameraController() { return m_pCameraController; }
+	boost::shared_ptr<CameraControllerBase> CameraController() { return m_pCameraController; }
+
+	void SetCameraController( boost::shared_ptr<CameraControllerBase> pCameraController ) { m_pCameraController = pCameraController; }
 
 	virtual void UpdateCameraPose( const Matrix34& camera_pose ) {}
 
@@ -100,7 +102,51 @@ public:
 
 	virtual void AcquireInputDevices() {}
 
+	bool UseCameraControl() const { return m_UseCameraControl; }
+
 	const SFloatRGBAColor& GetBackgroundColor() const { return m_BackgroundColor; }
+
+	static int ms_CameraControllerInputHandlerIndex;
+};
+
+
+class DemoSwitcher : public GraphicsApplicationBase
+{
+	boost::shared_ptr<CGraphicsTestBase> m_pDemo;
+
+	int m_DemoIndex;
+
+	bool m_DisplayDebugInfo;
+
+private:
+
+	unsigned int GetNumDemos();
+
+	const char **GetDemoNames();
+
+	CGraphicsTestBase *CreateTestInstance( const std::string& demo_name );
+
+	CGraphicsTestBase *CreateDemoInstance( unsigned int index );
+
+public:
+	
+	DemoSwitcher() : m_DemoIndex(-1), m_DisplayDebugInfo(true) {}
+
+	int Init();
+
+	void Update( float dt );
+
+	void NextDemo();
+
+	void PrevDemo();
+
+	bool InitDemo();
+
+	bool InitDemo( int index );
+
+	void Render();
+
+	void HandleInput( const InputData& input );
 };
 
 

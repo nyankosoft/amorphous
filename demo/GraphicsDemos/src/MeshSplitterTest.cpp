@@ -270,11 +270,17 @@ void CMeshSplitterTest::SplitMesh()
 
 void CMeshSplitterTest::UpdateSplitPlaneControllerState()
 {
-	if( GetInputHub().GetInputHandler(3) )
-		GetInputHub().GetInputHandler(3)->SetActive( m_ControlSplitPlane );
+//	if( GetInputHub().GetInputHandler(3) )
+//		GetInputHub().GetInputHandler(3)->SetActive( m_ControlSplitPlane );
 
-	if( GetInputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex) )
-		GetInputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex)->SetActive( !m_ControlSplitPlane );
+//	if( GetInputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex) )
+//		GetInputHub().GetInputHandler(ms_CameraControllerInputHandlerIndex)->SetActive( !m_ControlSplitPlane );
+
+	if( m_pSplitPlaneController )
+		m_pSplitPlaneController->SetActive( m_ControlSplitPlane );
+
+	if( CameraController() )
+		CameraController()->SetActive( !m_ControlSplitPlane );
 }
 
 
@@ -302,6 +308,7 @@ void CMeshSplitterTest::HandleInput( const InputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			m_ControlSplitPlane = !m_ControlSplitPlane;
+			m_UseCameraControl = !m_UseCameraControl;
 			UpdateSplitPlaneControllerState();
 		}
 		break;

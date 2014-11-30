@@ -11,7 +11,78 @@
 #include <boost/filesystem.hpp>
 
 
-extern Camera g_Camera;
+static Camera sg_Camera;
+
+
+ApplicationBase *amorphous::CreateApplicationInstance() { return new DemoSwitcher; }
+
+
+int DemoSwitcher::Init()
+{
+	InitDemo();
+
+	return 0;
+}
+
+
+void DemoSwitcher::Update( float dt )
+{
+	if( m_pDemo )
+	{
+		if( m_pDemo->UseCameraControl() )
+			EnableCameraControl();
+		else
+			DisableCameraControl();
+	}
+}
+
+
+void DemoSwitcher::Render()
+{
+	if( !m_pDemo )
+		return;
+
+	// Applied at the next Render() call
+	SetBackgroundColor( m_pDemo->GetBackgroundColor() );
+
+	sg_Camera = Camera();
+
+	m_pDemo->UpdateViewTransform( sg_Camera.GetCameraMatrix() );
+	m_pDemo->UpdateProjectionTransform( sg_Camera.GetProjectionMatrix() );
+
+	m_pDemo->Render();
+
+	if( m_DisplayDebugInfo )
+		m_pDemo->DisplayDebugInfo();
+}
+
+
+void DemoSwitcher::HandleInput( const InputData& input )
+{
+	if( m_pDemo )
+		m_pDemo->HandleInput( input );
+
+	switch( input.iGICode )
+	{
+	case GIC_F1:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_DisplayDebugInfo = !m_DisplayDebugInfo;
+		break;
+
+	case GIC_PAGE_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			NextDemo();
+		break;
+
+	case GIC_PAGE_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			PrevDemo();
+		break;
+
+	default:
+		GraphicsApplicationBase::HandleInput( input );
+	}
+}
 
 
 class ScreenshotRenderer
@@ -122,15 +193,17 @@ void TakeScreenshot(
 //}
 
 
+int CGraphicsTestBase::ms_CameraControllerInputHandlerIndex = 1;
+
+
 CGraphicsTestBase::CGraphicsTestBase()
 :
 m_WindowWidth(1280),
 m_WindowHeight(720),
-m_UseRenderBase(false),
-m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) ),
-m_DisplayDebugInfo(false)
+m_UseRenderBase(false)
+//m_BackgroundColor( SFloatRGBAColor( 0.19f, 0.19f, 0.19f, 1.00f ) ),
 {
-	m_pCameraController.reset( new amorphous::CameraController( ms_CameraControllerInputHandlerIndex ) );
+//	m_pCameraController.reset( new amorphous::CameraController( ms_CameraControllerInputHandlerIndex ) );
 }
 
 
@@ -152,9 +225,6 @@ Result::Name CGraphicsTestBase::InitBase()
 
 void CGraphicsTestBase::DisplayDebugInfo()
 {
-	if( !m_DisplayDebugInfo )
-		return;
-
 	GraphicsDevice().Enable(  RenderStateType::ALPHA_BLEND );
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
@@ -191,11 +261,6 @@ void CGraphicsTestBase::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F1:
-		if( input.iType == ITYPE_KEY_PRESSED )
-			m_DisplayDebugInfo = !m_DisplayDebugInfo;
-		break;
-
 	case GIC_F12:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -215,7 +280,7 @@ void CGraphicsTestBase::HandleInput( const InputData& input )
 
 const Camera& CGraphicsTestBase::GetCurrentCamera() const
 {
-	return g_Camera;
+	return sg_Camera;
 }
 
 

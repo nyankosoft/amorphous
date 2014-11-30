@@ -118,8 +118,11 @@
     <ClInclude Include="..\..\src\TextureRenderTargetTest.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\framework\amorphous\App\AppMain.cpp" />
     <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp" />
-    <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp" />
+    <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\2DPrimitivesTest.cpp" />
     <ClCompile Include="..\..\src\AsyncLoadingTest.cpp" />
     <ClCompile Include="..\..\src\BrickWallTextureGeneratorTest.cpp" />

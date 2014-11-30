@@ -189,7 +189,7 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 
 	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 	if( shader_mgr.GetShaderLightManager() )
@@ -220,7 +220,7 @@ void CPrimitiveShapeMeshesTest::RenderMeshes()
 		}
 //	}
 
-	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 

@@ -16,6 +16,9 @@
     <Filter Include="Source Files\src">
       <UniqueIdentifier>{8e2f2706-086b-49c1-9cc2-a7d2d174464c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Framework">
+      <UniqueIdentifier>{942247ad-9e0e-4863-9d37-7de5e4f9a31b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\LightingTest.cpp">
       <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\framework\amorphous\App\AppMain.cpp">
+      <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

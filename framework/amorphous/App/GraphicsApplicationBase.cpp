@@ -22,8 +22,8 @@ using namespace std;
 using namespace boost;
 
 
+static int sg_InputHandlerIndex = 0;
 static int sg_CameraControllerInputHandlerIndex = 1;
-static int sg_InputHandlerIndex = 1;
 
 
 GraphicsApplicationBase::GraphicsApplicationBase()
@@ -220,10 +220,35 @@ void GraphicsApplicationBase::Run()
 }
 
 
+void GraphicsApplicationBase::EnableCameraControl()
+{
+	if( m_pCameraController )
+		m_pCameraController->SetActive( true );
+}
+
+
+void GraphicsApplicationBase::DisableCameraControl()
+{
+	if( m_pCameraController )
+		m_pCameraController->SetActive( false );
+}
+
+
 void GraphicsApplicationBase::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
+	case GIC_F7:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			std::string dest;
+			GetInputHub().PrintInputHandlers(dest);
+			std::ofstream out("input_handlers.txt");
+			out << dest;
+            out.close();
+		}
+		break;
+
 	case GIC_F11:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{

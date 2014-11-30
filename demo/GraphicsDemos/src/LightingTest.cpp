@@ -30,9 +30,6 @@ m_NumLightsZ(3)
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	if( GetCameraController() )
-		GetCameraController()->SetPosition( Vector3( 0.0f, 1.6f, -10.0f ) );
-
 	InitRand( (unsigned long)timeGetTime() );
 }
 
@@ -225,6 +222,9 @@ int CLightingTest::Init()
 		"hs_directinal_lights false\n"\
 		"hs_point_lights true\n"\
 		"num_lights_x_z 3 3\n" );
+
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0.0f, 1.6f, -10.0f ) );
 
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );

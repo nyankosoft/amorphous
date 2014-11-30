@@ -26,9 +26,6 @@ m_EnableStripeEffect(true)
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-	if( GetCameraController() )
-		GetCameraController()->SetPosition( Vector3( 0, 5, -30 ) );
 }
 
 
@@ -88,6 +85,9 @@ bool CSimpleOverlayEffectsTest::InitShader()
 
 int CSimpleOverlayEffectsTest::Init()
 {
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 5, -30 ) );
+
 	m_PseudoNoiseEffect.Init( 0.5f, 2 );
 
 	// stripe texture
@@ -142,7 +142,7 @@ void CSimpleOverlayEffectsTest::RenderMeshes()
 
 	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 	BOOST_FOREACH( MeshHandle& mesh, m_Meshes )
@@ -155,7 +155,7 @@ void CSimpleOverlayEffectsTest::RenderMeshes()
 			pMesh->Render( shader_mgr );
 	}
 
-	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 

@@ -85,6 +85,10 @@ public:
 
 	void Run();
 
+	void EnableCameraControl();
+
+	void DisableCameraControl();
+
 	friend class CInputDataDelegate<GraphicsApplicationBase>;
 };
 
