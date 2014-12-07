@@ -544,7 +544,7 @@ void CClothTest::RenderMeshes()
 
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 */
-	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	for( size_t i=0; i<m_RigidBodies.size(); i++ )
 		m_RigidBodies[i].Render();
@@ -570,7 +570,7 @@ void CClothTest::RenderMeshes()
 		}
 	}
 */
-	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 

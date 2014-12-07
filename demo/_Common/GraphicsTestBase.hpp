@@ -6,10 +6,11 @@
 #include <string>
 #include <boost/weak_ptr.hpp>
 
-#include "amorphous/App/GraphicsApplicationbase.hpp"
 #include "KeyState.hpp"
 #include "amorphous/3DMath/fwd.hpp"
 #include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
 #include "amorphous/Input/InputHandler.hpp"
 #include "amorphous/Support/CameraController.hpp"
 
@@ -107,46 +108,6 @@ public:
 	const SFloatRGBAColor& GetBackgroundColor() const { return m_BackgroundColor; }
 
 	static int ms_CameraControllerInputHandlerIndex;
-};
-
-
-class DemoSwitcher : public GraphicsApplicationBase
-{
-	boost::shared_ptr<CGraphicsTestBase> m_pDemo;
-
-	int m_DemoIndex;
-
-	bool m_DisplayDebugInfo;
-
-private:
-
-	unsigned int GetNumDemos();
-
-	const char **GetDemoNames();
-
-	CGraphicsTestBase *CreateTestInstance( const std::string& demo_name );
-
-	CGraphicsTestBase *CreateDemoInstance( unsigned int index );
-
-public:
-	
-	DemoSwitcher() : m_DemoIndex(-1), m_DisplayDebugInfo(true) {}
-
-	int Init();
-
-	void Update( float dt );
-
-	void NextDemo();
-
-	void PrevDemo();
-
-	bool InitDemo();
-
-	bool InitDemo( int index );
-
-	void Render();
-
-	void HandleInput( const InputData& input );
 };
 
 

@@ -373,7 +373,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 /*
 	pShaderManager->SetViewerPosition( g_Camera.GetPosition() );
 */
-	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetWorldTransform( ToMatrix44( Matrix34(Vector3(0.0f,0.05f,0.0f),Matrix33Identity()) ) * Matrix44Scaling( 100.0f, 100.0f, 0.1f ) );
 
@@ -416,7 +416,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 
 	}
 
-	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 

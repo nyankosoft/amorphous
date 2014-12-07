@@ -1,7 +1,11 @@
+#include "PhysicsDemoFactory.hpp"
 #include "ClothTest.hpp"
 #include "ConvexTest.hpp"
 #include "MultiShapeActorsTest.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
+
+
+DemoFactory *CreateDemoFactory() { return new PhysicsDemoFactory; }
 
 
 static const char *sg_demos[] =
@@ -12,19 +16,19 @@ static const char *sg_demos[] =
 };
 
 
-unsigned int GetNumDemos()
+unsigned int PhysicsDemoFactory::GetNumDemos()
 {
 	return sizeof(sg_demos) / sizeof(sg_demos[0]);
 }
 
 
-const char **GetDemoNames()
+const char **PhysicsDemoFactory::GetDemoNames()
 {
 	return sg_demos;
 }
 
 
-CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
+CGraphicsTestBase *PhysicsDemoFactory::CreateDemoInstance( const std::string& demo_name )
 {
 	if( demo_name == "" )
 		return NULL;
@@ -36,7 +40,7 @@ CGraphicsTestBase *CreateTestInstance( const std::string& demo_name )
 }
 
 
-CGraphicsTestBase *CreateDemoInstance( unsigned int index )
+CGraphicsTestBase *PhysicsDemoFactory::CreateDemoInstance( unsigned int index )
 {
-	return CreateTestInstance( GetDemoNames()[index] );
+	return CreateDemoInstance( GetDemoNames()[index] );
 }

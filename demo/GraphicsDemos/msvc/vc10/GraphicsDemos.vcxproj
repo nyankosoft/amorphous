@@ -85,6 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\_Common\DemoFactory.hpp" />
+    <ClInclude Include="..\..\..\_Common\DemoSwitcher.hpp" />
     <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp" />
     <ClInclude Include="..\..\..\_Common\KeyState.hpp" />
     <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp" />
@@ -119,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\framework\amorphous\App\AppMain.cpp" />
+    <ClCompile Include="..\..\..\_Common\DemoSwitcher.cpp" />
     <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp" />
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

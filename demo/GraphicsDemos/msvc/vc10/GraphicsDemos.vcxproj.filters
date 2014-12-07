@@ -19,17 +19,11 @@
     <Filter Include="Source Files\Framework">
       <UniqueIdentifier>{942247ad-9e0e-4863-9d37-7de5e4f9a31b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Demo Framework">
+      <UniqueIdentifier>{19d60b63-8388-41e5-b15e-084a89ec89ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\_Common\KeyState.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\AsyncLoadingTest.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
@@ -114,6 +108,21 @@
     <ClInclude Include="..\..\src\LightingTest.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\_Common\DemoSwitcher.hpp">
+      <Filter>Demo Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\_Common\DemoFactory.hpp">
+      <Filter>Demo Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\_Common\KeyState_Win32.hpp">
+      <Filter>Demo Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\_Common\GraphicsTestBase.hpp">
+      <Filter>Demo Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\_Common\KeyState.hpp">
+      <Filter>Demo Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
@@ -197,9 +206,6 @@
     <ClCompile Include="..\..\src\BrickWallTextureGeneratorTest.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\CubeMapTest.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
@@ -211,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\framework\amorphous\App\AppMain.cpp">
       <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_Common\DemoSwitcher.cpp">
+      <Filter>Demo Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp">
+      <Filter>Demo Framework</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -245,7 +245,7 @@ void CConvexTest::RenderMeshes()
 
 	shader_mgr.SetViewerPosition( GetCurrentCamera().GetPosition() );
 
-	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
+//	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
 
@@ -270,7 +270,7 @@ void CConvexTest::RenderMeshes()
 		m_Actors[i].mesh.Render( shader_mgr );
 	}
 
-	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
+//	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 
 
