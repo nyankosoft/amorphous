@@ -3,6 +3,7 @@
 #include "amorphous/Graphics.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/VertexFormat.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Mesh/CustomMeshRenderer.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
@@ -16,9 +17,6 @@ using std::string;
 using std::vector;
 using boost::shared_ptr;
 using namespace physics;
-
-
-static int gs_TextureMipLevels = 1;
 
 
 void CRigidBodyObject::Release()
@@ -273,12 +271,13 @@ void CClothTest::SetLights()
 bool CClothTest::InitShader()
 {
 	// initialize shader
-/*	bool shader_loaded = m_Shader.Load( "shaders/glsl_test.vert|shaders/glsl_test.frag" );
-	if( !shader_loaded )
-		return false;
-*/
-
-//	string shader_filepath = LoadParamFromFile<string>( "config", "Shader" );
+	GenericShaderDesc gs_desc;
+	gs_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
+//	gs_desc.Specular = SpecularSource::NONE;
+//	gs_desc.NumDirectionalLights = 1;
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator( gs_desc ) );
+	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	SetLights();
 
@@ -411,6 +410,9 @@ void CClothTest::InitPhysicsEngine()
 
 int CClothTest::Init()
 {
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 3, -15 ) );
+
 	CreateParamFileIfNotFound( "ClothDemo/params.txt",
 		"//ClothMesh  models/cloth-10x10.msh\n"\
 		"//ClothMesh  models/tex_cloth-10x10.msh\n"\

@@ -3,13 +3,10 @@
 //#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Rect.hpp"
-#include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/Camera.hpp"
-#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/CommonShaders.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
@@ -61,7 +58,6 @@ bool CConvexTest::InitShader()
 	m_MeshTechnique.SetTechniqueName( "Default" );
 
 	// initialize shader
-//	bool shader_loaded = m_Shader.Load( "./shaders/MeshSplitterTest.fx" );
 	GenericShaderDesc gs_desc;
 	gs_desc.LightingTechnique = ShaderLightingTechnique::HEMISPHERIC;
 //	gs_desc.Specular = SpecularSource::NONE;
@@ -183,6 +179,9 @@ int CConvexTest::InitPhysics( const vector< pair<string,int> >& mesh_and_quantit
 
 int CConvexTest::Init()
 {
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 5, -25 ) );
+
 	CreateParamFileIfNotFound( "ConvexDemo/params.txt",
 		"mesh  models/pentagonal_prism.msh  5\n"\
 		"mesh  models/triangular_prism.msh  5\n"\
@@ -284,19 +283,6 @@ void CConvexTest::Render()
 	SetLight();
 
 	RenderMeshes();
-
-	m_TextBuffer.resize( 0 );
-	GraphicsResourceManager().GetStatus( GraphicsResourceType::Texture, m_TextBuffer );
-
-	Vector2 vTopLeft(     GetWindowWidth() / 4,  16 );
-	Vector2 vBottomRight( GetWindowWidth() - 16, GetWindowHeight() * 3 / 2 );
-	C2DRect rect( vTopLeft, vBottomRight, 0x50000000 );
-//	rect.Draw();
-
-	if( m_pFont )
-	{
-		m_pFont->DrawText( m_TextBuffer, vTopLeft );
-	}
 }
 
 

@@ -6,7 +6,6 @@
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Graphics/Mesh/CustomMesh.hpp"
-#include "amorphous/Input/fwd.hpp"
 #include "amorphous/Physics/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
@@ -34,8 +33,6 @@ class CConvexTest : public CGraphicsTestBase
 	ShaderTechniqueHandle m_MeshTechnique;
 
 //	boost::shared_ptr<CCameraController> m_pSplitPlaneController;
-
-	std::string m_TextBuffer;
 
 private:
 

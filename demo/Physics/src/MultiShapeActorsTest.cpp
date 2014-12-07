@@ -1,14 +1,12 @@
 #include "MultiShapeActorsTest.hpp"
 #include <boost/filesystem.hpp>
+#include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Graphics/VertexFormat.hpp"
 #include "amorphous/Graphics/ShapesExtractor.hpp"
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
-#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Font/FontBase.hpp"
@@ -76,7 +74,11 @@ void CMultiShapeActorsTest::CreateSampleUI()
 void CMultiShapeActorsTest::SetLights()
 {
 	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	if( !pShaderManager )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderManager;
 
 	ShaderLightManager *pShaderLightMgr = shader_mgr.GetShaderLightManager().get();
 	if( !pShaderLightMgr )
@@ -259,6 +261,9 @@ void CMultiShapeActorsTest::InitPhysicsEngine()
 
 int CMultiShapeActorsTest::Init()
 {
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 5, -25 ) );
+
 	CreateParamFileIfNotFound( "MultiShapeActorsDemo/params.txt",
 		"#model  models/M1911.msh  20\n"\
 		"model  models/table.msh  12\n"\
@@ -367,7 +372,10 @@ void CMultiShapeActorsTest::Update( float dt )
 void CMultiShapeActorsTest::RenderMeshes()
 {
 	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
+	if( !pShaderManager )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderManager;
 
 	// render the scene
 /*
@@ -426,7 +434,7 @@ void CMultiShapeActorsTest::Render()
 
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
-	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+//	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 	SetLights();
 
