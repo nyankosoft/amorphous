@@ -89,6 +89,8 @@ public:
 
 	void DisableCameraControl();
 
+	void RenderScreenshotScene() { RenderBase(); } 
+
 	friend class CInputDataDelegate<GraphicsApplicationBase>;
 };
 

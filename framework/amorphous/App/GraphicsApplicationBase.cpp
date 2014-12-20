@@ -13,6 +13,7 @@
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Utilities/ScreenshotRenderer.hpp"
 
 
 namespace amorphous
@@ -195,6 +196,10 @@ void GraphicsApplicationBase::Run()
 	m_WindowedModeResolution.width  = w;
 	m_WindowedModeResolution.height = h;
 
+	string image_format = "png";
+	LoadParamFromFile( "config", "screenshot_image_format", image_format );
+	SetScreenshotImageFormat( image_format );
+
 	try
 	{
 		if( Init() != 0 )
@@ -255,6 +260,20 @@ void GraphicsApplicationBase::HandleInput( const InputData& input )
 			ToggleScreenModes();
 		}
 		break;
+
+	case GIC_F12:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			std::string dp = "screenshots";
+			std::string bn = "image";
+			TakeScreenshot(
+				*this,
+				dp,
+				bn
+				);
+		}
+		break;
+
 	default:
 		break;
 	}
