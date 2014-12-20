@@ -265,11 +265,10 @@ void GraphicsApplicationBase::HandleInput( const InputData& input )
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			std::string dp = "screenshots";
-			std::string bn = "image";
 			TakeScreenshot(
 				*this,
 				dp,
-				bn
+				"image"
 				);
 		}
 		break;
