@@ -31,8 +31,10 @@ void Win32StdMouseInput::UpdateInput( UINT msg, WPARAM wParam, LPARAM lParam )
 	{
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
+	case WM_MBUTTONDOWN:
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
+	case WM_MBUTTONUP:
 		if( msg == WM_LBUTTONDOWN || msg == WM_RBUTTONDOWN || msg == WM_MBUTTONDOWN )
 			input.iType = ITYPE_KEY_PRESSED;
 		else if( msg == WM_LBUTTONUP || msg == WM_RBUTTONUP )
