@@ -1,6 +1,7 @@
 #include "GLShader.hpp"
 #include "amorphous/Graphics/OpenGL/Shader/GLSLShaderLightManager.hpp"
 #include "amorphous/Graphics/OpenGL/GLTextureResourceVisitor.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/SafeDelete.hpp"
 
@@ -571,6 +572,11 @@ void CGLProgram::SetParam( ShaderParameter<float>& float_param )
 }
 
 
+void CGLProgram::SetParam( ShaderParameter<Vector2>& vec2_param )
+{
+}
+
+
 void CGLProgram::SetParam( ShaderParameter<Vector3>& vec3_param )
 {
 }
@@ -610,12 +616,23 @@ void CGLProgram::SetParam( const char *parameter_name, float float_param )
 }
 
 
+void CGLProgram::SetParam( const char *parameter_name, const Vector2& vec2_param )
+{
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	float fv[2] = { vec2_param.x, vec2_param.y };
+	if( 0 <= location )
+		glUniform2fv( location, 1, fv ); // Send 1 vec2 to the shader
+}
+
+
 void CGLProgram::SetParam( const char *parameter_name, const Vector3& vec3_param )
 {
 	GLint location = glGetUniformLocation( m_Program, parameter_name );
 	glUseProgram( m_Program );
-//	if( 0 <= location )
-//		glUniform3fv( location, (const float *)&vec3_param );
+	float fv[3] = { vec3_param.x, vec3_param.y, vec3_param.z };
+	if( 0 <= location )
+		glUniform3fv( location, 1, fv ); // Send 1 vec3 to the shader
 }
 
 

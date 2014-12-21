@@ -281,6 +281,12 @@ void CHLSLShaderManager::SetParam( ShaderParameter<float>& float_param )
 }
 
 
+void CHLSLShaderManager::SetParam( ShaderParameter<Vector2>& vec2_param )
+{
+	LOG_PRINT_ERROR( " - Not implemented." );
+}
+
+
 void CHLSLShaderManager::SetParam( ShaderParameter<Vector3>& vec3_param )
 {
 	LOG_PRINT_ERROR( " - Not implemented." );
@@ -373,6 +379,15 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, float float_param
 	HRESULT hr = m_pEffect->SetFloat( parameter_name, float_param );
 	if( FAILED(hr) )
 		LOG_PRINTF_WARNING(("Failed to set a float value to a shader: %s",parameter_name));
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector2& vec2_param )
+{
+	const float values[2] = { vec2_param.x, vec2_param.y };
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, values, 2 );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(("Failed to set a Vector2 value to a shader: %s",parameter_name));
 }
 
 

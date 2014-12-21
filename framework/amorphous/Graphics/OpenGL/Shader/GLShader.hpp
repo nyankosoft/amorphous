@@ -195,7 +195,10 @@ public:
 	// Sets a single float value
 	void SetParam( ShaderParameter<float>& float_param );
 
-	// Sets a single float value
+	// Sets a single float2 (Vector2) value
+	void SetParam( ShaderParameter<Vector2>& vec2_param );
+
+	// Sets a single float3 (Vector3) value
 	void SetParam( ShaderParameter<Vector3>& vec3_param );
 
 	// Sets a color value as 4 floats in RGBA order
@@ -214,6 +217,9 @@ public:
 
 	// Sets a single float value
 	void SetParam( const char *parameter_name, float float_param );
+
+	// Sets a single float2 (Vector2) value
+	void SetParam( const char *parameter_name, const Vector2& vec2_param );
 
 	// Sets a single float3 (Vector3) value
 	void SetParam( const char *parameter_name, const Vector3& vec3_param );
