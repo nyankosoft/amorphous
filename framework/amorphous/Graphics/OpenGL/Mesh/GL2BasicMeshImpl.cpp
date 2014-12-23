@@ -6,10 +6,6 @@
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
 
-#include "Graphics/OpenGL/Mesh/GLProgressiveMeshImpl.hpp" // Used by CGLMeshImplFactory
-#include "Graphics/OpenGL/Mesh/GLSkeletalMeshImpl.hpp"	  // Used by CGLMeshImplFactory
-#include "GLBasicMeshImpl.hpp"
-
 
 namespace amorphous
 {
@@ -511,12 +507,6 @@ void CGL2BasicMeshImpl::RenderSubsets( ShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */)
 {
 }
-
-
-//MeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new CGL2BasicMeshImpl; }
-MeshImpl* CGLMeshImplFactory::CreateBasicMeshImpl() { return new GLBasicMeshImpl; }
-MeshImpl* CGLMeshImplFactory::CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
-MeshImpl* CGLMeshImplFactory::CreateSkeletalMeshImpl() { return new CGLSkeletalMeshImpl; }
 
 
 } // namespace amorphous

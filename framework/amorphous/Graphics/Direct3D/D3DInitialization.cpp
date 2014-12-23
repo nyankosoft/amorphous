@@ -5,13 +5,14 @@
 #include "D3DGraphicsResources.hpp"
 #include "D3DTextureRenderTarget.hpp"
 #include "D3DCubeTextureRenderTarget.hpp"
-#include "Mesh/D3DXMeshObjectBase.hpp"
+#include "Mesh/D3DXSMeshObject.hpp" // Used by CD3DMeshImplFactory
 #include "Mesh/D3DCustomMeshRenderer.hpp"
 #include "Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericHLSL.hpp"
 #include "../GraphicsResources.hpp"
 #include "../GraphicsResourceCacheManager.hpp"
 #include "../Mesh/CustomMesh.hpp"
+#include "../Mesh/MeshFactory.hpp"
 #include "../Shader/FixedFunctionPipelineManager.hpp"
 
 
@@ -52,6 +53,37 @@ public:
 	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
 	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
 	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
+};
+
+
+//=======================================================================================
+// CD3DMeshImplFactory
+//=======================================================================================
+
+class CD3DMeshImplFactory : public MeshImplFactory
+{
+public:
+
+//	MeshImpl* CreateMeshImpl( MeshType::Name mesh_type )
+//	{
+//		switch( mesh_type )
+//		{
+//		case MeshType::BASIC:
+//			return new CD3DXMeshObject();
+//		case MeshType::PROGRESSIVE:
+//			return new CD3DXPMeshObject();
+//		case MeshType::SKELETAL:
+//			return new CD3DXSMeshObject();
+//		default:
+//			return NULL;
+//		}
+//
+//		return NULL;
+//	}
+
+	MeshImpl* CreateBasicMeshImpl()       { return new CD3DXMeshObject(); }
+	MeshImpl* CreateProgressiveMeshImpl() { return new CD3DXPMeshObject(); }
+	MeshImpl* CreateSkeletalMeshImpl()    { return new CD3DXSMeshObject(); }
 };
 
 

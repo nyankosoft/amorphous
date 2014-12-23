@@ -1,20 +1,15 @@
 #include "D3DXMeshObjectBase.hpp"
-
 #include "amorphous/base.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-//#include "Graphics/Shader/CgEffectBase.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/Direct3D/Conversions.hpp"
-
-#include "Support/StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Profile.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Macro.h"
-
-#include "D3DXMeshObject.hpp"  // Used by CD3DMeshImplFactory
-#include "D3DXSMeshObject.hpp" // Used by CD3DMeshImplFactory
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+//#include "amorphous/Graphics/Shader/CgEffectBase.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/Direct3D/Conversions.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Macro.h"
 
 #include <boost/filesystem.hpp>
 
@@ -1100,101 +1095,6 @@ void CD3DXMeshObjectBase::SetVertexDeclaration()
 {
 	DIRECT3D9.GetDevice()->SetVertexDeclaration( GetVertexDeclaration() );
 }
-
-
-/*
-MeshImpl* CD3DMeshImplFactory::CreateMeshImpl( MeshType::Name mesh_type )
-{
-	switch( mesh_type )
-	{
-	case MeshType::BASIC:
-		return new CD3DXMeshObject();
-	case MeshType::PROGRESSIVE:
-		return new CD3DXPMeshObject();
-	case MeshType::SKELETAL:
-		return new CD3DXSMeshObject();
-	default:
-		return NULL;
-	}
-
-	return NULL;
-}
-*/
-
-
-MeshImpl* CD3DMeshImplFactory::CreateBasicMeshImpl()       { return new CD3DXMeshObject(); }
-MeshImpl* CD3DMeshImplFactory::CreateProgressiveMeshImpl() { return new CD3DXPMeshObject(); }
-MeshImpl* CD3DMeshImplFactory::CreateSkeletalMeshImpl()    { return new CD3DXSMeshObject(); }
-
-/*
-shared_ptr<CD3DXMeshObjectBase> CMeshObjectFactory::CreateMesh( MeshType::Name mesh_type )
-{
-	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
-	return pMesh;
-}
-
-
-CD3DXMeshObjectBase* CMeshObjectFactory::LoadMeshObjectFromFile( const std::string& filepath,
-																 U32 load_option_flags,
-																 MeshType::Name mesh_type )
-{
-	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
-
-	bool loaded = pMesh->LoadFromFile( filepath, load_option_flags );
-
-	if( loaded )
-		return pMesh;
-	else
-	{
-		SafeDelete( pMesh );
-		return NULL;
-	}
-}
-
-
-shared_ptr<MeshImpl> CD3DMeshImplFactory::CreateMesh( MeshType::Name mesh_type )
-{
-	shared_ptr<CD3DXMeshObjectBase> pMesh( CreateMeshInstance( mesh_type ) );
-	return pMesh;
-}
-
-
-MeshImpl* CD3DMeshImplFactory::LoadMeshObjectFromFile( const std::string& filepath,
-																 U32 load_option_flags,
-																 MeshType::Name mesh_type )
-{
-	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
-
-	bool loaded = pMesh->LoadFromFile( filepath, load_option_flags );
-
-	if( loaded )
-		return pMesh;
-	else
-	{
-		SafeDelete( pMesh );
-		return NULL;
-	}
-}
-
-
-CD3DXMeshObjectBase* CD3DMeshImplFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
-																    const std::string& filepath,
-																    U32 load_option_flags,
-																	MeshType::Name mesh_type )
-{
-	CD3DXMeshObjectBase* pMesh = CreateMeshInstance( mesh_type );
-
-	bool loaded = pMesh->LoadFromArchive( mesh_archive, filepath, load_option_flags );
-
-	if( loaded )
-		return pMesh;
-	else
-	{
-		SafeDelete( pMesh );
-		return NULL;
-	}
-}
-*/
 
 
 } // namespace amorphous

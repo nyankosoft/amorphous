@@ -6,13 +6,14 @@
 #include "GLGraphicsResources.hpp"
 #include "GLTextureRenderTarget.hpp"
 #include "GLCubeTextureRenderTarget.hpp"
-#include "Mesh/GL2BasicMeshImpl.hpp"
+#include "Mesh/GLSkeletalMeshImpl.hpp"	  // Used by CGLMeshImplFactory
 #include "Mesh/GLCustomMeshRenderer.hpp"
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericGLSLShader.hpp"
 #include "../GraphicsResources.hpp"
 #include "../GraphicsResourceCacheManager.hpp"
 #include "../Mesh/CustomMesh.hpp"
+#include "../Mesh/MeshFactory.hpp"
 #include "../Shader/FixedFunctionPipelineManager.hpp"
 
 
@@ -53,6 +54,21 @@ public:
 	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
 	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
 	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
+};
+
+
+//=======================================================================================
+// CGLGraphicsResourceFactoryImpl
+//=======================================================================================
+
+class CGLMeshImplFactory : public MeshImplFactory
+{
+public:
+
+//	MeshImpl* CreateBasicMeshImpl()       { return new CGL2BasicMeshImpl; }
+	MeshImpl* CreateBasicMeshImpl()       { return new GLBasicMeshImpl; }
+	MeshImpl* CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
+	MeshImpl* CreateSkeletalMeshImpl()    { return new CGLSkeletalMeshImpl; }
 };
 
 

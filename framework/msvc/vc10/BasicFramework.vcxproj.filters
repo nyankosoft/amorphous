@@ -774,9 +774,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp">
-      <Filter>Graphics\OpenGL\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.cpp">
       <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
     </ClCompile>
@@ -1877,9 +1874,6 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp">
       <Filter>Graphics\MeshGenerators</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp">
-      <Filter>Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.hpp">
       <Filter>Graphics\OpenGL\Shader\Embedded</Filter>

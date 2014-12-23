@@ -4,7 +4,6 @@
 
 #include "3DMath/Sphere.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/Mesh/MeshFactory.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
@@ -227,18 +226,6 @@ public:
 
 	friend class CD3DXMeshVerticesLoader;
 	friend class CD3DXMeshIndicesLoader;
-};
-
-
-class CD3DMeshImplFactory : public MeshImplFactory
-{
-public:
-
-//	MeshImpl* CreateMeshImpl( MeshType::Name mesh_type );
-
-	MeshImpl* CreateBasicMeshImpl();
-	MeshImpl* CreateProgressiveMeshImpl();
-	MeshImpl* CreateSkeletalMeshImpl();
 };
 
 

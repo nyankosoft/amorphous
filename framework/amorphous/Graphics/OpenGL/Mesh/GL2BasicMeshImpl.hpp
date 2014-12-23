@@ -6,7 +6,6 @@
 #include <gl/gl.h>											// Header File For The OpenGL32 Library
 #include <gl/glu.h>											// Header File For The GLu32 Library
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
-#include "amorphous/Graphics/Mesh/MeshFactory.hpp"
 #include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
@@ -79,18 +78,6 @@ public:
 
 	virtual void RenderSubsets( ShaderManager& rShaderMgr,
 		                        const std::vector<int>& vecMaterialIndex /* some option to specify handles for texture */);
-};
-
-
-class CGLMeshImplFactory : public MeshImplFactory
-{
-public:
-
-//	MeshImpl* CreateMeshImpl( MeshType::Name mesh_type );
-
-	MeshImpl* CreateBasicMeshImpl();
-	MeshImpl* CreateProgressiveMeshImpl();
-	MeshImpl* CreateSkeletalMeshImpl();
 };
 
 
