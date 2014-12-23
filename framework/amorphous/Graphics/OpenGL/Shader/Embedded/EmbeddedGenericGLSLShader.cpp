@@ -408,7 +408,7 @@ static const char *sg_2d_glsl_vs =
 	"out vec2 t1;\n"\
 	"out vec2 t2;\n"\
 	"out vec2 t3;\n"\
-	"uniform vec2 ViewportSize = vec2(1280,720)"\
+	"uniform vec2 ViewportSize = vec2(1280,720);\n"\
 	"void main(){"\
 		/*"gl_Position = position;"\*/
 		"float vpw = ViewportSize.x;"\
