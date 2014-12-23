@@ -28,9 +28,6 @@ CSkeletalMeshTest::CSkeletalMeshTest()
 //	m_fDetailLevel = 1.0f;
 
 //	m_MeshFilepath = "???.msh";
-
-	if( GetCameraController() )
-		GetCameraController()->SetPosition( Vector3( 0, 1, -5 ) );
 }
 
 
@@ -83,6 +80,9 @@ Result::Name CSkeletalMeshTest::SetLight( ShaderManager& shader_mgr )
 
 int CSkeletalMeshTest::Init()
 {
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 1, -5 ) );
+
 	Result::Name res = LoadShader();
 
 	string mesh_pathname = "models/human.msh";//m_MeshFilepath;

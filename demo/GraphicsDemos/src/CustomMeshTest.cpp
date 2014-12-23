@@ -17,9 +17,6 @@ CCustomMeshTest::CCustomMeshTest()
 	m_MeshTechnique.SetTechniqueName( "NoLighting" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-	if( GetCameraController() )
-		GetCameraController()->SetPosition( Vector3( 0, 2, -10 ) );
 }
 
 
@@ -97,6 +94,9 @@ int CCustomMeshTest::Init()
 {
 	CreateParamFileIfNotFound( "LightingDemo/params.txt",
 		"model  ../Common/models/Chevelle.msh\n" );
+
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0, 2, -12 ) );
 /*
 	m_vecMesh.push_back( CTestMeshHolder() );
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new CBoxMeshGenerator() );
