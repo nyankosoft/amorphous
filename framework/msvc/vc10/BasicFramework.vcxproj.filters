@@ -852,6 +852,9 @@
     <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp">
       <Filter>XML</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Utilities\ScreenshotRenderer.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -1994,6 +1997,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp">
       <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Utilities\ScreenshotRenderer.hpp">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

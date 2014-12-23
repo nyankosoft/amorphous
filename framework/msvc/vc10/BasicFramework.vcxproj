@@ -324,6 +324,7 @@
     <ClCompile Include="..\..\amorphous\Sound\PyModule_SoundMethods.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\SoundManager.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp" />
+    <ClCompile Include="..\..\amorphous\Utilities\ScreenshotRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -724,6 +725,7 @@
     <ClInclude Include="..\..\amorphous\Sound\SoundManagerImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\SoundSource.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp" />
+    <ClInclude Include="..\..\amorphous\Utilities\ScreenshotRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp" />
     <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp" />
     <ClInclude Include="..\..\amorphous\XML\XercesString.hpp">
