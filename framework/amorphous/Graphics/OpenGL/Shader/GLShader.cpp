@@ -423,6 +423,9 @@ Result::Name CGLProgram::InitProgram()
 	if( m_pLightManager )
 		m_pLightManager->Init( m_Program );
 
+	Vector2 v( (float)GraphicsComponent::GetScreenWidth(), (float)GraphicsComponent::GetScreenHeight() );
+	SetParam( "ViewportSize", v );
+
 	LOG_GL_ERROR( "Detected a GL error at the end of the function." );
 
 	return Result::SUCCESS;
