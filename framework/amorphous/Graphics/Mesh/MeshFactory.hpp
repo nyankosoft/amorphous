@@ -1,5 +1,5 @@
-#ifndef __MeshFactory_HPP__
-#define __MeshFactory_HPP__
+#ifndef __amorphous_MeshFactory_HPP__
+#define __amorphous_MeshFactory_HPP__
 
 
 #include "BasicMesh.hpp"
@@ -18,23 +18,9 @@ public:
 
 //	virtual MeshImpl* CreateMeshImpl( MeshType::Name mesh_type ) = 0;
 
-//	boost::shared_ptr<MeshImpl> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );// = 0; //{ return boost::shared_ptr<MeshImpl>(); }
-
 	virtual MeshImpl* CreateBasicMeshImpl() { return NULL; }
 	virtual MeshImpl* CreateProgressiveMeshImpl() { return NULL; }
 	virtual MeshImpl* CreateSkeletalMeshImpl() { return NULL; }
-
-/*
-	MeshImpl* LoadMeshObjectFromFile( const std::string& filepath,
-		                               U32 load_option_flags = 0,
-		                               MeshType::Name mesh_type = MeshType::SKELETAL );
-
-	/// TODO: support PMesh and SMesh
-	MeshImpl*  LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
-		                                 const std::string& filepath,
-										 U32 load_option_flags = 0,
-										 MeshType::Name mesh_type = MeshType::SKELETAL );
-*/
 };
 
 
@@ -81,37 +67,8 @@ public:
 											MeshType::Name mesh_type = MeshType::SKELETAL );
 };
 
-/*
-inline MeshFactory& GetMeshFactory()
-{
-	static boost::shared_ptr<MeshFactory> s_pMeshFactory;
-	if( s_pMeshFactory == boost::shared_ptr<MeshFactory>() )
-	{
-		InitMeshFactory( s_pMeshFactory );
-	}
-
-	return *(MeshFactoryPtr().get());
-}*/
-
-
-
-inline boost::shared_ptr<MeshFactory>& MeshFactoryPtr()
-{
-	static boost::shared_ptr<MeshFactory> s_pMeshFactory;
-	return s_pMeshFactory;
-}
-
-
-// MeshFactoryPtr() must be initialized before calling this
-//inline MeshFactory& GetMeshFactory()
-//{
-//	return *(MeshFactoryPtr().get());
-//}
-
-
 
 } // namespace amorphous
 
 
-
-#endif /* __MeshFactory_HPP__ */
+#endif /* __amorphous_MeshFactory_HPP__ */

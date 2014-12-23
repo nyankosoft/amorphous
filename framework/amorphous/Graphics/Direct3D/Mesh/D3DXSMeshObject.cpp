@@ -1,8 +1,6 @@
 #include "D3DXSMeshObject.hpp"
-#include "D3DXMeshObject.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
-#include "Support/memory_helpers.hpp"
 
 
 namespace amorphous
