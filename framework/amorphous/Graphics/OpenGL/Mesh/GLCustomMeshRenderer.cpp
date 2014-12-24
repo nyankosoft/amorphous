@@ -15,10 +15,10 @@ namespace amorphous
 using namespace std;
 
 
-CGLCustomMeshRenderer CGLCustomMeshRenderer::ms_Instance;
+GLCustomMeshRenderer GLCustomMeshRenderer::ms_Instance;
 
 
-void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
+void GLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 {
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
@@ -178,13 +178,13 @@ void CGLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 }
 
 
-void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
+void GLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, int subset_index )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }
 
 
-void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
+void GLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 {
 	glUseProgram( 0 );
 
@@ -192,7 +192,7 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 }
 
 
-void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, ShaderManager& shader_mgr )
+void GLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, ShaderManager& shader_mgr )
 {
 //	LOG_PRINT_ERROR( " Not implemented." );
 
@@ -204,7 +204,7 @@ void CGLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, ShaderManager& shader_
 }
 
 
-void CGLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, ShaderManager& shader_mgr, int subset_index )
+void GLCustomMeshRenderer::RenderSubset( CustomMesh& mesh, ShaderManager& shader_mgr, int subset_index )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
 }

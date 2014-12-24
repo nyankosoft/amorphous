@@ -5,12 +5,12 @@ namespace amorphous
 {
 
 
-CGLSkeletalMeshImpl::CGLSkeletalMeshImpl()
+GLSkeletalMeshImpl::GLSkeletalMeshImpl()
 {
 }
 
 
-CGLSkeletalMeshImpl::CGLSkeletalMeshImpl( const std::string& filename )
+GLSkeletalMeshImpl::GLSkeletalMeshImpl( const std::string& filename )
 {
 }
 

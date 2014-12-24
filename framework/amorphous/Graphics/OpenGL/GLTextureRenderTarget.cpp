@@ -130,7 +130,7 @@ public:
 
 
 	
-CGLTextureRenderTarget::CGLTextureRenderTarget()
+GLTextureRenderTarget::GLTextureRenderTarget()
 {
 	m_Framebuffer = 0;
 	m_DepthRenderBuffer = 0;
@@ -141,7 +141,7 @@ CGLTextureRenderTarget::CGLTextureRenderTarget()
 }
 
 
-CGLTextureRenderTarget::CGLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+GLTextureRenderTarget::GLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 :
 TextureRenderTarget( texture_width, texture_height, texture_format )
 {
@@ -156,7 +156,7 @@ TextureRenderTarget( texture_width, texture_height, texture_format )
 }
 
 
-CGLTextureRenderTarget::CGLTextureRenderTarget( const TextureResourceDesc& texture_desc )
+GLTextureRenderTarget::GLTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 TextureRenderTarget(texture_desc)
 {
@@ -171,13 +171,13 @@ TextureRenderTarget(texture_desc)
 }
 
 
-CGLTextureRenderTarget::~CGLTextureRenderTarget()
+GLTextureRenderTarget::~GLTextureRenderTarget()
 {
 	ReleaseGraphicsResources();
 }
 
 
-void CGLTextureRenderTarget::ReleaseTextures()
+void GLTextureRenderTarget::ReleaseTextures()
 {
 	// Delete resources
 //	glDeleteTextures(1, &color_tex);
@@ -193,7 +193,7 @@ void CGLTextureRenderTarget::ReleaseTextures()
 }
 
 
-bool CGLTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+bool GLTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
 {
 	m_TextureDesc.Width  = texture_width;
 	m_TextureDesc.Height = texture_height;
@@ -206,7 +206,7 @@ bool CGLTextureRenderTarget::Init( int texture_width, int texture_height, Textur
 }
 
 
-bool CGLTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
+bool GLTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
 {
 	m_TextureDesc = texture_desc;
 
@@ -216,7 +216,7 @@ bool CGLTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
 }
 
 
-bool CGLTextureRenderTarget::InitScreenSizeRenderTarget()
+bool GLTextureRenderTarget::InitScreenSizeRenderTarget()
 {
 	m_bScreenSizeRenderTarget = true;
 
@@ -224,7 +224,7 @@ bool CGLTextureRenderTarget::InitScreenSizeRenderTarget()
 }
 
 
-bool CGLTextureRenderTarget::LoadTextures()
+bool GLTextureRenderTarget::LoadTextures()
 {
 	ReleaseTextures();
 
@@ -390,13 +390,13 @@ bool CGLTextureRenderTarget::LoadTextures()
 }
 
 
-void CGLTextureRenderTarget::CopyRenderTarget()
+void GLTextureRenderTarget::CopyRenderTarget()
 {
 	//	DIRECT3D9.GetDevice()->GetRenderTargetData( m_RenderTargetSurface, m_RenderTargetCopySurface );
 }
 
 
-void CGLTextureRenderTarget::SetBackgroundColor( const SFloatRGBAColor& bg_color )
+void GLTextureRenderTarget::SetBackgroundColor( const SFloatRGBAColor& bg_color )
 {
 	TextureRenderTarget::SetBackgroundColor( bg_color );
 
@@ -409,7 +409,7 @@ void CGLTextureRenderTarget::SetBackgroundColor( const SFloatRGBAColor& bg_color
 }
 
 
-void CGLTextureRenderTarget::SetRenderTarget()
+void GLTextureRenderTarget::SetRenderTarget()
 {
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
@@ -449,7 +449,7 @@ void CGLTextureRenderTarget::SetRenderTarget()
 }
 
 
-void CGLTextureRenderTarget::ResetRenderTarget()
+void GLTextureRenderTarget::ResetRenderTarget()
 {
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
@@ -466,7 +466,7 @@ void CGLTextureRenderTarget::ResetRenderTarget()
 }
 
 
-void CGLTextureRenderTarget::OutputImageFile( const std::string& image_file_path )
+void GLTextureRenderTarget::OutputImageFile( const std::string& image_file_path )
 {
 	LOG_PRINT_ERROR( " not implemented." );
 }

@@ -10,16 +10,16 @@ namespace amorphous
 
 
 /// NOT IMPLEMENTED YET
-class CGLProgressiveMeshImpl : public GLBasicMeshImpl
+class GLProgressiveMeshImpl : public GLBasicMeshImpl
 {
 
 public:
 
-	CGLProgressiveMeshImpl();
+	GLProgressiveMeshImpl();
 
-	CGLProgressiveMeshImpl( const std::string& filename );
+	GLProgressiveMeshImpl( const std::string& filename );
 
-	virtual ~CGLProgressiveMeshImpl();
+	virtual ~GLProgressiveMeshImpl();
 
 	void Release() {}
 };

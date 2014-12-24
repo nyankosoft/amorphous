@@ -6,7 +6,7 @@
 #include "GLGraphicsResources.hpp"
 #include "GLTextureRenderTarget.hpp"
 #include "GLCubeTextureRenderTarget.hpp"
-#include "Mesh/GLSkeletalMeshImpl.hpp"	  // Used by CGLMeshImplFactory
+#include "Mesh/GLSkeletalMeshImpl.hpp"	  // Used by GLMeshImplFactory
 #include "Mesh/GLCustomMeshRenderer.hpp"
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericGLSLShader.hpp"
@@ -42,10 +42,10 @@ public:
 
 
 //=======================================================================================
-// CGLGraphicsResourceFactoryImpl
+// GLGraphicsResourceFactoryImpl
 //=======================================================================================
 
-class CGLGraphicsResourceFactoryImpl : public GraphicsResourceFactoryImpl
+class GLGraphicsResourceFactoryImpl : public GraphicsResourceFactoryImpl
 {
 public:
 
@@ -58,21 +58,21 @@ public:
 
 
 //=======================================================================================
-// CGLGraphicsResourceFactoryImpl
+// GLGraphicsResourceFactoryImpl
 //=======================================================================================
 
-class CGLMeshImplFactory : public MeshImplFactory
+class GLMeshImplFactory : public MeshImplFactory
 {
 public:
 
 //	MeshImpl* CreateBasicMeshImpl()       { return new CGL2BasicMeshImpl; }
 	MeshImpl* CreateBasicMeshImpl()       { return new GLBasicMeshImpl; }
-	MeshImpl* CreateProgressiveMeshImpl() { return new CGLProgressiveMeshImpl; }
-	MeshImpl* CreateSkeletalMeshImpl()    { return new CGLSkeletalMeshImpl; }
+	MeshImpl* CreateProgressiveMeshImpl() { return new GLProgressiveMeshImpl; }
+	MeshImpl* CreateSkeletalMeshImpl()    { return new GLSkeletalMeshImpl; }
 };
 
 
-shared_ptr<TextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResource( const TextureResourceDesc& desc )
+shared_ptr<TextureResource> GLGraphicsResourceFactoryImpl::CreateTextureResource( const TextureResourceDesc& desc )
 {
 	shared_ptr<GLTextureResourceBase> pTexResource;
 
@@ -84,12 +84,12 @@ shared_ptr<TextureResource> CGLGraphicsResourceFactoryImpl::CreateTextureResourc
 	return pTexResource;
 }
 
-shared_ptr<MeshResource> CGLGraphicsResourceFactoryImpl::CreateMeshResource( const MeshResourceDesc& desc )
+shared_ptr<MeshResource> GLGraphicsResourceFactoryImpl::CreateMeshResource( const MeshResourceDesc& desc )
 {
 	return shared_ptr<MeshResource>( new MeshResource(&desc) );
 }
 
-shared_ptr<ShaderResource> CGLGraphicsResourceFactoryImpl::CreateShaderResource( const ShaderResourceDesc& desc )
+shared_ptr<ShaderResource> GLGraphicsResourceFactoryImpl::CreateShaderResource( const ShaderResourceDesc& desc )
 {
 	return shared_ptr<ShaderResource>( new CGLShaderResource(&desc) );
 }
@@ -100,13 +100,13 @@ Result::Name InitializeOpenGLClasses()
 	CGraphicsDeviceHolder::Get()->SetDevice( &GLGraphicsDevice() );
 	Ref2DPrimitiveRendererPtr() = &PrimitiveRenderer_GL();
 	RefPrimitiveRendererPtr() = &GetPrimitiveRenderer_GL();
-	GetGraphicsResourceFactory().Init( new CGLGraphicsResourceFactoryImpl() );
+	GetGraphicsResourceFactory().Init( new GLGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
-	GetMeshImplFactory().reset( new CGLMeshImplFactory );
+	GetMeshImplFactory().reset( new GLMeshImplFactory );
 	CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
-	TextureRenderTarget::SetInstanceCreationFunction( CGLTextureRenderTarget::Create );
+	TextureRenderTarget::SetInstanceCreationFunction( GLTextureRenderTarget::Create );
 	CubeTextureRenderTarget::SetInstanceCreationFunction( GLCubeTextureRenderTarget::Create );
-	CustomMeshRenderer::ms_pInstance = &(CGLCustomMeshRenderer::ms_Instance);
+	CustomMeshRenderer::ms_pInstance = &(GLCustomMeshRenderer::ms_Instance);
 	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_FRGBA );
 	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericGLSLShader( new EmbeddedGenericGLSLShader );
 	SetEmbeddedGenericShader( pEmbeddedGenericGLSLShader );

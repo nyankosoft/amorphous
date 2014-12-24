@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 
-class CGLTextureRenderTarget : public TextureRenderTarget
+class GLTextureRenderTarget : public TextureRenderTarget
 {
 private:
 
@@ -32,13 +32,13 @@ private:
 
 public:
 
-	CGLTextureRenderTarget();
+	GLTextureRenderTarget();
 
-	CGLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
+	GLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
 
-	CGLTextureRenderTarget( const TextureResourceDesc& texture_desc );
+	GLTextureRenderTarget( const TextureResourceDesc& texture_desc );
 
-	~CGLTextureRenderTarget();
+	~GLTextureRenderTarget();
 
 	/// Returns true on success
 	bool Init( int texture_width,
@@ -70,7 +70,7 @@ public:
 
 	void OutputImageFile( const std::string& image_file_path );
 
-	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<CGLTextureRenderTarget> p( new CGLTextureRenderTarget ); return p; }
+	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<GLTextureRenderTarget> p( new GLTextureRenderTarget ); return p; }
 };
 
 } // namespace amorphous

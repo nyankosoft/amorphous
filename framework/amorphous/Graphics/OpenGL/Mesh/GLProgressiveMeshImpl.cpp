@@ -5,17 +5,17 @@ namespace amorphous
 {
 
 
-CGLProgressiveMeshImpl::CGLProgressiveMeshImpl()
+GLProgressiveMeshImpl::GLProgressiveMeshImpl()
 {
 }
 
 
-CGLProgressiveMeshImpl::CGLProgressiveMeshImpl( const std::string& filename )
+GLProgressiveMeshImpl::GLProgressiveMeshImpl( const std::string& filename )
 {
 }
 
 
-CGLProgressiveMeshImpl::~CGLProgressiveMeshImpl()
+GLProgressiveMeshImpl::~GLProgressiveMeshImpl()
 {
 }
 

@@ -10,7 +10,7 @@ namespace amorphous
 
 
 /// NOT IMPLEMENTED YET
-class CGLSkeletalMeshImpl : public CGLProgressiveMeshImpl
+class GLSkeletalMeshImpl : public GLProgressiveMeshImpl
 {
 private:
 
@@ -18,11 +18,11 @@ private:
 
 public:
 
-	CGLSkeletalMeshImpl();
+	GLSkeletalMeshImpl();
 
-	CGLSkeletalMeshImpl( const std::string& filename );
+	GLSkeletalMeshImpl( const std::string& filename );
 
-//	virtual ~CGLSkeletalMeshImpl();
+//	virtual ~GLSkeletalMeshImpl();
 
 	void Release() {}
 

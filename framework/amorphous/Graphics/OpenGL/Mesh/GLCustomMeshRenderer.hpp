@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 
-class CGLCustomMeshRenderer : public CustomMeshRenderer
+class GLCustomMeshRenderer : public CustomMeshRenderer
 {
 	void RenderMeshWithCurrentProgram( CustomMesh& mesh );
 
@@ -27,7 +27,7 @@ public:
 
 	void RenderZSortedMesh( CustomMesh& mesh, ShaderManager& shader_mgr ) { RenderMesh( mesh, shader_mgr ); }
 
-	static CGLCustomMeshRenderer ms_Instance;
+	static GLCustomMeshRenderer ms_Instance;
 };
 
 } // namespace amorphous
