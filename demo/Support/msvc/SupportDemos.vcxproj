@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>../app</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
@@ -84,6 +84,7 @@
     <ClCompile Include="..\src\BitmapImageTest.cpp" />
     <ClCompile Include="..\src\clipboard_utils_test.cpp" />
     <ClCompile Include="..\src\fixed_string_test.cpp" />
+    <ClCompile Include="..\src\FreeTypeTest.cpp" />
     <ClCompile Include="..\src\ImageSplitterTest.cpp" />
     <ClCompile Include="..\src\SupportDemos.cpp" />
     <ClCompile Include="..\src\TextFileScannerTest.cpp" />

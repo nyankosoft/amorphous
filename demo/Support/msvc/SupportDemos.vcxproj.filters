@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogOutput.cpp">
       <Filter>Source Files\Support\Log</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FreeTypeTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp">
