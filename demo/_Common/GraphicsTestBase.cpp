@@ -1,17 +1,11 @@
 #include "GraphicsTestBase.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
-#include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
-#include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/Vec3_StringAux.hpp"
-#include "amorphous/App/GameWindowManager.hpp"
 #include <boost/filesystem.hpp>
-
-
-static Camera sg_Camera;
 
 
 int CGraphicsTestBase::ms_CameraControllerInputHandlerIndex = 1;
@@ -93,9 +87,12 @@ void CGraphicsTestBase::HandleInput( const InputData& input )
 }
 
 
-const Camera& CGraphicsTestBase::GetCurrentCamera() const
+const Camera& CGraphicsTestBase::GetCurrentCamera()
 {
-	return sg_Camera;
+	if( m_pCameraController )
+		m_Camera.SetPose( m_pCameraController->GetPose() );
+
+	return m_Camera;
 }
 
 

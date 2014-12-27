@@ -11,6 +11,7 @@
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Input/InputHandler.hpp"
 #include "amorphous/Support/CameraController.hpp"
 
@@ -25,6 +26,8 @@ class CGraphicsTestBase
 	bool m_UseRenderBase;
 
 	SFloatRGBAColor m_BackgroundColor;
+
+	Camera m_Camera;
 
 	boost::shared_ptr<CameraControllerBase> m_pCameraController;
 
@@ -45,7 +48,7 @@ protected:
 
 	void SetBackgroundColor( const SFloatRGBAColor& color ) { m_BackgroundColor = color; }
 
-	const Camera& GetCurrentCamera() const;
+	const Camera& GetCurrentCamera();
 
 	void CreateParamFileIfNotFound( const char *param_file, const char *text );
 
@@ -102,6 +105,8 @@ public:
 	int GetWindowHeight() const { return m_WindowHeight; }
 
 	virtual void AcquireInputDevices() {}
+
+	void SetCamera( const Camera& camera ) { m_Camera = camera; }
 
 	bool UseCameraControl() const { return m_UseCameraControl; }
 

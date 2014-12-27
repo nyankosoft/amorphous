@@ -106,6 +106,8 @@ bool DemoSwitcher::InitDemo( int index )
 	if( !m_pDemo )
 		return false;
 
+	m_pDemo->SetCamera( Camera() );
+
 	m_pDemo->SetCameraController( GetCameraController() );
 
 	const std::string app_title = m_pDemo->GetAppTitle();
