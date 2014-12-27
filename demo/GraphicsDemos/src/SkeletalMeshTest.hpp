@@ -25,11 +25,17 @@ class CSkeletalMeshTest : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
+	ShaderHandle m_VertexWeightMapViewShader;
+
+	bool m_VertexWeightMapViewMode;
+
 //	boost::shared_ptr<CVehicleController> m_pVehicleController;
 
 private:
 
 	Result::Name LoadShader();
+
+	Result::Name LoadVertexWeightMapViewShader();
 
 	Result::Name SetLight( ShaderManager& shader_mgr );
 

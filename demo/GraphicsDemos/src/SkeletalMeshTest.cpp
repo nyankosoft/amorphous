@@ -6,6 +6,7 @@
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
+#include "amorphous/Graphics/Shader/MiscShaderGenerator.hpp"
 #include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
@@ -19,11 +20,9 @@ using std::string;
 using boost::shared_ptr;
 
 
-//===========================================================================
-// CSkeletalMeshTest
-//===========================================================================
-
 CSkeletalMeshTest::CSkeletalMeshTest()
+:
+m_VertexWeightMapViewMode(true)
 {
 //	m_fDetailLevel = 1.0f;
 
@@ -49,6 +48,17 @@ Result::Name CSkeletalMeshTest::LoadShader()
 	sd.pShaderGenerator.reset( new GenericShaderGenerator( gsd ) );
 
 	bool loaded = m_Shader.Load( sd );
+
+	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+Result::Name CSkeletalMeshTest::LoadVertexWeightMapViewShader()
+{
+	ShaderResourceDesc sd;
+	sd.pShaderGenerator.reset( new MiscShaderGenerator( MiscShader::VERTEX_WEIGHT_MAP_DISPLAY ) );
+
+	bool loaded = m_VertexWeightMapViewShader.Load( sd );
 
 	return loaded ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
@@ -84,6 +94,8 @@ int CSkeletalMeshTest::Init()
 		GetCameraController()->SetPosition( Vector3( 0, 1, -5 ) );
 
 	Result::Name res = LoadShader();
+
+	res = LoadVertexWeightMapViewShader();
 
 	string mesh_pathname = "models/human.msh";//m_MeshFilepath;
 
@@ -123,7 +135,8 @@ int CSkeletalMeshTest::Init()
 
 void CSkeletalMeshTest::RenderMesh()
 {
-	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+//	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	ShaderManager *pShaderMgr = m_VertexWeightMapViewMode ? m_VertexWeightMapViewShader.GetShaderManager() : m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
