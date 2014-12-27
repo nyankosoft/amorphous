@@ -1,5 +1,5 @@
-#ifndef  __BBTreeDemo_HPP__
-#define  __BBTreeDemo_HPP__
+#ifndef  __OBBTreeDemo_HPP__
+#define  __OBBTreeDemo_HPP__
 
 
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
@@ -11,7 +11,7 @@
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
-class BBTreeDemo : public CGraphicsTestBase
+class OBBTreeDemo : public CGraphicsTestBase
 {
 	boost::shared_ptr<OBBTree> m_pOBBTree;
 
@@ -39,11 +39,11 @@ private:
 
 public:
 
-	BBTreeDemo();
+	OBBTreeDemo();
 
-	~BBTreeDemo();
+	~OBBTreeDemo();
 
-	const char *GetAppTitle() const { return "BBTreeDemo"; }
+	const char *GetAppTitle() const { return "OBBTreeDemo"; }
 
 	int Init();
 
@@ -57,4 +57,4 @@ public:
 };
 
 
-#endif /* __BBTreeDemo_HPP__ */
+#endif /* __OBBTreeDemo_HPP__ */

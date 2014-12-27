@@ -1,4 +1,4 @@
-#include "BBTreeDemo.hpp"
+#include "OBBTreeDemo.hpp"
 #include "amorphous/3DMath/OBBTree.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/CameraController.hpp"
@@ -16,7 +16,7 @@ using std::string;
 using namespace boost;
 
 
-BBTreeDemo::BBTreeDemo()
+OBBTreeDemo::OBBTreeDemo()
 :
 m_DrawLevel(0),
 m_NumDrawLevels(8)
@@ -24,24 +24,24 @@ m_NumDrawLevels(8)
 }
 
 
-BBTreeDemo::~BBTreeDemo()
+OBBTreeDemo::~OBBTreeDemo()
 {
 }
 
 
-int BBTreeDemo::Init()
+int OBBTreeDemo::Init()
 {
 	if( CameraController() )
 		CameraController()->SetPosition( Vector3(0,1,-3) );
 
-	const string dir_path = "OBBTreeDemo/";
+	const string dir_path = "OOBBTreeDemo/";
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "Default" );
 	m_DefaultTechnique.SetTechniqueName( "Default" );
 
 	// initialize shader
-//	bool shader_loaded = m_Shader.Load( dir_path + "shaders/BBTreeDemo.fx" );
+//	bool shader_loaded = m_Shader.Load( dir_path + "shaders/OBBTreeDemo.fx" );
 	m_Shader = GetNoLightingShader();
 
 	// load skybox mesh
@@ -72,11 +72,11 @@ int BBTreeDemo::Init()
 }
 
 
-void BBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
+void OBBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 {
 	m_pOBBTree.reset( new OBBTree );
 
-	const string dir_path = "OBBTreeDemo/";
+	const string dir_path = "OOBBTreeDemo/";
 
 	int level = 8;
 	LoadParamFromFile( dir_path + "params.txt", "obb_tree_level", level );
@@ -92,12 +92,12 @@ void BBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 }
 
 
-void BBTreeDemo::Update( float dt )
+void OBBTreeDemo::Update( float dt )
 {
 }
 
 
-void BBTreeDemo::Render()
+void OBBTreeDemo::Render()
 {
 	Matrix44 matWorld = Matrix44Identity();
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
@@ -132,7 +132,7 @@ void BBTreeDemo::Render()
 }
 
 
-void BBTreeDemo::HandleInput( const InputData& input )
+void OBBTreeDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{

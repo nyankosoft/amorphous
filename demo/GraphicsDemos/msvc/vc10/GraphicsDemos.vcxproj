@@ -105,7 +105,7 @@
     <ClInclude Include="..\..\src\LightingDemo.hpp" />
     <ClInclude Include="..\..\src\MeshSplitterDemo.hpp" />
     <ClInclude Include="..\..\src\MultibyteFontDemo.hpp" />
-    <ClInclude Include="..\..\src\BBTreeDemo.hpp" />
+    <ClInclude Include="..\..\src\OBBTreeDemo.hpp" />
     <ClInclude Include="..\..\src\PerlinNoiseTextureGeneratorDemo.hpp" />
     <ClInclude Include="..\..\src\PlanarReflectionDemo.hpp" />
     <ClInclude Include="..\..\src\PostProcessEffectDemo.hpp" />
@@ -142,7 +142,7 @@
     <ClCompile Include="..\..\src\LightingDemo.cpp" />
     <ClCompile Include="..\..\src\MeshSplitterDemo.cpp" />
     <ClCompile Include="..\..\src\MultibyteFontDemo.cpp" />
-    <ClCompile Include="..\..\src\BBTreeDemo.cpp" />
+    <ClCompile Include="..\..\src\OBBTreeDemo.cpp" />
     <ClCompile Include="..\..\src\PerlinNoiseTextureGeneratorDemo.cpp" />
     <ClCompile Include="..\..\src\PlanarReflectionDemo.cpp" />
     <ClCompile Include="..\..\src\PostProcessEffectDemo.cpp" />

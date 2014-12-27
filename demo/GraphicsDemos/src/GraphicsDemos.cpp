@@ -14,7 +14,7 @@
 #include "LightingDemo.hpp"
 #include "MeshSplitterDemo.hpp"
 #include "MultibyteFontDemo.hpp"
-#include "BBTreeDemo.hpp"
+#include "OBBTreeDemo.hpp"
 #include "PerlinNoiseTextureGeneratorDemo.hpp"
 #include "PlanarReflectionDemo.hpp"
 #include "PostProcessEffectDemo.hpp"
@@ -99,7 +99,7 @@ CGraphicsTestBase *GraphicsDemoFactory::CreateDemoInstance( const std::string& d
 	else if( demo_name == "LightingDemo" )                    return new LightingDemo;
 	else if( demo_name == "MeshSplitterDemo" )                return new MeshSplitterDemo;
 	else if( demo_name == "MultibyteFontDemo" )               return new MultibyteFontDemo;
-	else if( demo_name == "BBTreeDemo" )                     return new BBTreeDemo;
+	else if( demo_name == "OBBTreeDemo" )                     return new OBBTreeDemo;
 	else if( demo_name == "PerlinNoiseTextureGeneratorDemo" ) return new PerlinNoiseTextureGeneratorDemo;
 	else if( demo_name == "PlanarReflectionDemo" )            return new PlanarReflectionDemo;
 	else if( demo_name == "PostProcessEffectDemo" )           return new PostProcessEffectDemo;

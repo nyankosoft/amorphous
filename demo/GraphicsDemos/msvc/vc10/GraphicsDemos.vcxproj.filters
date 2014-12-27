@@ -54,7 +54,7 @@
     <ClInclude Include="..\..\src\MultibyteFontDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\BBTreeDemo.hpp">
+    <ClInclude Include="..\..\src\OBBTreeDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PerlinNoiseTextureGeneratorDemo.hpp">
@@ -161,7 +161,7 @@
     <ClCompile Include="..\..\src\MultibyteFontDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\BBTreeDemo.cpp">
+    <ClCompile Include="..\..\src\OBBTreeDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\PerlinNoiseTextureGeneratorDemo.cpp">
