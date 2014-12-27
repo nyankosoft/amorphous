@@ -156,6 +156,10 @@
     <ClCompile Include="..\..\src\TextureFontTest.cpp" />
     <ClCompile Include="..\..\src\TextureRenderTargetTest.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\app\config" />
+    <None Include="..\..\app\params.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
