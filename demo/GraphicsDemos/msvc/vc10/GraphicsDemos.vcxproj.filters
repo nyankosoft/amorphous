@@ -24,88 +24,88 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\AsyncLoadingTest.hpp">
+    <ClInclude Include="..\..\src\AsyncLoadingDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\CustomMeshTest.hpp">
+    <ClInclude Include="..\..\src\CustomMeshDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\EnvMapTest.hpp">
+    <ClInclude Include="..\..\src\EnvMapDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\GenericShaderTest.hpp">
+    <ClInclude Include="..\..\src\GenericShaderDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\GLSLTest.hpp">
+    <ClInclude Include="..\..\src\GLSLDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\GraphicsElementsTest.hpp">
+    <ClInclude Include="..\..\src\GraphicsElementsDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\HLSLEffectTest.hpp">
+    <ClInclude Include="..\..\src\HLSLEffectDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\LensFlareTest.hpp">
+    <ClInclude Include="..\..\src\LensFlareDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\MeshSplitterTest.hpp">
+    <ClInclude Include="..\..\src\MeshSplitterDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\MultibyteFontTest.hpp">
+    <ClInclude Include="..\..\src\MultibyteFontDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\OBBTreeTest.hpp">
+    <ClInclude Include="..\..\src\BBTreeDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\PerlinNoiseTextureGeneratorTest.hpp">
+    <ClInclude Include="..\..\src\PerlinNoiseTextureGeneratorDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\PlanarReflectionTest.hpp">
+    <ClInclude Include="..\..\src\PlanarReflectionDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\PostProcessEffectTest.hpp">
+    <ClInclude Include="..\..\src\PostProcessEffectDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\PrimitiveRendererTest.hpp">
+    <ClInclude Include="..\..\src\PrimitiveRendererDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\PrimitiveShapeMeshesTest.hpp">
+    <ClInclude Include="..\..\src\PrimitiveShapeMeshesDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ResolutionChangeTest.hpp">
+    <ClInclude Include="..\..\src\ResolutionChangeDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ShadowMapTest.hpp">
+    <ClInclude Include="..\..\src\ShadowMapDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\SimpleMotionBlurTest.hpp">
+    <ClInclude Include="..\..\src\SimpleMotionBlurDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\SimpleOverlayEffectsTest.hpp">
+    <ClInclude Include="..\..\src\SimpleOverlayEffectsDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TextureFontTest.hpp">
+    <ClInclude Include="..\..\src\TextureFontDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TextureRenderTargetTest.hpp">
+    <ClInclude Include="..\..\src\TextureRenderTargetDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\2DPrimitivesTest.hpp">
+    <ClInclude Include="..\..\src\2DPrimitivesDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\GraphicsElementEffectTest.hpp">
+    <ClInclude Include="..\..\src\GraphicsElementEffectDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\BrickWallTextureGeneratorTest.hpp">
+    <ClInclude Include="..\..\src\BrickWallTextureGeneratorDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\CubeMapTest.hpp">
+    <ClInclude Include="..\..\src\CubeMapDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\SkeletalMeshTest.hpp">
+    <ClInclude Include="..\..\src\SkeletalMeshDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\LightingTest.hpp">
+    <ClInclude Include="..\..\src\LightingDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\_Common\DemoSwitcher.hpp">
@@ -128,91 +128,91 @@
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\AsyncLoadingTest.cpp">
+    <ClCompile Include="..\..\src\AsyncLoadingDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\CustomMeshTest.cpp">
+    <ClCompile Include="..\..\src\CustomMeshDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\EnvMapTest.cpp">
+    <ClCompile Include="..\..\src\EnvMapDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\GenericShaderTest.cpp">
+    <ClCompile Include="..\..\src\GenericShaderDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\GLSLTest.cpp">
+    <ClCompile Include="..\..\src\GLSLDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\GraphicsDemos.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\GraphicsElementsTest.cpp">
+    <ClCompile Include="..\..\src\GraphicsElementsDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\HLSLEffectTest.cpp">
+    <ClCompile Include="..\..\src\HLSLEffectDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\LensFlareTest.cpp">
+    <ClCompile Include="..\..\src\LensFlareDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MeshSplitterTest.cpp">
+    <ClCompile Include="..\..\src\MeshSplitterDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MultibyteFontTest.cpp">
+    <ClCompile Include="..\..\src\MultibyteFontDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OBBTreeTest.cpp">
+    <ClCompile Include="..\..\src\BBTreeDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\PerlinNoiseTextureGeneratorTest.cpp">
+    <ClCompile Include="..\..\src\PerlinNoiseTextureGeneratorDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\PlanarReflectionTest.cpp">
+    <ClCompile Include="..\..\src\PlanarReflectionDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\PostProcessEffectTest.cpp">
+    <ClCompile Include="..\..\src\PostProcessEffectDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\PrimitiveRendererTest.cpp">
+    <ClCompile Include="..\..\src\PrimitiveRendererDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\PrimitiveShapeMeshesTest.cpp">
+    <ClCompile Include="..\..\src\PrimitiveShapeMeshesDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ResolutionChangeTest.cpp">
+    <ClCompile Include="..\..\src\ResolutionChangeDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ShadowMapTest.cpp">
+    <ClCompile Include="..\..\src\ShadowMapDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\SimpleMotionBlurTest.cpp">
+    <ClCompile Include="..\..\src\SimpleMotionBlurDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\SimpleOverlayEffectsTest.cpp">
+    <ClCompile Include="..\..\src\SimpleOverlayEffectsDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TextureFontTest.cpp">
+    <ClCompile Include="..\..\src\TextureFontDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TextureRenderTargetTest.cpp">
+    <ClCompile Include="..\..\src\TextureRenderTargetDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\2DPrimitivesTest.cpp">
+    <ClCompile Include="..\..\src\2DPrimitivesDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\GraphicsElementEffectTest.cpp">
+    <ClCompile Include="..\..\src\GraphicsElementEffectDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\BrickWallTextureGeneratorTest.cpp">
+    <ClCompile Include="..\..\src\BrickWallTextureGeneratorDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\CubeMapTest.cpp">
+    <ClCompile Include="..\..\src\CubeMapDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\SkeletalMeshTest.cpp">
+    <ClCompile Include="..\..\src\SkeletalMeshDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\LightingTest.cpp">
+    <ClCompile Include="..\..\src\LightingDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\framework\amorphous\App\AppMain.cpp">

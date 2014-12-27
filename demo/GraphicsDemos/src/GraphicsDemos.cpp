@@ -1,32 +1,32 @@
 #include "GraphicsDemoFactory.hpp"
-#include "2DPrimitivesTest.hpp"
-#include "AsyncLoadingTest.hpp"
-#include "BrickWallTextureGeneratorTest.hpp"
-#include "CustomMeshTest.hpp"
-#include "CubeMapTest.hpp"
-#include "EnvMapTest.hpp"
-#include "GenericShaderTest.hpp"
-#include "GLSLTest.hpp"
-#include "GraphicsElementEffectTest.hpp"
-#include "GraphicsElementsTest.hpp"
-#include "HLSLEffectTest.hpp"
-#include "LensFlareTest.hpp"
-#include "LightingTest.hpp"
-#include "MeshSplitterTest.hpp"
-#include "MultibyteFontTest.hpp"
-#include "OBBTreeTest.hpp"
-#include "PerlinNoiseTextureGeneratorTest.hpp"
-#include "PlanarReflectionTest.hpp"
-#include "PostProcessEffectTest.hpp"
-#include "PrimitiveRendererTest.hpp"
-#include "PrimitiveShapeMeshesTest.hpp"
-#include "ResolutionChangeTest.hpp"
-#include "ShadowMapTest.hpp"
-#include "SimpleMotionBlurTest.hpp"
-#include "SimpleOverlayEffectsTest.hpp"
-#include "SkeletalMeshTest.hpp"
-#include "TextureFontTest.hpp"
-#include "TextureRenderTargetTest.hpp"
+#include "2DPrimitivesDemo.hpp"
+#include "AsyncLoadingDemo.hpp"
+#include "BrickWallTextureGeneratorDemo.hpp"
+#include "CustomMeshDemo.hpp"
+#include "CubeMapDemo.hpp"
+#include "EnvMapDemo.hpp"
+#include "GenericShaderDemo.hpp"
+#include "GLSLDemo.hpp"
+#include "GraphicsElementEffectDemo.hpp"
+#include "GraphicsElementsDemo.hpp"
+#include "HLSLEffectDemo.hpp"
+#include "LensFlareDemo.hpp"
+#include "LightingDemo.hpp"
+#include "MeshSplitterDemo.hpp"
+#include "MultibyteFontDemo.hpp"
+#include "BBTreeDemo.hpp"
+#include "PerlinNoiseTextureGeneratorDemo.hpp"
+#include "PlanarReflectionDemo.hpp"
+#include "PostProcessEffectDemo.hpp"
+#include "PrimitiveRendererDemo.hpp"
+#include "PrimitiveShapeMeshesDemo.hpp"
+#include "ResolutionChangeDemo.hpp"
+#include "ShadowMapDemo.hpp"
+#include "SimpleMotionBlurDemo.hpp"
+#include "SimpleOverlayEffectsDemo.hpp"
+#include "SkeletalMeshDemo.hpp"
+#include "TextureFontDemo.hpp"
+#include "TextureRenderTargetDemo.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 
 using std::string;
@@ -37,34 +37,34 @@ DemoFactory *CreateDemoFactory() { return new GraphicsDemoFactory; }
 
 static const char *sg_demos[] =
 {
-	"2DPrimitivesTest",
-	"AsyncLoadingTest",
-	"BrickWallTextureGeneratorTest",
-	"CustomMeshTest",
-	"CubeMapTest",
-	"EnvMapTest",
-	"GenericShaderTest",
-	"GLSLTest",
-	"GraphicsElementEffectTest",
-	"GraphicsElementsTest",
-	"HLSLEffectTest",
-	"LensFlareTest",
-	"LightingTest",
-	"MeshSplitterTest",
-	"MultibyteFontTest",
-	"OBBTreeTest",
-	"PerlinNoiseTextureGeneratorTest",
-	"PlanarReflectionTest",
-	"PostProcessEffectTest",
-	"PrimitiveRendererTest",
-	"PrimitiveShapeMeshesTest",
-	"ResolutionChangeTest",
-	"ShadowMapTest",
-	"SimpleMotionBlurTest",
-	"SimpleOverlayEffectsTest",
-	"SkeletalMeshTest",
-	"TextureFontTest",
-	"TextureRenderTargetTest"
+	"2DPrimitivesDemo",
+	"AsyncLoadingDemo",
+	"BrickWallTextureGeneratorDemo",
+	"CustomMeshDemo",
+	"CubeMapDemo",
+	"EnvMapDemo",
+	"GenericShaderDemo",
+	"GLSLDemo",
+	"GraphicsElementEffectDemo",
+	"GraphicsElementsDemo",
+	"HLSLEffectDemo",
+	"LensFlareDemo",
+	"LightingDemo",
+	"MeshSplitterDemo",
+	"MultibyteFontDemo",
+	"BBTreeDemo",
+	"PerlinNoiseTextureGeneratorDemo",
+	"PlanarReflectionDemo",
+	"PostProcessEffectDemo",
+	"PrimitiveRendererDemo",
+	"PrimitiveShapeMeshesDemo",
+	"ResolutionChangeDemo",
+	"ShadowMapDemo",
+	"SimpleMotionBlurDemo",
+	"SimpleOverlayEffectsDemo",
+	"SkeletalMeshDemo",
+	"TextureFontDemo",
+	"TextureRenderTargetDemo"
 };
 
 
@@ -84,34 +84,34 @@ CGraphicsTestBase *GraphicsDemoFactory::CreateDemoInstance( const std::string& d
 {
 	if( demo_name == "" )
 		return NULL;
-	else if( demo_name == "2DPrimitivesTest" )                return new C2DPrimitivesTest;
-	else if( demo_name == "AsyncLoadingTest" )                return new CAsyncLoadingTest;
-	else if( demo_name == "BrickWallTextureGeneratorTest" )   return new CBrickWallTextureGeneratorTest;
-	else if( demo_name == "CustomMeshTest" )                  return new CCustomMeshTest;
-	else if( demo_name == "CubeMapTest" )                     return new CCubeMapTest;
-	else if( demo_name == "EnvMapTest" )                      return new CEnvMapTest;
-	else if( demo_name == "GenericShaderTest" )               return new CGenericShaderTest;
-	else if( demo_name == "GLSLTest" )                        return new CGLSLTest;
-	else if( demo_name == "GraphicsElementEffectTest" )       return new CGraphicsElementEffectTest;
-	else if( demo_name == "GraphicsElementsTest" )            return new CGraphicsElementsTest;
-	else if( demo_name == "HLSLEffectTest" )                  return new CHLSLEffectTest;
-	else if( demo_name == "LensFlareTest" )                   return new CLensFlareTest;
-	else if( demo_name == "LightingTest" )                    return new CLightingTest;
-	else if( demo_name == "MeshSplitterTest" )                return new CMeshSplitterTest;
-	else if( demo_name == "MultibyteFontTest" )               return new CMultibyteFontTest;
-	else if( demo_name == "OBBTreeTest" )                     return new OBBTreeTest;
-	else if( demo_name == "PerlinNoiseTextureGeneratorTest" ) return new CPerlinNoiseTextureGeneratorTest;
-	else if( demo_name == "PlanarReflectionTest" )            return new CPlanarReflectionTest;
-	else if( demo_name == "PostProcessEffectTest" )           return new CPostProcessEffectTest;
-	else if( demo_name == "PrimitiveRendererTest" )           return new CPrimitiveRendererTest;
-	else if( demo_name == "PrimitiveShapeMeshesTest" )        return new CPrimitiveShapeMeshesTest;
-	else if( demo_name == "ResolutionChangeTest" )            return new CResolutionChangeTest;
-	else if( demo_name == "ShadowMapTest" )                   return new CShadowMapTest;
-	else if( demo_name == "SimpleMotionBlurTest" )            return new CSimpleMotionBlurTest;
-	else if( demo_name == "SimpleOverlayEffectsTest" )        return new CSimpleOverlayEffectsTest;
-	else if( demo_name == "SkeletalMeshTest" )                return new CSkeletalMeshTest;
-	else if( demo_name == "TextureFontTest" )                 return new CTextureFontTest;
-	else if( demo_name == "TextureRenderTargetTest" )         return new CTextureRenderTargetTest;
+	else if( demo_name == "2DPrimitivesDemo" )                return new C2DPrimitivesDemo;
+	else if( demo_name == "AsyncLoadingDemo" )                return new AsyncLoadingDemo;
+	else if( demo_name == "BrickWallTextureGeneratorDemo" )   return new BrickWallTextureGeneratorDemo;
+	else if( demo_name == "CustomMeshDemo" )                  return new CCustomMeshDemo;
+	else if( demo_name == "CubeMapDemo" )                     return new CubeMapDemo;
+	else if( demo_name == "EnvMapDemo" )                      return new EnvMapDemo;
+	else if( demo_name == "GenericShaderDemo" )               return new GenericShaderDemo;
+	else if( demo_name == "GLSLDemo" )                        return new GLSLDemo;
+	else if( demo_name == "GraphicsElementEffectDemo" )       return new GraphicsElementEffectDemo;
+	else if( demo_name == "GraphicsElementsDemo" )            return new GraphicsElementsDemo;
+	else if( demo_name == "HLSLEffectDemo" )                  return new HLSLEffectDemo;
+	else if( demo_name == "LensFlareDemo" )                   return new LensFlareDemo;
+	else if( demo_name == "LightingDemo" )                    return new LightingDemo;
+	else if( demo_name == "MeshSplitterDemo" )                return new MeshSplitterDemo;
+	else if( demo_name == "MultibyteFontDemo" )               return new MultibyteFontDemo;
+	else if( demo_name == "BBTreeDemo" )                     return new BBTreeDemo;
+	else if( demo_name == "PerlinNoiseTextureGeneratorDemo" ) return new PerlinNoiseTextureGeneratorDemo;
+	else if( demo_name == "PlanarReflectionDemo" )            return new PlanarReflectionDemo;
+	else if( demo_name == "PostProcessEffectDemo" )           return new PostProcessEffectDemo;
+	else if( demo_name == "PrimitiveRendererDemo" )           return new PrimitiveRendererDemo;
+	else if( demo_name == "PrimitiveShapeMeshesDemo" )        return new PrimitiveShapeMeshesDemo;
+	else if( demo_name == "ResolutionChangeDemo" )            return new ResolutionChangeDemo;
+	else if( demo_name == "ShadowMapDemo" )                   return new ShadowMapDemo;
+	else if( demo_name == "SimpleMotionBlurDemo" )            return new SimpleMotionBlurDemo;
+	else if( demo_name == "SimpleOverlayEffectsDemo" )        return new SimpleOverlayEffectsDemo;
+	else if( demo_name == "SkeletalMeshDemo" )                return new SkeletalMeshDemo;
+	else if( demo_name == "TextureFontDemo" )                 return new TextureFontDemo;
+	else if( demo_name == "TextureRenderTargetDemo" )         return new TextureRenderTargetDemo;
 	else
 		return NULL;
 }
