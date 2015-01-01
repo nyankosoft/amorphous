@@ -1,8 +1,6 @@
-#include "amorphous/Support/Log/LogOutput.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/ImageArchiveAux.hpp"
-#include "amorphous/Support/MiscAux.hpp"
 #include "amorphous/base.hpp"
 
 using namespace std;
@@ -59,6 +57,12 @@ int TestImageArchive()
 
 void RunImageSaveTest()
 {
+
+	const char *extensions[] = {
+		"png",
+		"jpg"
+	};
+
 	const SFloatRGBAColor colors[] = {
 		SFloatRGBAColor::White(),
 		SFloatRGBAColor::Red(),
@@ -75,15 +79,27 @@ void RunImageSaveTest()
 		"black"
 	};
 
-	const int bpps[] = { 24, 32 };
-	for( int i=0; i<numof(bpps); i++ )
-	{
-		for( int j=0; j<numof(colors); j++ )
-		{
-			BitmapImage img( 64, 64, bpps[i] );
-			img.FillColor( colors[j] );
+	string image_file_pathname;
 
-			img.SaveToFile( string(basenames[j]) + "_bpp" + to_string(bpps[i]) + string(".png") );
+	for( int i=0; i<numof(extensions); i++ )
+	{
+		const int bpps[] = { 24, 32 };
+		for( int j=0; j<numof(bpps); j++ )
+		{
+			for( int k=0; k<numof(colors); k++ )
+			{
+				BitmapImage img64( 64, 64, bpps[j] );
+				img64.FillColor( colors[k] );
+
+				image_file_pathname = string("results/bitmap_images/") + string(basenames[k]) + "_064x064_bpp" + to_string(bpps[j]) + "." + string(extensions[i]);
+				img64.SaveToFile( image_file_pathname );
+
+				BitmapImage img256( 256, 256, bpps[j] );
+				img256.FillColor( colors[k] );
+
+				image_file_pathname = string("results/bitmap_images/") + string(basenames[k]) + "_256x256_bpp" + to_string(bpps[j]) + "." + string(extensions[i]);
+				img256.SaveToFile( image_file_pathname );
+			}
 		}
 	}
 }
@@ -104,10 +120,6 @@ int RunTests()
 int test_BitmapImage( int argc, char *argv[] )
 {
 	InitFreeImage();
-
-	string log_filepath = "BitmapImageTest-" + string(GetBuildInfo()) + ".html";
-	boost::shared_ptr<LogOutput_HTML> pLog( new LogOutput_HTML(log_filepath) );
-	GlobalLog().AddLogOutput( pLog.get() );
 
 	return RunTests();
 }
