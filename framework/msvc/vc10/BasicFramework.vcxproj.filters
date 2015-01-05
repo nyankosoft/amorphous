@@ -852,6 +852,9 @@
     <ClCompile Include="..\..\amorphous\Utilities\ScreenshotRenderer.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.cpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -1994,6 +1997,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Utilities\ScreenshotRenderer.hpp">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.hpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
