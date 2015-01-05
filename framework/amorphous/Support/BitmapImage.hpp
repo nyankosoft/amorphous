@@ -143,6 +143,8 @@ private:
 		}
 	}
 
+	inline bool Save32BPPImageTo24JPEGFile( const std::string& image_file_pathname, int flag );
+
 public:
 
 	BitmapImage() : m_pFreeImageBitMap(NULL), m_BitsPerPixel(0) {}
@@ -228,6 +230,7 @@ inline void InitFreeImage()
 	FreeImage_SetOutputMessage(LogFreeImageError);
 
 	LOG_PRINT( std::string("FreeImage version: ") + FreeImage_GetVersion() );
+	LOG_PRINT( std::string("FreeImage copyright: ") + FreeImage_GetCopyrightMessage() );
 }
 
 
@@ -569,9 +572,12 @@ inline const char *BitmapImage::GetColorTypeName() const
 
 // ----------------------------------------------------------
 
-/** Generic image loader
+/**
+	@brief Loads an image from a file
+
 	@param pathname Pointer to the full file name
 	@param flag Optional load flag constant
+
 	@return Returns true on success
 */
 inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
@@ -592,7 +598,7 @@ inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
 
 	if(fif == FIF_UNKNOWN)
 	{
-		LOG_PRINT_ERROR( " An unsupported image file format." );
+		LOG_PRINT_ERROR( " An unsupported image file format: " + pathname );
 		return false;
 	}
 
@@ -619,17 +625,48 @@ inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
 	}
 }
 
-/** Generic image writer
-	@param dib Pointer to the dib to be saved
+
+inline bool BitmapImage::Save32BPPImageTo24JPEGFile( const std::string& image_file_pathname, int flag )
+{
+	int width  = this->GetWidth();
+	int height = this->GetHeight();
+	int bpp    = this->m_BitsPerPixel;
+
+	if( 4 <= image_file_pathname.length()
+	 && image_file_pathname.find(".jpg") == image_file_pathname.length() - 4
+	 && bpp == 32 )
+	{
+		BitmapImage img_bpp24( width, height, 24 );
+		if( !img_bpp24.m_pFreeImageBitMap )
+			return false;
+
+		for( int y=0; y<height; y++ )
+		{
+			for( int x=0; x<width; x++ )
+			{
+				U8 r=0,g=0,b=0;
+				GetPixel(x,y,r,g,b);
+				img_bpp24.SetPixel(x,y,r,g,b);
+			}
+		}
+
+		BOOL succeeded = FreeImage_Save(FIF_JPEG, img_bpp24.m_pFreeImageBitMap, image_file_pathname.c_str(), flag);
+		return succeeded ? true : false;
+	}
+
+	return false;
+}
+
+/** 
+	@brief Save the bitmap to a file
+
 	@param pathname Pointer to the full file name
 	@param flag Optional save flag constant
+
 	@return Returns true if successful, returns false otherwise
 */
 inline bool BitmapImage::SaveToFile( const std::string& pathname, int flag )
 {
-	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-	BOOL bSuccess = FALSE;
-
 	if( !m_pFreeImageBitMap )
 	{
 		LOG_PRINT_ERROR( " Has no valid bitmap." );
@@ -637,7 +674,7 @@ inline bool BitmapImage::SaveToFile( const std::string& pathname, int flag )
 	}
 
 	// try to guess the file format from the file extension
-	fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
+	FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename( pathname.c_str() );
 	if(fif == FIF_UNKNOWN )
 	{
 		LOG_PRINT_ERROR( " An unsupported image format: " + pathname );
@@ -649,29 +686,39 @@ inline bool BitmapImage::SaveToFile( const std::string& pathname, int flag )
 	BOOL supports_writing = FreeImage_FIFSupportsWriting(fif);
 	if( !supports_writing )
 	{
-		LOG_PRINT_ERROR( " FreeImage_FIFSupportsWriting() returned false. Cannot save the image to disk as " + pathname );
+		LOG_PRINT_ERROR( " FreeImage_FIFSupportsWriting() returned false. Cannot save the image to the file as " + pathname );
 		return false;
+	}
+
+	if( 4 <= pathname.length()
+	 && pathname.find(".jpg") == pathname.length() - 4
+	 && bpp == 32 )
+	{
+		// 32-bit (RGBA) images cannot be saved to JPEG files.
+		// Give up the alpha and save the bitmap as a 24-bit (RGB) image file.
+		LOG_PRINT_WARNING( " 32-bit images cannot be saved to JPEG files. Saving the image as 24-bit bitmap without the alpha channel: " + pathname );
+		return Save32BPPImageTo24JPEGFile(pathname,flag);
 	}
 
 	BOOL supports_export_bpp = FreeImage_FIFSupportsExportBPP(fif, bpp);
 	if( !supports_export_bpp )
 	{
-		LOG_PRINT_ERROR( " Cannot save an image to disk: " + pathname );
+		LOG_PRINT_ERROR( " Cannot save an image to the file: " + pathname );
 		return false;
 	}
 
 	// ok, we can save the file
-	bSuccess = FreeImage_Save(fif, m_pFreeImageBitMap, pathname.c_str(), flag);
+	BOOL succeeded = FreeImage_Save(fif, m_pFreeImageBitMap, pathname.c_str(), flag);
 
 	// unless an abnormal bug, we are done !
-	if( bSuccess == TRUE )
+	if( succeeded == TRUE )
 	{
-		LOG_PRINT_VERBOSE( " Saved an image file to disk: " + pathname );
+		LOG_PRINT_VERBOSE( " Saved an image to the file: " + pathname );
 		return true;
 	}
 	else
 	{
-		LOG_PRINT_ERROR( " Failed to save an image file to disk: " + pathname );
+		LOG_PRINT_ERROR( " Failed to save an image to the file: " + pathname );
 		return false;
 	}
 }
