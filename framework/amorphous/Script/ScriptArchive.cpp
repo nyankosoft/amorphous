@@ -79,7 +79,8 @@ static void CreateScriptFileListBySearchingDirectory( path script_dir_path,
 bool g_LoadScriptFilesFromListFile = true;
 
 /**
- * \param dir_path root directory for script directory
+ * \param src_dir_path root directory for all the script files directories
+ * \param output_dir_path output directory path
  */
 void UpdateScriptArchives( const std::string & src_dir_path,
 						   const std::string & output_dir_path )
