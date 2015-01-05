@@ -5,6 +5,7 @@
 #include "ShaderGenerator.hpp"
 #include "MiscShader.hpp"
 #include "Embedded/EmbeddedGenericShader.hpp"
+#include "../ShaderHandle.hpp"
 
 
 namespace amorphous
@@ -62,6 +63,18 @@ public:
 			return false;
 	}
 };
+
+
+inline ShaderHandle CreateMiscShader( MiscShader::ID misc_shader_id )
+{
+	ShaderResourceDesc desc;
+	desc.pShaderGenerator.reset( new MiscShaderGenerator(misc_shader_id) );
+
+	ShaderHandle shader;
+	shader.Load( desc );
+
+	return shader;
+}
 
 
 } // namespace amorphous
