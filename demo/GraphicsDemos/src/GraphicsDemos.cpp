@@ -13,6 +13,7 @@
 #include "LensFlareDemo.hpp"
 #include "LightingDemo.hpp"
 #include "MeshSplitterDemo.hpp"
+#include "MiscShaderDemo.hpp"
 #include "MultibyteFontDemo.hpp"
 #include "OBBTreeDemo.hpp"
 #include "PerlinNoiseTextureGeneratorDemo.hpp"
@@ -51,8 +52,9 @@ static const char *sg_demos[] =
 	"LensFlareDemo",
 	"LightingDemo",
 	"MeshSplitterDemo",
+	"MiscShaderDemo",
 	"MultibyteFontDemo",
-	"BBTreeDemo",
+	"OBBTreeDemo",
 	"PerlinNoiseTextureGeneratorDemo",
 	"PlanarReflectionDemo",
 	"PostProcessEffectDemo",
@@ -98,6 +100,7 @@ CGraphicsTestBase *GraphicsDemoFactory::CreateDemoInstance( const std::string& d
 	else if( demo_name == "LensFlareDemo" )                   return new LensFlareDemo;
 	else if( demo_name == "LightingDemo" )                    return new LightingDemo;
 	else if( demo_name == "MeshSplitterDemo" )                return new MeshSplitterDemo;
+	else if( demo_name == "MiscShaderDemo" )                  return new MiscShaderDemo;
 	else if( demo_name == "MultibyteFontDemo" )               return new MultibyteFontDemo;
 	else if( demo_name == "OBBTreeDemo" )                     return new OBBTreeDemo;
 	else if( demo_name == "PerlinNoiseTextureGeneratorDemo" ) return new PerlinNoiseTextureGeneratorDemo;
