@@ -44,6 +44,8 @@ private:
 
 	virtual int Init() { return 0; }
 
+	void GetResolution( int& w, int& h );
+
 	void UpdateCameraMatrices();
 
 	void UpdateFrame();

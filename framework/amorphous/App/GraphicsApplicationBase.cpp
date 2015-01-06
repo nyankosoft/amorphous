@@ -140,6 +140,37 @@ void GraphicsApplicationBase::RenderBase()
 }
 
 
+void GraphicsApplicationBase::GetResolution( int& w, int& h )
+{
+	LoadParamFromFile( "config", "screen_resolution", w, h );
+
+	if( w==0 || h==0 )
+	{
+		unsigned int res_x = 0, res_y = 0;
+		GetCurrentPrimaryDisplayResolution( res_x, res_y );
+
+		if( 1920 < res_x )
+		{
+			// A rsolution higher than full HD; make the screen size full HD
+			w = 1920;
+			h = 1080;
+		}
+		else if( 1280 < res_x )
+		{
+			// A rsolution higher than HD 720; An HD 720-sized window should fit.
+			w = 1280;
+			h =  720;
+		}
+		else
+		{
+			// Probably an old display or a display on a small laptop; we go with XGA.
+			w = 1024;
+			h =  768;
+		}
+	}
+}
+
+
 void GraphicsApplicationBase::Run()
 {
 	const std::string app_title = GetApplicationTitle();
@@ -165,28 +196,8 @@ void GraphicsApplicationBase::Run()
 
 	InitFreeImage();
 
-	unsigned int res_x = 0, res_y = 0;
-	GetCurrentPrimaryDisplayResolution( res_x, res_y );
-
 	int w=0,h=0;
-	if( 1920 < res_x )
-	{
-		// A rsolution higher than full HD; make the screen size full HD
-		w = 1920;
-		h = 1080;
-	}
-	else if( 1280 < res_x )
-	{
-		// A rsolution higher than HD 720; An HD 720-sized window should fit.
-		w = 1280;
-		h =  720;
-	}
-	else
-	{
-		// Probably an old display or a display on a small laptop; we go with XGA.
-		w = 1024;
-		h =  768;
-	}
+	GetResolution( w, h );
 
 	m_Camera.SetAspectRatio( (float)w / (float)h );
 
