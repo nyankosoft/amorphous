@@ -5,7 +5,6 @@
 #include "amorphous/Graphics/VertexFormat.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
@@ -282,7 +281,12 @@ void LightingDemo::RenderMeshes()
 	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
 
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	// render the scene
 
@@ -290,7 +294,7 @@ void LightingDemo::RenderMeshes()
 
 	SetLights( pShaderMgr ? true : false );
 
-	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+//	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 

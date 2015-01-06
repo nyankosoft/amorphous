@@ -8,7 +8,6 @@
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderHelpers.hpp"
@@ -49,13 +48,17 @@ bool TextureRenderTargetDemo::InitShader()
 	bool shader_loaded = m_Shader.Load( shader_desc );
 
 	m_NoLightingShader = CreateNoLightingShader();
-	
+
 //	if( !shader_loaded )
 //		return false;
 
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 
-	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	if( !pShaderMgr )
+		return false;
+
+//	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	shared_ptr<ShaderLightManager> pShaderLightMgr = shader_mgr.GetShaderLightManager();
 
@@ -128,7 +131,11 @@ void TextureRenderTargetDemo::RenderMeshes()
 
 	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 
-	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	if( !pShaderManager )
+		return;
+
+//	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderManager;
 
 //	shared_ptr<ShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
 //	if( pLightMgr )

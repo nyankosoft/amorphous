@@ -4,7 +4,6 @@
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"

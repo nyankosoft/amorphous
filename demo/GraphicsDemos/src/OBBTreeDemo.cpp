@@ -6,7 +6,6 @@
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/CommonShaders.hpp"
 #include "amorphous/Graphics/BoundingVolumeTreeRenderers.hpp"
 //#include "amorphous/Graphics/SkyboxMisc.hpp"
@@ -34,7 +33,7 @@ int OBBTreeDemo::Init()
 	if( CameraController() )
 		CameraController()->SetPosition( Vector3(0,1,-3) );
 
-	const string dir_path = "OOBBTreeDemo/";
+	const string dir_path = "OBBTreeDemo/";
 
 //	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
 	m_MeshTechnique.SetTechniqueName( "Default" );
@@ -53,7 +52,7 @@ int OBBTreeDemo::Init()
 //	mesh_desc.MeshType     = CMeshType::BASIC;
 //	m_Mesh.Load( mesh_desc );
 
-	string relative_model_pathname = "../Common/models/Chevelle.msh";
+	string relative_model_pathname = "../Common/models/bunny.msh";
 	LoadParamFromFile( dir_path + "params.txt", "model", relative_model_pathname );
 
 	string model_pathname = dir_path + relative_model_pathname;
@@ -76,7 +75,7 @@ void OBBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 {
 	m_pOBBTree.reset( new OBBTree );
 
-	const string dir_path = "OOBBTreeDemo/";
+	const string dir_path = "OBBTreeDemo/";
 
 	int level = 8;
 	LoadParamFromFile( dir_path + "params.txt", "obb_tree_level", level );
@@ -101,8 +100,6 @@ void OBBTreeDemo::Render()
 {
 	Matrix44 matWorld = Matrix44Identity();
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-
-//	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
 
 	if(!pShaderMgr)
 		return;
