@@ -5,7 +5,6 @@
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
@@ -132,10 +131,10 @@ void LensFlareDemo::Render()
 
 	Matrix44 matWorld = Matrix44Identity();
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-//	if( !pShaderMgr )
-//		return;
+	if( !pShaderMgr )
+		return;
 
-	ShaderManager& shader_mgr = pShaderMgr ? (*pShaderMgr) : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 //	RenderAsSkybox( m_SkyboxMesh, GetCurrentCamera().GetPose() );
 	RenderSkybox( m_SkyTexture, GetCurrentCamera().GetPose() );
@@ -153,7 +152,6 @@ void LensFlareDemo::Render()
 	Matrix34 light_pose( m_pLensFlare->GetLightPosition(), Matrix33Identity() );
 //	light_pose.GetRowMajorMatrix44( (Scalar *)&matWorld );
 	shader_mgr.SetWorldTransform( light_pose );
-	FixedFunctionPipelineManager().SetWorldTransform( light_pose );
 	shared_ptr<BasicMesh> pLightPosIndicator = m_LightPosIndicator.GetMesh();
 	if( pLightPosIndicator )
 		pLightPosIndicator->Render();
