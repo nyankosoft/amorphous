@@ -31,6 +31,8 @@ public:
 	
 	DemoSwitcher() : m_DemoIndex(-1), m_DisplayDebugInfo(true) {}
 
+	const std::string GetApplicationTitle() { return "demo_app"; }
+
 	int Init();
 
 	void Update( float dt );
