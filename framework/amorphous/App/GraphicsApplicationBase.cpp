@@ -192,7 +192,7 @@ void GraphicsApplicationBase::Run()
 	if( res != Result::SUCCESS )
 		return;
 
-	InitHTMLLog( app_title + "_" + string(GetBuildInfo()) + "_Log.html" );
+	InitHTMLLog( app_title + "_" + string(GetBuildInfo()) + "_" + graphics_library_name + "_Log.html" );
 
 	InitFreeImage();
 
