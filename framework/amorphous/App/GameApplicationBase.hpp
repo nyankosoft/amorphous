@@ -52,9 +52,9 @@ protected:
 	/// - taking screen shot (not debug input)
 	boost::shared_ptr<GlobalInputHandler> m_pGlobalInputHandler;
 
-	GameTaskManager *m_pTaskManager;
+	boost::shared_ptr<GameTaskManager> m_pTaskManager;
 
-	LogOutput_ScrolledTextBuffer *m_pOnScreenLog;
+	boost::shared_ptr<LogOutput_ScrolledTextBuffer> m_pOnScreenLog;
 
 	static int ms_DefaultSleepTimeMS;
 
@@ -108,7 +108,7 @@ public:
 
 	void AcquireInputDevices();
 
-	GameTaskManager *GetTaskManager() { return m_pTaskManager; }
+	GameTaskManager *GetTaskManager() { return m_pTaskManager.get(); }
 
 	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
 

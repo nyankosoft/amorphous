@@ -78,8 +78,6 @@ int GameApplicationBase::ms_DefaultSleepTimeMS = 3;
 
 GameApplicationBase::GameApplicationBase()
 {
-	m_pTaskManager = NULL;
-
 //	m_pDIGamepad = NULL;
 
 	m_UseDefaultMouse = false;
@@ -107,7 +105,7 @@ GameTaskFactoryBase *GameApplicationBase::CreateGameTaskFactory() const
 
 void GameApplicationBase::Release()
 {
-	SafeDelete( m_pTaskManager );
+	m_pTaskManager.reset();
 	GameTask::SetMouseInputDevice( shared_ptr<MouseInputDevice>() );
 
 	m_pMouse.reset();
@@ -132,10 +130,10 @@ void GameApplicationBase::InitDebugItems()
 
 	DebugOutput.AddDebugItem( "perf", new DebugInfo_Profile() );
 
-	m_pOnScreenLog = new LogOutput_ScrolledTextBuffer( font_name, 6, 12, 16, 95 );
-	GlobalLog().AddLogOutput( m_pOnScreenLog );
+	m_pOnScreenLog.reset( new LogOutput_ScrolledTextBuffer( font_name, 6, 12, 16, 95 ) );
+	GlobalLog().AddLogOutput( m_pOnScreenLog.get() );
 
-	DebugOutput.AddDebugItem( "log",                       new DebugInfo_Log(m_pOnScreenLog) );
+	DebugOutput.AddDebugItem( "log",                       new DebugInfo_Log(m_pOnScreenLog.get()) );
 	DebugOutput.AddDebugItem( "graphics_resource_manager", new DebugInfo_GraphicsResourceManager() );
 	DebugOutput.AddDebugItem( "sound_manager",             new DebugInfo_SoundManager() );
 	DebugOutput.AddDebugItem( "input_device",              new DebugInfo_InputDevice() );
@@ -166,8 +164,8 @@ void GameApplicationBase::ReleaseDebugItems()
 
 	DebugOutput.ReleaseDebugItem( "log" );
 
-	GlobalLog().RemoveLogOutput( m_pOnScreenLog );
-	SafeDelete( m_pOnScreenLog );
+	GlobalLog().RemoveLogOutput( m_pOnScreenLog.get() );
+	m_pOnScreenLog.reset();
 
 	DebugOutput.ReleaseDebugItem( "perf" );
 	GlobalDebugOutput.Release();
@@ -346,13 +344,13 @@ bool GameApplicationBase::InitTaskManager()
 
 	if( 0 < start_task_name.length() )
 	{
-		m_pTaskManager = new GameTaskManager( CreateGameTaskFactory(), start_task_name );
+		m_pTaskManager.reset( new GameTaskManager( CreateGameTaskFactory(), start_task_name ) );
 	}
 	else
 	{
 		const int start_task_id = GetStartTaskID();
 		if( start_task_id != GameTask::ID_INVALID )
-			m_pTaskManager = new GameTaskManager( CreateGameTaskFactory(), start_task_id );
+			m_pTaskManager.reset( new GameTaskManager( CreateGameTaskFactory(), start_task_id ) );
 		else
 		{
 			LOG_PRINT_WARNING( " No start task was specified by the user." );
