@@ -1,14 +1,12 @@
-#ifndef __ARCHIVEBASE_H__
-#define __ARCHIVEBASE_H__
+#ifndef __amorphous_Archive_HPP__
+#define __amorphous_Archive_HPP__
 
 
+#include <assert.h>
 #include <vector>
 #include <map>
 #include <string>
-
 #include <boost/shared_ptr.hpp>
-
-#include <assert.h>
 
 #include "ArchiveObjectFactory.hpp"
 
@@ -18,9 +16,6 @@ namespace amorphous
 
 namespace serialization
 {
-
-
-class IArchiveObjectBase;
 
 
 class IArchive
@@ -423,4 +418,4 @@ public:
 } // namespace amorphous
 
 
-#endif  /*  __ARCHIVEBASE_H__  */
+#endif  /*  __amorphous_Archive_HPP__  */
