@@ -20,21 +20,6 @@ using std::string;
 using std::vector;
 using namespace boost;
 
-/*
-xercesc::DOMDocument *LoadXMLDocument( const std::string& xml_filepath )
-{
-	xercesc::DOMDocument* pXMLDocument = NULL;
-	CXMLDocumentLoader loader;
-	bool loaded = loader.Load( xml_filepath, &pXMLDocument );
-	if( !loaded )
-	{
-		return NULL;
-	}
-	else
-		return pXMLDocument;
-}
-*/
-
 //========================================================================================
 // CGM_XMLParser
 //========================================================================================
@@ -124,7 +109,7 @@ bool CGM_XMLParser::LoadControls( XMLNode& reader, CGM_Dialog *pDialog )
 	{
 		string control_type = control_reader[i].GetName();
 		
-		CGM_ControlDesc *pDesc = NULL;
+		CGM_ControlDesc *pDesc = nullptr;
 
 		if( control_type == "Static" )
 		{

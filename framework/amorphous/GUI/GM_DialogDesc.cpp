@@ -20,7 +20,7 @@ void CGM_DialogDesc::SetDefault()
 
 	bNonUserEvents = false;
 
-    pEventHandlerFn = NULL;
+    pEventHandlerFn = nullptr;
 
 	bRootDialog = false;
 

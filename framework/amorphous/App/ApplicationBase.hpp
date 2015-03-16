@@ -92,7 +92,7 @@ public:
 		if( ms_pInstance )
 		{
 			delete ms_pInstance;
-			ms_pInstance = NULL;
+			ms_pInstance = nullptr;
 		}
 	}
 

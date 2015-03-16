@@ -13,7 +13,7 @@ namespace amorphous
 using namespace std;
 
 
-static GameWindowManager *g_pGameWindowManager = NULL;
+static GameWindowManager *g_pGameWindowManager = nullptr;
 static std::string sg_GraphicsLibraryName;
 
 

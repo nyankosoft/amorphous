@@ -47,14 +47,14 @@ CGM_DialogManager::~CGM_DialogManager()
 
 void CGM_DialogManager::Init( CGM_ControlRendererManagerSharedPtr pRendererManager )
 {
-//	m_vecpRootDialog = NULL;
+//	m_vecpRootDialog = nullptr;
 
-	m_pControlFocus = NULL;
-	m_pControlPressed = NULL;
+	m_pControlFocus = nullptr;
+	m_pControlPressed = nullptr;
 
 	// caption-related settings
 	m_bCaption = false;
-	m_pControlForCaption = NULL;
+	m_pControlForCaption = nullptr;
 
 	m_pRendererManager = pRendererManager;
 

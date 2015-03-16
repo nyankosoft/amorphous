@@ -33,8 +33,8 @@ namespace amorphous
 using namespace std;
 
 
-//CGM_Control* CGM_Dialog::m_pDialogManager->ControlFocus()   = NULL;      // The control which has focus
-//CGM_Control* CGM_Dialog::m_pDialogManager->ControlPressed() = NULL;      // The control currently pressed
+//CGM_Control* CGM_Dialog::m_pDialogManager->ControlFocus()   = nullptr;      // The control which has focus
+//CGM_Control* CGM_Dialog::m_pDialogManager->ControlPressed() = nullptr;      // The control currently pressed
 
 
 CGM_Dialog::CGM_Dialog(	CGM_DialogManager *pDialogManager, CGM_DialogDesc& desc )
@@ -66,15 +66,15 @@ CGM_ControlBase( &desc )
 
 	m_strTitle = desc.strTitle;
 
-	m_pControlMouseOver = NULL;
+	m_pControlMouseOver = nullptr;
 
-	m_pLastFocusedControl = NULL;
+	m_pLastFocusedControl = nullptr;
 
-	m_pOwnerButton = NULL;
+	m_pOwnerButton = nullptr;
 
 
-//	m_pDialogManager->ControlFocus() = NULL;
-//	m_pDialogManager->ControlPressed() = NULL;
+//	m_pDialogManager->ControlFocus() = nullptr;
+//	m_pDialogManager->ControlPressed() = nullptr;
 
 	m_bRootDialog = desc.bRootDialog;
 
@@ -180,7 +180,7 @@ bool CGM_Dialog::HandleInput( CGM_InputData& input )
 					m_pDialogManager->ControlFocus()->m_pDialog == this )
 				{
 					m_pDialogManager->ControlFocus()->OnFocusOut();
-					m_pDialogManager->ControlFocus() = NULL;
+					m_pDialogManager->ControlFocus() = nullptr;
 				}
 			}
 
@@ -817,7 +817,7 @@ void CGM_Dialog::Close( CGM_SubEvent::Type sub_event )
 	{
 		// There is a focused control and it belongs to this dialog
 		m_pDialogManager->ControlFocus()->OnFocusOut();
-		m_pDialogManager->ControlFocus() = NULL;
+		m_pDialogManager->ControlFocus() = nullptr;
 	}
 
 	if( m_pOwnerButton )
@@ -929,7 +929,7 @@ void CGM_Dialog::ClearFocus()
     if( m_pDialogManager->ControlFocus() )
     {
         m_pDialogManager->ControlFocus()->OnFocusOut();
-        m_pDialogManager->ControlFocus() = NULL;
+        m_pDialogManager->ControlFocus() = nullptr;
     }
 }
 
@@ -939,7 +939,7 @@ void CGM_Dialog::ClearPressedControl()
 	if( m_pDialogManager->ControlPressed() )
 	{
 //		m_pDialogManager->ControlPressed()->OnFocusOut();
-		m_pDialogManager->ControlPressed() = NULL;
+		m_pDialogManager->ControlPressed() = nullptr;
 	}
 }
 

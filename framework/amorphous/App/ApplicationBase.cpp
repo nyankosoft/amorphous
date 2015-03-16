@@ -5,7 +5,7 @@ namespace amorphous
 {
 
 
-ApplicationBase *ApplicationBase::ms_pInstance = NULL;
+ApplicationBase *ApplicationBase::ms_pInstance = nullptr;
 std::vector<std::string> ApplicationBase::ms_CommandLineArguments;
 
 

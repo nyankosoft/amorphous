@@ -223,8 +223,8 @@ shared_ptr<XercesXMLDocument> XercesXMLDocumentLoader::Load( const std::string& 
 	// - How to use XInclude with Xerces C++ ???
 	return LoadWithLSParser( filepath );
 
-	xercesc::DOMDocument *pDoc = NULL;
-	xercesc::XercesDOMParser *pParser = NULL;
+	xercesc::DOMDocument *pDoc = nullptr;
+	xercesc::XercesDOMParser *pParser = nullptr;
 	bool loaded = Load( filepath, &pDoc, &pParser );
 
 	if( !loaded )
@@ -444,7 +444,7 @@ Need to make pXMLDocument a member variable of XercesXMLDocumentLoader to do thi
 
 xercesc::DOMNode *XercesXMLDocumentLoader::GetRootNode()
 {
-	xercesc::DOMDocument *pXMLDocument = NULL;
+	xercesc::DOMDocument *pXMLDocument = nullptr;
 
 	XercesXMLDocumentLoader xml_doc_loader;
 	xml_doc_loader.Load( source_script_filename, &pXMLDocument );

@@ -26,7 +26,7 @@ void CGM_ControlDesc::SetDefault()
 	coord_type = COORD_LOCAL;
 
 //	UserIndex = 0;
-//	pUserData = NULL;
+//	pUserData = nullptr;
 }
 
 
@@ -68,7 +68,7 @@ void CGM_SubDialogButtonDesc::SetDefault()
 {
 	CGM_ButtonDesc::SetDefault();
 
-	pSubDialog = NULL;
+	pSubDialog = nullptr;
 }
 
 

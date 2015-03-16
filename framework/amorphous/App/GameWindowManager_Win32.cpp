@@ -15,7 +15,7 @@ namespace amorphous
 {
 
 
-static GameWindowManager_Win32 *g_pGameWindowManager_Win32 = NULL;
+static GameWindowManager_Win32 *g_pGameWindowManager_Win32 = nullptr;
 
 
 GameWindowManager_Win32::GameWindowManager_Win32()
@@ -100,7 +100,7 @@ Result::Name SelectGraphicsLibrary_Win32( const std::string& graphics_library_na
 	else
 	{
 		LOG_PRINT_ERROR( "Unsupported graphics library: " + graphics_library_name );
-		g_pGameWindowManager_Win32 = NULL;
+		g_pGameWindowManager_Win32 = nullptr;
 
 		return Result::INVALID_ARGS;
 	}

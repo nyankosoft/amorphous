@@ -13,7 +13,7 @@ namespace amorphous
 {
 
 
-LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM ) = NULL;
+LRESULT (WINAPI *g_pMessageProcedureForGameWindow)( HWND, UINT, WPARAM, LPARAM ) = nullptr;
 
 // definition of the singleton instance
 GameWindowManager_Win32_D3D GameWindowManager_Win32_D3D::ms_SingletonInstance_;
@@ -66,15 +66,15 @@ bool GameWindowManager_Win32_D3D::CreateGameWindow( int iScreenWidth, int iScree
 
 	m_ApplicationClassName = "Application[" + app_title + "]";
 
-    m_WindowClassEx.cbClsExtra	= 0L; 
-    m_WindowClassEx.cbWndExtra	= 0L; 
-    m_WindowClassEx.hInstance		= GetModuleHandle(NULL); 
-    m_WindowClassEx.hIcon			= NULL; 
+    m_WindowClassEx.cbClsExtra    = 0L; 
+    m_WindowClassEx.cbWndExtra    = 0L; 
+    m_WindowClassEx.hInstance     = GetModuleHandle(NULL); 
+    m_WindowClassEx.hIcon         = NULL; 
     m_WindowClassEx.hCursor       = NULL; 
     m_WindowClassEx.hbrBackground = NULL; 
     m_WindowClassEx.lpszMenuName  = NULL; 
     m_WindowClassEx.lpszClassName = m_ApplicationClassName.c_str();//"Stage Test"; 
-    m_WindowClassEx.hIconSm		= NULL;
+    m_WindowClassEx.hIconSm       = NULL;
 
     // register the window class
     ATOM atom = RegisterClassEx( &m_WindowClassEx );

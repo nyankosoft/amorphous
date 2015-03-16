@@ -23,7 +23,7 @@
 
 inline FILE *fopen_for_win32( const char *filename, const char *mode )
 {
-	FILE *fp = NULL;
+	FILE *fp = nullptr;
 	fopen_s( &fp, filename, mode );
 	return fp;
 }

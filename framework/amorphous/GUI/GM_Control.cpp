@@ -126,7 +126,7 @@ CGM_ControlBase(pDesc)
 
 	// TODO: set adjacent controls
 	for( int i=0; i<NUM_MAX_ADJACENT_CONTROLS; i++ )
-        m_apNext[i] = NULL;
+        m_apNext[i] = nullptr;
 }
 
 

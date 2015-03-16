@@ -25,7 +25,7 @@ using namespace std;
 
 
 // global variable(s)
-ApplicationBase *g_pAppBase = NULL;
+ApplicationBase *g_pAppBase = nullptr;
 
 
 #define APPBASE_TIMER_RESOLUTION	1
