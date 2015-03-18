@@ -173,8 +173,8 @@ public:
 	SphereDesc()
 		:
 	poly_dir(MeshPolygonDirection::OUTWARD),
-	num_sides(12),
-	num_segments(8),
+	num_sides(24),
+	num_segments(12),
 	axis(2)
 	{
 		for( int i = 0; i<3; i++ )

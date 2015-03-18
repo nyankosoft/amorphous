@@ -34,12 +34,20 @@ inline MeshHandle CreateBoxMesh( const Vector3& whd,
 }
 
 
-inline MeshHandle CreateSphereMesh( float radius,
+/// \param num_horizontal_segments # of divisions in the direction of longitude
+/// \param num_vertical_segments # of divisions in the direction of latitude
+inline MeshHandle CreateSphereMesh(
+								float radius,
+								const unsigned int num_horizontal_segments = 24,
+								const unsigned int num_vertical_segments = 12,
 								const SFloatRGBAColor& diffuse_color = SFloatRGBAColor::White(),
-								const Matrix34& model_pose = Matrix34Identity() )
+								const Matrix34& model_pose = Matrix34Identity()
+								)
 {
 	SphereDesc sphere_desc;
 	sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = radius;
+	sphere_desc.num_sides    = (int)num_horizontal_segments;
+	sphere_desc.num_segments = (int)num_vertical_segments;
 	sphere_desc.axis = 1;
 	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
