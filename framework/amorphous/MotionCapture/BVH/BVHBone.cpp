@@ -14,8 +14,6 @@ using namespace std;
 
 
 SFloatRGBAColor BVHBone::ms_dwSkeletonColor;
-//MeshHandle BVHBone::ms_TestCube;
-//CUnitCube *BVHBone::ms_pUnitCube = NULL;
 
 
 BVHBone::BVHBone()
@@ -275,7 +273,6 @@ void BVHBone::Draw_r( Vector3* pvPrevPosition, Matrix34* pParentMatrix )
 
 	if( pvPrevPosition )
 	{
-//		if( ms_pUnitCube )
 		if( false )
 		{
 			Matrix44 matWorldTransform = ToMatrix44( m_matWorldPose );
@@ -359,8 +356,6 @@ void BVHBone::DrawBoxForBone( Matrix44 &rmatParent, Matrix44 &rmatWorldTransform
 	D3DXMatrixMultiply( &matTrans, &matTrans, &rmatParent );
 */
 	FixedFunctionPipelineManager().SetWorldTransform( matTrans );
-//	ms_pTestCube->Draw();
-//	ms_pUnitCube->Draw();
 	PrimitiveShapeRenderer renderer;
 	renderer.RenderBox( Vector3(1,1,1), Matrix34Identity() );
 

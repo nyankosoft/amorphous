@@ -48,8 +48,6 @@ class BVHBone
 
 	static SFloatRGBAColor ms_dwSkeletonColor;	// shared by all the bones
 
-//	static CUnitCube *ms_pUnitCube;
-
 	void SetChannels( char* pcChannel );
 
 public:

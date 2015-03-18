@@ -265,8 +265,6 @@ bool BVHPlayer::Render()
 
 	GraphicsDevice().SetRenderState( RenderStateType::DEPTH_TEST, true );
 
-//	BVHBone::ms_pUnitCube = NULL;
-
 	m_RootBone.SetSkeletonColor( 0xFFFFFFFF );
 	m_RootBone.Draw_r();
 
