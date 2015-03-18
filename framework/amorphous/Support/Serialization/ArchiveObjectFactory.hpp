@@ -1,5 +1,5 @@
-#ifndef  __KGL_ARCHIVEOBJECTFACTORY_H__
-#define  __KGL_ARCHIVEOBJECTFACTORY_H__
+#ifndef  __amorphous_ArchiveObjectFactory_HPP__
+#define  __amorphous_ArchiveObjectFactory_HPP__
 
 
 namespace amorphous
@@ -28,4 +28,5 @@ public:
 
 } // namespace amorphous
 
-#endif		/*  __KGL_ARCHIVEOBJECTFACTORY_H__  */
+
+#endif		/*  __amorphous_ArchiveObjectFactory_HPP__  */

@@ -1,6 +1,5 @@
-
-#ifndef __ARCHIVEOBJECTBASE_H__
-#define __ARCHIVEOBJECTBASE_H__
+#ifndef __amorphous_ArchiveObjectBase_HPP__
+#define __amorphous_ArchiveObjectBase_HPP__
 
 
 #include <string>
@@ -189,4 +188,4 @@ public:
 } // namespace amorphous
 
 
-#endif  /*  __ARCHIVEOBJECTBASE_H__  */
+#endif  /*  __amorphous_ArchiveObjectBase_HPP__  */
