@@ -2,7 +2,7 @@
 #define  __PostProcessEffectManager_HPP__
 
 
-#include "../3DMath/Vector4.hpp"
+#include "amorphous/3DMath/Vector4.hpp"
 #include "ShaderHandle.hpp"
 #include "PostProcessEffectFilter.hpp"
 
@@ -52,11 +52,7 @@ public:
 };
 
 
-//--------------------------------------------------------------------------------------
-// struct CPostProcess
-// A struct that encapsulates aspects of a render target postprocess
-// technique.
-//--------------------------------------------------------------------------------------
+/// \brief A struct that encapsulates aspects of a render target postprocess technique.
 class PostProcessFilterShader
 {
 	enum eParam
@@ -68,20 +64,12 @@ class PostProcessFilterShader
 
 	/// Effect object for this technique
 	ShaderHandle m_Shader;
-//	LPD3DXEFFECT m_pEffect;
 
 	/// filepath of the HLSL effect file for the effect interface above
 	ShaderResourceDesc m_ShaderDesc;
 
-	/// PostProcess technique handle
-//	D3DXHANDLE   m_hTPostProcess;
-
 	/// Render target channel this PP outputs
 //	int          m_nRenderTarget;
-
-//	D3DXHANDLE   m_hTexSource[4];        ///< Handle to the post-process source textures
-
-//	D3DXHANDLE   m_hTexScene[4];         ///< Handle to the saved scene texture
 
 	/// Indicates whether the post-process technique
 	///   outputs data for this render target.
@@ -104,7 +92,7 @@ public:
 
 	PostProcessFilterShader();
 
-	inline ~PostProcessFilterShader() {}//{ Cleanup(); }
+	inline ~PostProcessFilterShader() {}
 
 	Result::Name Init( const ShaderResourceDesc& shader_desc );
 
@@ -114,8 +102,6 @@ public:
 
 	ShaderHandle GetShader() { return m_Shader; }
 
-//	inline void Cleanup() { SAFE_RELEASE( m_pEffect ); }
-//	LPD3DXEFFECT GetEffect() { return m_pEffect; }
 //	HRESULT OnLostDevice();
 //	HRESULT OnResetDevice( DWORD dwWidth, DWORD dwHeight );
 //	HRESULT SetScale( float scale_x, float scale_y );

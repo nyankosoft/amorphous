@@ -2,10 +2,9 @@
 #define __PostProcessEffectFilter_HPP__
 
 
-#include <vector>
 #include <d3dx9.h>
-#include "../base.hpp"
-#include "../3DMath/Rectangular.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Rectangular.hpp"
 #include "Direct3D/Direct3D9.hpp"
 #include "TextureHandle.hpp"
 #include "SurfaceFormat.hpp"
@@ -41,11 +40,6 @@ public:
 
 //#define DEBUG_VS   // Uncomment this line to debug vertex shaders 
 //#define DEBUG_PS   // Uncomment this line to debug pixel shaders 
-
-
-// PPCOUNT is the number of postprocess effects supported
-//#define PPCOUNT (sizeof(g_aszFxFile) / sizeof(g_aszFxFile[0]))
-
 
 
 // RT_COUNT is the number of simultaneous render targets used in the sample.

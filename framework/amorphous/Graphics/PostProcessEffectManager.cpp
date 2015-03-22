@@ -65,11 +65,8 @@ public:
 
 PostProcessFilterShader::PostProcessFilterShader()
 //:
-//m_hTPostProcess(NULL),
 //m_nRenderTarget(0)
 {
-//	memset( m_hTexSource,    0, sizeof(m_hTexSource) );
-//	memset( m_hTexScene,     0, sizeof(m_hTexScene) );
 	memset( m_bWrite,        0, sizeof(m_bWrite) );
 //	memset( m_ahParam,       0, sizeof(m_ahParam) );
 	memset( m_anParamSize,   0, sizeof(m_anParamSize) );

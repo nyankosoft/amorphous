@@ -3,8 +3,8 @@
 
 
 #include "PostProcessEffectFilter.hpp"
-#include "../3DMath/Vector2.hpp"
-#include "../3DMath/Vector4.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/3DMath/Vector4.hpp"
 
 
 namespace amorphous

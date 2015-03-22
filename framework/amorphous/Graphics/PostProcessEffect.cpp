@@ -77,17 +77,9 @@ inline SRectangular GetCropWidthAndHeight( const SRectangular& src )
 
 void GetTextureRect( shared_ptr<RenderTargetTextureHolder>& pSrc, SRect *pDest )
 {
+	SRectangular tex_size = pSrc->m_Texture.GetSize2D(0);
 	pDest->left   = 0;
 	pDest->top    = 0;
-//	pDest->right  = pSrc->m_Desc.Width;
-//	pDest->bottom = pSrc->m_Desc.Height;
-
-//	D3DSURFACE_DESC desc;
-//	pSrc->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
-//	pDest->right  = desc.Width;
-//	pDest->bottom = desc.Height;
-
-	SRectangular tex_size = pSrc->m_Texture.GetSize2D(0);
 	pDest->right  = tex_size.width;
 	pDest->bottom = tex_size.height;
 }
@@ -256,12 +248,6 @@ void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, f
 }
 
 
-//void DrawFullScreenQuad( const CoordRect& c )
-//{
-//    DrawFullScreenQuad( c.fLeftU, c.fTopV, c.fRightU, c.fBottomV );
-//}
-
-
 //void RenderFullScreenQuad( LPD3DXEFFECT pEffect, const CoordRect& c )
 //{
 //	HRESULT hr;
@@ -283,34 +269,14 @@ void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, f
 //}
 
 
-//void RenderFullScreenQuad( LPD3DXEFFECT pEffect, float fLeftU, float fTopV, float fRightU, float fBottomV )
-//{
-//	CoordRect c;
-//	c.fLeftU   = fLeftU;
-//	c.fTopV    = fTopV;
-//	c.fRightU  = fRightU;
-//	c.fBottomV = fBottomV;
-//
-//    RenderFullScreenQuad( pEffect, c );
-//}
-
-
 void RenderFullScreenQuad( ShaderManager& shader_mgr, const CoordRect& c )
 {
-//	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
-//	if( pEffect )
-//		amorphous::RenderFullScreenQuad( pEffect, c );
-
 	DrawFullScreenQuad( shader_mgr, c.fLeftU, c.fTopV, c.fRightU, c.fBottomV );
 }
 
 
 void RenderFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
 {
-//	LPD3DXEFFECT pEffect = shader_mgr.GetEffect();
-//	if( pEffect )
-//		amorphous::RenderFullScreenQuad( pEffect, fLeftU, fTopV, fRightU, fBottomV );
-
 	DrawFullScreenQuad( shader_mgr, fLeftU, fTopV, fRightU, fBottomV );
 }
 
