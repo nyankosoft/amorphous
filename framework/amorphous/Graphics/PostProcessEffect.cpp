@@ -839,14 +839,11 @@ GaussianBlurFilter::GaussianBlurFilter()
 //-----------------------------------------------------------------------------
 void GaussianBlurFilter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
 
 	ShaderManager& shader_mgr = *pShaderMgr;
-
-	HRESULT hr = S_OK;
 
 	Vector2 avSampleOffsets[MAX_SAMPLES];
 	Vector4 avSampleWeights[MAX_SAMPLES];
@@ -887,10 +884,7 @@ void GaussianBlurFilter::Render()
 
 	// The gaussian blur smooths out rough edges to avoid aliasing effects
 	// when the star effect is run
-//	pEffect->SetTechnique( "GaussBlur5x5" );
 
-//	pd3dDevice->SetRenderTarget( 0, m_pDest->pTexSurf );
-	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() );
 	GraphicsDevice().SetScissorRect( rectDest );
 //	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
