@@ -90,15 +90,15 @@ CMS_MassSpringSim::CMS_MassSpringSim()
 {
 	m_iNumControlPoints = 0;
 
-	m_paPointProperty = NULL;
+	m_paPointProperty = nullptr;
 
-	m_paPoint = NULL;
+	m_paPoint = nullptr;
 
-	m_paTempPoint[0] = NULL;
-	m_paTempPoint[1] = NULL;
+	m_paTempPoint[0] = nullptr;
+	m_paTempPoint[1] = nullptr;
 
 	m_iNumFixedPoints = 0;
-	m_paFixedPointIndex = NULL;
+	m_paFixedPointIndex = nullptr;
 
 	m_fSimTimeStep = 0.001f;
 	m_fOverlapTime = 0;

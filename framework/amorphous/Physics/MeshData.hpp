@@ -107,23 +107,23 @@ inline CMeshData::~CMeshData()
 
 inline void CMeshData::SetToDefault()
 {
-	pVerticesPosBegin		 = NULL;
-	pVerticesNormalBegin	 = NULL;
+	pVerticesPosBegin		 = nullptr;
+	pVerticesNormalBegin	 = nullptr;
 	VerticesPosByteStride	 = 0;
 	VerticesNormalByteStride = 0;
 	NumMaxVertices			 = 0;
-	pNumVerticesPtr			 = NULL;
-	pIndicesBegin			 = NULL;
+	pNumVerticesPtr			 = nullptr;
+	pIndicesBegin			 = nullptr;
 	IndicesByteStride		 = 0;
 	NumMaxIndices			 = 0;
-	pNumIndicesPtr			 = NULL;
-/*	ParentIndicesBegin		 = NULL;
+	pNumIndicesPtr			 = nullptr;
+/*	ParentIndicesBegin		 = nullptr;
 	ParentIndicesByteStride	 = 0;
 	MaxParentIndices		 = 0;
-	pNumParentIndicesPtr	 = NULL;
-	pDirtyBufferFlagsPtr	 = NULL;*/
+	pNumParentIndicesPtr	 = nullptr;
+	pDirtyBufferFlagsPtr	 = nullptr;*/
 	Flags					 = 0;
-//	name					 = NULL;
+//	name					 = nullptr;
 }
 
 

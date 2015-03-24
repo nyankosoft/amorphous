@@ -37,10 +37,13 @@ struct OBBDATA{
 	}
 };
 
-struct OBBNODE{
+class OBBNODE
+{
+public:
 	OBBNODE *pOBBNodeL, *pOBBNodeR;
 	OBBDATA OBBData;
-	OBBNODE(){ pOBBNodeL = NULL; pOBBNodeR = NULL; }
+
+	OBBNODE() : pOBBNodeL(nullptr), pOBBNodeR(nullptr) {}
 };
 
 class OBBTree

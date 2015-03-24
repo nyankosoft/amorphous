@@ -24,7 +24,7 @@ void OBBTree::ReleaseNodes( OBBNODE *pOBBNode )
 	if( pOBBNode->pOBBNodeR ) ReleaseNodes( pOBBNode->pOBBNodeR );
 
 	delete pOBBNode;
-	pOBBNode = NULL;
+	pOBBNode = nullptr;
 }
 /*
 bool OBBTree::Create( LPD3DXMESH pMesh, int Level )
@@ -63,8 +63,8 @@ bool OBBTree::Create( LPD3DXMESH pMesh, int Level )
 	D3DINDEXBUFFER_DESC IDesc;
 	pIB->GetDesc( &IDesc );
 
-	WORD  *pw = NULL;
-	DWORD *pd = NULL;
+	WORD  *pw = nullptr;
+	DWORD *pd = nullptr;
 	if( IDesc.Format == D3DFMT_INDEX16 ) pIB->Lock( 0, 0, (void**)&pw, D3DLOCK_DISCARD );
 	else if( IDesc.Format == D3DFMT_INDEX32 ) pIB->Lock( 0, 0, (void**)&pd, D3DLOCK_DISCARD );
 	else return false;
@@ -350,8 +350,8 @@ bool OBBTree::CheckCollision( OBBTree &OBBTreeA, Matrix34 &TransMatA,
 
 void OBBTree::GetLeafOBBs( const OBBNODE *pNode, std::vector<OBBDATA>& obbs )
 {
-	if( pNode->pOBBNodeL == NULL
-	 || pNode->pOBBNodeR == NULL )
+	if( pNode->pOBBNodeL == nullptr
+	 || pNode->pOBBNodeR == nullptr )
 	{
 		obbs.push_back( pNode->OBBData );
 	}

@@ -9,7 +9,7 @@ namespace amorphous
 ConvexPolygon::ConvexPolygon()
 {
 	m_iNumVertices = 0;
-	m_pavVertex = NULL;
+	m_pavVertex = nullptr;
 
 	m_iPolygonIndex = -1;
 	m_uiCollisionFlag = 0;
@@ -18,7 +18,7 @@ ConvexPolygon::ConvexPolygon()
 
 ConvexPolygon::ConvexPolygon( Vector3 *pavVertex, int iNumVertices )
 {
-	m_pavVertex = NULL;
+	m_pavVertex = nullptr;
 	SetVertices( pavVertex, iNumVertices );
 }
 
