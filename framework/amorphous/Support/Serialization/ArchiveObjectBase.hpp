@@ -141,7 +141,7 @@ public:
 		{
 		case CBaseClass::DERIVED_0:	return new CDerived0();
 		case CBaseClass::DERIVED_1:	return new CDerived1();
-		default: return NULL;
+		default: return nullptr;
 		}
 	}
 };

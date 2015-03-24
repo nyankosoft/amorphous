@@ -19,7 +19,7 @@ public:
 
 	/// constructor
 	BinaryArchive_Input( const std::string& filename,
-		                  const char *pcStringID = NULL,
+		                  const char *pcStringID = nullptr,
 						  unsigned int archive_option_flags = 0 );
 
 	virtual ~BinaryArchive_Input() { m_InputFileStream.close(); }

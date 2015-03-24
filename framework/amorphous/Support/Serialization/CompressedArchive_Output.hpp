@@ -25,7 +25,7 @@ public:
 //	CompressedArchive_Output( const char *pcFilename, const unsigned long archive_id = 0, unsigned int flag = 0 );
 
 	CompressedArchive_Output( const std::string& filename,
-		                       const char *pStringID = NULL,
+		                       const char *pStringID = nullptr,
 							   unsigned int flag = 0 )
                                :
 	BinaryArchive_Output(filename,pStringID,flag),

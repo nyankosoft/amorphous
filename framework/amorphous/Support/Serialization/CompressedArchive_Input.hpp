@@ -25,7 +25,7 @@ public:
 
 	/// constructor
 	CompressedArchive_Input( const std::string& filename,
-		                  const char *pcStringID = NULL,
+		                  const char *pcStringID = nullptr,
 						  unsigned int flag = 0 )
 						  :
 	BinaryArchive_Input(filename,pcStringID,flag),

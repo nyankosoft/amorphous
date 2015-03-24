@@ -22,7 +22,7 @@ public:
 
 	BinaryArchive_Output(
 		const std::string& filename,
-		const char *pStringID = NULL,
+		const char *pStringID = nullptr,
 		unsigned int archive_option_flags = 0 );
 
 	virtual ~BinaryArchive_Output() { m_OutputFileStream.close(); }

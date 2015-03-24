@@ -145,7 +145,7 @@ public:
 
 	CBinaryDatabase()
 	:
-	m_pFile(NULL)
+	m_pFile(nullptr)
 //	m_CurrentDataOffset(0)
 	{
 	}
@@ -230,7 +230,7 @@ public:
 		IArchive::operator &( m_KeyOffsetPair );
 
 		fclose( m_pFile );
-		m_pFile = NULL;
+		m_pFile = nullptr;
 	}
 
 	bool KeyExists( const KeyType& key )

@@ -32,7 +32,7 @@ public:
 		return true;
 	}
 
-	void operator++()
+	void next()
 	{
 		if( m_elements.empty() )
 			return;
@@ -43,7 +43,7 @@ public:
 			m_index += 1;
 	}
 
-	void operator--()
+	void prev()
 	{
 		if( m_elements.empty() )
 			return;
@@ -92,6 +92,9 @@ public:
 	{
 		m_elements = src;
 	}
+
+	void operator++() { next(); }
+	void operator--() { prev(); }
 };
 
 

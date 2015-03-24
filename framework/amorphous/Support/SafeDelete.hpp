@@ -19,7 +19,7 @@ void SafeDelete(PointerType*& p)
 	else
 	{
 		delete p;
-		p = NULL;
+		p = nullptr;
 	}
 }
 
@@ -33,7 +33,7 @@ void SafeDeleteArray(ArrayPointer*& p)
 	else
 	{
 		delete [] p;
-		p = NULL;
+		p = nullptr;
 	}
 }
 

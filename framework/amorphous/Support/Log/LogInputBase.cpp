@@ -28,7 +28,7 @@ m_TimeStampFormat(TimeFormat::HHMMSSMS)
 {
 	if( buffer_size == 0 )
 	{
-		m_pBuffer = NULL;
+		m_pBuffer = nullptr;
 		return;
 	}
 

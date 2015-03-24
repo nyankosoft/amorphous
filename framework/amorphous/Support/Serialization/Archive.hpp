@@ -207,7 +207,7 @@ public:
 				if( vecpData[i] )
 				{
 					delete vecpData[i];
-					vecpData[i] = NULL;
+					vecpData[i] = nullptr;
 				}
 			}
 

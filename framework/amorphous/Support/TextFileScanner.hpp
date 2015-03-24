@@ -197,15 +197,15 @@ class CTextFileScanner
 
 public:
 
-	CTextFileScanner() { Init(); }
+	CTextFileScanner() : m_fp(nullptr) { Init(); }
 
-	CTextFileScanner( const std::string& strFilename ) { Init(); OpenFile(strFilename); }
+	CTextFileScanner( const std::string& strFilename ) : m_fp(nullptr) { Init(); OpenFile(strFilename); }
 	
 	~CTextFileScanner() { CloseFile(); }
 
 	inline bool OpenFile( const std::string& strFilename );
 
-	void CloseFile() { if( m_fp ) fclose(m_fp); m_fp = NULL; }
+	void CloseFile() { if( m_fp ) fclose(m_fp); m_fp = nullptr; }
 
 	/// returns true if the file is open and ready to scan
 	bool IsReady() const { return (m_fp != NULL); }
@@ -404,7 +404,7 @@ public:
 
 inline void CTextFileScanner::Init()
 {
-	m_fp = NULL;
+	CloseFile();
 	m_strTag = "";
 	memset( m_acCurrentLine, 0, sizeof(char) * MAX_LINE_LENGTH );
 }
