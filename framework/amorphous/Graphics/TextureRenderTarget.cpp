@@ -24,25 +24,10 @@ m_bScreenSizeRenderTarget( false )
 }
 
 
-TextureRenderTarget::TextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
-:
-m_BackgroundColor( SFloatRGBAColor( 0.449f, 0.398f, 0.738f, 1.0f ) ),
-m_bScreenSizeRenderTarget( false )
-{
-	m_TextureDesc.UsageFlags = UsageFlag::RENDER_TARGET;
-	m_TextureDesc.Sharable   = false;
-	m_TextureDesc.Width      = texture_width;
-	m_TextureDesc.Height     = texture_height;
-	m_TextureDesc.Format     = texture_format;
-	m_TextureDesc.MipLevels  = 1;
-
-	LoadTextures();
-}
-
-
 TextureRenderTarget::TextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 m_TextureDesc(texture_desc),
+m_OptionFlags(0),
 m_BackgroundColor( SFloatRGBAColor( 0.449f, 0.398f, 0.738f, 1.0f ) ),
 m_bScreenSizeRenderTarget( false )
 {
@@ -56,20 +41,24 @@ TextureRenderTarget::~TextureRenderTarget()
 }
 
 
-bool TextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
+bool TextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, U32 option_flags )
 {
 	m_TextureDesc.Width  = texture_width;
 	m_TextureDesc.Height = texture_height;
 	m_TextureDesc.Format = texture_format;
 	m_TextureDesc.MipLevels  = 1;
 
+	m_OptionFlags = option_flags;
+
 	return LoadTextures();
 }
 
 
-bool TextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
+bool TextureRenderTarget::Init( const TextureResourceDesc& texture_desc, U32 option_flags )
 {
 	m_TextureDesc = texture_desc;
+
+	m_OptionFlags = option_flags;
 
 	return LoadTextures();
 }

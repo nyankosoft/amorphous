@@ -22,24 +22,6 @@ CD3DTextureRenderTarget::CD3DTextureRenderTarget()
 }
 
 
-CD3DTextureRenderTarget::CD3DTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
-:
-TextureRenderTarget( texture_width, texture_height, texture_format, option_flags )
-{
-//	m_pRenderTargetTexture      = NULL;
-	m_pRenderTargetSurface      = NULL;
-	m_pRenderTargetDepthSurface = NULL;
-
-//	m_pRenderTargetCopyTexture = NULL;
-	m_pRenderTargetCopySurface = NULL;
-
-	m_pOriginalSurface = NULL;
-	m_pOriginalDepthSurface = NULL;
-
-	LoadTextures();
-}
-
-
 CD3DTextureRenderTarget::CD3DTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 TextureRenderTarget(texture_desc)
@@ -135,29 +117,39 @@ bool CD3DTextureRenderTarget::LoadTextures()
 	if( m_RenderTargetCopyTexture.GetTexture() )
 		hr = m_RenderTargetCopyTexture.GetTexture()->GetSurfaceLevel(0, &m_pRenderTargetCopySurface);
 
-
-	// get the current depth buffer format
-	hr = pd3dDev->GetDepthStencilSurface( &m_pOriginalDepthSurface );
-	D3DSURFACE_DESC surface_desc;
-	m_pOriginalDepthSurface->GetDesc( &surface_desc );
-
-	// decrement the reference count
-//	m_pOriginalDepthSurface->Release();
-
-	hr = pd3dDev->CreateDepthStencilSurface( m_TextureDesc.Width,
-	                                         m_TextureDesc.Height,
-		                                     surface_desc.Format, /*D3DFMT_D16,*/
-											 D3DMULTISAMPLE_NONE,
-											 0, TRUE, &m_pRenderTargetDepthSurface, NULL );
-
-/*	hr = pd3dDev->CreateDepthStencilSurface( m_iTextureWidth, m_iTextureHeight,
-		                                     D3DFMT_D16, D3DMULTISAMPLE_NONE,
-											 0, TRUE, &m_pRenderTargetDepthSurface, NULL );
-											 */
-	if( FAILED(hr) )
+	if( m_OptionFlags & OPTFLG_NO_DEPTH_BUFFER )
 	{
-		LOG_PRINT_ERROR( fmt_string("IDirect3DDevice9::CreateDepthStencilSurface() failed ( texture (w,h) = (%d,%d), fotmat: %s ).", m_TextureDesc.Width, m_TextureDesc.Height, GetD3DSurfaceFormatName(surface_desc.Format) ) );
-		return false;
+		// Do not create the depth buffer.
+	}
+	else
+	{
+		// get the current depth buffer format
+		hr = pd3dDev->GetDepthStencilSurface( &m_pOriginalDepthSurface );
+
+		if( m_pOriginalDepthSurface )
+		{
+			D3DSURFACE_DESC surface_desc;
+			m_pOriginalDepthSurface->GetDesc( &surface_desc );
+
+			// decrement the reference count
+//			m_pOriginalDepthSurface->Release();
+
+			hr = pd3dDev->CreateDepthStencilSurface( m_TextureDesc.Width,
+													m_TextureDesc.Height,
+													surface_desc.Format, /*D3DFMT_D16,*/
+													D3DMULTISAMPLE_NONE,
+													0, TRUE, &m_pRenderTargetDepthSurface, NULL );
+
+/*			hr = pd3dDev->CreateDepthStencilSurface( m_iTextureWidth, m_iTextureHeight,
+					                               D3DFMT_D16, D3DMULTISAMPLE_NONE,
+													 0, TRUE, &m_pRenderTargetDepthSurface, NULL );
+											 */
+			if( FAILED(hr) )
+			{
+				LOG_PRINT_ERROR( fmt_string("IDirect3DDevice9::CreateDepthStencilSurface() failed ( texture (w,h) = (%d,%d), fotmat: %s ).", m_TextureDesc.Width, m_TextureDesc.Height, GetD3DSurfaceFormatName(surface_desc.Format) ) );
+				return false;
+			}
+		}
 	}
 
 	return true;
@@ -174,12 +166,9 @@ void CD3DTextureRenderTarget::SetRenderTarget()
 {
 	PROFILE_FUNCTION();
 
-	if( //!m_pRenderTargetTexture ||
-		!m_pRenderTargetSurface ||
-		!m_pRenderTargetDepthSurface ||
-//		!m_pRenderTargetCopyTexture ||
-		!m_pRenderTargetCopySurface
-		)
+	// Note that m_pRenderTargetDepthSurface is not checked for NULL;
+	// the texture render target may/may not have the depth surface.
+	if( !m_pRenderTargetSurface || !m_pRenderTargetCopySurface )
 		return;
 
 	int iTextureWidth  = m_TextureDesc.Width;
@@ -217,8 +206,11 @@ void CD3DTextureRenderTarget::SetRenderTarget()
 
 	hr = pd3dDev->ColorFill( m_pRenderTargetSurface, NULL, D3DCOLOR_ARGB(0, 0, 0, 0) );
 
-	hr = pd3dDev->SetDepthStencilSurface( m_pRenderTargetDepthSurface );
-//	m_pRenderTargetDepthSurface->Release();
+	if( m_pRenderTargetDepthSurface )
+	{
+		hr = pd3dDev->SetDepthStencilSurface( m_pRenderTargetDepthSurface );
+//		m_pRenderTargetDepthSurface->Release();
+	}
 
 	if( FAILED(hr) )
 		return;

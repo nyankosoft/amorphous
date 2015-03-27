@@ -141,21 +141,6 @@ GLTextureRenderTarget::GLTextureRenderTarget()
 }
 
 
-GLTextureRenderTarget::GLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
-:
-TextureRenderTarget( texture_width, texture_height, texture_format )
-{
-	m_Framebuffer = 0;
-	m_DepthRenderBuffer = 0;
-	m_RenderTargetTextureID = 0;
-	m_OrigFrameBuffer = 0;
-
-//	m_RenderTargetTexture      = 0;
-
-	LoadTextures();
-}
-
-
 GLTextureRenderTarget::GLTextureRenderTarget( const TextureResourceDesc& texture_desc )
 :
 TextureRenderTarget(texture_desc)
@@ -190,29 +175,6 @@ void GLTextureRenderTarget::ReleaseTextures()
 
 	glDeleteFramebuffersEXT(1, &m_Framebuffer );
 	m_Framebuffer = 0;
-}
-
-
-bool GLTextureRenderTarget::Init( int texture_width, int texture_height, TextureFormat::Format texture_format, uint option_flags )
-{
-	m_TextureDesc.Width  = texture_width;
-	m_TextureDesc.Height = texture_height;
-
-	m_TextureDesc.Format = texture_format;
-
-	m_BackgroundColor = SFloatRGBAColor(0,0,0,0);
-
-	return LoadTextures();
-}
-
-
-bool GLTextureRenderTarget::Init( const TextureResourceDesc& texture_desc )
-{
-	m_TextureDesc = texture_desc;
-
-	m_BackgroundColor = SFloatRGBAColor(0,0,0,0);
-
-	return LoadTextures();
 }
 
 
@@ -338,44 +300,50 @@ bool GLTextureRenderTarget::LoadTextures()
 		LOG_GL_ERROR( " glFramebufferTexture2DEXT() failed." );
 	}
 
-	glGenRenderbuffersEXT(1, &m_DepthRenderBuffer);
+	if( m_OptionFlags & OPTFLG_NO_DEPTH_BUFFER )
+	{
+		// Do not create the depth buffer.
+	}
+	else
+	{
+		glGenRenderbuffersEXT(1, &m_DepthRenderBuffer);
 
-	LOG_GL_ERROR( " glGenRenderbuffersEXT() failed." );
+		LOG_GL_ERROR( " glGenRenderbuffersEXT() failed." );
 
-//	GET_GLERROR(NULL);
+//		GET_GLERROR(NULL);
 
-	glTexParameteri(texTarget, GL_TEXTURE_MIN_FILTER, filter_mode);
-	glTexParameteri(texTarget, GL_TEXTURE_MAG_FILTER, filter_mode);
-	glTexParameteri(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(texTarget, GL_TEXTURE_MIN_FILTER, filter_mode);
+		glTexParameteri(texTarget, GL_TEXTURE_MAG_FILTER, filter_mode);
+		glTexParameteri(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	LOG_GL_ERROR( " One or more glTexParameteri() call(s) failed." );
+		LOG_GL_ERROR( " One or more glTexParameteri() call(s) failed." );
 
-//	GLFramebufferTextureResourceVisitor visitor(texTarget);
-//	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
+//		GLFramebufferTextureResourceVisitor visitor(texTarget);
+//		m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
 
-//	GET_GLERROR(0);
-	LOG_GL_ERROR( " Clearing OpenGL errors..." );
+//		GET_GLERROR(0);
+		LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
-	// initialize depth renderbuffer
-	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
+		// initialize depth renderbuffer
+		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
 
-	LOG_GL_ERROR( " glBindRenderbufferEXT() failed." );
+		LOG_GL_ERROR( " glBindRenderbufferEXT() failed." );
 
-	// Before we can bind a renderbuffer to a framebuffer object,
-	// we must allocate storage for the renderbuffer.
-	glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, tex_width, tex_height);
+		// Before we can bind a renderbuffer to a framebuffer object,
+		// we must allocate storage for the renderbuffer.
+		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, tex_width, tex_height);
 
-	LOG_GL_ERROR( " glRenderbufferStorageEXT() failed." );
+		LOG_GL_ERROR( " glRenderbufferStorageEXT() failed." );
 
-	// Attach the renderbuffer object to the framebuffer object
-	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, 
-		GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
+		// Attach the renderbuffer object to the framebuffer object
+		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
 
-//	GET_GLERROR(0);
-	LOG_GL_ERROR( " glFramebufferRenderbufferEXT() failed." );
+//		GET_GLERROR(0);
+		LOG_GL_ERROR( " glFramebufferRenderbufferEXT() failed." );
 
-	CheckFramebufferStatus( GL_DRAW_FRAMEBUFFER_EXT );
+		CheckFramebufferStatus( GL_DRAW_FRAMEBUFFER_EXT );
+	}
 
 //	CheckFramebufferStatus();
 

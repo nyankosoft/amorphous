@@ -38,8 +38,6 @@ public:
 
 	CD3DTextureRenderTarget();
 
-	CD3DTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
-
 	CD3DTextureRenderTarget( const TextureResourceDesc& texture_desc );
 
 	~CD3DTextureRenderTarget();

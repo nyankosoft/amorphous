@@ -17,14 +17,9 @@ class TextureRenderTarget : public GraphicsComponent
 {
 protected:
 
-	enum OptionFlags
-	{
-		OPTFLG_NO_DEPTH_BUFFER    = ( 1 << 0 ),
-		OPTFLG_ANOTHER_OPTION     = ( 1 << 1 ),
-		OPTFLG_YET_ANOTHER_OPTION = ( 1 << 2 )
-	};
-
 	TextureResourceDesc m_TextureDesc;
+
+	U32 m_OptionFlags;
 
 	TextureHandle m_RenderTargetTexture;
 
@@ -37,9 +32,14 @@ protected:
 
 public:
 
-	TextureRenderTarget();
+	enum OptionFlags
+	{
+		OPTFLG_NO_DEPTH_BUFFER    = ( 1 << 0 ),
+		OPTFLG_ANOTHER_OPTION     = ( 1 << 1 ),
+		OPTFLG_YET_ANOTHER_OPTION = ( 1 << 2 )
+	};
 
-	TextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
+	TextureRenderTarget();
 
 	TextureRenderTarget( const TextureResourceDesc& texture_desc );
 
@@ -54,9 +54,9 @@ public:
 		int texture_width,
 		int texture_height,
 		TextureFormat::Format texture_format = TextureFormat::A8R8G8B8,
-		uint option_flags = 0 );
+		U32 option_flags = 0 );
 
-	bool Init( const TextureResourceDesc& texture_desc );
+	bool Init( const TextureResourceDesc& texture_desc, U32 option_flags = 0 );
 
 	/// Creates the render target of the current screen size
 	/// - The texture size is automatically resized to screen size (viewport size)

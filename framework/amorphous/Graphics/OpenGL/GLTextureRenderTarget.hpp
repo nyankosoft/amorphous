@@ -34,19 +34,9 @@ public:
 
 	GLTextureRenderTarget();
 
-	GLTextureRenderTarget( int texture_width, int texture_height, TextureFormat::Format texture_format = TextureFormat::A8R8G8B8, uint option_flags = 0 );
-
 	GLTextureRenderTarget( const TextureResourceDesc& texture_desc );
 
 	~GLTextureRenderTarget();
-
-	/// Returns true on success
-	bool Init( int texture_width,
-		       int texture_height,
-			   TextureFormat::Format texture_format,
-			   uint option_flags );
-
-	bool Init( const TextureResourceDesc& texture_desc );
 
 	/// Creates the render target of the current screen size
 	/// - The texture size is automatically resized to screen size (viewport size)
