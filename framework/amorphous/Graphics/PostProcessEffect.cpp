@@ -4,6 +4,7 @@
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -77,11 +78,11 @@ inline SRectangular GetCropWidthAndHeight( const SRectangular& src )
 
 void GetTextureRect( shared_ptr<RenderTargetTextureHolder>& pSrc, SRect *pDest )
 {
-	SRectangular tex_size = pSrc->m_Texture.GetSize2D(0);
+//	SRectangular tex_size = pSrc->m_Texture.GetSize2D(0);
 	pDest->left   = 0;
 	pDest->top    = 0;
-	pDest->right  = tex_size.width;
-	pDest->bottom = tex_size.height;
+	pDest->right  = pSrc->m_Desc.Width; // tex_size.width;
+	pDest->bottom = pSrc->m_Desc.Height; // tex_size.height;
 }
 
 
@@ -444,8 +445,8 @@ Result::Name GetSampleOffsets_Star( unsigned int dwD3DTexSize,
  texture, given the source and destination rectangles
 */
 Result::Name GetTextureCoords(
-	TextureHandle& tex_src,  const SRect* pRectSrc,
-	TextureHandle& tex_dest, const SRect* pRectDest, CoordRect* pCoords
+	TextureResourceDesc& tex_src,  const SRect* pRectSrc,
+	TextureResourceDesc& tex_dest, const SRect* pRectDest, CoordRect* pCoords
 	)
 {
 	float tU, tV;
@@ -465,40 +466,40 @@ Result::Name GetTextureCoords(
 	if( pRectSrc != NULL )
 	{
 		// Get destination texture description
-		const SRectangular src_tex_size = tex_src.GetSize2D( 0 );
+//		const SRectangular src_tex_size = tex_src.GetSize2D( 0 );
 
-		if( src_tex_size.width == 0 || src_tex_size.height )
+		if( tex_src.Width == 0 || tex_src.Height )
 			return Result::UNKNOWN_ERROR;
 
 		// These delta values are the distance between source texel centers in 
 		// texture address space
-		tU = 1.0f / src_tex_size.width;
-		tV = 1.0f / src_tex_size.height;
+		tU = 1.0f / tex_src.Width;
+		tV = 1.0f / tex_src.Height;
 
 		pCoords->fLeftU += pRectSrc->left * tU;
-		pCoords->fTopV += pRectSrc->top * tV;
-		pCoords->fRightU -= ( src_tex_size.width - pRectSrc->right ) * tU;
-		pCoords->fBottomV -= ( src_tex_size.height - pRectSrc->bottom ) * tV;
+		pCoords->fTopV  += pRectSrc->top * tV;
+		pCoords->fRightU  -= ( tex_src.Width  - pRectSrc->right ) * tU;
+		pCoords->fBottomV -= ( tex_src.Height - pRectSrc->bottom ) * tV;
 	}
 
 	// If not drawing to the complete destination surface, adjust the coordinates
 	if( pRectDest != NULL )
 	{
 		// Get source texture description
-		const SRectangular dest_tex_size = tex_dest.GetSize2D();
+//		const SRectangular dest_tex_size = tex_dest.GetSize2D();
 
-		if( dest_tex_size.width == 0 || dest_tex_size.height )
+		if( tex_dest.Width == 0 || tex_dest.Height )
 			return Result::UNKNOWN_ERROR;
 
 		// These delta values are the distance between source texel centers in 
 		// texture address space
-		tU = 1.0f / dest_tex_size.width;
-		tV = 1.0f / dest_tex_size.height;
+		tU = 1.0f / tex_dest.Width;
+		tV = 1.0f / tex_dest.Height;
 
 		pCoords->fLeftU -= pRectDest->left * tU;
-		pCoords->fTopV -= pRectDest->top * tV;
-		pCoords->fRightU += ( dest_tex_size.width - pRectDest->right ) * tU;
-		pCoords->fBottomV += ( dest_tex_size.height - pRectDest->bottom ) * tV;
+		pCoords->fTopV  -= pRectDest->top * tV;
+		pCoords->fRightU  += ( tex_dest.Width  - pRectDest->right ) * tU;
+		pCoords->fBottomV += ( tex_dest.Height - pRectDest->bottom ) * tV;
 	}
 
 	return Result::SUCCESS;
@@ -608,7 +609,7 @@ void DownScale4x4Filter::Render()
 	CoordRect coords;
 	if( m_pDest )
 	{
-		GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, NULL, &coords );
+		GetTextureCoords( m_pPrevScene->m_Desc, &rectSrc, m_pDest->m_Desc, NULL, &coords );
 	}
 	else
 	{
@@ -696,7 +697,7 @@ void DownScale2x2Filter::Render()
 	// Get the correct texture coordinates to apply to the rendered quad in order
 	// to sample from the source rectangle and render into the destination rectangle
 	CoordRect coords;
-	GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, &rectDest, &coords );
+	GetTextureCoords( m_pPrevScene->m_Desc, &rectSrc, m_pDest->m_Desc, &rectDest, &coords );
 
 	// Get the sample offsets used within the pixel shader
 
@@ -777,7 +778,7 @@ void HDRBrightPassFilter::Render()
 	// Get the correct texture coordinates to apply to the rendered quad in order 
 	// to sample from the source rectangle and render into the destination rectangle
 	CoordRect coords;
-	GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, &rectDest, &coords );
+	GetTextureCoords( m_pPrevScene->m_Desc, &rectSrc, m_pDest->m_Desc, &rectDest, &coords );
 
 	// The bright-pass filter removes everything from the scene except lights and
 	// bright reflections
@@ -788,7 +789,8 @@ void HDRBrightPassFilter::Render()
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pDest->m_pTexSurf );
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
 
-	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_Texture.GetTexture() );
+//	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_Texture.GetTexture() );
+	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
 
 //	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
@@ -863,7 +865,7 @@ void GaussianBlurFilter::Render()
 	// to sample from the source rectangle and render into the destination rectangle
 	CoordRect coords;
 	if( m_pDest )
-		GetTextureCoords( m_pPrevScene->m_Texture, NULL, m_pDest->m_Texture, &rectDest, &coords );
+		GetTextureCoords( m_pPrevScene->m_Desc, NULL, m_pDest->m_Desc, &rectDest, &coords );
 	else
 	{
 		coords.fLeftU = 0;
@@ -990,12 +992,12 @@ void BloomFilter::Render()
 		GetTextureRect( m_pDest, &rectDest );
 		rectDest.Inflate( -1, -1 );
 
-		GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, &rectDest, &coords );
+		GetTextureCoords( m_pPrevScene->m_Desc, &rectSrc, m_pDest->m_Desc, &rectDest, &coords );
 	}
 	else
 	{
 		// vertical blur settings
-		GetTextureCoords( m_pPrevScene->m_Texture, &rectSrc, m_pDest->m_Texture, NULL, &coords );
+		GetTextureCoords( m_pPrevScene->m_Desc, &rectSrc, m_pDest->m_Desc, NULL, &coords );
 	}
 
 
@@ -1433,7 +1435,7 @@ void AdaptationCalcFilter::Render()
 	m_pTexAdaptedLuminanceCur = pTexSwap;
 
 	m_pDest = m_pTexAdaptedLuminanceCur;
-	hr = m_pDest->m_Texture.GetTexture()->GetSurfaceLevel( 0, &(m_pDest->m_pTexSurf) );
+//	hr = m_pDest->m_Texture.GetTexture()->GetSurfaceLevel( 0, &(m_pDest->m_pTexSurf) );
 
 	/// increment the lock count to avoid decrement it to be zero-ed by the next filter
 	m_pDest->IncrementLockCount();
@@ -1451,10 +1453,13 @@ void AdaptationCalcFilter::Render()
 
 //	hr = pd3dDevice->SetRenderTarget( 0, pSurfAdaptedLum );
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pTexAdaptedLuminanceCur->m_pTexSurf );
-	hr = pd3dDevice->SetRenderTarget( 0, m_pDest->m_pTexSurf );
-	hr = pd3dDevice->SetTexture( 0, m_pTexAdaptedLuminanceLast->m_Texture.GetTexture() );
+
+//	hr = pd3dDevice->SetRenderTarget( 0, m_pDest->m_pTexSurf );
+	m_pDest->m_pTextureRenderTarget->SetRenderTarget();
+
+	hr = pd3dDevice->SetTexture( 0, m_pTexAdaptedLuminanceLast->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
 //	hr = pd3dDevice->SetTexture( 1, g_apTexToneMap[0] );
-	hr = pd3dDevice->SetTexture( 1, m_pPrevScene->m_Texture.GetTexture() );
+	hr = pd3dDevice->SetTexture( 1, m_pPrevScene->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
 /*
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
@@ -1579,18 +1584,18 @@ void HDRLightingFinalPassFilter::Render()
 //	V( pEffect->SetBool( "g_bEnableToneMap", m_ToneMappingEnabled ) );
 	shader_mgr.SetBool( "g_bEnableToneMap", m_ToneMappingEnabled );
 
-	m_pPrevResult->m_Texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::NEAREST );
-	m_pPrevResult->m_Texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::NEAREST );
-	m_pBloom->m_Texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
-	m_pBloom->m_Texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
+	m_pPrevResult->GetTexture().SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::NEAREST );
+	m_pPrevResult->GetTexture().SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::NEAREST );
+	m_pBloom->GetTexture().SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
+	m_pBloom->GetTexture().SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
 //	???.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
 //	???.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
-	m_pAdaptedLuminance->m_Texture.SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::NEAREST );
-	m_pAdaptedLuminance->m_Texture.SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::NEAREST );
+	m_pAdaptedLuminance->GetTexture().SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::NEAREST );
+	m_pAdaptedLuminance->GetTexture().SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::NEAREST );
 
-	GraphicsDevice().SetTexture( 0, m_pPrevResult->m_Texture );
-	GraphicsDevice().SetTexture( 1, m_pBloom->m_Texture );
-	GraphicsDevice().SetTexture( 3, m_pAdaptedLuminance->m_Texture );
+	GraphicsDevice().SetTexture( 0, m_pPrevResult->GetTexture() );
+	GraphicsDevice().SetTexture( 1, m_pBloom->GetTexture() );
+	GraphicsDevice().SetTexture( 3, m_pAdaptedLuminance->GetTexture() );
 /*
 //	V( pd3dDevice->SetRenderTarget( 0, pSurfLDR ) );
 	V( pd3dDevice->SetTexture( 0, m_pPrevResult->m_Texture.GetTexture() ) );
@@ -1600,7 +1605,7 @@ void HDRLightingFinalPassFilter::Render()
 	if( m_pStar )
 	{
 //		V( pd3dDevice->SetTexture( 2, m_pStar->m_Texture.GetTexture() ) );
-		GraphicsDevice().SetTexture( 2, m_pStar->m_Texture );
+		GraphicsDevice().SetTexture( 2, m_pStar->GetTexture() );
 	}
 	else
 	{
@@ -1946,10 +1951,10 @@ void FullScreenBlurFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 
 	m_pDownScale4x4Filter->RenderBase( prev_filter );
 
-	if( prev_filter.GetDestRenderTarget() )
-		prev_filter.GetDestRenderTarget()->IncrementLockCount();
+//	if( prev_filter.GetDestRenderTarget() )
+//		prev_filter.GetDestRenderTarget()->IncrementLockCount();
 
-	m_pBloomFilter->RenderBase( prev_filter );
+//	m_pBloomFilter->RenderBase( prev_filter );
 }
 
 

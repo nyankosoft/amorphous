@@ -1,5 +1,6 @@
 #include "PostProcessEffectManager.hpp"
 #include "PostProcessEffect.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -256,9 +257,12 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 	m_pOrigSceneHolder->m_Desc.Format = orig_scene_buffer_format;
 	m_pOrigSceneHolder->m_Desc.MipLevels = 1;
 	m_pOrigSceneHolder->m_Desc.UsageFlags = UsageFlag::RENDER_TARGET;
-	bool loaded = m_pOrigSceneHolder->m_Texture.Load( m_pOrigSceneHolder->m_Desc );
-	if( !loaded )
-		LOG_PRINT_ERROR( " Failed to create a render target texture for original scene." );
+//	bool loaded = m_pOrigSceneHolder->m_Texture.Load( m_pOrigSceneHolder->m_Desc );
+//	if( !loaded )
+//		LOG_PRINT_ERROR( " Failed to create a render target texture for original scene." );
+
+	m_pOrigSceneHolder->m_pTextureRenderTarget = TextureRenderTarget::Create();
+	bool loaded = m_pOrigSceneHolder->m_pTextureRenderTarget->Init( m_pOrigSceneHolder->m_Desc );
 
 	// Create the HDR scene texture
 //	hr = pd3dDevice->CreateTexture( pBackBufferDesc->Width, pBackBufferDesc->Height,
@@ -297,15 +301,15 @@ Result::Name PostProcessEffectManager::BeginRender()
 	HRESULT hr = S_OK;
 
 	// Store the old render target
-	V( pd3dDevice->GetRenderTarget( 0, &m_pSurfLDR ) );
-	V( pd3dDevice->GetDepthStencilSurface( &m_pSurfDS ) );
+//	V( pd3dDevice->GetRenderTarget( 0, &m_pSurfLDR ) );
+//	V( pd3dDevice->GetDepthStencilSurface( &m_pSurfDS ) );
 
 	// Save the copy of the original render target
 	// The final filter renders to this surface.
-	m_pTextureCache->m_pOrigRenderTarget = m_pSurfLDR;
+//	m_pTextureCache->m_pOrigRenderTarget = m_pSurfLDR;
 
 	// Setup HDR render target
-	LPDIRECT3DTEXTURE9 pOrigSceneTexture = m_pOrigSceneHolder->m_Texture.GetTexture();
+/*	LPDIRECT3DTEXTURE9 pOrigSceneTexture = m_pOrigSceneHolder->m_Texture.GetTexture();
 	V( pOrigSceneTexture->GetSurfaceLevel( 0, &m_pOrigSceneHolder->m_pTexSurf ) );
 //	V( m_SceneRenderTarget.GetTexture()->GetSurfaceLevel( 0, &pSurfHDR ) );
 	if( m_bUseMultiSampleFloat16 )
@@ -318,19 +322,11 @@ Result::Name PostProcessEffectManager::BeginRender()
 		V( pd3dDevice->SetRenderTarget( 0, m_pOrigSceneHolder->m_pTexSurf ) );
 //		V( pd3dDevice->SetRenderTarget( 0, pSurfHDR ) );
 	}
+*/
+	m_pOrigSceneHolder->m_pTextureRenderTarget->SetRenderTarget();
 
 	// Clear the viewport
 	V( pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA( 0, 0, 0, 0 ), 1.0f, 0L ) );
-
-	// Render the scene
-//	if( SUCCEEDED( pd3dDevice->BeginScene() ) )
-//	{
-		// Render the HDR Scene
-/*		{
-			CDXUTPerfEventGenerator g( DXUT_PERFEVENTCOLOR, L"Scene" );
-			RenderScene();
-		}
-*/
 
 	return Result::SUCCESS;
 }
@@ -408,7 +404,7 @@ Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 	if( PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame == 1 )
 	{
 		boost::filesystem::create_directories( "debug/post-process_effect" );
-		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
+//		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
 	}
 
 	// send the base scene to the first filter and start the post process effects
@@ -428,13 +424,15 @@ Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 		V( pd3dDevice->SetDepthStencilSurface( pSurfDS ) );
 	}*/
 
-	SAFE_RELEASE( m_pSurfLDR );
-	SAFE_RELEASE( m_pSurfDS );
+//	SAFE_RELEASE( m_pSurfLDR );
+//	SAFE_RELEASE( m_pSurfDS );
 
 	// done by SAFE_RELEASE( m_pSurfLDR )
 //	m_pOrigSceneHolder->ReleaseSurface();
 
-	SAFE_RELEASE( m_pTextureCache->m_pOrigRenderTarget );
+//	SAFE_RELEASE( m_pTextureCache->m_pOrigRenderTarget );
+
+//	m_pTextureCache->m_pOrigSceneHolder->m_pTextureRenderTarget->ResetRenderTarget();
 
 	m_IsRedering = false;
 
@@ -686,7 +684,7 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 			return;
 
 //		pShader->SetTexture( tex_index, pRTTexHolder->m_Texture );
-		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->m_Texture.GetTexture() );
+		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->GetTexture().GetTexture() );
 /*
 		static TextureHandle s_tex;
 		s_tex.Load( "debug/test_images/Meerkat_256.jpg" );

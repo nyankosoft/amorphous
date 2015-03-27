@@ -2,6 +2,7 @@
 #include "PostProcessEffectManager.hpp"
 #include "Graphics/SurfaceFormat.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
+#include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Support/Log/DefaultLog.hpp"
@@ -14,6 +15,15 @@ namespace amorphous
 using std::string;
 using std::vector;
 using namespace boost;
+
+
+TextureHandle RenderTargetTextureHolder::GetTexture()
+{
+	if( m_pTextureRenderTarget )
+		return m_pTextureRenderTarget->GetRenderTargetTexture();
+	else
+		return TextureHandle();
+}
 
 
 /// Does not consider the current lock count
@@ -39,10 +49,20 @@ int RenderTargetTextureCache::GetNumTextures( const TextureResourceDesc& desc )
 
 Result::Name RenderTargetTextureCache::AddTexture( const TextureResourceDesc& desc )
 {
-	TextureHandle new_tex;
-	bool created = new_tex.Load( desc );
-	if( !created )
+//	TextureHandle new_tex;
+//	bool created = new_tex.Load( desc );
+//	if( !created )
+//		return Result::UNKNOWN_ERROR;
+
+	boost::shared_ptr<TextureRenderTarget> pTRT = TextureRenderTarget::Create();
+	bool res = pTRT->Init( desc );
+	if( !res )
+	{
+		LOG_PRINT_ERROR( "Failed to initialize a texture render target." );
 		return Result::UNKNOWN_ERROR;
+	}
+
+	TextureHandle new_tex = pTRT->GetRenderTargetTexture();
 
 	// Assume that all the render target textures use the "clamp" mode
 	new_tex.SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_0, TextureAddressMode::CLAMP_TO_EDGE );
@@ -51,15 +71,17 @@ Result::Name RenderTargetTextureCache::AddTexture( const TextureResourceDesc& de
 	shared_ptr<RenderTargetTextureHolder> pHolder( new RenderTargetTextureHolder );
 	m_vecpHolder.push_back( pHolder );
 	m_vecpHolder.back()->m_Desc    = desc;
-	m_vecpHolder.back()->m_Texture = new_tex;
+	m_vecpHolder.back()->m_Desc.Sharable = false;
+//	m_vecpHolder.back()->m_Texture = new_tex;
+	m_vecpHolder.back()->m_pTextureRenderTarget = pTRT;
 
 	// debug - check the texture which was just created.
-	shared_ptr<TextureResource> pTex = new_tex.GetEntry()->GetTextureResource();
-	D3DSURFACE_DESC surf_desc;
-	if( pTex && pTex->GetTexture() )
-	{
-		pTex->GetTexture()->GetLevelDesc( 0, &surf_desc );
-	}
+//	shared_ptr<TextureResource> pTex = new_tex.GetEntry()->GetTextureResource();
+//	D3DSURFACE_DESC surf_desc;
+//	if( pTex && pTex->GetTexture() )
+//	{
+//		pTex->GetTexture()->GetLevelDesc( 0, &surf_desc );
+//	}
 
 	return Result::SUCCESS;
 }
@@ -154,7 +176,7 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 		if( m_pDest )
 		{
 			// Note that this increases the internal reference count of m_pDest->m_pTexSurf
-			hr = m_pDest->m_Texture.GetTexture()->GetSurfaceLevel( 0, &(m_pDest->m_pTexSurf) );
+/*			hr = m_pDest->m_Texture.GetTexture()->GetSurfaceLevel( 0, &(m_pDest->m_pTexSurf) );
 
 			ULONG ref_count = 0;
 			if( FAILED( hr ) )
@@ -163,16 +185,22 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 				ref_count = m_pDest->m_pTexSurf->Release(); // Decrement the reference count
 
 			hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pDest->m_pTexSurf );
+*/
+			m_pDest->m_pTextureRenderTarget->SetRenderTarget();
+
+			if( !m_pCache->m_pOrigSceneHolder )
+			{
+				// This is the first filter; the original render target is saved in m_pDest->m_pTextureRenderTarget
+				m_pCache->m_pOrigSceneHolder = m_pDest;
+			}
 
 			// set viewport
-//			D3DSURFACE_DESC surf_desc;
-//			hr = m_pDest->m_pTexSurf->GetDesc( &surf_desc );
-//			D3DVIEWPORT9 viewport = { 0, 0, surf_desc.Width, surf_desc.Height, 0.0f, 1.0f };
-//			hr = DIRECT3D9.GetDevice()->SetViewport( &viewport );
 			Viewport vp;
 			vp.UpperLeftX = 0;
 			vp.UpperLeftY = 0;
-			vp.Width = m_pDest->m_Desc.Width;
+			// We have to get the dimension of the leve 0 surface;
+			// is the texture size always the same as the level 0 surface size?
+			vp.Width  = m_pDest->m_Desc.Width;
 			vp.Height = m_pDest->m_Desc.Height;
 			GraphicsDevice().SetViewport( vp );
 		}
@@ -193,7 +221,9 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 
 		DIRECT3D9.GetDevice()->SetRenderTarget( 0, pTexSurf );
 */
-		hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pCache->m_pOrigRenderTarget );
+//		hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pCache->m_pOrigRenderTarget );
+
+		m_pCache->m_pOrigSceneHolder->m_pTextureRenderTarget->ResetRenderTarget();
 	}
 
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
@@ -250,7 +280,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	if( res != Result::SUCCESS )
 		int failed_to_set_technique = 1;
 
-	TextureHandle& prev_scene_texture = m_pPrevScene->m_Texture;
+	TextureHandle& prev_scene_texture = m_pPrevScene->GetTexture();
 	if( !prev_scene_texture.IsLoaded() )
 		int texture_is_not_loaded = 1;
 
@@ -342,7 +372,7 @@ void PostProcessEffectFilter::SaveProcessedSceneToImageFile()
 
 //	boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in PostProcessEffectManager::RenderPostProcessEffects()
 	string image_pathname = "debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
-	bool saved = m_pDest->m_Texture.SaveTextureToImageFile( image_pathname );
+	bool saved = m_pDest->GetTexture().SaveTextureToImageFile( image_pathname );
 //	hr = D3DXSaveTextureToFile( img_fmt, m_pDest->m_Texture.GetTexture(), NULL );
 }
 

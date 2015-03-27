@@ -57,21 +57,22 @@ class RenderTargetTextureHolder
 	int m_NumLocks;
 
 public:
-	LPDIRECT3DSURFACE9 m_pTexSurf;
-	TextureHandle m_Texture;
+//	LPDIRECT3DSURFACE9 m_pTexSurf;
+//	TextureHandle m_Texture;
 	TextureResourceDesc m_Desc;
+
+	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 	RenderTargetTextureHolder()
 		:
-	m_pTexSurf(NULL),
-//	m_pTexture(NULL),
+//	m_pTexSurf(NULL),
 	m_NumLocks(0)
 	{}
 
 	/// call this after rendering
 	void ReleaseSurface()
 	{
-		SAFE_RELEASE( m_pTexSurf );
+//		SAFE_RELEASE( m_pTexSurf );
 	}
 
 	void IncrementLockCount()
@@ -91,6 +92,8 @@ public:
 	}
 
 	int GetLockCount() const { return m_NumLocks; }
+
+	TextureHandle GetTexture();
 };
 
 
