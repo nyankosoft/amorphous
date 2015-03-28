@@ -3,6 +3,7 @@
 
 
 #include "Graphics/Direct3D/fwd.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "3DMath/Transform.hpp"
 
@@ -223,7 +224,7 @@ public:
 //	inline void SetVertexBlendMatrix( int i, const Matrix44& mat );
 
 
-	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
+//	inline HRESULT SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture );
 
 	inline Result::Name SetTexture( const int iStage, const TextureHandle& texture );
 
@@ -473,15 +474,23 @@ inline void CHLSLShaderManager::SetVertexBlendMatrix( int i, const Matrix44& mat
 }
 */
 
-inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
-{
-	return m_pEffect->SetTexture( m_aTextureHandle[iStage], pTexture );
-}
+//inline HRESULT CHLSLShaderManager::SetTexture( const int iStage, const LPDIRECT3DTEXTURE9 pTexture )
+//{
+//	return m_pEffect->SetTexture( m_aTextureHandle[iStage], pTexture );
+//}
 
 
 inline Result::Name CHLSLShaderManager::SetTexture( const int iStage, const TextureHandle& texture )
 {
-	HRESULT hr = m_pEffect->SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
+	HRESULT hr = E_FAIL;
+	if( m_aTextureHandle[iStage] )
+		hr = m_pEffect->SetTexture( m_aTextureHandle[iStage], texture.GetTexture() );
+	else
+	{
+		// We assume that the shader uses register()s, e.g. "sampler s0 : register(s0);".
+		hr = DIRECT3D9.GetDevice()->SetTexture( iStage, texture.GetTexture() );
+	}
+
 	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
 
