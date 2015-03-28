@@ -3,6 +3,8 @@
 
 
 #include <string>
+#include <boost/shared_ptr.hpp>
+#include "amorphous/base.hpp"
 
 
 namespace amorphous
@@ -19,12 +21,19 @@ public:
 	/// from a single file which contains multiple vertex & pixel shaders.
 	virtual bool SupportsCombinedShader() const = 0;
 
-	virtual void GetShader( const char *effect_name, std::string& shader ) {}
+	virtual Result::Name GenerateShader( const std::string& effect_name, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 
-	virtual void GetVertexShader( const char *effect_name, std::string& vertex_shader ) {}
+	virtual Result::Name GenerateVertexShader( const std::string& effect_name, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 
-	virtual void GetFragmentShader( const char *effect_name, std::string& fragment_shader ) {}
+	virtual Result::Name GenerateFragmentShader( const std::string& effect_name, std::string& shader ) { return Result::UNKNOWN_ERROR; }
 };
+
+
+inline boost::shared_ptr<EmbeddedPostProcessEffectShader>& GetEmbeddedPostProcessEffectShader()
+{
+	static boost::shared_ptr<EmbeddedPostProcessEffectShader> s_pPPEffectShader;
+	return s_pPPEffectShader;
+}
 
 
 } // namespace amorphous

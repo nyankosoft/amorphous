@@ -468,16 +468,18 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_BrightPass =
 "}\n";*/
 
 
-void EmbeddedPostProcessEffectGLSLShader::GetVertexShader( const char *effect_name, std::string& vertex_shader )
+Result::Name EmbeddedPostProcessEffectGLSLShader::GenerateVertexShader( const std::string& effect_name, std::string& vertex_shader )
 {
 	vertex_shader = m_pVertexShader;
+
+	return Result::SUCCESS;
 }
 
 
-void EmbeddedPostProcessEffectGLSLShader::GetFragmentShader( const char *effect_name, std::string& fragment_shader )
+Result::Name EmbeddedPostProcessEffectGLSLShader::GenerateFragmentShader( const std::string& effect_name, std::string& fragment_shader )
 {
 	std::string& fs = fragment_shader;
-	const std::string effect = effect_name;
+	const std::string& effect = effect_name;
 
 	fs = EmbeddedPostProcessEffectGLSLShader::m_pTextureSamplers;
 
@@ -501,7 +503,12 @@ void EmbeddedPostProcessEffectGLSLShader::GetFragmentShader( const char *effect_
 	else if( effect == "hdr.bright_pass" )                  fs += std::string(m_pHDR) + m_pHDR_BrightPass;
 	else if( effect == "hdr.final_pass" )                   fs += std::string(m_pHDR) + m_pHDR_FinalPass;
 	else
+	{
 		LOG_PRINT_WARNING( "An unsupported effect name: " + effect );
+		return Result::INVALID_ARGS;
+	}
+
+	return Result::SUCCESS;
 }
 
 

@@ -10,6 +10,7 @@
 #include "Mesh/GLCustomMeshRenderer.hpp"
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericGLSLShader.hpp"
+#include "Shader/Embedded/EmbeddedPostProcessEffectGLSLShader.hpp"
 #include "../GraphicsResources.hpp"
 #include "../GraphicsResourceCacheManager.hpp"
 #include "../Mesh/CustomMesh.hpp"
@@ -66,7 +67,7 @@ class GLMeshImplFactory : public MeshImplFactory
 public:
 
 //	MeshImpl* CreateBasicMeshImpl()       { return new CGL2BasicMeshImpl; }
-	MeshImpl* CreateBasicMeshImpl()       { return new GLBasicMeshImpl; }
+	MeshImpl* CreateBasicMeshImpl()       { return new CustomMesh; }
 	MeshImpl* CreateProgressiveMeshImpl() { return new GLProgressiveMeshImpl; }
 	MeshImpl* CreateSkeletalMeshImpl()    { return new GLSkeletalMeshImpl; }
 };
@@ -110,6 +111,7 @@ Result::Name InitializeOpenGLClasses()
 	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_FRGBA );
 	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericGLSLShader( new EmbeddedGenericGLSLShader );
 	SetEmbeddedGenericShader( pEmbeddedGenericGLSLShader );
+	GetEmbeddedPostProcessEffectShader().reset( new EmbeddedPostProcessEffectGLSLShader );
 
 	return Result::SUCCESS;
 }

@@ -53,9 +53,9 @@ public:
 	
 	bool SupportsCombinedShader() const { return false; }
 
-	void GetVertexShader( const char *effect_name, std::string& vertex_shader );
+	Result::Name GenerateVertexShader( const std::string& effect_name, std::string& vertex_shader );
 
-	void GetFragmentShader( const char *effect_name, std::string& fragment_shader );
+	Result::Name GenerateFragmentShader( const std::string& effect_name, std::string& fragment_shader );
 };
 
 

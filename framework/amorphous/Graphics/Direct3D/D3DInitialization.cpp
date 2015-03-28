@@ -9,6 +9,7 @@
 #include "Mesh/D3DCustomMeshRenderer.hpp"
 #include "Shader/D3DFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericHLSL.hpp"
+#include "Shader/Embedded/EmbeddedPostProcessEffectHLSLShader.hpp"
 #include "../GraphicsResources.hpp"
 #include "../GraphicsResourceCacheManager.hpp"
 #include "../Mesh/CustomMesh.hpp"
@@ -126,6 +127,7 @@ Result::Name InitializeDirect3DClasses()
 	CustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
 	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericHLSL( new EmbeddedGenericHLSL );
 	SetEmbeddedGenericShader( pEmbeddedGenericHLSL );
+	GetEmbeddedPostProcessEffectShader().reset( new CEmbeddedPostProcessEffectHLSLShader );
 
 	// For Direct3D, Use ARGB32 as the default vertex diffuse color format to support
 	// fixed function pipeline (FFP). On some graphics cards, the application crashes

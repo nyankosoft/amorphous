@@ -454,37 +454,60 @@ const char *CEmbeddedPostProcessEffectHLSLShader::m_pHDR =
 "}\n";
 
 
-void CPostProcessEffectFilterShaderGenerator::GetCombinedShader( std::string& shader )
+void CEmbeddedPostProcessEffectHLSLShader::GetCombinedShader( std::string& shader )
 {
-	shader += CEmbeddedPostProcessEffectHLSLShader::m_pMonochrome;   // "monochrome"
-	shader += CEmbeddedPostProcessEffectHLSLShader::m_pBloom;        // "bloom"
-	shader += CEmbeddedPostProcessEffectHLSLShader::m_pDownScale2x2; // "down_scale_2x2"
-	shader += CEmbeddedPostProcessEffectHLSLShader::m_pDownScale4x4; // "down_scale_4x4"
-	shader += CEmbeddedPostProcessEffectHLSLShader::m_pGaussBlur5x5; // "gauss_blur_5x5"
-	shader += CEmbeddedPostProcessEffectHLSLShader::m_pHDR;          // "hdr"
+	shader += m_pMonochrome;   // "monochrome"
+	shader += m_pBloom;        // "bloom"
+	shader += m_pDownScale2x2; // "down_scale_2x2"
+	shader += m_pDownScale4x4; // "down_scale_4x4"
+	shader += m_pGaussBlur5x5; // "gauss_blur_5x5"
+	shader += m_pHDR;          // "hdr"
 }
 
 
-void CPostProcessEffectFilterShaderGenerator::GetShader( std::string& shader )
+Result::Name CEmbeddedPostProcessEffectHLSLShader::GenerateShader( const std::string& effect_name, std::string& shader )
 {
 	shader = CEmbeddedPostProcessEffectHLSLShader::m_pTextureSamplers;
 
 	shader += CEmbeddedPostProcessEffectHLSLShader::m_pSampleOffsetsAndWeights;
 
-	if( m_EffectName.length() == 0 )
+	if( effect_name.length() == 0 )
 	{
 		GetCombinedShader( shader );
-		return;
+		return Result::SUCCESS;
 	}
 
-	if( m_EffectName == "monochrome" )          shader += CEmbeddedPostProcessEffectHLSLShader::m_pMonochrome;
-	else if( m_EffectName == "bloom" )          shader += CEmbeddedPostProcessEffectHLSLShader::m_pBloom;
-	else if( m_EffectName == "down_scale_2x2" ) shader += CEmbeddedPostProcessEffectHLSLShader::m_pDownScale2x2;
-	else if( m_EffectName == "down_scale_4x4" ) shader += CEmbeddedPostProcessEffectHLSLShader::m_pDownScale4x4;
-	else if( m_EffectName == "gauss_blur_5x5" ) shader += CEmbeddedPostProcessEffectHLSLShader::m_pGaussBlur5x5;
-	else if( m_EffectName == "hdr" )            shader += CEmbeddedPostProcessEffectHLSLShader::m_pHDR;
+	if( effect_name == "monochrome" )          shader += m_pMonochrome;
+	else if( effect_name == "bloom" )          shader += m_pBloom;
+	else if( effect_name == "down_scale_2x2" ) shader += m_pDownScale2x2;
+	else if( effect_name == "down_scale_4x4" ) shader += m_pDownScale4x4;
+	else if( effect_name == "gauss_blur_5x5" ) shader += m_pGaussBlur5x5;
+	else if( effect_name == "hdr" )            shader += m_pHDR;
 	else
-		LOG_PRINT_WARNING( "An unsupported effect name: " + m_EffectName );
+	{
+		LOG_PRINT_WARNING( "An unsupported effect name: " + effect_name );
+		return Result::INVALID_ARGS;
+	}
+
+	return Result::SUCCESS;
+}
+
+
+void CPostProcessEffectFilterShaderGenerator::GetShader( std::string& shader )
+{
+	GetEmbeddedPostProcessEffectShader()->GenerateShader( m_EffectName.c_str(), shader );
+}
+
+
+void CPostProcessEffectFilterShaderGenerator::GetVertexShader( std::string& shader )
+{
+	GetEmbeddedPostProcessEffectShader()->GenerateVertexShader( m_EffectName.c_str(), shader );
+}
+
+
+void CPostProcessEffectFilterShaderGenerator::GetPixelShader( std::string& shader )
+{
+	GetEmbeddedPostProcessEffectShader()->GenerateFragmentShader( m_EffectName.c_str(), shader );
 }
 
 

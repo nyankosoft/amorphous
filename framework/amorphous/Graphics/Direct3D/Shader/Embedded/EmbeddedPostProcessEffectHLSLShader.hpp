@@ -2,21 +2,17 @@
 #define __EmbeddedPostProcessEffectHLSLShader_HPP__
 
 
-#include "../../../Shader/ShaderGenerator.hpp"
-#include "../../../PostProcessEffectFilter.hpp"
+#include "amorphous/Graphics/PostProcessEffectFilter.hpp"
+#include "amorphous/Graphics/Shader/ShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/Embedded/EmbeddedPostProcessEffectShader.hpp"
 
 
 namespace amorphous
 {
 
 
-class CEmbeddedPostProcessEffectHLSLShader
+class CEmbeddedPostProcessEffectHLSLShader : public EmbeddedPostProcessEffectShader
 {
-public:
-
-	CEmbeddedPostProcessEffectHLSLShader(){}
-	~CEmbeddedPostProcessEffectHLSLShader(){}
-
 	static const char *m_pTextureSamplers;
 
 	static const char *m_pSampleOffsetsAndWeights;
@@ -32,12 +28,22 @@ public:
 	static const char *m_pMonochrome;
 
 	static const char *m_pHDR;
+
+	void GetCombinedShader( std::string& shader );
+
+public:
+
+	CEmbeddedPostProcessEffectHLSLShader(){}
+	~CEmbeddedPostProcessEffectHLSLShader(){}
+
+	bool SupportsCombinedShader() const { return true; }
+
+	Result::Name GenerateShader( const std::string& effect_name, std::string& shader );
 };
 
 
 class CPostProcessEffectFilterShaderGenerator : public ShaderGenerator
 {
-	void GetCombinedShader( std::string& shader );
 
 public:
 
@@ -54,6 +60,10 @@ public:
 	{}
 
 	void GetShader( std::string& shader );
+
+	void GetVertexShader( std::string& shader );
+
+	void GetPixelShader( std::string& shader );
 };
 
 
