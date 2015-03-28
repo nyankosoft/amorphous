@@ -49,12 +49,7 @@ int RenderTargetTextureCache::GetNumTextures( const TextureResourceDesc& desc )
 
 Result::Name RenderTargetTextureCache::AddTexture( const TextureResourceDesc& desc )
 {
-//	TextureHandle new_tex;
-//	bool created = new_tex.Load( desc );
-//	if( !created )
-//		return Result::UNKNOWN_ERROR;
-
-	boost::shared_ptr<TextureRenderTarget> pTRT = TextureRenderTarget::Create();
+	shared_ptr<TextureRenderTarget> pTRT = TextureRenderTarget::Create();
 	bool res = pTRT->Init( desc );
 	if( !res )
 	{
@@ -305,6 +300,9 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	}
 
 	res = GraphicsDevice().SetTexture( 0, prev_scene_texture );
+	if( pShaderMgr )
+		pShaderMgr->SetTexture( 0, prev_scene_texture );
+
 	if( res != Result::SUCCESS )
 		int failed_to_set_texture = 1;
 

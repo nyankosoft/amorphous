@@ -298,14 +298,15 @@ float GaussianDistribution( float x, float y, float rho )
 /**
  Get the texture coordinate offsets to be used inside the GaussBlur5x5 pixel shader.
 */
-Result::Name GetSampleOffsets_GaussBlur5x5( unsigned int dwD3DTexWidth,
-                                       unsigned int dwD3DTexHeight,
+Result::Name GetSampleOffsets_GaussBlur5x5( unsigned int tex_width,
+                                       unsigned int tex_height,
                                        Vector2* avTexCoordOffset,
                                        Vector4* avSampleWeight,
+									   float standard_deviation = 1.0f,
                                        float fMultiplier = 1.0f )
 {
-    float tu = 1.0f / ( float )dwD3DTexWidth;
-    float tv = 1.0f / ( float )dwD3DTexHeight;
+    float tu = 1.0f / ( float )tex_width;
+    float tv = 1.0f / ( float )tex_height;
 
     Vector4 vWhite( 1.0f, 1.0f, 1.0f, 1.0f );
 
@@ -815,6 +816,8 @@ void HDRBrightPassFilter::Render()
 //=======================================================================
 
 GaussianBlurFilter::GaussianBlurFilter()
+:
+m_fStandardDeviation(1.0f)
 {
 	m_Technique.SetTechniqueName( "GaussBlur5x5" );
 
@@ -879,7 +882,7 @@ void GaussianBlurFilter::Render()
 	const uint tex_width  = (uint)m_pPrevScene->m_Desc.Width;
 	const uint tex_height = (uint)m_pPrevScene->m_Desc.Height;
 
-	GetSampleOffsets_GaussBlur5x5( tex_width, tex_height, avSampleOffsets, avSampleWeights );
+	GetSampleOffsets_GaussBlur5x5( tex_width, tex_height, avSampleOffsets, avSampleWeights, m_fStandardDeviation );
 
 	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof( avSampleOffsets ) * 2 );
 	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, numof( avSampleWeights ) * 4 );
@@ -1163,6 +1166,7 @@ void CombinedBloomFilter::UseAsGaussianBlurFilter( bool use_as_gauss_blur )
 
 void CombinedBloomFilter::SetBlurStrength( float strength )
 {
+	m_pGaussianBlurFilter->SetStandardDeviation( strength );
 	m_pHBloomFilter->SetDeviation( strength );
 	m_pVBloomFilter->SetDeviation( strength );
 }
@@ -1954,6 +1958,7 @@ void FullScreenBlurFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 //	if( prev_filter.GetDestRenderTarget() )
 //		prev_filter.GetDestRenderTarget()->IncrementLockCount();
 
+	// Don't do this; m_pBloomFilter->RenderBase() is called in m_pDownScale4x4Filter->RenderBase() above.
 //	m_pBloomFilter->RenderBase( prev_filter );
 }
 

@@ -54,6 +54,8 @@ class GaussianBlurFilter : public PostProcessEffectFilter
 		MAX_SAMPLES = 16,
 	};
 
+	float m_fStandardDeviation;
+
 public:
 
 	GaussianBlurFilter();
@@ -64,6 +66,13 @@ public:
 
 	void SetWidth( float fWidth ) {}
 	void SetHeight( float fHeight ) {}
+
+	void SetStandardDeviation( float sd )
+	{
+		clamp( sd, 0.001f, 1000.0f );
+
+		m_fStandardDeviation = sd;
+	}
 
 //	void Update();
 };
@@ -410,7 +419,12 @@ public:
 
 	void Render() {}
 
-	void SetBlurStrength( float strength ) { m_fBlurStrength = strength; }
+	void SetBlurStrength( float strength )
+	{
+		clamp( strength, 0.001f, 1000000.0f );
+
+		m_fBlurStrength = strength;
+	}
 };
 
 
