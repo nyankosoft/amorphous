@@ -3,7 +3,6 @@
 
 
 #include "amorphous/Graphics/PostProcessEffectFilter.hpp"
-#include "amorphous/Graphics/Shader/ShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/Embedded/EmbeddedPostProcessEffectShader.hpp"
 
 
@@ -39,31 +38,6 @@ public:
 	bool SupportsCombinedShader() const { return true; }
 
 	Result::Name GenerateShader( const std::string& effect_name, std::string& shader );
-};
-
-
-class CPostProcessEffectFilterShaderGenerator : public ShaderGenerator
-{
-
-public:
-
-	std::string m_EffectName;
-
-	/// Multiple flags are not supported, i.e. specify only one flag.
-//	CPostProcessEffect::TypeFlag m_Type;
-
-//	CPostProcessEffectFilterShaderGenerator() : m_Type(0) {}
-
-	CPostProcessEffectFilterShaderGenerator( const char *effect_name = "" )
-		:
-	m_EffectName(effect_name)
-	{}
-
-	void GetShader( std::string& shader );
-
-	void GetVertexShader( std::string& shader );
-
-	void GetPixelShader( std::string& shader );
 };
 
 

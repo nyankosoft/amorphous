@@ -1,10 +1,11 @@
-#ifndef __EmbeddedPostProcessEffectShader_HPP__
-#define __EmbeddedPostProcessEffectShader_HPP__
+#ifndef __amorphous_EmbeddedPostProcessEffectShader_HPP__
+#define __amorphous_EmbeddedPostProcessEffectShader_HPP__
 
 
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include "amorphous/base.hpp"
+#include "amorphous/Graphics/Shader/ShaderGenerator.hpp"
 
 
 namespace amorphous
@@ -36,8 +37,42 @@ inline boost::shared_ptr<EmbeddedPostProcessEffectShader>& GetEmbeddedPostProces
 }
 
 
+class PostProcessEffectFilterShaderGenerator : public ShaderGenerator
+{
+
+public:
+
+	std::string m_EffectName;
+
+	/// Multiple flags are not supported, i.e. specify only one flag.
+//	CPostProcessEffect::TypeFlag m_Type;
+
+//	PostProcessEffectFilterShaderGenerator() : m_Type(0) {}
+
+	PostProcessEffectFilterShaderGenerator( const char *effect_name = "" )
+		:
+	m_EffectName(effect_name)
+	{}
+
+	void GetShader( std::string& shader )
+	{
+		GetEmbeddedPostProcessEffectShader()->GenerateShader( m_EffectName.c_str(), shader );
+	}
+
+	void GetVertexShader( std::string& shader )
+	{
+		GetEmbeddedPostProcessEffectShader()->GenerateVertexShader( m_EffectName.c_str(), shader );
+	}
+
+	void GetPixelShader( std::string& shader )
+	{
+		GetEmbeddedPostProcessEffectShader()->GenerateFragmentShader( m_EffectName.c_str(), shader );
+	}
+};
+
+
 } // namespace amorphous
 
 
 
-#endif /* __EmbeddedPostProcessEffectShader_HPP__ */
+#endif /* __amorphous_EmbeddedPostProcessEffectShader_HPP__ */

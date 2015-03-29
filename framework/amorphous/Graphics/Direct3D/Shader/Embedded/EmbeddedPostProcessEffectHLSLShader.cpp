@@ -493,22 +493,4 @@ Result::Name CEmbeddedPostProcessEffectHLSLShader::GenerateShader( const std::st
 }
 
 
-void CPostProcessEffectFilterShaderGenerator::GetShader( std::string& shader )
-{
-	GetEmbeddedPostProcessEffectShader()->GenerateShader( m_EffectName.c_str(), shader );
-}
-
-
-void CPostProcessEffectFilterShaderGenerator::GetVertexShader( std::string& shader )
-{
-	GetEmbeddedPostProcessEffectShader()->GenerateVertexShader( m_EffectName.c_str(), shader );
-}
-
-
-void CPostProcessEffectFilterShaderGenerator::GetPixelShader( std::string& shader )
-{
-	GetEmbeddedPostProcessEffectShader()->GenerateFragmentShader( m_EffectName.c_str(), shader );
-}
-
-
 } // namespace amorphous
