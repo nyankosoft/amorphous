@@ -50,18 +50,19 @@ enum eSizeFilterType
 
 class PostProcessEffectDemo : public CGraphicsTestBase
 {
-//	shared_ptr<CPostProcessManager> m_pPPManager;
 	boost::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
 
 //	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
 
 //	int m_aPostProcessEffect[NUM_PP_EFFECTS];
 
-	float m_fBlurFactor;
+	unsigned int m_BlurStrength; // blur strength x 10
+
+	static const float m_fBlurFactor;
 
 //	int m_aFilterIndex[NUM_SIZE_FILTERS];
 
-	float m_fLuminance;
+	float m_fLuminanceAdaptationRate;
 
 	U32 m_PPEffectFlags;
 
@@ -77,9 +78,11 @@ class PostProcessEffectDemo : public CGraphicsTestBase
 
 //	float m_fKeyValue;
 
+	bool m_EnablePostProcessEffects;
+
 	HDRLightingParams m_HDRLightingParams;
 
-	float m_fBlurStrength;
+//	float m_fBlurStrength;
 
 protected:
 

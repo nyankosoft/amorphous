@@ -14,6 +14,8 @@ using std::string;
 using namespace boost;
 
 
+const float PostProcessEffectDemo::m_fBlurFactor = 0.02f;
+
 void PostProcessEffectDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
@@ -35,6 +37,13 @@ void PostProcessEffectDemo::HandleInput( const InputData& input )
 
 //	case 'R':
 //		m_pSynthTest->m_pSynthesizer->SetRootPose( Matrix34Identity() );
+		break;
+
+	case 'P':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_EnablePostProcessEffects = !m_EnablePostProcessEffects;
+		}
 		break;
 
 	case 'H':
@@ -102,28 +111,52 @@ void PostProcessEffectDemo::HandleInput( const InputData& input )
 		}*/
 		break;
 
+	case 'J':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			if( m_BlurStrength == 0 )
+				return;
+
+			m_BlurStrength -= 1;
+
+			if( m_pPostProcessEffectManager )
+				m_pPostProcessEffectManager->SetBlurStrength( (float)m_BlurStrength * m_fBlurFactor );
+		}
+		break;
+
 	case 'K':
-/*		if( input.iType == ITYPE_KEY_PRESSED )
+		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-		}*/
+			m_BlurStrength += 1;
+
+			if( m_pPostProcessEffectManager )
+				m_pPostProcessEffectManager->SetBlurStrength( (float)m_BlurStrength * m_fBlurFactor );
+		}
 		break;
 
-	case 'L':
-/*		if( input.iType == ITYPE_KEY_PRESSED )
+	case 'U':
+		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-		}*/
+			if( m_fLuminanceAdaptationRate <= 0.01f )
+				return;
+
+			m_fLuminanceAdaptationRate -= 0.01f;
+			m_HDRLightingParams.luminance_adaptation_rate = m_fLuminanceAdaptationRate;
+
+			if( m_pPostProcessEffectManager )
+				m_pPostProcessEffectManager->SetHDRLightingParams( HDRLightingParams::LUMINANCE_ADAPTATION_RATE, m_HDRLightingParams );
+		}
 		break;
 
-	case 'G':
-/*		if( input.iType == ITYPE_KEY_PRESSED )
+	case 'I':
+		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-		}*/
-		break;
+			m_fLuminanceAdaptationRate += 0.01f;
+			m_HDRLightingParams.luminance_adaptation_rate = m_fLuminanceAdaptationRate;
 
-	case 'C':
-/*		if( input.iType == ITYPE_KEY_PRESSED )
-		{
-		}*/
+			if( m_pPostProcessEffectManager )
+				m_pPostProcessEffectManager->SetHDRLightingParams( HDRLightingParams::LUMINANCE_ADAPTATION_RATE, m_HDRLightingParams );
+		}
 		break;
 
 	case GIC_PAGE_UP:
@@ -142,14 +175,13 @@ void PostProcessEffectDemo::HandleInput( const InputData& input )
 				m_HDRLightingParams.key_value += delta;
 				m_pPostProcessEffectManager->SetHDRLightingParams( HDRLightingParams::KEY_VALUE, m_HDRLightingParams );
 			}
-			else if( m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_BLUR) )
-			{
-				delta = 0.05f;
-				delta *= page_up ? 1.0f : -1.0f;
-				m_fBlurStrength += delta;
-				clamp( m_fBlurStrength, 0.05f, 10.0f );
-				m_pPostProcessEffectManager->SetBlurStrength( m_fBlurStrength );
-			}
+//			else if( m_pPostProcessEffectManager->IsEnabled(PostProcessEffect::TF_BLUR) )
+//			{
+//				delta = 0.05f;
+//				delta *= page_up ? 1.0f : -1.0f;
+//				m_fBlurStrength += delta;
+//				clamp( m_fBlurStrength, 0.05f, 10.0f );
+//			}
 		}
 		break;
 
@@ -198,11 +230,12 @@ void PostProcessEffectDemo::HandleInput( const InputData& input )
 
 PostProcessEffectDemo::PostProcessEffectDemo()
 :
-m_fBlurFactor(2.0f),
-m_fLuminance(0.08f),
+m_BlurStrength(50),
+m_fLuminanceAdaptationRate(0.08f),
 m_PPEffectFlags(0),
 //m_fKeyValue(0.5f)
-m_fBlurStrength(1.0f)
+m_EnablePostProcessEffects(true)
+//m_fBlurStrength(1.0f)
 {
 	m_HDRLightingParams.key_value = 3.5f;
 
@@ -308,29 +341,33 @@ void PostProcessEffectDemo::Update( float dt )
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: Render()
-// Desc: Draws the scene
-//-----------------------------------------------------------------------------
 void PostProcessEffectDemo::Render()
 {
 //	DIRECT3D9.GetDevice()->BeginScene();
 	UpdateShaderParams();
 //	DIRECT3D9.GetDevice()->EndScene();
 
-	if( m_pPostProcessEffectManager )
+	if( m_pPostProcessEffectManager && m_EnablePostProcessEffects )
+	{
 		m_pPostProcessEffectManager->BeginRender();
 
-	RenderScene();
+		RenderScene();
 
-	if( m_pPostProcessEffectManager )
-	{
 		m_pPostProcessEffectManager->EndRender();
 		m_pPostProcessEffectManager->RenderPostProcessEffects();
 	}
+	else
+	{
+		RenderScene();
+	}
 
 	// render the text info
-	string text = fmt_string( "gray mid value: %f", m_HDRLightingParams.key_value );
+	string text = fmt_string( "gray mid value: %f\nblur strength: %f\nluminace adaptation rate: %f",
+		m_HDRLightingParams.key_value,
+		(float)m_BlurStrength * m_fBlurFactor,
+		m_fLuminanceAdaptationRate
+		);
+
 	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
 }
 
@@ -392,6 +429,9 @@ int PostProcessEffectDemo::Init()
 		"hdr.tone_mapping_key_value     3.0\n"\
 		"hdr.luminance_adaptation_rate  0.02\n" );
 
+	if( GetCameraController() )
+		GetCameraController()->SetPosition( Vector3( 0.0f, 15.0f, -1.0f ) );
+
 	bool loaded = m_Shader.Load( "PostProcessEffectDemo/shaders/mesh.fx" );
 
 //	if( !m_pShaderManager->LoadShaderFromFile( "shaders/mesh.fx" ) )
@@ -420,10 +460,10 @@ int PostProcessEffectDemo::Init()
 	m_ShaderLightManager.SetLight( 0, light );
 */
 
-	D3DSURFACE_DESC back_buffer_desc;
-	IDirect3DSurface9 *pBackBuffer;
-	DIRECT3D9.GetDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
-	pBackBuffer->GetDesc( &back_buffer_desc );
+//	D3DSURFACE_DESC back_buffer_desc;
+//	IDirect3DSurface9 *pBackBuffer;
+//	DIRECT3D9.GetDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
+//	pBackBuffer->GetDesc( &back_buffer_desc );
 
 	SetDefaultLinearFog();
 
