@@ -70,8 +70,8 @@ PostProcessFilterShader::PostProcessFilterShader()
 {
 	memset( m_bWrite,        0, sizeof(m_bWrite) );
 //	memset( m_ahParam,       0, sizeof(m_ahParam) );
-	memset( m_anParamSize,   0, sizeof(m_anParamSize) );
-	memset( m_avParamDef,    0, sizeof(m_avParamDef) );
+//	memset( m_anParamSize,   0, sizeof(m_anParamSize) );
+//	memset( m_avParamDef,    0, sizeof(m_avParamDef) );
 }
 
 
@@ -93,12 +93,14 @@ Result::Name PostProcessFilterShader::Init( const std::string& filename )
 }
 
 
-Result::Name FilterShaderContainer::AddShader( const ShaderResourceDesc& shader_desc )
+shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddShader( const ShaderResourceDesc& shader_desc )
 {
-	m_vecpShader.resize( 1 );
-	m_vecpShader[0].reset( new PostProcessFilterShader );
+	m_vecpShader.push_back( shared_ptr<PostProcessFilterShader>() );
+	m_vecpShader.back().reset( new PostProcessFilterShader );
 
-	return m_vecpShader[0]->Init( shader_desc );
+	Result::Name res = m_vecpShader.back()->Init( shader_desc );
+
+	return m_vecpShader.back();
 }
 
 
@@ -106,6 +108,15 @@ Result::Name FilterShaderContainer::AddShader( const std::string& filepath )
 {
 	ShaderResourceDesc shader_desc;
 	shader_desc.ResourcePath = filepath;
+	shared_ptr<PostProcessFilterShader> pShader = AddShader( shader_desc );
+	return pShader ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddPostProcessEffectShader( const std::string& effect_name )
+{
+	ShaderResourceDesc shader_desc;
+	shader_desc.pShaderGenerator.reset( new CPostProcessEffectFilterShaderGenerator( effect_name.c_str() ) );
 	return AddShader( shader_desc );
 }
 
@@ -162,11 +173,11 @@ PostProcessEffectManager::PostProcessEffectManager()
 :
 m_EnabledEffectFlags(0),
 m_IsRedering(false),
-m_bUseMultiSampleFloat16(false),
-m_pSurfLDR(NULL),
-m_pSurfDS(NULL),
-m_pFloatMSRT(NULL),
-m_pFloatMSDS(NULL)
+m_bUseMultiSampleFloat16(false)
+//m_pSurfLDR(NULL),
+//m_pSurfDS(NULL),
+//m_pFloatMSRT(NULL),
+//m_pFloatMSDS(NULL)
 {
 	m_pTextureCache.reset( new RenderTargetTextureCache );
 	m_pTextureCache->m_pSelf = m_pTextureCache;
@@ -182,10 +193,6 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 {
 	using namespace boost::filesystem;
 
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-//	const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
-
 	ShaderResourceDesc shader_desc;
 	if( base_shader_directory_path.length() == 0 )
 	{
@@ -199,14 +206,9 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 	}
 	
 	// load shader
-	Result::Name res = m_FilterShaderContainer.AddShader( shader_desc );
-/*
-	m_FilterShaderContainer.m_vecpShader.resize( 1 );
-	m_FilterShaderContainer.m_vecpShader[0]
-	= shared_ptr<PostProcessFilterShader>( new PostProcessFilterShader );
+	auto pShader = m_FilterShaderContainer.AddShader( shader_desc );
 
-	m_FilterShaderContainer.m_vecpShader[0]->Init( "HDRPostProcessor.fx" );
-*/
+//	const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
 
 /*
     // Create the Multi-Sample floating point render target
@@ -293,12 +295,10 @@ Result::Name PostProcessEffectManager::BeginRender()
 	if( m_EnabledEffectFlags == 0 )
 		return Result::UNKNOWN_ERROR;
 
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
-	PDIRECT3DSURFACE9 pSurfHDR = NULL; // High dynamic range surface to store 
+//	PDIRECT3DSURFACE9 pSurfHDR = NULL; // High dynamic range surface to store 
 	// intermediate floating point color values
 
-	HRESULT hr = S_OK;
+//	HRESULT hr = S_OK;
 
 	// Store the old render target
 //	V( pd3dDevice->GetRenderTarget( 0, &m_pSurfLDR ) );
@@ -326,7 +326,9 @@ Result::Name PostProcessEffectManager::BeginRender()
 	m_pOrigSceneHolder->m_pTextureRenderTarget->SetRenderTarget();
 
 	// Clear the viewport
-	V( pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA( 0, 0, 0, 0 ), 1.0f, 0L ) );
+	GraphicsDevice().SetClearColor( SFloatRGBAColor(0,0,0,0) );
+	GraphicsDevice().SetClearDepth( 1.0f );
+	GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
 
 	return Result::SUCCESS;
 }
@@ -357,8 +359,6 @@ Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 		m_IsRedering = false;
 		return Result::SUCCESS;
 	}
-
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
 	shared_ptr<PostProcessEffectFilter> pLastFilter;
 	if( m_pHDRLightingFilter && (m_EnabledEffectFlags & PostProcessEffect::TF_HDR_LIGHTING) )

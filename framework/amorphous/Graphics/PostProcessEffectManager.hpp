@@ -76,17 +76,15 @@ class PostProcessFilterShader
 	bool         m_bWrite[4];            
 	                                     
 
-	std::string  m_awszParamName[NUM_PARAMS]; ///< Names of changeable parameters
-
-	std::string  m_awszParamDesc[NUM_PARAMS]; ///< Description of parameters
-
+//	std::string  m_awszParamName[NUM_PARAMS]; ///< Names of changeable parameters
+//	std::string  m_awszParamDesc[NUM_PARAMS]; ///< Description of parameters
 //	D3DXHANDLE   m_ahParam[NUM_PARAMS];  ///< Handles to the changeable parameters
 
 	/// Size of the parameter. Indicates how many
 	/// components of float4 are used.
-	int          m_anParamSize[NUM_PARAMS];
+//	int          m_anParamSize[NUM_PARAMS];
 
-	Vector4      m_avParamDef[NUM_PARAMS]; ///< Parameter default
+//	Vector4      m_avParamDef[NUM_PARAMS]; ///< Parameter default
 
 public:
 
@@ -114,9 +112,11 @@ class FilterShaderContainer
 
 public:
 
-	Result::Name AddShader( const ShaderResourceDesc& shader_desc );
+	boost::shared_ptr<PostProcessFilterShader> AddShader( const ShaderResourceDesc& shader_desc );
 
 	Result::Name AddShader( const std::string& name );
+
+	boost::shared_ptr<PostProcessFilterShader> AddPostProcessEffectShader( const std::string& effect_name );
 
 	boost::shared_ptr<PostProcessFilterShader> GetFilterShader( const std::string& name );
 
@@ -168,11 +168,11 @@ class PostProcessEffectManager : public GraphicsComponent
 
 	bool m_bUseMultiSampleFloat16;
 
-	PDIRECT3DSURFACE9 m_pFloatMSRT;
-	PDIRECT3DSURFACE9 m_pFloatMSDS;
+//	PDIRECT3DSURFACE9 m_pFloatMSRT;
+//	PDIRECT3DSURFACE9 m_pFloatMSDS;
 
-	PDIRECT3DSURFACE9 m_pSurfLDR; /// Low dynamic range surface for final output (original render target)
-	PDIRECT3DSURFACE9 m_pSurfDS;  /// Low dynamic range depth stencil surface
+//	PDIRECT3DSURFACE9 m_pSurfLDR; /// Low dynamic range surface for final output (original render target)
+//	PDIRECT3DSURFACE9 m_pSurfDS;  /// Low dynamic range depth stencil surface
 
 	/// When set to true, displays adapted luminance on a small rectangle at the top-left corner of the display.
 	/// - Used for debugging.

@@ -103,7 +103,7 @@ public:
 
 	std::vector< boost::shared_ptr<RenderTargetTextureHolder> > m_vecpHolder;
 
-	LPDIRECT3DSURFACE9 m_pOrigRenderTarget;
+//	LPDIRECT3DSURFACE9 m_pOrigRenderTarget;
 
 	boost::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
 
@@ -112,8 +112,8 @@ public:
 public:
 
 	RenderTargetTextureCache()
-		:
-	m_pOrigRenderTarget(NULL)
+//		:
+//	m_pOrigRenderTarget(NULL)
 	{}
 
 	/// Returns the number of textures that match the description of desc

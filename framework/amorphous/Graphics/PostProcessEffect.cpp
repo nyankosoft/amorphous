@@ -249,27 +249,6 @@ void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, f
 }
 
 
-//void RenderFullScreenQuad( LPD3DXEFFECT pEffect, const CoordRect& c )
-//{
-//	HRESULT hr;
-//	UINT uiPassCount, uiPass;
-//
-//	V( pEffect->Begin( &uiPassCount, 0 ) );
-//
-//	for( uiPass = 0; uiPass < uiPassCount; uiPass++ )
-//	{
-//		hr = pEffect->BeginPass( uiPass );
-//
-//		// Draw a fullscreen quad to sample the RT
-//		DrawFullScreenQuad( 0.0f, 0.0f, 1.0f, 1.0f );
-//
-//		hr = pEffect->EndPass();
-//	}
-//
-//	hr = pEffect->End();
-//}
-
-
 void RenderFullScreenQuad( ShaderManager& shader_mgr, const CoordRect& c )
 {
 	DrawFullScreenQuad( shader_mgr, c.fLeftU, c.fTopV, c.fRightU, c.fBottomV );
@@ -542,6 +521,8 @@ DownScale4x4Filter::DownScale4x4Filter()
 Result::Name DownScale4x4Filter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
+	
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("down_scale_4x4") );
 
 	return Result::SUCCESS;
 }
@@ -1117,21 +1098,21 @@ Result::Name CombinedBloomFilter::Init( RenderTargetTextureCache& cache, FilterS
 	m_pGaussianBlurFilter.reset( new GaussianBlurFilter );
 	m_pGaussianBlurFilter->SetRenderTargetSize( base_plane.width + 2, base_plane.height + 2 );
 	m_pGaussianBlurFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "GaussBlur5x5" ) );
+	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.AddPostProcessEffectShader( "gauss_blur_5x5" ) );
 	m_pGaussianBlurFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pGaussianBlurFilter->SetDebugImageFilenameExtraString( "-for-bloom" );
 
 	m_pHBloomFilter.reset( new HorizontalBloomFilter );
 	m_pHBloomFilter->SetRenderTargetSize( base_plane.width + 2, base_plane.height + 2 );
 	m_pHBloomFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pHBloomFilter->SetFilterShader( filter_shader_container.GetFilterShader( "Bloom" ) );
+	m_pHBloomFilter->SetFilterShader( filter_shader_container.AddPostProcessEffectShader( "bloom" ) );
 	m_pHBloomFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pHBloomFilter->SetDebugImageFilenameExtraString( "-for-horizontal-bloom" );
 
 	m_pVBloomFilter.reset( new VerticalBloomFilter );
 	m_pVBloomFilter->SetRenderTargetSize( base_plane.width,     base_plane.height );
 	m_pVBloomFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pVBloomFilter->SetFilterShader( filter_shader_container.GetFilterShader( "Bloom" ) );
+	m_pVBloomFilter->SetFilterShader( filter_shader_container.AddPostProcessEffectShader( "bloom" ) );
 	m_pVBloomFilter->SetTextureCache( cache.GetSelfPtr().lock() );
 	m_pVBloomFilter->SetDebugImageFilenameExtraString( "-for-vertical-bloom" );
 
@@ -1991,7 +1972,9 @@ MonochromeColorFilter::MonochromeColorFilter()
 Result::Name MonochromeColorFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
 {
 	m_pCache = cache.GetSelfPtr().lock();
-	SetFilterShader( filter_shader_container.GetShader( "HDRPostProcessor" ) );
+//	SetFilterShader( filter_shader_container.GetShader( "HDRPostProcessor" ) );
+
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("monochrome") );
 
 	const SRectangular cbb = GetCropWidthAndHeight();
 	SetRenderTargetSize( cbb.width, cbb.height );
