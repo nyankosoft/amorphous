@@ -132,13 +132,7 @@ struct CRenderTargetChain
 };
 
 
-
-//======================================================================================
-// PostProcessEffectManager
-//  A class that manages post process effects
-//  Only the color channel is available
-//======================================================================================
-
+/// \brief A class that manages post process effects
 class PostProcessEffectManager : public GraphicsComponent
 {
 	boost::shared_ptr<HDRLightingFilter> m_pHDRLightingFilter;

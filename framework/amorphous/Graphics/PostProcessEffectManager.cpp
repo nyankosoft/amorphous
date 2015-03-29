@@ -148,22 +148,6 @@ boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetShader( con
 	return shared_ptr<PostProcessFilterShader>();*/
 }
 
-/*
-boost::shared_ptr<PostProcessFilterShader> GetShaderFromFilename( const std::string& filename )
-{
-	for( i=0; i<; i++ )
-	{
-		const string& filepath = m_vecpShader[i]->GetFilepath();
-		if( filepath.find( filename )  )
-		{
-			return ==  ;
-		}
-	}
-
-	return shared_ptr<PostProcessFilterShader>();
-}
-*/
-
 
 //================================================================================
 // PostProcessEffectManager
@@ -174,10 +158,6 @@ PostProcessEffectManager::PostProcessEffectManager()
 m_EnabledEffectFlags(0),
 m_IsRedering(false),
 m_bUseMultiSampleFloat16(false)
-//m_pSurfLDR(NULL),
-//m_pSurfDS(NULL),
-//m_pFloatMSRT(NULL),
-//m_pFloatMSDS(NULL)
 {
 	m_pTextureCache.reset( new RenderTargetTextureCache );
 	m_pTextureCache->m_pSelf = m_pTextureCache;
@@ -295,34 +275,6 @@ Result::Name PostProcessEffectManager::BeginRender()
 	if( m_EnabledEffectFlags == 0 )
 		return Result::UNKNOWN_ERROR;
 
-//	PDIRECT3DSURFACE9 pSurfHDR = NULL; // High dynamic range surface to store 
-	// intermediate floating point color values
-
-//	HRESULT hr = S_OK;
-
-	// Store the old render target
-//	V( pd3dDevice->GetRenderTarget( 0, &m_pSurfLDR ) );
-//	V( pd3dDevice->GetDepthStencilSurface( &m_pSurfDS ) );
-
-	// Save the copy of the original render target
-	// The final filter renders to this surface.
-//	m_pTextureCache->m_pOrigRenderTarget = m_pSurfLDR;
-
-	// Setup HDR render target
-/*	LPDIRECT3DTEXTURE9 pOrigSceneTexture = m_pOrigSceneHolder->m_Texture.GetTexture();
-	V( pOrigSceneTexture->GetSurfaceLevel( 0, &m_pOrigSceneHolder->m_pTexSurf ) );
-//	V( m_SceneRenderTarget.GetTexture()->GetSurfaceLevel( 0, &pSurfHDR ) );
-	if( m_bUseMultiSampleFloat16 )
-	{
-		V( pd3dDevice->SetRenderTarget( 0, m_pFloatMSRT ) );
-		V( pd3dDevice->SetDepthStencilSurface( m_pFloatMSDS ) );
-	}
-	else
-	{
-		V( pd3dDevice->SetRenderTarget( 0, m_pOrigSceneHolder->m_pTexSurf ) );
-//		V( pd3dDevice->SetRenderTarget( 0, pSurfHDR ) );
-	}
-*/
 	m_pOrigSceneHolder->m_pTextureRenderTarget->SetRenderTarget();
 
 	// Clear the viewport
@@ -336,12 +288,6 @@ Result::Name PostProcessEffectManager::BeginRender()
 
 Result::Name PostProcessEffectManager::EndRender()
 {
-/*	if( m_EnabledEffectFlags == 0 )
-		return;
-
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-	V( pd3dDevice->SetRenderTarget( 0, m_pSurfLDR ) );*/
-
 	return Result::SUCCESS;
 }
 
@@ -712,51 +658,5 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 	m_pPostProcessEffectManager->Init();
 */
 
-
-/*
-// Name of the postprocess .fx files
-LPCWSTR g_aszFxFile[] =
-{
-    L"PP_ColorMonochrome.fx",
-    L"PP_ColorInverse.fx",
-    L"PP_ColorGBlurH.fx",
-    L"PP_ColorGBlurV.fx",
-    L"PP_ColorBloomH.fx",
-    L"PP_ColorBloomV.fx",
-    L"PP_ColorBrightPass.fx",
-    L"PP_ColorToneMap.fx",
-    L"PP_ColorEdgeDetect.fx",
-    L"PP_ColorDownFilter4.fx",
-    L"PP_ColorUpFilter4.fx",
-    L"PP_ColorCombine.fx",
-    L"PP_ColorCombine4.fx",
-    L"PP_NormalEdgeDetect.fx",
-    L"PP_DofCombine.fx",
-    L"PP_NormalMap.fx",
-    L"PP_PositionMap.fx",
-};
-
-
-// Description of each postprocess supported
-LPCWSTR g_aszPpDesc[] =
-{
-    L"[Color] Monochrome",
-    L"[Color] Inversion",
-    L"[Color] Gaussian Blur Horizontal",
-    L"[Color] Gaussian Blur Vertical",
-    L"[Color] Bloom Horizontal",
-    L"[Color] Bloom Vertical",
-    L"[Color] Bright Pass",
-    L"[Color] Tone Mapping",
-    L"[Color] Edge Detection",
-    L"[Color] Down Filter 4x",
-    L"[Color] Up Filter 4x",
-    L"[Color] Combine",
-    L"[Color] Combine 4x",
-    L"[Normal] Edge Detection",
-    L"DOF Combine",
-    L"Normal Map",
-    L"Position Map",
-};*/
 
 } // namespace amorphous

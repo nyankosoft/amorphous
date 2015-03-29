@@ -119,7 +119,6 @@ boost::shared_ptr<RenderTargetTextureHolder> RenderTargetTextureCache::GetTextur
 // PostProcessEffectFilter
 //============================================================================
 
-
 int PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
 
 
@@ -209,14 +208,6 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 	else
 	{
 		// The last filter - render to the original render target
-
-/*		hr = m_SceneRenderTarget.GetTexture()->GetSurfaceLevel( 0, &pTexSurf );
-		if( FAILED( hr ) )
-			return false;	// return DXUT_ERR( L"GetSurfaceLevel", hr );
-
-		DIRECT3D9.GetDevice()->SetRenderTarget( 0, pTexSurf );
-*/
-//		hr = DIRECT3D9.GetDevice()->SetRenderTarget( 0, m_pCache->m_pOrigRenderTarget );
 
 		m_pCache->m_pOrigSceneHolder->m_pTextureRenderTarget->ResetRenderTarget();
 	}
