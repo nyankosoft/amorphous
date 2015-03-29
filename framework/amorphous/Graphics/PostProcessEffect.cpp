@@ -1,7 +1,9 @@
 #include "PostProcessEffect.hpp"
 #include "PostProcessEffectManager.hpp"
 #include "Graphics/SurfaceFormat.hpp"
+#include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
+#include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Graphics/GraphicsResourceDescs.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/TextureRenderTarget.hpp"
@@ -58,8 +60,21 @@ const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc()
 
 SRectangular GetBackBufferWidthAndHeight()
 {
-	const D3DSURFACE_DESC *pBB = GetD3D9BackBufferSurfaceDesc();
-	return SRectangular( (int)(pBB->Width), (int)(pBB->Height) );
+	if( DIRECT3D9.GetDevice() )
+	{
+		// We are running Direct3D
+		const D3DSURFACE_DESC *pBB = GetD3D9BackBufferSurfaceDesc();
+		return SRectangular( (int)(pBB->Width), (int)(pBB->Height) );
+	}
+	else
+	{
+		// We are running OpenGL
+		GLint width = 0;
+		GLint height = 0;
+		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH_EXT,  &width );
+		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT_EXT, &height );
+		return SRectangular(width,height);
+	}
 }
 
 

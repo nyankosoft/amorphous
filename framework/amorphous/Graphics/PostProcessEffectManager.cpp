@@ -4,7 +4,7 @@
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Direct3D/Shader/Embedded/EmbeddedPostProcessEffectHLSLShader.hpp"
+#include "Graphics/Shader/Embedded/EmbeddedPostProcessEffectShader.hpp"
 #include "Support/ParamLoader.hpp"
 #include <boost/filesystem.hpp>
 
@@ -116,7 +116,7 @@ Result::Name FilterShaderContainer::AddShader( const std::string& filepath )
 boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddPostProcessEffectShader( const std::string& effect_name )
 {
 	ShaderResourceDesc shader_desc;
-	shader_desc.pShaderGenerator.reset( new CPostProcessEffectFilterShaderGenerator( effect_name.c_str() ) );
+	shader_desc.pShaderGenerator.reset( new PostProcessEffectFilterShaderGenerator( effect_name.c_str() ) );
 	return AddShader( shader_desc );
 }
 
@@ -177,7 +177,7 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 	if( base_shader_directory_path.length() == 0 )
 	{
 		// Create the shader which contains all the effects.
-		shader_desc.pShaderGenerator.reset( new CPostProcessEffectFilterShaderGenerator );
+		shader_desc.pShaderGenerator.reset( new PostProcessEffectFilterShaderGenerator );
 	}
 	else
 	{
@@ -629,8 +629,8 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 		if( !pShader )
 			return;
 
-//		pShader->SetTexture( tex_index, pRTTexHolder->m_Texture );
-		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->GetTexture().GetTexture() );
+//		DIRECT3D9.GetDevice()->SetTexture( tex_index, pRTTexHolder->GetTexture().GetTexture() );
+		pShader->SetTexture( tex_index, pRTTexHolder->GetTexture() );
 /*
 		static TextureHandle s_tex;
 		s_tex.Load( "debug/test_images/Meerkat_256.jpg" );

@@ -3,6 +3,7 @@
 
 
 #include "amorphous/3DMath/Vector4.hpp"
+#include "FloatRGBAColor.hpp"
 #include "ShaderHandle.hpp"
 #include "PostProcessEffectFilter.hpp"
 

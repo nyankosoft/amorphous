@@ -5,7 +5,6 @@
 #include <d3dx9.h>
 #include "amorphous/base.hpp"
 #include "amorphous/3DMath/Rectangular.hpp"
-#include "Direct3D/Direct3D9.hpp"
 #include "TextureHandle.hpp"
 #include "SurfaceFormat.hpp"
 #include "GraphicsResourceDescs.hpp"

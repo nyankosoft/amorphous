@@ -5,6 +5,7 @@
 #include "Graphics/TextureRenderTarget.hpp"
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Direct3D/Direct3D9.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
