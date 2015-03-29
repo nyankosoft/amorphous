@@ -855,6 +855,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.cpp">
       <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.cpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -1999,6 +2002,9 @@
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.hpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.hpp">
       <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
     </ClInclude>
   </ItemGroup>

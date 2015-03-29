@@ -111,6 +111,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectFilter.cpp" />
@@ -323,7 +324,9 @@
     <ClCompile Include="..\..\amorphous\Sound\OpenALSoundSourceImpl.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\PyModule_SoundMethods.cpp" />
     <ClCompile Include="..\..\amorphous\Sound\SoundManager.cpp" />
-    <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp" />
+    <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Utilities\ScreenshotRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -404,6 +407,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectFilter.hpp" />
@@ -724,7 +728,9 @@
     <ClInclude Include="..\..\amorphous\Sound\SoundManager.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\SoundManagerImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Sound\SoundSource.hpp" />
-    <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp" />
+    <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\Utilities\ScreenshotRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp" />
     <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp" />
