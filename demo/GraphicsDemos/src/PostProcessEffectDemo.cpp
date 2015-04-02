@@ -3,10 +3,12 @@
 #include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/CommonShaders.hpp"
 #include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
+#include "amorphous/Graphics/FogParams.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Input.hpp"
 
@@ -240,6 +242,8 @@ m_EnablePostProcessEffects(true)
 	m_HDRLightingParams.key_value = 3.5f;
 
 	LoadHDRParamValues();
+
+	SetBackgroundColor( SFloatRGBAColor::Magenta() );
 }
 
 
@@ -250,29 +254,32 @@ PostProcessEffectDemo::~PostProcessEffectDemo()
 
 void PostProcessEffectDemo::RenderMeshes()
 {
-	HRESULT hr;
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
-
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
 	for( int i=0; i<4; i++ )
 	{
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSU,  D3DTADDRESS_WRAP );
-		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSV,  D3DTADDRESS_WRAP );
+//		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR );
+//		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR );
+//		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSU,  D3DTADDRESS_WRAP );
+//		hr = pd3dDevice->SetSamplerState( i, D3DSAMP_ADDRESSV,  D3DTADDRESS_WRAP );
+		GraphicsDevice().SetSamplingParameter( i, SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
+		GraphicsDevice().SetSamplingParameter( i, SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
+		GraphicsDevice().SetSamplingParameter( i, SamplingParameter::TEXTURE_WRAP_AXIS_0, TextureAddressMode::REPEAT );
+		GraphicsDevice().SetSamplingParameter( i, SamplingParameter::TEXTURE_WRAP_AXIS_1, TextureAddressMode::REPEAT );
 	}
 
 	// alpha-blending settings 
-//	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-//	pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
-//	pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
+//	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().Disable( RenderStateType::ALPHA_BLEND );
+//	GraphicsDevice().SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+//	GraphicsDevice().SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
-	pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, TRUE );
-	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
-	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
-	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
+	GraphicsDevice().Enable( RenderStateType::ALPHA_TEST );
+//	pd3dDevice->SetRenderState( D3DRS_ALPHAREF,  (DWORD)0x00000001 );
+//	pd3dDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL );	// draw a pixel if its alpha value is greater than or equal to '0x00000001'
+	GraphicsDevice().SetReferenceAlphaValue( 1.0f );
+	GraphicsDevice().SetAlphaFunction( CompareFunc::GREATER_THAN_OR_EQUAL_TO );
+//	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
 /*	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( pShaderManager )
@@ -291,9 +298,6 @@ void PostProcessEffectDemo::RenderMeshes()
 //	if( FAILED(hr) )
 //		return;
 
-	pd3dDevice->SetVertexShader( NULL );
-	pd3dDevice->SetPixelShader( NULL );
-
 	size_t i, num_meshes = m_vecMesh.size();
 
 	if( 0 < num_meshes )
@@ -301,24 +305,59 @@ void PostProcessEffectDemo::RenderMeshes()
 		RenderAsSkybox( m_vecMesh[0], GetCurrentCamera().GetPose() );
 	}
 
-	// reset the world transform matrix
-	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+//	DWORD fog_colors[] =
+//	{
+//		0xFFFFFFFF, // place holder
+//		0xFFDDDFDE, // terrain mesh
+//		0xFF101010  // underground
+//	};
 
-	DWORD fog_colors[] =
+	SFloatRGBAColor fog_colors[] =
 	{
-		0xFFFFFFFF, // place holder
-		0xFFDDDFDE, // terrain mesh
-		0xFF101010  // underground
+		SFloatRGBAColor(1.0f,  1.0f,  1.0f,  1.0f), // place holder
+		SFloatRGBAColor(0.867f,0.874f,0.871f,1.0f), // terrain mesh
+		SFloatRGBAColor(0.063f,0.063f,0.063f,1.0f),  // underground
 	};
+	
+	FogParams fog_params;
+	fog_params.Density = 0.66f;   // For exponential modes
+	fog_params.Start   = 0.50f;   // For linear mode
+	fog_params.End     = 480.0f;  //0.95f;
+
+	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	pShaderMgr->SetWorldTransform( Matrix44Identity() );
 
 	for( i=1; i<num_meshes; i++ )
 	{
 		shared_ptr<BasicMesh> pMesh = m_vecMesh[i].GetMesh();
 
-		hr = pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, fog_colors[i] );
+//		hr = pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, fog_colors[i] );
+		fog_params.Color = fog_colors[i];
+		GraphicsDevice().SetFogParams( fog_params );
 
 		if( pMesh )
-			pMesh->Render();
+		{
+			for( int i=0; i<pMesh->GetNumMaterials(); i++ )
+			{
+				for( int j=0; j<(int)pMesh->GetMaterial(i).Texture.size(); j++ )
+				{
+					shared_ptr<GraphicsResourceEntry> pEntry = pMesh->GetMaterial(i).Texture[j].GetEntry();
+					if( !pEntry )
+						continue;
+
+//					pEntry->GetTextureResource()->SetSamplingParameter( SamplingParameter::MAG_FILTER, TextureFilter::LINEAR );
+//					pEntry->GetTextureResource()->SetSamplingParameter( SamplingParameter::MIN_FILTER, TextureFilter::LINEAR );
+//					pEntry->GetTextureResource()->SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_0, TextureAddressMode::REPEAT );
+//					pEntry->GetTextureResource()->SetSamplingParameter( SamplingParameter::TEXTURE_WRAP_AXIS_1, TextureAddressMode::REPEAT );
+				}
+			}
+
+//			pMesh->Render();
+			pMesh->Render( *pShaderMgr );
+		}
 	}
 }
 
@@ -348,6 +387,7 @@ void PostProcessEffectDemo::Render()
 //	DIRECT3D9.GetDevice()->EndScene();
 
 	if( m_pPostProcessEffectManager && m_EnablePostProcessEffects )
+//	if( false )
 	{
 		m_pPostProcessEffectManager->BeginRender();
 
@@ -432,18 +472,13 @@ int PostProcessEffectDemo::Init()
 	if( GetCameraController() )
 		GetCameraController()->SetPosition( Vector3( 0.0f, 15.0f, -1.0f ) );
 
-	bool loaded = m_Shader.Load( "PostProcessEffectDemo/shaders/mesh.fx" );
-
-//	if( !m_pShaderManager->LoadShaderFromFile( "shaders/mesh.fx" ) )
-	if( !loaded )
-		return 1;
+	m_Shader = GetNoLightingShader();
 
 	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
 	if( !pShaderManager )
 		return 1;
 
 	// set the world matrix to the identity
-	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
 	pShaderManager->SetWorldTransform( Matrix44Identity() );
 
 /*
@@ -465,7 +500,8 @@ int PostProcessEffectDemo::Init()
 //	DIRECT3D9.GetDevice()->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
 //	pBackBuffer->GetDesc( &back_buffer_desc );
 
-	SetDefaultLinearFog();
+//	SetDefaultLinearFog();
+	GraphicsDevice().Enable( RenderStateType::FOG );
 
 	// init post process effect manager
 	bool test_ppeffect_mgr = true;
@@ -487,7 +523,7 @@ int PostProcessEffectDemo::Init()
 	}
 
 	// load models
-	loaded = LoadModels();
+	bool loaded = LoadModels();
 
 	return 0;
 }
