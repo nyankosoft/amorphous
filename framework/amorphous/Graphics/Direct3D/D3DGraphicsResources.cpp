@@ -351,8 +351,7 @@ bool CD3DTextureResource::GetD3DSurfaceDesc( UINT level, D3DSURFACE_DESC& dest )
 	HRESULT desc_hr = pSurfaceLevel->GetDesc( &dest );
 	pSurfaceLevel->Release();
 
-	if( SUCCEEDED(desc_hr) )
-		return true;
+	return SUCCEEDED(desc_hr) ? true : false;
 }
 
 
