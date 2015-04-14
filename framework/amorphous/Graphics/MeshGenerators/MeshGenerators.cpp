@@ -184,10 +184,13 @@ Result::Name BoxMeshGenerator::Generate( Vector3 vLengths, U32 vertex_flags, con
 		}
 	}*/
 
-	for( i=0; i<num_faces; i++ )
+	if( vertex_flags & CMMA_VertexSet::VF_NORMAL )
 	{
-		for( int j=0; j<4; j++ )
-			vecVertex[i*4+j].m_vNormal = vecvNormal[i];
+		for( i=0; i<num_faces; i++ )
+		{
+			for( int j=0; j<4; j++ )
+				vecVertex[i*4+j].m_vNormal = vecvNormal[i];
+		}
 	}
 
 	// indices
