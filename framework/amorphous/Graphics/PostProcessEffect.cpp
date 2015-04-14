@@ -73,6 +73,14 @@ SRectangular GetBackBufferWidthAndHeight()
 		GLint height = 0;
 		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH_EXT,  &width );
 		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT_EXT, &height );
+
+		// The calls above returns 0s (width and height)
+
+		uint w=0, h=0;
+		GraphicsDevice().GetViewportSize(w,h);
+		width  = w;
+		height = h;
+
 		return SRectangular(width,height);
 	}
 }

@@ -15,10 +15,6 @@ namespace amorphous
 using namespace boost;
 
 
-#define V(x) { hr = x; if( FAILED(hr) ) { LOG_PRINT_ERROR( std::string(#x) + " failed." ); } }
-#define V_RETURN(x) { hr = x; if(FAILED(hr)) return hr; }
-
-
 class CMultiSampleType
 {
 public:
@@ -157,7 +153,8 @@ PostProcessEffectManager::PostProcessEffectManager()
 :
 m_EnabledEffectFlags(0),
 m_IsRedering(false),
-m_bUseMultiSampleFloat16(false)
+m_bUseMultiSampleFloat16(false),
+m_DisplayAdaptedLuminance(false)
 {
 	m_pTextureCache.reset( new RenderTargetTextureCache );
 	m_pTextureCache->m_pSelf = m_pTextureCache;

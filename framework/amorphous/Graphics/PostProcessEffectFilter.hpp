@@ -2,7 +2,6 @@
 #define __PostProcessEffectFilter_HPP__
 
 
-#include <d3dx9.h>
 #include "amorphous/base.hpp"
 #include "amorphous/3DMath/Rectangular.hpp"
 #include "TextureHandle.hpp"
