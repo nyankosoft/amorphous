@@ -67,6 +67,25 @@ void GLEmbeddedMiscGLSLShader::GetVertexWeightMapDisplayVertexShader( std::strin
 }
 
 
+void GLEmbeddedMiscGLSLShader::GetSingleColorMembraneVertexShader( std::string& shader )
+{
+	static const char *vs =
+	"#version 330\n"\
+	"layout(location = 0) in vec4 position;\n"\
+	"layout(location = 2) in vec4 _dc;\n"\
+	"layout(location = 1) in vec3 normal;\n"\
+	"out vec4 dc;\n"\
+	"out vec3 vn;\n"\
+	"uniform mat4 World;\n"\
+	"uniform mat4 ViewWorld;\n"\
+	"uniform mat4 ProjViewWorld;\n"\
+	"void main(){gl_Position=ProjViewWorld*position;vn=mat3(ViewWorld)*normal;dc=_dc;}\n";
+/*	"void main(){gl_Position=ProjViewWorld*position;vn=normal;dc=_dc;}\n";*/
+
+	shader = vs;
+}
+
+
 void GLEmbeddedMiscGLSLShader::GetSingleDiffuseColorFragmentShader( std::string& shader )
 {
 	static const char *fs =
@@ -74,7 +93,7 @@ void GLEmbeddedMiscGLSLShader::GetSingleDiffuseColorFragmentShader( std::string&
 	"in vec4 dc;\n"\
 	"layout(location = 0) out vec4 fc;\n"\
 	"void main(){"\
-	"	fc = dc;\n";
+	"	fc = dc;\n"\
 	"}\n";
 
 	shader = fs;
@@ -94,6 +113,34 @@ void GLEmbeddedMiscGLSLShader::GetVertexWeightMapDisplayFragmentShader( std::str
 	shader = fs;
 }
 
+
+void GLEmbeddedMiscGLSLShader::GetSingleColorMembraneFragmentShader( std::string& shader )
+{
+	// Calculate the opacity based on the view space normal.
+	// View space normal z = -1.0: facing directly toward the camera, thus opacity_factor = 1.0
+	// View space normal z = 0 or higher: facing vertical or away from the camera, thus opacity_factor = 1.0
+	static const char *fs =
+	"#version 330\n"\
+	// vn: view space normal
+	"in vec3 vn;\n"\
+	"in vec4 dc;\n"\
+	"layout(location = 0) out vec4 fc;\n"\
+	"uniform vec4 Color=vec4(1,1,0,1);\n"\
+	"uniform float MinOpacity = 0.0;\n"\
+	"uniform float MaxOpacity = 1.0;\n"\
+	"void main(){"\
+		"vec3 n = normalize(vn);"\
+		"float f=1.0+clamp(n.z,-1.0,0.0);"\
+		"float a = MinOpacity+f*(MaxOpacity-MinOpacity);\n"\
+		/*"fc=vec4(vn.x,vn.y,vn.z,1);"\*/
+		"fc=Color;"\
+		"fc.a=a;"\
+	"}\n";
+
+	shader = fs;
+}
+
+
 Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id, std::string& shader )
 {
 	switch( shader_id )
@@ -106,6 +153,9 @@ Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id
 		break;
 	case MiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
 		GetVertexWeightMapDisplayVertexShader(shader);
+		break;
+	case MiscShader::SINGLE_COLOR_MEMBRANE:
+		GetSingleColorMembraneVertexShader(shader);
 		break;
 	default:
 		return Result::UNKNOWN_ERROR;
@@ -128,6 +178,9 @@ Result::Name GLEmbeddedMiscGLSLShader::GetFragmentShader( MiscShader::ID shader_
 		break;
 	case MiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
 		GetVertexWeightMapDisplayFragmentShader(shader);
+		break;
+	case MiscShader::SINGLE_COLOR_MEMBRANE:
+		GetSingleColorMembraneFragmentShader(shader);
 		break;
 	default:
 		return Result::UNKNOWN_ERROR;
