@@ -667,6 +667,8 @@ Result::Name DownScale2x2Filter::Init( RenderTargetTextureCache& cache, FilterSh
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("down_scale_2x2") );
+
 	return Result::SUCCESS;
 }
 
@@ -747,6 +749,8 @@ Result::Name HDRBrightPassFilter::Init( RenderTargetTextureCache& cache, FilterS
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("hdr") );
+
 	return Result::SUCCESS;
 }
 
@@ -790,6 +794,9 @@ void HDRBrightPassFilter::Render()
 //	if( pEffect )
 //		hr = pEffect->SetTechnique( "BrightPassFilter" );
 	shader_mgr.SetTechnique( m_Technique );
+
+	float fKeyValue = 3.5f;
+	shader_mgr.SetParam( "g_fMiddleGray", fKeyValue );
 
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pDest->m_pTexSurf );
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
@@ -837,6 +844,16 @@ m_fStandardDeviation(1.0f)
 	m_SetTextureWrapParameters[0] = 1;
 	m_TextureWrapAxis0[0] = TextureAddressMode::CLAMP_TO_EDGE;
 	m_TextureWrapAxis1[0] = TextureAddressMode::CLAMP_TO_EDGE;
+}
+
+
+Result::Name GaussianBlurFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
+{
+	m_pCache = cache.GetSelfPtr().lock();
+
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("gauss_blur_5x5") );
+
+	return Result::SUCCESS;
 }
 
 
@@ -938,6 +955,16 @@ BloomFilter::BloomFilter()
 	m_MaxInputTextureIndex = 0;
 	m_MagFilters[0] = TextureFilter::LINEAR;
 	m_MinFilters[0] = TextureFilter::LINEAR;
+}
+
+
+Result::Name BloomFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
+{
+	m_pCache = cache.GetSelfPtr().lock();
+
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("bloom") );
+
+	return Result::SUCCESS;
 }
 
 
@@ -1240,6 +1267,8 @@ Result::Name LuminanceCalcFilter::Init( RenderTargetTextureCache& cache, FilterS
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("hdr") );
+
 	Result::Name res = Result::SUCCESS;
 	if( m_pCache->GetNumTextures( m_Desc ) == 0 )
 		res = m_pCache->AddTexture( m_Desc );
@@ -1389,6 +1418,8 @@ Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, Filter
 {
 	m_pCache = cache.GetSelfPtr().lock();
 
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("hdr") );
+
 	m_Desc.Width  = 1;
 	m_Desc.Height = 1;
 	GetLuminanceTextureDesc( m_Desc );
@@ -1530,6 +1561,16 @@ m_StarEffectEnabled(false)
 		m_TextureWrapAxis0[i] = TextureAddressMode::CLAMP_TO_EDGE;
 		m_TextureWrapAxis1[i] = TextureAddressMode::CLAMP_TO_EDGE;
 	}
+}
+
+
+Result::Name HDRLightingFinalPassFilter::Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container )
+{
+	m_pCache = cache.GetSelfPtr().lock();
+
+	SetFilterShader( filter_shader_container.AddPostProcessEffectShader("hdr") );
+
+	return Result::SUCCESS;
 }
 
 
@@ -1704,20 +1745,20 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, FilterSha
 	m_pDownScale4x4Filter.reset( new DownScale4x4Filter );
 	m_pDownScale4x4Filter->SetRenderTargetSize( cbb.width / 4, cbb.height / 4 );
 	m_pDownScale4x4Filter->SetRenderTargetSurfaceFormat( TextureFormat::A16R16G16B16F );
-	m_pDownScale4x4Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//	m_pDownScale4x4Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pDownScale4x4Filter->Init( cache, filter_shader_container );
 
 	m_pBrightPassFilter.reset( new HDRBrightPassFilter );
 	m_pBrightPassFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pBrightPassFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pBrightPassFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//	m_pBrightPassFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pBrightPassFilter->Init( cache, filter_shader_container );
 //	m_pBrightPassFilter->SetExtraTexelBorderWidth( 1 );
 
 	m_pGaussianBlurFilter.reset( new GaussianBlurFilter );
 	m_pGaussianBlurFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pGaussianBlurFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//	m_pGaussianBlurFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pGaussianBlurFilter->Init( cache, filter_shader_container );
 	m_pGaussianBlurFilter->SetDebugImageFilenameExtraString( "-for-hdrl" );
 //	m_pGaussianBlurFilter->Init();
@@ -1726,7 +1767,7 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, FilterSha
 	m_pDownScale2x2Filter.reset( new DownScale2x2Filter );
 	m_pDownScale2x2Filter->SetRenderTargetSize( cbb.width / 8 + 2, cbb.height / 8 + 2 );
 	m_pDownScale2x2Filter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pDownScale2x2Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//	m_pDownScale2x2Filter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pDownScale2x2Filter->Init( cache, filter_shader_container );
 //	m_pDownScale2x2Filter->SetExtraTexelBorderWidth( 1 );
 
@@ -1743,11 +1784,11 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, FilterSha
 	for( int i=0; i<NUM_TONEMAP_TEXTURES; i++ )
 	{
 		m_apLumCalcFilter[i]->Init( cache, filter_shader_container );
-		m_apLumCalcFilter[i]->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//		m_apLumCalcFilter[i]->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	}
 
 	m_pAdaptationCalcFilter.reset( new AdaptationCalcFilter() );
-	m_pAdaptationCalcFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//	m_pAdaptationCalcFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pAdaptationCalcFilter->Init( cache, filter_shader_container );
 
 	m_pBloomFilter.reset( new CombinedBloomFilter );
@@ -1760,7 +1801,7 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, FilterSha
 //	m_pFinalPassFilter->SetRenderTargetSize( cbb.width / 4 + 2, cbb.height / 4 + 2 );
 	m_pFinalPassFilter->SetRenderTargetSize( cbb.width, cbb.height );
 	m_pFinalPassFilter->SetRenderTargetSurfaceFormat( TextureFormat::A8R8G8B8 );
-	m_pFinalPassFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
+//	m_pFinalPassFilter->SetFilterShader( filter_shader_container.GetFilterShader( "HDRPostProcessor" ) );
 	res = m_pFinalPassFilter->Init( cache, filter_shader_container );
 
 	//

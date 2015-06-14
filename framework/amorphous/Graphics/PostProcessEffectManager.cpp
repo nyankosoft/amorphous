@@ -96,6 +96,9 @@ shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddShader( const Shad
 
 	Result::Name res = m_vecpShader.back()->Init( shader_desc );
 
+	if( res != Result::SUCCESS )
+		LOG_PRINT_WARNING( "Failed to initialize a shader." );
+
 	return m_vecpShader.back();
 }
 
@@ -170,20 +173,20 @@ Result::Name PostProcessEffectManager::Init( const std::string& base_shader_dire
 {
 	using namespace boost::filesystem;
 
-	ShaderResourceDesc shader_desc;
-	if( base_shader_directory_path.length() == 0 )
-	{
-		// Create the shader which contains all the effects.
-		shader_desc.pShaderGenerator.reset( new PostProcessEffectFilterShaderGenerator );
-	}
-	else
-	{
-		path shader_filepath = path(base_shader_directory_path) / path("HDRPostProcessor.fx");
-		shader_desc.ResourcePath = shader_filepath.string();
-	}
+//	ShaderResourceDesc shader_desc;
+//	if( base_shader_directory_path.length() == 0 )
+//	{
+//		// Create the shader which contains all the effects.
+//		shader_desc.pShaderGenerator.reset( new PostProcessEffectFilterShaderGenerator );
+//	}
+//	else
+//	{
+//		path shader_filepath = path(base_shader_directory_path) / path("HDRPostProcessor.fx");
+//		shader_desc.ResourcePath = shader_filepath.string();
+//	}
 	
 	// load shader
-	auto pShader = m_FilterShaderContainer.AddShader( shader_desc );
+//	auto pShader = m_FilterShaderContainer.AddShader( shader_desc );
 
 //	const D3DSURFACE_DESC* pBackBufferDesc = GetD3D9BackBufferSurfaceDesc();
 
@@ -636,6 +639,7 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 		ShaderTechniqueHandle t;
 		t.SetTechniqueName( "AdaptedLuminanceDisplay" );
 		pShader->SetTechnique( t );
+
 		pShader->GetEffect()->CommitChanges();
 
 		C2DRect rect( RectLTWH( 20, 20, 40, 40 ) );

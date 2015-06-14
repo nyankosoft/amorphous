@@ -62,6 +62,8 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_GAUSSIAN_BLUR; }
 
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
+
 	void Render();
 
 	void SetWidth( float fWidth ) {}
@@ -106,6 +108,8 @@ public:
 	BloomFilter();
 
 	virtual ~BloomFilter() {}
+
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	void Render();
 
@@ -327,6 +331,8 @@ public:
 	HDRLightingFinalPassFilter();
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_HDR_LIGHTING_FINAL_PASS; }
+
+	Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
 	bool IsReadyToRender();
 
