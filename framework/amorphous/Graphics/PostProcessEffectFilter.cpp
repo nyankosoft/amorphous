@@ -155,7 +155,7 @@ bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_fil
 //Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<RenderTargetTextureHolder>& pDest )
 Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter )
 {
-	HRESULT hr = S_OK;
+//	HRESULT hr = S_OK;
 	if( 0 < m_vecpNextFilter.size() )
 	{
 		// Find a texture render target currently available, and set it to m_pDest
@@ -212,7 +212,8 @@ Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& 
 		m_pCache->m_pOrigSceneHolder->m_pTextureRenderTarget->ResetRenderTarget();
 	}
 
-	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+//	return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+	return Result::SUCCESS;
 }
 
 

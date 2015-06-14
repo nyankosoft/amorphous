@@ -109,11 +109,9 @@ void GetTextureRect( shared_ptr<RenderTargetTextureHolder>& pSrc, SRect *pDest )
 }
 
 
-//-----------------------------------------------------------------------------
-// Name: GetSampleOffsets_DownScale4x4
-// Desc: Get the texture coordinate offsets to be used inside the DownScale4x4
-//       pixel shader.
-//-----------------------------------------------------------------------------
+/**
+ \brief Get the texture coordinate offsets to be used inside the DownScale4x4 pixel shader.
+*/
 Result::Name GetSampleOffsets_DownScale4x4( unsigned int width, unsigned int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
@@ -142,11 +140,9 @@ Result::Name GetSampleOffsets_DownScale4x4( unsigned int width, unsigned int hei
 
 
 
-//-----------------------------------------------------------------------------
-// Name: GetSampleOffsets_DownScale2x2
-// Desc: Get the texture coordinate offsets to be used inside the DownScale2x2
-//       pixel shader.
-//-----------------------------------------------------------------------------
+/**
+ \brief Get the texture coordinate offsets to be used inside the DownScale2x2 pixel shader.
+*/
 Result::Name GetSampleOffsets_DownScale2x2( unsigned int width, unsigned int height, Vector2 avSampleOffsets[] )
 {
     if( NULL == avSampleOffsets )
@@ -1065,7 +1061,7 @@ void HorizontalBloomFilter::GetSampleOffsets()
 	static float fDeviation = 0.5f; // experiment
 	memset( m_afSampleOffsets, 0, sizeof(m_afSampleOffsets) );
 	memset( m_avSampleWeights, 0, sizeof(m_avSampleWeights) );
-	HRESULT hr = GetSampleOffsets_Bloom( m_Desc.Width, m_afSampleOffsets, m_avSampleWeights, m_fDeviation, 2.0f );
+	GetSampleOffsets_Bloom( m_Desc.Width, m_afSampleOffsets, m_avSampleWeights, m_fDeviation, 2.0f );
 	for( int i = 0; i < MAX_SAMPLES; i++ )
 	{
 		m_avSampleOffsets[i] = Vector2( m_afSampleOffsets[i], 0.0f );
@@ -1083,7 +1079,7 @@ void VerticalBloomFilter::GetSampleOffsets()
 {
 	memset( m_afSampleOffsets, 0, sizeof(m_afSampleOffsets) );
 	memset( m_avSampleWeights, 0, sizeof(m_avSampleWeights) );
-	HRESULT hr = GetSampleOffsets_Bloom( m_Desc.Height, m_afSampleOffsets, m_avSampleWeights, m_fDeviation, 2.0f );
+	GetSampleOffsets_Bloom( m_Desc.Height, m_afSampleOffsets, m_avSampleWeights, m_fDeviation, 2.0f );
 	for( int i = 0; i < MAX_SAMPLES; i++ )
 	{
 		m_avSampleOffsets[i] = Vector2( 0.0f, m_afSampleOffsets[i] );
@@ -1884,18 +1880,18 @@ Result::Name HDRLightingFilter::Init( RenderTargetTextureCache& cache, FilterSha
 	m_pLastFilter = m_pFinalPassFilter;
 
 	// set shader params
-	shared_ptr<PostProcessFilterShader> pShader = filter_shader_container.GetFilterShader( "HDRPostProcessor" );
-	if( pShader && pShader->GetShader().GetShaderManager() )
-	{
-		ShaderManager *pShaderMgr = pShader->GetShader().GetShaderManager();
-		ShaderParameter< vector<float> > bloom_scale( "g_fBloomScale" ), star_scale( "g_fStarScale" );
-		bloom_scale.Parameter().resize(1);
-		star_scale.Parameter().resize(1);
-		bloom_scale.Parameter()[0] = 1.0f;
-		star_scale.Parameter()[0] = 0.5f;
-		pShaderMgr->SetParam( bloom_scale );
-		pShaderMgr->SetParam( star_scale );
-	}
+//	shared_ptr<PostProcessFilterShader> pShader = filter_shader_container.GetFilterShader( "HDRPostProcessor" );
+//	if( pShader && pShader->GetShader().GetShaderManager() )
+//	{
+//		ShaderManager *pShaderMgr = pShader->GetShader().GetShaderManager();
+//		ShaderParameter< vector<float> > bloom_scale( "g_fBloomScale" ), star_scale( "g_fStarScale" );
+//		bloom_scale.Parameter().resize(1);
+//		star_scale.Parameter().resize(1);
+//		bloom_scale.Parameter()[0] = 1.0f;
+//		star_scale.Parameter()[0] = 0.5f;
+//		pShaderMgr->SetParam( bloom_scale );
+//		pShaderMgr->SetParam( star_scale );
+//	}
 
 	return Result::SUCCESS;
 }
