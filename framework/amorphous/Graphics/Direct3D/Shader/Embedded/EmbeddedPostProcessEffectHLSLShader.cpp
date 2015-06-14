@@ -231,10 +231,10 @@ const char *CEmbeddedPostProcessEffectHLSLShader::m_pHDR =
 "bool  g_bRenderStar = false;\n"\
 
 // Bloom process multiplier
-"float  g_fBloomScale;\n"\
+"float  g_fBloomScale = 1.0;\n"\
 
 // Star process multiplier
-"float  g_fStarScale;\n"\
+"float  g_fStarScale = 0.5;\n"\
 
 // Multiply each horizontal / vertical bloom process
 //"float  g_fBloomFactor = 1.0f;\n"\
