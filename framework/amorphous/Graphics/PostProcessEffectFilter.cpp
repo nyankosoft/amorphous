@@ -299,7 +299,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 
 	res = GraphicsDevice().SetTexture( 1, prev_scene_texture );
 
-	HRESULT hr = pShaderMgr->GetEffect()->CommitChanges();
+//	HRESULT hr = pShaderMgr->GetEffect()->CommitChanges();
 
 	if( GetDebugImageFilenameExtraString() == "-for-gaussblur" )
 	{

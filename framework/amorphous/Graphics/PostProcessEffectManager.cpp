@@ -640,7 +640,8 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 		t.SetTechniqueName( "AdaptedLuminanceDisplay" );
 		pShader->SetTechnique( t );
 
-		pShader->GetEffect()->CommitChanges();
+		if( pShader->GetEffect() )
+			pShader->GetEffect()->CommitChanges();
 
 		C2DRect rect( RectLTWH( 20, 20, 40, 40 ) );
 		rect.SetColor( SFloatRGBAColor::White() );
