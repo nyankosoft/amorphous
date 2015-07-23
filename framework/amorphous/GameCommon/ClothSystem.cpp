@@ -892,7 +892,10 @@ Result::Name CClothSystem::AddCollisionSphere( const std::string& target_bone_na
 		// for debugging
 //		m_ClothCollisionObjects[index].m_pShapes.push_back( pShape );
 		SFloatRGBAColor diffuse_color = SFloatRGBAColor( RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), RangedRand(0.7f,1.0f), 0.7f );
-		coll_obj.m_ShapeMeshes.push_back( CreateSphereMesh( sphere.radius, diffuse_color ) );
+		uint num_horizontal_segments = 24;
+		uint num_vertical_segments = 12;
+		MeshHandle sphere_mesh = CreateSphereMesh( sphere.radius, num_horizontal_segments, num_vertical_segments, diffuse_color );
+		coll_obj.m_ShapeMeshes.push_back( sphere_mesh );
 		return Result::SUCCESS;
 	}
 	else
