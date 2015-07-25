@@ -16,9 +16,6 @@
     <Filter Include="Graphics\2DPrimitives">
       <UniqueIdentifier>{4d4c02e9-9463-4881-8d42-b7c4dfebf275}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\2D Graphics Elements &amp; Effects">
-      <UniqueIdentifier>{4c1721be-0b72-4787-9669-f8ae95b3d5c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Graphics\Font">
       <UniqueIdentifier>{439b37dc-0cda-4eea-b19a-95f8f1583a0c}</UniqueIdentifier>
     </Filter>
@@ -147,6 +144,9 @@
     </Filter>
     <Filter Include="MotionCapture\BVH">
       <UniqueIdentifier>{01c14dff-8847-4da7-b62c-fde5eef60113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\2DPrimitives\2D Graphics Elements &amp; Effects">
+      <UniqueIdentifier>{4c1721be-0b72-4787-9669-f8ae95b3d5c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -355,16 +355,16 @@
       <Filter>Graphics\2DPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsEffectManager.cpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsElementManager.cpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsElements.cpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp">
       <Filter>Graphics\Font</Filter>
@@ -1128,19 +1128,19 @@
       <Filter>Graphics\2DPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectHandle.hpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectManager.hpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\GraphicsElementManager.hpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\GraphicsElements.hpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.hpp">
-      <Filter>Graphics\2D Graphics Elements &amp; Effects</Filter>
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp">
       <Filter>Graphics\Font</Filter>
