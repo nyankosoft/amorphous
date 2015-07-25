@@ -9,7 +9,8 @@ namespace amorphous
 const char *EmbeddedPostProcessEffectGLSLShader::m_pVertexShader =
 "#version 330\n"\
 "layout(location = 0) in vec4 position;\n"\
-"layout(location = 1) in vec2 tex0;\n"\
+"layout(location = 1) in vec4 diffuse_color;\n"\
+"layout(location = 2) in vec2 tex0;\n"\
 "out vec2 vScreenPosition;\n"\
 "void main(){"\
 	/*"gl_Position = position;"\*/
@@ -19,6 +20,7 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pVertexShader =
 	"float y = (-position.y / vph + 0.5) * 2.0;"\
 	"gl_Position = vec4(x,y,position.z,1);"\
 	"vScreenPosition = tex0;"\
+	"vScreenPosition.y = 1.0 - vScreenPosition.y;"\
 "}\n";
 
 //-----------------------------------------------------------------------------
@@ -43,15 +45,15 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pSampleOffsetsAndWeights =
 const char *EmbeddedPostProcessEffectGLSLShader::m_pBloom =
 // Multiply each horizontal / vertical bloom process 
 "uniform float  g_fBloomFactor = 1.0;\n"\
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;"\
 "out vec4 color;"\
-"vec4 main()"\
+"void main()"\
 "{"\
 
-	"vec4 vSample = 0.0;"\
-	"vec4 vColor = 0.0;"\
+	"vec4 vSample = vec4(0.0,0.0,0.0,0.0);"\
+	"vec4 vColor = vec4(0.0,0.0,0.0,0.0);"\
 
-	"vec2 vSamplePosition;"\
+	"vec2 vSamplePosition = vec2(0.0,0.0);\n"\
 
 	// Perform a one-directional gaussian blur
 	"for(int iSample = 0; iSample < 15; iSample++)"\
@@ -59,9 +61,9 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pBloom =
 		"vSamplePosition = vScreenPosition + g_avSampleOffsets[iSample];"\
 		"vColor = texture(S0, vSamplePosition);"\
 		"vSample += g_avSampleWeights[iSample]*vColor;"\
-	"}"\
+	"}\n"\
 
-	"color = vec4( vSample.rgb * g_fBloomFactor, vSample.a );"\
+	"color = vec4( vSample.rgb * g_fBloomFactor, vSample.a );\n"\
 //	color = vec4( vSample.rgb / 2.0, vSample.a );
 //	color = vec4( vSample.rgb, vSample.a );
 "}\n";
@@ -75,18 +77,18 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pBloom =
 "}\n";*/
 
 const char *EmbeddedPostProcessEffectGLSLShader::m_pDownScale2x2 =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;"\
 "out vec4 color;"\
 "void main()"\
 "{"\
-	"vec4 sample = 0.0;"\
+	"vec4 sample = vec4(0.0,0.0,0.0,0.0);"\
 
 	"for( int i=0; i < 4; i++ )"\
 	"{"\
 		"sample += texture( S0, vScreenPosition + g_avSampleOffsets[i] );"\
 	"}"\
 
-	"color = sample / 4;"
+	"color = sample / 4;"\
 "}\n";
 /*
 "technique DownScale2x2"\
@@ -98,11 +100,11 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pDownScale2x2 =
 "}\n";*/
 
 const char *EmbeddedPostProcessEffectGLSLShader::m_pDownScale4x4 =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;"\
 "out vec4 color;"\
 "void main()"\
 "{"\
-	"vec4 sample = 0.0;"\
+	"vec4 sample = vec4(0.0,0.0,0.0,0.0);"\
 
 	"for( int i=0; i < 16; i++ )"\
 	"{"\
@@ -121,12 +123,12 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pDownScale4x4 =
 "}\n";*/
 
 const char *EmbeddedPostProcessEffectGLSLShader::m_pGaussBlur5x5 =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;"\
 "out vec4 color;"\
 "void main()"\
 "{"\
 
-	"vec4 sample = 0.0;"\
+	"vec4 sample = vec4(0.0,0.0,0.0,0.0);"\
 
 	"for( int i=0; i < 12; i++ )"\
 	"{"\
@@ -249,7 +251,8 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR =
 // (1/e, 1/e, 1/e, 1.0) -> log(1/e) -> fLogLumSum += -1
 //-----------------------------------------------------------------------------
 const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_InitialLuimnanceSampling =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;\n"\
+"out vec4 color;\n"\
 /* SampleLumInitial */
 "void main()\n"\
 "{"\
@@ -267,12 +270,13 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_InitialLuimnanceSampling
 	// Divide the sum to complete the average
 	"fLogLumSum /= 9;"\
 
-	"return vec4(fLogLumSum, fLogLumSum, fLogLumSum, 1.0);"\
+	"color = vec4(fLogLumSum, fLogLumSum, fLogLumSum, 1.0);"\
 "}\n";
 
 // Scale down the luminance texture by blending sample points
 const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_IterativeLuimnanceSampling =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;\n"\
+"out vec4 color;\n"\
 /* SampleLumIterative */
 "void main()\n"\
 "{"\
@@ -287,13 +291,14 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_IterativeLuimnanceSampli
 	// Divide the sum to complete the average
 	"fResampleSum /= 16;"\
 
-	"return vec4(fResampleSum, fResampleSum, fResampleSum, 1.0);"\
+	"color = vec4(fResampleSum, fResampleSum, fResampleSum, 1.0);"\
 "}\n";
 
 // Extract the average luminance of the image by completing the averaging
 // and taking the exp() of the result
 const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_FinalLuimnanceSampling =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;\n"\
+"out vec4 color;\n"\
 /* SampleLumFinal */
 "void main()\n"\
 "{"\
@@ -309,14 +314,15 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_FinalLuimnanceSampling =
 	// the average luminance calculation
 	"fResampleSum = exp(fResampleSum/16);"\
 
-	"return vec4(fResampleSum, fResampleSum, fResampleSum, 1.0);"\
+	"color = vec4(fResampleSum, fResampleSum, fResampleSum, 1.0);"\
 "}\n";
 
 // Calculate the luminance that the camera is current adapted to, using
 // the most recented adaptation level, the current scene luminance, and
 // the time elapsed since last calculated
 const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_AdaptedLuminanceCalc =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;\n"\
+"out vec4 color;\n"\
 /* CalculateAdaptedLumPS */
 "void main()\n"\
 "{"\
@@ -332,12 +338,13 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_AdaptedLuminanceCalc =
 	// In the original D3D sample g_fAdaptationRate was hard-coded to 0.02.
 	"float f = ( 1 - pow( 1.0 - g_fAdaptationRate, 30 * g_fElapsedTime ) );"\
 	"float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * f;"\
-	"return vec4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0);"\
+	"color = vec4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0);"\
 "}\n";
 
 // Perform blue shift, tone map the scene, and add post-processed light effects
 const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_FinalPass =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;\n"\
+"out vec4 color;\n"\
 /* FinalScenePassPS */
 "void main()\n"\
 "{"\
@@ -377,15 +384,16 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_FinalPass =
 
 	"vSample += g_fBloomScale * vBloom;\n"\
 
-	"return vSample;"\
+	"color = vSample;"\
 //	return vec4(fAdaptedLum,fAdaptedLum,fAdaptedLum,1.0);
 "}\n";
 
 // Perform a high-pass filter on the source texture
 const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_BrightPass =
-"in vec2 vScreenPosition"\
+"in vec2 vScreenPosition;\n"\
+"out vec4 color;\n"\
 /* BrightPassFilterPS */
-"vec4 main()\n"\
+"void main()\n"\
 "{"\
 	"vec4 vSample = texture( S0, vScreenPosition );"\
 	"float  fAdaptedLum = texture( S1, vec2(0.5, 0.5) );"\
@@ -405,7 +413,7 @@ const char *EmbeddedPostProcessEffectGLSLShader::m_pHDR_BrightPass =
 	// objects.
 	"vSample.rgb /= (BRIGHT_PASS_OFFSET+vSample);"\
 
-	"return vSample;"\
+	"color = vSample;"\
 //	return vec4(fAdaptedLum,fAdaptedLum,fAdaptedLum,1.0);
 "}\n";
 /*
@@ -483,7 +491,9 @@ Result::Name EmbeddedPostProcessEffectGLSLShader::GenerateFragmentShader( const 
 	std::string& fs = fragment_shader;
 	const std::string& effect = effect_name;
 
-	fs = EmbeddedPostProcessEffectGLSLShader::m_pTextureSamplers;
+	fs = "#version 330\n";
+
+	fs += EmbeddedPostProcessEffectGLSLShader::m_pTextureSamplers;
 
 	fs += EmbeddedPostProcessEffectGLSLShader::m_pSampleOffsetsAndWeights;
 
