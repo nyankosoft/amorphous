@@ -181,6 +181,15 @@ public:
 	// Sets one or more float values
 	virtual void SetParam( const char *parameter_name, const float *float_param, uint num_float_values ) {}
 
+	// Sets a Vector2 array
+	virtual void SetParam( const char *parameter_name, const Vector2 *vec2_param, uint num_vec2_values ) {}
+
+	// Sets a Vector3 array
+	virtual void SetParam( const char *parameter_name, const Vector3 *vec3_param, uint num_vec3_values ) {}
+
+	// Sets a Vector4 array
+	virtual void SetParam( const char *parameter_name, const Vector4 *vec4_param, uint num_vec4_values ) {}
+
 	// Sets one or more float values
 	inline void SetParam( const char *parameter_name, const std::vector<float>& float_param );
 

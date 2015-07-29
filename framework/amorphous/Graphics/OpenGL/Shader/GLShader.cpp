@@ -183,7 +183,7 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 }
 
 
-static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::string& error_info )
+static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::string& error_info, const char *source )
 {
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
@@ -209,6 +209,16 @@ static void GetCompileStatus( GLenum shader_type, GLhandleARB shader, std::strin
 
 		error_info = fmt_string( "Compile failure in %s shader:\n", strShaderType );
 		error_info += strInfoLog;
+
+		static int s_counter = 0;
+		// Save the shader source to a file
+		FILE *fp = fopen(fmt_string(".debug/compile_failed_%02d.glsl",s_counter).c_str(),"w");
+		s_counter += 1;
+		if( fp )
+		{
+			fprintf(fp,source);
+			int ret = fclose(fp);
+		}
 
 		delete[] strInfoLog;
 	}
@@ -239,7 +249,7 @@ bool CGLShader::CreateShader( const char *source )
 
 	LOG_GL_ERROR( "glCompileShader() failed. Failed to compile a shader" );
 
-	GetCompileStatus( GetShaderType(), m_Shader, error_info );
+	GetCompileStatus( GetShaderType(), m_Shader, error_info, source );
 
 	if( 0 < error_info.length() )
 		LOG_PRINT_ERROR( error_info );
@@ -646,6 +656,94 @@ void CGLProgram::SetParam( const char *parameter_name, const SFloatRGBAColor& co
 
 void CGLProgram::SetParam( const char *parameter_name, const float *float_param, uint num_float_values )
 {
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+	{
+		// glUniform1fv() does not accept 'non-const' pointers, so we make a local copy.
+		vector<GLfloat> fv;
+		fv.resize( num_float_values );
+		for(uint i=0; i<num_float_values; i++ )
+			fv[i] = float_param[i];
+
+//		glUniform1fv( location, num_float_values, &fv[0] );
+
+		if( string(parameter_name) == "g_avSampleOffsets" )
+			glUniform2fv( location, num_float_values / 2, &fv[0] );
+		else
+			glUniform4fv( location, num_float_values / 4, &fv[0] );
+
+		LOG_GL_ERROR( "Called glUniform1fv()." );
+	}
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const Vector2 *vec2_param, uint num_vec2_values )
+{
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+	{
+		// glUniform1fv() does not accept 'non-const' pointers, so we make a local copy.
+		vector<GLfloat> fv;
+		fv.resize( num_vec2_values * 2 );
+		for(uint i=0; i<num_vec2_values; i++ )
+		{
+			fv[i*2]   = vec2_param[i].x;
+			fv[i*2+1] = vec2_param[i].y;
+		}
+
+		glUniform2fv( location, num_vec2_values, &fv[0] );
+
+//		LOG_GL_ERROR( "Called glUniform1fv()." );
+	}
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const Vector3 *vec3_param, uint num_vec3_values )
+{
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+	{
+		// glUniform1fv() does not accept 'non-const' pointers, so we make a local copy.
+		vector<GLfloat> fv;
+		fv.resize( num_vec3_values * 3 );
+		for(uint i=0; i<num_vec3_values; i++ )
+		{
+			fv[i*3]   = vec3_param[i].x;
+			fv[i*3+1] = vec3_param[i].y;
+			fv[i*3+2] = vec3_param[i].z;
+		}
+
+		glUniform3fv( location, num_vec3_values, &fv[0] );
+
+//		LOG_GL_ERROR( "Called glUniform1fv()." );
+	}
+}
+
+
+void CGLProgram::SetParam( const char *parameter_name, const Vector4 *vec4_param, uint num_vec4_values )
+{
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+	{
+		// glUniform1fv() does not accept 'non-const' pointers, so we make a local copy.
+		vector<GLfloat> fv;
+		fv.resize( num_vec4_values * 4 );
+		for(uint i=0; i<num_vec4_values; i++ )
+		{
+			fv[i*4]   = vec4_param[i].x;
+			fv[i*4+1] = vec4_param[i].y;
+			fv[i*4+2] = vec4_param[i].z;
+			fv[i*4+3] = vec4_param[i].w;
+		}
+
+		glUniform4fv( location, num_vec4_values, &fv[0] );
+
+//		LOG_GL_ERROR( "Called glUniform1fv()." );
+	}
 }
 
 

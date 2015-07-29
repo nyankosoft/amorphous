@@ -283,6 +283,15 @@ public:
 	// Sets one or more float values
 	void SetParam( const char *parameter_name, const float *float_param, uint num_float_values );
 
+	// Sets a Vector2 array
+	void SetParam( const char *parameter_name, const Vector2 *vec2_param, uint num_vec2_values );
+
+	// Sets a Vector3 array
+	void SetParam( const char *parameter_name, const Vector3 *vec3_param, uint num_vec3_values );
+
+	// Sets a Vector4 array
+	void SetParam( const char *parameter_name, const Vector4 *vec4_param, uint num_vec4_values );
+
 	// Sets a column-major 4x4 matrix
 	void SetParam( const char *parameter_name, const Matrix44& mat44_param );
 

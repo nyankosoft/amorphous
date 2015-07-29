@@ -418,6 +418,30 @@ void CHLSLShaderManager::SetParam( const char *parameter_name, const float *floa
 }
 
 
+void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector2 *vec2_param, uint num_vec2_values )
+{
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, (float *)vec2_param, (UINT)num_vec2_values * 2 );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(( "Failed to set Vector2 values to a shader: %s",parameter_name));
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector3 *vec3_param, uint num_vec3_values )
+{
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, (float *)vec3_param, (UINT)num_vec3_values * 3 );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(( "Failed to set Vector3 values to a shader: %s",parameter_name));
+}
+
+
+void CHLSLShaderManager::SetParam( const char *parameter_name, const Vector4 *vec4_param, uint num_vec4_values )
+{
+	HRESULT hr = m_pEffect->SetFloatArray( parameter_name, (float *)vec4_param, (UINT)num_vec4_values * 4 );
+	if( FAILED(hr) )
+		LOG_PRINTF_WARNING(( "Failed to set Vector4 values to a shader: %s",parameter_name));
+}
+
+
 void CHLSLShaderManager::SetParam( const char *parameter_name, const Matrix44& mat44_param )
 {
 	D3DXMATRIX mat;
