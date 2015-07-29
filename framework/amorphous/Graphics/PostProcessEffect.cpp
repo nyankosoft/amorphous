@@ -10,6 +10,7 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
 #include "Support/Log/DefaultLog.hpp"
+#include "Graphics/OpenGL/GLGraphicsDevice.hpp"
 
 
 namespace amorphous
@@ -69,13 +70,18 @@ SRectangular GetBackBufferWidthAndHeight()
 	else
 	{
 		// We are running OpenGL
+
+//		LOG_GL_ERROR( "Calling glGetRenderbufferParameterivEXT() ..." );
 		GLint width = 0;
 		GLint height = 0;
-		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH_EXT,  &width );
-		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT_EXT, &height );
+//		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH_EXT,  &width );
+//		glGetRenderbufferParameterivEXT( GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT_EXT, &height );
 
-		// The calls above returns 0s (width and height)
+		// The calls above return 0s (width and height), and cause GL_INVALID_OPERATION
+		// if zero is bound to target, so for now let's assume that the viewport has
+		// the same dimension.
 
+		LOG_GL_ERROR( "Retrieving the viewport size..." );
 		uint w=0, h=0;
 		GraphicsDevice().GetViewportSize(w,h);
 		width  = w;
@@ -323,7 +329,7 @@ Result::Name GetSampleOffsets_GaussBlur5x5( unsigned int tex_width,
 
             // Get the unscaled Gaussian intensity for this offset
             avTexCoordOffset[index] = Vector2( x * tu, y * tv );
-            avSampleWeight[index] = vWhite * GaussianDistribution( ( float )x, ( float )y, 1.0f );
+            avSampleWeight[index] = vWhite * GaussianDistribution( ( float )x, ( float )y, standard_deviation );
             totalWeight += avSampleWeight[index].x;
 
             index++;
@@ -901,8 +907,10 @@ void GaussianBlurFilter::Render()
 
 	GetSampleOffsets_GaussBlur5x5( tex_width, tex_height, avSampleOffsets, avSampleWeights, m_fStandardDeviation );
 
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof( avSampleOffsets ) * 2 );
-	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, numof( avSampleWeights ) * 4 );
+//	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof( avSampleOffsets ) * 2 );
+//	shader_mgr.SetParam( "g_avSampleWeights", (float *)avSampleWeights, numof( avSampleWeights ) * 4 );
+	shader_mgr.SetParam( "g_avSampleOffsets", avSampleOffsets, numof( avSampleOffsets ) );
+	shader_mgr.SetParam( "g_avSampleWeights", avSampleWeights, numof( avSampleWeights ) );
 
 	// The gaussian blur smooths out rough edges to avoid aliasing effects
 	// when the star effect is run
@@ -986,8 +994,10 @@ void BloomFilter::Render()
 	}
 
 //	pEffect->SetTechnique( "Bloom" );
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)m_avSampleOffsets, numof( m_avSampleOffsets ) * 2 );
-	shader_mgr.SetParam( "g_avSampleWeights", (float *)m_avSampleWeights, numof( m_avSampleWeights ) * 4 );
+//	shader_mgr.SetParam( "g_avSampleOffsets", (float *)m_avSampleOffsets, numof( m_avSampleOffsets ) * 2 );
+//	shader_mgr.SetParam( "g_avSampleWeights", (float *)m_avSampleWeights, numof( m_avSampleWeights ) * 4 );
+	shader_mgr.SetParam( "g_avSampleOffsets", m_avSampleOffsets, numof( m_avSampleOffsets ) );
+	shader_mgr.SetParam( "g_avSampleWeights", m_avSampleWeights, numof( m_avSampleWeights ) );
 
 	// blur filter  -> set to 1/16
 	// bloom filter -> set to 1
