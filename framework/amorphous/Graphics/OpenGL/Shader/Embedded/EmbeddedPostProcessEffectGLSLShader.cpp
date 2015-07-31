@@ -8,14 +8,16 @@ namespace amorphous
 
 const char *EmbeddedPostProcessEffectGLSLShader::m_pVertexShader =
 "#version 330\n"\
+"uniform float g_ViewportWidth  = 1280;\n"\
+"uniform float g_ViewportHeight =  720;\n"\
 "layout(location = 0) in vec4 position;\n"\
 "layout(location = 1) in vec4 diffuse_color;\n"\
 "layout(location = 2) in vec2 tex0;\n"\
 "out vec2 vScreenPosition;\n"\
 "void main(){"\
 	/*"gl_Position = position;"\*/
-	"float vpw = 1280;"\
-	"float vph =  720;"\
+	"float vpw = g_ViewportWidth;"\
+	"float vph = g_ViewportHeight;"\
 	"float x = ( position.x / vpw - 0.5) * 2.0;"\
 	"float y = (-position.y / vph + 0.5) * 2.0;"\
 	"gl_Position = vec4(x,y,position.z,1);"\
