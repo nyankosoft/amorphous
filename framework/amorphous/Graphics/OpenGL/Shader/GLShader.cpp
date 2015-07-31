@@ -582,41 +582,53 @@ void CGLProgram::SetParam( ShaderParameter<int>& int_param )
 
 void CGLProgram::SetParam( ShaderParameter<float>& float_param )
 {
+	SetParam( float_param.GetParameterName().c_str(), float_param.GetParameter() ); 
 }
 
 
 void CGLProgram::SetParam( ShaderParameter<Vector2>& vec2_param )
 {
+	SetParam( vec2_param.GetParameterName().c_str(), vec2_param.GetParameter() ); 
 }
 
 
 void CGLProgram::SetParam( ShaderParameter<Vector3>& vec3_param )
 {
+	SetParam( vec3_param.GetParameterName().c_str(), vec3_param.GetParameter() ); 
 }
 
 
 void CGLProgram::SetParam( ShaderParameter<SFloatRGBAColor>& color_param )
 {
+	SetParam( color_param.GetParameterName().c_str(), color_param.GetParameter() ); 
 }
 
 
 void CGLProgram::SetParam( ShaderParameter< std::vector<float> >& float_param )
 {
+	const std::vector<float>& vec = float_param.GetParameter();
+	SetParam( float_param.GetParameterName().c_str(), &(vec[0]), (uint)vec.size() ); 
 }
 
 
 void CGLProgram::SetParam( ShaderParameter<TextureParam>& tex_param )
 {
+	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
 void CGLProgram::SetParam( ShaderParameter<Matrix44>& mat44_param )
 {
+	SetParam( mat44_param.GetParameterName().c_str(), mat44_param.GetParameter() ); 
 }
 
 
 void CGLProgram::SetParam( const char *parameter_name, int int_param )
 {
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+		glUniform1i( location, int_param );
 }
 
 
@@ -651,6 +663,7 @@ void CGLProgram::SetParam( const char *parameter_name, const Vector3& vec3_param
 
 void CGLProgram::SetParam( const char *parameter_name, const SFloatRGBAColor& color_param )
 {
+	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
@@ -666,12 +679,7 @@ void CGLProgram::SetParam( const char *parameter_name, const float *float_param,
 		for(uint i=0; i<num_float_values; i++ )
 			fv[i] = float_param[i];
 
-//		glUniform1fv( location, num_float_values, &fv[0] );
-
-		if( string(parameter_name) == "g_avSampleOffsets" )
-			glUniform2fv( location, num_float_values / 2, &fv[0] );
-		else
-			glUniform4fv( location, num_float_values / 4, &fv[0] );
+		glUniform1fv( location, num_float_values, &fv[0] );
 
 		LOG_GL_ERROR( "Called glUniform1fv()." );
 	}
@@ -695,7 +703,7 @@ void CGLProgram::SetParam( const char *parameter_name, const Vector2 *vec2_param
 
 		glUniform2fv( location, num_vec2_values, &fv[0] );
 
-//		LOG_GL_ERROR( "Called glUniform1fv()." );
+		LOG_GL_ERROR( "Called glUniform2fv()." );
 	}
 }
 
@@ -718,7 +726,7 @@ void CGLProgram::SetParam( const char *parameter_name, const Vector3 *vec3_param
 
 		glUniform3fv( location, num_vec3_values, &fv[0] );
 
-//		LOG_GL_ERROR( "Called glUniform1fv()." );
+		LOG_GL_ERROR( "Called glUniform3fv()." );
 	}
 }
 
@@ -742,13 +750,14 @@ void CGLProgram::SetParam( const char *parameter_name, const Vector4 *vec4_param
 
 		glUniform4fv( location, num_vec4_values, &fv[0] );
 
-//		LOG_GL_ERROR( "Called glUniform1fv()." );
+		LOG_GL_ERROR( "Called glUniform4fv()." );
 	}
 }
 
 
 void CGLProgram::SetParam( const char *parameter_name, const Matrix44& mat44_param )
 {
+	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
