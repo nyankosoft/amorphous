@@ -2,7 +2,8 @@
 #define  __GLTextureRenderTarget_HPP__
 
 
-#include "../TextureRenderTarget.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
 #include <GL/gl.h>
 
 
@@ -22,7 +23,7 @@ private:
 
 	GLint m_OrigFrameBuffer;
 
-//	D3DVIEWPORT9 m_OriginalViewport;
+	Viewport m_OriginalViewport; // TODO: take this up to TextureRenderTarget
 
 
 	// Turned on when an instance is initialized by InitScreenSizeRenderTarget().

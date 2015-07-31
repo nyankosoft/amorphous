@@ -188,6 +188,8 @@ bool GLTextureRenderTarget::InitScreenSizeRenderTarget()
 
 bool GLTextureRenderTarget::LoadTextures()
 {
+//	LOG_GL_ERROR( "GLTextureRenderTarget::LoadTextures() entered." );
+
 	ReleaseTextures();
 
 	if( !(m_TextureDesc.UsageFlags & UsageFlag::RENDER_TARGET) )
@@ -379,6 +381,9 @@ void GLTextureRenderTarget::SetBackgroundColor( const SFloatRGBAColor& bg_color 
 
 void GLTextureRenderTarget::SetRenderTarget()
 {
+	// TODO: merge D3D implementation
+	GraphicsDevice().GetViewport( m_OriginalViewport );
+
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	// save the current framebuffer
@@ -419,6 +424,9 @@ void GLTextureRenderTarget::SetRenderTarget()
 
 void GLTextureRenderTarget::ResetRenderTarget()
 {
+	// TODO: merge D3D implementation
+	GraphicsDevice().SetViewport( m_OriginalViewport );
+
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 //	glPopAttrib();
