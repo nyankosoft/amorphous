@@ -13,8 +13,6 @@
 #include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
-#include "amorphous/Support/Macro.h"
-#include "amorphous/Support/MTRand.hpp"
 #include "amorphous/Input.hpp"
 
 using std::string;
@@ -28,8 +26,6 @@ m_CurrentShader(0)
 	m_MeshTechnique.SetTechniqueName( "Default" );
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
-
-	InitRand( (unsigned long)timeGetTime() );
 }
 
 
@@ -65,13 +61,13 @@ bool MiscShaderDemo::InitShaders()
 
 int MiscShaderDemo::Init()
 {
-//f	CreateParamFileIfNotFound( "MiscShaderDemo/params.txt",
-//f		"model models/shapes.msh\n"\
-//f		"random_light_colors true\n"\
-//f		"specular false\n"\
-//f		"hs_directinal_lights false\n"\
-//f		"hs_point_lights true\n"\
-//f		"num_lights_x_z 3 3\n" );
+//	CreateParamFileIfNotFound( "MiscShaderDemo/params.txt",
+//		"model models/shapes.msh\n"\
+//		"random_light_colors true\n"\
+//		"specular false\n"\
+//		"hs_directinal_lights false\n"\
+//		"hs_point_lights true\n"\
+//		"num_lights_x_z 3 3\n" );
 
 	if( GetCameraController() )
 		GetCameraController()->SetPosition( Vector3( 0.0f, 1.6f, -5.0f ) );
@@ -96,7 +92,7 @@ int MiscShaderDemo::Init()
 */
 	m_Meshes.resize(3);
 	m_Meshes[0] = CreateBoxMesh( Vector3(1,1,1) );
-	m_Meshes[1] = CreateSphereMesh( 0.5f );
+	m_Meshes[1] = CreateSphereMesh( 0.5f, 36, 18 );
 	m_Meshes[2].Load( "Common/models/bunny.msh" );
 
 	InitShaders();
@@ -117,7 +113,10 @@ void MiscShaderDemo::Update( float dt )
 ShaderHandle MiscShaderDemo::GetCurrentShader()
 {
 //	return ShaderHandle();
-	return m_Shaders[MiscShader::SINGLE_COLOR_MEMBRANE];
+//	return m_Shaders[MiscShader::SINGLE_COLOR_MEMBRANE];
+	ShaderHandle shader;
+	m_Shaders.get_current( shader );
+	return shader;
 }
 
 
@@ -148,9 +147,11 @@ void MiscShaderDemo::RenderMeshes()
 
 //	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
-	if( 2 < m_Meshes.size() )
+	MeshHandle mesh;
+	bool res = m_Meshes.get_current( mesh );
+	if( res )
 	{
-		boost::shared_ptr<BasicMesh> pMesh = m_Meshes[2].GetMesh();
+		boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( pMesh )
 			pMesh->Render( shader_mgr );
 	}
@@ -173,6 +174,22 @@ void MiscShaderDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
+	case GIC_DOWN:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_Shaders++;
+		break;
+	case GIC_UP:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_Shaders--;
+		break;
+	case GIC_RIGHT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_Meshes++;
+		break;
+	case GIC_LEFT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_Meshes--;
+		break;
 	case GIC_SPACE:
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )

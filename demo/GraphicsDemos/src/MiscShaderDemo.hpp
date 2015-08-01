@@ -7,16 +7,16 @@
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"
 #include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Support/indexed_vector.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
 
 class MiscShaderDemo : public CGraphicsTestBase
 {
-	std::vector<MeshHandle> m_Meshes;
+	indexed_vector<MeshHandle> m_Meshes;
 
-//	ShaderHandle m_Shader;
-	std::vector<ShaderHandle> m_Shaders;
+	indexed_vector<ShaderHandle> m_Shaders;
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
