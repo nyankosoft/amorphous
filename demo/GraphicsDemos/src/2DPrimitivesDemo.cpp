@@ -25,7 +25,28 @@ C2DPrimitivesDemo::~C2DPrimitivesDemo()
 }
 
 
-#define NUM_VARIATIONS 5
+int C2DPrimitivesDemo::InitShaders()
+{
+	Generic2DShaderDesc shader_descs[2];
+
+	shader_descs[0].diffuse_color_and_tex0_blend.rgb.op = '*';
+	shader_descs[0].diffuse_color_and_tex0_blend.alpha.op = '*';
+	shader_descs[0].textures[0].sampler = 0;
+	shader_descs[0].textures[0].coord   = 0;
+	m_Shaders[0] = CreateGeneric2DShader( shader_descs[0] );
+
+	shader_descs[1].diffuse_color_and_tex0_blend.rgb.op = '*';
+	shader_descs[1].diffuse_color_and_tex0_blend.alpha.op = '*';
+	shader_descs[1].textures[0].sampler = 0;
+	shader_descs[1].textures[0].coord   = 0;
+	shader_descs[1].tex0_and_tex1_blend.rgb.op = '*';
+	shader_descs[1].tex0_and_tex1_blend.alpha.op = '*';
+	shader_descs[1].textures[1].sampler = 1;
+	shader_descs[1].textures[1].coord   = 0;
+	m_Shaders[1] = CreateGeneric2DShader( shader_descs[1] );
+
+	return 0;
+}
 
 
 int C2DPrimitivesDemo::InitRects()
@@ -49,24 +70,6 @@ int C2DPrimitivesDemo::InitRects()
 	for( size_t i=0; i<m_Rects.size(); i++ )
 		m_Rects[i].SetColor( SFloatRGBAColor::White() );
 
-	Generic2DShaderDesc shader_descs[2];
-
-	shader_descs[0].diffuse_color_and_tex0_blend.rgb.op = '*';
-	shader_descs[0].diffuse_color_and_tex0_blend.alpha.op = '*';
-	shader_descs[0].textures[0].sampler = 0;
-	shader_descs[0].textures[0].coord   = 0;
-	m_Shaders[0] = CreateGeneric2DShader( shader_descs[0] );
-
-	shader_descs[1].diffuse_color_and_tex0_blend.rgb.op = '*';
-	shader_descs[1].diffuse_color_and_tex0_blend.alpha.op = '*';
-	shader_descs[1].textures[0].sampler = 0;
-	shader_descs[1].textures[0].coord   = 0;
-	shader_descs[1].tex0_and_tex1_blend.rgb.op = '*';
-	shader_descs[1].tex0_and_tex1_blend.alpha.op = '*';
-	shader_descs[1].textures[1].sampler = 1;
-	shader_descs[1].textures[1].coord   = 0;
-	m_Shaders[1] = CreateGeneric2DShader( shader_descs[1] );
-
 	return 0;
 }
 
@@ -84,7 +87,7 @@ int C2DPrimitivesDemo::InitFrameRects()
 	float h = 100;
 
 	const int num_cols = (int)m_FrameTextures.size();
-	const int num_rows = NUM_VARIATIONS;
+	const int num_rows = m_NumFrameTextureVariations;
 
 	m_FrameRects.resize(      num_rows * num_cols );
 	m_RoundFrameRects.resize( num_rows * num_cols );
@@ -119,6 +122,8 @@ int C2DPrimitivesDemo::InitFrameRects()
 
 int C2DPrimitivesDemo::Init()
 {
+	InitShaders();
+
 	InitRects();
 
 	InitFrameRects();
@@ -192,15 +197,15 @@ void C2DPrimitivesDemo::RenderFrameRects()
 
 	for( size_t i=0; i<m_FrameRects.size(); i++ )
 	{
-//		m_FrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
+//		m_FrameRects[i].Draw( m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 
-		shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
+		shader_mgr.SetTexture( 0, m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 
 		if( m_RenderWithUserDefinedShader )
 			m_FrameRects[i].Draw( shader_mgr );
 //			Get2DPrimitiveRenderer().Render( shader_mgr, &(m_FrameRects[i].GetVertex(0)), 10, PrimitiveType::TRIANGLE_STRIP );
 		else
-			m_FrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
+			m_FrameRects[i].Draw( m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 	}
 }
 
@@ -220,15 +225,15 @@ void C2DPrimitivesDemo::RenderRoundFrameRects()
 
 	for( size_t i=0; i<m_RoundFrameRects.size(); i++ )
 	{
-//		m_RoundFrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
+//		m_RoundFrameRects[i].Draw( m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 
 		if( m_RenderWithUserDefinedShader )
 		{
-			shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
+			shader_mgr.SetTexture( 0, m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 			m_RoundFrameRects[i].Draw( shader_mgr );
 		}
 		else
-			m_RoundFrameRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
+			m_RoundFrameRects[i].Draw( m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 	}
 }
 
@@ -241,7 +246,7 @@ void C2DPrimitivesDemo::RenderRectSet()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
-//	shader_mgr.SetTexture( 0, m_FrameTextures[ i / NUM_VARIATIONS ] );
+//	shader_mgr.SetTexture( 0, m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 
 	m_RectSet.Draw( m_RectTextures[2] );
 }
@@ -260,7 +265,7 @@ void C2DPrimitivesDemo::Render()
 	case 2:
 		RenderRoundRects();
 //		for( size_t i=0; i<m_FrameRects.size(); i++ )
-//			m_RoundRects[i].Draw( m_FrameTextures[ i / NUM_VARIATIONS ] );
+//			m_RoundRects[i].Draw( m_FrameTextures[ i / m_NumFrameTextureVariations ] );
 		break;
 	case 3:
 		RenderRoundFrameRects();

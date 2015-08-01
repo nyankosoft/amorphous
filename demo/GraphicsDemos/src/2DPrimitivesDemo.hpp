@@ -21,6 +21,8 @@ class C2DPrimitivesDemo : public CGraphicsTestBase
 
 	int m_Type;
 
+	static const int m_NumFrameTextureVariations = 5;
+
 	std::vector<TextureHandle> m_RectTextures;
 
 	std::vector<TextureHandle> m_FrameTextures;
@@ -42,6 +44,8 @@ class C2DPrimitivesDemo : public CGraphicsTestBase
 	bool m_RenderWithUserDefinedShader;
 
 private:
+
+	int InitShaders();
 
 	int InitRects();
 
