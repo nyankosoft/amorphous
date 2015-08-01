@@ -250,6 +250,9 @@ void DrawFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, f
 	float fWidth5  = (float)vp.Width  - 0.5f;
 	float fHeight5 = (float)vp.Height - 0.5f;
 
+	shader_mgr.SetParam( "g_ViewportWidth",  (float)vp.Width );
+	shader_mgr.SetParam( "g_ViewportHeight", (float)vp.Height );
+
 	// TODO: support vertices with different elements, such as ScreenVertex
 	// defined in this file.
 	// C2DRect includes elements unnecessary for drawing fullscreen rects
@@ -628,7 +631,8 @@ void DownScale4x4Filter::Render()
 
 	// Get the sample offsets used within the pixel shader
 	GetSampleOffsets_DownScale4x4( (unsigned int)prev_scene_width, (unsigned int)prev_scene_height, avSampleOffsets );
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
+//	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
+	shader_mgr.SetParam( "g_avSampleOffsets", avSampleOffsets, numof(avSampleOffsets) );
 
 //	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 //	HRESULT hr = S_OK;
@@ -715,7 +719,8 @@ void DownScale2x2Filter::Render()
 	const uint tex_height = (uint)m_pPrevScene->m_Desc.Height;
 
 	GetSampleOffsets_DownScale2x2( tex_width, tex_height, avSampleOffsets );
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
+//	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
+	shader_mgr.SetParam( "g_avSampleOffsets", avSampleOffsets, numof(avSampleOffsets) );
 
 	// Create an exact 1/2 x 1/2 copy of the source texture
 	//pEffect->SetTechnique( "DownScale2x2" );
@@ -915,7 +920,7 @@ void GaussianBlurFilter::Render()
 	// The gaussian blur smooths out rough edges to avoid aliasing effects
 	// when the star effect is run
 
-	GraphicsDevice().SetScissorRect( rectDest );
+//	GraphicsDevice().SetScissorRect( rectDest );
 //	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 
@@ -1043,7 +1048,7 @@ void BloomFilter::Render()
 
 	if( m_DoScissorTesting )
 	{
-		GraphicsDevice().SetScissorRect( rectDest );
+//		GraphicsDevice().SetScissorRect( rectDest );
 //		GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 		GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 	}
@@ -1360,7 +1365,8 @@ void LuminanceCalcFilter::Render()
 		break;
 	}
 
-	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
+//	shader_mgr.SetParam( "g_avSampleOffsets", (float *)avSampleOffsets, numof(avSampleOffsets) * 2 );
+	shader_mgr.SetParam( "g_avSampleOffsets", avSampleOffsets, numof(avSampleOffsets) );
 /*
 //	pd3dDevice->SetRenderTarget( 0, apSurfToneMap[dwCurTexture] );
 //	pd3dDevice->SetTexture( 0, g_pTexSceneScaled );
