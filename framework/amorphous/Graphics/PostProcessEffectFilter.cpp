@@ -361,7 +361,7 @@ void PostProcessEffectFilter::SaveProcessedSceneToImageFile()
 	}*/
 
 //	boost::filesystem::create_directories( "debug/post-process_effect" ); // Done in PostProcessEffectManager::RenderPostProcessEffects()
-	string image_pathname = "debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
+	string image_pathname = ".debug/post-process_effect/filter-" + string(m_Technique.GetTechniqueName()) + GetDebugImageFilenameExtraString() + ext;
 	bool saved = m_pDest->GetTexture().SaveTextureToImageFile( image_pathname );
 //	hr = D3DXSaveTextureToFile( img_fmt, m_pDest->m_Texture.GetTexture(), NULL );
 }

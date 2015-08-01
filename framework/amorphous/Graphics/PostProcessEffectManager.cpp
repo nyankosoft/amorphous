@@ -349,7 +349,7 @@ Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 
 	if( PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame == 1 )
 	{
-		boost::filesystem::create_directories( "debug/post-process_effect" );
+		boost::filesystem::create_directories( ".debug/post-process_effect" );
 //		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
 	}
 
