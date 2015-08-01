@@ -8,7 +8,7 @@
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/FogParams.hpp"
-#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Input.hpp"
 
@@ -22,6 +22,11 @@ void PostProcessEffectDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
+	case GIC_F2:
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_DisplayDebugInfo = !m_DisplayDebugInfo;
+		break;
+
 	case GIC_F6:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
@@ -236,7 +241,9 @@ m_BlurStrength(50),
 m_fLuminanceAdaptationRate(0.08f),
 m_PPEffectFlags(0),
 //m_fKeyValue(0.5f)
-m_EnablePostProcessEffects(true)
+m_EnablePostProcessEffects(true),
+m_RenderSky(true),
+m_DisplayDebugInfo(true)
 //m_fBlurStrength(1.0f)
 {
 	m_HDRLightingParams.key_value = 3.5f;
@@ -281,26 +288,12 @@ void PostProcessEffectDemo::RenderMeshes()
 	GraphicsDevice().SetAlphaFunction( CompareFunc::GREATER_THAN_OR_EQUAL_TO );
 //	pd3dDevice->SetRenderState( D3DRS_CULLMODE,  D3DCULL_CCW );
 
-/*	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
-	if( pShaderManager )
-	{
-		pShaderManager->SetParam( "m_vEyePos", GetCurrentCamera().GetPosition() );
-//		hr = pEffect->SetValue( "m_vEyePos", &(GetCurrentCamera().GetPosition()), sizeof(float) * 3 );
-
-		ShaderTechniqueHandle tech_handle;
-//		tech_handle.SetTechniqueName( "Default" );
-//		tech_handle.SetTechniqueName( "NullShader" );
-		tech_handle.SetTechniqueName( "QuickTest" );
-		pShaderManager->SetTechnique( tech_handle );
-//		hr = pEffect->SetTechnique( "QuickTest" );
-	}*/
-
-//	if( FAILED(hr) )
-//		return;
+	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
+	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 
 	size_t i, num_meshes = m_vecMesh.size();
 
-	if( 0 < num_meshes )
+	if( 0 < num_meshes && m_RenderSky )
 	{
 		RenderAsSkybox( m_vecMesh[0], GetCurrentCamera().GetPose() );
 	}
@@ -327,6 +320,12 @@ void PostProcessEffectDemo::RenderMeshes()
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
+
+//	pShaderMgr->SetParam( "m_vEyePos", GetCurrentCamera().GetPosition() );
+
+//	ShaderTechniqueHandle tech_handle;
+//	tech_handle.SetTechniqueName( "Default" );
+//	pShaderMgr->SetTechnique( tech_handle );
 
 	pShaderMgr->SetWorldTransform( Matrix44Identity() );
 
@@ -387,7 +386,6 @@ void PostProcessEffectDemo::Render()
 //	DIRECT3D9.GetDevice()->EndScene();
 
 	if( m_pPostProcessEffectManager && m_EnablePostProcessEffects )
-//	if( false )
 	{
 		m_pPostProcessEffectManager->BeginRender();
 
@@ -401,14 +399,17 @@ void PostProcessEffectDemo::Render()
 		RenderScene();
 	}
 
-	// render the text info
-	string text = fmt_string( "gray mid value: %f\nblur strength: %f\nluminace adaptation rate: %f",
-		m_HDRLightingParams.key_value,
-		(float)m_BlurStrength * m_fBlurFactor,
-		m_fLuminanceAdaptationRate
-		);
+	if( m_DisplayDebugInfo )
+	{
+		// render the text info
+		string text = fmt_string( "gray mid value: %f\nblur strength [j/k]: %f\nluminace adaptation rate: %f",
+			m_HDRLightingParams.key_value,
+			(float)m_BlurStrength * m_fBlurFactor,
+			m_fLuminanceAdaptationRate
+			);
 
-	m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
+		m_pFont->DrawText( text.c_str(), Vector2(20,100), 0xFFFFFFFF );
+	}
 }
 
 // mesh 0: skybox
@@ -429,7 +430,7 @@ bool PostProcessEffectDemo::LoadModels()
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
 	pBoxMeshGenerator->SetPolygonDirection( MeshPolygonDirection::INWARD );
-	pBoxMeshGenerator->SetTexturePath( "PostProcessEffectDemo/models/textures/skygrad_slim_01.jpg" );
+	pBoxMeshGenerator->SetTexturePath( "PostProcessEffectDemo/models/textures/sky.jpg" );
 	skybox_mesh_desc.pMeshGenerator = pBoxMeshGenerator;
 	bool loaded = m_vecMesh[0].Load( skybox_mesh_desc );
 
@@ -442,20 +443,30 @@ bool PostProcessEffectDemo::LoadModels()
 
 void SetDefaultLinearFog()
 {
-	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDev = DIRECT3D9.GetDevice();
 
 	float fStart   = 0.50f;    // For linear mode
 	float fEnd     = 480.0f;//0.95f;
 	float fDensity = 0.66f;   // For exponential modes
 
-	DWORD fog_color = 0xFFDDDFDE;
+//	DWORD fog_color = 0xFFDDDFDE;
 
-	HRESULT hr;
-	hr = pd3dDev->SetRenderState( D3DRS_FOGENABLE, TRUE );
-	hr = pd3dDev->SetRenderState( D3DRS_FOGTABLEMODE, D3DFOG_LINEAR );
-	hr = pd3dDev->SetRenderState( D3DRS_FOGCOLOR, fog_color);
-	hr = pd3dDev->SetRenderState( D3DRS_FOGSTART, *(DWORD *)(&fStart));
-	hr = pd3dDev->SetRenderState( D3DRS_FOGEND,   *(DWORD *)(&fEnd));
+//	HRESULT hr;
+//	hr = pd3dDev->SetRenderState( D3DRS_FOGENABLE, TRUE );
+//	hr = pd3dDev->SetRenderState( D3DRS_FOGTABLEMODE, D3DFOG_LINEAR );
+//	hr = pd3dDev->SetRenderState( D3DRS_FOGCOLOR, fog_color);
+//	hr = pd3dDev->SetRenderState( D3DRS_FOGSTART, *(DWORD *)(&fStart));
+//	hr = pd3dDev->SetRenderState( D3DRS_FOGEND,   *(DWORD *)(&fEnd));
+
+	GraphicsDevice().Enable( RenderStateType::FOG );
+
+	FogParams fog_params;
+	fog_params.Mode    = FogMode::LINEAR;
+	fog_params.Color   = SFloatRGBAColor( 0.867f, 0.875f, 0.871f, 1.0f );
+	fog_params.Start   = fStart;
+	fog_params.End     = fEnd;
+	fog_params.Density = fDensity;
+	GraphicsDevice().SetFogParams( fog_params );
 
 //	hr = pd3dDev->SetRenderState( D3DRS_FOGTABLEMODE, D3DFOG_EXP);
 //	hr = pd3dDev->SetRenderState(D3DRS_FOGDENSITY, *(DWORD *)(&fDensity));
@@ -503,6 +514,9 @@ int PostProcessEffectDemo::Init()
 //	SetDefaultLinearFog();
 	GraphicsDevice().Enable( RenderStateType::FOG );
 
+	// load models
+	bool loaded = LoadModels();
+
 	// init post process effect manager
 	bool test_ppeffect_mgr = true;
 	if( test_ppeffect_mgr )
@@ -521,9 +535,6 @@ int PostProcessEffectDemo::Init()
 		if( res != Result::SUCCESS )
 			return -1;
 	}
-
-	// load models
-	bool loaded = LoadModels();
 
 	return 0;
 }

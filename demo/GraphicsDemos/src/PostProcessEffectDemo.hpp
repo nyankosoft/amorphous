@@ -84,6 +84,10 @@ class PostProcessEffectDemo : public CGraphicsTestBase
 
 //	float m_fBlurStrength;
 
+	bool m_RenderSky;
+
+	bool m_DisplayDebugInfo;
+
 protected:
 
 	void RenderMeshes();
