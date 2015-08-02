@@ -531,7 +531,7 @@ void SpotlightShadowMap::SetWorldToLightSpaceTransformMatrix()
 
 PointLightShadowMap::PointLightShadowMap()
 {
-	m_pCubeShadowMapManager = new CubeMapManager();
+	m_pCubeShadowMapManager.reset( new CubeMapManager() );
 	m_pCubeShadowMapManager->SetCubeMapSceneRenderer( &m_CubeShadowMapSceneRenderer );
 //	m_CubeShadowMapSceneRenderer.SetRenderer( m_pSceneRenderer );
 //	m_pCubeShadowMapManager->SetSceneRenderer( m_pCubeShadowMapSceneRenderer );
@@ -540,7 +540,6 @@ PointLightShadowMap::PointLightShadowMap()
 
 PointLightShadowMap::~PointLightShadowMap()
 {
-	SafeDelete( m_pCubeShadowMapManager );
 }
 
 

@@ -252,14 +252,16 @@ public:
 };
 
 
-/// Used this for directional lights.
-/// The shadow map texture stores the distance from the light plane
-/// to the surface of the object.
-/// A light plane is the plane defined by shifting the plane perpendicular
-/// to the light direction back from the scene.
-/// This means that if the scene is objects on the ground and the light
-/// is the sunlight, the light plane is defined by shifting the plane
-/// perpendicular to the sunlight' direction toward the sky.
+/**
+ \brief Shadowmap for directional lights
+ - The shadow map texture stores the distance from the light plane
+   to the surface of the object.
+ - A light plane is the plane defined by shifting the plane perpendicular
+   to the light direction back from the scene. Example: if the scene has
+   objects on the ground and the light is the sunlight, the light plane is
+   defined by shifting the plane perpendicular to the sunlight' direction
+   toward the sky.
+*/
 class OrthoShadowMap : public FlatShadowMap
 {
 	void UpdateShadowMapSettings();
@@ -321,7 +323,7 @@ public:
 
 
 /**
- Renders the shadowmap to each face of the cube texture
+ \brief Renders the shadowmap to each face of the cube texture
  - Calls RenderShadowMapScene() of m_pSceneRenderer 6 times
 
 */
@@ -332,7 +334,7 @@ class PointLightShadowMap : public ShadowMap
 
 	// or 
 
-	CubeMapManager *m_pCubeShadowMapManager;
+	boost::shared_ptr<CubeMapManager> m_pCubeShadowMapManager;
 
 	CCubeShadowMapSceneRenderer m_CubeShadowMapSceneRenderer;
 
