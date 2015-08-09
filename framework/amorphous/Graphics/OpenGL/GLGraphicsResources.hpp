@@ -4,8 +4,8 @@
 
 #include "amorphous/Graphics/GraphicsResources.hpp"
 #include "amorphous/Graphics/TextureResourceVisitor.hpp"
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 #include "amorphous/Support/fwd.hpp"
-#include <gl/gl.h>
 
 
 namespace amorphous

@@ -190,7 +190,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLExtensions.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLExtensions.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.cpp" />
@@ -514,7 +516,9 @@
     <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RectTree.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\glext.h" />
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLExtensions.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLExtensions.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.hpp" />

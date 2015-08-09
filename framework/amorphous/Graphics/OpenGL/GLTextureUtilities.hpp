@@ -2,9 +2,9 @@
 #define __GLTextureUtilities_HPP__
 
 
-#include "../../base.hpp" // syntax errors in <gl/gl.h> if this is not included on VC++ express 2010.
+//#include "../../base.hpp" // syntax errors in <gl/gl.h> if this is not included on VC++ express 2010.
 #include <string>
-#include <gl/gl.h>
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

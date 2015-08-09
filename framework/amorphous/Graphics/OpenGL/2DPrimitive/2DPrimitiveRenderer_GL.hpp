@@ -4,7 +4,7 @@
 
 #include "../../2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "../../TextureHandle.hpp"
-#include <gl/gl.h>
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

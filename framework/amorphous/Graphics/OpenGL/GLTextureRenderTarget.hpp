@@ -4,7 +4,7 @@
 
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
-#include <GL/gl.h>
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

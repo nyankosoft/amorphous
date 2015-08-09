@@ -4,7 +4,6 @@
 
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "amorphous/Graphics/OpenGL/fwd.hpp"
-#include "amorphous/Graphics/OpenGL/GLExtensions.hpp"
 #include "amorphous/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"

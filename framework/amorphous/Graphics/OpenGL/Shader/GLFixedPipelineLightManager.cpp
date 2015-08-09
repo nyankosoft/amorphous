@@ -1,5 +1,5 @@
 #include "GLFixedPipelineLightManager.hpp"
-#include <GL/gl.h>
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

@@ -3,8 +3,8 @@
 
 
 #include "amorphous/Graphics/GraphicsDevice.hpp"
-#include <gl/gl.h>			// Header File For The OpenGL32 Library
-#include <gl/glu.h>			// Header File For The GLu32 Library
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
+//#include <gl/glu.h>			// Header File For The GLu32 Library
 
 
 namespace amorphous
@@ -13,6 +13,10 @@ namespace amorphous
 
 #pragma comment( lib, "OpenGL32.lib" )
 #pragma comment( lib, "glu32.lib" )
+#pragma comment( lib, "glew32.lib" )
+
+// Commented out: including glew32s.lib and not glew32.lib causes 'unresolved external symbol' link errors.
+//#pragma comment( lib, "glew32s.lib" )
 
 
 //------------------------------------------------------------------------------

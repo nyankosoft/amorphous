@@ -2,15 +2,14 @@
 #define __GLFixedFunctionPipelineManager_HPP__
 
 
-#include "../../../base.hpp" // windows.h is included in this header. Need to be included before gl.h on Windows platform
-#include "../../../Support/stream_buffer.hpp"
-
-#include <GL/gl.h>
-#include "../../fwd.hpp"
-#include "../../Shader/ShaderTechniqueHandle.hpp"
-#include "../../Shader/ShaderParameter.hpp"
-#include "../../Shader/ShaderManager.hpp"
-#include "../fwd.hpp"
+#include "amorphous/base.hpp" // windows.h is included in this header. Need to be included before gl.h on Windows platform
+#include "amorphous/Support/stream_buffer.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderParameter.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/OpenGL/fwd.hpp"
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

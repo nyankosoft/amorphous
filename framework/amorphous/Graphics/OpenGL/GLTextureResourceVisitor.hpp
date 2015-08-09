@@ -5,8 +5,8 @@
 #include "../TextureResourceVisitor.hpp"
 #include "GLGraphicsResources.hpp"
 #include "GLGraphicsDevice.hpp"
-#include "GLExtensions.hpp"
-#include <gl/gl.h>
+//#include "GLExtensions.hpp"
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

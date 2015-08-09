@@ -1,6 +1,5 @@
 #include "GLGraphicsDevice.hpp"
 #include "GLTextureResourceVisitor.hpp"
-#include "GLExtensions.hpp"
 #include "../TextureStage.hpp"
 #include "../FogParams.hpp"
 #include "../../3DMath/Matrix44.hpp"
@@ -104,6 +103,7 @@ bool CGLGraphicsDevice::Init( int iWindowWidth, int iWindowHeight, ScreenMode::N
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 

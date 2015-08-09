@@ -1,4 +1,6 @@
 #include "GLEmbeddedMiscGLSLShader.hpp"
+#include <istream>
+#include <fstream>
 
 
 namespace amorphous
@@ -141,6 +143,18 @@ void GLEmbeddedMiscGLSLShader::GetSingleColorMembraneFragmentShader( std::string
 }
 
 
+std::string get_file_contents(const char *filename)
+{
+	std::ifstream in(filename, std::ios::in | std::ios::binary);
+	if (in)
+	{
+		return(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
+	}
+
+	throw(errno);
+}
+
+
 Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id, std::string& shader )
 {
 	switch( shader_id )
@@ -156,6 +170,15 @@ Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id
 		break;
 	case MiscShader::SINGLE_COLOR_MEMBRANE:
 		GetSingleColorMembraneVertexShader(shader);
+		break;
+	case MiscShader::ORTHO_SHADOW_MAP:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/OrthoShadowMap.vert" );
+		break;
+	case MiscShader::SPOTLIGHT_SHADOW_MAP:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowMap.vert" );
+		break;
+	case MiscShader::SHADOW_RECEIVER:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/ShadowReceiver.vert" );
 		break;
 	default:
 		return Result::UNKNOWN_ERROR;
@@ -181,6 +204,15 @@ Result::Name GLEmbeddedMiscGLSLShader::GetFragmentShader( MiscShader::ID shader_
 		break;
 	case MiscShader::SINGLE_COLOR_MEMBRANE:
 		GetSingleColorMembraneFragmentShader(shader);
+		break;
+	case MiscShader::ORTHO_SHADOW_MAP:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/OrthoShadowMap.frag" );
+		break;
+	case MiscShader::SPOTLIGHT_SHADOW_MAP:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowMap.frag" );
+		break;
+	case MiscShader::SHADOW_RECEIVER:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/ShadowReceiver.frag" );
 		break;
 	default:
 		return Result::UNKNOWN_ERROR;

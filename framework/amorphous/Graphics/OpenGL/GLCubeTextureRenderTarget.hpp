@@ -3,7 +3,6 @@
 
 
 #include "../CubeTextureRenderTarget.hpp"
-#include <gl/gl.h>
 
 
 namespace amorphous

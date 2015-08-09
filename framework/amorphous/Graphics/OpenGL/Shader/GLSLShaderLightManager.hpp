@@ -4,7 +4,7 @@
 
 #include "GLFixedPipelineLightManager.hpp"
 #include "amorphous/Support/Macro.h"
-#include <GL/gl.h>
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous

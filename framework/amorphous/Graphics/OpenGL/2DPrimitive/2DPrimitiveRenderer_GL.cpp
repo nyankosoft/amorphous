@@ -2,7 +2,6 @@
 #include "../GLGraphicsDevice.hpp"
 //#include "App/GameWindowManager_Win32_GL.hpp"
 #include "3DMath/Matrix44.hpp"
-#include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Shader/GenericShaderHelpers.hpp"

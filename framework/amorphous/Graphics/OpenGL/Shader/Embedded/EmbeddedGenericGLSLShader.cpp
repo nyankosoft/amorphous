@@ -11,6 +11,31 @@ namespace amorphous
 {
 
 
+const char *g_pTransform =
+
+"struct Transform"\
+"{"\
+	"vec4 translation;"\
+
+	/// quaternion
+	"vec4 rotation;"\
+"};\n"\
+
+
+"vec3 mul( Transform transform, vec3 rhs )"\
+"{"\
+	"vec4 res = quat_mul( quat_mul( transform.rotation, vec4( rhs.x, rhs.y, rhs.z, 0 ) ), quat_inv( transform.rotation ) );"\
+	"return res.xyz + transform.translation.xyz / transform.translation.w;"\
+"}\n"\
+
+
+"vec4 mul( Transform transform, vec4 rhs )"\
+"{"\
+	"return vec4( mul( transform, rhs.xyz / rhs.w ), 1 );"\
+"}\n";
+
+
+
 static Result::Name GenerateLightingVertexShader( const GenericShaderDesc& desc, std::string& vertex_shader )
 {
 	static const char *vs =
@@ -30,6 +55,7 @@ static Result::Name GenerateLightingVertexShader( const GenericShaderDesc& desc,
 	// Note that the actual light calculation is done in FS
 	static const char *hs_dl_vs =
 	"#version 330\n"\
+
 	"layout(location = 0) in vec4 position;\n"\
 	"layout(location = 1) in vec3 normal;\n"\
 	"layout(location = 2) in vec4 diffuse_color;\n"\

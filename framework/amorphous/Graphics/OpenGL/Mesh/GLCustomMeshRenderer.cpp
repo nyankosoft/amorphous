@@ -1,5 +1,4 @@
 #include "GLCustomMeshRenderer.hpp"
-#include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/FixedFunctionPipelineManager.hpp"

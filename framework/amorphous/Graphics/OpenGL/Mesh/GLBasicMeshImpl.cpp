@@ -1,5 +1,4 @@
 #include "GLBasicMeshImpl.hpp"
-#include "../GLExtensions.hpp"
 #include "../GLGraphicsDevice.hpp" // for LOG_GL_ERROR() macro
 #include "../GLTextureResourceVisitor.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"

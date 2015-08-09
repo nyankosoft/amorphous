@@ -199,9 +199,11 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
 {
 	switch( fmt )
 	{
-	case TextureFormat::A8R8G8B8:      return GL_RGBA8;
-	case TextureFormat::X8R8G8B8:      return GL_RGB8;
-	case TextureFormat::A16R16G16B16F: return GL_RGBA16;
+	case TextureFormat::A8R8G8B8:      return GL_RGBA;
+	case TextureFormat::X8R8G8B8:      return GL_RGB;
+	case TextureFormat::R32F:          return GL_R32F;
+	case TextureFormat::A16R16G16B16F: return GL_RGBA16F;
+//	case TextureFormat::A32R32G32B32F: return GL_RGBA32F;
 //	case TextureFormat: return ;
 //	case TextureFormat: return ;
 //	case TextureFormat: return ;
@@ -212,14 +214,33 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
 	}
 }
 
+
+static Result::Name GetSrcPixelTypeAndFormat( const TextureResourceDesc& desc, GLenum& src_format, GLenum& src_type )
+{
+	bool is_render_target = (desc.UsageFlags & UsageFlag::RENDER_TARGET);
+
+	src_format = is_render_target ? GL_RGBA : GL_BGRA;
+
+	if( desc.Format == TextureFormat::R32F )
+		src_type = GL_FLOAT;
+	else
+		src_type = GL_UNSIGNED_BYTE;
+
+	return Result::SUCCESS;
+}
+
+
 /**
  \param[in]  img
  \param[in]  is_render_target
  \param[out] src_format
  \param[out] src_type
 */
-static Result::Name GetSrcPixelTypeAndFormat( BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
+static Result::Name GetSrcPixelTypeAndFormat( const TextureResourceDesc& desc, BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
 {
+//	if( desc.UsageFlags & UsageFlag::RENDER_TARGET )
+//		bool is_render_target;
+
 	src_format = GL_RGB;
 	src_type   = GL_UNSIGNED_BYTE;
 
@@ -298,13 +319,28 @@ inline static int GetNumMipmaps( const TextureResourceDesc& desc )
 
 // Create texture from a bitmap image
 // \param src_img [in] the source image. NOTE: the image is altered by one or more scaling operations to create mipmap textures.
-bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, BitmapImage& src_image, GLuint& texture_id )
+bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, BitmapImage& src_img, GLuint& texture_id )
 {
 	const bool is_render_target = (m_TextureDesc.UsageFlags & UsageFlag::RENDER_TARGET);
 
+	if( m_TextureDesc.Height == 1024 )
+		int break_here = 1;
+
 	GLenum src_format = GL_RGB;
 	GLenum src_type   = GL_UNSIGNED_BYTE;
-	Result::Name res = GetSrcPixelTypeAndFormat( src_image, is_render_target, src_format, src_type );
+
+	Result::Name res = Result::UNKNOWN_ERROR;
+	if( 0 < src_img.GetWidth() )
+	{
+		// An image for the texture has been loaded from a file, or generated with an algorithm
+		res = GetSrcPixelTypeAndFormat( m_TextureDesc, src_img, is_render_target, src_format, src_type );
+	}
+	else
+	{
+		// We are creating an empty texture
+		res = GetSrcPixelTypeAndFormat( m_TextureDesc, src_format, src_type );
+	}
+
 	if( res != Result::SUCCESS )
 	{
 		LOG_PRINT_ERROR( " GetSrcPixelTypeAndFormat() failed." );
@@ -318,19 +354,29 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 
 	m_NumMipmaps = (uint)num_mipmaps;
 
-	shared_ptr<BitmapImage> pImageCopy = src_image.CreateCopy();
-	if( !pImageCopy )
+	shared_ptr<BitmapImage> pImageCopy;
+	if( 0 < src_img.GetWidth() )
 	{
-		string stat;
-		GetStatus(stat);
-		LOG_PRINT_ERROR( " Failed to create a copy of the source image (source: " + stat + ")." );
-		return false;
+		pImageCopy = src_img.CreateCopy();
+
+		if( !pImageCopy )
+		{
+			string stat;
+			GetStatus(stat);
+			LOG_PRINT_ERROR( " Failed to create a copy of the source image (source: " + stat + ")." );
+			return false;
+		}
 	}
 
-	BitmapImage& image_copy = *pImageCopy;
+	BitmapImage empty_image;
+
+	BitmapImage& image_copy = pImageCopy ? (*pImageCopy) : empty_image;
 
 	int next_width  = m_TextureDesc.Width;
 	int next_height = m_TextureDesc.Height;
+	if( next_width == 1024 && next_height == 1024 )
+		int break_here = 1;
+
 	for( int i=0; i<num_mipmaps; i++ )
 	{
 		if( 0 < i )
@@ -338,16 +384,24 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			// Scale the image to the half in width and height to create the mipmap texture(s).
 			next_width  /= 2;
 			next_height /= 2;
-			bool rescaled = image_copy.Rescale( next_width, next_height );
-			if( !rescaled )
+
+			// Scale the image to half of its current size, if we have actually an image
+			// Sometimes people need to create an empty texture with a complete mipmap chain,
+			// and in such a case rescaling is unnecessary.
+			if( 0 < image_copy.GetWidth() )
 			{
-				LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d, path=%s", i, m_TextureDesc.ResourcePath.c_str() ) );
-//				LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d", i ) );
-				break;
+				bool rescaled = image_copy.Rescale( next_width, next_height );
+				if( !rescaled )
+				{
+					LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d, path=%s", i, m_TextureDesc.ResourcePath.c_str() ) );
+//					LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d", i ) );
+					break;
+				}
 			}
 		}
 
-		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, FreeImage_GetBits(image_copy.GetFBITMAP()), texture_id );
+		void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
+		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, pImageData, texture_id );
 	}
 
 	return true;//CreateGLTexture( GL_TEXTURE_2D, src_format, src_type, FreeImage_GetBits(img.GetFBITMAP()) );
@@ -421,6 +475,9 @@ m_NumMipmaps(0)
 {}
 
 
+/**
+ \param pImageData NULL if an empty texture is being created.
+ */
 bool GLTextureResourceBase::UpdateGLTextureImage(
 	GLenum target,
 	int level,
@@ -432,10 +489,6 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 	GLuint texture_id
 	)
 {
-//	glGenTextures( 1, &m_TextureID );
-
-//	LOG_GL_ERROR( "glGenTextures() failed." );
-
 	glBindTexture( GL_TEXTURE_2D, texture_id );
 
 	LOG_GL_ERROR( "glBindTexture() failed." );
@@ -445,21 +498,16 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 
 	TextureResourceDesc& desc = m_TextureDesc;
 
-//	GLint level = 0;
-//	GLint level = (0 < desc.MipLevels) ? (desc.MipLevels - 1) : min( mip_level_calc(desc.Width), mip_level_calc(desc.Height) );
-
 	GLint internal_format = ToGLInternalFormat( desc.Format );
-//	internal_format = GL_RGBA8;
-	internal_format = GL_RGBA;
+
+	// TODO: respect the specified format
+//	internal_format = GL_RGBA;
 
 	LOG_GL_ERROR( "Clearing error before glTexImage2D()" );
 
 	LOG_PRINTF(( "glTexImage2D() level: %d, width: %d, height: %d", level, width, height ));
 
-//	vector<uchar> fake_img_data;
-//	fake_img_data.resize( desc.Width * desc.Height * 3, 0x80 );
-
-	if( true )//desc.MipLevels == 1 )
+	if( true )
 	{
 		glTexImage2D( target,                 // GLenum target,
 					  level,                  // GLint level,
@@ -469,8 +517,7 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 					  0,                      // GLint border,
 					  src_format,             // GLenum format,
 					  src_type,               // GLenum type
-					  pImageData // const GLvoid *pixels
-					  //&(fake_img_data[0]) // const GLvoid *pixels
+					  pImageData              // const GLvoid *pixels
 					  );
 
 		LOG_GL_ERROR( fmt_string( "glTexImage2D() failed: level=%d, width=%d, height=%d", level, width, height ).c_str() );
@@ -488,21 +535,7 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 			pImageData );
 	}*/
 
-
-//	LOG_GL_ERROR( "error in glTexImage2D(): " );
-
 	return true;
-/*
-	SAFE_RELEASE( m_pTexture );
-
-	const CGLTextureResourceDesc& desc = m_TextureDesc;
-
-	HRESULT hr;
-	DWORD usage = 0;
-	D3DPOOL pool = D3DPOOL_MANAGED;
-//	DWORD usage = D3DUSAGE_DYNAMIC;
-//	D3DPOOL pool = D3DPOOL_DEFAULT;
-*/
 }
 
 
@@ -510,9 +543,16 @@ bool CGLTextureResource::CreateFromDesc()
 {
 	const TextureResourceDesc& desc = m_TextureDesc;
 
+	LOG_GL_ERROR( "clearing errors (if there is any) before calling glGenTextures()." );
+
 	glGenTextures( 1, &m_TextureID );
 
 	LOG_GL_ERROR( "glGenTextures() failed." );
+
+	if( m_TextureID == 0 )
+	{
+		int break_here = 1;
+	}
 
 	// create an empty texture
 //	bool created = Create();
@@ -525,7 +565,7 @@ bool CGLTextureResource::CreateFromDesc()
 
 //	if( m_TextureDesc.Height == 512 )
 //		m_TextureDesc.Height = 1024;
-
+/*
 	m_pLockedImage.reset( new BitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
 
 	shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
@@ -568,6 +608,51 @@ bool CGLTextureResource::CreateFromDesc()
 	else
 	{
 		LOG_PRINT_ERROR( " Failed to lock the texture: " + desc.ResourcePath );
+		return false;
+	}
+*/
+	shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
+
+//	if( !pLoader )
+//		pLoader.reset( new SingleColorTextureGenerator );
+
+	if( pLoader )
+	{
+		m_pLockedImage.reset( new BitmapImage( m_TextureDesc.Width, m_TextureDesc.Height, bpp ) );
+
+		shared_ptr<CGLLockedTexture> pLockedTex( new CGLLockedTexture(m_pLockedImage) );
+
+		if( pLockedTex->IsValid() )
+		{
+			// An empty texture has been created
+			// - fill the texture if loader was specified
+			shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
+
+			// Let the user-defined routine to fill the texture
+			pLoader->FillTexture( *pLockedTex );
+
+			for( size_t i=0; i<pLoader->m_pFilters.size(); i++ )
+			{
+				if( pLoader->m_pFilters[i] )
+					pLoader->m_pFilters[i]->ApplyFilter( *pLockedTex );
+			}
+		}
+	}
+
+	BitmapImage empty_image;
+	BitmapImage& src_image = m_pLockedImage ? (*m_pLockedImage) : empty_image;
+
+	bool res = CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, src_image, m_TextureID );
+
+	if( res )
+	{
+//		Unlock();
+		SetState( GraphicsResourceState::LOADED );
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_ERROR( " CreateGLTextureFromBitmapImage() failed (" + desc.ResourcePath + ").");
 		return false;
 	}
 }

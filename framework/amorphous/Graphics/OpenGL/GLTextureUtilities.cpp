@@ -1,6 +1,5 @@
 #include "GLTextureUtilities.hpp"
 #include "GLGraphicsDevice.hpp"
-#include "GLExtensions.hpp"
 #include "Support/BitmapImage.hpp"
 
 
@@ -19,7 +18,8 @@ bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum s
 	LOG_GL_ERROR( "glBindTexture() failed." );
 
 	vector<uchar> pixels;
-	pixels.resize( width * height * 4, 0 );
+	uint pixel_data_size = 4;
+	pixels.resize( width * height * pixel_data_size, 0 );
 
 	glGetTexImage(
 		GL_TEXTURE_2D,   // GLenum target,

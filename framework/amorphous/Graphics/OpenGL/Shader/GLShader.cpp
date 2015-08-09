@@ -6,9 +6,6 @@
 #include "amorphous/Support/SafeDelete.hpp"
 
 
-#define GL_GEOMETRY_SHADER                0x8DD9
-
-
 namespace amorphous
 {
 
@@ -577,6 +574,7 @@ void CGLProgram::End()
 
 void CGLProgram::SetParam( ShaderParameter<int>& int_param )
 {
+	LOG_PRINT_ERROR( " - Not implemented." );
 }
 
 
@@ -613,7 +611,15 @@ void CGLProgram::SetParam( ShaderParameter< std::vector<float> >& float_param )
 
 void CGLProgram::SetParam( ShaderParameter<TextureParam>& tex_param )
 {
-	LOG_PRINT_ERROR( " - Not implemented." );
+	uint stage = 0;
+
+	GLint location = glGetUniformLocation( m_Program, tex_param.GetParameterName().c_str() );
+	GLint v0 = stage;
+	glUniform1i(location, v0);
+
+	TextureHandle texture = tex_param.GetParameter().m_Handle;
+
+	SetTextureGL( stage, texture );
 }
 
 
@@ -757,7 +763,14 @@ void CGLProgram::SetParam( const char *parameter_name, const Vector4 *vec4_param
 
 void CGLProgram::SetParam( const char *parameter_name, const Matrix44& mat44_param )
 {
-	LOG_PRINT_ERROR( " - Not implemented." );
+	GLint location = glGetUniformLocation( m_Program, parameter_name );
+	glUseProgram( m_Program );
+	if( 0 <= location )
+	{
+		glUniformMatrix4fv( location, 1, GL_FALSE, (GLfloat *)mat44_param.GetData() );
+
+		LOG_GL_ERROR( "Called glUniformMatrix4fv()." );
+	}
 }
 
 

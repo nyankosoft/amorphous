@@ -1,5 +1,4 @@
 #include "GLTextureRenderTarget.hpp"
-#include "GLExtensions.hpp"
 #include "GLGraphicsDevice.hpp" // LOG_GL_ERROR macro
 #include "GLGraphicsResources.hpp"
 #include "GLTextureUtilities.hpp"
@@ -433,6 +432,8 @@ void GLTextureRenderTarget::ResetRenderTarget()
 
 	// Bind the original frame buffer. 0 if it's the back buffer.
 	glBindFramebufferEXT( GL_DRAW_FRAMEBUFFER_EXT, m_OrigFrameBuffer );
+
+//	GLenum src_format = (m_TextureDesc.Format == TextureFormat::R32F) ? 
 
 	bool save_rt_texture = false;
 	if( save_rt_texture )

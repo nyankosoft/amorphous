@@ -1,5 +1,4 @@
 #include "GLSLShaderLightManager.hpp"
-#include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Support/StringAux.hpp"
 #include "Support/Macro.h"
 
