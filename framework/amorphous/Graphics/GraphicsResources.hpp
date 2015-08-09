@@ -11,7 +11,7 @@
 #include "../Support/Serialization/BinaryDatabase.hpp"
 #include "../Support/fwd.hpp"
 #include "../3DMath/Rectangular.hpp"
-#include <gl/gl.h>
+#include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 
 namespace amorphous
