@@ -26,11 +26,13 @@ class ShadowMapSceneRenderer
 {
 public:
 
+	virtual ~ShadowMapSceneRenderer() {}
+
 	/// render objects that cast shadows
-	virtual void RenderSceneToShadowMap( Camera& camera ) = 0;
+	virtual void RenderSceneToShadowMap( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques ) = 0;
 
 	/// render objects which are cast shadows by others
-	virtual void RenderShadowReceivers( Camera& camera ) = 0;
+	virtual void RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques ) = 0;
 };
 
 
@@ -44,7 +46,7 @@ public:
 
 	void RenderSceneToCubeMap( Camera& camera )
 	{
-		m_pSceneRenderer->RenderSceneToShadowMap( camera );
+//		m_pSceneRenderer->RenderSceneToShadowMap( camera );
 	}
 
 	virtual Vector3 GetCameraPosition() { return Vector3(0,0,0); }
@@ -134,7 +136,7 @@ public:
 	/// returns true on success
 	virtual bool Init() { return true; }
 
-	void SetShader( ShaderHandle& shader ) { m_Shader = shader; }
+//	void SetShader( ShaderHandle& shader ) { m_Shader = shader; }
 
 	void SetSceneCamera( Camera *pCamera ) { m_pSceneCamera = pCamera; }
 

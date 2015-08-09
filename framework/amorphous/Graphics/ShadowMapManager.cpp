@@ -1,4 +1,5 @@
 #include "ShadowMapManager.hpp"
+#include <boost/filesystem.hpp>
 #include "Graphics/2DPrimitive/2DRect.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
@@ -88,7 +89,7 @@ public:
 ShadowMapManager::ShadowMapManager()
 :
 //m_ShadowMapShaderFilename("Shader/VarianceShadowMap.fx"),
-m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
+//m_ShadowMapShaderFilename("Shader/SimpleShadowMap.fx"),
 m_pSceneRenderTarget( TextureRenderTarget::Create() ),
 m_DisplayShadowMapTexturesForDebugging(false),
 m_IDCounter(0),
@@ -123,13 +124,16 @@ bool ShadowMapManager::Init()
 
 	ReleaseTextures();
 
-	bool shader_loaded = m_Shader.Load( m_ShadowMapShaderFilename );
+	bool shader_loaded = false;
+	
+	if( 0 < m_ShadowMapShaderFilename.length() )
+		shader_loaded = m_Shader.Load( m_ShadowMapShaderFilename );
 
-	if( !shader_loaded )
-	{
-		LOG_PRINT_ERROR( "Cannot load shader: " + m_ShadowMapShaderFilename );
-		return false;
-	}
+//	if( !shader_loaded )
+//	{
+//		LOG_PRINT_ERROR( "Cannot load shader: " + m_ShadowMapShaderFilename );
+//		return false;
+//	}
 
 	bool textures_created = CreateSceneShadowMapTextures();
 
@@ -152,7 +156,7 @@ bool ShadowMapManager::Init()
 	if( !m_RectDrawShader.IsLoaded() )
 		LOG_PRINT_ERROR(( "Failed to create the 2D shader for drawing fullscreeen quads." ));
 
-	if( shader_loaded && textures_created && m_RectDrawShader.IsLoaded() )
+	if( /*shader_loaded &&*/ textures_created && m_RectDrawShader.IsLoaded() )
 		return true;
 	else
 		return false;
@@ -161,7 +165,7 @@ bool ShadowMapManager::Init()
 
 void ShadowMapManager::SetDefault()
 {
-	m_ShadowMapSize = 512;
+	m_ShadowMapSize = 1024;
 
 	// set the default pose of the scene camera
 	m_SceneCamera.SetPosition( Vector3( 0.0f, 1.0f, -5.0f ) );
@@ -205,10 +209,14 @@ void ShadowMapManager::SetSceneRenderer( shared_ptr<ShadowMapSceneRenderer> pSce
 /// TODO: support spotlight
 std::map< int, boost::shared_ptr<ShadowMap> >::iterator ShadowMapManager::CreateShadowMap( U32 id, const Light& light )
 {
-	if( light.GetLightType() != Light::DIRECTIONAL
-	 && light.GetLightType() != Light::HEMISPHERIC_DIRECTIONAL
-	 && light.GetLightType() != Light::POINT
-	 && light.GetLightType() != Light::HEMISPHERIC_POINT )
+	Light::Type light_type = light.GetLightType();
+
+	if( light_type != Light::DIRECTIONAL
+	 && light_type != Light::HEMISPHERIC_DIRECTIONAL
+	 && light_type != Light::POINT
+	 && light_type != Light::HEMISPHERIC_POINT
+	 && light_type != Light::SPOTLIGHT
+	 && light_type != Light::HEMISPHERIC_SPOTLIGHT )
 	{
 		return m_mapIDtoShadowMap.end();
 	}
@@ -229,7 +237,7 @@ std::map< int, boost::shared_ptr<ShadowMap> >::iterator ShadowMapManager::Create
 
 //	pShadowMap->UseLightPosInWorldSpace( m_UseLightPosInWorldSpace );
 
-	pShadowMap->SetShader( m_Shader );
+//	pShadowMap->SetShader( m_Shader );
 
 	bool init = pShadowMap->CreateShadowMapTextures();
 	if( !init )
@@ -714,6 +722,30 @@ void ShadowMapManager::EndScene()
 //	DIRECT3D9.GetDevice()->EndScene();
 
 	m_pSceneRenderTarget->ResetRenderTarget();
+}
+
+
+void ShadowMapManager::SaveShadowMapTexturesToImageFiles( const std::string& output_directory_path )
+{
+	using namespace boost::filesystem;
+
+	boost::system::error_code ec;
+	create_directories( output_directory_path, ec );
+
+	int i = 0;
+	for( IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
+		itr != m_mapIDtoShadowMap.end();
+		itr++ )
+	{
+		shared_ptr<ShadowMap> pShadowMap = itr->second;
+
+		if( !pShadowMap )
+			continue;
+
+		path image_file_pathname = output_directory_path / fmt_string("shadowmap%02d.png", i);
+
+		pShadowMap->SaveShadowMapTextureToFile( image_file_pathname.string() );
+	}
 }
 
 

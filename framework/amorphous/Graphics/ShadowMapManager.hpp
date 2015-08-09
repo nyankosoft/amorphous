@@ -195,7 +195,12 @@ public:
 //	static void SetDefaultShaderFilename( const std::string& filename ) { ms_strDefaultShaderFilename = filename; }
 	void SetShadowMapShaderFilename( const std::string& filename ) { m_ShadowMapShaderFilename = filename; }
 
-	/// For debugging
+	//
+	// For debugging
+	//
+
+	void SaveShadowMapTexturesToImageFiles( const std::string& output_directory_path );
+
 	void SaveSceneTextureToFile( const std::string& filename );
 };
 

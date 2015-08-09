@@ -5,6 +5,7 @@
 #include "TextureRenderTarget.hpp"
 #include "Shader/ShaderManagerHub.hpp"
 #include "Shader/ShaderManager.hpp"
+#include "Shader/MiscShaderGenerator.hpp"
 #include "Meshgenerators/Meshgenerators.hpp"
 #include "Mesh/BasicMesh.hpp"
 #include "3DMath/3DGameMath.hpp"
@@ -64,7 +65,10 @@ void ShadowMap::RenderSceneToShadowMap( Camera& camera )
 	// set shadow map texture, etc.
 	BeginSceneShadowMap();
 
-	m_pSceneRenderer->RenderSceneToShadowMap( m_LightCamera );
+	ShaderHandle shaders[] = { m_Shader, m_Shader };
+	ShaderTechniqueHandle shader_techniques[] = { ShaderTechniqueHandle(), ShaderTechniqueHandle() };
+
+	m_pSceneRenderer->RenderSceneToShadowMap( m_LightCamera, shaders, shader_techniques );
 
 	EndSceneShadowMap();
 }
@@ -77,7 +81,10 @@ void ShadowMap::RenderShadowReceivers( Camera& camera )
 
 	BeginSceneShadowReceivers();
 
-	m_pSceneRenderer->RenderShadowReceivers( camera );
+	ShaderHandle shaders[] = { m_Shader, m_Shader };
+	ShaderTechniqueHandle shader_techniques[] = { ShaderTechniqueHandle(), ShaderTechniqueHandle() };
+
+	m_pSceneRenderer->RenderShadowReceivers( camera, shaders, shader_techniques );
 }
 
 
@@ -193,6 +200,9 @@ bool FlatShadowMap::CreateShadowMapTextures()
 		return false;
 	}
 */
+
+	// Shadow map rendering test
+//	m_ShadowMapTextureFormat = TextureFormat::A8R8G8B8;
 
 	uint option_flags = 0;
 	m_pShadowmapRenderTarget = TextureRenderTarget::Create();
@@ -353,6 +363,9 @@ OrthoShadowMap::OrthoShadowMap()
 	m_DepthTestTechnique.SetTechniqueName( "OrthoSceneShadowMap" );
 	m_VertexBlendShadowMapTechnique.SetTechniqueName( "OrthoShadowMap_VertexBlend" );
 	m_VertexBlendDepthTestTechnique.SetTechniqueName( "OrthoSceneShadowMap_VertexBlend" );
+
+
+	m_Shader = CreateMiscShader( MiscShader::ORTHO_SHADOW_MAP );
 }
 
 
@@ -453,6 +466,8 @@ SpotlightShadowMap::SpotlightShadowMap()
 	m_LightCamera.SetFarClip( far_clip );
 	m_LightCamera.SetFOV( (float)PI / 4.0f );
 	m_LightCamera.SetAspectRatio( 1.0f );
+
+	m_Shader = CreateMiscShader( MiscShader::SPOTLIGHT_SHADOW_MAP );
 }
 
 
