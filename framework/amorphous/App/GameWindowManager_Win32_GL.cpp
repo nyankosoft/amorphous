@@ -2,7 +2,6 @@
 #include "Graphics/GraphicsComponentCollector.hpp"
 #include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "Graphics/OpenGL/GLGraphicsDevice.hpp"
-#include "Graphics/OpenGL/GLExtensions.hpp"
 #include "Support/WindowMisc_Win32.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/StringAux.hpp"
@@ -238,7 +237,15 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 	}
 
 	// initialize OpenGL extensions
-	initExtensions( m_hDC );
+//	initExtensions( m_hDC );
+
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+		/* Problem: glewInit failed, something is seriously wrong. */
+		LOG_PRINTF_ERROR(( "Error: %s", glewGetErrorString(err)));
+		return FALSE;
+	}
 
 	// save width and height
 	m_iCurrentScreenWidth  = iScreenWidth;
