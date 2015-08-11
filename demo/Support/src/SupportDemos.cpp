@@ -12,6 +12,7 @@ int test_clipboard_utils( int argc, char *argv[] );
 int test_BitmapImage( int argc, char *argv[] );
 int test_ImageSplitter( int argc, char *argv[] );
 int test_FreeType( int argc, char *argv[] );
+int demo_AES( int argc, char *argv[] );
 
 
 int main( int argc, char *argv[] )
@@ -33,11 +34,13 @@ int main( int argc, char *argv[] )
 
 //	test_clipboard_utils( argc, argv );
 
-	test_BitmapImage( argc, argv );
+//	test_BitmapImage( argc, argv );
 
 //	test_ImageSplitter( argc, argv );
 
 //	test_FreeType( argc, argv );
+
+	demo_AES( argc, argv );
 
 	return 0;
 }

@@ -83,6 +83,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.cpp" />
     <ClCompile Include="..\..\..\framework\amorphous\Support\Log\LogOutput.cpp" />
+    <ClCompile Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_base64.c" />
+    <ClCompile Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_lib.c" />
+    <ClCompile Include="..\src\AESDemo.cpp" />
     <ClCompile Include="..\src\BitmapImageTest.cpp" />
     <ClCompile Include="..\src\clipboard_utils_test.cpp" />
     <ClCompile Include="..\src\fixed_string_test.cpp" />
@@ -95,6 +98,10 @@
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp" />
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutput.hpp" />
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.hpp" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_base64.h" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_common.h" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_config.h" />
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_lib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

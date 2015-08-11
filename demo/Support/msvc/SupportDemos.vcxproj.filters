@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Support\Log">
       <UniqueIdentifier>{0ec51d7f-2d19-44a5-84f8-1775bbe05877}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Support\OpenAES">
+      <UniqueIdentifier>{803b055d-3196-4fa2-bd27-3e8f6333137f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BitmapImageTest.cpp">
@@ -48,6 +51,15 @@
     <ClCompile Include="..\src\FreeTypeTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\AESDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_base64.c">
+      <Filter>Source Files\Support\OpenAES</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_lib.c">
+      <Filter>Source Files\Support\OpenAES</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp">
@@ -58,6 +70,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogOutputBase.hpp">
       <Filter>Source Files\Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_base64.h">
+      <Filter>Source Files\Support\OpenAES</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_common.h">
+      <Filter>Source Files\Support\OpenAES</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_config.h">
+      <Filter>Source Files\Support\OpenAES</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_lib.h">
+      <Filter>Source Files\Support\OpenAES</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
