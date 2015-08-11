@@ -123,6 +123,9 @@
     <ClInclude Include="..\..\..\_Common\KeyState.hpp">
       <Filter>Demo Framework</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\MiscShaderDemo.hpp">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\_Common\TestMain_Win32.cpp">
@@ -223,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\_Common\GraphicsTestBase.cpp">
       <Filter>Demo Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MiscShaderDemo.cpp">
+      <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
