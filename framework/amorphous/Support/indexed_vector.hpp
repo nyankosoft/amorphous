@@ -93,8 +93,8 @@ public:
 		m_elements = src;
 	}
 
-	void operator++() { next(); }
-	void operator--() { prev(); }
+	void operator++(int) { next(); }
+	void operator--(int) { prev(); }
 };
 
 
