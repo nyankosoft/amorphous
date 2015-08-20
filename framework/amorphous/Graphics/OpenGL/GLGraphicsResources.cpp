@@ -207,10 +207,9 @@ GLint ToGLInternalFormat( TextureFormat::Format fmt )
 //	case TextureFormat: return ;
 //	case TextureFormat: return ;
 //	case TextureFormat: return ;
-//	case TextureFormat: return ;
-//	case TextureFormat: return ;
+	case TextureFormat::Invalid:
 	default:
-		return GL_RGB8;
+		return GL_RGBA;
 	}
 }
 
