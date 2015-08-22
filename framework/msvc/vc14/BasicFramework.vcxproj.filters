@@ -1,0 +1,2204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{161546cf-b27f-4c49-ad3d-4b9a9b3ae108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Shader">
+      <UniqueIdentifier>{7499a83f-fbb4-461b-a2f4-db9322a7cd6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Mesh">
+      <UniqueIdentifier>{d68c96d8-4ece-4771-ad00-2e916b6005d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\GraphicsResourceManager">
+      <UniqueIdentifier>{e436d744-71ce-48bd-8fc4-37da0a486312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\2DPrimitives">
+      <UniqueIdentifier>{4d4c02e9-9463-4881-8d42-b7c4dfebf275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Font">
+      <UniqueIdentifier>{439b37dc-0cda-4eea-b19a-95f8f1583a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\2D">
+      <UniqueIdentifier>{d600d349-d133-4c05-b50d-49b5e0a0849c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL">
+      <UniqueIdentifier>{6234ec18-3470-43f8-a5a3-ef9d52174b3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL\2DPrimitive">
+      <UniqueIdentifier>{ce20afa2-c745-4b0a-81ab-3d08877a3671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL\Mesh">
+      <UniqueIdentifier>{e79a2c56-7971-4e42-a2a6-02614bdeeaf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL\Shader">
+      <UniqueIdentifier>{5a24651e-22d6-45ae-938f-4e045da69615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Direct3D">
+      <UniqueIdentifier>{0447ccc6-2501-40b6-b7ee-24adda6c0b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Direct3D\2DPrimitive">
+      <UniqueIdentifier>{90b51e24-2855-4360-8c44-25e1588550e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Direct3D\Shader">
+      <UniqueIdentifier>{cd21fd8c-c7d9-4743-9f25-b62300d2110f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Direct3D\Shader\Embedded">
+      <UniqueIdentifier>{e5a33845-4894-4b9d-a664-c9b035275064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Direct3D\Mesh">
+      <UniqueIdentifier>{e965a809-f95e-4eed-a709-705fb1f7812d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3DMath">
+      <UniqueIdentifier>{a1f58bfc-60b5-49e0-96f7-ea7050e32b77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{e353d181-70b9-4153-8a73-0c5f897ed6bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\ForceFeedback">
+      <UniqueIdentifier>{e39684de-f263-4662-8c6c-58ebb19fb80a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{fe35e466-7275-44ff-a98d-6835dbfba5e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support">
+      <UniqueIdentifier>{c426e2d8-ed89-4b0b-8070-673718d0c5c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support\Log">
+      <UniqueIdentifier>{e8c5873f-dc11-4aaf-b6fd-da2c7d74652b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support\Serialization">
+      <UniqueIdentifier>{cfcdd562-c91e-4c55-9f79-8dcd696236bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support\ZLib">
+      <UniqueIdentifier>{ed11c88a-5995-47bd-b5ed-93ff129c34ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support\UTF8">
+      <UniqueIdentifier>{46592dd2-f394-4d1c-951a-f38e18cf51a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support\UTF8\utf8">
+      <UniqueIdentifier>{64dac20d-70b8-44ad-bc05-d7d61c1e4675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{0235667a-d3b1-4fe4-95c7-7acb7a10e3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{ea1f1c87-6c60-4f7b-a953-b1157cb69e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{7b44be9c-27d0-4cac-a561-753461c30dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Joints">
+      <UniqueIdentifier>{0baf3b6d-a3f6-4469-9180-c740125098ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Actors &amp; Shapes">
+      <UniqueIdentifier>{fd69a9b2-adfa-4fd0-8399-af4a978cad6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\core">
+      <UniqueIdentifier>{0f06be88-52aa-463d-bad2-ed2190204d09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\engines">
+      <UniqueIdentifier>{8582a8d0-1e0e-4763-9dea-7462d008c0ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\engines\JigLib">
+      <UniqueIdentifier>{625663b8-3d0a-4c99-891b-f92365af3fed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicFramework">
+      <UniqueIdentifier>{e9b671cc-f2b3-444e-bd04-e9b73b7feb05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{adeef322-70f8-4ae9-aa9e-894d49880c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{db3caf17-ba0e-428e-88fd-bf601da812e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\Physics">
+      <UniqueIdentifier>{0b7254c4-a8b8-43d4-b703-c65022bfc82d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Direct3D\Font">
+      <UniqueIdentifier>{3c0933ad-b9b1-4b5c-acec-14f6b72339b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\TextureGenerators">
+      <UniqueIdentifier>{c13d7b69-7284-4c30-9781-e12db4f01c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\MeshGenerators">
+      <UniqueIdentifier>{2c2b3307-3c8f-4f79-a619-4a1a683f6dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL\Shader\Embedded">
+      <UniqueIdentifier>{25cfb31e-e996-42a1-a000-60edf007b5d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Shader\Embedded">
+      <UniqueIdentifier>{be190979-2f97-4b8e-9fb3-601dd4e79099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\MassSpring">
+      <UniqueIdentifier>{93fe21c3-c9ad-4daf-bc32-05e8d9fa2d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\engines\PhysX">
+      <UniqueIdentifier>{3566b202-88ab-4c4e-a0f8-14b1b081ca62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\Win32">
+      <UniqueIdentifier>{fca6d22b-ab7e-4290-93d0-d86a0254f325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MotionCapture">
+      <UniqueIdentifier>{031094c4-ee09-4c98-83ae-12e5563bdb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MotionCapture\BVH">
+      <UniqueIdentifier>{01c14dff-8847-4da7-b62c-fde5eef60113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\2DPrimitives\2D Graphics Elements &amp; Effects">
+      <UniqueIdentifier>{4c1721be-0b72-4787-9669-f8ae95b3d5c8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\BuiltinSkyTextures.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\CubeMapManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsComponentCollector.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsDevice.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\IndexedPolygon.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffect.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\PseudoNoiseEffect.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\RenderTaskProcessor.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\ShadowMapManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\ShadowMaps.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\ShapeDetector.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\ShapesExtractor.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\SimpleMotionBlur.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\SkyboxMisc.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\VarianceShadowMapManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectBase.cpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.cpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.cpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.cpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManager.cpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.cpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\BasicMesh.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\CustomMesh.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\CustomMeshRenderer.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshBone.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshFactory.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\ProgressiveMesh.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\RectSetMesh.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\SkeletalMesh.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\AsyncResourceLoader.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceCacheManager.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceDescs.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceEntries.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceHandle.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceLoaders.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceManager.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResources.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshObjectHandle.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\ShaderHandle.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureHandle.cpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsEffectManager.cpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsElementManager.cpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsElements.cpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp">
+      <Filter>Graphics\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Font\TextureFont.cpp">
+      <Filter>Graphics\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.cpp">
+      <Filter>Graphics\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp">
+      <Filter>Graphics\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp">
+      <Filter>Graphics\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
+      <Filter>Graphics\OpenGL\2DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.cpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.cpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.cpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLSLShaderLightManager.cpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DGraphicsResources.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DTextureRenderTarget.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Direct3D9.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\TextureTool.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.cpp">
+      <Filter>Graphics\Direct3D\2DPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.cpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.cpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.cpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DShaderManager.cpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\HLSLShaderLightManager.cpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.cpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.cpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.cpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.cpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObject.cpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.cpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXPMeshObject.cpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.cpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\AABTree.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForBox.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\ConvexPolygon.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\OBBTree.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\Perlin.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\InputDevice.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\InputHub.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\ForceFeedback\DIForceFeedbackEffectImpl.cpp">
+      <Filter>Input\ForceFeedback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.cpp">
+      <Filter>Input\ForceFeedback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Aux.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Button.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Control.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_ControlDescBase.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_ControlRenderer.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_ControlRendererManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Dialog.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_DialogCloseButton.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_DialogDesc.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_DialogManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Keybind.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_ListBox.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_ScrollBar.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Slider.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_SoundPlayer.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_Static.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_StdControlRenderer.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_StdControlRendererManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_SubDialogButton.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\GM_XMLParser.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GUI\InputHandler_Dialog.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\CameraController.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\DebugOutput.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\MTRand.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Profile.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Timer_Win32.cpp">
+      <Filter>Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp">
+      <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp">
+      <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.cpp">
+      <Filter>Support\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.cpp">
+      <Filter>Support\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Output.cpp">
+      <Filter>Support\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryDatabase.cpp">
+      <Filter>Support\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\adler32.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\compress.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\crc32.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\deflate.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\infback.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inffast.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inflate.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inftrees.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\trees.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\uncompr.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\zpipe_stream.cpp">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\ZLib\zutil.c">
+      <Filter>Support\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Sound\OggVorbisAux.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Sound\OpenALSoundManagerImpl.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Sound\OpenALSoundSourceImpl.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Sound\PyModule_SoundMethods.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Sound\SoundManager.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Sound\WaveFile.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\XML\XercesString.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentLoader.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Actor.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\PhysicsEngine.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Preprocessor.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Scene.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\SceneUtility.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysActor.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysicsEngine.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysPreprocessorImpl.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysScene.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeDescFactory.cpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\ApplicationBase.cpp">
+      <Filter>BasicFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager.cpp">
+      <Filter>BasicFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager_Win32.cpp">
+      <Filter>BasicFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager_Win32_D3D.cpp">
+      <Filter>BasicFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\GameWindowManager_Win32_GL.cpp">
+      <Filter>BasicFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\GraphicsApplicationBase.cpp">
+      <Filter>BasicFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Utilities\Physics\PhysicsMeshUtility.cpp">
+      <Filter>Utilities\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Font\FontFactory.cpp">
+      <Filter>Graphics\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.cpp">
+      <Filter>Graphics\Direct3D\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectFilter.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.cpp">
+      <Filter>3DMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.cpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.cpp">
+      <Filter>Graphics\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.cpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Log\LogOutput.cpp">
+      <Filter>Support\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.cpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.cpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.cpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive.cpp">
+      <Filter>Support\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DIInputDeviceMonitor.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DIKeyboard.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DirectInput.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DirectInputGamepad.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\DirectInputMouse.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\StdKeyboard.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\Win32\StdMouseInput.cpp">
+      <Filter>Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.cpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHBone.cpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.cpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Utilities\ScreenshotRenderer.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.cpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.cpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\BuiltinSkyTextures.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\FloatRGBAColor.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\FloatRGBColor.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\General2DVertex.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\General3DVertex.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsComponentCollector.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsDevice.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\HemisphericLight.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\IndexedPolygon.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\LensFlare.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffect.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectManager.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PrimitiveRenderer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PseudoNoiseEffect.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\RenderTask.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\RenderTaskProcessor.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ShadowMapManager.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ShadowMaps.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ShapeContainers.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ShapeDetector.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ShapesExtractor.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\SimpleMotionBlur.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\SkyboxMisc.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\SurfaceFormat.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureCoord.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureRenderTarget.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\VarianceShadowMapManager.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\BlendTransformsLoader.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectBase.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CgEffectLightManager.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderDesc.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderGenerator.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderGenerator.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManager.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderParameter.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderTechniqueHandle.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderVariableLoader.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\BasicMesh.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\CustomMesh.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\CustomMeshRenderer.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMesh.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshBone.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshFactory.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\ProgressiveMesh.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\RectSetMesh.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\SkeletalMesh.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TangentSpace.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\AsyncResourceLoader.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceCacheManager.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceDescs.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceEntries.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceHandle.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceLoaders.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceManager.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResources.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshObjectHandle.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\ShaderHandle.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureHandle.hpp">
+      <Filter>Graphics\GraphicsResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp">
+      <Filter>Graphics\2DPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectHandle.hpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectManager.hpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsElementManager.hpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsElements.hpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.hpp">
+      <Filter>Graphics\2DPrimitives\2D Graphics Elements &amp; Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\BuiltinFonts.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\FontBase.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\GrayscalePixelDataLoader.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\SimpleBitmapFontData.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\TextureFont.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\UTFFont.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Point.hpp">
+      <Filter>Graphics\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp">
+      <Filter>Graphics\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\RectTree.hpp">
+      <Filter>Graphics\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\glext.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp">
+      <Filter>Graphics\OpenGL\2DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp">
+      <Filter>Graphics\OpenGL\2DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLCgEffect.hpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.hpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLSLShaderLightManager.hpp">
+      <Filter>Graphics\OpenGL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DGraphicsResources.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DSurfaceFormat.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DTextureRenderTarget.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Direct3D9.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_BillboardVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_BumpVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_BumpWeightVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_ColorVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_MapVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_NormalVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_ShadowVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_TextureVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_TextureVertex2.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_TLVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_Vertices.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\FVF_WeightVertex.h">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\TextureTool.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DPrimitiveRenderer_D3D.hpp">
+      <Filter>Graphics\Direct3D\2DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\2DPrimitive\2DRectSetImpl_D3D.hpp">
+      <Filter>Graphics\Direct3D\2DPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DCgEffect.hpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineLightManager.hpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DFixedFunctionPipelineManager.hpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\D3DShaderManager.hpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\HLSLShaderLightManager.hpp">
+      <Filter>Graphics\Direct3D\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedGenericHLSL.hpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedHLSLShader.hpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedMiscHLSL.hpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DCustomMeshRenderer.hpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObject.hpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXMeshObjectBase.hpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXPMeshObject.hpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Mesh\D3DXSMeshObject.hpp">
+      <Filter>Graphics\Direct3D\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\3DStructs.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\AABB2.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\AABB3.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\AABTree.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForBox.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexPolygon.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Cylinder.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\index.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\IndexedTriangle.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\MathMisc.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix22.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix23.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix33.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix34.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix44.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\MatrixConversions.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\misc.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\OBB3.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\OBBTree.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Perlin.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Plane.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\precision.h">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Quaternion.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\ray.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Sphere.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\stream.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Transform.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Triangle.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Vector2.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Vector2_Gen.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Vector3.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Vector3_Gen.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\fwd.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\GICodeTitle.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputDevice.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputDeviceGroup.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputHandler.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputHub.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\DIForceFeedbackEffectImpl.hpp">
+      <Filter>Input\ForceFeedback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.hpp">
+      <Filter>Input\ForceFeedback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\fwd.hpp">
+      <Filter>Input\ForceFeedback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Aux.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Button.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Control.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ControlDescBase.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ControlRenderer.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ControlRendererManager.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Controls.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Dialog.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_DialogCloseButton.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_DialogDesc.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_DialogManager.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Event.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_EventHandlerBase.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Input.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Keybind.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ListBox.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ListBoxDesc.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ScrollBar.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_ScrollBarDesc.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Slider.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_SoundPlayer.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_Static.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_StdControlRenderer.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_StdControlRendererManager.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_SubDialogButton.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\GM_XMLParser.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\InputHandler_Dialog.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\ui.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GUI\ui_fwd.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\CameraController.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\CameraController_Win32.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\CameraControllerBase.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\DebugOutput.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ImageArchive.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\lfs.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Macro.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\MTRand.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ParamLoader.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Profile.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ResourceArchiver.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\SafeDelete.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\SafeDeleteVector.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\SerializableStream.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Singleton.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\stream_buffer.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\StringAux.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\TextFileScanner.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Timer.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Timer_Win32.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Vec3_StringAux.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\DefaultLog.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\Log.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\LogInputBase.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutputBase.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\StateLog.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Archive.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive_Output.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryDatabase.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_32BitColor.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_3DCommon.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_3DMath.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Color.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_FixedVector.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Light.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\crc32.hpp">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\deflate.hpp">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inffast.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inffixed.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inflate.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inftrees.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\trees.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zconf.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zconf.in.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zlib.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zpipe_stream.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zutil.h">
+      <Filter>Support\ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8.h">
+      <Filter>Support\UTF8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\checked.h">
+      <Filter>Support\UTF8\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\core.h">
+      <Filter>Support\UTF8\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\unchecked.h">
+      <Filter>Support\UTF8\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\fwd.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\OggVorbisAux.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\OpenALSoundManagerImpl.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\OpenALSoundSourceImpl.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\PyModule_SoundMethods.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\Serialization_SoundHandle.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\SoundDesc.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\SoundHandle.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\SoundManager.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\SoundManagerImpl.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\SoundSource.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Sound\WaveFile.hpp">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XercesString.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\xmlch2x.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentLoader.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\ContactStreamIterator.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MeshData.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\SceneUtility.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysContactStreamIterator.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\ApplicationBase.hpp">
+      <Filter>BasicFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager.hpp">
+      <Filter>BasicFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager_Win32.hpp">
+      <Filter>BasicFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager_Win32_D3D.hpp">
+      <Filter>BasicFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\GameWindowManager_Win32_GL.hpp">
+      <Filter>BasicFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\GraphicsApplicationBase.hpp">
+      <Filter>BasicFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Utilities\TextFileScannerExtensions.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Utilities\Physics\PhysicsMeshUtility.hpp">
+      <Filter>Utilities\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Utilities\Physics\PhysicsShapeMakerVisitor.hpp">
+      <Filter>Utilities\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath.hpp" />
+    <ClInclude Include="..\..\amorphous\base.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics.hpp" />
+    <ClInclude Include="..\..\amorphous\GUI.hpp" />
+    <ClInclude Include="..\..\amorphous\Input.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics.hpp" />
+    <ClInclude Include="..\..\amorphous\Platform.hpp" />
+    <ClInclude Include="..\..\amorphous\Platform_Win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support.hpp" />
+    <ClInclude Include="..\..\amorphous\XML.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\FontFactory.hpp">
+      <Filter>Graphics\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\Vector4.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.hpp">
+      <Filter>Graphics\Direct3D\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCGraphicsResourceLoaders.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectFilter.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GridTextureGenerator.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DInitialization.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexPolygonUtilities.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GradationTextureGenerators.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.hpp">
+      <Filter>Graphics\Direct3D\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\fwd.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\fwd.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\array2d.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_array2d.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.hpp">
+      <Filter>3DMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.hpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.hpp">
+      <Filter>Graphics\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
+      <Filter>Graphics\OpenGL\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DCubeTextureRenderTarget.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutput.hpp">
+      <Filter>Support\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringExporter.hpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringSim.hpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\MassSpring\MassSpringModelMaker.hpp">
+      <Filter>Physics\MassSpring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\HelixMeshGenerator.hpp">
+      <Filter>Graphics\MeshGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\DebugInfo.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive.hpp">
+      <Filter>Support\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\ConvexShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DIInputDeviceMonitor.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DIKeyboard.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DirectInput.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DirectInputGamepad.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\DirectInputMouse.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\InputDeviceInitializer_DirectInput.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\InputDeviceInitializer_Win32.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\StdKeyboard.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\Win32\StdMouseInput.hpp">
+      <Filter>Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.hpp">
+      <Filter>Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\recursive_directory_processor.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\recursive_file_finder.hpp">
+      <Filter>Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Direct3D\D3DTextureResourceVisitor.hpp">
+      <Filter>Graphics\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\fwd.hpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHBone.hpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionCapture\BVH\BVHPlayer.hpp">
+      <Filter>MotionCapture\BVH</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderHelpers.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp">
+      <Filter>Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentBase.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Utilities\ScreenshotRenderer.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.hpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.hpp">
+      <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl">
+      <Filter>Graphics</Filter>
+    </None>
+    <None Include="..\..\amorphous\Graphics\FloatRGBColor.inl">
+      <Filter>Graphics</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\AABTree.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Matrix22.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Matrix33.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Matrix44.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Quaternion.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Vector2_Gen.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Vector3_Gen.inl">
+      <Filter>3DMath</Filter>
+    </None>
+    <None Include="..\..\amorphous\3DMath\Vector4.inl">
+      <Filter>3DMath</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Actor.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Actor.inl">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\ActorDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\BodyDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\BoxShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\CapsuleShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Cloth.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\ClothDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\DescImplFactory.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Enums.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\fwd.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Joint.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\JointDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Material.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\MaterialDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\PhysicsEngine.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Preprocessor.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\RawTriangleMeshShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Ray.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\RaycastHit.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\RevoluteJoint.Desc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\RevoluteJoint.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Scene.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\SceneDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Shape.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeDescFactory.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeEnums.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\ShapeImpl.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\SphereShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\SphericalJoint.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\SphericalJointDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\SpringDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Stream.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMesh.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMeshDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\TriangleMeshShapeDesc.hpp">
+      <Filter>Physics</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\fwd.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxMathConv.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysActor.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysCloth.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysConv.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysicsEngine.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysJoint.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysMaterial.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysOutputStream.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysPreprocessorImpl.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysScene.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShape.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeDescFactory.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeFactory.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysShapeImpl.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysStream.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxPhysTriangleMesh.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\amorphous\Physics\Engines\PhysX\NxShapeDescImplFactory.hpp">
+      <Filter>Physics\engines\PhysX</Filter>
+    </CustomBuildStep>
+  </ItemGroup>
+</Project>

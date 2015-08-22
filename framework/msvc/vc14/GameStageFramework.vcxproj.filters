@@ -1,0 +1,1504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8fa557be-1e86-414f-a8f6-1266761866b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage">
+      <UniqueIdentifier>{317de939-1f30-4fd8-98da-f5ab86c975fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage\BSPMap_Collision">
+      <UniqueIdentifier>{e297a079-f7c5-4ec1-a735-129512c22bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage\Input">
+      <UniqueIdentifier>{8f8e5329-02bd-4f1e-8d12-a50a85dc6dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage\PyModules">
+      <UniqueIdentifier>{6e9fd988-304b-4845-9ed0-6e78e5c2b08e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage\BaseEntity">
+      <UniqueIdentifier>{c03514dd-ecf1-471a-9b46-64f89a23fbb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage\BaseEntity\components">
+      <UniqueIdentifier>{f84da7ae-7a30-4b01-8279-78a3fc8e3ede}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage\Entity">
+      <UniqueIdentifier>{56485a0a-d54b-4919-a933-77594d84f424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Task">
+      <UniqueIdentifier>{37e9c5a9-613c-4937-962c-b53fcbc23a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameCommon">
+      <UniqueIdentifier>{5b18169c-822c-4f70-95eb-c0c2905cb7bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\JigLib">
+      <UniqueIdentifier>{2526d055-2e48-4dbb-932e-3a1c77754bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\JigLib\Geometry">
+      <UniqueIdentifier>{99c2bd41-7faf-41cc-9413-8d135573b50d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\App">
+      <UniqueIdentifier>{12737422-2245-45fb-b20a-1a1f9a51847f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Item">
+      <UniqueIdentifier>{6e9ac599-a7bb-47f3-ae71-a344bf4f1d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Item\Entity">
+      <UniqueIdentifier>{92107e24-faec-468e-a85d-b43ecb39a7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script">
+      <UniqueIdentifier>{3b13857d-a3cc-4030-986e-47cd28ecb455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameTextSystem">
+      <UniqueIdentifier>{a9489911-c378-4e61-9b65-0776f3b3b4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MotionSynthesis">
+      <UniqueIdentifier>{8d0988f8-3dfd-4764-9009-2f6012318b5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script\EmbeddedPythonModules">
+      <UniqueIdentifier>{0e51837f-4efc-44ea-b86f-9915b317c69b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script\BoostPython">
+      <UniqueIdentifier>{0f3e0d22-63fa-4414-8ea1-9d3304c9b528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Script\BoostPython\Modules">
+      <UniqueIdentifier>{0cfe55c3-c800-409c-b564-409331095d2f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\amorphous\Stage\BinaryNode.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\bsptree.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EnemyState.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityCollisionGroups.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityFactory.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityFile.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityGroupHandle.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityMotionPathRequest.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityNode.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityRenderManager.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntitySet.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\fwd.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\GameMessage.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerAircraft.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerBase.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerShip.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\OverlapTestAABB.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ParticleThreadManager.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PlayerInfo.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ScreenEffect.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ScreenEffectManager.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Serialization_BaseEntityHandle.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Stage.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageEntryPoint.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageGraph.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageLoader.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageUtility.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometry.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryBase.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SubDisplay.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterial.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterialManager.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\trace.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ViewFrustumTest.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel.hpp">
+      <Filter>Source Files\Stage\BSPMap_Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel_Exporter.hpp">
+      <Filter>Source Files\Stage\BSPMap_Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_Cutscene.hpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_PlayerBase.hpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_PlayerPAC.hpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_PlayerShip.hpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_StageDebug.hpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Camera.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Entity.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_HUD.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Light.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Player.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Stage.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_VisualEffect.hpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntity.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntity_Draw.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityFactory.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityHandle.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityManager.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_AreaSensor.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Blast.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Bullet.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_CameraController.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Cloud.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Decal.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_DirectionalLight.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Door.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_DoorController.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Enemy.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_EnemyAircraft.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_EnemyShip.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_EventTrigger.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_ExplosionSmoke.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Explosive.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_FixedTurretPod.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Floater.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_GeneralEntity.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_HomingMissile.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_IndividualEntity.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_LaserDot.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Light.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_MuzzleFlash.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_NozzleExhaust.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_ParticleSet.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PhysicsBaseEntity.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Platform.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Player.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerPseudoAircraft.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerPseudoLeggedVehicle.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerShip.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PointLight.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_ScriptedCamera.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Skybox.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_SmokeTrace.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticGeometry.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticParticleSet.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_SupplyItem.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_TextureAnimation.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Turret.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BEC_PseudoAircraft.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BEC_Destruction.hpp">
+      <Filter>Source Files\Stage\BaseEntity\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\AlphaEntity.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntity.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityCallback.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityDesc.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityDescFileArchive.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityHandle.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\LightEntity.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTask.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTask_AsyncStageLoader.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTask_GlobalStageLoader.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTask_MainMenu.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTask_Stage.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTaskFactoryBase.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GameTaskManager.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\GUIGameTask.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\MainMenuEventHandler.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\PyModule_TaskMethods.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\SingleStageGameTask.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\StageViewerGameTask.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\3DActionCode.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\AircraftCapsDisplay.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\AssaultRecord.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\Caliber.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\ClothSystem.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\CombatRecord.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\CriticalDamping.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\fwd.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\GameItemShop.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\GameMathMisc.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\GameStageFrameworkGlobalParams.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\GlobalInputHandler.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\GlobalParams.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\HUD_TimerDisplay.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\KeyBind.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\LangID.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\MeshBoneController_Aircraft.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\MeshBoneControllerBase.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\MeshBoneControllerFactory.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\NozzleFlameParams.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\PlayTime.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\PseudoAircraftHUD.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\PseudoAircraftSimulator.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\PyModule_ShopMethods.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\RandomDirectionTable.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\RangedSet.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\SaveDataManager.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\fwd.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JigLib.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionFunctor.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ContactInfo.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ContactPair.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_LineSegment.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActorDesc.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsManager.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Box.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Capsule.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Sphere.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeBase.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Box.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Capsule.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Sphere.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_TriangleMesh.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDescFactory.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_SurfaceMaterial.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\rand_util.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\TriangleMesh.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\Box.hpp">
+      <Filter>Source Files\JigLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\distance.hpp">
+      <Filter>Source Files\JigLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\JL_Box.hpp">
+      <Filter>Source Files\JigLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\line.hpp">
+      <Filter>Source Files\JigLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\App\GameApplicationBase.hpp">
+      <Filter>Source Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\Cartridge.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\Clothing.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\Firearm.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GameItem.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GameItemDatabase.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GameItemObjectFactory.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GI_Aircraft.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GI_Ammunition.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GI_GravityGun.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GI_LaserGun.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GI_MissileLauncher.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\GI_Weapon.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\ItemDatabaseBuilder.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\ItemDatabaseManager.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\LandVehicle.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\Magazine.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\MiscGameItems.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\Radar.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\RotatableTurret.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\SkeletalCharacter.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\WeaponSystem.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Item\ItemEntity.hpp">
+      <Filter>Source Files\Item\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\GameEvent.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\GameEventManager.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\GameEventTypes.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\GE_SpawnEvent.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\GE_TextEvent.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModules.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\ScriptArchive.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\ScriptManager.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_3DMath.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_Graphics.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_shop.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_single_player.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_sound.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_stage.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_StageUtility.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_task.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_visual_effect.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameTextSystem\GameTextSet.hpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameTextSystem\GameTextSystem.hpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameTextSystem\GameTextWindow.hpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameTextSystem\PyModule_TextMessage.hpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameTextSystem\TextMessageManager.hpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameTextSystem\TextMessageRenderer.hpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\BlendNode.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\HumanoidMotionTable.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionBlender.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionDatabase.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionFSM.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionPrimitive.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\SkeletalMeshTransform.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\Skeleton.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\SkeletonRenderer.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\TransformCacheTree.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\TransformNode.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\ThirdPersonCameraController.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\GameCommon\ThirdPersonMotionController.hpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticLiquid.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\MirroredSceneTextureParam.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\BVHUtilities.hpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BSPMap.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SoundEntity.hpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\math3d_py.hpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\EmbeddedPythonModule.hpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityRenderer.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\MiscEntityRenderers.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\gfx_py.hpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsVisualizer.hpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Task\fwd.hpp">
+      <Filter>Source Files\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PythonScriptManager.hpp">
+      <Filter>Source Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\BoostPythonScriptManager.hpp">
+      <Filter>Source Files\Script\BoostPython</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Script\PyModule_amorphous.hpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageCameraUtility.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageLightUtility.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntitySplitter.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\amorphous\Stage\BSPMapFileExporter.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\bsptree.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EnemyState.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntityFactory.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntityNode.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntityRenderManager.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntitySet.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\GameMessage.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerAircraft.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerShip.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\ParticleThreadManager.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PlayerInfo.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\ScreenEffect.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\ScreenEffectManager.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\Stage.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageEntryPoint.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageGraph.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageLoader.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageUtility.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StaticGeometry.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SubDisplay.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterial.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterialManager.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\trace.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel.cpp">
+      <Filter>Source Files\Stage\BSPMap_Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel_Base.cpp">
+      <Filter>Source Files\Stage\BSPMap_Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel_Exporter.cpp">
+      <Filter>Source Files\Stage\BSPMap_Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_Cutscene.cpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_PlayerPAC.cpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_PlayerShip.cpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_StageDebug.cpp">
+      <Filter>Source Files\Stage\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Camera.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Entity.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_HUD.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Light.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Player.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Stage.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_VisualEffect.cpp">
+      <Filter>Source Files\Stage\PyModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity_Draw.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity_ScriptedMotion.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntityFactory.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntityManager.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_AreaSensor.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Blast.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Bullet.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_CameraController.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Cloud.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Decal.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_DirectionalLight.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Door.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_DoorController.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Enemy.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_EnemyAircraft.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_EnemyShip.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_EventTrigger.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_ExplosionSmoke.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Explosive.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_FixedTurretPod.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Floater.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_GeneralEntity.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_HomingMissile.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_IndividualEntity.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_LaserDot.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Light.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_MuzzleFlash.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_NozzleExhaust.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_ParticleSet.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PhysicsBaseEntity.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Platform.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Player.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerPseudoAircraft.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerPseudoLeggedVehicle.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerShip.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerShipEx.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PointLight.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_ScriptedCamera.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Skybox.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_SmokeTrace.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticGeometry.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticParticleSet.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_SupplyItem.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_TextureAnimation.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Turret.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BEC_PseudoAircraft.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\CoreBaseEntities.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BEC_Destruction.cpp">
+      <Filter>Source Files\Stage\BaseEntity\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\AlphaEntity.cpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\CopyEntity.cpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\CopyEntityDescFileArchive.cpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\LightEntity.cpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTask.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTask_AsyncStageLoader.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTask_GlobalStageLoader.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTask_MainMenu.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTask_Stage.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTaskFactoryBase.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GameTaskManager.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\GUIGameTask.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\MainMenuEventHandler.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\PyModule_TaskMethods.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\SingleStageGameTask.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Task\StageViewerGameTask.cpp">
+      <Filter>Source Files\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\AircraftCapsDisplay.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\ClothSystem.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\GameItemShop.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\GameStageFrameworkGlobalParams.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\GlobalInputHandler.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\GlobalParams.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\HUD_TimerDisplay.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\MeshBoneController_Aircraft.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\MeshBoneControllerBase.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\MeshBoneControllerFactory.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\MouseCursor.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\PseudoAircraftHUD.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\PseudoAircraftSimulator.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\PyModule_ShopMethods.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\RandomDirectionTable.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\SaveDataManager.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Box.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Capsule.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Triangle.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Capsule_Capsule.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Capsule_TriangleMesh.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Sphere_TriangleMesh.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActorDesc.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsManager.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Box.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Capsule.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Sphere.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeBase.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDescFactory.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\TriangleMesh.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\distance.cpp">
+      <Filter>Source Files\JigLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\overlap.cpp">
+      <Filter>Source Files\JigLib\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\App\GameApplicationBase.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\Cartridge.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\Clothing.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\Firearm.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GameItem.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GameItemDatabase.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GameItemObjectFactory.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GI_Aircraft.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GI_Ammunition.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GI_GravityGun.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GI_LaserGun.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GI_MissileLauncher.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\GI_Weapon.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\ItemDatabaseBuilder.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\ItemDatabaseManager.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\LandVehicle.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\Magazine.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\MiscGameItems.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\Radar.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\RotatableTurret.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\SkeletalCharacter.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\WeaponSystem.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Item\ItemEntity.cpp">
+      <Filter>Source Files\Item\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\GameEvent.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\GameEventManager.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\GE_SpawnEvent.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\GE_TextEvent.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\ScriptArchive.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\ScriptManager.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_3DMath.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_Graphics.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_shop.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_single_player.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_sound.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_stage.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_StageUtility.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_task.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_visual_effect.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameTextSystem\GameTextSet.cpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameTextSystem\GameTextSystem.cpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameTextSystem\GameTextWindow.cpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameTextSystem\PyModule_TextMessage.cpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameTextSystem\TextMessageManager.cpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameTextSystem\TextMessageRenderer.cpp">
+      <Filter>Source Files\GameTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\BlendNode.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionBlender.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionDatabase.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionFSM.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionPrimitive.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\SkeletalMeshTransform.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\Skeleton.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\SkeletonRenderer.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\TransformCacheTree.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\TransformNode.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\ThirdPersonCameraController.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\GameCommon\ThirdPersonMotionController.cpp">
+      <Filter>Source Files\GameCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticLiquid.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\BVHUtilities.cpp">
+      <Filter>Source Files\MotionSynthesis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SoundEntity.cpp">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\math3d_py.cpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\EmbeddedPythonModule.cpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\gfx_py.cpp">
+      <Filter>Source Files\Script\EmbeddedPythonModules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsVisualizer.cpp">
+      <Filter>Source Files\JigLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PythonScriptManager.cpp">
+      <Filter>Source Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\BoostPythonScriptManager.cpp">
+      <Filter>Source Files\Script\BoostPython</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_amorphous.cpp">
+      <Filter>Source Files\Script\BoostPython\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageCameraUtility.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageLightUtility.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntitySplitter.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amorphous\Stage\CopyEntity.inl">
+      <Filter>Source Files\Stage\Entity</Filter>
+    </None>
+    <None Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.inl">
+      <Filter>Source Files\JigLib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="..\..\amorphous\Stage\BSPMapFileExporter.hpp">
+      <Filter>Source Files\Stage</Filter>
+    </CustomBuildStep>
+  </ItemGroup>
+</Project>

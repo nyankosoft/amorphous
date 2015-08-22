@@ -1,0 +1,598 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A647F5C6-E14D-408F-8D01-AD55A86772B3}</ProjectGuid>
+    <RootNamespace>GameStageFramework_VC8</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.vc/$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lib</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.vc/$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../;../../amorphous;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ProgramDataBaseFileName>$(IntDir)vc80.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(ProjectName)_d.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>../../;../../amorphous;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ProgramDataBaseFileName>$(IntDir)vc80.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\amorphous\GameCommon\ThirdPersonCameraController.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\ThirdPersonMotionController.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsVisualizer.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\BVHUtilities.hpp" />
+    <ClInclude Include="..\..\amorphous\Script.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\BoostPythonScriptManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\EmbeddedPythonModule.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\gfx_py.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\math3d_py.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_amorphous.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PythonScriptManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticLiquid.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BinaryNode.hpp" />
+    <CustomBuildStep Include="..\..\amorphous\Stage\BSPMapFileExporter.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <ClInclude Include="..\..\amorphous\Stage\BSPMap.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\bsptree.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EnemyState.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityCollisionGroups.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityFile.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityGroupHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityMotionPathRequest.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityNode.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityRenderManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntitySet.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntitySplitter.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\GameMessage.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerAircraft.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerShip.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\MirroredSceneTextureParam.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\MiscEntityRenderers.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\OverlapTestAABB.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\ParticleThreadManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PlayerInfo.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\ScreenEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\ScreenEffectManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Serialization_BaseEntityHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\SoundEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Stage.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageCameraUtility.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageEntryPoint.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageGraph.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageLightUtility.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StageUtility.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometry.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\SubDisplay.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterial.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterialManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\trace.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\ViewFrustumTest.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel_Exporter.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_Cutscene.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_PlayerBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_PlayerPAC.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_PlayerShip.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\Input\InputHandler_StageDebug.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Camera.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Entity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_HUD.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Light.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Player.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Stage.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_VisualEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntity_Draw.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_AreaSensor.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Blast.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Bullet.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_CameraController.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Cloud.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Decal.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_DirectionalLight.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Door.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_DoorController.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Enemy.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_EnemyAircraft.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_EnemyShip.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_EventTrigger.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_ExplosionSmoke.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Explosive.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_FixedTurretPod.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Floater.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_GeneralEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_HomingMissile.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_IndividualEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_LaserDot.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Light.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_MuzzleFlash.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_NozzleExhaust.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_ParticleSet.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_PhysicsBaseEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Platform.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Player.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerPseudoAircraft.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerPseudoLeggedVehicle.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerShip.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_PointLight.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_ScriptedCamera.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Skybox.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_SmokeTrace.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticGeometry.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticParticleSet.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_SupplyItem.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_TextureAnimation.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BE_Turret.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BEC_PseudoAircraft.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\BEC_Destruction.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\AlphaEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityCallback.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityDesc.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityDescFileArchive.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\EntityHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\LightEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Task.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTask.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTask_AsyncStageLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTask_GlobalStageLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTask_MainMenu.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTask_Stage.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTaskFactoryBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GameTaskManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\GUIGameTask.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\MainMenuEventHandler.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\PyModule_TaskMethods.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\SingleStageGameTask.hpp" />
+    <ClInclude Include="..\..\amorphous\Task\StageViewerGameTask.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\3DActionCode.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\AircraftCapsDisplay.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\AssaultRecord.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\Caliber.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\ClothSystem.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\CombatRecord.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\CriticalDamping.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\GameItemShop.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\GameMathMisc.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\GameStageFrameworkGlobalParams.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\GlobalInputHandler.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\GlobalParams.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\HUD_TimerDisplay.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\KeyBind.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\LangID.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\MeshBoneController_Aircraft.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\MeshBoneControllerBase.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\MeshBoneControllerFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\NozzleFlameParams.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\PlayTime.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\PseudoAircraftHUD.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\PseudoAircraftSimulator.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\PyModule_ShopMethods.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\RandomDirectionTable.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\RangedSet.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\SaveDataManager.hpp" />
+    <ClInclude Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JigLib.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionFunctor.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ContactInfo.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ContactPair.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_LineSegment.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActorDesc.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Box.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Capsule.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Sphere.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Box.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Capsule.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_Sphere.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDesc_TriangleMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDescFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\JL_SurfaceMaterial.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\rand_util.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\TriangleMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\Box.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\distance.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\JL_Box.hpp" />
+    <ClInclude Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\line.hpp" />
+    <ClInclude Include="..\..\amorphous\App\GameApplicationBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\Cartridge.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\Clothing.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\Firearm.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GameItem.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GameItemDatabase.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GameItemObjectFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GI_Aircraft.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GI_Ammunition.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GI_GravityGun.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GI_LaserGun.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GI_MissileLauncher.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\GI_Weapon.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\ItemDatabaseBuilder.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\ItemDatabaseManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\LandVehicle.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\Magazine.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\MiscGameItems.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\Radar.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\RotatableTurret.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\SkeletalCharacter.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\WeaponSystem.hpp" />
+    <ClInclude Include="..\..\amorphous\Item\ItemEntity.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\GameEvent.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\GameEventManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\GameEventTypes.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\GE_SpawnEvent.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\GE_TextEvent.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModules.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\ScriptArchive.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\ScriptManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_3DMath.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_Graphics.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_shop.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_single_player.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_sound.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_stage.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_StageUtility.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_task.hpp" />
+    <ClInclude Include="..\..\amorphous\Script\PyModule_visual_effect.hpp" />
+    <ClInclude Include="..\..\amorphous\GameTextSystem\GameTextSet.hpp" />
+    <ClInclude Include="..\..\amorphous\GameTextSystem\GameTextSystem.hpp" />
+    <ClInclude Include="..\..\amorphous\GameTextSystem\GameTextWindow.hpp" />
+    <ClInclude Include="..\..\amorphous\GameTextSystem\PyModule_TextMessage.hpp" />
+    <ClInclude Include="..\..\amorphous\GameTextSystem\TextMessageManager.hpp" />
+    <ClInclude Include="..\..\amorphous\GameTextSystem\TextMessageRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\BlendNode.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\HumanoidMotionTable.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionBlender.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionDatabase.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionDatabaseBuilder.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionFSM.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionPrimitive.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\MotionPrimitiveBlender.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\SkeletalMeshTransform.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\Skeleton.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\SkeletonRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\TransformCacheTree.hpp" />
+    <ClInclude Include="..\..\amorphous\MotionSynthesis\TransformNode.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\amorphous\GameCommon\ThirdPersonCameraController.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\ThirdPersonMotionController.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsVisualizer.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\BVHUtilities.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\BoostPythonScriptManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\EmbeddedPythonModule.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\gfx_py.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\math3d_py.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_amorphous.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PythonScriptManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticLiquid.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BSPMapFileExporter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\bsptree.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EnemyState.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\EntityFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\EntityNode.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\EntityRenderManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\EntitySet.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\EntitySplitter.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\GameMessage.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerAircraft.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerShip.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\ParticleThreadManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PlayerInfo.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\ScreenEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\ScreenEffectManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\SoundEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\Stage.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageCameraUtility.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageEntryPoint.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageGraph.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageLightUtility.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageLoader.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StageUtility.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StaticGeometry.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\SubDisplay.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterial.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterialManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\trace.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel_Base.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BSPMap_Collision\BSPTree_CollisionModel_Exporter.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_Cutscene.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_PlayerPAC.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_PlayerShip.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\Input\InputHandler_StageDebug.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Camera.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Entity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_HUD.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Light.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Player.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Stage.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_VisualEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity_Draw.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity_ScriptedMotion.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntityFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntityManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_AreaSensor.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Blast.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Bullet.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_CameraController.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Cloud.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Decal.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_DirectionalLight.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Door.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_DoorController.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Enemy.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_EnemyAircraft.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_EnemyShip.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_EventTrigger.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_ExplosionSmoke.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Explosive.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_FixedTurretPod.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Floater.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_GeneralEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_HomingMissile.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_IndividualEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_LaserDot.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Light.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_MuzzleFlash.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_NozzleExhaust.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_ParticleSet.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_PhysicsBaseEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Platform.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Player.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerPseudoAircraft.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerPseudoLeggedVehicle.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerShip.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerShipEx.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_PointLight.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_ScriptedCamera.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Skybox.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_SmokeTrace.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticGeometry.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticParticleSet.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_SupplyItem.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_TextureAnimation.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BE_Turret.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BEC_PseudoAircraft.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\CoreBaseEntities.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\BEC_Destruction.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\AlphaEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\CopyEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\CopyEntityDescFileArchive.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\LightEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTask.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTask_AsyncStageLoader.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTask_GlobalStageLoader.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTask_MainMenu.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTask_Stage.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTaskFactoryBase.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GameTaskManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\GUIGameTask.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\MainMenuEventHandler.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\PyModule_TaskMethods.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\SingleStageGameTask.cpp" />
+    <ClCompile Include="..\..\amorphous\Task\StageViewerGameTask.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\AircraftCapsDisplay.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\ClothSystem.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\GameItemShop.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\GameStageFrameworkGlobalParams.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\GlobalInputHandler.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\GlobalParams.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\HUD_TimerDisplay.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\MeshBoneController_Aircraft.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\MeshBoneControllerBase.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\MeshBoneControllerFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\MouseCursor.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\PseudoAircraftHUD.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\PseudoAircraftSimulator.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\PyModule_ShopMethods.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\RandomDirectionTable.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\SaveDataManager.cpp" />
+    <ClCompile Include="..\..\amorphous\GameCommon\ShockWaveCameraEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\GravityFunction.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Box.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Capsule.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Box_Triangle.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Capsule_Capsule.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Capsule_TriangleMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_CollisionDetect_Sphere_TriangleMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActorDesc.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Box.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Capsule.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_Shape_Sphere.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeBase.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\JL_ShapeDescFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\TriangleMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\distance.cpp" />
+    <ClCompile Include="..\..\amorphous\Physics\Engines\JigLib\Geometry\overlap.cpp" />
+    <ClCompile Include="..\..\amorphous\App\GameApplicationBase.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\Cartridge.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\Clothing.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\Firearm.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GameItem.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GameItemDatabase.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GameItemObjectFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GI_Aircraft.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GI_Ammunition.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GI_GravityGun.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GI_LaserGun.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GI_MissileLauncher.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\GI_Weapon.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\ItemDatabaseBuilder.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\ItemDatabaseManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\LandVehicle.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\Magazine.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\MiscGameItems.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\Radar.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\RotatableTurret.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\SkeletalCharacter.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\WeaponSystem.cpp" />
+    <ClCompile Include="..\..\amorphous\Item\ItemEntity.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\GameEvent.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\GameEventManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\GE_SpawnEvent.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\GE_TextEvent.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\ScriptArchive.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\ScriptManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_3DMath.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_Graphics.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_shop.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_single_player.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_sound.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_stage.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Script\PyModule_StageUtility.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_task.cpp" />
+    <ClCompile Include="..\..\amorphous\Script\PyModule_visual_effect.cpp" />
+    <ClCompile Include="..\..\amorphous\GameTextSystem\GameTextSet.cpp" />
+    <ClCompile Include="..\..\amorphous\GameTextSystem\GameTextSystem.cpp" />
+    <ClCompile Include="..\..\amorphous\GameTextSystem\GameTextWindow.cpp" />
+    <ClCompile Include="..\..\amorphous\GameTextSystem\PyModule_TextMessage.cpp" />
+    <ClCompile Include="..\..\amorphous\GameTextSystem\TextMessageManager.cpp" />
+    <ClCompile Include="..\..\amorphous\GameTextSystem\TextMessageRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\BlendNode.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\BVHMotionDatabaseCompiler.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\HumanoidMotionSynthesizer.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionBlender.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionDatabase.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionDatabaseBuilder.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionFSM.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionPrimitive.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\MotionPrimitiveBlender.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\SkeletalMeshTransform.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\Skeleton.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\SkeletonRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\TransformCacheTree.cpp" />
+    <ClCompile Include="..\..\amorphous\MotionSynthesis\TransformNode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amorphous\Stage\CopyEntity.inl" />
+    <None Include="..\..\amorphous\Physics\Engines\JigLib\JL_PhysicsActor.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BasicFramework.vcxproj">
+      <Project>{0a3dc23b-9508-4f65-8492-4b122f2def7b}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
