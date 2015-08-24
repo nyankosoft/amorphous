@@ -3,7 +3,6 @@
 
 
 #include "../PrimitiveRenderer.hpp"
-#include "GLExtensions.hpp"
 
 
 namespace amorphous
