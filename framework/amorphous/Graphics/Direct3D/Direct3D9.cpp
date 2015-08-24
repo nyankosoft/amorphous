@@ -858,7 +858,20 @@ Result::Name CDirect3D9::SetSamplingParameter( uint sampler_index, SamplingParam
 	}
 
 	DWORD dest_value = 0;
-	if( dest_type == D3DSAMP_ADDRESSU
+	if( dest_type == D3DSAMP_MINFILTER
+	 || dest_type == D3DSAMP_MAGFILTER )
+	{
+		switch(value)
+		{
+		case TextureFilter::NEAREST:   dest_value = D3DTEXF_POINT;   break;
+		case TextureFilter::LINEAR:    dest_value = D3DTEXF_LINEAR; break;
+		default:
+			LOG_PRINTF_ERROR(( " An unsupported texture filter mode (%d)", (int)value ));
+			break;
+		}
+	}
+	else if(
+	    dest_type == D3DSAMP_ADDRESSU
 	 || dest_type == D3DSAMP_ADDRESSV
 	 || dest_type == D3DSAMP_ADDRESSW )
 	{
