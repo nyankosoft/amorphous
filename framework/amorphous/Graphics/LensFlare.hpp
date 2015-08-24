@@ -1,9 +1,9 @@
-#ifndef  __LensFlare_H__
-#define  __LensFlare_H__
+#ifndef  __amorphous_LensFlare_HPP__
+#define  __amorphous_LensFlare_HPP__
 
-#include "../base.hpp"
-#include "../3DMath/Vector3.hpp"
-#include "../3DMath/Matrix44.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
 #include "TextureHandle.hpp"
 #include "FloatRGBAColor.hpp"
 #include "2DPrimitive/2DRectSet.hpp"
@@ -75,8 +75,6 @@ class LensFlare
 		NUM_MAX_FLARES = 32
 	};
 
-//	TLVERTEX m_avVertex[NUM_MAX_FLARES * 4];
-//	WORD m_awIndex[NUM_MAX_FLARES * 6];
 //	C2DRectSet m_RectGroup;
 
 	std::vector<LensFlareGroup> m_vecLensFlareGroup;
@@ -178,4 +176,4 @@ inline void LensFlare::UpdateScreenSize( int screen_width, int screen_height )
 
 
 
-#endif		/*  __LensFlare_H__  */
+#endif		/*  __amorphous_LensFlare_HPP__  */

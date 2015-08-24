@@ -1,5 +1,5 @@
 #include "LensFlare.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 
 
 namespace amorphous
@@ -172,12 +172,6 @@ void LensFlare::Render()
 	GraphicsDevice().SetSourceBlendMode( AlphaBlend::SrcAlpha );
 	GraphicsDevice().SetDestBlendMode( AlphaBlend::One );
 
-//	UINT pass, cPasses;
-
-//	LPD3DXEFFECT pEffect = rShaderManager.GetEffect();
-
-//	pEffect->Begin( &cPasses, 0 );
-
 	const size_t num_groups = m_vecLensFlareGroup.size();
 	for( size_t i=0; i<num_groups; i++ )
 	{
@@ -197,8 +191,6 @@ void LensFlare::Render()
 			pEffect->EndPass();
 		}*/
 	}
-
-//	pEffect->End();
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
