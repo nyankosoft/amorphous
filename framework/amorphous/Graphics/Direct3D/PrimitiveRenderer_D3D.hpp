@@ -191,6 +191,8 @@ public:
 		if( points.size() < 2 || points.size() != colors.size() )
 			return Result::INVALID_ARGS;
 
+		CopyPoints(points, colors);
+
 		HRESULT hr = D3DDrawPrimitives( D3DPT_LINESTRIP, (int)points.size() - 1, NULL );
 
 		return SUCCEEDED(hr) ? Result::SUCCESS : Result::UNKNOWN_ERROR;
