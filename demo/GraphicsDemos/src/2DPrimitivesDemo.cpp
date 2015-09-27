@@ -142,6 +142,7 @@ int C2DPrimitivesDemo::Init()
 		}
 	}
 
+	m_BackgroundTexture.Load("2DPrimitivesDemo/textures/silvery_blue.jpg");
 
 	return 0;
 }
@@ -174,6 +175,8 @@ void C2DPrimitivesDemo::RenderRects()
 		else
 			shader_mgr.SetTexture( i, TextureHandle() );
 	}
+
+	GraphicsDevice().Enable(RenderStateType::ALPHA_BLEND);
 
 	for( size_t i=0; i<m_Rects.size(); i++ )
 	{
@@ -254,6 +257,13 @@ void C2DPrimitivesDemo::RenderRectSet()
 
 void C2DPrimitivesDemo::Render()
 {
+	// Render background
+	C2DRect bg_rect;
+	bg_rect.SetPositionLTWH(0, 0, GetWindowWidth(), GetWindowHeight());
+	bg_rect.SetColor(SFloatRGBAColor::White());
+	bg_rect.SetTextureUV(TEXCOORD2(0, 0), TEXCOORD2(1, 1));
+	bg_rect.Draw(m_BackgroundTexture);
+
 	switch( m_Type )
 	{
 	case 0:

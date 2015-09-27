@@ -43,6 +43,8 @@ class C2DPrimitivesDemo : public CGraphicsTestBase
 
 	bool m_RenderWithUserDefinedShader;
 
+	TextureHandle m_BackgroundTexture;
+
 private:
 
 	int InitShaders();
