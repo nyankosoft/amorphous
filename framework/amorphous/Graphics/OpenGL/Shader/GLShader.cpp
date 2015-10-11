@@ -413,17 +413,23 @@ Result::Name CGLProgram::InitProgram()
 
 	glAttachShader( m_Program, m_pVertexShader->GetGLHandle() );
 
-	LOG_GL_ERROR( " glAttachShader() failed." );
+	LOG_GL_ERROR( " glAttachShader() (.vert) failed." );
 
 	glAttachShader( m_Program, m_pFragmentShader->GetGLHandle() );
 
-	LOG_GL_ERROR( " glAttachShader() failed." );
+	LOG_GL_ERROR( " glAttachShader() (.frag) failed." );
 
 	glLinkProgram( m_Program );
 
-	LOG_GL_ERROR( " glLinkProgram() failed." );
+	LOG_GL_ERROR( " glLinkProgram() error." );
 
-//	glUseProgramObjectARB( m_Program );
+	GLint link_status = 0;
+	glGetProgramiv(m_Program, GL_LINK_STATUS, &link_status);
+
+	LOG_GL_ERROR(" glGetProgramiv() error.");
+
+	if( link_status == GL_FALSE )
+		LOG_PRINT_ERROR("shaders are not linked.");
 
 	InitUniforms();
 
@@ -433,7 +439,7 @@ Result::Name CGLProgram::InitProgram()
 	Vector2 v( (float)GraphicsComponent::GetScreenWidth(), (float)GraphicsComponent::GetScreenHeight() );
 	SetParam( "ViewportSize", v );
 
-	LOG_GL_ERROR( "Detected a GL error at the end of the function." );
+	LOG_GL_ERROR( "fn end" );
 
 	return Result::SUCCESS;
 }
@@ -782,7 +788,11 @@ boost::shared_ptr<ShaderLightManager> CGLProgram::GetShaderLightManager()
 
 void CGLProgram::InitUniforms()
 {
+	LOG_GL_ERROR("fn start");
+
 	glUseProgram( m_Program );
+
+	LOG_GL_ERROR(" glUseProgram() error");
 
 	// Return values of glGetUniformLocation() will be -1 if
 	// 1. The matrix is not defined in the shader.
@@ -801,8 +811,11 @@ void CGLProgram::InitUniforms()
 
 		m_TextureSamplerUniforms[i] = glGetUniformLocation( m_Program, sampler_name );
 
-		glUniform1i( m_TextureSamplerUniforms[i], i );
+		if( 0 <= m_TextureSamplerUniforms[i] )
+			glUniform1i( m_TextureSamplerUniforms[i], i );
 	}
+
+	LOG_GL_ERROR("fn end");
 }
 
 /*
