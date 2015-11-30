@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<MeshTree>
+	<MinimumCellVolume>1000000000.0</MinimumCellVolume>
+	<NumMaxGeometriesPerCell>2000</NumMaxGeometriesPerCell>
+	<MaxDepth>6</MaxDepth>
+	<RecursionStopCondition>OR</RecursionStopCondition>
+</MeshTree>

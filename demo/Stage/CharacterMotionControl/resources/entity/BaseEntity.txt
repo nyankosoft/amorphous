@@ -1,0 +1,2 @@
+input	light.txt
+output	../../app/System/BaseEntity.bin

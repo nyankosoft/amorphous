@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item>
+		<ClassName>SkeletalCharacter</ClassName>
+		<Name>nyanko</Name>
+		<Model path="models/male_skinny_young.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+	<Item>
+		<ClassName>SkeletalCharacter</ClassName>
+		<Name>wanko</Name>
+		<Model path="models/male_skinny_young.msh">
+			<Shader specular="false"/>
+		</Model>
+		<MaxQuantity>1</MaxQuantity>
+	</Item>
+</Items>

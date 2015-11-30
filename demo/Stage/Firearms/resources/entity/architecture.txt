@@ -1,0 +1,11 @@
+================= architecture model(s) (not needed for firearms tests. added for testing the models)
+CLASSNAME	CBE_GeneralEntity
+NAME		steel_tower
+AABB		1.0  1.0  1.0
+BV_TYPE		BVTYPE_AABB
+3DMODEL		models/architecture/steel_tower.msh
+LIGHTING	TRUE
+RIGIDBODY	TRUE
+MASS            6.0
+FLAGS           INDESTRUCTIBLE
+END

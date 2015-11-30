@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Include relative_path="characters.xml"/>
+	<Include relative_path="clothing.xml"/>
+	<Include relative_path="cartridges.xml"/>
+	<Include relative_path="firearms.xml"/>
+</Root>

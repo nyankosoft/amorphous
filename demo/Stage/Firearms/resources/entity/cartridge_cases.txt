@@ -1,0 +1,12 @@
+================= explosives
+CLASSNAME      CBE_GeneralEntity
+NAME           case-brass-9x19mm
+AABB           0.02  0.02  0.02
+BV_TYPE        BVTYPE_AABB
+3DMODEL        models/cartridge_cases/9x19mm-case.msh
+LIGHTING       TRUE
+RIGIDBODY      TRUE
+SHAPE_CAPSULE  0.005  0.019
+MASS           0.01
+LIFE           20.0
+END

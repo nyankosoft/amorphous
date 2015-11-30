@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<motion_database file="motions/lws-fwd.mdb"/>
+	<!--<motion_database file="motions/basic_moves__mo.mdb"/>-->
+	<!--<motion_database file="motions/basic_moves__az.mdb"/>-->
+	<complete_skeleton motion_primitive_name="standing"/>
+	<FSMs>
+		<FSM name="lower_limbs">
+			<nodes>
+				<!--<node name="fwd" motion_primitive_name="walk-legs"></node>-->
+				<node name="fwd" motion_primitive_name="walk" motion_play_speed_factor="2.5"></node>
+				<node name="run" motion_play_speed_factor="3.0"></node>
+				<node name="standing"></node>
+				<node name="crouch"></node>
+				<node name="prone"></node>
+				<node name="bwd"></node>
+				<node name="sidestep-right"></node>
+				<node name="sidestep-left"></node>
+				<node name="crouch-sidestep-right"></node>
+				<node name="crouch-sidestep-left"></node>
+				<node name="falling"></node>
+				<node name="land"></node>
+				<node name="bend_down_for_vertical_jump"></node>
+				<node name="vertical_jump"></node>
+				<node name="standing_and_aiming_with_handgun" motion_primitive_name="standing"></node>
+				<node name="crouching_and_aiming_with_handgun"></node>
+				<node name="prone_and_aiming_with_handgun"></node>
+				<node name="walking_and_aiming_with_handgun"></node>
+			</nodes>
+			<transitions>
+				<!-- from fwd to standing -->
+				<transition from="fwd" to="standing">
+					<trans time="0.2" goal="standing"/>
+				</transition>
+				<transition from="fwd" to="crouch">
+					<trans time="0.2" goal="crouch"/>
+				</transition>
+				<transition from="fwd" to="run">
+					<trans time="0.2" goal="run"/>
+				</transition>
+				<transition from="run" to="fwd">
+					<trans time="0.2" goal="fwd"/>
+				</transition>
+				<transition from="run" to="standing">
+					<trans time="0.2" goal="standing"/>
+				</transition>
+				<transition from="standing" to="fwd">
+					<trans time="0.2" goal="fwd"/>
+				</transition>
+				<transition from="standing" to="crouch">
+					<trans time="0.2" goal="crouch"/>
+				</transition>
+				<transition from="crouch" to="fwd">
+					<trans time="0.2" goal="fwd"/>
+				</transition>
+				<transition from="crouch" to="standing">
+					<trans time="0.2" goal="standing"/>
+				</transition>
+				<transition from="crouch" to="prone">
+					<trans time="0.2" goal="prone"/>
+				</transition>
+				<transition from="prone" to="fwd">
+					<trans time="0.2" goal="crouch"/>
+					<trans time="0.2" goal="fwd"/>
+				</transition>
+				<transition from="prone" to="standing">
+					<trans time="0.2" goal="standing"/>
+				</transition>
+				<transition from="prone" to="crouch">
+					<trans time="0.2" goal="crouch"/>
+				</transition>
+				<transition from="fwd" to="falling">
+					<trans time="0.2" goal="falling"/>
+				</transition>
+				<transition from="run" to="falling">
+					<trans time="0.2" goal="falling"/>
+				</transition>
+				<transition from="standing" to="falling">
+					<trans time="0.1" goal="falling"/>
+				</transition>
+				<transition from="falling" to="standing">
+					<trans time="0.005" goal="land"/>
+					<trans time="0.7" goal="standing"/>
+				</transition>
+				<transition from="standing" to="vertical_jump">
+					<trans time="0.1" goal="bend_down_for_vertical_jump"/>
+					<trans time="0.001" goal="vertical_jump"/>
+				</transition>
+				<transition from="vertical_jump" to="falling">
+					<trans time="0.1" goal="falling"/>
+				</transition>
+				<!-- Add the transition from 'v.jump' to 'standing' just in case.
+				although the motion 'falling' should be played between 'v.jump' and 'standing'. -->
+				<transition from="vertical_jump" to="standing">
+					<trans time="0.1" goal="standing"/>
+				</transition>
+				<transition from="standing" to="standing_and_aiming_with_handgun">
+					<trans time="0.1" goal="standing_and_aiming_with_handgun"/>
+				</transition>
+				<transition from="standing_and_aiming_with_handgun" to="standing">
+					<trans time="0.1" goal="standing"/>
+				</transition>
+				<transition from="crouching" to="crouching_and_aiming_with_handgun">
+					<trans time="0.1" goal="crouching_and_aiming_with_handgun"/>
+				</transition>
+				<transition from="prone" to="prone_and_aiming_with_handgun">
+					<trans time="0.1" goal="prone_and_aiming_with_handgun"/>
+				</transition>
+			</transitions>
+		</FSM>
+		<FSM name="upper_body">
+			<node name="arms-down"></node>
+			<node name="arms-swinging"></node>
+		</FSM>
+	</FSMs>
+</root>

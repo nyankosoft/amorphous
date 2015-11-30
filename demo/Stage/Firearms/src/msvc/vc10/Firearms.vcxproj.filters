@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{2d37da8a-c526-475f-8b8f-92cc92498a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\App">
+      <UniqueIdentifier>{2db7e1b7-a913-47b7-820f-ec00f1ba9c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Task">
+      <UniqueIdentifier>{8fef1403-6bfd-470d-a606-f225a930599c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{983ee836-c3d4-4d34-bafb-62db4cb8f4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\base">
+      <UniqueIdentifier>{9cf9fc31-83fa-455f-9aac-e313adc6a99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Item">
+      <UniqueIdentifier>{196f41ec-5fa6-40be-8a9c-6838825c0667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{a07adba1-b6a8-46eb-aba8-740960f92b53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStageFrameworkAppMain">
+      <UniqueIdentifier>{a9422f88-26b7-463a-b763-a0b5c081bc3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{08ad6cd9-e33f-45b8-a227-025bd7d228e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\misc">
+      <UniqueIdentifier>{be8c264b-8035-4a9f-b923-df52ffa44105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\entities">
+      <UniqueIdentifier>{c38262bf-8a20-48ce-aeb7-9f5019f42ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\items">
+      <UniqueIdentifier>{569954e8-f42b-4d0f-9394-4ffbdac88bd3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\root\app\FirearmsAppBase.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\root\item\ArmedCharacterOperations.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Project1\framework\amorphous\App\AppMain.cpp">
+      <Filter>GameStageFrameworkAppMain</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\root\app\FirearmsAppBase.hpp">
+      <Filter>Source Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\root\item\ArmedCharacterOperations.hpp">
+      <Filter>Source Files\Item</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\resources\misc\test_motion_fsm.xml">
+      <Filter>Resource Files\misc</Filter>
+    </None>
+    <None Include="..\..\..\resources\entity\BaseEntity.txt">
+      <Filter>Resource Files\entities</Filter>
+    </None>
+    <None Include="..\..\..\resources\entity\light.txt">
+      <Filter>Resource Files\entities</Filter>
+    </None>
+    <None Include="..\..\..\resources\items\cartridges.xml">
+      <Filter>Resource Files\items</Filter>
+    </None>
+    <None Include="..\..\..\resources\items\characters.xml">
+      <Filter>Resource Files\items</Filter>
+    </None>
+    <None Include="..\..\..\resources\items\clothing.xml">
+      <Filter>Resource Files\items</Filter>
+    </None>
+    <None Include="..\..\..\resources\items\firearms.xml">
+      <Filter>Resource Files\items</Filter>
+    </None>
+    <None Include="..\..\..\resources\items\items.xml">
+      <Filter>Resource Files\items</Filter>
+    </None>
+  </ItemGroup>
+</Project>

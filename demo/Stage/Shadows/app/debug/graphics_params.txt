@@ -1,0 +1,7 @@
+debug_shadowmap               1
+shadowmap_scene_cam_nearclip  0.01
+shadowmap_scene_cam_farclip   100.1
+shadowmap_size                1024
+shadowmap_dist_tolerance      0.1
+light_cam_shift_distance      40.0
+display_shadowmap_textures    1

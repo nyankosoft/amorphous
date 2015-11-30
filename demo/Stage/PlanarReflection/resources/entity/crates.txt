@@ -1,0 +1,39 @@
+================= miscellaneous entities
+CLASSNAME     CBE_GeneralEntity
+NAME          synty_crate-low_res
+AABB          1.0  1.0  1.0
+BV_TYPE       BVTYPE_AABB
+3DMODEL       models/misc/synty_crate-low_res.msh
+RIGIDBODY     TRUE
+SHAPE_BOX     1.0  1.0  1.0
+MASS          9.0
+FLAGS         INDESTRUCTIBLE
+FLAGS         LIGHTING
+LIGHTING      TRUE
+END
+---
+CLASSNAME     CBE_GeneralEntity
+NAME          synty_crate-low_res-s0.64
+AABB          0.64  0.64  0.64
+BV_TYPE       BVTYPE_AABB
+3DMODEL       models/misc/synty_crate-low_res-s0.64.msh
+RIGIDBODY     TRUE
+SHAPE_BOX     0.64  0.64  0.64
+MASS          5.0
+FLAGS         INDESTRUCTIBLE
+FLAGS         LIGHTING
+LIGHTING      TRUE
+END
+---
+CLASSNAME     CBE_GeneralEntity
+NAME          synty_crate-low_res-s0.5
+AABB          0.5  0.5  0.5
+BV_TYPE       BVTYPE_AABB
+3DMODEL       models/misc/synty_crate-low_res-s0.5.msh
+RIGIDBODY     TRUE
+SHAPE_BOX     0.5  0.5  0.5
+MASS          3.0
+FLAGS         INDESTRUCTIBLE
+FLAGS         LIGHTING
+LIGHTING      TRUE
+END

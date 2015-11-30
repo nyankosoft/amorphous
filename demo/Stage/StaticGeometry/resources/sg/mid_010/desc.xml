@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Root>
+	<Input>
+		<LightWave>
+			<File>./mid_010-hills-low_poly.lwo</File>
+		</LightWave>
+	</Input>
+	<Output>
+		<ProgramRootDirectoryPath>../../../app</ProgramRootDirectoryPath>
+		<File>../../../app/Stage/hills.sga</File>
+	</Output>
+	<!--<Collision>
+		<GeometryFilterFile>../_common/fg_collision_geometry_filter.xml</GeometryFilterFile>
+	</Collision>-->
+	<Graphics>
+		<!--<GeometryFilterFile>../_common/fg_graphics_geometry_filter.xml</GeometryFilterFile>-->
+		<Surface>
+			<SurfaceDescFile>../_common/surface_descs.xml</SurfaceDescFile>
+		</Surface>
+		<Shader>
+			<ShaderParamFile>./shader_params.xml</ShaderParamFile>
+		</Shader>
+		<!--<TextureSubdivision enabled="true">
+			<TextureSubdivisionFile>../_common/texture_subdivision.xml</TextureSubdivisionFile>
+		</TextureSubdivision>-->
+		<MeshTreeOptions enabled="true">
+			<MeshTreeOptionsFile>../_common/meshtree_options.xml</MeshTreeOptionsFile>
+		</MeshTreeOptions>
+		<!--		<TextureSubdivision enabled="true">
+			<OutputImageFormat>jpg</OutputImageFormat>
+			<SplitSize>1024</SplitSize>
+		</TextureSubdivision>
+-->
+	</Graphics>
+</Root>

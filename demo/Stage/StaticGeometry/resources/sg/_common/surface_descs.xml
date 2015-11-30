@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SurfaceDescs>
+	<!--
+	Rationale behind adopting surface descs and surface & desc pairs
+	- FPS levels are made of many surfaces since they use many textures.
+	  - Writing properties for each surface will be a burden.
+	- Usually, same surface properties are shared by multiple surfaces.
+	  - They only differ in textures.
+	-->
+	<Descs>
+		<Desc name="Default">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>./Shader/MultiTexturedTerrain.fx</File>
+				<!--
+				<Technique>SingleColorFade</Technique>
+				-->
+				<Technique>SingleOverlayTexture_SingleColorFade</Technique>
+			</Shader>
+		</Desc>
+		<Desc name="Terrain">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>./Shader/MultiTexturedTerrain.fx</File>
+				<Technique>SingleColorFade</Technique>
+			</Shader>
+		</Desc>
+		<Desc name="TerrainWithWater">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>./Shader/MultiTexturedTerrain.fx</File>
+				<Technique>SingleColorFade</Technique>
+			</Shader>
+		</Desc>
+		<Desc name="Building">
+			<Lightmap enabled="false"></Lightmap>
+			<Shader>
+				<File>./Shader/MultiTexturedTerrain.fx</File>
+				<Technique>SingleColorFade</Technique>
+			</Shader>
+		</Desc>
+	</Descs>
+	<SurfaceToDescMaps>
+		<!-- maps surface to desc -->
+		<Map surface="Terrain" desc="Terrain"></Map>
+		<Map surface="TerrainWithWater" desc="TerrainWithWater"></Map>
+		<Map surface="Buildings" desc="Buildings"></Map>
+		<Map surface="Default" desc="Default"></Map>
+	</SurfaceToDescMaps>
+</SurfaceDescs>

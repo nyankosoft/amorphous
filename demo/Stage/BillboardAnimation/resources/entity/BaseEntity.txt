@@ -1,0 +1,4 @@
+input	all.txt
+input	effect.txt
+input	light.txt
+output	../../app/System/BaseEntity.bin
