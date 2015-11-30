@@ -61,7 +61,7 @@ Result::Name ShapesExtractor::ExtractShapes( const shared_ptr<General3DMesh> pSr
 		return Result::INVALID_ARGS;
 
 	// Divide general 3D mesh(es) into connected  sets
-	vector< const shared_ptr<General3DMesh> > pSrcMeshes;
+	vector< shared_ptr<const General3DMesh> > pSrcMeshes;
 	pSrcMeshes.push_back( pSrcMesh );
 	vector< shared_ptr<General3DMesh> > pConnectedMeshes;
 	pConnectedMeshes.reserve( 16 );
