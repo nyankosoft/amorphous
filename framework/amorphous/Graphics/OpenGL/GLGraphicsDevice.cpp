@@ -281,7 +281,7 @@ bool ToGLenum( RenderStateType::Name type, GLenum& cap )
 	case RenderStateType::LIGHTING:	                 cap = GL_LIGHTING;     return true;
 	case RenderStateType::FOG:                       cap = GL_FOG;          return true;
 	case RenderStateType::FACE_CULLING:              cap = GL_CULL_FACE;    return true;
-	case RenderStateType::WRITING_INTO_DEPTH_BUFFER: // Handled separately. See GetRenderState() & SetRenderState()
+	case RenderStateType::WRITING_INTO_DEPTH_BUFFER: return false; // Handled separately. See GetRenderState() & SetRenderState()
 	case RenderStateType::SCISSOR_TEST:              cap = GL_SCISSOR_TEST; return true;
 	default:
 		return false;
