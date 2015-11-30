@@ -80,15 +80,15 @@ void FirearmsAppTask::ArmCharacter( SkeletalCharacter& character )
 {
 	CItemStageUtility stg_util( m_pStage );
 
-	shared_ptr<Firearm> pUSP = ItemDatabaseManager().GetItem<Firearm>( "USP (9mm)", 1 );
+	shared_ptr<Firearm> pUSP = GetItemDatabaseManager().GetItem<Firearm>( "USP (9mm)", 1 );
 	if( !pUSP )
 		return;
 
-	shared_ptr<Cartridge> pCartridges = ItemDatabaseManager().GetItem<Cartridge>( "9x19mm (FMJ)", 1000 );
+	shared_ptr<Cartridge> pCartridges = GetItemDatabaseManager().GetItem<Cartridge>( "9x19mm (FMJ)", 1000 );
 	if( !pCartridges )
 		return;
 
-	shared_ptr<Magazine> pMag = ItemDatabaseManager().GetItem<Magazine>( "USP Magazine (9mm, 15)", 1 );
+	shared_ptr<Magazine> pMag = GetItemDatabaseManager().GetItem<Magazine>( "USP Magazine (9mm, 15)", 1 );
 	if( !pMag )
 		return;
 
