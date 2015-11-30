@@ -135,7 +135,10 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 				// TODO: define a function to set texture resource id string
 				static int s_texcount = 0;
 				if( current_desc.ResourcePath.length() == 0 )
+				{
 					current_desc.ResourcePath = "<Texture>" + to_string(s_texcount);
+					s_texcount += 1;
+				}
 
 			}
 
