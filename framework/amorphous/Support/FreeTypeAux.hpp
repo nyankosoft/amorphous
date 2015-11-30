@@ -13,9 +13,9 @@ namespace amorphous
 {
 
 #ifdef _DEBUG
-#pragma comment( lib, "freetype253_D.lib" )
+#pragma comment( lib, "freetype26MTd.lib" )
 #else
-#pragma comment( lib, "freetype253.lib" )
+#pragma comment( lib, "freetype26MT.lib" )
 #endif
 
 
