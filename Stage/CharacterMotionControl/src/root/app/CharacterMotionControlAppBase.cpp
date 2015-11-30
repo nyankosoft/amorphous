@@ -469,8 +469,8 @@ bool CCharacterMotionControlAppBase::Init()
 	// Do initial settings using scripts
 	//
 
-	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
-	MouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", 0xFFFFFFFF );
+//	SRect cursor_rect = SRect( 0, 0, 27, 27 ) * ((float)GetGameWindowManager().GetScreenWidth()) / 800.0f;
+//	GetMouseCursor().Load( 0, cursor_rect, "./textures/crosshair_cursor.dds", SFloatRGBAColor::White() );
 
 /*
 	ScriptManager script_mgr;
