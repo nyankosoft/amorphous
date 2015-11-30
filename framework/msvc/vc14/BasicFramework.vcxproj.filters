@@ -855,6 +855,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.cpp">
       <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.cpp">
+      <Filter>Graphics\TextureGenerators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -2000,6 +2003,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.hpp">
       <Filter>Graphics\OpenGL\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.hpp">
+      <Filter>Graphics\TextureGenerators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
