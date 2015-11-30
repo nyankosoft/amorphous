@@ -1,4 +1,5 @@
 #include "GLSLShaderLightManager.hpp"
+#include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "Support/StringAux.hpp"
 #include "Support/Macro.h"
 
@@ -31,12 +32,16 @@ m_FragmentShader(0)
 
 void CGLSLShaderLightManager::Init( GLuint program )
 {
+	LOG_GL_ERROR("fn start");
+
 	if( program == 0 )
 		return;
 
 	m_Program = program;
 
 	glUseProgram( m_Program );
+
+	LOG_GL_ERROR(" glUseProgram() failed.");
 
 	char var_name[16];
 	memset( var_name, 0, sizeof(var_name) );
@@ -77,6 +82,8 @@ void CGLSLShaderLightManager::Init( GLuint program )
 		m_HSPointLightUniforms[i].m_Position         = glGetUniformLocation( program, fmt_string( "HSPL_Positions[%d]", i ).c_str() );
 		m_HSPointLightUniforms[i].m_Attenuation      = glGetUniformLocation( program, fmt_string( "HSPL_Atts[%d]"     , i ).c_str() );
 	}
+
+	LOG_GL_ERROR("fn end");
 }
 
 
