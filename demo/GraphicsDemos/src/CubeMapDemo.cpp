@@ -3,7 +3,6 @@
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/MeshUtilities.hpp"
-#include "amorphous/Graphics/OpenGL/GLExtensions.hpp"
 #include "amorphous/Support/Profile.hpp"
 
 using std::string;
@@ -116,21 +115,29 @@ void CubeMapDemo::Render()
 //		return;
 
 //	ShaderManager& shader_mgr = pShaderManager ? (*pShaderManager) : FixedFunctionPipelineManager();
-	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 
-	shader_mgr.SetTexture( 0, m_CubeMapTextures[0] );
+	bool use_ffp = false;
+	if( use_ffp )
+	{
+		ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		shader_mgr.SetTexture( 0, m_CubeMapTextures[0] );
 
-	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
-	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
-	glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
-	glEnable(GL_TEXTURE_CUBE_MAP);
-	glEnable(GL_TEXTURE_GEN_S);
-	glEnable(GL_TEXTURE_GEN_T);
-	glEnable(GL_TEXTURE_GEN_R);
-	glEnable(GL_NORMALIZE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+		glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+		glEnable(GL_TEXTURE_CUBE_MAP);
+		glEnable(GL_TEXTURE_GEN_S);
+		glEnable(GL_TEXTURE_GEN_T);
+		glEnable(GL_TEXTURE_GEN_R);
+		glEnable(GL_NORMALIZE);
+	}
+	else
+	{
+	}
 
 //	for( size_t i=0; i<m_vecEnvMappedMesh.size(); i++ )
 	if( m_MeshIndex < (uint)m_vecEnvMappedMesh.size() )
