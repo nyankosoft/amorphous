@@ -7,7 +7,7 @@
 
 // Windows headers
 #include <windows.h>
-#include <mmsystem.h>
+//#include <mmsystem.h>
 
 
 // Visual Leak Detector
