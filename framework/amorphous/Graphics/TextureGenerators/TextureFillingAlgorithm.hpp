@@ -29,6 +29,17 @@ public:
 
 	virtual void GetPixel( int x, int y, SFloatRGBAColor& dest ) = 0;
 
+	void SetPixel(int x, int y, const SFloatRGBAColor& color)
+	{
+		U8 r = (U8)get_clamped( (U32)(color.red   * 255), (U32)0, (U32)255 );
+		U8 g = (U8)get_clamped( (U32)(color.green * 255), (U32)0, (U32)255 );
+		U8 b = (U8)get_clamped( (U32)(color.blue  * 255), (U32)0, (U32)255 );
+		U8 a = (U8)get_clamped( (U32)(color.alpha * 255), (U32)0, (U32)255 );
+		U32 argb32 = a << 24 | r << 16 | g << 8 | b;
+
+		SetPixelARGB32( x, y, argb32 );
+	}
+
 	virtual void SetPixelARGB32( int x, int y, U32 argb_color ) = 0;
 
 	/// \param alpha [0,255]
