@@ -1,8 +1,8 @@
 #include "OggVorbisAux.hpp"
-#include "../base.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/SerializableStream.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/SerializableStream.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous
