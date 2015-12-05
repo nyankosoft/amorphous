@@ -1,5 +1,6 @@
 #include "PostProcessEffect.hpp"
 #include "PostProcessEffectManager.hpp"
+#include "3DMath/Gaussian.hpp"
 #include "Graphics/SurfaceFormat.hpp"
 #include "Graphics/Direct3D/Direct3D9.hpp"
 #include "Graphics/Direct3D/D3DSurfaceFormat.hpp"
@@ -285,19 +286,6 @@ void RenderFullScreenQuad( ShaderManager& shader_mgr, const CoordRect& c )
 void RenderFullScreenQuad( ShaderManager& shader_mgr, float fLeftU, float fTopV, float fRightU, float fBottomV )
 {
 	DrawFullScreenQuad( shader_mgr, fLeftU, fTopV, fRightU, fBottomV );
-}
-
-
-/**
- Helper function for GetSampleOffsets function to compute the 
- 2 parameter Gaussian distrubution using the given standard deviation rho.
-*/
-float GaussianDistribution( float x, float y, float rho )
-{
-    float g = 1.0f / sqrtf( 2.0f * (float)PI * rho * rho );
-    g *= expf( -( x * x + y * y ) / ( 2 * rho * rho ) );
-
-    return g;
 }
 
 
