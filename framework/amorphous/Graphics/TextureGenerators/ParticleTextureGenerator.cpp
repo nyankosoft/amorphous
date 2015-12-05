@@ -1,7 +1,7 @@
 #include "ParticleTextureGenerator.hpp"
-#include "../fwd.hpp"
-#include "../GraphicsResources.hpp"
-#include "../../3DMath/Gaussian.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsResources.hpp"
+#include "amorphous/3DMath/Gaussian.hpp"
 
 
 namespace amorphous
