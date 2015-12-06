@@ -99,6 +99,9 @@ void LightingDemo::SetHSPointLights( ShaderLightManager& shader_light_mgr, bool 
 	float interval_z = (2 <= z) ? span_z / (float)(z-1) : 0.0f;
 	int num_point_lights = z * x;
 	int light_index = 0;
+	m_HSPointLights.resize(0);
+	m_HSPointLights.reserve(x * z);
+
 	for( int i=0; i<z; i++ )
 	{
 		for( int j=0; j<x; j++ )
@@ -116,6 +119,7 @@ void LightingDemo::SetHSPointLights( ShaderLightManager& shader_light_mgr, bool 
 			light.fAttenuation[0] = 0.2f;
 			light.fAttenuation[1] = 0.1f;
 			light.fAttenuation[2] = 0.1f;
+			m_HSPointLights.push_back(light);
 			shader_light_mgr.SetHemisphericPointLight( light );
 		}
 	}
@@ -321,12 +325,26 @@ void LightingDemo::Render()
 
 void LightingDemo::HandleInput( const InputData& input )
 {
+	float m_AttenuationCoefficients[3] = { 0,0,0 };
+
 	switch( input.iGICode )
 	{
 	case GIC_SPACE:
 	case GIC_ENTER:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
+		}
+		break;
+	case 'K':
+		if (input.iType == ITYPE_KEY_PRESSED)
+		{
+//			m_HSPointLights
+		}
+		break;
+	case 'J':
+		if (input.iType == ITYPE_KEY_PRESSED)
+		{
+//			m_HSPointLights
 		}
 		break;
 	default:

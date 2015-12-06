@@ -15,22 +15,19 @@ class SimpleMotionBlurDemo : public CGraphicsTestBase
 {
 	boost::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
 
-//	MeshHandle m_SkyboxMesh;
 	TextureHandle m_SkyTexture;
 
 	MeshHandle m_TerrainMesh;
 
-//	std::vector<MeshHandle> m_vecpMeshes;
+//	std::vector<MeshHandle> m_Meshes;
 
 	ShaderTechniqueHandle m_MeshTechnique;
-
-//	ShaderTechniqueHandle m_SkyboxTechnique;
 
 	ShaderTechniqueHandle m_DefaultTechnique;
 
 	ShaderHandle m_Shader;
 
-//	float m_FOV;// = PI / 4.0f;
+	int m_BlurWeight;
 
 protected:
 
@@ -52,7 +49,7 @@ public:
 
 	void Render();
 
-//	void OnKeyPressed( KeyCode::Code key_code );
+	void HandleInput( const InputData& input );
 };
 
 

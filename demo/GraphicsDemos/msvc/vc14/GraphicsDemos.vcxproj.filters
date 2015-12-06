@@ -126,6 +126,9 @@
     <ClInclude Include="..\..\src\MiscShaderDemo.hpp">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\ParticleTextureGeneratorDemo.hpp">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AsyncLoadingDemo.cpp">
@@ -225,6 +228,9 @@
       <Filter>Demo Framework</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MiscShaderDemo.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ParticleTextureGeneratorDemo.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>

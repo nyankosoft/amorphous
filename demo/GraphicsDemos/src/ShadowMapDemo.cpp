@@ -3,11 +3,12 @@
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/MeshModel/PrimitiveShapeMeshes.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
-#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+//#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderHelpers.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
@@ -24,9 +25,10 @@ static int sg_LightID = 0;
 
 
 ShadowMapDemo::ShadowMapDemo()
+:
+m_RenderSceneWithShadow(true),
+m_Lighting(false)
 {
-	if( CameraController() )
-		CameraController()->SetPosition( Vector3( 0, 2, 0 ) );
 }
 
 
@@ -37,15 +39,13 @@ ShadowMapDemo::~ShadowMapDemo()
 
 int ShadowMapDemo::Init()
 {
-//	m_SkyboxTechnique.SetTechniqueName( "SkyBox" );
-	m_MeshTechnique.SetTechniqueName( "Default" );
-	m_DefaultTechnique.SetTechniqueName( "NullShader" );
+	if( CameraController() )
+		CameraController()->SetPosition( Vector3( 0, 2, -3 ) );
 
-	// initialize shader
-/*	string shader_path = "./shaders/ShadowMapDemo.fx";
-//	string shader_path = "./shaders/PerPixelSingleHSDirectionalLight.fx";
-	bool shader_loaded = m_Shader.Load( shader_path );
-*/
+	m_MeshTechnique.SetTechniqueName( "Default" );
+
+	m_NoLightingShader = CreateNoLightingShader();
+
 	GenericShaderDesc desc;
 
 	desc.LightingType = ShaderLightingType::PER_PIXEL;
@@ -76,27 +76,49 @@ int ShadowMapDemo::Init()
 //	m_FloorMesh = CreateBoxMesh();
 
 	m_pShadowMapManager.reset( new ShadowMapManager );
-	m_pShadowMapManager->SetShadowMapShaderFilename( "ShadowMapDemo/shaders/SimpleShadowMap.fx" );
+//	m_pShadowMapManager->SetShadowMapShaderFilename( "ShadowMapDemo/shaders/SimpleShadowMap.fx" );
 	bool initialized = m_pShadowMapManager->Init();
 
-	// Create a light
-	shared_ptr<HemisphericDirectionalLight> pLight;
-	pLight.reset( new HemisphericDirectionalLight );
-	pLight->vDirection = Vec3GetNormalized( Vector3( -1.0f, -3.0f, 1.0f ) );
-	pLight->Attribute.UpperDiffuseColor = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f );
-	pLight->Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.2f, 0.2f, 0.2f, 1.0f );
-	m_pLight = pLight;
+	// Create some lights
+	m_pLights.resize( 2 );
+
+	// A spotlight (enabled by default)
+	shared_ptr<HemisphericSpotlight> pSpotLight;
+	pSpotLight.reset( new HemisphericSpotlight );
+	pSpotLight->fInnerConeAngle = 1.20f;
+	pSpotLight->fOuterConeAngle = 1.21f;
+	pSpotLight->vPosition = Vector3(-3,12,-1);
+	pSpotLight->vDirection = Vec3GetNormalized( Vector3( 1.0f, -2.0f, 1.0f ) );
+	pSpotLight->Attribute.UpperDiffuseColor = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f );
+	pSpotLight->Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.2f, 0.2f, 0.2f, 1.0f );
+	m_pLights[0].first  = 1;
+	m_pLights[0].second = pSpotLight;
+
+	// A directional light (disabled by default)
+	shared_ptr<HemisphericDirectionalLight> pDirLight;
+	pDirLight.reset( new HemisphericDirectionalLight );
+	pDirLight->vDirection = Vec3GetNormalized( Vector3( -1.0f, -3.0f, 1.0f ) );
+	pDirLight->Attribute.UpperDiffuseColor = SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 1.0f );
+	pDirLight->Attribute.LowerDiffuseColor = SFloatRGBAColor( 0.2f, 0.2f, 0.2f, 1.0f );
+	m_pLights[1].first  = 0;
+	m_pLights[1].second = pDirLight;
 
 	// Set the light to the shader
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+//	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	if( !pShaderMgr )
+		return 0;
+	ShaderManager& shader_mgr = *pShaderMgr;
+
 	shared_ptr<ShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
 	if( pLightMgr )
 	{
-		pLightMgr->SetHemisphericDirectionalLight( *pLight );
+		pLightMgr->SetHemisphericSpotlight( *pSpotLight );
+//		pLightMgr->SetHemisphericDirectionalLight( *pDirLight );
 	}
 
-	m_pShadowMapManager->CreateShadowMap( sg_LightID, *pLight );
+	m_pShadowMapManager->CreateShadowMap( sg_LightID, *pSpotLight );
+//	m_pShadowMapManager->CreateShadowMap( sg_AnotherLightID, *pDirLight );
 
 	m_pShadowMapSceneRenderer.reset( new ShadowMapDemoSceneRenderer(this) );
 
@@ -116,7 +138,7 @@ void ShadowMapDemo::RenderScene( ShaderManager& shader_mgr )
 //	m_pShadowMapManager->ShaderTechniqueForShadowCaster();
 
 	GraphicsDevice().SetRenderState( RenderStateType::ALPHA_BLEND, false );
-	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,    true );
+	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING,    m_Lighting );
 
 	shared_ptr<ShaderLightManager> pLightMgr = shader_mgr.GetShaderLightManager();
 	if( pLightMgr )
@@ -146,10 +168,22 @@ void ShadowMapDemo::RenderScene( ShaderManager& shader_mgr )
 }
 
 
-void ShadowMapDemo::Render()
+void ShadowMapDemo::RenderSceneWithShadow()
 {
-	if( m_pLight )
-		m_pShadowMapManager->UpdateLightForShadow( sg_LightID, *m_pLight );
+	if( !m_pShadowMapManager )
+		return;
+
+	for( size_t i=0; i<m_pLights.size(); i++ )
+	{
+		if( m_pLights[i].first == 0 )
+			continue;
+
+		shared_ptr<Light> pLight = m_pLights[i].second;
+		if( !pLight )
+			continue;
+
+		m_pShadowMapManager->UpdateLightForShadow( sg_LightID, *pLight );
+	}
 
 	m_pShadowMapManager->SetSceneCamera( GetCurrentCamera() );
 
@@ -157,8 +191,13 @@ void ShadowMapDemo::Render()
 
 	m_pShadowMapManager->RenderShadowReceivers( Camera() );
 
-	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderHandle shader_to_use = m_Lighting ? m_Shader : m_NoLightingShader;
+
+	ShaderManager *pShaderMgr = shader_to_use.GetShaderManager();
+	if( !pShaderMgr )
+		return;
+
+	ShaderManager& shader_mgr = *pShaderMgr;
 
 	m_pShadowMapManager->BeginScene();
 
@@ -178,17 +217,49 @@ void ShadowMapDemo::Render()
 }
 
 
+void ShadowMapDemo::Render()
+{
+	if( m_RenderSceneWithShadow )
+	{
+		RenderSceneWithShadow();
+	}
+	else
+	{
+		ShaderHandle shader_to_use = m_Lighting ? m_Shader : m_NoLightingShader;
+		ShaderManager *pShaderMgr = shader_to_use.GetShaderManager();
+		if( pShaderMgr )
+			RenderScene( *pShaderMgr );
+	}
+}
+
+
 void ShadowMapDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
+	case 'T':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_RenderSceneWithShadow = !m_RenderSceneWithShadow;
+		}
+		break;
+
+	case 'L':
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_Lighting = !m_Lighting;
+		}
+		break;
+
 	case GIC_F11:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			if( m_pShadowMapManager )
 			{
 				TextureHandle tex = m_pShadowMapManager->GetSceneShadowTexture();
-				tex.SaveTextureToImageFile( "scene_shadow_texture.png" );
+				tex.SaveTextureToImageFile( ".debug/shadow_maps/scene_shadow_texture.png" );
+
+				m_pShadowMapManager->SaveShadowMapTexturesToImageFiles( ".debug/shadow_maps" );
 
 //				shared_ptr<TextureRenderTarget> pTexRenderTarget
 //					= m_pShadowMapManager->GetSceneShadowTexture();
@@ -198,6 +269,7 @@ void ShadowMapDemo::HandleInput( const InputData& input )
 			}
 		}
 		break;
+
 	default:
 		CGraphicsTestBase::HandleInput( input );
 		break;
@@ -205,9 +277,11 @@ void ShadowMapDemo::HandleInput( const InputData& input )
 }
 
 
-void ShadowMapDemo::RenderShadowCasters( Camera& camera )
+void ShadowMapDemo::RenderShadowCasters( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques )
 {
-	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
+//	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
+	ShaderHandle shader = shaders[VertexBlendType::NONE];
+	ShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 
@@ -220,9 +294,11 @@ void ShadowMapDemo::RenderShadowCasters( Camera& camera )
 }
 
 
-void ShadowMapDemo::RenderShadowReceivers( Camera& camera )
+void ShadowMapDemo::RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques )
 {
-	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
+//	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
+	ShaderHandle shader = shaders[VertexBlendType::NONE];
+	ShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
 

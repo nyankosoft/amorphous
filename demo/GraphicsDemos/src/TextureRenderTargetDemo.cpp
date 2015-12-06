@@ -172,6 +172,9 @@ void TextureRenderTargetDemo::RenderMeshes()
 		pMesh->Render( shader_mgr );
 	}
 
+	static auto floor_shader = CreateNoLightingShader();
+	RenderFloorPlane(floor_shader);
+
 	GetShaderManagerHub().PopViewAndProjectionMatrices();
 }
 
@@ -228,7 +231,8 @@ void TextureRenderTargetDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
-	case GIC_F11:
+//	case GIC_F11: // Switches to full screen mode and crashes (Direct3D)
+	case GIC_F7:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
 			SaveTexturesAsImageFiles();

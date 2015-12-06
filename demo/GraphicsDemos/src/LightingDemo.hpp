@@ -29,6 +29,10 @@ class LightingDemo : public CGraphicsTestBase
 
 	int m_NumLightsZ;
 
+	std::vector<HemisphericPointLight> m_HSPointLights;
+
+	std::vector<HemisphericSpotlight> m_HSSpotights;
+
 private:
 
 	bool InitShader();

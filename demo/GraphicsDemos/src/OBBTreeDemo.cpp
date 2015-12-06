@@ -2,7 +2,6 @@
 #include "amorphous/3DMath/OBBTree.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/CameraController.hpp"
-#include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -40,29 +39,42 @@ int OBBTreeDemo::Init()
 	m_DefaultTechnique.SetTechniqueName( "Default" );
 
 	// initialize shader
-//	bool shader_loaded = m_Shader.Load( dir_path + "shaders/OBBTreeDemo.fx" );
 	m_Shader = GetNoLightingShader();
 
 	// load skybox mesh
 //	m_SkyboxMesh = CreateSkyboxMesh( "./textures/skygrad_slim_01.jpg" );
 
-	// load the terrain mesh
-//	MeshResourceDesc mesh_desc;
-//	mesh_desc.ResourcePath = "./models/terrain06.msh";
-//	mesh_desc.MeshType     = CMeshType::BASIC;
-//	m_Mesh.Load( mesh_desc );
+	string mesh_pathnames[] =
+	{
+		"../Common/models/bunny.msh",
+		"../Common/models/Chevelle.msh",
+		"../Common/models/gerzi_chapel.msh",
+		"../Common/models/wc1_1.00.msh"
+	};
 
-	string relative_model_pathname = "../Common/models/bunny.msh";
-	LoadParamFromFile( dir_path + "params.txt", "model", relative_model_pathname );
+	const int num_meshes = numof(mesh_pathnames);
+	m_Meshes.resize( num_meshes );
+	for( int i=0; i<num_meshes; i++ )
+	{
+		string model_pathname = dir_path + mesh_pathnames[i];
 
-	string model_pathname = dir_path + relative_model_pathname;
+		m_Meshes[i].reset( new CustomMesh );
 
-	bool model_loaded = m_Mesh.Load( model_pathname );
+		bool model_loaded = m_Meshes[i]->LoadFromFile( model_pathname );
+	}
 
-	C3DMeshModelArchive mesh_archive;
-	mesh_archive.LoadFromFile( model_pathname );
+	UpdateOBB();
 
-	InitOBBTree( mesh_archive );
+//	LoadParamFromFile( dir_path + "params.txt", "model", relative_model_pathname );
+	
+//	bool model_loaded = m_Mesh.Load( model_pathname );
+
+	string model_pathname = mesh_pathnames[0];
+
+//	C3DMeshModelArchive mesh_archive;
+//	mesh_archive.LoadFromFile( model_pathname );
+
+//	InitOBBTree( mesh_archive );
 
 	if( m_pOBBTree )
 		m_pOBBTree->DumpToTextFile( model_pathname + "-obbtree.txt" );
@@ -71,7 +83,25 @@ int OBBTreeDemo::Init()
 }
 
 
-void OBBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
+void OBBTreeDemo::UpdateOBB()
+{
+	boost::shared_ptr<CustomMesh> pMesh;
+	m_Meshes.get_current( pMesh );
+
+	if( !pMesh )
+		return;
+
+	std::vector<Vector3> points;
+	std::vector<unsigned int> indices;
+	pMesh->GetVertexPositions(points);
+	pMesh->GetVertexIndices(indices);
+
+	InitOBBTree( points, indices );
+}
+
+
+//void OBBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
+void OBBTreeDemo::InitOBBTree( const std::vector<Vector3>& vertex_positions, const std::vector<unsigned int>& vertex_indices )
 {
 	m_pOBBTree.reset( new OBBTree );
 
@@ -81,8 +111,10 @@ void OBBTreeDemo::InitOBBTree( C3DMeshModelArchive& mesh_archive )
 	LoadParamFromFile( dir_path + "params.txt", "obb_tree_level", level );
 
 	bool created = m_pOBBTree->Create(
-		mesh_archive.GetVertexSet().vecPosition,
-		mesh_archive.GetVertexIndex(),
+//		mesh_archive.GetVertexSet().vecPosition,
+//		mesh_archive.GetVertexIndex(),
+		vertex_positions,
+		vertex_indices,
 		level
 		);
 
@@ -117,7 +149,9 @@ void OBBTreeDemo::Render()
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 	GraphicsDevice().SetCullingMode( CullingMode::COUNTERCLOCKWISE );
 
-	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
+	shared_ptr<CustomMesh> pMesh;
+	m_Meshes.get_current(pMesh);
+//	shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if( pMesh )
 		pMesh->Render( shader_mgr );
 
@@ -133,6 +167,20 @@ void OBBTreeDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
+	case GIC_RIGHT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_Meshes.next();
+			UpdateOBB();
+		}
+		break;
+	case GIC_LEFT:
+		if( input.iType == ITYPE_KEY_PRESSED )
+		{
+			m_Meshes.prev();
+			UpdateOBB();
+		}
+		break;
 	case GIC_UP:
 		if( input.iType == ITYPE_KEY_PRESSED )
 			m_DrawLevel = (m_DrawLevel+1) % m_NumDrawLevels;

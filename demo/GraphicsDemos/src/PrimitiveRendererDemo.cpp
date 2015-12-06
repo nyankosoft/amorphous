@@ -22,9 +22,6 @@ PrimitiveRendererDemo::PrimitiveRendererDemo()
 	SetBackgroundColor( SFloatRGBAColor( 0.1f, 0.1f, 0.1f, 1.0f ) );
 
 //	LoadParamFromFile( "params.txt", "num_primitives_to_draw", m_NumPrimitivesToDraw );
-
-	if( GetCameraController() )
-		GetCameraController()->SetPosition( Vector3( 0, 2, -10 ) );
 }
 
 
@@ -64,6 +61,9 @@ bool PrimitiveRendererDemo::InitShader()
 int PrimitiveRendererDemo::Init()
 {
 //	InitShader();
+
+	if (GetCameraController())
+		GetCameraController()->SetPosition(Vector3(0, 3, -10));
 
 	return 0;
 }

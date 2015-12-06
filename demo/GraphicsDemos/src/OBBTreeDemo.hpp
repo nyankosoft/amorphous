@@ -6,6 +6,8 @@
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Support/indexed_vector.hpp"
 #include "amorphous/Input/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
@@ -23,7 +25,7 @@ class OBBTreeDemo : public CGraphicsTestBase
 
 	MeshHandle m_Mesh;
 
-//	std::vector<MeshHandle> m_vecpMeshes;
+	indexed_vector< boost::shared_ptr<CustomMesh> > m_Meshes; // Want to access vertices and indices easily in order to create OBBs
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
@@ -35,7 +37,10 @@ class OBBTreeDemo : public CGraphicsTestBase
 
 private:
 
-	void InitOBBTree( C3DMeshModelArchive& mesh_archive );
+//	void InitOBBTree( C3DMeshModelArchive& mesh_archive );
+	void InitOBBTree( const std::vector<Vector3>& vertex_positions, const std::vector<unsigned int>& vertex_indices );
+
+	void UpdateOBB();
 
 public:
 

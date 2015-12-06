@@ -2,8 +2,6 @@
 #define  __ShadowMapDemo_HPP__
 
 
-#include "amorphous/3DMath/Vector3.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/TextureHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
@@ -19,6 +17,8 @@ class ShadowMapDemoSceneRenderer;
 
 class ShadowMapDemo : public CGraphicsTestBase
 {
+	bool m_RenderSceneWithShadow;
+
 	MeshHandle m_SkyboxMesh;
 
 	MeshHandle m_Mesh;
@@ -27,21 +27,25 @@ class ShadowMapDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-//	ShaderTechniqueHandle m_SkyboxTechnique;
-
 	ShaderTechniqueHandle m_DefaultTechnique;
+
+	bool m_Lighting;
+
+	ShaderHandle m_NoLightingShader;
 
 	ShaderHandle m_Shader;
 
 	boost::shared_ptr<ShadowMapManager> m_pShadowMapManager;
 
-	boost::shared_ptr<Light> m_pLight;
+	std::vector< std::pair< int, boost::shared_ptr<Light> > > m_pLights;
 
 	boost::shared_ptr<ShadowMapDemoSceneRenderer> m_pShadowMapSceneRenderer;
 
 private:
 
 	void RenderScene( ShaderManager& shader_mgr );
+
+	void RenderSceneWithShadow();
 
 public:
 
@@ -61,9 +65,9 @@ public:
 
 	void HandleInput( const InputData& input );
 
-	void RenderShadowCasters( Camera& camera );
+	void RenderShadowCasters( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques );
 
-	void RenderShadowReceivers( Camera& camera );
+	void RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques );
 };
 
 
@@ -75,9 +79,9 @@ public:
 
 	ShadowMapDemoSceneRenderer( ShadowMapDemo *pTarget ) : m_pTarget(pTarget) {}
 
-	void RenderSceneToShadowMap( Camera& camera ) { m_pTarget->RenderShadowCasters( camera ); }
+	void RenderSceneToShadowMap( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques ) { m_pTarget->RenderShadowCasters( camera, shaders, shader_techniques ); }
 
-	void RenderShadowReceivers( Camera& camera ) { m_pTarget->RenderShadowReceivers( camera ); }
+	void RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques ) { m_pTarget->RenderShadowReceivers( camera, shaders, shader_techniques ); }
 };
 
 

@@ -16,6 +16,7 @@
 #include "MiscShaderDemo.hpp"
 #include "MultibyteFontDemo.hpp"
 #include "OBBTreeDemo.hpp"
+#include "ParticleTextureGeneratorDemo.hpp"
 #include "PerlinNoiseTextureGeneratorDemo.hpp"
 #include "PlanarReflectionDemo.hpp"
 #include "PostProcessEffectDemo.hpp"
@@ -55,6 +56,7 @@ static const char *sg_demos[] =
 	"MiscShaderDemo",
 	"MultibyteFontDemo",
 	"OBBTreeDemo",
+	"ParticleTextureGeneratorDemo",
 	"PerlinNoiseTextureGeneratorDemo",
 	"PlanarReflectionDemo",
 	"PostProcessEffectDemo",
@@ -103,6 +105,7 @@ CGraphicsTestBase *GraphicsDemoFactory::CreateDemoInstance( const std::string& d
 	else if( demo_name == "MiscShaderDemo" )                  return new MiscShaderDemo;
 	else if( demo_name == "MultibyteFontDemo" )               return new MultibyteFontDemo;
 	else if( demo_name == "OBBTreeDemo" )                     return new OBBTreeDemo;
+	else if( demo_name == "ParticleTextureGeneratorDemo" )    return new ParticleTextureGeneratorDemo;
 	else if( demo_name == "PerlinNoiseTextureGeneratorDemo" ) return new PerlinNoiseTextureGeneratorDemo;
 	else if( demo_name == "PlanarReflectionDemo" )            return new PlanarReflectionDemo;
 	else if( demo_name == "PostProcessEffectDemo" )           return new PostProcessEffectDemo;

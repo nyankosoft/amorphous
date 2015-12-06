@@ -2,13 +2,11 @@
 #define  __SimpleOverlayEffectsDemo_H__
 
 
-#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 #include "amorphous/Graphics/MeshObjectHandle.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Graphics/PseudoNoiseEffect.hpp"
 #include "amorphous/Input/fwd.hpp"
-#include "amorphous/GUI/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 

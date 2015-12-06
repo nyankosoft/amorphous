@@ -206,7 +206,7 @@ void MeshSplitterDemo::RenderSplitPlane()
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
 
 	PrimitiveShapeRenderer shape_renderer;
-	shape_renderer.RenderBox( Vector3(10.0f, 0.1f, 10.0f), pose, SFloatRGBAColor(0.0f,0.5f,0.5f,0.0f) );
+	shape_renderer.RenderBox( Vector3(10.0f, 0.1f, 10.0f), pose, SFloatRGBAColor(0.0f,0.5f,0.5f,0.3f) );
 }
 
 
