@@ -214,4 +214,6 @@ int main( int argc, char *argv[] )
 	if( !mesh_compiled )
 		LOG_PRINT_ERROR( "Failed to compile mesh" );
 */
+
+	return 0;
 }
