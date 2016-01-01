@@ -197,6 +197,10 @@ bool CStage::InitPhysicsManager()
 	// initialize physics scene
 	CSceneDesc phys_scene_desc;
 	m_pPhysicsScene = PhysicsEngine().CreateScene( phys_scene_desc );
+
+	if( m_pPhysicsScene == NULL )
+		return false;
+
 	m_pPhysicsScene->SetUserContactReport( &s_TCR );
 	m_pPhysicsScene->SetActorGroupPairFlags(0,0,ContactPairFlag::NOTIFY_ALL);
 //	m_pPhysicsScene->SetActorGroupPairFlags(0,0,NX_NOTIFY_ON_START_TOUCH|NX_NOTIFY_ON_TOUCH|NX_NOTIFY_ON_END_TOUCH);
