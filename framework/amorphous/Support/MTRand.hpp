@@ -215,21 +215,21 @@ inline int RangedRand(int min, int max)
 }
 
 
-// returns a float value in [0,fMax]
+/// \return a random float value in the range [0,fMax]
 inline float RangedRand(float fMax)
 {
 	return fMax * RandFloat32();
 }
 
 
-// returns a float value in [fMin,fMax]
+/// \return a random float value in the range [fMin,fMax]
 inline float RangedRand(float fMin, float fMax)
 {
 	return fMin + (fMax - fMin) * RandFloat32();
 }
 
 
-// returns a float value in [fMin,fMax]
+/// \return a random double value in the range [fMin,fMax]
 inline double RangedRand(double fMin, double fMax)
 {
 	return fMin + (fMax - fMin) * RandReal1();
@@ -241,12 +241,9 @@ inline float GaussianRandFloat32()
 }*/
 
 
-
-// ==============================================================
-// gaussian random number generator by Box-Muller method
-// ==============================================================
-
-
+/**
+ \brief A gaussian random number generator using Box-Muller method
+ */
 inline void GaussianRand( float& x, float& y )
 {
 	float x1, x2, w;
