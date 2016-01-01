@@ -1020,59 +1020,7 @@ void BaseEntity::NudgePosition(CCopyEntity* pCopyEnt)
 //	MessageBox(NULL, "NudgePosition: stuck", "Error", MB_OK|MB_ICONWARNING);
 	return;
 }
-/*
-static void LogTaskError()
-{
-	if( !g_pAppBase )
-		g_Log.Print( "%s 'g_pAppBase' is NULL", __FILE__ );
-	else if( !g_pAppBase->GetTaskManager() )
-		g_Log.Print( "%s g_pAppBase->GetTaskManager() == NULL", __FILE__ );
-	else if( !g_pAppBase->GetTaskManager()->GetCurrentTask() )
-		g_Log.Print( "%s g_pAppBase->GetTaskManager()->GetCurrentTask() == NULL", __FILE__ );
-	else
-		g_Log.Print( "%s unknown error with app, task manager or task", __FILE__ );
-}
-*/
-/*
-void BaseEntity::RequestTaskTransition( const std::string& next_task_title,
-	                                     float delay_in_sec,
-	                                     float fade_out_time_in_sec,
-								         float fade_in_time_in_sec )
-{
-	if( g_pAppBase
-	 && g_pAppBase->GetTaskManager()
-	 && g_pAppBase->GetTaskManager()->GetCurrentTask() )
-	{
-		g_pAppBase->GetTaskManager()->GetCurrentTask()->RequestTaskTransition(
-			next_task_title,
-			delay_in_sec,
-			fade_out_time_in_sec,
-			fade_in_time_in_sec );
-	}
-	else
-		LogTaskError();
-}
 
-
-void BaseEntity::RequestTaskTransitionMS( const std::string& next_task_title,
-								           int delay_in_ms,
-	                                       int fade_out_time_in_ms,
-								           int fade_in_time_in_ms )
-{
-	if( g_pAppBase
-	 && g_pAppBase->GetTaskManager()
-	 && g_pAppBase->GetTaskManager()->GetCurrentTask() )
-	{
-		g_pAppBase->GetTaskManager()->GetCurrentTask()->RequestTaskTransitionMS(
-			next_task_title,
-			fade_out_time_in_ms,
-			fade_in_time_in_ms,
-			delay_in_ms );
-	}
-	else
-		LogTaskError();
-}
-*/
 
 void BaseEntity::LoadFromFile( CTextFileScanner& scanner )
 {

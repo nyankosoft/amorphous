@@ -320,18 +320,6 @@ public:
 	virtual void LoadGraphicsResources( const GraphicsParameters& rParam );
 	virtual void ReleaseGraphicsResources();
 
-/*
-	void RequestTaskTransition( const std::string& next_task_title,
-	                            float delay_in_sec = 0,
-	                            float fade_out_time_in_sec = -1.0f,
-								float fade_in_time_in_sec = -1.0f );
-
-	void RequestTaskTransitionMS( const std::string& next_task_title,
-								  int delay_in_ms = 0,
-	                              int fade_out_time_in_ms = -1,
-								  int fade_in_time_in_ms = -1 );
-*/
-
 	//
 	// friend class
 	//
