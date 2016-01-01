@@ -25,7 +25,7 @@ private:
 		NUM_TURRET_MESHES
 	};
 
-    CBE_MeshObjectProperty m_aMesh[NUM_TURRET_MESHES];
+	SharedMeshContainer m_aMesh[NUM_TURRET_MESHES];
 
 public:
 

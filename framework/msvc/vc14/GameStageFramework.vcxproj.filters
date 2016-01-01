@@ -837,6 +837,9 @@
     <ClInclude Include="..\..\amorphous\Stage\EntitySplitter.hpp">
       <Filter>Source Files\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SharedMeshContainer.hpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\Stage\BSPMapFileExporter.cpp">
@@ -1486,6 +1489,9 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Stage\EntitySplitter.cpp">
       <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SharedMeshContainer.cpp">
+      <Filter>Source Files\Stage\BaseEntity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

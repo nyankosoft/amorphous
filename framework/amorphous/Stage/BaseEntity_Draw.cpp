@@ -302,7 +302,7 @@ void BaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 }
 
 
-static void InitShadowCasterReceiverSettings( shared_ptr<SkeletalMesh> pSkeletalMesh, CBE_MeshObjectProperty& mesh_property )
+static void InitShadowCasterReceiverSettings( shared_ptr<SkeletalMesh> pSkeletalMesh, SharedMeshContainer& mesh_property )
 {
 	ONCE( LOG_PRINT_ERROR( " Not implemented yet." ) );
 

@@ -132,6 +132,7 @@
     <ClInclude Include="..\..\amorphous\Stage\ScreenEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\ScreenEffectManager.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\Serialization_BaseEntityHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Stage\SharedMeshContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\SoundEntity.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\Stage.hpp" />
     <ClInclude Include="..\..\amorphous\Stage\StageCameraUtility.hpp" />
@@ -389,6 +390,7 @@
     <ClCompile Include="..\..\amorphous\Stage\PlayerInfo.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\ScreenEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\ScreenEffectManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Stage\SharedMeshContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\SoundEntity.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\Stage.cpp" />
     <ClCompile Include="..\..\amorphous\Stage\StageCameraUtility.cpp" />

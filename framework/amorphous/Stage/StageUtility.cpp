@@ -52,14 +52,14 @@ EntityHandle<> StageUtility::CreateNamedEntity( CCopyEntityDesc& desc,
 	if( !pEntity )
 		return EntityHandle<>();
 
-	CBE_MeshObjectProperty& mesh_property = pEntity->pBaseEntity->MeshProperty();
-	if( 0 < mesh_property.m_ShaderTechnique.size_x() )
+	SharedMeshContainer& mesh_container = pEntity->pBaseEntity->MeshProperty();
+	if( 0 < mesh_container.m_ShaderTechnique.size_x() )
 	{
-		pEntity->m_pMeshRenderMethod = mesh_property.m_pMeshRenderMethod;
+		pEntity->m_pMeshRenderMethod = mesh_container.m_pMeshRenderMethod;
 
 		pEntity->pBaseEntity->InitEntityGraphics( *pEntity,
-			mesh_property.m_ShaderHandle,
-			mesh_property.m_ShaderTechnique(0,0) );
+			mesh_container.m_ShaderHandle,
+			mesh_container.m_ShaderTechnique(0,0) );
 	}
 	else
 	{
