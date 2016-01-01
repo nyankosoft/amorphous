@@ -9,13 +9,13 @@ namespace amorphous
 {
 
 
-class CStandardEntityRenderer : public EntityRenderer
+class StandardEntityRenderer : public EntityRenderer
 {
 	EntityRenderManager *m_pEntityRenderManager;
 
 public:
 
-	CStandardEntityRenderer( EntityRenderManager *pEntityRenderManager )
+	StandardEntityRenderer( EntityRenderManager *pEntityRenderManager )
 		:
 	m_pEntityRenderManager(pEntityRenderManager)
 	{}
@@ -74,7 +74,7 @@ public:
 };
 
 
-class CShadowCasterEntityRenderer : public EntityRenderer
+class ShadowCasterEntityRenderer : public EntityRenderer
 {
 public:
 
@@ -98,7 +98,7 @@ public:
 };
 
 
-class CShadowReceiverEntityRenderer : public EntityRenderer
+class ShadowReceiverEntityRenderer : public EntityRenderer
 {
 public:
 

@@ -184,19 +184,19 @@ public:
 	m_pRenderer(pRenderer)
 	{}
 
-	void RenderSceneToShadowMap( Camera& camera );
+	void RenderSceneToShadowMap( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques );
 
-	void RenderShadowReceivers( Camera& camera );
+	void RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques );
 };
 
 
-void CEntityShadowMapRenderer::RenderSceneToShadowMap( Camera& camera )
+void CEntityShadowMapRenderer::RenderSceneToShadowMap( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques )
 {
 	m_pRenderer->RenderShadowCasters( camera );
 }
 
 
-void CEntityShadowMapRenderer::RenderShadowReceivers( Camera& camera )
+void CEntityShadowMapRenderer::RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques )
 {
 	m_pRenderer->RenderShadowReceivers( camera );
 }
@@ -384,7 +384,7 @@ void EntityRenderManager::RenderEntityNodeUp_r( short sEntNodeIndex, Camera& rCa
 	EntityNode* pFirstEntNode = m_paEntityTree;
 	EntityNode* pEntNode = pFirstEntNode + sEntNodeIndex;
 
-	CStandardEntityRenderer entity_renderer( this );
+	StandardEntityRenderer entity_renderer( this );
 	pEntNode->RenderEntities( entity_renderer, rCam );
 	m_EntityNodeRendered[sEntNodeIndex] = 1;	// mark this entity node as an already rendered one
 
@@ -559,7 +559,7 @@ void EntityRenderManager::RenderScene( Camera& rCam )
 	}
 
 	// render the entity tree by downward traversal
-	CStandardEntityRenderer entity_renderer( this );
+	StandardEntityRenderer entity_renderer( this );
 	if( m_paEntityTree )
 		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, entity_renderer, rCam, true );
 
@@ -612,17 +612,10 @@ void EntityRenderManager::RenderAllButEnvMapTarget( Camera& rCam, U32 target_ent
 
 void EntityRenderManager::RenderShadowCasters( Camera& rCam )
 {
-/*	EntityNode& rRootNode = m_paEntityTree[0];
-	if( !m_pShadowManager )
-		return;
-*/
-	//==================== render the entities ====================
-
-	// move the skybox to the head of the list to render it first
-//	MoveSkyboxToListHead();
+	// Skybox does not cast shadows, so we don't call MoveSkyboxToListHead() this time.
 
 	// render the entity tree by downward traversal
-	CShadowCasterEntityRenderer shadow_caster_entity_renderer;
+	ShadowCasterEntityRenderer shadow_caster_entity_renderer;
 	if( m_paEntityTree )
 		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, shadow_caster_entity_renderer, rCam, false );
 
@@ -643,7 +636,7 @@ void EntityRenderManager::RenderShadowReceivers( Camera& rCam )
 	//==================== render the entities ====================
 
 	// render the entity tree by downward traversal
-	CShadowReceiverEntityRenderer shadow_receiver_entity_renderer;
+	ShadowReceiverEntityRenderer shadow_receiver_entity_renderer;
 	if( m_paEntityTree )
 		m_paEntityTree[0].RenderEntitiesWithDownwardTraversal( m_paEntityTree, shadow_receiver_entity_renderer, rCam, true );
 
@@ -1380,19 +1373,18 @@ void EntityRenderManager::Render( Camera& rCam )
 	rCam.GetPose( m_CameraPose );
 	m_fCameraFarClipDist = rCam.GetFarClip();
 
-	Matrix44 matView, matProj;
-	rCam.GetCameraMatrix(matView);
-	rCam.GetProjectionMatrix(matProj);
+//	Matrix44 matView, matProj;
+//	rCam.GetCameraMatrix(matView);
+//	rCam.GetProjectionMatrix(matProj);
 
-	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-	FixedFunctionPipelineManager().SetViewTransform( matView );
-	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
+//	FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+//	FixedFunctionPipelineManager().SetViewTransform( matView );
+//	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
 
 	/// set view and projection matrices to all shader managers
 	GetShaderManagerHub().PushViewAndProjectionMatrices( rCam );
 
 	// clear dest buffer
-//	pd3dDev->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(64,64,64), 1.0f, 0 );
 	GraphicsDevice().SetClearColor( SFloatRGBAColor(0.3f,0.3f,0.3f,1.0f) );
 	GraphicsDevice().SetClearDepth( 1.0f );
 	GraphicsDevice().Clear( BufferMask::COLOR | BufferMask::DEPTH );
@@ -1403,9 +1395,6 @@ void EntityRenderManager::Render( Camera& rCam )
 	GraphicsDevice().Enable( RenderStateType::ALPHA_TEST );
 	GraphicsDevice().SetAlphaFunction( CompareFunc::GREATER_THAN_OR_EQUAL_TO );
 	GraphicsDevice().SetReferenceAlphaValue( 1.0f / 256.0f );
-//	pd3dDev->SetRenderState(D3DRS_ALPHAREF, (DWORD)0x00000001);
-//	pd3dDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
-//	pd3dDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 
 	// enable lights of graphics device for entities
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, true );
@@ -1449,7 +1438,7 @@ void EntityRenderManager::Render( Camera& rCam )
 		// Directly render the scene to the currenet render target.
 		// This happens if one of the following is true:
 		// 1) Shadowmap is disabled (A is false).
-		// 2) Shadowmap is enabled, but there is not light for the shadowmap (B is false).
+		// 2) Shadowmap is enabled, but there is no light for the shadowmap (B is false).
 		RenderScene( rCam );
 	}
 
