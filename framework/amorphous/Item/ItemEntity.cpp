@@ -150,7 +150,7 @@ void ItemEntity::InitMesh()
 {
 	if( m_ItemEntityFlags & ItemEntity::SF_USE_ENTITY_ATTRIBUTES_FOR_RENDERING )
 	{
-		CBE_MeshObjectProperty& mesh_property = this->pBaseEntity->MeshProperty();
+		SharedMeshContainer& mesh_property = this->pBaseEntity->MeshProperty();
 		if( 0 < mesh_property.m_ShaderTechnique.size_x() )
 		{
 			// Set shader and shader params loaders to this->m_pMeshRenderMethod
