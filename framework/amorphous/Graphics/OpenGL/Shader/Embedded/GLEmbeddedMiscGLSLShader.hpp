@@ -16,11 +16,19 @@ class GLEmbeddedMiscGLSLShader : public EmbeddedMiscShader
 
 	static void GetVertexWeightMapDisplayVertexShader( std::string& shader );
 
+	static void GetViewSpaceDepthRenderingVertexShader( std::string& shader );
+
+	static void GetProjectionSpaceDepthRenderingVertexShader( std::string& shader );
+
 	static void GetSingleColorMembraneVertexShader( std::string& shader );
 
 	static void GetSingleDiffuseColorFragmentShader( std::string& shader );
 
 	static void GetVertexWeightMapDisplayFragmentShader( std::string& shader );
+
+	static void GetViewSpaceDepthRenderingFragmentShader( std::string& shader );
+
+	static void GetProjectionSpaceDepthRenderingFragmentShader( std::string& shader );
 
 	static void GetSingleColorMembraneFragmentShader( std::string& shader );
 

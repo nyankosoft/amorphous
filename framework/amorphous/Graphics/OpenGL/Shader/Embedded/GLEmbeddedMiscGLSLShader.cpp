@@ -70,6 +70,33 @@ void GLEmbeddedMiscGLSLShader::GetVertexWeightMapDisplayVertexShader( std::strin
 }
 
 
+void GLEmbeddedMiscGLSLShader::GetViewSpaceDepthRenderingVertexShader( std::string& shader )
+{
+	static const char *vs =
+		"#version 330\n"\
+		"layout(location = 0) in vec4 position;\n"\
+		"out vec4 p;\n"\
+		"uniform mat4 ViewWorld;\n"\
+		"uniform mat4 ProjViewWorld;\n"\
+		"void main(){vec4 pos=ProjViewWorld*position;gl_Position=pos;vec4 vp=ViewWorld*position;p.x=vp.z;p.y=vp.w;}\n";
+
+	shader = vs;
+}
+
+
+void GLEmbeddedMiscGLSLShader::GetProjectionSpaceDepthRenderingVertexShader( std::string& shader )
+{
+	static const char *vs =
+		"#version 330\n"\
+		"layout(location = 0) in vec4 position;\n"\
+		"out vec4 d;\n"\
+		"uniform mat4 ProjViewWorld;\n"\
+		"void main(){vec4 pos=ProjViewWorld*position;gl_Position=pos;d.x=pos.z;d.y=pos.w;}\n";
+
+	shader = vs;
+}
+
+
 void GLEmbeddedMiscGLSLShader::GetSingleColorMembraneVertexShader( std::string& shader )
 {
 	static const char *vs =
@@ -112,6 +139,38 @@ void GLEmbeddedMiscGLSLShader::GetVertexWeightMapDisplayFragmentShader( std::str
 	"void main(){"\
 		"fc = dc;\n"\
 	"}\n";
+
+	shader = fs;
+}
+
+
+void GLEmbeddedMiscGLSLShader::GetViewSpaceDepthRenderingFragmentShader( std::string& shader )
+{
+	static const char *fs =
+		"#version 330\n"\
+		"in vec4 p;\n"\
+		"layout(location = 0) out vec4 fc;\n"\
+		"void main(){"\
+		"fc.x = fc.y = fc.z = p.x / p.y;\n"\
+		/*"fc.x = fc.y = fc.z = p.x / p.y * 0.3; // Scale the depth to see the results on the screen (for debugging)\n"\*/
+		"fc.w = 1;\n"\
+		"}\n";
+
+	shader = fs;
+}
+
+
+void GLEmbeddedMiscGLSLShader::GetProjectionSpaceDepthRenderingFragmentShader( std::string& shader )
+{
+	static const char *fs =
+		"#version 330\n"\
+		"in vec4 d;\n"\
+		"layout(location = 0) out vec4 fc;\n"\
+		"void main(){"\
+		"fc.x = fc.y = fc.z = d.x / d.y;\n"\
+		/*"fc.x = fc.y = fc.z = d.x / d.y * 0.5; // Scale the depth to see the results on the screen (for debugging)\n"\*/
+		"fc.w = 1;\n"\
+		"}\n";
 
 	shader = fs;
 }
@@ -170,19 +229,31 @@ Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id
 	case MiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
 		GetVertexWeightMapDisplayVertexShader(shader);
 		break;
+	case MiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
+		GetViewSpaceDepthRenderingVertexShader(shader);
+		break;
+	case MiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
+		GetProjectionSpaceDepthRenderingVertexShader(shader);
+		break;
 	case MiscShader::SINGLE_COLOR_MEMBRANE:
 		GetSingleColorMembraneVertexShader(shader);
 		break;
 	case MiscShader::ORTHO_SHADOW_MAP:
+	case MiscShader::ORTHO_SHADOW_MAP_WITH_VERTEX_BLEND:
 		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/OrthoShadowMap.vert" );
 		break;
 	case MiscShader::SPOTLIGHT_SHADOW_MAP:
+	case MiscShader::SPOTLIGHT_SHADOW_MAP_VERTEX_BLEND:
 		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowMap.vert" );
 		break;
+	case MiscShader::ORTHO_SHADOW_RECEIVER:
+	case MiscShader::ORTHO_SHADOW_RECEIVER_WITH_VERTEX_BLEND:
 	case MiscShader::SPOTLIGHT_SHADOW_RECEIVER:
+	case MiscShader::SPOTLIGHT_SHADOW_RECEIVER_VERTEX_BLEND:
 		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowReceiver.vert" );
 		break;
 	default:
+		LOG_PRINT_ERROR("Unsupported vertex shader type: " + to_string((int)shader_id));
 		return Result::UNKNOWN_ERROR;
 	}
 
@@ -203,6 +274,12 @@ Result::Name GLEmbeddedMiscGLSLShader::GetFragmentShader( MiscShader::ID shader_
 	case MiscShader::VERTEX_WEIGHT_MAP_DISPLAY:
 		GetVertexWeightMapDisplayFragmentShader(shader);
 		break;
+	case MiscShader::DEPTH_RENDERING_IN_VIEW_SPACE:
+		GetViewSpaceDepthRenderingFragmentShader(shader);
+		break;
+	case MiscShader::DEPTH_RENDERING_IN_PROJECTION_SPACE:
+		GetProjectionSpaceDepthRenderingFragmentShader(shader);
+		break;
 	case MiscShader::SINGLE_COLOR_MEMBRANE:
 		GetSingleColorMembraneFragmentShader(shader);
 		break;
@@ -216,7 +293,7 @@ Result::Name GLEmbeddedMiscGLSLShader::GetFragmentShader( MiscShader::ID shader_
 		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowReceiver.frag" );
 		break;
 	default:
-		LOG_PRINT_ERROR("Unsupported shader type: " + to_string((int)shader_id));
+		LOG_PRINT_ERROR("Unsupported fragment shader type: " + to_string((int)shader_id));
 		return Result::UNKNOWN_ERROR;
 		break;
 	}
