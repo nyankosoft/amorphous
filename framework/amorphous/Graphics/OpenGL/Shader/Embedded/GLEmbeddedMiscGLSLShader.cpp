@@ -1,4 +1,5 @@
 #include "GLEmbeddedMiscGLSLShader.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <istream>
 #include <fstream>
 
@@ -146,12 +147,13 @@ void GLEmbeddedMiscGLSLShader::GetSingleColorMembraneFragmentShader( std::string
 std::string get_file_contents(const char *filename)
 {
 	std::ifstream in(filename, std::ios::in | std::ios::binary);
-	if (in)
+	if( in.is_open() )
 	{
 		return(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
 	}
 
-	throw(errno);
+//	throw(errno);
+	return "";
 }
 
 
@@ -177,12 +179,11 @@ Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id
 	case MiscShader::SPOTLIGHT_SHADOW_MAP:
 		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowMap.vert" );
 		break;
-	case MiscShader::SHADOW_RECEIVER:
-		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/ShadowReceiver.vert" );
+	case MiscShader::SPOTLIGHT_SHADOW_RECEIVER:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowReceiver.vert" );
 		break;
 	default:
 		return Result::UNKNOWN_ERROR;
-		break;
 	}
 
 	return Result::SUCCESS;
@@ -211,10 +212,11 @@ Result::Name GLEmbeddedMiscGLSLShader::GetFragmentShader( MiscShader::ID shader_
 	case MiscShader::SPOTLIGHT_SHADOW_MAP:
 		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowMap.frag" );
 		break;
-	case MiscShader::SHADOW_RECEIVER:
-		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/ShadowReceiver.frag" );
+	case MiscShader::SPOTLIGHT_SHADOW_RECEIVER:
+		shader = get_file_contents( "ShadowMapDemo/shaders/glsl/SpotlightShadowReceiver.frag" );
 		break;
 	default:
+		LOG_PRINT_ERROR("Unsupported shader type: " + to_string((int)shader_id));
 		return Result::UNKNOWN_ERROR;
 		break;
 	}
