@@ -48,6 +48,8 @@ private:
 
 	ShaderTechniqueHandle m_aShaderTechHandle[2];
 
+	ShaderHandle m_NoLightingShader;
+
 public:
 
 	CBE_TextureAnimation();

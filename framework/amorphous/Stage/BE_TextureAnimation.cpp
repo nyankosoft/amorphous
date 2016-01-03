@@ -3,8 +3,9 @@
 //#include "trace.hpp"
 #include "Stage.hpp"
 #include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+//#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
+#include "Graphics/Shader/GenericShaderHelpers.hpp"
 
 
 namespace amorphous
@@ -72,6 +73,8 @@ void CBE_TextureAnimation::Init()
 	// --- corrected 050505 - this is not needed if we disable z-writing during rendering
 //	for(i=0; i<4; i++)
 //		m_avRectangle2[i].vPosition = m_avRectangle1[i].vPosition /* + Vector3(0, 0, 0.02f) */;
+
+	m_NoLightingShader = CreateNoLightingShader();
 }
 
 
@@ -199,7 +202,14 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 
 	// use the texture color only
 	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+
+	if(!pShaderManager)
+		pShaderManager = m_NoLightingShader.GetShaderManager();
+
+	if(!pShaderManager)
+		return;
+
+	ShaderManager& shader_mgr = *pShaderManager;
 
 	shader_mgr.SetWorldTransform( world_pose );
 
@@ -231,8 +241,8 @@ void CBE_TextureAnimation::Draw(CCopyEntity* pCopyEnt)
 	GraphicsDevice().SetRenderState( RenderStateType::LIGHTING, lighting );
 
 	if( iCurrentFrame < iNumTotalFrames - 1 ) // if 'iCurrentFrame' is not the last frame of the texture animation
-		m_RearRectMesh.Render();
-	m_FrontRectMesh.Render();
+		m_RearRectMesh.Render(shader_mgr);
+	m_FrontRectMesh.Render(shader_mgr);
 
 	GraphicsDevice().Enable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 }
