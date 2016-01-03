@@ -391,34 +391,34 @@ void BaseEntity::Init3DModel()
 }
 
 
-void BaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD )
-{
-	vector<int> single_index;
-	single_index.push_back( material_index );
+//void BaseEntity::DrawMeshSubset( const Matrix34& world_pose, int material_index, int ShaderLOD )
+//{
+//	vector<int> single_index;
+//	single_index.push_back( material_index );
+//
+//	DrawMeshObject( world_pose,
+//		            m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
+//					single_index,
+//					m_MeshProperty.m_ShaderTechnique,
+//					ShaderLOD );
+//}
 
-	DrawMeshObject( world_pose,
-		            m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
-					single_index,
-					m_MeshProperty.m_ShaderTechnique,
-					ShaderLOD );
-}
 
-
-void BaseEntity::DrawMeshMaterial( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech )
-{
-	vector<int> single_index;
-	single_index.push_back( material_index );
-
-	array2d<ShaderTechniqueHandle> shader_tech_table;
-	shader_tech_table.resize( material_index + 1, 1 );
-	shader_tech_table( material_index, 0 ) = shader_tech;
-
-	DrawMeshObject( world_pose,
-		            m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
-					single_index,
-					shader_tech_table,
-					0 );
-}
+//void BaseEntity::DrawMeshSubset( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech )
+//{
+//	vector<int> single_index;
+//	single_index.push_back( material_index );
+//
+//	array2d<ShaderTechniqueHandle> shader_tech_table;
+//	shader_tech_table.resize( material_index + 1, 1 );
+//	shader_tech_table( material_index, 0 ) = shader_tech;
+//
+//	DrawMeshObject( world_pose,
+//		            m_MeshProperty.m_MeshObjectHandle.GetMesh().get(),
+//					single_index,
+//					shader_tech_table,
+//					0 );
+//}
 
 
 void BaseEntity::DrawMeshObject( const Matrix34& world_pose,

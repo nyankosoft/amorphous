@@ -124,10 +124,10 @@ public:
 	void CreateMeshGenerator( CTextFileScanner& scanner );
 
 	// made public since alpha entity needs to call this
-	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, int ShaderLOD );
+//	void DrawMeshSubset( const Matrix34& world_pose, int material_index, int ShaderLOD );
 
 	// made public since alpha entity needs to call this
-	void DrawMeshMaterial( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech );
+//	void DrawMeshSubset( const Matrix34& world_pose, int material_index, ShaderTechniqueHandle& shader_tech );
 
 	/// draws a mesh object.
 	/// For entities that have a single mesh object as their 3D model
