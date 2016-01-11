@@ -312,7 +312,7 @@ inline static int GetNumMipmaps( const TextureResourceDesc& desc )
 	if( 0 < desc.MipLevels )
 		return desc.MipLevels;
 	else
-		return take_min( CalcNumMipmaps(desc.Width), CalcNumMipmaps(desc.Height) );
+		return take_max( CalcNumMipmaps(desc.Width), CalcNumMipmaps(desc.Height) );
 }
 
 
@@ -384,18 +384,28 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			next_width  /= 2;
 			next_height /= 2;
 
+			if( next_width == 0 )
+				next_width = 1;
+
+			if( next_height == 0 )
+				next_height = 1;
+
 			// Scale the image to half of its current size, if we have actually an image
 			// Sometimes people need to create an empty texture with a complete mipmap chain,
 			// and in such a case rescaling is unnecessary.
 			if( 0 < image_copy.GetWidth() )
 			{
 				bool rescaled = image_copy.Rescale( next_width, next_height );
+				//LOG_PRINTF((" %s - target scale: %d x %d, rescaled: %s", m_TextureDesc.ResourcePath.c_str(), next_width, next_height, rescaled ? "true" : "false" ));
 				if( !rescaled )
 				{
 					LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d, path=%s", i, m_TextureDesc.ResourcePath.c_str() ) );
 //					LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d", i ) );
 					break;
 				}
+
+				// Uncomment this line to visualize the effect of the mipmaps
+//				image_copy.FillColor( SFloatRGBAColor::Magenta() );
 			}
 		}
 
