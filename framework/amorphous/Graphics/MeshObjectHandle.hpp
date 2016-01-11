@@ -28,6 +28,8 @@ public:
 
 	inline boost::shared_ptr<BasicMesh> GetMesh();
 
+	inline boost::shared_ptr<const BasicMesh> GetMesh() const;
+
 	boost::shared_ptr<SkeletalMesh> GetSkeletalMesh();
 
 	bool Load( const std::string& resource_path );
@@ -60,6 +62,17 @@ inline boost::shared_ptr<BasicMesh> MeshHandle::GetMesh()
 	else
 		return boost::shared_ptr<BasicMesh>();
 }
+
+
+inline boost::shared_ptr<const BasicMesh> MeshHandle::GetMesh() const
+{
+	if( GetEntry()
+		&& GetEntry()->GetMeshResource() )
+		return GetEntry()->GetMeshResource()->GetMesh();
+	else
+		return boost::shared_ptr<const BasicMesh>();
+}
+
 
 } // namespace amorphous
 
