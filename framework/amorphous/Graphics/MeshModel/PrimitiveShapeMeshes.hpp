@@ -135,7 +135,7 @@ public:
 		:
 	height(1),
 	axis(AxisAndDirection::POS_Y),
-	num_sides(6),
+	num_sides(24),
 	num_divisions(1),
 	style(PrimitivePlacingStyle::PLACE_CENTER_AT_ORIGIN),
 	style_flags( CCylinderMeshStyleFlags::TOP_POLYGONS | CCylinderMeshStyleFlags::BOTTOM_POLYGONS )
