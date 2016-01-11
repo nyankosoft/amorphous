@@ -29,12 +29,12 @@ BOOST_PYTHON_MODULE(stage_util)
 	using namespace boost::python;
 	namespace py = boost::python;
 
-	class_< StageCameraUtility, shared_ptr<StageCameraUtility> >("StageCameraUtility")
+	class_< StageCameraUtility/*, shared_ptr<StageCameraUtility>*/ >("StageCameraUtility")
 		.def( "CreateCameraController",     &StageCameraUtility::CreateCameraController,     ( py::arg("camera_controller_name") = "", py::arg("cutscene_input_handler_index") = -1 ) )
 //		.def( "CreateScriptedCamera",       &StageCameraUtility::CreateScriptedCamera,       ( py::arg("camera_name") = "", py::arg("camera_controller_name") = "", py::arg("default_camera_param") = sg_DefaultCameraParam ) )
 	;
 
-	class_< StageLightUtility, shared_ptr<StageLightUtility> >("StageLightUtility")
+	class_< StageLightUtility/*, shared_ptr<StageLightUtility>*/ >("StageLightUtility")
 		.def( "CreateHSPointLightEntity",        &StageLightUtility::CreateHSPointLightEntity,       ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("pos") = Vector3(0,0,0), py::arg("attenu0") = 1.0f, py::arg("attenu1") = 1.0f, py::arg("attenu2") = 1.0f ) )
 		.def( "CreateHSDirectionalLightEntity",  &StageLightUtility::CreateHSDirectionalLightEntity, ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("dir") = Vector3(0,-1,0) ) )
 		.def( "CreateHSSpotlightEntity",         &StageLightUtility::CreateHSSpotlightEntity,        ( py::arg("name") = "", py::arg("upper_color") = SFloatRGBAColor::White(), py::arg("lower_color") = SFloatRGBAColor::Black(), py::arg("intensity") = 1.0f, py::arg("dir") = Vector3(0,-1,0), py::arg("attenu0") = 1.0f, py::arg("attenu1") = 1.0f, py::arg("attenu2") = 1.0f, py::arg("inner_cone_angle") = 1.0f, py::arg("outer_cone_angle") = 1.0f ) )
@@ -43,7 +43,7 @@ BOOST_PYTHON_MODULE(stage_util)
 //		.def( "CreateTriSpotlightEntity",        &StageLightUtility::CreateTriSpotlightEntity )  // NOT IMPLEMENTED
 	;
 
-	class_< StageMiscUtility, shared_ptr<StageMiscUtility> >("StageMiscUtility")
+	class_< StageMiscUtility/*, shared_ptr<StageMiscUtility>*/ >("StageMiscUtility")
 //		.def( "CreateBox",               &StageMiscUtility::CreateBox,              ( py::arg("pos"), python::arg("edge_lengths"), python::arg("diffuse_color") ) )
 		.def( "CreateBox",               CreateBox_Pose,                             ( py::arg("edge_lengths") = Vector3(1,1,1), py::arg("diffuse_color") = SFloatRGBAColor::White(), py::arg("pose"),                                                                                          py::arg("mass")=1.0f, py::arg("material_name")="default", py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
 		.def( "CreateBox",               CreateBox_PosHPB,                           ( py::arg("edge_lengths") = Vector3(1,1,1), py::arg("diffuse_color") = SFloatRGBAColor::White(), py::arg("position")=Vector3(0,0,0), py::arg("heading")=0.0f, py::arg("pitch")=0.0f, py::arg("bank")=0.0f, py::arg("mass")=1.0f, py::arg("material_name")="default", py::arg("entity_name")="", py::arg("entity_attributes_name")="" ) )
@@ -61,7 +61,7 @@ BOOST_PYTHON_MODULE(stage_util)
 		.def( "GlueEntities",                      GlueEntitiesEN,                          ( py::arg("entity0_name"), py::arg("entity1_name"), py::arg("max_force") = FLT_MAX, py::arg("max_torque") = FLT_MAX ) )
 	;
 
-	class_< StageEntityUtility, shared_ptr<StageEntityUtility> >("StageEntityUtility")
+	class_< StageEntityUtility/*, shared_ptr<StageEntityUtility>*/ >("StageEntityUtility")
 		.def( "SetShader",          &StageEntityUtility::SetShader,         ( py::arg("entity"), py::arg("shader"), py::arg("technique")="Default", py::arg("subset")="" ) )
 	;
 

@@ -64,31 +64,43 @@ inline void UnregisterStageForScript()
 
 
 
-inline boost::shared_ptr<StageCameraUtility> CreateStageCameraUtility()
+//inline boost::shared_ptr<StageCameraUtility> CreateStageCameraUtility()
+inline StageCameraUtility CreateStageCameraUtility()
 {
-	boost::shared_ptr<StageCameraUtility> pUtil( new StageCameraUtility( GetStageForScript() ) );
-	return pUtil;
+//	boost::shared_ptr<StageCameraUtility> pUtil( new StageCameraUtility( GetStageForScript() ) );
+//	return pUtil;
+	StageCameraUtility util(GetStageForScript());
+	return util;
 }
 
 
-inline boost::shared_ptr<StageLightUtility> CreateStageLightUtility()
+//inline boost::shared_ptr<StageLightUtility> CreateStageLightUtility()
+inline StageLightUtility CreateStageLightUtility()
 {
-	boost::shared_ptr<StageLightUtility> pUtil( new StageLightUtility( GetStageForScript() ) );
-	return pUtil;
+//	boost::shared_ptr<StageLightUtility> pUtil( new StageLightUtility( GetStageForScript() ) );
+//	return pUtil;
+	StageLightUtility util(GetStageForScript());
+	return util;
 }
 
 
-inline boost::shared_ptr<StageMiscUtility> CreateStageMiscUtility()
+//inline boost::shared_ptr<StageMiscUtility> CreateStageMiscUtility()
+inline StageMiscUtility CreateStageMiscUtility()
 {
-	boost::shared_ptr<StageMiscUtility> pUtil( new StageMiscUtility( GetStageForScript() ) );
-	return pUtil;
+//	boost::shared_ptr<StageMiscUtility> pUtil( new StageMiscUtility( GetStageForScript() ) );
+//	return boost::ref(pUtil);
+	StageMiscUtility util(GetStageForScript());
+	return util;
 }
 
 
-inline boost::shared_ptr<StageEntityUtility> CreateStageEntityUtility()
+//inline boost::shared_ptr<StageEntityUtility> CreateStageEntityUtility()
+inline StageEntityUtility CreateStageEntityUtility()
 {
-	boost::shared_ptr<StageEntityUtility> pUtil( new StageEntityUtility( GetStageForScript() ) );
-	return pUtil;
+//	boost::shared_ptr<StageEntityUtility> pUtil( new StageEntityUtility( GetStageForScript() ) );
+//	return pUtil;
+	StageEntityUtility util(GetStageForScript());
+	return util;
 }
 
 
