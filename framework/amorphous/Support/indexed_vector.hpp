@@ -32,6 +32,8 @@ public:
 		return true;
 	}
 
+	unsigned int get_current_index() const { return m_index; }
+
 	void next()
 	{
 		if( m_elements.empty() )
@@ -61,6 +63,11 @@ public:
 	void push_back( const T& val )
 	{
 		m_elements.push_back( val );
+	}
+
+	size_t size() const
+	{
+		return m_elements.size();
 	}
 
 	void resize( unsigned int size )
