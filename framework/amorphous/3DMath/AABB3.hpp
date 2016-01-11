@@ -28,6 +28,8 @@ public:
 	inline void SetMaxAndMin( const Vector3& vMax, const Vector3& vMin ) { this->vMax = vMax; this->vMin = vMin; }
 
 	inline Vector3 GetCenterPosition() const { return (vMax + vMin) / 2.0f; }
+
+	/// \return The radii along the axes, i.e. ( width/2, height/2, depth/2 ).
 	inline Vector3 GetExtents() const { return ( vMax - vMin ) / 2.0f; }
 
 	inline void AddPoint( const Vector3& v );
@@ -48,7 +50,7 @@ public:
 
 	inline void TransformCoord( const AABB3& raabb, const Vector3& rvOrigin );
 
-	/// returns a sphere that contains aabb
+	/// \return A sphere that contains aabb
 	Sphere CreateBoundingSphere() const;
 };
 
