@@ -32,7 +32,7 @@ public:
 
 	/**
 	NOTE: The caller is responsible for setting the appropriate transforms
-	via FixedFunctionPipelineManager().Set*Transform() (* = World, View, or Projection).
+	via ShaderManager::Set*Transform() (* = World, View, or Projection).
 	Especially, don't forget to set the world transform.
 	*/
 	virtual Result::Name DrawPoint( const Vector3& pos, const SFloatRGBAColor& color = SFloatRGBAColor::White() ) = 0;
