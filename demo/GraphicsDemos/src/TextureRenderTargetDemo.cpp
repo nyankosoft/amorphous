@@ -1,5 +1,6 @@
 #include "TextureRenderTargetDemo.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
 #include "amorphous/Graphics/PrimitiveShapeRenderer.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
@@ -179,7 +180,26 @@ void TextureRenderTargetDemo::RenderMeshes()
 }
 
 
-void TextureRenderTargetDemo::RenderTexturedRect()
+void TextureRenderTargetDemo::RenderTexturedRect2D()
+{
+	if( !m_pTextureRenderTarget )
+		return;
+
+	int w = 320, h = 180;
+	int margin = 10;
+	int l = GraphicsComponent::GetScreenWidth()  - w - margin;
+	int t = GraphicsComponent::GetScreenHeight() - h - margin;
+
+	C2DRect rect;
+	rect.SetPositionLTWH( l, t, w, h );
+	rect.SetTextureUV( TEXCOORD2(0,0), TEXCOORD2(1,1) );
+	rect.SetColor( SFloatRGBAColor::White() );
+
+	rect.Draw( m_pTextureRenderTarget->GetRenderTargetTexture() );
+}
+
+
+void TextureRenderTargetDemo::RenderTexturedRect3D()
 {
 	if( !m_pTextureRenderTarget )
 		return;
@@ -216,7 +236,9 @@ void TextureRenderTargetDemo::Render()
 
 	// The mesh was rendered to the render target texture of m_pTextureRenderTarget
 
-	RenderTexturedRect();
+	RenderTexturedRect3D();
+
+	RenderTexturedRect2D();
 }
 
 

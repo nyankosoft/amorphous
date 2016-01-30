@@ -33,7 +33,9 @@ private:
 
 	void SaveTexturesAsImageFiles();
 
-	void RenderTexturedRect();
+	void RenderTexturedRect2D();
+
+	void RenderTexturedRect3D();
 
 public:
 
