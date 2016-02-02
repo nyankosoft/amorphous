@@ -330,7 +330,7 @@ inline void BitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b )
 
 inline void BitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a )
 {
-	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, GetHeight() - y - 1) + m_BitsPerPixel / 8 * x;
 
 	r = bits[FI_RGBA_RED];
 	g = bits[FI_RGBA_GREEN];
@@ -418,7 +418,7 @@ inline void BitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
 	{
 		// This code causes crash when the bpp is 32. Why?
 
-		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
+		BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, GetHeight() - y - 1) + m_BitsPerPixel / 8 * x;
 
 		int bytespp = FreeImage_GetLine(m_pFreeImageBitMap) / FreeImage_GetWidth(m_pFreeImageBitMap);
 
@@ -446,7 +446,7 @@ inline void BitmapImage::SetAlpha( int x, int y, U8 alpha )
 {
 //	int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
 
-	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, y) + m_BitsPerPixel / 8 * x;
+	BYTE *bits = FreeImage_GetScanLine(m_pFreeImageBitMap, GetHeight() - y - 1) + m_BitsPerPixel / 8 * x;
 
 	bits[FI_RGBA_ALPHA] = alpha;
 }
