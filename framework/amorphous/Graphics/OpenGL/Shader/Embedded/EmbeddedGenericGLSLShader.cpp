@@ -76,7 +76,9 @@ static Result::Name GenerateLightingVertexShader( const GenericShaderDesc& desc,
 		"vec4 pos4_vs = ViewWorld * position;"\
 		"pos_vs = pos4_vs.xyz / pos4_vs.w;"\
 		"pos_ps = ProjViewWorld * position;"\
-		"t0 = tex0;"\
+		/*"t0 = tex0;"\*/
+		"t0.x = tex0.x;"\
+		"t0.y =-tex0.y+1;"\
 		"dc = diffuse_color;"\
 	"}\n";
 
@@ -98,7 +100,9 @@ static Result::Name GenerateNoLightingVertexShader( const GenericShaderDesc& des
 	"uniform mat4 ProjViewWorld;\n"\
 	"void main(){"\
 		"gl_Position = ProjViewWorld * position;"\
-		"t0 = tex0;"\
+		/*"t0 = tex0;"\*/
+		"t0.x = tex0.x;"\
+		"t0.y =-tex0.y+1;"\
 		"dc = diffuse_color;"\
 	"}\n";
 
@@ -443,8 +447,12 @@ static const char *sg_2d_glsl_vs =
 		"float y = (-position.y / vph + 0.5) * 2.0;"\
 		"gl_Position = vec4(x,y,position.z,1);"\
 		"dc = diffuse_color;"\
-		"t0 = tex0;"\
-		"t1 = tex1;"\
+		"t0.x = tex0.x;"\
+		"t0.y =-tex0.y+1;"\
+		/*"t0 = tex0;"\*/
+		"t1.x = tex1.x;"\
+		"t1.y =-tex1.y+1;"\
+		/*"t1 = tex1;"\*/
 		"t2 = tex2;"\
 		"t3 = tex3;"\
 	"}\n";

@@ -409,6 +409,8 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			}
 		}
 
+		image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",boost::filesystem::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
+
 		void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
 		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, pImageData, texture_id );
 	}
@@ -448,7 +450,8 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 	if( !loaded )
 		return false;
 
-	bool res = img.FlipVertical();
+	// FreeImage loads the image upside down, so we vertically flip the image data
+//	bool res = img.FlipVertical();
 
 	m_TextureDesc.Width  = img.GetWidth();
 	m_TextureDesc.Height = img.GetHeight();
@@ -851,9 +854,9 @@ bool CGLCubeTextureResource::LoadFromFile( const std::string& filepath )
 			}
 		}
 
-		bool res = img.FlipVertical();
+//		bool res = img.FlipVertical();
 
-		res = CreateGLTextureFromBitmapImage( cube_map_targets[i], img, m_TextureIDs[i] );
+		bool res = CreateGLTextureFromBitmapImage( cube_map_targets[i], img, m_TextureIDs[i] );
 		if( !res )
 			return false;
 	}

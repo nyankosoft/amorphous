@@ -17,8 +17,14 @@ bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum s
 
 	LOG_GL_ERROR( "glBindTexture() failed." );
 
+	uint pixel_data_size = 16;
+	if(src_format == GL_RGBA)
+	{
+		if(src_type == GL_UNSIGNED_BYTE)
+			pixel_data_size = 4;
+	}
+
 	vector<uchar> pixels;
-	uint pixel_data_size = 4;
 	pixels.resize( width * height * pixel_data_size, 0 );
 
 	glGetTexImage(
@@ -37,14 +43,15 @@ bool SaveGL2DTextureToImageFile( GLuint texture, int width, int height, GLenum s
 //	const int height = m_TextureDesc.Height;
 	BitmapImage img( width, height, bpp );
 	for( int y=0; y<height; y++ )
+//	for( int y=height-1; 0<=y; y-- )
 	{
 		for( int x=0; x<width; x++ )
 		{
-			int offset = (y * width + x) * num_channels;
+			int offset = ((height-y-1) * width + x) * num_channels;
 			U8 r = pixels[offset + 0];
 			U8 g = pixels[offset + 1];
 			U8 b = pixels[offset + 2];
-			
+
 			if( num_channels == 4 )
 			{
 				U8 a = pixels[offset + 3];
