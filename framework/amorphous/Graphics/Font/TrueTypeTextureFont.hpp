@@ -77,8 +77,8 @@ public:
 
 /**
  A texture font created from TrueType font (*.ttf)
-  - Supports only the ANSI chars
-  - Crates a texture that stores the rendered ANSI chars
+  - Supports the ASCII characters
+  - Creates a texture that stores the rendered ASCII characters
   - Saves the texture to disk to use the texture font by simply loading it
     from the next time
 
@@ -97,7 +97,7 @@ private:
 
 	void InitTrueTypeFontInternal();
 
-	/// Creates a bitmap that contains ANSI characters
+	/// Creates a bitmap that contains ASCII characters
 	bool CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer );
 
 public:
