@@ -368,13 +368,6 @@ void GLTextureRenderTarget::CopyRenderTarget()
 void GLTextureRenderTarget::SetBackgroundColor( const SFloatRGBAColor& bg_color )
 {
 	TextureRenderTarget::SetBackgroundColor( bg_color );
-
-	glClearColor(
-		bg_color.red,
-		bg_color.green,
-		bg_color.blue,
-		bg_color.alpha
-		);
 }
 
 
@@ -410,6 +403,16 @@ void GLTextureRenderTarget::SetRenderTarget()
 	glDrawBuffers(1, attachments);
 
 	LOG_GL_ERROR( " glDrawBuffers() failed." );
+
+	const SFloatRGBAColor& bg_color = m_BackgroundColor;
+	glClearColor(
+		bg_color.red,
+		bg_color.green,
+		bg_color.blue,
+		bg_color.alpha
+		);
+
+	LOG_GL_ERROR( " glClearColor() failed." );
 
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
