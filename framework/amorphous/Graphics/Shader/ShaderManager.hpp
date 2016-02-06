@@ -5,13 +5,12 @@
 #include <boost/shared_ptr.hpp>
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
-#include "../D3DHeaders.hpp"
-#include "../../base.hpp"
-#include "../../3DMath/Matrix34.hpp"
-#include "../../3DMath/Matrix44.hpp"
-#include "../../3DMath/MatrixConversions.hpp"
-#include "../../3DMath/Transform.hpp"
-#include "../../Support/stream_buffer.hpp"
+#include "amorphous/Graphics/D3DHeaders.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/3DMath/Transform.hpp"
+#include "amorphous/Support/stream_buffer.hpp"
 
 
 namespace amorphous
