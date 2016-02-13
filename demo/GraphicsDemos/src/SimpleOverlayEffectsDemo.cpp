@@ -135,8 +135,10 @@ void SimpleOverlayEffectsDemo::RenderMeshes()
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
 	ShaderManager *pShaderMgr = m_Shader.GetShaderManager();
+	if(!pShaderMgr)
+		return;
 
-	ShaderManager& shader_mgr = pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
+	ShaderManager& shader_mgr = *pShaderMgr;// pShaderMgr ? *pShaderMgr : FixedFunctionPipelineManager();
 
 	// render the scene
 
