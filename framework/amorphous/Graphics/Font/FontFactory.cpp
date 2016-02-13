@@ -1,6 +1,6 @@
 #include "FontFactory.hpp"
 #include "TextureFont.hpp"
-#include "TrueTypeTextureFont.hpp"
+#include "ASCIIFont.hpp"
 #include "UTFFont.hpp"
 #include "BuiltinFonts.hpp"
 #include "../../Support/SafeDelete.hpp"

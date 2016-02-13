@@ -372,9 +372,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\Font\TextureFont.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.cpp">
-      <Filter>Graphics\Font</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp">
       <Filter>Graphics\Font</Filter>
     </ClCompile>
@@ -858,6 +855,9 @@
     <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.cpp">
       <Filter>Graphics\TextureGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Font\ASCIIFont.cpp">
+      <Filter>Graphics\Font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp">
@@ -1158,9 +1158,6 @@
       <Filter>Graphics\Font</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Font\TextureFont.hpp">
-      <Filter>Graphics\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.hpp">
       <Filter>Graphics\Font</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Font\UTFFont.hpp">
@@ -2006,6 +2003,9 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.hpp">
       <Filter>Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Font\ASCIIFont.hpp">
+      <Filter>Graphics\Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

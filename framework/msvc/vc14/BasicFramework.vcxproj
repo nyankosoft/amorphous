@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Font\D3DXFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Direct3D\Shader\Embedded\EmbeddedPostProcessEffectHLSLShader.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Font\ASCIIFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Font\FontFactory.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsComponentCollector.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsDevice.cpp" />
@@ -191,7 +192,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Font\TextureFont.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.cpp" />
@@ -382,6 +382,7 @@
     <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\FloatRGBAColor.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\FloatRGBColor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\ASCIIFont.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Font\FontFactory.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\fwd.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\General2DVertex.hpp" />
@@ -512,7 +513,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\Font\GrayscalePixelDataLoader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Font\SimpleBitmapFontData.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Font\TextureFont.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\Font\TrueTypeTextureFont.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Font\UTFFont.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Point.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp" />
