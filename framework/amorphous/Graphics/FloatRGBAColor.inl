@@ -70,10 +70,10 @@ inline U32 SFloatRGBAColor::GetARGB32() const
 
 inline void SFloatRGBAColor::SetARGB32( U32 color )
 {
-	alpha	= (float)( (color >> 24) & 0x000000FF ) / 256.0f;
-	red	= (float)( (color >> 16) & 0x000000FF ) / 256.0f;
-	green	= (float)( (color >>  8) & 0x000000FF ) / 256.0f;
-	blue	= (float)( (color)       & 0x000000FF ) / 256.0f;
+	alpha = (float)( (color >> 24) & 0x000000FF ) / 256.0f;
+	red   = (float)( (color >> 16) & 0x000000FF ) / 256.0f;
+	green = (float)( (color >>  8) & 0x000000FF ) / 256.0f;
+	blue  = (float)( (color)       & 0x000000FF ) / 256.0f;
 }
 
 
