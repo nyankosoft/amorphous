@@ -1,8 +1,10 @@
 #include "GLCustomMeshRenderer.hpp"
+#include "Graphics/ShaderHandle.hpp"
 #include "Graphics/Mesh/CustomMesh.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/OpenGL/GLTextureResourceVisitor.hpp"
+#include "Graphics/Shader/GenericShaderHelpers.hpp"
+#include "Graphics/OpenGL/GLGraphicsDevice.hpp"
+//#include "Graphics/OpenGL/GLTextureResourceVisitor.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Profile.hpp"
 
@@ -17,7 +19,7 @@ using namespace std;
 GLCustomMeshRenderer GLCustomMeshRenderer::ms_Instance;
 
 
-void GLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
+void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, ShaderManager& shader_mgr )
 {
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
@@ -145,7 +147,8 @@ void GLCustomMeshRenderer::RenderMeshWithCurrentProgram( CustomMesh& mesh )
 		const MeshMaterial& mat = mesh.GetMaterial(i);
 		for( size_t j=0; j<mat.Texture.size(); j++ )
 		{
-			SetTextureGL( j, mat.Texture[j] );
+//			SetTextureGL( j, mat.Texture[j] );
+			shader_mgr.SetTexture( j, mat.Texture[j] );
 		}
 
 		int index_offsets_in_bytes        = mesh.GetTriangleSets()[i].m_iStartIndex * index_size;
@@ -187,7 +190,10 @@ void GLCustomMeshRenderer::RenderMesh( CustomMesh& mesh )
 {
 	glUseProgram( 0 );
 
-	RenderMeshWithCurrentProgram( mesh );
+	ShaderHandle shader = CreateNoLightingShader();
+	ShaderManager *pShaderMgr = shader.GetShaderManager();
+	if( pShaderMgr )
+		RenderMeshWithSpecifiedProgram( mesh, *pShaderMgr );
 }
 
 
@@ -197,9 +203,7 @@ void GLCustomMeshRenderer::RenderMesh( CustomMesh& mesh, ShaderManager& shader_m
 
 	shader_mgr.Begin();
 
-	bool using_programmable_shader = (&shader_mgr != &FixedFunctionPipelineManager()) ? true : false;
-
-	RenderMeshWithCurrentProgram( mesh );//, using_programmable_shader );
+	RenderMeshWithSpecifiedProgram( mesh, shader_mgr );
 }
 
 

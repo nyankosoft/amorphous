@@ -11,7 +11,7 @@ namespace amorphous
 
 class GLCustomMeshRenderer : public CustomMeshRenderer
 {
-	void RenderMeshWithCurrentProgram( CustomMesh& mesh );
+	void RenderMeshWithSpecifiedProgram( CustomMesh& mesh, ShaderManager& shader_mgr );
 
 public:
 
