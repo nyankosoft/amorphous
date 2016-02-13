@@ -7,6 +7,7 @@
 #include "amorphous/Support/FreeTypeAux.hpp"
 #include "amorphous/Support/TextFileScanner.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/BitmapImageHelpers.hpp"
 #include "amorphous/Support/UTF8/utf8.h"
 #include "amorphous/Support/MiscAux.hpp"
 #include <boost/filesystem.hpp>

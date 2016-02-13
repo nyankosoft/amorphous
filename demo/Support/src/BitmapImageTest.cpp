@@ -1,3 +1,5 @@
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/ImageArchiveAux.hpp"
@@ -93,13 +95,13 @@ void RunImageSaveTest()
 			for( int k=0; k<numof(colors); k++ )
 			{
 				BitmapImage img64( 64, 64, bpps[j] );
-				img64.FillColor( colors[k] );
+				img64.FillFRGBAColor( colors[k] );
 
 				image_file_pathname = string("results/bitmap_images/") + string(basenames[k]) + "_064x064_bpp" + std::to_string(bpps[j]) + "." + string(extensions[i]);
 				img64.SaveToFile( image_file_pathname );
 
 				BitmapImage img256( 256, 256, bpps[j] );
-				img256.FillColor( colors[k] );
+				img256.FillFRGBAColor( colors[k] );
 
 				image_file_pathname = string("results/bitmap_images/") + string(basenames[k]) + "_256x256_bpp" + std::to_string(bpps[j]) + "." + string(extensions[i]);
 				img256.SaveToFile( image_file_pathname );
