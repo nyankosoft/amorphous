@@ -15,7 +15,7 @@ using std::string;
 using std::vector;
 using boost::shared_ptr;
 
-typedef TextureFont ASCIIFont;
+//typedef TextureFont ASCIIFont;
 
 
 template<class dest_buffer_type, typename BitmapCalc>
@@ -105,8 +105,8 @@ UTFFont::~UTFFont()
 
 void UTFFont::InitUTFFontInternal()
 {
-	ASCIIFont::InitInternal();
-//	TextureFont::InitInternal();
+//	ASCIIFont::InitInternal();
+	TextureFont::InitInternal();
 
 //	m_BaseHeight = 64;
 

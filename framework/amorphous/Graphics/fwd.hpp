@@ -52,7 +52,7 @@ class C2DTriangle;
 class C2DRegularPolygon;
 class FontBase;
 class TextureFont;
-class TrueTypeTextureFont;
+class ASCIIFont;
 class UTFFont;
 class SimpleBitmapFontData;
 class Camera;
@@ -165,6 +165,10 @@ public:
 		NUM_INIT_LAYOUTS
 	};
 };
+
+
+typedef ASCIIFont TrueTypeTextureFont;
+
 
 } // namespace amorphous
 

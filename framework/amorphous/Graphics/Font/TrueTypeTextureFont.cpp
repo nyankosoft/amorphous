@@ -1,6 +1,6 @@
 #include "TrueTypeTextureFont.hpp"
-#include "Graphics/Rect.hpp"
-#include <string.h>
+#include "amorphous/Graphics/Rect.hpp"
+#include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Support/lfs.hpp"
 #include "Support/FreeTypeAux.hpp"
 #include "Support/BitmapImage.hpp"
@@ -35,6 +35,21 @@ void DrawRect( array2d<U8>& dest_buffer, const SRect& rect, U8 color )
 }
 
 
+class FontTextureLoader : public TextureFillingAlgorithm
+{
+	ASCIIFont *m_pFont;
+
+public:
+
+	FontTextureLoader( ASCIIFont *pFont )
+		:
+		m_pFont(pFont)
+	{}
+
+	void FillTexture( LockedTexture& texture );
+};
+
+
 void FontTextureLoader::FillTexture( LockedTexture& texture )
 {
 	array2d<U8> dest_bitmap_buffer;
@@ -57,7 +72,7 @@ void FontTextureLoader::FillTexture( LockedTexture& texture )
 	// Save the image for faster loading from the next time
 /*	string filename_minus_ext = m_pFont->m_FontFilepath.substr( 0, m_pFont->m_FontFilepath.length() - 4 );
 	CBinaryDatabase<string> db;
-	bool db_open = db.Open( TrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath + "/" + filename_minus_ext + ".tfd", CBinaryDatabase<string>::DB_MODE_NEW );
+	bool db_open = db.Open( ASCIIFont::ms_TextureArchiveDestDirectoryPath + "/" + filename_minus_ext + ".tfd", CBinaryDatabase<string>::DB_MODE_NEW );
 	if( db_open )
 	{
 		TextureFontArchive archive;
@@ -83,19 +98,19 @@ void FontTextureLoader::FillTexture( LockedTexture& texture )
 
 
 //=========================================================================================
-// TrueTypeTextureFont
+// ASCIIFont
 //=========================================================================================
 
-std::string TrueTypeTextureFont::ms_TextureArchiveDestDirectoryPath = "./Texture";
+std::string ASCIIFont::ms_TextureArchiveDestDirectoryPath = "./Texture";
 
 
-TrueTypeTextureFont::TrueTypeTextureFont()
+ASCIIFont::ASCIIFont()
 {
 	InitTrueTypeFontInternal();
 }
 
 
-TrueTypeTextureFont::TrueTypeTextureFont( const std::string& filename,
+ASCIIFont::ASCIIFont( const std::string& filename,
  		                    int resolution, int font_width, int font_height )
 
 {
@@ -104,13 +119,13 @@ TrueTypeTextureFont::TrueTypeTextureFont( const std::string& filename,
 }
 
 
-TrueTypeTextureFont::~TrueTypeTextureFont()
+ASCIIFont::~ASCIIFont()
 {
 	Release();
 }
 
 
-void TrueTypeTextureFont::InitTrueTypeFontInternal()
+void ASCIIFont::InitTrueTypeFontInternal()
 {
 	TextureFont::InitInternal();
 
@@ -125,7 +140,7 @@ void RenderTextToBuffer( FT_Face& face,
 						const std::string &text,
 						int char_height,
 						array2d<U8>& dest_bitmap_buffer,
-						vector<TrueTypeTextureFont::CharRect>& char_rect )
+						vector<ASCIIFont::CharRect>& char_rect )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -213,7 +228,7 @@ void RenderTextToBuffer( FT_Face& face,
 }
 
 
-bool TrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer )
+bool ASCIIFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buffer )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -268,7 +283,7 @@ bool TrueTypeTextureFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_b
 }
 
 
-bool TrueTypeTextureFont::InitFont( const std::string& filename,
+bool ASCIIFont::InitFont( const std::string& filename,
  		                     int resolution, int font_width, int font_height )
 {
 	if( filename.length() == 0 )
@@ -348,7 +363,7 @@ bool TrueTypeTextureFont::InitFont( const std::string& filename,
 }
 
 
-bool TrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& texture_filepath )
+bool ASCIIFont::SaveTextureAndCharacterSet( const std::string& texture_filepath )
 {
 	m_FontTexture.SaveTextureToImageFile( texture_filepath );
 
@@ -364,7 +379,7 @@ bool TrueTypeTextureFont::SaveTextureAndCharacterSet( const std::string& texture
 }
 
 
-bool TrueTypeTextureFont::SaveTextureFontArchive( const std::string& pathname )
+bool ASCIIFont::SaveTextureFontArchive( const std::string& pathname )
 {
 	string temporary_texture_pathname = "temporary_font_texture.png";
 	bool tex_saved = m_FontTexture.SaveTextureToImageFile( temporary_texture_pathname );

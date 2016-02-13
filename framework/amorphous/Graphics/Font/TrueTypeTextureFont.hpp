@@ -1,15 +1,16 @@
-#ifndef  __TrueTypeTextureFont_H__
-#define  __TrueTypeTextureFont_H__
+#ifndef  __amorphous_ASCIIFont_HPP__
+#define  __amorphous_ASCIIFont_HPP__
 
 
 #include "TextureFont.hpp"
-#include "../TextureGenerators/TextureFillingAlgorithm.hpp"
-#include "../../Support/array2d.hpp"
-#include "../../Support/ImageArchive.hpp"
+#include "amorphous/Support/array2d.hpp"
+#include "amorphous/Support/ImageArchive.hpp"
 
 
 namespace amorphous
 {
+
+class FontTextureLoader;
 
 
 /**
@@ -60,21 +61,6 @@ public:
 };
 
 
-class FontTextureLoader : public TextureFillingAlgorithm
-{
-	TrueTypeTextureFont *m_pFont;
-
-public:
-
-	FontTextureLoader( TrueTypeTextureFont *pFont )
-		:
-	m_pFont(pFont)
-	{}
-
-	void FillTexture( LockedTexture& texture );
-};
-
-
 /**
  A texture font created from TrueType font (*.ttf)
   - Supports the ASCII characters
@@ -83,7 +69,7 @@ public:
     from the next time
 
 */
-class TrueTypeTextureFont : public TextureFont
+class ASCIIFont : public TextureFont
 {
 private:
 
@@ -102,12 +88,12 @@ private:
 
 public:
 
-	TrueTypeTextureFont();
+	ASCIIFont();
 
-	TrueTypeTextureFont( const std::string& filename,
+	ASCIIFont( const std::string& filename,
 		          int resolution = 64, int font_width = 0, int font_height = 32 );
 
-	virtual ~TrueTypeTextureFont();
+	virtual ~ASCIIFont();
 
 //	void Release();
 
@@ -143,8 +129,12 @@ public:
 	friend class FontTextureLoader;
 };
 
+
+//typedef ASCIIFont TrueTypeTextureFont;
+
+
 } // namespace amorphous
 
 
 
-#endif		/*  __TrueTypeTextureFont_H__  */
+#endif		/*  __amorphous_ASCIIFont_HPP__  */
