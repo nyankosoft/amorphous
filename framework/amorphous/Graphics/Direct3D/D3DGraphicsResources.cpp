@@ -11,6 +11,7 @@
 #include "Support/ImageArchive.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Serialization/BinaryDatabase.hpp"
+//#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -526,6 +527,8 @@ bool CD3DTextureResource::CreateFromDesc()
 		SetState( GraphicsResourceState::LOADED );
 
 		HRESULT hr = S_OK;
+
+//		hr = D3DXSaveTextureToFile( fmt_string(".debug/d3d_textures/%s.png",boost::filesystem::path(desc.ResourcePath).leaf().string().c_str()).c_str(), D3DXIFF_PNG, GetD3DBaseTexture(), NULL );
 
 //		hr = D3DXFilterTexture( m_pTexture, NULL, 0, D3DX_FILTER_TRIANGLE );
 		hr = D3DXFilterTexture( GetD3DBaseTexture(), NULL, 0, D3DX_FILTER_TRIANGLE );
