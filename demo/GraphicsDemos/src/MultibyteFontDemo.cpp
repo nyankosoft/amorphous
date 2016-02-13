@@ -1,7 +1,7 @@
 #include "MultibyteFontDemo.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
-#include "amorphous/Graphics/Font/TrueTypeTextureFont.hpp"
+#include "amorphous/Graphics/Font/ASCIIFont.hpp"
 #include "amorphous/Graphics/Font/UTFFont.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Timer.hpp"

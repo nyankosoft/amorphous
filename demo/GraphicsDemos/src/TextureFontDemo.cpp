@@ -1,7 +1,7 @@
 #include "TextureFontDemo.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/GraphicsComponentCollector.hpp"
-#include "amorphous/Graphics/Font/TrueTypeTextureFont.hpp"
+#include "amorphous/Graphics/Font/ASCIIFont.hpp"
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Input/InputHandler.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
