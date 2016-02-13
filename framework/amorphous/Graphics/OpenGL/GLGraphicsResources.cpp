@@ -49,11 +49,21 @@ public:
 			);
 	}
 
+	inline void ARGB32toR8G8B8A8( U32 src, U8& red, U8& green, U8& blue, U8& alpha )
+	{
+		alpha = (U8)( (src >> 24) & 0x000000FF );
+		red   = (U8)( (src >> 16) & 0x000000FF );
+		green = (U8)( (src >>  8) & 0x000000FF );
+		blue  = (U8)( (src)       & 0x000000FF );
+	}
+
 	void SetPixelARGB32( int x, int y, U32 argb_color )
 	{
 		SFloatRGBAColor color;
 		color.SetARGB32( argb_color );
-		m_pImage->SetPixel( x, y, color );
+		U8 r=0,g=0,b=0,a=0;
+		ARGB32toR8G8B8A8( argb_color, r, g, b, a );
+		m_pImage->SetPixel( x, y, r, g, b, a );
 	}
 
 	void SetAlpha( int x, int y, U8 alpha )
@@ -64,7 +74,7 @@ public:
 	// TODO: add FillColorARGB32(), a performance friendly alternative, to BitmapImage
 //	void Clear( U32 argb_color ) { m_pImage->FillColorARGB32( argb_color ); }
 
-	void Clear( const SFloatRGBAColor& color ) { m_pImage->FillColor( color ); }
+	void Clear( const SFloatRGBAColor& color ) { m_pImage->FillFRGBAColor( color ); }
 };
 
 
@@ -689,7 +699,7 @@ bool CGLTextureResource::Lock( uint mip_level )
 	else
 	{
 		m_pLockedImage.reset( new BitmapImage(m_TextureDesc.Width,m_TextureDesc.Height,32) );
-		m_pLockedImage->FillColor( SFloatRGBAColor::White() );
+		m_pLockedImage->FillFRGBAColor( SFloatRGBAColor::White() );
 		return true;
 	}
 
