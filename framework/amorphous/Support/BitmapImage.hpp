@@ -3,12 +3,9 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "FreeImage.h"
+#include "FreeImage.h" // FreeImage library header
 
-#include "amorphous/Graphics/FloatRGBColor.hpp"
-#include "amorphous/Graphics/FloatRGBAColor.hpp"
 #include "stream_buffer.hpp"
-#include "array2d.hpp"
 
 // Comment out this header inclusion and do the following replacings
 // if you want to use BitmapImage class without the log system.
@@ -34,7 +31,7 @@ inline int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin
 inline long DLL_CALLCONV ImageTellProc( fi_handle handle );
 
 
-class CImageStreamBufferHolder
+class ImageStreamBufferHolder
 {
 	stream_buffer *m_pStreamBuffer;
 
@@ -48,27 +45,27 @@ public:
 };
 
 
-/// The singleton instance of CImageStreamBufferHolder
-inline CImageStreamBufferHolder& ImageStreamBufferHolder()
+/// The singleton instance of ImageStreamBufferHolder
+inline ImageStreamBufferHolder& GetImageStreamBufferHolder()
 {
-	static CImageStreamBufferHolder holder;
+	static ImageStreamBufferHolder holder;
 	return holder;
 }
 
 
 inline unsigned int DLL_CALLCONV ImageReadProc( void *buffer, unsigned int size, unsigned int count, fi_handle handle )
 {
-	return ImageStreamBufferHolder().m_pStreamBuffer->read( buffer, size * count );
+	return GetImageStreamBufferHolder().m_pStreamBuffer->read( buffer, size * count );
 }
 
 inline unsigned int DLL_CALLCONV ImageWriteProc( void *buffer, unsigned int size, unsigned int count, fi_handle handle )
 {
-	return ImageStreamBufferHolder().m_pStreamBuffer->write( buffer, size * count );
+	return GetImageStreamBufferHolder().m_pStreamBuffer->write( buffer, size * count );
 }
 
 inline int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin )
 {
-	stream_buffer *pStreamBuffer = ImageStreamBufferHolder().m_pStreamBuffer;
+	stream_buffer *pStreamBuffer = GetImageStreamBufferHolder().m_pStreamBuffer;
 	switch(origin)
 	{
 	case SEEK_SET: pStreamBuffer->seek_pos( offset ); break;
@@ -83,7 +80,7 @@ inline int DLL_CALLCONV ImageSeekProc( fi_handle handle, long offset, int origin
 
 inline long DLL_CALLCONV ImageTellProc( fi_handle handle )
 {
-	return (long)ImageStreamBufferHolder().m_pStreamBuffer->get_current_pos();
+	return (long)GetImageStreamBufferHolder().m_pStreamBuffer->get_current_pos();
 }
 
 
@@ -152,10 +149,10 @@ public:
 	inline BitmapImage( int width, int height, int bpp );
 
 	/// \param bpp bits per pixel. Must support RGBA format
-	inline BitmapImage( int width, int height, int bpp, const SFloatRGBAColor& color );
+//	inline BitmapImage( int width, int height, int bpp, const RGBAColorType& color );
 
 	/// TODO: Make the argument const
-	/// - Need to do sth to CImageStreamBufferHolder. See the function definition
+	/// - Need to do sth to ImageStreamBufferHolder. See the function definition
 	inline BitmapImage( stream_buffer& image_data, const std::string& image_format );
 
 	~BitmapImage() { Release(); }
@@ -166,27 +163,64 @@ public:
 
 	inline bool CreateFromImageDataStream( stream_buffer& image_data, const std::string& image_format );
 
-	inline void FillColor( const SFloatRGBAColor& color );
+	/**
+	\brief Filll the entire image with the specified color
+
+	All the color components shall be in the [0,255] range 
+	*/
+	inline void FillColor( U8 r, U8 g, U8 b, U8 a );
+
+	/**
+	\brief Filll the entire image with the specified color
+
+	All the color components shall be in the [0.0,1.0] range 
+	*/
+	inline void FillColor( float r, float g, float b, float a );
+
+	/**
+	\brief 'RGBAColorType' shall have the following public class members,
+	each of which shall be floating point type in the range of [0.0,1.0]
+
+	- RGBAColorType::red
+	- RGBAColorType::green
+	- RGBAColorType::blue
+	- RGBAColorType::alpha
+	*/
+	template<class RGBAColorType>
+	inline void FillFRGBAColor( const RGBAColorType& color );
 
 	inline U32 GetPixelARGB32( int x, int y );
 
-	inline void GetPixel( int x, int y, SFloatRGBAColor& color );
+//	inline void GetPixel( int x, int y, SFloatRGBAColor& color );
 
-	inline SFloatRGBAColor GetPixel( int x, int y );
+//	inline SFloatRGBAColor GetPixel( int x, int y );
 
 	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b );
 
 	inline void GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a );
 
-	/// Support only 24-bit/32-bit images. Float values are internally converted to U8 values.
-	inline void SetPixel( int x, int y, const SFloatRGBAColor& color );
+	inline void GetPixel( int x, int y, float& r, float& g, float& b );
 
-	/// Support only 24-bit/32-bit images. Float values are internally converted to U8 values.
-	inline void SetPixel( int x, int y, const SFloatRGBColor& color );
+	inline void GetPixel( int x, int y, float& r, float& g, float& b, float& a );
+
+	/**
+	  \brief Support only 24-bit/32-bit images. Float values are internally converted to U8 values.
+
+	  See FillFRGBAColor for the requirements to RGBAColorType
+	*/
+	template<class RGBAColorType>
+	inline void SetFRGBAPixel( int x, int y, const RGBAColorType& color )
+	{
+		SetPixel( x, y, color.red, color.green, color.blue, color.alpha );
+	}
 
 	inline void SetPixel( int x, int y, U8 r, U8 g, U8 b );
 
 	inline void SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a );
+
+	inline void SetPixel( int x, int y, float r, float g, float b );
+
+	inline void SetPixel( int x, int y, float r, float g, float b, float a );
 
 	/// \param grayscale must be [0,255]
 	inline void SetGrayscalePixel( int x, int y, U8 grayscale );
@@ -242,15 +276,15 @@ m_BitsPerPixel(bpp)
 }
 
 
-inline BitmapImage::BitmapImage( int width, int height, int bpp, const SFloatRGBAColor& color )
-:
-m_BitsPerPixel(bpp)
-{
-	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
-
-	FillColor( color );
-
-}
+//inline BitmapImage::BitmapImage( int width, int height, int bpp, const RGBAColorType& color )
+//:
+//m_BitsPerPixel(bpp)
+//{
+//	m_pFreeImageBitMap = FreeImage_Allocate( width, height, bpp );
+//
+//	FillColor( color );
+//
+//}
 
 
 inline BitmapImage::BitmapImage( stream_buffer& image_data, const std::string& image_format )
@@ -297,22 +331,43 @@ inline U32 BitmapImage::GetPixelARGB32( int x, int y )
 }
 
 
-inline void BitmapImage::GetPixel( int x, int y, SFloatRGBAColor& color )
+//inline void BitmapImage::GetPixel( int x, int y, SFloatRGBAColor& color )
+//{
+//	U8 r=0, g=0, b=0, a=0;
+//	GetPixel( x, y, r, g, b, a );
+//	color.red   = (float)r / (float)255.0f;
+//	color.green = (float)g / (float)255.0f;
+//	color.blue  = (float)b / (float)255.0f;
+//	color.alpha = (float)a / (float)255.0f;
+//}
+
+
+//inline SFloatRGBAColor BitmapImage::GetPixel( int x, int y )
+//{
+//	SFloatRGBAColor dest;
+//	GetPixel( x, y, dest );
+//	return dest;
+//}
+
+
+inline void BitmapImage::GetPixel( int x, int y, float& r, float& g, float& b )
 {
-	U8 r=0, g=0, b=0, a=0;
-	GetPixel( x, y, r, g, b, a );
-	color.red   = (float)r / (float)255.0f;
-	color.green = (float)g / (float)255.0f;
-	color.blue  = (float)b / (float)255.0f;
-	color.alpha = (float)a / (float)255.0f;
+	U8 _r=0, _g=0, _b=0;
+	GetPixel( x, y, _r, _g, _b );
+	r = (float)_r / (float)255.0f;
+	g = (float)_g / (float)255.0f;
+	b = (float)_b / (float)255.0f;
 }
 
 
-inline SFloatRGBAColor BitmapImage::GetPixel( int x, int y )
+inline void BitmapImage::GetPixel( int x, int y, float& r, float& g, float& b, float& a )
 {
-	SFloatRGBAColor dest;
-	GetPixel( x, y, dest );
-	return dest;
+	U8 _r=0, _g=0, _b=0, _a=0;
+	GetPixel( x, y, _r, _g, _b, _a );
+	r = (float)_r / (float)255.0f;
+	g = (float)_g / (float)255.0f;
+	b = (float)_b / (float)255.0f;
+	a = (float)_a / (float)255.0f;
 }
 
 
@@ -341,16 +396,8 @@ inline void BitmapImage::GetPixel( int x, int y, U8& r, U8& g, U8& b, U8& a )
 }
 
 
-inline void BitmapImage::FillColor( const SFloatRGBAColor& color )
+inline void BitmapImage::FillColor( U8 r, U8 g, U8 b, U8 a )
 {
-	if( !m_pFreeImageBitMap )
-		return;
-
-	U8 r = (U8)(color.red   * 255);
-	U8 g = (U8)(color.green * 255);
-	U8 b = (U8)(color.blue  * 255);
-	U8 a = (U8)(color.alpha * 255);
-
 	const int w = GetWidth();
 	const int h = GetHeight();
 	const int bytespp = FreeImage_GetLine(m_pFreeImageBitMap) / FreeImage_GetWidth(m_pFreeImageBitMap);
@@ -372,25 +419,18 @@ inline void BitmapImage::FillColor( const SFloatRGBAColor& color )
 }
 
 
-inline void BitmapImage::SetPixel( int x, int y, const SFloatRGBAColor& color )
+template<class RGBAColorType>
+inline void BitmapImage::FillFRGBAColor( const RGBAColorType& color )
 {
-	// TODO: support float RGBA images
-	if( m_BitsPerPixel == 24
-	 || m_BitsPerPixel == 32 )
-	{
-		SetPixel( x, y, color.GetRedByte(), color.GetGreenByte(), color.GetBlueByte(), color.GetAlphaByte() );
-	}
-}
+	if( !m_pFreeImageBitMap )
+		return;
 
+	U8 r = (U8)get_clamped( (int)(color.red   * 255), 0, 255 );
+	U8 g = (U8)get_clamped( (int)(color.green * 255), 0, 255 );
+	U8 b = (U8)get_clamped( (int)(color.blue  * 255), 0, 255 );
+	U8 a = (U8)get_clamped( (int)(color.alpha * 255), 0, 255 );
 
-inline void BitmapImage::SetPixel( int x, int y, const SFloatRGBColor& color )
-{
-	RGBQUAD quad;
-	quad.rgbRed   = color.GetRedByte();
-	quad.rgbGreen = color.GetGreenByte();
-	quad.rgbBlue  = color.GetBlueByte();
-
-	FreeImage_SetPixelColor( m_pFreeImageBitMap, x, GetHeight() - y - 1, &quad );
+	FillColor(r,g,b,a);
 }
 
 
@@ -427,6 +467,29 @@ inline void BitmapImage::SetPixel( int x, int y, U8 r, U8 g, U8 b, U8 a )
 		bits[FI_RGBA_BLUE]  = b;
 		bits[FI_RGBA_ALPHA] = a;
 	}
+}
+
+
+void BitmapImage::SetPixel( int x, int y, float r, float g, float b )
+{
+	SetPixel(
+		x, y,
+		(U8)(get_clamped(r,0.0f,1.0f) * 255.0f),
+		(U8)(get_clamped(g,0.0f,1.0f) * 255.0f),
+		(U8)(get_clamped(b,0.0f,1.0f) * 255.0f)
+		);
+}
+
+
+void BitmapImage::SetPixel( int x, int y, float r, float g, float b, float a )
+{
+	SetPixel(
+		x, y,
+		(U8)(get_clamped(r,0.0f,1.0f) * 255.0f),
+		(U8)(get_clamped(g,0.0f,1.0f) * 255.0f),
+		(U8)(get_clamped(b,0.0f,1.0f) * 255.0f),
+		(U8)(get_clamped(a,0.0f,1.0f) * 255.0f)
+	);
 }
 
 
@@ -729,7 +792,7 @@ inline bool BitmapImage::CreateFromImageDataStream( stream_buffer& image_data, c
 
 //	lock
 
-	ImageStreamBufferHolder().m_pStreamBuffer = &image_data;//(img_archive.m_Buffer);
+	GetImageStreamBufferHolder().m_pStreamBuffer = &image_data;//(img_archive.m_Buffer);
 	FreeImageIO img_io;
 	img_io.read_proc  = ImageReadProc;
 	img_io.write_proc = ImageWriteProc;
@@ -764,69 +827,6 @@ inline shared_ptr<BitmapImage> CreateBitmapImage( const std::string& pathname, i
 	bool bSuccess = pImage->LoadFromFile( pathname, flag );
 
 	return bSuccess ? pImage : shared_ptr<BitmapImage>();
-}
-
-
-inline bool SaveToImageFile( const array2d<SFloatRGBColor>& texel, const std::string& filepath )
-{
-	int x,y;
-	int width  = texel.size_x();
-	int height = texel.size_y();
-	const int depth = 24;
-
-	BitmapImage img( width, height, depth );
-
-	for( y=0; y<height ; y++ )
-	{
-		for( x=0; x<width; x++ )
-		{
-			img.SetPixel( x, y, texel(x,y) );
-		}
-	}
-
-	return img.SaveToFile( filepath );
-}
-
-
-inline bool SaveToImageFile( const array2d<SFloatRGBAColor>& texel, const std::string& filepath )
-{
-	int x,y;
-	int width  = texel.size_x();
-	int height = texel.size_y();
-	const int depth = 32;
-
-	BitmapImage img( width, height, depth );
-
-	for( y=0; y<height ; y++ )
-	{
-		for( x=0; x<width; x++ )
-		{
-			img.SetPixel( x, y, texel(x,y) );
-		}
-	}
-
-	return img.SaveToFile( filepath );
-}
-
-
-inline bool SaveGrayscaleToImageFile( const array2d<U8>& texel, const std::string& filepath )
-{
-	int x,y;
-	int width  = texel.size_x();
-	int height = texel.size_y();
-	const int depth = 24;
-
-	BitmapImage img( width, height, depth );
-
-	for( y=0; y<height ; y++ )
-	{
-		for( x=0; x<width; x++ )
-		{
-			img.SetGrayscalePixel( x, y, texel(x,y) );
-		}
-	}
-
-	return img.SaveToFile( filepath );
 }
 
 
