@@ -2,6 +2,7 @@
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/App/GameWindowManager.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
+#include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 
 
@@ -31,16 +32,40 @@ unsigned int GetNextImageFileNumber( const std::string& directory_path, const st
 	if( ec != boost::system::errc::success )
 		return 0;
 
+	int max_num = -1;
 	directory_iterator end_itr; // default construction yields past-the-end
 	for( ; itr != end_itr; ++itr )
 	{
 		const path& pathname = *itr;
+		std::string leaf = pathname.leaf().string();
+		if( leaf.find( basename ) != 0 )
+			continue;
 
-		if( pathname.leaf().string().find( basename ) == 0 )
-			count += 1;
+		std::string basename_suffix = leaf.substr(basename.length());
+
+		int dot_pos = basename_suffix.rfind(".");
+		if(dot_pos == std::string::npos)
+			continue;
+
+		try
+		{
+			int num = boost::lexical_cast<unsigned int>(basename_suffix.substr(0,dot_pos));
+			max_num = take_max( max_num, num );
+		}
+		catch (const std::exception& e)
+		{
+			LOG_PRINT( "exception: " + std::string(e.what()) + ", pathname: " + pathname.string() );
+			continue;
+		}
+
+//		if( pathname.leaf().string().find( basename ) == 0 )
+//		{
+//			LOG_PRINT( "pathname: " + pathname.string() );
+//			count += 1;
+//		}
 	}
 
-	return count;
+	return (max_num == -1) ? 0 : (unsigned int)(max_num + 1);
 }
 
 
