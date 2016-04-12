@@ -29,10 +29,12 @@ LensFlareDemo::~LensFlareDemo()
 
 void LensFlareDemo::InitSkyTexture()
 {
-	SFloatRGBAColor top_color, mid_color, bottom_color;
-	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_top",    top_color );
-	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_mid",    mid_color );
-	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_bottom", bottom_color );
+	SFloatRGBAColor top_color    = SFloatRGBAColor(0.596f, 0.773f, 0.988f, 1.000f);
+	SFloatRGBAColor mid_color    = SFloatRGBAColor(0.894f, 0.941f, 0.996f, 1.000f);
+	SFloatRGBAColor bottom_color = SFloatRGBAColor(0.894f, 0.941f, 0.996f, 1.000f);
+//	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_top",    top_color );
+//	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_mid",    mid_color );
+//	LoadParamFromFile( "LensFlareDemo/params.txt", "bg_color_bottom", bottom_color );
 
 	m_SkyTexture = CreateHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
 //	m_SkyTexture = CreateTCBSplineHorizontalGradationTexture( 256, 256, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
