@@ -20,11 +20,13 @@ class MiscShaderDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
+	bool m_RenderAllMeshes;
+
 //	CustomMesh m_Mesh;
 
 //	MeshHandle m_RegularMesh;
 
-	unsigned int m_CurrentShader;
+//	unsigned int m_CurrentShader;
 
 private:
 

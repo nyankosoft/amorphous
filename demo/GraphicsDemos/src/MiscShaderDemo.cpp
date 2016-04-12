@@ -18,10 +18,47 @@
 using std::string;
 using namespace boost;
 
+class const_test
+{
+public:
+	int i;
+
+	int const_function() const { return i; }
+	void non_const_function() { i = 0; }
+};
+
+void const_test_function()
+{
+	boost::shared_ptr<const_test> ptr( new const_test );
+	boost::shared_ptr<const const_test> ptr_to_const_obj( new const_test );
+//	ptr_to_const_obj->non_const_function(); // Error: Conversion loses qualifiers
+	ptr_to_const_obj = ptr; // No error
+//	ptr = ptr_to_const_obj; // Error: cannot convert from 'const boost::shared_ptr<const const_test>' to 'boost::shared_ptr<const_test>'
+}
+
+
+template<typename ArrayType>
+float GetAggregateWidth( const ArrayType& meshes )
+{
+	float w = 0;
+	for(int i=0; i<(int)meshes.size(); i++)
+	{
+		const MeshHandle& mesh = meshes[i];
+//		const boost::shared_ptr<const BasicMesh> pMesh = mesh.GetMesh();
+		boost::shared_ptr<const BasicMesh> pMesh = mesh.GetMesh();
+		pMesh = boost::shared_ptr<const BasicMesh>(); // No error: 
+//		pMesh->Render(); // Error: cannot call the non-const member function of the BasicMesh class
+		if( pMesh )
+			w += pMesh->GetAABB().GetExtents().x * 2.0f;
+	}
+
+	return w;
+}
+
 
 MiscShaderDemo::MiscShaderDemo()
 :
-m_CurrentShader(0)
+m_RenderAllMeshes(true)
 {
 	m_MeshTechnique.SetTechniqueName( "Default" );
 
@@ -49,8 +86,8 @@ bool MiscShaderDemo::InitShaders()
 
 //	return shader_loaded;
 
-	m_Shaders.resize( MiscShader::NUM_IDS );
-	for( int i=0; i<MiscShader::NUM_IDS; i++ )
+	m_Shaders.resize( 6/*MiscShader::NUM_IDS*/ );
+	for( int i=0; i<6/*MiscShader::NUM_IDS*/; i++ )
 	{
 		m_Shaders[i] = CreateMiscShader( (MiscShader::ID)i );
 	}
@@ -90,10 +127,11 @@ int MiscShaderDemo::Init()
 		loaded = m_Mesh.LoadFromArchive( ar );
 	}
 */
-	m_Meshes.resize(3);
+	m_Meshes.resize(4);
 	m_Meshes[0] = CreateBoxMesh( Vector3(1,1,1) );
 	m_Meshes[1] = CreateSphereMesh( 0.5f, 36, 18 );
-	m_Meshes[2].Load( "Common/models/bunny.msh" );
+	m_Meshes[2] = CreateCylinderMesh();
+	m_Meshes[3].Load( "Common/models/bunny.msh" );
 
 	InitShaders();
 
@@ -143,17 +181,41 @@ void MiscShaderDemo::RenderMeshes()
 
 //	SetLights( pShaderMgr ? true : false );
 
-	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
 //	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
-	MeshHandle mesh;
-	bool res = m_Meshes.get_current( mesh );
-	if( res )
+	if( m_RenderAllMeshes )
 	{
-		boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
-		if( pMesh )
+		float aw = GetAggregateWidth(m_Meshes);
+		float x = -(aw + (float)(m_Meshes.size()-1) * 0.3f) * 0.5f;
+
+		for( size_t i=0; i<m_Meshes.size(); i++ )
+		{
+			Matrix44 world = ToMatrix44(Matrix34(Vector3(x,0,0),Matrix33Identity()));
+			shader_mgr.SetWorldTransform(world);
+
+			boost::shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
+			if( !pMesh )
+				continue;
+
 			pMesh->Render( shader_mgr );
+
+			x += pMesh->GetAABB().GetExtents().x * 2.0f + 0.3f;
+		}
+
+	}
+	else
+	{
+		shader_mgr.SetWorldTransform( Matrix44Identity() );
+
+		MeshHandle mesh;
+		bool res = m_Meshes.get_current( mesh );
+		if( res )
+		{
+			boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
+			if( pMesh )
+				pMesh->Render( shader_mgr );
+		}
 	}
 
 //	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
@@ -167,6 +229,11 @@ void MiscShaderDemo::Render()
 	RenderMeshes();
 
 	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+
+	string text = fmt_string("[0,%u]: %u", MiscShader::NUM_IDS, m_Shaders.get_current_index());
+	if(m_pFont)
+		m_pFont->DrawText( text.c_str(), Vector2( 20, 50 ) );
+
 }
 
 
@@ -174,6 +241,10 @@ void MiscShaderDemo::HandleInput( const InputData& input )
 {
 	switch( input.iGICode )
 	{
+	case 'A':
+		if( input.iType == ITYPE_KEY_PRESSED )
+			m_RenderAllMeshes = !m_RenderAllMeshes;
+		break;
 	case GIC_DOWN:
 		if( input.iType == ITYPE_KEY_PRESSED )
 			m_Shaders++;
