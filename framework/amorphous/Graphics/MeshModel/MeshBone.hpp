@@ -121,11 +121,11 @@ public:
 inline MeshBone::MeshBone()
 :
 m_vLocalOffset( Vector3(0,0,0) ),
-m_pWorldTransform(NULL),
+m_pWorldTransform(nullptr),
 m_MatrixIndex(0),
 m_BoneTransform( Matrix34Identity() ),
 m_LocalTransform( Matrix34Identity() ),
-m_paChild(NULL),
+m_paChild(nullptr),
 m_iNumChildren(0)
 {}
 

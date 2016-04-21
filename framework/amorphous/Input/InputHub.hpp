@@ -209,10 +209,10 @@ inline void InputHub::ReleaseInputHandler( int index )
 inline InputHandler *InputHub::GetInputHandler( int index )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
-		return NULL;
+		return nullptr;
 
 	if( m_vecpInputHandler[index].size() == 0 )
-		return NULL;
+		return nullptr;
 	else
 		return m_vecpInputHandler[index].back();
 }
@@ -246,10 +246,10 @@ inline void InputHub::PushInputHandler( int index, InputHandler *pInputHandler )
 inline InputHandler *InputHub::PopInputHandler( int index )
 {
 	if( index < 0 || NUM_MAX_INPUT_HANDLERS <= index )
-		return NULL;
+		return nullptr;
 
 	if( m_vecpInputHandler[index].size() == 0 )
-		return NULL;	// no input handler in the stack
+		return nullptr;	// no input handler in the stack
 
 	InputHandler* pTop = m_vecpInputHandler[index].back();
 

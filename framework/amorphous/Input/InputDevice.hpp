@@ -147,7 +147,7 @@ inline InputDeviceClass *GetPrimaryInputDevice()
 		return pDest;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 

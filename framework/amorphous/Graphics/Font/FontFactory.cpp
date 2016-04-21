@@ -26,7 +26,7 @@ FontBase* FontFactory::CreateFontRawPtr( FontBase::FontType type )
 //		return new CD3DFont;
 	default:
 		LOG_PRINT_ERROR( " An unsupported font type." );
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -65,7 +65,7 @@ FontBase* FontFactory::CreateFontRawPtr( const std::string& font_name, int font_
 		else
 		{
 			SafeDelete( pFont );
-			return NULL;
+			return nullptr;
 		}
 	}
 	else if( 4 < font_name.length() )
@@ -80,23 +80,23 @@ FontBase* FontFactory::CreateFontRawPtr( const std::string& font_name, int font_
 			return pUTFFont;
 		}
 		else
-			return NULL;
+			return nullptr;
 	}
 	else
-		return NULL;
+		return nullptr;
 
 //	TextureFont *pTexFont = new TextureFont;
 //	pTexFont->InitFont( font_name, 16, 32 );
 //	return pTexFont;
 
-	return NULL;
+	return nullptr;
 }
 
 
 FontBase* FontFactory::CreateFontRawPtr( FontBase::FontType type, const string& font_name, int font_width, int font_height )
 {
 	LOG_PRINT_ERROR( " Not implemented." );
-	return NULL;
+	return nullptr;
 }
 
 

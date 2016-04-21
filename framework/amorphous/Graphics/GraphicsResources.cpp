@@ -585,7 +585,7 @@ void MeshResource::GetStatus( std::string& dest_buffer )
 
 ShaderResource::ShaderResource( const ShaderResourceDesc *pDesc )
 :
-m_pShaderManager(NULL)
+m_pShaderManager(nullptr)
 {
 	if( pDesc )
 		m_ShaderDesc = *pDesc;

@@ -18,7 +18,7 @@ using namespace boost;
 
 InputDevice::InputDevice()
 :
-m_pGroup(NULL)
+m_pGroup(nullptr)
 {
 	GetInputDeviceHub().RegisterInputDevice( this );
 

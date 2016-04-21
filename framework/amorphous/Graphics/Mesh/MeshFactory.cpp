@@ -24,7 +24,7 @@ BasicMesh *MeshFactory::InitMeshInstance( MeshType::Name mesh_type, U32 load_opt
 {
 	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
 	if( !pMesh )
-		return NULL;
+		return nullptr;
 
 	if( load_option_flags & MeshLoadOption::CUSTOM_MESH )
 		SetCustomMesh( *pMesh );
@@ -44,10 +44,10 @@ BasicMesh *MeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
 	case MeshType::SKELETAL:
 		return CreateSkeletalMeshInstance();
 	default:
-		return NULL;
+		return nullptr;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -79,7 +79,7 @@ BasicMesh* MeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 	else
 	{
 		SafeDelete( pMesh );
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -98,7 +98,7 @@ BasicMesh* MeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_arc
 	else
 	{
 		SafeDelete( pMesh );
-		return NULL;
+		return nullptr;
 	}
 }
 

@@ -221,7 +221,7 @@ public:
 	virtual void CalculateBlendTransforms( const std::vector<Transform>& src_local_transforms, std::vector<Transform>& dest_blend_transforms ) {}
 
 	/// returns the pointer to the array of vertex blend matrices (world transforms)
-	virtual Transform* GetBlendTransforms() { return NULL; }
+	virtual Transform* GetBlendTransforms() { return nullptr; }
 
 	virtual void GetBlendTransforms( std::vector<Transform>& dest_transforms ) {}
 

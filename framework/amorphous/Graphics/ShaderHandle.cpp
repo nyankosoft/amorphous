@@ -53,7 +53,7 @@ ShaderManager *ShaderHandle::GetShaderManager()
 		return GetEntry()->GetShaderResource()->GetShaderManager();
 	}
 	else
-		return NULL;
+		return nullptr;
 }
 
 

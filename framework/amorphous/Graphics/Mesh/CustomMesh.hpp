@@ -125,15 +125,15 @@ public:
 
 	inline void InitIndexBuffer( int num_indices, uint index_size = sizeof(U16) );
 
-	uchar *GetVertexBufferPtr() { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : NULL; }
+	uchar *GetVertexBufferPtr() { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : nullptr; }
 
-	uchar *GetIndexBufferPtr() { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : NULL; }
+	uchar *GetIndexBufferPtr() { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : nullptr; }
 
-	const uchar *GetVertexBufferPtr() const { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : NULL; }
+	const uchar *GetVertexBufferPtr() const { return (0 < m_VertexBuffer.size()) ? &(m_VertexBuffer[0]) : nullptr; }
 
-	const uchar *GetIndexBufferPtr() const { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : NULL; }
+	const uchar *GetIndexBufferPtr() const { return (0 < m_IndexBuffer.size()) ? &(m_IndexBuffer[0]) : nullptr; }
 
-	const uchar *GetZSortedIndexBufferPtr() const { return (0 < m_ZSortedIndexBuffer.size()) ? &(m_ZSortedIndexBuffer[0]) : NULL; }
+	const uchar *GetZSortedIndexBufferPtr() const { return (0 < m_ZSortedIndexBuffer.size()) ? &(m_ZSortedIndexBuffer[0]) : nullptr; }
 
 	uint GetNumVertices() const { return (0 < m_VertexSize) ? ((uint)m_VertexBuffer.size() / m_VertexSize) : 0; }
 

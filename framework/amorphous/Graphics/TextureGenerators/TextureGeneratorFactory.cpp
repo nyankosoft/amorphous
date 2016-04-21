@@ -24,7 +24,7 @@ IArchiveObjectBase *TextureGeneratorFactory::CreateObject(const unsigned int id)
 	case TextureFillingAlgorithm::TG_STRIPE_TEXTURE_GENERATOR:                     return new StripeTextureGenerator;
 //	case TextureFillingAlgorithm::TG_BUILTIN_IMAGE_TEXTURE_LOADER:                 return new BuiltinImageTextureLoader;
 	default:
-		return NULL;
+		return nullptr;
 	}
 }
 

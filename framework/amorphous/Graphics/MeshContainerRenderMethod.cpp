@@ -272,7 +272,7 @@ void MeshContainerRenderMethod::RenderMesh( BasicMesh &mesh, const Matrix34& wor
 
 		// set different shaders / techniques for each subset
 		const int num_subsets = mesh.GetNumMaterials();
-		std::vector<int> *pvecIndicesOfSubsetsToRender = NULL;
+		std::vector<int> *pvecIndicesOfSubsetsToRender = nullptr;
 		if( m_vecIndicesOfSubsetsToRender.size() == 0 )
 		{
 			// render all the subsets
