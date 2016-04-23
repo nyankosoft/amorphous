@@ -5,7 +5,6 @@
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
-#include <boost/foreach.hpp>
 
 using std::string;
 using std::vector;
@@ -106,7 +105,7 @@ int EnvMapDemo::Init()
 		"./models/F14s_display_primitives.msh"
 	};
 
-	BOOST_FOREACH( const string& filepath, env_mapped_mesh_file )
+	for( const auto& filepath : env_mapped_mesh_file )
 	{
 		m_vecEnvMappedMesh.push_back( MeshHandle() );
 //		m_vecEnvMappedMesh.back().filename = filepath;
@@ -120,7 +119,7 @@ int EnvMapDemo::Init()
 		"./models/F14s_display_rest.msh",
 	};
 
-	BOOST_FOREACH( const string& filepath, non_env_mapped_mesh_file )
+	for( const auto& filepath : non_env_mapped_mesh_file )
 	{
 		m_vecNonEnvMappedMesh.push_back( MeshHandle() );
 //		m_vecNonEnvMappedMesh.back().filename = filepath;
@@ -229,7 +228,7 @@ void EnvMapDemo::RenderBase()
 
 //	RenderNonEnvMappedMeshes();
 	shader_mgr.SetTechnique( m_NonEnvMappedMesh );
-	BOOST_FOREACH( MeshHandle& mesh, m_vecNonEnvMappedMesh )
+	for( auto& mesh : m_vecNonEnvMappedMesh )
 	{
 		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )
@@ -243,7 +242,7 @@ void EnvMapDemo::RenderBase()
 //	RenderEnvMappedMeshes();
 	Result::Name res = shader_mgr.SetTechnique( m_EnvMappedMesh );
 	Vector3 positions[] = { Vector3(1,1,1), Vector3(1,1,-1), Vector3(-1,1,-1), Vector3(-1,1,1), Vector3(0,1,0) };
-	BOOST_FOREACH( MeshHandle& mesh, m_vecEnvMappedMesh )
+	for( auto& mesh : m_vecEnvMappedMesh )
 	{
 		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )
@@ -282,7 +281,7 @@ void EnvMapDemo::RenderNonEnvMappedMeshes()
 	ShaderManager& shader_mgr = FixedFunctionPipelineManager();
 
 	shader_mgr.SetTechnique( m_NonEnvMappedMesh );
-	BOOST_FOREACH( MeshHandle& mesh, m_vecNonEnvMappedMesh )
+	for( auto& mesh : m_vecNonEnvMappedMesh )
 	{
 		shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 		if( !pMesh )

@@ -1,5 +1,4 @@
 #include "SimpleOverlayEffectsDemo.hpp"
-#include <boost/foreach.hpp>
 #include "amorphous/Graphics/Font/FontBase.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
@@ -147,7 +146,7 @@ void SimpleOverlayEffectsDemo::RenderMeshes()
 //	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	shader_mgr.SetTechnique( m_MeshTechnique );
-	BOOST_FOREACH( MeshHandle& mesh, m_Meshes )
+	for( auto& mesh : m_Meshes )
 	{
 		shader_mgr.SetWorldTransform( Matrix44Identity() );
 

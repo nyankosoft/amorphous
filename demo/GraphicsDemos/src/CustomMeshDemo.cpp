@@ -176,25 +176,7 @@ void CCustomMeshDemo::RenderMeshes()
 //	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	m_Mesh.Render( shader_mgr );
-/*
-	pShaderManager->SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
-	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
-	{
-		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
-		{
-			// set world transform
-			const Matrix34 mesh_world_pose = holder.m_Pose;
-//			FixedPipelineManager().SetWorldTransform( mesh_world_pose );
-			pShaderManager->SetWorldTransform( mesh_world_pose );
 
-			shared_ptr<BasicMesh> pMesh = holder.m_Handle.GetMesh();
-
-			if( pMesh )
-				pMesh->Render( *pShaderManager );
-		}
-	}
-*/
 //	GetShaderManagerHub().PopViewAndProjectionMatrices_NoRestore();
 }
 

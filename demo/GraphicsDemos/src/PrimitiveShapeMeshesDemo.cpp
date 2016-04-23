@@ -197,7 +197,7 @@ void PrimitiveShapeMeshesDemo::RenderMeshes()
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
 
-//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
+//	for( auto& mesh : m_vecMesh )
 //	{
 		shared_ptr<BasicMesh> pMesh = m_vecMesh[m_MeshIndex].GetMesh();//mesh.GetMesh();
 

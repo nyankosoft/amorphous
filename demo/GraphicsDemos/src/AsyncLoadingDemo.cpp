@@ -1,5 +1,4 @@
 #include "AsyncLoadingDemo.hpp"
-#include <boost/foreach.hpp>
 #include "amorphous/Graphics.hpp"
 #include "amorphous/Graphics/AsyncResourceLoader.hpp"
 //#include "amorphous/Graphics/GraphicsResourceCacheManager.hpp"
@@ -148,7 +147,7 @@ int AsyncLoadingDemo::Init()
 		"./models/SmashedGrayMarble.msh"
 	};
 
-	BOOST_FOREACH( const string& filepath, mesh_file )
+	for( const auto& filepath : mesh_file )
 	{
 		m_vecMesh.push_back( MeshHandle() );
 
@@ -253,7 +252,7 @@ void AsyncLoadingDemo::Update( float dt )
 	{
 //		LoadTexturesAsync();
 
-		BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
+		for( auto& holder : m_vecMesh )
 		{
 			//if( holder.m_LoadingStyle != CTestMeshHolder::LOAD_SYNCHRONOUSLY )
 				LoadResourcesAsync( holder );
@@ -284,8 +283,8 @@ void AsyncLoadingDemo::RenderMeshes()
 	GetShaderManagerHub().PushViewAndProjectionMatrices( GetCurrentCamera() );
 
 	pShaderManager->SetTechnique( m_MeshTechnique );
-//	BOOST_FOREACH( MeshHandle& mesh, m_vecMesh )
-	BOOST_FOREACH( CTestMeshHolder& holder, m_vecMesh )
+//	for( MeshHandle& mesh : m_vecMesh )
+	for( auto& holder : m_vecMesh )
 	{
 //		BasicMesh *pMesh = mesh.GetMesh().get();
 
