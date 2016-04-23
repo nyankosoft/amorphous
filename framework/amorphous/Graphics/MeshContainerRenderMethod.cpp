@@ -6,7 +6,6 @@
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
-#include <boost/foreach.hpp>
 
 
 namespace amorphous
@@ -342,7 +341,7 @@ void MeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boo
 		{
 			itr->second.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
 		}
-/*		BOOST_FOREACH( str_rendermethod& p, m_vecSubsetNameToRenderMethod[i] ) // error
+/*		for( str_rendermethod& p : m_vecSubsetNameToRenderMethod[i] ) // error
 		{
 			p.second.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
 		}*/
@@ -387,7 +386,7 @@ void MeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethods
 					itrParamsLoader++;
 			}
 		}
-/*		BOOST_FOREACH( str_rendermethod& p, m_vecSubsetNameToRenderMethod[i] ) // error
+/*		for( str_rendermethod& p : m_vecSubsetNameToRenderMethod[i] ) // error
 		{
 			p.second.m_vecpShaderParamsLoader.push_back( pShaderParamsLoader );
 		}*/
@@ -406,9 +405,9 @@ void MeshContainerRenderMethod::BreakMeshRenderMethodsToSubsetRenderMethods( con
 	m_vecSubsetNameToRenderMethod.resize( 1 );
 
 //	for( size_t i=0; i<num_lods; i++ )
-//	BOOST_FOREACH( SubsetRenderMethod& render_method, m_vecMeshRenderMethod )
+//	for( auto& render_method : m_vecMeshRenderMethod )
 //	{
-		BOOST_FOREACH( const string& subset_name, vecSubsetName )
+		for( const auto& subset_name : vecSubsetName )
 		{
 //			m_vecSubsetNameToRenderMethod[i][subset_name] = m_vecMeshRenderMethod[i];
 			m_vecSubsetNameToRenderMethod[0][subset_name] = PrimaryMeshRenderMethod();
