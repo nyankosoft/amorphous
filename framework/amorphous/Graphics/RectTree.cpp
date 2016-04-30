@@ -1,4 +1,3 @@
-#include "Support/memory_helpers.hpp"
 #include "RectTree.hpp"
 
 
@@ -11,7 +10,6 @@ namespace amorphous
 
 RectTree::RectTree()
 {
-	m_pRootNode = NULL;
 }
 
 
@@ -23,22 +21,20 @@ RectTree::RectTree( const SRect& rect )
 
 void RectTree::SetRectangle( const SRect& rect )
 {
-	SafeDelete( m_pRootNode );
-	m_pRootNode = new RectNode;
+	m_pRootNode.reset( new RectNode );
 	m_pRootNode->m_Rectangle = rect;
 }
 
 
 RectTree::~RectTree()
 {
-	SafeDelete( m_pRootNode );
 }
 
 int RectTree::Insert( const SRect& rect, const int index )
 {
 	RectNode *pNode = m_pRootNode->Insert( rect );
 
-	if( pNode != NULL )
+	if( pNode != nullptr )
 	{
 		pNode->m_iIndex = index;
 		return 0;
@@ -56,16 +52,12 @@ int RectTree::Insert( const SRect& rect, const int index )
 
 RectNode::RectNode()
 {
-	m_pChild[0] = m_pChild[1] = NULL;
-
 	m_iIndex = INVALID_INDEX;
 }
 
 
 RectNode::~RectNode()
 {
-	SafeDelete( m_pChild[0] );
-	SafeDelete( m_pChild[1] );
 }
 
 bool RectNode::IsLeaf() const
@@ -93,11 +85,11 @@ RectNode *RectNode::Insert( const SRect& rect )
 	{
 		// if there's already a rectangle here, return
 		if( m_iIndex != INVALID_INDEX )
-			return NULL;
+			return nullptr;
 
 		// if we are too small, return 
 		if( this->m_Rectangle.GetWidth() < rect.GetWidth() || this->m_Rectangle.GetHeight() < rect.GetHeight() )
-			return NULL;
+			return nullptr;
 
 		int dw, dh;
 
@@ -109,8 +101,8 @@ RectNode *RectNode::Insert( const SRect& rect )
 			return this;
 
 		// otherwise gotta split this node and create some kids
-		m_pChild[0] = new RectNode;
-		m_pChild[1] = new RectNode;
+		m_pChild[0].reset( new RectNode );
+		m_pChild[1].reset( new RectNode );
 
 		// decide which way to split
 
@@ -155,7 +147,7 @@ RectNode *RectNode::GetNode( const int index )
 		if( index == m_iIndex )
 			return this;
 		else
-			return NULL;
+			return nullptr;
 	}
 }
 

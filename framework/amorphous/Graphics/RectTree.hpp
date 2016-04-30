@@ -2,6 +2,7 @@
 #define  __RECTTREE_H__
 
 
+#include <memory>
 #include "Rect.hpp"
 
 
@@ -17,7 +18,7 @@ class RectTree;
 
 class RectNode
 {
-	RectNode *m_pChild[2];
+	std::unique_ptr<RectNode> m_pChild[2];
 	SRect m_Rectangle;
 	int m_iIndex;
 	
@@ -45,7 +46,7 @@ public:
 
 class RectTree
 {
-	RectNode *m_pRootNode;
+	std::unique_ptr<RectNode> m_pRootNode;
 
 public:
 
@@ -73,7 +74,7 @@ inline SRect *RectTree::GetRectangle( const int index )
 	if( pNode )
 		return &(pNode->m_Rectangle);
 	else
-		return NULL;
+		return nullptr;
 }
 
 
