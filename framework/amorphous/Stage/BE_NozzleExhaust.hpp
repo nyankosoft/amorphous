@@ -24,9 +24,9 @@ private:
 
 	BaseEntityHandle m_MuzzleFlashLight;
 
-	void UpdateNozzleExhaust( CCopyEntity* pCopyEnt, SBE_ParticleSetExtraData& rParticleSet, float dt );
+	void UpdateNozzleExhaust( CCopyEntity* pCopyEnt, ParticleSetExtraData& rParticleSet, float dt );
 
-    void CreateNewParticle( CCopyEntity* pCopyEnt, SBE_ParticleSetExtraData& rParticleSet, int index );
+    void CreateNewParticle( CCopyEntity* pCopyEnt, ParticleSetExtraData& rParticleSet, int index );
 
 protected:
 		

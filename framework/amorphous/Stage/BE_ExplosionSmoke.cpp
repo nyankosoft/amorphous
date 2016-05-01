@@ -26,7 +26,7 @@ void CBE_ExplosionSmoke::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	InitParticleSetEntity( *pCopyEnt );
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& particle_set = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	Vector3& rvDir = pCopyEnt->GetDirection();
 	Vector3 vRandDir;
@@ -36,26 +36,26 @@ void CBE_ExplosionSmoke::InitCopyEntity( CCopyEntity* pCopyEnt )
 	float fRandPositionMin = m_fRandPositionMin;
 	float fRandPositionMax = m_fRandPositionMax;
 	int i, iNumParticles = m_MaxNumParticlesPerSet;
-	rParticleSet.iNumParticles = iNumParticles;
+	particle_set.iNumParticles = iNumParticles;
 	int iNumPatterns = m_iNumTextureSegments * m_iNumTextureSegments * 4 - 1;
 
 	if( m_ParticleType == TYPE_SMOKE_SHOOTING)
 	{
 		for(i=0; i<iNumParticles; i++)
 		{
-			rParticleSet.pavOrigDirection[i] = rvDir;
+			particle_set.pavOrigDirection[i] = rvDir;
 
 			vRandDir = Vec3RandDir();
 
-			rParticleSet.pavPosition[i] = pCopyEnt->GetWorldPosition();
+			particle_set.pavPosition[i] = pCopyEnt->GetWorldPosition();
 
-			rParticleSet.pavVelocity[i] = vRandDir * RangedRand( 0.05f, 0.50f) + rvDir * RangedRand( 0.1f, 12.0f);
+			particle_set.pavVelocity[i] = vRandDir * RangedRand( 0.05f, 0.50f) + rvDir * RangedRand( 0.1f, 12.0f);
 
-			rParticleSet.pafAnimationTime[i] = RangedRand( m_fAnimTimeOffsetMin, m_fAnimTimeOffsetMax );
+			particle_set.pafAnimationTime[i] = RangedRand( m_fAnimTimeOffsetMin, m_fAnimTimeOffsetMax );
 
-			rParticleSet.pasPattern[i] = RangedRand( iNumPatterns );
+			particle_set.pasPattern[i] = RangedRand( iNumPatterns );
 
-			rParticleSet.pafFadeVel[i] = RangedRand( 1.6f, 2.0f );
+			particle_set.pafFadeVel[i] = RangedRand( 1.6f, 2.0f );
 		}
 	}
 	else // i.e. TYPE_SMOKE_NORMAL or TYPE_SMOKE_DIRECTIONAL
@@ -68,13 +68,13 @@ void CBE_ExplosionSmoke::InitCopyEntity( CCopyEntity* pCopyEnt )
 
 			fDist = RangedRand( fRandPositionMin, fRandPositionMax );
 
-			rParticleSet.pavPosition[i] = pCopyEnt->GetWorldPosition() + vRandDir * fDist + rvDir * (0.8f - fRandSpeed) * 0.3f;
+			particle_set.pavPosition[i] = pCopyEnt->GetWorldPosition() + vRandDir * fDist + rvDir * (0.8f - fRandSpeed) * 0.3f;
 
-			rParticleSet.pavVelocity[i] = vRandDir * RangedRand( fRandVelMin, fRandVelMax ) + rvDir * fRandSpeed;
+			particle_set.pavVelocity[i] = vRandDir * RangedRand( fRandVelMin, fRandVelMax ) + rvDir * fRandSpeed;
 
-			rParticleSet.pafAnimationTime[i] = RangedRand( m_fAnimTimeOffsetMin, m_fAnimTimeOffsetMax );
+			particle_set.pafAnimationTime[i] = RangedRand( m_fAnimTimeOffsetMin, m_fAnimTimeOffsetMax );
 
-			rParticleSet.pasPattern[i] = RangedRand( iNumPatterns );
+			particle_set.pasPattern[i] = RangedRand( iNumPatterns );
 		}
 	}
 }

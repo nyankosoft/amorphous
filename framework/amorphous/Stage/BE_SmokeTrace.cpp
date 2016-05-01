@@ -64,8 +64,8 @@ void CBE_SmokeTrace::InitCopyEntity(CCopyEntity* pCopyEnt)
 {
 	InitParticleSetEntity( *pCopyEnt );
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
-//	SBE_ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
+	ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+//	ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
 
 	rParticleSet.iNumParticles = 0;
 
@@ -120,14 +120,14 @@ void CBE_SmokeTrace::Act( CCopyEntity* pCopyEnt )
 		UpdateVertexBuffer( pCopyEnt );
 	}*/
 
-	UpdateVertices( pCopyEnt );
+	UpdateVertices( *pCopyEnt );
 }
 
 
 void CBE_SmokeTrace::MakeDistanceBasedTrailParticles( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
-	float& rfCurrentTime = CurrentTime(pCopyEnt);
+	float& rfCurrentTime = CurrentTime(*pCopyEnt);
 	float& rfTotalFrameTime = pCopyEnt->f4;
 	CCopyEntity *pSmokeEmitter = pCopyEnt->GetParent();
 	Vector3& rvLastUpdatePos = pCopyEnt->v2;
@@ -136,7 +136,7 @@ void CBE_SmokeTrace::MakeDistanceBasedTrailParticles( CCopyEntity* pCopyEnt )
 	rfCurrentTime += fFrameTime;
 
 	// get the external particle object for 'pCopyEnt'
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	int i, iNumCurrentParticles = rParticleSet.iNumParticles;
 
@@ -289,7 +289,7 @@ void CBE_SmokeTrace::MakeTimeBasedTrailParticles( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
 
-	float& rfCurrentTime = CurrentTime(pCopyEnt);
+	float& rfCurrentTime = CurrentTime(*pCopyEnt);
 	float& rfTotalFrameTime = pCopyEnt->f4;
 	CCopyEntity *pSmokeEmitter = pCopyEnt->GetParent();
 //	float num_particles_per_sec = m_iNumParticlesPerSec;
@@ -298,8 +298,8 @@ void CBE_SmokeTrace::MakeTimeBasedTrailParticles( CCopyEntity* pCopyEnt )
 	rfCurrentTime += fFrameTime;
 
 	// get the external particle object for 'pCopyEnt'
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
-//	SBE_ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
+	ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+//	ParticleSetExtraData& rParticleSet = pParticleSetEntity->m_ParticleSet;
 
 	int iNumCurrentParticles = rParticleSet.iNumParticles;
 

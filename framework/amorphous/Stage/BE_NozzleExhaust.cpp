@@ -53,7 +53,7 @@ void CBE_NozzleExhaust::Init()
 }
 
 
-void CBE_NozzleExhaust::CreateNewParticle( CCopyEntity* pCopyEnt, SBE_ParticleSetExtraData& rParticleSet, int index )
+void CBE_NozzleExhaust::CreateNewParticle( CCopyEntity* pCopyEnt, ParticleSetExtraData& rParticleSet, int index )
 {
 	const Vector3 vDir	= Vector3(0,0,1);
 	Vector3 vRight	= Vector3(1,0,0);
@@ -78,13 +78,13 @@ void CBE_NozzleExhaust::CreateNewParticle( CCopyEntity* pCopyEnt, SBE_ParticleSe
 
 void CBE_NozzleExhaust::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
-	float& rfCurrentTime = CurrentTime(pCopyEnt);
+	float& rfCurrentTime = CurrentTime(*pCopyEnt);
 	rfCurrentTime = 0.0f;
 
 //	pCopyEnt->bUseZSort = true;
 	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	// set the number of particles for this particle set
 	rParticleSet.iNumParticles = m_MaxNumParticlesPerSet;
@@ -136,7 +136,7 @@ void CBE_NozzleExhaust::Act( CCopyEntity* pCopyEnt )
 {
 	float fFrameTime = m_pStage->GetFrameTime();
 
-	float& rfCurrentTime = CurrentTime(pCopyEnt);
+	float& rfCurrentTime = CurrentTime(*pCopyEnt);
 	rfCurrentTime += fFrameTime;
 
 	// update the positions of particles
@@ -145,7 +145,7 @@ void CBE_NozzleExhaust::Act( CCopyEntity* pCopyEnt )
 
 //	DWORD dwColor = D3DCOLOR_ARGB( ((int)((m_fDuration - rfCurrentTime) / m_fDuration * 255.0f)), 255, 255, 255 );
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	const float dt = 0.008f;
 	const float fTotalFrameTime = fFrameTime + OverlapTime(pCopyEnt);
@@ -159,11 +159,11 @@ void CBE_NozzleExhaust::Act( CCopyEntity* pCopyEnt )
 //	if( m_Type == CBEC_Billboard::TYPE_BILLBOARDARRAYMESH )
 //		UpdateVertexBuffer( pCopyEnt );
 
-	UpdateVertices( pCopyEnt );
+	UpdateVertices( *pCopyEnt );
 }
 
 
-void CBE_NozzleExhaust::UpdateNozzleExhaust( CCopyEntity* pCopyEnt, SBE_ParticleSetExtraData& rParticleSet, float dt )
+void CBE_NozzleExhaust::UpdateNozzleExhaust( CCopyEntity* pCopyEnt, ParticleSetExtraData& rParticleSet, float dt )
 {
 	int i, num_particles = m_MaxNumParticlesPerSet;
 

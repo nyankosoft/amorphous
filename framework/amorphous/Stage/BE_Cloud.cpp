@@ -53,14 +53,14 @@ void CBE_Cloud::Init()
 void CBE_Cloud::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& particle_set = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	Vector3 vCenterPos = pCopyEnt->GetWorldPosition();
 
 	float r = m_fParticleRadius;
 	float x,y,z,w;
 	int i, num_particls_per_clouds = m_MaxNumParticlesPerSet;
-	rParticleSet.iNumParticles = num_particls_per_clouds;
+	particle_set.iNumParticles = num_particls_per_clouds;
 	AABB3 world_aabb;
 	world_aabb.Nullify();
 	for( i=0; i<num_particls_per_clouds; i++ )
@@ -68,11 +68,11 @@ void CBE_Cloud::InitCopyEntity( CCopyEntity* pCopyEnt )
 		GaussianRand( x, z );
 		GaussianRand( y, w );
 
-		rParticleSet.pavPosition[i] = vCenterPos + Vector3( x * r * 1.2f, y * r * 0.6f, z * r * 1.2f );
-//		rParticleSet.pavPosition[i] = vCenterPos + Vector3( x * 20.0f, y * 5.0f, z * 20.0f );
-//		rParticleSet.pavPosition[i] = Vector3( -80.0f, 8.0f, 0.0f );
+		particle_set.pavPosition[i] = vCenterPos + Vector3( x * r * 1.2f, y * r * 0.6f, z * r * 1.2f );
+//		particle_set.pavPosition[i] = vCenterPos + Vector3( x * 20.0f, y * 5.0f, z * 20.0f );
+//		particle_set.pavPosition[i] = Vector3( -80.0f, 8.0f, 0.0f );
 
-		Sphere sphere( rParticleSet.pavPosition[i], r );
+		Sphere sphere( particle_set.pavPosition[i], r );
 		world_aabb.AddSphere( sphere );
 	}
 
@@ -89,10 +89,10 @@ void CBE_Cloud::Act(CCopyEntity* pCopyEnt)
 
 void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 {
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& particle_set = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	float fRadius = m_fParticleRadius;
-	int i, num_particles = rParticleSet.iNumParticles;
+	int i, num_particles = particle_set.iNumParticles;
 //	short sPatternOffset;
 
 	// set the matrix which rotates a 2D polygon and make it face to the direction of the camera
@@ -123,7 +123,7 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 
 		// calc the world position of the particle
 
-		const Vector3& rvPos   = rParticleSet.pavPosition[i];	// center position of the billboard in world space
+		const Vector3& rvPos   = particle_set.pavPosition[i];	// center position of the billboard in world space
 
 		billboard_pose.vPosition = rvPos;
 
@@ -145,7 +145,7 @@ void CBE_Cloud::Draw(CCopyEntity* pCopyEnt)
 		pParticleVertex[vert_offset+2].color = dwColor;
 		pParticleVertex[vert_offset+3].color = dwColor;*/
 
-/*		sPatternOffset = rParticleSet.asPattern[i] * 4;
+/*		sPatternOffset = particle_set.asPattern[i] * 4;
 		m_avDestParticle[0].tex = m_avRandomTexCoordTable[ sPatternOffset ];
 		m_avDestParticle[1].tex = m_avRandomTexCoordTable[ sPatternOffset + 1 ];
 		m_avDestParticle[2].tex = m_avRandomTexCoordTable[ sPatternOffset + 2 ];

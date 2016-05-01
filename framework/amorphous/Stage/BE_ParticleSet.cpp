@@ -9,7 +9,6 @@
 #include "3DMath/MatrixConversions.hpp"
 //#include "Graphics/Shader/2DPrimitiveCommonShaders.hpp"
 #include "Graphics/Shader/CommonShaders.hpp"
-//#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/MeshGenerators/MeshGenerators.hpp" // box mesh for debugging
@@ -17,7 +16,6 @@
 #include "Graphics/TextureGenerators/ParticleTextureGenerator.hpp"
 #include "Support/Profile.hpp"
 #include "Support/MTRand.hpp"
-#include "Support/Serialization/Serialization_Color.hpp"
 
 
 namespace amorphous
@@ -59,12 +57,12 @@ void CBE_ParticleSet::ParticleThreadMain()
 
 		for( int i=0; i<num_particle_sets; i++ )
 		{
-			SBE_ParticleSetExtraData& rParticleSet = m_paParticleSet[i];
+			auto& particle_set = m_paParticleSet[i];
 			AABB3 aabb;
 
-			if( 0 < rParticleSet.iNumParticles )
-//				UpdateParticles( rParticleSet, dt, aabb );
-				UpdateParticlePositions( rParticleSet, dt, aabb );
+			if( 0 < particle_set.iNumParticles )
+//				UpdateParticles( particle_set, dt, aabb );
+				UpdateParticlePositions( particle_set, dt, aabb );
 		}
 
 	}
@@ -73,7 +71,7 @@ void CBE_ParticleSet::ParticleThreadMain()
 
 CBE_ParticleSet::CBE_ParticleSet()
 :
-m_fParticleImageStandardDeviation(0.4)
+m_fParticleImageStandardDeviation(0.4f)
 {
 	m_iParticleSetCurrentIndex = 0;
 
@@ -167,9 +165,13 @@ void CBE_ParticleSet::InitParticleSetMesh()
 	ar.GetMaterial()[0].vecTexture.resize( 1 );
 
 	if( 0 < m_BillboardTextureFilepath.length() )
+	{
+		// Load a particle texture from an image file
 		ar.GetMaterial()[0].vecTexture[0].ResourcePath = m_BillboardTextureFilepath;
+	}
 	else
 	{
+		// Create a particle texture (draw a blurred circle via Gaussian blur)
 		ar.GetMaterial()[0].vecTexture[0].Width  = 64;
 		ar.GetMaterial()[0].vecTexture[0].Height = 64;
 		ar.GetMaterial()[0].vecTexture[0].Format = TextureFormat::A8R8G8B8;
@@ -188,7 +190,7 @@ void CBE_ParticleSet::InitParticleSetMesh()
 
 void CBE_ParticleSet::InitParticleSetEntity( CCopyEntity& entity )
 {
-	CurrentTime(&entity) = 0.0f;
+	CurrentTime(entity) = 0.0f;
 
 	entity.RaiseEntityFlags( BETYPE_USE_ZSORT );
 
@@ -200,7 +202,7 @@ void CBE_ParticleSet::Init()
 {
 	// allocate buffer for particle sets
 	SafeDeleteArray( m_paParticleSet );
-	m_paParticleSet = new SBE_ParticleSetExtraData [m_MaxNumParticleSets];
+	m_paParticleSet = new ParticleSetExtraData [m_MaxNumParticleSets];
 
 	int i;
 	const int max_num_particle_sets = m_MaxNumParticleSets;
@@ -209,9 +211,10 @@ void CBE_ParticleSet::Init()
 		m_paParticleSet[i].Init( ParticleSetFlag::ALL, m_MaxNumParticlesPerSet );
 	}
 
+	// Create an empty mesh with a billboard texture
 	InitParticleSetMesh();
 
-	// Initialize the particle set mesh
+	// Set vertices and indices to m_ParticleSetMesh
 	InitBillboardRects();
 
 	InitParticles();
@@ -254,13 +257,6 @@ void CBE_ParticleSet::Init()
 		for( i=0; i<1; i++ )
 			m_ParticleThreadGroup.add_thread( new boost::thread(CParticleThreadStarter(this)) );
 	}
-
-/*	string shader_path( "Shader/Particle.fx" );
-	bool shared_loaded = false;
-	if( lfs::path_exists( shader_path ) )
-	{
-		shared_loaded = m_MeshProperty.m_ShaderHandle.Load( shader_path );
-	}*/
 
 //	m_MeshProperty.m_ShaderHandle = Get2DPrimitiveCommonShader( C2DPrimitiveCommonShaders::ST_DIFFUSE_COLOR_AND_TEXTURE );
 	m_MeshProperty.m_ShaderHandle = GetNoLightingShader();
@@ -319,9 +315,8 @@ void CBE_ParticleSet::InitBillboardRects()
 	{
 		// set random texture patterns for each particle in advance
 		offset = RangedRand( 0, num_tex_patterns - 1 );
-		float u,v;
-		u = (float)(offset % num_tex_segs) * fTex;
-		v = (float)(offset / num_tex_segs) * fTex;
+		float u = (float)(offset % num_tex_segs) * fTex;
+		float v = (float)(offset / num_tex_segs) * fTex;
 
 //		SetTexCoord( i, 0, TEXCOORD2(u,        v       ) );
 //		SetTexCoord( i, 1, TEXCOORD2(u + fTex, v       ) );
@@ -390,7 +385,7 @@ void CBE_ParticleSet::InitCopyEntity(CCopyEntity* pCopyEnt)
 	rfCurrentTime = 0.0f;
 
 	pCopyEnt->iExtraDataIndex = GetNewExtraDataID();
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	auto& particle_set = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	float fRandX, fRandY, fRandZ;
 	float fRandVelocity_XZ = m_fRandomVelocity_XZ;
@@ -398,16 +393,16 @@ void CBE_ParticleSet::InitCopyEntity(CCopyEntity* pCopyEnt)
 	int i, num_particles = m_MaxNumParticlesPerSet;
 	for(i=0; i<num_particles; i++)
 	{
-		rParticleSet.pavPosition[i] = pCopyEnt->GetWorldPosition();
+		particle_set.pavPosition[i] = pCopyEnt->GetWorldPosition();
 		fRandX = ( 0.5f - RangedRand(0.0f, 1.0f) ) * fRandVelocity_XZ;
 		fRandZ = ( 0.5f - RangedRand(0.0f, 1.0f) ) * fRandVelocity_XZ;
 		fRandY = ( 0.5f - RangedRand(0.0f, 1.0f) ) * fRandVelocity_Y;
-		rParticleSet.pavVelocity[i] = pCopyEnt->Velocity() + Vector3(fRandX, fRandY, fRandZ);
+		particle_set.pavVelocity[i] = pCopyEnt->Velocity() + Vector3(fRandX, fRandY, fRandZ);
 
-		rParticleSet.pafAnimationTime[i] = 0.0f;
-		rParticleSet.pasPattern[i] = 0;
+		particle_set.pafAnimationTime[i] = 0.0f;
+		particle_set.pasPattern[i] = 0;
 	}
-	rParticleSet.iNumParticles = num_particles;
+	particle_set.iNumParticles = num_particles;
 
 	pCopyEnt->RaiseEntityFlags( BETYPE_USE_ZSORT );
 //	pCopyEnt->bUseZSort = true;
@@ -432,41 +427,41 @@ void CBE_ParticleSet::Act(CCopyEntity* pCopyEnt)
 
 //	U32 dwColor = D3DCOLOR_ARGB( ((int)((m_fDuration - rfCurrentTime) / m_fDuration * 255.0f)), 255, 255, 255 );
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& particle_set = GetExtraData( pCopyEnt->iExtraDataIndex );
 	int i, num_particles = m_MaxNumParticlesPerSet;
 
 	if( m_ParticleType == TYPE_SMOKE_SHOOTING )
 	{
 		for(i=0; i<num_particles; i++)
 		{
-		  if( 0.01f < Vec3Dot( rParticleSet.pavVelocity[i], rParticleSet.pavOrigDirection[i] ) )
+		  if( 0.01f < Vec3Dot( particle_set.pavVelocity[i], particle_set.pavOrigDirection[i] ) )
 		  {
 
 			// update velocity
-			rParticleSet.pavVelocity[i] -= rParticleSet.pavOrigDirection[i] * 28.0f * fFrameTime * RangedRand( 0.9f, 1.1f );
-//			rParticleSet.pavVelocity[i]
-//				-= rParticleSet.pavOrigDirection[i]
-//				* Vec3Dot( rParticleSet.pavVelocity[i], rParticleSet.pavOrigDirection[i] ) * 1.0f * fFrameTime;
+			particle_set.pavVelocity[i] -= particle_set.pavOrigDirection[i] * 28.0f * fFrameTime * RangedRand( 0.9f, 1.1f );
+//			particle_set.pavVelocity[i]
+//				-= particle_set.pavOrigDirection[i]
+//				* Vec3Dot( particle_set.pavVelocity[i], particle_set.pavOrigDirection[i] ) * 1.0f * fFrameTime;
 
-			if( Vec3Dot( rParticleSet.pavVelocity[i], rParticleSet.pavOrigDirection[i] ) < 0 )
-				rParticleSet.pavVelocity[i] = Vector3(0,0,0);
+			if( Vec3Dot( particle_set.pavVelocity[i], particle_set.pavOrigDirection[i] ) < 0 )
+				particle_set.pavVelocity[i] = Vector3(0,0,0);
 		  }
 
 
-			rParticleSet.pavVelocity[i] += (vGravityAccel * fGravityInfluenceFactor) * fFrameTime;
+			particle_set.pavVelocity[i] += (vGravityAccel * fGravityInfluenceFactor) * fFrameTime;
 
 			// update position
-			rParticleSet.pavPosition[i] += rParticleSet.pavVelocity[i] * fFrameTime;
+			particle_set.pavPosition[i] += particle_set.pavVelocity[i] * fFrameTime;
 
 			// update animation time
-			rParticleSet.pafAnimationTime[i] += fFrameTime;
+			particle_set.pafAnimationTime[i] += fFrameTime;
 		}
 	}
 	else
 	{
 		AABB3 aabb;
 		aabb.Nullify();
-		UpdateParticles( rParticleSet, fFrameTime, aabb );
+		UpdateParticles( particle_set, fFrameTime, aabb );
 
 		pCopyEnt->world_aabb.MergeAABB( aabb );
 	}
@@ -558,18 +553,18 @@ static void SetRectDiffuseAlpha_ARGB32( uchar *pVertElement, int vert_size, floa
 }
 */
 
-void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
+void CBE_ParticleSet::UpdateVertices( CCopyEntity& entity )
 {
 	PROFILE_FUNCTION();
 
 	CustomMesh& mesh = m_ParticleSetMesh;
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& particle_set = GetExtraData( entity.iExtraDataIndex );
 
 ///	float fRadius, fBaseRadius = m_fParticleRadius;
 	float fFraction, fTotalAnimationTime = m_fDuration;
 	float fExpansionFactor = m_fExpansionFactor;
-	int i, num_particles = rParticleSet.iNumParticles;
+	int i, num_particles = particle_set.iNumParticles;
 //	short sPatternOffset;
 
 	// vertex color - alpha is set later for each particle to make fading effects
@@ -588,7 +583,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 
 	float particle_set_anim_time;
 	if( m_bMinimumParticleUpdates )
-		particle_set_anim_time = CurrentTime(pCopyEnt);
+		particle_set_anim_time = CurrentTime(entity);
 	else
 		particle_set_anim_time = 0;
 
@@ -611,7 +606,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 	{
 		for(i=0; i<num_particles; i++)
 		{
-			float fCurrentTime = particle_set_anim_time + rParticleSet.pafAnimationTime[i];
+			float fCurrentTime = particle_set_anim_time + particle_set.pafAnimationTime[i];
 			pFractions[i] = fCurrentTime / fTotalAnimationTime;
 		}
 	}*/
@@ -634,7 +629,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 	for(i=0; i<num_particles; i++)
 	{
 		// change anim duration for each particle
-		fTotalAnimationTime = rParticleSet.pafAnimDuration[i];
+		fTotalAnimationTime = particle_set.pafAnimDuration[i];
 
 		vert_offset = i * 4 * vert_size;
 		uchar *pVert0 = pParticleVertex + i * 4 * vert_size;
@@ -643,7 +638,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 		uchar *pVert3 = pVert2 + vert_size;
 
 		// set alpha value - smoke particles fade away as time passes
-		float fCurrentTime = particle_set_anim_time + rParticleSet.pafAnimationTime[i];
+		float fCurrentTime = particle_set_anim_time + particle_set.pafAnimationTime[i];
 
 		if( fCurrentTime < 0 || fTotalAnimationTime <= fCurrentTime )
 		{
@@ -651,7 +646,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 			continue;
 		}
 
-		const Vector3 vBasePos = rParticleSet.pavPosition[i];
+		const Vector3 vBasePos = particle_set.pavPosition[i];
 		memcpy( pVert0 + pos_offset, &vBasePos, sizeof(Vector3) );
 		memcpy( pVert1 + pos_offset, &vBasePos, sizeof(Vector3) );
 		memcpy( pVert2 + pos_offset, &vBasePos, sizeof(Vector3) );
@@ -686,7 +681,7 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 		float fAlpha = 1.0f - fFraction;
 //		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
 
-//		float& rfFadeVel = rParticleSet.pafFadeVel[i];
+//		float& rfFadeVel = particle_set.pafFadeVel[i];
 //		U32 color = 0x00FFFFFF | (int)( SmoothCD( fFraction, 0.0f, rfFadeVel, fTotalAnimationTime, dt ) );
 //		color = 0xFFFFFFFF;
 
@@ -723,18 +718,18 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 }
 
 
-void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
+void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity& entity )
 {
 	PROFILE_FUNCTION();
 
 	CustomMesh& mesh = m_ParticleSetMesh;
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& particle_set = GetExtraData( entity.iExtraDataIndex );
 
 ///	float fRadius, fBaseRadius = m_fParticleRadius;
 	float fFraction, fTotalAnimationTime = m_fDuration;
 	float fExpansionFactor = m_fExpansionFactor;
-	int i, num_particles = rParticleSet.iNumParticles;
+	int i, num_particles = particle_set.iNumParticles;
 //	short sPatternOffset;
 
 	// vertex color - alpha is set later for each particle to make fading effects
@@ -755,7 +750,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 
 	float particle_set_anim_time;
 	if( m_bMinimumParticleUpdates )
-		particle_set_anim_time = CurrentTime(pCopyEnt);
+		particle_set_anim_time = CurrentTime(entity);
 	else
 		particle_set_anim_time = 0;
 
@@ -790,7 +785,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 	for(i=0; i<num_particles; i++)
 	{
 		// change anim duration for each particle
-		fTotalAnimationTime = rParticleSet.pafAnimDuration[i];
+		fTotalAnimationTime = particle_set.pafAnimDuration[i];
 
 		vert_offset = i * 4 * vert_size;
 		uchar *pVert0 = pParticleVertex + i * 4 * vert_size;
@@ -799,7 +794,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 		uchar *pVert3 = pVert2 + vert_size;
 
 		// set alpha value - smoke particles fade away as time passes
-		float fCurrentTime = particle_set_anim_time + rParticleSet.pafAnimationTime[i];
+		float fCurrentTime = particle_set_anim_time + particle_set.pafAnimationTime[i];
 
 		if( fCurrentTime < 0 || fTotalAnimationTime <= fCurrentTime )
 		{
@@ -810,7 +805,7 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 //		factor = (1.0f + fFraction * ( fExpansionFactor - 1.0f ));
 		factor = 1.0f;
 		float r = m_fParticleRadius * factor;
-		const Vector3 vBasePos = rParticleSet.pavPosition[i];
+		const Vector3 vBasePos = particle_set.pavPosition[i];
 		billboard_pose.vPosition = vBasePos;
 		avWorldPos[0] = billboard_pose * Vector3( r, r, 0);
 		avWorldPos[1] = billboard_pose * Vector3( r,-r, 0);
@@ -873,7 +868,7 @@ void CBE_ParticleSet::UpdateMesh( CCopyEntity* pCopyEnt )
 	bool lockless_mesh = true;
 	if( lockless_mesh )
 	{
-		UpdateVertices( pCopyEnt );
+		UpdateVertices( *pCopyEnt );
 	}
 /*	else
 	{
@@ -892,14 +887,16 @@ void CBE_ParticleSet::UpdateMesh( CCopyEntity* pCopyEnt )
 /// draw particles through billboard array mesh or rect array
 void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 {
+	CCopyEntity& entity = *pCopyEnt;
+
 	PROFILE_FUNCTION();
 
 	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
 //		UpdateVertices( pCopyEnt );
-		UpdateVerticesFFP( pCopyEnt );
+		UpdateVerticesFFP( entity );
 	else
-		UpdateVerticesFFP( pCopyEnt );
+		UpdateVerticesFFP( entity );
 
 /*	if( m_Type != TYPE_BILLBOARDARRAYMESH )
 	{
@@ -908,8 +905,8 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 		UpdateVertexBuffer( pCopyEnt );
 	}*/
 
-//	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
-//	const int num_particles = rParticleSet.iNumParticles;
+//	ParticleSetExtraData& particle_set = GetExtraData( pCopyEnt->iExtraDataIndex );
+//	const int num_particles = particle_set.iNumParticles;
 
 //	ProfileBegin( "DrawParticles(): pEffect->SetMatrix(), etc." );
 
@@ -933,22 +930,23 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	// draw particles
 	if( pShaderManager )
 	{
+		auto& shader_mgr = *pShaderManager;
 		// render particle via programmable shader
 		ShaderTechniqueHandle tech;
 		tech.SetTechniqueName( "Default" );
-		pShaderManager->SetTechnique( tech );
-		pShaderManager->SetWorldTransform( Matrix44Identity() );
-		m_ParticleSetMesh.Render( *pShaderManager );
+		shader_mgr.SetTechnique( tech );
+		shader_mgr.SetWorldTransform( Matrix44Identity() );
+		m_ParticleSetMesh.Render( shader_mgr );
 
-		if( m_ParticleSetMesh.GetMaterial(0).TextureDesc[0].ResourcePath.find("<Texture>") == 0 )
-		{
-			static int s_saved = 0;
-			if( s_saved == 0 )
-			{
-				m_ParticleSetMesh.Material(0).Texture[0].SaveTextureToImageFile( "particle_texture.png" );
-				s_saved = 1;
-			}
-		}
+//		if( m_ParticleSetMesh.GetMaterial(0).TextureDesc[0].ResourcePath.find("<Texture>") == 0 )
+//		{
+//			static int s_saved = 0;
+//			if( s_saved == 0 )
+//			{
+//				m_ParticleSetMesh.Material(0).Texture[0].SaveTextureToImageFile( "particle_texture.png" );
+//				s_saved = 1;
+//			}
+//		}
 	}
 	else
 	{

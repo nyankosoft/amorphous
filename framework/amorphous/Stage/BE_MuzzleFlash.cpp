@@ -47,7 +47,7 @@ void CBE_MuzzleFlash::InitCopyEntity( CCopyEntity* pCopyEnt )
 {
 	InitParticleSetEntity( *pCopyEnt );
 
-	SBE_ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
+	ParticleSetExtraData& rParticleSet = GetExtraData( pCopyEnt->iExtraDataIndex );
 
 	// set the number of particles for this particle set
 	rParticleSet.iNumParticles = m_MaxNumParticlesPerSet;

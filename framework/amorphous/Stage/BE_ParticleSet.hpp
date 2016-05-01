@@ -65,8 +65,10 @@ public:
 };
 
 
-struct SBE_ParticleSetExtraData
+class ParticleSetExtraData
 {
+public:
+
 	int iNumParticles;
 	
 	/// avPosition[i] - position of i-th particle (in world coord)
@@ -92,22 +94,23 @@ struct SBE_ParticleSetExtraData
 
 	AABB3 aabb;
 
+public:
 
-	SBE_ParticleSetExtraData()
+	ParticleSetExtraData()
 		:
 	iNumParticles(0),
-	pavPosition(NULL),
-	pavVelocity(NULL),
-	pavOrigDirection(NULL),
-	pafAnimationTime(NULL),
-	pafAnimDuration(NULL),
-	pasPattern(NULL),
-	pafFadeVel(NULL)
+	pavPosition(nullptr),
+	pavVelocity(nullptr),
+	pavOrigDirection(nullptr),
+	pafAnimationTime(nullptr),
+	pafAnimDuration(nullptr),
+	pasPattern(nullptr),
+	pafFadeVel(nullptr)
 	{
 		aabb.Nullify();
 	}
 
-	~SBE_ParticleSetExtraData()
+	~ParticleSetExtraData()
 	{
 		Release();
 	}
@@ -194,8 +197,8 @@ protected:
 
 	int m_MaxNumParticlesPerSet;
 
-//	SBE_ParticleSetExtraData m_paParticleSet[NUM_MAX_PARTICLESETS];
-	SBE_ParticleSetExtraData *m_paParticleSet;
+//	ParticleSetExtraData m_paParticleSet[NUM_MAX_PARTICLESETS];
+	ParticleSetExtraData *m_paParticleSet;
 
 	int m_VertexBufferType;
 
@@ -255,19 +258,19 @@ protected:
 
 	void InitParticleSetEntity( CCopyEntity& entity );
 
-	inline void UpdateParticles( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
+	inline void UpdateParticles( ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
 
-	inline void UpdateParticlePositions( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
+	inline void UpdateParticlePositions( ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb );
 
-	void UpdateVerticesFFP( CCopyEntity* pCopyEnt );
+	void UpdateVerticesFFP( CCopyEntity& entity );
 
-	void UpdateVertices( CCopyEntity* pCopyEnt );
+	void UpdateVertices( CCopyEntity& entity );
 
 	void UpdateMesh( CCopyEntity* pCopyEnt );
 
 	inline int GetNewExtraDataID();
 
-	inline float& CurrentTime(CCopyEntity *pCopyEnt) { return pCopyEnt->f2; }
+	inline float& CurrentTime(CCopyEntity& entity) { return entity.f2; }
 
 	void ParticleThreadMain();
 
@@ -313,7 +316,7 @@ public:
 
 	void DrawParticles(CCopyEntity* pCopyEnt);
 
-	inline SBE_ParticleSetExtraData& GetExtraData(int iExtraDataIndex);
+	inline ParticleSetExtraData& GetExtraData(int iExtraDataIndex);
 
 	// friend class
 	friend class CParticleThreadStarter; ///< calls ParticleThreadMain() to start particle thread
@@ -325,7 +328,7 @@ public:
  *  - rParticleSet.aabb is also updated
  *
  */
-inline void CBE_ParticleSet::UpdateParticles( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb )
+inline void CBE_ParticleSet::UpdateParticles( ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb )
 {
 //	Vector3 vGravityAccel = m_pStage->GetGravityAccel();
 //	float fGravityInfluenceFactor = m_fGravityInfluenceFactor;
@@ -363,7 +366,7 @@ inline void CBE_ParticleSet::UpdateParticles( SBE_ParticleSetExtraData& rParticl
  *  - rParticleSet.aabb is also updated
  *
  */
-inline void CBE_ParticleSet::UpdateParticlePositions( SBE_ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb )
+inline void CBE_ParticleSet::UpdateParticlePositions( ParticleSetExtraData& rParticleSet, float dt, AABB3& aabb )
 {
 //	AABB3 aabb;
 	aabb.Nullify();
@@ -400,7 +403,7 @@ inline int CBE_ParticleSet::GetNewExtraDataID()
 }
 
 
-inline SBE_ParticleSetExtraData& CBE_ParticleSet::GetExtraData(int iExtraDataIndex)
+inline ParticleSetExtraData& CBE_ParticleSet::GetExtraData(int iExtraDataIndex)
 {
 	return m_paParticleSet[iExtraDataIndex];
 }
