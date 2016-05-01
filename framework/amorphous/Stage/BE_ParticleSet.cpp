@@ -7,10 +7,14 @@
 
 #include "3DMath/MathMisc.hpp"
 #include "3DMath/MatrixConversions.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+//#include "Graphics/Shader/2DPrimitiveCommonShaders.hpp"
+#include "Graphics/Shader/CommonShaders.hpp"
+//#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/MeshGenerators/MeshGenerators.hpp" // box mesh for debugging
+#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
+#include "Graphics/TextureGenerators/ParticleTextureGenerator.hpp"
 #include "Support/Profile.hpp"
 #include "Support/MTRand.hpp"
 #include "Support/Serialization/Serialization_Color.hpp"
@@ -68,6 +72,8 @@ void CBE_ParticleSet::ParticleThreadMain()
 
 
 CBE_ParticleSet::CBE_ParticleSet()
+:
+m_fParticleImageStandardDeviation(0.4)
 {
 	m_iParticleSetCurrentIndex = 0;
 
@@ -94,6 +100,8 @@ CBE_ParticleSet::CBE_ParticleSet()
 	m_VertexColor.SetRGB( 1.0f, 1.0f, 1.0f );
 
 	m_bMinimumParticleUpdates = false;
+
+	m_ParticleColor = SFloatRGBAColor::White();
 
 	// particle threads (experimental)
 
@@ -157,7 +165,22 @@ void CBE_ParticleSet::InitParticleSetMesh()
 
 	ar.GetMaterial().resize( 1 );
 	ar.GetMaterial()[0].vecTexture.resize( 1 );
-	ar.GetMaterial()[0].vecTexture[0].ResourcePath = m_BillboardTextureFilepath;
+
+	if( 0 < m_BillboardTextureFilepath.length() )
+		ar.GetMaterial()[0].vecTexture[0].ResourcePath = m_BillboardTextureFilepath;
+	else
+	{
+		ar.GetMaterial()[0].vecTexture[0].Width  = 64;
+		ar.GetMaterial()[0].vecTexture[0].Height = 64;
+		ar.GetMaterial()[0].vecTexture[0].Format = TextureFormat::A8R8G8B8;
+		shared_ptr<ParticleTextureGenerator> pGenerator;
+		pGenerator.reset( new ParticleTextureGenerator );
+		pGenerator->m_Color = m_ParticleColor;
+		pGenerator->m_fStandardDeviation = m_fParticleImageStandardDeviation;
+//		shared_ptr<SingleColorTextureGenerator> pGenerator( new SingleColorTextureGenerator( SFloatRGBAColor::Green() ) );
+		ar.GetMaterial()[0].vecTexture[0].pLoader = pGenerator;
+	}
+
 
 	m_ParticleSetMesh.LoadFromArchive( ar );
 }
@@ -238,6 +261,9 @@ void CBE_ParticleSet::Init()
 	{
 		shared_loaded = m_MeshProperty.m_ShaderHandle.Load( shader_path );
 	}*/
+
+//	m_MeshProperty.m_ShaderHandle = Get2DPrimitiveCommonShader( C2DPrimitiveCommonShaders::ST_DIFFUSE_COLOR_AND_TEXTURE );
+	m_MeshProperty.m_ShaderHandle = GetNoLightingShader();
 
 	MeshResourceDesc mesh_desc;
 	shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
@@ -631,11 +657,11 @@ void CBE_ParticleSet::UpdateVertices( CCopyEntity* pCopyEnt )
 		memcpy( pVert2 + pos_offset, &vBasePos, sizeof(Vector3) );
 		memcpy( pVert3 + pos_offset, &vBasePos, sizeof(Vector3) );
 
-		if( pBoxMesh )
-		{
-			FixedFunctionPipelineManager().SetWorldTransform( Matrix34( vBasePos, Matrix33Identity() ) );
-			pBoxMesh->Render();
-		}
+//		if( pBoxMesh )
+//		{
+//			FixedFunctionPipelineManager().SetWorldTransform( Matrix34( vBasePos, Matrix33Identity() ) );
+//			pBoxMesh->Render();
+//		}
 
 		fFraction = fCurrentTime / fTotalAnimationTime;
 
@@ -809,11 +835,24 @@ void CBE_ParticleSet::UpdateVerticesFFP( CCopyEntity* pCopyEnt )
 		float fAlpha = 1.0f - fFraction;
 //		U32 color = vert_color | ( ((int)(fAlpha * 255.0f)) << 24 );
 
-		rgba[0] = vert_color.red   * fAlpha;
-		rgba[1] = vert_color.green * fAlpha;
-		rgba[2] = vert_color.blue  * fAlpha;
-		rgba[3] = fAlpha;
-		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgba );
+		// 2015-11-29 Commented out; Direct3D and OpenGL use different diffuse color formats (U32 and float[4] respectively),
+		// so performance concerns aside we should let the CustomMesh API handle the differences.
+//		rgba[0] = vert_color.red   * fAlpha;
+//		rgba[1] = vert_color.green * fAlpha;
+//		rgba[2] = vert_color.blue  * fAlpha;
+//		rgba[3] = fAlpha;
+//		(*SetRectDiffuseColor)( pVert0 + color_offset, vert_size, rgba );
+
+		SFloatRGBAColor vertex_color;
+		vertex_color.red   = vert_color.red   * fAlpha;
+		vertex_color.green = vert_color.green * fAlpha;
+		vertex_color.blue  = vert_color.blue  * fAlpha;
+		vertex_color.alpha = 0;
+		SFloatRGBAColor( rgba[0], rgba[1], rgba[2], rgba[3] );
+		for( int j=0; j<4; j++ )
+		{
+			mesh.SetDiffuseColor( i*4+j, vertex_color );
+		}
 	}
 
 /*	if( m_bWorldOffset )
@@ -857,7 +896,8 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 
 	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
 	if( pShaderManager )
-		UpdateVertices( pCopyEnt );
+//		UpdateVertices( pCopyEnt );
+		UpdateVerticesFFP( pCopyEnt );
 	else
 		UpdateVerticesFFP( pCopyEnt );
 
@@ -876,6 +916,8 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 	GraphicsDevice().Disable( RenderStateType::WRITING_INTO_DEPTH_BUFFER );
 	GraphicsDevice().Disable( RenderStateType::ALPHA_TEST );
 
+	GraphicsDevice().Disable( RenderStateType::LIGHTING );
+
 	Matrix34 billboard_pose( Matrix34Identity() );
 	m_pStage->GetBillboardRotationMatrix( billboard_pose.matOrient );
 	const Matrix44 billboard_matrix = ToMatrix44( billboard_pose );
@@ -884,24 +926,35 @@ void CBE_ParticleSet::DrawParticles( CCopyEntity* pCopyEnt )
 
 //	ProfileEnd( "DrawParticles(): pEffect->SetMatrix(), etc." );
 
+	GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
+	GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
+	GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
+
 	// draw particles
 	if( pShaderManager )
 	{
 		// render particle via programmable shader
 		ShaderTechniqueHandle tech;
-		tech.SetTechniqueName( "Particle" );
+		tech.SetTechniqueName( "Default" );
 		pShaderManager->SetTechnique( tech );
 		pShaderManager->SetWorldTransform( Matrix44Identity() );
 		m_ParticleSetMesh.Render( *pShaderManager );
+
+		if( m_ParticleSetMesh.GetMaterial(0).TextureDesc[0].ResourcePath.find("<Texture>") == 0 )
+		{
+			static int s_saved = 0;
+			if( s_saved == 0 )
+			{
+				m_ParticleSetMesh.Material(0).Texture[0].SaveTextureToImageFile( "particle_texture.png" );
+				s_saved = 1;
+			}
+		}
 	}
 	else
 	{
 		// render particle via fixed function pipeline
-		GraphicsDevice().Enable( RenderStateType::ALPHA_BLEND );
-		GraphicsDevice().SetSourceBlendMode( AlphaBlend::One );
-		GraphicsDevice().SetDestBlendMode( AlphaBlend::InvSrcAlpha );
-		FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
-		m_ParticleSetMesh.Render();
+//		FixedFunctionPipelineManager().SetWorldTransform( Matrix44Identity() );
+//		m_ParticleSetMesh.Render();
 	}
 
 /*	if( m_Type == TYPE_BILLBOARDARRAYMESH )
@@ -935,6 +988,10 @@ bool CBE_ParticleSet::LoadSpecificPropertiesFromFile( CTextFileScanner& scanner 
 //		Limit( m_iNumParticles, 1, m_MaxNumParticlesPerSet );
 //		return true;
 //	}
+
+	float& rho = m_fParticleImageStandardDeviation;
+	SFloatRGBAColor& pc = m_ParticleColor;
+	if( scanner.TryScanLine( "PARTICLE_TEXTURE", pc.red, pc.green, pc.blue, rho ) ) return true;
 
 	SFloatRGBColor& color = m_VertexColor;
 	if( scanner.TryScanLine( "VERT_COLOR",	color.red, color.green, color.blue ) ) return true;
@@ -986,6 +1043,8 @@ void CBE_ParticleSet::Serialize( serialization::IArchive& ar, const unsigned int
     ar & m_MaxNumParticlesPerSet;
 	ar & m_VertexBufferType;
 	ar & m_BillboardTextureFilepath;
+	ar & m_ParticleColor;
+	ar & m_fParticleImageStandardDeviation;
 }
 
 

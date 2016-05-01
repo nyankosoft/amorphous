@@ -238,6 +238,11 @@ protected:
 
 	std::string m_BillboardTextureFilepath;
 
+	// Used to create a particle texture with ParticleTextureGenerator
+	SFloatRGBAColor m_ParticleColor;
+
+	float m_fParticleImageStandardDeviation;
+
 	MeshHandle m_ParticleDebugBox;
 
 protected:
