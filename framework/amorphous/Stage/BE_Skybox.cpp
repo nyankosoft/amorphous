@@ -6,10 +6,14 @@
 #include "Stage.hpp"
 #include "Graphics/MeshGenerators/MeshGenerators.hpp"
 #include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "Graphics/Shader/MiscShaderGenerator.hpp"
+#include "Graphics/Shader/GenericShaderGenerator.hpp"
+//#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
 #include "Graphics/Mesh/BasicMesh.hpp"
 #include "Graphics/BuiltinSkyTextures.hpp"
+#include "Graphics/SkyboxMisc.hpp"
 #include "Graphics/TextureGenerators/BuiltinImageTextureLoader.hpp"
+#include "Graphics/TextureGenerators/GradationTextureGenerators.hpp"
 #include "Support/Log/DefaultLog.hpp"
 #include "Support/Macro.h"
 
@@ -34,9 +38,9 @@ CBE_Skybox::CBE_Skybox()
 
 	m_BoundingVolumeType = BVTYPE_AABB;
 
-	m_MeshProperty.m_ShaderDesc.ResourcePath = "Shader/HighAltCamSkybox.fx";
-	m_MeshProperty.m_ShaderTechnique.resize(1,1);
-	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SkySphereFG" );
+//	m_MeshProperty.m_ShaderDesc.ResourcePath = "Shader/HighAltCamSkybox.fx";
+//	m_MeshProperty.m_ShaderTechnique.resize(1,1);
+//	m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SkySphereFG" );
 }
 
 
@@ -52,11 +56,28 @@ void CBE_Skybox::Init()
 	{
 		// The default mesh for skybox, which is currently "./Model/skybox.msh", was not found;
 		// create a skysphere mesh with sphere mesh generator.
-		SphereDesc sphere_desc;
-		sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
-		sphere_desc.axis = 1; // shift texture coords along y-axis
-		sphere_desc.poly_dir = MeshPolygonDirection::INWARD;
-		mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
+//		SphereDesc sphere_desc;
+//		sphere_desc.radii[0] = sphere_desc.radii[1] = sphere_desc.radii[2] = 5.0f;
+//		sphere_desc.axis = 1; // shift texture coords along y-axis
+//		sphere_desc.poly_dir = MeshPolygonDirection::INWARD;
+//		mesh_desc.pMeshGenerator.reset( new SphereMeshGenerator(sphere_desc) );
+	}
+
+	if( m_strName == "skybox" )
+	{
+		GenericShaderDesc desc;
+		desc.Lighting = false;
+		boost::shared_ptr<GenericShaderGenerator> p;
+		p.reset( new GenericShaderGenerator(desc) );
+		m_MeshProperty.m_ShaderDesc.pShaderGenerator = p;
+
+		m_MeshProperty.m_ShaderTechnique.resize(1,1);
+	}
+	else if( m_strName == "high_altitude_range_skybox" )
+	{
+		m_MeshProperty.m_ShaderDesc.ResourcePath = "Shader/HighAltCamSkybox.fx";
+		m_MeshProperty.m_ShaderTechnique.resize(1,1);
+		m_MeshProperty.m_ShaderTechnique(0,0).SetTechniqueName( "SkySphereFG" );
 	}
 
 	Init3DModel();
@@ -76,18 +97,22 @@ void CBE_Skybox::Act(CCopyEntity* pCopyEnt)
 
 void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 {
+	Camera* pCamera = m_pStage->GetCurrentCamera();
 	BasicMesh* pMeshObject = m_MeshProperty.m_MeshObjectHandle.GetMesh().get();
+
 	if( !pMeshObject )
 	{
-		ONCE( LOG_PRINT_WARNING( " An invlid mesh object: base entity '%s'", m_strName.c_str() ) );
+//		ONCE( LOG_PRINT_WARNING( " An invlid mesh object: base entity '%s'", m_strName.c_str() ) );
+		RenderSkybox( m_SkyboxTexture, pCamera ? pCamera->GetPose() : Matrix34Identity() );
 		return;
 	}
+
+	BasicMesh& mesh = *pMeshObject;
 
 	// set the world transform
 	Matrix44 world( Matrix44Scaling( 10.0f, 10.0f, 10.0f ) );
 
 	Vector3 vPos;
-	Camera* pCamera = m_pStage->GetCurrentCamera();
 	if( pCamera )
 		vPos = pCamera->GetPosition();
 	else
@@ -98,7 +123,7 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	world(2,3) = vPos.z;
 	world(3,3) = 1;
 
-	FixedFunctionPipelineManager().SetWorldTransform( world );
+//	FixedFunctionPipelineManager().SetWorldTransform( world );
 
 
 	pMeshObject->SetVertexDeclaration();
@@ -123,28 +148,33 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 	TextureHandle orig_tex;
 	if( 0 < num_materials )
 	{
-		if( pMeshObject->Material(0).Texture.empty() )
-			pMeshObject->Material(0).Texture.resize( 1 );
+		if( mesh.Material(0).Texture.empty() )
+			mesh.Material(0).Texture.resize( 1 );
 
-		orig_tex = pMeshObject->Material(0).Texture[0];
-		pMeshObject->Material(0).Texture[0] = m_SkyboxTexture;
+		orig_tex = mesh.Material(0).Texture[0];
+		mesh.Material(0).Texture[0] = m_SkyboxTexture;
 	}
 
 	ShaderManager *pShaderManager = m_MeshProperty.m_ShaderHandle.GetShaderManager();
-	if( pShaderManager )
-//	 && pShaderManager->IsValid() ) // check if pEffect is present?
+
+	if( m_strName == "skybox" && pCamera )
+	{
+//		//RenderAsSkybox( m_MeshProperty.m_MeshObjectHandle, vPos );
+		mesh.Render();
+
+	}
+	else if( m_strName == "high_altitude_range_skybox" && pShaderManager )
 	{
 		if( shift_camera_height )
 		{
-			Camera *pCam = m_pStage->GetCurrentCamera();
 			float fCamHeight;
-			if( pCam )
-				fCamHeight = pCam->GetPosition().y;
+			if( pCamera )
+				fCamHeight = pCamera->GetPosition().y;
 			else
 				fCamHeight = 5.0f;
 
-			pShaderManager->GetEffect()->SetFloat( "g_CameraHeight", fCamHeight );
-//			pShaderManager->SetParam( "g_CameraHeight", fCamHeight );
+//			pShaderManager->GetEffect()->SetFloat( "g_CameraHeight", fCamHeight );
+			pShaderManager->SetParam( "g_CameraHeight", fCamHeight );
 
 //			pEffect->SetFloat( "g_TexVShiftFactor", 0.000005f );
 //			pShaderManager->SetParam( "g_TexVShiftFactor", 0.000005f );
@@ -160,19 +190,14 @@ void CBE_Skybox::Draw(CCopyEntity* pCopyEnt)
 		Result::Name res = pShaderManager->SetTechnique( m_MeshProperty.m_ShaderTechnique(0,0) );
 
 		// Meshes are divided into subsets by materials. Render each subset in a loop
-		pMeshObject->Render( *pShaderManager );
-	}
-	else
-	{
-//		RenderAsSkybox( m_MeshProperty.m_MeshObjectHandle, vPos );
-		pMeshObject->Render();
+		mesh.Render( *pShaderManager );
 	}
 
 	if( 0 < num_materials
-	 && 0 < pMeshObject->Material(0).Texture.size() )
+	 && 0 < mesh.Material(0).Texture.size() )
 	{
 		// restore the original texture
-		pMeshObject->Material(0).Texture[0] = orig_tex;
+		mesh.Material(0).Texture[0] = orig_tex;
 	}
 
 	GraphicsDevice().Enable( RenderStateType::DEPTH_TEST );
@@ -190,8 +215,14 @@ bool CBE_Skybox::LoadSkyboxTexture( const std::string& texture_filename )
 	TextureResourceDesc desc;
 	if( texture_filename.length() == 0 )
 	{
-		const CBuiltinImage& default_sky_image = GetDefaultBuiltinSkyTexture();
-		m_SkyboxTexture = CreateTextureFromBuiltinImage( default_sky_image );
+//		const CBuiltinImage& default_sky_image = GetDefaultBuiltinSkyTexture();
+//		m_SkyboxTexture = CreateTextureFromBuiltinImage( default_sky_image );
+
+		auto top_color    = SFloatRGBAColor(0.659f, 0.741f, 0.816f, 1.000f);
+		auto mid_color    = SFloatRGBAColor(0.827f, 0.859f, 0.871f, 1.000f);
+		auto bottom_color = SFloatRGBAColor(0.961f, 0.827f, 0.682f, 1.000f);
+		m_SkyboxTexture = CreateHorizontalGradationTexture( 512, 512, TextureFormat::A8R8G8B8, top_color, mid_color, bottom_color );
+
 		return m_SkyboxTexture.IsLoaded();
 	}
 //	else if( texture_filename.find( "Builtin::" ) == 0
@@ -204,30 +235,42 @@ bool CBE_Skybox::LoadSkyboxTexture( const std::string& texture_filename )
 	else
 		desc.ResourcePath = texture_filename;
 
+	// Keep the pixel at the center of the image so that it can easily retrieved as the fog color
+	BitmapImage img;
+	bool res = img.LoadFromFile(texture_filename);
+	if( res )
+	{
+		float r=0,g=0,b=0,a=0;
+		img.GetPixel( img.GetWidth()/2, img.GetHeight()/2, r, g, b, a );
+		m_SkyboxTextureCenterPixelColor.SetRGBA(r,g,b,a);
+	}
+
 	return m_SkyboxTexture.Load( desc );
 }
 
 
 bool CBE_Skybox::GetFogColor( SFloatRGBAColor& dest )
 {
-	if( !GetSkyboxTexture().GetEntry() )
-		return false;
+//	if( !GetSkyboxTexture().GetEntry() )
+//		return false;
+//
+//	boost::shared_ptr<TextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
+//	if( !pTexResource )
+//		return false;
+//
+//	if( !pTexResource->Lock() )
+//		return false;
+//
+//	boost::shared_ptr<LockedTexture> pLockedTex;
+//	pTexResource->GetLockedTexture( pLockedTex );
+//	if( pLockedTex )
+//	{
+//		pLockedTex->GetPixel( pLockedTex->GetWidth() / 2, pLockedTex->GetHeight() / 2, dest );
+//	}
+//
+//	pTexResource->Unlock();
 
-	boost::shared_ptr<TextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
-	if( !pTexResource )
-		return false;
-
-	if( !pTexResource->Lock() )
-		return false;
-
-	boost::shared_ptr<LockedTexture> pLockedTex;
-	pTexResource->GetLockedTexture( pLockedTex );
-	if( pLockedTex )
-	{
-		pLockedTex->GetPixel( pLockedTex->GetWidth() / 2, pLockedTex->GetHeight() / 2, dest );
-
-		pTexResource->Unlock();
-	}
+	dest = m_SkyboxTextureCenterPixelColor;
 
 	return true;
 }

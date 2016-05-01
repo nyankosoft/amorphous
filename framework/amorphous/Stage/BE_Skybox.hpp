@@ -18,8 +18,10 @@ private:
 	std::string m_SkyboxTextureFilepath;
 	TextureHandle m_SkyboxTexture;
 
+	SFloatRGBAColor m_SkyboxTextureCenterPixelColor;
+
 	// BaseEntity::m_MeshProperty is used for the mesh of the skybox
-	
+
 public:
 
 	CBE_Skybox();
@@ -46,6 +48,13 @@ public:
 	/// Right now, it simply returns the texel at the center of the skybox texture, the texel which mapped near the horizon
 	/// on the skybox mesh.
 	bool GetFogColor( SFloatRGBAColor& dest );
+
+	enum Type
+	{
+		BE_SKYBOX_NORMAL = 0,
+		BE_SKYBOX_HIGH_ALTITUDE,
+		NUM_SKYBOX_TYPES
+	};
 };
 } // namespace amorphous
 
