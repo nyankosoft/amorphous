@@ -176,10 +176,10 @@ void MeshSplitterDemo::RenderMeshes()
 	GraphicsDevice().SetRenderState( RenderStateType::WRITING_INTO_DEPTH_BUFFER, true );
 
 	ShaderManager *pShaderManager = m_Shader.GetShaderManager();
-//	if( !pShaderManager )
-//		return;
+	if( !pShaderManager )
+		return;
 
-	ShaderManager& shader_mgr = pShaderManager ? *pShaderManager : FixedFunctionPipelineManager();
+	auto& shader_mgr = *pShaderManager;
 
 	// render the scene
 
