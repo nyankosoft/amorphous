@@ -22,13 +22,13 @@ public:
 };*/
 
 
-class CSplitMeshNodeObjects
+class SplitMeshNodeObjects
 {
 public:
 	boost::shared_ptr<CustomMesh> pMesh;
 	Vector3 shift;
 
-	CSplitMeshNodeObjects()
+	SplitMeshNodeObjects()
 		:
 	shift(Vector3(0,0,0))
 	{}
@@ -37,11 +37,9 @@ public:
 
 class MeshSplitterDemo : public CGraphicsTestBase
 {
-	typedef binary_node<CSplitMeshNodeObjects> CMeshNode;
+	typedef binary_node<SplitMeshNodeObjects> SplitMeshNode;
 
-//	CSplitMeshNode m_RootMeshNode;
-//	binary_node<CustomMesh> m_RootMeshNode;
-	CMeshNode m_RootMeshNode;
+	SplitMeshNode m_RootMeshNode;
 
 	Matrix34 m_MeshPose;
 
@@ -57,15 +55,13 @@ private:
 
 	bool InitShader();
 
-	void RenderMeshes( binary_node<CSplitMeshNodeObjects>& node, ShaderManager& shader_mgr, const Matrix34& parent_transform );
+	void RenderMeshes( SplitMeshNode& node, ShaderManager& shader_mgr, const Matrix34& parent_transform );
 
 	void RenderMeshes();
 
 	void RenderSplitPlane();
 
-	void SaveTexturesAsImageFiles();
-
-	void SplitMeshesAtLeafNodes( CMeshNode& node, const Plane& split_plane );
+	void SplitMeshesAtLeafNodes( SplitMeshNode& node, const Plane& split_plane );
 
 	void SplitMesh();
 

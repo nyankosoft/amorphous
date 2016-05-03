@@ -61,7 +61,7 @@ bool MeshSplitterDemo::SetLight()
 	if( !pShaderMgr )
 		return false;
 
-	ShaderLightManager *pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager().get();
+	auto pShaderLightMgr = m_Shader.GetShaderManager()->GetShaderLightManager();
 	if( pShaderLightMgr )
 	{
 		pShaderLightMgr->ClearLights();
@@ -153,7 +153,7 @@ void MeshSplitterDemo::Update( float dt )
 }
 
 
-void MeshSplitterDemo::RenderMeshes( binary_node<CSplitMeshNodeObjects>& node, ShaderManager& shader_mgr, const Matrix34& parent_transform )
+void MeshSplitterDemo::RenderMeshes( binary_node<SplitMeshNodeObjects>& node, ShaderManager& shader_mgr, const Matrix34& parent_transform )
 {
 	Matrix34 pose = parent_transform * Matrix34( node.object.shift, Matrix33Identity() );
 	if( !node.child0 && !node.child1 )
@@ -225,7 +225,7 @@ void MeshSplitterDemo::Render()
 }
 
 
-void MeshSplitterDemo::SplitMeshesAtLeafNodes( CMeshNode& node, const Plane& split_plane )
+void MeshSplitterDemo::SplitMeshesAtLeafNodes( SplitMeshNode& node, const Plane& split_plane )
 {
 	if( node.child0 && node.child1 )
 	{
@@ -239,10 +239,10 @@ void MeshSplitterDemo::SplitMeshesAtLeafNodes( CMeshNode& node, const Plane& spl
 
 	MeshSplitResults results;
 	splitter.GetSplitResults( results );
-	node.child0.reset( new CMeshNode );
+	node.child0.reset( new SplitMeshNode );
 	node.child0->object.pMesh = results.m_pFrontMesh;
 	node.child0->object.shift =  split_plane.normal * 0.2f;
-	node.child1.reset( new CMeshNode );
+	node.child1.reset( new SplitMeshNode );
 	node.child1->object.pMesh = results.m_pBackMesh;
 	node.child1->object.shift = -split_plane.normal * 0.2f;
 
