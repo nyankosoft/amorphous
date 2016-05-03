@@ -10,57 +10,14 @@
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
-/*
-enum ePPEffectFile
-{
-	PP_COLOR_GBLUR_H,
-	PP_COLOR_GBLUR_V,
-    PP_COLOR_INVERSE,
-	PP_COLOR_MONOCHROME,
-	PP_COLOR_DOWNFILTER4,
-	PP_COLOR_UPFILTER4,
-	PP_COLOR_BLOOM_H,
-	PP_COLOR_BLOOM_V,
-	PP_COLOR_BRIGHTPASS,
-	PP_COLOR_COMBINE4,
-	NUM_PP_EFFECT_FILES
-};
-
-enum ePPEffect
-{
-	PP_GBLUR,
-	PP_GBLUR2,
-	PP_COARSE,
-	PP_NEGATIVE,
-	PP_BLOOM,
-	NUM_PP_EFFECTS
-};
-
-enum eSizeFilterType
-{
-	SF_DOWNFILTER_FOR_BLUR,
-	SF_UPFILTER_FOR_BLUR,
-	SF_DOWNFILTER_FOR_BLOOM,
-	SF_UPFILTER_FOR_BLOOM,
-	SF_BRIGHTPASS,
-	NUM_SIZE_FILTERS,
-};
-*/
-
 
 class PostProcessEffectDemo : public CGraphicsTestBase
 {
 	boost::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
 
-//	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
-
-//	int m_aPostProcessEffect[NUM_PP_EFFECTS];
-
 	unsigned int m_BlurStrength; // blur strength x 10
 
 	static const float m_fBlurFactor;
-
-//	int m_aFilterIndex[NUM_SIZE_FILTERS];
 
 	float m_fLuminanceAdaptationRate;
 
