@@ -76,8 +76,50 @@ void ParticleTextureGeneratorDemo::CreateParticleTextures()
 			tex_desc.pLoader = pGenerator;
 			bool loaded = m_ParticleTextures.back().Load( tex_desc );
 
-			m_ParticleTextures.back().SaveTextureToImageFile(fmt_string(".debug/particle%02d_%02d.png",i,j));
+			m_ParticleTextures.back().SaveTextureToImageFile(fmt_string(".debug/ParticleTextureGeneratorDemo/particle%02d_%02d.png",i,j));
 		}
+	}
+}
+
+
+void ParticleTextureGeneratorDemo::CreateSmokeParticleTextures()
+{
+	TextureResourceDesc tex_desc;
+	tex_desc.Width  = 256;
+	tex_desc.Height = 256;
+	tex_desc.Format = TextureFormat::A8R8G8B8;
+
+	SFloatRGBAColor colors[] = {
+		SFloatRGBAColor( 0.0f, 0.0f, 0.0f, 0.0f ),
+		SFloatRGBAColor( 1.0f, 0.9f, 0.5f, 0.0f ),
+		SFloatRGBAColor( 0.5f, 1.0f, 0.9f, 0.0f ),
+		SFloatRGBAColor( 0.6f, 0.8f, 1.0f, 0.0f ),
+		SFloatRGBAColor( 1.0f, 0.3f, 0.3f, 0.0f ),
+		SFloatRGBAColor( 0.7f, 0.3f, 1.0f, 0.0f )
+	};
+
+	m_NumColorVariations = numof(colors);
+
+//	float rhos[] = {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 1.0f, 2.0f, 3.0f};
+	m_SmokeParticleTextures.reserve(numof(colors));// * numof(rhos));
+
+	for( int i=0; i<numof(colors); i++ )
+	{
+		boost::shared_ptr<SmokeParticleTextureGenerator> pGenerator;
+//		for( int j=0; j<numof(rhos); j++ )
+//		{
+			pGenerator.reset( new SmokeParticleTextureGenerator );
+//			pGenerator->m_fStandardDeviation = rhos[j];
+
+			pGenerator->m_Color = colors[i];
+
+			m_SmokeParticleTextures.push_back( TextureHandle() );
+
+			tex_desc.pLoader = pGenerator;
+			bool loaded = m_SmokeParticleTextures.back().Load( tex_desc );
+
+			m_SmokeParticleTextures.back().SaveTextureToImageFile(fmt_string(".debug/ParticleTextureGeneratorDemo/smoke_particle%02d_%02d.png",i,0));//j));
+//		}
 	}
 }
 
@@ -85,6 +127,8 @@ void ParticleTextureGeneratorDemo::CreateParticleTextures()
 int ParticleTextureGeneratorDemo::Init()
 {
 	CreateParticleTextures();
+
+	CreateSmokeParticleTextures();
 
 	string bg_textures[] = 
 	{

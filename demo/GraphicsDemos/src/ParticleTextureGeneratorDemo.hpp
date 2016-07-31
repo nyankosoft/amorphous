@@ -18,6 +18,8 @@ class ParticleTextureGeneratorDemo : public CGraphicsTestBase
 
 	std::vector<TextureHandle> m_ParticleTextures;
 
+	std::vector<TextureHandle> m_SmokeParticleTextures;
+
 	TextureHandle m_BackgroundTexture;
 
 //	TextureHandle m_PerlinNoiseNormalMap;
@@ -35,6 +37,8 @@ private:
 	bool InitShader();
 
 	void CreateParticleTextures();
+
+	void CreateSmokeParticleTextures();
 
 	void SaveTexturesAsImageFiles();
 
