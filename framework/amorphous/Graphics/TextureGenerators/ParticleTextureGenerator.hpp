@@ -43,6 +43,20 @@ public:
 };
 
 
+class SmokeParticleTextureGenerator : public TextureFillingAlgorithm
+{
+public:
+
+	SFloatRGBAColor m_Color;
+
+	void CreateTile( LockedTexture& texture, int sx, int sy, int tile_width, int tile_height, int seed );
+
+public:
+
+	void FillTexture( LockedTexture& texture );
+};
+
+
 } // amorphous
 
 
