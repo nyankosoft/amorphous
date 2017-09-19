@@ -7,6 +7,7 @@
 
 // use the original Vector3
 #include "Vector3_Gen.hpp"
+#include <cmath>
 
 
 namespace amorphous
@@ -31,7 +32,7 @@ inline Scalar Vec3GetAngleBetween( const Vector3& a, const Vector3& b )
 	if( acos_arg < -1.0f )     acos_arg = -1.0f;
 	else if( 1.0f < acos_arg ) acos_arg =  1.0f;
 
-	return acos( acos_arg );
+	return std::acos( acos_arg );
 }
 
 } // namespace amorphous
