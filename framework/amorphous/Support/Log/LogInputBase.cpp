@@ -6,10 +6,10 @@
 #include "LogInputBase.hpp"
 #include "LogOutputBase.hpp"
 
-#include "../../Platform.hpp"
-//#include "../../Support/Timer.hpp"
-#include "../../Support/SafeDelete.hpp"
-#include "../../Support/time_string.hpp"
+#include "amorphous/Platform.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/time_string.hpp"
 
 
 namespace amorphous
@@ -172,9 +172,7 @@ bool LogInputBase::RemoveLogOutputDevice( LogOutputBase *pLogOutput )
 
 unsigned long LogInputBase::GetCurrentTimeMS() const
 {
-//	return (unsigned long)(m_pTimer->GetTime() * 1000.0f);
-	boost::timer::cpu_times elapsed = m_Timer.elapsed();
-	return (unsigned long)(elapsed.system / 1000);
+	return m_Timer.GetElapsedTimeMilliseconds();
 }
 
 

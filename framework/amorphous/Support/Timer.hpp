@@ -1,16 +1,47 @@
-#ifndef __Timer_HPP__
-#define __Timer_HPP__
+#ifndef __amorphous_Timer_HPP__
+#define __amorphous_Timer_HPP__
 
 
-#ifdef _MSC_VER
-#include "Timer_Win32.hpp"
-#else
-#include "Timer_posix.hpp"
-#endif
+#include <chrono>
 
 
 namespace amorphous
 {
+
+/**
+\brief A timer that keeps how much time has passed since the creation of the timer object.
+
+Timer automatically starts when the object is instantiated.
+*/
+class Timer
+{
+	std::chrono::high_resolution_clock m_Clock;
+
+	std::chrono::time_point<std::chrono::steady_clock> m_StartTime;
+
+public:
+
+	Timer() : m_StartTime(m_Clock.now())
+	{}
+
+	/**
+	\brief Resets and starts the timer.
+	*/
+	void Reset()
+	{
+		m_StartTime = m_Clock.now();
+	}
+
+	/**
+	\brief Returns the elapsed time in milliseconds.
+	*/
+	inline unsigned long GetElapsedTimeMilliseconds() const
+	{
+		auto now = m_Clock.now();
+		std::chrono::duration<double, std::milli> elapsed = now - m_StartTime;
+		return (unsigned long)elapsed.count();
+	}
+};
 
 
 inline Timer& GlobalTimer()
@@ -20,12 +51,12 @@ inline Timer& GlobalTimer()
 	// - Make sure GlobalTimer() is not called by more than one thread at the same time.
 	static Timer timer;
 
-	static int initialized = 0;
-	if( initialized == 0 )
-	{
-		timer.Start();
-		initialized = 1;
-	}
+//	static int initialized = 0;
+//	if( initialized == 0 )
+//	{
+//		timer.Start();
+//		initialized = 1;
+//	}
 
 	return timer;
 }
@@ -34,4 +65,4 @@ inline Timer& GlobalTimer()
 
 
 
-#endif /* __Timer_HPP__ */
+#endif /* __amorphous_Timer_HPP__ */

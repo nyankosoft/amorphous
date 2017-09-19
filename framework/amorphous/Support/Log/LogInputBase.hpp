@@ -4,10 +4,10 @@
 
 #include <vector>
 #include <string>
-#include <boost/timer/timer.hpp>
 
 #include "LogOutputBase.hpp"
-#include "../TimeFormats.hpp"
+#include "amorphous/Support/TimeFormats.hpp"
+#include "amorphous/Support/Timer.hpp"
 
 
 namespace amorphous
@@ -24,7 +24,7 @@ class LogInputBase
 
 	TimeFormat::Format m_TimeStampFormat;
 
-	boost::timer::cpu_timer m_Timer;
+	Timer m_Timer;
 
 	/// holds pointers to output device (borrowed reference)
 	/// NOTE: user is responsible for releasing these instances
