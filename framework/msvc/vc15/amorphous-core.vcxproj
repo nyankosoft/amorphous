@@ -18,6 +18,405 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\amorphous\3DMath\3DGameMath.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\3DStructs.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\AABB2.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\AABB3.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\AABTree.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForBox.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Capsule.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexPolygon.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexPolygonUtilities.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\ConvexVolume.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\CriticalDamping.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Cylinder.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Gaussian.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\GridPolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\IndexedTriangle.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\MathMisc.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix22.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix23.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix33.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix34.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Matrix44.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\MatrixConversions.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\misc.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\OBB3.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\OBBTree.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Perlin.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Plane.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\PolygonMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\PolygonModelStyle.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\PolygonModelUtilities.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\precision.h" />
+    <ClInclude Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Quaternion.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\range.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\ray.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Rectangular.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Sphere.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\stream.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\TCBSpline.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Transform.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Triangle.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Vector2.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Vector2_Gen.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Vector3.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Vector3_Gen.hpp" />
+    <ClInclude Include="..\..\amorphous\3DMath\Vector4.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DGraph.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitiveRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTexturedRect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\32BitColor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\3DtoScreenSpaceConversions.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\AlphaBlend.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\AsyncResourceLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\BuiltinSkyTextures.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\CorrelationGraph.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\D3DHeaders.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\FloatRGBAColor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\FloatRGBColor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\FogParams.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\ASCIIFont.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\BuiltinFonts.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\FontBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\FontFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\GrayscalePixelDataLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\SimpleBitmapFontData.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\TextureFont.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Font\UTFFont.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\General2DVertex.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\General3DVertex.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsComponentCollector.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsDevice.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsEffectManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsElementManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsElements.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceCacheManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceDescs.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceEntries.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceLoaders.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResourceManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\GraphicsResources.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Graphics_StringAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\HemisphericLight.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\IndexedPolygon.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\LensFlare.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\LinePrimitives.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\GridMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\HelixMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\CompositeMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshBone.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TangentSpace.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshObjectHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\MeshUtilities.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\BasicMaterialParams.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\BasicMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\CustomMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\CustomMeshRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\ProgressiveMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\RectSetMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Mesh\SkeletalMesh.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLHeaders.h" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureResourceVisitor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\platform.h" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\PrimitiveRenderer_GL.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Shader\GLSLShaderLightManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Point.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectFilter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PostProcessEffectManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PrimitiveRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PseudoNoiseEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\RectTree.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\RenderTaskProcessor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\SamplingParameter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ShaderHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ShadowMapManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ShadowMaps.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ShapeContainers.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ShapeDetector.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\ShapesExtractor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\SimpleMotionBlur.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\SkyboxMisc.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\SurfaceFormat.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureCoord.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureRenderTarget.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureResourceVisitor.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureStage.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureUtilities.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\VarianceShadowMapManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\VertexFormat.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\DefaultLog.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\DefaultLogAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\Log.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\LogInputBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutput.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\LogOutputBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\ScopeLog.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Log\StateLog.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Archive.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\ArchiveObjectFactory.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryArchive_Output.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryDatabase.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\CompressedArchive_Input.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\CompressedArchive_Output.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\PADLinkListSerializer.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\SerializationEx.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_32BitColor.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_3DCommon.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_3DMath.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_array2d.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_BoostSmartPtr.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Color.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_FixedVector.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Light.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_linear_interpolation.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8.h" />
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\checked.h" />
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\core.h" />
+    <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\unchecked.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\crc32.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\deflate.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inffast.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inffixed.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inflate.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\inftrees.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\trees.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zconf.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zconf.in.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zlib.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\ZLibAux.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zpipe_stream.h" />
+    <ClInclude Include="..\..\amorphous\Support\ZLib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\AABTree.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\BrickWallPolygonModelMaker.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForBox.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\BSPTreeForTriangleMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\ConvexPolygon.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\OBBTree.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\Perlin.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\PolygonMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DGraph.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitiveRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTexturedRect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\AsyncResourceLoader.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\BuiltinSkyTextures.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\CorrelationGraph.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\CubeMapManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Font\ASCIIFont.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Font\BitstreamVeraSansMono_Bold_256.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Font\FontFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Font\TextureFont.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Font\UTFFont.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsComponentCollector.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsDevice.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsEffectManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsElementManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsElements.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceCacheManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceDescs.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceEntries.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceHandle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceLoaders.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResourceManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\GraphicsResources.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\IndexedPolygon.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\LinePrimitives.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\PipeMeshGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\CompositeMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshBone.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\MeshObjectHandle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\BasicMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\ConvexMeshSplitter.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\CustomMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\CustomMeshRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshFactory.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\MeshInfoRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\ProgressiveMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\RectSetMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Mesh\SkeletalMesh.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OnScreenDebugInfoRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsDevice.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLGraphicsResources.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLSkeletalMeshImpl.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedGenericGLSLShader.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\EmbeddedPostProcessEffectGLSLShader.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\Embedded\GLEmbeddedMiscGLSLShader.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedFunctionPipelineManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLFixedPipelineLightManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLShader.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Shader\GLSLShaderLightManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectFilter.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\PseudoNoiseEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\RenderTaskProcessor.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\ShaderHandle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\ShadowMapManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\ShadowMaps.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\ShapeDetector.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\ShapesExtractor.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\SimpleMotionBlur.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\SkyboxMisc.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureHandle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\VarianceShadowMapManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Log\LogOutput.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Output.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryDatabase.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\adler32.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\compress.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\crc32.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\deflate.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\gzio.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\infback.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inffast.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inflate.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\inftrees.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\trees.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\uncompr.c" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\ZLibAux.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\zpipe_stream.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\ZLib\zutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amorphous\3DMath\AABTree.inl" />
+    <None Include="..\..\amorphous\3DMath\Matrix22.inl" />
+    <None Include="..\..\amorphous\3DMath\Matrix33.inl" />
+    <None Include="..\..\amorphous\3DMath\Matrix44.inl" />
+    <None Include="..\..\amorphous\3DMath\Quaternion.inl" />
+    <None Include="..\..\amorphous\3DMath\Vector2_Gen.inl" />
+    <None Include="..\..\amorphous\3DMath\Vector3_Gen.inl" />
+    <None Include="..\..\amorphous\3DMath\Vector4.inl" />
+    <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl" />
+    <None Include="..\..\amorphous\Graphics\FloatRGBColor.inl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7CEB3745-E4C3-4BB3-A4DD-D01BE06E37F8}</ProjectGuid>
@@ -40,17 +439,17 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -78,6 +477,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>.vc\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <IncludePath>../../;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -86,6 +488,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>.vc\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -102,7 +505,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -132,7 +535,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -147,9 +550,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
