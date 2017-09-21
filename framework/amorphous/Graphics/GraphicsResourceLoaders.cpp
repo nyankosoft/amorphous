@@ -2,13 +2,13 @@
 #include "GraphicsResourceCacheManager.hpp"
 #include "AsyncResourceLoader.hpp"
 //#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/BitmapImage.hpp"
-#include "Support/ImageArchiveAux.hpp"
-#include "Support/Profile.hpp"
-#include "Support/lfs.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/ImageArchiveAux.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include <boost/filesystem.hpp>
 
 

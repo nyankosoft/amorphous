@@ -1,16 +1,16 @@
 #include "GraphicsResources.hpp"
 
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/Mesh/CustomMesh.hpp" // For GetCustomMesh()
-#include "Graphics/Mesh/MeshFactory.hpp"
-#include "Graphics/MeshGenerators/MeshGenerators.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/ShaderGenerator.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/lfs.hpp"
-#include "Support/ImageArchive.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp" // For GetCustomMesh()
+#include "amorphous/Graphics/Mesh/MeshFactory.hpp"
+#include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderGenerator.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/ImageArchive.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous

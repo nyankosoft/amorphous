@@ -2,7 +2,7 @@
 #define __FLOATRGBCOLOR_H__
 
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous

@@ -2,7 +2,7 @@
 #define  __RECTTRILISTINDEX_H__
 
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 #include <vector> // Used by CRectTriListIndexBuffer
 

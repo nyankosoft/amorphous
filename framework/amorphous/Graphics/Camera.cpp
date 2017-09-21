@@ -1,5 +1,5 @@
 #include "Camera.hpp"
-#include "./Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

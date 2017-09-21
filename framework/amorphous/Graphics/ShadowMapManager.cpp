@@ -1,14 +1,14 @@
 #include "ShadowMapManager.hpp"
 #include <boost/filesystem.hpp>
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/Generic2DShaderGenerator.hpp"
-//#include "Graphics/2DPrimitive/2DTexRect.hpp"
-#include "Graphics/LightStructs.hpp"
-#include "Graphics/HemisphericLight.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/ParamLoader.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/Generic2DShaderGenerator.hpp"
+//#include "amorphous/Graphics/2DPrimitive/2DTexRect.hpp"
+#include "amorphous/Graphics/LightStructs.hpp"
+#include "amorphous/Graphics/HemisphericLight.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 
 namespace amorphous

@@ -1,6 +1,6 @@
 #include "CubeMapManager.hpp"
 #include "CubeTextureRenderTarget.hpp"
-#include "Graphics/Shader/ShaderManagerHub.hpp"
+#include "Shader/ShaderManagerHub.hpp"
 
 
 namespace amorphous

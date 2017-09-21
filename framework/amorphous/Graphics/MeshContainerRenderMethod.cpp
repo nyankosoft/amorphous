@@ -1,11 +1,11 @@
 #include "MeshContainerRenderMethod.hpp"
 #include "MeshObjectContainer.hpp"
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
-#include "XML.hpp"
-#include "XML/LoadFromXMLNode_3DMath.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "amorphous/XML.hpp"
+#include "amorphous/XML/LoadFromXMLNode_3DMath.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 
 
 namespace amorphous

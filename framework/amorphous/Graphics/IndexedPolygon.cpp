@@ -1,6 +1,6 @@
 #include "IndexedPolygon.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

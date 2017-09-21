@@ -1,11 +1,10 @@
 #include "GraphicsElements.hpp"
 #include "GraphicsElementManager.hpp"
-#include "Graphics/Font/FontBase.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/2DPrimitive/2DPolygon.hpp"
-#include "Support/Macro.h"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Profile.hpp"
+#include "Font/TextureFont.hpp"
+#include "2DPrimitive/2DPolygon.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

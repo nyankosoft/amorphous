@@ -8,9 +8,9 @@
 #include "GraphicsResourceDescs.hpp"
 #include "TextureResourceVisitor.hpp"
 #include "SamplingParameter.hpp"
-#include "../Support/Serialization/BinaryDatabase.hpp"
-#include "../Support/fwd.hpp"
-#include "../3DMath/Rectangular.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/fwd.hpp"
+#include "amorphous/3DMath/Rectangular.hpp"
 #include "amorphous/Graphics/OpenGL/GLHeaders.h"
 
 

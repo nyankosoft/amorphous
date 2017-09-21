@@ -1,11 +1,11 @@
 #include "SimpleMotionBlur.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Support/Macro.h"
-#include "Support/StringAux.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

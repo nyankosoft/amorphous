@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "../3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
 #include "FloatRGBAColor.hpp"
 #include "GraphicsDevice.hpp" // TODO: Separate graphics device-related enums
 

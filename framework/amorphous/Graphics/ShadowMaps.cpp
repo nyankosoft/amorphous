@@ -8,12 +8,12 @@
 #include "Shader/MiscShaderGenerator.hpp"
 #include "Meshgenerators/Meshgenerators.hpp"
 #include "Mesh/BasicMesh.hpp"
-#include "3DMath/3DGameMath.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/ParamLoader.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 
 namespace amorphous

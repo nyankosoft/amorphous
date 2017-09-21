@@ -1,8 +1,8 @@
 #ifndef  __GENERAL3DVERTEX_H__
 #define  __GENERAL3DVERTEX_H__
 
-#include "../Support/FixedVector.hpp"
-#include "../3DMath/Vector3.hpp"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
 #include "TextureCoord.hpp"
 #include "FloatRGBAColor.hpp"
 

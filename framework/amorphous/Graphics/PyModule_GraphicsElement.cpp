@@ -1,12 +1,12 @@
 #include "PyModule_GraphicsElement.hpp"
 #include "GraphicsEffectManager.hpp"
 
-#include "../base.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/Rect.hpp"
-#include "Script/PythonScriptManager.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/Rect.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 
 
 namespace amorphous

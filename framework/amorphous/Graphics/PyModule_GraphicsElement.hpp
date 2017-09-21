@@ -3,8 +3,8 @@
 
 
 #include "fwd.hpp"
-#include "../Script/fwd.hpp"
-#include "../Script/PythonHeaders.hpp"
+#include "amorphous/Script/fwd.hpp"
+#include "amorphous/Script/PythonHeaders.hpp"
 
 
 namespace amorphous

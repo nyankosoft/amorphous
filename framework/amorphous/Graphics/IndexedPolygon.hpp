@@ -4,12 +4,12 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
-#include "../3DMath/ray.hpp"
-#include "../3DMath/AABB3.hpp"
-#include "../3DMath/Plane.hpp"
-#include "../3DMath/Triangle.hpp"
+#include "amorphous/3DMath/ray.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
+#include "amorphous/3DMath/Plane.hpp"
+#include "amorphous/3DMath/Triangle.hpp"
 #include "General3DVertex.hpp"
-#include "../Support/Serialization/ArchiveObjectBase.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectBase.hpp"
 
 
 namespace amorphous

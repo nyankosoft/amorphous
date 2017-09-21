@@ -6,11 +6,10 @@
 #include "../TextureHandle.hpp"
 #include "../TextureCoord.hpp"
 #include "../2DPrimitive/2DRectSet.hpp"
-#include "../../3DMath/AABB2.hpp"
-
-#include "../../Support/Serialization/Serialization.hpp"
-#include "../../Support/Serialization/Serialization_3DCommon.hpp"
-#include "../../Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/3DMath/AABB2.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DCommon.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

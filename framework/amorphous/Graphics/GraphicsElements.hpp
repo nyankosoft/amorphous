@@ -2,21 +2,21 @@
 #define  __GraphicsElements_H__
 
 
-#include "../base.hpp"
-#include "../3DMath/Matrix23.hpp"
-#include "../3DMath/Vector3.hpp"
-#include "../3DMath/aabb2.hpp"
-#include "../Graphics/fwd.hpp"
-#include "../Graphics/2DPrimitive/2DRect.hpp"
-#include "../Graphics/2DPrimitive/2DFrameRect.hpp"
-#include "../Graphics/2DPrimitive/2DRoundRect.hpp"
-#include "../Graphics/2DPrimitive/2DTriangle.hpp"
-#include "../Graphics/TextureCoord.hpp"
-#include "../Graphics/FloatRGBAColor.hpp"
-#include "../Graphics/GraphicsComponentCollector.hpp"
-#include "../Graphics/TextureHandle.hpp"
-#include "../Support/Vec3_StringAux.hpp"
-#include "../Support/memory_helpers.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Matrix23.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/aabb2.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRoundRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DTriangle.hpp"
+#include "amorphous/Graphics/TextureCoord.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 #include <vector>
 #include <list>

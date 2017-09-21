@@ -1,11 +1,11 @@
 #include "PostProcessEffectManager.hpp"
 #include "PostProcessEffect.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/Embedded/EmbeddedPostProcessEffectShader.hpp"
-#include "Support/ParamLoader.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/Embedded/EmbeddedPostProcessEffectShader.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 #include <boost/filesystem.hpp>
 
 

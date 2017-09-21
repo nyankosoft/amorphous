@@ -2,15 +2,15 @@
 #define __GraphicsDevice_HPP__
 
 #include <vector>
-#include "../base.hpp"
-#include "../3DMath/fwd.hpp"
-#include "../3DMath/Plane.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/fwd.hpp"
+#include "amorphous/3DMath/Plane.hpp"
+#include "amorphous/Support/singleton.hpp"
 #include "FloatRGBAColor.hpp"
 #include "AlphaBlend.hpp"
 #include "SurfaceFormat.hpp"
 #include "TextureHandle.hpp"
 #include "Rect.hpp"
-#include "../Support/singleton.hpp"
 
 
 namespace amorphous

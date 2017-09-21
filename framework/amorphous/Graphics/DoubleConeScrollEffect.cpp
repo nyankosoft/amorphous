@@ -1,12 +1,12 @@
-#include "Graphics/DoubleConeScrollEffect.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/Meshgenerators/MeshGenerator.hpp"
-#include "Graphics/TextureStage.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/MeshModel/General3DMesh.hpp"
-#include "Graphics/MeshModel/3DMeshModelBuilder.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
+#include "DoubleConeScrollEffect.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/Meshgenerators/MeshGenerator.hpp"
+#include "amorphous/Graphics/TextureStage.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/MeshModel/General3DMesh.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelBuilder.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 
 
 namespace amorphous

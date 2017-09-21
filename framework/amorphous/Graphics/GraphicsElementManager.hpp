@@ -2,16 +2,16 @@
 #define  __GraphicsElementManager_H__
 
 
-#include "../base.hpp"
-#include "../Graphics/fwd.hpp"
-#include "../Graphics/GraphicsElements.hpp"
-#include "../Graphics/2DPrimitive/2DRect.hpp"
-#include "../Graphics/2DPrimitive/2DFrameRect.hpp"
-#include "../Graphics/2DPrimitive/2DRoundRect.hpp"
-#include "../Graphics/2DPrimitive/2DTriangle.hpp"
-#include "../Graphics/GraphicsComponentCollector.hpp"
-#include "../Graphics/TextureHandle.hpp"
-#include "../Support/FixedVector.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsElements.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRoundRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DTriangle.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
 #include <list>
 #include <algorithm>

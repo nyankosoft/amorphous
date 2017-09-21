@@ -1,7 +1,7 @@
 #include "GraphicsEffectManager.hpp"
 #include "GraphicsElementManager.hpp"
-#include "Support/Timer.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphousSupport/Timer.hpp"
+#include "amorphousSupport/Log/DefaultLog.hpp"
 
 #include <algorithm>
 

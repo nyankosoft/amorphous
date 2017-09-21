@@ -1,10 +1,10 @@
 #include "VarianceShadowMapManager.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Shader/ShaderManagerHub.hpp"
-#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

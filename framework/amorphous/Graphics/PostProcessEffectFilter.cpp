@@ -1,11 +1,11 @@
 #include "PostProcessEffectFilter.hpp"
 #include "PostProcessEffectManager.hpp"
-#include "Graphics/SurfaceFormat.hpp"
-#include "Graphics/GraphicsResourceDescs.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/SurfaceFormat.hpp"
+#include "amorphous/Graphics/GraphicsResourceDescs.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <boost/filesystem.hpp>
 
 
