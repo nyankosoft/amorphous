@@ -1,14 +1,14 @@
 #include "GlobalInputHandler.hpp"
 
-#include "App/GameWindowManager.hpp"
-#include "App/GameApplicationBase.hpp"
-#include "Task/GameTaskManager.hpp"
-#include "Task/GameTask.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
+#include "amorphous/App/GameApplicationBase.hpp"
+#include "amorphous/Task/GameTaskManager.hpp"
+#include "amorphous/Task/GameTask.hpp"
 
-#include "Graphics/GraphicsresourceManager.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/GraphicsresourceManager.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
 
-#include "Support/DebugOutput.hpp"
+#include "amorphous/Support/DebugOutput.hpp"
 #include <boost/filesystem.hpp>
 
 

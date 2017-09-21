@@ -1,11 +1,11 @@
 #include "InputHandler_PlayerShip.hpp"
-#include "Stage/PlayerInfo.hpp"
-#include "Stage/HUD_PlayerBase.hpp"
-#include "Stage/BE_Player.hpp"
-//#include "Stage/BE_PlayerShip.hpp"
-#include "Item/WeaponSystem.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
+#include "amorphous/Stage/HUD_PlayerBase.hpp"
+#include "amorphous/Stage/BE_Player.hpp"
+//#include "amorphous/Stage/BE_PlayerShip.hpp"
+#include "amorphous/Item/WeaponSystem.hpp"
 
-#include "Task/GameTask.hpp"
+#include "amorphous/Task/GameTask.hpp"
 
 
 namespace amorphous

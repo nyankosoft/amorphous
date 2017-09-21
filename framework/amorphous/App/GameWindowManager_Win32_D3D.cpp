@@ -1,12 +1,12 @@
 #include "GameWindowManager_Win32_D3D.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include <math.h>
 
-#include "Support/WindowMisc_Win32.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/StringAux.hpp"
+#include "amorphous/Support/WindowMisc_Win32.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

@@ -1,11 +1,11 @@
 #include "InputHandler_PlayerPAC.hpp"
 
-#include "Stage/PlayerInfo.hpp"
-#include "Stage/BE_Player.hpp"
-#include "Item/WeaponSystem.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Task/GameTask.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
+#include "amorphous/Stage/BE_Player.hpp"
+#include "amorphous/Item/WeaponSystem.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Task/GameTask.hpp"
 
 
 namespace amorphous
