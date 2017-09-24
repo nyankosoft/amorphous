@@ -143,7 +143,7 @@ PyObject* CreateStaticEntityFromMesh( PyObject* self, PyObject* args, PyObject *
 	if( !gs_pTargetStage )
 		return Py_None;
 
-	boost::shared_ptr<CStage> pStage = gs_pTargetStage->GetWeakPtr().lock();
+	std::shared_ptr<CStage> pStage = gs_pTargetStage->GetWeakPtr().lock();
 	if( !pStage )
 		return Py_None;
 
@@ -178,7 +178,7 @@ PyObject* CreateEntity( PyObject* self, PyObject* args, PyObject *keywords )
 	if( !gs_pTargetStage )
 		return Py_None;
 
-	boost::shared_ptr<CStage> pStage = gs_pTargetStage->GetWeakPtr().lock();
+	std::shared_ptr<CStage> pStage = gs_pTargetStage->GetWeakPtr().lock();
 	if( !pStage )
 		return Py_None;
 

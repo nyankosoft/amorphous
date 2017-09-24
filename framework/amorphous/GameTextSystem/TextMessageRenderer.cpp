@@ -18,7 +18,7 @@ using namespace boost;
 // CTextMessageRenderer
 //========================================================================================
 
-CTextMessageRenderer::CTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr )
+CTextMessageRenderer::CTextMessageRenderer( std::shared_ptr<GraphicsElementAnimationManager> pEffectMgr )
 :
 m_pEffectManager(pEffectMgr)
 {
@@ -42,7 +42,7 @@ void CTextMessageRenderer::Update( float dt )
 // CDefaultTextMessageRenderer
 //========================================================================================
 
-CDefaultTextMessageRenderer::CDefaultTextMessageRenderer( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr,
+CDefaultTextMessageRenderer::CDefaultTextMessageRenderer( std::shared_ptr<GraphicsElementAnimationManager> pEffectMgr,
 														  int top_layer,
 														  int bottom_layer )
 :

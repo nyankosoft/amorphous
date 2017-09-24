@@ -22,7 +22,7 @@
 namespace amorphous
 {
 
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 class CStageLightAttributeHolder
@@ -39,7 +39,7 @@ class CStageLightAttributeHolder
 
 public:
 
-	boost::weak_ptr<CStage> m_pStage;
+	std::weak_ptr<CStage> m_pStage;
 
 	BaseEntityHandle m_aBaseEntityHandle[NUM_DEFAULT_BASE_ENTITY_HANDLES];
 

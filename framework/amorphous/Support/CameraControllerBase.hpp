@@ -28,7 +28,7 @@ public:
 
 /*
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 class CameraControllerBase : public CameraController
@@ -43,14 +43,14 @@ public:
 };
 
 
-boost::shared_ptr<CameraController> CreateCameraController()
+std::shared_ptr<CameraController> CreateCameraController()
 {
-	boost::shared_ptr<CameraController> ptr;
+	std::shared_ptr<CameraController> ptr;
 
 #ifdef WIN32
-	ptr = boost::shared_ptr<CameraController>( new CameraControllerBase() );
+	ptr = std::shared_ptr<CameraController>( new CameraControllerBase() );
 #else
-	ptr = boost::shared_ptr<CameraController>( new CameraController_Linux() );
+	ptr = std::shared_ptr<CameraController>( new CameraController_Linux() );
 #endif
 
 	return ptr;

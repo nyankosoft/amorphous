@@ -40,7 +40,7 @@ public:
 	ShaderTechniqueHandle m_Technique;
 
 	/// Need to be set at runtime
-	std::vector< boost::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
+	std::vector< std::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
 
 public:
 
@@ -133,7 +133,7 @@ public:
 
 	void RenderMeshContainer( MeshObjectContainer& mesh_container,
 		                      const Matrix34& world_transform );
-							  //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
+							  //std::vector< std::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
 //	std::vector<SubsetRenderMethod>& MeshRenderMethod() { return m_vecMeshRenderMethod; }
 
@@ -149,16 +149,16 @@ public:
 
 	std::vector< std::map<std::string,SubsetRenderMethod> >& SubsetRenderMethodMaps() { return m_vecSubsetNameToRenderMethod; }
 
-	void SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
+	void SetShaderParamsLoaderToAllMeshRenderMethods( std::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
 
-	void RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
+	void RemoveShaderParamsLoaderFromAllMeshRenderMethods( std::shared_ptr<ShaderParamsLoader> pShaderParamsLoader );
 
 	/// Creates a copy or copies of render methods at each LoD for subsets whose names are specified by the argument.
 	void BreakMeshRenderMethodsToSubsetRenderMethods( const std::vector<std::string>& vecName );
 
 	bool LoadRenderMethodResources();
 
-	boost::shared_ptr<MeshContainerRenderMethod> CreateCopy();
+	std::shared_ptr<MeshContainerRenderMethod> CreateCopy();
 
 	virtual void LoadFromXMLNode( XMLNode& reader );
 
@@ -168,9 +168,9 @@ public:
 
 class MeshContainerNodeRenderMethod : public IArchiveObjectBase
 {
-	std::vector< boost::shared_ptr<MeshContainerRenderMethod> > m_vecpContainerRenderMethod;
+	std::vector< std::shared_ptr<MeshContainerRenderMethod> > m_vecpContainerRenderMethod;
 
-	std::vector< boost::shared_ptr<MeshContainerNodeRenderMethod> > m_vecpChild;
+	std::vector< std::shared_ptr<MeshContainerNodeRenderMethod> > m_vecpChild;
 
 public:
 
@@ -178,14 +178,14 @@ public:
 
 	~MeshContainerNodeRenderMethod() {}
 
-	void AddMeshContainer( boost::shared_ptr<MeshContainerRenderMethod> pMeshContainerRenderMethod )
+	void AddMeshContainer( std::shared_ptr<MeshContainerRenderMethod> pMeshContainerRenderMethod )
 	{
 		m_vecpContainerRenderMethod.push_back( pMeshContainerRenderMethod );
 	}
 
 //	void RenderMeshContainer( MeshObjectContainer& mesh_container, int index );
 
-	void RenderMeshContainerNode( MeshContainerNode& node );//, std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
+	void RenderMeshContainerNode( MeshContainerNode& node );//, std::vector< std::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter );
 
 	//
 	// child nodes
@@ -193,12 +193,12 @@ public:
 
 	int GetNumChildren() { return (int)m_vecpChild.size(); }
 
-	const boost::shared_ptr<MeshContainerNodeRenderMethod> GetChild( int index ) const { return m_vecpChild[index]; }
+	const std::shared_ptr<MeshContainerNodeRenderMethod> GetChild( int index ) const { return m_vecpChild[index]; }
 
 	/// Returns non-const pointer
-	boost::shared_ptr<MeshContainerNodeRenderMethod> Child( int index ) { return index < (int)m_vecpChild.size() ? m_vecpChild[index] : boost::shared_ptr<MeshContainerNodeRenderMethod>(); }
+	std::shared_ptr<MeshContainerNodeRenderMethod> Child( int index ) { return index < (int)m_vecpChild.size() ? m_vecpChild[index] : std::shared_ptr<MeshContainerNodeRenderMethod>(); }
 
-	void AddChild( boost::shared_ptr<MeshContainerNodeRenderMethod> pChild ) { m_vecpChild.push_back( pChild ); }
+	void AddChild( std::shared_ptr<MeshContainerNodeRenderMethod> pChild ) { m_vecpChild.push_back( pChild ); }
 
 	/// Recursively load all meshes on the nodes of the tree
 	bool LoadRenderMethodResources();
@@ -213,15 +213,15 @@ public:
 	// 
 
 //	int GetNumMeshContainers() const { return (int)m_vecpMeshContainer.size(); }
-//	const boost::shared_ptr<MeshContainerRenderMethod> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
-//	boost::shared_ptr<MeshContainerRenderMethod> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
+//	const std::shared_ptr<MeshContainerRenderMethod> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
+//	std::shared_ptr<MeshContainerRenderMethod> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 };
 
 //================================ inline implementations ================================
 
 inline void MeshContainerRenderMethod::RenderMesh( MeshHandle& mesh, const Matrix34& world_transform )
 {
-	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
+	std::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 
 	if( !pMesh )
 		return;

@@ -6,7 +6,7 @@
 namespace amorphous
 {
 
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace msynth;
 
 
@@ -58,7 +58,7 @@ Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, ms
 }
 
 
-boost::shared_ptr<msynth::Skeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname )
+std::shared_ptr<msynth::Skeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname )
 {
 	shared_ptr<Skeleton> pSkeleton( new Skeleton );
 

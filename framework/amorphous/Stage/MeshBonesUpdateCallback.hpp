@@ -19,24 +19,24 @@ class CMeshBonesUpdateCallback : public CGraphicsResourcesUpdateCallback
 
 	MeshHandle m_TargetSkeletalMesh;
 
-	boost::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
+	std::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
 
 public:
 
 	CMeshBonesUpdateCallback() {}
 
-	CMeshBonesUpdateCallback( boost::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader )
+	CMeshBonesUpdateCallback( std::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader )
 		:
 	m_pBlendTransformsLoader(pBlendTransformsLoader)
 	{}
 
 	Result::Name SetSkeletalMesh( MeshHandle target_skeletal_mesh )
 	{
-		boost::shared_ptr<BasicMesh> pMesh = target_skeletal_mesh.GetMesh();
+		std::shared_ptr<BasicMesh> pMesh = target_skeletal_mesh.GetMesh();
 		if( !pMesh )
 			return Result::INVALID_ARGS;
 
-		boost::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+		std::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( !pSMesh )
 			return Result::INVALID_ARGS;
 
@@ -45,7 +45,7 @@ public:
 		return Result::SUCCESS;
 	}
 
-	void SetBlendTransformsLoader( boost::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader ) { m_pBlendTransformsLoader = pBlendTransformsLoader; }
+	void SetBlendTransformsLoader( std::shared_ptr<BlendTransformsLoader> pBlendTransformsLoader ) { m_pBlendTransformsLoader = pBlendTransformsLoader; }
 
 	/// Update the blend transforms stored in the blend transforms loader.
 	void UpdateGraphics()
@@ -58,11 +58,11 @@ public:
 		std::vector<Transform>& dest_blend_transforms = m_pBlendTransformsLoader->BlendTransforms();
 		dest_blend_transforms.resize( m_LocalTransforms.size() );
 
-		boost::shared_ptr<BasicMesh> pMesh = m_TargetSkeletalMesh.GetMesh();
+		std::shared_ptr<BasicMesh> pMesh = m_TargetSkeletalMesh.GetMesh();
 		if( !pMesh )
 			return;
 
-		boost::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+		std::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( !pSMesh )
 			return;
 

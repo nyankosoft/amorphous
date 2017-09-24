@@ -304,15 +304,15 @@ public:
 	GraphicsElementAnimationCallback( GraphicsElementAnimationManager *pEffectMgr ) : m_pEffectMgr(pEffectMgr) {}
 	virtual ~GraphicsElementAnimationCallback() {}
 
-//	virtual void OnCreated( boost::shared_ptr<GraphicsElement> pElement ) {}
+//	virtual void OnCreated( std::shared_ptr<GraphicsElement> pElement ) {}
 
 	/// delete graphics effects which are currently being apllied to the deleted element
-	virtual void OnDestroyed( boost::shared_ptr<GraphicsElement> pElement );
+	virtual void OnDestroyed( std::shared_ptr<GraphicsElement> pElement );
 
 };
 
 
-void GraphicsElementAnimationCallback::OnDestroyed( boost::shared_ptr<GraphicsElement> pElement )
+void GraphicsElementAnimationCallback::OnDestroyed( std::shared_ptr<GraphicsElement> pElement )
 {
 	if( m_pEffectMgr->m_vecpEffect.size() == 0 )
 		return;
@@ -333,14 +333,14 @@ void GraphicsElementAnimationCallback::OnDestroyed( boost::shared_ptr<GraphicsEl
 }
 
 
-boost::shared_ptr<GraphicsElement> GraphicsElementAnimation::GetElement()
+std::shared_ptr<GraphicsElement> GraphicsElementAnimation::GetElement()
 {
 	return m_pTargetElement;
 //	return m_pManager->GetGraphicsElementManager()->GetElement(m_TargetElementID);
 }
 
 
-CE_TextDraw::CE_TextDraw( boost::shared_ptr<TextElement> pTargetElement, double start_time )
+CE_TextDraw::CE_TextDraw( std::shared_ptr<TextElement> pTargetElement, double start_time )
 :
 GraphicsElementLinearAnimation( pTargetElement, start_time, 0.0f ), m_CharsPerSec(1), m_FadeLength(0)
 {
@@ -424,7 +424,7 @@ void GraphicsElementAnimationManager::SetTimeOffset( double time )
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlpha( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlpha( std::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time,  double end_time,
 											int color_index, float start_alpha, float end_alpha,
 											int trans_mode )
@@ -438,7 +438,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlpha( boo
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlphaTo( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlphaTo( std::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, float end_alpha,
 											  int trans_mode )
@@ -451,7 +451,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeAlphaTo( b
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( std::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											int color_index,
 											const SFloatRGBAColor& start_color,
@@ -469,7 +469,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( boo
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( std::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											int color_index,
 											const SFloatRGBColor& start_color,
@@ -495,7 +495,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColor( boo
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( std::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, const SFloatRGBAColor& end_color,
 											  int trans_mode )
@@ -508,7 +508,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( b
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( std::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, const SFloatRGBColor& end_color,
 											  int trans_mode )
@@ -521,7 +521,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( b
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( std::shared_ptr<GraphicsElement> pTargetElement,
 											  double start_time, double end_time,
 											  int color_index, U32 end_color,
 											  int trans_mode )
@@ -535,7 +535,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorTo( b
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateNonLinear( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateNonLinear( std::shared_ptr<GraphicsElement> pTargetElement,
 											 double start_time,
 											 Vector2 vDestPos,
 											 Vector2 vInitVel,
@@ -567,7 +567,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateNonLine
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::BlinkAlpha( boost::shared_ptr<GraphicsElement> pTargetElement, double interval, int color_index )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::BlinkAlpha( std::shared_ptr<GraphicsElement> pTargetElement, double interval, int color_index )
 {
 	CE_AlphaBlink *pEffect = new CE_AlphaBlink( pTargetElement );
 	pEffect->m_afAlpha[0] = pTargetElement->GetColor(0).alpha;
@@ -607,7 +607,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeColorInSin
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateTo( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateTo( std::shared_ptr<GraphicsElement> pTargetElement,
 											double start_time, double end_time,
 											Vector2 vDestPos,
 											int coord_type, int trans_mode )
@@ -636,7 +636,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::TranslateTo( boo
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeSize( boost::shared_ptr<GraphicsElement> pTargetElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeSize( std::shared_ptr<GraphicsElement> pTargetElement,
 										  double start_time, double end_time,
 											 Vector2 vDestMin, Vector2 vDestMax )
 {
@@ -648,7 +648,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeSize( boos
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ScaleTo( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, float end_scale )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ScaleTo( std::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, float end_scale )
 {
 	ScalingAnimation *p = new ScalingAnimation( pTargetElement, m_fTimeOffset + start_time, m_fTimeOffset + end_time );
 //	p->m_vStart = pTargetElement->GetTopLeftPos();
@@ -658,14 +658,14 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::ScaleTo( boost::
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetPosition( boost::shared_ptr<GraphicsElement> pTargetElement, double time, const Vector2& vPos )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetPosition( std::shared_ptr<GraphicsElement> pTargetElement, double time, const Vector2& vPos )
 {
 	LOG_PRINT_ERROR( " Not implemented yet." );
 	return GraphicsElementAnimationHandle::Null();
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetColor( boost::shared_ptr<GraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetColor( std::shared_ptr<GraphicsElement> pTargetElement, double time, int color_index, const SFloatRGBAColor& color )
 {
 	if( !pTargetElement )
 		return GraphicsElementAnimationHandle::Null();
@@ -682,7 +682,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::SetColor( boost:
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::DrawText( boost::shared_ptr<TextElement> pTargetTextElement, double start_time, int num_chars_per_sec )
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::DrawText( std::shared_ptr<TextElement> pTargetTextElement, double start_time, int num_chars_per_sec )
 {
 	if( !pTargetTextElement )//|| pTargetTextElement->GetType() != GraphicsElement::TEXT )
 		return GraphicsElementAnimationHandle::Null();
@@ -697,7 +697,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::DrawText( boost:
 }
 
 
-GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeVertexColorNonLinear( boost::shared_ptr<PolygonElement> pTargetPolygonElement,
+GraphicsElementAnimationHandle GraphicsElementAnimationManager::ChangeVertexColorNonLinear( std::shared_ptr<PolygonElement> pTargetPolygonElement,
 																		    double start_time,
 																			int color_index,
 																			int vertex,

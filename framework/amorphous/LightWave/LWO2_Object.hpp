@@ -96,7 +96,7 @@ class LWO2_Object
 
 	LWO2_TAGChunk m_tag;
 
-	// should you boost::shared_ptr<>?
+	// should you std::shared_ptr<>?
 	progress_display m_ProgressDisplay;
 
 public:

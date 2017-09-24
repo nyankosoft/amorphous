@@ -4,7 +4,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "GraphicsComponentCollector.hpp"
 #include "GraphicsResources.hpp"
@@ -29,44 +29,44 @@ private:
 
 	bool m_AsyncLoadingAllowed;
 
-	boost::shared_ptr<GraphicsResourceCacheManager> m_pCacheManager;
+	std::shared_ptr<GraphicsResourceCacheManager> m_pCacheManager;
 
-	std::vector< boost::shared_ptr<GraphicsResourceEntry> > m_vecpResourceEntry;
+	std::vector< std::shared_ptr<GraphicsResourceEntry> > m_vecpResourceEntry;
 
 	boost::mutex m_ResourceLock;
 
 private:
 
 	/// Synchronously loads a graphics resource
-	boost::shared_ptr<GraphicsResourceEntry> LoadGraphicsResource( const GraphicsResourceDesc& desc );
+	std::shared_ptr<GraphicsResourceEntry> LoadGraphicsResource( const GraphicsResourceDesc& desc );
 
 	/// creates and registers a graphics resources of the specified type
 	/// returns the shared ointer to the created and registered resource
-	boost::shared_ptr<GraphicsResourceEntry> CreateGraphicsResourceEntry();
+	std::shared_ptr<GraphicsResourceEntry> CreateGraphicsResourceEntry();
 
 	/// called from handle
-	boost::shared_ptr<GraphicsResourceEntry> LoadTexture( const TextureResourceDesc& desc );
+	std::shared_ptr<GraphicsResourceEntry> LoadTexture( const TextureResourceDesc& desc );
 
-	boost::shared_ptr<GraphicsResourceEntry> CreateTexture( const TextureResourceDesc& desc );
-
-	/// called from handle
-	boost::shared_ptr<GraphicsResourceEntry> LoadMesh( const MeshResourceDesc& desc );
+	std::shared_ptr<GraphicsResourceEntry> CreateTexture( const TextureResourceDesc& desc );
 
 	/// called from handle
-	boost::shared_ptr<GraphicsResourceEntry> LoadShaderManager( const ShaderResourceDesc& desc );
+	std::shared_ptr<GraphicsResourceEntry> LoadMesh( const MeshResourceDesc& desc );
 
-	bool ReleaseResourceEntry( boost::shared_ptr<GraphicsResourceEntry> ptr );
+	/// called from handle
+	std::shared_ptr<GraphicsResourceEntry> LoadShaderManager( const ShaderResourceDesc& desc );
 
-	boost::shared_ptr<GraphicsResourceLoader> CreateResourceLoader(
-		boost::shared_ptr<GraphicsResourceEntry> pEntry,
+	bool ReleaseResourceEntry( std::shared_ptr<GraphicsResourceEntry> ptr );
+
+	std::shared_ptr<GraphicsResourceLoader> CreateResourceLoader(
+		std::shared_ptr<GraphicsResourceEntry> pEntry,
 		const GraphicsResourceDesc& desc );
 
-	boost::shared_ptr<GraphicsResourceEntry> FindSameLoadedResource( const GraphicsResourceDesc& desc );
+	std::shared_ptr<GraphicsResourceEntry> FindSameLoadedResource( const GraphicsResourceDesc& desc );
 
 	/// asynchronously loads a graphics resource
 	/// - sends load request and returns
 	/// - index to the entry is returned immediately
-	boost::shared_ptr<GraphicsResourceEntry> LoadAsync( const GraphicsResourceDesc& desc );
+	std::shared_ptr<GraphicsResourceEntry> LoadAsync( const GraphicsResourceDesc& desc );
 
 protected:
 ///	GraphicsResourceManager();		//singleton
@@ -96,7 +96,7 @@ public:
 
 	void AllowAsyncLoading( bool allow );
 
-//	boost::shared_ptr<GraphicsResourceEntry> CreateAt( const GraphicsResourceDesc& desc, int dest_index );
+//	std::shared_ptr<GraphicsResourceEntry> CreateAt( const GraphicsResourceDesc& desc, int dest_index );
 
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();

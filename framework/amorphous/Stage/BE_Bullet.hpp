@@ -41,7 +41,7 @@ class CBE_Bullet : public BaseEntity
 	BaseEntityHandle m_Light;
 
 	// For visual debugging
-	std::vector< boost::shared_ptr< std::vector<Vector3> > > m_pTrajectoryPoints;
+	std::vector< std::shared_ptr< std::vector<Vector3> > > m_pTrajectoryPoints;
 
 	int m_RenderTrajectory;
 
@@ -62,7 +62,7 @@ private:
     void Draw3DObjectBullet(CCopyEntity* pCopyEnt);
 
 	// Return the buffer to store trajectory points. Used for visual debugging
-	boost::shared_ptr< std::vector<Vector3> > GetTrajectoryPoints( CCopyEntity& bullet );
+	std::shared_ptr< std::vector<Vector3> > GetTrajectoryPoints( CCopyEntity& bullet );
 
 	void ReleaseTrajectoryPoints( CCopyEntity& bullet );
 
@@ -89,7 +89,7 @@ public:
 	virtual void Serialize( IArchive& ar, const unsigned int version );
 
 	static float& Power(CCopyEntity* pCopyEnt) { return pCopyEnt->f1; }
-	static float& Power(boost::shared_ptr<CCopyEntity> pEntity) { return pEntity->f1; }
+	static float& Power(std::shared_ptr<CCopyEntity> pEntity) { return pEntity->f1; }
 
 	static float& TraveledDist(CCopyEntity* pCopyEnt) { return pCopyEnt->f2; }
 

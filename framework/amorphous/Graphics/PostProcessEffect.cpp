@@ -503,7 +503,7 @@ Result::Name GetTextureCoords(
 
 ShaderManager *GetShaderManager(PostProcessEffectFilter& filter)
 {
-	boost::shared_ptr<PostProcessFilterShader> pFilterShader = filter.GetFilterShader();
+	std::shared_ptr<PostProcessFilterShader> pFilterShader = filter.GetFilterShader();
 	if( !pFilterShader )
 		return NULL;
 
@@ -544,7 +544,7 @@ Result::Name DownScale4x4Filter::Init( RenderTargetTextureCache& cache, FilterSh
 
 
 /*
-bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<RenderTargetTextureHolder>& pDest )
+bool DownScale4x4Filter::GetRenderTarget( PostProcessEffectFilter& prev_filter, std::shared_ptr<RenderTargetTextureHolder>& pDest )
 {
 	int src_w = prev_filter.pDest->m_Desc.Width;
 	int src_h = prev_filter.pDest->m_Desc.Height;
@@ -1202,7 +1202,7 @@ void CombinedBloomFilter::SetBlurStrength( float strength )
 
 
 /*
-void CombinedBloomFilter::AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter )
+void CombinedBloomFilter::AddNextFilter( std::shared_ptr<PostProcessEffectFilter> pFilter )
 {
 	m_vecpNextFilter.push_back( pFilter );
 }

@@ -507,7 +507,7 @@ void GameTask_MainMenu::Render()
 
 void GameTask_MainMenu::InitFontForBackgroundText()
 {
-	boost::shared_ptr<TextureFont> pTexFont( new TextureFont );
+	std::shared_ptr<TextureFont> pTexFont( new TextureFont );
 	pTexFont->InitFont( GetBuiltinFontData( "BitstreamVeraSansMono-Bold-256" ) );
 	int w = 16 * GetGameWindowManager().GetScreenWidth() / 800;
 	int h = w * 2;

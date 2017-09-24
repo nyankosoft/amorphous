@@ -67,7 +67,7 @@ void CBE_Skybox::Init()
 	{
 		GenericShaderDesc desc;
 		desc.Lighting = false;
-		boost::shared_ptr<GenericShaderGenerator> p;
+		std::shared_ptr<GenericShaderGenerator> p;
 		p.reset( new GenericShaderGenerator(desc) );
 		m_MeshProperty.m_ShaderDesc.pShaderGenerator = p;
 
@@ -254,14 +254,14 @@ bool CBE_Skybox::GetFogColor( SFloatRGBAColor& dest )
 //	if( !GetSkyboxTexture().GetEntry() )
 //		return false;
 //
-//	boost::shared_ptr<TextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
+//	std::shared_ptr<TextureResource> pTexResource = GetSkyboxTexture().GetEntry()->GetTextureResource();
 //	if( !pTexResource )
 //		return false;
 //
 //	if( !pTexResource->Lock() )
 //		return false;
 //
-//	boost::shared_ptr<LockedTexture> pLockedTex;
+//	std::shared_ptr<LockedTexture> pLockedTex;
 //	pTexResource->GetLockedTexture( pLockedTex );
 //	if( pLockedTex )
 //	{

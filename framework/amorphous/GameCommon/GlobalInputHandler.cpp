@@ -120,7 +120,7 @@ void GlobalInputHandler::ProcessInput(InputData& input)
 	case GIC_F12:
 		if( input.iType == ITYPE_KEY_PRESSED )
 		{
-			boost::shared_ptr<TextureRenderTarget> pTextureRenderTarget = TextureRenderTarget::Create();
+			std::shared_ptr<TextureRenderTarget> pTextureRenderTarget = TextureRenderTarget::Create();
 			int screen_width  = GetGameWindowManager().GetScreenWidth();
 			int screen_height = GetGameWindowManager().GetScreenHeight();
 			pTextureRenderTarget->Init( screen_width, screen_height );

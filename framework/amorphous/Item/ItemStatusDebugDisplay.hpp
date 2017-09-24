@@ -2,7 +2,6 @@
 #define __ItemStatusDebugDisplay_HPP__
 
 
-#include <boost/weak_ptr.hpp>
 #include "GameItem.hpp"
 #include "amorphous/Support/DebugOutput.hpp"
 
@@ -13,23 +12,23 @@ namespace amorphous
 
 class ItemStatusDebugDisplay : public DebugInfo
 {
-	boost::weak_ptr<GameItem> m_pItem;
+	std::weak_ptr<GameItem> m_pItem;
 
 public:
 
 	ItemStatusDebugDisplay(){}
 
-	ItemStatusDebugDisplay( boost::weak_ptr<GameItem> pItem ) : m_pItem(pItem) {}
+	ItemStatusDebugDisplay( std::weak_ptr<GameItem> pItem ) : m_pItem(pItem) {}
 
 	~ItemStatusDebugDisplay(){}
 
-	void SetItem( boost::weak_ptr<GameItem> pItem ) { m_pItem = pItem; }
+	void SetItem( std::weak_ptr<GameItem> pItem ) { m_pItem = pItem; }
 
 	void UpdateDebugInfoText()
 	{
 		m_TextBuffer.resize( 0 );
 
-		boost::shared_ptr<GameItem> pItem = m_pItem.lock();
+		std::shared_ptr<GameItem> pItem = m_pItem.lock();
 
 		if( pItem )
 		{

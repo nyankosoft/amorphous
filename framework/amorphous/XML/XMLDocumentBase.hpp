@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "XMLNode.hpp"
 
 
@@ -26,7 +26,7 @@ public:
 class XMLDocumentBaseLoader
 {
 	// test
-	boost::shared_ptr<XMLDocumentBase> LoadWithLSParser( const std::string& filepath );
+	std::shared_ptr<XMLDocumentBase> LoadWithLSParser( const std::string& filepath );
 
 public:
 
@@ -43,13 +43,13 @@ public:
 
 	bool Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc, xercesc::XercesDOMParser **ppParser );
 
-	boost::shared_ptr<XMLDocumentBase> Load( const std::string& filepath );
+	std::shared_ptr<XMLDocumentBase> Load( const std::string& filepath );
 
 //	xercesc::DOMNode *GetRootNode();
 };
 */
 
-boost::shared_ptr<XMLDocumentBase> CreateXMLDocument( const std::string& filepath );
+std::shared_ptr<XMLDocumentBase> CreateXMLDocument( const std::string& filepath );
 
 
 

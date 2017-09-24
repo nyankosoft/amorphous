@@ -10,7 +10,7 @@ SkeletalMesh::SkeletalMesh()
 {
 //	m_pImpl = MeshFactory()->CreateSkeletalMeshImpl();
 	MeshImpl *pImpl = GetMeshImplFactory()->CreateSkeletalMeshImpl();
-	m_pImpl = boost::shared_ptr<MeshImpl>( pImpl );
+	m_pImpl = std::shared_ptr<MeshImpl>( pImpl );
 }
 
 

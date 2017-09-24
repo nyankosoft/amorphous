@@ -37,7 +37,7 @@ void SetDefaultMeshAttributes( C3DMeshModelArchive& mesh_archive )
 }
 
 
-Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive )
+Result::Name CreateArchiveFromGeneral3DMesh( std::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive )
 {
 	C3DMeshModelBuilder mesh_builder;
 	mesh_builder.BuildMeshModelArchive( pSrcMesh );

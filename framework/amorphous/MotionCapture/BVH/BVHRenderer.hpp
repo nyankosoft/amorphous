@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/Quaternion.hpp"
 #include "amorphous/Graphics/fwd.hpp"
@@ -23,9 +23,9 @@ class BVHRenderer
 {
 	SFloatRGBAColor m_SkeletonColor;	// shared by all the bones
 
-	boost::shared_ptr<CUnitCube> m_pUnitCube;
+	std::shared_ptr<CUnitCube> m_pUnitCube;
 
-	boost::shared_ptr<CD3DXMeshObject> m_pTestCube;
+	std::shared_ptr<CD3DXMeshObject> m_pTestCube;
 
 public:
 

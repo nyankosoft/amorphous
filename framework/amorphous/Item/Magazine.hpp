@@ -19,7 +19,7 @@ class Magazine : public GameItem
 	Caliber::Name m_Caliber;
 	uint m_Capacity;
 
-	std::stack< boost::shared_ptr<Cartridge> > m_pLoadedCartridges;
+	std::stack< std::shared_ptr<Cartridge> > m_pLoadedCartridges;
 
 	bool m_IsInserted; ///< true if the magazine is currently in the gun
 
@@ -42,14 +42,14 @@ public:
 
 	bool IsEmpty() const { return m_pLoadedCartridges.empty(); }
 
-	int LoadCartridges( boost::shared_ptr<Cartridge>& pCartridge, uint num_max_rounds_to_load );
+	int LoadCartridges( std::shared_ptr<Cartridge>& pCartridge, uint num_max_rounds_to_load );
 
-	boost::shared_ptr<Cartridge> TakeNextCartridge()
+	std::shared_ptr<Cartridge> TakeNextCartridge()
 	{
 		if( IsEmpty() )
-			return boost::shared_ptr<Cartridge>();
+			return std::shared_ptr<Cartridge>();
 
-		boost::shared_ptr<Cartridge> pNextCartridge = m_pLoadedCartridges.top();
+		std::shared_ptr<Cartridge> pNextCartridge = m_pLoadedCartridges.top();
 		m_pLoadedCartridges.pop();
 		return pNextCartridge;
 	}

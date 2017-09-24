@@ -49,7 +49,7 @@ public:
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 
-	static boost::shared_ptr<CubeTextureRenderTarget> Create() { boost::shared_ptr<GLCubeTextureRenderTarget> p( new GLCubeTextureRenderTarget ); return p; }
+	static std::shared_ptr<CubeTextureRenderTarget> Create() { std::shared_ptr<GLCubeTextureRenderTarget> p( new GLCubeTextureRenderTarget ); return p; }
 };
 
 

@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "fwd.hpp"
 #include "amorphous/Support/Macro.h"
 
@@ -18,10 +18,10 @@ using namespace msynth;
 
 //void CreateBuiltinMotions(
 //	const msynth::Skeleton& skeleton,
-//	std::vector< boost::shared_ptr<MotionPrimitive> >& pMotions );
+//	std::vector< std::shared_ptr<MotionPrimitive> >& pMotions );
 
 
-boost::shared_ptr<MotionPrimitive> CreateWalkMotion( const msynth::Skeleton& skeleton );
+std::shared_ptr<MotionPrimitive> CreateWalkMotion( const msynth::Skeleton& skeleton );
 
 
 } // amorphous

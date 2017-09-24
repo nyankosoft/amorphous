@@ -16,7 +16,7 @@ public:
 
 	StageCameraUtility() {}
 
-	StageCameraUtility( boost::weak_ptr<CStage> pStage )
+	StageCameraUtility( std::weak_ptr<CStage> pStage )
 		:
 	StageUtility(pStage)
 	{}

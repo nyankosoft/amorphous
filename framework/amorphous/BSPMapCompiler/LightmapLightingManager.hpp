@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <boost/thread.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "amorphous/3DMath/Vector3.hpp"
 #include "amorphous/3DMath/Plane.hpp"
@@ -36,7 +36,7 @@ class CLightRaytrace
 {
 protected:
 
-	boost::shared_ptr<Light> m_pLight;
+	std::shared_ptr<Light> m_pLight;
 
 	/// polygon mesh for ray check
 	/// - borrowed reference
@@ -44,7 +44,7 @@ protected:
 
 public:
 
-	CLightRaytrace( boost::shared_ptr<Light> pLight ) : m_pLight(pLight) {}
+	CLightRaytrace( std::shared_ptr<Light> pLight ) : m_pLight(pLight) {}
 
 	virtual ~CLightRaytrace() {}
 
@@ -60,7 +60,7 @@ class CPointLightRaytrace : public CLightRaytrace
 
 public:
 
-	CPointLightRaytrace( boost::shared_ptr<Light> pLight ) : CLightRaytrace(pLight) {}
+	CPointLightRaytrace( std::shared_ptr<Light> pLight ) : CLightRaytrace(pLight) {}
 
 	inline virtual void CalcLightAmount( CLightmap& rLightmap, int x, int y );
 
@@ -73,7 +73,7 @@ class CDirectionalLightRaytrace : public CLightRaytrace
 
 public:
 
-	CDirectionalLightRaytrace( boost::shared_ptr<Light> pLight ) : CLightRaytrace(pLight) {}
+	CDirectionalLightRaytrace( std::shared_ptr<Light> pLight ) : CLightRaytrace(pLight) {}
 
 	inline virtual void CalcLightAmount( CLightmap& rLightmap, int x, int y );
 
@@ -91,7 +91,7 @@ class CLightmapRaytraceTask
 
 	CLightmapLightingManager *m_pMgr;
 
-	boost::shared_ptr<AABTree<IndexedPolygon>> m_pGeometry;
+	std::shared_ptr<AABTree<IndexedPolygon>> m_pGeometry;
 
 public:
 
@@ -128,7 +128,7 @@ public:
 class CLightmapLightingManager
 {
 	/// pointer to the array of pointers to lights
-	std::vector<boost::shared_ptr<Light>> *m_pvecpLight;
+	std::vector<std::shared_ptr<Light>> *m_pvecpLight;
 
 	std::vector<CLightmap> *m_pvecLightmap;
 
@@ -165,13 +165,13 @@ class CLightmapLightingManager
 
 private:
 
-	std::vector<CLightRaytrace *> CreateLightRaytraceTasks( std::vector<boost::shared_ptr<Light>> *pvecpLight );
+	std::vector<CLightRaytrace *> CreateLightRaytraceTasks( std::vector<std::shared_ptr<Light>> *pvecpLight );
 
 public:
 
 	CLightmapLightingManager();
 
-	bool CreateLightmaps( std::vector<boost::shared_ptr<Light>> *pvecpLight,
+	bool CreateLightmaps( std::vector<std::shared_ptr<Light>> *pvecpLight,
                           std::vector<CLightmap> *pvecLightmap,
 						  AABTree<IndexedPolygon> *pGeometry );
 

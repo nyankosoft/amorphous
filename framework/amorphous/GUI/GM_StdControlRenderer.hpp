@@ -29,11 +29,11 @@ private:
 	{
 	public:
 
-		boost::shared_ptr<GraphicsElement> m_pElement;
+		std::shared_ptr<GraphicsElement> m_pElement;
 		GraphicsElementAnimationHandle m_PrevEffect;
 
 		ColoredElementHolder() {}
-		ColoredElementHolder(boost::shared_ptr<GraphicsElement> pElement) : m_pElement(pElement) {}
+		ColoredElementHolder(std::shared_ptr<GraphicsElement> pElement) : m_pElement(pElement) {}
 	};
 
 	std::vector<ColoredElementHolder> m_vecColoredElement;
@@ -52,7 +52,7 @@ protected:
 	/// - focus in/out, mouse cursor entered/left
 	void ChangeColorToCurrentState();
 
-	void RegisterColoredElement(boost::shared_ptr<GraphicsElement> pElement) { m_vecColoredElement.push_back( ColoredElementHolder(pElement) ); }
+	void RegisterColoredElement(std::shared_ptr<GraphicsElement> pElement) { m_vecColoredElement.push_back( ColoredElementHolder(pElement) ); }
 
 	virtual void OnGroupElementCreated();
 
@@ -104,7 +104,7 @@ class CGM_StdStaticRenderer : public CGM_StdControlRenderer
 {
 protected:
 
-	boost::shared_ptr<TextElement> m_pText;
+	std::shared_ptr<TextElement> m_pText;
 
 public:
 
@@ -124,7 +124,7 @@ protected:
 
 //	CGE_Rect *m_pRect;
 //	CGE_Rect *m_pFrameRect;
-	boost::shared_ptr<CombinedRectElement> m_pRect;
+	std::shared_ptr<CombinedRectElement> m_pRect;
 
 public:
 
@@ -219,9 +219,9 @@ protected:
 
 //	CGE_Rect *m_pRect;
 //	CGE_Rect *m_pFrameRect;
-	boost::shared_ptr<CombinedRectElement> m_pRect;
+	std::shared_ptr<CombinedRectElement> m_pRect;
 
-	std::vector<boost::shared_ptr<TextElement> > m_vecpText;
+	std::vector<std::shared_ptr<TextElement> > m_vecpText;
 
 protected:
 
@@ -268,12 +268,12 @@ protected:
 
 //	CGE_Rect *m_apRect[NUM_RECT_ELEMENTS];
 //	CGE_Rect *m_apFrameRect[NUM_RECT_ELEMENTS];
-	boost::shared_ptr<CombinedRectElement> m_apRect[NUM_RECT_ELEMENTS];
+	std::shared_ptr<CombinedRectElement> m_apRect[NUM_RECT_ELEMENTS];
 
 //	CGE_Triangle *m_apTriangle[NUM_TRIANGLE_ELEMENTS];
-	boost::shared_ptr<FillTriangleElement> m_apTriangle[NUM_TRIANGLE_ELEMENTS];
+	std::shared_ptr<FillTriangleElement> m_apTriangle[NUM_TRIANGLE_ELEMENTS];
 
-	boost::shared_ptr<GraphicsElementGroup> m_pThumbGroup;
+	std::shared_ptr<GraphicsElementGroup> m_pThumbGroup;
 
 protected:
 
@@ -305,16 +305,16 @@ class CGM_StdSliderRenderer : public CGM_StdControlRenderer
 {
 //	CGE_Rect *m_pRect;
 //	CGE_Rect *m_pFrameRect;
-	boost::shared_ptr<CombinedRectElement> m_pRect;
+	std::shared_ptr<CombinedRectElement> m_pRect;
 
 	// button
 //	CGE_Rect *m_pSliderButtonRect;
 //	CGE_Rect *m_pSliderButtonFrameRect;
-	boost::shared_ptr<CombinedRectElement> m_pSliderButtonRect;
+	std::shared_ptr<CombinedRectElement> m_pSliderButtonRect;
 //	CGE_Rect *m_pSliderButtonDot;
-	boost::shared_ptr<FillRectElement> m_pSliderButtonDot;
+	std::shared_ptr<FillRectElement> m_pSliderButtonDot;
 
-	boost::shared_ptr<GraphicsElementGroup> m_pSliderButton;
+	std::shared_ptr<GraphicsElementGroup> m_pSliderButton;
 
 public:
 
@@ -340,7 +340,7 @@ class CGM_StdDialogRenderer : public CGM_StdControlRenderer
 {
 //	CGE_Rect *m_pRect;
 //	CGE_Rect *m_pFrameRect;
-	boost::shared_ptr<CombinedRectElement> m_pRect;
+	std::shared_ptr<CombinedRectElement> m_pRect;
 
 	GraphicsElementAnimationHandle m_PrevSlideEffect;
 
@@ -368,7 +368,7 @@ protected:
 
 	GraphicsElementAnimationHandle m_PrevTextDrawEffect;
 
-	boost::shared_ptr<TextElement> m_pCaptionText;
+	std::shared_ptr<TextElement> m_pCaptionText;
 
 protected:
 

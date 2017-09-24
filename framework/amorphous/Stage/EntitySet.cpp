@@ -28,7 +28,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace physics;
 
 
@@ -537,7 +537,7 @@ void EntityManager::SetBasicEntityAttributes( CCopyEntity *pEntity, BaseEntity& 
 }
 
 
-void EntityManager::InitEntity( boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
+void EntityManager::InitEntity( std::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 							 CCopyEntity *pParent,
 							 BaseEntity *pBaseEntity,
 							 CActorDesc* pPhysActorDesc )

@@ -17,7 +17,7 @@ public:
 
 	Result::Name AddFileToDB( const std::string& keyname, const boost::filesystem::path& input_path, CBinaryDatabase<std::string>& db ) { return Result::UNKNOWN_ERROR; }
 
-	Result::Name CreateArchive( const std::string& input_filepath, boost::shared_ptr<IArchiveObjectBase>& pArchive )
+	Result::Name CreateArchive( const std::string& input_filepath, std::shared_ptr<IArchiveObjectBase>& pArchive )
 	{
 		return Result::UNKNOWN_ERROR;
 	}

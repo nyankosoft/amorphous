@@ -213,7 +213,7 @@ protected:
 	/// Geometries that cast shadows to others (=shadow casters)
 	/// are rendered to this texture.
 	/// a depth-stencil buffer for rendering to shadow map is also created and stored.
-	boost::shared_ptr<TextureRenderTarget> m_pShadowmapRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pShadowmapRenderTarget;
 
 	MeshHandle m_ShadowCasterBoundingBox;
 
@@ -288,7 +288,7 @@ public:
 /*
 class DirectionalLightShadowMap : public FlatShadowMap
 {
-//	boost::weak_ptr<CHemisphericalDirectionalLight> m_DirectionalLight;
+//	std::weak_ptr<CHemisphericalDirectionalLight> m_DirectionalLight;
 
 public:
 
@@ -336,11 +336,11 @@ class PointLightShadowMap : public ShadowMap
 
 	// or 
 
-	boost::shared_ptr<CubeMapManager> m_pCubeShadowMapManager;
+	std::shared_ptr<CubeMapManager> m_pCubeShadowMapManager;
 
 	CCubeShadowMapSceneRenderer m_CubeShadowMapSceneRenderer;
 
-//	boost::weak_ptr<CPhemisphericalPointLight> m_PointpLight;
+//	std::weak_ptr<CPhemisphericalPointLight> m_PointpLight;
 
 public:
 

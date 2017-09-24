@@ -140,7 +140,7 @@ void HUD_PlayerAircraft::Init()
 	shared_ptr<FrameRectElement> pInnerFrame = pElementMgr->CreateFrameRect( inner_frame_rect, SFloatRGBAColor( 1.0f, 1.0f, 1.0f, 0.32f ), 4.0f, global_radar_layer );
 	pInnerFrame->SetDestAlphaBlendMode( AlphaBlend::One );
 
-	boost::shared_ptr<GraphicsElement> apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
+	std::shared_ptr<GraphicsElement> apElement[] = { m_pGlobalRadarBG, pFrame, pInnerFrame };
 	m_pGlobalRadar = pElementMgr->CreateGroup( apElement, numof(apElement), m_GlobalRadarRect.GetTopLeftCorner() );
 	m_pGlobalRadar->SetLocalTopLeftPos( m_GlobalRadarRect.GetTopLeftCorner() );
 

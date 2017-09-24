@@ -53,7 +53,7 @@ class CD3DFixedFunctionPipelineManager : public CD3DShaderManager
 	/// it indicates no vacancy is left
 	int m_VacantTechniqueEntryIndex;
 */
-	boost::shared_ptr<CD3DFixedFunctionPipelineLightManager> m_pFFPLightManager;
+	std::shared_ptr<CD3DFixedFunctionPipelineLightManager> m_pFFPLightManager;
 
 private:
 
@@ -97,7 +97,7 @@ public:
 
 //	void SetTextureParam()
 
-	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
+	std::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
 

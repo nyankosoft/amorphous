@@ -2,7 +2,7 @@
 #define __ThirdPersonMotionController_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/Input/fwd.hpp"
 
@@ -16,7 +16,7 @@ class SkeletalCharacter;
 
 class ThirdPersonMotionController
 {
-	boost::shared_ptr<SkeletalCharacter> m_pCharacter;
+	std::shared_ptr<SkeletalCharacter> m_pCharacter;
 
 	Matrix34 m_CameraPose;
 
@@ -29,7 +29,7 @@ public:
 	ThirdPersonMotionController();
 	~ThirdPersonMotionController(){}
 
-	void SetSkeletalCharacter( boost::shared_ptr<SkeletalCharacter> pCharacter ) { m_pCharacter = pCharacter; }
+	void SetSkeletalCharacter( std::shared_ptr<SkeletalCharacter> pCharacter ) { m_pCharacter = pCharacter; }
 
 	void Update();
 

@@ -60,7 +60,7 @@ bool CD3DFixedFunctionPipelineManager::Init()
 
 	pD3DShaderLightMgr->Init();
 
-	m_pLightManager = boost::shared_ptr<CHLSLShaderLightManager>( pD3DShaderLightMgr );
+	m_pLightManager = std::shared_ptr<CHLSLShaderLightManager>( pD3DShaderLightMgr );
 
 	m_vecParamHandle.reserve( 8 );
 */
@@ -116,7 +116,7 @@ void CD3DFixedFunctionPipelineManager::SetParam( ShaderParameter< std::vector<fl
 }
 
 
-boost::shared_ptr<ShaderLightManager> CD3DFixedFunctionPipelineManager::GetShaderLightManager()
+std::shared_ptr<ShaderLightManager> CD3DFixedFunctionPipelineManager::GetShaderLightManager()
 {
 	return m_pFFPLightManager;
 }

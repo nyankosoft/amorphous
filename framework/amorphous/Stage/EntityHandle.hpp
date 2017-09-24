@@ -3,7 +3,7 @@
 
 
 #include "amorphous/3DMath/Matrix34.hpp"
-#include <boost/weak_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -26,7 +26,7 @@ public:
 template<class T = CCopyEntity>
 class EntityHandle : public EntityHandleBase
 {
-	boost::weak_ptr<T> m_pEntity;
+	std::weak_ptr<T> m_pEntity;
 
 	/// - m_StockID == -2 : m_pEntity is a valid entity that does not use shared_prealloc_pool
 	/// - m_StockID == -1 : No entity is set to m_pEntity. The handle is empty
@@ -38,19 +38,19 @@ public:
 	EntityHandle() : m_StockID(-1) {}
 
 	/// Defined in CopyEntity.inl
-	EntityHandle( boost::weak_ptr<T> pEntity );
+	EntityHandle( std::weak_ptr<T> pEntity );
 
 	/// Defined in CopyEntity.inl
-	EntityHandle( boost::shared_ptr<T> pEntity );
+	EntityHandle( std::shared_ptr<T> pEntity );
 
 	virtual ~EntityHandle() {}
 
 	/// Defined in CopyEntity.inl
-	inline boost::shared_ptr<T> Get();
+	inline std::shared_ptr<T> Get();
 
 	T *GetRawPtr()
 	{
-		boost::shared_ptr<T> pEntity = Get();
+		std::shared_ptr<T> pEntity = Get();
 		if( pEntity )
 			return pEntity.get();
 		else
@@ -67,7 +67,7 @@ public:
 
 	void Reset()
 	{
-		m_pEntity = boost::weak_ptr<T>();
+		m_pEntity = std::weak_ptr<T>();
 		m_StockID = -1;
 	}
 

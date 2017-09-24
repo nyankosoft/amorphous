@@ -4,7 +4,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/LightWave/fwd.hpp"
@@ -26,7 +26,7 @@ namespace amorphous
 class C3DShapesExporter_LW
 {
 
-	boost::shared_ptr<LWO2_Object> m_pObject;
+	std::shared_ptr<LWO2_Object> m_pObject;
 
 public:
 
@@ -36,9 +36,9 @@ public:
 
 	void Release();
 
-	bool ExtractShapes( boost::shared_ptr<LWO2_Object> pObject, const std::vector<std::string>& output_filepaths );
+	bool ExtractShapes( std::shared_ptr<LWO2_Object> pObject, const std::vector<std::string>& output_filepaths );
 
-	bool ExtractShapes( boost::shared_ptr<LWO2_Object> pObject, const std::string& output_filepath );
+	bool ExtractShapes( std::shared_ptr<LWO2_Object> pObject, const std::string& output_filepath );
 };
 
 

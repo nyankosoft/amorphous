@@ -34,7 +34,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 //#define APPLY_PHYSICS_TO_PLAYER_SHIP

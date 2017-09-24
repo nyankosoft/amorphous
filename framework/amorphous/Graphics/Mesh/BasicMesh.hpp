@@ -237,13 +237,13 @@ class BasicMesh
 {
 protected:
 
-	boost::shared_ptr<MeshImpl> m_pImpl;
+	std::shared_ptr<MeshImpl> m_pImpl;
 
 public:
 
 	BasicMesh();
 /*
-	BasicMesh( boost::shared_ptr<MeshImpl pImpl )
+	BasicMesh( std::shared_ptr<MeshImpl pImpl )
 		:
 	m_pImpl(pImpl)
 	{}
@@ -338,7 +338,7 @@ public:
 
 	void UpdateVisibility( const Camera& cam ) { m_pImpl->UpdateVisibility( cam ); }
 
-	friend boost::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
+	friend std::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
 
 	/// Overwrites the m_pImpl with a CustomMesh instance
 	friend void SetCustomMesh( BasicMesh& src_mesh );

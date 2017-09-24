@@ -9,7 +9,7 @@ namespace amorphous
 using namespace std;
 
 
-int Magazine::LoadCartridges( boost::shared_ptr<Cartridge>& pCartridge, uint num_max_rounds_to_load )
+int Magazine::LoadCartridges( std::shared_ptr<Cartridge>& pCartridge, uint num_max_rounds_to_load )
 {
 	if( !pCartridge )
 		return 0;

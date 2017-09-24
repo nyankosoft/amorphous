@@ -87,7 +87,7 @@ class General3DMesh
 	unsigned int m_VertexFormatFlag;
 
 	/// shared pointer of the vertex buffer. The pointer is shared by all the polygons in m_vecPolygon
-	boost::shared_ptr< std::vector<General3DVertex> > m_pVertexBuffer;
+	std::shared_ptr< std::vector<General3DVertex> > m_pVertexBuffer;
 
 	/// Polygons that hold indices to vertices
 	/// - Can be retrieved later
@@ -109,9 +109,9 @@ public:
 	/// \param dest [out] mesh archive
 //	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
 
-	boost::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
+	std::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
 
-	const boost::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() const { return m_pVertexBuffer; }
+	const std::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() const { return m_pVertexBuffer; }
 
 
 	std::vector<IndexedPolygon>& GetPolygonBuffer() { return m_vecPolygon; }
@@ -176,7 +176,7 @@ m_MeshFlag(0),
 m_VertexFormatFlag(0)
 {
 	m_pVertexBuffer
-		= boost::shared_ptr< std::vector<General3DVertex> >( new std::vector<General3DVertex>() );
+		= std::shared_ptr< std::vector<General3DVertex> >( new std::vector<General3DVertex>() );
 }
 
 
@@ -300,7 +300,7 @@ inline void General3DMesh::CalculateVertexNormalsFromPolygonPlanes()
 {
 	using std::vector;
 
-	boost::shared_ptr< std::vector<General3DVertex> > pVB = GetVertexBuffer();
+	std::shared_ptr< std::vector<General3DVertex> > pVB = GetVertexBuffer();
 	if( !pVB )
 		return;
 
@@ -349,7 +349,7 @@ inline void General3DMesh::SetVertices(
 
 	const size_t num_vertices = positions.size();
 
-	boost::shared_ptr< std::vector<General3DVertex> > pVB = GetVertexBuffer();
+	std::shared_ptr< std::vector<General3DVertex> > pVB = GetVertexBuffer();
 	if( !pVB )
 		return;
 
@@ -406,10 +406,10 @@ inline Result::Name CalculateAABB( const General3DMesh& src_mesh, AABB3& dest_aa
 
 
 
-inline boost::shared_ptr<General3DMesh> CreateGeneral3DMesh()
+inline std::shared_ptr<General3DMesh> CreateGeneral3DMesh()
 {
-	boost::shared_ptr<General3DMesh> pMesh
-		= boost::shared_ptr<General3DMesh>( new General3DMesh() );
+	std::shared_ptr<General3DMesh> pMesh
+		= std::shared_ptr<General3DMesh>( new General3DMesh() );
 
 	return pMesh;
 }

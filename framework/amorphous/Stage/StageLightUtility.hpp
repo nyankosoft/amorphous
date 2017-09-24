@@ -20,7 +20,7 @@ public:
 	/// default ctor. Added to compile this code with boost::python.
 	StageLightUtility() {}
 
-	StageLightUtility( boost::shared_ptr<CStage> pStage )
+	StageLightUtility( std::shared_ptr<CStage> pStage )
 		:
 	StageUtility(pStage)
 	{}

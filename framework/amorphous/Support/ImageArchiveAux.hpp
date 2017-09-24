@@ -71,9 +71,9 @@ inline bool LoadBitmapImageFromImageArchive( ImageArchive& src_img_archive, Bitm
 }
 
 
-inline boost::shared_ptr<BitmapImage> CreateBitmapImageFromImageArchive( ImageArchive& src_img_archive )
+inline std::shared_ptr<BitmapImage> CreateBitmapImageFromImageArchive( ImageArchive& src_img_archive )
 {
-	using boost::shared_ptr;
+	using std::shared_ptr;
 
 	shared_ptr<BitmapImage> pImage( new BitmapImage );
 

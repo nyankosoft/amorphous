@@ -59,7 +59,7 @@ public:
 //	TextureHandle m_Texture;
 	TextureResourceDesc m_Desc;
 
-	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 	RenderTargetTextureHolder()
 		:
@@ -99,13 +99,13 @@ class RenderTargetTextureCache
 {
 public:
 
-	std::vector< boost::shared_ptr<RenderTargetTextureHolder> > m_vecpHolder;
+	std::vector< std::shared_ptr<RenderTargetTextureHolder> > m_vecpHolder;
 
 //	LPDIRECT3DSURFACE9 m_pOrigRenderTarget;
 
-	boost::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
+	std::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
 
-	boost::weak_ptr<RenderTargetTextureCache> m_pSelf;
+	std::weak_ptr<RenderTargetTextureCache> m_pSelf;
 
 public:
 
@@ -123,11 +123,11 @@ public:
 
 	Result::Name AddTexture( int width, int height, TextureFormat::Format format );
 
-	boost::shared_ptr<RenderTargetTextureHolder> GetTexture( const TextureResourceDesc& desc );
+	std::shared_ptr<RenderTargetTextureHolder> GetTexture( const TextureResourceDesc& desc );
 
-	void SetSelfPtr( boost::weak_ptr<RenderTargetTextureCache> pSelf ) { m_pSelf = pSelf; }
+	void SetSelfPtr( std::weak_ptr<RenderTargetTextureCache> pSelf ) { m_pSelf = pSelf; }
 
-	boost::weak_ptr<RenderTargetTextureCache> GetSelfPtr() { return m_pSelf; }
+	std::weak_ptr<RenderTargetTextureCache> GetSelfPtr() { return m_pSelf; }
 };
 
 
@@ -141,7 +141,7 @@ class PostProcessEffectFilter
 {
 protected:
 
-	boost::shared_ptr<PostProcessFilterShader> m_pFilterShader;
+	std::shared_ptr<PostProcessFilterShader> m_pFilterShader;
 
 //    int m_nFxIndex;
 
@@ -149,9 +149,9 @@ protected:
 
 	float m_fScaleX, m_fScaleY;
 
-	boost::shared_ptr<RenderTargetTextureHolder> m_pDest;
+	std::shared_ptr<RenderTargetTextureHolder> m_pDest;
 
-	boost::shared_ptr<RenderTargetTextureHolder> m_pPrevScene;
+	std::shared_ptr<RenderTargetTextureHolder> m_pPrevScene;
 
 	/// The specification of the render target.
 	TextureResourceDesc m_Desc;
@@ -178,9 +178,9 @@ protected:
 
 	float m_fScalingFactor;
 
-	std::vector< boost::shared_ptr<PostProcessEffectFilter> > m_vecpNextFilter;
+	std::vector< std::shared_ptr<PostProcessEffectFilter> > m_vecpNextFilter;
 
-	boost::shared_ptr<RenderTargetTextureCache> m_pCache;
+	std::shared_ptr<RenderTargetTextureCache> m_pCache;
 
 	std::string m_DebugImageFilenameExtraString;
 
@@ -255,7 +255,7 @@ public:
 
 	virtual Result::Name Init( RenderTargetTextureCache& cache, FilterShaderContainer& filter_shader_container );
 
-	void SetTextureCache( boost::shared_ptr<RenderTargetTextureCache> pCache ) { m_pCache = pCache; }
+	void SetTextureCache( std::shared_ptr<RenderTargetTextureCache> pCache ) { m_pCache = pCache; }
 
 	inline void SetScale( float fScaleX, float fScaleY ) { m_fScaleX = fScaleX; m_fScaleY = fScaleY; }
 
@@ -284,20 +284,20 @@ public:
 
 	void SetRenderTargetSize( int width, int height ) { m_Desc.Width = width; m_Desc.Height = height; }
 
-	virtual void AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter ) { m_vecpNextFilter.push_back( pFilter ); }
+	virtual void AddNextFilter( std::shared_ptr<PostProcessEffectFilter> pFilter ) { m_vecpNextFilter.push_back( pFilter ); }
 
 	virtual void ClearNextFilters() { m_vecpNextFilter.resize( 0 ); }
 
-	void SetFilterShader(  boost::shared_ptr<PostProcessFilterShader> pFilterShader ) { m_pFilterShader = pFilterShader; }
+	void SetFilterShader(  std::shared_ptr<PostProcessFilterShader> pFilterShader ) { m_pFilterShader = pFilterShader; }
 
-	boost::shared_ptr<PostProcessFilterShader> GetFilterShader() { return m_pFilterShader; }
+	std::shared_ptr<PostProcessFilterShader> GetFilterShader() { return m_pFilterShader; }
 
-	boost::shared_ptr<RenderTargetTextureHolder> GetDestRenderTarget() { return m_pDest; }
+	std::shared_ptr<RenderTargetTextureHolder> GetDestRenderTarget() { return m_pDest; }
 
 	/// rationale to make this virtual: combined filters may not need to lock prev render target
-	virtual void LockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
+	virtual void LockPrevRenderTarget( std::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
-	virtual void UnlockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
+	virtual void UnlockPrevRenderTarget( std::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
 
 	const std::string& GetDebugImageFilenameExtraString() { return m_DebugImageFilenameExtraString; }
 

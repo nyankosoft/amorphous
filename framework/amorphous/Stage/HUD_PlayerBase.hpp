@@ -20,7 +20,7 @@ class HUD_PlayerBase : public GraphicsComponent
 {
 protected:
 
-	boost::shared_ptr<GraphicsElementAnimationManager> m_pGraphicsEffectManager;
+	std::shared_ptr<GraphicsElementAnimationManager> m_pGraphicsEffectManager;
 
 	/// show / hide the HUD
 	bool m_bShow;
@@ -73,7 +73,7 @@ public:
 	virtual bool OpenTextWindow( CGameTextSet *pTextSet ) { return false; }
 	virtual CGameTextSet *GetCurrentTextSetInTextWindow() { return NULL; }
 
-	void SetGraphicsEffectManager( boost::shared_ptr<GraphicsElementAnimationManager> pEffectMgr ) { m_pGraphicsEffectManager = pEffectMgr; }
+	void SetGraphicsEffectManager( std::shared_ptr<GraphicsElementAnimationManager> pEffectMgr ) { m_pGraphicsEffectManager = pEffectMgr; }
 
 	virtual void CreateRenderTasks() {}
 

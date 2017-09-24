@@ -48,7 +48,7 @@ LightWaveSceneLoader::LightWaveSceneLoader()
 }
 
 
-boost::shared_ptr<LWS_Bone> GetBone( int bone_id, std::vector< boost::shared_ptr<LWS_Bone> >& vecpBone )
+std::shared_ptr<LWS_Bone> GetBone( int bone_id, std::vector< std::shared_ptr<LWS_Bone> >& vecpBone )
 {
 	const int num_bones = (int)vecpBone.size();
 	for( int i=0; i<num_bones; i++ )
@@ -57,7 +57,7 @@ boost::shared_ptr<LWS_Bone> GetBone( int bone_id, std::vector< boost::shared_ptr
 			return vecpBone[i];
 	}
 
-	return boost::shared_ptr<LWS_Bone>();
+	return std::shared_ptr<LWS_Bone>();
 }
 
 
@@ -372,7 +372,7 @@ shared_ptr<LWS_Bone> LightWaveSceneLoader::GetBone(int i)
 }
 
 
-std::vector< boost::shared_ptr<LWS_Bone> > LightWaveSceneLoader::GetRootBones()
+std::vector< std::shared_ptr<LWS_Bone> > LightWaveSceneLoader::GetRootBones()
 {
 	vector< shared_ptr<LWS_Bone> > vecpRootBone;
 	vecpRootBone.reserve( 8 );

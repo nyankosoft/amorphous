@@ -2,7 +2,7 @@
 #define __SkeletonRenderer_H__
 
 #include <vector>
-#include <boost/weak_ptr.hpp>
+#include <memory>
 
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/ray.hpp"
@@ -20,7 +20,7 @@ namespace msynth
 
 class SkeletonRenderer
 {
-	boost::weak_ptr<Skeleton> m_pSkeleton;
+	std::weak_ptr<Skeleton> m_pSkeleton;
 
 	std::vector<Matrix34> m_vecBonePose;
 
@@ -30,7 +30,7 @@ class SkeletonRenderer
 
 //	CUnitCube m_Cube;
 
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	bool m_DisplayBoneNames;
 
@@ -50,7 +50,7 @@ public:
 
 	void UpdateBonePoses( const Keyframe& keyframe );
 
-	void SetSkeleton( boost::weak_ptr<Skeleton> pSkeleton ) { m_pSkeleton = pSkeleton; }
+	void SetSkeleton( std::weak_ptr<Skeleton> pSkeleton ) { m_pSkeleton = pSkeleton; }
 
 //	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = skeleton; }
 

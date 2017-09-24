@@ -17,12 +17,12 @@ public:
 
 	FilterType GetFilterType() const { return PostProcessEffectFilter::TYPE_ORIGINAL_SCENE; }
 
-	OriginalSceneFilter( boost::shared_ptr<RenderTargetTextureHolder> pHolder )
+	OriginalSceneFilter( std::shared_ptr<RenderTargetTextureHolder> pHolder )
 	{
 		m_pDest = pHolder;
 	}
 
-	void SetSceneRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder )
+	void SetSceneRenderTarget( std::shared_ptr<RenderTargetTextureHolder> pHolder )
 	{
 		m_pDest = pHolder;
 	}
@@ -33,15 +33,15 @@ class CombinedFilter : public PostProcessEffectFilter
 {
 protected:
 
-//	std::vector< boost::shared_ptr<PostProcessEffectFilter> > m_vecpChildFilter;
+//	std::vector< std::shared_ptr<PostProcessEffectFilter> > m_vecpChildFilter;
 
-	boost::shared_ptr<PostProcessEffectFilter> m_pLastFilter;
+	std::shared_ptr<PostProcessEffectFilter> m_pLastFilter;
 
 public:
 
 	virtual ~CombinedFilter() {}
 
-	void AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter ) { if(m_pLastFilter) { m_pLastFilter->AddNextFilter( pFilter ); } }
+	void AddNextFilter( std::shared_ptr<PostProcessEffectFilter> pFilter ) { if(m_pLastFilter) { m_pLastFilter->AddNextFilter( pFilter ); } }
 
 	void ClearNextFilters() { if(m_pLastFilter) { m_pLastFilter->ClearNextFilters(); } }
 };
@@ -147,9 +147,9 @@ public:
 
 class CombinedBloomFilter : public CombinedFilter
 {
-	boost::shared_ptr<GaussianBlurFilter> m_pGaussianBlurFilter;
-	boost::shared_ptr<HorizontalBloomFilter> m_pHBloomFilter;
-	boost::shared_ptr<VerticalBloomFilter>   m_pVBloomFilter;
+	std::shared_ptr<GaussianBlurFilter> m_pGaussianBlurFilter;
+	std::shared_ptr<HorizontalBloomFilter> m_pHBloomFilter;
+	std::shared_ptr<VerticalBloomFilter>   m_pVBloomFilter;
 
 	SRectangular m_BasePlane;
 
@@ -170,7 +170,7 @@ public:
 
 	void SetBlurStrength( float strength );
 
-//	void AddNextFilter( boost::shared_ptr<PostProcessEffectFilter> pFilter );
+//	void AddNextFilter( std::shared_ptr<PostProcessEffectFilter> pFilter );
 };
 
 
@@ -260,8 +260,8 @@ public:
 
 class AdaptationCalcFilter : public PostProcessEffectFilter
 {
-	boost::shared_ptr<RenderTargetTextureHolder> m_pTexAdaptedLuminanceLast;
-	boost::shared_ptr<RenderTargetTextureHolder> m_pTexAdaptedLuminanceCur;
+	std::shared_ptr<RenderTargetTextureHolder> m_pTexAdaptedLuminanceLast;
+	std::shared_ptr<RenderTargetTextureHolder> m_pTexAdaptedLuminanceCur;
 
 	float m_fElapsedTime;
 
@@ -287,13 +287,13 @@ public:
 
 	void SetLuminanceAdaptationRate( float fRate ) { m_fLuminanceAdaptationRate = fRate; }
 
-	boost::shared_ptr<RenderTargetTextureHolder> GetAdaptedLuminanceTexture() { return m_pTexAdaptedLuminanceCur; }
+	std::shared_ptr<RenderTargetTextureHolder> GetAdaptedLuminanceTexture() { return m_pTexAdaptedLuminanceCur; }
 };
 
 
 class HDRBrightPassFilter : public PostProcessEffectFilter
 {
-	boost::shared_ptr<RenderTargetTextureHolder> m_pAdaptedLuminanceTexture;
+	std::shared_ptr<RenderTargetTextureHolder> m_pAdaptedLuminanceTexture;
 
 public:
 
@@ -305,7 +305,7 @@ public:
 
 	void Render();
 
-	void SetAdaptedLuminanceTexture( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { m_pAdaptedLuminanceTexture = pHolder; }
+	void SetAdaptedLuminanceTexture( std::shared_ptr<RenderTargetTextureHolder> pHolder ) { m_pAdaptedLuminanceTexture = pHolder; }
 };
 
 
@@ -313,10 +313,10 @@ class HDRLightingFinalPassFilter : public PostProcessEffectFilter
 {
 public:
 
-	boost::shared_ptr<RenderTargetTextureHolder> m_pBloom;
-	boost::shared_ptr<RenderTargetTextureHolder> m_pStar;
-	boost::shared_ptr<RenderTargetTextureHolder> m_pAdaptedLuminance;
-	boost::shared_ptr<RenderTargetTextureHolder> m_pPrevResult;
+	std::shared_ptr<RenderTargetTextureHolder> m_pBloom;
+	std::shared_ptr<RenderTargetTextureHolder> m_pStar;
+	std::shared_ptr<RenderTargetTextureHolder> m_pAdaptedLuminance;
+	std::shared_ptr<RenderTargetTextureHolder> m_pPrevResult;
 
 	float m_fKeyValue;
 
@@ -355,25 +355,25 @@ class HDRLightingFilter : public CombinedFilter
 		NUM_TONEMAP_TEXTURES = 4,
 	};
 
-//	boost::shared_ptr<CHDROverlayEffectFilter> m_pOverlayEffectFilter;
+//	std::shared_ptr<CHDROverlayEffectFilter> m_pOverlayEffectFilter;
 
-	boost::shared_ptr<LuminanceCalcFilter> m_apLumCalcFilter[NUM_TONEMAP_TEXTURES];
+	std::shared_ptr<LuminanceCalcFilter> m_apLumCalcFilter[NUM_TONEMAP_TEXTURES];
 
-	boost::shared_ptr<AdaptationCalcFilter> m_pAdaptationCalcFilter;
+	std::shared_ptr<AdaptationCalcFilter> m_pAdaptationCalcFilter;
 
-	boost::shared_ptr<DownScale4x4Filter> m_pDownScale4x4Filter;
+	std::shared_ptr<DownScale4x4Filter> m_pDownScale4x4Filter;
 
-	boost::shared_ptr<HDRBrightPassFilter> m_pBrightPassFilter;
+	std::shared_ptr<HDRBrightPassFilter> m_pBrightPassFilter;
 
-	boost::shared_ptr<GaussianBlurFilter> m_pGaussianBlurFilter;
+	std::shared_ptr<GaussianBlurFilter> m_pGaussianBlurFilter;
 
-	boost::shared_ptr<DownScale2x2Filter> m_pDownScale2x2Filter;
+	std::shared_ptr<DownScale2x2Filter> m_pDownScale2x2Filter;
 
-	boost::shared_ptr<CombinedBloomFilter> m_pBloomFilter;
+	std::shared_ptr<CombinedBloomFilter> m_pBloomFilter;
 
-	boost::shared_ptr<HDRLightingFinalPassFilter> m_pFinalPassFilter;
+	std::shared_ptr<HDRLightingFinalPassFilter> m_pFinalPassFilter;
 
-	boost::shared_ptr<StarFilter> m_pStarFilter;
+	std::shared_ptr<StarFilter> m_pStarFilter;
 
 	bool m_EnableStarFilter;
 
@@ -393,12 +393,12 @@ public:
 
 	void SetLuminanceAdaptationRate( float fRate ) { if(m_pAdaptationCalcFilter) m_pAdaptationCalcFilter->SetLuminanceAdaptationRate(fRate); }
 
-	void LockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
+	void LockPrevRenderTarget( std::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->IncrementLockCount(); }
 
-	void UnlockPrevRenderTarget( boost::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
+	void UnlockPrevRenderTarget( std::shared_ptr<RenderTargetTextureHolder> pHolder ) { pHolder->DecrementLockCount(); }
 
 	/// used to display adapted luminance for debugging
-	boost::shared_ptr<AdaptationCalcFilter> GetAdaptationCalcFilter() { return m_pAdaptationCalcFilter; }
+	std::shared_ptr<AdaptationCalcFilter> GetAdaptationCalcFilter() { return m_pAdaptationCalcFilter; }
 };
 
 
@@ -406,12 +406,12 @@ class FullScreenBlurFilter : public CombinedFilter
 {
 	float m_fBlurStrength;
 
-	boost::shared_ptr<DownScale4x4Filter> m_pDownScale4x4Filter;
+	std::shared_ptr<DownScale4x4Filter> m_pDownScale4x4Filter;
 
-//	boost::shared_ptr<HorizontalBloomFilter> m_apHorizontalBloomFilter[2];
-//	boost::shared_ptr<VerticalBloomFilter> m_apVerticalBloomFilter[2];
+//	std::shared_ptr<HorizontalBloomFilter> m_apHorizontalBloomFilter[2];
+//	std::shared_ptr<VerticalBloomFilter> m_apVerticalBloomFilter[2];
 
-	boost::shared_ptr<CombinedBloomFilter> m_pBloomFilter;
+	std::shared_ptr<CombinedBloomFilter> m_pBloomFilter;
 
 public:
 

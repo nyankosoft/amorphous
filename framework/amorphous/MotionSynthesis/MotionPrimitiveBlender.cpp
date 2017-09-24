@@ -11,7 +11,7 @@ namespace amorphous
 
 using std::vector;
 using std::list;
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace msynth;
 
 

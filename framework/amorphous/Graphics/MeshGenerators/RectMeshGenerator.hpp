@@ -58,7 +58,7 @@ public:
 	Result::Name Generate()
 	{
 		using std::vector;
-		using boost::shared_ptr;
+		using std::shared_ptr;
 
 		vector<Vector3> positions, normals;
 		vector<SFloatRGBAColor> diffuse_colors;

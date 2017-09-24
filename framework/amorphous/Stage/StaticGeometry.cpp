@@ -56,7 +56,7 @@ void CreateCachedResources()
 
 
 // temporary measure to avoid D3DXFilterTexture() calls in async loading at runtime
-static void ForceTextureMipMapLevelsToOne( boost::shared_ptr<BasicMesh> pMesh )
+static void ForceTextureMipMapLevelsToOne( std::shared_ptr<BasicMesh> pMesh )
 {
 	if( !pMesh )
 		return;

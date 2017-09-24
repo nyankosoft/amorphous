@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/3DMath/Transform.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/XML/fwd.hpp"
@@ -59,7 +59,7 @@ protected:
 
 
 	/// borrowed reference
-//	boost::shared_ptr<SkeletalMesh> m_pTargetMesh;
+//	std::shared_ptr<SkeletalMesh> m_pTargetMesh;
 
 //	std::vector<std::string> m_vecTargetBoneName;
 
@@ -76,7 +76,7 @@ public:
 		NUM_IDS
 	};
 
-	MeshBoneControllerBase( boost::shared_ptr<SkeletalMesh> pTargetMesh = boost::shared_ptr<SkeletalMesh>() ){}
+	MeshBoneControllerBase( std::shared_ptr<SkeletalMesh> pTargetMesh = std::shared_ptr<SkeletalMesh>() ){}
 //		:
 //	m_pTargetMesh(pTargetMesh) {}
 
@@ -86,7 +86,7 @@ public:
 
 	virtual void UpdateTransforms() = 0;
 
-//	virtual void SetTargetMesh( boost::shared_ptr<SkeletalMesh> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
+//	virtual void SetTargetMesh( std::shared_ptr<SkeletalMesh> pTargetMesh ) { m_pTargetMesh = pTargetMesh; }
 
 //	void UpdateTargetMeshTransforms();
 

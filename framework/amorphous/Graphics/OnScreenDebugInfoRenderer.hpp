@@ -13,7 +13,7 @@ namespace amorphous
 
 class OnScreenDebugInfoRenderer
 {
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	C2DRect m_BackgroundRect;
 

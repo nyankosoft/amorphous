@@ -126,11 +126,11 @@ public:
 	std::string m_Name;
 
 	physics::CActor *m_pActor; ///< kinematic actor
-	std::vector< boost::shared_ptr<physics::CShapeDesc> > m_pShapeDescs;
+	std::vector< std::shared_ptr<physics::CShapeDesc> > m_pShapeDescs;
 
 	std::string m_BoneName;
 
-//	boost::shared_ptr<msynth::CBlendNode> m_pBlendNode;
+//	std::shared_ptr<msynth::CBlendNode> m_pBlendNode;
 	const msynth::TransformCacheNode *m_pTransformNode;
 
 	/// -2: not initialized / -1: invalid index (searched once, but the bone was not found. Used to avoid searching a mesh skeleton with an invalid bone name more than once)
@@ -200,7 +200,7 @@ public:
 
 	msynth::TransformCacheTree m_TransformCacheTree;
 
-	boost::shared_ptr<msynth::Skeleton> m_pSkeleton;
+	std::shared_ptr<msynth::Skeleton> m_pSkeleton;
 
 public:
 
@@ -208,7 +208,7 @@ public:
 
 	virtual ~CClothSystem() { ReleasePhysics(); }
 
-	Result::Name InitMotionSystem( boost::shared_ptr<msynth::Skeleton> pSkeleton );
+	Result::Name InitMotionSystem( std::shared_ptr<msynth::Skeleton> pSkeleton );
 
 	/**
 	When called without arguments, the cloth system creates a new scene for physics objects.
@@ -254,7 +254,7 @@ public:
 
 	void RenderObjectsForDebugging();
 
-//	void SetSkeleton( boost::shared_ptr<msynth::CSkeleton>& pSkeleton ) { m_pSkeleton = pSkeleton; }
+//	void SetSkeleton( std::shared_ptr<msynth::CSkeleton>& pSkeleton ) { m_pSkeleton = pSkeleton; }
 
 	Result::Name AttachClothMesh( const std::string& cloth_name, MeshHandle& cloth_mesh, const std::string& target_bone_name, const Sphere& vertices_catcher_volume );
 

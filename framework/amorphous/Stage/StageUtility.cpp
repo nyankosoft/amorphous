@@ -810,7 +810,7 @@ EntityHandle<> StageMiscUtility::CreateEntityFromBaseEntity(
 	const char *name,
 	const Matrix34& pose )
 {
-	boost::shared_ptr<CStage> pStage = m_pStage.lock();
+	std::shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
 		return EntityHandle<>();
 
@@ -910,7 +910,7 @@ EntityHandle<> StageMiscUtility::CreateEntity(
 			// Guess shape(s) from the model
 			C3DMeshModelArchive ma;
 			bool ma_loaded = ma.LoadFromFile( model );
-			boost::shared_ptr<General3DMesh> pMesh = CreateGeneral3DMesh();
+			std::shared_ptr<General3DMesh> pMesh = CreateGeneral3DMesh();
 			if( !pMesh )
 				return EntityHandle<>();
 			CMeshArchiveToGeneral3DMeshConverer converter;
@@ -1234,7 +1234,7 @@ EntityHandle<> StageMiscUtility::CreateNonCollidableEntityFromMesh(
 	if( !pEntityRawPtr )
 		return EntityHandle<>();
 
-	const boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
+	const std::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 	if( !pMesh )
 	{
 		return EntityHandle<>();

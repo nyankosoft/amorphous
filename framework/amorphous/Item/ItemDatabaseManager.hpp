@@ -6,7 +6,7 @@
 #include "GameItem.hpp"
 #include "amorphous/Support/singleton.hpp"
 #include "amorphous/Support/Serialization/BinaryDatabase.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -45,20 +45,20 @@ public:
 	bool LoadFromFile( const std::string& filename );
 
 	template<class T>
-	inline boost::shared_ptr<T> GetItem( const std::string& item_name, int quantity );
+	inline std::shared_ptr<T> GetItem( const std::string& item_name, int quantity );
 };
 
 
 //--------------------------------- inline implementations ---------------------------------
 
 template<class T>
-inline boost::shared_ptr<T> ItemDatabaseManager::GetItem( const std::string& item_name, int quantity )
+inline std::shared_ptr<T> ItemDatabaseManager::GetItem( const std::string& item_name, int quantity )
 {
 	GameItem *pRawOwnedPtr = GetItemRawPtr( item_name, quantity );
 	if( !pRawOwnedPtr )
-		return  boost::shared_ptr<T>();
+		return  std::shared_ptr<T>();
 
-	boost::shared_ptr<GameItem> pBasePtr = boost::shared_ptr<GameItem>( pRawOwnedPtr );
+	std::shared_ptr<GameItem> pBasePtr = std::shared_ptr<GameItem>( pRawOwnedPtr );
 
 	pBasePtr->SetWeakPtr( pBasePtr );
 

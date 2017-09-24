@@ -111,7 +111,7 @@ inline CLightingForLightmap_SimpleRaytrace<T>::CLightingForLightmap_SimpleRaytra
 
 class CLightRayTrace
 {
-	boost::shared_ptr<CLight> m_pLight;
+	std::shared_ptr<CLight> m_pLight;
 
 	CAABTree<CIndexedPolygon> *m_pGeometry;
 
@@ -123,7 +123,7 @@ public:
 
 class CPointLightRayTrace
 {
-	boost::shared_ptr<CLight> m_pLight;
+	std::shared_ptr<CLight> m_pLight;
 
 	Vector3 m_vLightPosition;
 

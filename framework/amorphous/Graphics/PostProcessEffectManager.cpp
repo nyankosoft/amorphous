@@ -112,7 +112,7 @@ Result::Name FilterShaderContainer::AddShader( const std::string& filepath )
 }
 
 
-boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddPostProcessEffectShader( const std::string& effect_name )
+std::shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddPostProcessEffectShader( const std::string& effect_name )
 {
 	ShaderResourceDesc shader_desc;
 	shader_desc.pShaderGenerator.reset( new PostProcessEffectFilterShaderGenerator( effect_name.c_str() ) );
@@ -120,7 +120,7 @@ boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::AddPostProcess
 }
 
 
-boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetFilterShader( const std::string& name )
+std::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetFilterShader( const std::string& name )
 {
 	if( 0 < m_vecpShader.size() )
 		return m_vecpShader[0];
@@ -129,7 +129,7 @@ boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetFilterShade
 }
 
 
-boost::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetShader( const std::string& technique_name )
+std::shared_ptr<PostProcessFilterShader> FilterShaderContainer::GetShader( const std::string& technique_name )
 {
 	if( 0 < m_vecpShader.size() )
 		return m_vecpShader[0];
@@ -654,7 +654,7 @@ void PostProcessEffectManager::DisplayAdaptedLuminance()
 
 
 /*
-	boost::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
+	std::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
 	m_pPostProcessEffectManager = shared_ptr<PostProcessEffectManager>( new PostProcessEffectManager );
 
 	m_pPostProcessEffectManager->Init();

@@ -5,7 +5,7 @@
 #include "SingleStageGameTask.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Support/CameraController.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -16,7 +16,7 @@ class StageViewerGameTask : public SingleStageGameTask
 {
 	Camera m_Camera;
 
-	boost::shared_ptr<CameraController> m_pCameraController;
+	std::shared_ptr<CameraController> m_pCameraController;
 
 	/// Use the above camera controller to control the camera movement.
 	/// - default: true
@@ -26,7 +26,7 @@ protected:
 
 	const Camera& GetCamera() const { return m_Camera; }
 
-	const boost::shared_ptr<CameraController> GetCameraController() const { return m_pCameraController; }
+	const std::shared_ptr<CameraController> GetCameraController() const { return m_pCameraController; }
 
 	void SetCameraPosition( const Vector3& pos ) { m_Camera.SetPosition(pos); m_pCameraController->SetPosition(pos); }
 

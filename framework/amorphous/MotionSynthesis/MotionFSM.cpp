@@ -11,7 +11,7 @@ namespace amorphous
 using std::string;
 using std::vector;
 using std::pair;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 namespace msynth
@@ -239,12 +239,12 @@ public:
 
 	MotionFSMCallback( MotionFSM *pFSM ) : m_pFSM(pFSM) {}
 /*
-	virtual void OnNewMotionPrimitiveStarted( boost::shared_ptr<MotionPrimitiveNode>& pNew )
+	virtual void OnNewMotionPrimitiveStarted( std::shared_ptr<MotionPrimitiveNode>& pNew )
 	{
 	}
 */
 	/// Called when a motion primitive is finished playing and a new primitive is being started playing
-	void OnMotionPrimitiveChanged( boost::shared_ptr<MotionPrimitive>& pPrev, boost::shared_ptr<MotionPrimitive>& pNew )
+	void OnMotionPrimitiveChanged( std::shared_ptr<MotionPrimitive>& pPrev, std::shared_ptr<MotionPrimitive>& pNew )
 	{
 		if( pPrev->IsLoopedMotion() )
 			return;
@@ -259,7 +259,7 @@ public:
 		m_pFSM->StartNextMotion();
 	}
 
-	void OnMotionPrimitiveFinished( boost::shared_ptr<MotionPrimitive>& pPrev )
+	void OnMotionPrimitiveFinished( std::shared_ptr<MotionPrimitive>& pPrev )
 	{
 		if( !m_pFSM )
 			return;
@@ -436,7 +436,7 @@ void MotionPrimitiveNode::LoadMotion( MotionDatabase& db )
 }
 
 
-void MotionPrimitiveNode::SetStartBlendNode( boost::shared_ptr<BlendNode> pRootBlendNode )
+void MotionPrimitiveNode::SetStartBlendNode( std::shared_ptr<BlendNode> pRootBlendNode )
 {
 	if( m_pMotionPrimitive )
 		m_pMotionPrimitive->SearchAndSetStartBlendNode( pRootBlendNode );
@@ -453,7 +453,7 @@ void MotionPrimitiveNode::CalculateKeyframe()
 }
 
 
-void MotionPrimitiveNode::SetAlgorithm( boost::shared_ptr<MotionNodeAlgorithm> pAlgorithm )
+void MotionPrimitiveNode::SetAlgorithm( std::shared_ptr<MotionNodeAlgorithm> pAlgorithm )
 {
 	if( !pAlgorithm )
 		pAlgorithm.reset( new MotionNodeAlgorithm );

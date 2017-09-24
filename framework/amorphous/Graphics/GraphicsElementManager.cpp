@@ -303,7 +303,7 @@ shared_ptr<CombinedRoundRectElement> GraphicsElementManager::CreateRoundRect( co
 }
 
 
-boost::shared_ptr<RoundFillRectElement> GraphicsElementManager::CreateRoundFillRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, float corner_radius, int layer )
+std::shared_ptr<RoundFillRectElement> GraphicsElementManager::CreateRoundFillRect( const SRect& rect, const SFloatRGBAColor& fill_color_0, float corner_radius, int layer )
 {
 	shared_ptr<RoundFillRectElement> pRoundFillRectElement( new RoundFillRectElement( rect, m_fScale, corner_radius ) );
 
@@ -755,14 +755,14 @@ bool GraphicsElementManager::RemoveElement( shared_ptr<GraphicsElement> pElement
 }
 
 /*
-bool GraphicsElementManager::RemoveElement( boost::shared_ptr<CombinedPrimitiveElement> pElement )
+bool GraphicsElementManager::RemoveElement( std::shared_ptr<CombinedPrimitiveElement> pElement )
 {
-	boost::shared_ptr<GraphicsElement> pFilElement   = pElement->FillElement();
-	boost::shared_ptr<GraphicsElement> pFrameElement = pElement->FrameElement();
+	std::shared_ptr<GraphicsElement> pFilElement   = pElement->FillElement();
+	std::shared_ptr<GraphicsElement> pFrameElement = pElement->FrameElement();
 	RemoveElement( pFilElement );
 	RemoveElement( pFrameElement );
 
-	boost::shared_ptr<GraphicsElement> pCombinedPrimitiveElement   = pElement;
+	std::shared_ptr<GraphicsElement> pCombinedPrimitiveElement   = pElement;
 	RemoveElement( pCombinedPrimitiveElement );
 
 	return true;
@@ -784,7 +784,7 @@ bool GraphicsElementManager::RemoveAllElements()
 
 // remove an element from its current layer
 // - does not release the element
-void GraphicsElementManager::RemoveFromLayer( boost::shared_ptr<GraphicsElement> pElement )
+void GraphicsElementManager::RemoveFromLayer( std::shared_ptr<GraphicsElement> pElement )
 {
 	int layer_index = pElement->GetLayerIndex();
 	if( layer_index < 0 || (int)m_vecLayer.size() <= layer_index )
@@ -799,7 +799,7 @@ void GraphicsElementManager::RemoveFromLayer( boost::shared_ptr<GraphicsElement>
 }
 
 
-void GraphicsElementManager::SetElementToLayer( boost::shared_ptr<GraphicsElement> pElement, int layer_index )
+void GraphicsElementManager::SetElementToLayer( std::shared_ptr<GraphicsElement> pElement, int layer_index )
 {
 	if( layer_index < 0 || NUM_MAX_LAYERS <= layer_index )
 		return;

@@ -38,7 +38,7 @@ protected:
 	/// generate texture coords based on m_TexCoordStyleFlags.
 	void GenerateTextureCoords( General3DMesh& mesh );
 
-	Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh );
+	Result::Name CreateArchiveFromGeneral3DMesh( std::shared_ptr<General3DMesh>& pSrcMesh );
 
 public:
 

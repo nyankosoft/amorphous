@@ -423,7 +423,7 @@ public:
 
 	ScriptedCameraEntityHandle() {}
 
-	ScriptedCameraEntityHandle( boost::weak_ptr<ScriptedCameraEntity> pCameraEntity )
+	ScriptedCameraEntityHandle( std::weak_ptr<ScriptedCameraEntity> pCameraEntity )
 		:
 	EntityHandle<ScriptedCameraEntity>( pCameraEntity )
 	{}

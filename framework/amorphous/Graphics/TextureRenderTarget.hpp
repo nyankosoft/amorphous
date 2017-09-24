@@ -83,11 +83,11 @@ public:
 
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 
-	static boost::shared_ptr<TextureRenderTarget> (*ms_pCreateTextureRenderTarget)(void);
+	static std::shared_ptr<TextureRenderTarget> (*ms_pCreateTextureRenderTarget)(void);
 
-	static void SetInstanceCreationFunction( boost::shared_ptr<TextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateTextureRenderTarget = CreateTextureRenderTarget; }
+	static void SetInstanceCreationFunction( std::shared_ptr<TextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateTextureRenderTarget = CreateTextureRenderTarget; }
 
-	static boost::shared_ptr<TextureRenderTarget> Create();
+	static std::shared_ptr<TextureRenderTarget> Create();
 };
 
 

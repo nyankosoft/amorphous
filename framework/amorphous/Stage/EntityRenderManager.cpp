@@ -32,7 +32,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 bool IsValidPlane( const Plane& plane )
@@ -56,19 +56,19 @@ class PlanarReflectionGroup
 
 	std::vector< EntityHandle<> > m_Entities;
 
-	boost::shared_ptr<TextureRenderTarget> m_pReflectionRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pReflectionRenderTarget;
 
 	bool m_TextureUpdated;
 
 	int FindEntity( EntityHandle<>& entity )
 	{
-		boost::shared_ptr<CCopyEntity> pEntity = entity.Get();
+		std::shared_ptr<CCopyEntity> pEntity = entity.Get();
 		if( !pEntity )
 			return -1;
 
 		for( size_t i=0; i<m_Entities.size(); i++ )
 		{
-			boost::shared_ptr<CCopyEntity> pOtherEntity = m_Entities[i].Get();
+			std::shared_ptr<CCopyEntity> pOtherEntity = m_Entities[i].Get();
 			if( pOtherEntity
 			 && pOtherEntity->GetID() == pEntity->GetID() )
 			{
@@ -140,7 +140,7 @@ class CubeTextureParamsLoader : public ShaderParamsLoader
 
 public:
 
-	CubeTextureParamsLoader( boost::shared_ptr<CCopyEntity> pEntity = boost::shared_ptr<CCopyEntity>(),
+	CubeTextureParamsLoader( std::shared_ptr<CCopyEntity> pEntity = std::shared_ptr<CCopyEntity>(),
 		                      EntityRenderManager *pEntityRenderMgr = NULL,
 							  int cube_tex_index = 0 )
 		:
@@ -159,7 +159,7 @@ public:
 	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
 //		rShaderMgr.SetCubeTexture( m_CubeTexIndex, m_pCubeTexture );
-		boost::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
+		std::shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 		if( pEntity && m_pEntityRenderManager )
 		{
 			TextureHandle cube_map_texture

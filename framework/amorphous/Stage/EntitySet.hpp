@@ -2,7 +2,7 @@
 #define __ENTITYSET_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "fwd.hpp"
 #include "CopyEntity.hpp"
@@ -31,7 +31,7 @@ private:
 
 	U32 m_EntityIDConter;
 
-	boost::shared_ptr<CCopyEntity> m_pEntityInUse; ///< list of copy-entities currently in use
+	std::shared_ptr<CCopyEntity> m_pEntityInUse; ///< list of copy-entities currently in use
 
 	EntityFactory *m_pEntityFactory;
 
@@ -45,7 +45,7 @@ private:
 
 //	LightEntityManager *m_pLightEntityManager;
 
-	boost::shared_ptr<EntityRenderManager> m_pRenderManager;
+	std::shared_ptr<EntityRenderManager> m_pRenderManager;
 
 	float m_PhysTimestep;
 	float m_PhysOverlapTime;
@@ -76,7 +76,7 @@ private:
 	void SetBasicEntityAttributes( CCopyEntity *pEntity, BaseEntity& rBaseEntity );
 
 	void InitEntity(
-		boost::shared_ptr<CCopyEntity> pNewCopyEntPtr,
+		std::shared_ptr<CCopyEntity> pNewCopyEntPtr,
 		CCopyEntity *pParent,
 		BaseEntity *pBaseEntity,
 		physics::CActorDesc* pPhysActorDesc
@@ -173,7 +173,7 @@ public:
 							   const Vector3& rvDirection = Vector3(0,0,0) );
 
 	template<class T>
-	inline EntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
+	inline EntityHandle<T> CreateEntity( std::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
 
 	/// get entity with a specified individual name
 	/// returns NULL if not found
@@ -197,7 +197,7 @@ public:
 	void UpdateGraphics();
 	void GetBillboardRotationMatrix( Matrix33 &rmatBillboard ) const;
 
-	inline boost::shared_ptr<EntityRenderManager> GetRenderManager() { return m_pRenderManager; }
+	inline std::shared_ptr<EntityRenderManager> GetRenderManager() { return m_pRenderManager; }
 
 	static void SetDefaultPhysicsTimestep( float timestep ) { ms_DefaultPhysTimestep = timestep; }
 
@@ -226,7 +226,7 @@ inline void EntityManager::UpdateLink( CCopyEntity* pEntity )
 
 /// T must be a derived class of CCopyEntity
 template<class T>
-inline EntityHandle<T> EntityManager::CreateEntity( boost::shared_ptr<T> pEntity,
+inline EntityHandle<T> EntityManager::CreateEntity( std::shared_ptr<T> pEntity,
 												  BaseEntityHandle& rBaseEntityHandle,
 												  physics::CActorDesc *pPhysActorDesc )
 {

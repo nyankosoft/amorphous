@@ -84,7 +84,7 @@ public:
 		NUM_TEXTURE_GENERATOR_TYPES
 	};
 
-	std::vector< boost::shared_ptr<TextureImageFilter> > m_pFilters;
+	std::vector< std::shared_ptr<TextureImageFilter> > m_pFilters;
 
 public:
 
@@ -93,7 +93,7 @@ public:
 	/// called by the system after the texture resource is created
 	virtual void FillTexture( LockedTexture& texture ) = 0;
 
-	void AddFilter( boost::shared_ptr<TextureImageFilter> pFilter ) { m_pFilters.push_back( pFilter ); }
+	void AddFilter( std::shared_ptr<TextureImageFilter> pFilter ) { m_pFilters.push_back( pFilter ); }
 
 //	virtual unsigned int GetArchiveObjectID() const { return TG_XXX; }
 

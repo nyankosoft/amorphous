@@ -15,7 +15,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 /*
 class GraphicsElementHandle
@@ -26,7 +26,7 @@ public:
 
 class RectElementHandle
 {
-	boost::shared_ptr<FillRectElement> m_pRect;
+	std::shared_ptr<FillRectElement> m_pRect;
 
 public:
 };
@@ -34,11 +34,11 @@ public:
 
 class TextElementHandle
 {
-	boost::shared_ptr<TextElement> m_pText;
+	std::shared_ptr<TextElement> m_pText;
 
 public:
 
-	boost::shared_ptr<TextElement> operator ->() { return m_pText; };
+	std::shared_ptr<TextElement> operator ->() { return m_pText; };
 };
 */
 
@@ -516,7 +516,7 @@ void CGM_StdScrollBarRenderer::Init( CGM_ScrollBar& scrollbar )
 	// - rendered on top of other elements
 	// - create a subgroup
 	// - local origin: top-left corner of the rect in local coord of the owner dialog (owner dialog coord)
-	boost::shared_ptr<GraphicsElement> apElement[] = { /*m_apFrameRect[RE_THUMB],*/ m_apRect[RE_THUMB] };
+	std::shared_ptr<GraphicsElement> apElement[] = { /*m_apFrameRect[RE_THUMB],*/ m_apRect[RE_THUMB] };
 	SRect thumb_rect_in_owner_dlg_coord = scrollbar.GetLocalThumbButtonRectInOwnerDialogCoord();
 	m_pThumbGroup = pElementMgr->CreateGroup( apElement, numof(apElement), thumb_rect_in_owner_dlg_coord.GetTopLeftCorner() );
 
@@ -566,7 +566,7 @@ void CGM_StdSliderRenderer::Init( CGM_Slider& slider )
 	const SPoint btn_local_topleft = slider.GetLocalButtonRectInOwnerDialogCoord().GetTopLeftCorner(); // local coord of owner dialog
 
 	// subgroup for slider button
-	vector<boost::shared_ptr<GraphicsElement> > vecpButtonElement;
+	vector<std::shared_ptr<GraphicsElement> > vecpButtonElement;
 	vecpButtonElement.push_back( m_pSliderButtonRect );
 //	vecpButtonElement.push_back( m_pSliderButtonFrameRect );
 	vecpButtonElement.push_back( m_pSliderButtonDot );

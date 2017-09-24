@@ -18,7 +18,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 /*
 void CBE_PseudoAircraft::Init()
@@ -125,7 +125,7 @@ float CGI_Aircraft::GetArmorScaled() const
 class ValidWeakPtr
 {
 public:
-	bool operator() ( boost::weak_ptr<CGI_Ammunition>& p ) { return !(p.lock()); }
+	bool operator() ( std::weak_ptr<CGI_Ammunition>& p ) { return !(p.lock()); }
 };
 
 

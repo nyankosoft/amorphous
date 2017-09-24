@@ -42,7 +42,7 @@ C3DMeshModelBuilder::~C3DMeshModelBuilder()
 static int s_MeshNum = 0;
 
 
-void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags )
+void C3DMeshModelBuilder::BuildMeshModel( std::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags )
 {
 	LOG_FUNCTION_SCOPE();
 
@@ -53,7 +53,7 @@ void C3DMeshModelBuilder::BuildMeshModel( boost::shared_ptr<C3DModelLoader> pMod
 
 
 /// \param [in] borrowed reference
-void C3DMeshModelBuilder::BuildMeshModelArchive( boost::shared_ptr<General3DMesh> pGeneralMesh,
+void C3DMeshModelBuilder::BuildMeshModelArchive( std::shared_ptr<General3DMesh> pGeneralMesh,
 												 U32 build_option_flags )
 {
 	LOG_FUNCTION_SCOPE();

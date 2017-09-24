@@ -4,7 +4,6 @@
 
 #include <queue>
 #include <boost/thread.hpp>
-#include <boost/weak_ptr.hpp>
 #include "fwd.hpp"
 #include "GraphicsResourceManager.hpp"
 
@@ -28,18 +27,18 @@ public:
 
 private:
 
-	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
+	std::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 	/// all the loaders have resource desc?
-	boost::shared_ptr<GraphicsResourceLoader> m_pLoader;
+	std::shared_ptr<GraphicsResourceLoader> m_pLoader;
 
 	Type m_RequestType;
 
 public:
 
 	ResourceLoadRequest( Type type,
-		boost::shared_ptr<GraphicsResourceLoader> pLoader,
-		boost::weak_ptr<GraphicsResourceEntry> pEntry
+		std::shared_ptr<GraphicsResourceLoader> pLoader,
+		std::weak_ptr<GraphicsResourceEntry> pEntry
 		)
 		:
 	m_RequestType(type),
@@ -49,7 +48,7 @@ public:
 
 	Type GetRequestType() const { return m_RequestType; }
 
-//	boost::weak_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry; }
+//	std::weak_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry; }
 
 	friend class AsyncResourceLoader;
 	friend class GraphicsResourceManager;
@@ -72,17 +71,17 @@ public:
 
 	Type m_RequestType;
 
-	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
+	std::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 	/// all the loaders have resource desc?
-	boost::shared_ptr<GraphicsResourceLoader> m_pLoader;
+	std::shared_ptr<GraphicsResourceLoader> m_pLoader;
 
 public:
 
 	CGraphicsDeviceRequest(
 		CGraphicsDeviceRequest::Type type,
-		boost::shared_ptr<GraphicsResourceLoader> pLoader,
-		boost::weak_ptr<GraphicsResourceEntry> pEntry )
+		std::shared_ptr<GraphicsResourceLoader> pLoader,
+		std::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_RequestType(type),
 	m_pLoader(pLoader),
@@ -104,7 +103,7 @@ class AsyncResourceLoader
 
 	boost::mutex m_GraphicsDeviceMutex;
 
-	boost::shared_ptr<boost::thread> m_pIOThread;
+	std::shared_ptr<boost::thread> m_pIOThread;
 
 	bool m_bEndIOThread;
 

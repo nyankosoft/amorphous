@@ -43,9 +43,9 @@ protected:
 
 	int m_StandardMagazineCapacity;
 
-	boost::shared_ptr<Cartridge> m_pChamberedCartridge;
+	std::shared_ptr<Cartridge> m_pChamberedCartridge;
 
-	boost::shared_ptr<Magazine> m_pMagazine;
+	std::shared_ptr<Magazine> m_pMagazine;
 
 	std::vector<std::string> m_ComplientMagazineNames;
 
@@ -172,11 +172,11 @@ public:
 	/// since those loaded missiles are held as entity pointers
 	virtual void Disarm() {}
 
-	void ChangeMagazine( boost::shared_ptr<Magazine> pNewMagazine );
+	void ChangeMagazine( std::shared_ptr<Magazine> pNewMagazine );
 
-	boost::shared_ptr<Magazine> DropMagazine() { boost::shared_ptr<Magazine> pMag = m_pMagazine; m_pMagazine.reset(); return pMag; }
+	std::shared_ptr<Magazine> DropMagazine() { std::shared_ptr<Magazine> pMag = m_pMagazine; m_pMagazine.reset(); return pMag; }
 
-	const boost::shared_ptr<Magazine> GetMagazine() const { return m_pMagazine; }
+	const std::shared_ptr<Magazine> GetMagazine() const { return m_pMagazine; }
 
 	bool IsSlideOpen() const;
 
@@ -186,7 +186,7 @@ public:
 
 	void DisengageSlideStop();
 
-	bool IsMagazineCompliant( const boost::shared_ptr<Magazine>& pMagazine ) const;
+	bool IsMagazineCompliant( const std::shared_ptr<Magazine>& pMagazine ) const;
 
 	FirearmState GetFirearmState() const { return m_FirearmState; }
 

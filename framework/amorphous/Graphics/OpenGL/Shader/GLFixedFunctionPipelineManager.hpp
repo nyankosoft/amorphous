@@ -30,7 +30,7 @@ class CGLFixedFunctionPipelineManager : public ShaderManager
 	Matrix44 m_matView;
 	Matrix44 m_matProjection;
 
-	boost::shared_ptr<CGLFixedPipelineLightManager> m_pFFPLightManager;
+	std::shared_ptr<CGLFixedPipelineLightManager> m_pFFPLightManager;
 
 private:
 
@@ -50,7 +50,7 @@ public:
 
 	void Reload();
 
-	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
+	std::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const Matrix44& matWorld );
 
@@ -84,7 +84,7 @@ public:
 
 //	void SetTextureParam()
 
-//	boost::shared_ptr<ShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
+//	std::shared_ptr<ShaderLightManager> GetShaderLightManager() { return m_pLightManager; }
 
 	friend CGLFixedFunctionPipelineManager& GLFixedFunctionPipelineManager();
 	friend class CGLShaderResource;

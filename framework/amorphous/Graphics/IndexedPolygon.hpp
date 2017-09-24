@@ -2,7 +2,7 @@
 #define __INDEXEDPOLYGON_H__
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "amorphous/3DMath/ray.hpp"
 #include "amorphous/3DMath/AABB3.hpp"
@@ -23,7 +23,7 @@ class IndexedPolygon : public IArchiveObjectBase
 	/// - Usually shared by polygons that belongs to the same polygon buffer
 	/// - When GetVertex() is called, the object will internally
 	///   access this buffer and return the reference to the vertex
-	boost::shared_ptr< std::vector<General3DVertex> > m_pVertexBuffer;
+	std::shared_ptr< std::vector<General3DVertex> > m_pVertexBuffer;
 
 	SPlane m_Plane;
 
@@ -49,14 +49,14 @@ public:
 	m_MaterialIndex(0)
 	{}
 
-	inline IndexedPolygon( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer )
+	inline IndexedPolygon( std::shared_ptr< std::vector<General3DVertex> > pVertexBuffer )
 		:
 	m_pVertexBuffer(pVertexBuffer),
 	m_MaterialIndex(0)
 	{}
 
 	/// creates an indexed triangle
-	inline IndexedPolygon( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer, int i0, int i1, int i2,
+	inline IndexedPolygon( std::shared_ptr< std::vector<General3DVertex> > pVertexBuffer, int i0, int i1, int i2,
 		                    int mat_index = 0, const SPlane& plane = SPlane(), const AABB3& aabb = AABB3() );
 
 	/// polygon must be convex
@@ -101,9 +101,9 @@ public:
 	/// - m_pVertexBuffer would have to be separately serialized and restored
 	void Serialize( IArchive& ar, const unsigned int version );
 
-	void SetVertexBuffer( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
+	void SetVertexBuffer( std::shared_ptr< std::vector<General3DVertex> > pVertexBuffer ) { m_pVertexBuffer = pVertexBuffer; }
 
-	boost::shared_ptr< std::vector<General3DVertex> > VertexBuffer() { return m_pVertexBuffer; }
+	std::shared_ptr< std::vector<General3DVertex> > VertexBuffer() { return m_pVertexBuffer; }
 
 
 //	static std::vector<General3DVertex>& VertexBuffer() { return (*m_pVertexBuffer); }
@@ -118,7 +118,7 @@ public:
 enum ePolygonStatus { POLYGON_ONPLANE, POLYGON_FRONT, POLYGON_BACK, POLYGON_INTERSECTING };
 
 
-inline IndexedPolygon::IndexedPolygon( boost::shared_ptr< std::vector<General3DVertex> > pVertexBuffer, int i0, int i1, int i2,
+inline IndexedPolygon::IndexedPolygon( std::shared_ptr< std::vector<General3DVertex> > pVertexBuffer, int i0, int i1, int i2,
 										 int mat_index, const SPlane& plane, const AABB3& aabb )
 :
 m_pVertexBuffer(pVertexBuffer),

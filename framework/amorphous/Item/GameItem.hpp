@@ -19,9 +19,9 @@ using namespace serialization;
 
 
 template<class T>
-inline boost::shared_ptr<T> CreateGameItem()
+inline std::shared_ptr<T> CreateGameItem()
 {
-	boost::shared_ptr<T> pItem( new T );
+	std::shared_ptr<T> pItem( new T );
 	pItem->SetWeakPtr( pItem );
 	return pItem;
 }
@@ -55,7 +55,7 @@ class GameItem : public IArchiveObjectBase
 {
 private:
 
-	void SetWeakPtr( boost::weak_ptr<GameItem> pMyself ) { m_pMyself = pMyself; }
+	void SetWeakPtr( std::weak_ptr<GameItem> pMyself ) { m_pMyself = pMyself; }
 
 protected:
 
@@ -82,7 +82,7 @@ protected:
 
 	EntityHandle<ItemEntity> m_Entity;
 
-	boost::weak_ptr<GameItem> m_pMyself;
+	std::weak_ptr<GameItem> m_pMyself;
 
 public:
 
@@ -167,7 +167,7 @@ public:
 
 	inline void SetWorldPose( const Matrix34& rSrcWorldPose )
 	{
-		boost::shared_ptr<ItemEntity> pEntity = m_Entity.Get();
+		std::shared_ptr<ItemEntity> pEntity = m_Entity.Get();
 		if( pEntity )
 			pEntity->SetWorldPose( rSrcWorldPose );
 	}
@@ -176,7 +176,7 @@ public:
 
 	inline void SetLinearVelocity( const Vector3& vLinearVelocity )
 	{
-		boost::shared_ptr<ItemEntity> pEntity = m_Entity.Get();
+		std::shared_ptr<ItemEntity> pEntity = m_Entity.Get();
 		if( pEntity )
 			pEntity->SetVelocity( vLinearVelocity );
 	}
@@ -232,7 +232,7 @@ public:
 	friend class ItemDatabaseBuilder;
 	friend class GameItemInfo;
 	friend class ItemDatabaseManager;
-	template<class T> friend inline boost::shared_ptr<T> CreateGameItem();
+	template<class T> friend inline std::shared_ptr<T> CreateGameItem();
 
 };
 

@@ -2,7 +2,7 @@
 #define  __GraphicsApplicationBase_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "ApplicationBase.hpp"
 #include "amorphous/3DMath/Rectangular.hpp"
 #include "amorphous/Graphics/fwd.hpp"
@@ -24,11 +24,11 @@ class GraphicsApplicationBase : public ApplicationBase
 	Camera m_Camera;
 
 //	CPlatformDependentCameraController m_CameraController;
-	boost::shared_ptr<CameraControllerBase> m_pCameraController;
+	std::shared_ptr<CameraControllerBase> m_pCameraController;
 
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
-	boost::shared_ptr<InputHandler> m_pInputHandler;
+	std::shared_ptr<InputHandler> m_pInputHandler;
 
 	SFloatRGBAColor m_BackgroundColor;
 
@@ -63,7 +63,7 @@ protected:
 
 	bool m_UseCameraController;
 
-	boost::shared_ptr<CameraControllerBase> GetCameraController() { return m_pCameraController; }
+	std::shared_ptr<CameraControllerBase> GetCameraController() { return m_pCameraController; }
 
 	Camera& Camera() { return m_Camera; }
 

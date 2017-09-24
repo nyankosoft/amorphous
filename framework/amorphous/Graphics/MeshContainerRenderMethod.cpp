@@ -324,7 +324,7 @@ void MeshContainerRenderMethod::RenderMesh( BasicMesh &mesh, const Matrix34& wor
 }
 
 
-void MeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader )
+void MeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( std::shared_ptr<ShaderParamsLoader> pShaderParamsLoader )
 {
 	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
 	{
@@ -349,7 +349,7 @@ void MeshContainerRenderMethod::SetShaderParamsLoaderToAllMeshRenderMethods( boo
 }
 
 
-void MeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethods( boost::shared_ptr<ShaderParamsLoader> pShaderParamsLoader )
+void MeshContainerRenderMethod::RemoveShaderParamsLoaderFromAllMeshRenderMethods( std::shared_ptr<ShaderParamsLoader> pShaderParamsLoader )
 {
 	for( size_t i=0; i<m_RenderMethodsAndSubsetIndices.size(); i++ )
 	{
@@ -418,7 +418,7 @@ void MeshContainerRenderMethod::BreakMeshRenderMethodsToSubsetRenderMethods( con
 
 void MeshContainerRenderMethod::RenderMeshContainer( MeshObjectContainer& mesh_container,
 													 const Matrix34& world_transform )
-													 //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
+													 //std::vector< std::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
 {
 	RenderMesh( mesh_container.m_MeshObjectHandle, world_transform );
 }
@@ -520,7 +520,7 @@ MeshContainerNodeRenderMethod::MeshContainerNodeRenderMethod()
 
 
 void MeshContainerNodeRenderMethod::RenderMeshContainerNode( MeshContainerNode& node )//,
-															  //std::vector< boost::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
+															  //std::vector< std::shared_ptr<ShaderParamsLoader> >& vecpShaderParamsWriter )
 {
 	const int num_mesh_containers = node.GetNumMeshContainers();
 	for( int i=0; i<num_mesh_containers; i++ )

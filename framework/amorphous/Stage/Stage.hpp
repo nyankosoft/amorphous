@@ -39,14 +39,14 @@ class CStage
 	/// handles physics simulation
 	physics::CScene *m_pPhysicsScene;
 
-	boost::shared_ptr<CSurfaceMaterialManager> m_pMaterialManager;
+	std::shared_ptr<CSurfaceMaterialManager> m_pMaterialManager;
 
 	std::vector<physics::CMaterial *> m_vecpMaterial;
 
 	/// manages scripted events
-	boost::shared_ptr<ScriptManager> m_pScriptManager;
+	std::shared_ptr<ScriptManager> m_pScriptManager;
 
-	boost::shared_ptr<ScreenEffectManager> m_pScreenEffectManager;
+	std::shared_ptr<ScreenEffectManager> m_pScreenEffectManager;
 
 	/// keeps time elapsed in stage
 	/// GameTask_Stage() pauses the timer when the stage task is left
@@ -112,7 +112,7 @@ public:
 //	inline Camera* GetCurrentCamera() { return m_pEntitySet->GetCurrentCamera(); }
 	inline Camera* GetCurrentCamera() { return m_pCamera; }
 	inline void GetBillboardRotationMatrix( Matrix33& matBillboard ) const;
-	inline boost::shared_ptr<ScreenEffectManager> GetScreenEffectManager() { return m_pScreenEffectManager; }
+	inline std::shared_ptr<ScreenEffectManager> GetScreenEffectManager() { return m_pScreenEffectManager; }
 
 
 	//
@@ -142,7 +142,7 @@ public:
 	                      	          const Vector3& rvVelocity, const Vector3& rvDirection = Vector3(0,0,0));
 
 	template<class T>
-	inline EntityHandle<T> CreateEntity( boost::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
+	inline EntityHandle<T> CreateEntity( std::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc = NULL );
 
 	/// removes an entity from the stage
 	inline void TerminateEntity( CCopyEntity*& pEntity );
@@ -200,7 +200,7 @@ public:
 
 	physics::CScene *GetPhysicsScene() { return m_pPhysicsScene; }
 
-	boost::shared_ptr<ScriptManager> GetScriptManager() { return m_pScriptManager; }
+	std::shared_ptr<ScriptManager> GetScriptManager() { return m_pScriptManager; }
 
 	friend class StageLoader;
 	friend class EntityManager;
@@ -252,7 +252,7 @@ inline CCopyEntity *CStage::CreateEntity( BaseEntityHandle& rBaseEntityHandle,
 
 
 template<class T>
-inline EntityHandle<T> CStage::CreateEntity( boost::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc )
+inline EntityHandle<T> CStage::CreateEntity( std::shared_ptr<T> pEntity, BaseEntityHandle& rBaseEntityHandle, physics::CActorDesc *pPhysActorDesc )
 {
 	EntityHandle<T> entity_handle = m_pEntitySet->CreateEntity( pEntity, rBaseEntityHandle, pPhysActorDesc );
 	return entity_handle;

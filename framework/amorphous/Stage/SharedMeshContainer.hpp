@@ -41,14 +41,14 @@ public:
 	/// used by skeletal mesh (not serialized)
 	std::vector<MeshBoneControllerBase*> m_vecpMeshBoneController;
 
-	boost::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
+	std::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
 
-	std::vector< boost::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
+	std::vector< std::shared_ptr<ShaderParamsLoader> > m_vecpShaderParamsLoader;
 
-	//	boost::shared_ptr<CBlendMatricesLoader> m_pBlendMatricesLoader;
-	boost::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
+	//	std::shared_ptr<CBlendMatricesLoader> m_pBlendMatricesLoader;
+	std::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
 
-	boost::shared_ptr<CEntityShaderLightParamsLoader> m_pShaderLightParamsLoader;
+	std::shared_ptr<CEntityShaderLightParamsLoader> m_pShaderLightParamsLoader;
 
 	/// subsets of the mesh that should be rendered by the entity
 	/// - Holds non-transparant materials(subsets) of the mesh

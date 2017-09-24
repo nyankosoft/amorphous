@@ -117,7 +117,7 @@ CDIForceFeedbackEffectImpl::~CDIForceFeedbackEffectImpl()
 }
 
 
-Result::Name CDIForceFeedbackEffectImpl::Init( boost::shared_ptr<CDIFFParams> pFFParams )
+Result::Name CDIForceFeedbackEffectImpl::Init( std::shared_ptr<CDIFFParams> pFFParams )
 {
 	return Init( *(m_pDesc.get()), pFFParams );
 }
@@ -136,7 +136,7 @@ DWORD ToDIEffectCoordSys( const CFFCoordSys::Name& cs )
 }
 
 
-Result::Name CDIForceFeedbackEffectImpl::Init( const CForceFeedbackEffectDesc& desc, boost::shared_ptr<CDIFFParams> pFFParams )
+Result::Name CDIForceFeedbackEffectImpl::Init( const CForceFeedbackEffectDesc& desc, std::shared_ptr<CDIFFParams> pFFParams )
 {
 	m_pFFParams = pFFParams;
 

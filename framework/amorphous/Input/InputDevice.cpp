@@ -136,7 +136,7 @@ CForceFeedbackEffect InputDevice::CreateForceFeedbackEffect( const CForceFeedbac
 }
 
 
-void InputDevice::SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe )
+void InputDevice::SetImplToForceFeedbackEffect( std::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe )
 {
 	ffe.m_pImpl = pImpl;
 }
@@ -189,7 +189,7 @@ void InputDeviceHub::RegisterInputDeviceToGroup( InputDevice *pDevice )
 
 		if( m_vecpGroup.size() == i )	
 		{
-			boost::shared_ptr<InputDeviceGroup> pGroup( new InputDeviceGroup() );
+			std::shared_ptr<InputDeviceGroup> pGroup( new InputDeviceGroup() );
 			m_vecpGroup.push_back( pGroup );
 			m_vecpGroup.back()->m_vecpDevice.push_back( pDevice );
 			pDevice->SetGroup( m_vecpGroup.back().get() );

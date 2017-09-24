@@ -181,7 +181,7 @@ class CHLSLShaderManager : public CD3DShaderManager
 
 //	UINT m_Passes;
 
-	boost::shared_ptr<CHLSLShaderLightManager> m_pHLSLShaderLightManager;
+	std::shared_ptr<CHLSLShaderLightManager> m_pHLSLShaderLightManager;
 
 private:
 
@@ -299,7 +299,7 @@ public:
 
 //	void SetTextureParam()
 
-	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
+	std::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	inline void SetWorldTransform( const D3DXMATRIX& matWorld );
 

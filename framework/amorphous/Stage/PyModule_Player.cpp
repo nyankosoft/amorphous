@@ -7,7 +7,6 @@
 #include "Item/ItemEntity.hpp"
 #include "Item/GI_Aircraft.hpp"
 #include "Script/PythonScriptManager.hpp"
-#include <boost/weak_ptr.hpp>
 
 
 namespace amorphous
@@ -149,7 +148,7 @@ PyObject* MountWeapon( PyObject* self, PyObject* args )
 	if( weapon_slot_index < 0 || CWeaponSystem::NUM_WEAPONSLOTS <= weapon_slot_index )
 		return Py_BuildValue( "b", false );
 
-	boost::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
+	std::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
 	if( !pWeapon || !(pWeapon->GetTypeFlag() & GameItem::TYPE_WEAPON) )
 		return Py_BuildValue( "b", false );
 
@@ -170,7 +169,7 @@ PyObject* LoadAmmo( PyObject* self, PyObject* args )
 	if( weapon_slot_index < 0 || CWeaponSystem::NUM_WEAPONSLOTS <= weapon_slot_index )
 		return Py_BuildValue( "b", false );
 
-	boost::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
+	std::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
 	if( !pAmmo || !(pAmmo->GetTypeFlag() & GameItem::TYPE_AMMO) )
 		return Py_BuildValue( "b", false );
 
@@ -215,11 +214,11 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 
 	CItemStageUtility item_stg_util( pStage->GetWeakPtr().lock() );
 
-//	boost::shared_ptr<GameItem> pItem = SinglePlayerInfo().GetItemByName<GameItem>(item_name);
+//	std::shared_ptr<GameItem> pItem = SinglePlayerInfo().GetItemByName<GameItem>(item_name);
 //	if( !pItem )
 //		return Py_None;
 
-	boost::shared_ptr<CGI_Aircraft> pVehicle = SinglePlayerInfo().GetAircraft();
+	std::shared_ptr<CGI_Aircraft> pVehicle = SinglePlayerInfo().GetAircraft();
 	if( !pVehicle )
 		return Py_None;
 
@@ -231,7 +230,7 @@ PyObject* CreateEntityFromCurrentVehicleItem( PyObject* self, PyObject* args )
 
 	EntityHandle<ItemEntity> entity = item_stg_util.CreateItemEntity( pVehicle, base_entity_handle, actor_desc );
 
-	boost::shared_ptr<ItemEntity> pEntity = entity.Get();
+	std::shared_ptr<ItemEntity> pEntity = entity.Get();
 	if( pEntity )
 	{
 		pEntity->SetName( entity_name );

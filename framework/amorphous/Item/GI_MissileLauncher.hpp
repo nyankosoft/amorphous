@@ -99,7 +99,7 @@ protected:
 
 	float m_fFrameTimeAccumulation;
 
-	boost::shared_ptr<CForceFeedbackEffect> m_pFFEffect;
+	std::shared_ptr<CForceFeedbackEffect> m_pFFEffect;
 
 protected:
 

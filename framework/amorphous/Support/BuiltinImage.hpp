@@ -55,14 +55,14 @@ inline bool LoadBuiltinImage( const CBuiltinImage& src, BitmapImage& dest )
 }
 
 
-inline boost::shared_ptr<BitmapImage> LoadBuiltinImage( const CBuiltinImage& src )
+inline std::shared_ptr<BitmapImage> LoadBuiltinImage( const CBuiltinImage& src )
 {
-	boost::shared_ptr<BitmapImage> pBitmapImage( new BitmapImage );
+	std::shared_ptr<BitmapImage> pBitmapImage( new BitmapImage );
 	bool loaded = LoadBuiltinImage( src, *pBitmapImage );
 	if( loaded )
 		return pBitmapImage;
 	else
-		return boost::shared_ptr<BitmapImage>();
+		return std::shared_ptr<BitmapImage>();
 }
 
 

@@ -75,9 +75,9 @@ class CCompositeMesh
 {
 	std::string m_strFilename;
 
-	boost::shared_ptr<SkeletalMesh> m_pMesh;
+	std::shared_ptr<SkeletalMesh> m_pMesh;
 
-	boost::shared_ptr<SkeletalMesh> m_pShadowVolumeMesh;
+	std::shared_ptr<SkeletalMesh> m_pShadowVolumeMesh;
 
 	CMS_MassSpringSim m_MassSpringSim;
 

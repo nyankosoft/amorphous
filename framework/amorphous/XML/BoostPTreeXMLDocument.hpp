@@ -31,7 +31,7 @@ public:
 		boost::property_tree::ptree::iterator itr = m_PropertyTree.begin();
 		for( ; itr != m_PropertyTree.end(); itr++ )
 		{
-			boost::shared_ptr<BoostPTreeXMLNode> pImpl( new BoostPTreeXMLNode );
+			std::shared_ptr<BoostPTreeXMLNode> pImpl( new BoostPTreeXMLNode );
 //			boost::property_tree::ptree child = m_PropertyTree.get_child( itr->first );
 			pImpl->m_NodeName = itr->first;
 			pImpl->m_PropertyTree = m_PropertyTree.get_child( itr->first );

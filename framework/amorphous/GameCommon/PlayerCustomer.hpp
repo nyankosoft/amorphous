@@ -14,7 +14,7 @@ class PlayerCustomer : public CCustomer
 {
 public:
 
-	virtual int AddItem( boost::shared_ptr<GameItem> pItem )
+	virtual int AddItem( std::shared_ptr<GameItem> pItem )
 	{
 		if( !pItem )
 			return 0;

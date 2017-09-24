@@ -28,7 +28,7 @@ m_fNextTargetUpdateTime(0)
 
 void Radar::Update( float dt )
 {
-	boost::shared_ptr<CStage> pStage = m_pStage.lock();
+	std::shared_ptr<CStage> pStage = m_pStage.lock();
 
 	if( !pStage )
 		return;

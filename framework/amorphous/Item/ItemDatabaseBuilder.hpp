@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/XML/fwd.hpp"
 
 
@@ -56,7 +56,7 @@ class ItemDatabaseBuilder
 
     void AddMeshBoneControllerForAircraft( CGI_Aircraft& aircraft, 
 		                                   CTextFileScanner& scanner,
-										   std::vector< boost::shared_ptr<MeshBoneController_AircraftBase> >& vecpMeshController );
+										   std::vector< std::shared_ptr<MeshBoneController_AircraftBase> >& vecpMeshController );
 
 	void LoadItem( XMLNode& items_node );
 

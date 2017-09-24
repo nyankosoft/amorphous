@@ -2,8 +2,7 @@
 #define  __HumanoidMotionSynthesizer_H__
 
 
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
+#include <memory>
 
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/MathMisc.hpp"
@@ -42,17 +41,17 @@ class CHumanoidMotionHolder
 {
 public:
 	
-	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpMotion;
+	std::vector< std::shared_ptr<MotionPrimitive> > m_vecpMotion;
 };
 
 
 class CHumanoidMotionSynthesizer
 {
-	std::vector< boost::shared_ptr<MotionBlender> > m_vecpMotionBlender;
+	std::vector< std::shared_ptr<MotionBlender> > m_vecpMotionBlender;
 
-	boost::shared_ptr<SteeringMotionBlender> m_pSteeringMotionBlender;
+	std::shared_ptr<SteeringMotionBlender> m_pSteeringMotionBlender;
 
-	boost::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitiveBlender;
+	std::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitiveBlender;
 
 	CHumanoidMotionHolder m_aMotion[HumanoidMotion::NumActions];
 
@@ -61,7 +60,7 @@ class CHumanoidMotionSynthesizer
 	Keyframe m_CurrentKeyframe;
 
 
-	boost::shared_ptr<MotionPrimitiveBlenderStatistics> m_pMotionPrimitiveBlenderStatics;
+	std::shared_ptr<MotionPrimitiveBlenderStatistics> m_pMotionPrimitiveBlenderStatics;
 
 
 private:
@@ -102,12 +101,12 @@ public:
 	void Update( float dt );
 
 //	const Skeleton& GetSkeleton();
-	const boost::shared_ptr<Skeleton> GetSkeleton();
+	const std::shared_ptr<Skeleton> GetSkeleton();
 
-	const boost::shared_ptr<MotionPrimitiveBlender> GetMotionPrimitiveBlender() const { return m_pMotionPrimitiveBlender; }
+	const std::shared_ptr<MotionPrimitiveBlender> GetMotionPrimitiveBlender() const { return m_pMotionPrimitiveBlender; }
 
 
-	const boost::shared_ptr<MotionPrimitiveBlenderStatistics>
+	const std::shared_ptr<MotionPrimitiveBlenderStatistics>
 		GetStatistics() const { return m_pMotionPrimitiveBlenderStatics; }
 
 	/// set the pose of the root node of the character

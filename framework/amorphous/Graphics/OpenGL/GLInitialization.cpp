@@ -22,7 +22,7 @@ namespace amorphous
 {
 
 
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 //=======================================================================================
@@ -33,9 +33,9 @@ class C2DPrimitiveFactoryImpl_GL : public C2DPrimitiveFactoryImpl
 {
 public:
 
-	boost::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl()
+	std::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl()
 	{
-		boost::shared_ptr<C2DRectSetImpl> pImpl( new C2DRectSetImpl_GL );
+		std::shared_ptr<C2DRectSetImpl> pImpl( new C2DRectSetImpl_GL );
 		return pImpl;
 	}
 };
@@ -52,9 +52,9 @@ public:
 
 //	CreateGraphicsResource( GraphicsResourceDesc &desc );
 
-	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
-	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
-	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
+	std::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
+	std::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
+	std::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
 };
 
 
@@ -109,7 +109,7 @@ Result::Name InitializeOpenGLClasses()
 	CubeTextureRenderTarget::SetInstanceCreationFunction( GLCubeTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(GLCustomMeshRenderer::ms_Instance);
 	CustomMesh::SetDefaultVertexDiffuseColorFormat( CustomMesh::VCF_FRGBA );
-	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericGLSLShader( new EmbeddedGenericGLSLShader );
+	std::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericGLSLShader( new EmbeddedGenericGLSLShader );
 	SetEmbeddedGenericShader( pEmbeddedGenericGLSLShader );
 	GetEmbeddedPostProcessEffectShader().reset( new EmbeddedPostProcessEffectGLSLShader );
 

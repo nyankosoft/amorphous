@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <tbb/concurrent_queue.h>
 #include <tbb/mutex.h>
 #include "amorphous/Input/fwd.hpp"
@@ -35,7 +35,7 @@ class CDIInputDeviceContainer
 {
 public:
 
-	boost::shared_ptr<DirectInputGamepad> m_pGamepad;
+	std::shared_ptr<DirectInputGamepad> m_pGamepad;
 
 	DIDEVICEINSTANCE m_DeviceInstance;
 
@@ -104,7 +104,7 @@ class CDIInputDeviceMonitor : public thread_class
 
 	bool m_ExitThread;
 
-	boost::shared_ptr<InputDeviceStateCallback> m_pCallback;
+	std::shared_ptr<InputDeviceStateCallback> m_pCallback;
 
 private:
 
@@ -149,9 +149,9 @@ public:
 
 	void AcquireInputDevices();
 
-	void RegisterCallback( boost::shared_ptr<InputDeviceStateCallback> pCallback ) { m_pCallback = pCallback; }
+	void RegisterCallback( std::shared_ptr<InputDeviceStateCallback> pCallback ) { m_pCallback = pCallback; }
 
-	void UnregisterCallback() { m_pCallback = boost::shared_ptr<InputDeviceStateCallback>(); }
+	void UnregisterCallback() { m_pCallback = std::shared_ptr<InputDeviceStateCallback>(); }
 };
 
 

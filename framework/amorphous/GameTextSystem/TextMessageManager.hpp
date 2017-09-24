@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "amorphous/base.hpp"
 #include "fwd.hpp"
@@ -116,7 +116,7 @@ public:
 	int m_Priority;
 
 	/// Owned references
-	std::vector< boost::shared_ptr<TextMessageBase> > m_vecpMessage;
+	std::vector< std::shared_ptr<TextMessageBase> > m_vecpMessage;
 
 public:
 
@@ -283,9 +283,9 @@ public:
 
 class CTextMessageManagerHub
 {
-//	std::vector< boost::shared_ptr<TextMessageManager> > m_vecpTextMessageManager;
+//	std::vector< std::shared_ptr<TextMessageManager> > m_vecpTextMessageManager;
 
-//	std::map< std::string, boost::shared_ptr<CTextMessageManager> > m_mapNameToTextMessageManager;
+//	std::map< std::string, std::shared_ptr<CTextMessageManager> > m_mapNameToTextMessageManager;
 	std::map< std::string, CTextMessageManager * > m_mapNameToTextMessageManager;
 
 public:
@@ -299,7 +299,7 @@ public:
 
 	void Detach( CTextMessageManager *pMgr )
 	{
-//		std::map< std::string, boost::shared_ptr<TextMessageManager> >::iterator itr
+//		std::map< std::string, std::shared_ptr<TextMessageManager> >::iterator itr
 		std::map< std::string, CTextMessageManager * >::iterator itr
 			= m_mapNameToTextMessageManager.find( pMgr->GetName() );
 

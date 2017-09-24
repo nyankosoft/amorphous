@@ -9,7 +9,7 @@
 #include "amorphous/GameCommon/PlayTime.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Support/singleton.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -60,7 +60,7 @@ private:
 	/// - detached in CBE_Player::OnEntityDestroyed()
 	CBE_Player *m_pCurrentPlayerBaseEntity;
 
-	boost::weak_ptr<CStage> m_pCurrentStage;
+	std::weak_ptr<CStage> m_pCurrentStage;
 
 	CWeaponSystem *m_pWeaponSystem;
 
@@ -69,10 +69,10 @@ private:
 	int m_TaskID;
 
 	/// a list of items the player is carrying
-	std::vector< boost::shared_ptr<GameItem> > m_vecpItem;
+	std::vector< std::shared_ptr<GameItem> > m_vecpItem;
 
 	/// lists of items sorted by categories
-	std::vector< boost::shared_ptr<GameItem> > m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
+	std::vector< std::shared_ptr<GameItem> > m_vecpCategoryItem[CItemCategory::NUM_CATEGORIES];
 
 	/// borrowed ref?
 	std::vector<GameItem *> m_vecpActiveItem;
@@ -87,7 +87,7 @@ private:
 	/// During the stage initialization, base entities are loaded and initialized.
 	/// In that phase, one base entity, 'CBE_PlayerPseudoAircraft' access this variable
 	/// and saves the borrowed reference, then use it as the player's aircraft in the stage
-	boost::shared_ptr<CGI_Aircraft> m_pCurrentAircraft;
+	std::shared_ptr<CGI_Aircraft> m_pCurrentAircraft;
 
 	KeyBind m_KeyBind;
 
@@ -95,7 +95,7 @@ private:
 
 private:
 
-	void AddItemToCategoryList( boost::shared_ptr<GameItem> pItem );
+	void AddItemToCategoryList( std::shared_ptr<GameItem> pItem );
 
 protected:
 
@@ -148,14 +148,14 @@ public:
 	/// - The argument pItem is not stored to the item array of the player.
 	/// - A copy of the item is drawn from game item database and stored in the item array
 	///   of the player.
-	int SupplyItem( boost::shared_ptr<GameItem> pItem );
+	int SupplyItem( std::shared_ptr<GameItem> pItem );
 
-	const std::vector<boost::shared_ptr<GameItem>>& GetItemList() { return m_vecpItem; }
+	const std::vector<std::shared_ptr<GameItem>>& GetItemList() { return m_vecpItem; }
 
 	template<class CItemType>
-	inline boost::shared_ptr<CItemType> GetItemByName( const char *pcItemName );
+	inline std::shared_ptr<CItemType> GetItemByName( const char *pcItemName );
 
-	inline std::vector<boost::shared_ptr<GameItem>>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
+	inline std::vector<std::shared_ptr<GameItem>>& GetCategoryItemList( int category ) { return m_vecpCategoryItem[category]; }
 
 	inline void AddActiveItem( GameItem *pItem );
 	inline void ReleaseActiveItem( GameItem *pItem );
@@ -176,12 +176,12 @@ public:
 	void RenderHUD();
 
 	/// returns currently selected aircraft
-	boost::shared_ptr<CGI_Aircraft> GetAircraft() { return m_pCurrentAircraft; }
+	std::shared_ptr<CGI_Aircraft> GetAircraft() { return m_pCurrentAircraft; }
 
 	/// sets an aircraft for the player
 	/// must be chosen from the player's item list
 	/// \param pAircraft pointer to an aircraft item selected from m_vecpItem (borrowed reference)
-	void SetAircraft( boost::shared_ptr<CGI_Aircraft> pAircraft ) { m_pCurrentAircraft = pAircraft; }
+	void SetAircraft( std::shared_ptr<CGI_Aircraft> pAircraft ) { m_pCurrentAircraft = pAircraft; }
 
 	int GetMoneyLeft() const { return m_Money; }
 
@@ -201,7 +201,7 @@ public:
 //============================= inline implementations =============================
 
 template<class CItemType>
-inline boost::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char *pcItemName )
+inline std::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char *pcItemName )
 {
 	size_t i=0, num_items = m_vecpItem.size();
 	for( i=0; i<num_items; i++ )
@@ -212,7 +212,7 @@ inline boost::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char
 
 	LOG_PRINT( "Cannot find the item: " + std::string(pcItemName) );
 
-	return boost::shared_ptr<CItemType>();
+	return std::shared_ptr<CItemType>();
 }
 
 

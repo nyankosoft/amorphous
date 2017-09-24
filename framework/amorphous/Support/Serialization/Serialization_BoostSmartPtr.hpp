@@ -1,7 +1,7 @@
 #ifndef __KGL_BoostSmartPtr_SERIALIZATION_H__
 #define __KGL_BoostSmartPtr_SERIALIZATION_H__
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "Archive.hpp"
 
@@ -15,7 +15,7 @@ namespace serialization
 
 /// Works only when the shared_ptr is not shared.
 template <class T>
-inline IArchive& operator & ( IArchive& ar, boost::shared_ptr<T>& ptr )
+inline IArchive& operator & ( IArchive& ar, std::shared_ptr<T>& ptr )
 {
 	int saved = 0;
 	if( ar.GetMode() == IArchive::MODE_OUTPUT )
@@ -44,7 +44,7 @@ inline IArchive& operator & ( IArchive& ar, boost::shared_ptr<T>& ptr )
 		if( saved == 1 )
 		{
 			// load the object
-			ptr = boost::shared_ptr<T>( new T() );
+			ptr = std::shared_ptr<T>( new T() );
 			ar & *(ptr.get());
 		}
 

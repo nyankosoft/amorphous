@@ -98,7 +98,7 @@ void SkeletonRenderer::UpdateBonePoses( const Keyframe& keyframe )
 	if( keyframe.GetRootNode().GetNumChildren() == 0 )
 		return;
 
-	boost::shared_ptr<Skeleton> pSkeleton = m_pSkeleton.lock();
+	std::shared_ptr<Skeleton> pSkeleton = m_pSkeleton.lock();
 
 	if( pSkeleton )
 	{

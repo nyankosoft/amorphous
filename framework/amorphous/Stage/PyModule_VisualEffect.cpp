@@ -183,7 +183,7 @@ PyObject* AddPlanarReflector( PyObject* self, PyObject* args )
 //			pEntity->RaiseEntityFlags( BETYPE_PLANAR_REFLECTOR );
 //			pRenderMgr->AddPlanarReflector( EntityHandle<>(pEntity->Self()) );
 //		}
-		boost::shared_ptr<BasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
+		std::shared_ptr<BasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
 		int target_subset_index = 0;
 //		if( pMesh )
 //			RegisterAsPlanarMirror( *pEntity, *pMesh, target_subset_index );

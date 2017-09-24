@@ -18,11 +18,11 @@ class CImageClipper : public thread_class
 
 	std::string m_DestFilepath;
 
-	boost::shared_ptr<CBitmapImage> m_pBitmapImage;
+	std::shared_ptr<CBitmapImage> m_pBitmapImage;
 
 public:
 
-	CImageClipper( SRect& dest_region, const std::string& dest_filepath, boost::shared_ptr<CBitmapImage> pBitmapImage )
+	CImageClipper( SRect& dest_region, const std::string& dest_filepath, std::shared_ptr<CBitmapImage> pBitmapImage )
 		:
 	m_DestRegion(dest_region),
 	m_DestFilepath(dest_filepath),

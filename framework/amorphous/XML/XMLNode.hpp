@@ -4,7 +4,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/3DMath/Vector3.hpp"
 #include "amorphous/Graphics/FloatRGBColor.hpp"
@@ -100,13 +100,13 @@ public:
 
 class XMLNode
 {
-	boost::shared_ptr<XMLNodeImpl> m_pImpl;
+	std::shared_ptr<XMLNodeImpl> m_pImpl;
 
 public:
 
 	XMLNode(){}
 
-	XMLNode( boost::shared_ptr<XMLNodeImpl> pImpl ) : m_pImpl(pImpl) {}
+	XMLNode( std::shared_ptr<XMLNodeImpl> pImpl ) : m_pImpl(pImpl) {}
 
 	~XMLNode(){}
 

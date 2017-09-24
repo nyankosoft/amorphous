@@ -97,8 +97,8 @@ class CGLProgram : public ShaderManager
 
 	GLhandleARB m_Program;
 
-//	boost::shared_ptr<CGLVertexShader> m_pVertexShader;
-//	boost::shared_ptr<CGLFragmentShader> m_pFragmentShader;
+//	std::shared_ptr<CGLVertexShader> m_pVertexShader;
+//	std::shared_ptr<CGLFragmentShader> m_pFragmentShader;
 
 	// Why raw ptr?
 	// - graphis resources manager currenly stores shader managers with raw pointers
@@ -114,7 +114,7 @@ class CGLProgram : public ShaderManager
 
 	GLuint m_TextureSamplerUniforms[NUM_TEXTURE_SAMPLER_UNIFORMS];
 
-	boost::shared_ptr<CGLSLShaderLightManager> m_pLightManager;
+	std::shared_ptr<CGLSLShaderLightManager> m_pLightManager;
 
 	void InitUniforms();
 
@@ -243,7 +243,7 @@ public:
 
 //	void SetTextureParam()
 
-	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
+	std::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 	friend class ShaderManagerHub;
 };

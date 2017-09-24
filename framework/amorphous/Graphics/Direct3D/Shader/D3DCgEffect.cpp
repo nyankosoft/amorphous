@@ -83,7 +83,7 @@ extern CGcontext g_myCgContext;
 extern void InitCg();
 
 uint CD3DCgEffect::ms_RefCount = 0;
-boost::shared_ptr<CD3DCgManager> CD3DCgEffect::ms_pD3DCgManager;
+std::shared_ptr<CD3DCgManager> CD3DCgEffect::ms_pD3DCgManager;
 
 
 CD3DCgEffect::CD3DCgEffect()

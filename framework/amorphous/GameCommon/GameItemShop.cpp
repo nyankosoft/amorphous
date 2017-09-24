@@ -8,7 +8,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 //=============================================================================
@@ -55,7 +55,7 @@ int GameItemShop::LoadItems( const std::vector<std::string>& m_vecItemName );
 }
 */
 
-bool GameItemShop::AddItem( boost::shared_ptr<GameItem> pItem )
+bool GameItemShop::AddItem( std::shared_ptr<GameItem> pItem )
 {
 	if( !pItem )
 		return false;
@@ -99,7 +99,7 @@ bool GameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
 
 	if( true/*paid*/ )
 	{
-		boost::shared_ptr<GameItem> pItemCopy
+		std::shared_ptr<GameItem> pItemCopy
 			= GetItemDatabaseManager().GetItem<GameItem>( m_vecpItem[index]->GetName(), quantity );
 
 		int num_items_received = customer.AddItem( pItemCopy );
@@ -123,7 +123,7 @@ bool GameItemShop::PurchaseItem( CCustomer& customer, int index, int quantity )
 const shared_ptr<GameItem> GameItemShop::GetItem( int index )
 {
 	if( index < 0 || (int)m_vecpItem.size() <= index )
-		return boost::shared_ptr<GameItem>();
+		return std::shared_ptr<GameItem>();
 
 	return m_vecpItem[index];
 }

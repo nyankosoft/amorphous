@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "ArchiveObjectFactory.hpp"
 
@@ -289,7 +289,7 @@ public:
 
 
 	template<class T>
-	void Polymorphic( boost::shared_ptr<T>& pData, IArchiveObjectFactory& rFactory )
+	void Polymorphic( std::shared_ptr<T>& pData, IArchiveObjectFactory& rFactory )
 	{
 		int id = -1;
 
@@ -316,7 +316,7 @@ public:
 
 			if( 0 <= id )
 			{
-				pData = boost::shared_ptr<T>( dynamic_cast<T*>(rFactory.CreateObject((unsigned int)id)) );
+				pData = std::shared_ptr<T>( dynamic_cast<T*>(rFactory.CreateObject((unsigned int)id)) );
 
 				if( pData )
 					(*this) & (*(pData.get()));	// the object must override the Serialize function
@@ -331,7 +331,7 @@ public:
 
 
 	template<class T>
-	void Polymorphic( std::vector< boost::shared_ptr<T> >& vecpData, IArchiveObjectFactory& rFactory )
+	void Polymorphic( std::vector< std::shared_ptr<T> >& vecpData, IArchiveObjectFactory& rFactory )
 	{
 		size_t i, array_size = 0;
 		unsigned int id;
@@ -361,7 +361,7 @@ public:
 			{
 				(*this) & id;	// get id for this object
 
-				vecpData[i] = boost::shared_ptr<T>( dynamic_cast<T*>(rFactory.CreateObject(id)) );
+				vecpData[i] = std::shared_ptr<T>( dynamic_cast<T*>(rFactory.CreateObject(id)) );
 
 				(*this) & (*(vecpData[i].get()));	// the object must override the Serialize function
 			}

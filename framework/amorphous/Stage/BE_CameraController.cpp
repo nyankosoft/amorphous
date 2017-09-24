@@ -19,7 +19,7 @@
 namespace amorphous
 {
 
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 static const U32 gs_FadeoutTimeMS = 500;

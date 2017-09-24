@@ -23,26 +23,26 @@ const std::string g_NullString = "";
 class GraphicsResourceLoader
 {
 	/// entry that stores the loaded resource
-	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
+	std::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 protected:
 
-//	virtual boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() = 0;
+//	virtual std::shared_ptr<GraphicsResourceEntry> GetResourceEntry() = 0;
 
-	boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry.lock(); }
+	std::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pResourceEntry.lock(); }
 
-	const boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() const { return m_pResourceEntry.lock(); }
+	const std::shared_ptr<GraphicsResourceEntry> GetResourceEntry() const { return m_pResourceEntry.lock(); }
 
 	inline const std::string& GetSourceFilepath();
 
 public:
 
-	GraphicsResourceLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
+	GraphicsResourceLoader( std::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_pResourceEntry(pEntry)
 	{}
 
-	inline boost::shared_ptr<GraphicsResource> GetResource();
+	inline std::shared_ptr<GraphicsResource> GetResource();
 
 	virtual Result::Name Load();
 
@@ -69,10 +69,10 @@ public:
 	///   -> See Lock() above
 	virtual bool Unlock();
 
-//	virtual void SetEntry( boost::weak_ptr<GraphicsResourceEntry> pEntry ) = 0;
+//	virtual void SetEntry( std::weak_ptr<GraphicsResourceEntry> pEntry ) = 0;
 
 	/// add a lock request to the graphics device request queue of the async resource loader
-	virtual void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf );
+	virtual void OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf );
 
 	/// - Called by async resource loader when the resource is loaded on locked graphics memory
 	///   and the memory is successfully unlocked.
@@ -101,21 +101,21 @@ class DiskTextureLoader : public GraphicsResourceLoader
 	TextureResourceDesc m_TextureDesc;
 
 	/// Stores texture data loaded from disk
-//	boost::shared_ptr<BitmapImage> m_pImage;
-	std::vector< boost::shared_ptr<BitmapImage> > m_vecpImage;
+//	std::shared_ptr<BitmapImage> m_pImage;
+	std::vector< std::shared_ptr<BitmapImage> > m_vecpImage;
 
-	boost::weak_ptr<DiskTextureLoader> m_pSelf;
+	std::weak_ptr<DiskTextureLoader> m_pSelf;
 
 	int m_CurrentMipLevel;
 
-	boost::shared_ptr<TextureResource> GetTextureResource();
+	std::shared_ptr<TextureResource> GetTextureResource();
 
 protected:
 
-//	boost::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pTextureEntry.lock(); }
+//	std::shared_ptr<GraphicsResourceEntry> GetResourceEntry() { return m_pTextureEntry.lock(); }
 
 	/// Returns true on success
-	bool InitImageArray( boost::shared_ptr<BitmapImage> pBaseImage );
+	bool InitImageArray( std::shared_ptr<BitmapImage> pBaseImage );
 
 	/// Creates rescaled images for mipmaps.
 	/// Returns true on success.
@@ -123,7 +123,7 @@ protected:
 
 public:
 
-	DiskTextureLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const TextureResourceDesc& desc )
+	DiskTextureLoader( std::weak_ptr<GraphicsResourceEntry> pEntry, const TextureResourceDesc& desc )
 		:
 	GraphicsResourceLoader(pEntry),
 	m_TextureDesc(desc),
@@ -152,7 +152,7 @@ public:
 
 	void OnResourceLoadedOnGraphicsMemory();
 
-	void SetWeakPtr( boost::weak_ptr<DiskTextureLoader> pSelf ) { m_pSelf = pSelf; }
+	void SetWeakPtr( std::weak_ptr<DiskTextureLoader> pSelf ) { m_pSelf = pSelf; }
 };
 
 
@@ -162,15 +162,15 @@ protected:
 
 	MeshResourceDesc m_MeshDesc;
 
-	boost::shared_ptr<C3DMeshModelArchive> m_pArchive;
+	std::shared_ptr<C3DMeshModelArchive> m_pArchive;
 
 	U32 m_MeshLoaderStateFlags;
 
-	boost::weak_ptr<MeshLoader> m_pSelf;
+	std::weak_ptr<MeshLoader> m_pSelf;
 
 public:
 
-	MeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc );
+	MeshLoader( std::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc );
 
 	virtual ~MeshLoader();
 
@@ -191,13 +191,13 @@ public:
 	/// - See the comment of Lock()
 	bool Unlock() { return false; }
 
-	virtual void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf ) {}
+	virtual void OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf ) {}
 
 	virtual void OnResourceLoadedOnGraphicsMemory() {}
 
 	virtual void LoadMeshSubresources() {}
 
-	void SetWeakPtr( boost::weak_ptr<MeshLoader> pSelf ) { m_pSelf = pSelf; }
+	void SetWeakPtr( std::weak_ptr<MeshLoader> pSelf ) { m_pSelf = pSelf; }
 
 	const GraphicsResourceDesc *GetDesc() const { return &m_MeshDesc; }
 
@@ -224,14 +224,14 @@ public:
 // GraphicsResourceLoader
 //==============================================================================
 
-inline boost::shared_ptr<GraphicsResource> GraphicsResourceLoader::GetResource()
+inline std::shared_ptr<GraphicsResource> GraphicsResourceLoader::GetResource()
 {
-	boost::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
+	std::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 
 	if( pEntry )
 		return pEntry->GetResource();
 	else
-		return boost::shared_ptr<GraphicsResource>();
+		return std::shared_ptr<GraphicsResource>();
 }
 
 
@@ -246,7 +246,7 @@ inline const std::string& GraphicsResourceLoader::GetSourceFilepath()
 	else
 		return g_NullString;
 
-/*	boost::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
+/*	std::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry && pEntry->GetResource() )
 		return pEntry->GetResource()->GetDesc().ResourcePath;
 	else
@@ -266,7 +266,7 @@ class ShaderLoader : public GraphicsResourceLoader
 
 public:
 
-	ShaderLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const ShaderResourceDesc& desc )
+	ShaderLoader( std::weak_ptr<GraphicsResourceEntry> pEntry, const ShaderResourceDesc& desc )
 		:
 	GraphicsResourceLoader(pEntry),
 	m_ShaderDesc(desc)
@@ -292,7 +292,7 @@ public:
 
 	bool Unlock() { return true; }
 
-	void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf );
+	void OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf );
 
 	bool LoadToGraphicsMemoryByRenderThread();
 };

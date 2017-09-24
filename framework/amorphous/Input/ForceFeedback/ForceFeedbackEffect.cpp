@@ -12,19 +12,19 @@ using namespace boost;
 
 class CDIForceFeedbackEffectImplList
 {
-	std::vector< boost::shared_ptr<CDIForceFeedbackEffectImpl> > m_vecpList;
+	std::vector< std::shared_ptr<CDIForceFeedbackEffectImpl> > m_vecpList;
 
 public:
 
 	CDIForceFeedbackEffectImplList() {}
 
-	void Register( boost::shared_ptr<CDIForceFeedbackEffectImpl> pDIImpl )
+	void Register( std::shared_ptr<CDIForceFeedbackEffectImpl> pDIImpl )
 	{
 		m_vecpList.push_back( pDIImpl );
 	}
 
-//	void Unregister( boost::shared_ptr<CDIForceFeedbackEffectImpl> pDIImpl )
-	void Unregister( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl )
+//	void Unregister( std::shared_ptr<CDIForceFeedbackEffectImpl> pDIImpl )
+	void Unregister( std::shared_ptr<CForceFeedbackEffectImpl> pImpl )
 	{
 		for( size_t i=0; i<m_vecpList.size(); i++ )
 		{
@@ -63,7 +63,7 @@ void OnInputDevicePlugged()
 
 CForceFeedbackEffect::CForceFeedbackEffect()
 {
-	boost::shared_ptr<CDIForceFeedbackEffectImpl> pDIFFImpl( new CDIForceFeedbackEffectImpl );
+	std::shared_ptr<CDIForceFeedbackEffectImpl> pDIFFImpl( new CDIForceFeedbackEffectImpl );
 
 	// register the FF effect impl to the list
 	DIForceFeedbackEffectImplList().Register( pDIFFImpl );

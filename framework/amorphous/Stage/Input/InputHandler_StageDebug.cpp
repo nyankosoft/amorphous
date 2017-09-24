@@ -22,7 +22,7 @@ inline void replace_chars( std::string& src, char from, char to )
 }
 
 
-void InputHandler_StageDebug::WriteEntityTreeToFile( boost::shared_ptr<CStage> pStage )
+void InputHandler_StageDebug::WriteEntityTreeToFile( std::shared_ptr<CStage> pStage )
 {
 	using namespace gregorian;
 
@@ -58,7 +58,7 @@ void InputHandler_StageDebug::WriteEntityTreeToFile( boost::shared_ptr<CStage> p
 
 void InputHandler_StageDebug::ProcessInput(InputData& input)
 {
-	boost::shared_ptr<CStage> pStage = m_pStage.lock();
+	std::shared_ptr<CStage> pStage = m_pStage.lock();
 	if( !pStage )
 		return;
 

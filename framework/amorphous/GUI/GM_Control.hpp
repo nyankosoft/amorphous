@@ -38,7 +38,7 @@ protected:
 
 	/// Used when the control has special keybind.
 	/// If this is NULL, the default keybind of the CGM_DialogManager is used.
-	boost::shared_ptr<CGM_Keybind> m_pKeybind;
+	std::shared_ptr<CGM_Keybind> m_pKeybind;
 
 public:
 

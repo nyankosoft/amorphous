@@ -18,9 +18,9 @@ using namespace std;
 using namespace boost;
 
 
-boost::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath )
+std::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath )
 {
-	boost::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
+	std::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 
 	pBoxMeshGenerator->SetEdgeLengths( Vector3(1,1,1) );
 	pBoxMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -31,7 +31,7 @@ boost::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string
 }
 
 
-static boost::shared_ptr<CylinderMeshGenerator> CreateSkyCylinderMeshGenerator( const std::string& texture_filepath )
+static std::shared_ptr<CylinderMeshGenerator> CreateSkyCylinderMeshGenerator( const std::string& texture_filepath )
 {
 	CylinderDesc desc;
 	desc.style_flags |= CCylinderMeshStyleFlags::WELD_VERTICES;
@@ -39,7 +39,7 @@ static boost::shared_ptr<CylinderMeshGenerator> CreateSkyCylinderMeshGenerator( 
 	desc.radii[0] = desc.radii[1] = 10.0f;
 	desc.height = 10.0f;
 
-	boost::shared_ptr<CylinderMeshGenerator> pCylinderMeshGenerator( new CylinderMeshGenerator(desc) );
+	std::shared_ptr<CylinderMeshGenerator> pCylinderMeshGenerator( new CylinderMeshGenerator(desc) );
 
 //	pCylinderMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_INV_Y );
 	pCylinderMeshGenerator->SetTexCoordStyleFlags( TexCoordStyle::LINEAR_SHIFT_Y | TexCoordStyle::LINEAR_SHIFT_INV_Y );
@@ -73,7 +73,7 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 		ShaderResourceDesc desc;
 		GenericShaderDesc gs_desc;
 		gs_desc.Lighting = false;
-		boost::shared_ptr<GenericShaderGenerator> pGenerator( new GenericShaderGenerator(gs_desc) );
+		std::shared_ptr<GenericShaderGenerator> pGenerator( new GenericShaderGenerator(gs_desc) );
 		desc.pShaderGenerator = pGenerator;
 		bool shader_loaded = s_Shader.Load( desc );
 		if( !shader_loaded )
@@ -132,7 +132,7 @@ void RenderAsSkybox( MeshClass& mesh, const Matrix34& vCamPose )
 
 void RenderAsSkybox( MeshHandle& mesh, const Matrix34& vCamPose )
 {
-	boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
+	std::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 
 	if( pMesh )
 		RenderAsSkybox( *pMesh, vCamPose );
@@ -159,7 +159,7 @@ void RenderSkybox( TextureHandle& sky_texture, const Matrix34& vCamPose )
 
 	if( !s_SkyboxMesh.IsValid() )
 	{
-		boost::shared_ptr<BoxMeshGenerator> pSkyboxMeshGenerator
+		std::shared_ptr<BoxMeshGenerator> pSkyboxMeshGenerator
 			= CreateSkyboxMeshGenerator( "" );
 		if( pSkyboxMeshGenerator )
 		{
@@ -183,7 +183,7 @@ void RenderSkyCylinder( TextureHandle& sky_texture, const Matrix34& vCamPose )
 
 	if( !s_SkyCylinderMesh.IsValid() )
 	{
-		boost::shared_ptr<CylinderMeshGenerator> pSkyCylinderMeshGenerator
+		std::shared_ptr<CylinderMeshGenerator> pSkyCylinderMeshGenerator
 			= CreateSkyCylinderMeshGenerator( "" );
 		if( pSkyCylinderMeshGenerator )
 		{

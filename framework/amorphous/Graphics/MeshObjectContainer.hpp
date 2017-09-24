@@ -93,11 +93,11 @@ class MeshContainerNode : public IArchiveObjectBase
 
 	/// Mesh Containers
 	/// - Don't do m_vecpMeshContainer.push_back(). See below.
-	std::vector< boost::shared_ptr<MeshObjectContainer> > m_vecpMeshContainer;
+	std::vector< std::shared_ptr<MeshObjectContainer> > m_vecpMeshContainer;
 
 	std::vector<Matrix34> m_vecMeshLocalPose;
 
-	std::vector< boost::shared_ptr<MeshContainerNode> > m_vecpChild;
+	std::vector< std::shared_ptr<MeshContainerNode> > m_vecpChild;
 
 	std::vector<ShaderTechniqueHandle> m_vecShaderTechniqueBuffer;
 
@@ -113,7 +113,7 @@ public:
 
 	Matrix34 GetMeshContainerWorldTransform( int mesh_container_index );
 
-	void AddMeshContainer( boost::shared_ptr<MeshObjectContainer> pMeshContainer, const Matrix34& local_pose = Matrix34Identity() )
+	void AddMeshContainer( std::shared_ptr<MeshObjectContainer> pMeshContainer, const Matrix34& local_pose = Matrix34Identity() )
 	{
 		m_vecpMeshContainer.push_back( pMeshContainer );
 		m_vecMeshLocalPose.push_back( local_pose );
@@ -126,11 +126,11 @@ public:
 
 	int GetNumMeshContainers() const { return (int)m_vecpMeshContainer.size(); }
 
-	const boost::shared_ptr<MeshObjectContainer> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
+	const std::shared_ptr<MeshObjectContainer> GetMeshContainer( int index ) const { return m_vecpMeshContainer[index]; }
 
-	inline void SetMeshContainer( int index, boost::shared_ptr<MeshObjectContainer>& pContainer, const Matrix34& local_pose = Matrix34Identity() );
+	inline void SetMeshContainer( int index, std::shared_ptr<MeshObjectContainer>& pContainer, const Matrix34& local_pose = Matrix34Identity() );
 
-	boost::shared_ptr<MeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
+	std::shared_ptr<MeshObjectContainer> MeshContainer( int index ) { return m_vecpMeshContainer[index]; }
 
 	void ClearMeshContainers() { m_vecpMeshContainer.resize( 0 ); }
 
@@ -144,12 +144,12 @@ public:
 
 	int GetNumChildren() { return (int)m_vecpChild.size(); }
 
-	const boost::shared_ptr<MeshContainerNode> GetChild( int index ) const { return m_vecpChild[index]; }
+	const std::shared_ptr<MeshContainerNode> GetChild( int index ) const { return m_vecpChild[index]; }
 
 	/// Returns non-const pointer
-	boost::shared_ptr<MeshContainerNode> Child( int index ) { return m_vecpChild[index]; }
+	std::shared_ptr<MeshContainerNode> Child( int index ) { return m_vecpChild[index]; }
 
-	void AddChild( boost::shared_ptr<MeshContainerNode> pChild ) { m_vecpChild.push_back( pChild ); }
+	void AddChild( std::shared_ptr<MeshContainerNode> pChild ) { m_vecpChild.push_back( pChild ); }
 
 	/// Recursively load all meshes on the nodes of the tree
 	bool LoadMeshesFromDesc();
@@ -164,7 +164,7 @@ public:
 //=============================== inline implementations ===============================
 
 inline void MeshContainerNode::SetMeshContainer( int index,
-												  boost::shared_ptr<MeshObjectContainer>& pContainer,
+												  std::shared_ptr<MeshObjectContainer>& pContainer,
 												  const Matrix34& local_pose )
 {
 	if( index < 0 )
@@ -172,7 +172,7 @@ inline void MeshContainerNode::SetMeshContainer( int index,
 
 	while( (int)m_vecpMeshContainer.size() <= index )
 	{
-		boost::shared_ptr<MeshObjectContainer> pNewContainer( new MeshObjectContainer );
+		std::shared_ptr<MeshObjectContainer> pNewContainer( new MeshObjectContainer );
 		AddMeshContainer( pNewContainer );
 	}
 

@@ -480,7 +480,7 @@ CMaterial *CNxPhysScene::CreateMaterial (const CMaterialDesc &desc)
 		ONCE( LOG_PRINT_WARNING( " You are actually using quite a few materials or PhysX implementation changed?" ) );
 
 	while( (NxMaterialIndex)m_vecpNxPhysMaterial.size() <= material_index )
-		m_vecpNxPhysMaterial.push_back( boost::shared_ptr<CNxPhysMaterial>() );
+		m_vecpNxPhysMaterial.push_back( std::shared_ptr<CNxPhysMaterial>() );
 
 	m_vecpNxPhysMaterial[material_index].reset( new CNxPhysMaterial( pNxMaterial, m_pScene ) );
 

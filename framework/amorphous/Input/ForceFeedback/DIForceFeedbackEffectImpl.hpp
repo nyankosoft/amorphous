@@ -2,7 +2,6 @@
 #define __DIForceFeedbackEffectImpl_HPP__
 
 
-#include <boost/weak_ptr.hpp>
 #include "amorphous/base.hpp"
 #include "amorphous/Input/Win32/DirectInput.hpp"
 #include "amorphous/Input/Win32/DirectInputGamepad.hpp"
@@ -23,13 +22,13 @@ class CDIForceFeedbackEffectImpl : public CForceFeedbackEffectImpl
 	DIEFFECT m_Effect;
 
 //	CForceFeedbackEffectDesc m_Desc;
-	boost::shared_ptr<CForceFeedbackEffectDesc> m_pDesc;
+	std::shared_ptr<CForceFeedbackEffectDesc> m_pDesc;
 
 	CForceFeedbackTargetDevice m_Target;
 
 	DWORD m_adwAxis[32];
 
-	boost::weak_ptr<CDIFFParams> m_pFFParams;
+	std::weak_ptr<CDIFFParams> m_pFFParams;
 
 	uint m_ID;
 
@@ -41,15 +40,15 @@ public:
 
 	CDIForceFeedbackEffectImpl();
 
-//	CDIForceFeedbackEffectImpl( const CForceFeedbackEffectDesc& desc, boost::shared_ptr<CDIFFParams> pFFParams );
+//	CDIForceFeedbackEffectImpl( const CForceFeedbackEffectDesc& desc, std::shared_ptr<CDIFFParams> pFFParams );
 
 	~CDIForceFeedbackEffectImpl();
 
-	Result::Name Init( const CForceFeedbackEffectDesc& desc, boost::shared_ptr<CDIFFParams> pFFParams );
+	Result::Name Init( const CForceFeedbackEffectDesc& desc, std::shared_ptr<CDIFFParams> pFFParams );
 
 	Result::Name Init( const CForceFeedbackEffectDesc& desc, const CForceFeedbackTargetDevice& target );
 
-	Result::Name Init( boost::shared_ptr<CDIFFParams> pFFParams );
+	Result::Name Init( std::shared_ptr<CDIFFParams> pFFParams );
 
 	void Update();
 

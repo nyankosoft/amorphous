@@ -39,9 +39,9 @@ extern GameApplicationBase *g_pGameAppBase;
  */
 class GameApplicationBase : public ApplicationBase
 {
-	boost::shared_ptr<MouseInputDevice> m_pMouse;
+	std::shared_ptr<MouseInputDevice> m_pMouse;
 
-	boost::shared_ptr<KeyboardInputDevice> m_pDIKeyboard;
+	std::shared_ptr<KeyboardInputDevice> m_pDIKeyboard;
 
 //	DirectInputGamepad *m_pDIGamepad;
 
@@ -50,11 +50,11 @@ protected:
 	/// handles debug-related input
 	/// - turning on / off logs on the screen
 	/// - taking screen shot (not debug input)
-	boost::shared_ptr<GlobalInputHandler> m_pGlobalInputHandler;
+	std::shared_ptr<GlobalInputHandler> m_pGlobalInputHandler;
 
-	boost::shared_ptr<GameTaskManager> m_pTaskManager;
+	std::shared_ptr<GameTaskManager> m_pTaskManager;
 
-	boost::shared_ptr<LogOutput_ScrolledTextBuffer> m_pOnScreenLog;
+	std::shared_ptr<LogOutput_ScrolledTextBuffer> m_pOnScreenLog;
 
 	static int ms_DefaultSleepTimeMS;
 

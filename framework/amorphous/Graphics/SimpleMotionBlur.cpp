@@ -172,8 +172,8 @@ void SimpleMotionBlur::Render()
 	C2DRect rect( -0.5f, -0.5f, (float)m_TextureWidth - 0.5f, (float)m_TextureHeight - 0.5f );
 	rect.SetTextureUV( TEXCOORD2(0.0f,0.0f), TEXCOORD2(1.0f,1.0f) );
 
-	boost::shared_ptr<TextureRenderTarget>& pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
-	boost::shared_ptr<TextureRenderTarget>& pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
+	std::shared_ptr<TextureRenderTarget>& pDestRenderTarget = m_apTexRenderTarget[m_TargetTexIndex];
+	std::shared_ptr<TextureRenderTarget>& pPrevRenderTarget = m_apTexRenderTarget[(m_TargetTexIndex+1)%2];
 
 	if( !pDestRenderTarget
 	 || !pPrevRenderTarget )

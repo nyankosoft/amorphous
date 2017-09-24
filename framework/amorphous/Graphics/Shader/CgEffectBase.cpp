@@ -361,10 +361,10 @@ void CCgEffectBase::SetParam( const char *parameter_name, const Matrix44& mat44_
 }
 
 
-boost::shared_ptr<ShaderLightManager> CCgEffectBase::GetShaderLightManager()
+std::shared_ptr<ShaderLightManager> CCgEffectBase::GetShaderLightManager()
 {
 	LOG_PRINT_ERROR( " Not implemented." );
-	return boost::shared_ptr<ShaderLightManager>();
+	return std::shared_ptr<ShaderLightManager>();
 }
 
 

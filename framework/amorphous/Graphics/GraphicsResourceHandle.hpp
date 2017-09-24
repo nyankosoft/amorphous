@@ -17,7 +17,7 @@ class GraphicsResourceHandle
 {
 protected:
 
-	boost::shared_ptr<GraphicsResourceEntry> m_pResourceEntry;
+	std::shared_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 //	void IncResourceRefCount();
 //	void DecResourceRefCount();
@@ -33,9 +33,9 @@ public:
 
 	virtual GraphicsResourceType::Name GetResourceType() const = 0;
 
-	boost::shared_ptr<GraphicsResourceEntry> GetEntry() { return m_pResourceEntry; }
+	std::shared_ptr<GraphicsResourceEntry> GetEntry() { return m_pResourceEntry; }
 
-	const boost::shared_ptr<GraphicsResourceEntry> GetEntry() const { return m_pResourceEntry; }
+	const std::shared_ptr<GraphicsResourceEntry> GetEntry() const { return m_pResourceEntry; }
 
 	inline bool IsLoaded() const;
 

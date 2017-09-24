@@ -17,7 +17,7 @@ class CGI_Ammunition;
 /*
 class Magazine : public GameItem
 {
-	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
+	std::vector< std::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
 };
 */
 
@@ -44,15 +44,15 @@ class CRotatableTurret : public GameItem
 	cdv<float> m_LocalGunTubePitchAngle;
 
 	std::string m_WeaponName;
-	boost::shared_ptr<CGI_Weapon> m_pWeapon;
+	std::shared_ptr<CGI_Weapon> m_pWeapon;
 
-//	boost::shared_ptr<CGI_Ammunition> m_pAmmunition;
+//	std::shared_ptr<CGI_Ammunition> m_pAmmunition;
 	class CAmmunitionAttributes : public IArchiveObjectBase
 	{
 	public:
 		std::string m_AmmunitionName;
 		int m_InitQuantity;
-		boost::shared_ptr<CGI_Ammunition> pItem;
+		std::shared_ptr<CGI_Ammunition> pItem;
 
 		CAmmunitionAttributes()
 			:
@@ -71,7 +71,7 @@ class CRotatableTurret : public GameItem
 
 	std::vector<CAmmunitionAttributes> m_vecAmmunition;
 
-	std::vector< boost::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
+	std::vector< std::shared_ptr<CGI_Ammunition> > m_vecpAmmunition;
 
 	EntityHandle<> m_Target;
 
@@ -84,7 +84,7 @@ class CRotatableTurret : public GameItem
 	Matrix34 m_MountMeshTransform;
 	Matrix34 m_GunMeshTransform;
 
-	boost::shared_ptr<GameItem> m_pOwner;
+	std::shared_ptr<GameItem> m_pOwner;
 
 /*	enum StyleFlags
 	{
@@ -123,7 +123,7 @@ public:
 	void SetMeshTransform( Matrix34& transform );
 //	void SetGunMeshTransform( Matrix34& transform ) { m_GunMeshTransform = transform; }
 
-	void SetOwner( boost::shared_ptr<GameItem> pOwner ) { m_pOwner = pOwner; }
+	void SetOwner( std::shared_ptr<GameItem> pOwner ) { m_pOwner = pOwner; }
 };
 
 

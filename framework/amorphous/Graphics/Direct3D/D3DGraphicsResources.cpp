@@ -510,7 +510,7 @@ bool CD3DTextureResource::CreateFromDesc()
 	{
 		// An empty texture has been created
 		// - fill the texture if loader was specified
-		boost::shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
+		std::shared_ptr<TextureFillingAlgorithm> pLoader = desc.pLoader;
 		if( pLoader && m_pLockedTexture )
 		{
 			pLoader->FillTexture( *m_pLockedTexture );

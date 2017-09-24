@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "fwd.hpp"
 #include "GM_ControlRenderer.hpp"
@@ -37,7 +37,7 @@ protected:
 //	std::vector<CGM_ControlRenderer *> m_vecpControlRenderer;
 
 	/// borrowed reference
-	boost::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
+	std::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
 
 	/// owned / borrowed reference
 	GraphicsElementAnimationManagerSharedPtr m_pGraphicsEffectManager;
@@ -77,7 +77,7 @@ public:
 //	virtual void ChangeScale( float factor ) {}
 
 
-	boost::shared_ptr<GraphicsElementManager> GetGraphicsElementManager() { return m_pGraphicsElementManager; }
+	std::shared_ptr<GraphicsElementManager> GetGraphicsElementManager() { return m_pGraphicsElementManager; }
 
 	GraphicsElementAnimationManagerBase *GetGraphicsEffectManager() { return m_pGraphicsEffectManager.get(); }
 

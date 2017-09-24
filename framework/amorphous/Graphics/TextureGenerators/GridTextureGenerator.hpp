@@ -129,7 +129,7 @@ public:
 //	desc.Width   = width
 //	desc.Height  = height
 //
-//	boost::shared_ptr<GridTextureGenerator> pGenerator( new GridTextureGenerator );
+//	std::shared_ptr<GridTextureGenerator> pGenerator( new GridTextureGenerator );
 //	pGenerator->m_BaseColor    = base_color;
 //	pGenerator->m_LineColor    = line_color;
 //	pGenerator->m_LineWidth    = line_width;

@@ -2,7 +2,7 @@
 #define __BVHUtilities_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/base.hpp"
 #include "amorphous/MotionCapture/BVH/fwd.hpp"
 #include "fwd.hpp"
@@ -16,7 +16,7 @@ void CopySkeletonFromBVH( const BVHPlayer& src_bvh, msynth::Skeleton& target );
 
 Result::Name CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname, msynth::Skeleton& dest_skeleton );
 
-boost::shared_ptr<msynth::Skeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname );
+std::shared_ptr<msynth::Skeleton> CreateSkeletonFromBVHFile( const std::string& bvh_file_pathname );
 
 
 } // namespace amorphous

@@ -109,21 +109,21 @@ public:
 
 class FilterShaderContainer
 {
-	std::vector< boost::shared_ptr<PostProcessFilterShader> > m_vecpShader;
+	std::vector< std::shared_ptr<PostProcessFilterShader> > m_vecpShader;
 
 public:
 
-	boost::shared_ptr<PostProcessFilterShader> AddShader( const ShaderResourceDesc& shader_desc );
+	std::shared_ptr<PostProcessFilterShader> AddShader( const ShaderResourceDesc& shader_desc );
 
 	Result::Name AddShader( const std::string& name );
 
-	boost::shared_ptr<PostProcessFilterShader> AddPostProcessEffectShader( const std::string& effect_name );
+	std::shared_ptr<PostProcessFilterShader> AddPostProcessEffectShader( const std::string& effect_name );
 
-	boost::shared_ptr<PostProcessFilterShader> GetFilterShader( const std::string& name );
+	std::shared_ptr<PostProcessFilterShader> GetFilterShader( const std::string& name );
 
-	boost::shared_ptr<PostProcessFilterShader> GetShader( const std::string& technique_name );
+	std::shared_ptr<PostProcessFilterShader> GetShader( const std::string& technique_name );
 
-//	boost::shared_ptr<PostProcessFilterShader> GetShaderFromFilename( const std::string& filename );
+//	std::shared_ptr<PostProcessFilterShader> GetShaderFromFilename( const std::string& filename );
 };
 
 
@@ -136,25 +136,25 @@ struct CRenderTargetChain
 /// \brief A class that manages post process effects
 class PostProcessEffectManager : public GraphicsComponent
 {
-	boost::shared_ptr<HDRLightingFilter> m_pHDRLightingFilter;
+	std::shared_ptr<HDRLightingFilter> m_pHDRLightingFilter;
 
-	boost::shared_ptr<FullScreenBlurFilter> m_pFullScreenBlurFilter;
+	std::shared_ptr<FullScreenBlurFilter> m_pFullScreenBlurFilter;
 
-	boost::shared_ptr<MonochromeColorFilter> m_pMonochromeColorFilter;
+	std::shared_ptr<MonochromeColorFilter> m_pMonochromeColorFilter;
 
 
-	boost::shared_ptr<RenderTargetTextureCache> m_pTextureCache;
+	std::shared_ptr<RenderTargetTextureCache> m_pTextureCache;
 
 	FilterShaderContainer m_FilterShaderContainer;
 
 	/// render target to render the scene
 	TextureHandle m_SceneRenderTarget;
 
-	boost::shared_ptr<OriginalSceneFilter> m_pOriginalSceneFilter;
+	std::shared_ptr<OriginalSceneFilter> m_pOriginalSceneFilter;
 
-	boost::shared_ptr<PostProcessEffectFilter> m_pFilter;
+	std::shared_ptr<PostProcessEffectFilter> m_pFilter;
 
-	boost::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
+	std::shared_ptr<RenderTargetTextureHolder> m_pOrigSceneHolder;
 
 
 	U32 m_EnabledEffectFlags;

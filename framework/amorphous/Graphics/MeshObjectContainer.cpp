@@ -218,7 +218,7 @@ void MeshContainerNode::Render( /*const Matrix34& parent_transform*/ )
 
 	for( size_t i=0; i<m_vecpMeshContainer.size(); i++ )
 	{
-		boost::shared_ptr<BasicMesh> pMesh
+		std::shared_ptr<BasicMesh> pMesh
 			= m_vecpMeshContainer[i]->m_MeshObjectHandle.GetMesh();
 
 		if( !pMesh )
@@ -358,7 +358,7 @@ void MeshContainerNode::LoadFromXMLNode( XMLNode& reader )
 	m_vecMeshLocalPose.resize( vecReader.size(), Matrix34Identity() );
 	for( size_t i=0; i<vecReader.size(); i++ )
 	{
-		m_vecpMeshContainer[i] = boost::shared_ptr<MeshObjectContainer>( new MeshObjectContainer() );
+		m_vecpMeshContainer[i] = std::shared_ptr<MeshObjectContainer>( new MeshObjectContainer() );
 		m_vecpMeshContainer[i]->LoadFromXMLNode( vecReader[i].GetChild( "MeshContainer" ) );
 		amorphous::LoadFromXMLNode( vecReader[i].GetChild( "MeshLocalPose" ), m_vecMeshLocalPose[i] );
 	}

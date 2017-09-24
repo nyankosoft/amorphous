@@ -173,13 +173,13 @@ typedef ASCIIFont TrueTypeTextureFont;
 } // namespace amorphous
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace amorphous
 {
-typedef boost::shared_ptr<GraphicsElementManager> GraphicsElementManagerSharedPtr;
-typedef boost::shared_ptr<GraphicsElementManagerCallback> GraphicsElementManagerCallbackSharedPtr;
-typedef boost::shared_ptr<GraphicsElementAnimationManagerBase> GraphicsElementAnimationManagerSharedPtr;
+typedef std::shared_ptr<GraphicsElementManager> GraphicsElementManagerSharedPtr;
+typedef std::shared_ptr<GraphicsElementManagerCallback> GraphicsElementManagerCallbackSharedPtr;
+typedef std::shared_ptr<GraphicsElementAnimationManagerBase> GraphicsElementAnimationManagerSharedPtr;
 } // namespace amorphous
 
 

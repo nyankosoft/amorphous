@@ -2,7 +2,7 @@
 #define __InputDevice_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/thread/mutex.hpp>
 #include "fwd.hpp"
 #include "InputHub.hpp"
@@ -44,7 +44,7 @@ protected:
 
 	virtual void RefreshKeyStates() {}
 
-	void SetImplToForceFeedbackEffect( boost::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe );
+	void SetImplToForceFeedbackEffect( std::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe );
 
 public:
 
@@ -93,7 +93,7 @@ class InputDeviceHub
 {
 	std::vector<InputDevice *> m_vecpInputDevice;
 
-	std::vector< boost::shared_ptr<InputDeviceGroup> > m_vecpGroup;
+	std::vector< std::shared_ptr<InputDeviceGroup> > m_vecpGroup;
 
 	boost::mutex m_Mutex;
 
@@ -115,7 +115,7 @@ public:
 
 	void SendAutoRepeat( InputDeviceGroup& group );
 
-	boost::shared_ptr<InputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
+	std::shared_ptr<InputDeviceGroup> GetInputDeviceGroup( int i ) { return m_vecpGroup[i]; }
 
 	int GetNumInputDeviceGroups() const { return (int)m_vecpGroup.size(); }
 
@@ -133,7 +133,7 @@ inline InputDeviceHub& GetInputDeviceHub()
 template<class InputDeviceClass>
 inline InputDeviceClass *GetPrimaryInputDevice()
 {
-	boost::shared_ptr<InputDeviceGroup> pGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
+	std::shared_ptr<InputDeviceGroup> pGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 	if( !pGroup )
 		return NULL;
 

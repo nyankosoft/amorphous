@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "../base.hpp"
 #include "../Graphics/fwd.hpp"
 
@@ -26,10 +26,10 @@ public:
 
 	~ShapesExtractor(){}
 
-	Result::Name ExtractShapes( const boost::shared_ptr<General3DMesh> pSrcMesh, ShapeContainerSet& shape_set );
+	Result::Name ExtractShapes( const std::shared_ptr<General3DMesh> pSrcMesh, ShapeContainerSet& shape_set );
 
 	/// \param output_filepath [in] pathname of output file.
-	Result::Name ExtractShapesAndSaveToFile( const boost::shared_ptr<General3DMesh> pSrcMesh, const std::string& output_filepath );
+	Result::Name ExtractShapesAndSaveToFile( const std::shared_ptr<General3DMesh> pSrcMesh, const std::string& output_filepath );
 };
 
 } // namespace amorphous

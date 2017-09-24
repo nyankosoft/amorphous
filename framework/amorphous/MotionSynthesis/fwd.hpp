@@ -29,8 +29,8 @@ class MotionDatabaseCompiler;
 
 class HumanoidMotionTable;
 
-//#include <boost/shared_ptr.hpp>
-//typedef boost::shared_ptr<MotionPrimitive> MotionPrimitiveSharedPtr;
+//#include <memory>
+//typedef std::shared_ptr<MotionPrimitive> MotionPrimitiveSharedPtr;
 
 
 // later added classes

@@ -21,7 +21,6 @@
 #include <vector>
 #include <list>
 #include <algorithm>
-#include <boost/weak_ptr.hpp>
 
 
 namespace amorphous
@@ -71,7 +70,7 @@ protected:
 
 	GraphicsElementManager *m_pManager;
 
-	boost::weak_ptr<GraphicsElement> m_pSelf;
+	std::weak_ptr<GraphicsElement> m_pSelf;
 
 	SFloatRGBAColor m_aColor[NUM_COLORS];
 
@@ -587,14 +586,14 @@ public:
 class CombinedPrimitiveElement : public GraphicsElement// GraphicsElementGroup
 {
 	/// Set by  derived classes
-	boost::shared_ptr<PrimitiveElement> m_pFillElement;
-	boost::shared_ptr<PrimitiveElement> m_pFrameElement;
+	std::shared_ptr<PrimitiveElement> m_pFillElement;
+	std::shared_ptr<PrimitiveElement> m_pFrameElement;
 
 public:
 
 	CombinedPrimitiveElement() {}
 
-	CombinedPrimitiveElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<PrimitiveElement> pFill, boost::shared_ptr<PrimitiveElement> pFrame )
+	CombinedPrimitiveElement( const SRect& non_scaled_rect, float fScale, std::shared_ptr<PrimitiveElement> pFill, std::shared_ptr<PrimitiveElement> pFrame )
 		:
 	m_pFillElement(pFill),
 	m_pFrameElement(pFrame)
@@ -672,8 +671,8 @@ public:
 			m_pFrameElement->SetLayer( layer_index );
 	}
 
-	boost::shared_ptr<PrimitiveElement>& FillElement() { return m_pFillElement; }
-	boost::shared_ptr<PrimitiveElement>& FrameElement() { return m_pFrameElement; }
+	std::shared_ptr<PrimitiveElement>& FillElement() { return m_pFillElement; }
+	std::shared_ptr<PrimitiveElement>& FrameElement() { return m_pFrameElement; }
 
 	void OnRemovalRequested();
 };
@@ -681,14 +680,14 @@ public:
 
 class CombinedRectElement : public CombinedPrimitiveElement
 {
-	boost::shared_ptr<FillRectElement> m_pFillRectElement;
-	boost::shared_ptr<FrameRectElement> m_pFrameRectElement;
+	std::shared_ptr<FillRectElement> m_pFillRectElement;
+	std::shared_ptr<FrameRectElement> m_pFrameRectElement;
 
 public:
 
 	CombinedRectElement() {}
 
-	CombinedRectElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<FillRectElement> pFill, boost::shared_ptr<FrameRectElement> pFrame )
+	CombinedRectElement( const SRect& non_scaled_rect, float fScale, std::shared_ptr<FillRectElement> pFill, std::shared_ptr<FrameRectElement> pFrame )
 		:
 	CombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
 	m_pFillRectElement(pFill),
@@ -708,21 +707,21 @@ public:
 
 	void Draw() {}
 
-	boost::shared_ptr<FillRectElement> FillRectElement() { return m_pFillRectElement; }
-	boost::shared_ptr<FrameRectElement> FrameRectElement() { return m_pFrameRectElement; }
+	std::shared_ptr<FillRectElement> FillRectElement() { return m_pFillRectElement; }
+	std::shared_ptr<FrameRectElement> FrameRectElement() { return m_pFrameRectElement; }
 };
 
 
 class CombinedRoundRectElement : public CombinedPrimitiveElement
 {
-	boost::shared_ptr<RoundFillRectElement> m_pRoundFillRectElement;
-	boost::shared_ptr<RoundFrameRectElement> m_pRoundFrameRectElement;
+	std::shared_ptr<RoundFillRectElement> m_pRoundFillRectElement;
+	std::shared_ptr<RoundFrameRectElement> m_pRoundFrameRectElement;
 
 public:
 
 	CombinedRoundRectElement() {}
 
-	CombinedRoundRectElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<RoundFillRectElement> pFill, boost::shared_ptr<RoundFrameRectElement> pFrame )
+	CombinedRoundRectElement( const SRect& non_scaled_rect, float fScale, std::shared_ptr<RoundFillRectElement> pFill, std::shared_ptr<RoundFrameRectElement> pFrame )
 		:
 	CombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
 	m_pRoundFillRectElement(pFill),
@@ -742,21 +741,21 @@ public:
 
 	void Draw() {}
 
-	boost::shared_ptr<RoundFillRectElement> RoundFillRectElement() { return m_pRoundFillRectElement; }
-	boost::shared_ptr<RoundFrameRectElement> RoundFrameRectElement() { return m_pRoundFrameRectElement; }
+	std::shared_ptr<RoundFillRectElement> RoundFillRectElement() { return m_pRoundFillRectElement; }
+	std::shared_ptr<RoundFrameRectElement> RoundFrameRectElement() { return m_pRoundFrameRectElement; }
 };
 
 
 class CombinedTriangleElement : public CombinedPrimitiveElement
 {
-	boost::shared_ptr<FillTriangleElement> m_pFillTriangleElement;
-	boost::shared_ptr<FrameTriangleElement> m_pFrameTriangleElement;
+	std::shared_ptr<FillTriangleElement> m_pFillTriangleElement;
+	std::shared_ptr<FrameTriangleElement> m_pFrameTriangleElement;
 
 public:
 
 	CombinedTriangleElement() {}
 
-	CombinedTriangleElement( const SRect& non_scaled_rect, float fScale, boost::shared_ptr<FillTriangleElement> pFill, boost::shared_ptr<FrameTriangleElement> pFrame )
+	CombinedTriangleElement( const SRect& non_scaled_rect, float fScale, std::shared_ptr<FillTriangleElement> pFill, std::shared_ptr<FrameTriangleElement> pFrame )
 		:
 	CombinedPrimitiveElement(non_scaled_rect,fScale,pFill,pFrame),
 	m_pFillTriangleElement(pFill),
@@ -776,8 +775,8 @@ public:
 
 	void Draw() {}
 
-	boost::shared_ptr<FillTriangleElement> FillTriangleElement() { return m_pFillTriangleElement; }
-	boost::shared_ptr<FrameTriangleElement> FrameTriangleElement() { return m_pFrameTriangleElement; }
+	std::shared_ptr<FillTriangleElement> FillTriangleElement() { return m_pFillTriangleElement; }
+	std::shared_ptr<FrameTriangleElement> FrameTriangleElement() { return m_pFrameTriangleElement; }
 };
 
 
@@ -978,7 +977,7 @@ public:
 
 class GraphicsElementGroup : public GraphicsElement
 {
-	std::vector< boost::shared_ptr<GraphicsElement> > m_vecpElement;
+	std::vector< std::shared_ptr<GraphicsElement> > m_vecpElement;
 
 	/// origin of local top-left positions which are grouped by the group element.
 	/// - Represented in global screen coordinates
@@ -994,11 +993,11 @@ private:
 
 public:
 
-//	GraphicsElementGroup( std::vector< boost::shared_ptr<GraphicsElement> >& rvecpElement );
+//	GraphicsElementGroup( std::vector< std::shared_ptr<GraphicsElement> >& rvecpElement );
 
 	/// Calculates the local top-left positions of the specified graphics elements from vLocalOrigin
 	/// \param vLocalOrigin local origin in global screen coordinates
-	GraphicsElementGroup( std::vector< boost::shared_ptr<GraphicsElement> >& rvecpElement, Vector2 vLocalOrigin );
+	GraphicsElementGroup( std::vector< std::shared_ptr<GraphicsElement> >& rvecpElement, Vector2 vLocalOrigin );
 
 	virtual ~GraphicsElementGroup();
 
@@ -1041,16 +1040,16 @@ public:
 
 	void SetDestAlphaBlendMode( AlphaBlend::Mode mode );
 
-	inline void RemoveElementFromGroup( boost::shared_ptr<GraphicsElement> pElement );
+	inline void RemoveElementFromGroup( std::shared_ptr<GraphicsElement> pElement );
 
-	std::vector< boost::shared_ptr<GraphicsElement> >& GetElementBuffer() { return m_vecpElement; }
+	std::vector< std::shared_ptr<GraphicsElement> >& GetElementBuffer() { return m_vecpElement; }
 };
 
 
 inline void GraphicsElementGroup::UpdateAABB()
 {
 	m_LocalAABB.Nullify();
-	std::vector< boost::shared_ptr<GraphicsElement> >::iterator itr;
+	std::vector< std::shared_ptr<GraphicsElement> >::iterator itr;
 	for( itr = m_vecpElement.begin(); itr != m_vecpElement.end(); itr++ )
 	{
 		m_LocalAABB.MergeAABB( (*itr)->GetAABB() );
@@ -1058,11 +1057,11 @@ inline void GraphicsElementGroup::UpdateAABB()
 }
 
 
-inline void GraphicsElementGroup::RemoveElementFromGroup( boost::shared_ptr<GraphicsElement> pElement )
+inline void GraphicsElementGroup::RemoveElementFromGroup( std::shared_ptr<GraphicsElement> pElement )
 {
 	// remove the arg element from this group
 	// - does not release the element
-	std::vector< boost::shared_ptr<GraphicsElement> >::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
+	std::vector< std::shared_ptr<GraphicsElement> >::iterator itr = std::find( m_vecpElement.begin(), m_vecpElement.end(), pElement );
 	if( itr != m_vecpElement.end() )
 		m_vecpElement.erase( itr );
 	else
@@ -1078,10 +1077,10 @@ public:
 	GraphicsElementManagerCallback() {}
 	virtual ~GraphicsElementManagerCallback() {}
 
-	virtual void OnCreated( boost::shared_ptr<GraphicsElement> pElement ) {}
+	virtual void OnCreated( std::shared_ptr<GraphicsElement> pElement ) {}
 
 	/// called right before the element is released in GraphicsElementManager::RemoveElement()
-	virtual void OnDestroyed( boost::shared_ptr<GraphicsElement> pElement ) {}
+	virtual void OnDestroyed( std::shared_ptr<GraphicsElement> pElement ) {}
 };
 
 

@@ -21,7 +21,7 @@ namespace amorphous
 {
 
 
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 //=======================================================================================
@@ -32,9 +32,9 @@ class C2DPrimitiveFactoryImpl_D3D : public C2DPrimitiveFactoryImpl
 {
 public:
 
-	boost::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl()
+	std::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl()
 	{
-		boost::shared_ptr<C2DRectSetImpl> pImpl( new C2DRectSetImpl_D3D );
+		std::shared_ptr<C2DRectSetImpl> pImpl( new C2DRectSetImpl_D3D );
 		return pImpl;
 	}
 };
@@ -51,9 +51,9 @@ public:
 
 //	CreateGraphicsResource( GraphicsResourceDesc &desc );
 
-	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
-	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
-	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
+	std::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc );
+	std::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc );
+	std::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc );
 };
 
 
@@ -125,7 +125,7 @@ Result::Name InitializeDirect3DClasses()
 	TextureRenderTarget::SetInstanceCreationFunction( CD3DTextureRenderTarget::Create );
 	CubeTextureRenderTarget::SetInstanceCreationFunction( D3DCubeTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(CD3DCustomMeshRenderer::ms_Instance);
-	boost::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericHLSL( new EmbeddedGenericHLSL );
+	std::shared_ptr<EmbeddedGenericShader> pEmbeddedGenericHLSL( new EmbeddedGenericHLSL );
 	SetEmbeddedGenericShader( pEmbeddedGenericHLSL );
 	GetEmbeddedPostProcessEffectShader().reset( new CEmbeddedPostProcessEffectHLSLShader );
 

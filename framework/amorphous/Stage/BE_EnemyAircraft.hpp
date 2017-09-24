@@ -32,7 +32,7 @@ public:
 	/// - owned reference
 	/// - includes aircraft simulator and weapon system for each entity
 	/// - 3D model in the item is not loaded. model data is managed by the base entity
-	boost::shared_ptr<CGI_Aircraft> m_pAircraft;
+	std::shared_ptr<CGI_Aircraft> m_pAircraft;
 
 	/// owned reference
 	std::vector<CGI_Weapon *> m_vecpWeapon;

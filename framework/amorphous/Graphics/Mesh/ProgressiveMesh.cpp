@@ -10,7 +10,7 @@ ProgressiveMesh::ProgressiveMesh()
 {
 //	m_pImpl = MeshFactory().CreateProgressiveMeshImpl();
 	MeshImpl *pImpl = GetMeshImplFactory()->CreateProgressiveMeshImpl();
-	m_pImpl = boost::shared_ptr<MeshImpl>( pImpl );
+	m_pImpl = std::shared_ptr<MeshImpl>( pImpl );
 }
 
 

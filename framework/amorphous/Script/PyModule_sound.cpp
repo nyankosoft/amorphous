@@ -201,7 +201,7 @@ BOOST_PYTHON_MODULE(sound)
 */
 
 /*
-	class_< SoundManagerWrapper//, boost::shared_ptr<> >("SoundManager")
+	class_< SoundManagerWrapper//, std::shared_ptr<> >("SoundManager")
 		.def( "PlayAt",              &SndMgr::PlayAt, ( python::arg("sound_handle"),  python::arg("pos"), python::arg("max_dist") = 1000.0f, python::arg("ref_dist") = 100.0f, python::arg("rolloff_factor") = 1.0f ) )
 		.def( "PlayAt",              &SndMgr::PlayAt, ( python::arg("resource_path"), python::arg("pos"), python::arg("max_dist") = 1000.0f, python::arg("max_dist") = 100.0f, python::arg("rolloff_factor") = 1.0f ) )
 		.def( "Play",                &SndMgr::Play,   ( python::arg("sound_handle") ) )

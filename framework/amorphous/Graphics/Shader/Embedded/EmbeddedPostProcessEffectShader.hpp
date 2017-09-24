@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/Shader/ShaderGenerator.hpp"
 
@@ -30,9 +30,9 @@ public:
 };
 
 
-inline boost::shared_ptr<EmbeddedPostProcessEffectShader>& GetEmbeddedPostProcessEffectShader()
+inline std::shared_ptr<EmbeddedPostProcessEffectShader>& GetEmbeddedPostProcessEffectShader()
 {
-	static boost::shared_ptr<EmbeddedPostProcessEffectShader> s_pPPEffectShader;
+	static std::shared_ptr<EmbeddedPostProcessEffectShader> s_pPPEffectShader;
 	return s_pPPEffectShader;
 }
 

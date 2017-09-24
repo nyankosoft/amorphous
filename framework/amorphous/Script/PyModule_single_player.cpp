@@ -105,7 +105,7 @@ void MountWeapon( int weapon_slot_index, const std::string& weapon_name )
 	if( weapon_slot_index < 0 || CWeaponSystem::NUM_WEAPONSLOTS <= weapon_slot_index )
 		return;
 
-	boost::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
+	std::shared_ptr<CGI_Weapon> pWeapon = SinglePlayerInfo().GetItemByName<CGI_Weapon>(weapon_name);
 	if( !pWeapon || !(pWeapon->GetTypeFlag() & GameItem::TYPE_WEAPON) )
 		return;
 
@@ -124,7 +124,7 @@ void LoadAmmo()
 	if( weapon_slot_index < 0 || CWeaponSystem::NUM_WEAPONSLOTS <= weapon_slot_index )
 		return Py_BuildValue( "b", false );
 
-	boost::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
+	std::shared_ptr<CGI_Ammunition> pAmmo = SinglePlayerInfo().GetItemByName<CGI_Ammunition>(ammo_name);
 	if( !pAmmo || !(pAmmo->GetTypeFlag() & GameItem::TYPE_AMMO) )
 		return Py_BuildValue( "b", false );
 

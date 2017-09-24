@@ -300,7 +300,7 @@ void TerrainMeshTree::SetTextureOutputDirectory( const std::string& tex_output_d
 /**
  Stores the subdivided mesh to m_pDestMesh
 */
-bool TerrainMeshTree::Build( boost::shared_ptr<General3DMesh> pSrcMesh, int target_depth )
+bool TerrainMeshTree::Build( std::shared_ptr<General3DMesh> pSrcMesh, int target_depth )
 {
 	LOG_FUNCTION_SCOPE();
 	LOG_PRINT( " target_depth: " + to_string(target_depth) );
@@ -347,7 +347,7 @@ bool TerrainMeshTree::Build( boost::shared_ptr<General3DMesh> pSrcMesh, int targ
 }
 
 /*
-bool TerrainMeshTree::Build( boost::shared_ptr<std::vector<General3DVertex>> pVertexBuffer,
+bool TerrainMeshTree::Build( std::shared_ptr<std::vector<General3DVertex>> pVertexBuffer,
 							 vector<IndexedPolygon>& vecPolygonBuffer,
 							 int target_depth )
 {
@@ -547,7 +547,7 @@ bool CTerrainMeshGenerator::SplitTexture( const string& src_tex_filename )
 		return false;
 	}
 
-	boost::shared_ptr<BitmapImage> pSrcImg( new BitmapImage() );
+	std::shared_ptr<BitmapImage> pSrcImg( new BitmapImage() );
 	if( !pSrcImg->LoadFromFile( src_tex_filename ) )
 	{
 		LOG_PRINT_ERROR( " - cannot load file: " + src_tex_filename );
@@ -631,7 +631,7 @@ void CTerrainMeshGenerator::SetOutputTextureFormat( const std::string& image_ext
 }
 
 
-bool CTerrainMeshGenerator::BuildTerrainMesh( boost::shared_ptr<General3DMesh> pSrcMesh )
+bool CTerrainMeshGenerator::BuildTerrainMesh( std::shared_ptr<General3DMesh> pSrcMesh )
 {
 	LOG_FUNCTION_SCOPE();
 

@@ -21,9 +21,9 @@ class VarianceShadowMapManager : public ShadowMapManager
 
 //	LPDIRECT3DTEXTURE9 m_pBlurredShadowMap;
 
-	boost::shared_ptr<TextureRenderTarget> m_pHBlurredShadowMap;
+	std::shared_ptr<TextureRenderTarget> m_pHBlurredShadowMap;
 
-	boost::shared_ptr<TextureRenderTarget> m_pBlurredShadowMap;
+	std::shared_ptr<TextureRenderTarget> m_pBlurredShadowMap;
 
 	ShaderHandle m_BlurShader;
 

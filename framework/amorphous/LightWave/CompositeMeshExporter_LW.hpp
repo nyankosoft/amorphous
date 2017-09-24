@@ -2,7 +2,7 @@
 #define	__COMPOSITEMESHEXPORTER_LW_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/LightWave/fwd.hpp"
 #include "amorphous/Graphics/MeshModel/CompositeMesh.hpp"
 
@@ -17,7 +17,7 @@ namespace amorphous
 
 class CCompositeMeshExporter_LW
 {
-	boost::shared_ptr<LWO2_Object> m_pOrigModel;
+	std::shared_ptr<LWO2_Object> m_pOrigModel;
 
 	CMA_CompositeMeshArchive m_CompositeMeshArchive;
 

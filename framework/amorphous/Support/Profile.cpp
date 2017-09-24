@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "amorphous/Support/Timer.hpp"
 
@@ -88,7 +88,7 @@ static bool g_ProfileRequestedState = true;
 
 static vector<string> g_vecstrProfileText;
 
-static boost::shared_ptr<CProfileTimer> g_pTimer;
+static std::shared_ptr<CProfileTimer> g_pTimer;
 
 
 const vector<string>& GetProfileText()

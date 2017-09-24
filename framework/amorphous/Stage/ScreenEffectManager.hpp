@@ -2,7 +2,7 @@
 #define  __SCREENEFFECTMANAGER_H__
 
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous//base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
@@ -144,19 +144,19 @@ private:
 	C2DRect m_ScreenColor;
 
 	/// manages post-process effects
-	boost::shared_ptr<PostProcessEffectManager> m_pPPEffectManager;
+	std::shared_ptr<PostProcessEffectManager> m_pPPEffectManager;
 
 //	int m_aPPEffectIndex[NUM_PP_EFFECT_FILES];
 
 //	int m_aFilterIndex[NUM_FILTERS];
 
-	boost::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
+	std::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
 
 	PseudoNoiseEffect m_NoiseEffect;
 
 	TCFixedVector< CExtraTextureEffect, NUM_MAX_EXTRA_TEXTURES > m_vecExtraTexEffect;
 
-	boost::shared_ptr<LensFlare> m_pLensFlare;
+	std::shared_ptr<LensFlare> m_pLensFlare;
 
 //	TextureRenderTarget m_TexRenderTarget;
 
@@ -273,7 +273,7 @@ public:
 	Result::Name SetHDRLightingParams( U32 param_flags, const HDRLightingParams& params );
 	Result::Name EnableHDRLighting( bool enable );
 
-	boost::shared_ptr<LensFlare> GetLensFlare() { return m_pLensFlare; }
+	std::shared_ptr<LensFlare> GetLensFlare() { return m_pLensFlare; }
 
 	void ReleaseGraphicsResources();
 	void LoadGraphicsResources( const GraphicsParameters& rParam );

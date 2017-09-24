@@ -1,11 +1,10 @@
 #ifndef  __InputHandler_StageDebug_H__
 #define  __InputHandler_StageDebug_H__
 
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
-#include "../../base.hpp"
-#include "Stage/fwd.hpp"
-#include "Input/InputHandler.hpp"
+#include <memory>
+#include "amorphous/base.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous
@@ -14,17 +13,17 @@ namespace amorphous
 
 class InputHandler_StageDebug : public InputHandler
 {
-	boost::weak_ptr<CStage> m_pStage;
+	std::weak_ptr<CStage> m_pStage;
 
 	ulong m_EntityTreeFileLastOutputTime;
 
 private:
 
-	void WriteEntityTreeToFile( boost::shared_ptr<CStage> pStage );
+	void WriteEntityTreeToFile( std::shared_ptr<CStage> pStage );
 
 public:
 
-	InputHandler_StageDebug( boost::weak_ptr<CStage> pStage )
+	InputHandler_StageDebug( std::weak_ptr<CStage> pStage )
 		:
 	m_pStage(pStage),
 	m_EntityTreeFileLastOutputTime(0)

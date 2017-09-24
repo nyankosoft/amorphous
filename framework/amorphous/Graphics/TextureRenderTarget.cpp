@@ -5,7 +5,7 @@
 namespace amorphous
 {
 
-boost::shared_ptr<TextureRenderTarget> (*TextureRenderTarget::ms_pCreateTextureRenderTarget)(void);
+std::shared_ptr<TextureRenderTarget> (*TextureRenderTarget::ms_pCreateTextureRenderTarget)(void);
 
 
 TextureRenderTarget::TextureRenderTarget()
@@ -91,12 +91,12 @@ void TextureRenderTarget::LoadGraphicsResources( const GraphicsParameters& rPara
 }
 
 
-boost::shared_ptr<TextureRenderTarget> TextureRenderTarget::Create()
+std::shared_ptr<TextureRenderTarget> TextureRenderTarget::Create()
 {
 	if( ms_pCreateTextureRenderTarget )
 		return (*ms_pCreateTextureRenderTarget)();
 	else
-		return boost::shared_ptr<TextureRenderTarget>();
+		return std::shared_ptr<TextureRenderTarget>();
 }
 
 

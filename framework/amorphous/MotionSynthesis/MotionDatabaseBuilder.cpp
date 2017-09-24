@@ -12,7 +12,7 @@ namespace amorphous
 using std::vector;
 using std::string;
 using std::map;
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace boost::filesystem;
 using namespace msynth;
 
@@ -28,7 +28,7 @@ inline bool to_bool( const std::string& src, const char *true_str = "true", cons
 }
 
 
-static std::vector< boost::shared_ptr<MotionPrimitiveCompilerCreator> > sg_vecpExtAndMotionPrimitiveCompiler;
+static std::vector< std::shared_ptr<MotionPrimitiveCompilerCreator> > sg_vecpExtAndMotionPrimitiveCompiler;
 
 
 void msynth::RegisterMotionPrimitiveCompilerCreator( shared_ptr<MotionPrimitiveCompilerCreator> pCreator )
@@ -201,8 +201,8 @@ void CopyTransformNodesOfBone(
 }
 
 
-Result::Name MotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<MotionPrimitive>& pSrcMotion,
-																		  boost::shared_ptr<Skeleton>& pDestSkeleton )
+Result::Name MotionDatabaseBuilder::MapMotionPrimitiveToAnotherSkeleton( std::shared_ptr<MotionPrimitive>& pSrcMotion,
+																		  std::shared_ptr<Skeleton>& pDestSkeleton )
 {
 	CMotionMapTarget& tgt = m_MotionMapTarget;
 

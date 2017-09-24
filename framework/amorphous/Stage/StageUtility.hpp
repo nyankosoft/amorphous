@@ -18,7 +18,7 @@ class StageUtility
 {
 protected:
 
-	boost::weak_ptr<CStage> m_pStage;
+	std::weak_ptr<CStage> m_pStage;
 
 public:
 
@@ -26,7 +26,7 @@ public:
 
 	virtual ~StageUtility() {}
 
-	StageUtility( boost::weak_ptr<CStage> pStage )
+	StageUtility( std::weak_ptr<CStage> pStage )
 		:
 	m_pStage(pStage)
 	{}
@@ -120,7 +120,7 @@ public:
 	/// default ctor. Added to compile this code with boost::python.
 	StageMiscUtility() {}
 
-	StageMiscUtility( boost::shared_ptr<CStage> pStage )
+	StageMiscUtility( std::shared_ptr<CStage> pStage )
 		:
 	StageUtility(pStage)
 	{}
@@ -306,7 +306,7 @@ public:
 
 	StageEntityUtility() {}
 
-	StageEntityUtility( boost::shared_ptr<CStage> pStage )
+	StageEntityUtility( std::shared_ptr<CStage> pStage )
 		:
 	StageUtility(pStage)
 	{}
@@ -325,7 +325,7 @@ public:
 	/// default ctor. Added to compile this code with boost::python.
 	CStageEffectUtility() {}
 
-	CStageEffectUtility( boost::shared_ptr<CStage> pStage )
+	CStageEffectUtility( std::shared_ptr<CStage> pStage )
 		:
 	StageUtility(pStage)
 

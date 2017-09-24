@@ -1,7 +1,7 @@
 #ifndef __GAMEITEM_AIRCRAFT_H__
 #define __GAMEITEM_AIRCRAFT_H__
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "GameItem.hpp"
 #include "WeaponSystem.hpp"
 
@@ -130,7 +130,7 @@ class CGI_Aircraft : public GameItem
 	/// - Call UpdateAvailableAmmoCache() to update the cache
 	/// - Borrowed reference. Owned reference needs to be maintained by the owner of the aircraft item
 	/// - Not serialized.
-	std::vector< std::vector< boost::weak_ptr<CGI_Ammunition> > > m_vecpAvailableAmmoCache;
+	std::vector< std::vector< std::weak_ptr<CGI_Ammunition> > > m_vecpAvailableAmmoCache;
 
 	/// weapon slot index : name of the previously used ammunition
 	std::map<int,std::string> m_PrevUsedAmmo;
@@ -138,15 +138,15 @@ class CGI_Aircraft : public GameItem
 //	BaseEntityHandle m_EngineNozzleFlame;
 //	BaseEntityHandle m_MuzzleFlashBaseEntity;
 
-	std::vector< boost::shared_ptr<MeshBoneController_AircraftBase> > m_vecpMeshController;
+	std::vector< std::shared_ptr<MeshBoneController_AircraftBase> > m_vecpMeshController;
 
-//	std::vector< boost::shared_ptr<MeshBoneController_Rotor> > m_vecpRotor;
+//	std::vector< std::shared_ptr<MeshBoneController_Rotor> > m_vecpRotor;
 
-	std::vector< boost::shared_ptr<MeshBoneController_GearUnit> > m_vecpGear;
+	std::vector< std::shared_ptr<MeshBoneController_GearUnit> > m_vecpGear;
 
 	float m_fDefaultForwardAirFriction;
 
-	boost::shared_ptr<CForceFeedbackEffect> m_pFFBrake;
+	std::shared_ptr<CForceFeedbackEffect> m_pFFBrake;
 
 public:
 
@@ -203,9 +203,9 @@ public:
 
 	/// Updates the list of ammunitions that can be loaded to the weapon slots of the aircraft.
 	/// All the previous cache is cleared when this function is called.
-	void UpdateAvailableAmmoCache(int num_weapon_slots, std::vector< boost::shared_ptr<CGI_Ammunition> >& vecpAmmo);
+	void UpdateAvailableAmmoCache(int num_weapon_slots, std::vector< std::shared_ptr<CGI_Ammunition> >& vecpAmmo);
 
-	std::vector< std::vector< boost::weak_ptr<CGI_Ammunition> > >& AvailableAmmoCache() { return m_vecpAvailableAmmoCache; }
+	std::vector< std::vector< std::weak_ptr<CGI_Ammunition> > >& AvailableAmmoCache() { return m_vecpAvailableAmmoCache; }
 	
 
 	/// update prev used ammo
@@ -215,7 +215,7 @@ public:
 
 	int GetPrevUsedAmmoIndex( int weapon_slot_index );
 
-	boost::shared_ptr<CGI_Ammunition> GetAvailableAmmoFromCache( int weapon_slot_index, int ammo_index );
+	std::shared_ptr<CGI_Ammunition> GetAvailableAmmoFromCache( int weapon_slot_index, int ammo_index );
 
 	/// Initializes mesh bone controller.
 	/// If called without an argument, the mesh bone controllers use the mesh
@@ -225,7 +225,7 @@ public:
 	/// In the latter case, the mesh is maintained as a simple borrowed reference,
 	/// and the user is responsible for calling ResetMeshController(),
 	/// before the mesh is destroyed
-	bool InitMeshController( boost::shared_ptr<SkeletalMesh> pMesh = boost::shared_ptr<SkeletalMesh>() );
+	bool InitMeshController( std::shared_ptr<SkeletalMesh> pMesh = std::shared_ptr<SkeletalMesh>() );
 
 	/// disconnet the target mesh from the mesh bone controllers.
 	/// The target mesh object is held as borrowed reference

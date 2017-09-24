@@ -96,7 +96,7 @@ public:
 
 class C2DRectSet : public C2DPrimitive
 {
-	boost::shared_ptr<C2DRectSetImpl> m_pImpl;
+	std::shared_ptr<C2DRectSetImpl> m_pImpl;
 
 public:
 
@@ -280,7 +280,7 @@ class C2DPrimitiveFactoryImpl
 {
 public:
 
-	virtual boost::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl() = 0;
+	virtual std::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl() = 0;
 };
 
 
@@ -291,13 +291,13 @@ public:
 
 class C2DPrimitiveFactory
 {
-	boost::shared_ptr<C2DPrimitiveFactoryImpl> m_pImpl;
+	std::shared_ptr<C2DPrimitiveFactoryImpl> m_pImpl;
 
 public:
 
-	void Init( C2DPrimitiveFactoryImpl *pImpl ) { m_pImpl = boost::shared_ptr<C2DPrimitiveFactoryImpl>( pImpl ); }
+	void Init( C2DPrimitiveFactoryImpl *pImpl ) { m_pImpl = std::shared_ptr<C2DPrimitiveFactoryImpl>( pImpl ); }
 
-	boost::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl() { return m_pImpl->Create2DRectSetImpl(); }
+	std::shared_ptr<C2DRectSetImpl> Create2DRectSetImpl() { return m_pImpl->Create2DRectSetImpl(); }
 };
 
 

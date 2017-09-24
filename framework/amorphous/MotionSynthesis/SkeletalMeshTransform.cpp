@@ -177,9 +177,9 @@ void CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh, msyn
 }
 
 
-boost::shared_ptr<msynth::Skeleton> CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh )
+std::shared_ptr<msynth::Skeleton> CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh )
 {
-	boost::shared_ptr<msynth::Skeleton> pSkeleton( new msynth::Skeleton );
+	std::shared_ptr<msynth::Skeleton> pSkeleton( new msynth::Skeleton );
 	CreateSkeletonFromMeshSkeleton( src_skeletal_mesh, *pSkeleton );
 	return pSkeleton;
 }

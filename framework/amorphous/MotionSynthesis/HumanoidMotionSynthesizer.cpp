@@ -21,17 +21,17 @@ using namespace msynth;
 CHumanoidMotionSynthesizer::CHumanoidMotionSynthesizer()
 {
 	m_pMotionPrimitiveBlender
-		= boost::shared_ptr<MotionPrimitiveBlender>( new MotionPrimitiveBlender() );
+		= std::shared_ptr<MotionPrimitiveBlender>( new MotionPrimitiveBlender() );
 
 	m_pSteeringMotionBlender
-		= boost::shared_ptr<SteeringMotionBlender>( new SteeringMotionBlender( m_pMotionPrimitiveBlender ) );
+		= std::shared_ptr<SteeringMotionBlender>( new SteeringMotionBlender( m_pMotionPrimitiveBlender ) );
 
 	m_vecpMotionBlender.push_back( m_pSteeringMotionBlender );
 	m_vecpMotionBlender.push_back( m_pMotionPrimitiveBlender );
 
 
 	m_pMotionPrimitiveBlenderStatics
-		= boost::shared_ptr<MotionPrimitiveBlenderStatistics>( new MotionPrimitiveBlenderStatistics( m_pMotionPrimitiveBlender.get() ) );
+		= std::shared_ptr<MotionPrimitiveBlenderStatistics>( new MotionPrimitiveBlenderStatistics( m_pMotionPrimitiveBlender.get() ) );
 }
 
 
@@ -190,13 +190,13 @@ void CHumanoidMotionSynthesizer::LoadMotions( MotionDatabase& mdb, const std::st
 
 void CHumanoidMotionSynthesizer::Update( float dt )
 {
-	BOOST_FOREACH( boost::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
+	BOOST_FOREACH( std::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
 	{
 		pMotionBlender->Update( dt );
 //		pMotionBlender->CalculateKeyframe( dt, m_CurrentKeyframe );
 	}
 
-	const boost::shared_ptr<MotionPrimitive>& pCurrentMotion = m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
+	const std::shared_ptr<MotionPrimitive>& pCurrentMotion = m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();
 
 	if( pCurrentMotion->IsEmpty() )
 	{
@@ -212,7 +212,7 @@ void CHumanoidMotionSynthesizer::Update( float dt )
 /*
 void CHumanoidMotionSynthesizer::CalculateKeyframe( Keyframe& dest_keyframe )
 {
-	BOOST_FOREACH( boost::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
+	BOOST_FOREACH( std::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
 	{
 		pMotionBlender->CalculateKeyframe( dest_keyframe );
 	}
@@ -223,7 +223,7 @@ void CHumanoidMotionSynthesizer::CalculateKeyframe( Keyframe& dest_keyframe )
 
 void CHumanoidMotionSynthesizer::UpdateKeyframe()
 {
-	BOOST_FOREACH( boost::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
+	BOOST_FOREACH( std::shared_ptr<MotionBlender>& pMotionBlender, m_vecpMotionBlender )
 	{
 		pMotionBlender->CalculateKeyframe( m_CurrentKeyframe );
 	}
@@ -231,7 +231,7 @@ void CHumanoidMotionSynthesizer::UpdateKeyframe()
 
 
 // const Skeleton& CHumanoidMotionSynthesizer::GetSkeleton()
-const boost::shared_ptr<Skeleton> CHumanoidMotionSynthesizer::GetSkeleton()
+const std::shared_ptr<Skeleton> CHumanoidMotionSynthesizer::GetSkeleton()
 {
 	shared_ptr<MotionPrimitive> pCurrentMotion
 		= m_pMotionPrimitiveBlender->GetCurrentMotionPrimitive();

@@ -54,7 +54,7 @@ public:
 	Vector2 m_vIDPosition;
 
     /// font to display the ID (shared by all the segments under the same parent graph)
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 public:
 
@@ -66,7 +66,7 @@ public:
 	}
 
 	void SetSegmentID( int iNewSegmentID ) { m_iSegmentID = iNewSegmentID; }
-	void SetSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor, boost::shared_ptr<FontBase> pFont );
+	void SetSegment( int iSegmentID, int iStart, int iEnd, U32 dwColor, std::shared_ptr<FontBase> pFont );
 	void UpdatePosition(int iNumData, float sx, float ex, float sy, float ey);
 	void Draw();
 
@@ -102,7 +102,7 @@ protected:
 	// used to hightlight particular portions of the graph
 	std::vector<CGraphSegment> m_vecGraphSegment;
 
-	boost::shared_ptr<FontBase> m_pGraphSegmentIDFont;
+	std::shared_ptr<FontBase> m_pGraphSegmentIDFont;
 
 public:
 

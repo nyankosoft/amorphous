@@ -2,7 +2,7 @@
 #define  __CubeMapManager_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "fwd.hpp"
 #include "Camera.hpp"
 #include "SurfaceFormat.hpp"
@@ -41,7 +41,7 @@ class CubeMapManager// : public GraphicsComponent
 	/// borrowed reference
 	CCubeMapSceneRenderer *m_pCubeMapSceneRenderer;
 
-	boost::shared_ptr<CubeTextureRenderTarget> m_pCubeTextureRenderTarget;
+	std::shared_ptr<CubeTextureRenderTarget> m_pCubeTextureRenderTarget;
 
 private:
 

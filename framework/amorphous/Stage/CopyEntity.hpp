@@ -93,10 +93,10 @@ private:
 
 	CStage *m_pStage;
 
-	boost::weak_ptr<CCopyEntity> m_pSelf;
+	std::weak_ptr<CCopyEntity> m_pSelf;
 
 	/// next entity in the chain list 'm_pEntityInUse'
-	boost::shared_ptr<CCopyEntity> m_pNext;
+	std::shared_ptr<CCopyEntity> m_pNext;
 
 	CCopyEntity* m_pNextRawPtr;
 
@@ -119,7 +119,7 @@ private:
 
 private:
 
-	void SetNext( boost::shared_ptr<CCopyEntity> pNext )
+	void SetNext( std::shared_ptr<CCopyEntity> pNext )
 	{
 		m_pNext       = pNext;
 		m_pNextRawPtr = pNext.get();
@@ -127,7 +127,7 @@ private:
 
 	void SetNextToNull()
 	{
-		m_pNext       = boost::shared_ptr<CCopyEntity>();
+		m_pNext       = std::shared_ptr<CCopyEntity>();
 		m_pNextRawPtr = NULL;
 	}
 
@@ -135,7 +135,7 @@ public:
 
 	BaseEntity* pBaseEntity;
 
-	boost::weak_ptr<CCopyEntity>& Self() { return m_pSelf; }
+	std::weak_ptr<CCopyEntity>& Self() { return m_pSelf; }
 
 	char bvType;
 
@@ -199,18 +199,18 @@ public:
 	std::vector<physics::CJoint *> m_vecpPhysicsJoint;
 
 	/// borrowed reference
-	boost::shared_ptr<CCopyEntityCallbackBase> m_pCallback;
+	std::shared_ptr<CCopyEntityCallbackBase> m_pCallback;
 
 	/// Used mainly for updating blend transforms of a skeletal mesh
-	boost::shared_ptr<CGraphicsResourcesUpdateCallback> m_pGraphicsUpdate;
+	std::shared_ptr<CGraphicsResourcesUpdateCallback> m_pGraphicsUpdate;
 
-//	boost::shared_ptr<MeshContainerNode> m_pMeshNode;
+//	std::shared_ptr<MeshContainerNode> m_pMeshNode;
 
-//	boost::shared_ptr<MeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
+//	std::shared_ptr<MeshContainerNodeRenderMethod> m_pMeshNodeRenderMethod;
 
 	MeshHandle m_MeshHandle;
 
-	boost::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
+	std::shared_ptr<MeshContainerRenderMethod> m_pMeshRenderMethod;
 
 public:
 
@@ -378,11 +378,11 @@ public:
 	inline CCopyEntity *GetChild( int i );
 	inline int GetNumChildren() const { return iNumChildren; }
 //	inline int AddChild( CCopyEntity *pChild );
-	inline int AddChild( boost::weak_ptr<CCopyEntity> pChild );
+	inline int AddChild( std::weak_ptr<CCopyEntity> pChild );
 	void DisconnectFromParentAndChildren();
 	inline void CopyParentPose();
 
-	inline void SetCallback( boost::shared_ptr<CCopyEntityCallbackBase> pCallback ) { m_pCallback = pCallback; }
+	inline void SetCallback( std::shared_ptr<CCopyEntityCallbackBase> pCallback ) { m_pCallback = pCallback; }
 
 	/// Release and create alpha entities if BETYPE_SUPPORT_TRANSPARENT_PARTS is on.
 	inline void UpdateMesh();

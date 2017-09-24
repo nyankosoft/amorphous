@@ -8,7 +8,7 @@ namespace amorphous
 using namespace std;
 
 
-static void GetConnectedSets_r( const std::vector<IndexedPolygon>& polygons, //const General3DMesh& src_mesh,// std::vector< boost::shared_ptr<General3DMesh> >& pDestMeshes,
+static void GetConnectedSets_r( const std::vector<IndexedPolygon>& polygons, //const General3DMesh& src_mesh,// std::vector< std::shared_ptr<General3DMesh> >& pDestMeshes,
 							   std::vector<int>& group,
 							   std::vector<int>& already_selected )
 {
@@ -78,7 +78,7 @@ void GetConnectedSets( const General3DMesh& src_mesh, std::vector< std::vector<i
 }
 
 
-void GetConnectedSets( const General3DMesh& src_mesh, std::vector< boost::shared_ptr<General3DMesh> >& pDestMeshes )
+void GetConnectedSets( const General3DMesh& src_mesh, std::vector< std::shared_ptr<General3DMesh> >& pDestMeshes )
 {
 	std::vector< std::vector<int> > connected_polygon_sets;
 
@@ -88,7 +88,7 @@ void GetConnectedSets( const General3DMesh& src_mesh, std::vector< boost::shared
 
 	for( int i=0; i<num_connected_sets; i++ )
 	{
-		pDestMeshes.push_back( boost::shared_ptr<General3DMesh>() );
+		pDestMeshes.push_back( std::shared_ptr<General3DMesh>() );
 		pDestMeshes.back().reset( new General3DMesh );
 
 		General3DMesh& connected = *(pDestMeshes.back());

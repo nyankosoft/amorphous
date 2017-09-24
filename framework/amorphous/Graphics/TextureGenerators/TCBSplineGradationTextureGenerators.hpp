@@ -207,7 +207,7 @@ TextureHandle CreateTCBSplineHorizontalGradationTexture( uint width, uint height
 	float bias = 0
 	)
 {
-	boost::shared_ptr<TCBSplineHorizontalGradationTextureGenerator> pGenerator( new TCBSplineHorizontalGradationTextureGenerator(top_color,mid_color,bottom_color,tension,continuity,bias) );
+	std::shared_ptr<TCBSplineHorizontalGradationTextureGenerator> pGenerator( new TCBSplineHorizontalGradationTextureGenerator(top_color,mid_color,bottom_color,tension,continuity,bias) );
 	return CreateTextureFromGenerator( width, height, format, pGenerator );
 }
 

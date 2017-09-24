@@ -62,7 +62,7 @@ class C3DMeshModelBuilder_LW : public C3DModelLoader
 	/// borrowed reference
 	/// this class does not load / release the model data
 	/// the model data has to be supplied before building the model
-	boost::shared_ptr<LWO2_Object> m_pSrcObject;
+	std::shared_ptr<LWO2_Object> m_pSrcObject;
 
 
 	std::string m_strTargetLayerName;
@@ -115,7 +115,7 @@ public:
 
 	C3DMeshModelBuilder_LW();
 
-	C3DMeshModelBuilder_LW( boost::shared_ptr<LWO2_Object> pSrcObject );
+	C3DMeshModelBuilder_LW( std::shared_ptr<LWO2_Object> pSrcObject );
 
 	~C3DMeshModelBuilder_LW();
 
@@ -144,7 +144,7 @@ public:
 
 	std::vector<int>& GetDestBoneIndexArray() { return m_vecDestBoneIndex; }
 
-	bool LoadFromLWO2Object( boost::shared_ptr<LWO2_Object> pObject, const GeometryFilter& geometry_filter );
+	bool LoadFromLWO2Object( std::shared_ptr<LWO2_Object> pObject, const GeometryFilter& geometry_filter );
 
 	virtual bool LoadFromFile( const std::string& model_filepath, const GeometryFilter& geometry_filter );
 

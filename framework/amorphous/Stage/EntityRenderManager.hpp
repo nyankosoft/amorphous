@@ -40,7 +40,7 @@ public:
 
 	TextureHandle m_Texture; ///< stores env map texture
 
-	boost::shared_ptr<CubeTextureParamsLoader> m_pCubeMapTextureLoader;
+	std::shared_ptr<CubeTextureParamsLoader> m_pCubeMapTextureLoader;
 };
 
 
@@ -91,7 +91,7 @@ private:
 
 	ShadowMapManager *m_pShadowManager;
 
-	boost::shared_ptr<CEntityShadowMapRenderer> m_pShadowMapSceneRenderer;
+	std::shared_ptr<CEntityShadowMapRenderer> m_pShadowMapSceneRenderer;
 
 	bool m_bOverrideShadowMapLight;
 

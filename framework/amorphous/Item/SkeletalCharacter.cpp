@@ -28,7 +28,7 @@ using std::string;
 using std::vector;
 using std::map;
 using std::pair;
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace boost::filesystem;
 using namespace msynth;
 
@@ -38,7 +38,7 @@ static int sg_DisplayCharacterPosition = 0;
 class CDebugItem_MotionFSM : public DebugInfo
 {
 public:
-	boost::shared_ptr<msynth::MotionFSMManager> m_pMotionFSMManager;
+	std::shared_ptr<msynth::MotionFSMManager> m_pMotionFSMManager;
 public:
 
 	CDebugItem_MotionFSM() {}
@@ -66,7 +66,7 @@ void DisplayCharacterPosition( const Vector3& world_position )
 }
 
 
-inline boost::shared_ptr<SkeletalMesh> SkeletalCharacter::GetCharacterSkeletalMesh()
+inline std::shared_ptr<SkeletalMesh> SkeletalCharacter::GetCharacterSkeletalMesh()
 {
 	if( m_MeshContainerRootNode.GetNumMeshContainers() == 0 )
 		return shared_ptr<SkeletalMesh>();
@@ -271,7 +271,7 @@ static void UpdatePhysicsActorPose( physics::CActor& actor, const Matrix34& worl
 }
 /*
 static void UpdatePoseStoredInMotionPrimitivePlayer(
-	boost::shared_ptr<msynth::MotionFSMManager>& pMotionFSMManager,
+	std::shared_ptr<msynth::MotionFSMManager>& pMotionFSMManager,
 	const Matrix34& pose )
 {
 	shared_ptr<MotionFSM> pFSM = pMotionFSMManager->GetMotionFSM("lower_limbs");
@@ -476,7 +476,7 @@ void SkeletalCharacter::SetKeyBind( shared_ptr<KeyBind> pKeyBind )
 }
 
 
-void SkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<SkeletalCharacterOperations> pOperations )
+void SkeletalCharacter::AddOperationsAlgorithm( std::shared_ptr<SkeletalCharacterOperations> pOperations )
 {
 	m_pOperations.push_back( pOperations );
 	pOperations->m_pSkeletalCharacter
@@ -484,7 +484,7 @@ void SkeletalCharacter::AddOperationsAlgorithm( boost::shared_ptr<SkeletalCharac
 }
 
 
-void SkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_name, boost::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm )
+void SkeletalCharacter::SetMotionNodeAlgorithm( const std::string& motion_node_name, std::shared_ptr<CCharacterMotionNodeAlgorithm> pMotionNodeAlgorithm )
 {
 	if( !m_pLowerLimbsMotionsFSM )
 		return;
@@ -619,7 +619,7 @@ void SkeletalCharacter::OnPhysicsContact( physics::CContactPair& pair, CCopyEnti
 
 	m_Walls.resize( 0 );
 
-	boost::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
+	std::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
 	if( !pEntity )
 		return;
 
@@ -757,7 +757,7 @@ void SkeletalCharacter::UpdateGraphics()
 	if( !m_pSkeletonSrcMotion )
 		return;
 
-	boost::shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
+	std::shared_ptr<SkeletalMesh> pSkeletalMesh = GetCharacterSkeletalMesh();
 	if( !pSkeletalMesh )
 		return;
 

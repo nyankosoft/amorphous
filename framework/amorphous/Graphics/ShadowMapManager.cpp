@@ -207,7 +207,7 @@ void ShadowMapManager::SetSceneRenderer( shared_ptr<ShadowMapSceneRenderer> pSce
 /// returns -1 on failure
 /// \param [in] light must be either directional or point light
 /// TODO: support spotlight
-std::map< int, boost::shared_ptr<ShadowMap> >::iterator ShadowMapManager::CreateShadowMap( U32 id, const Light& light )
+std::map< int, std::shared_ptr<ShadowMap> >::iterator ShadowMapManager::CreateShadowMap( U32 id, const Light& light )
 {
 	Light::Type light_type = light.GetLightType();
 

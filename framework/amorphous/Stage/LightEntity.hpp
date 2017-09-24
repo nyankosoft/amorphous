@@ -22,7 +22,7 @@ public:
 
 	LightEntityHandle() {}
 
-	LightEntityHandle( boost::weak_ptr<LightEntity> pLightEntity )
+	LightEntityHandle( std::weak_ptr<LightEntity> pLightEntity )
 		:
 	EntityHandle<LightEntity>( pLightEntity )
 	{}
@@ -129,7 +129,7 @@ class LightEntityDesc : public CCopyEntityDesc
 {
 public:
 
-	boost::shared_ptr<Light> pLight;
+	std::shared_ptr<Light> pLight;
 
 //	or 
 
@@ -179,14 +179,14 @@ class LightEntity : public CCopyEntity
 	/// Use 1 or 2 to store the light object
 
 	/// 1. owned reference of light
-	boost::shared_ptr<Light> m_pLight;
+	std::shared_ptr<Light> m_pLight;
 
 	/// 2. hold light object taken from pooled resources
 	CLightHolder *m_pLightHolder;
 
 //	Light::Type m_LightType;
 
-	boost::weak_ptr<LightEntity> m_pLightEntitySelf;
+	std::weak_ptr<LightEntity> m_pLightEntitySelf;
 
 	CBE_Light *m_pLightBaseEntity;
 
@@ -208,7 +208,7 @@ public:
 
 	~LightEntity();
 
-	boost::weak_ptr<LightEntity>& LightEntitySelf() { return  m_pLightEntitySelf; }
+	std::weak_ptr<LightEntity>& LightEntitySelf() { return  m_pLightEntitySelf; }
 
 	inline void SetPosition( const Vector3& rvPosition );
 
@@ -227,7 +227,7 @@ public:
 
 	inline void SetAttenuationFactors( float a0, float a1, float a2 );
 
-//	boost::shared_ptr<Light>& GetLightObject() { return m_pLight; }
+//	std::shared_ptr<Light>& GetLightObject() { return m_pLight; }
 	Light *GetLightObject() { return m_pLightHolder ? m_pLightHolder->pLight : NULL; }
 
 	bool ReachesEntity( CCopyEntity *pEntity );
@@ -328,8 +328,8 @@ class LightEntityManager
 {
 public:
 
-	std::map< uint, boost::shared_ptr<LightEntity> > m_mapEntityIDtoStaticLight;
-	std::map< uint, boost::shared_ptr<LightEntity> > m_mapEntityIDtoDynamicLight;
+	std::map< uint, std::shared_ptr<LightEntity> > m_mapEntityIDtoStaticLight;
+	std::map< uint, std::shared_ptr<LightEntity> > m_mapEntityIDtoDynamicLight;
 };
 */
 

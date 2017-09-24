@@ -226,7 +226,7 @@ inline CCopyEntity *CCopyEntity::GetParent()
 /// - Return an index to the newly added child.
 /// - The index will become invalid if you delete other children.
 /// - Return -1 if no more children can be added.
-inline int CCopyEntity::AddChild( boost::weak_ptr<CCopyEntity> pChild )
+inline int CCopyEntity::AddChild( std::weak_ptr<CCopyEntity> pChild )
 {
 	if( iNumChildren == NUM_MAX_CHILDREN_PER_ENTITY )
 		return -1;
@@ -279,19 +279,19 @@ inline bool EntityHandleBase::IsEntityInUse( CCopyEntity *pEntity )
 /// since these guys use the methods of CCopyEntity
 
 template<class T>
-inline EntityHandle<T>::EntityHandle( boost::weak_ptr<T> pEntity )
+inline EntityHandle<T>::EntityHandle( std::weak_ptr<T> pEntity )
 :
 m_pEntity(pEntity),
 m_StockID(-1)
 {
-	boost::shared_ptr<T> pEntitySharedPtr = m_pEntity.lock();
+	std::shared_ptr<T> pEntitySharedPtr = m_pEntity.lock();
 	if( pEntitySharedPtr )
 		m_StockID = pEntitySharedPtr->GetStockID();
 }
 
 
 template<class T>
-inline EntityHandle<T>::EntityHandle( boost::shared_ptr<T> pEntity )
+inline EntityHandle<T>::EntityHandle( std::shared_ptr<T> pEntity )
 :
 m_pEntity(pEntity),
 m_StockID(-1)
@@ -302,9 +302,9 @@ m_StockID(-1)
 
 
 template<class T>
-inline boost::shared_ptr<T> EntityHandle<T>::Get()
+inline std::shared_ptr<T> EntityHandle<T>::Get()
 {
-	boost::shared_ptr<T> pEntity = m_pEntity.lock();
+	std::shared_ptr<T> pEntity = m_pEntity.lock();
 	if( !pEntity )
 	{
 		// Lock failed, which means,
@@ -312,7 +312,7 @@ inline boost::shared_ptr<T> EntityHandle<T>::Get()
 		//   - The entity has been released or the stage has been released.
 		// - For pooled entity,
 		//   - The stage has been released.
-		return boost::shared_ptr<T>();
+		return std::shared_ptr<T>();
 	}
 	else if( IsEntityInUse(pEntity.get()) == false )
 	{
@@ -320,7 +320,7 @@ inline boost::shared_ptr<T> EntityHandle<T>::Get()
 		// - Think of this state as 'marked as invalid'
 		// - The entity may still be in the link list of the active entities,
 		//   but it must not take any action. This entity is soon to be released.
-		return boost::shared_ptr<T>();
+		return std::shared_ptr<T>();
 	}
 	else
 	{
@@ -347,7 +347,7 @@ inline boost::shared_ptr<T> EntityHandle<T>::Get()
 			else
 			{
 				// The pooled instance is currently used as another entity
-				return boost::shared_ptr<T>();
+				return std::shared_ptr<T>();
 			}
 		}
 	}
@@ -357,7 +357,7 @@ inline boost::shared_ptr<T> EntityHandle<T>::Get()
 template<class T>
 inline Vector3 EntityHandle<T>::GetWorldPosition()
 {
-	boost::shared_ptr<T> pEntity = Get();
+	std::shared_ptr<T> pEntity = Get();
 	if( pEntity )
 		return pEntity->GetWorldPosition();
 	else
@@ -368,7 +368,7 @@ inline Vector3 EntityHandle<T>::GetWorldPosition()
 template<class T>
 inline Matrix34 EntityHandle<T>::GetWorldPose()
 {
-	boost::shared_ptr<T> pEntity = Get();
+	std::shared_ptr<T> pEntity = Get();
 	if( pEntity )
 		return pEntity->GetWorldPose();
 	else
@@ -379,7 +379,7 @@ inline Matrix34 EntityHandle<T>::GetWorldPose()
 template<class T>
 inline void EntityHandle<T>::SetWorldPosition( const Vector3& vPos )
 {
-	boost::shared_ptr<T> pEntity = Get();
+	std::shared_ptr<T> pEntity = Get();
 	if( pEntity )
 		pEntity->SetWorldPosition( vPos );
 }
@@ -388,7 +388,7 @@ inline void EntityHandle<T>::SetWorldPosition( const Vector3& vPos )
 template<class T>
 inline void EntityHandle<T>::SetWorldPose( const Matrix34& pose )
 {
-	boost::shared_ptr<T> pEntity = Get();
+	std::shared_ptr<T> pEntity = Get();
 	if( pEntity )
 		pEntity->SetWorldPose( pose );
 }

@@ -31,7 +31,7 @@ class CBE_Blast : public BaseEntity
 	/// and applied to the entity if it overlaps with the blast volume
 	float m_fImpulse;
 
-//	boost::shared_ptr<CUnitCube> m_pUnitCube;	// draw boundary for debug
+//	std::shared_ptr<CUnitCube> m_pUnitCube;	// draw boundary for debug
 
 public:
 	CBE_Blast();

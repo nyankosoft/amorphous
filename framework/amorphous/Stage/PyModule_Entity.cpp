@@ -374,7 +374,7 @@ PyObject* SetMeshMaterialParamValue( PyObject* self, PyObject* args )
 	if( !IsValidEntity(gs_pTargetEntity) )
 		return Py_None;
 
-	boost::shared_ptr<BasicMesh> pMesh = gs_pTargetEntity->m_MeshHandle.GetMesh();
+	std::shared_ptr<BasicMesh> pMesh = gs_pTargetEntity->m_MeshHandle.GetMesh();
 	if( !pMesh )
 		return Py_None;
 

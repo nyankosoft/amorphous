@@ -8,7 +8,7 @@ namespace amorphous
 {
 using namespace physics;
 
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 void CCopyEntity::ApplyWorldImpulse( const Vector3& vImpulse, const Vector3& vContactPoint )

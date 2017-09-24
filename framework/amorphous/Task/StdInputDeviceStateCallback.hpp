@@ -1,7 +1,7 @@
 #ifndef  __StdInputDeviceStateCallback_HPP__
 #define  __StdInputDeviceStateCallback_HPP__
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Input/Win32/DIInputDeviceMonitor.hpp"
 #include "Graphics/GraphicsEffectManager.hpp"
 
@@ -21,8 +21,8 @@ class CStdInputDeviceStateCallback : public InputDeviceStateCallback
 {
 	GraphicsElementAnimationManager *m_pEffectMgr;
 
-	boost::shared_ptr<CombinedRectElement> m_pRect;
-	boost::shared_ptr<TextElement> m_pText;
+	std::shared_ptr<CombinedRectElement> m_pRect;
+	std::shared_ptr<TextElement> m_pText;
 
 	GraphicsElementAnimationHandle m_TextFadein;
 	GraphicsElementAnimationHandle m_RectFadein;

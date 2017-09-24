@@ -28,9 +28,9 @@ public:
 
 //	virtual void CreateGraphicsResource( GraphicsResourceDesc &desc ) = 0;
 
-	virtual boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc ) = 0;
-	virtual boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc ) = 0;
-	virtual boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc ) = 0;
+	virtual std::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc ) = 0;
+	virtual std::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc ) = 0;
+	virtual std::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc ) = 0;
 };
 
 
@@ -41,7 +41,7 @@ public:
 
 class GraphicsResourceFactory
 {
-	boost::shared_ptr<GraphicsResourceFactoryImpl> m_pImpl;
+	std::shared_ptr<GraphicsResourceFactoryImpl> m_pImpl;
 
 protected:
 
@@ -59,11 +59,11 @@ public:
 
 	void Init( GraphicsResourceFactoryImpl *pFactoryImpl );
 
-	boost::shared_ptr<GraphicsResource> CreateGraphicsResource( const GraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
+	std::shared_ptr<GraphicsResource> CreateGraphicsResource( const GraphicsResourceDesc &desc );// { return m_pImpl->CreateGraphicsResource(desc); }
 
-	boost::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc ) { return ( m_pImpl ? m_pImpl->CreateTextureResource(desc) : boost::shared_ptr<TextureResource>() ); }
-	boost::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc )       { return ( m_pImpl ? m_pImpl->CreateMeshResource(desc)    : boost::shared_ptr<MeshResource>()    ); }
-	boost::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc )   { return ( m_pImpl ? m_pImpl->CreateShaderResource(desc)  : boost::shared_ptr<ShaderResource>()  ); }
+	std::shared_ptr<TextureResource> CreateTextureResource( const TextureResourceDesc& desc ) { return ( m_pImpl ? m_pImpl->CreateTextureResource(desc) : std::shared_ptr<TextureResource>() ); }
+	std::shared_ptr<MeshResource>    CreateMeshResource( const MeshResourceDesc& desc )       { return ( m_pImpl ? m_pImpl->CreateMeshResource(desc)    : std::shared_ptr<MeshResource>()    ); }
+	std::shared_ptr<ShaderResource>  CreateShaderResource( const ShaderResourceDesc& desc )   { return ( m_pImpl ? m_pImpl->CreateShaderResource(desc)  : std::shared_ptr<ShaderResource>()  ); }
 };
 
 
@@ -84,7 +84,7 @@ inline GraphicsResourceFactory& GetGraphicsResourceFactory()
 */
 class GraphicsResourceCacheManager : public GraphicsComponent
 {
-	std::vector< boost::shared_ptr<GraphicsResource> > m_vecpResurceCache;
+	std::vector< std::shared_ptr<GraphicsResource> > m_vecpResurceCache;
 
 protected:
 
@@ -103,7 +103,7 @@ public:
 	void AddCache( GraphicsResourceDesc& desc );
 
 	/// Returns a cached resource that matches the desc
-	boost::shared_ptr<GraphicsResource> GetCachedResource( const GraphicsResourceDesc& desc );
+	std::shared_ptr<GraphicsResource> GetCachedResource( const GraphicsResourceDesc& desc );
 
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 

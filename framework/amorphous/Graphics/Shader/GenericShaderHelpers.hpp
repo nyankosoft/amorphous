@@ -16,7 +16,7 @@ inline ShaderHandle CreateNoLightingShader()
 	ShaderResourceDesc desc;
 	GenericShaderDesc gs_desc;
 	gs_desc.Lighting = false;
-	boost::shared_ptr<GenericShaderGenerator> pGenerator( new GenericShaderGenerator(gs_desc) );
+	std::shared_ptr<GenericShaderGenerator> pGenerator( new GenericShaderGenerator(gs_desc) );
 	desc.pShaderGenerator = pGenerator;
 	bool shader_loaded = shader.Load( desc );
 	if( !shader_loaded )

@@ -2,7 +2,7 @@
 #define  __SkyboxMisc_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "../3DMath/Matrix34.hpp"
 #include "MeshObjectHandle.hpp"
 
@@ -15,7 +15,7 @@ namespace amorphous
 //{
 
 
-boost::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath );
+std::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath );
 MeshHandle CreateSkyboxMesh( const std::string& texture_filepath );
 void RenderAsSkybox( MeshHandle& mesh, const Matrix34& vCamPose );
 void RenderSkybox( TextureHandle& sky_texture, const Matrix34& vCamPose );

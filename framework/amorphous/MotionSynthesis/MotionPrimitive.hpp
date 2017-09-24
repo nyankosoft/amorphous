@@ -80,7 +80,7 @@ class MotionPrimitive : public IArchiveObjectBase
 	/// transform the original motion data into the body center space
 //	Matrix34 m_WorldOffset;
 
-	boost::shared_ptr<Skeleton> m_pSkeleton;
+	std::shared_ptr<Skeleton> m_pSkeleton;
 //	Skeleton m_pSkeleton;
 
 	bool m_bIsLoopedMotion;
@@ -96,7 +96,7 @@ class MotionPrimitive : public IArchiveObjectBase
 	std::string m_StartBoneName;
 
 	/// Used at runtime
-	boost::shared_ptr<BlendNode> m_pStartBlendNode;
+	std::shared_ptr<BlendNode> m_pStartBlendNode;
 
 public:
 
@@ -146,20 +146,20 @@ public:
 	Result::Name CreateEmptyKeyframes( uint num_keyframes );
 
 //	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = skeleton; }
-	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = boost::shared_ptr<Skeleton>( new Skeleton(skeleton) ); }
+	void SetSkeleton( const Skeleton& skeleton ) { m_pSkeleton = std::shared_ptr<Skeleton>( new Skeleton(skeleton) ); }
 
 //	const Skeleton& GetSkeleton() const { return m_pSkeleton; }
-	const boost::shared_ptr<Skeleton> GetSkeleton() const { return m_pSkeleton; }
+	const std::shared_ptr<Skeleton> GetSkeleton() const { return m_pSkeleton; }
 
 	const std::string& GetStartBoneName() const { return m_StartBoneName; }
 
 	void SetStartsBoneName( const std::string& start_bone_name ) { m_StartBoneName = start_bone_name; }
 
-	void SearchAndSetStartBlendNode( boost::shared_ptr<BlendNode>& pRootBlendNode );
+	void SearchAndSetStartBlendNode( std::shared_ptr<BlendNode>& pRootBlendNode );
 
-	boost::shared_ptr<BlendNode> GetStartBlendNode() { return m_pStartBlendNode; }
+	std::shared_ptr<BlendNode> GetStartBlendNode() { return m_pStartBlendNode; }
 
-	void SetStartBlendNode( boost::shared_ptr<BlendNode>& pBlendNode ) { m_pStartBlendNode = pBlendNode; }
+	void SetStartBlendNode( std::shared_ptr<BlendNode>& pBlendNode ) { m_pStartBlendNode = pBlendNode; }
 
 	void Serialize( IArchive & ar, const unsigned int version );
 

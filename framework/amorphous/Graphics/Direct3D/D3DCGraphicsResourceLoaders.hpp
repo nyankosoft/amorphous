@@ -26,7 +26,7 @@ public:
 
 	void LoadMeshSubresources();
 
-	void OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf );
+	void OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf );
 
 	void OnResourceLoadedOnGraphicsMemory();
 
@@ -43,19 +43,19 @@ class CD3DXMeshLoaderBase : public GraphicsResourceLoader
 protected:
 
 	/// entry to that stores the loaded resource
-//	boost::weak_ptr<GraphicsResourceEntry> m_pMeshEntry;
+//	std::weak_ptr<GraphicsResourceEntry> m_pMeshEntry;
 
 //	MeshResourceDesc m_Desc;
 
-	boost::shared_ptr<C3DMeshModelArchive> m_pArchive;
+	std::shared_ptr<C3DMeshModelArchive> m_pArchive;
 
 	/// Store the shared_ptr of the mesh loader so that it do not get released
 	/// after loading mesh archive.
-	boost::shared_ptr<CD3DMeshLoader> m_pMeshLoader;
+	std::shared_ptr<CD3DMeshLoader> m_pMeshLoader;
 
 public:
 
-	CD3DXMeshLoaderBase( boost::weak_ptr<GraphicsResourceEntry> pEntry )
+	CD3DXMeshLoaderBase( std::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	GraphicsResourceLoader(pEntry)
 	{}
@@ -95,7 +95,7 @@ protected:
 
 public:
 
-	CD3DXMeshVerticesLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
+	CD3DXMeshVerticesLoader( std::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	CD3DXMeshLoaderBase(pEntry),
 	m_pLockedVertexBuffer(NULL),
@@ -136,7 +136,7 @@ protected:
 
 public:
 
-	CD3DXMeshIndicesLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
+	CD3DXMeshIndicesLoader( std::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	CD3DXMeshLoaderBase(pEntry),
 	m_pLockedIndexBuffer(NULL),
@@ -170,7 +170,7 @@ protected:
 
 public:
 
-	CD3DXMeshAttributeTableLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry )
+	CD3DXMeshAttributeTableLoader( std::weak_ptr<GraphicsResourceEntry> pEntry )
 		:
 	CD3DXMeshLoaderBase(pEntry),
 	m_pLockedAttributeBuffer(NULL)
@@ -204,10 +204,10 @@ public:
 
 inline BasicMesh *CD3DXMeshLoaderBase::GetMesh()
 {
-	boost::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
+	std::shared_ptr<GraphicsResourceEntry> pEntry = GetResourceEntry();
 	if( pEntry )
 	{
-		boost::shared_ptr<MeshResource> pMesh = pEntry->GetMeshResource();
+		std::shared_ptr<MeshResource> pMesh = pEntry->GetMeshResource();
 
 		if( pMesh )
 			return pMesh->GetMeshInLoading().get();

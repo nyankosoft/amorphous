@@ -17,7 +17,7 @@ inline MeshHandle CreateBoxMesh( const Vector3& whd,
 								const Matrix34& model_pose = Matrix34Identity(),
 								const std::string& texture_pathname = "" )
 {
-	boost::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
+	std::shared_ptr<BoxMeshGenerator> pBoxMeshGenerator( new BoxMeshGenerator );
 	pBoxMeshGenerator->SetEdgeLengths( whd );
 	MeshResourceDesc mesh_desc;
 	mesh_desc.pMeshGenerator = pBoxMeshGenerator;

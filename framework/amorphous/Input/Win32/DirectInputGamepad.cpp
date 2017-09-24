@@ -803,7 +803,7 @@ CForceFeedbackEffect DirectInputGamepad::CreateForceFeedbackEffect( const CForce
 	if( !m_pDIJoystick )
 		return ffe;
 
-	boost::shared_ptr<CDIForceFeedbackEffectImpl> pImpl( new CDIForceFeedbackEffectImpl() );
+	std::shared_ptr<CDIForceFeedbackEffectImpl> pImpl( new CDIForceFeedbackEffectImpl() );
 
 	Result::Name res = pImpl->Init( desc, m_pFFParams );
 	if( res != Result::SUCCESS )

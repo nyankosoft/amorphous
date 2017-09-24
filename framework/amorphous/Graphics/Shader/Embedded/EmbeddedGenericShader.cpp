@@ -7,30 +7,30 @@ namespace amorphous
 {
 
 
-static boost::shared_ptr<EmbeddedGenericShader> sg_pEmbeddedGenericShader;
+static std::shared_ptr<EmbeddedGenericShader> sg_pEmbeddedGenericShader;
 
-//static boost::shared_ptr<EmbeddedMiscShader> sg_pEmbeddedGenericShader;
+//static std::shared_ptr<EmbeddedMiscShader> sg_pEmbeddedGenericShader;
 
 
-boost::shared_ptr<EmbeddedGenericShader> GetEmbeddedGenericShader()
+std::shared_ptr<EmbeddedGenericShader> GetEmbeddedGenericShader()
 {
 	return sg_pEmbeddedGenericShader;
 }
 
 
-void SetEmbeddedGenericShader( boost::shared_ptr<EmbeddedGenericShader> ptr )
+void SetEmbeddedGenericShader( std::shared_ptr<EmbeddedGenericShader> ptr )
 {
 	sg_pEmbeddedGenericShader = ptr;
 }
 
 /*
-boost::shared_ptr<MiscEmbeddedShader> GetMiscEmbeddedShader()
+std::shared_ptr<MiscEmbeddedShader> GetMiscEmbeddedShader()
 {
 	return sg_pMiscEmbeddedShader;
 }
 
 
-void SetEmbeddedGenericShader( boost::shared_ptr<MiscEmbeddedShader> ptr )
+void SetEmbeddedGenericShader( std::shared_ptr<MiscEmbeddedShader> ptr )
 {
 	sg_pMiscEmbeddedShader = ptr;
 }

@@ -2,7 +2,7 @@
 #define  __SimpleMotionBlur_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "fwd.hpp"
 
 
@@ -28,9 +28,9 @@ namespace amorphous
 class SimpleMotionBlur// : public GraphicsComponent
 {
 	/// used to render the scene
-	boost::shared_ptr<TextureRenderTarget> m_pSceneRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pSceneRenderTarget;
 
-	boost::shared_ptr<TextureRenderTarget> m_apTexRenderTarget[2];
+	std::shared_ptr<TextureRenderTarget> m_apTexRenderTarget[2];
 
 	int m_TextureWidth;
 	int m_TextureHeight;

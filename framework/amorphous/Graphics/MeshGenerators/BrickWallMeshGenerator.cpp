@@ -9,7 +9,7 @@ namespace amorphous
 {
 
 using std::vector;
-//using boost::shared_ptr;
+//using std::shared_ptr;
 
 
 typedef BrickPanelDesc bpd;
@@ -248,7 +248,7 @@ Result::Name BrickWallMeshGenerator::Generate()
 			materials[0].vecTexture[0].Format = TextureFormat::A8R8G8B8;
 			materials[0].vecTexture[0].pLoader.reset( new PerlinNoiseTextureGenerator() );
 //			materials[0].vecTexture[0].pLoader.reset( new GridTextureGenerator() );
-			boost::shared_ptr<ContrastBrightnessFilter> pFilter( new ContrastBrightnessFilter( 0.36f, 0.68f ) );
+			std::shared_ptr<ContrastBrightnessFilter> pFilter( new ContrastBrightnessFilter( 0.36f, 0.68f ) );
 			materials[0].vecTexture[0].pLoader->AddFilter( pFilter );
 		}
 	}

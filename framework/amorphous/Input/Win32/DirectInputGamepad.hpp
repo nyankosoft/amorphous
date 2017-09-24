@@ -31,7 +31,7 @@ class DirectInputGamepad : public GamepadInputDevice
 
 	DIJOYSTATE2 m_InputState;
 
-	boost::shared_ptr<CDIFFParams> m_pFFParams;
+	std::shared_ptr<CDIFFParams> m_pFFParams;
 
 	enum param
 	{

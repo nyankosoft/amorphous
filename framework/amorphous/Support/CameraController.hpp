@@ -4,7 +4,7 @@
 
 #include "CameraControllerBase.hpp"
 #include "amorphous/Input/InputHandler.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -18,7 +18,7 @@ class CameraController : public CameraControllerBase
 {
 	int m_InputHandlerIndex;
 
-	boost::shared_ptr< CInputDataDelegate<CameraController> > m_pInputDataDelagate;
+	std::shared_ptr< CInputDataDelegate<CameraController> > m_pInputDataDelagate;
 
 public:
 

@@ -12,10 +12,10 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
-boost::shared_ptr<CXMLParserInitReleaseManager> sg_pXMLParserInitReleaseMgr;
+std::shared_ptr<CXMLParserInitReleaseManager> sg_pXMLParserInitReleaseMgr;
 
 
 //=======================================================================

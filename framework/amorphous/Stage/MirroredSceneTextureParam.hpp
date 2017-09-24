@@ -30,13 +30,13 @@ public:
 
 	void UpdateShaderParams( ShaderManager& rShaderMgr )
 	{
-		using boost::shared_ptr;
+		using std::shared_ptr;
 
 		shared_ptr<CCopyEntity> pEntity = m_Entity.Get();
 		if( !pEntity )
 			return;
 
-//		boost::shared_ptr<CStage> pStage;
+//		std::shared_ptr<CStage> pStage;
 		CStage *pStage = pEntity->GetStage();
 
 		shared_ptr<BasicMesh> pMesh = pEntity->m_MeshHandle.GetMesh();
@@ -46,7 +46,7 @@ public:
 			rShaderMgr.SetParam( "g_fPlanarReflection", m_fReflection );
 		}
 
-		boost::shared_ptr<EntityRenderManager> pEntityRenderManager
+		std::shared_ptr<EntityRenderManager> pEntityRenderManager
 			= pStage->GetEntitySet()->GetRenderManager();
 
 		ShaderParameter<TextureParam> tex_param;

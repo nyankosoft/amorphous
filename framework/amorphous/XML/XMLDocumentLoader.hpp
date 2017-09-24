@@ -67,7 +67,7 @@ public:
 class XercesXMLDocumentLoader
 {
 	// test
-	boost::shared_ptr<XercesXMLDocument> LoadWithLSParser( const std::string& filepath );
+	std::shared_ptr<XercesXMLDocument> LoadWithLSParser( const std::string& filepath );
 
 public:
 
@@ -84,13 +84,13 @@ public:
 
 	bool Load( const XMLCh *src_fileapth, xercesc::DOMDocument** ppDoc, xercesc::XercesDOMParser **ppParser );
 
-	boost::shared_ptr<XercesXMLDocument> Load( const std::string& filepath );
+	std::shared_ptr<XercesXMLDocument> Load( const std::string& filepath );
 
 //	xercesc::DOMNode *GetRootNode();
 };
 
 
-inline boost::shared_ptr<XercesXMLDocument> CreateXMLDocument( const std::string& filepath )
+inline std::shared_ptr<XercesXMLDocument> CreateXMLDocument( const std::string& filepath )
 {
 	XercesXMLDocumentLoader doc_loader;
 	return doc_loader.Load( filepath );

@@ -2,7 +2,7 @@
 #define __amorphous_BitmapImage_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "FreeImage.h" // FreeImage library header
 
 #include "stream_buffer.hpp"
@@ -21,7 +21,7 @@
 
 namespace amorphous
 {
-using boost::shared_ptr;
+using std::shared_ptr;
 
 class BitmapImage;
 

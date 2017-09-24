@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Shader/MiscShader.hpp"
@@ -66,13 +66,13 @@ public:
 };
 
 
-boost::shared_ptr<EmbeddedGenericShader> GetEmbeddedGenericShader();
+std::shared_ptr<EmbeddedGenericShader> GetEmbeddedGenericShader();
 
-void SetEmbeddedGenericShader( boost::shared_ptr<EmbeddedGenericShader> ptr );
+void SetEmbeddedGenericShader( std::shared_ptr<EmbeddedGenericShader> ptr );
 
-boost::shared_ptr<EmbeddedMiscShader> GetEmbeddedMiscShader();
+std::shared_ptr<EmbeddedMiscShader> GetEmbeddedMiscShader();
 
-void SetEmbeddedMiscShader( boost::shared_ptr<EmbeddedMiscShader> ptr );
+void SetEmbeddedMiscShader( std::shared_ptr<EmbeddedMiscShader> ptr );
 
 
 } // namespace amorphous

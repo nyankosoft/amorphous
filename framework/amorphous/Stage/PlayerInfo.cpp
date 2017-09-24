@@ -160,7 +160,7 @@ int CSinglePlayerInfo::SupplyItem( GameItem* pItem )
 }
 
 
-int CSinglePlayerInfo::SupplyItem( boost::shared_ptr<GameItem> pItem )
+int CSinglePlayerInfo::SupplyItem( std::shared_ptr<GameItem> pItem )
 {
 	if( !pItem )
 		return false;

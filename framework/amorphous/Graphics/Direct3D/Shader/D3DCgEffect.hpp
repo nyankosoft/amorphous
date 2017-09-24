@@ -21,7 +21,7 @@ class CD3DCgEffect : public CCgEffectBase
 
 	static uint ms_RefCount;
 
-	static boost::shared_ptr<CD3DCgManager> ms_pD3DCgManager;
+	static std::shared_ptr<CD3DCgManager> ms_pD3DCgManager;
 
 	void InitCgContext();
 
@@ -64,7 +64,7 @@ public:
 
 //	void SetTextureParam()
 
-//	boost::shared_ptr<ShaderLightManager> GetShaderLightManager();
+//	std::shared_ptr<ShaderLightManager> GetShaderLightManager();
 
 //	void SetVertexBlendTransforms( const std::vector<Transform>& src_transforms );
 };

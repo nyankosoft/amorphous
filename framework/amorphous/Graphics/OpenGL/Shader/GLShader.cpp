@@ -780,7 +780,7 @@ void CGLProgram::SetParam( const char *parameter_name, const Matrix44& mat44_par
 }
 
 
-boost::shared_ptr<ShaderLightManager> CGLProgram::GetShaderLightManager()
+std::shared_ptr<ShaderLightManager> CGLProgram::GetShaderLightManager()
 {
 	return m_pLightManager;
 }

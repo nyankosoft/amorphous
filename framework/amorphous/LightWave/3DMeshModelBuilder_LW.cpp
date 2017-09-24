@@ -56,7 +56,7 @@ m_UseBoneStartAsBoneLocalOrigin(false)
 }
 
 
-C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW( boost::shared_ptr<LWO2_Object> pSrcObject )
+C3DMeshModelBuilder_LW::C3DMeshModelBuilder_LW( std::shared_ptr<LWO2_Object> pSrcObject )
 :
 m_pSrcObject(pSrcObject),
 m_DefaultVertexFlags(gs_DefaultVertexFlags_LW),
@@ -862,7 +862,7 @@ bool has_string( const std::vector<std::string>& string_buffer, const std::strin
 
 
 /// loads 3d mesh model from geometry filter
-bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( boost::shared_ptr<LWO2_Object> pObject, const GeometryFilter& geometry_filter )
+bool C3DMeshModelBuilder_LW::LoadFromLWO2Object( std::shared_ptr<LWO2_Object> pObject, const GeometryFilter& geometry_filter )
 {
 	LOG_FUNCTION_SCOPE();
 

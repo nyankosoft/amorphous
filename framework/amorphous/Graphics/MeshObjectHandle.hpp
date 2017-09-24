@@ -26,17 +26,17 @@ public:
 
 	MeshType::Name GetMeshType();
 
-	inline boost::shared_ptr<BasicMesh> GetMesh();
+	inline std::shared_ptr<BasicMesh> GetMesh();
 
-	inline boost::shared_ptr<const BasicMesh> GetMesh() const;
+	inline std::shared_ptr<const BasicMesh> GetMesh() const;
 
-	boost::shared_ptr<SkeletalMesh> GetSkeletalMesh();
+	std::shared_ptr<SkeletalMesh> GetSkeletalMesh();
 
 	bool Load( const std::string& resource_path );
 
 	bool Load( const MeshResourceDesc& desc );
 
-	boost::shared_ptr<MeshResource> GetMeshResource();
+	std::shared_ptr<MeshResource> GetMeshResource();
 
 	inline virtual const MeshHandle &operator=( const MeshHandle& handle );
 
@@ -54,23 +54,23 @@ inline const MeshHandle &MeshHandle::operator=( const MeshHandle& handle )
 }
 
 
-inline boost::shared_ptr<BasicMesh> MeshHandle::GetMesh()
+inline std::shared_ptr<BasicMesh> MeshHandle::GetMesh()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )
 		return GetEntry()->GetMeshResource()->GetMesh();
 	else
-		return boost::shared_ptr<BasicMesh>();
+		return std::shared_ptr<BasicMesh>();
 }
 
 
-inline boost::shared_ptr<const BasicMesh> MeshHandle::GetMesh() const
+inline std::shared_ptr<const BasicMesh> MeshHandle::GetMesh() const
 {
 	if( GetEntry()
 		&& GetEntry()->GetMeshResource() )
 		return GetEntry()->GetMeshResource()->GetMesh();
 	else
-		return boost::shared_ptr<const BasicMesh>();
+		return std::shared_ptr<const BasicMesh>();
 }
 
 

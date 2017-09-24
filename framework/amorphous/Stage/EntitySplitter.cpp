@@ -14,7 +14,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 class EmptyMeshGenerator : public MeshGenerator
@@ -157,7 +157,7 @@ Result::Name EntitySplitter::Split(
 {
 	LOG_PRINT( "Entered" );
 
-	boost::shared_ptr<CCopyEntity> pSrc = src.Get();
+	std::shared_ptr<CCopyEntity> pSrc = src.Get();
 	if( !pSrc )
 	{
 		LOG_PRINT_ERROR( "The source entity is invalid." );
@@ -171,7 +171,7 @@ Result::Name EntitySplitter::Split(
 	LOG_PRINTF(( "Entered (src: %s).", source_entity.GetName().c_str() ));
 
 	// Does source_entity have a mesh?
-	boost::shared_ptr<BasicMesh> pMesh = source_entity.m_MeshHandle.GetMesh();
+	std::shared_ptr<BasicMesh> pMesh = source_entity.m_MeshHandle.GetMesh();
 
 	if( !pMesh )
 	{
@@ -179,7 +179,7 @@ Result::Name EntitySplitter::Split(
 		return Result::INVALID_ARGS;
 	}
 
-	boost::shared_ptr<CustomMesh> pCustomMesh = GetCustomMesh( pMesh );
+	std::shared_ptr<CustomMesh> pCustomMesh = GetCustomMesh( pMesh );
 //		= boost::dynamic_pointer_cast<CustomMesh,BasicMesh>(pMesh->);
 
 	MeshHandle copy_mesh;

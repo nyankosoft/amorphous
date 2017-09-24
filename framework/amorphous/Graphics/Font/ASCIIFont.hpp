@@ -75,7 +75,7 @@ private:
 
 	std::string m_FontFilepath;
 
-	boost::shared_ptr<FontTextureLoader> m_pTextureLoader;
+	std::shared_ptr<FontTextureLoader> m_pTextureLoader;
 
 	static std::string ms_TextureArchiveDestDirectoryPath;
 

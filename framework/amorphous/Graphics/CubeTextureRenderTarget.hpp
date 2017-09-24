@@ -37,11 +37,11 @@ public:
 	virtual void SetRenderTarget( int face_index ) {}
 	virtual void End() {}
 
-	static boost::shared_ptr<CubeTextureRenderTarget> (*ms_pCreateCubeTextureRenderTarget)(void);
+	static std::shared_ptr<CubeTextureRenderTarget> (*ms_pCreateCubeTextureRenderTarget)(void);
 
-	static void SetInstanceCreationFunction( boost::shared_ptr<CubeTextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateCubeTextureRenderTarget = CreateTextureRenderTarget; }
+	static void SetInstanceCreationFunction( std::shared_ptr<CubeTextureRenderTarget> (*CreateTextureRenderTarget)(void) ) { ms_pCreateCubeTextureRenderTarget = CreateTextureRenderTarget; }
 
-	static boost::shared_ptr<CubeTextureRenderTarget> Create();
+	static std::shared_ptr<CubeTextureRenderTarget> Create();
 };
 
 

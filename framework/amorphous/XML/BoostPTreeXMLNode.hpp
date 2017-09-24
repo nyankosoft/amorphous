@@ -78,7 +78,7 @@ inline std::string BoostPTreeXMLNode::GetName()
 inline XMLNode BoostPTreeXMLNode::GetChild( const std::string& name )
 {
 	boost::property_tree::ptree empty_tree;
-	boost::shared_ptr<XMLNodeImpl> pImpl( new BoostPTreeXMLNode( m_PropertyTree.get_child( name, empty_tree ) ) );
+	std::shared_ptr<XMLNodeImpl> pImpl( new BoostPTreeXMLNode( m_PropertyTree.get_child( name, empty_tree ) ) );
 	XMLNode node( pImpl );
 	return node;
 }
@@ -102,7 +102,7 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren( const std::
 		if( node_name != name )
 			continue;
 
-		boost::shared_ptr<BoostPTreeXMLNode> pChild( new BoostPTreeXMLNode() );
+		std::shared_ptr<BoostPTreeXMLNode> pChild( new BoostPTreeXMLNode() );
 		pChild->m_NodeName     = itr->first;
 		pChild->m_PropertyTree = itr->second;
 		XMLNode node( pChild );
@@ -120,7 +120,7 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren()
 
 	for( auto itr = m_PropertyTree.begin(); itr != m_PropertyTree.end(); itr++ )
 	{
-		boost::shared_ptr<BoostPTreeXMLNode> pChild( new BoostPTreeXMLNode() );
+		std::shared_ptr<BoostPTreeXMLNode> pChild( new BoostPTreeXMLNode() );
 		pChild->m_NodeName     = itr->first;
 		pChild->m_PropertyTree = itr->second;
 		XMLNode node( pChild );

@@ -53,15 +53,15 @@ MeshHandle GetPrimaryMeshHandle( GameItem& item )
 		return MeshHandle();
 }
 
-boost::shared_ptr<BasicMesh> GetPrimaryMesh( GameItem& item )
+std::shared_ptr<BasicMesh> GetPrimaryMesh( GameItem& item )
 {
-	boost::shared_ptr<BasicMesh> pMesh = GetPrimaryMeshHandle(item).GetMesh();
+	std::shared_ptr<BasicMesh> pMesh = GetPrimaryMeshHandle(item).GetMesh();
 	return pMesh;
 }
 
-boost::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( GameItem& item )
+std::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( GameItem& item )
 {
-	boost::shared_ptr<SkeletalMesh> pSkeletalMesh
+	std::shared_ptr<SkeletalMesh> pSkeletalMesh
 		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( GetPrimaryMesh(item) );
 
 	return pSkeletalMesh;
@@ -76,7 +76,7 @@ m_ItemEntityFlags(0)
 }
 
 
-ItemEntity::ItemEntity( boost::shared_ptr<GameItem> pItem )
+ItemEntity::ItemEntity( std::shared_ptr<GameItem> pItem )
 :
 CCopyEntity(CItemModuleEntityTypeID::ITEM_ENTITY),
 m_pItem(pItem),

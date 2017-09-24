@@ -11,7 +11,7 @@ namespace amorphous
 
 class GameTask_GlobalStageLoader : public GameTask
 {
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	bool m_bRendered;
 

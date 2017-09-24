@@ -6,7 +6,7 @@
 #include "Graphics/fwd.hpp"
 #include "../base.hpp"
 #include <list>
-#include <boost/weak_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -33,13 +33,13 @@ class ResourceLoadingState
 
 protected:
 
-	boost::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
+	std::weak_ptr<GraphicsResourceEntry> m_pResourceEntry;
 
 public:
 
 	ResourceLoadingState();
 
-	ResourceLoadingState( boost::shared_ptr<GraphicsResourceEntry> pEntry )
+	ResourceLoadingState( std::shared_ptr<GraphicsResourceEntry> pEntry )
 		:
 	m_pResourceEntry( pEntry )
 	{}
@@ -57,7 +57,7 @@ class TextureLoadingStateHolder : public ResourceLoadingState
 {
 public:
 
-	TextureLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pTextureResourceEntry )
+	TextureLoadingStateHolder( std::shared_ptr<GraphicsResourceEntry> pTextureResourceEntry )
 		:
 	ResourceLoadingState(pTextureResourceEntry)
 	{}
@@ -70,7 +70,7 @@ class MeshLoadingStateHolder : public ResourceLoadingState
 {
 public:
 
-	MeshLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pMeshResourceEntry )
+	MeshLoadingStateHolder( std::shared_ptr<GraphicsResourceEntry> pMeshResourceEntry )
 		:
 	ResourceLoadingState(pMeshResourceEntry)
 	{}
@@ -81,11 +81,11 @@ public:
 
 class ShaderLoadingStateHolder : public ResourceLoadingState
 {
-	boost::weak_ptr<GraphicsResourceEntry> m_pShaderResourceEntry;
+	std::weak_ptr<GraphicsResourceEntry> m_pShaderResourceEntry;
 
 public:
 
-	ShaderLoadingStateHolder( boost::shared_ptr<GraphicsResourceEntry> pShaderResourceEntry )
+	ShaderLoadingStateHolder( std::shared_ptr<GraphicsResourceEntry> pShaderResourceEntry )
 		:
 	ResourceLoadingState(pShaderResourceEntry)
 	{}
@@ -96,7 +96,7 @@ public:
 
 class ResourceLoadingStateHolder
 {
-	std::list< boost::shared_ptr<ResourceLoadingState> > m_lstpResourceLoadingState;
+	std::list< std::shared_ptr<ResourceLoadingState> > m_lstpResourceLoadingState;
 
 public:
 
@@ -107,7 +107,7 @@ public:
 	void Add( MeshHandle& mesh_handle );
 	void Add( ShaderHandle& shader_handle );
 
-	void AddFromResourceEntry( boost::shared_ptr<GraphicsResourceEntry> pEntry );
+	void AddFromResourceEntry( std::shared_ptr<GraphicsResourceEntry> pEntry );
 
 	bool AreAllResourceLoaded();
 };

@@ -10,7 +10,7 @@ namespace amorphous
 
 using std::string;
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 /*
 /// uniformly-accelarated variable
@@ -534,7 +534,7 @@ void MeshBoneController_GearUnit::UpdateTransforms()
 }
 
 
-void MeshBoneController_GearUnit::SetTargetMesh( boost::shared_ptr<SkeletalMesh> pTargetMesh )
+void MeshBoneController_GearUnit::SetTargetMesh( std::shared_ptr<SkeletalMesh> pTargetMesh )
 {
 //	MeshBoneControllerBase::SetTargetMesh( pTargetMesh );
 

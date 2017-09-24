@@ -66,7 +66,7 @@ public:
 	void LoadGraphicsResources( const GraphicsParameters& rParam );
 	void ReleaseGraphicsResources();
 
-	static boost::shared_ptr<CubeTextureRenderTarget> Create() { boost::shared_ptr<D3DCubeTextureRenderTarget> p( new D3DCubeTextureRenderTarget ); return p; }
+	static std::shared_ptr<CubeTextureRenderTarget> Create() { std::shared_ptr<D3DCubeTextureRenderTarget> p( new D3DCubeTextureRenderTarget ); return p; }
 };
 
 

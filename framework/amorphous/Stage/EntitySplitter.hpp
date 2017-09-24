@@ -52,7 +52,7 @@ public:
 class EntitySplitter
 {
 	Result::Name EntitySplitter::CreateEntities(
-		boost::shared_ptr<CCopyEntity> pSourceEntity,
+		std::shared_ptr<CCopyEntity> pSourceEntity,
 		const Plane& split_plane,
 		const MeshSplitResults& split_results,
 		const EntitySplitterParams& params,

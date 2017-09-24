@@ -55,7 +55,7 @@ private:
 
 protected:
 
-	boost::shared_ptr<General3DMesh> m_pMesh;
+	std::shared_ptr<General3DMesh> m_pMesh;
 
 	/// used to specify the way of exporting the texture filename
 	TexturePathnameOption::Option m_TextureFilePathOption;
@@ -105,7 +105,7 @@ public:
 
 	General3DMesh& GetGeneral3DMesh() { return *m_pMesh; }
 
-	boost::shared_ptr<General3DMesh> GetGeneral3DMeshSharedPtr() { return m_pMesh; }
+	std::shared_ptr<General3DMesh> GetGeneral3DMeshSharedPtr() { return m_pMesh; }
 
 	void SetVertexFormatFlags( unsigned int flags ) { m_pMesh->m_VertexFormatFlag = flags; }
 
@@ -156,9 +156,9 @@ public:
 
 protected:
 
-	boost::shared_ptr<C3DModelLoader> m_pModelLoader;
+	std::shared_ptr<C3DModelLoader> m_pModelLoader;
 
-	boost::shared_ptr<General3DMesh> m_pMesh;
+	std::shared_ptr<General3DMesh> m_pMesh;
 
 	/// file name of the original model data
 	std::string m_strSrcFilename;
@@ -217,10 +217,10 @@ public:
 
 	/// \param pModelLoader 3D model loader. Must be in a "loaded" state.
 	/// TODO: rename to BuildMeshModelArchive
-	void BuildMeshModel( boost::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags = 0 );
+	void BuildMeshModel( std::shared_ptr<C3DModelLoader> pModelLoader, U32 build_option_flags = 0 );
 
 	/// \param [in] borrowed reference
-	void BuildMeshModelArchive( boost::shared_ptr<General3DMesh> pGeneralMesh, U32 build_option_flags = 0 );
+	void BuildMeshModelArchive( std::shared_ptr<General3DMesh> pGeneralMesh, U32 build_option_flags = 0 );
 
 //	void SetTextureFilenameOption( unsigned int option ) { m_TextureFilenameOption = option; }
 	void SetTextureFilenameOption( TexturePathnameOption::Option option ) { m_pModelLoader->SetTexturePathnameOption( option ); }

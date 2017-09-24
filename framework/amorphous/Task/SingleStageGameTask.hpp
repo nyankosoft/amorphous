@@ -16,7 +16,7 @@ class SingleStageGameTask : public GUIGameTask
 {
 protected:
 
-	boost::shared_ptr<CStage> m_pStage;
+	std::shared_ptr<CStage> m_pStage;
 
 public:
 

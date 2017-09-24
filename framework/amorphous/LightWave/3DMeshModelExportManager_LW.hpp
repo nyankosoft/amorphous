@@ -4,7 +4,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "3DMeshModelBuilder_LW.hpp"
@@ -26,7 +26,7 @@ class progress_display;
 class C3DMeshModelExportManager_LW
 {
 
-	boost::shared_ptr<LWO2_Object> m_pObject;
+	std::shared_ptr<LWO2_Object> m_pObject;
 
 	std::vector<C3DMeshModelBuilder *> m_vecpModelBuilder;
 
@@ -62,7 +62,7 @@ public:
 
 	uint GetNumOutputFilepaths() const { return (uint)m_OutputFilepaths.size(); }
 
-	boost::shared_ptr<LWO2_Object> GetLWO2Object() { return m_pObject; }
+	std::shared_ptr<LWO2_Object> GetLWO2Object() { return m_pObject; }
 
 	std::vector< std::vector<std::string> > GetOriginalTextureFilepaths( uint model_index );
 

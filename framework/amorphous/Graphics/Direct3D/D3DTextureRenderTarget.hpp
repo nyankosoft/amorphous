@@ -61,7 +61,7 @@ public:
 
 	void ReleaseTextures();
 
-	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<CD3DTextureRenderTarget> p( new CD3DTextureRenderTarget ); return p; }
+	static std::shared_ptr<TextureRenderTarget> Create() { std::shared_ptr<CD3DTextureRenderTarget> p( new CD3DTextureRenderTarget ); return p; }
 };
 
 

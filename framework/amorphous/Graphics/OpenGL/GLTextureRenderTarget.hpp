@@ -61,7 +61,7 @@ public:
 
 	void OutputImageFile( const std::string& image_file_path );
 
-	static boost::shared_ptr<TextureRenderTarget> Create() { boost::shared_ptr<GLTextureRenderTarget> p( new GLTextureRenderTarget ); return p; }
+	static std::shared_ptr<TextureRenderTarget> Create() { std::shared_ptr<GLTextureRenderTarget> p( new GLTextureRenderTarget ); return p; }
 };
 
 } // namespace amorphous

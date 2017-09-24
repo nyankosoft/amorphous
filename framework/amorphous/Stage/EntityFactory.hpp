@@ -48,16 +48,16 @@ public:
 
 	/// \param entity_type_id determines the type of entity to be created.
 	/// By default, always returns CCopyEntity()
-	virtual boost::shared_ptr<CCopyEntity> CreateEntity( unsigned int entity_type_id );
+	virtual std::shared_ptr<CCopyEntity> CreateEntity( unsigned int entity_type_id );
 
 	/// must be implemented in a derived class to create user defined entity
-	virtual boost::shared_ptr<CCopyEntity> CreateDerivedEntity( unsigned int entity_type_id ) { return boost::shared_ptr<CCopyEntity>(); }
+	virtual std::shared_ptr<CCopyEntity> CreateDerivedEntity( unsigned int entity_type_id ) { return std::shared_ptr<CCopyEntity>(); }
 
-	void ReleaseEntity( boost::shared_ptr<CCopyEntity> pEntity );
+	void ReleaseEntity( std::shared_ptr<CCopyEntity> pEntity );
 
 	/// must be implemented in a derived class if user defined entity is used
 	/// - user needs to downcast 'pEntity' to release a derived entity
-	virtual void ReleaseDerivedEntity( boost::shared_ptr<CCopyEntity> pEntity ) {}
+	virtual void ReleaseDerivedEntity( std::shared_ptr<CCopyEntity> pEntity ) {}
 
 	void ReleaseAllEntities();
 

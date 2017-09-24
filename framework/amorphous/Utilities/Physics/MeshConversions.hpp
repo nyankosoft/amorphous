@@ -17,7 +17,7 @@ inline void General3DMeshToTriangleMeshDesc( const General3DMesh& src, physics::
 	vector<IndexedPolygon> triangulated_polygons;
 	Triangulate( triangulated_polygons, src.GetPolygonBuffer() );
 
-	const boost::shared_ptr< vector<General3DVertex> > pVertices = src.GetVertexBuffer();
+	const std::shared_ptr< vector<General3DVertex> > pVertices = src.GetVertexBuffer();
 
 	if( !pVertices )
 		return;

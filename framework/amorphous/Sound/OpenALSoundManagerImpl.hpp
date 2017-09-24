@@ -4,7 +4,7 @@
 
 #include "Sound/SoundManagerImpl.hpp"
 #include "Sound/OpenALSoundSourceImpl.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/thread.hpp>
 #include <al.h>
 #include <alut.h>
@@ -104,7 +104,7 @@ class OpenALSoundManagerImpl : public SoundManagerImpl
 
 	// thread to release finished sound sources
 
-	boost::shared_ptr<boost::thread> m_pThread;
+	std::shared_ptr<boost::thread> m_pThread;
 
 	boost::mutex m_SourceListLock;
 

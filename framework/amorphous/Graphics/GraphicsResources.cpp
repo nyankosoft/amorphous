@@ -339,7 +339,7 @@ bool MeshResource::LoadFromDB( CBinaryDatabase<std::string>& db, const std::stri
 
 	MeshFactory factory;
 	BasicMesh *pMesh = factory.LoadMeshObjectFromArchive( mesh_archive, keyname, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
-	m_pMeshObject = boost::shared_ptr<BasicMesh>( pMesh );
+	m_pMeshObject = std::shared_ptr<BasicMesh>( pMesh );
 
 	return ( m_pMeshObject ? true : false );
 }

@@ -21,7 +21,7 @@ namespace amorphous
 using std::string;
 using std::vector;
 using std::set;
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace physics;
 
 
@@ -309,7 +309,7 @@ m_PhysOverlapTime(0.0f)
 {}
 
 
-Result::Name CClothSystem::InitMotionSystem( boost::shared_ptr<msynth::Skeleton> pSkeleton )
+Result::Name CClothSystem::InitMotionSystem( std::shared_ptr<msynth::Skeleton> pSkeleton )
 {
 	if( !pSkeleton )
 		return Result::INVALID_ARGS;
@@ -720,7 +720,7 @@ void CClothSystem::RenderObjectsForDebugging()
 }
 
 /*
-//void CClothSystem::AddCloth( const std::string& cloth_name, boost::shared_ptr<CustomMesh>& pClothMesh, const std::string& name_of_bone_to_attach_cloth_to )
+//void CClothSystem::AddCloth( const std::string& cloth_name, std::shared_ptr<CustomMesh>& pClothMesh, const std::string& name_of_bone_to_attach_cloth_to )
 int CClothSystem::AddClothMesh( const std::string& cloth_name, MeshHandle& cloth_mesh, const std::string& name_of_bone_to_attach_cloth_to )
 {
 	const int num_cloths = (int)m_Cloths.size();
@@ -751,7 +751,7 @@ bool IsPointInside( const Sphere& sphere, const Vector3& pos )
 }
 
 
-boost::shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& mesh )
+std::shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& mesh )
 {
 	return GetCustomMesh( mesh.GetMesh() );
 }
@@ -785,7 +785,7 @@ Result::Name CClothSystem::AttachClothMesh( const std::string& cloth_name, MeshH
 
 	shared_ptr<BasicMesh> pMesh = cloth_mesh.GetMesh();
 
-	boost::shared_ptr<CustomMesh> pClothMesh = GetCustomMesh( pMesh );
+	std::shared_ptr<CustomMesh> pClothMesh = GetCustomMesh( pMesh );
 	if( !pClothMesh || !pClothMesh->IsValid() )
 		return Result::INVALID_ARGS;
 

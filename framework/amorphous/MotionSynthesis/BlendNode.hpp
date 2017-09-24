@@ -27,7 +27,7 @@ class BlendNode
 		NUM_MAX_BLENDS = 4,
 	};
 
-	boost::weak_ptr<BlendNode> m_pSelf;
+	std::weak_ptr<BlendNode> m_pSelf;
 
 	std::string m_Name;
 
@@ -35,7 +35,7 @@ class BlendNode
 
 	/// Stores children as shared pointers to let motion primitives hold a pointer
 	/// to a blend node as an entry point
-	std::vector< boost::shared_ptr<BlendNode> > m_vecpChild;
+	std::vector< std::shared_ptr<BlendNode> > m_vecpChild;
 
 	// -1: no transform has been set.
 	int m_Priority;
@@ -46,7 +46,7 @@ public:
 
 	BlendNode();
 
-	void SetSelf( boost::weak_ptr<BlendNode> pSelf ) { m_pSelf = pSelf; }
+	void SetSelf( std::weak_ptr<BlendNode> pSelf ) { m_pSelf = pSelf; }
 
 	void CreateFromSkeleton( const Bone& src_bone );
 
@@ -68,7 +68,7 @@ public:
 			m_vecpChild[i]->SetTransformNodes( src_node.GetChildNode(i) );
 	}
 
-	boost::shared_ptr<BlendNode> GetBlendNodeByName( const std::string& name );
+	std::shared_ptr<BlendNode> GetBlendNodeByName( const std::string& name );
 
 	/// Recursively sets the transforms to a tree of transform nodes.
 	/// Resizes the child buffers of dest nodes if necessary

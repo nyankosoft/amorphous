@@ -2,7 +2,7 @@
 #define  __GAMEINPUT_FWD_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -21,7 +21,7 @@ class DIKeyboard;         /// for Windows platform (DirectInput)
 class DirectInputMouse;   /// for Windows platform (DirectInput)
 class DirectInputGamepad; /// for Windows platform (DirectInput)
 
-typedef boost::shared_ptr<InputHandler> InputHandlerSharedPtr;
+typedef std::shared_ptr<InputHandler> InputHandlerSharedPtr;
 
 
 class InputDeviceParam

@@ -209,7 +209,7 @@ bool ShapeDetector::IsConvex( const General3DMesh& src_mesh )
 {
 	bool is_not_sphere = false;
 
-	const boost::shared_ptr< vector<General3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
+	const std::shared_ptr< vector<General3DVertex> >& pVertBuffer = src_mesh.GetVertexBuffer();
 	if( !pVertBuffer )
 		return false;
 

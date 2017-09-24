@@ -41,7 +41,7 @@ void CGLFixedFunctionPipelineManager::Reload()
 }
 
 
-boost::shared_ptr<ShaderLightManager> CGLFixedFunctionPipelineManager::GetShaderLightManager()
+std::shared_ptr<ShaderLightManager> CGLFixedFunctionPipelineManager::GetShaderLightManager()
 {
 	return m_pFFPLightManager;
 }

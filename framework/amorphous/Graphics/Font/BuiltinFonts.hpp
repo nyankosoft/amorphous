@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "BitstreamVeraSansMono_Bold_256.hpp"
 #include "TextureFont.hpp"
 
@@ -38,9 +38,9 @@ inline TextureFont* CreateDefaultBuiltinFontRawPtr()
 }
 
 
-inline boost::shared_ptr<TextureFont> CreateDefaultBuiltinFont()
+inline std::shared_ptr<TextureFont> CreateDefaultBuiltinFont()
 {
-	boost::shared_ptr<TextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
+	std::shared_ptr<TextureFont> pTexFont( CreateDefaultBuiltinFontRawPtr() );
 	return pTexFont;
 }
 

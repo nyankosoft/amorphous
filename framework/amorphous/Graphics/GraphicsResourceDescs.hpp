@@ -3,7 +3,6 @@
 
 
 #include <string>
-#include <boost/weak_ptr.hpp>
 #include "D3DHeaders.hpp"
 
 #include "amorphous/base.hpp"
@@ -100,7 +99,7 @@ public:
 
 	bool IsCachedResource() const { return m_IsCachedResource; }
 
-	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const = 0;
+	virtual std::shared_ptr<GraphicsResourceDesc> GetCopy() const = 0;
 
 	virtual bool CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const { return false; }
 	virtual bool CanBeSharedAsSameMeshResource( const MeshResourceDesc& desc ) const { return false; }
@@ -154,7 +153,7 @@ public:
 
 	uint TypeFlags;
 
-	boost::shared_ptr<TextureFillingAlgorithm> pLoader;
+	std::shared_ptr<TextureFillingAlgorithm> pLoader;
 
 public:
 
@@ -172,7 +171,7 @@ public:
 
 	virtual bool IsValid() const;
 
-	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<TextureResourceDesc>( new TextureResourceDesc(*this) ); }
+	virtual std::shared_ptr<GraphicsResourceDesc> GetCopy() const { return std::shared_ptr<TextureResourceDesc>( new TextureResourceDesc(*this) ); }
 
 	bool CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const;
 
@@ -215,7 +214,7 @@ public:
 
 	U32 VertexFormatFlags;
 
-	boost::shared_ptr<MeshGenerator> pMeshGenerator;
+	std::shared_ptr<MeshGenerator> pMeshGenerator;
 
 	//
 	// Used by Direct3D
@@ -231,7 +230,7 @@ public:
 
 	bool IsValid() const;
 
-	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<MeshResourceDesc>( new MeshResourceDesc(*this) ); }
+	virtual std::shared_ptr<GraphicsResourceDesc> GetCopy() const { return std::shared_ptr<MeshResourceDesc>( new MeshResourceDesc(*this) ); }
 
 	bool CanBeSharedAsSameMeshResource( const MeshResourceDesc& desc ) const
 	{
@@ -288,7 +287,7 @@ public:
 
 	ShaderType::Name ShaderType;
 
-	boost::shared_ptr<ShaderGenerator> pShaderGenerator;
+	std::shared_ptr<ShaderGenerator> pShaderGenerator;
 
 	ShaderResourceDesc()
 		:
@@ -299,7 +298,7 @@ public:
 
 	virtual bool IsValid() const;
 
-	virtual boost::shared_ptr<GraphicsResourceDesc> GetCopy() const { return boost::shared_ptr<ShaderResourceDesc>( new ShaderResourceDesc(*this) ); }
+	virtual std::shared_ptr<GraphicsResourceDesc> GetCopy() const { return std::shared_ptr<ShaderResourceDesc>( new ShaderResourceDesc(*this) ); }
 
 	virtual bool CanBeSharedAsSameShaderResource( const ShaderResourceDesc& desc ) const;
 

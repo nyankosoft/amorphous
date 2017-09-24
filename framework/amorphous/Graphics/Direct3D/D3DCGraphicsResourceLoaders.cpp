@@ -55,7 +55,7 @@ void CD3DMeshLoader::LoadMeshSubresources()
 
 /// Called by I/O thread after the mesh archive is loaded and stored to 'm_pArchive'
 /// - Usually loaded from disk
-void CD3DMeshLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
+void CD3DMeshLoader::OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	// change this to true if async loading is fixed
 	bool preferred_async_loading_method = false;

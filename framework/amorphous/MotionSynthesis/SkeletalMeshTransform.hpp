@@ -95,7 +95,7 @@ void CreateTransformMapTree( const Skeleton& src_skeleton, TransformNodeMap& roo
 /// \param dest_skeleton [out] destination
 void CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh, msynth::Skeleton& dest_skeleton );
 
-boost::shared_ptr<msynth::Skeleton> CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh );
+std::shared_ptr<msynth::Skeleton> CreateSkeletonFromMeshSkeleton( const SkeletalMesh& src_skeletal_mesh );
 
 } // namespace msynth
 

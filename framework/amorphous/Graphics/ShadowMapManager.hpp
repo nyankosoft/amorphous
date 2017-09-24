@@ -47,14 +47,14 @@ protected:
 		NUM_MAX_SCENE_SHADOW_TEXTURES = 2,
 	};
 
-	typedef std::map< int, boost::shared_ptr<ShadowMap> > IDtoShadowMap;
+	typedef std::map< int, std::shared_ptr<ShadowMap> > IDtoShadowMap;
 
 	IDtoShadowMap m_mapIDtoShadowMap;
 
-	boost::shared_ptr<ShadowMapSceneRenderer> m_pSceneRenderer;
+	std::shared_ptr<ShadowMapSceneRenderer> m_pSceneRenderer;
 
 	// Temporarily stores the shadow map to return shadowmap/depth test technique
-	boost::shared_ptr<ShadowMap> m_pCurrentShadowMap;
+	std::shared_ptr<ShadowMap> m_pCurrentShadowMap;
 
 	int m_IDCounter;
 
@@ -72,7 +72,7 @@ protected:
 	/// Holds textures(s) with the original screen size.
 	/// Shadows of the scene are rendered to this texture, then overlayed
 	/// to the original, non-shadowed scene.
-	boost::shared_ptr<TextureRenderTarget> m_apShadowTexture[NUM_MAX_SCENE_SHADOW_TEXTURES];
+	std::shared_ptr<TextureRenderTarget> m_apShadowTexture[NUM_MAX_SCENE_SHADOW_TEXTURES];
 
 	Camera m_SceneCamera;
 
@@ -81,7 +81,7 @@ protected:
 	/// - "ShadowMap": for shadow map rendering. renders the shadow casters to shadow map texture. m_LightCamera is used to calculate  
 	ShaderHandle m_Shader;
 
-	boost::shared_ptr<TextureRenderTarget> m_pSceneRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pSceneRenderTarget;
 
 //	static std::string ms_strDefaultShaderFilename;
 
@@ -113,9 +113,9 @@ public:
 	/// The system sets the size to the screen width and height by default.
 	void SetSceneShadowTextureSize( int texture_width, int texture_height );
 
-	void SetSceneRenderer( boost::shared_ptr<ShadowMapSceneRenderer> pSceneRenderer );
+	void SetSceneRenderer( std::shared_ptr<ShadowMapSceneRenderer> pSceneRenderer );
 
-	std::map< int, boost::shared_ptr<ShadowMap> >::iterator CreateShadowMap( U32 id, const Light& light );
+	std::map< int, std::shared_ptr<ShadowMap> >::iterator CreateShadowMap( U32 id, const Light& light );
 
 	Result::Name UpdateLightForShadow( U32 id, const Light& light );
 
@@ -188,7 +188,7 @@ public:
 	void RenderSceneWithoutShadow( int sx, int sy, int ex, int ey );
 	void RenderSceneWithShadow( int sx, int sy, int ex, int ey );
 
-//	boost::shared_ptr<TextureRenderTarget> GetSceneShadowTexture() { return m_apShadowTexture[0]; }
+//	std::shared_ptr<TextureRenderTarget> GetSceneShadowTexture() { return m_apShadowTexture[0]; }
 
 	TextureHandle GetSceneShadowTexture();
 

@@ -5,7 +5,7 @@
 #include "../Support/Vec3_StringAux.hpp"
 #include "../Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous

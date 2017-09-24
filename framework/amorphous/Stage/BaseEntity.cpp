@@ -30,7 +30,7 @@ namespace amorphous
 using std::string;
 using std::vector;
 using std::map;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 //===============================================================================
@@ -131,7 +131,7 @@ int BaseEntity::GetEntityGroupID()
 
 // How to make a copy if T class has member variables of type shared_ptr
 //template<class T>
-//inline boost::shared_ptr<T> create_copy( shared_ptr<T> p ) { return ; }
+//inline std::shared_ptr<T> create_copy( shared_ptr<T> p ) { return ; }
 
 
 void BaseEntity::CreateAlphaEntities( CCopyEntity *pCopyEnt )

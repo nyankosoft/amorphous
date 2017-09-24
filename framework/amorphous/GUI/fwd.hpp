@@ -2,7 +2,7 @@
 #define  __GM_INDEX_FWD_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -54,13 +54,13 @@ class CInputHandler_Dialog;
 typedef CInputHandler_Dialog CGM_DialogInputHandler;
 
 
-typedef boost::shared_ptr<CGM_DialogManager> CGM_DialogManagerSharedPtr;
-typedef boost::shared_ptr<CGM_EventHandlerBase> CGM_DialogEventHandlerSharedPtr;
-typedef boost::shared_ptr<CGM_ButtonEventHandler> CGM_ButtonEventHandlerSharedPtr;
-typedef boost::shared_ptr<CGM_ListBoxEventHandler> CGM_ListBoxEventHandlerSharedPtr;
-typedef boost::shared_ptr<CGM_ControlRenderer> CGM_ControlRendererSharedPtr;
-typedef boost::shared_ptr<CGM_ControlRendererManager> CGM_ControlRendererManagerSharedPtr;
-typedef boost::shared_ptr<CGM_DialogInputHandler> CGM_DialogInputHandlerSharedPtr;
+typedef std::shared_ptr<CGM_DialogManager> CGM_DialogManagerSharedPtr;
+typedef std::shared_ptr<CGM_EventHandlerBase> CGM_DialogEventHandlerSharedPtr;
+typedef std::shared_ptr<CGM_ButtonEventHandler> CGM_ButtonEventHandlerSharedPtr;
+typedef std::shared_ptr<CGM_ListBoxEventHandler> CGM_ListBoxEventHandlerSharedPtr;
+typedef std::shared_ptr<CGM_ControlRenderer> CGM_ControlRendererSharedPtr;
+typedef std::shared_ptr<CGM_ControlRendererManager> CGM_ControlRendererManagerSharedPtr;
+typedef std::shared_ptr<CGM_DialogInputHandler> CGM_DialogInputHandlerSharedPtr;
 
 
 class CGM_GlobalSoundPlayer;
@@ -68,10 +68,10 @@ class CGM_DialogSoundPlayer;
 class CGM_ButtonSoundPlayer;
 class CGM_ListBoxSoundPlayer;
 
-typedef boost::shared_ptr<CGM_GlobalSoundPlayer>  CGM_GlobalSoundPlayerSharedPtr;
-typedef boost::shared_ptr<CGM_DialogSoundPlayer>  CGM_DialogSoundPlayerSharedPtr;
-typedef boost::shared_ptr<CGM_ButtonSoundPlayer>  CGM_ButtonSoundPlayerSharedPtr;
-typedef boost::shared_ptr<CGM_ListBoxSoundPlayer> CGM_ListBoxSoundPlayerSharedPtr;
+typedef std::shared_ptr<CGM_GlobalSoundPlayer>  CGM_GlobalSoundPlayerSharedPtr;
+typedef std::shared_ptr<CGM_DialogSoundPlayer>  CGM_DialogSoundPlayerSharedPtr;
+typedef std::shared_ptr<CGM_ButtonSoundPlayer>  CGM_ButtonSoundPlayerSharedPtr;
+typedef std::shared_ptr<CGM_ListBoxSoundPlayer> CGM_ListBoxSoundPlayerSharedPtr;
 
 
 // callback function pointer (C style)

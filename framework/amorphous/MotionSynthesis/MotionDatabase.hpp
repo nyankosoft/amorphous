@@ -41,7 +41,7 @@ public:
 
 	~MotionDatabase() {}
 
-	boost::shared_ptr<MotionPrimitive> GetMotionPrimitive( const std::string& name );
+	std::shared_ptr<MotionPrimitive> GetMotionPrimitive( const std::string& name );
 
 	/// returns true on success
 	bool GetHumanoidMotionTable( const std::string& table_name, HumanoidMotionTable& dest );

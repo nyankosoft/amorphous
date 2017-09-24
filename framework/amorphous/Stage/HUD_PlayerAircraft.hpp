@@ -66,19 +66,19 @@ private:
 	};
 
 
-	boost::shared_ptr<TextElement> m_pTimeText;
+	std::shared_ptr<TextElement> m_pTimeText;
 
 	GraphicsElementAnimationHandle m_TimeTextBlinkEffect;
 
-	boost::shared_ptr<FrameRectElement> m_apContainer[NUM_MAX_CONTAINER_RECTS];
+	std::shared_ptr<FrameRectElement> m_apContainer[NUM_MAX_CONTAINER_RECTS];
 
-	boost::shared_ptr<GraphicsElementGroup> m_pGlobalRadar;
+	std::shared_ptr<GraphicsElementGroup> m_pGlobalRadar;
 
-	boost::shared_ptr<FillRectElement> m_pGlobalRadarBG;
+	std::shared_ptr<FillRectElement> m_pGlobalRadarBG;
 
-	boost::shared_ptr<FillRectElement> m_apIconOnGlobalRadar[NUM_MAX_ICONS_ON_GLOBAL_RADAR];
+	std::shared_ptr<FillRectElement> m_apIconOnGlobalRadar[NUM_MAX_ICONS_ON_GLOBAL_RADAR];
 
-	boost::shared_ptr<FillRectElement> m_apIconOnLocalRadar[NUM_MAX_ICONS_ON_LOCAL_RADAR];
+	std::shared_ptr<FillRectElement> m_apIconOnLocalRadar[NUM_MAX_ICONS_ON_LOCAL_RADAR];
 
 	int m_NumLastRenderedLocalRadarIcons;
 

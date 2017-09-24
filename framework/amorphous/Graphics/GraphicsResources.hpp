@@ -2,7 +2,6 @@
 #define  __GraphicsResources_HPP__
 
 
-#include <boost/weak_ptr.hpp>
 #include <boost/thread.hpp>
 #include "fwd.hpp"
 #include "GraphicsResourceDescs.hpp"
@@ -145,7 +144,7 @@ protected:
 
 	TextureResourceDesc m_TextureDesc;
 
-	boost::shared_ptr<LockedTexture> m_pLockedTexture;
+	std::shared_ptr<LockedTexture> m_pLockedTexture;
 
 protected:
 
@@ -220,7 +219,7 @@ public:
 	/// Returns true on success
 	/// - Succeeds only between a pair of Lock() and Unlock() calls
 	/// - Returns an object that provides access to the locked texture surface
-	bool GetLockedTexture( boost::shared_ptr<LockedTexture>& pLockedTexture );
+	bool GetLockedTexture( std::shared_ptr<LockedTexture>& pLockedTexture );
 
 	void GetStatus( std::string& dest_buffer );
 
@@ -243,7 +242,7 @@ public:
 
 class MeshResource : public GraphicsResource
 {
-	boost::shared_ptr<BasicMesh> m_pMeshObject;
+	std::shared_ptr<BasicMesh> m_pMeshObject;
 
 	MeshResourceDesc m_MeshDesc;
 
@@ -277,9 +276,9 @@ public:
 
 	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
 
-	inline boost::shared_ptr<BasicMesh> GetMesh();
+	inline std::shared_ptr<BasicMesh> GetMesh();
 
-	inline boost::shared_ptr<BasicMesh> GetMeshInLoading();
+	inline std::shared_ptr<BasicMesh> GetMeshInLoading();
 
 	MeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 
@@ -383,16 +382,16 @@ inline GraphicsResourceState::Name GraphicsResource::GetState()
 // MeshResource
 //================================================================================
 
-inline boost::shared_ptr<BasicMesh> MeshResource::GetMesh()
+inline std::shared_ptr<BasicMesh> MeshResource::GetMesh()
 {
 	if( GetState() == GraphicsResourceState::LOADED )
 		return m_pMeshObject;
 	else
-		return boost::shared_ptr<BasicMesh>();
+		return std::shared_ptr<BasicMesh>();
 }
 
 
-inline boost::shared_ptr<BasicMesh> MeshResource::GetMeshInLoading()
+inline std::shared_ptr<BasicMesh> MeshResource::GetMeshInLoading()
 {
 	return m_pMeshObject;
 }
@@ -400,9 +399,9 @@ inline boost::shared_ptr<BasicMesh> MeshResource::GetMeshInLoading()
 
 //---------------------------- forward declarations ----------------------------
 
-boost::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
-boost::shared_ptr<CustomMesh> GetCustomMesh( boost::shared_ptr<BasicMesh> pSrcMesh );
-//boost::shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& src_mesh );
+std::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
+std::shared_ptr<CustomMesh> GetCustomMesh( std::shared_ptr<BasicMesh> pSrcMesh );
+//std::shared_ptr<CustomMesh> GetCustomMesh( MeshHandle& src_mesh );
 
 } // namespace amorphous
 

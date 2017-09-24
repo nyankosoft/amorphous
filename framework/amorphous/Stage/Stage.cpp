@@ -53,7 +53,7 @@ static uint gs_DebugInputHandlerIndex = 0;
 using namespace std;
 using namespace boost;
 using namespace physics;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 void SetStageForScriptCallback( CStage* pStage )

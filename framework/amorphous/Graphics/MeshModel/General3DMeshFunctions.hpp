@@ -11,7 +11,7 @@ namespace amorphous
 
 
 void GetConnectedSets( const General3DMesh& src_mesh, std::vector< std::vector<int> >& connected_polygon_sets );
-void GetConnectedSets( const General3DMesh& src_mesh, std::vector< boost::shared_ptr<General3DMesh> >& pDestMeshes );
+void GetConnectedSets( const General3DMesh& src_mesh, std::vector< std::shared_ptr<General3DMesh> >& pDestMeshes );
 
 } // namespace amorphous
 

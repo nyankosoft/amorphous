@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/Quaternion.hpp"
@@ -152,7 +152,7 @@ class CSubDisplay// : public GraphicsComponent
 {
 	C2DRect m_DisplayRect;
 
-	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 	Vector3 m_vTargetPosition;
 
@@ -161,7 +161,7 @@ class CSubDisplay// : public GraphicsComponent
 //	SubMonitor *m_pMonitor;
 
 	// owned reference
-	std::vector< boost::shared_ptr<SubMonitor> > m_vecpMonitor;
+	std::vector< std::shared_ptr<SubMonitor> > m_vecpMonitor;
 
 	CSubDisplayType::Name m_CurrentMonitor;
 
@@ -173,7 +173,7 @@ public:
 
 //	SubMonitor *GetMomitor() { return m_pMonitor; }
 
-	std::vector< boost::shared_ptr<SubMonitor> >& Monitor() { return m_vecpMonitor; }
+	std::vector< std::shared_ptr<SubMonitor> >& Monitor() { return m_vecpMonitor; }
 
 	inline SubMonitor *GetCurrentMonitor();
 

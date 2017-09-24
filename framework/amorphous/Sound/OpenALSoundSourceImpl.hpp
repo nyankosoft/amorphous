@@ -7,7 +7,7 @@
 #include "amorphous/Support/SerializableStream.hpp"
 #include "amorphous/Support/prealloc_pool.hpp"
 #include "amorphous/Support/Macro.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/thread.hpp>
 #include <al.h>
 #include <alut.h>
@@ -166,7 +166,7 @@ class COpenALStreamedSoundSourceImpl : public COpenALSoundSourceImpl
 
 	boost::mutex m_StreamSoundMutex;
 
-	boost::shared_ptr<boost::thread> m_pThread;
+	std::shared_ptr<boost::thread> m_pThread;
 
 	/// stores an encoded data loaded from disk
 	/// - Not used when the sound is streamed directly from the disk

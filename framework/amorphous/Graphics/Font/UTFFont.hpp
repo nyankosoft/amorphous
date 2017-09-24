@@ -20,9 +20,9 @@ private:
 
 	std::string m_FontFilepath;
 
-//	boost::shared_ptr<FontTextureLoader> m_pTextureLoader;
+//	std::shared_ptr<FontTextureLoader> m_pTextureLoader;
 
-	boost::shared_ptr<FreeTypeLibrary> m_pFreeTypeLibrary;
+	std::shared_ptr<FreeTypeLibrary> m_pFreeTypeLibrary;
 
 	FT_Face m_Face;
 

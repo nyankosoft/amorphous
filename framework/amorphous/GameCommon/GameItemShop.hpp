@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/Support/singleton.hpp"
 #include "amorphous/Item/fwd.hpp"
 
@@ -19,7 +19,7 @@ class CCustomer
 public:
 
 	/// \return actual added quantity
-	virtual int AddItem( boost::shared_ptr<GameItem> pItem ) = 0;
+	virtual int AddItem( std::shared_ptr<GameItem> pItem ) = 0;
 
 	virtual bool Pay( int amount ) = 0;
 
@@ -29,7 +29,7 @@ public:
 
 class GameItemShop
 {
-	std::vector< boost::shared_ptr<GameItem> > m_vecpItem;
+	std::vector< std::shared_ptr<GameItem> > m_vecpItem;
 
 public:
 
@@ -51,7 +51,7 @@ public:
 
 //	int LoadItems( const std::vector<std::string>& m_vecItemName );
 
-	bool AddItem( boost::shared_ptr<GameItem> pItem );
+	bool AddItem( std::shared_ptr<GameItem> pItem );
 
 	int AddItem( const std::string& item_name, int quantity );
 
@@ -59,7 +59,7 @@ public:
 
 	bool PurchaseItem( CCustomer& customer, int index, int quantity = 1 );
 
-	const boost::shared_ptr<GameItem> GetItem( int index );
+	const std::shared_ptr<GameItem> GetItem( int index );
 
 	size_t GetNumItems() const { return m_vecpItem.size(); }
 
@@ -88,7 +88,7 @@ class GameItemShopList
 {
 	static singleton<GameItemShopList> m_obj;
 
-	std::vector< boost::shared_ptr<GameItemShop> > m_vecpShopList;
+	std::vector< std::shared_ptr<GameItemShop> > m_vecpShopList;
 
 public:
 
@@ -102,12 +102,12 @@ public:
 
 	/// registers a shop to the list.
 	/// - called by CreateGameItemShop()
-	bool AddShop( boost::shared_ptr<GameItemShop> pShop );
+	bool AddShop( std::shared_ptr<GameItemShop> pShop );
 
 	/// - called by dtor of GameItemShop
 	bool RemoveShop( const std::string& name );
 
-	boost::shared_ptr<GameItemShop> GetShop( const std::string& name );
+	std::shared_ptr<GameItemShop> GetShop( const std::string& name );
 };
 
 
@@ -117,7 +117,7 @@ inline GameItemShopList& GetGameItemShopList()
 }
 
 
-extern boost::shared_ptr<GameItemShop> CreateGameItemShop( const std::string& shop_name );
+extern std::shared_ptr<GameItemShop> CreateGameItemShop( const std::string& shop_name );
 
 
 } // namespace amorphous

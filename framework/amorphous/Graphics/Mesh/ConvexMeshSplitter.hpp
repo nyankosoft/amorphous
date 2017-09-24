@@ -21,9 +21,9 @@ class MeshSplitResults
 {
 public:
 
-	boost::shared_ptr<CustomMesh> m_pFrontMesh;
+	std::shared_ptr<CustomMesh> m_pFrontMesh;
 
-	boost::shared_ptr<CustomMesh> m_pBackMesh;
+	std::shared_ptr<CustomMesh> m_pBackMesh;
 };
 
 

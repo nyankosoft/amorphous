@@ -22,7 +22,7 @@ namespace amorphous
 {
 
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 //======================================================================================
@@ -157,7 +157,7 @@ void Firearm::UpdateSlideMotionFromRearwardToForward( CStage& stage )
 }
 
 
-void Firearm::ChangeMagazine( boost::shared_ptr<Magazine> pNewMagazine )
+void Firearm::ChangeMagazine( std::shared_ptr<Magazine> pNewMagazine )
 {
 	if( !pNewMagazine )
 		return;
@@ -229,7 +229,7 @@ void Firearm::DisengageSlideStop()
 }
 
 
-bool Firearm::IsMagazineCompliant( const boost::shared_ptr<Magazine>& pMagazine ) const
+bool Firearm::IsMagazineCompliant( const std::shared_ptr<Magazine>& pMagazine ) const
 {
 	for( size_t i=0; i<m_ComplientMagazineNames.size(); i++ )
 	{
@@ -469,7 +469,7 @@ void Firearm::GetStatusForDebugging( std::string& dest_buffer ) const
 	}
 
 	dest_buffer += "mag: ";
-	const boost::shared_ptr<Magazine> pMag = GetMagazine();
+	const std::shared_ptr<Magazine> pMag = GetMagazine();
 	if( pMag )
 	{
 		dest_buffer += fmt_string( "%s [%02u / %02u]\n", pMag->GetName().c_str(), pMag->GetNumLoadedCartridges(), pMag->GetCapacity() );
@@ -549,7 +549,7 @@ void Firearm::Fire()
 	// ------------------ new fire ------------------
 
 	Matrix34 muzzle_end_world_pose( Matrix34Identity() );
-//	boost::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
+//	std::shared_ptr<CCopyEntity> pEntity = GetItemEntity().Get();
 	if( pEntity )
 		muzzle_end_world_pose = pEntity->GetWorldPose() * m_MuzzleEndLocalPose;
 	else

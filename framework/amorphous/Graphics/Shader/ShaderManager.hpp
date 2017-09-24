@@ -2,7 +2,7 @@
 #define __ShaderManager_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "ShaderTechniqueHandle.hpp"
 #include "ShaderParameter.hpp"
 #include "amorphous/Graphics/D3DHeaders.hpp"
@@ -201,7 +201,7 @@ public:
 
 //	void SetTextureParam()
 
-	virtual boost::shared_ptr<ShaderLightManager> GetShaderLightManager() { return boost::shared_ptr<ShaderLightManager>(); }
+	virtual std::shared_ptr<ShaderLightManager> GetShaderLightManager() { return std::shared_ptr<ShaderLightManager>(); }
 
 	friend class ShaderManagerHub;
 };

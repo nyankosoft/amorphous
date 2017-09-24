@@ -2,7 +2,7 @@
 #define __Item_LandVehicle_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/Item/GameItem.hpp"
 #include "amorphous/Stage/EntityMotionPathRequest.hpp"
 
@@ -43,11 +43,11 @@ class LandVehicle : public GameItem
 	// used for trace test
 	std::vector<CCopyEntity *> m_vecpEntityBuffer;
 
-	boost::shared_ptr<GameItem> m_pOwner;
+	std::shared_ptr<GameItem> m_pOwner;
 
 protected:
 
-	inline boost::shared_ptr<ItemEntity> GetVehicleEntity();
+	inline std::shared_ptr<ItemEntity> GetVehicleEntity();
 
 public:
 
@@ -65,7 +65,7 @@ public:
 
 	void Release() {}
 
-	void SetOwner( boost::shared_ptr<GameItem> pOwner ) { m_pOwner = pOwner; }
+	void SetOwner( std::shared_ptr<GameItem> pOwner ) { m_pOwner = pOwner; }
 };
 
 
@@ -82,23 +82,23 @@ public:
 class ArmedVehicle : public GameItem
 {
 	std::string m_RadarName;
-	boost::shared_ptr<Radar> m_pRadar;
+	std::shared_ptr<Radar> m_pRadar;
 
-//	std::vector< boost::shared_ptr<CWeapon> > m_vecpWeapon;
+//	std::vector< std::shared_ptr<CWeapon> > m_vecpWeapon;
 
 	std::string m_LandVehicleName;
-	boost::shared_ptr<item::LandVehicle> m_pLandVehicleItem;
+	std::shared_ptr<item::LandVehicle> m_pLandVehicleItem;
 
 	// current target
 	EntityHandle<> m_Target;
 
-//	std::vector< boost::shared_ptr<CRotatableTurret> > m_vecpTurret;
+//	std::vector< std::shared_ptr<CRotatableTurret> > m_vecpTurret;
 
 	class CTurretHolder : public IArchiveObjectBase
 	{
 	public:
 		std::string TurretName;
-		boost::shared_ptr<CRotatableTurret> pTurret;
+		std::shared_ptr<CRotatableTurret> pTurret;
 		Matrix34 LocalPose;
 		bool UseInvLocalTransformForMeshTransform;
 

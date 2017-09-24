@@ -4,7 +4,6 @@
 
 #include <sys/stat.h>
 #include <string>
-#include <boost/weak_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #include "fwd.hpp"
@@ -43,15 +42,15 @@ private:
 
 	int m_iRefCount;
 
-	boost::shared_ptr<GraphicsResource> m_pResource;
+	std::shared_ptr<GraphicsResource> m_pResource;
 
 	/// cache derived class pointers to avoid dynamic casting during runtime
-	boost::shared_ptr<TextureResource> m_pTextureResource;
-	boost::shared_ptr<MeshResource> m_pMeshResource;
-	boost::shared_ptr<ShaderResource> m_pShaderResource;
+	std::shared_ptr<TextureResource> m_pTextureResource;
+	std::shared_ptr<MeshResource> m_pMeshResource;
+	std::shared_ptr<ShaderResource> m_pShaderResource;
 
 	/// holds a copy of desc
-	boost::shared_ptr<GraphicsResourceDesc> m_pDesc;
+	std::shared_ptr<GraphicsResourceDesc> m_pDesc;
 
 public:
 
@@ -65,24 +64,24 @@ public:
 
 	State GetState() const { return m_State; }
 
-	boost::shared_ptr<GraphicsResource> GetResource() { return m_pResource; }
+	std::shared_ptr<GraphicsResource> GetResource() { return m_pResource; }
 
-	inline void SetResource( boost::shared_ptr<GraphicsResource> pResource );
+	inline void SetResource( std::shared_ptr<GraphicsResource> pResource );
 
-	boost::shared_ptr<TextureResource> GetTextureResource() { return m_pTextureResource; }
-	boost::shared_ptr<MeshResource> GetMeshResource() { return m_pMeshResource; }
-	boost::shared_ptr<ShaderResource> GetShaderResource() { return m_pShaderResource; }
+	std::shared_ptr<TextureResource> GetTextureResource() { return m_pTextureResource; }
+	std::shared_ptr<MeshResource> GetMeshResource() { return m_pMeshResource; }
+	std::shared_ptr<ShaderResource> GetShaderResource() { return m_pShaderResource; }
 
-	const boost::shared_ptr<TextureResource> GetTextureResource() const { return m_pTextureResource; }
-	const boost::shared_ptr<MeshResource> GetMeshResource() const { return m_pMeshResource; }
-	const boost::shared_ptr<ShaderResource> GetShaderResource() const { return m_pShaderResource; }
+	const std::shared_ptr<TextureResource> GetTextureResource() const { return m_pTextureResource; }
+	const std::shared_ptr<MeshResource> GetMeshResource() const { return m_pMeshResource; }
+	const std::shared_ptr<ShaderResource> GetShaderResource() const { return m_pShaderResource; }
 
 	void GetStatus( std::string& dest_buffer );
 
 	friend class GraphicsResourceManager;
 
-//	boost::shared_ptr<T> GetResource() { return m_pResource; }
-//	void SetResource( boost::shared_ptr<T> pResource ) { m_pResource = pResource; }
+//	std::shared_ptr<T> GetResource() { return m_pResource; }
+//	void SetResource( std::shared_ptr<T> pResource ) { m_pResource = pResource; }
 
 };
 
@@ -149,7 +148,7 @@ inline void GraphicsResourceEntry::DecRefCount()
 }
 
 
-inline void GraphicsResourceEntry::SetResource( boost::shared_ptr<GraphicsResource> pResource )
+inline void GraphicsResourceEntry::SetResource( std::shared_ptr<GraphicsResource> pResource )
 {
 	m_pResource = pResource;
 

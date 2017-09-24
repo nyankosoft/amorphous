@@ -35,19 +35,19 @@ public:
 */
 class ItemEntity : public CCopyEntity
 {
-	boost::shared_ptr<GameItem> m_pItem;
+	std::shared_ptr<GameItem> m_pItem;
 
 	U32 m_ItemEntityFlags;
 
 	/// Variables used by the item which has a skeletal mesh
 
 	/// Set to m_pMeshBonesUpdateCallback
-	boost::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
+	std::shared_ptr<BlendTransformsLoader> m_pBlendTransformsLoader;
 
 	/// Set to CCopyEntity::m_pGraphicsUpdate
-	boost::shared_ptr<CMeshBonesUpdateCallback> m_pMeshBonesUpdateCallback;
+	std::shared_ptr<CMeshBonesUpdateCallback> m_pMeshBonesUpdateCallback;
 
-	boost::shared_ptr< CGraphicsResourcesUpdateDelegate<ItemEntity> > m_pGraphicsUpdateDelegate;
+	std::shared_ptr< CGraphicsResourcesUpdateDelegate<ItemEntity> > m_pGraphicsUpdateDelegate;
 	
 private:
 
@@ -60,7 +60,7 @@ public:
 	/// A game item
 	/// - must be set via this ctor.
 	/// - cannot be changed later.
-	ItemEntity( boost::shared_ptr<GameItem> pItem );
+	ItemEntity( std::shared_ptr<GameItem> pItem );
 
 	virtual ~ItemEntity();
 
@@ -72,9 +72,9 @@ public:
 
 //	virtual void UpdatePhysics( float dt );
 
-	const boost::shared_ptr<GameItem> GetItem() const { return m_pItem; }
+	const std::shared_ptr<GameItem> GetItem() const { return m_pItem; }
 
-	boost::shared_ptr<GameItem> Item() { return m_pItem; }
+	std::shared_ptr<GameItem> Item() { return m_pItem; }
 
 	virtual void Draw();
 
@@ -97,7 +97,7 @@ public:
 
 	void RenderAs( CRenderContext& rc );
 
-	boost::shared_ptr<CMeshBonesUpdateCallback> MeshBonesUpdateCallback() { return m_pMeshBonesUpdateCallback; }
+	std::shared_ptr<CMeshBonesUpdateCallback> MeshBonesUpdateCallback() { return m_pMeshBonesUpdateCallback; }
 
 	enum ItemEntityFlags
 	{
@@ -110,57 +110,57 @@ public:
 
 class CItemStageUtility
 {
-	boost::shared_ptr<CStage> m_pStage;
+	std::shared_ptr<CStage> m_pStage;
 
 	BaseEntityHandle m_BaseEntityHandle;
 
 public:
 
-	CItemStageUtility( boost::shared_ptr<CStage> pStage )
+	CItemStageUtility( std::shared_ptr<CStage> pStage )
 		:
 	m_pStage(pStage)
 	{
 		m_BaseEntityHandle.SetBaseEntityName( "__ForItemEntity__" );
 	}
 
-	EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 												 BaseEntityHandle& attributes_base_entity_handle,
 		                                         physics::CActorDesc& actor_desc,
 												 bool create_physics_actor = false );
 
-	EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 												 BaseEntityHandle& attributes_base_entity_handle,
 		                                         const Matrix34& pose,
 		                                         const Vector3& vLinearVelocity  = Vector3(0,0,0),
 												 const Vector3& vAngularVelocity = Vector3(0,0,0) );
 
-	inline EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	inline EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 		                                                BaseEntityHandle& attributes_base_entity_handle,
 														const Vector3& vPosition );
 
 	/// \param heading heading angle [deg]
-	inline EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	inline EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 		                                                BaseEntityHandle& attributes_base_entity_handle,
 		                                                const Vector3& vPosition,
 														float heading );
 
 	/// Uses the default base entity for item entity
-	inline EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	inline EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 														const Vector3& vPosition );
 
 	/// Uses the default base entity for item entity
 	/// \param heading heading angle [deg]
-	inline EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	inline EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 		                                                const Vector3& vPosition,
 														float heading );
 
 	/// The created entity is registered to the physics scene of the stage
-	inline EntityHandle<ItemEntity> CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+	inline EntityHandle<ItemEntity> CreateItemEntity( std::shared_ptr<GameItem> pItem,
 		                                         physics::CActorDesc& actor_desc );
 };
 
 
-inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( std::shared_ptr<GameItem> pItem,
 																	   BaseEntityHandle& attributes_base_entity_handle,
 													                   const Vector3& vPosition )
 {
@@ -168,7 +168,7 @@ inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shar
 }
 
 
-inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( std::shared_ptr<GameItem> pItem,
 																	   BaseEntityHandle& attributes_base_entity_handle,
 													                   const Vector3& vPosition,
 													                   float heading )
@@ -177,21 +177,21 @@ inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shar
 }
 
 
-inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( std::shared_ptr<GameItem> pItem,
 													                   const Vector3& vPosition )
 {
 	return CreateItemEntity( pItem, m_BaseEntityHandle, Matrix34( vPosition, Matrix33Identity() ) );
 }
 
 
-inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( std::shared_ptr<GameItem> pItem,
 													                   const Vector3& vPosition,
 													                   float heading )
 {
 	return CreateItemEntity( pItem, m_BaseEntityHandle, Matrix34( vPosition, Matrix33RotationY(deg_to_rad(heading)) ) );
 }
 
-inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( boost::shared_ptr<GameItem> pItem,
+inline EntityHandle<ItemEntity> CItemStageUtility::CreateItemEntity( std::shared_ptr<GameItem> pItem,
 																	   physics::CActorDesc& actor_desc )
 {
 	return CreateItemEntity( pItem, m_BaseEntityHandle, actor_desc, true );

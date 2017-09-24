@@ -25,15 +25,15 @@ void SetCurrentThreadAsRenderThread()
 	sg_RenderThreadID = boost::this_thread::get_id();
 }
 
-static std::map< boost::thread::id, boost::shared_ptr<ResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
+static std::map< boost::thread::id, std::shared_ptr<ResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
 void CreateResourceLoadingStateHolderForCurrentThread()
 {
-	boost::shared_ptr<ResourceLoadingStateHolder> p( new ResourceLoadingStateHolder );
+	std::shared_ptr<ResourceLoadingStateHolder> p( new ResourceLoadingStateHolder );
 	sg_ThreadIDToLoadingStateHolder[boost::this_thread::get_id()] = p;
 }
 
 
-boost::shared_ptr<ResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
+std::shared_ptr<ResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
 {
 	std::map<thread::id, shared_ptr<ResourceLoadingStateHolder> >::iterator itr
 		= sg_ThreadIDToLoadingStateHolder.find( this_thread::get_id() );
@@ -48,7 +48,7 @@ boost::shared_ptr<ResourceLoadingStateHolder> GetResourceLoadingStateHolderForCu
 
 ResourceLoadingStateSet::Name GetGraphicsResourceLoadingState()
 {
-	boost::shared_ptr<ResourceLoadingStateHolder> pHolder
+	std::shared_ptr<ResourceLoadingStateHolder> pHolder
 		= GetResourceLoadingStateHolderForCurrentThread();
 
 	if( !pHolder )
@@ -143,7 +143,7 @@ size_t add_weak_ptr_to_vacant_slot( weak_ptr<T> ptr, vector< weak_ptr<T> >& vecP
 
 
 template<class T>
-inline int share_as_same_resource( const GraphicsResourceDesc& desc, const std::vector< boost::shared_ptr<T> >& vecPtr )
+inline int share_as_same_resource( const GraphicsResourceDesc& desc, const std::vector< std::shared_ptr<T> >& vecPtr )
 {
 	const  size_t num_resources = vecPtr.size();
 	for( size_t i=0; i<num_resources; i++ )
@@ -166,7 +166,7 @@ inline int share_as_same_resource( const GraphicsResourceDesc& desc, const std::
 }
 
 
-bool GraphicsResourceManager::ReleaseResourceEntry( boost::shared_ptr<GraphicsResourceEntry> ptr )
+bool GraphicsResourceManager::ReleaseResourceEntry( std::shared_ptr<GraphicsResourceEntry> ptr )
 {
 	if( ptr->GetResource() )
 		ptr->GetResource()->ReleaseNonChachedResource();
@@ -190,7 +190,7 @@ bool GraphicsResourceManager::ReleaseResourceEntry( boost::shared_ptr<GraphicsRe
 shared_ptr<GraphicsResourceLoader> GraphicsResourceManager::CreateResourceLoader( shared_ptr<GraphicsResourceEntry> pEntry,
 																				    const GraphicsResourceDesc& desc )
 {
-	boost::shared_ptr<GraphicsResourceLoader> pLoader;
+	std::shared_ptr<GraphicsResourceLoader> pLoader;
 	switch(desc.GetResourceType())
 	{
 	case GraphicsResourceType::Texture:

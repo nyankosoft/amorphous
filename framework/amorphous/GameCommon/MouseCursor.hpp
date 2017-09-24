@@ -17,7 +17,7 @@ class MouseCursor
 {
 	static singleton<MouseCursor> m_obj;
 
-	boost::shared_ptr<GraphicsElement> m_pCursor;
+	std::shared_ptr<GraphicsElement> m_pCursor;
 
 	bool m_bDisplay;
 

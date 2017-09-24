@@ -100,7 +100,7 @@ bool CASyncStageLoader::LoadStage( const std::string& script_name )
 {
 	m_StageScriptName = script_name;
 
-//	m_pLoader = boost::shared_ptr<boost::thread>( new boost::thread( *this ) );
+//	m_pLoader = std::shared_ptr<boost::thread>( new boost::thread( *this ) );
 //	m_pLoader = new boost::thread( *this );
 	m_pLoader = new boost::thread( CASyncStageLoaderThread(this) );
 

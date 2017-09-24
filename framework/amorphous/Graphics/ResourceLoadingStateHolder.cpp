@@ -10,7 +10,7 @@ namespace amorphous
 {
 
 using std::list;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 ResourceLoadingState::ResourceLoadingState()

@@ -79,7 +79,7 @@ public:
 	std::vector<CJointFixMod> m_vecFixMod;
 
 	/// output
-	boost::shared_ptr<MotionPrimitive> m_pMotionPrimitive;
+	std::shared_ptr<MotionPrimitive> m_pMotionPrimitive;
 
 public:
 
@@ -140,7 +140,7 @@ protected:
 
 	/// Borrowed reference set by MotionDatabaseBuilder and available to derived class
 	/// derived classes are responsible for storing created motion primitives to this variable
-	std::vector< boost::shared_ptr<MotionPrimitive> > *m_pvecpMotionPrimitive;
+	std::vector< std::shared_ptr<MotionPrimitive> > *m_pvecpMotionPrimitive;
 
 	std::vector<std::string> *m_vecpAnnotationName;
 
@@ -184,7 +184,7 @@ public:
 
 	virtual const char *Extension() const = 0;
 
-	virtual boost::shared_ptr<MotionDatabaseCompiler> Create() const = 0;
+	virtual std::shared_ptr<MotionDatabaseCompiler> Create() const = 0;
 };
 
 
@@ -252,7 +252,7 @@ protected:
 
 	/// stores motion primitives created from descs above
 //	std::vector<MotionPrimitive> m_vecMotionPrimitive;
-	std::vector< boost::shared_ptr<MotionPrimitive> > m_vecpMotionPrimitive;
+	std::vector< std::shared_ptr<MotionPrimitive> > m_vecpMotionPrimitive;
 
 	std::vector<std::string> m_vecAnnotationName;
 
@@ -299,8 +299,8 @@ protected:
 
 	void ProcessCreatedMotionPrimitive( MotionPrimitiveDesc& desc ); 
 
-	Result::Name MapMotionPrimitiveToAnotherSkeleton( boost::shared_ptr<MotionPrimitive>& pSrcMotion,
-													  boost::shared_ptr<Skeleton>& pDestSkeleton );
+	Result::Name MapMotionPrimitiveToAnotherSkeleton( std::shared_ptr<MotionPrimitive>& pSrcMotion,
+													  std::shared_ptr<Skeleton>& pDestSkeleton );
 
 	Result::Name MapMotionPrimitivesToAnotherSkeleton();
 
@@ -329,7 +329,7 @@ extern void AlignLastKeyframe( std::vector<Keyframe>& vecKeyframe );
 extern Matrix33 CalculateHorizontalOrientation( const Matrix34& pose );
 
 
-extern void RegisterMotionPrimitiveCompilerCreator( boost::shared_ptr<MotionPrimitiveCompilerCreator> pCreator );
+extern void RegisterMotionPrimitiveCompilerCreator( std::shared_ptr<MotionPrimitiveCompilerCreator> pCreator );
 
 
 } // namespace msynth

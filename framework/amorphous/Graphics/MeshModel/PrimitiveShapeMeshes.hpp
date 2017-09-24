@@ -243,7 +243,7 @@ extern Result::Name CreateConeMeshArchive( const ConeDesc& desc,         C3DMesh
 extern Result::Name CreateSphereMeshArchive( const SphereDesc& desc,     C3DMeshModelArchive& mesh_archive );
 extern Result::Name CreateCapsuleMeshArchive( const CapsuleDesc& desc,   C3DMeshModelArchive& mesh_archive );
 
-extern Result::Name CreateArchiveFromGeneral3DMesh( boost::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );
+extern Result::Name CreateArchiveFromGeneral3DMesh( std::shared_ptr<General3DMesh>& pSrcMesh, C3DMeshModelArchive& dest_mesh_archive );
 
 
 } // namespace amorphous

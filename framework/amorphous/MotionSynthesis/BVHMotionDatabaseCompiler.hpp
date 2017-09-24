@@ -36,9 +36,9 @@ public:
 
 	const char *Extension() const { return "bvh"; }
 
-	boost::shared_ptr<MotionDatabaseCompiler> Create() const
+	std::shared_ptr<MotionDatabaseCompiler> Create() const
 	{
-		boost::shared_ptr<BVHMotionDatabaseCompiler> pCompiler( new BVHMotionDatabaseCompiler );
+		std::shared_ptr<BVHMotionDatabaseCompiler> pCompiler( new BVHMotionDatabaseCompiler );
 		return pCompiler;
 	}
 };

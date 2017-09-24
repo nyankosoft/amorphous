@@ -16,17 +16,17 @@ bool (TextureHandle::*LoadTextureFromResourcePath)( const std::string& ) = &Text
 bool (MeshHandle::*LoadMeshFromResourcePath)( const std::string& ) = &MeshHandle::Load;
 bool (ShaderHandle::*LoadShaderFromResourcePath)( const std::string& ) = &ShaderHandle::Load;
 
-boost::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &GraphicsElementManager::CreateText;
-boost::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &GraphicsElementManager::CreateText;
+std::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextWithTLPos)( int, const std::string&, float, float, const SFloatRGBAColor&, int, int, int ) = &GraphicsElementManager::CreateText;
+std::shared_ptr<TextElement> (GraphicsElementManager::*CreateTextInBox)( int, const std::string&, const SRect&, int, int, const SFloatRGBAColor&, int, int, int ) = &GraphicsElementManager::CreateText;
 bool (GraphicsElementManager::*LoadTextureWithID)( int, const std::string& ) = &GraphicsElementManager::LoadTexture;
 int (GraphicsElementManager::*LoadTextureWithoutID)( const std::string& ) = &GraphicsElementManager::LoadTexture;
 bool (GraphicsElementManager::*LoadFontWithID)( int, const std::string&, int, int, float, float, float ) = &GraphicsElementManager::LoadFont;
 int (GraphicsElementManager::*LoadFontWithoutID)( const std::string&, int, int, float, float, float ) = &GraphicsElementManager::LoadFont;
 
-GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColor_RGBA)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) = &GraphicsElementAnimationManager::ChangeColor;
-GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColor_RGB)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode )    = &GraphicsElementAnimationManager::ChangeColor;
-GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColorTo_RGBA)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) = &GraphicsElementAnimationManager::ChangeColorTo;
-GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColorTo_RGB)( boost::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode )   = &GraphicsElementAnimationManager::ChangeColorTo;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColor_RGBA)( std::shared_ptr<GraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBAColor& start_color, const SFloatRGBAColor& end_color, int trans_mode ) = &GraphicsElementAnimationManager::ChangeColor;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColor_RGB)( std::shared_ptr<GraphicsElement> pTargetElement, double start_time,  double end_time, int color_index, const SFloatRGBColor& start_color, const SFloatRGBColor& end_color, int trans_mode )    = &GraphicsElementAnimationManager::ChangeColor;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColorTo_RGBA)( std::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBAColor& end_color, int trans_mode ) = &GraphicsElementAnimationManager::ChangeColorTo;
+GraphicsElementAnimationHandle (GraphicsElementAnimationManager::*ChangeColorTo_RGB)( std::shared_ptr<GraphicsElement> pTargetElement, double start_time, double end_time, int color_index, const SFloatRGBColor& end_color, int trans_mode )   = &GraphicsElementAnimationManager::ChangeColorTo;
 
 //BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(gem_member_overloads, CreateText, 1, 3)
 
@@ -110,7 +110,7 @@ BOOST_PYTHON_MODULE(gfx)
 		.def( "SetTechniqueName", &ShaderTechniqueHandle::SetTechniqueName, ( python::arg("name") ) )
 	;
 
-//	class_< GraphicsElementWrap, boost::shared_ptr<GraphicsElement> >( "GraphicsElement" )
+//	class_< GraphicsElementWrap, std::shared_ptr<GraphicsElement> >( "GraphicsElement" )
 //	class_< GraphicsElementWrap, boost::noncopyable >( "GraphicsElement" )
 //		.def( "GetElementType",  pure_virtual(&GraphicsElement::GetElementType) )
 //		.def( "GetColor",       &GraphicsElement::GetColor )
@@ -119,28 +119,28 @@ BOOST_PYTHON_MODULE(gfx)
 //		.def( "SetAlpha",       &GraphicsElement::SetAlpha )
 	;
 
-	class_< CombinedRectElement, boost::shared_ptr<CombinedRectElement> >("CombinedRectElement")
+	class_< CombinedRectElement, std::shared_ptr<CombinedRectElement> >("CombinedRectElement")
 		.def( "FillRectElement",  &CombinedRectElement::FillRectElement )
 		.def( "FrameRectElement", &CombinedRectElement::FrameRectElement )
 	;
 
-	class_< CombinedRoundRectElement, boost::shared_ptr<CombinedRoundRectElement> >("CombinedRoundRectElement")
+	class_< CombinedRoundRectElement, std::shared_ptr<CombinedRoundRectElement> >("CombinedRoundRectElement")
 		.def( "RoundFillRectElement",  &CombinedRoundRectElement::RoundFillRectElement )
 		.def( "RoundFrameRectElement", &CombinedRoundRectElement::RoundFrameRectElement )
 	;
 
-	class_< CombinedTriangleElement, boost::shared_ptr<CombinedTriangleElement> >("CombinedTriangleElement")
+	class_< CombinedTriangleElement, std::shared_ptr<CombinedTriangleElement> >("CombinedTriangleElement")
 		.def( "FillTriangleElement",  &CombinedTriangleElement::FillTriangleElement )
 		.def( "FrameTriangleElement", &CombinedTriangleElement::FrameTriangleElement )
 	;
 
-	class_< TextElement, boost::shared_ptr<TextElement> >("TextElement")
+	class_< TextElement, std::shared_ptr<TextElement> >("TextElement")
 		.def( "GetText",   &TextElement::GetTextCopy )
 		.def( "SetText",   &TextElement::SetText )
 		.def( "SetFontID", &TextElement::SetFontID )
 	;
 
-	class_< GraphicsElementManager, boost::shared_ptr<GraphicsElementManager> >("GraphicsElementManager")
+	class_< GraphicsElementManager, std::shared_ptr<GraphicsElementManager> >("GraphicsElementManager")
 //	class_< GraphicsElementManager >("GraphicsElementManager")
 		.def( "CreateRect",             &GraphicsElementManager::CreateRect,      ( python::arg("rect"), python::arg("fill_color_0"), python::arg("frame_color_0"), python::arg("frame_width")=4, python::arg("layer") = 0 ) )
 		.def( "CreateFillRect",         &GraphicsElementManager::CreateFillRect,  ( python::arg("rect"), python::arg("fill_color_0"), python::arg("layer") = 0 ) )
@@ -184,7 +184,7 @@ BOOST_PYTHON_MODULE(gfx)
 
 //	def( "GetGraphicsEffectManager", GetGraphicsEffectManager );
 
-	class_< GraphicsElementAnimationManager, boost::shared_ptr<GraphicsElementAnimationManager> >("GraphicsEffectManager")
+	class_< GraphicsElementAnimationManager, std::shared_ptr<GraphicsElementAnimationManager> >("GraphicsEffectManager")
 		.def( "ChangeAlpha",           &GraphicsElementAnimationManager::ChangeAlpha,           (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_alpha"), py::arg("end_alpha"), py::arg("trans_mode") ) )
 		.def( "ChangeAlphaTo",         &GraphicsElementAnimationManager::ChangeAlphaTo,         (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("end_alpha"), py::arg("trans_mode") ) )
 		.def( "ChangeColor",           ChangeColor_RGBA,                                 (  py::arg("target"), py::arg("start_time"), py::arg("end_time"), py::arg("color_index"), py::arg("start_color"), py::arg("end_color"), py::arg("trans_mode") ) )
@@ -195,7 +195,7 @@ BOOST_PYTHON_MODULE(gfx)
 		.def( "BlinkAlpha",            &GraphicsElementAnimationManager::BlinkAlpha,            (  py::arg("target"), py::arg("interval"), py::arg("color_index") ) )
 		.def( "ChangeAlphaInSineWave", &GraphicsElementAnimationManager::ChangeAlphaInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("alpha0"), py::arg("alpha1"), py::arg("num_periods") ) )
 		.def( "ChangeColorInSineWave", &GraphicsElementAnimationManager::ChangeColorInSineWave, (  py::arg("target"), py::arg("start_time"), py::arg("period"), py::arg("color_index"), py::arg("color0"), py::arg("color1"), py::arg("num_periods") ) )
-/*		.def( "DrawText",              &GraphicsElementAnimationManager::DrawText,              (  boost::shared_ptr<TextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) )
+/*		.def( "DrawText",              &GraphicsElementAnimationManager::DrawText,              (  std::shared_ptr<TextElement> pTargetTextElement, double start_time, int num_chars_per_sec ) )
 		.def( "CancelEffect",          &GraphicsElementAnimationManager::CancelEffect,          (  py::arg("effect_handle") ) )
 */
 	;
@@ -209,24 +209,24 @@ BOOST_PYTHON_MODULE(gfx)
 	;
 */
 
-	class_< LensFlare, boost::shared_ptr<LensFlare> >("LensFlare")
+	class_< LensFlare, std::shared_ptr<LensFlare> >("LensFlare")
 		.def( "AddTexture",            &LensFlare::AddTexture,                          (  py::arg("texture_path"), py::arg("group_index") = 0, py::arg("num_segs_x") = 1, py::arg("num_segs_y") = 1 ) )
 		.def( "AddLensFlareRect",      &LensFlare::AddLensFlareRect,                    (  py::arg("dim"), py::arg("scale_factor") = 1, py::arg("dist_factor") = 1, py::arg("color") = SFloatRGBAColor::White(), py::arg("group_index") = 0, py::arg("tex_seg_index_x") = 0, py::arg("tex_seg_index_y") = 0 ) )
 	;
 
-	class_< ShaderVariableLoader<float>, boost::shared_ptr< ShaderVariableLoader<float> > >("ShaderFloatLoader")
+	class_< ShaderVariableLoader<float>, std::shared_ptr< ShaderVariableLoader<float> > >("ShaderFloatLoader")
 		.def( init< const char *, float >() )
 		.def( init< ShaderParameter<float> >() )
 		.def( "UpdateShaderParams",   &ShaderVariableLoader<float>::UpdateShaderParams ) // compile test
 	;
 
-	class_< ShaderVariableLoader<Vector3>, boost::shared_ptr< ShaderVariableLoader<Vector3> > >("ShaderVec3Loader")
+	class_< ShaderVariableLoader<Vector3>, std::shared_ptr< ShaderVariableLoader<Vector3> > >("ShaderVec3Loader")
 //		.def( init< const char *, Vector3 >() ) // (A) Either (A) or (B) compiles. (B) conforms to the original argument types.
 		.def( init< const char *, const Vector3& >() ) // (B)
 		.def( init< ShaderParameter<Vector3> >() )
 	;
 /*
-	class_< ShaderVariableLoader<SFloatRGBAColor>, boost::shared_ptr< ShaderVariableLoader<SFloatRGBAColor> > >("ShaderColorLoader")
+	class_< ShaderVariableLoader<SFloatRGBAColor>, std::shared_ptr< ShaderVariableLoader<SFloatRGBAColor> > >("ShaderColorLoader")
 		.def( init< ShaderParameter<SFloatRGBAColor> >() )
 	;*/
 }

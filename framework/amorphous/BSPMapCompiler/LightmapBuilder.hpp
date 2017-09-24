@@ -112,7 +112,7 @@ public:
 	/// controls whether lightmaps are created for a surface or not
 	std::vector<int> m_vecEnableLightmapForSurface;
 
-	std::vector< boost::shared_ptr<Light> > *m_pvecpLight;
+	std::vector< std::shared_ptr<Light> > *m_pvecpLight;
 
 	/// texture coordinates index for lightmap texture
 	/// - valid range: [0,3]

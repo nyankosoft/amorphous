@@ -69,7 +69,7 @@ bool GameItem::LoadMeshObject()
 
 void GameItem::Render()
 {
-	boost::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
+	std::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
 
 	m_MeshContainerRootNode.UpdateWorldTransforms( pItemEntity ? pItemEntity->GetWorldPose() : Matrix34Identity() );
 	m_MeshContainerRootNode.Render();
@@ -105,7 +105,7 @@ void GameItem::LoadFromXMLNode( XMLNode& reader )
 		{
 			// simplified version: a single mesh file without local offset
 			m_MeshContainerRootNode.ClearMeshContainers();
-			boost::shared_ptr<MeshObjectContainer> pContainer( new MeshObjectContainer );
+			std::shared_ptr<MeshObjectContainer> pContainer( new MeshObjectContainer );
 			m_MeshContainerRootNode.AddMeshContainer(pContainer);
 			m_MeshContainerRootNode.MeshContainer(0)->LoadFromXMLNode( model_node );
 		}
@@ -131,7 +131,7 @@ void GameItem::SetGraphicsUpdateCallbackForSkeletalMesh()
 	if( pBasicMesh->GetMeshType() != MeshType::SKELETAL )
 		return;
 
-	boost::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
+	std::shared_ptr<ItemEntity> pItemEntity = GetItemEntity().Get();
 	if( !pItemEntity )
 		return;
 

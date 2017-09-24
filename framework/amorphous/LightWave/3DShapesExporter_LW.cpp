@@ -11,7 +11,7 @@ using namespace boost;
 
 
 /// each i-th element of output_filepaths corresponds to the i-th mesh group
-bool C3DShapesExporter_LW::ExtractShapes( boost::shared_ptr<LWO2_Object> pObject, const std::vector<std::string>& output_filepaths )
+bool C3DShapesExporter_LW::ExtractShapes( std::shared_ptr<LWO2_Object> pObject, const std::vector<std::string>& output_filepaths )
 {
 	if( output_filepaths.empty() )
 		return false;
@@ -89,7 +89,7 @@ bool C3DShapesExporter_LW::ExtractShapes( boost::shared_ptr<LWO2_Object> pObject
 }
 
 
-bool C3DShapesExporter_LW::ExtractShapes( boost::shared_ptr<LWO2_Object> pObject, const std::string& output_filepath )
+bool C3DShapesExporter_LW::ExtractShapes( std::shared_ptr<LWO2_Object> pObject, const std::string& output_filepath )
 {
 	std::vector<std::string> output_filepaths;
 	output_filepaths.push_back( output_filepath );

@@ -38,9 +38,9 @@ protected:
 
 	float m_fProjectionMatrixOffset;
 
-	boost::weak_ptr<CClothSystem> m_pClothSystem;
+	std::weak_ptr<CClothSystem> m_pClothSystem;
 
-	boost::shared_ptr<CustomMesh> m_pClothMesh;
+	std::shared_ptr<CustomMesh> m_pClothMesh;
 
 public:
 

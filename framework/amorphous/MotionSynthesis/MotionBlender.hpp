@@ -2,7 +2,6 @@
 #define  __MotionBlender_H__
 
 
-#include <boost/weak_ptr.hpp>
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/MathMisc.hpp"
 #include "MotionPrimitive.hpp"
@@ -97,7 +96,7 @@ class SteeringMotionBlender : public MotionBlender
 	/// rad per sec
 	float m_fSteeringSpeed;
 
-	boost::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitiveBlender;
+	std::shared_ptr<MotionPrimitiveBlender> m_pMotionPrimitiveBlender;
 
 public:
 
@@ -106,7 +105,7 @@ public:
 public:
 
 //	SteeringMotionBlender() : m_fSteeringSpeed(0.1f), m_vDestDir(Vector3(0,0,1)) {}
-	SteeringMotionBlender( boost::shared_ptr<MotionPrimitiveBlender> pMotionPrimitiveBlender )
+	SteeringMotionBlender( std::shared_ptr<MotionPrimitiveBlender> pMotionPrimitiveBlender )
 		:
 	m_pMotionPrimitiveBlender(pMotionPrimitiveBlender),
 	m_fSteeringSpeed(0.0f),

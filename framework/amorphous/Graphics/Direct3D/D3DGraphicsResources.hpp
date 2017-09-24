@@ -20,7 +20,7 @@ class CD3DTextureResource : public TextureResource
 	D3DTEXTUREADDRESS m_TextureAddressU;
 	D3DTEXTUREADDRESS m_TextureAddressV;
 
-//	boost::shared_ptr<LockedTexture> m_pLockedTexture;
+//	std::shared_ptr<LockedTexture> m_pLockedTexture;
 
 protected:
 
@@ -143,7 +143,7 @@ public:
 
 class MeshResource : public GraphicsResource
 {
-	boost::shared_ptr<CD3DXMeshObjectBase> m_pMeshObject;
+	std::shared_ptr<CD3DXMeshObjectBase> m_pMeshObject;
 
 	MeshResourceDesc m_MeshDesc;
 
@@ -177,9 +177,9 @@ public:
 
 	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
 
-	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMesh();
+	inline std::shared_ptr<CD3DXMeshObjectBase> GetMesh();
 
-	inline boost::shared_ptr<CD3DXMeshObjectBase> GetMeshInLoading();
+	inline std::shared_ptr<CD3DXMeshObjectBase> GetMeshInLoading();
 
 	MeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
 

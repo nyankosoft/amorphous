@@ -94,7 +94,7 @@ Result::Name RenderTargetTextureCache::AddTexture( int width, int height, Textur
 }
 
 
-boost::shared_ptr<RenderTargetTextureHolder> RenderTargetTextureCache::GetTexture( const TextureResourceDesc& desc )
+std::shared_ptr<RenderTargetTextureHolder> RenderTargetTextureCache::GetTexture( const TextureResourceDesc& desc )
 {
 	size_t i=0;
 	for( i=0; i<m_vecpHolder.size(); i++ )
@@ -110,7 +110,7 @@ boost::shared_ptr<RenderTargetTextureHolder> RenderTargetTextureCache::GetTextur
 		}
 	}
 
-	return boost::shared_ptr<RenderTargetTextureHolder>();
+	return std::shared_ptr<RenderTargetTextureHolder>();
 }
 
 
@@ -122,7 +122,7 @@ boost::shared_ptr<RenderTargetTextureHolder> RenderTargetTextureCache::GetTextur
 int PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame = 0;
 
 
-//bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<RenderTargetTextureHolder>& pDest )
+//bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_filter, std::shared_ptr<RenderTargetTextureHolder>& pDest )
 bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_filter )
 {
 /*	int width  = prev_filter.m_pDest->m_Desc.Width;
@@ -152,7 +152,7 @@ bool PostProcessEffectFilter::GetRenderTarget( PostProcessEffectFilter& prev_fil
 
 
 /// default implementation - use the current texture desc to specify the render target
-//Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter, boost::shared_ptr<RenderTargetTextureHolder>& pDest )
+//Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter, std::shared_ptr<RenderTargetTextureHolder>& pDest )
 Result::Name PostProcessEffectFilter::SetRenderTarget( PostProcessEffectFilter& prev_filter )
 {
 //	HRESULT hr = S_OK;

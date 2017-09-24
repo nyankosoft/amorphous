@@ -29,7 +29,7 @@ public:
 
 // Static member variables
 
-boost::shared_ptr<MouseInputDevice> GameTask::ms_pMouse;
+std::shared_ptr<MouseInputDevice> GameTask::ms_pMouse;
 
 GraphicsElementAnimationManager *GameTask::ms_pAnimatedGraphicsManager = NULL;
 

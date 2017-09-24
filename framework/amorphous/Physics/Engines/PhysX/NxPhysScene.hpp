@@ -5,7 +5,7 @@
 #include "NxPhysics.h"
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/Physics/Scene.hpp"
 #include "fwd.hpp"
 #include "NxMathConv.hpp"
@@ -69,7 +69,7 @@ class CNxPhysScene : public CScene
 
 	CNxPhysicsUserContactReport m_NxUserContactReport;
 
-	std::vector< boost::shared_ptr<CNxPhysMaterial> > m_vecpNxPhysMaterial;
+	std::vector< std::shared_ptr<CNxPhysMaterial> > m_vecpNxPhysMaterial;
 
 public:
 

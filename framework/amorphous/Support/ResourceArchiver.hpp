@@ -48,7 +48,7 @@ public:
 	/// Return any error code to indicate that the file has NOT been added to the db 
 	virtual Result::Name AddFileToDB( const std::string& keyname, const boost::filesystem::path& input_path, CBinaryDatabase<std::string>& db ) { return Result::SUCCESS; }
 
-//	virtual Result::Name CreateArchive( const std::string& input_filepath, boost::shared_ptr<IArchiveObjectBase>& pArchive ) { return Result::SUCCESS; }
+//	virtual Result::Name CreateArchive( const std::string& input_filepath, std::shared_ptr<IArchiveObjectBase>& pArchive ) { return Result::SUCCESS; }
 	virtual Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath, CResourceArchiverUnitOutput& out ) { return Result::SUCCESS; }
 };
 
@@ -97,7 +97,7 @@ public:
 //	}
 
 	Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath, CResourceArchiverUnitOutput& out )
-//	Result::Name CreateArchive( const std::string& input_filepath, boost::shared_ptr<IArchiveObjectBase>& pArchive )
+//	Result::Name CreateArchive( const std::string& input_filepath, std::shared_ptr<IArchiveObjectBase>& pArchive )
 	{
 		using namespace std;
 
@@ -110,7 +110,7 @@ public:
 
 		bool saved = img_archive.SaveToFile( output_filepath );
 
-//		boost::shared_ptr<ImageArchive> pImgArchive( new ImageArchive( input_filepath ) );
+//		std::shared_ptr<ImageArchive> pImgArchive( new ImageArchive( input_filepath ) );
 //		pArchive = pImgArchive;
 
 		return saved ? Result::SUCCESS : Result::UNKNOWN_ERROR;
@@ -340,7 +340,7 @@ public:
 
 //	std::string m_OutputFilepath;
 
-	std::vector< boost::shared_ptr<CResourceArchiverUnit> > m_vecpArchiverUnit;
+	std::vector< std::shared_ptr<CResourceArchiverUnit> > m_vecpArchiverUnit;
 
 	CFilepathAndTimestamp m_LastBuildInfo;
 
@@ -350,10 +350,10 @@ public:
 
 	inline Result::Name CreateDBs( const std::string& filepath );
 
-	void AddArchiverUnit( boost::shared_ptr<CResourceArchiverUnit> pUnit ) { m_vecpArchiverUnit.push_back( pUnit ); }
+	void AddArchiverUnit( std::shared_ptr<CResourceArchiverUnit> pUnit ) { m_vecpArchiverUnit.push_back( pUnit ); }
 
 	/// Client does not have to release the memory
-	void AddArchiverUnit( CResourceArchiverUnit *pUnit ) { m_vecpArchiverUnit.push_back( boost::shared_ptr<CResourceArchiverUnit>( pUnit ) ); }
+	void AddArchiverUnit( CResourceArchiverUnit *pUnit ) { m_vecpArchiverUnit.push_back( std::shared_ptr<CResourceArchiverUnit>( pUnit ) ); }
 
 	Result::Name LoadCompileInfo( const std::string& desc_filepath, CResourceBuildInfo& build_info );
 

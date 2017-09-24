@@ -22,7 +22,7 @@ namespace amorphous
 {
 
 using std::string;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 class CParticleThreadStarter

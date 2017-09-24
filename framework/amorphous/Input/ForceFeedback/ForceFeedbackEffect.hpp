@@ -2,7 +2,7 @@
 #define __ForceFeedbackEffect_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "../../base.hpp"
 #include "fwd.hpp"
 #include "ForceFeedbackTargetDevice.hpp"
@@ -50,7 +50,7 @@ public:
 
 	inline CForceFeedbackEffectDesc();
 
-	virtual boost::shared_ptr<CForceFeedbackEffectDesc> CreateCopy() const = 0;
+	virtual std::shared_ptr<CForceFeedbackEffectDesc> CreateCopy() const = 0;
 
 	virtual void Accept( CForceFeedbackEffectDescVisitor& visitor ) {}
 };
@@ -69,7 +69,7 @@ public:
 	magnitude(0)
 	{}
 
-	boost::shared_ptr<CForceFeedbackEffectDesc> CreateCopy() const { return boost::shared_ptr<CForceFeedbackEffectDesc>( new CConstantForceFeedbackEffectDesc(*this) ); }
+	std::shared_ptr<CForceFeedbackEffectDesc> CreateCopy() const { return std::shared_ptr<CForceFeedbackEffectDesc>( new CConstantForceFeedbackEffectDesc(*this) ); }
 
 	void Accept( CForceFeedbackEffectDescVisitor& visitor ) { visitor.Visit( *this ); }
 };
@@ -89,7 +89,7 @@ public:
 	end(0)
 	{}
 
-	boost::shared_ptr<CForceFeedbackEffectDesc> CreateCopy() const { return boost::shared_ptr<CForceFeedbackEffectDesc>( new CRampForceFeedbackEffectDesc(*this) ); }
+	std::shared_ptr<CForceFeedbackEffectDesc> CreateCopy() const { return std::shared_ptr<CForceFeedbackEffectDesc>( new CRampForceFeedbackEffectDesc(*this) ); }
 
 	void Accept( CForceFeedbackEffectDescVisitor& visitor ) { visitor.Visit( *this ); }
 };
@@ -119,7 +119,7 @@ public:
 
 class CForceFeedbackEffect
 {
-	boost::shared_ptr<CForceFeedbackEffectImpl> m_pImpl;
+	std::shared_ptr<CForceFeedbackEffectImpl> m_pImpl;
 
 public:
 

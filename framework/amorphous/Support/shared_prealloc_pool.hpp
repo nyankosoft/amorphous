@@ -3,7 +3,7 @@
 
 
 #include "prealloc_pool.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 namespace amorphous
@@ -18,7 +18,7 @@ class shared_prealloc_pool
 {
 protected:
 
-	typedef boost::shared_ptr<CElementType> ElementPointer;
+	typedef std::shared_ptr<CElementType> ElementPointer;
 
 	std::vector<int> m_VacantSlot;
 
@@ -68,7 +68,7 @@ public:
 		{
 			m_VacantSlot[i] = i;
 
-			m_vecpStock[i] = boost::shared_ptr<CElementType>( new CElementType() );
+			m_vecpStock[i] = std::shared_ptr<CElementType>( new CElementType() );
 			m_vecpStock[i]->SetStockIndex( i );
 			m_vecpStock[i]->SetStockID( -1 );
 		}
@@ -129,7 +129,7 @@ public:
 
 	/// Use this if the pointer was upcasted and has lost type information
 	template<class T>
-	void release( boost::shared_ptr<T> pObject )
+	void release( std::shared_ptr<T> pObject )
 	{
 		m_VacantSlotPos++;
 		m_VacantSlot[ m_VacantSlotPos ] = pObject->GetStockIndex();

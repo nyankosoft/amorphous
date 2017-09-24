@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/3DMath/Matrix34.hpp"
 
 
@@ -99,7 +99,7 @@ protected:
 
 	float m_afPivotRotationAngle[3];
 
-//	boost::shared_ptr<LWS_Item> m_pParent;
+//	std::shared_ptr<LWS_Item> m_pParent;
 	LWS_Item *m_pParent;
 
 protected:
@@ -258,9 +258,9 @@ class LWS_Bone : public LWS_Item
 
 	std::string m_strBoneWeightMapName;
 
-	std::vector< boost::shared_ptr<LWS_Bone> > m_vecpChildBone;
+	std::vector< std::shared_ptr<LWS_Bone> > m_vecpChildBone;
 
-	boost::shared_ptr<LWS_Bone> m_pParentBone;
+	std::shared_ptr<LWS_Bone> m_pParentBone;
 
 public:
 
@@ -272,9 +272,9 @@ public:
 
 	const std::string& GetBoneName() const { return m_strBoneName; }
 
-	std::vector< boost::shared_ptr<LWS_Bone> >& ChildBone() { return m_vecpChildBone; }
+	std::vector< std::shared_ptr<LWS_Bone> >& ChildBone() { return m_vecpChildBone; }
 
-	boost::shared_ptr<LWS_Bone> GetParentBone() { return m_pParentBone; }
+	std::shared_ptr<LWS_Bone> GetParentBone() { return m_pParentBone; }
 
 	float GetBoneRestLength() const { return m_fBoneRestLength; }
 

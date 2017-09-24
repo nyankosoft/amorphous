@@ -465,7 +465,7 @@ void CHLSLShaderManager::SetBool( const char *parameter_name, bool bool_param )
 }
 
 
-boost::shared_ptr<ShaderLightManager> CHLSLShaderManager::GetShaderLightManager()
+std::shared_ptr<ShaderLightManager> CHLSLShaderManager::GetShaderLightManager()
 {
 	return m_pHLSLShaderLightManager;
 }

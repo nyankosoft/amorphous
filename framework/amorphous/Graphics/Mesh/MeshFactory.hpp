@@ -24,9 +24,9 @@ public:
 };
 
 
-inline boost::shared_ptr<MeshImplFactory>& GetMeshImplFactory()
+inline std::shared_ptr<MeshImplFactory>& GetMeshImplFactory()
 {
-	static boost::shared_ptr<MeshImplFactory> s_pMeshFactory;
+	static std::shared_ptr<MeshImplFactory> s_pMeshFactory;
 	return s_pMeshFactory;
 }
 
@@ -37,24 +37,24 @@ class MeshFactory
 
 public:
 
-//	virtual boost::shared_ptr<BasicMesh> CreateBasicMeshImpl() = 0;
-//	virtual boost::shared_ptr<ProgressiveMesh> CreateProgressiveMeshImpl() = 0;
-//	virtual boost::shared_ptr<SkeletalMesh> CreateSkeletalMeshImpl() = 0;
-/*	virtual boost::shared_ptr<MeshImpl> CreateBasicMeshImpl() = 0;
-	virtual boost::shared_ptr<MeshImpl> CreateProgressiveMeshImpl() = 0;
-	virtual boost::shared_ptr<MeshImpl> CreateSkeletalMeshImpl() = 0;
+//	virtual std::shared_ptr<BasicMesh> CreateBasicMeshImpl() = 0;
+//	virtual std::shared_ptr<ProgressiveMesh> CreateProgressiveMeshImpl() = 0;
+//	virtual std::shared_ptr<SkeletalMesh> CreateSkeletalMeshImpl() = 0;
+/*	virtual std::shared_ptr<MeshImpl> CreateBasicMeshImpl() = 0;
+	virtual std::shared_ptr<MeshImpl> CreateProgressiveMeshImpl() = 0;
+	virtual std::shared_ptr<MeshImpl> CreateSkeletalMeshImpl() = 0;
 */
 	BasicMesh *CreateMeshInstance( MeshType::Name mesh_type = MeshType::SKELETAL );
 
-	boost::shared_ptr<BasicMesh> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );
+	std::shared_ptr<BasicMesh> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );
 
 	BasicMesh *CreateBasicMeshInstance();
 	ProgressiveMesh *CreateProgressiveMeshInstance();
 	SkeletalMesh *CreateSkeletalMeshInstance();
 
-	boost::shared_ptr<BasicMesh> CreateBasicMesh();
-	boost::shared_ptr<ProgressiveMesh> CreateProgressiveMesh();
-	boost::shared_ptr<SkeletalMesh> CreateSkeletalMesh();
+	std::shared_ptr<BasicMesh> CreateBasicMesh();
+	std::shared_ptr<ProgressiveMesh> CreateProgressiveMesh();
+	std::shared_ptr<SkeletalMesh> CreateSkeletalMesh();
 
 	BasicMesh* LoadMeshObjectFromFile( const std::string& filepath,
 		                                U32 load_option_flags = 0,

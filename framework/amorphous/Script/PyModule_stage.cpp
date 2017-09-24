@@ -120,7 +120,7 @@ BOOST_PYTHON_MODULE(stage)
 
 /*
 	// error C2248: 'CStage::CStage' : cannot access private member declared in class 'CStage'
-	class_< CStage, boost::shared_ptr<CStage> >("Stage")
+	class_< CStage, std::shared_ptr<CStage> >("Stage")
 //		.def( "GetEntityByName",          &CStage::GetEntityByName )
 		.def( "GetScreenEffectManager",   &CStage::GetScreenEffectManager )
 	;*/

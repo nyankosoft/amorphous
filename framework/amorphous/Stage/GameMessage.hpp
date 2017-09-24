@@ -76,7 +76,7 @@ struct GameMessage
 /// \param target [in] recipient of the message
 inline void SendGameMessageTo(GameMessage& rGameMessage, EntityHandle<> target )
 {
-	boost::shared_ptr<CCopyEntity> pEntity = target.Get();
+	std::shared_ptr<CCopyEntity> pEntity = target.Get();
 
 	if( pEntity )
 		pEntity->GetBaseEntity()->MessageProcedure( rGameMessage, pEntity.get() );

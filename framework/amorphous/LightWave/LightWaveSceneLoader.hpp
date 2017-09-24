@@ -38,13 +38,13 @@ public:
 
 class LightWaveSceneLoader
 {
-	std::vector< boost::shared_ptr<LWS_ObjectLayer> > m_vecObjectLayer;
+	std::vector< std::shared_ptr<LWS_ObjectLayer> > m_vecObjectLayer;
 
-	std::vector< boost::shared_ptr<LWS_Light> > m_vecLight;
+	std::vector< std::shared_ptr<LWS_Light> > m_vecLight;
 
-	std::vector< boost::shared_ptr<LWS_Bone> > m_vecpBone;
+	std::vector< std::shared_ptr<LWS_Bone> > m_vecpBone;
 
-//	std::vector< boost::shared_ptr<LWS_Camera> > m_vecpCamera;
+//	std::vector< std::shared_ptr<LWS_Camera> > m_vecpCamera;
 
 	// borrowed reference
 	std::vector<LWS_Item *> m_vecpItem;
@@ -78,25 +78,25 @@ public:
 
 	int GetNumObjectLayers() { return (int)m_vecObjectLayer.size(); }
 
-//	boost::shared_ptr<LWS_ObjectLayer> GetObjectLayer(int i);
+//	std::shared_ptr<LWS_ObjectLayer> GetObjectLayer(int i);
 	LWS_ObjectLayer* GetObjectLayer(int i);
 
 	// lights
 
 	int GetNumLights() const { return (int)m_vecLight.size(); }
 
-//	boost::shared_ptr<LWS_Light> GetLight(int i);
+//	std::shared_ptr<LWS_Light> GetLight(int i);
 	LWS_Light* GetLight(int i);
 
 	// bones
 
 	int GetNumBones() const { return (int)m_vecpBone.size(); }
 
-	boost::shared_ptr<LWS_Bone> GetBone(int i);
+	std::shared_ptr<LWS_Bone> GetBone(int i);
 
-	const std::vector< boost::shared_ptr<LWS_Bone> >& Bones() const{ return m_vecpBone; }
+	const std::vector< std::shared_ptr<LWS_Bone> >& Bones() const{ return m_vecpBone; }
 
-	std::vector< boost::shared_ptr<LWS_Bone> > GetRootBones();
+	std::vector< std::shared_ptr<LWS_Bone> > GetRootBones();
 
 	inline LWS_Item *GetItemByID( int item_id );
 

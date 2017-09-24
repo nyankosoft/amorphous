@@ -48,7 +48,7 @@ class ImageSplitter
 	int m_NumSplitsX;
 	int m_NumSplitsY;
 
-	boost::shared_ptr<BitmapImage> m_pBitmapImage;
+	std::shared_ptr<BitmapImage> m_pBitmapImage;
 
 	std::string m_BaseDestFilepath;
 
@@ -82,7 +82,7 @@ public:
 		int num_splits_x,
 		int num_splits_y,
 		const std::string& base_dest_filepath,
-		boost::shared_ptr<BitmapImage> pBitmapImage,
+		std::shared_ptr<BitmapImage> pBitmapImage,
 		SplitImageFilepathPrinter *pDestFilepathPrinter )
 		:
 	m_NumSplitsX(num_splits_x),

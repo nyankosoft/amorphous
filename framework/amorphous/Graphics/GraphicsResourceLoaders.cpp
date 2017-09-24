@@ -140,7 +140,7 @@ bool GraphicsResourceLoader::Unlock()
 }
 
 
-void GraphicsResourceLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
+void GraphicsResourceLoader::OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	FillResourceDesc();
 
@@ -180,7 +180,7 @@ shared_ptr<TextureResource> DiskTextureLoader::GetTextureResource()
 }
 
 
-bool DiskTextureLoader::InitImageArray( boost::shared_ptr<BitmapImage> pBaseImage )
+bool DiskTextureLoader::InitImageArray( std::shared_ptr<BitmapImage> pBaseImage )
 {
 	if( !pBaseImage )
 		return false;
@@ -396,13 +396,13 @@ void DiskTextureLoader::OnResourceLoadedOnGraphicsMemory()
 // MeshLoader
 //===================================================================================
 
-MeshLoader::MeshLoader( boost::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc )
+MeshLoader::MeshLoader( std::weak_ptr<GraphicsResourceEntry> pEntry, const MeshResourceDesc& desc )
 :
 GraphicsResourceLoader(pEntry),
 m_MeshDesc(desc),
 m_MeshLoaderStateFlags(0)
 {
-	m_pArchive = boost::shared_ptr<C3DMeshModelArchive>( new C3DMeshModelArchive() );
+	m_pArchive = std::shared_ptr<C3DMeshModelArchive>( new C3DMeshModelArchive() );
 }
 
 
@@ -560,7 +560,7 @@ bool ShaderLoader::LoadFromFile( const std::string& filepath )
 }
 
 
-void ShaderLoader::OnLoadingCompleted( boost::shared_ptr<GraphicsResourceLoader> pSelf )
+void ShaderLoader::OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader> pSelf )
 {
 	CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread, pSelf, GetResourceEntry() );
 	GetAsyncResourceLoader().AddGraphicsDeviceRequest( req );

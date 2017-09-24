@@ -20,9 +20,9 @@ m_DatabaseFilepath(database_filename)
 }
 
 
-boost::shared_ptr<MotionPrimitive> MotionDatabase::GetMotionPrimitive( const std::string& name )
+std::shared_ptr<MotionPrimitive> MotionDatabase::GetMotionPrimitive( const std::string& name )
 {
-	boost::shared_ptr<MotionPrimitive> pMotion( new MotionPrimitive() );
+	std::shared_ptr<MotionPrimitive> pMotion( new MotionPrimitive() );
 
 	bool success = m_DB.GetData( name, *(pMotion.get()) );
 
@@ -36,7 +36,7 @@ boost::shared_ptr<MotionPrimitive> MotionDatabase::GetMotionPrimitive( const std
 		string msg = fmt_string( " Failed to get the motion primitive '%s' from database '%s'", name.c_str(), m_DatabaseFilepath.c_str() );
 		LOG_PRINT_WARNING( msg );
 
-		return boost::shared_ptr<MotionPrimitive>();
+		return std::shared_ptr<MotionPrimitive>();
 	}
 }
 

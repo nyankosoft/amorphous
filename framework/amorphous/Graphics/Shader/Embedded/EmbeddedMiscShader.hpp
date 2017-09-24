@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "amorphous/base.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 

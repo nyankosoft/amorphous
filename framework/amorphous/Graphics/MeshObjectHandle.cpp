@@ -17,12 +17,12 @@ using namespace std;
 const MeshHandle MeshHandle::ms_NullHandle;
 
 
-boost::shared_ptr<MeshResource> MeshHandle::GetMeshResource()
+std::shared_ptr<MeshResource> MeshHandle::GetMeshResource()
 {
 	if( GetEntry() )
 		return GetEntry()->GetMeshResource();
 	else
-		return boost::shared_ptr<MeshResource>();
+		return std::shared_ptr<MeshResource>();
 }
 
 
@@ -65,13 +65,13 @@ bool MeshHandle::Load( const MeshResourceDesc& desc )
 }
 
 
-boost::shared_ptr<SkeletalMesh> MeshHandle::GetSkeletalMesh()
+std::shared_ptr<SkeletalMesh> MeshHandle::GetSkeletalMesh()
 {
-	boost::shared_ptr<BasicMesh> pBasicMesh = GetMesh();
+	std::shared_ptr<BasicMesh> pBasicMesh = GetMesh();
 	if( pBasicMesh )
 		return boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBasicMesh);
 	else
-		return boost::shared_ptr<SkeletalMesh>();
+		return std::shared_ptr<SkeletalMesh>();
 }
 
 
