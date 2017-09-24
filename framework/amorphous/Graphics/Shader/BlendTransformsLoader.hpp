@@ -2,9 +2,9 @@
 #define __BlendTransformsLoader_HPP__
 
 
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/MeshContainerRenderMethod.hpp"
-#include "3DMath/Transform.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/MeshContainerRenderMethod.hpp"
+#include "amorphous/3DMath/Transform.hpp"
 
 
 namespace amorphous

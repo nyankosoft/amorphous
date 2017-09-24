@@ -2,8 +2,8 @@
 #define  __BE_PLAYERSHIP_H__
 
 #include "BE_Player.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/Camera.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Camera.hpp"
 #include "fwd.hpp"
 
 

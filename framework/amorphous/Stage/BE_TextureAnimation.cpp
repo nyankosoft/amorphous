@@ -2,10 +2,10 @@
 #include "CopyEntity.hpp"
 //#include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-//#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/GenericShaderHelpers.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+//#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderHelpers.hpp"
 
 
 namespace amorphous

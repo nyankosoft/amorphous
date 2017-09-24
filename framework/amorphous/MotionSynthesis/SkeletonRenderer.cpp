@@ -1,6 +1,6 @@
 #include "SkeletonRenderer.hpp"
 #include "MotionPrimitive.hpp"
-//#include "Support/LineSegmentRenderer.hpp"
+//#include "amorphous/Support/LineSegmentRenderer.hpp"
 #include "amorphous/3DMath/MatrixConversions.hpp"
 #include "amorphous/Graphics/PrimitiveRenderer.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"

@@ -1,14 +1,14 @@
 #include "GameTask_MainMenu.hpp"
-#include "App/GameWindowManager.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
 #include "MainMenuEventHandler.hpp"
-#include "GUI.hpp"
-#include "Sound/SoundManager.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
 #include "GameTask_Stage.hpp"
 
-#include "Stage/PlayerInfo.hpp"
-//#include "Stage/ScreenEffectManager.hpp"
-#include "Stage/Stage.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
+//#include "amorphous/Stage/ScreenEffectManager.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

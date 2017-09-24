@@ -5,9 +5,9 @@
 #include "EntityHandle.hpp"
 #include "Stage.hpp"
 #include "EntityRenderManager.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/MeshContainerRenderMethod.hpp"
-#include "Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/MeshContainerRenderMethod.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
 
 
 namespace amorphous

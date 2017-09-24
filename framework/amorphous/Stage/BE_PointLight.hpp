@@ -3,8 +3,8 @@
 
 #include "BE_Light.hpp"
 //#include "BEC_Billboard.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/HemisphericLight.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/HemisphericLight.hpp"
 
 
 namespace amorphous

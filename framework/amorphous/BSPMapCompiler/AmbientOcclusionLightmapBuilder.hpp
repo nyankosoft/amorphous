@@ -12,12 +12,12 @@
 #include "Lightmap.hpp"
 //#include "MapFace.hpp"
 
-#include "Graphics/fwd.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/LightStructs.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/LightStructs.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

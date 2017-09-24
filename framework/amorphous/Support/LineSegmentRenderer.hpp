@@ -2,10 +2,10 @@
 #define  __LINESEGMENTRENDERER_HPP__
 
 
-#include "3DMath/ray.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/FVF_TLVertex.h"
+#include "amorphous/3DMath/ray.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/FVF_ColorVertex.h"
+#include "amorphous/Graphics/FVF_TLVertex.h"
 
 
 namespace amorphous

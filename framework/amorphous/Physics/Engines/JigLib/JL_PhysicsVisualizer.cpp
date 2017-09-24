@@ -1,10 +1,10 @@
 #include "JL_PhysicsVisualizer.hpp"
 #include "JL_PhysicsManager.hpp"
-#include "3DMath/AABB3.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/PrimitiveRenderer.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/PrimitiveRenderer.hpp"
 
 
 namespace amorphous

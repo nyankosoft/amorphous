@@ -1,5 +1,5 @@
 #include "ScreenEffect.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 
 
 namespace amorphous

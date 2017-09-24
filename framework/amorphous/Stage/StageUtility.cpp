@@ -116,12 +116,12 @@ EntityHandle<> StageUtility::CreateNamedEntity( const std::string& entity_name,
 // StageMiscUtility
 //========================================================================================
 
-#include "Stage/BE_Skybox.hpp"
-#include "Graphics/MeshModel/General3DMesh.hpp"
-#include "Graphics/MeshModel/MeshArchiveToGeneral3DMeshConverer.hpp"
-#include "Graphics/ShapeDetector.hpp"
-#include "Physics/ConvexShapeDesc.hpp"
-#include "Physics/ConvexMesh.hpp"
+#include "BE_Skybox.hpp"
+#include "amorphous/Graphics/MeshModel/General3DMesh.hpp"
+#include "amorphous/Graphics/MeshModel/MeshArchiveToGeneral3DMeshConverer.hpp"
+#include "amorphous/Graphics/ShapeDetector.hpp"
+#include "amorphous/Physics/ConvexShapeDesc.hpp"
+#include "amorphous/Physics/ConvexMesh.hpp"
 
 
 namespace amorphous

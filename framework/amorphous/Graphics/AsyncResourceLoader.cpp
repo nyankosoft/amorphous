@@ -1,6 +1,6 @@
 #include "AsyncResourceLoader.hpp"
-#include "Support/Profile.hpp"
-#include "../base.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/base.hpp"
 #include <boost/thread/xtime.hpp>
 
 

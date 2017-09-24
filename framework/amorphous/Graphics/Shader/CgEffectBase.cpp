@@ -1,7 +1,7 @@
 #include "CgEffectBase.hpp"
 //#include "Graphics/Shader/ShaderManagerHub.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

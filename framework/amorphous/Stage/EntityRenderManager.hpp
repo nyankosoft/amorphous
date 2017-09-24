@@ -2,16 +2,16 @@
 #define  __EntityRenderManager_H__
 
 
-#include "../base.hpp"
-#include "3DMath/AABB3.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
 #include "fwd.hpp"
 #include "CopyEntity.hpp"
 #include "EntityNode.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/CubeMapManager.hpp"
-#include "Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/CubeMapManager.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
 
 
 namespace amorphous

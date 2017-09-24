@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "Graphics/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 #include "FontBase.hpp"
 
 

@@ -7,7 +7,7 @@
 //using namespace std;
 
 
-#include "Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 
 
 namespace amorphous

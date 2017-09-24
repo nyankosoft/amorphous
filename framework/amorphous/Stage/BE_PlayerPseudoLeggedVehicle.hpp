@@ -5,7 +5,7 @@
 #include "BaseEntityHandle.hpp"
 #include "CopyEntity.hpp"
 #include "GameMessage.hpp"
-#include "Graphics/Camera.hpp"
+#include "amorphous/Graphics/Camera.hpp"
 #include "fwd.hpp"
 
 

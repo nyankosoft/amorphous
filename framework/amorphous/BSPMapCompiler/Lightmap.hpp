@@ -4,11 +4,11 @@
 
 #include "fwd.hpp"
 
-#include "3DMath/Matrix34.hpp"
-#include "Support/array2d.hpp"
-#include "Graphics/IndexedPolygon.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/Rect.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Support/array2d.hpp"
+#include "amorphous/Graphics/IndexedPolygon.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 
 
 namespace amorphous

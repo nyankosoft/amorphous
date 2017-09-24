@@ -3,7 +3,7 @@
 
 
 #include <NxStream.h>
-#include "Support/stream_buffer.hpp"
+#include "amorphous/Support/stream_buffer.hpp"
 
 
 namespace amorphous

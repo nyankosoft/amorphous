@@ -1,13 +1,13 @@
 #include "BE_StaticLiquid.hpp"
-#include "Graphics/Shader/GenericShaderGenerator.hpp"
-#include "Graphics/Shader/ShaderVariableLoader.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/Shader/ShaderVariableLoader.hpp"
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "EntityRenderManager.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 
 namespace amorphous

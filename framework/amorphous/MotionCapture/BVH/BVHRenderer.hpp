@@ -5,10 +5,10 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Quaternion.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/Direct3D9.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/Direct3D9.hpp"
 
 #include "fwd.hpp"
 
