@@ -86,10 +86,8 @@
     <ClInclude Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\BuiltinSkyTextures.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\CorrelationGraph.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\D3DHeaders.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\FloatRGBAColor.hpp" />
@@ -125,7 +123,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\IndexedPolygon.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\LensFlare.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\LinePrimitives.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp" />
@@ -198,7 +195,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RectTree.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\RenderTaskProcessor.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\SamplingParameter.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShaderHandle.hpp" />
@@ -235,7 +231,6 @@
     <ClInclude Include="..\..\amorphous\Support\Serialization\BinaryDatabase.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\CompressedArchive_Input.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\CompressedArchive_Output.hpp" />
-    <ClInclude Include="..\..\amorphous\Support\Serialization\PADLinkListSerializer.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\SerializationEx.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_32BitColor.hpp" />
@@ -291,7 +286,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\BuiltinSkyTextures.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\CorrelationGraph.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\CubeMapManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\DoubleConeScrollEffect.cpp" />
@@ -314,7 +308,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsResources.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\IndexedPolygon.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\LinePrimitives.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp" />
@@ -370,7 +363,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\RenderTaskProcessor.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShaderHandle.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShadowMapManager.cpp" />

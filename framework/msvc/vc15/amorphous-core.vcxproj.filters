@@ -285,16 +285,10 @@
     <ClInclude Include="..\..\amorphous\Graphics\Camera.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\CorrelationGraph.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\CubeMapManager.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\CubeTextureRenderTarget.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\D3DHeaders.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\DebugInfo_GraphicsResourceManager.hpp">
@@ -375,9 +369,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\LinePrimitives.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
@@ -427,9 +418,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\RenderTaskProcessor.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.hpp">
@@ -735,9 +723,6 @@
     <ClInclude Include="..\..\amorphous\Support\Serialization\CompressedArchive_Output.hpp">
       <Filter>Source Files\Support\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Support\Serialization\PADLinkListSerializer.hpp">
-      <Filter>Source Files\Support\Serialization</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization.hpp">
       <Filter>Source Files\Support\Serialization</Filter>
     </ClInclude>
@@ -881,9 +866,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\Camera.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\CorrelationGraph.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\CubeMapManager.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -935,9 +917,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\LinePrimitives.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -975,9 +954,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\RenderTaskProcessor.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp">
