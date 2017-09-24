@@ -1,6 +1,6 @@
 #include "InputHub.hpp"
-#include "Support/Timer.hpp"
-#include "Support/StringAux.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

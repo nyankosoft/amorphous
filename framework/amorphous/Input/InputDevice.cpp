@@ -1,8 +1,8 @@
 #include "InputDevice.hpp"
 #include "InputHub.hpp"
 #include "ForceFeedback/ForceFeedbackEffect.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous
