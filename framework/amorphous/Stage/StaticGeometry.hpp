@@ -5,15 +5,15 @@
 #include "StaticGeometryBase.hpp"
 #include "StaticGeometryArchiveFG.hpp"
 
-#include "3DMath/3DStructs.hpp"
-#include "3DMath/AABTree.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
-#include "Graphics/Shader/ShaderParameter.hpp"
-#include "Support/StringAux.hpp"
+#include "amorphous/3DMath/3DStructs.hpp"
+#include "amorphous/3DMath/AABTree.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderParameter.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

@@ -11,22 +11,22 @@
 #include "HUD_PlayerBase.hpp"
 #include "SubDisplay.hpp"
 
-#include "Input/InputHub.hpp"
-#include "Support/MTRand.hpp"
-#include "GameCommon/ShockWaveCameraEffect.hpp"
-#include "Item/WeaponSystem.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/GameCommon/ShockWaveCameraEffect.hpp"
+#include "amorphous/Item/WeaponSystem.hpp"
 
-#include "Sound/SoundManager.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
 
 // added for laser dot casting test
-#include "Support/VectorRand.hpp"
-#include "Support/Timer.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Support/Profile.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
-#include "GUI/GM_DialogManager.hpp"
-#include "GUI/GM_ControlRendererManager.hpp"
-#include "GUI/InputHandler_Dialog.hpp"
+#include "amorphous/Support/VectorRand.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/GUI/GM_DialogManager.hpp"
+#include "amorphous/GUI/GM_ControlRendererManager.hpp"
+#include "amorphous/GUI/InputHandler_Dialog.hpp"
 
 
 namespace amorphous

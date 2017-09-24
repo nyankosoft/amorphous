@@ -2,8 +2,8 @@
 #define __BE_STATICPARTICLESET_H__
 
 #include "BE_ParticleSet.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Support/FixedVector.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
 
 namespace amorphous

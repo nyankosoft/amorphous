@@ -2,9 +2,9 @@
 #define  __VectorRand_H__
 
 
-#include "3DMath/Vector2.hpp"
-#include "3DMath/Vector3.hpp"
-#include "Support/MTRand.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 
 namespace amorphous

@@ -1,8 +1,8 @@
-w#include "LightEntityManager.hpp"
+#include "LightEntityManager.hpp"
 #include "EntitySet.hpp"
-#include "Graphics/Shader/Shader.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Graphics/Shader/Shader.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

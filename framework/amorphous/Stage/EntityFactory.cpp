@@ -1,11 +1,11 @@
 #include "EntityFactory.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/LightEntity.hpp"
-#include "Stage/AlphaEntity.hpp"
-#include "Stage/SoundEntity.hpp"
-#include "Stage/BE_ScriptedCamera.hpp"
-#include "Support/memory_helpers.hpp"
+#include "CopyEntity.hpp"
+#include "CopyEntityDesc.hpp"
+#include "LightEntity.hpp"
+#include "AlphaEntity.hpp"
+#include "SoundEntity.hpp"
+#include "BE_ScriptedCamera.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

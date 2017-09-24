@@ -1,8 +1,8 @@
 #include "PyModule_VisualEffect.hpp"
 #include "PyModule_Stage.hpp"
 
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/ShadowMaps.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/ShadowMaps.hpp"
 
 #include "BaseEntity_Draw.hpp"
 #include "Stage.hpp"
@@ -10,11 +10,11 @@
 #include "EntityRenderManager.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
-#include "Script/PythonScriptManager.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous

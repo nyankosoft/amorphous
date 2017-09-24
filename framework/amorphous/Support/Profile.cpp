@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <boost/shared_ptr.hpp>
 
-#include "Support/Timer.hpp"
+#include "amorphous/Support/Timer.hpp"
 
 
 namespace amorphous

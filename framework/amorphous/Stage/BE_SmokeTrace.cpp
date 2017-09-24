@@ -3,9 +3,9 @@
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/VectorRand.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/VectorRand.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

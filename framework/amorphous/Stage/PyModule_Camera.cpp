@@ -6,13 +6,13 @@
 #include "GameMessage.hpp"
 #include "Stage.hpp"
 #include "EntitySet.hpp"
-#include "Script/PythonScriptManager.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 
-#include "Support/Macro.h"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous

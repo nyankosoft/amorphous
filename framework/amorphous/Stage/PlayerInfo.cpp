@@ -1,13 +1,13 @@
 #include "PlayerInfo.hpp"
 
-#include "Input/InputHub.hpp"
-#include "Item/GameItem.hpp"
-#include "Item/GI_Ammunition.hpp"
-//#include "Item/GI_Aircraft.hpp"
-#include "Item/ItemDatabaseManager.hpp"
-#include "Item/GameItemObjectFactory.hpp"
-#include "Item/WeaponSystem.hpp"
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/Item/GameItem.hpp"
+#include "amorphous/Item/GI_Ammunition.hpp"
+//#include "amorphous/Item/GI_Aircraft.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
+#include "amorphous/Item/GameItemObjectFactory.hpp"
+#include "amorphous/Item/WeaponSystem.hpp"
+#include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
 #include "BE_Player.hpp"
 
 

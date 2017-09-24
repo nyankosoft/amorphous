@@ -2,21 +2,21 @@
 #define __STATICGEOMETRY_BSPMAP_H__
 
 
-#include "Stage/fwd.hpp"
-#include "Stage/StaticGeometryBase.hpp"
-#include "Stage/BSPStaticGeometry.hpp"
-#include "Stage/bspstructs.hpp"
-#include "Stage/bsptree.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/StaticGeometryBase.hpp"
+#include "amorphous/Stage/BSPStaticGeometry.hpp"
+#include "amorphous/Stage/bspstructs.hpp"
+#include "amorphous/Stage/bsptree.hpp"
 
 #include "BSPMap_Collision/BSPTree_CollisionModel.hpp"
 
-#include "Graphics/fwd.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/Shader/ShaderTechniqueHandle.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 
-#include "Support/FixedVector.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/macro.h"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/macro.h"
 
 
 namespace amorphous

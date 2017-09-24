@@ -1,10 +1,10 @@
 #include "DebugOutput.hpp"
 
-#include "Graphics/LogOutput_OnScreen.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Log/StateLog.hpp"
+#include "amorphous/Graphics/LogOutput_OnScreen.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
 
 
 namespace amorphous

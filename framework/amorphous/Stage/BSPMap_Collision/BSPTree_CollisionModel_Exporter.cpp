@@ -2,11 +2,11 @@
 #include "BSPTree_CollisionModel_Exporter.hpp"
 
 #include "../bspstructs.hpp"
-#include "BSPMapCompiler/BSPMapCompiler.hpp"
+#include "amorphous/BSPMapCompiler/BSPMapCompiler.hpp"
 
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
-#include "3DMath/ConvexPolygon.hpp"
+#include "amorphous/3DMath/ConvexPolygon.hpp"
 
 #include <vector>
 

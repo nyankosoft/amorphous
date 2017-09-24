@@ -2,7 +2,7 @@
 #define  __NamedResourceHandle_H__
 
 
-#include "Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 #include <string>
 
 

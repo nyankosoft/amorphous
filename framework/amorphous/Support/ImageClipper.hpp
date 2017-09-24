@@ -2,9 +2,9 @@
 #define __ImageClipper_H__
 
 
-#include "Support/BitmapImage.hpp"
-#include "Support/thread_starter.hpp"
-#include "Graphics/Rect.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/thread_starter.hpp"
+#include "amorphous/Graphics/Rect.hpp"
 
 
 namespace amorphous

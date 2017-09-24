@@ -1,14 +1,14 @@
 #include "SharedMeshContainer.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "GameCommon/GameMathMisc.hpp"
-#include "GameCommon/MeshBoneControllerBase.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/GameCommon/GameMathMisc.hpp"
+#include "amorphous/GameCommon/MeshBoneControllerBase.hpp"
 //#include "App/GameApplicationBase.hpp"
-#include "Task/GameTaskManager.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Task/GameTaskManager.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

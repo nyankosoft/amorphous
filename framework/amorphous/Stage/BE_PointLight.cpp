@@ -4,12 +4,12 @@
 #include "GameMessage.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "3DMath/MathMisc.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -4,9 +4,9 @@
 #include "BSPMapCompiler/lightmapbuilder.h"
 #include "Graphics/FloatRGBColor.hpp"
 
-#include "Support/fnop.hpp"
-#include "Support/StatusDisplay/StatusDisplay.hpp"
-#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
+#include "amorphous/Support/fnop.hpp"
+#include "amorphous/Support/StatusDisplay/StatusDisplay.hpp"
+#include "amorphous/Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
 #include "BSPMapFileExporter.hpp"
 
