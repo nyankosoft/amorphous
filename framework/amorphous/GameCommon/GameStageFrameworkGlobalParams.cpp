@@ -1,6 +1,6 @@
 #include "GameStageFrameworkGlobalParams.hpp"
 
-#include "Support/ParamLoader.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 #include "amorphous/Stage/EntitySet.hpp"
 #include "amorphous/Stage/ScreenEffectManager.hpp"

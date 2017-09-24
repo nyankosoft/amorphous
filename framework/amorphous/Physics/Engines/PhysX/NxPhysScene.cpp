@@ -16,8 +16,8 @@
 #include "amorphous/Physics/ClothDesc.hpp"
 #include "amorphous/Physics/RaycastHit.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

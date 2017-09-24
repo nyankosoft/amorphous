@@ -8,10 +8,10 @@
 
 #include "LightmapBuilder.hpp"
 
-#include "Stage/bspstructs.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/LightStructs.hpp"
-#include "Support/TextFileScanner.hpp"
+#include "amorphous/Stage/bspstructs.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/LightStructs.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
 
 #include <string>
 

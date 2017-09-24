@@ -1,10 +1,10 @@
 #include "LightmapBuilder.hpp"
 #include <direct.h>
 
-#include "3DMath/AABTree.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/3DMath/AABTree.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "LightmapLightingManager.hpp"
 

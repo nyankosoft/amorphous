@@ -7,8 +7,8 @@
 #include "amorphous/Physics/Stream.hpp"
 #include "amorphous/Physics/SceneDesc.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/SafeDelete.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

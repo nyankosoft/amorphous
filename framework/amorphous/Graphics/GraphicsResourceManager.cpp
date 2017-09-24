@@ -1,10 +1,10 @@
-#include "Graphics/GraphicsResourceManager.hpp"
-#include "Graphics/GraphicsResourceCacheManager.hpp"
-#include "Graphics/GraphicsResourceHandle.hpp"
-#include "Graphics/AsyncResourceLoader.hpp"
-#include "Graphics/ResourceLoadingStateHolder.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "GraphicsResourceManager.hpp"
+#include "amorphous/Graphics/GraphicsResourceCacheManager.hpp"
+#include "amorphous/Graphics/GraphicsResourceHandle.hpp"
+#include "amorphous/Graphics/AsyncResourceLoader.hpp"
+#include "amorphous/Graphics/ResourceLoadingStateHolder.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -2,10 +2,10 @@
 #define  __JL_SHAPEDESC_H__
 
 
-#include "3DMath/Matrix33.hpp"
+#include "amorphous/3DMath/Matrix33.hpp"
 
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

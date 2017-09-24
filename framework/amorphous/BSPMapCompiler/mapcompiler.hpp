@@ -8,9 +8,9 @@
 #include "../BSPMapCompiler/CellBuilder.hpp"
 #include "../BSPMapCompiler/BSPMapData.hpp"
 
-#include "../LightWave/LWO2_Object.hpp"
+#include "amorphous/LightWave/LWO2_Object.hpp"
 
-#include "../Physics/Engines/JigLib/TriangleMesh.hpp"
+#include "amorphous/Physics/Engines/JigLib/TriangleMesh.hpp"
 
 #include "Support/Vec3_StringAux.hpp"
 

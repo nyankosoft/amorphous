@@ -1,7 +1,7 @@
 #include "GraphicsResourceEntries.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/ImageArchive.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/ImageArchive.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -6,8 +6,8 @@
 #include "PhysXLoader.h"
 
 // my library headers
-#include "3DMath/precision.h"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/3DMath/precision.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "fwd.hpp"
 #include "NxPhysOutputStream.hpp"

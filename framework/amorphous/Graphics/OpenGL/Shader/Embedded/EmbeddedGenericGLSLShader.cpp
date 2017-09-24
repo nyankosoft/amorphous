@@ -1,8 +1,8 @@
 #include "EmbeddedGenericGLSLShader.hpp"
 #include "GLEmbeddedMiscGLSLShader.hpp"
-#include "Graphics/Shader/GenericShaderDesc.hpp"
-#include "Graphics/Shader/Generic2DShaderDesc.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
+#include "amorphous/Graphics/Shader/Generic2DShaderDesc.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 using std::string;
 

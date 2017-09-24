@@ -1,12 +1,12 @@
 #include "GLCustomMeshRenderer.hpp"
-#include "Graphics/ShaderHandle.hpp"
-#include "Graphics/Mesh/CustomMesh.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/GenericShaderHelpers.hpp"
-#include "Graphics/OpenGL/GLGraphicsDevice.hpp"
-//#include "Graphics/OpenGL/GLTextureResourceVisitor.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderHelpers.hpp"
+#include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
+//#include "amorphous/Graphics/OpenGL/GLTextureResourceVisitor.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

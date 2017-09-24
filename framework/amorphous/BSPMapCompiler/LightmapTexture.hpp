@@ -2,7 +2,7 @@
 #define __MAPCOMPILER_LIGHTMAPTEXTURE_H__
 
 
-#include "Support/array2d.hpp"
+#include "amorphous/Support/array2d.hpp"
 #include "amorphous/Graphics/FloatRGBColor.hpp"
 #include "amorphous/Graphics/LightStructs.hpp"
 #include "amorphous/Graphics/IndexedPolygon.hpp"
