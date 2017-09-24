@@ -3,8 +3,8 @@
 
 #include "GameSound.hpp"
 #include "WaveFile.hpp"
-#include "../base.hpp"
-#include "Support/Macro.h"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

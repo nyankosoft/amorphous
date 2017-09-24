@@ -1,10 +1,10 @@
 #include "OpenALSoundSourceImpl.hpp"
 #include "OpenALSoundManagerImpl.hpp"
-#include "../base.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/thread_starter.hpp"
-#include "Support/SerializableStream.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/thread_starter.hpp"
+#include "amorphous/Support/SerializableStream.hpp"
 #include "OggVorbisAux.hpp"
 
 

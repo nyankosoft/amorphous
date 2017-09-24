@@ -2,7 +2,7 @@
 #define  __GAMESOUND_H__
 
 
-#include "3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
 
 
 namespace amorphous

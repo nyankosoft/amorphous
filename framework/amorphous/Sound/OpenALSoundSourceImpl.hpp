@@ -4,9 +4,9 @@
 
 #include "fwd.hpp"
 #include "SoundSource.hpp"
-#include "Support/SerializableStream.hpp"
-#include "Support/prealloc_pool.hpp"
-#include "Support/Macro.h"
+#include "amorphous/Support/SerializableStream.hpp"
+#include "amorphous/Support/prealloc_pool.hpp"
+#include "amorphous/Support/Macro.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <al.h>

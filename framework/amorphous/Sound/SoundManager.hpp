@@ -7,8 +7,8 @@
 #include "SoundHandle.hpp"
 #include "SoundDesc.hpp"
 #include "SoundManagerImpl.hpp"
-#include "../base.hpp"
-#include "../Support/singleton.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/singleton.hpp"
 
 
 namespace amorphous

@@ -1,8 +1,8 @@
 #include "SoundManager.hpp"
 #include "OpenALSoundManagerImpl.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/SafeDelete.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

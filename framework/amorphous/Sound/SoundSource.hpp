@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "../3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
 
 
 namespace amorphous

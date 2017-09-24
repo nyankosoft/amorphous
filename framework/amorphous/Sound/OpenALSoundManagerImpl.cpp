@@ -1,9 +1,9 @@
 #include "OpenALSoundManagerImpl.hpp"
 #include "OggVorbisAux.hpp"
-#include "Support/Macro.h"
-#include "Support/SerializableStream.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/SerializableStream.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous

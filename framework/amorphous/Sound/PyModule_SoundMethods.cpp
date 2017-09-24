@@ -1,7 +1,7 @@
 #include "PyModule_SoundMethods.hpp"
-#include "../Script/PythonScriptManager.hpp"
-#include "../Sound/SoundManager.hpp"
-#include "../Support/Log/DefaultLog.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <map>
 
 
