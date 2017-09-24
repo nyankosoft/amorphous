@@ -2,10 +2,10 @@
 
 #include "Support/ParamLoader.hpp"
 
-#include "Stage/EntitySet.hpp"
-#include "Stage/ScreenEffectManager.hpp"
-#include "App/GameApplicationBase.hpp"
-#include "Support/DebugOutput.hpp"
+#include "amorphous/Stage/EntitySet.hpp"
+#include "amorphous/Stage/ScreenEffectManager.hpp"
+#include "amorphous/App/GameApplicationBase.hpp"
+#include "amorphous/Support/DebugOutput.hpp"
 
 
 namespace amorphous

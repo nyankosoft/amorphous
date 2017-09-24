@@ -1,8 +1,8 @@
 #include "MeshBoneController_Aircraft.hpp"
 #include "MeshBoneControllerFactory.hpp"
-#include "Graphics/Mesh/SkeletalMesh.hpp"
-#include "PseudoAircraftSimulator.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/PseudoAircraftSimulator.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

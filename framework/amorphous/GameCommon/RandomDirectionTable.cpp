@@ -1,5 +1,5 @@
 #include "RandomDirectionTable.hpp"
-#include "../3DMath/Matrix33.hpp"
+#include "amorphous/3DMath/Matrix33.hpp"
 
 
 namespace amorphous

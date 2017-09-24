@@ -1,6 +1,6 @@
 #include "MeshBoneControllerBase.hpp"
-#include "Graphics/Mesh/SkeletalMesh.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

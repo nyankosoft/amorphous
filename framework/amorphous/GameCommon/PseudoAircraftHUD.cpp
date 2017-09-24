@@ -1,14 +1,14 @@
 #include "PseudoAircraftHUD.hpp"
 
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/Matrix44.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "3DMath/Matrix22.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/3DMath/Matrix22.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Font/TextureFont.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 #include "PseudoAircraftSimulator.hpp"
 
 

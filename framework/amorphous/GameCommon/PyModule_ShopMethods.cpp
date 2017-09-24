@@ -1,7 +1,7 @@
 #include "PyModule_ShopMethods.hpp"
 #include "GameItemShop.hpp"
-#include "Item/ItemDatabaseManager.hpp"
-#include "Script/PythonScriptManager.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 
 
 namespace amorphous

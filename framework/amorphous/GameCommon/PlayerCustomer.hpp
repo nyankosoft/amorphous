@@ -3,7 +3,7 @@
 
 
 #include "GameItemShop.hpp"
-#include "../Stage/PlayerInfo.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
 
 
 namespace amorphous

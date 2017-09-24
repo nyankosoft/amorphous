@@ -2,8 +2,8 @@
 #define __amorphous_GlobalParams_HPP__
 
 
-#include "Support/ParamLoader.hpp"
-#include "Support/Log/LogOutputBase.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Log/LogOutputBase.hpp"
 
 
 namespace amorphous

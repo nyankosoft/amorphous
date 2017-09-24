@@ -1,7 +1,7 @@
 #include "AircraftCapsDisplay.hpp"
-#include "Item/GI_Aircraft.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/2DPrimitive/2DFrameRect.hpp"
+#include "amorphous/Item/GI_Aircraft.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DFrameRect.hpp"
 
 
 namespace amorphous

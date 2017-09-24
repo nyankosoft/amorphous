@@ -1,7 +1,7 @@
 #include "PseudoAircraftSimulator.hpp"
 
-#include "GameCommon/GameMathMisc.hpp"
-#include "Support/Macro.h"
+#include "amorphous/GameCommon/GameMathMisc.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

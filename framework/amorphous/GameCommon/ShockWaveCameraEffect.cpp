@@ -1,6 +1,6 @@
 #include "ShockWaveCameraEffect.hpp"
-#include "Support/VectorRand.hpp"
-#include "Support/MTRand.hpp"
+#include "amorphous/Support/VectorRand.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 
 namespace amorphous

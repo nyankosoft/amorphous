@@ -3,8 +3,8 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "../3DMath/Matrix34.hpp"
-#include "../Input/fwd.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 
 namespace amorphous

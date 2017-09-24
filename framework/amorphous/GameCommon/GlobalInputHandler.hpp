@@ -1,7 +1,7 @@
 #ifndef  __GlobalInputHandler_H__
 #define  __GlobalInputHandler_H__
 
-#include "Input/InputHandler.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous

@@ -1,7 +1,7 @@
 #include "ThirdPersonMotionController.hpp"
-#include "../3DMath/3DGameMath.hpp"
-#include "../Item/SkeletalCharacter.hpp"
-#include "../Input/InputHandler.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Item/SkeletalCharacter.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous

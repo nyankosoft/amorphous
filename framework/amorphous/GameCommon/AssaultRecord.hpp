@@ -2,7 +2,7 @@
 #define __ASSAULTRECORD_H__
 
 
-#include "Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

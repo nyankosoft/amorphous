@@ -1,6 +1,6 @@
 #include "GameItemShop.hpp"
-#include "Script/PyModule_shop.hpp"
-#include "Item/ItemDatabaseManager.hpp"
+#include "amorphous/Script/PyModule_shop.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
 
 
 namespace amorphous

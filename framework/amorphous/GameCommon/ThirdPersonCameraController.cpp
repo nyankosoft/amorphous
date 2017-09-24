@@ -1,6 +1,6 @@
 #include "ThirdPersonCameraController.hpp"
-#include "../3DMath/3DGameMath.hpp"
-#include "../Stage.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Stage.hpp"
 
 
 namespace amorphous
