@@ -1,8 +1,8 @@
 
 #include "InputHandler_Dialog.hpp"
 
-#include "GUI/GM_DialogManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "GM_DialogManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

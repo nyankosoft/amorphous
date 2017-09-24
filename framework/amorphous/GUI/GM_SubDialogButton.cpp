@@ -4,7 +4,7 @@
 #include "GM_Dialog.hpp"
 #include "GM_ControlRenderer.hpp"
 #include "GM_SoundPlayer.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

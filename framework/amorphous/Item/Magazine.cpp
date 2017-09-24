@@ -1,6 +1,6 @@
 #include "Magazine.hpp"
 #include "Cartridge.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

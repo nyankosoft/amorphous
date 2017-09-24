@@ -1,6 +1,6 @@
 #include "PipeMeshGenerator.hpp"
-#include "../../3DMath/PrimitivePolygonModelMaker.hpp"
-#include "../MeshModel/General3DMesh.hpp"
+#include "amorphous/3DMath/PrimitivePolygonModelMaker.hpp"
+#include "amorphous/Graphics/MeshModel/General3DMesh.hpp"
 
 
 namespace amorphous

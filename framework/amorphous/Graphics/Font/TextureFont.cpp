@@ -1,9 +1,9 @@
 #include "TextureFont.hpp"
 #include "SimpleBitmapFontData.hpp"
 #include "GrayscalePixelDataLoader.hpp"
-#include "Graphics/TextureStage.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Graphics/TextureStage.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

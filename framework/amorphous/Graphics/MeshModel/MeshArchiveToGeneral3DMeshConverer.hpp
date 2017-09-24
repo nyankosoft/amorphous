@@ -2,8 +2,8 @@
 #define __MeshArchiveToGeneral3DMeshConverer_HPP__
 
 
-#include "../../base.hpp"
-#include "../fwd.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 
 
 namespace amorphous

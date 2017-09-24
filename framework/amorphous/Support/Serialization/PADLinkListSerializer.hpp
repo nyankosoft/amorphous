@@ -2,8 +2,8 @@
 #ifndef  __PREALLOCDYNAMICLINKLIST_SERIALIZER_H__
 #define  __PREALLOCDYNAMICLINKLIST_SERIALIZER_H__
 
-#include "Support/PreAllocDynamicLinkList.hpp"
-#include "Support/Serialization/ArchiveObjectBase.hpp"
+#include "amorphous/Support/PreAllocDynamicLinkList.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectBase.hpp"
 
 using namespace amorphous;
 

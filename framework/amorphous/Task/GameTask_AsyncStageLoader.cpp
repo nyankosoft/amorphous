@@ -2,13 +2,13 @@
 #include "GameTask_Stage.hpp"
 #include "Stage/Stage.hpp"
 
-#include "Graphics/Font/BuiltinFonts.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Input/InputHub.hpp"
-#include "GUI.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

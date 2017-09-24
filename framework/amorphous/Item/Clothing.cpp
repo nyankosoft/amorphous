@@ -1,16 +1,16 @@
 #include "Clothing.hpp"
 
-#include "3DMath/MathMisc.hpp"
-#include "3DMath/3DGameMath.hpp"
-#include "GameCommon/3DActionCode.hpp"
-#include "Support/MTRand.hpp"
-#include "XML/XMLNode.hpp"
-#include "Input/InputHandler.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/XML/XMLNode.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
-#include "Stage/Stage.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/GameMessage.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Stage/GameMessage.hpp"
 
 
 namespace amorphous

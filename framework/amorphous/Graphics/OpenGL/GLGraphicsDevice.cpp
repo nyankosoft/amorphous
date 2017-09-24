@@ -1,11 +1,11 @@
 #include "GLGraphicsDevice.hpp"
 #include "GLTextureResourceVisitor.hpp"
-#include "../TextureStage.hpp"
-#include "../FogParams.hpp"
-#include "../../3DMath/Matrix44.hpp"
-#include "../../Support/Log/DefaultLog.hpp"
-#include "../../Support/Macro.h"
-#include "../../Support/Profile.hpp"
+#include "amorphous/Graphics/TextureStage.hpp"
+#include "amorphous/Graphics/FogParams.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

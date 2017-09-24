@@ -1,11 +1,11 @@
 #include "GameTextWindow.hpp"
 #include "GameTextSystem.hpp"
-//#include "Graphics/Font/Font.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "Support/Timer.hpp"
-#include "Support/memory_helpers.hpp"
+//#include "amorphous/Graphics/Font/Font.hpp"
+#include "amorphous/Graphics/Font/TextureFont.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
-#include "App/GameWindowManager_Win32.hpp"
+#include "amorphous/App/GameWindowManager_Win32.hpp"
 
 
 namespace amorphous

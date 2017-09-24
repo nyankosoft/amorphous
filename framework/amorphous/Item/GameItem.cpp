@@ -1,7 +1,7 @@
 #include "GameItem.hpp"
-#include "XML/XMLNode.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Stage/MeshBonesUpdateCallback.hpp"
+#include "amorphous/XML/XMLNode.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Stage/MeshBonesUpdateCallback.hpp"
 
 
 namespace amorphous

@@ -4,7 +4,7 @@
 
 #include <string>
 #include "GameTextSet.hpp"
-#include "Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

@@ -1,15 +1,15 @@
 #include "ItemEntity.hpp"
 
-#include "Graphics/Shader/BlendTransformsLoader.hpp"
-#include "Stage/MeshBonesUpdateCallback.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/GameMessage.hpp"
-#include "Stage/BaseEntity_Draw.hpp"
-//#include "Stage/RenderContext.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Item/GameItem.hpp"
-#include "Physics/ActorDesc.hpp"
+#include "amorphous/Graphics/Shader/BlendTransformsLoader.hpp"
+#include "amorphous/Stage/MeshBonesUpdateCallback.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Stage/GameMessage.hpp"
+#include "amorphous/Stage/BaseEntity_Draw.hpp"
+//#include "amorphous/Stage/RenderContext.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Item/GameItem.hpp"
+#include "amorphous/Physics/ActorDesc.hpp"
 
 
 namespace amorphous

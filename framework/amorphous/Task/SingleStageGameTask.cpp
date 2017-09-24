@@ -1,7 +1,7 @@
 #include "SingleStageGameTask.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Stage.hpp"
-#include "GUI.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Stage.hpp"
+#include "amorphous/GUI.hpp"
 #include <boost/filesystem.hpp>
 
 

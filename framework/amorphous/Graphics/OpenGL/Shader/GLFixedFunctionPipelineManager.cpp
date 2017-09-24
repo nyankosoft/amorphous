@@ -1,6 +1,6 @@
 #include "GLFixedFunctionPipelineManager.hpp"
 #include "GLFixedPipelineLightManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

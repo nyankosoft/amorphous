@@ -2,7 +2,7 @@
 #define  __GrayscaleImageLoader_HPP__
 
 
-#include "../TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 
 
 namespace amorphous

@@ -1,8 +1,8 @@
 #include "BuiltinMotions.hpp"
 #include "Skeleton.hpp"
 #include "MotionPrimitive.hpp"
-#include "../Support/Macro.h"
-#include "../Support/ParamLoader.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/ParamLoader.hpp"
 
 
 namespace amorphous

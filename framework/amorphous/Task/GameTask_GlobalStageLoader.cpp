@@ -1,10 +1,10 @@
 #include "GameTask_GlobalStageLoader.hpp"
 #include "GameTask_Stage.hpp"
-#include "Stage/Stage.hpp"
+#include "amorphous/Stage/Stage.hpp"
 
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/BuiltinFonts.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Font/BuiltinFonts.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -11,12 +11,12 @@
 
 #include "CopyEntityDesc.hpp"
 
-#include "Support/Macro.h"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
-#include "../base.hpp"
-#include "../Script/convert_python_to_x.hpp"
-#include "../Script/PythonScriptManager.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Script/convert_python_to_x.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 
 
 namespace amorphous

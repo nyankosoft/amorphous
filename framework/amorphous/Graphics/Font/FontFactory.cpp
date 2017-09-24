@@ -3,7 +3,7 @@
 #include "ASCIIFont.hpp"
 #include "UTFFont.hpp"
 #include "BuiltinFonts.hpp"
-#include "../../Support/SafeDelete.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

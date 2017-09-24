@@ -1,10 +1,10 @@
 #include "StageViewerGameTask.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Graphics/GraphicsElementManager.hpp"
-#include "Input/InputHub.hpp"
-#include "Stage.hpp"
-#include "GUI.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/Stage.hpp"
+#include "amorphous/GUI.hpp"
 
 
 namespace amorphous

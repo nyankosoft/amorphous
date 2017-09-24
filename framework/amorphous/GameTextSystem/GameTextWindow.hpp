@@ -2,13 +2,13 @@
 #define  __GAMETEXTWINDOW_H__
 
 
-#include "3DMath/aabb2.hpp"
-#include "Graphics/fwd.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/TextureHandle.hpp"
+#include "amorphous/3DMath/aabb2.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
 
-#include "../Support/FixedVector.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
 
 namespace amorphous

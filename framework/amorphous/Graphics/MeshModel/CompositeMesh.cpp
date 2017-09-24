@@ -1,16 +1,16 @@
 #include "CompositeMesh.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
-#include "Graphics/FVF_NormalVertex.h"
-#include "Graphics/FVF_BumpVertex.h"
-#include "Graphics/FVF_WeightVertex.h"
-#include "Graphics/FVF_BumpWeightVertex.h"
+#include "amorphous/Graphics/FVF_NormalVertex.h"
+#include "amorphous/Graphics/FVF_BumpVertex.h"
+#include "amorphous/Graphics/FVF_WeightVertex.h"
+#include "amorphous/Graphics/FVF_BumpWeightVertex.h"
 
-#include "Graphics/FVF_ColorVertex.h"
-#include "Graphics/Direct3D9.hpp"
+#include "amorphous/Graphics/FVF_ColorVertex.h"
+#include "amorphous/Graphics/Direct3D9.hpp"
 
-#include "Graphics/Shader/Shader.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/Shader.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 
 
 namespace amorphous

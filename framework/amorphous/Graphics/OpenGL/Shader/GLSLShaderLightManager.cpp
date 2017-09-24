@@ -1,7 +1,7 @@
 #include "GLSLShaderLightManager.hpp"
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Macro.h"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

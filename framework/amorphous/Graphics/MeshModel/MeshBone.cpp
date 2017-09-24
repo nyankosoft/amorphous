@@ -1,6 +1,6 @@
 #include "MeshBone.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "Support/Vec3_StringAux.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
 #include "3DMeshModelArchive.hpp"
 
 

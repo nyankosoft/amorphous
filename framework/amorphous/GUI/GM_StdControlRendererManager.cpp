@@ -1,5 +1,5 @@
-#include "Graphics/GraphicsElementManager.hpp"
-#include "Graphics/Font/FontBase.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
 #include "GM_StdControlRendererManager.hpp"
 #include "GM_StdControlRenderer.hpp"
 #include "GUI.hpp"

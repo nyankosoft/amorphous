@@ -3,8 +3,8 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "Item/GameItem.hpp"
-#include "Stage/EntityMotionPathRequest.hpp"
+#include "amorphous/Item/GameItem.hpp"
+#include "amorphous/Stage/EntityMotionPathRequest.hpp"
 
 
 namespace amorphous

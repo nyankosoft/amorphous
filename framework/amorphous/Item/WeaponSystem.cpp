@@ -1,10 +1,10 @@
 #include "WeaponSystem.hpp"
 
-#include "GameCommon/3DActionCode.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

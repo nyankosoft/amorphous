@@ -1,9 +1,9 @@
 #include "BrickWallMeshGenerator.hpp"
-#include "../TextureGenerators/PerlinNoiseTextureGenerator.hpp"
+#include "amorphous/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.hpp"
 //#include "../TextureGenerators/GridTextureGenerator.hpp"
-#include "../TextureGenerators/TextureFilter.hpp"
-#include "../../3DMath/PolygonModelUtilities.hpp"
-#include "../../Support/MTRand.hpp"
+#include "amorphous/Graphics/TextureGenerators/TextureFilter.hpp"
+#include "amorphous/3DMath/PolygonModelUtilities.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 namespace amorphous
 {

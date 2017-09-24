@@ -1,11 +1,11 @@
 #include "GUIGameTask.hpp"
 
-#include "GUI.hpp"
-#include "Graphics/GraphicsElementManager.hpp"
-#include "Input/InputHub.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/GUI.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

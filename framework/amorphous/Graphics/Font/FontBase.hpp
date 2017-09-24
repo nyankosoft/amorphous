@@ -2,10 +2,10 @@
 #define __FONTBASE_H__
 
 
-#include "../../base.hpp"
-#include "../../3DMath/Vector2.hpp"
-#include "../FloatRGBAColor.hpp"
-#include "../AlphaBlend.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/AlphaBlend.hpp"
 
 #include <cstring>
 #include <string>

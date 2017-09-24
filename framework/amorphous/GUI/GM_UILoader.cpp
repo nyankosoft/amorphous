@@ -1,8 +1,8 @@
 
 #include "GM_Loader.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "Support/TextFileScanner.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
 
 #include "UI/ui.h"
 

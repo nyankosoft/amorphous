@@ -4,10 +4,10 @@
 #include "GM_DialogManager.hpp"
 #include "GM_ControlRendererManager.hpp"
 
-#include "Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

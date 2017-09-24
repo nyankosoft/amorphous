@@ -1,9 +1,9 @@
 #include "TextMessageRenderer.hpp"
 
-#include "../Graphics/GraphicsEffectManager.hpp"
-#include "../Graphics/Font/FontBase.hpp"
-#include "../Support/Log/DefaultLog.hpp"
-#include "../Support/StringAux.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

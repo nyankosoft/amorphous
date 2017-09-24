@@ -1,6 +1,6 @@
-#include "Item/GameItem.hpp"
-#include "Item/GameItemObjectFactory.hpp"
-#include "GameItemDatabase.hpp"
+#include "amorphous/Item/GameItem.hpp"
+#include "amorphous/Item/GameItemObjectFactory.hpp"
+#include "amorphous/GameItemDatabase.hpp"
 #include <assert.h>
 #include <algorithm>
 

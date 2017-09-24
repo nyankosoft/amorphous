@@ -1,10 +1,10 @@
 #include "3DMeshModelBuilder.hpp"
 #include "NVMeshMender.hpp"
 #include "ShadowVolumeMeshGenerator.hpp"
-#include "Support/lfs.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/ImageArchive.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/ImageArchive.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <assert.h>
 #include <algorithm>
 #include <boost/filesystem.hpp>

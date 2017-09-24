@@ -7,8 +7,8 @@
 #include "GM_ControlRendererManager.hpp"
 #include "XML/XMLDocumentBase.hpp"
 #include "XML/XMLNode.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/lfs.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/lfs.hpp"
 
 #include "GUI.hpp"
 

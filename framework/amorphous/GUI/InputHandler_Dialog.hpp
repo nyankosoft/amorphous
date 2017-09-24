@@ -4,7 +4,7 @@
 
 #include "fwd.hpp"
 #include "GM_Input.hpp"
-#include "../Input/InputHandler.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 #include <math.h>
 

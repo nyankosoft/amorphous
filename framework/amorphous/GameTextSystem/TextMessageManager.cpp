@@ -1,9 +1,9 @@
 #include "TextMessageManager.hpp"
 #include "TextMessageRenderer.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/StringAux.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

@@ -1,6 +1,6 @@
 #include "GLTextureUtilities.hpp"
 #include "GLGraphicsDevice.hpp"
-#include "Support/BitmapImage.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
 
 
 namespace amorphous

@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "../fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 
 
 namespace amorphous

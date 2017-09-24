@@ -2,7 +2,7 @@
 #define  __GM_INPUT_H__
 
 
-#include "Graphics/Point.hpp"
+#include "amorphous/Graphics/Point.hpp"
 
 
 namespace amorphous

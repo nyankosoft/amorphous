@@ -1,6 +1,6 @@
 #include "PrimitiveShapeMeshes.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "3DMath/PrimitivePolygonModelMaker.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/3DMath/PrimitivePolygonModelMaker.hpp"
 #include "General3DMesh.hpp"
 #include "3DMeshModelArchive.hpp"
 #include "3DMeshModelBuilder.hpp"

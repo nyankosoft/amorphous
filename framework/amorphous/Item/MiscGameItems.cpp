@@ -1,12 +1,12 @@
 #include "MiscGameItems.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "3DMath/CriticalDamping.hpp"
-#include "Graphics/Camera.hpp"
-#include "Stage/PlayerInfo.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/ScreenEffectManager.hpp"
-#include "GameCommon/3DActionCode.hpp"
-#include "Input/InputHandler.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/ScreenEffectManager.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous

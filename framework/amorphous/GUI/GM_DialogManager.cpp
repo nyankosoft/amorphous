@@ -7,8 +7,8 @@
 #include "GM_SoundPlayer.hpp"
 #include "GM_XMLParser.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include <algorithm>
 

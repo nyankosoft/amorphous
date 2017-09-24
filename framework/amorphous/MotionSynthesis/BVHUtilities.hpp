@@ -3,8 +3,8 @@
 
 
 #include <boost/shared_ptr.hpp>
-#include "../base.hpp"
-#include "../MotionCapture/BVH/fwd.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/MotionCapture/BVH/fwd.hpp"
 #include "fwd.hpp"
 
 

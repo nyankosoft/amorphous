@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "XML/fwd.hpp"
+#include "amorphous/XML/fwd.hpp"
 
 
 namespace amorphous

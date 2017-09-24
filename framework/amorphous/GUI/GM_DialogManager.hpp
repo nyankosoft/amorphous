@@ -2,7 +2,7 @@
 #define  __GM_DIALOGMANAGER_H__
 
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 #include "GM_Control.hpp"
 #include <vector>
 

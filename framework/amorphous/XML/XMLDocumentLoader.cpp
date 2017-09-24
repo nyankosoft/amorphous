@@ -1,7 +1,7 @@
 #include "XMLDocumentLoader.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "XercesString.hpp"
 #include "xmlch2x.hpp"

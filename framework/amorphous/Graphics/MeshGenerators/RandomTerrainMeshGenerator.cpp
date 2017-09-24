@@ -1,6 +1,6 @@
 #include "RandomTerrainMeshGenerator.hpp"
-#include "../fwd.hpp"
-#include "../GraphicsResources.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/GraphicsResources.hpp"
 
 
 namespace amorphous

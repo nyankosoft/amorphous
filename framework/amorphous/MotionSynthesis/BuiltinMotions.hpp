@@ -5,7 +5,7 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include "fwd.hpp"
-#include "../Support/Macro.h"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

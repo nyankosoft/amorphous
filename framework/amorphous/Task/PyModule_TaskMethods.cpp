@@ -1,10 +1,10 @@
 #include "PyModule_TaskMethods.hpp"
 
-#include "App/GameApplicationBase.hpp"
-#include "Task/GameTask.hpp"
-#include "Task/GameTaskManager.hpp"
-#include "Script/PythonScriptManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/App/GameApplicationBase.hpp"
+#include "amorphous/Task/GameTask.hpp"
+#include "amorphous/Task/GameTaskManager.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

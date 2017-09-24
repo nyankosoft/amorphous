@@ -2,8 +2,8 @@
 #include "GM_ControlRenderer.hpp"
 #include "GM_ControlRendererManager.hpp"
 #include "GM_ControlRendererManager.hpp"
-#include "Graphics/GraphicsEffectManager.hpp"
-#include "Support/SafeDelete.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

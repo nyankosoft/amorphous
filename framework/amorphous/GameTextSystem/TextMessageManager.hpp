@@ -7,7 +7,7 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 #include "fwd.hpp"
 
 

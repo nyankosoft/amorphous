@@ -2,8 +2,8 @@
 #define __GAMEITEM_AMMUNITION_H__
 
 #include "GameItem.hpp"
-#include "../Stage/BaseEntityHandle.hpp"
-#include "../Stage/Serialization_BaseEntityHandle.hpp"
+#include "amorphous/Stage/BaseEntityHandle.hpp"
+#include "amorphous/Stage/Serialization_BaseEntityHandle.hpp"
 
 
 namespace amorphous

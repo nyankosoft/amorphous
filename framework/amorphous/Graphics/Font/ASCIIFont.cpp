@@ -2,10 +2,10 @@
 #include "amorphous/Graphics/Rect.hpp"
 #include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "Support/lfs.hpp"
-#include "Support/FreeTypeAux.hpp"
-#include "Support/BitmapImage.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/FreeTypeAux.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous

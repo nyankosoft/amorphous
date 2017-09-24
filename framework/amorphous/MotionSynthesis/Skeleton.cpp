@@ -1,6 +1,6 @@
 #include "Skeleton.hpp"
 #include "Keyframe.hpp"
-#include "../Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous

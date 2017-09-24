@@ -11,11 +11,11 @@
 #include "Shader/GLFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericGLSLShader.hpp"
 #include "Shader/Embedded/EmbeddedPostProcessEffectGLSLShader.hpp"
-#include "../GraphicsResources.hpp"
-#include "../GraphicsResourceCacheManager.hpp"
-#include "../Mesh/CustomMesh.hpp"
-#include "../Mesh/MeshFactory.hpp"
-#include "../Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/GraphicsResources.hpp"
+#include "amorphous/Graphics/GraphicsResourceCacheManager.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Graphics/Mesh/MeshFactory.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 
 namespace amorphous

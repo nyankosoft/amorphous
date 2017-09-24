@@ -1,10 +1,10 @@
 #include "TerrainMeshGenerator.hpp"
 #include "General3DMesh.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/lfs.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/BitmapImage.hpp"
-#include "Support/ImageSplitter.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/ImageSplitter.hpp"
 #include "tbb/task_scheduler_init.h"
 #include <boost/filesystem.hpp>
 

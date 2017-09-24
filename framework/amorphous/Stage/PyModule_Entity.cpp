@@ -7,10 +7,10 @@
 #include "BE_StaticParticleSet.hpp"
 #include "BaseEntity_Draw.hpp"
 
-#include "Script/PythonScriptManager.hpp"
-#include "Support/Macro.h"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/fixed_string.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/fixed_string.hpp"
 
 
 namespace amorphous

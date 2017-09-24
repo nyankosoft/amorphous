@@ -3,7 +3,7 @@
 
 
 #include <stack>
-#include "../GameCommon/Caliber.hpp"
+#include "amorphous/GameCommon/Caliber.hpp"
 #include "GameItem.hpp"
 
 

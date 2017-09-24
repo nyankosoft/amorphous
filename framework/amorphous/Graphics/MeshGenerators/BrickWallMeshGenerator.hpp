@@ -3,9 +3,9 @@
 
 
 #include "MeshGenerator.hpp"
-#include "../FloatRGBAColor.hpp"
-#include "../../3DMath/BrickWallPolygonModelMaker.hpp"
-#include "../../Utilities/PerlinAux.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/3DMath/BrickWallPolygonModelMaker.hpp"
+#include "amorphous/Utilities/PerlinAux.hpp"
 
 
 namespace amorphous

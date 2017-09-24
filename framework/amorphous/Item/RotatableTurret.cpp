@@ -1,13 +1,13 @@
 #include "RotatableTurret.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "Item/GI_Weapon.hpp"
-#include "Item/GI_Ammunition.hpp"
-#include "Item/ItemDatabaseManager.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/Stage.hpp"
-#include "XML/XMLNode.hpp"
-#include "XML/LoadFromXMLNode_3DMath.hpp"
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/Item/GI_Weapon.hpp"
+#include "amorphous/Item/GI_Ammunition.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/XML/XMLNode.hpp"
+#include "amorphous/XML/LoadFromXMLNode_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
 
 
 namespace amorphous

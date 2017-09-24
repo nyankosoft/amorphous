@@ -1,14 +1,14 @@
 #include "GI_GravityGun.hpp"
 #include "WeaponSystem.hpp"
-#include "GameCommon/3DActionCode.hpp"
-#include "Input/InputHandler.hpp"
-#include "3DMath/CriticalDamping.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/trace.hpp"
-#include "Stage/Stage.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/3DMath/CriticalDamping.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/trace.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
-#include "Physics/Actor.hpp"
+#include "amorphous/Physics/Actor.hpp"
 
 
 namespace amorphous

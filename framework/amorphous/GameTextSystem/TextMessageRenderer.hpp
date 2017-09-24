@@ -5,12 +5,12 @@
 #include <vector>
 #include <string>
 
-#include "Graphics/fwd.hpp"
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/GraphicsEffectManager.hpp"
-#include "Graphics/Rect.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Graphics/Rect.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

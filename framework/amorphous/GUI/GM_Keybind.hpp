@@ -2,9 +2,9 @@
 #define __GM_Keybind_HPP__
 
 
-#include "Input/InputHandler.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 #include "GM_Input.hpp"
 
 

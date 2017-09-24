@@ -1,11 +1,11 @@
 #include "Radar.hpp"
-#include "Stage/EntitySet.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/BE_PlayerPseudoAircraft.hpp"
-#include "Stage/BE_HomingMissile.hpp"
-#include "Stage/OverlapTestAABB.hpp"
-#include "Stage/HUD_PlayerAircraft.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/Stage/EntitySet.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/BE_PlayerPseudoAircraft.hpp"
+#include "amorphous/Stage/BE_HomingMissile.hpp"
+#include "amorphous/Stage/OverlapTestAABB.hpp"
+#include "amorphous/Stage/HUD_PlayerAircraft.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

@@ -1,17 +1,17 @@
 #include "LandVehicle.hpp"
-#include "Stage/EntityMotionPathRequest.hpp"
-#include "Stage/BaseEntity.hpp"
-#include "Stage/Trace.hpp"
-#include "Stage/Stage.hpp"
-#include "XML/XMLNode.hpp"
-#include "XML/LoadFromXMLNode_3DMath.hpp"
-#include "Support/Serialization/Serialization_BoostSmartPtr.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Stage/EntityMotionPathRequest.hpp"
+#include "amorphous/Stage/BaseEntity.hpp"
+#include "amorphous/Stage/Trace.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/XML/XMLNode.hpp"
+#include "amorphous/XML/LoadFromXMLNode_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 //ArmedVehicle
-#include "Item/Radar.hpp"
-#include "Item/RotatableTurret.hpp"
-#include "Item/ItemDatabaseManager.hpp"
+#include "amorphous/Item/Radar.hpp"
+#include "amorphous/Item/RotatableTurret.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
 
 
 namespace amorphous

@@ -1,9 +1,9 @@
 #include "MotionPrimitive.hpp"
 #include "BlendNode.hpp"
 
-#include "../3DMath/Matrix44.hpp"
-#include "../Support/Log/DefaultLog.hpp"
-#include "../Support/ParamLoader.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 
 namespace amorphous

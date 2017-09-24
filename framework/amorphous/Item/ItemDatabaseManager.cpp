@@ -3,8 +3,8 @@
 #include "GameItem.hpp"
 #include "GameItemObjectFactory.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -4,8 +4,8 @@
 #include "GM_DialogManager.hpp"
 #include "GM_ControlRendererManager.hpp"
 
-#include "Graphics/GraphicsElementManager.hpp"
-#include "Graphics/GraphicsEffectManager.hpp"
+#include "amorphous/Graphics/GraphicsElementManager.hpp"
+#include "amorphous/Graphics/GraphicsEffectManager.hpp"
 
 
 namespace amorphous

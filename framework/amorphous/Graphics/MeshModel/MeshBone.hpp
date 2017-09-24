@@ -4,9 +4,9 @@
 
 #include <vector>
 #include <string>
-#include "../fwd.hpp"
-#include "../../Support/memory_helpers.hpp"
-#include "../../3DMath/Transform.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/3DMath/Transform.hpp"
 
 
 namespace amorphous

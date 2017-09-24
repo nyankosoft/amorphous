@@ -3,10 +3,10 @@
 
 
 #include <vector>
-#include "../base.hpp"
-#include "3DMath/Vector2.hpp"
-//#include "Graphics/32BITCOLOR.h"
-#include "Support/Serialization/Serialization.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/3DMath/Vector2.hpp"
+//#include "amorphous/Graphics/32BITCOLOR.h"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

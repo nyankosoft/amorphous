@@ -1,6 +1,6 @@
 #include "GI_Ammunition.hpp"
-#include "Stage/Serialization_BaseEntityHandle.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/Stage/Serialization_BaseEntityHandle.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

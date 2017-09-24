@@ -1,8 +1,8 @@
 #include "GameTextSystem.hpp"
 
 #include <stdlib.h>
-#include "../Graphics/Font/FontBase.hpp"
-#include "../Support/memory_helpers.hpp"
+#include "amorphous/Graphics/Font/FontBase.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

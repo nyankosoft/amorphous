@@ -1,6 +1,6 @@
 #include "ShadowVolumeMeshGenerator.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/TextureUtilities.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/TextureUtilities.hpp"
 
 
 namespace amorphous

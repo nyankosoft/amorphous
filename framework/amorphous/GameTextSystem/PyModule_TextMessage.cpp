@@ -1,6 +1,6 @@
 #include "PyModule_TextMessage.hpp"
 #include "TextMessageManager.hpp"
-#include "../Script/PythonScriptManager.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 #include <map>
 
 

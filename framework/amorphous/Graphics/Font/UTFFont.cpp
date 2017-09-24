@@ -1,10 +1,10 @@
 #include "UTFFont.hpp"
-#include "../TextureGenerators/TextureFillingAlgorithm.hpp"
-#include "../Rect.hpp"
-#include "Support/FreeTypeAux.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/UTF8/utf8.h"
+#include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
+#include "amorphous/Graphics/Rect.hpp"
+#include "amorphous/Support/FreeTypeAux.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/UTF8/utf8.h"
 //#include "amorphous/App/GameWindowManager.hpp"
 
 

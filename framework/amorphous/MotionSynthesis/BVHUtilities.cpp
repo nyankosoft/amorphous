@@ -1,6 +1,6 @@
 #include "BVHUtilities.hpp"
 #include "Skeleton.hpp"
-#include "../MotionCapture/BVH/BVHPlayer.hpp"
+#include "amorphous/MotionCapture/BVH/BVHPlayer.hpp"
 
 
 namespace amorphous

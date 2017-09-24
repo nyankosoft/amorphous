@@ -2,11 +2,11 @@
 
 #include <fstream>
 
-#include "Graphics/General3DVertex.hpp"
-#include "Graphics/TextureUtilities.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/ImageArchive.hpp"
-#include "Support/lfs.hpp"
+#include "amorphous/Graphics/General3DVertex.hpp"
+#include "amorphous/Graphics/TextureUtilities.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/ImageArchive.hpp"
+#include "amorphous/Support/lfs.hpp"
 
 
 namespace amorphous
