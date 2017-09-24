@@ -1,13 +1,13 @@
 #include "LightEntity.hpp"
 
-#include "Stage/BE_Light.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/EntitySet.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/GameMessage.hpp"
-#include "Stage/Trace.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Stage/BE_Light.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/EntitySet.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Stage/GameMessage.hpp"
+#include "amorphous/Stage/Trace.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

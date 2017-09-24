@@ -1,11 +1,11 @@
 #include "GameTaskManager.hpp"
 #include "GameTask.hpp"
-//#include "Graphics/RenderTask.hpp"
-//#include "Graphics/RenderTaskProcessor.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "GameTaskFactoryBase.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Support/Profile.hpp"
+//#include "amorphous/Graphics/RenderTask.hpp"
+//#include "amorphous/Graphics/RenderTaskProcessor.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/GameTaskFactoryBase.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

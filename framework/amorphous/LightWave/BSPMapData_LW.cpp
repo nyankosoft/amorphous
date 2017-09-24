@@ -6,10 +6,10 @@
 #include "LightWaveSceneLoader.hpp"
 #include "3DMeshModelBuilder_LW.hpp"
 
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 using namespace MeshModel;
 
-#include "Support/FilenameOperation.h"
+#include "amorphous/Support/FilenameOperation.h"
 
 #include <string.h>
 

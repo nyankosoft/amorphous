@@ -2,14 +2,14 @@
 #include "PhysicsManager_Visualizer.hpp"
 #include "JL_PhysicsManager.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/aabb3.hpp"
-#include "Graphics/Direct3D9.hpp"
-#include "Graphics/Shader/Shader.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/UnitCube.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/LineSegmentRenderer.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/aabb3.hpp"
+#include "amorphous/Graphics/Direct3D9.hpp"
+#include "amorphous/Graphics/Shader/Shader.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/UnitCube.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/LineSegmentRenderer.hpp"
 
 
 #include <d3d9.h>

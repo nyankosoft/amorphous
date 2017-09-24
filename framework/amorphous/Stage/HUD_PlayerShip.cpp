@@ -1,15 +1,15 @@
 #include "HUD_PlayerShip.hpp"
 #include "BE_PlayerShip.hpp"
-#include "Stage/PlayerInfo.hpp"
-#include "Stage/Input/InputHandler_PlayerShip.hpp"
+#include "PlayerInfo.hpp"
+#include "Input/InputHandler_PlayerShip.hpp"
 
-#include "Graphics/GraphicsDevice.hpp"
-#include "Item/WeaponSystem.hpp"
-#include "GameCommon/3DActionCode.hpp"
-#include "GameTextSystem/GameTextWindow.hpp"
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Item/WeaponSystem.hpp"
+#include "amorphous/GameCommon/3DActionCode.hpp"
+#include "amorphous/GameTextSystem/GameTextWindow.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
-#include "App/GameWindowManager.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
 
 
 namespace amorphous

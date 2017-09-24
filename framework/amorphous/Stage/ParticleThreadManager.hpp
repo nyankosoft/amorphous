@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "Support/singleton.hpp"
+#include "amorphous/Support/singleton.hpp"
 
 
 namespace amorphous

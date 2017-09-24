@@ -1,6 +1,6 @@
 #include "WaveFile.hpp"
-#include "Support/Macro.h"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

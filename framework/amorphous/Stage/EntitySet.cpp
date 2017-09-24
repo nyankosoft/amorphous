@@ -14,13 +14,13 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "CopyEntityDescFileArchive.hpp"
 
-#include "3DMath/3DGameMath.hpp"
-#include "Physics/Actor.hpp"
-#include "Physics/Scene.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/macro.h"
-#include "Support/Profile.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Physics/Scene.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/macro.h"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

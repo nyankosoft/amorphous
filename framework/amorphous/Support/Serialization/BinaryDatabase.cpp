@@ -2,7 +2,7 @@
 #include "BinaryDatabase.hpp"
 using namespace amorphous::serialization;
 
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 /*
 template<class KeyType>

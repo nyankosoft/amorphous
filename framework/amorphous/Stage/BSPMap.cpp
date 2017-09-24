@@ -1,19 +1,19 @@
 #include "BSPMap.hpp"
 
-#include "Stage/Stage.hpp"
-#include "Stage/EntitySet.hpp"
-#include "Stage/trace.hpp"
-#include "Stage/ScreenEffectManager.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/EntitySet.hpp"
+#include "amorphous/Stage/trace.hpp"
+#include "amorphous/Stage/ScreenEffectManager.hpp"
 
 #include "DynamicLightManagerForStaticGeometry.hpp"
 
-#include "Graphics/Direct3D/Direct3D9.hpp"
-#include "Graphics/Direct3D/TextureTool.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "JigLib/TriangleMesh.hpp"
+#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+#include "amorphous/Graphics/Direct3D/TextureTool.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Physics/JigLib/TriangleMesh.hpp"
 
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

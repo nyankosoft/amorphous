@@ -1,10 +1,10 @@
 #include "BSPTree_CollisionModel.hpp"
-#include "3DMath/ConvexPolygon.hpp"
+#include "amorphous/3DMath/ConvexPolygon.hpp"
 
-#include "Stage/BinaryNode.hpp"
-#include "Stage/trace.hpp"
+#include "amorphous/Stage/BinaryNode.hpp"
+#include "amorphous/Stage/trace.hpp"
 
-#include "Support/memory_helpers.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
 
 
 namespace amorphous

@@ -2,18 +2,18 @@
 #include "PyModule_StageUtility.hpp"
 #include <boost/python.hpp>
 
-#include "3DMath/Matrix34.hpp"
-#include "Graphics/ShadowMaps.hpp"
-#include "Stage/BaseEntity_Draw.hpp"
-#include "Stage/BE_DirectionalLight.hpp"
-#include "Stage/BE_PointLight.hpp"
-#include "Stage/Stage.hpp"
-#include "Stage/EntityRenderManager.hpp"
-#include "Stage/ScreenEffectManager.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Graphics/ShadowMaps.hpp"
+#include "amorphous/Stage/BaseEntity_Draw.hpp"
+#include "amorphous/Stage/BE_DirectionalLight.hpp"
+#include "amorphous/Stage/BE_PointLight.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/EntityRenderManager.hpp"
+#include "amorphous/Stage/ScreenEffectManager.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous

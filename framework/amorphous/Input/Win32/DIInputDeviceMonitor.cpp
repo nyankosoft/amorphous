@@ -1,6 +1,6 @@
 #include "DIInputDeviceMonitor.hpp"
 #include "DirectInputGamepad.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <boost/thread/xtime.hpp>
 
 

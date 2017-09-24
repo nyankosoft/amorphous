@@ -1,18 +1,18 @@
 #include "ScreenEffectManager.hpp"
 #include <algorithm>
-#include "3DMath/MathMisc.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/PostProcessEffectManager.hpp"
-#include "Graphics/SimpleMotionBlur.hpp"
-#include "Graphics/LensFlare.hpp"
-#include "Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/PostProcessEffectManager.hpp"
+#include "amorphous/Graphics/SimpleMotionBlur.hpp"
+#include "amorphous/Graphics/LensFlare.hpp"
+#include "amorphous/Graphics/TextureGenerators/NoiseTextureGenerators.hpp"
 
-#include "Graphics/RenderTask.hpp"
-#include "Graphics/RenderTaskProcessor.hpp"
+#include "amorphous/Graphics/RenderTask.hpp"
+#include "amorphous/Graphics/RenderTaskProcessor.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
 
 
 namespace amorphous

@@ -1,8 +1,8 @@
 
 #include "BSPTree_CollisionModel.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "3DMath/ConvexPolygon.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/3DMath/ConvexPolygon.hpp"
 
 
 namespace amorphous
