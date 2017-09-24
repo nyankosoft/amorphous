@@ -2,9 +2,9 @@
 #include "../GLExtensions.hpp"
 #include "../GLGraphicsDevice.hpp" // for LOG_GL_ERROR() macro
 #include "../GLTextureResourceVisitor.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

@@ -6,11 +6,11 @@
 #include <vector>
 using namespace std;
 
-#include "3DMath/AABTree.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/LightStructs.hpp"
-#include "Support/StatusDisplay/StatusDisplay.hpp"
-#include "Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
+#include "amorphous/3DMath/AABTree.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/LightStructs.hpp"
+#include "amorphous/Support/StatusDisplay/StatusDisplay.hpp"
+#include "amorphous/Support/StatusDisplay/StatusDisplayRenderer_D3DX.hpp"
 
 #include "Lightmap.hpp"
 

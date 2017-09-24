@@ -1,7 +1,7 @@
 #include "PyModule_shop.hpp"
-#include "GameCommon/PyModule_ShopMethods.hpp"
-#include "GameCommon/GameItemShop.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/GameCommon/PyModule_ShopMethods.hpp"
+#include "amorphous/GameCommon/GameItemShop.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <boost/python.hpp>
 
 

@@ -1,5 +1,5 @@
 #include "LogOutput_OnScreen.hpp"
-#include "Support/StringAux.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous

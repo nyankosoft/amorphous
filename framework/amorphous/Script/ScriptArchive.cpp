@@ -1,8 +1,8 @@
 #include "ScriptArchive.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/lfs.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/lfs.hpp"
 
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"

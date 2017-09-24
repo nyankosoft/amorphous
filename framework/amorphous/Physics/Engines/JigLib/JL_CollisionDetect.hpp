@@ -1,7 +1,7 @@
 #ifndef  __JL_COLLISIONDETECT_H__
 #define  __JL_COLLISIONDETECT_H__
 
-#include "Support/PreAllocDynamicLinkList.hpp"
+#include "amorphous/Support/PreAllocDynamicLinkList.hpp"
 
 
 namespace amorphous

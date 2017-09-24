@@ -1,7 +1,7 @@
 #include "Engines/PhysX/NxPhysicsEngine.hpp"
 #include "PhysicsEngine.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/SafeDelete.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

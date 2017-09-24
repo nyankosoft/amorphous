@@ -4,9 +4,9 @@
 #include "JL_ShapeDesc_TriangleMesh.hpp"
 #include "JL_LineSegment.hpp"
 //#include "Stage/trace.hpp"
-#include "3DMath/Plane.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/3DMath/Plane.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

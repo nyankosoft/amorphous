@@ -3,12 +3,12 @@
 
 
 #include "Support/array2d.hpp"
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/LightStructs.hpp"
-#include "Graphics/IndexedPolygon.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/Rect.hpp"
-#include "Graphics/RectTree.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/LightStructs.hpp"
+#include "amorphous/Graphics/IndexedPolygon.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/Rect.hpp"
+#include "amorphous/Graphics/RectTree.hpp"
 #include "fwd.hpp"
 #include "Lightmap.hpp"
 

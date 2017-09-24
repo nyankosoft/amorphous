@@ -2,16 +2,16 @@
 #include "AmbientOcclusionLightmapBuilder.hpp"
 #include "lightmapbuilder.h"
 
-#include "Graphics/Camera.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/D3DXMeshObject.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/D3DXMeshObject.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Plane.hpp"
-#include "Support/SafeDeleteVector.hpp"
-#include "Support/macro.h"
-#include "Support/BMPImageExporter.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Plane.hpp"
+#include "amorphous/Support/SafeDeleteVector.hpp"
+#include "amorphous/Support/macro.h"
+#include "amorphous/Support/BMPImageExporter.hpp"
 
 
 namespace amorphous

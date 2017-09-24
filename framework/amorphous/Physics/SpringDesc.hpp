@@ -1,9 +1,9 @@
 #ifndef  __PhysSpringDesc_H__
 #define  __PhysSpringDesc_H__
 
-#include "3DMath/precision.h"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "amorphous/3DMath/precision.h"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
 #include "fwd.hpp"
 
 

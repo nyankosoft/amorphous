@@ -3,8 +3,8 @@
 
 
 #include "fwd.hpp"
-#include "3DMath/Matrix34.hpp"
-#include "Support/SafeDelete.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 #include "JointDesc.hpp"
 
 

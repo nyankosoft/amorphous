@@ -2,13 +2,13 @@
 #define __LIGHTMAPBUILDER_H__
 
 
-#include "Graphics/LightStructs.hpp"
-#include "Graphics/MeshModel/3DMeshModelArchive.hpp"
-#include "Graphics/MeshModel/General3DMesh.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/FixedVector.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/Graphics/LightStructs.hpp"
+#include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
+#include "amorphous/Graphics/MeshModel/General3DMesh.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 #include "fwd.hpp"
 #include "LightmapTexture.hpp"

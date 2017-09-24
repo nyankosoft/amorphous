@@ -5,11 +5,11 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "3DMath/3DGameMath.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Macro.h"
-#include "Support/VectorRand.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/VectorRand.hpp"
 
 
 namespace amorphous

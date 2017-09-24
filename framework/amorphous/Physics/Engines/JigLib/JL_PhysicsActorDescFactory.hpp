@@ -3,8 +3,8 @@
 #define __CJL_PhysicsActorDescFACTORY_H__
 
 
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
 
 
 namespace amorphous

@@ -4,10 +4,10 @@
 #include "../Graphics/LightStructs.hpp"
 #include "../Stage/StaticGeometry.hpp"
 
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/fnop.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/fnop.hpp"
 
 
 namespace amorphous

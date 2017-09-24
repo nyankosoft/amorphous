@@ -4,7 +4,7 @@
 #include "MeshModel/General3DMesh.hpp"
 #include "MeshModel/General3DMeshFunctions.hpp"
 #include "MeshModel/PrimitiveShapeMeshes.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
 
 namespace amorphous

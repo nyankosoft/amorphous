@@ -1,12 +1,12 @@
 #include "GameCommon/RandomDirectionTable.hpp"
 #include "Physics/Actor.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/VectorRand.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
-#include "Stage/BEC_Destruction.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/Stage.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/VectorRand.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Stage/BEC_Destruction.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Stage/Stage.hpp"
 
 
 namespace amorphous

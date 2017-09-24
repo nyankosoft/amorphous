@@ -1,11 +1,11 @@
 #include "DirectInputMouse.hpp"
 
-#include "Support/Profile.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Input/InputHub.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Input/InputHub.hpp"
 
-#include "App/GameWindowManager_Win32.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/App/GameWindowManager_Win32.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
 
 
 namespace amorphous

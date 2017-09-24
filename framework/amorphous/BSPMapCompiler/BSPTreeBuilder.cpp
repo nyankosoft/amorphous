@@ -1,8 +1,8 @@
 #include "BSPTreeBuilder.hpp"
 #include "MapCompiler.h"
 
-#include "Stage/BinaryNode.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Stage/BinaryNode.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include <string>
 #include <algorithm>

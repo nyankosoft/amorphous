@@ -1,6 +1,6 @@
 #include "LightmapTexture.hpp"
-#include "Support/BitmapImage.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/BitmapImage.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

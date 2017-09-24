@@ -1,17 +1,17 @@
 
 #include "BSPMapCompiler.hpp"
 #include "BSPMapCompiler/lightmapbuilder.h"
-#include "Stage/StaticGeometry.hpp"
-#include "Stage/BSPMapFileExporter.hpp"
+#include "amorphous/Stage/StaticGeometry.hpp"
+#include "amorphous/Stage/BSPMapFileExporter.hpp"
 
-#include "LightWave/BSPMapData_LW.hpp"
+#include "amorphous/LightWave/BSPMapData_LW.hpp"
 
-#include "Support/TextFileScanner.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/fnop.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/fnop.hpp"
 using namespace fnop;
 
-#include "3DMath/3DStructs.hpp"
+#include "amorphous/3DMath/3DStructs.hpp"
 //#include "3DMath/PolygonMesh.hpp"
 
 #include <direct.h>

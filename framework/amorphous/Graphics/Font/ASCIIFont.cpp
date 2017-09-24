@@ -1,7 +1,7 @@
 #include "ASCIIFont.hpp"
 #include "amorphous/Graphics/Rect.hpp"
 #include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
-#include "Support/lfs.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/FreeTypeAux.hpp"
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"

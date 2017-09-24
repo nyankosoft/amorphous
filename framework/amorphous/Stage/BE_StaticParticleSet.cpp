@@ -3,13 +3,13 @@
 #include "CopyEntity.hpp"
 //#include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/RectTriListIndex.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/Macro.h"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/RectTriListIndex.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

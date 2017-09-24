@@ -3,9 +3,9 @@
 
 #include <float.h>
 
-#include "3DMath/precision.h"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/3DMath/precision.h"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 #include "fwd.hpp"
 
 

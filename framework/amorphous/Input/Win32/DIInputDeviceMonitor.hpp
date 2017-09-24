@@ -8,10 +8,10 @@
 #include <boost/shared_ptr.hpp>
 #include <tbb/concurrent_queue.h>
 #include <tbb/mutex.h>
-#include "Input/fwd.hpp"
-#include "Input/Win32/DirectInput.hpp"
-#include "Support/thread_starter.hpp"
-#include "Support/singleton.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Input/Win32/DirectInput.hpp"
+#include "amorphous/Support/thread_starter.hpp"
+#include "amorphous/Support/singleton.hpp"
 
 
 namespace amorphous

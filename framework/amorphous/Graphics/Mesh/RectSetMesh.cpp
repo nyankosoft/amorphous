@@ -1,6 +1,6 @@
 #include "RectSetMesh.hpp"
-#include "Graphics/RectTriListIndex.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/RectTriListIndex.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

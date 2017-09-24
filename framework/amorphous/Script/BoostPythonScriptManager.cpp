@@ -1,7 +1,7 @@
 #include "BoostPythonScriptManager.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Profile.hpp"
 #include <boost/python.hpp>
 
 

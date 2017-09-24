@@ -1,7 +1,7 @@
 #include "Lightmap.hpp"
-#include "Support/Vec3_StringAux.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Graphics/Direct3D/Conversions.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Graphics/Direct3D/Conversions.hpp"
 
 
 namespace amorphous
