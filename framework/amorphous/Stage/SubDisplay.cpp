@@ -2,15 +2,15 @@
 #include "Stage.hpp"
 #include "ScreenEffectManager.hpp"
 
-#include "Graphics/TextureStage.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "3DMath/3DGameMath.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/RenderTask.hpp"
-#include "Graphics/RenderTaskProcessor.hpp"
-#include "Support/SafeDeleteVector.hpp"
+#include "amorphous/Graphics/TextureStage.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/RenderTask.hpp"
+#include "amorphous/Graphics/RenderTaskProcessor.hpp"
+#include "amorphous/Support/SafeDeleteVector.hpp"
 
 
 namespace amorphous

@@ -4,8 +4,8 @@
 #include <string>
 using namespace std;
 
-#include "3DMath/Vector3.hpp"
-#include "3DMath/Matrix33.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Matrix33.hpp"
 
 
 namespace amorphous

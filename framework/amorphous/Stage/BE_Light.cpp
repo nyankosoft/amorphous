@@ -2,10 +2,10 @@
 
 #include "GameMessage.hpp"
 #include "Stage.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

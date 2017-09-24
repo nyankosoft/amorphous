@@ -1,8 +1,8 @@
 #include "BE_ExplosionSmoke.hpp"
 #include "CopyEntity.hpp"
 #include "Stage.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/VectorRand.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/VectorRand.hpp"
 
 
 namespace amorphous

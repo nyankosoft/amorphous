@@ -6,10 +6,10 @@
 #include "CopyEntity.hpp"
 #include "EnemyState.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
 
-#include "Sound/SoundHandle.hpp"
-#include "GameCommon/RangedSet.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
+#include "amorphous/GameCommon/RangedSet.hpp"
 
 
 namespace amorphous

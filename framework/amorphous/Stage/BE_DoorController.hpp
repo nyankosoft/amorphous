@@ -6,10 +6,10 @@
 #include "BaseEntityHandle.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
 
-#include "Support/FixedVector.hpp"
-#include "3DMath/Matrix34.hpp"
+#include "amorphous/Support/FixedVector.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
 
-#include "Sound/SoundHandle.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
 
 
 namespace amorphous

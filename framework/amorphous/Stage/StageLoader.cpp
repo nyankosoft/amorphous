@@ -1,7 +1,7 @@
 #include "StageLoader.hpp"
 #include "Stage.hpp"
-#include "Script/PyModule_StageUtility.hpp"
-#include "Graphics/ResourceLoadingStateHolder.hpp"
+#include "amorphous/Script/PyModule_StageUtility.hpp"
+#include "amorphous/Graphics/ResourceLoadingStateHolder.hpp"
 
 
 namespace amorphous

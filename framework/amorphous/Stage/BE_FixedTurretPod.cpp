@@ -3,11 +3,11 @@
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Graphics/GraphicsComponentCollector.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Serialization/Serialization_3DMath.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Serialization/Serialization_3DMath.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

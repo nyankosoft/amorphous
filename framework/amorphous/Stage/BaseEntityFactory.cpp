@@ -1,5 +1,5 @@
 #include "BaseEntityFactory.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "BaseEntity.hpp"
 #include "BE_AreaSensor.hpp"

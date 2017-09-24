@@ -1,14 +1,14 @@
 #include "BE_PhysicsBaseEntity.hpp"
 #include "EntityCollisionGroups.hpp"
 #include "CopyEntity.hpp"
-#include "3DMath/PrimitivePolygonModelMaker.hpp"
-#include "Graphics/ShapeContainers.hpp"
-#include "Physics/Enums.hpp"
-#include "Physics/PhysicsEngine.hpp"
-#include "Physics/Preprocessor.hpp"
-#include "Support/SafeDeleteVector.hpp"
-#include "Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/3DMath/PrimitivePolygonModelMaker.hpp"
+#include "amorphous/Graphics/ShapeContainers.hpp"
+#include "amorphous/Physics/Enums.hpp"
+#include "amorphous/Physics/PhysicsEngine.hpp"
+#include "amorphous/Physics/Preprocessor.hpp"
+#include "amorphous/Support/SafeDeleteVector.hpp"
+#include "amorphous/Utilities/Physics/PhysicsShapeMakerVisitor.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

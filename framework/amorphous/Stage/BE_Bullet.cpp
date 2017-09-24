@@ -7,14 +7,14 @@
 #include "Stage.hpp"
 #include "SurfaceMaterial.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "3DMath/3DGameMath.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/PrimitiveRenderer.hpp"
-#include "Sound/SoundManager.hpp"
-#include "Support/ParamLoader.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/PrimitiveRenderer.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
+#include "amorphous/Support/ParamLoader.hpp"
 
 
 namespace amorphous

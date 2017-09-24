@@ -1,9 +1,9 @@
 #include "BE_Cloud.hpp"
-#include "3DMath/MatrixConversions.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
 #include "GameMessage.hpp"
 #include "CopyEntity.hpp"
 #include "Stage.hpp"
-#include "Support/MTRand.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 
 namespace amorphous

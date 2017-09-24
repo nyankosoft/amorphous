@@ -4,10 +4,10 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "3DMath/MatrixConversions.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
 
 
 namespace amorphous

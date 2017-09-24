@@ -1,9 +1,9 @@
 #include "BE_DirectionalLight.hpp"
 #include "Stage.hpp"
 #include "LightEntity.hpp"
-#include "Graphics/Camera.hpp"
-#include "3DMath/3DGameMath.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

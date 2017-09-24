@@ -5,10 +5,10 @@
 #include <boost/thread/thread.hpp>
 #include "BaseEntity.hpp"
 #include "Stage.hpp" // CStage::GetGravityAccel()
-#include "Graphics/FloatRGBColor.hpp"
-#include "Graphics/Mesh/CustomMesh.hpp"
-#include "Support/FloatLookUpTable.hpp"
-#include "Support/SafeDelete.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
+#include "amorphous/Graphics/Mesh/CustomMesh.hpp"
+#include "amorphous/Support/FloatLookUpTable.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 
 
 namespace amorphous

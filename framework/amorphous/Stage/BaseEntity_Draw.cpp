@@ -7,19 +7,19 @@
 #include "LightEntity.hpp"
 #include "MirroredSceneTextureParam.hpp"
 
-#include "Graphics/Camera.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/ShaderLightManager.hpp"
-#include "Graphics/Shader/BlendTransformsLoader.hpp"
-#include "Graphics/Shader/GenericShaderGenerator.hpp"
-#include "Graphics/MeshGenerators/MeshGenerators.hpp"
-#include "Graphics/Mesh/SkeletalMesh.hpp"
-#include "Graphics/ShadowMapManager.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderLightManager.hpp"
+#include "amorphous/Graphics/Shader/BlendTransformsLoader.hpp"
+#include "amorphous/Graphics/Shader/GenericShaderGenerator.hpp"
+#include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/Graphics/ShadowMapManager.hpp"
 
-#include "Support/stl_aux.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Macro.h"
+#include "amorphous/Support/stl_aux.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous

@@ -6,8 +6,8 @@
 #include "EntityMotionPathRequest.hpp"
 
 #include "BEC_PseudoAircraft.hpp"
-#include "Item/GI_Aircraft.hpp"
-#include "Support/MTRand.hpp"
+#include "amorphous/Item/GI_Aircraft.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 
 namespace amorphous

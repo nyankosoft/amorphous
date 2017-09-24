@@ -1,8 +1,8 @@
 #include "SurfaceMaterial.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Sound/Serialization_SoundHandle.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/Serialization/SerializationEx.hpp"
+#include "amorphous/Sound/Serialization_SoundHandle.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/Serialization/SerializationEx.hpp"
 
 
 namespace amorphous

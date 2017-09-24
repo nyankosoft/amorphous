@@ -2,9 +2,9 @@
 #define __BE_Decal_H__
 
 #include "BaseEntity.hpp"
-#include "../Graphics/2DPrimitive/2DRect.hpp"
-//#include "../Graphics/2DPrimitive/2DRectSet.hpp"
-#include "../Graphics/Mesh/RectSetMesh.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+//#include "amorphous/Graphics/2DPrimitive/2DRectSet.hpp"
+#include "amorphous/Graphics/Mesh/RectSetMesh.hpp"
 
 
 namespace amorphous

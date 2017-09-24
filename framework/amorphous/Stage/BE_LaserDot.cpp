@@ -2,12 +2,12 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "3DMath/MatrixConversions.hpp"
-#include "3DMath/3DGameMath.hpp"
-#include "Graphics/GraphicsDevice.hpp"
-#include "Graphics/TextureStage.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/TextureStage.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
 
 
 namespace amorphous

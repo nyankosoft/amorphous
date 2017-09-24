@@ -5,11 +5,11 @@
 #include "CopyEntity.hpp"
 #include "LightEntity.hpp"
 
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/HemisphericLight.hpp"
-#include "Support/Serialization/Serialization_Light.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/prealloc_pool.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/HemisphericLight.hpp"
+#include "amorphous/Support/Serialization/Serialization_Light.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/prealloc_pool.hpp"
 
 
 namespace amorphous

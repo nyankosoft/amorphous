@@ -10,10 +10,10 @@
 #include "Serialization_BaseEntityHandle.hpp"
 #include "EntityMotionPathRequest.hpp"
 
-#include "3DMath/MathMisc.hpp"
-#include "Input/InputHub.hpp"
-#include "Input/InputHandler_Cutscene.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/Input/InputHandler_Cutscene.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

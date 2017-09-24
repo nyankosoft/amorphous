@@ -1,9 +1,9 @@
 #include "BE_Decal.hpp"
 
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Shader/FixedFunctionPipelineManager.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/Profile.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/Profile.hpp"
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"

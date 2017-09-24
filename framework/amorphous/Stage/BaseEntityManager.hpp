@@ -5,10 +5,10 @@
 #include <vector>
 #include <map>
 #include "fwd.hpp"
-#include "Support/singleton.hpp"
-#include "Support/Serialization/Serialization.hpp"
-#include "Support/Serialization/ArchiveObjectFactory.hpp"
-#include "Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/singleton.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/Serialization/ArchiveObjectFactory.hpp"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
 namespace amorphous

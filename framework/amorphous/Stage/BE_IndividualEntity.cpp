@@ -5,8 +5,8 @@
 #include "EntityRenderManager.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Physics/Actor.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous

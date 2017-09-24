@@ -1,6 +1,6 @@
 #include "StageLightUtility.hpp"
-#include "Stage/LightEntity.hpp"
-#include "3DMath/3DGameMath.hpp"
+#include "amorphous/Stage/LightEntity.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
 
 
 namespace amorphous

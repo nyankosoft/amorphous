@@ -2,10 +2,10 @@
 #define  __AlphaEntity_H__
 
 
-#include "Stage/fwd.hpp"
-#include "Stage/CopyEntity.hpp"
-#include "Stage/EntityMotionPathRequest.hpp"
-#include "Support/shared_prealloc_pool.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
+#include "amorphous/Stage/EntityMotionPathRequest.hpp"
+#include "amorphous/Support/shared_prealloc_pool.hpp"
 
 
 namespace amorphous

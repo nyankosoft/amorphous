@@ -4,7 +4,7 @@
 #include "CopyEntity.hpp"
 #include "trace.hpp"
 #include "Stage.hpp"
-#include "Sound/SoundManager.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
 
 
 namespace amorphous

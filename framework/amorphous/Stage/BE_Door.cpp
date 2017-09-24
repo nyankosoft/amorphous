@@ -3,9 +3,9 @@
 #include "trace.hpp"
 #include "Stage.hpp"
 #include "GameMessage.hpp"
-#include "Sound/SoundManager.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
-#include "Physics/Actor.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Physics/Actor.hpp"
 
 
 namespace amorphous

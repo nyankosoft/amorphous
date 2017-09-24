@@ -3,9 +3,9 @@
 #include "EntityRenderManager.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Physics/Actor.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

@@ -1,7 +1,7 @@
 #include "StageGraph.hpp"
-#include "3DMath/Vector3.hpp"
-#include "Support/SafeDelete.hpp"
-#include "Script/PythonScriptManager.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
+#include "amorphous/Script/PythonScriptManager.hpp"
 
 
 namespace amorphous

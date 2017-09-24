@@ -5,11 +5,11 @@
 #include "ViewFrustumTest.hpp"
 #include "Stage.hpp"
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Physics/Actor.hpp"
-#include "Support/Profile.hpp"
-#include "Support/Macro.h"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Vec3_StringAux.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Macro.h"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
 
 
 namespace amorphous

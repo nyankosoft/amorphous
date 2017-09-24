@@ -2,23 +2,23 @@
 #include "bsptree.hpp"
 #include "Stage.hpp" // used in CStaticGeometry::CreateCollisionGeometry() and dtor
 
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/Mesh/BasicMesh.hpp"
-#include "Graphics/GraphicsResourceCacheManager.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/Camera.hpp"
+#include "amorphous/Graphics/Mesh/BasicMesh.hpp"
+#include "amorphous/Graphics/GraphicsResourceCacheManager.hpp"
 
-#include "Physics/PhysicsEngine.hpp"
-#include "Physics/Stream.hpp"
-#include "Physics/TriangleMeshShapeDesc.hpp"
-#include "Physics/Scene.hpp"
-#include "Physics/Actor.hpp"
-#include "Physics/RaycastHit.hpp"
+#include "amorphous/Physics/PhysicsEngine.hpp"
+#include "amorphous/Physics/Stream.hpp"
+#include "amorphous/Physics/TriangleMeshShapeDesc.hpp"
+#include "amorphous/Physics/Scene.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Physics/RaycastHit.hpp"
 
-#include "Support/Serialization/BinaryDatabase.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/StringAux.hpp"
-#include "Support/macro.h"
+#include "amorphous/Support/Serialization/BinaryDatabase.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/Support/macro.h"
 #include <boost/filesystem.hpp>
 
 

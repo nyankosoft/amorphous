@@ -3,7 +3,7 @@
 
 
 #include "BE_PhysicsBaseEntity.hpp"
-#include "Sound/SoundHandle.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
 
 
 namespace amorphous

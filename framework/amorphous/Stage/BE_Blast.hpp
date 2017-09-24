@@ -3,7 +3,7 @@
 
 #include "BaseEntity.hpp"
 #include "CopyEntity.hpp"
-#include "Graphics/fwd.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 
 
 namespace amorphous

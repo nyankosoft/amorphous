@@ -2,7 +2,7 @@
 #define  __SurfaceMaterialHandle_H__
 
 
-#include "Support/NamedResourceHandle.hpp"
+#include "amorphous/Support/NamedResourceHandle.hpp"
 
 
 namespace amorphous

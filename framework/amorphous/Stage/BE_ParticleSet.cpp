@@ -5,17 +5,17 @@
 //#include "ScreenEffectManager.hpp"
 #include "EntityRenderManager.hpp"
 
-#include "3DMath/MathMisc.hpp"
-#include "3DMath/MatrixConversions.hpp"
-//#include "Graphics/Shader/2DPrimitiveCommonShaders.hpp"
-#include "Graphics/Shader/CommonShaders.hpp"
-#include "Graphics/Shader/ShaderManager.hpp"
-#include "Graphics/RectTriListIndex.hpp"
-#include "Graphics/MeshGenerators/MeshGenerators.hpp" // box mesh for debugging
-#include "Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
-#include "Graphics/TextureGenerators/ParticleTextureGenerator.hpp"
-#include "Support/Profile.hpp"
-#include "Support/MTRand.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
+//#include "amorphous/Graphics/Shader/2DPrimitiveCommonShaders.hpp"
+#include "amorphous/Graphics/Shader/CommonShaders.hpp"
+#include "amorphous/Graphics/Shader/ShaderManager.hpp"
+#include "amorphous/Graphics/RectTriListIndex.hpp"
+#include "amorphous/Graphics/MeshGenerators/MeshGenerators.hpp" // box mesh for debugging
+#include "amorphous/Graphics/TextureGenerators/SingleColorTextureGenerator.hpp"
+#include "amorphous/Graphics/TextureGenerators/ParticleTextureGenerator.hpp"
+#include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 
 namespace amorphous

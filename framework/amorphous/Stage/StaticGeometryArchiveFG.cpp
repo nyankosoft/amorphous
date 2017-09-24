@@ -1,7 +1,7 @@
 #include "StaticGeometryArchiveFG.hpp"
 
-#include "Support/StringAux.hpp"
-#include "3DMath/stream.hpp"
+#include "amorphous/Support/StringAux.hpp"
+#include "amorphous/3DMath/stream.hpp"
 
 
 namespace amorphous

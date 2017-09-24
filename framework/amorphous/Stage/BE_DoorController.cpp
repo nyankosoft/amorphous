@@ -6,9 +6,9 @@
 #include "GameMessage.hpp"
 
 #include "Serialization_BaseEntityHandle.hpp"
-#include "Sound/Serialization_SoundHandle.hpp"
-#include "Support/Serialization/Serialization_FixedVector.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Sound/Serialization_SoundHandle.hpp"
+#include "amorphous/Support/Serialization/Serialization_FixedVector.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

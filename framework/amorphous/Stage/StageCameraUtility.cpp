@@ -1,6 +1,6 @@
 #include "StageCameraUtility.hpp"
 #include "GameMessage.hpp"
-#include "3DMath/3DGameMath.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
 
 
 namespace amorphous

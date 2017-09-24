@@ -2,9 +2,9 @@
 #include "CopyEntity.hpp"
 #include "CopyEntityDesc.hpp"
 #include "Stage.hpp"
-#include "../Stage/PlayerInfo.hpp"
-#include "../Stage/HUD_PlayerBase.hpp"
-#include "../Script/GameEventTypes.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
+#include "amorphous/Stage/HUD_PlayerBase.hpp"
+#include "amorphous/Script/GameEventTypes.hpp"
 
 
 namespace amorphous

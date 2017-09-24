@@ -1,11 +1,11 @@
 #include "AlphaEntity.hpp"
 
-#include "Stage/Stage.hpp"
-#include "Stage/CopyEntityDesc.hpp"
-#include "Stage/GameMessage.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Support/memory_helpers.hpp"
-#include "Support/MTRand.hpp"
+#include "amorphous/Stage/Stage.hpp"
+#include "amorphous/Stage/CopyEntityDesc.hpp"
+#include "amorphous/Stage/GameMessage.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/MTRand.hpp"
 
 
 namespace amorphous

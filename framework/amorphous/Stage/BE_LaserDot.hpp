@@ -3,8 +3,8 @@
 
 
 #include "BaseEntity.hpp"
-#include "Graphics/FloatRGBAColor.hpp"
-#include "Graphics/3DRect.hpp"
+#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include "amorphous/Graphics/3DRect.hpp"
 
 
 namespace amorphous

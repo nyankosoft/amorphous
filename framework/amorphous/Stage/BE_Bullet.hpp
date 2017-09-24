@@ -6,8 +6,8 @@
 #include "Stage.hpp"
 #include "BaseEntityHandle.hpp"
 
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/Mesh/RectSetMesh.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/Mesh/RectSetMesh.hpp"
 
 
 namespace amorphous

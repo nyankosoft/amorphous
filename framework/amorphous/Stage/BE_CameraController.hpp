@@ -5,10 +5,10 @@
 #include "BaseEntityHandle.hpp"
 #include "CopyEntity.hpp"
 #include "EntityHandle.hpp"
-#include "Graphics/TextureRenderTarget.hpp"
-#include "Support/FixedVector.hpp"
+#include "amorphous/Graphics/TextureRenderTarget.hpp"
+#include "amorphous/Support/FixedVector.hpp"
 
-#include "../base.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous

@@ -6,13 +6,13 @@
 #include "Stage.hpp"
 #include "PlayerInfo.hpp"
 
-#include "Physics/Actor.hpp"
-#include "Item/ItemDatabaseManager.hpp"
-#include "Item/GI_Weapon.hpp"
-#include "Item/GI_Ammunition.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Log/StateLog.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
+#include "amorphous/Item/GI_Weapon.hpp"
+#include "amorphous/Item/GI_Ammunition.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
 
 
 namespace amorphous

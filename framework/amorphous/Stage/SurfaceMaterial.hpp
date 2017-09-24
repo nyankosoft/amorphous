@@ -4,11 +4,11 @@
 
 #include <vector>
 #include <string>
-#include "Sound/SoundHandle.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
 #include "BaseEntityHandle.hpp"
 //#include "Support/FixedVector.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/Serialization/Serialization.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/Serialization/Serialization.hpp"
 
 
 namespace amorphous

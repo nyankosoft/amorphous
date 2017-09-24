@@ -9,14 +9,14 @@
 #include "PlayerInfo.hpp"
 #include "BE_HomingMissile.hpp"
 
-#include "Graphics/Mesh/SkeletalMesh.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "Physics/Actor.hpp"
-#include "Item/ItemDatabaseManager.hpp"
-#include "Support/MTRand.hpp"
-#include "Support/Log/DefaultLog.hpp"
-#include "Support/Log/StateLog.hpp"
-#include "Utilities/TextFileScannerExtensions.hpp"
+#include "amorphous/Graphics/Mesh/SkeletalMesh.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/Physics/Actor.hpp"
+#include "amorphous/Item/ItemDatabaseManager.hpp"
+#include "amorphous/Support/MTRand.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/StateLog.hpp"
+#include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 
 
 namespace amorphous

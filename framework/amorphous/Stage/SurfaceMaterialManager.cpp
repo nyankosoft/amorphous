@@ -1,9 +1,9 @@
 
 #include "SurfaceMaterialManager.hpp"
 
-#include "Support/memory_helpers.hpp"
-#include "Support/TextFileScanner.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/memory_helpers.hpp"
+#include "amorphous/Support/TextFileScanner.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
