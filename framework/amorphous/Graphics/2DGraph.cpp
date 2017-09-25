@@ -4,9 +4,9 @@
 //===============================================================================
 
 #include "2DGraph.hpp"
-#include "Graphics/Font/TextureFont.hpp"
-#include "Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
-#include "Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
+#include "amorphous/Graphics/Font/TextureFont.hpp"
+#include "amorphous/Graphics/Font/BitstreamVeraSansMono_Bold_256.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 
 
 namespace amorphous

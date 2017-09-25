@@ -2,8 +2,6 @@
 #define  __GraphicsResourceHandle_H__
 
 
-#include <string>
-
 #include "fwd.hpp"
 #include "GraphicsResources.hpp"
 #include "GraphicsResourceEntries.hpp"

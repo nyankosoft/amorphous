@@ -16,9 +16,7 @@
 namespace amorphous
 {
 using namespace serialization;
-
-using std::string;
-using namespace boost;
+using namespace std;
 
 
 //==================================================================================================
@@ -284,7 +282,7 @@ shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh )
 	if( !pMeshImpl )
 		return shared_ptr<CustomMesh>();
 
-	shared_ptr<CustomMesh> pCustomMesh = boost::dynamic_pointer_cast<CustomMesh,MeshImpl>( pMeshImpl );
+	shared_ptr<CustomMesh> pCustomMesh = std::dynamic_pointer_cast<CustomMesh,MeshImpl>( pMeshImpl );
 
 	return pCustomMesh;
 }

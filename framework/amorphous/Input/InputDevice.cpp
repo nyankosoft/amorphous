@@ -9,7 +9,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 //=============================================================================
@@ -49,7 +48,7 @@ void InputDevice::UpdateInputState( const InputData& input_data )
 		key.m_State = CInputState::PRESSED;
 
 		// schedule the first auto repeat event
-		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetTimeMS() + FIRST_AUTO_REPEAT_INTERVAL_MS;
+		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetElapsedTimeMilliseconds() + FIRST_AUTO_REPEAT_INTERVAL_MS;
 
 		if( pressed_key_list.size() < InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES )
 		{
@@ -155,7 +154,7 @@ InputDeviceHub::InputDeviceHub()
 
 void InputDeviceHub::RegisterInputDevice( InputDevice *pDevice )
 {
-	boost::mutex::scoped_lock(m_Mutex);
+	std::lock_guard<std::mutex> lock(m_Mutex);
 
 	m_vecpInputDevice.push_back( pDevice );
 }
@@ -217,7 +216,7 @@ void InputDeviceHub::UnregisterInputDeviceFromGroup( InputDevice *pDevice )
 
 void InputDeviceHub::UnregisterInputDevice( InputDevice *pDevice )
 {
-	boost::mutex::scoped_lock(m_Mutex);
+	std::lock_guard<std::mutex> lock(m_Mutex);
 
 	for( size_t i=0; i<m_vecpInputDevice.size(); i++ )
 	{
@@ -267,7 +266,7 @@ void InputDeviceHub::SendAutoRepeat( InputDeviceGroup& group )
 	int i, num_keys = group.m_PressedKeyList.size();
 	for( i=0; i<num_keys; i++ )
 	{
-		unsigned long current_time = GlobalTimer().GetTimeMS();
+		unsigned long current_time = GlobalTimer().GetElapsedTimeMilliseconds();
 		InputData input_data;
 
 		CInputState& pressed_key_state = group.m_aInputState[ group.m_PressedKeyList[i] ];
@@ -302,7 +301,7 @@ void InputDeviceHub::SendAutoRepeat( InputDeviceGroup& group )
 
 void InputDeviceHub::GetInputDeviceStatus( std::vector<std::string>& dest_text_buffer )
 {
-	boost::mutex::scoped_lock(m_Mutex);
+	std::lock_guard<std::mutex> lock(m_Mutex);
 
 	dest_text_buffer.resize( 2 );
 	dest_text_buffer[0] = fmt_string( "Input Device(s) (%d found)\n", (int)m_vecpInputDevice.size() );

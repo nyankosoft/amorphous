@@ -35,11 +35,17 @@ public:
 	/**
 	\brief Returns the elapsed time in milliseconds.
 	*/
-	inline unsigned long GetElapsedTimeMilliseconds() const
+	inline unsigned long GetElapsedTimeInMilliseconds() const
 	{
 		auto now = m_Clock.now();
 		std::chrono::duration<double, std::milli> elapsed = now - m_StartTime;
 		return (unsigned long)elapsed.count();
+	}
+
+	inline double GetElapsedTimeInSeconds() const
+	{
+		unsigned long milliseconds = GetElapsedTimeInMilliseconds();
+		return (double)milliseconds * 0.001;
 	}
 };
 

@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <boost/thread.hpp>
+#include <thread>
 #include <memory>
 
 #include "amorphous/3DMath/Vector3.hpp"

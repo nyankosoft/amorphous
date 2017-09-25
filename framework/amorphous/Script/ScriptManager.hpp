@@ -6,7 +6,7 @@
 #include <string>
 #include <sys/stat.h>
 #include <boost/python.hpp>
-#include <boost/thread.hpp>
+#include <thread>
 #include "ScriptArchive.hpp"
 #include "amorphous/Support/singleton.hpp"
 

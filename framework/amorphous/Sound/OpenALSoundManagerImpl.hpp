@@ -5,7 +5,7 @@
 #include "Sound/SoundManagerImpl.hpp"
 #include "Sound/OpenALSoundSourceImpl.hpp"
 #include <memory>
-#include <boost/thread.hpp>
+#include <thread>
 #include <al.h>
 #include <alut.h>
 #include <list>

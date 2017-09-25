@@ -6,15 +6,13 @@
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
 
 
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 TextureHandle RenderTargetTextureHolder::GetTexture()
@@ -271,7 +269,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	if( !prev_scene_texture.IsLoaded() )
 		int texture_is_not_loaded = 1;
 
-	uint num_loops = take_min( m_MaxInputTextureIndex + 1, numof(m_SetSamplerParameters) );
+	uint num_loops = take_min<uint>( m_MaxInputTextureIndex + 1, numof(m_SetSamplerParameters) );
 	for( uint i=0; i<num_loops; i++ )
 	{
 		if( m_SetSamplerParameters[i] )
@@ -281,7 +279,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 		}
 	}
 
-	num_loops = take_min( m_MaxInputTextureIndex + 1, numof(m_SetTextureWrapParameters) );
+	num_loops = take_min<uint>( m_MaxInputTextureIndex + 1, numof(m_SetTextureWrapParameters) );
 	for( uint i=0; i<num_loops; i++ )
 	{
 		if( m_SetTextureWrapParameters[i] )

@@ -3,11 +3,11 @@
 
 
 #include "StringAux.hpp"
-
-#include "../3DMath/AABB3.hpp"
-#include "../3DMath/OBB3.hpp"
-#include "../3DMath/Quaternion.hpp"
-#include "../3DMath/AABB2.hpp"
+#include "amorphous/Platform.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
+#include "amorphous/3DMath/OBB3.hpp"
+#include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/3DMath/AABB2.hpp"
 
 
 namespace amorphous

@@ -12,7 +12,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 static const std::string gs_FontBasicInfoKeyname = "Base";

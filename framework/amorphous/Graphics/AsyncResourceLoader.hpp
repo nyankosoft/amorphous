@@ -3,7 +3,7 @@
 
 
 #include <queue>
-#include <boost/thread.hpp>
+#include <thread>
 #include "fwd.hpp"
 #include "GraphicsResourceManager.hpp"
 

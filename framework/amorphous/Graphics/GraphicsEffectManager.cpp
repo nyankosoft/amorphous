@@ -1,7 +1,7 @@
 #include "GraphicsEffectManager.hpp"
 #include "GraphicsElementManager.hpp"
-#include "amorphousSupport/Timer.hpp"
-#include "amorphousSupport/Log/DefaultLog.hpp"
+#include "amorphous/Support/Timer.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include <algorithm>
 
@@ -9,8 +9,7 @@
 namespace amorphous
 {
 
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 /**
@@ -373,7 +372,7 @@ GraphicsElementLinearAnimation( pTargetElement, start_time, 0.0f ), m_CharsPerSe
 GraphicsElementAnimationManager::GraphicsElementAnimationManager()
 {
 	m_pTimer = new Timer();
-	m_pTimer->Start();
+	//m_pTimer->Start();
 
 	SetTimeOffset();
 
@@ -418,7 +417,7 @@ void GraphicsElementAnimationManager::Release()
 void GraphicsElementAnimationManager::SetTimeOffset( double time )
 {
 	if( time < 0 )
-		m_fTimeOffset = m_pTimer->GetTime();
+		m_fTimeOffset = m_pTimer->GetElapsedTimeInSeconds();
 	else
 		m_fTimeOffset = time;
 }
@@ -742,7 +741,7 @@ GraphicsElementAnimationHandle GraphicsElementAnimationManager::AddGraphicsEffec
 
 void GraphicsElementAnimationManager::UpdateEffects( double dt )
 {
-	const double current_time = m_pTimer->GetTime();
+	const double current_time = m_pTimer->GetElapsedTimeInSeconds();
 
 	vector<GraphicsElementAnimation *>::iterator itr;
 	for( itr = m_vecpEffect.begin();

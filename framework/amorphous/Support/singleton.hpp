@@ -2,7 +2,7 @@
 #define __GDS_SINGLETON_H__
 
 
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 
 
 namespace amorphous
@@ -66,7 +66,7 @@ public:
 
 protected:
 
-	static boost::mutex m_Mutex;
+	static std::mutex m_Mutex;
 
 	/// define as static to guarantee that the pointer is NULL.
 	/// during the link phase, which comes before the initialization of non-local static objects.
@@ -78,7 +78,7 @@ protected:
 // static objects
 template <class T> T* singleton<T>::m_lpObj = 0;
 
-template <class T> boost::mutex singleton<T>::m_Mutex;
+template <class T> std::mutex singleton<T>::m_Mutex;
 
 
 template <class T> void	singleton<T>::CheckInstance()
@@ -86,7 +86,7 @@ template <class T> void	singleton<T>::CheckInstance()
 	if (m_lpObj==NULL)
 	{
 		// Do double-checked locking
-		boost::mutex::scoped_lock scoped_lock(m_Mutex);
+		std::lock_guard<std::mutex> lock(m_Mutex);
 		if (m_lpObj == NULL)
 		{
 			m_lpObj = new T;
@@ -100,7 +100,7 @@ template <class T> void	singleton<T>::Release()
 	if (m_lpObj!=NULL)
 	{
 		// Do double-checked locking
-		boost::mutex::scoped_lock scoped_lock(m_Mutex);
+		std::lock_guard<std::mutex> lock(m_Mutex);
 		if (m_lpObj != NULL)
 		{
 			delete m_lpObj;

@@ -10,7 +10,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 const std::string TextureFont::ms_Characters = " !\"#$%&'()*+,-./0123456789:;<=>?`ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~";

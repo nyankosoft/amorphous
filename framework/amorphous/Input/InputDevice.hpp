@@ -3,7 +3,7 @@
 
 
 #include <memory>
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 #include "fwd.hpp"
 #include "InputHub.hpp"
 #include "InputDeviceGroup.hpp"
@@ -95,7 +95,7 @@ class InputDeviceHub
 
 	std::vector< std::shared_ptr<InputDeviceGroup> > m_vecpGroup;
 
-	boost::mutex m_Mutex;
+	std::mutex m_Mutex;
 
 public:
 

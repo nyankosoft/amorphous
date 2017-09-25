@@ -33,7 +33,7 @@ private:
 
 	std::vector< std::shared_ptr<GraphicsResourceEntry> > m_vecpResourceEntry;
 
-	boost::mutex m_ResourceLock;
+	std::mutex m_ResourceLock;
 
 private:
 

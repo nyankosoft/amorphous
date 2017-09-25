@@ -12,8 +12,7 @@
 namespace amorphous
 {
 
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 class DoubleConeMeshGenerator : public MeshGenerator

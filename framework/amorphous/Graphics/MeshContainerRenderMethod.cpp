@@ -11,10 +11,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using std::map;
-using namespace boost;
+using namespace std;
 
 
 /*

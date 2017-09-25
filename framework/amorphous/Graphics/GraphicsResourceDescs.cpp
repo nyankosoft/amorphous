@@ -2,7 +2,7 @@
 #include "TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "TextureGenerators/TextureGeneratorFactory.hpp"
 #include "Shader/ShaderGenerator.hpp"
-#include "XML.hpp"
+#include "amorphous/XML.hpp"
 
 
 namespace amorphous

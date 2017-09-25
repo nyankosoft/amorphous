@@ -8,7 +8,7 @@
 #include "amorphous/Support/prealloc_pool.hpp"
 #include "amorphous/Support/Macro.h"
 #include <memory>
-#include <boost/thread.hpp>
+#include <thread>
 #include <al.h>
 #include <alut.h>
 #include <vorbis/vorbisfile.h>

@@ -3,8 +3,7 @@
 
 
 #include <sys/stat.h>
-#include <string>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "fwd.hpp"
 #include "GraphicsResources.hpp"
@@ -152,9 +151,9 @@ inline void GraphicsResourceEntry::SetResource( std::shared_ptr<GraphicsResource
 {
 	m_pResource = pResource;
 
-	m_pTextureResource = boost::dynamic_pointer_cast<TextureResource,GraphicsResource>(pResource);
-	m_pMeshResource    = boost::dynamic_pointer_cast<MeshResource,GraphicsResource>(pResource);
-	m_pShaderResource  = boost::dynamic_pointer_cast<ShaderResource,GraphicsResource>(pResource);
+	m_pTextureResource = std::dynamic_pointer_cast<TextureResource,GraphicsResource>(pResource);
+	m_pMeshResource    = std::dynamic_pointer_cast<MeshResource,GraphicsResource>(pResource);
+	m_pShaderResource  = std::dynamic_pointer_cast<ShaderResource,GraphicsResource>(pResource);
 }
 
 

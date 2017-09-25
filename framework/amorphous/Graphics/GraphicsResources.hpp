@@ -2,7 +2,8 @@
 #define  __GraphicsResources_HPP__
 
 
-#include <boost/thread.hpp>
+#include <thread>
+#include <mutex>
 #include "fwd.hpp"
 #include "GraphicsResourceDescs.hpp"
 #include "TextureResourceVisitor.hpp"
@@ -64,7 +65,7 @@ protected:
 
 	int m_Index;
 
-	boost::mutex m_StateChangeLock;
+	std::mutex m_StateChangeLock;
 
 protected:
 
@@ -362,7 +363,7 @@ public:
 
 inline void GraphicsResource::SetState( GraphicsResourceState::Name state )
 {
-	boost::mutex::scoped_lock scoped_lock(m_StateChangeLock);
+	std::lock_guard<std::mutex> lock(m_StateChangeLock);
 
 	m_State = state;
 }
@@ -370,7 +371,7 @@ inline void GraphicsResource::SetState( GraphicsResourceState::Name state )
 
 inline GraphicsResourceState::Name GraphicsResource::GetState()
 {
-	boost::mutex::scoped_lock scoped_lock(m_StateChangeLock);
+	std::lock_guard<std::mutex> lock(m_StateChangeLock);
 
 	GraphicsResourceState::Name current_state = m_State;
 

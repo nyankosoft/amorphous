@@ -3,10 +3,10 @@
 
 
 #include <memory>
-#include "../../base.hpp"
+#include "amorphous/base.hpp"
 #include "fwd.hpp"
 #include "ForceFeedbackTargetDevice.hpp"
-#include "Input/fwd.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 
 namespace amorphous

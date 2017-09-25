@@ -39,7 +39,7 @@ public:
 
 	~CStdInputDeviceStateCallback()
 	{
-		using namespace boost;
+		using namespace std;
 
 		if( !m_pEffectMgr )
 			return;
@@ -106,7 +106,7 @@ public:
 
 	void Init()
 	{
-		using namespace boost;
+		using namespace std;
 
 		if( !m_pEffectMgr )
 			return;

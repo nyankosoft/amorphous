@@ -10,32 +10,31 @@
 namespace amorphous
 {
 
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 // draft
-boost::thread::id sg_RenderThreadID;
-boost::thread::id GetRenderThreadID() { return sg_RenderThreadID; }
+std::thread::id sg_RenderThreadID;
+std::thread::id GetRenderThreadID() { return sg_RenderThreadID; }
 
 static bool sg_bRenderThreadSpecified = false;
 void SetCurrentThreadAsRenderThread()
 {
 	sg_bRenderThreadSpecified = true;
-	sg_RenderThreadID = boost::this_thread::get_id();
+	sg_RenderThreadID = std::this_thread::get_id();
 }
 
-static std::map< boost::thread::id, std::shared_ptr<ResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
+static std::map< std::thread::id, std::shared_ptr<ResourceLoadingStateHolder> > sg_ThreadIDToLoadingStateHolder;
 void CreateResourceLoadingStateHolderForCurrentThread()
 {
 	std::shared_ptr<ResourceLoadingStateHolder> p( new ResourceLoadingStateHolder );
-	sg_ThreadIDToLoadingStateHolder[boost::this_thread::get_id()] = p;
+	sg_ThreadIDToLoadingStateHolder[std::this_thread::get_id()] = p;
 }
 
 
 std::shared_ptr<ResourceLoadingStateHolder> GetResourceLoadingStateHolderForCurrentThread()
 {
-	std::map<thread::id, shared_ptr<ResourceLoadingStateHolder> >::iterator itr
+	std::map<std::thread::id, shared_ptr<ResourceLoadingStateHolder> >::iterator itr
 		= sg_ThreadIDToLoadingStateHolder.find( this_thread::get_id() );
 
 	if( itr == sg_ThreadIDToLoadingStateHolder.end() )
@@ -310,7 +309,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 		LOG_PRINT_WARNING( "Using GraphicsResourceManager without specifying render thread." );
 	}
 
-	if( boost::this_thread::get_id() != GetRenderThreadID() )
+	if( std::this_thread::get_id() != GetRenderThreadID() )
 	{
 		return LoadAsync( desc );
 	}
@@ -485,7 +484,7 @@ void GraphicsResourceManager::AllowAsyncLoading( bool allow )
 
 void GraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::string& dest_buffer )
 {
-	boost::mutex::scoped_lock scoped_lock(m_ResourceLock);
+	std::lock_guard<std::mutex> lock(m_ResourceLock);
 
 	size_t i, num_entries = m_vecpResourceEntry.size();
 	dest_buffer = to_string(num_entries) + " resources in total\n";

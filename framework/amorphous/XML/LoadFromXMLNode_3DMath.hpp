@@ -2,8 +2,8 @@
 #define __LoadFromXMLNode_3DMath_H__
 
 
-#include "3DMath/Matrix34.hpp"
-#include "XML/XMLNode.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

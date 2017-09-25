@@ -1,5 +1,5 @@
 #include "ForceFeedbackEffect.hpp"
-#include "Input/InputDevice.hpp"
+#include "amorphous/Input/InputDevice.hpp"
 #include  "DIForceFeedbackEffectImpl.hpp"
 
 

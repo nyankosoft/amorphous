@@ -6,7 +6,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 GraphicsResourceState::Name GraphicsResourceHandle::GetEntryState()

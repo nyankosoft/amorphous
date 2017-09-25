@@ -3,8 +3,8 @@
 
 
 #include <vector>
-#include "../base.hpp"
-#include "../Support/Log/LogOutputBase.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Support/Log/LogOutputBase.hpp"
 
 
 namespace amorphous

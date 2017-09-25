@@ -1,7 +1,7 @@
 #include "GraphicsResourceLoaders.hpp"
 #include "GraphicsResourceCacheManager.hpp"
 #include "AsyncResourceLoader.hpp"
-//#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
+#include "amorphous/base.hpp"
 #include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 #include "amorphous/Graphics/TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -9,15 +9,13 @@
 #include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/lfs.hpp"
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
 
 
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 //===================================================================================
@@ -53,7 +51,7 @@ Result::Name GraphicsResourceLoader::LoadFromDisk()
 		{
 			LOG_PRINT_ERROR( "Failed to open the database file: " + db_filename );
 
-			if( boost::filesystem::exists( db_filename ) )
+			if( lfs::path_exists( db_filename ) )
 				return Result::RESOURCE_IN_USE; // the database is being used by someone else - retry later
 			else
 				return Result::RESOURCE_NOT_FOUND;

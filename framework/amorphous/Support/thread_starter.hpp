@@ -2,7 +2,7 @@
 #define  __thread_starter_H__
 
 
-#include <boost/thread.hpp>
+#include <thread>
 
 
 namespace amorphous

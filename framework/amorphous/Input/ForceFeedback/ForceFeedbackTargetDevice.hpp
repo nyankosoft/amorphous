@@ -1,10 +1,10 @@
 #ifndef __ForceFeedbackTargetDevice_HPP__
 #define __ForceFeedbackTargetDevice_HPP__
 
-#include "../../base.hpp"
 #include "fwd.hpp"
-#include "Input/fwd.hpp"
-#include "Input/InputDevice.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Input/InputDevice.hpp"
 
 
 namespace amorphous

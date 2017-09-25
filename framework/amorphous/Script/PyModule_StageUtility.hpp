@@ -4,7 +4,7 @@
 #include "amorphous/Support/Vec3_StringAux.hpp"
 #include "amorphous/Stage/StageCameraUtility.hpp"
 #include "amorphous/Stage/StageLightUtility.hpp"
-#include <boost/thread.hpp>
+#include <thread>
 #include <boost/python.hpp>
 #include <memory>
 #include <map>
