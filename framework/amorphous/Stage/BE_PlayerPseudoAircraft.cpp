@@ -39,8 +39,7 @@ namespace amorphous
 {
 
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
 using std::shared_ptr;
 using namespace physics;
@@ -507,7 +506,7 @@ bool CBE_PlayerPseudoAircraft::SetAircraft()
 	{
 		m_pAircraft->ResetMeshController();
 		shared_ptr<BasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
-		shared_ptr<SkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBaseMesh);
+		shared_ptr<SkeletalMesh> pSkeletalMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBaseMesh);
 		m_pAircraft->InitMeshController( pSkeletalMesh );
 	}
 

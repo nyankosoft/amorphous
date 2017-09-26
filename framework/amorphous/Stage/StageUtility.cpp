@@ -28,10 +28,8 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
-using namespace boost;
 
 
 bool resources_exists( const std::string& resource_path )

@@ -26,7 +26,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 using namespace physics;
 
 

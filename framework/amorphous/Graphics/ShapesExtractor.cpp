@@ -10,9 +10,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 void CreatePhysicsShapes( ShapeContainerSet& shape_set )

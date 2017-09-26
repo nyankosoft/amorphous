@@ -8,8 +8,7 @@
 namespace amorphous
 {
 
-using std::vector;
-//using std::shared_ptr;
+using namespace std;
 
 
 typedef BrickPanelDesc bpd;

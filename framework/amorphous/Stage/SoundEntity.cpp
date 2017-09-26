@@ -9,7 +9,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 float sg_fSpeedOfSoundAtSeaLevel = 340.29f;
 

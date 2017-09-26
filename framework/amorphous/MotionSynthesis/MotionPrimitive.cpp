@@ -10,7 +10,6 @@ namespace amorphous
 {
 
 using namespace msynth;
-using namespace boost;
 
 
 //==========================================================================

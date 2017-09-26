@@ -11,7 +11,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 EntityFactory::EntityFactory()

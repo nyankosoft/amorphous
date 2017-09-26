@@ -6,10 +6,8 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
-using namespace boost;
 
 
 EntityHandle<> StageCameraUtility::CreateCameraController( const std::string& camera_controller_name,

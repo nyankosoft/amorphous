@@ -7,7 +7,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 void ItemDesc::LoadFromXMLNode( XMLNode& reader )

@@ -18,10 +18,8 @@ namespace amorphous
 {
 using namespace serialization;
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
-using namespace boost;
 
 
 static inline D3DXIMAGE_FILEFORMAT ArchiveImgFmt2D3DImgFmt( ImageArchive::ImageFormat img_archive_format )

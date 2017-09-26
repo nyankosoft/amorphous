@@ -2,6 +2,7 @@
 #define  __CubeMapManager_H__
 
 
+#include <string>
 #include <memory>
 #include "fwd.hpp"
 #include "Camera.hpp"

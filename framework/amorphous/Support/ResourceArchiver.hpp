@@ -387,8 +387,7 @@ inline bool CResourceArchiver::NeedToUpdateDB( const std::vector<keyname_and_fil
 	return true;
 /*
 	using namespace std;
-	using namespace boost;
-	using namespace boost::filesystem;
+		using namespace boost::filesystem;
 
 	map< string, CLastTimestampInfo > map_info
 
@@ -479,8 +478,7 @@ inline Result::Name CResourceArchiver::CreateArchive( const std::string& input_f
 inline Result::Name CResourceArchiver::CompileResource( CResourceCompileInfo& compile_info, CResourceArchiverUnitOutput& out )
 {
 	using namespace std;
-	using namespace boost;
-	using namespace boost::filesystem;
+		using namespace boost::filesystem;
 
 	if( compile_info.m_mapInputFilepathToModTime.empty() )
 		return Result::INVALID_ARGS;
@@ -518,8 +516,7 @@ inline Result::Name CResourceArchiver::CompileResource( CResourceCompileInfo& co
 inline Result::Name CResourceArchiver::CreateDBs( const std::string& desc_filepath )
 {
 	using namespace std;
-	using namespace boost;
-	using namespace boost::filesystem;
+		using namespace boost::filesystem;
 
 	path descfile_directory = path(desc_filepath).parent_path();
 
@@ -541,8 +538,7 @@ inline Result::Name CResourceArchiver::CreateDBs( const std::string& desc_filepa
 inline Result::Name CResourceArchiver::LoadCompileInfo( const std::string& desc_filepath, CResourceBuildInfo& build_info )
 {
 	using namespace std;
-	using namespace boost;
-	using namespace boost::filesystem;
+		using namespace boost::filesystem;
 
 	CTextFileScanner scanner( desc_filepath );
 

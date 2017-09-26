@@ -15,7 +15,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 std::shared_ptr<BoxMeshGenerator> CreateSkyboxMeshGenerator( const std::string& texture_filepath )

@@ -7,7 +7,7 @@
 namespace amorphous
 {
 
-using namespace boost;
+using namespace std;
 
 
 void SetCustomMesh( BasicMesh& src_mesh )

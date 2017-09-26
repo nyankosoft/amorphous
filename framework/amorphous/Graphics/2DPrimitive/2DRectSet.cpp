@@ -6,7 +6,6 @@ namespace amorphous
 {
 
 
-using namespace boost;
 
 
 C2DRectSet::C2DRectSet()

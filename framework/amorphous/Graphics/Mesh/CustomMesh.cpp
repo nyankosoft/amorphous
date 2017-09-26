@@ -10,8 +10,7 @@ namespace amorphous
 {
 
 using namespace std;
-//using namespace boost;
-
+//
 
 template<typename IndexType>
 inline static void copy_indices(

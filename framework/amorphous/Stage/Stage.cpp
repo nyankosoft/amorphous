@@ -51,7 +51,6 @@ static uint gs_DebugInputHandlerIndex = 0;
 
 
 using namespace std;
-using namespace boost;
 using namespace physics;
 using std::shared_ptr;
 
@@ -693,7 +692,7 @@ bool CStage::InitEventScriptManager( const string& script_archive_filename )
 	else
 	{
 		shared_ptr<PythonScriptManager> pPythonScriptManager
-			= boost::dynamic_pointer_cast<PythonScriptManager,ScriptManager>( m_pScriptManager );
+			= std::dynamic_pointer_cast<PythonScriptManager,ScriptManager>( m_pScriptManager );
 
 		if( !pPythonScriptManager )
 			return false;

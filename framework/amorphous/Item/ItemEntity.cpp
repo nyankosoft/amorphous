@@ -15,7 +15,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 
@@ -62,7 +61,7 @@ std::shared_ptr<BasicMesh> GetPrimaryMesh( GameItem& item )
 std::shared_ptr<SkeletalMesh> GetPrimarySkeletalMesh( GameItem& item )
 {
 	std::shared_ptr<SkeletalMesh> pSkeletalMesh
-		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( GetPrimaryMesh(item) );
+		= std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( GetPrimaryMesh(item) );
 
 	return pSkeletalMesh;
 }

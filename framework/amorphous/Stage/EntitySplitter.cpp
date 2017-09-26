@@ -12,9 +12,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using std::shared_ptr;
+using namespace std;
 
 
 class EmptyMeshGenerator : public MeshGenerator
@@ -180,7 +178,7 @@ Result::Name EntitySplitter::Split(
 	}
 
 	std::shared_ptr<CustomMesh> pCustomMesh = GetCustomMesh( pMesh );
-//		= boost::dynamic_pointer_cast<CustomMesh,BasicMesh>(pMesh->);
+//		= std::dynamic_pointer_cast<CustomMesh,BasicMesh>(pMesh->);
 
 	MeshHandle copy_mesh;
 	if( !pCustomMesh )

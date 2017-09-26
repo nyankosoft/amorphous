@@ -9,7 +9,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 

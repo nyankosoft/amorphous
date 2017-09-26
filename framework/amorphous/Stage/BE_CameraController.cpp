@@ -92,7 +92,7 @@ void CBE_CameraController::GetActiveCameraIndices( CCopyEntity* pCopyEnt,
 		shared_ptr<CCopyEntity> pCameraEntity = pCopyEnt->m_aChild[i].Get();
 
 		shared_ptr<ScriptedCameraEntity> pScriptedCamEntity
-			= boost::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+			= std::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 		if( pScriptedCamEntity->GetPath().IsAvailable( time_in_stage ) )
 			active_cam_indices.push_back( (uint)i );
@@ -122,7 +122,7 @@ void CBE_CameraController::Act(CCopyEntity* pCopyEnt)
 		pCameraEntity->pBaseEntity->Act( pCameraEntity.get() );
 
 		shared_ptr<ScriptedCameraEntity> pScriptedCamEntity
-			= boost::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+			= std::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 		if( pScriptedCamEntity->GetPath().IsExpired( time_in_stage ) )
 		{
@@ -234,7 +234,7 @@ void CBE_CameraController::RenderStage( CCopyEntity* pCopyEnt )
 			if( !IsValidEntity(pCameraEntity.get()) )
 				continue;
 
-			apCameraEntity[i] = boost::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
+			apCameraEntity[i] = std::dynamic_pointer_cast<ScriptedCameraEntity,CCopyEntity>( pCameraEntity );
 
 			ms_apTextureRenderTarget[i]->SetRenderTarget();
 

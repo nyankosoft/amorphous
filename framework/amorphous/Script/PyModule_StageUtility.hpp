@@ -17,7 +17,6 @@ namespace amorphous
 namespace stage_util
 {
 
-using namespace boost;
 
 
 // global function externs

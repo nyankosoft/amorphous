@@ -12,7 +12,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 SimpleMotionBlur::SimpleMotionBlur()

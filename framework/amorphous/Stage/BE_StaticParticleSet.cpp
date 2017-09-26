@@ -16,7 +16,6 @@ namespace amorphous
 {
 
 using std::vector;
-using namespace boost;
 
 
 // num particles

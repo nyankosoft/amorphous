@@ -8,8 +8,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::pair;
 using std::shared_ptr;
 

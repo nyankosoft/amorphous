@@ -13,7 +13,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 
@@ -193,7 +192,7 @@ HRESULT DirectInputGamepad::InitDIGamepad( HWND hWnd )
 
 Result::Name DirectInputGamepad::Init()
 {
-	boost::mutex::scoped_lock( gs_GamepadDeviceCreationMutex );
+	std::lock_guard<std::mutex>( gs_GamepadDeviceCreationMutex );
 
 	sg_pDIGamepad = this;
 

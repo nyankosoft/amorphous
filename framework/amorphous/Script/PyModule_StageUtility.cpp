@@ -25,8 +25,7 @@ namespace stage_util
 
 BOOST_PYTHON_MODULE(stage_util)
 {
-	using namespace boost;
-	using namespace boost::python;
+		using namespace boost::python;
 	namespace py = boost::python;
 
 	class_< StageCameraUtility/*, shared_ptr<StageCameraUtility>*/ >("StageCameraUtility")

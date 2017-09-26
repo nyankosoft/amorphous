@@ -193,7 +193,7 @@ public:
 
 inline CLightmap *CLightmapLightingManager::GetLightmapForRaytraceTask()
 {
-	boost::mutex::scoped_lock scoped_lock(m_Mutex);
+	std::lock_guard<std::mutex> scoped_lock(m_Mutex);
 
 	if( m_CurrentLightmapIndex < (int)m_pvecLightmap->size() )
 	{

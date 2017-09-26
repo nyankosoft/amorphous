@@ -19,7 +19,6 @@ namespace amorphous
 {
 
 //using namespace std;
-using namespace boost;
 
 
 class CSimpleMotionBlurRenderTask : public CRenderTask

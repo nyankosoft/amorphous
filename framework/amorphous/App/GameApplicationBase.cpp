@@ -41,7 +41,6 @@ namespace amorphous
 {
 
 using std::string;
-using namespace boost;
 
 
 // ================================ global variables ================================

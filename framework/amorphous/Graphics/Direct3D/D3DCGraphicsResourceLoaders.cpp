@@ -8,7 +8,6 @@ namespace amorphous
 {
 
 using std::vector;
-using namespace boost;
 
 /*
 CD3DMeshLoader::CD3DMeshLoader()
@@ -86,7 +85,7 @@ void CD3DMeshLoader::OnLoadingCompleted( std::shared_ptr<GraphicsResourceLoader>
 		apLoader[i]->m_pArchive   = m_pArchive;
 //		apLoader[i]->m_pMeshEntry = m_pMeshEntry;
 
-		apLoader[i]->m_pMeshLoader = boost::dynamic_pointer_cast<CD3DMeshLoader,MeshLoader>( m_pSelf.lock() );
+		apLoader[i]->m_pMeshLoader = std::dynamic_pointer_cast<CD3DMeshLoader,MeshLoader>( m_pSelf.lock() );
 
 		// add requests to load subresource from the mesh archive
 //		ResourceLoadRequest req( ResourceLoadRequest::LoadFromDisk, apLoader[i], GetResourceEntry() );
@@ -284,7 +283,7 @@ bool CD3DXMeshAttributeTableLoader::Lock()
 	LOG_PRINT( "" );
 
 	shared_ptr<CD3DXMeshObjectBase> pMesh
-		= boost::dynamic_pointer_cast<CD3DXMeshObjectBase,MeshImpl>( GetMesh()->m_pImpl );
+		= std::dynamic_pointer_cast<CD3DXMeshObjectBase,MeshImpl>( GetMesh()->m_pImpl );
 
 	if( !pMesh )
 		return false;

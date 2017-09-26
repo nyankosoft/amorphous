@@ -2,7 +2,7 @@
 #define __BE_PARTICLESET_H__
 
 
-#include <boost/thread/thread.hpp>
+#include <thread>
 #include "BaseEntity.hpp"
 #include "Stage.hpp" // CStage::GetGravityAccel()
 #include "amorphous/Graphics/FloatRGBColor.hpp"

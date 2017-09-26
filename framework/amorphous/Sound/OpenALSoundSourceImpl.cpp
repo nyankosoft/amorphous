@@ -12,7 +12,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 inline static void sleep_milliseonds( int64_t ms )

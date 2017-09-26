@@ -25,8 +25,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::pair;
 using std::shared_ptr;
 
@@ -292,7 +291,7 @@ void BaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 	if( pMesh->GetMeshType() == MeshType::SKELETAL )
 	{
 //		shared_ptr<SkeletalMesh> pSkeletalMesh
-//			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+//			= std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 		shared_ptr<BlendTransformsLoader> pBlendMatricesLoader( new BlendTransformsLoader );//(pSkeletalMesh) );
 		entity.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pBlendMatricesLoader );
@@ -657,7 +656,7 @@ void InitMeshRenderMethod( CCopyEntity &entity, shared_ptr<BlendTransformsLoader
 	if( pMesh && pMesh->GetMeshType() == MeshType::SKELETAL )
 	{
 //		shared_ptr<SkeletalMesh> pSkeletalMesh
-//			= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+//			= std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 
 		if( !pBlendTransformsLoader )
 			pBlendTransformsLoader.reset( new BlendTransformsLoader() );

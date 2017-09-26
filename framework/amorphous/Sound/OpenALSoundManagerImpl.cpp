@@ -11,7 +11,6 @@ namespace amorphous
 using namespace serialization;
 
 using namespace std;
-using namespace boost;
 
 
 
@@ -346,7 +345,7 @@ void OpenALSoundManagerImpl::PlayAt( SoundHandle& sound_handle, const Vector3& v
 /// plays non-3D sound
 void OpenALSoundManagerImpl::Play( SoundHandle& sound_handle )
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	SoundBuffer *pBuffer = GetSoundBuffer( sound_handle );
 	if( !pBuffer )
@@ -413,7 +412,7 @@ void OpenALSoundManagerImpl::PlayStream( SoundHandle& sound_handle )
 SoundSource *OpenALSoundManagerImpl::CreateSoundSource( SoundHandle& sound_handle,
 		                                                  const SoundDesc& desc )
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	SoundBuffer *pBuffer = NULL;
 	
@@ -484,7 +483,7 @@ SoundSource *OpenALSoundManagerImpl::CreateSoundSource( SoundHandle& sound_handl
 
 void OpenALSoundManagerImpl::AddToActiveSourceList( SoundSource *pSource )
 {
-//	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+//	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	m_ActiveSoundList.push_back( pSource );
 }
@@ -519,7 +518,7 @@ void OpenALSoundManagerImpl::ReleaseSoundSource( SoundSource*& pSoundSource )
 
 void OpenALSoundManagerImpl::PauseAllSounds()
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	list<SoundSource *>::iterator itr;
 	for( itr = m_ActiveSoundList.begin();
@@ -533,7 +532,7 @@ void OpenALSoundManagerImpl::PauseAllSounds()
 
 void OpenALSoundManagerImpl::ResumeAllSounds()
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	list<SoundSource *>::iterator itr;
 	for( itr = m_ActiveSoundList.begin();
@@ -555,7 +554,7 @@ void OpenALSoundManagerImpl::SetVolume( int volume_group, uint volume )
 		m_vecVolume[volume_group] = volume;
 
 		{
-			boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+			std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 //			for( each active_sound_source )
 		}
 	}
@@ -578,7 +577,7 @@ void OpenALSoundManagerImpl::SetListenerPosition( const Vector3& vPosition )
 
 	// move non-3D sound source to the listener position?
 /*	{
-		boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+		std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 		list<SoundSource *>::iterator itr;
 		for( itr = m_ActiveSoundList.begin();
@@ -622,7 +621,7 @@ void OpenALSoundManagerImpl::SetListenerVelocity( const Vector3& vVelocity )
 
 void OpenALSoundManagerImpl::Update()
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	list<SoundSource *>::iterator itr;
 	for( itr = m_ActiveSoundList.begin();
@@ -652,7 +651,7 @@ void OpenALSoundManagerImpl::Update()
 
 void OpenALSoundManagerImpl::GetTextInfo( std::string& dest_buffer )
 {
-	boost::mutex::scoped_lock scoped_lock(m_SourceListLock);
+	std::lock_guard<std::mutex> scoped_lock(m_SourceListLock);
 
 	const size_t num_buffers = m_ActiveSoundBuffer.size();
 

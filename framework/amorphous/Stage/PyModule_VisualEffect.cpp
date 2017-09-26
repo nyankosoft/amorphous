@@ -21,7 +21,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 /**
  - enable shadow mapping

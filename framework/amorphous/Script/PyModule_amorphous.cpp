@@ -8,7 +8,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 BOOST_PYTHON_MODULE(amorphous)

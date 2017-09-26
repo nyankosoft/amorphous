@@ -1,17 +1,16 @@
 #include "DIForceFeedbackEffectImpl.hpp"
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Support/Log/DefaultLog.hpp"
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 
 
 namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
-static boost::mutex sg_IDCreationMutex;
+static std::mutex sg_IDCreationMutex;
 
 
 static const char *GetDIErrorString( HRESULT hr )
@@ -32,7 +31,7 @@ static const char *GetDIErrorString( HRESULT hr )
 
 static uint GetDIFFEffectID()
 {
-	boost::mutex::scoped_lock( sg_IDCreationMutex );
+	std::lock_guard<std::mutex>( sg_IDCreationMutex );
 
 	static uint s_Count = 0;
 	s_Count += 1;

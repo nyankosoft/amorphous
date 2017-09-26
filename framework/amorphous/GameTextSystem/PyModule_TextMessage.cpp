@@ -8,7 +8,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 static CTextMessageManager *gs_pCurrentTextMessageManager = NULL;

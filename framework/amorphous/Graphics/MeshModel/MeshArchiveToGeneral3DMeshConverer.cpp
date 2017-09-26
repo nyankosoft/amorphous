@@ -7,7 +7,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 Result::Name CMeshArchiveToGeneral3DMeshConverer::Convert( const C3DMeshModelArchive& src, General3DMesh& dest )

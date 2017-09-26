@@ -12,7 +12,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 class CMultiSampleType

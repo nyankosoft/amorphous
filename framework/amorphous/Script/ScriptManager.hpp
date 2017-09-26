@@ -40,7 +40,7 @@ public:
 
 	void IncRefCount()
 	{
-		boost::mutex::scoped_lock scoped_lock(m_Mutex);
+		std::lock_guard<std::mutex> scoped_lock(m_Mutex);
 
 		m_RefCount++;
 
@@ -60,7 +60,7 @@ public:
 
 	void DecRefCount()
 	{
-		boost::mutex::scoped_lock scoped_lock(m_Mutex);
+		std::lock_guard<std::mutex> scoped_lock(m_Mutex);
 
 		m_RefCount--;
 		

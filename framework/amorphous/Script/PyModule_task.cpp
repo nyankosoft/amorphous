@@ -11,7 +11,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 inline static bool IsTaskAvailable()

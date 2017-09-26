@@ -9,7 +9,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 extern const char *hr_d3d_error_to_string(HRESULT hr);

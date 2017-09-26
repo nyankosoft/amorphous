@@ -26,8 +26,7 @@ static Matrix33 Matrix33IdentityForBoostPython()
 
 BOOST_PYTHON_MODULE(math3d)
 {
-	using namespace boost;
-	using namespace boost::python;
+		using namespace boost::python;
 
 	class_<Vector3>("Vector3")
 		.def(init<float,float,float>())

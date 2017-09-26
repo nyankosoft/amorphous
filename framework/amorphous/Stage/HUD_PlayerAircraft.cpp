@@ -21,9 +21,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 static const int gs_TimerDisplayBlinkThreasholdMS = 60 * 1000 * 14;

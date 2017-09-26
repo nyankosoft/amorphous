@@ -69,7 +69,7 @@ std::shared_ptr<SkeletalMesh> MeshHandle::GetSkeletalMesh()
 {
 	std::shared_ptr<BasicMesh> pBasicMesh = GetMesh();
 	if( pBasicMesh )
-		return boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBasicMesh);
+		return std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBasicMesh);
 	else
 		return std::shared_ptr<SkeletalMesh>();
 }

@@ -13,7 +13,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 class CLightInitializer : public LightVisitor

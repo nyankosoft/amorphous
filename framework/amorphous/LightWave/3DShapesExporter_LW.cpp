@@ -7,7 +7,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 /// each i-th element of output_filepaths corresponds to the i-th mesh group

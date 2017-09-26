@@ -24,8 +24,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
 using std::pair;
 using std::shared_ptr;
@@ -79,7 +78,7 @@ inline std::shared_ptr<SkeletalMesh> SkeletalCharacter::GetCharacterSkeletalMesh
 	if( !pMesh )
 		return shared_ptr<SkeletalMesh>();
 
-	shared_ptr<SkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pMesh );
+	shared_ptr<SkeletalMesh> pSkeletalMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pMesh );
 
 	return pSkeletalMesh;
 }
@@ -480,7 +479,7 @@ void SkeletalCharacter::AddOperationsAlgorithm( std::shared_ptr<SkeletalCharacte
 {
 	m_pOperations.push_back( pOperations );
 	pOperations->m_pSkeletalCharacter
-		= boost::dynamic_pointer_cast<SkeletalCharacter,GameItem>( m_pMyself.lock() );
+		= std::dynamic_pointer_cast<SkeletalCharacter,GameItem>( m_pMyself.lock() );
 }
 
 

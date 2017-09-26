@@ -27,8 +27,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
 using std::shared_ptr;
 

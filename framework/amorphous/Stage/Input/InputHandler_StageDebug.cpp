@@ -9,7 +9,6 @@ namespace amorphous
 
 
 using namespace std;
-using namespace boost;
 
 
 inline void replace_chars( std::string& src, char from, char to )

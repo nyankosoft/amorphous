@@ -12,7 +12,6 @@ namespace amorphous
 {
 
 using std::map;
-using namespace boost;
 
 
 Radar::Radar()

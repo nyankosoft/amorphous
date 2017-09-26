@@ -10,7 +10,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 using namespace physics;
 
 

@@ -503,7 +503,7 @@ void GraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::s
 
 void GraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::vector<std::string>& dest_buffer )
 {
-	boost::mutex::scoped_lock scoped_lock(m_ResourceLock);
+	std::lock_guard<std::mutex> scoped_lock(m_ResourceLock);
 
 	dest_buffer.reserve( 0xFF );
 

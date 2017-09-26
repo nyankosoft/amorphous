@@ -44,8 +44,7 @@ public:
 
 BOOST_PYTHON_MODULE(gfx)
 {
-	using namespace boost;
-	using namespace boost::python;
+		using namespace boost::python;
 	namespace py = boost::python;
 
 	class_<SFloatRGBAColor>("Color")

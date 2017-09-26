@@ -15,7 +15,6 @@
 namespace amorphous
 {
 
-using namespace boost;
 
 
 inline static short& HasExpired(CCopyEntity* pCameraEntity) { return pCameraEntity->s1; };

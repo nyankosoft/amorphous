@@ -22,9 +22,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using std::shared_ptr;
+using namespace std;
 using namespace physics;
 
 
@@ -506,7 +504,7 @@ void CBE_EnemyAircraft::AddExtraData()
 	{
 		ex.m_pAircraft->ResetMeshController();
 		shared_ptr<BasicMesh> pBaseMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
-		shared_ptr<SkeletalMesh> pSkeletalMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBaseMesh);
+		shared_ptr<SkeletalMesh> pSkeletalMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pBaseMesh);
 		ex.m_pAircraft->InitMeshController( pSkeletalMesh );
 	}
 }

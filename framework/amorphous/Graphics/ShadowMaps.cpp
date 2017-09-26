@@ -20,7 +20,6 @@ namespace amorphous
 {
 
 using std::string;
-using namespace boost;
 
 
 float g_fShadowMapNearClip = 0.1f;

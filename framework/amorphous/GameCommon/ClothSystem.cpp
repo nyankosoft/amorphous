@@ -18,8 +18,7 @@ namespace amorphous
 {
 //#include "amorphous/Support/lfs.hpp"
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::set;
 using std::shared_ptr;
 using namespace physics;

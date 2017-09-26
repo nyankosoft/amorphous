@@ -17,9 +17,7 @@ namespace amorphous
 {
 
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 //#define V(x) { hr = x; if( FAILED(hr) ) { LOG_PRINT_ERROR( string(#x) + " failed." ); } }

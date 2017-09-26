@@ -1,13 +1,12 @@
 #include "AsyncResourceLoader.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/base.hpp"
-#include <boost/thread/xtime.hpp>
 
 
 namespace amorphous
 {
 
-using namespace boost;
+using namespace std;
 
 
 singleton<AsyncResourceLoader> AsyncResourceLoader::m_obj;
@@ -50,7 +49,7 @@ void AsyncResourceLoader::Release()
 
 bool AsyncResourceLoader::AddResourceLoadRequest( const ResourceLoadRequest& req )
 {
-	mutex::scoped_lock scoped_lock(m_IOMutex);
+	std::lock_guard<std::mutex> lock(m_IOMutex);
 
 	m_ResourceLoadRequestQueue.push( req );
 
@@ -60,7 +59,7 @@ bool AsyncResourceLoader::AddResourceLoadRequest( const ResourceLoadRequest& req
 
 bool AsyncResourceLoader::AddGraphicsDeviceRequest( const CGraphicsDeviceRequest& req )
 {
-	mutex::scoped_lock scoped_lock(m_GraphicsDeviceMutex);
+	std::lock_guard<std::mutex> lock(m_GraphicsDeviceMutex);
 
 	m_GraphicsDeviceRequestQueue.push( req );
 
@@ -83,7 +82,7 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 
 	if( 0 < m_ResourceLoadRequestQueue.size() )
 	{
-		mutex::scoped_lock scoped_lock(m_IOMutex);
+		std::lock_guard<std::mutex> lock(m_IOMutex);
 		req = m_ResourceLoadRequestQueue.front();
 		m_ResourceLoadRequestQueue.pop();
 	}
@@ -119,7 +118,7 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 		case Result::RESOURCE_IN_USE:
 			// try again later
 			{
-				mutex::scoped_lock scoped_lock(m_IOMutex);
+				std::lock_guard<std::mutex> lock(m_IOMutex);
 				m_ResourceLoadRequestQueue.push( req );
 			}
 //			continue;
@@ -155,13 +154,11 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 /// called by file IO thread
 void AsyncResourceLoader::ProcessResourceLoadRequests()
 {
-	boost::xtime xt;
-	boost::xtime_get(&xt, boost::TIME_UTC_);
-	xt.sec += 1; // 1 [sec]
+	auto seconds_to_sleep = 1s; // 1 [sec]
 
 	while( !m_bEndIOThread )
 	{
-		boost::thread::sleep(xt);
+		std::this_thread::sleep_for(seconds_to_sleep);
 
 		ProcessResourceLoadRequest();
 	}
@@ -180,7 +177,7 @@ void AsyncResourceLoader::ProcessGraphicsDeviceRequests()
 	for( int i=0; i<1; i++ )
 	{
 		{
-			mutex::scoped_lock scoped_lock(m_GraphicsDeviceMutex);
+			std::lock_guard<std::mutex> lock(m_GraphicsDeviceMutex);
 
 			if( m_GraphicsDeviceRequestQueue.size() == 0 )
 				break; // no request to process

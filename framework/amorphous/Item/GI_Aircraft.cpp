@@ -16,9 +16,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using std::shared_ptr;
+using namespace std;
 
 /*
 void CBE_PseudoAircraft::Init()
@@ -389,7 +387,7 @@ bool CGI_Aircraft::InitMeshController( shared_ptr<SkeletalMesh> pMesh )
 
 		if( pMeshObject && pMeshObject->GetMeshType() == MeshType::SKELETAL )
 		{
-			pTargetMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMeshObject);
+			pTargetMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMeshObject);
 		}
 	}
 

@@ -16,7 +16,6 @@ namespace amorphous
 
 
 using std::string;
-using namespace boost;
 
 
 // definition of the singleton instance

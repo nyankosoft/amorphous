@@ -207,7 +207,7 @@ inline std::shared_ptr<CItemType> CSinglePlayerInfo::GetItemByName( const char *
 	for( i=0; i<num_items; i++ )
 	{
 		if( m_vecpItem[i]->GetName() == pcItemName )
-			return boost::dynamic_pointer_cast<CItemType,GameItem>(m_vecpItem[i]);
+			return std::dynamic_pointer_cast<CItemType,GameItem>(m_vecpItem[i]);
 	}
 
 	LOG_PRINT( "Cannot find the item: " + std::string(pcItemName) );

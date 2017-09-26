@@ -10,7 +10,6 @@ namespace amorphous
 using namespace serialization;
 
 using namespace std;
-using namespace boost;
 
 
 static inline void Swap(short &s1, short &s2)

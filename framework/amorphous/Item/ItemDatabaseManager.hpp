@@ -64,7 +64,7 @@ inline std::shared_ptr<T> ItemDatabaseManager::GetItem( const std::string& item_
 
 	pBasePtr->OnLoadedFromDatabase();
 
-	return boost::dynamic_pointer_cast<T,GameItem>(pBasePtr);
+	return std::dynamic_pointer_cast<T,GameItem>(pBasePtr);
 }
 
 

@@ -10,7 +10,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 bool ScriptManager::ms_UseBoostPythonModules = true;

@@ -17,7 +17,6 @@ namespace amorphous
 {
 using namespace serialization;
 using namespace std;
-using std::shared_ptr;
 
 
 class CGLLockedTexture : public LockedTexture

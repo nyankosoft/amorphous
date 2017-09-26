@@ -15,7 +15,6 @@ namespace amorphous
 {
 
 using std::map;
-using namespace boost;
 
 
 const char *sg_pShadowMapDebugParamsFile = ".debug/shadowmap.txt";

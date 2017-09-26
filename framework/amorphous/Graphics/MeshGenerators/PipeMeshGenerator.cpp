@@ -6,8 +6,7 @@
 namespace amorphous
 {
 
-using std::vector;
-using std::shared_ptr;
+using namespace std;
 
 
 Result::Name PipeMeshGenerator::Generate()

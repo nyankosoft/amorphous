@@ -11,7 +11,6 @@ namespace amorphous
 {
 
 using namespace std;
-//using namespace boost;
 
 
 #define GL_INDEX_BUFFER_OFFSET(i) ((char *)NULL + (i))

@@ -11,7 +11,6 @@ namespace amorphous
 {
 
 using std::vector;
-using namespace boost;
 
 
 void SetDefaultMeshAttributes( C3DMeshModelArchive& mesh_archive )

@@ -6,7 +6,7 @@ namespace amorphous
 {
 
 
-using std::shared_ptr;
+using namespace std;
 
 
 //===============================================================

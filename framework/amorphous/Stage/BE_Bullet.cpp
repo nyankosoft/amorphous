@@ -22,7 +22,6 @@ namespace amorphous
 
 using std::vector;
 using std::string;
-using namespace boost;
 
 
 CBE_Bullet::CBE_Bullet()

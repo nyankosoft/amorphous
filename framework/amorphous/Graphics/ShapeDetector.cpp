@@ -1,8 +1,8 @@
 #include "ShapeDetector.hpp"
 #include "MeshModel/General3DMesh.hpp"
 #include "MeshModel/PrimitiveShapeMeshes.hpp"
-#include "../3DMath.hpp"
-#include "../Support/Log/DefaultLog.hpp"
+#include "amorphous/3DMath.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <set>
 
 
@@ -10,7 +10,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 

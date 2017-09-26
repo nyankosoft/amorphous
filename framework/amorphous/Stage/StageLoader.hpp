@@ -2,9 +2,8 @@
 #define __STAGELOADER_H__
 
 #include <string>
+#include <thread>
 #include "fwd.hpp"
-
-#include <boost/thread/thread.hpp>
 
 
 namespace amorphous

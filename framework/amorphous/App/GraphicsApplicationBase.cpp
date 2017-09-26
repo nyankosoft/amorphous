@@ -20,7 +20,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost;
 
 
 static int sg_InputHandlerIndex = 0;

@@ -23,7 +23,6 @@ namespace amorphous
 {
 
 using std::vector;
-using namespace boost;
 
 
 void SetShaderToEntity( EntityHandle<>& entity, ShaderHandle& shader, ShaderTechniqueHandle& tech )

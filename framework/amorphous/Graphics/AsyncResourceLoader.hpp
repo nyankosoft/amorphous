@@ -3,7 +3,7 @@
 
 
 #include <queue>
-#include <thread>
+#include <mutex>
 #include "fwd.hpp"
 #include "GraphicsResourceManager.hpp"
 
@@ -97,13 +97,13 @@ class AsyncResourceLoader
 {
 	std::queue<ResourceLoadRequest> m_ResourceLoadRequestQueue;
 
-	boost::mutex m_IOMutex;
+	std::mutex m_IOMutex;
 
 	std::queue<CGraphicsDeviceRequest> m_GraphicsDeviceRequestQueue;
 
-	boost::mutex m_GraphicsDeviceMutex;
+	std::mutex m_GraphicsDeviceMutex;
 
-	std::shared_ptr<boost::thread> m_pIOThread;
+	std::shared_ptr<std::thread> m_pIOThread;
 
 	bool m_bEndIOThread;
 

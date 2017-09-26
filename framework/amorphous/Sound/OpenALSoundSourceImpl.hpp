@@ -231,7 +231,7 @@ public:
 
 inline SoundSource::State COpenALStreamedSoundSourceImpl::GetRequestedState()
 {
-	boost::mutex::scoped_lock scoped_lock(m_StreamSoundMutex);
+	std::lock_guard<std::mutex> scoped_lock(m_StreamSoundMutex);
 
 	const SoundSource::State state = m_RequestedState;
 
@@ -241,7 +241,7 @@ inline SoundSource::State COpenALStreamedSoundSourceImpl::GetRequestedState()
 
 inline void COpenALStreamedSoundSourceImpl::SetRequestedState( SoundSource::State state )
 {
-	boost::mutex::scoped_lock scoped_lock(m_StreamSoundMutex);
+	std::lock_guard<std::mutex> scoped_lock(m_StreamSoundMutex);
 
 	m_RequestedState = state;
 }

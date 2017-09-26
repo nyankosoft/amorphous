@@ -36,7 +36,7 @@ public:
 		if( !pMesh )
 			return Result::INVALID_ARGS;
 
-		std::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+		std::shared_ptr<SkeletalMesh> pSMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( !pSMesh )
 			return Result::INVALID_ARGS;
 
@@ -50,8 +50,7 @@ public:
 	/// Update the blend transforms stored in the blend transforms loader.
 	void UpdateGraphics()
 	{
-		using namespace boost;
-
+		
 		if( !m_pBlendTransformsLoader )
 			return;
 
@@ -62,7 +61,7 @@ public:
 		if( !pMesh )
 			return;
 
-		std::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+		std::shared_ptr<SkeletalMesh> pSMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 		if( !pSMesh )
 			return;
 

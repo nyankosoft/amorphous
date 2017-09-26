@@ -4,9 +4,7 @@
 namespace amorphous
 {
 
-using std::string;
-using std::vector;
-using std::shared_ptr;
+using namespace std;
 
 
 void CLightmapRaytraceTask::RunTask()
@@ -232,14 +230,14 @@ static CLightmapRaytraceTask *gs_pTask = NULL;
 
 static void SetTargetRaytraceTask( CLightmapRaytraceTask *pTask )
 {
-	boost::mutex::scoped_lock scoped_lock(gs_TaskThreadStart);
+	std::lock_guard<std::mutex> scoped_lock(gs_TaskThreadStart);
 
 	gs_pTask = pTask;
 }
 
 static void StartRaytraceTask()
 {
-	boost::mutex::scoped_lock scoped_lock(gs_TaskThreadStart);
+	std::lock_guard<std::mutex> scoped_lock(gs_TaskThreadStart);
 
 	if( gs_pTask )
 	{

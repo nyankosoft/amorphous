@@ -8,7 +8,6 @@ namespace amorphous
 {
 
 
-using namespace boost;
 using namespace boost::python;
 
 // changed function names to avoid overloading so that boost::python can see the difference
