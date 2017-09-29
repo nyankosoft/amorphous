@@ -85,6 +85,9 @@
     <Filter Include="Source Files\Support\UTF8\utf8">
       <UniqueIdentifier>{7dfba5f6-2e27-42c1-837c-8435dd3248f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Input\ForceFeedback">
+      <UniqueIdentifier>{5ac160a2-d970-4c51-9989-d8f45a4e911f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\3DMath\3DGameMath.hpp">
@@ -260,9 +263,6 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Support\Log\StateLog.hpp">
       <Filter>Source Files\Support\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\2DGraph.hpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\3DtoScreenSpaceConversions.hpp">
       <Filter>Source Files\Graphics</Filter>
@@ -471,9 +471,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\TextureUtilities.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\VarianceShadowMapManager.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\VertexFormat.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
@@ -496,9 +493,6 @@
       <Filter>Source Files\Graphics\2DPrimitive</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp">
-      <Filter>Source Files\Graphics\2DPrimitive</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTexturedRect.hpp">
       <Filter>Source Files\Graphics\2DPrimitive</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp">
@@ -589,9 +583,6 @@
       <Filter>Source Files\Graphics\MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.hpp">
-      <Filter>Source Files\Graphics\MeshModel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\CompositeMesh.hpp">
       <Filter>Source Files\Graphics\MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMesh.hpp">
@@ -807,6 +798,255 @@
     <ClInclude Include="..\..\amorphous\Support\ZLib\zutil.h">
       <Filter>Source Files\Support\ZLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\fwd.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\LoadFromXMLNode_3DMath.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentBase.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLNode.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp">
+      <Filter>Source Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\DebugInfo_InputDevice.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\fwd.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\GICodeTitle.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputDevice.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputDeviceGroup.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputDeviceInitializer.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputHandler.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\InputHub.hpp">
+      <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.hpp">
+      <Filter>Source Files\Input\ForceFeedback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackTargetDevice.hpp">
+      <Filter>Source Files\Input\ForceFeedback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\fwd.hpp">
+      <Filter>Source Files\Input\ForceFeedback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\AES.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\array2d.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\BitmapImageHelpers.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\CameraController.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\CameraController_Win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\CameraControllerBase.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\clipboard_utils.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\clipboard_utils_linux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\clipboard_utils_win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\DebugInfo.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\DebugOutput.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\FileOpenDialog_Win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\FileSaveDialog_Win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\filesystem_aux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\fixed_string.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\FixedStackVector.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\FixedVector.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\FreeTypeAux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\fwd.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ImageArchive.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ImageArchiveAux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ImageClipper.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ImageSplitter.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\indexed_vector.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\lfs.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\linear_interpolation.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\LineSegmentRenderer.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Macro.h">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\memory_helpers.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\MinMax.h">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\MiscAux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\msgbox.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\MTRand.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\NamedResourceHandle.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\ParamLoader.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\prealloc_pool.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\PreAllocDynamicLinkList.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Profile.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\progress_display.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\recursive_directory_processor.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\recursive_file_finder.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\SafeDelete.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\SafeDeleteVector.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\SerializableStream.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\shared_prealloc_pool.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\single_instance.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\single_instance_win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\singleton.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\sleep.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\stl_aux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\stream_buffer.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\StringAux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\TextFileScanner.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\thread_starter.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\time.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\time_string.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\TimeFormats.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Timer.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\Vec3_StringAux.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\VectorRand.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\wavefront_obj_input.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\wavefront_obj_output.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\WindowMisc_Win32.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp">
@@ -836,9 +1076,6 @@
     <ClCompile Include="..\..\amorphous\3DMath\Perlin.cpp">
       <Filter>Source Files\3DMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\3DMath\PolygonMesh.cpp">
-      <Filter>Source Files\3DMath</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.cpp">
       <Filter>Source Files\3DMath</Filter>
     </ClCompile>
@@ -850,9 +1087,6 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp">
       <Filter>Source Files\Support\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\2DGraph.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\AsyncResourceLoader.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -986,9 +1220,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\VarianceShadowMapManager.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.cpp">
       <Filter>Source Files\Graphics\2DPrimitive</Filter>
     </ClCompile>
@@ -1008,9 +1239,6 @@
       <Filter>Source Files\Graphics\2DPrimitive</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp">
-      <Filter>Source Files\Graphics\2DPrimitive</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTexturedRect.cpp">
       <Filter>Source Files\Graphics\2DPrimitive</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp">
@@ -1074,9 +1302,6 @@
       <Filter>Source Files\Graphics\MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.cpp">
-      <Filter>Source Files\Graphics\MeshModel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\CompositeMesh.cpp">
       <Filter>Source Files\Graphics\MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.cpp">
@@ -1214,6 +1439,36 @@
     <ClCompile Include="..\..\amorphous\Support\ZLib\zutil.c">
       <Filter>Source Files\Support\ZLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp">
+      <Filter>Source Files\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\InputDevice.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\InputHub.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.cpp">
+      <Filter>Source Files\Input\ForceFeedback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\CameraController.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\DebugOutput.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\MTRand.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\Profile.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\3DMath\AABTree.inl">
@@ -1246,5 +1501,6 @@
     <None Include="..\..\amorphous\Graphics\FloatRGBColor.inl">
       <Filter>Source Files\Graphics</Filter>
     </None>
+    <None Include="amorphous-lightwave.vcxproj" />
   </ItemGroup>
 </Project>

@@ -69,7 +69,6 @@
     <ClInclude Include="..\..\amorphous\3DMath\Vector3.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\Vector3_Gen.hpp" />
     <ClInclude Include="..\..\amorphous\3DMath\Vector4.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\2DGraph.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.hpp" />
@@ -77,7 +76,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTexturedRect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\32BitColor.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\3DtoScreenSpaceConversions.hpp" />
@@ -135,7 +133,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\RectMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\CompositeMesh.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMesh.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.hpp" />
@@ -212,8 +209,47 @@
     <ClInclude Include="..\..\amorphous\Graphics\TextureResourceVisitor.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\TextureStage.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\TextureUtilities.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\VarianceShadowMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\VertexFormat.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\DebugInfo_InputDevice.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackTargetDevice.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\ForceFeedback\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\GICodeTitle.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\InputDevice.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\InputDeviceGroup.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\InputDeviceInitializer.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\InputHandler.hpp" />
+    <ClInclude Include="..\..\amorphous\Input\InputHub.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\AES.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\array2d.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\BitmapImageHelpers.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\CameraController.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\CameraControllerBase.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\CameraController_Win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\clipboard_utils.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\clipboard_utils_linux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\clipboard_utils_win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\DebugInfo.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\DebugOutput.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\FileOpenDialog_Win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\FileSaveDialog_Win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\filesystem_aux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\FixedStackVector.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\FixedVector.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\fixed_string.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\FreeTypeAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\ImageArchive.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\ImageArchiveAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\ImageClipper.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\ImageSplitter.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\indexed_vector.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\lfs.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\linear_interpolation.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\LineSegmentRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Log\DefaultLog.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Log\DefaultLogAux.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Log\Log.hpp" />
@@ -222,6 +258,23 @@
     <ClInclude Include="..\..\amorphous\Support\Log\LogOutputBase.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Log\ScopeLog.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Log\StateLog.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Macro.h" />
+    <ClInclude Include="..\..\amorphous\Support\memory_helpers.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\MinMax.h" />
+    <ClInclude Include="..\..\amorphous\Support\MiscAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\msgbox.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\MTRand.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\NamedResourceHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\ParamLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\PreAllocDynamicLinkList.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\prealloc_pool.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Profile.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\progress_display.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\recursive_directory_processor.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\recursive_file_finder.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\SafeDelete.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\SafeDeleteVector.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\SerializableStream.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\Archive.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\ArchiveObjectFactory.hpp" />
@@ -242,10 +295,29 @@
     <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_FixedVector.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_Light.hpp" />
     <ClInclude Include="..\..\amorphous\Support\Serialization\Serialization_linear_interpolation.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\shared_prealloc_pool.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\singleton.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\single_instance.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\single_instance_win32.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\sleep.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\stl_aux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\stream_buffer.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\StringAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\TextFileScanner.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\thread_starter.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\time.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\TimeFormats.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\Timer.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\time_string.hpp" />
     <ClInclude Include="..\..\amorphous\Support\UTF8\utf8.h" />
     <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\checked.h" />
     <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\core.h" />
     <ClInclude Include="..\..\amorphous\Support\UTF8\utf8\unchecked.h" />
+    <ClInclude Include="..\..\amorphous\Support\Vec3_StringAux.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\VectorRand.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\wavefront_obj_input.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\wavefront_obj_output.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\WindowMisc_Win32.hpp" />
     <ClInclude Include="..\..\amorphous\Support\ZLib\crc32.h" />
     <ClInclude Include="..\..\amorphous\Support\ZLib\deflate.h" />
     <ClInclude Include="..\..\amorphous\Support\ZLib\inffast.h" />
@@ -259,6 +331,13 @@
     <ClInclude Include="..\..\amorphous\Support\ZLib\ZLibAux.h" />
     <ClInclude Include="..\..\amorphous\Support\ZLib\zpipe_stream.h" />
     <ClInclude Include="..\..\amorphous\Support\ZLib\zutil.h" />
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLDocument.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\BoostPTreeXMLNode.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\fwd.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\LoadFromXMLNode_3DMath.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\XMLDocumentBase.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\XMLNode.hpp" />
+    <ClInclude Include="..\..\amorphous\XML\XMLNodeReader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp" />
@@ -270,9 +349,7 @@
     <ClCompile Include="..\..\amorphous\3DMath\HelixPolygonModelMaker.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\OBBTree.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\Perlin.cpp" />
-    <ClCompile Include="..\..\amorphous\3DMath\PolygonMesh.cpp" />
     <ClCompile Include="..\..\amorphous\3DMath\PrimitivePolygonModelMaker.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\2DGraph.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DFrameRect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPolygon.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DPrimitive.cpp" />
@@ -280,7 +357,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRectSet.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DRoundRect.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTexturedRect.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\2DPrimitive\2DTriangle.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\AsyncResourceLoader.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\BoundingVolumeTreeRenderers.cpp" />
@@ -316,7 +392,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\RandomTerrainMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelArchive.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\3DMeshModelBuilder.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\CompositeMesh.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\General3DMeshFunctions.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshArchiveToGeneral3DMeshConverer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\MeshBone.cpp" />
@@ -373,10 +448,18 @@
     <ClCompile Include="..\..\amorphous\Graphics\SkyboxMisc.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\TextureHandle.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\VarianceShadowMapManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.cpp" />
+    <ClCompile Include="..\..\amorphous\Input\InputDevice.cpp" />
+    <ClCompile Include="..\..\amorphous\Input\InputHub.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\CameraController.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\DebugOutput.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\LogInputBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\LogOutput.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Log\StateLog.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\MTRand.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\Profile.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Serialization\ArchiveObjectBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive.cpp" />
     <ClCompile Include="..\..\amorphous\Support\Serialization\BinaryArchive_Input.cpp" />
@@ -396,6 +479,7 @@
     <ClCompile Include="..\..\amorphous\Support\ZLib\ZLibAux.cpp" />
     <ClCompile Include="..\..\amorphous\Support\ZLib\zpipe_stream.cpp" />
     <ClCompile Include="..\..\amorphous\Support\ZLib\zutil.c" />
+    <ClCompile Include="..\..\amorphous\XML\XMLDocumentBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amorphous\3DMath\AABTree.inl" />
@@ -408,6 +492,7 @@
     <None Include="..\..\amorphous\3DMath\Vector4.inl" />
     <None Include="..\..\amorphous\Graphics\FloatRGBAColor.inl" />
     <None Include="..\..\amorphous\Graphics\FloatRGBColor.inl" />
+    <None Include="amorphous-lightwave.vcxproj" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -471,7 +556,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>.vc\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <IncludePath>../../;$(IncludePath)</IncludePath>
+    <IncludePath>../../;C:\development\libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -481,6 +566,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>.vc\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>../../;C:\development\libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -500,7 +586,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -532,7 +618,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
