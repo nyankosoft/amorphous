@@ -9,7 +9,6 @@
 #include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/lfs.hpp"
-//#include <boost/filesystem.hpp>
 
 
 namespace amorphous

@@ -7,10 +7,10 @@
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 //#include "amorphous/Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "amorphous/Graphics/OpenGL/Shader/GLShader.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Support/Serialization/BinaryDatabase.hpp"
-#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -418,7 +418,7 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			}
 		}
 
-		image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",boost::filesystem::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
+		image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",lfs::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
 
 		void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
 		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, pImageData, texture_id );
@@ -440,12 +440,10 @@ FIC_CMYK CMYK bitmap (32 bit only)
 // Used in synchronous loading
 bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 {
-	using namespace boost::filesystem;
-
 	BitmapImage img;
 	bool loaded = false;
 
-	if( path(filepath).extension() == ".ia" )
+	if( lfs::path(filepath).extension() == ".ia" )
 	{
 		ImageArchive ia;
 		ia.LoadFromFile(filepath);

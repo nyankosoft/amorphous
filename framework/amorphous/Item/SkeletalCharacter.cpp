@@ -10,6 +10,7 @@
 #include "amorphous/MotionSynthesis/MotionPrimitiveBlender.hpp"
 #include "amorphous/Support/DebugOutput.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Stage/BaseEntity_Draw.hpp"
 #include "amorphous/Stage/MeshBonesUpdateCallback.hpp"
 #include "amorphous/Physics/Actor.hpp"
@@ -27,8 +28,6 @@ namespace amorphous
 using namespace std;
 using std::map;
 using std::pair;
-using std::shared_ptr;
-using namespace boost::filesystem;
 using namespace msynth;
 
 
@@ -169,7 +168,7 @@ Result::Name SkeletalCharacter::InitClothSystem()
 	}*/
 
 	// Debug - dump the skeleton for the motion data and the skeleton of the mesh
-	if( exists( ".debug" ) )
+	if( lfs::path_exists( ".debug" ) )
 	{
 		m_pSkeletonSrcMotion->GetSkeleton()->DumpToTextFile( ".debug/msynth_skeleton.txt" );
 		shared_ptr<SkeletalMesh> pSMesh = GetCharacterSkeletalMesh();

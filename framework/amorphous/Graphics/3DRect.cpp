@@ -1,5 +1,5 @@
 #include "3DRect.hpp"
-#include "Graphics/Direct3D9.hpp"
+//#include "Graphics/Direct3D9.hpp"
 
 
 namespace amorphous

@@ -32,11 +32,11 @@ class CProfileTimer_Win32 : public CProfileTimer
 
 public:
 
-	CProfileTimer_Win32() { m_Timer.Start(); }
+	CProfileTimer_Win32() {}// m_Timer.Start(); }
 
 	~CProfileTimer_Win32() {}
 
-	double GetExactTime() { return m_Timer.GetTime(); }
+	double GetExactTime() { return m_Timer.GetElapsedTimeInSeconds(); }
 
 	double GetFrameTime() { return m_Timer.GetFrameTime(); }
 

@@ -19,7 +19,7 @@
 namespace amorphous
 {
 
-using std::string;
+using namespace std;
 
 
 float g_fShadowMapNearClip = 0.1f;

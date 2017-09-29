@@ -197,6 +197,20 @@ inline void SeparateStrings( std::vector<std::string>& rDestStr, const char *pSr
 }
 
 
+inline size_t replace_all(std::string &str, const std::string &from, const std::string &to) {
+	size_t count = 0;
+
+	size_t pos = 0;
+	while ((pos = str.find(from, pos)) != std::string::npos) {
+		str.replace(pos, from.length(), to);
+		pos += to.length();
+		++count;
+	}
+
+	return count;
+}
+
+
 inline int get_str_index( const std::string& input_str, const std::vector<std::string>& reference_str )
 {
 	const size_t num_elements = reference_str.size();

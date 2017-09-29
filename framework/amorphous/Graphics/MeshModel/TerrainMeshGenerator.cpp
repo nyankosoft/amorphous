@@ -6,7 +6,6 @@
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/ImageSplitter.hpp"
 #include "tbb/task_scheduler_init.h"
-#include <boost/filesystem.hpp>
 
 #include "3DMeshModelArchive.hpp"
 
@@ -15,7 +14,6 @@ namespace amorphous
 {
 
 using namespace std;
-using namespace boost::filesystem;
 
 
 double log2( double scalar )
@@ -271,7 +269,7 @@ std::string TerrainMeshTree::CreateSubdividedTextureFilepath( const string& src_
 	// make sure that the dest directory exists
 	create_directories( m_TextureOutputDirectory );
 
-	path dest_filepath = path(m_TextureOutputDirectory) / path(src_tex_filename).leaf();
+	path dest_filepath = lfs::path(m_TextureOutputDirectory) / lfs::path(src_tex_filename).leaf();
 	dest_filename = dest_filepath.string();
 //	dest_filename = ".\\temp" + fnop::get_nopath(src_tex_filename);
 

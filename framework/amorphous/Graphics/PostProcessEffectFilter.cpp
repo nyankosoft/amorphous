@@ -6,7 +6,6 @@
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
-//#include <boost/filesystem.hpp>
 
 
 namespace amorphous

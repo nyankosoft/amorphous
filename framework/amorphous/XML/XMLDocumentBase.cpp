@@ -1,5 +1,5 @@
 #include "XMLDocumentBase.hpp"
-#include <boost/filesystem.hpp>
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 
 #include "BoostPTreeXMLNode.hpp"
@@ -16,7 +16,7 @@ namespace amorphous
 
 std::shared_ptr<XMLDocumentBase> CreateXMLDocument( const std::string& filepath )
 {
-	if( !boost::filesystem::exists( filepath ) )
+	if( !lfs::path_exists( filepath ) )
 	{
 		LOG_PRINT_ERROR( "Couldn't find the file: " + filepath );
 		return std::shared_ptr<XMLDocumentBase>();

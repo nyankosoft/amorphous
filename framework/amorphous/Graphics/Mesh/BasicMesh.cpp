@@ -3,14 +3,13 @@
 #include "../MeshModel/3DMeshModelArchive.hpp"
 #include "../MeshModel/MeshBone.hpp"
 #include "../TextureUtilities.hpp"
-#include <boost/filesystem.hpp>
+#include "amorphous/Support/lfs.hpp"
 
 
 namespace amorphous
 {
 
 using namespace std;
-using namespace boost::filesystem;
 
 
 //=============================================================================
@@ -119,7 +118,7 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 				else
 				{
 					// relative apth
-					path filepath = path(m_strFilename).parent_path() / tex_filename;
+					lfs::path filepath = lfs::path(m_strFilename).parent_path() / tex_filename;
 					tex_filepath = filepath.string();
 				}
 

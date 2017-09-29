@@ -1,14 +1,13 @@
 #include "LogOutput.hpp"
-#include "../../base.hpp"
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/filesystem.hpp>
+#include "amorphous/base.hpp"
+#include "amorphous/Support/lfs.hpp"
+#include "amorphous/Support/StringAux.hpp"
 
 
 namespace amorphous
 {
 
 using namespace std;
-
 
 //=================================================================================
 // LogOutput_TextFile
@@ -139,15 +138,13 @@ static const char *s_LogTextColor[] =
 LogOutput_HTML::LogOutput_HTML( const std::string& filename )
 : LogOutput_TextFile( filename )
 {
-	using namespace boost::filesystem;
-
 	bool support_filtering = true;
 
 	std::ofstream& ofs = m_OutputFileStream;
 
 	ofs << "<html>\n";
 	ofs << "	<head>\n";
-	ofs << "	<title>" << path(filename).leaf().stem().string() << "</title>\n";
+	ofs << "	<title>" << lfs::path(filename).leaf().stem().string() << "</title>\n";
 
 	if( support_filtering )
 		ofs << js_source;
@@ -199,8 +196,8 @@ void LogOutput_HTML::Print( const LogMessage& msg )
 	if( text_in_html[ text_in_html.size() - 1 ] == '\n' )
 		text_in_html = text_in_html.substr( 0, text_in_html.size() - 1 );
 
-	boost::replace_all( text_in_html, "<", "&lt;" );
-	boost::replace_all( text_in_html, ">", "&gt;" );
+	replace_all( text_in_html, "<", "&lt;" );
+	replace_all( text_in_html, ">", "&gt;" );
 
 	int color_index = msg.m_FilterVal & 0x000000FF;	// take out the warning level index from the lowest 8-bits
 	clamp( color_index, 0, NUM_LOGWARNINGLEVELS - 1 );

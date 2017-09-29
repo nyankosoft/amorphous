@@ -6,12 +6,13 @@
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/Embedded/EmbeddedPostProcessEffectShader.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
-#include <boost/filesystem.hpp>
+#include "amorphous/Support/lfs.hpp"
 
 
 namespace amorphous
 {
 
+using namespace std;
 
 
 class CMultiSampleType
@@ -170,7 +171,7 @@ PostProcessEffectManager::~PostProcessEffectManager()
 
 Result::Name PostProcessEffectManager::Init( const std::string& base_shader_directory_path )
 {
-	using namespace boost::filesystem;
+//	using namespace boost::filesystem;
 
 //	ShaderResourceDesc shader_desc;
 //	if( base_shader_directory_path.length() == 0 )
@@ -348,7 +349,7 @@ Result::Name PostProcessEffectManager::RenderPostProcessEffects()
 
 	if( PostProcessEffectFilter::ms_SaveFilterResultsAtThisFrame == 1 )
 	{
-		boost::filesystem::create_directories( ".debug/post-process_effect" );
+		lfs::create_directories( ".debug/post-process_effect" );
 //		m_pOrigSceneHolder->m_Texture.SaveTextureToImageFile( "debug/post-process_effect/orig_scene.png" );
 	}
 

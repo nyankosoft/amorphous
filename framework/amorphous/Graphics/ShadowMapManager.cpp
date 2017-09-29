@@ -1,5 +1,4 @@
 #include "ShadowMapManager.hpp"
-#include <boost/filesystem.hpp>
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
@@ -7,6 +6,7 @@
 //#include "amorphous/Graphics/2DPrimitive/2DTexRect.hpp"
 #include "amorphous/Graphics/LightStructs.hpp"
 #include "amorphous/Graphics/HemisphericLight.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 
@@ -14,7 +14,7 @@
 namespace amorphous
 {
 
-using std::map;
+using namespace std;
 
 
 const char *sg_pShadowMapDebugParamsFile = ".debug/shadowmap.txt";
@@ -726,10 +726,8 @@ void ShadowMapManager::EndScene()
 
 void ShadowMapManager::SaveShadowMapTexturesToImageFiles( const std::string& output_directory_path )
 {
-	using namespace boost::filesystem;
-
-	boost::system::error_code ec;
-	create_directories( output_directory_path, ec );
+	//boost::system::error_code ec;
+	lfs::create_directories( output_directory_path );//, ec );
 
 	int i = 0;
 	for( IDtoShadowMap::iterator itr = m_mapIDtoShadowMap.begin();
@@ -741,7 +739,7 @@ void ShadowMapManager::SaveShadowMapTexturesToImageFiles( const std::string& out
 		if( !pShadowMap )
 			continue;
 
-		path image_file_pathname = output_directory_path / fmt_string("shadowmap%02d.png", i);
+		lfs::path image_file_pathname = lfs::path(output_directory_path) / fmt_string("shadowmap%02d.png", i);
 
 		pShadowMap->SaveShadowMapTextureToFile( image_file_pathname.string() );
 	}

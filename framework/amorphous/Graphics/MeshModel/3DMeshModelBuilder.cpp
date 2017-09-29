@@ -7,14 +7,13 @@
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include <assert.h>
 #include <algorithm>
-#include <boost/filesystem.hpp>
 
 
 namespace amorphous
 {
 
 using namespace std;
-using namespace boost::filesystem;
+using namespace lfs;
 
 
 C3DModelLoader::C3DModelLoader()
@@ -100,7 +99,7 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( std::shared_ptr<General3DMesh> 
 //		m_MeshModelArchive.SaveToFile( dest_filepath );
 
 	// Commented out: decided to do this with AutoResourceArchiver.
-	const path dest_dir_path = path(dest_filepath).parent_path();
+	const lfs::path dest_dir_path = lfs::path(dest_filepath).parent_path();
 	if( build_option_flags & C3DMeshModelBuilder::BOF_SAVE_TEXTURES_AS_IMAGE_ARCHIVES )
 	{
 //		const int num_materials = (int)m_MeshModelArchive.GetMaterial().size();
@@ -131,8 +130,8 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( std::shared_ptr<General3DMesh> 
 				LOG_PRINT( "dest_tex_path: " + dest_tex_path.string() );
 
 				// Create the directory/directories for the texture if they do not exist.
-				boost::system::error_code ec;
-				create_directories( dest_tex_path.parent_path(), ec );
+				//boost::system::error_code ec;
+				create_directories( dest_tex_path.parent_path());//, ec );
 
 				path dest_ia_path = change_extension( dest_tex_path, ".ia" );
 				LOG_PRINT( "Saving an image as an image archive file: " + dest_ia_path.string() );

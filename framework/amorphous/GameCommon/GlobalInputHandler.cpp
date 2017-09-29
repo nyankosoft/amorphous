@@ -8,8 +8,8 @@
 #include "amorphous/Graphics/GraphicsresourceManager.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/DebugOutput.hpp"
-#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -34,7 +34,7 @@ inline int GetCurrentCountOfCounterFileAndIncrementCount( const std::string& cou
 		if( !fp )
 		{
 			// probably the directory 'screenshots' does not exist
-			create_directories( path(counter_file_path).parent_path() );
+			lfs::create_directories( lfs::path(counter_file_path).parent_path() );
 			fp = fopen( counter_file_path.c_str(), "wb" );
 			if(!fp)
 				return -1;

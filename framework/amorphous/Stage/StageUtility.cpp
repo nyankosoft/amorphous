@@ -20,9 +20,9 @@
 #include "amorphous/Stage/CopyEntityDesc.hpp"
 #include "amorphous/Stage/StaticGeometry.hpp"
 #include "amorphous/Stage/BE_StaticGeometry.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Utilities/Physics/MeshConversions.hpp"
-#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -34,7 +34,7 @@ using std::map;
 
 bool resources_exists( const std::string& resource_path )
 {
-	return boost::filesystem::exists( resource_path );
+	return lfs::path_exists( resource_path );
 }
 
 

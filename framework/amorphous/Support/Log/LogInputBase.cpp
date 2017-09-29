@@ -172,7 +172,7 @@ bool LogInputBase::RemoveLogOutputDevice( LogOutputBase *pLogOutput )
 
 unsigned long LogInputBase::GetCurrentTimeMS() const
 {
-	return m_Timer.GetElapsedTimeMilliseconds();
+	return m_Timer.GetElapsedTimeInMilliseconds();
 }
 
 

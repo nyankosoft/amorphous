@@ -1,8 +1,8 @@
 #include "SingleStageGameTask.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/lfshpp"
 #include "amorphous/Stage.hpp"
 #include "amorphous/GUI.hpp"
-#include <boost/filesystem.hpp>
 
 
 namespace amorphous
@@ -24,17 +24,15 @@ SingleStageGameTask::~SingleStageGameTask()
 
 void SingleStageGameTask::LoadStage( const std::string& script_name )
 {
-	using namespace boost::filesystem;
-
 	string name_of_script_to_load;
 
-	if( exists( script_name ) )
+	if( lfs::path_exists( script_name ) )
 		name_of_script_to_load = script_name;
 	else
 	{
 		std::string stage_script_filepath = GetStageScriptFilepath();
 
-		if( exists( stage_script_filepath ) )
+		if( lfs::path_exists( stage_script_filepath ) )
 			name_of_script_to_load = stage_script_filepath;
 		else
 		{

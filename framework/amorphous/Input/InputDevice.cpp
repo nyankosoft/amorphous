@@ -48,7 +48,7 @@ void InputDevice::UpdateInputState( const InputData& input_data )
 		key.m_State = CInputState::PRESSED;
 
 		// schedule the first auto repeat event
-		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetElapsedTimeMilliseconds() + FIRST_AUTO_REPEAT_INTERVAL_MS;
+		key.m_NextAutoRepeatTimeMS = GlobalTimer().GetElapsedTimeInMilliseconds() + FIRST_AUTO_REPEAT_INTERVAL_MS;
 
 		if( pressed_key_list.size() < InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES )
 		{
@@ -266,7 +266,7 @@ void InputDeviceHub::SendAutoRepeat( InputDeviceGroup& group )
 	int i, num_keys = group.m_PressedKeyList.size();
 	for( i=0; i<num_keys; i++ )
 	{
-		unsigned long current_time = GlobalTimer().GetElapsedTimeMilliseconds();
+		unsigned long current_time = GlobalTimer().GetElapsedTimeInMilliseconds();
 		InputData input_data;
 
 		CInputState& pressed_key_state = group.m_aInputState[ group.m_PressedKeyList[i] ];

@@ -47,6 +47,10 @@ public:
 		unsigned long milliseconds = GetElapsedTimeInMilliseconds();
 		return (double)milliseconds * 0.001;
 	}
+
+	inline float GetFrameTime() const { return 0.01f; }
+
+	inline void UpdateFrameTime() {}
 };
 
 

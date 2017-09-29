@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <string>
 #include <vector>
+#include <regex>
 
 #ifdef _MSC_VER
 #include <direct.h>
@@ -327,6 +328,157 @@ inline void get_filedata( const std::string& filename, std::vector<unsigned char
 	fread( &rDestBuffer[0], 1, filesize, fp );
 
 	fclose(fp);
+}
+
+
+class path
+{
+	std::string pathname;
+
+public:
+
+	path() {}
+
+	path(const std::string& _pathname)
+		:
+		pathname(_pathname)
+	{}
+
+	path operator/(const path& rhs) const
+	{
+		return path(this->pathname + "/" + rhs.pathname);
+	}
+
+	path parent_path() const
+	{
+		return get_parent_path(pathname);
+	}
+
+	path leaf() const
+	{
+		return path(get_leaf(pathname));
+	}
+
+	path stem() const
+	{
+		path leaf = this->leaf();
+		auto dot_pos = leaf.pathname.rfind(".");
+		if(dot_pos != std::string::npos)
+			return path(leaf.pathname.substr(0,dot_pos));
+		else
+			return leaf;
+	}
+
+	std::string extension() const
+	{
+		auto dot_pos = pathname.rfind(".");
+		if(dot_pos != std::string::npos)
+			return pathname.substr(dot_pos);
+		else
+			return std::string();
+	}
+
+	std::string string() const
+	{
+		return this->pathname;
+	}
+};
+
+
+inline int create_directory( const std::string& pathname ) {
+
+	// mkdir under Windows MSVC only takes the path argument
+#ifdef _MSC_VER
+	int ret = mkdir(pathname.c_str());
+#else /* _MSC_VER */
+	// Whereas everywhere else in the world, we have permission bits
+	// Since I'm coding and compiling on VS, I'll come back and
+	// work on this later
+	mode_t = mode_flags S_IRUSR | S_IWUSR | S_IXUSR;
+	int ret = mkdir(pathname.c_str(), mode_flags);
+#endif /* _MSC_VER */
+
+	return ret;
+}
+
+
+inline bool find_contiguous_slash_or_backslash_block(
+	const std::string& pathname,
+	size_t current_offset,
+	size_t& separator_start,
+	size_t& separator_end )
+{
+	std::regex myregex("[/\\\\]+");
+	std::smatch results;
+	std::string path_to_search = pathname.substr(current_offset);
+	std::regex_search(path_to_search, results, myregex);
+
+	if( 0 < results.size() )
+	{
+		separator_start = results.prefix().length();
+		separator_end   = results.prefix().length() + results[0].length();
+
+		return true;
+	}
+	else
+		return false;
+}
+
+
+/**
+TODO: Support permisson flags
+*/
+inline int create_directories( const path& pathname ) {
+
+	const std::string& _pathname = pathname.string();
+	size_t current_offset = 0;
+	std::string dir_to_create;
+
+	size_t separator_start = std::string::npos;
+	size_t separator_end = std::string::npos;
+
+	bool found = find_contiguous_slash_or_backslash_block(_pathname,current_offset,separator_start,separator_end);
+	if(found && separator_start == 0) // The pathname starts with separator(s)
+		current_offset = separator_end + 1;
+
+	while(1) {
+		// Example:
+		// pathname[in] = abc//\\/de
+		// separator_start[out] = 3
+		// separator_end[out] = 7 (/ before 'd')
+		separator_start = std::string::npos;
+		separator_end = std::string::npos;
+		found = find_contiguous_slash_or_backslash_block(_pathname,current_offset,separator_start,separator_end);
+
+		if( found )
+		{
+			// Found a separator, or a block of separators
+
+			// Get the substring that ends just before the separator character
+			dir_to_create = _pathname.substr( 0, separator_start );
+
+			int ret = create_directory( dir_to_create );
+
+			current_offset = separator_end + 1;
+
+			if( _pathname.length() <= current_offset )
+				break; // pathname ends with a separator block; no more directories to create.
+		}
+		else
+		{
+			// No more slashes/backslashes found; create the leaf directory.
+			dir_to_create = _pathname;
+
+			// Remember that it is possible 'dir_to_create' is not a valid directory path.
+			// For instance, the all the previous directory paths already exist and
+			// dir_to_create is a file pathname in the innermost directory.
+			create_directory( dir_to_create );
+
+			break;
+		}
+	}
+
+	return 0;
 }
 
 

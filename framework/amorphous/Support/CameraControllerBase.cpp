@@ -1,5 +1,5 @@
 #include "CameraControllerBase.hpp"
-#include "Input/InputHandler.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous
