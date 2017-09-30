@@ -1,9 +1,9 @@
 #include "ResourceLoadingStateHolder.hpp"
 //#include "Graphics/Direct3D/Mesh/D3DXMeshObjectBase.hpp"
-#include "Graphics/GraphicsResourceEntries.hpp"
-#include "Graphics/TextureHandle.hpp"
-#include "Graphics/MeshObjectHandle.hpp"
-#include "Graphics/ShaderHandle.hpp"
+#include "amorphous/Graphics/TextureHandle.hpp"
+#include "amorphous/Graphics/GraphicsResourceEntries.hpp"
+#include "amorphous/Graphics/MeshObjectHandle.hpp"
+#include "amorphous/Graphics/ShaderHandle.hpp"
 
 
 namespace amorphous

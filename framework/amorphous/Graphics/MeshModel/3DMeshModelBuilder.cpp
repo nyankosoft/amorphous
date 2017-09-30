@@ -133,7 +133,8 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( std::shared_ptr<General3DMesh> 
 				//boost::system::error_code ec;
 				create_directories( dest_tex_path.parent_path());//, ec );
 
-				path dest_ia_path = change_extension( dest_tex_path, ".ia" );
+				path dest_ia_path = dest_tex_path;
+				dest_ia_path.replace_extension( ".ia" );
 				LOG_PRINT( "Saving an image as an image archive file: " + dest_ia_path.string() );
 				bool ia_saved = ia.SaveToFile( dest_ia_path.string(), ArchiveOptionFlags::AOF_OBFUSCATE );
 				if( ia_saved )

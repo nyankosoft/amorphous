@@ -107,7 +107,7 @@ inline void TriangulateConvexPolygon(
 
 	triangle_indices.reserve( point_indices.size() );
 	
-	for( int num_orig_indices = indices.size();
+	for( int num_orig_indices = (int)indices.size();
 		0 < num_orig_indices;
 		num_orig_indices--)
 	{

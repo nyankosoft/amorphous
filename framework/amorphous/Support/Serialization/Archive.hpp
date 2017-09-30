@@ -80,17 +80,18 @@ public:
 	template<class T>
 	IArchive& operator & (std::vector<T>& vecData)
 	{
-		size_t n,i;
+		typedef unsigned long vector_size_type;
+		vector_size_type n, i;
 
 		if( m_Mode == MODE_OUTPUT )
 		{
-			n = vecData.size();
-			HandleData( &n, sizeof(size_t) );	// record array size
+			n = (vector_size_type)vecData.size();
+			HandleData( &n, sizeof(vector_size_type) );	// record array size
 		}
 		else // i.e. ( m_Mode == MODE_INPUT )
 		{
-			HandleData( &n, sizeof(size_t) );	// get array size
-			vecData.resize( n );
+			HandleData( &n, sizeof(vector_size_type) );	// get array size
+			vecData.resize( (size_t)n );
 		}
 
 		for( i=0; i<n; i++ )
@@ -372,12 +373,14 @@ public:
 	template<class T>
 	void Polymorphic( std::vector<T>& vecpData, IArchiveObjectFactory& rFactory )
 	{
-		size_t i, array_size = 0;
+		typedef unsigned long vector_size_type;
+
+		vector_size_type i, array_size = 0;
 		unsigned int id;
 
 		if( m_Mode == MODE_OUTPUT )
 		{
-			array_size = vecpData.size();
+			array_size = (vector_size_type)vecpData.size();
 
 			(*this) & array_size;	// record array size
 
@@ -394,7 +397,7 @@ public:
 		{
 			(*this) & array_size;	// get array size
 
-			vecpData.resize(array_size);
+			vecpData.resize((size_t)array_size);
 
 			for( i=0; i<array_size; i++ )
 			{

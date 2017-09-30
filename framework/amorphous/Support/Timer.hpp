@@ -19,9 +19,19 @@ class Timer
 
 	std::chrono::time_point<std::chrono::steady_clock> m_StartTime;
 
+	/// Below are somewhat undesirable backward compatibility necessities
+	/// The thing is that this Timer class assumes the duty of keeping frame time
+	/// as well as functions as timer.
+
+	unsigned long m_LastElapsedTimeInMilliseconds;
+
+	float m_fFrameTime;
+
 public:
 
-	Timer() : m_StartTime(m_Clock.now())
+	Timer() : m_StartTime(m_Clock.now()),
+		m_LastElapsedTimeInMilliseconds(0),
+		m_fFrameTime(0.0f)
 	{}
 
 	/**
@@ -48,9 +58,16 @@ public:
 		return (double)milliseconds * 0.001;
 	}
 
-	inline float GetFrameTime() const { return 0.01f; }
+	inline float GetFrameTime() const { return m_fFrameTime; }
 
-	inline void UpdateFrameTime() {}
+	inline void UpdateFrameTime()
+	{
+		auto elapsed = GetElapsedTimeInMilliseconds();
+		m_fFrameTime = (elapsed - m_LastElapsedTimeInMilliseconds) * 0.001f;
+		m_LastElapsedTimeInMilliseconds = elapsed;
+	}
+
+	inline float GetFPS() const { return 1.0f / m_fFrameTime; }
 };
 
 

@@ -89,7 +89,7 @@ How to use MeshMender:
 #pragma warning( disable : 4786)
 #pragma warning( disable : 4100)
 
-#include "3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
 using amorphous::Vector3;
 #include <map>
 #include <set>

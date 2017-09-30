@@ -486,7 +486,7 @@ void GraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::s
 {
 	std::lock_guard<std::mutex> lock(m_ResourceLock);
 
-	size_t i, num_entries = m_vecpResourceEntry.size();
+	int i, num_entries = (int)m_vecpResourceEntry.size();
 	dest_buffer = to_string(num_entries) + " resources in total\n";
 	dest_buffer += "----------------------------------------------------------\n";
 
@@ -507,7 +507,7 @@ void GraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::v
 
 	dest_buffer.reserve( 0xFF );
 
-	size_t i, num_entries = m_vecpResourceEntry.size();
+	int i, num_entries = (int)m_vecpResourceEntry.size();
 	dest_buffer.push_back( to_string(num_entries) + " resources in total" );
 	dest_buffer.push_back( "----------------------------------------------------------" );
 

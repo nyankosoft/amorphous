@@ -15,9 +15,11 @@
 
 #else /* BUILD_WITH_DIRECT3D */
 
+class null_d3d9_effect { public: void CommitChanges() {} };
+
 typedef void* LPDIRECT3DDEVICE9;
 typedef void* LPDIRECT3DTEXTURE9;
-typedef void* LPD3DXEFFECT;
+typedef null_d3d9_effect* LPD3DXEFFECT;
 
 #endif /* BUILD_WITH_DIRECT3D */
 

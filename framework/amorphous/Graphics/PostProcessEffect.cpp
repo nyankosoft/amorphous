@@ -2,8 +2,8 @@
 #include "PostProcessEffectManager.hpp"
 #include "amorphous/3DMath/Gaussian.hpp"
 #include "amorphous/Graphics/SurfaceFormat.hpp"
-#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
-#include "amorphous/Graphics/Direct3D/D3DSurfaceFormat.hpp"
+//#include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
+//#include "amorphous/Graphics/Direct3D/D3DSurfaceFormat.hpp"
 #include "amorphous/Graphics/GraphicsResourceDescs.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
@@ -32,40 +32,28 @@ struct CoordRect
 };
 
 
-// Screen quad vertex format
-//class ScreenVertex
+//const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc()
 //{
-//public:
-//    Vector4 p; // position
-//    TEXCOORD2 t; // texture coordinate
+//	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 //
-//    static const DWORD FVF;
-//};
-//const DWORD                 ScreenVertex::FVF = D3DFVF_XYZRHW | D3DFVF_TEX1;
-
-
-const D3DSURFACE_DESC *GetD3D9BackBufferSurfaceDesc()
-{
-	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
-
-	// retrieve the back buffer size
-	static D3DSURFACE_DESC s_back_buffer_desc;
-	IDirect3DSurface9 *pBackBuffer;
-	pd3dDevice->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
-	pBackBuffer->GetDesc( &s_back_buffer_desc );
-	return &s_back_buffer_desc;
-}
+//	// retrieve the back buffer size
+//	static D3DSURFACE_DESC s_back_buffer_desc;
+//	IDirect3DSurface9 *pBackBuffer;
+//	pd3dDevice->GetBackBuffer( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
+//	pBackBuffer->GetDesc( &s_back_buffer_desc );
+//	return &s_back_buffer_desc;
+//}
 
 
 SRectangular GetBackBufferWidthAndHeight()
 {
-	if( DIRECT3D9.GetDevice() )
-	{
-		// We are running Direct3D
-		const D3DSURFACE_DESC *pBB = GetD3D9BackBufferSurfaceDesc();
-		return SRectangular( (int)(pBB->Width), (int)(pBB->Height) );
-	}
-	else
+//	if( DIRECT3D9.GetDevice() )
+//	{
+//		// We are running Direct3D
+//		const D3DSURFACE_DESC *pBB = GetD3D9BackBufferSurfaceDesc();
+//		return SRectangular( (int)(pBB->Width), (int)(pBB->Height) );
+//	}
+//	else
 	{
 		// We are running OpenGL
 
@@ -734,6 +722,15 @@ void DownScale2x2Filter::Render()
 HDRBrightPassFilter::HDRBrightPassFilter()
 {
 	m_Technique.SetTechniqueName( "BrightPassFilter" );
+
+	m_SetSamplerParameters[0] = 1;
+	m_MagFilters[0] = TextureFilter::NEAREST;
+	m_MinFilters[0] = TextureFilter::NEAREST;
+
+	m_SetSamplerParameters[1] = 1;
+	m_MagFilters[1] = TextureFilter::NEAREST;
+	m_MinFilters[1] = TextureFilter::NEAREST;
+
 }
 
 
@@ -751,7 +748,6 @@ Result::Name HDRBrightPassFilter::Init( RenderTargetTextureCache& cache, FilterS
 /// and place the result in dest render target texture.
 void HDRBrightPassFilter::Render()
 {
-	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -790,21 +786,24 @@ void HDRBrightPassFilter::Render()
 	float fKeyValue = 3.5f;
 	shader_mgr.SetParam( "g_fMiddleGray", fKeyValue );
 
+//	IDirect3DDevice9* pd3dDevice = DIRECT3D9.GetDevice();
+
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pDest->m_pTexSurf );
 //	hr = pd3dDevice->SetTexture( 0, m_pPrevScene->m_Texture.GetTexture() ); // done in RenderBase()
 
 //	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_Texture.GetTexture() );
-	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
+///	hr = pd3dDevice->SetTexture( 1, m_pAdaptedLuminanceTexture->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
+	GraphicsDevice().SetTexture( 1, m_pAdaptedLuminanceTexture->m_pTextureRenderTarget->GetRenderTargetTexture() );
 
 //	GraphicsDevice().Enable( RenderStateType::SCISSOR_TEST ); // original D3D sample
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
 	GraphicsDevice().SetScissorRect( rectDest );
 
-	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
+/*	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
-
+*/
 	RenderFullScreenQuad( shader_mgr, coords );
 
 	GraphicsDevice().Disable( RenderStateType::SCISSOR_TEST );
@@ -1208,6 +1207,7 @@ void CombinedBloomFilter::AddNextFilter( std::shared_ptr<PostProcessEffectFilter
 
 void GetLuminanceTextureDesc( TextureResourceDesc& dest )
 {
+#ifdef BUILD_WITH_DIRECT3D
 	LPDIRECT3D9 pD3D = DIRECT3D9.GetD3D();
 	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 
@@ -1230,6 +1230,7 @@ void GetLuminanceTextureDesc( TextureResourceDesc& dest )
 
 	vector<AdapterMode> adapter_modes;
 	GraphicsDevice().GetAdapterModesForDefaultAdapter( adapter_modes );
+#endif /* BUILD_WITH_DIRECT3D */
 }
 
 
@@ -1455,7 +1456,7 @@ Result::Name AdaptationCalcFilter::Init( RenderTargetTextureCache& cache, Filter
 */
 void AdaptationCalcFilter::Render()
 {
-	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
+//	LPDIRECT3DDEVICE9 pd3dDevice = DIRECT3D9.GetDevice();
 	ShaderManager *pShaderMgr = GetShaderManager(*this);
 	if( !pShaderMgr )
 		return;
@@ -1493,9 +1494,12 @@ void AdaptationCalcFilter::Render()
 //	hr = pd3dDevice->SetRenderTarget( 0, m_pDest->m_pTexSurf );
 	m_pDest->m_pTextureRenderTarget->SetRenderTarget();
 
-	hr = pd3dDevice->SetTexture( 0, m_pTexAdaptedLuminanceLast->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
+/*	hr = pd3dDevice->SetTexture( 0, m_pTexAdaptedLuminanceLast->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
 //	hr = pd3dDevice->SetTexture( 1, g_apTexToneMap[0] );
 	hr = pd3dDevice->SetTexture( 1, m_pPrevScene->m_pTextureRenderTarget->GetRenderTargetTexture().GetTexture() );
+*/
+	GraphicsDevice().SetTexture( 0, m_pTexAdaptedLuminanceLast->m_pTextureRenderTarget->GetRenderTargetTexture() );
+	GraphicsDevice().SetTexture( 1, m_pPrevScene->m_pTextureRenderTarget->GetRenderTargetTexture() );
 /*
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MAGFILTER, D3DTEXF_POINT );
 	pd3dDevice->SetSamplerState( 0, D3DSAMP_MINFILTER, D3DTEXF_POINT );
@@ -1503,11 +1507,11 @@ void AdaptationCalcFilter::Render()
 	pd3dDevice->SetSamplerState( 1, D3DSAMP_MINFILTER, D3DTEXF_POINT );
 */
 	// Check the current states: should all be D3DTEXF_POINT. See above.
-	DWORD mag0=0, min0=0, mag1=0, min1=0;
-	pd3dDevice->GetSamplerState( 0, D3DSAMP_MAGFILTER, &mag0 );
-	pd3dDevice->GetSamplerState( 0, D3DSAMP_MINFILTER, &min0 );
-	pd3dDevice->GetSamplerState( 1, D3DSAMP_MAGFILTER, &mag1 );
-	pd3dDevice->GetSamplerState( 1, D3DSAMP_MINFILTER, &min1 );
+//	DWORD mag0=0, min0=0, mag1=0, min1=0;
+//	pd3dDevice->GetSamplerState( 0, D3DSAMP_MAGFILTER, &mag0 );
+//	pd3dDevice->GetSamplerState( 0, D3DSAMP_MINFILTER, &min0 );
+//	pd3dDevice->GetSamplerState( 1, D3DSAMP_MAGFILTER, &mag1 );
+//	pd3dDevice->GetSamplerState( 1, D3DSAMP_MINFILTER, &min1 );
 
 	RenderFullScreenQuad( shader_mgr, 0.0f, 0.0f, 1.0f, 1.0f );
 

@@ -6,9 +6,9 @@
 #include <string>
 #include <memory>
 
-#include "../fwd.hpp"
-#include "../IndexedPolygon.hpp"
-#include "3DMath/AABB3.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/IndexedPolygon.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
 
 
 namespace amorphous

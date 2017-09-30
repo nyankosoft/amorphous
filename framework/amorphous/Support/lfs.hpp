@@ -339,6 +339,11 @@ public:
 
 	path() {}
 
+	path(const char *_pathname)
+		:
+		pathname(_pathname)
+	{}
+
 	path(const std::string& _pathname)
 		:
 		pathname(_pathname)
@@ -378,6 +383,20 @@ public:
 			return std::string();
 	}
 
+	path replace_extension(const path& replacement = path() )
+	{
+		auto dot_pos = pathname.rfind(".");
+		std::string dest = replacement.pathname;
+
+		if(0 < dest.length() && dest[0] != '.')
+			dest = "." + dest;
+
+		if(dot_pos != std::string::npos)
+			pathname.replace(dot_pos, pathname.length() - dot_pos, dest);
+
+		return *this;
+	}
+		
 	std::string string() const
 	{
 		return this->pathname;

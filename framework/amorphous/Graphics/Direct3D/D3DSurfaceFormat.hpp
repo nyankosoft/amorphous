@@ -3,7 +3,7 @@
 
 
 #include "../SurfaceFormat.hpp"
-#include "Support/Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include <d3dx9.h>
 
 

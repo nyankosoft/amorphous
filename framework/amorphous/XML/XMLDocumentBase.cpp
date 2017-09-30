@@ -2,8 +2,10 @@
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 
+#ifdef _BUILD_WITH_BOOST_PROPERTY_TREE_
 #include "BoostPTreeXMLNode.hpp"
 #include "BoostPTreeXMLDocument.hpp"
+#endif // _BUILD_WITH_BOOST_PROPERTY_TREE_
 
 #ifdef _BUILD_WITH_XERCESC_
 #include "XMLDocumentBase.hpp"
@@ -27,10 +29,12 @@ std::shared_ptr<XMLDocumentBase> CreateXMLDocument( const std::string& filepath 
 #ifdef _BUILD_WITH_XERCESC_
 	XMLDocumentBaseLoader doc_loader;
 	return doc_loader.Load( filepath );
-#else // _BUILD_WITH_XERCESC_
+#endif // _BUILD_WITH_XERCESC_
+
+#ifdef _BUILD_WITH_BOOST_PROPERTY_TREE_
 	pDocument.reset( new BoostPTreeXMLDocument( filepath ) );
 //	BoostPTreeXMLDocument boost_ptree_xml_document;
-#endif // _BUILD_WITH_XERCESC_
+#endif // _BUILD_WITH_BOOST_PROPERTY_TREE_
 
 	return pDocument;
 }

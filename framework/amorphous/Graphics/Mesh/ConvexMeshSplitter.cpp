@@ -1,14 +1,12 @@
 #include "ConvexMeshSplitter.hpp"
 #include "CustomMesh.hpp"
-#include "../../3DMath/ConvexPolygonUtilities.hpp"
-
+#include "amorphous/3DMath/ConvexPolygonUtilities.hpp"
+#include <algorithm>
 
 namespace amorphous
 {
 
-using std::vector;
-using std::map;
-using std::pair;
+using namespace std;
 
 typedef std::pair<U16,U16> u16_pair;
 
@@ -35,7 +33,7 @@ Result::Name ConvexMeshSplitter::CreateTrianglesOnSplitSurface(
 {
 	typedef fixed_vector<U16,3> triangle;
 
-	const int num_points = m_SplitSurfacePoints.size();
+	const int num_points = (int)m_SplitSurfacePoints.size();
 
 	vector<int> point_indices;
 	CalculateConvexPolygonIndices( m_SplitSurfacePoints, point_indices );

@@ -3,8 +3,8 @@
 
 
 #include "fwd.hpp"
-#include "Graphics/fwd.hpp"
-#include "../base.hpp"
+#include "amorphous/base.hpp"
+#include "amorphous/Graphics/fwd.hpp"
 #include <list>
 #include <memory>
 

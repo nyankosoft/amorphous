@@ -10,7 +10,7 @@
 namespace amorphous
 {
 
-using std::vector;
+using namespace std;
 
 
 void SetDefaultMeshAttributes( C3DMeshModelArchive& mesh_archive )
