@@ -141,7 +141,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TangentSpace.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectContainer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshObjectHandle.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshUtilities.hpp" />
@@ -167,7 +166,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureResourceVisitor.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.hpp" />
@@ -188,7 +186,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\PrimitiveRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\PseudoNoiseEffect.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RectTree.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\RectTriListIndex.hpp" />
@@ -225,6 +222,7 @@
     <ClInclude Include="..\..\amorphous\Support\array2d.hpp" />
     <ClInclude Include="..\..\amorphous\Support\BitmapImage.hpp" />
     <ClInclude Include="..\..\amorphous\Support\BitmapImageHelpers.hpp" />
+    <ClInclude Include="..\..\amorphous\Support\BitmapImage_stb.hpp" />
     <ClInclude Include="..\..\amorphous\Support\BuiltinImage.hpp" />
     <ClInclude Include="..\..\amorphous\Support\CameraController.hpp" />
     <ClInclude Include="..\..\amorphous\Support\CameraControllerBase.hpp" />
@@ -398,7 +396,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\NVMeshMender.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\PrimitiveShapeMeshes.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectContainer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshObjectHandle.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Mesh\BasicMesh.cpp" />
@@ -418,7 +415,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLInitialization.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLTextureUtilities.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLCustomMeshRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLProgressiveMeshImpl.cpp" />
@@ -435,7 +431,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\PostProcessEffectManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PrimitiveShapeRenderer.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\PseudoNoiseEffect.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp" />
@@ -451,6 +446,7 @@
     <ClCompile Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.cpp" />
     <ClCompile Include="..\..\amorphous\Input\InputDevice.cpp" />
     <ClCompile Include="..\..\amorphous\Input\InputHub.cpp" />
+    <ClCompile Include="..\..\amorphous\Support\BitmapImage_stb.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraController.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraControllerBase.cpp" />
     <ClCompile Include="..\..\amorphous\Support\CameraController_Win32.cpp" />

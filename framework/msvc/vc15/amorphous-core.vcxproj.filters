@@ -408,9 +408,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\PseudoNoiseEffect.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\Rect.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
@@ -609,9 +606,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TangentSpace.hpp">
       <Filter>Source Files\Graphics\MeshModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.hpp">
-      <Filter>Source Files\Graphics\MeshModel</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\fwd.hpp">
       <Filter>Source Files\Graphics\OpenGL</Filter>
     </ClInclude>
@@ -650,9 +644,6 @@
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DRectSetImpl_GL.hpp">
       <Filter>Source Files\Graphics\OpenGL\2DPrimitive</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.hpp">
-      <Filter>Source Files\Graphics\OpenGL\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.hpp">
       <Filter>Source Files\Graphics\OpenGL\Mesh</Filter>
@@ -1047,6 +1038,9 @@
     <ClInclude Include="..\..\amorphous\Support\WindowMisc_Win32.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Support\BitmapImage_stb.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp">
@@ -1179,9 +1173,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\PseudoNoiseEffect.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\PyModule_GraphicsElement.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\RectTree.cpp">
@@ -1322,9 +1313,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\MeshModel\ShadowVolumeMeshGenerator.cpp">
       <Filter>Source Files\Graphics\MeshModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\MeshModel\TerrainMeshGenerator.cpp">
-      <Filter>Source Files\Graphics\MeshModel</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\GLCubeTextureRenderTarget.cpp">
       <Filter>Source Files\Graphics\OpenGL</Filter>
     </ClCompile>
@@ -1345,9 +1333,6 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\2DPrimitive\2DPrimitiveRenderer_GL.cpp">
       <Filter>Source Files\Graphics\OpenGL\2DPrimitive</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GL2BasicMeshImpl.cpp">
-      <Filter>Source Files\Graphics\OpenGL\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\OpenGL\Mesh\GLBasicMeshImpl.cpp">
       <Filter>Source Files\Graphics\OpenGL\Mesh</Filter>
@@ -1467,6 +1452,9 @@
       <Filter>Source Files\Support</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\Profile.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Support\BitmapImage_stb.cpp">
       <Filter>Source Files\Support</Filter>
     </ClCompile>
   </ItemGroup>
