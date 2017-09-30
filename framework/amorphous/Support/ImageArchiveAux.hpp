@@ -11,27 +11,6 @@ namespace amorphous
 {
 
 
-inline FREE_IMAGE_FORMAT ToFIF( ImageArchive::ImageFormat img_fmt )
-{
-	switch(img_fmt)
-	{
-	case ImageArchive::IMGFMT_BMP24: return FIF_BMP;
-	case ImageArchive::IMGFMT_BMP32: return FIF_BMP;
-	case ImageArchive::IMGFMT_JPEG:  return FIF_JPEG;
-	case ImageArchive::IMGFMT_TGA:   return FIF_TARGA;
-	case ImageArchive::IMGFMT_PNG:   return FIF_PNG;
-//	case ImageArchive::IMGFMT_ : return FIF_DDS,
-//	case ImageArchive::IMGFMT_ : return FIF_PPM,
-//	case ImageArchive::IMGFMT_ : return FIF_DIB,
-//	case ImageArchive::IMGFMT_ : return FIF_HDR,       ///< high dynamic range formats
-//	case ImageArchive::IMGFMT_ : return FIF_PFM,       ///
-	default: return FIF_UNKNOWN;
-	}
-
-	return FIF_UNKNOWN;
-}
-
-
 inline const char *ToImageExtension( ImageArchive::ImageFormat img_fmt )
 {
 	switch(img_fmt)

@@ -336,21 +336,27 @@ void DiskTextureLoader::FillTexture( LockedTexture& texture )
 
 	const int w = img.GetWidth();
 	const int h = img.GetHeight();
-	if( FreeImage_GetBPP( img.GetFBITMAP() ) == 24 )
+	//const int bits_per_pixel = FreeImage_GetBPP( img.GetFBITMAP() );
+	const int bits_per_pixel = img.GetBitsPerPixel();
+	if( bits_per_pixel == 24 )
 	{
 		// probably an image without alpha channel
-		RGBQUAD quad;
+		//RGBQUAD quad;
 		for( int y=0; y<h; y++ )
 		{
 			for( int x=0; x<w; x++ )
 			{
 //				FreeImage_GetPixelColor( img.GetFBITMAP(), x, y, &quad );
-				FreeImage_GetPixelColor( img.GetFBITMAP(), x, h - y - 1, &quad );
+/*				FreeImage_GetPixelColor( img.GetFBITMAP(), x, h - y - 1, &quad );
 				U32 argb32
 					= 0xFF000000
 					| quad.rgbRed   << 16
 					| quad.rgbGreen <<  8
 					| quad.rgbBlue;
+*/
+				U8 r=0, g=0, b=0, a=0;
+				img.GetPixel( x, h - y - 1, r, g, b );
+				U32 argb32 = 0xFF000000 | r << 16 | g <<  8 | b;
 
 				texture.SetPixelARGB32( x, y, argb32 );
 //				texture.SetPixelARGB32( x, y, 0xFF00FF00 ); / debug

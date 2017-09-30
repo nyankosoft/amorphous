@@ -239,12 +239,85 @@ static Result::Name GetSrcPixelTypeAndFormat( const TextureResourceDesc& desc, G
 
 
 /**
+\param[in]  img
+\param[in]  is_render_target
+\param[out] src_format
+\param[out] src_type
+*/
+static Result::Name GetSrcPixelTypeAndFormat_stb( const TextureResourceDesc& desc, BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
+{
+	//	if( desc.UsageFlags & UsageFlag::RENDER_TARGET )
+	//		bool is_render_target;
+
+	src_format = GL_RGB;
+	src_type   = GL_UNSIGNED_BYTE;
+
+//	FIBITMAP *pFIBitmap = img.GetFBITMAP();
+//	if( !pFIBitmap )
+//		return Result::UNKNOWN_ERROR;
+
+	bool supported = true;
+/*
+	FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( pFIBitmap );
+	unsigned int bpp = FreeImage_GetBPP( pFIBitmap );
+
+	// Consider the format as the RGBA if the BPP is 32
+	// Rationale: FreeImage seems to return FIC_RGB if the all the alpha channel bytes are 0xFFs.
+	// See the definition of FreeImage_GetColorType() in Source/FreeImage/BitmapAccess.cpp
+	// in the source code of FreeImage library.
+	if( bpp == 32 )
+		color_type = FIC_RGBALPHA;
+
+	switch( color_type )
+	{
+	case FIC_RGB:
+		//		src_format = GL_RGB;
+		src_format = GL_BGR;
+		switch( bpp )
+		{
+		case 24:
+			src_type = GL_UNSIGNED_BYTE;
+			break;
+		case 32:
+			src_type = GL_UNSIGNED_BYTE;
+			break;
+		default:
+			supported = false;
+			break;
+		}
+		break;
+	case FIC_RGBALPHA:
+		//		src_format = GL_RGBA; // Works when the texture is used as a render target.
+		//		src_format = GL_BGRA; // Works when an image file is used as a texture.
+		src_format = is_render_target ? GL_RGBA : GL_BGRA;
+		switch( bpp )
+		{
+		case 32:
+			src_type = GL_UNSIGNED_BYTE;
+			break;
+		default:
+			supported = false;
+			break;
+		}
+		break;
+	default:
+		supported = false;
+		LOG_PRINT_ERROR( fmt_string( " An unsupported image format: color type = %s", img.GetColorTypeName() ) );
+		break;
+	}*/
+
+	return supported ? Result::SUCCESS : Result::UNKNOWN_ERROR;
+}
+
+
+#ifdef BUILD_WITH_FREE_IMAGE
+/**
  \param[in]  img
  \param[in]  is_render_target
  \param[out] src_format
  \param[out] src_type
 */
-static Result::Name GetSrcPixelTypeAndFormat( const TextureResourceDesc& desc, BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
+static Result::Name GetSrcPixelTypeAndFormat_FreeImage( const TextureResourceDesc& desc, BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
 {
 //	if( desc.UsageFlags & UsageFlag::RENDER_TARGET )
 //		bool is_render_target;
@@ -308,6 +381,7 @@ static Result::Name GetSrcPixelTypeAndFormat( const TextureResourceDesc& desc, B
 
 	return supported ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
+#endif BUILD_WITH_FREE_IMAGE
 
 
 inline static int CalcNumMipmaps( int src )
@@ -341,7 +415,8 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 	if( 0 < src_img.GetWidth() )
 	{
 		// An image for the texture has been loaded from a file, or generated with an algorithm
-		res = GetSrcPixelTypeAndFormat( m_TextureDesc, src_img, is_render_target, src_format, src_type );
+		//res = GetSrcPixelTypeAndFormat_FreeImage( m_TextureDesc, src_img, is_render_target, src_format, src_type );
+		res = GetSrcPixelTypeAndFormat_stb( m_TextureDesc, src_img, is_render_target, src_format, src_type );
 	}
 	else
 	{
@@ -420,7 +495,8 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 
 		image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",lfs::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
 
-		void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
+		//void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
+		void *pImageData = image_copy.GetImageData();
 		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, pImageData, texture_id );
 	}
 
@@ -745,11 +821,13 @@ bool CGLTextureResource::Unlock()
 //		int level = 2;
 		int tex_width  = copied_image.GetWidth();  //locked_image.GetWidth();
 		int tex_height = copied_image.GetHeight(); //locked_image.GetHeight();
-		unsigned int bpp = FreeImage_GetBPP( copied_image.GetFBITMAP() );
-		unsigned int num_colors = FreeImage_GetColorsUsed( copied_image.GetFBITMAP() );
+		//unsigned int bpp = FreeImage_GetBPP( copied_image.GetFBITMAP() );
+		//unsigned int num_colors = FreeImage_GetColorsUsed( copied_image.GetFBITMAP() );
 //		GLenum format = GL_RGBA;
 		GLenum format = GL_BGRA; // GL_BGRA is set because is not specified as a render target
-		const GLvoid *data = FreeImage_GetBits(m_pLockedImage->GetFBITMAP());
+		//const GLvoid *data = FreeImage_GetBits(m_pLockedImage->GetFBITMAP());
+		const void *data = m_pLockedImage->GetImageData();
+
 
 //		vector<U8> u8buffer;
 //		u8buffer.resize( tex_width * tex_height * 4, 255 );
