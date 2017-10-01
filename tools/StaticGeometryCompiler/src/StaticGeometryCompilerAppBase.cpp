@@ -18,9 +18,7 @@
 #include "StaticGeometryCompiler.h"
 #include "StaticGeometryCompiler_Main.h"
 
-using std::string;
-using std::vector;
-using boost::shared_ptr;
+using namespace std;
 
 
 bool CompileStaticGeometry( const string& filename )
@@ -47,7 +45,7 @@ bool CompileStaticGeometry( const string& filename )
 
 			m_OutputFilepath = output_filepath;
 
-//			g_pTest = boost::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
+//			g_pTest = std::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
 //			g_pTest->LoadFromFile( lfs::get_nopath(output_filepath) );*/
 			return true;
 		}

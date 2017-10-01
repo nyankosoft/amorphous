@@ -15,7 +15,6 @@
 #include "amorphous/GUI.hpp"
 
 using std::string;
-using namespace boost;
 
 
 CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )

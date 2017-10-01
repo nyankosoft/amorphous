@@ -46,7 +46,7 @@ Result::Name CreateMesh(
 	if( points.size() != normals.size() )
 		return Result::INVALID_ARGS;
 
-	boost::shared_ptr< std::vector<General3DVertex> > pVB = dest_mesh.GetVertexBuffer();
+	std::shared_ptr< std::vector<General3DVertex> > pVB = dest_mesh.GetVertexBuffer();
 	if( !pVB )
 		return Result::UNKNOWN_ERROR;
 
@@ -225,7 +225,7 @@ void Create(
 		break;
 	}
 
-	boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
+	std::shared_ptr<General3DMesh> pMesh( new General3DMesh );
 
 	res = CreateMesh( points, normals, polygons, *pMesh );
 
@@ -314,7 +314,7 @@ void CreateBullets( const string& output_model_directory )
 		dest_mesh.WriteToTextFile( output_model_directory + "archive/" + caliber_name + "-bullet.txt" );
 
 		// msh
-		boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
+		std::shared_ptr<General3DMesh> pMesh( new General3DMesh );
 		MakeBullet( bd, 16, case_top_height, *pMesh );
 		C3DMeshModelBuilder builder;
 		builder.BuildMeshModelArchive( pMesh );
@@ -383,7 +383,7 @@ void CreateCase( const firearm::CaseDesc& src_case_desc, const string& output_mo
 
 	Result::Name res = cm.MakeCase( cd, 16, points, normals, tex_uvs, polygons );
 
-	boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
+	std::shared_ptr<General3DMesh> pMesh( new General3DMesh );
 //	MakeCase( cd, cd.num_sides, *pMesh );
 
 	CreateMesh( points, normals, polygons, *pMesh );
@@ -439,7 +439,7 @@ void CreateCases( firearm::CaseDesc& ref_case_desc, const string& output_model_d
 		firearm::CartridgeMaker cm;
 		cm.MakeCase( cd, 16, points, normals, tex_uvs, polygons );
 
-		boost::shared_ptr<General3DMesh> pMesh( new General3DMesh );
+		std::shared_ptr<General3DMesh> pMesh( new General3DMesh );
 //		MakeCase( cd, cd.num_sides, *pMesh );
 
 		CreateMesh( points, normals, polygons, *pMesh );

@@ -12,7 +12,6 @@
 #include <boost/filesystem.hpp>
 
 using std::string;
-using namespace boost;
 using namespace boost::filesystem;
 
 

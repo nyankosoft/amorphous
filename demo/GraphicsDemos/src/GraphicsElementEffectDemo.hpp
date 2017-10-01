@@ -18,11 +18,11 @@
 
 class GraphicsElementEffectDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<GraphicsElementAnimationManager> m_pAnimGraphicsManager;
+	std::shared_ptr<GraphicsElementAnimationManager> m_pAnimGraphicsManager;
 
-//	boost::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
+//	std::shared_ptr<CGraphicsElementManager> m_pGraphicsElementManager;
 
-	boost::shared_ptr<GraphicsElement> m_pElements[8];
+	std::shared_ptr<GraphicsElement> m_pElements[8];
 
 private:
 

@@ -10,12 +10,12 @@ using namespace amorphous;
 
 
 template<class T>
-inline void GetItems( const std::vector< boost::shared_ptr<GameItem> >& pSrcItems,
-			   std::vector< boost::shared_ptr<T> >& pDestItems )
+inline void GetItems( const std::vector< std::shared_ptr<GameItem> >& pSrcItems,
+			   std::vector< std::shared_ptr<T> >& pDestItems )
 {
 	for( size_t i=0; i<pSrcItems.size(); i++ )
 	{
-		boost::shared_ptr<T> pDest = boost::dynamic_pointer_cast<T,GameItem>( pSrcItems[i] );
+		std::shared_ptr<T> pDest = boost::dynamic_pointer_cast<T,GameItem>( pSrcItems[i] );
 
 		if( pDest )
 			pDestItems.push_back( pDest );
@@ -46,9 +46,9 @@ class CArmedCharacterOperations : public SkeletalCharacterOperations
 
 private:
 
-	boost::shared_ptr<ItemEntity> GetSkeletalCharacterEntity();
+	std::shared_ptr<ItemEntity> GetSkeletalCharacterEntity();
 
-	boost::shared_ptr<CStage> GetStage();
+	std::shared_ptr<CStage> GetStage();
 
 	boost::weak_ptr<CArmedCharacterOperations> GetWeakPtr() { return m_pSelf; }
 
@@ -72,19 +72,19 @@ public:
 	class FirearmUnit
 	{
 	public:
-		boost::shared_ptr<Firearm> m_pFirearm;
-		boost::shared_ptr<Magazine> m_pMagazine;
-//		std::vector< boost::shared_ptr<Magazine> > m_pMagazines;
-		boost::shared_ptr<Cartridge> m_pCartridge;
+		std::shared_ptr<Firearm> m_pFirearm;
+		std::shared_ptr<Magazine> m_pMagazine;
+//		std::vector< std::shared_ptr<Magazine> > m_pMagazines;
+		std::shared_ptr<Cartridge> m_pCartridge;
 
 		U32 m_CarryStateFlags;
 
 		EntityHandle<ItemEntity> m_pFirearmEntity;
 //		std::vector< EntityHandle<ItemEntity> > m_pMagazineEntities;
 
-		boost::shared_ptr<MotionPrimitive> m_pFireMotion;
-		boost::shared_ptr<MotionPrimitive> m_pFiredToAimingMotion;
-		boost::shared_ptr<MotionPrimitive> m_pReloadMotion;
+		std::shared_ptr<MotionPrimitive> m_pFireMotion;
+		std::shared_ptr<MotionPrimitive> m_pFiredToAimingMotion;
+		std::shared_ptr<MotionPrimitive> m_pReloadMotion;
 
 		FirearmUnit()
 			:
@@ -94,15 +94,15 @@ public:
 
 	// Firearms
 
-	boost::shared_ptr<Cartridge> m_pCartridges;
+	std::shared_ptr<Cartridge> m_pCartridges;
 
-//	boost::shared_ptr<Magazine> m_pMagazines[Caliber::NUM_CALIBERS];
+//	std::shared_ptr<Magazine> m_pMagazines[Caliber::NUM_CALIBERS];
 
-//	boost::shared_ptr<Firearm> m_pFirearms;
+//	std::shared_ptr<Firearm> m_pFirearms;
 
 	std::vector<FirearmUnit> m_FirearmUnits;
 
-//	boost::shared_ptr<Firearm> m_pSelectedFirearm;
+//	std::shared_ptr<Firearm> m_pSelectedFirearm;
 
 //	int m_SelectedFirearmUnitIndex;
 
@@ -149,11 +149,11 @@ public:
 
 class CAimingMotionNode : public CCharacterMotionNodeAlgorithm
 {
-	boost::shared_ptr<CArmedCharacterOperations> m_pArmedCharacterOperations;
+	std::shared_ptr<CArmedCharacterOperations> m_pArmedCharacterOperations;
 
 public:
 
-	CAimingMotionNode( boost::shared_ptr<CArmedCharacterOperations> pArmedCharacterOperations )
+	CAimingMotionNode( std::shared_ptr<CArmedCharacterOperations> pArmedCharacterOperations )
 		:
 	m_pArmedCharacterOperations( pArmedCharacterOperations )
 	{}

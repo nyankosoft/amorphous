@@ -29,13 +29,13 @@ class CGraphicsTestBase
 
 	Camera m_Camera;
 
-	boost::shared_ptr<CameraControllerBase> m_pCameraController;
+	std::shared_ptr<CameraControllerBase> m_pCameraController;
 
 	std::string m_TextBuffer;
 
 protected:
 
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	bool m_UseCameraControl;
 
@@ -83,11 +83,11 @@ public:
 
 	void UpdateCameraController( float dt ) { if( m_pCameraController ) m_pCameraController->UpdateCameraPose( dt ); }
 
-	const boost::shared_ptr<CameraControllerBase> GetCameraController() const { return m_pCameraController; }
+	const std::shared_ptr<CameraControllerBase> GetCameraController() const { return m_pCameraController; }
 
-	boost::shared_ptr<CameraControllerBase> CameraController() { return m_pCameraController; }
+	std::shared_ptr<CameraControllerBase> CameraController() { return m_pCameraController; }
 
-	void SetCameraController( boost::shared_ptr<CameraControllerBase> pCameraController ) { m_pCameraController = pCameraController; }
+	void SetCameraController( std::shared_ptr<CameraControllerBase> pCameraController ) { m_pCameraController = pCameraController; }
 
 	virtual void UpdateCameraPose( const Matrix34& camera_pose ) {}
 
@@ -128,7 +128,7 @@ public:
 
 	void ProcessInput( InputData& input )
 	{
-		boost::shared_ptr<CGraphicsTestBase> pTest = m_pTest.lock();
+		std::shared_ptr<CGraphicsTestBase> pTest = m_pTest.lock();
 
 		if( pTest )
 		{

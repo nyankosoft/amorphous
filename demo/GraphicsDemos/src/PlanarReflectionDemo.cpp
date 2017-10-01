@@ -13,9 +13,7 @@
 // TODO: make the source code graphics-library independent.
 #include "amorphous/Graphics/Direct3D/Direct3D9.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 Vector3 GetMirroredPosition( const Plane& plane, const Vector3& pos )

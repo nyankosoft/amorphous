@@ -12,8 +12,8 @@ class TextureFontDemo : public CGraphicsTestBase
 {
 private:
 
-//	boost::shared_ptr<TrueTypeTextureFont> m_pFont;
-	boost::shared_ptr<FontBase> m_pDemoFont;
+//	std::shared_ptr<TrueTypeTextureFont> m_pFont;
+	std::shared_ptr<FontBase> m_pDemoFont;
 
 	indexed_vector<std::string> m_FontFilePathnames;
 

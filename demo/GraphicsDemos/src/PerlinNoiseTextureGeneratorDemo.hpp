@@ -14,7 +14,7 @@ class PerlinNoiseTextureGeneratorDemo : public CGraphicsTestBase
 {
 //	ShaderHandle m_Shader;
 
-	boost::shared_ptr<Timer> m_pTimer;
+	std::shared_ptr<Timer> m_pTimer;
 
 	TextureHandle m_PerlinNoiseTexture;
 

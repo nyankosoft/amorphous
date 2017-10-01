@@ -9,7 +9,6 @@
 #include "amorphous/GUI.hpp"
 
 using std::string;
-using namespace boost;
 
 
 static string sg_TestStageScriptToLoad = "./Script/rigid_bodies.bin";

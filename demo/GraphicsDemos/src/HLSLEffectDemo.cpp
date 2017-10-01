@@ -15,9 +15,7 @@
 #include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 #include "amorphous/Input.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 HLSLEffectDemo::HLSLEffectDemo()

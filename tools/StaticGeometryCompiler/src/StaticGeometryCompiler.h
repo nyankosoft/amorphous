@@ -2,7 +2,7 @@
 #define __StaticGeometryCompiler_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "StaticGeometryDesc.hpp"
 #include "App/ApplicationBase.hpp"
 #include "Graphics/MeshModel/3DMeshModelArchive.hpp"
@@ -40,7 +40,7 @@ class CStaticGeometryCompiler
 	physics::CStream m_CollisionMeshStream;
 
 	/// changed to shared_ptr since terrain mesh builder accepts shared_ptr
-	boost::shared_ptr<General3DMesh> m_pGraphicsMesh;
+	std::shared_ptr<General3DMesh> m_pGraphicsMesh;
 
 	General3DMesh m_GraphicsMeshWithLightmap;
 
@@ -53,7 +53,7 @@ class CStaticGeometryCompiler
 	/// subdivided graphics meshes
 	/// - Each mesh meets the limit of vertex and index count of decent graphics cards
 	/// - Created through 
-	std::vector< boost::shared_ptr<General3DMesh> > m_vecpDestGraphicsMesh;
+	std::vector< std::shared_ptr<General3DMesh> > m_vecpDestGraphicsMesh;
 
 	std::vector<C3DMeshModelArchive> m_vecDestGraphicsMeshArchive;
 
@@ -63,7 +63,7 @@ class CStaticGeometryCompiler
 
 	/// why member variable
 	/// -> Need to hold lightmap textures on memory in order to add them later to db
-//	boost::shared_ptr<CLightmapBuilder> m_pLightmapBuilder;
+//	std::shared_ptr<CLightmapBuilder> m_pLightmapBuilder;
 
 protected:
 

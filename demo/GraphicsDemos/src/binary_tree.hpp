@@ -2,7 +2,7 @@
 #define __binary_tree_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 template<typename T>
@@ -12,15 +12,15 @@ public:
 
 	binary_node(){}
 
-	binary_node( boost::shared_ptr<T>& obj ) : object(obj) {}
+	binary_node( std::shared_ptr<T>& obj ) : object(obj) {}
 
 	~binary_node(){}
 
 	T object;
 
-	boost::shared_ptr< binary_node<T> > child0;
+	std::shared_ptr< binary_node<T> > child0;
 
-	boost::shared_ptr< binary_node<T> > child1;
+	std::shared_ptr< binary_node<T> > child1;
 
 public:
 

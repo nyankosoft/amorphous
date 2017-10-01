@@ -2,10 +2,10 @@
 #include "amorphous/Graphics/Font/BuiltinFonts.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/Vec3_StringAux.hpp"
-#include <boost/filesystem.hpp>
 
 
 int CGraphicsTestBase::ms_CameraControllerInputHandlerIndex = 1;
@@ -98,9 +98,7 @@ const Camera& CGraphicsTestBase::GetCurrentCamera()
 
 void CGraphicsTestBase::CreateParamFileIfNotFound( const char *param_file, const char *text )
 {
-	using namespace boost::filesystem;
-	
-	if( exists(param_file) )
+	if( lfs::path_exists(param_file) )
 		return;
 
 	std::ofstream ofs( param_file );

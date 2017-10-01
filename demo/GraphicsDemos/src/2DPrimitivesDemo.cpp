@@ -7,7 +7,6 @@
 
 
 using namespace std;
-using namespace boost;
 
 
 C2DPrimitivesDemo::C2DPrimitivesDemo()

@@ -4,7 +4,7 @@
 
 //#include <vld.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/foreach.hpp>
 
 #include "Graphics/all.hpp"
@@ -25,7 +25,7 @@
 class CStaticGeometryViewer
 {
 
-	boost::shared_ptr<CStaticGeometryBase> m_pStaticGeometry;
+	std::shared_ptr<CStaticGeometryBase> m_pStaticGeometry;
 
 public:
 
@@ -39,7 +39,7 @@ public:
 
 	bool LoadFromFile( const std::string& sg_db_filepath )
 	{
-		m_pStaticGeometry = boost::shared_ptr<CStaticGeometryBase>( new CStaticGeometry( NULL ) );
+		m_pStaticGeometry = std::shared_ptr<CStaticGeometryBase>( new CStaticGeometry( NULL ) );
 		return m_pStaticGeometry->LoadFromFile( sg_db_filepath );
 	}
 
@@ -53,7 +53,7 @@ void CStaticGeometryViewer::Render( const CCamera& camera )
 }
 
 
-boost::shared_ptr<CStaticGeometryViewer> g_pTest;
+std::shared_ptr<CStaticGeometryViewer> g_pTest;
 
 //-----------------------------------------------------------------------------
 // Global variables
@@ -61,7 +61,7 @@ boost::shared_ptr<CStaticGeometryViewer> g_pTest;
 
 CStdKeyboard g_StdKeyboard;
 
-boost::shared_ptr<CFontBase> g_pFont;
+std::shared_ptr<CFontBase> g_pFont;
 
 CPlatformDependentCameraController g_CameraController;
 
@@ -232,7 +232,7 @@ int RunWin32App( const std::string& cmd_line )
 	string initial_working_directory = fnop::get_cwd();
 
 	// init font
-	boost::shared_ptr<CFont> pFont = boost::shared_ptr<CFont>( new CFont() );
+	std::shared_ptr<CFont> pFont = std::shared_ptr<CFont>( new CFont() );
 	pFont->InitFont( "Arial", 8, 16 );
 	g_pFont = pFont;
 
@@ -240,7 +240,7 @@ int RunWin32App( const std::string& cmd_line )
 
 	if( compiled )
 	{
-		g_pTest = boost::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
+		g_pTest = std::shared_ptr<CStaticGeometryViewer>( new CStaticGeometryViewer() );
 		g_pTest->LoadFromFile( fnop::get_nopath(m_OutputFilepath) );
 	}
 

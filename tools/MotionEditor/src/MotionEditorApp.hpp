@@ -2,7 +2,7 @@
 #define  __MotionEditorApp_HPP__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "gds/App/GraphicsApplicationBase.hpp"
 #include "gds/Graphics/fwd.hpp"
 #include "gds/Graphics/Camera.hpp"
@@ -16,7 +16,7 @@ class CMotionPrimitiveViewer;
 
 class CMotionEditorApp : public CGraphicsApplicationBase
 {
-	boost::shared_ptr<CMotionPrimitiveViewer> m_pMotionPrimitiveViewer;
+	std::shared_ptr<CMotionPrimitiveViewer> m_pMotionPrimitiveViewer;
 
 private:
 

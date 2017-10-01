@@ -6,9 +6,7 @@
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/Profile.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 void CubeMapDemoRenderer::RenderSceneToCubeMap( Camera& camera )

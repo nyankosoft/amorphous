@@ -37,7 +37,7 @@ class PlanarReflectionDemo : public CGraphicsTestBase
 
 	TextureHandle m_PerturbationTexture;
 
-	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 	float m_fReflection;
 

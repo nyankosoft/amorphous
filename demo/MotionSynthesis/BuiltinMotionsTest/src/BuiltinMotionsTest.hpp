@@ -32,11 +32,11 @@ class BuiltinMotionsTest : public CGraphicsTestBase
 
 	std::vector<std::string> m_CharacterModelPathnames;
 
-	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
+	std::shared_ptr<msynth::CSkeleton> m_pSkeleton;
 
-	std::vector< boost::shared_ptr<msynth::CMotionPrimitive> > m_pMotions;
+	std::vector< std::shared_ptr<msynth::CMotionPrimitive> > m_pMotions;
 
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	unsigned int m_CurrentModelIndex;
 
@@ -56,7 +56,7 @@ protected:
 
 	void SetLight();
 
-	boost::shared_ptr<msynth::CMotionPrimitive> GetCurrentMotion();
+	std::shared_ptr<msynth::CMotionPrimitive> GetCurrentMotion();
 
 	void LoadCharacterModel();
 

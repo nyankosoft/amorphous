@@ -5,7 +5,7 @@
 
 //#include <vld.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/foreach.hpp>
 
 #include "amorphous/Graphics.hpp"

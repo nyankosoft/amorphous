@@ -18,7 +18,6 @@
 #include "amorphous/Support/Macro.h"
 
 using std::string;
-using namespace boost;
 
 
 MeshSplitterDemo::MeshSplitterDemo()

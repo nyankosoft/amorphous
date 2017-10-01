@@ -5,9 +5,7 @@
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/base.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 using namespace boost::filesystem;
 using namespace msynth;
 
@@ -635,7 +633,7 @@ void CLWSMotionDatabaseCompiler::CreateKeyframe( shared_ptr<LWS_Bone> pBone, flo
 }
 
 
-void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( boost::shared_ptr<LWS_Bone> pRootBone )
+void CLWSMotionDatabaseCompiler::CreateMotionPrimitives( std::shared_ptr<LWS_Bone> pRootBone )
 {
 //	int num_motion_primitives = (int)m_vecMotionPrimitiveDesc.size();
 //	for( int i=0; i<num_motion_primitives; i++ )

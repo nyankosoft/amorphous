@@ -14,9 +14,7 @@
 #include "amorphous/App/GameWindowManager.hpp"
 #include "amorphous/Support/CameraController.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 ResolutionChangeDemo::ResolutionChangeDemo()

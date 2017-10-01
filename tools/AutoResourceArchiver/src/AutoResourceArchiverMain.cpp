@@ -4,7 +4,6 @@
 #include "amorphous/LightWave.hpp"
 
 using namespace std;
-using namespace boost;
 using namespace boost::filesystem;
 
 
@@ -28,7 +27,7 @@ public:
 		}
 	}*/
 
-//	Result::Name CreateArchive( const std::string& input_filepath, boost::shared_ptr<IArchiveObjectBase>& pArchive, CResourceArchiverUnitOutput& out )
+//	Result::Name CreateArchive( const std::string& input_filepath, std::shared_ptr<IArchiveObjectBase>& pArchive, CResourceArchiverUnitOutput& out )
 	Result::Name CreateArchive( const std::string& input_filepath, const std::string& output_filepath, CResourceArchiverUnitOutput& out )
 	{
 		if( path(input_filepath).extension() != ".lwo" )

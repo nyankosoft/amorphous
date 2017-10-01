@@ -23,7 +23,7 @@ class GenericShaderDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-//	boost::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
+//	std::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
 //	CGM_DialogManagerSharedPtr m_pSampleUI;
 

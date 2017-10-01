@@ -7,9 +7,7 @@
 #include "amorphous/Support/MiscAux.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 using namespace boost::filesystem;
 using namespace amorphous::msynth;
 

@@ -13,9 +13,7 @@
 #include "amorphous/Physics.hpp"
 #include "SceneUtility.hpp"
 
-using std::string;
-using std::vector;
-using boost::shared_ptr;
+using namespace std;
 using namespace physics;
 
 

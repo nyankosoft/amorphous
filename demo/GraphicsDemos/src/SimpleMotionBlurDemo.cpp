@@ -11,7 +11,6 @@
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Support/CameraController.hpp"
 
-using namespace boost;
 
 
 SimpleMotionBlurDemo::SimpleMotionBlurDemo()

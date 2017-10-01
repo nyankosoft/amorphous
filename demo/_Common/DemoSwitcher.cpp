@@ -14,7 +14,7 @@ ApplicationBase *amorphous::CreateApplicationInstance() { return new DemoSwitche
 
 int DemoSwitcher::Init()
 {
-	boost::shared_ptr<DemoFactory> pDemoFactory( CreateDemoFactory() );
+	std::shared_ptr<DemoFactory> pDemoFactory( CreateDemoFactory() );
 	SetDemoFactory( pDemoFactory );
 
 	InitDemo();

@@ -12,7 +12,6 @@
 #include "amorphous/GUI.hpp"
 
 using std::string;
-using namespace boost;
 
 
 ParticleTextureGeneratorDemo::ParticleTextureGeneratorDemo()
@@ -63,7 +62,7 @@ void ParticleTextureGeneratorDemo::CreateParticleTextures()
 
 	for( int i=0; i<numof(colors); i++ )
 	{
-		boost::shared_ptr<ParticleTextureGenerator> pGenerator;
+		std::shared_ptr<ParticleTextureGenerator> pGenerator;
 		for( int j=0; j<numof(rhos); j++ )
 		{
 			pGenerator.reset( new ParticleTextureGenerator );
@@ -105,7 +104,7 @@ void ParticleTextureGeneratorDemo::CreateSmokeParticleTextures()
 
 	for( int i=0; i<numof(colors); i++ )
 	{
-		boost::shared_ptr<SmokeParticleTextureGenerator> pGenerator;
+		std::shared_ptr<SmokeParticleTextureGenerator> pGenerator;
 //		for( int j=0; j<numof(rhos); j++ )
 //		{
 			pGenerator.reset( new SmokeParticleTextureGenerator );

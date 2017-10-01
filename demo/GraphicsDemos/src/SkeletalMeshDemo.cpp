@@ -17,7 +17,7 @@
 
 using std::vector;
 using std::string;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 SkeletalMeshDemo::SkeletalMeshDemo()
@@ -156,7 +156,7 @@ void SkeletalMeshDemo::RenderMesh()
 
 	shader_mgr.SetWorldTransform( Matrix44Identity() );
 
-	boost::shared_ptr<BasicMesh> pBasicMesh = m_Mesh.GetMesh();
+	std::shared_ptr<BasicMesh> pBasicMesh = m_Mesh.GetMesh();
 
 	if( !pBasicMesh )
 		return;
@@ -223,11 +223,11 @@ Result::Name SkeletalMeshDemo::SetUniformRotations( float angle, unsigned int ax
 {
 	std::vector<Transform> local_transforms;
 
-	boost::shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
+	std::shared_ptr<BasicMesh> pMesh = m_Mesh.GetMesh();
 	if( !pMesh )
 		return Result::INVALID_ARGS;
 
-	boost::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+	std::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 	if( !pSMesh )
 		return Result::INVALID_ARGS;
 

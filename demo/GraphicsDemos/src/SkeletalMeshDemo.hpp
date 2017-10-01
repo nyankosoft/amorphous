@@ -29,7 +29,7 @@ class SkeletalMeshDemo : public CGraphicsTestBase
 
 	bool m_VertexWeightMapViewMode;
 
-//	boost::shared_ptr<CVehicleController> m_pVehicleController;
+//	std::shared_ptr<CVehicleController> m_pVehicleController;
 
 private:
 

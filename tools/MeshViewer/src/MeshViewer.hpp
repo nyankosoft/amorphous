@@ -52,7 +52,7 @@ class MeshViewer : public GraphicsApplicationBase
 
 	Vector3 m_vLightPosition;
 
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	int m_CurrentMouseX;
 	int m_CurrentMouseY;

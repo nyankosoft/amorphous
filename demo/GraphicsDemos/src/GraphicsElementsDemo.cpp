@@ -4,7 +4,6 @@
 #include "amorphous/Input.hpp"
 
 using std::string;
-using namespace boost;
 
 
 GraphicsElementsDemo::GraphicsElementsDemo()

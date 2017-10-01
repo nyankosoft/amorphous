@@ -24,9 +24,7 @@
 #include "amorphous/Support/recursive_file_finder.hpp"
 #include <boost/filesystem.hpp>
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 using namespace boost::filesystem;
 
 

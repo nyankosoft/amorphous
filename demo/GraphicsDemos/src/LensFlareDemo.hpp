@@ -13,7 +13,7 @@
 
 class LensFlareDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<LensFlare> m_pLensFlare;
+	std::shared_ptr<LensFlare> m_pLensFlare;
 
 	MeshHandle m_SkyboxMesh;
 

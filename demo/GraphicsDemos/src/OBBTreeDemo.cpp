@@ -11,7 +11,6 @@
 #include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
 using std::string;
-using namespace boost;
 
 
 OBBTreeDemo::OBBTreeDemo()
@@ -85,7 +84,7 @@ int OBBTreeDemo::Init()
 
 void OBBTreeDemo::UpdateOBB()
 {
-	boost::shared_ptr<CustomMesh> pMesh;
+	std::shared_ptr<CustomMesh> pMesh;
 	m_Meshes.get_current( pMesh );
 
 	if( !pMesh )

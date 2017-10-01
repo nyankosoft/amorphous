@@ -17,10 +17,9 @@
 
 #include "MeshOperations.hpp"
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::map;
-using boost::shared_ptr;
+using std::shared_ptr;
 using namespace boost::filesystem;
 
 
@@ -389,7 +388,7 @@ void CStaticGeometryCompiler::CreateMeshSubsets_r( AABTree<IndexedPolygon>& src_
 }
 
 
-bool CreateGeneral3DMesh( boost::shared_ptr<LWO2_Object> pSrcLWO2Object,
+bool CreateGeneral3DMesh( std::shared_ptr<LWO2_Object> pSrcLWO2Object,
 						  const GeometryFilter& geometry_filter,
 						  General3DMesh& dest_general_mesh )
 {
@@ -478,7 +477,7 @@ bool CStaticGeometryCompiler::CreateCollisionMesh()
 
 
 void LoadLightsFromLightPolygons( General3DMesh& light_polygon_mesh,
-								  std::vector< boost::shared_ptr<Light> >& dest_lights )
+								  std::vector< std::shared_ptr<Light> >& dest_lights )
 {
 	LOG_FUNCTION_SCOPE();
 

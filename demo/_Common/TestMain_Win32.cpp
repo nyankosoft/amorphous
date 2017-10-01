@@ -27,7 +27,6 @@
 //#include <vld.h> // Visual Leak Detector - available only in the debugging mode of the debug build
 
 using namespace std;
-using namespace boost;
 
 
 // >>> Implemented by demo app
@@ -64,7 +63,7 @@ class AppDemoFrameworkInputHandler;
 */
 
 
-static boost::shared_ptr<CGraphicsTestBase> m_pDemo;
+static std::shared_ptr<CGraphicsTestBase> m_pDemo;
 
 //-----------------------------------------------------------------------------
 // Global variables
@@ -72,8 +71,8 @@ static boost::shared_ptr<CGraphicsTestBase> m_pDemo;
 
 static Win32StdKeyboard g_StdKeyboard;
 
-static boost::shared_ptr<InputHandler> g_pInputHandler;
-static boost::shared_ptr<AppDemoFrameworkInputHandler> g_pDemoAppInputHandler;
+static std::shared_ptr<InputHandler> g_pInputHandler;
+static std::shared_ptr<AppDemoFrameworkInputHandler> g_pDemoAppInputHandler;
 
 Camera g_Camera;
 

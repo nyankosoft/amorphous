@@ -11,7 +11,6 @@
 #include "amorphous/Support/ParamLoader.hpp"
 
 using std::string;
-using namespace boost;
 
 
 PrimitiveShapeMeshesDemo::PrimitiveShapeMeshesDemo()

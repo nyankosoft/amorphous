@@ -17,7 +17,7 @@ class MultibyteFontDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<UTFFont> m_pUTFFont;
+	std::shared_ptr<UTFFont> m_pUTFFont;
 
 //	CGM_DialogManagerSharedPtr m_pSampleUI;
 

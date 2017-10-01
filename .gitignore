@@ -13,8 +13,13 @@
 .[vV][cC]
 .[vV][sS]
 */vc10/lib
+*.iobj
+*.ipdb
+*.
 .debug
 *Log.html
+*_Debug.html
+*_Release.html
 *.msh.txt
 *params.txt
 */MeshViewer/app

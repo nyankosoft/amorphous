@@ -32,7 +32,7 @@ class CConvexTest : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-//	boost::shared_ptr<CCameraController> m_pSplitPlaneController;
+//	std::shared_ptr<CCameraController> m_pSplitPlaneController;
 
 private:
 

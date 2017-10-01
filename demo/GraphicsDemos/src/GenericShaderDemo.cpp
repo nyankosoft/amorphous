@@ -15,9 +15,7 @@
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/Macro.h"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 GenericShaderDemo::GenericShaderDemo()
@@ -141,7 +139,7 @@ void GenericShaderDemo::RenderMeshes()
 	Result::Name res = pShaderManager->SetTechnique( m_Technique );
 	for( size_t i=0; i<m_Meshes.size(); i++ )
 	{
-		boost::shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
+		std::shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
 
 		if( !pMesh )
 			continue;

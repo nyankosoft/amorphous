@@ -16,7 +16,6 @@
 #include "amorphous/Input.hpp"
 
 using std::string;
-using namespace boost;
 
 class const_test
 {
@@ -29,11 +28,11 @@ public:
 
 void const_test_function()
 {
-	boost::shared_ptr<const_test> ptr( new const_test );
-	boost::shared_ptr<const const_test> ptr_to_const_obj( new const_test );
+	std::shared_ptr<const_test> ptr( new const_test );
+	std::shared_ptr<const const_test> ptr_to_const_obj( new const_test );
 //	ptr_to_const_obj->non_const_function(); // Error: Conversion loses qualifiers
 	ptr_to_const_obj = ptr; // No error
-//	ptr = ptr_to_const_obj; // Error: cannot convert from 'const boost::shared_ptr<const const_test>' to 'boost::shared_ptr<const_test>'
+//	ptr = ptr_to_const_obj; // Error: cannot convert from 'const std::shared_ptr<const const_test>' to 'std::shared_ptr<const_test>'
 }
 
 
@@ -44,9 +43,9 @@ float GetAggregateWidth( const ArrayType& meshes )
 	for(int i=0; i<(int)meshes.size(); i++)
 	{
 		const MeshHandle& mesh = meshes[i];
-//		const boost::shared_ptr<const BasicMesh> pMesh = mesh.GetMesh();
-		boost::shared_ptr<const BasicMesh> pMesh = mesh.GetMesh();
-		pMesh = boost::shared_ptr<const BasicMesh>(); // No error: 
+//		const std::shared_ptr<const BasicMesh> pMesh = mesh.GetMesh();
+		std::shared_ptr<const BasicMesh> pMesh = mesh.GetMesh();
+		pMesh = std::shared_ptr<const BasicMesh>(); // No error: 
 //		pMesh->Render(); // Error: cannot call the non-const member function of the BasicMesh class
 		if( pMesh )
 			w += pMesh->GetAABB().GetExtents().x * 2.0f;
@@ -194,7 +193,7 @@ void MiscShaderDemo::RenderMeshes()
 			Matrix44 world = ToMatrix44(Matrix34(Vector3(x,0,0),Matrix33Identity()));
 			shader_mgr.SetWorldTransform(world);
 
-			boost::shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
+			std::shared_ptr<BasicMesh> pMesh = m_Meshes[i].GetMesh();
 			if( !pMesh )
 				continue;
 
@@ -212,7 +211,7 @@ void MiscShaderDemo::RenderMeshes()
 		bool res = m_Meshes.get_current( mesh );
 		if( res )
 		{
-			boost::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
+			std::shared_ptr<BasicMesh> pMesh = mesh.GetMesh();
 			if( pMesh )
 				pMesh->Render( shader_mgr );
 		}

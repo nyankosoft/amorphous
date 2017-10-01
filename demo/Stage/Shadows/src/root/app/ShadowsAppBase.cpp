@@ -11,9 +11,7 @@
 #include "amorphous/App/GameWindowManager_Win32.hpp"
 
 
-using std::string;
-using std::vector;
-using boost::shared_ptr;
+using namespace std;
 
 
 static string sg_TestStageScriptToLoad;

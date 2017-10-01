@@ -20,9 +20,7 @@
 
 #include "amorphous/Item/SkeletalCharacter.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 static string sg_TestStageScriptToLoad = "./Script/empty.bin";

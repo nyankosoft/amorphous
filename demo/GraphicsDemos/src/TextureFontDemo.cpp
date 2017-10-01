@@ -9,7 +9,6 @@
 
 using std::vector;
 using std::string;
-using namespace boost;
 
 
 TextureFontDemo::TextureFontDemo()

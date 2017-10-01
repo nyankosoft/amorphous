@@ -13,13 +13,13 @@ class DemoFactory;
 
 class DemoSwitcher : public GraphicsApplicationBase
 {
-	boost::shared_ptr<CGraphicsTestBase> m_pDemo;
+	std::shared_ptr<CGraphicsTestBase> m_pDemo;
 
 	int m_DemoIndex;
 
 	bool m_DisplayDebugInfo;
 
-	boost::shared_ptr<DemoFactory> m_pDemoFactory;
+	std::shared_ptr<DemoFactory> m_pDemoFactory;
 
 private:
 
@@ -45,7 +45,7 @@ public:
 
 	bool InitDemo( int index );
 
-	void SetDemoFactory( boost::shared_ptr<DemoFactory> pFactory ) { m_pDemoFactory = pFactory; }
+	void SetDemoFactory( std::shared_ptr<DemoFactory> pFactory ) { m_pDemoFactory = pFactory; }
 
 	void Render();
 

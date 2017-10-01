@@ -14,7 +14,6 @@
 #include "amorphous/Support/Macro.h"
 
 using std::string;
-using namespace boost;
 
 
 GLSLDemo::GLSLDemo()

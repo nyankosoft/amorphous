@@ -17,10 +17,7 @@
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Support/Timer.hpp"
 
-using std::string;
-using std::vector;
-using boost::shared_ptr;
-using namespace boost;
+using namespace std;
 
 
 TextureRenderTargetDemo::TextureRenderTargetDemo()

@@ -12,7 +12,6 @@
 #include "amorphous/GUI.hpp"
 
 using std::string;
-using namespace boost;
 
 
 PerlinNoiseTextureGeneratorDemo::PerlinNoiseTextureGeneratorDemo()

@@ -5,7 +5,6 @@
 #include <boost/filesystem.hpp>
 
 using namespace std;
-using namespace boost;
 
 typedef boost::tokenizer< boost::escaped_list_separator<char> > csv_tokenizer;
 

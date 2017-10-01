@@ -16,7 +16,7 @@ class CDoubleConeScrollEffect;
 
 class PrecipitationEffectDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<CDoubleConeScrollEffect> m_pDoubleConeScrollEffect;
+	std::shared_ptr<CDoubleConeScrollEffect> m_pDoubleConeScrollEffect;
 
 //	std::vector<MeshHandle> m_vecMesh;
 
@@ -24,7 +24,7 @@ class PrecipitationEffectDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<FontBase> m_pFont;
+	std::shared_ptr<FontBase> m_pFont;
 
 	std::string m_TextBuffer;
 

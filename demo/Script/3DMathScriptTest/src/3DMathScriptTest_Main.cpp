@@ -8,7 +8,6 @@
 #include <boost/python.hpp>
 
 using namespace std;
-using namespace boost;
 using namespace amorphous;
 
 

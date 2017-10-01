@@ -9,9 +9,7 @@
 #include "amorphous/Task.hpp"
 #include "amorphous/Script.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 static string sg_TestStageScriptToLoad = "./Script/hs_lights.bin";

@@ -21,9 +21,7 @@
 #include "amorphous/MotionSynthesis/BuiltinMotions.hpp"
 #include "amorphous/MotionSynthesis/SkeletalMeshTransform.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 using namespace msynth;
 
 
@@ -165,7 +163,7 @@ bool BuiltinMotionsTest::GetKeyframeToRender( CKeyframe& dest )
 	if( m_pMotions.empty() )
 		return false;
 
-	boost::shared_ptr<CMotionPrimitive> pMotion = m_pMotions[0];
+	std::shared_ptr<CMotionPrimitive> pMotion = m_pMotions[0];
 	if( !pMotion )
 		return false;
 
@@ -322,7 +320,7 @@ shared_ptr<CMotionPrimitive> BuiltinMotionsTest::GetCurrentMotion()
 	if( m_pMotions.empty() )
 		return shared_ptr<CMotionPrimitive>();
 
-	boost::shared_ptr<CMotionPrimitive> pMotion = m_pMotions[0];
+	std::shared_ptr<CMotionPrimitive> pMotion = m_pMotions[0];
 
 	return pMotion;
 }

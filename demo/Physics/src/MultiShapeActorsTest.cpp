@@ -21,9 +21,7 @@
 #include "amorphous/Physics/SceneUtility.hpp"
 #include "amorphous/Physics/RaycastHit.hpp"
 
-using std::string;
-using std::vector;
-using boost::shared_ptr;
+using namespace std;
 using namespace boost::filesystem;
 using namespace physics;
 
@@ -399,7 +397,7 @@ void CMultiShapeActorsTest::RenderMeshes()
 		if( (uint)m_Meshes.size() <= m_ActorMeshIDs[i] )
 			continue;
 
-		boost::shared_ptr<BasicMesh> pMesh = m_Meshes[ m_ActorMeshIDs[i] ].GetMesh();
+		std::shared_ptr<BasicMesh> pMesh = m_Meshes[ m_ActorMeshIDs[i] ].GetMesh();
 		if( !pMesh )
 			continue;
 

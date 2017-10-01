@@ -15,7 +15,7 @@
 
 class OBBTreeDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<OBBTree> m_pOBBTree;
+	std::shared_ptr<OBBTree> m_pOBBTree;
 
 	int m_DrawLevel;
 
@@ -25,7 +25,7 @@ class OBBTreeDemo : public CGraphicsTestBase
 
 	MeshHandle m_Mesh;
 
-	indexed_vector< boost::shared_ptr<CustomMesh> > m_Meshes; // Want to access vertices and indices easily in order to create OBBs
+	indexed_vector< std::shared_ptr<CustomMesh> > m_Meshes; // Want to access vertices and indices easily in order to create OBBs
 
 	ShaderTechniqueHandle m_MeshTechnique;
 

@@ -12,9 +12,7 @@
 #include "amorphous/Support/UTF8/utf8.h"
 #include "amorphous/Support/clipboard_utils.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 /*
 inline void conv_to_x( std::vector<std::string>& src, int& index, std::wstring& dest )

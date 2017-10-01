@@ -154,7 +154,7 @@ public:
 
 	std::map<std::string,std::string> m_SurfaceToDesc;
 
-	std::vector< boost::shared_ptr<Light> > m_vecpLight;
+	std::vector< std::shared_ptr<Light> > m_vecpLight;
 
 	std::map<std::string,ShaderParameterGroup> m_ShaderFileToParamGroup;
 

@@ -13,7 +13,7 @@
 
 class SimpleMotionBlurDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
+	std::shared_ptr<SimpleMotionBlur> m_pSimpleMotionBlur;
 
 	TextureHandle m_SkyTexture;
 

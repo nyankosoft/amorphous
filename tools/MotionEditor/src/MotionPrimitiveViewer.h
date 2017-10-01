@@ -22,14 +22,14 @@ class SkeletalMeshMotionViewer
 
 	Matrix34 m_ViewerPose;
 
-//	boost::shared_ptr<msynth::CSkeleton> m_pSkeleton;
+//	std::shared_ptr<msynth::CSkeleton> m_pSkeleton;
 	boost::weak_ptr<msynth::CSkeleton> m_pSkeleton;
 
 	bool m_UseQuaternionForBoneTransformation;
 
 	void Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
-										  boost::shared_ptr<SkeletalMesh>& pMesh );
+										  std::shared_ptr<SkeletalMesh>& pMesh );
 
 	void UpdateVertexBlendTransforms( ShaderManager& shader_mgr, SkeletalMesh& skeletal_mesh );
 
@@ -54,15 +54,15 @@ class CMotionPrimitiveViewer
 {
 	CGM_DialogManagerSharedPtr m_pDialogManager;
 
-	boost::shared_ptr<InputHandler> m_pGUIInputHandler;
+	std::shared_ptr<InputHandler> m_pGUIInputHandler;
 
-	boost::shared_ptr<InputHandler> m_pInputHandler;
+	std::shared_ptr<InputHandler> m_pInputHandler;
 
-	std::vector< boost::shared_ptr<msynth::CMotionPrimitive> > m_vecpMotionPrimitive;
+	std::vector< std::shared_ptr<msynth::CMotionPrimitive> > m_vecpMotionPrimitive;
 
 	CGM_ListBox *m_pMotionPrimitiveListBox;
 
-	boost::shared_ptr<msynth::CMotionPrimitive> m_pCurrentMotion;
+	std::shared_ptr<msynth::CMotionPrimitive> m_pCurrentMotion;
 
 	float m_fCurrentPlayTime;
 

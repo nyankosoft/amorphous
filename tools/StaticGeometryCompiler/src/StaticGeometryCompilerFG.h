@@ -2,7 +2,7 @@
 #define  __STATICGEOMETRYCOMPILERFG_H__
 
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "3DMath/BSPTreeForTriangleMesh.hpp"
 #include "Graphics/MeshModel/TerrainMeshGenerator.hpp"
@@ -60,7 +60,7 @@ class CStaticGeometryCompilerFG
 
 	CTerrainMeshGenerator m_TerrainMeshGenerator;
 
-	boost::shared_ptr<LWO2_Object> m_pObject;
+	std::shared_ptr<LWO2_Object> m_pObject;
 
 	std::string m_SkyboxTextureFilename;
 

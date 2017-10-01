@@ -30,7 +30,6 @@
 using std::string;
 using std::pair;
 using std::vector;
-using namespace boost;
 using namespace physics;
 
 

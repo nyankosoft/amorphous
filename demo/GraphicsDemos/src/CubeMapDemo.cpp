@@ -5,9 +5,7 @@
 #include "amorphous/Graphics/MeshUtilities.hpp"
 #include "amorphous/Support/Profile.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 CubeMapDemo::CubeMapDemo()

@@ -10,9 +10,7 @@
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Support/linear_interpolation.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 PrimitiveRendererDemo::PrimitiveRendererDemo()

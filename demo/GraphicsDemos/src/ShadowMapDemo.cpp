@@ -16,9 +16,7 @@
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 
 
 static int sg_LightID = 0;

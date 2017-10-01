@@ -3,10 +3,9 @@
 #include "3DMath/Sphere.hpp"
 #include <set>
 
-using std::string;
-using std::vector;
+using namespace std;
 using std::set;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 
 static void GetConnected( int pnt_id,

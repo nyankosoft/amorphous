@@ -18,7 +18,6 @@
 #include "amorphous/Support/Vec3_StringAux.hpp"
 
 using std::string;
-using namespace boost;
 
 
 extern CGraphicsTestBase *CreateTestInstance()

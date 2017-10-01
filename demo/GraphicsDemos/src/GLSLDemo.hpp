@@ -19,7 +19,7 @@ class GLSLDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<CGLProgram> m_pGLProgram;
+	std::shared_ptr<CGLProgram> m_pGLProgram;
 
 private:
 

@@ -29,9 +29,7 @@
 
 #include <boost/filesystem.hpp>
 
-using std::string;
-using std::vector;
-using namespace boost;
+using namespace std;
 using namespace amorphous;
 
 
@@ -190,7 +188,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 //	actor_desc.vecpShapeDesc.push_back( &core_box_desc );
 	actor_desc.vecpShapeDesc.push_back( &sphere_desc );
 
-	boost::shared_ptr<msynth::MotionFSMManager> pMotionFSMManager;
+	std::shared_ptr<msynth::MotionFSMManager> pMotionFSMManager;
 	pMotionFSMManager.reset( new msynth::MotionFSMManager );
 
 	string motion_fsm_filepath = "motions/test_motion_fsm.bin";
@@ -278,7 +276,7 @@ m_vPrevCamPos( Vector3(0,0,0) )
 	m_pThirdPersonMotionController->SetSkeletalCharacter( m_pCharacterItems[0] );
 
 	ArmCharacter( *m_pCharacterItems[0] );
-	boost::shared_ptr<CArmedCharacterOperations> pOperations( new CArmedCharacterOperations );
+	std::shared_ptr<CArmedCharacterOperations> pOperations( new CArmedCharacterOperations );
 	pOperations->SetWeakPtr( pOperations );
 	pOperations->Init( *m_pCharacterItems[0] );
 	EntityHandle<ItemEntity> pFirearm = pOperations->CreateFirearmEntity( 0 );

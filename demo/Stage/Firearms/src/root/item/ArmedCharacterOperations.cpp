@@ -3,9 +3,7 @@
 #include "amorphous/Stage/Stage.hpp"
 #include "amorphous/Item/ItemEntity.hpp"
 
-using std::string;
-using std::vector;
-using boost::shared_ptr;
+using namespace std;
 
 
 void CArmedCharacterOperations::InitMotionNodesForFirearmOperations( SkeletalCharacter& skeletal_character )
@@ -38,13 +36,13 @@ void CArmedCharacterOperations::Init( SkeletalCharacter& skeletal_character )
 {
 	using namespace std;
 
-	vector< boost::shared_ptr<Firearm> > pFirearms;
+	vector< std::shared_ptr<Firearm> > pFirearms;
 	GetItems( skeletal_character.GetOwnedItems(), pFirearms );
 
-	vector< boost::shared_ptr<Magazine> > pMags;
+	vector< std::shared_ptr<Magazine> > pMags;
 	GetItems( skeletal_character.GetOwnedItems(), pMags );
 
-	vector< boost::shared_ptr<Cartridge> > pCartridges;
+	vector< std::shared_ptr<Cartridge> > pCartridges;
 	GetItems( skeletal_character.GetOwnedItems(), pCartridges );
 
 	m_FirearmUnits.resize( 0 );
@@ -74,7 +72,7 @@ void CArmedCharacterOperations::Init( SkeletalCharacter& skeletal_character )
 			continue;
 		}
 
-		boost::shared_ptr<Cartridge> pCartridge;
+		std::shared_ptr<Cartridge> pCartridge;
 		for( int j=0; j<(int)pCartridges.size(); j++ )
 		{
 			if( pCartridges[j]->GetCaliber() == pMags[mag_index]->GetCaliber() )
@@ -105,11 +103,11 @@ void CArmedCharacterOperations::Init( SkeletalCharacter& skeletal_character )
 
 //	for( int i=0; i<skeletal_character.m_pProperty.size(); i++ )
 //	{
-//		boost::shared_ptr<GameItem> pItem = skeletal_character.m_pProperty[i];
+//		std::shared_ptr<GameItem> pItem = skeletal_character.m_pProperty[i];
 //		if( !pItem )
 //			continue;
 
-//		boost::shared_ptr<Firearm> pFirearm
+//		std::shared_ptr<Firearm> pFirearm
 //			= boost::dynamic_pointer_cast<Firearm,GameItem>( pItem );
 
 //		if( !pFirearm )
@@ -242,9 +240,9 @@ void CArmedCharacterOperations::UpdateFirearm( int unit_index )
 }
 
 
-boost::shared_ptr<ItemEntity> CArmedCharacterOperations::GetSkeletalCharacterEntity()
+std::shared_ptr<ItemEntity> CArmedCharacterOperations::GetSkeletalCharacterEntity()
 {
-	boost::shared_ptr<SkeletalCharacter> pCharacter = GetSkeletalCharacter().lock();
+	std::shared_ptr<SkeletalCharacter> pCharacter = GetSkeletalCharacter().lock();
 	if( !pCharacter )
 		return shared_ptr<ItemEntity>();
 
@@ -254,7 +252,7 @@ boost::shared_ptr<ItemEntity> CArmedCharacterOperations::GetSkeletalCharacterEnt
 }
 
 
-boost::shared_ptr<CStage> CArmedCharacterOperations::GetStage()
+std::shared_ptr<CStage> CArmedCharacterOperations::GetStage()
 {
 	shared_ptr<ItemEntity> pCharacter = GetSkeletalCharacterEntity();
 

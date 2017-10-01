@@ -42,9 +42,9 @@ public:
 
 class EnvMapDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<CubeMapManager> m_pCubeMapManager;
+	std::shared_ptr<CubeMapManager> m_pCubeMapManager;
 
-	boost::shared_ptr<CCubeMapSceneRenderer> m_pCubeMapSceneRenderer;
+	std::shared_ptr<CCubeMapSceneRenderer> m_pCubeMapSceneRenderer;
 
 	std::vector<MeshHandle> m_vecEnvMappedMesh;
 

@@ -21,7 +21,7 @@ class TextureRenderTargetDemo : public CGraphicsTestBase
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	boost::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
+	std::shared_ptr<TextureRenderTarget> m_pTextureRenderTarget;
 
 	CustomMesh m_BoxMesh;
 

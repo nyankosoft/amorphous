@@ -26,20 +26,20 @@ enum ShadowAppTaskID
 
 class FirearmsAppTask : public StageViewerGameTask
 {
-	boost::shared_ptr<KeyBind> m_pKeyBind;
+	std::shared_ptr<KeyBind> m_pKeyBind;
 
 
-	boost::shared_ptr< CInputDataDelegate<FirearmsAppTask> > m_pInputHandler;
+	std::shared_ptr< CInputDataDelegate<FirearmsAppTask> > m_pInputHandler;
 
 	EntityHandle<ItemEntity> m_CharacterItemEntity;
 
-	std::vector< boost::shared_ptr<SkeletalCharacter> > m_pCharacterItems;
+	std::vector< std::shared_ptr<SkeletalCharacter> > m_pCharacterItems;
 
-	boost::shared_ptr<ThirdPersonCameraController> m_pThirdPersonCameraController;
+	std::shared_ptr<ThirdPersonCameraController> m_pThirdPersonCameraController;
 
-	boost::shared_ptr<ThirdPersonMotionController> m_pThirdPersonMotionController;
+	std::shared_ptr<ThirdPersonMotionController> m_pThirdPersonMotionController;
 
-//	boost::shared_ptr<CArmedCharacterOperations> m_pArmedCharacterOperations;
+//	std::shared_ptr<CArmedCharacterOperations> m_pArmedCharacterOperations;
 
 	DoubleConeScrollEffect m_ScrollEffect;
 

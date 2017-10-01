@@ -12,7 +12,6 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 
-using namespace boost;
 
 
 static const float g_fIndicatorHeight = 0.05f;
@@ -29,8 +28,7 @@ static const float g_fIndicatorHeight = 0.05f;
 
 
 
-using std::string;
-using std::vector;
+using namespace std;
 using namespace msynth;
 
 /*
@@ -289,7 +287,7 @@ extern int g_htrans_rev;
 /// NOTE: param 'bone' is used to calculate num_child_bones
 void SkeletalMeshMotionViewer::Update_r( const msynth::CBone& bone,
                                           const msynth::CTransformNode& node,
-										  boost::shared_ptr<SkeletalMesh>& pMesh )//,
+										  std::shared_ptr<SkeletalMesh>& pMesh )//,
 //										  CMM_Bone& mesh_bone )
 {
 	// find the matrix index from the bone name (slow).

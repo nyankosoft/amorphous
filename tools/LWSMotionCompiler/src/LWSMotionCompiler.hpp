@@ -5,7 +5,7 @@
 #include <list>
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/filesystem.hpp>
 #include "amorphous/3DMath/Matrix34.hpp"
 #include "amorphous/3DMath/Quaternion.hpp"
@@ -37,12 +37,12 @@ class CRotaitonEnvelope : public CEnvelope
 
 class CEnvelopeContainer
 {
-	boost::shared_ptr<CPositionEnvelope> m_pPositionEnvelope;
-	boost::shared_ptr<CRotaitonEnvelope> m_pRotationEnvelope;
+	std::shared_ptr<CPositionEnvelope> m_pPositionEnvelope;
+	std::shared_ptr<CRotaitonEnvelope> m_pRotationEnvelope;
 
 public:
 
-	std::vector< boost::shared_ptr<CEnvelopeContainer> > m_vecpChild;
+	std::vector< std::shared_ptr<CEnvelopeContainer> > m_vecpChild;
 };
 
 
@@ -53,23 +53,23 @@ class CLWSMotionDatabaseCompiler : public msynth::MotionDatabaseCompiler
 
 //	std::string m_OutputFilepath;
 
-	boost::shared_ptr<LightWaveSceneLoader> m_pScene;
+	std::shared_ptr<LightWaveSceneLoader> m_pScene;
 
-	boost::shared_ptr<msynth::Skeleton> m_pSkeleton;
+	std::shared_ptr<msynth::Skeleton> m_pSkeleton;
 
 //	std::vector<CLWSMotionPrimitiveDesc> m_vecMotionPrimitiveDesc;
 
 private:
 
-	boost::shared_ptr<LWS_Bone> CreateSkeleton();
+	std::shared_ptr<LWS_Bone> CreateSkeleton();
 
 	void CreateMotionPrimitive();
 
-	void CreateMotionPrimitives( boost::shared_ptr<LWS_Bone> pRootBone );
+	void CreateMotionPrimitives( std::shared_ptr<LWS_Bone> pRootBone );
 
 	void CollectKeyFrameTimes( LWS_Bone& bone, std::vector<float>& vecKeyframeTime );
 
-	void CreateKeyframe( boost::shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::TransformNode& dest_node );
+	void CreateKeyframe( std::shared_ptr<LWS_Bone> pBone, float fTime, const Matrix34& parent_transform, msynth::TransformNode& dest_node );
 
 	void CreateMotionPrimitive( msynth::MotionPrimitiveDescGroup& desc_group, msynth::MotionPrimitiveDesc& desc, std::vector<msynth::Keyframe>& vecSrcKeyframe );
 
@@ -116,9 +116,9 @@ public:
 
 	const char *Extension() const { return "lws"; }
 
-	boost::shared_ptr<msynth::MotionDatabaseCompiler> Create() const
+	std::shared_ptr<msynth::MotionDatabaseCompiler> Create() const
 	{
-		boost::shared_ptr<CLWSMotionDatabaseCompiler> pCompiler( new CLWSMotionDatabaseCompiler );
+		std::shared_ptr<CLWSMotionDatabaseCompiler> pCompiler( new CLWSMotionDatabaseCompiler );
 		return pCompiler;
 	}
 };

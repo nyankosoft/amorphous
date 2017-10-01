@@ -35,11 +35,11 @@ class ShadowMapDemo : public CGraphicsTestBase
 
 	ShaderHandle m_Shader;
 
-	boost::shared_ptr<ShadowMapManager> m_pShadowMapManager;
+	std::shared_ptr<ShadowMapManager> m_pShadowMapManager;
 
-	std::vector< std::pair< int, boost::shared_ptr<Light> > > m_pLights;
+	std::vector< std::pair< int, std::shared_ptr<Light> > > m_pLights;
 
-	boost::shared_ptr<ShadowMapDemoSceneRenderer> m_pShadowMapSceneRenderer;
+	std::shared_ptr<ShadowMapDemoSceneRenderer> m_pShadowMapSceneRenderer;
 
 private:
 

@@ -16,7 +16,7 @@ class CSplitMeshNode
 {
 public:
 
-	boost::shared_ptr<CustomMesh> m_pMesh;
+	std::shared_ptr<CustomMesh> m_pMesh;
 
 	std::vector<CSplitMeshNode> m_Children;
 };*/
@@ -25,7 +25,7 @@ public:
 class SplitMeshNodeObjects
 {
 public:
-	boost::shared_ptr<CustomMesh> pMesh;
+	std::shared_ptr<CustomMesh> pMesh;
 	Vector3 shift;
 
 	SplitMeshNodeObjects()
@@ -49,7 +49,7 @@ class MeshSplitterDemo : public CGraphicsTestBase
 
 	bool m_ControlSplitPlane;
 
-	boost::shared_ptr<amorphous::CameraController> m_pSplitPlaneController;
+	std::shared_ptr<amorphous::CameraController> m_pSplitPlaneController;
 
 private:
 

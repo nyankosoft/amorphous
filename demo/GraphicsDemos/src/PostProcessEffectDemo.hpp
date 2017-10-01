@@ -13,7 +13,7 @@
 
 class PostProcessEffectDemo : public CGraphicsTestBase
 {
-	boost::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
+	std::shared_ptr<PostProcessEffectManager> m_pPostProcessEffectManager;
 
 	unsigned int m_BlurStrength; // blur strength x 10
 

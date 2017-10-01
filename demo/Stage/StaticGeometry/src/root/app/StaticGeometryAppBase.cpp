@@ -12,7 +12,6 @@
 
 
 using namespace std;
-using namespace boost;
 
 
 static string sg_TestStageScriptToLoad = "./Script/hills.bin";

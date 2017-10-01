@@ -12,19 +12,19 @@
 
 class GraphicsElementsDemo : public CGraphicsTestBase//, public GraphicsComponent
 {
-	boost::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
+	std::shared_ptr<GraphicsElementManager> m_pGraphicsElementManager;
 
 //	CGM_DialogManagerSharedPtr m_pSampleUI;
 
-	std::vector< boost::shared_ptr<CombinedRectElement> > m_pRects;
+	std::vector< std::shared_ptr<CombinedRectElement> > m_pRects;
 
-	std::vector< boost::shared_ptr<CombinedRoundRectElement> > m_pRoundRects;
+	std::vector< std::shared_ptr<CombinedRoundRectElement> > m_pRoundRects;
 
-	boost::shared_ptr<CombinedTriangleElement> m_apTriangle[0xFF];
+	std::shared_ptr<CombinedTriangleElement> m_apTriangle[0xFF];
 
-	std::vector< boost::shared_ptr<FillTriangleElement> > m_pFillTriangles;
+	std::vector< std::shared_ptr<FillTriangleElement> > m_pFillTriangles;
 
-	boost::shared_ptr<FillTriangleElement> m_pCornerIndicators[4];
+	std::shared_ptr<FillTriangleElement> m_pCornerIndicators[4];
 
 private:
 
