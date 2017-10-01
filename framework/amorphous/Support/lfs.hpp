@@ -408,7 +408,7 @@ inline int create_directory( const std::string& pathname ) {
 
 	// mkdir under Windows MSVC only takes the path argument
 #ifdef _MSC_VER
-	int ret = mkdir(pathname.c_str());
+	int ret = _mkdir(pathname.c_str());
 #else /* _MSC_VER */
 	// Whereas everywhere else in the world, we have permission bits
 	// Since I'm coding and compiling on VS, I'll come back and

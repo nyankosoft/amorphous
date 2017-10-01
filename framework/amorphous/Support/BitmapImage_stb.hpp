@@ -72,7 +72,7 @@ public:
 	/**
 	\param bits_per_pixel 32 for RGBA or 24 RGB image
 	*/
-	inline BitmapImage( int width, int height, int bits_per_pixel );
+	BitmapImage( int width, int height, int bits_per_pixel );
 
 	BitmapImage( unsigned char *pToBeCopied, int width, int height, int num_channels );
 
@@ -107,7 +107,7 @@ public:
 	*/
 	bool SaveToFile( const std::string& pathname, int flag = 0 );
 
-	inline bool CreateFromImageDataStream( stream_buffer& image_data, const std::string& image_format );
+	bool CreateFromImageDataStream( stream_buffer& image_data, const std::string& image_format );
 
 	/**
 	\brief Paints the entire image with the specified color
@@ -310,20 +310,23 @@ inline void BitmapImage::FillColor( U8 r, U8 g, U8 b, U8 a )
 {
 	const int w = GetWidth();
 	const int h = GetHeight();
+	const int bytes_per_pixel = m_NumChannels;
 	for( int y = 0; y < h; y++)
 	{
 		for( int x = 0; x < w; x++)
 		{
-			unsigned char *pixel = m_pStbImage + w * y + x;
+			unsigned char *pixel = m_pStbImage + (w * y + x) * bytes_per_pixel;
 
 			// Set pixel color
 			pixel[0] = r;
 			pixel[1] = g;
 			pixel[2] = b;
-			pixel[3] = a;
+
+			if( bytes_per_pixel == 4 )
+				pixel[3] = a;
 
 			// jump to next pixel
-			pixel += 4;
+			//pixel += 4;
 		}
 	}
 }

@@ -60,6 +60,9 @@
     <ClCompile Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_lib.c">
       <Filter>Source Files\Support\OpenAES</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\framework\amorphous\Support\BitmapImage_stb.cpp">
+      <Filter>Source Files\Support</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\framework\amorphous\Support\Log\LogInputBase.hpp">
@@ -82,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\framework\amorphous\Support\OpenAES\oaes_lib.h">
       <Filter>Source Files\Support\OpenAES</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\framework\amorphous\Support\BitmapImage.hpp">
+      <Filter>Source Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\framework\amorphous\Support\BitmapImage_stb.hpp">
+      <Filter>Source Files\Support</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,7 +10,6 @@
 #include "amorphous/Support/BitmapImageHelpers.hpp"
 #include "amorphous/Support/UTF8/utf8.h"
 #include "amorphous/Support/MiscAux.hpp"
-#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace amorphous;
@@ -216,8 +215,7 @@ int StartFreeTypeTests()
 	if( text.length() == 0 )
 		return -1;
 
-	using namespace boost::filesystem;
-	create_directories( path("results") / GetBuildInfo() );
+	lfs::create_directories( lfs::path("results") / GetBuildInfo() );
 
 	const char *fonts[] =
 	{

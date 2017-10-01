@@ -75,7 +75,7 @@ BitmapImage::BitmapImage( const BitmapImage& img )
 // ----------------------------------------------------------
 
 
-inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
+bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
 {
 	Release();
 
@@ -114,6 +114,7 @@ inline bool BitmapImage::LoadFromFile( const std::string& pathname, int flag )
 	if( img )
 	{
 		m_pStbImage = img;
+		m_NumChannels = channels_in_file;
 		return true;
 	}
 	else
@@ -149,11 +150,15 @@ bool BitmapImage::SaveToFile( const std::string& pathname, int flag )
 	const int w = m_ImageWidth;
 	const int h = m_ImageHeight;
 	const int comp = m_NumChannels;
-	const int stride_in_bytes = m_NumChannels;
 
 	int num_channels = m_NumChannels;
 	if(ext == ".png")
 	{
+		// Comments in stb_image_write.h say,
+		// For PNG, "stride_in_bytes" is the distance in bytes from the first byte of
+		// a row of pixels to the first byte of the next row of pixels.
+		const int stride_in_bytes = w * m_NumChannels;
+
 		ret = stbi_write_png(pathname.c_str(), w, h, comp, m_pStbImage, stride_in_bytes );
 	}
 	else if(ext == ".jpg")

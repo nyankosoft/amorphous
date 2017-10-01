@@ -34,13 +34,13 @@ int main( int argc, char *argv[] )
 
 //	test_clipboard_utils( argc, argv );
 
-//	test_BitmapImage( argc, argv );
+	test_BitmapImage( argc, argv );
 
 //	test_ImageSplitter( argc, argv );
 
 //	test_FreeType( argc, argv );
 
-	demo_AES( argc, argv );
+//	demo_AES( argc, argv );
 
 	return 0;
 }

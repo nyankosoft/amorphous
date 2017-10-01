@@ -4,9 +4,32 @@
 #include "amorphous/Support/BitmapImage.hpp"
 #include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/base.hpp"
+#include <array>
 
 using namespace std;
 using namespace amorphous;
+
+class scope_timer
+{
+public:
+	scope_timer(const std::string& name)
+		: name_ (name),
+		start_ (std::clock())
+	{
+	}
+
+	~scope_timer()
+	{
+		double elapsed = (double(std::clock() - start_) / double(CLOCKS_PER_SEC));
+		std::cout << name_ << ": " << int(elapsed * 1000) << "ms" << std::endl;
+	}
+
+private:
+	std::string name_;
+	std::clock_t start_;
+};                                                                                                                                                                                                               
+
+#define SCOPE_TIMER(name) scope_timer timer__(name);
 
 
 // Resolved boost link error by doing this:
@@ -58,6 +81,32 @@ int TestImageArchive()
 		return 0;
 	else
 		return -1;
+}
+
+
+void RunImageLoadAndSaveTest()
+{
+	BitmapImage images[2];
+	std::array<std::string, 2> extensions = { "png", "jpg" };
+
+	for(size_t i=0; i<extensions.size(); i++)
+	{
+		std::string image_to_load = "test_images/testimage." + extensions[i];
+		{
+			SCOPE_TIMER( image_to_load );
+			bool res = images[i].LoadFromFile( image_to_load );
+		}
+
+		for(size_t j=0; j<extensions.size(); j++)
+		{
+			std::string image_pathname = "results/testimage-" + extensions[i] + "." + extensions[j];
+			{
+				SCOPE_TIMER( image_pathname );
+				images[i].SaveToFile( image_pathname );
+			}
+		}
+	}
+
 }
 
 
@@ -113,7 +162,7 @@ void RunImageSaveTest()
 
 void RunPixelOperationsTest( BitmapImage& img )
 {
-	LOG_PRINTF(("bpp: %d", img.GetFBITMAP() ? FreeImage_GetBPP(img.GetFBITMAP()) : 0));
+	LOG_PRINTF(("bits per pixel: %d", img.GetBitsPerPixel()));
 
 	int w = img.GetWidth();
 	int h = img.GetHeight();
@@ -179,9 +228,11 @@ void RunPixelOperationsTest()
 
 int RunTests()
 {
+	RunImageLoadAndSaveTest();
+
 //	RunImageSaveTest();
 
-	RunPixelOperationsTest();
+//	RunPixelOperationsTest();
 
 //	TestImageArchive();
 
@@ -193,7 +244,7 @@ int RunTests()
 
 int test_BitmapImage( int argc, char *argv[] )
 {
-	InitFreeImage();
+	//InitFreeImage();
 
 	return RunTests();
 }

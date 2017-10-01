@@ -27,7 +27,7 @@ int test_ImageSplitter(int argc, char *argv[])
 //	string image_filepath = "data/images/test30_tex03b.bmp";
 //	const int num_edge_splits = 8;
 
-	boost::shared_ptr<BitmapImage> pSrcImg( new BitmapImage() );
+	std::shared_ptr<BitmapImage> pSrcImg( new BitmapImage() );
 	bool loaded = pSrcImg->LoadFromFile( image_filepath );
 
 	StdSplitImageFilepathPrinter dest_filepath_printer(image_filepath);
