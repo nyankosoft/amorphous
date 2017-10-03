@@ -121,7 +121,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\IndexedPolygon.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\LensFlare.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp" />
-    <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\MeshGenerators\GridMeshGenerator.hpp" />
@@ -382,7 +381,6 @@
     <ClCompile Include="..\..\amorphous\Graphics\GraphicsResources.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\IndexedPolygon.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp" />
-    <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\BrickWallMeshGenerator.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\MeshGenerators\MeshGenerators.cpp" />

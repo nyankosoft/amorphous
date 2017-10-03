@@ -33,7 +33,7 @@ public:
 
 	void RenderDebugInfo(
 		const std::vector<std::string>& debug_info_texts,
-		const std::vector<SFloatRGBAColor> text_colors
+		const std::vector< std::array<unsigned char,4> >& text_colors
 		);
 
 	void SetBackgroundRect( const C2DRect& bg_rect ) { m_BackgroundRect = bg_rect; }

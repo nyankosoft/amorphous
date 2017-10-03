@@ -116,11 +116,21 @@ inline void AABNode::Serialize( IArchive& ar, const unsigned int version )
 
 extern void  WriteNodeToFile_r( int node_index, std::vector<AABNode>& nodes, int depth, FILE *fp );
 
+enum class AABTreeType
+{
+	LEAFY,
+	NON_LEAFY,
+	NUM_TREE_TYPES
+};
+
 template<class TGeometry>
 class AABTree : public IArchiveObjectBase
 {
 protected:
 
+	/**
+	Usually a particular type of objects, such as spheres and boxes, managed by an aab tree.
+	*/
 	std::vector<TGeometry> m_vecGeometry;
 
 	std::vector<AABNode> m_vecNode;
@@ -159,13 +169,6 @@ protected:
 
 public:
 
-	enum TreeType
-	{
-		LEAFY,
-		NON_LEAFY,
-		NUM_TREE_TYPES
-	};
-
 	enum RecursionStopCond
 	{
 		COND_AND, ///< i.e. loose recursion stopper
@@ -180,7 +183,7 @@ public:
 
 	std::vector<TGeometry>& GetGeometryBuffer() { return m_vecGeometry; }
 
-	virtual TreeType GetTreeType() const = 0;
+	virtual AABTreeType GetTreeType() const = 0;
 
 	/// creates an empty tree
 	/// - Declare as virtual and have derived class call this
@@ -323,11 +326,11 @@ public:
 
 	virtual ~LeafyAABTree() {}
 
-	TreeType GetTreeType() const { return AABTree::LEAFY; }
+	AABTreeType GetTreeType() const { return AABTreeType::LEAFY; }
 
-	void Build( const AABB3& rBoundingBox, const int depth ) { AABTree::Build( rBoundingBox, depth ); }
+	void Build( const AABB3& rBoundingBox, const int depth ) { AABTree<TGeometry>::Build( rBoundingBox, depth ); }
 
-	void Build( const std::vector<TGeometry>& vecGeometry ) { AABTree::Build( vecGeometry ); }
+	void Build( const std::vector<TGeometry>& vecGeometry ) { AABTree<TGeometry>::Build( vecGeometry ); }
 
 	/// \param [in] vecGeometry copied and stored
 	inline void Build();
@@ -351,15 +354,15 @@ public:
 
 	virtual ~CNonLeafyAABTree() {}
 
-	TreeType GetTreeType() const { return AABTree::NON_LEAFY; }
+	AABTreeType GetTreeType() const { return AABTreeType::NON_LEAFY; }
 
 	/// update the link of the geometry[index]
 	inline void UpdateGeometry( int index );
 
-	void Build( const AABB3& rBoundingBox, const int depth ) { AABTree::Build( rBoundingBox, depth ); }
+	void Build( const AABB3& rBoundingBox, const int depth ) { AABTree<TGeometry>::Build( rBoundingBox, depth ); }
 
 	/// Cannot call AABTree::Build() from an instance of CNonLeafyAABTree. Why?
-	void Build( const std::vector<TGeometry>& vecGeometry ) { AABTree::Build( vecGeometry ); }
+	void Build( const std::vector<TGeometry>& vecGeometry ) { AABTree<TGeometry>::Build( vecGeometry ); }
 
 	/// \param [in] vecGeometry copied and stored
 	inline void Build();

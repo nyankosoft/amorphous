@@ -199,14 +199,14 @@ shared_ptr<AABTree<IndexedPolygon>> CreateAABTreeCopy( AABTree<IndexedPolygon> *
 {
 	switch( pGeometry->GetTreeType() )
 	{
-	case AABTree<IndexedPolygon>::NON_LEAFY:
+	case AABTreeType::NON_LEAFY:
 		{
 			CNonLeafyAABTree<IndexedPolygon> *pNonLeafy = dynamic_cast<CNonLeafyAABTree<IndexedPolygon> *>(pGeometry);
 			return shared_ptr<AABTree<IndexedPolygon>>( new CNonLeafyAABTree<IndexedPolygon>( *pNonLeafy ) );
 		}
 		break;
 
-	case AABTree<IndexedPolygon>::LEAFY:
+	case AABTreeType::LEAFY:
 		{
 			LeafyAABTree<IndexedPolygon> *pLeafy = dynamic_cast<LeafyAABTree<IndexedPolygon> *>(pGeometry);
 			return shared_ptr<AABTree<IndexedPolygon>>( new LeafyAABTree<IndexedPolygon>( *pLeafy ) );

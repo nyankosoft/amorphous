@@ -1,5 +1,5 @@
 #include "PolygonMesh.hpp"
-#include "3DMath/Plane.hpp"
+#include "amorphous/3DMath/Plane.hpp"
 
 #include <assert.h>
 

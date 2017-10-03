@@ -158,14 +158,16 @@ inline void LeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, st
 {
 	size_t i;
 
-	m_vecNodeToCheck.resize(0);
+	std::vector<int>& nodes_to_check = AABTree<TGeometry>::m_vecNodeToCheck;
 
-	m_vecNodeToCheck.push_back(0);
+	nodes_to_check.resize(0);
 
-	while( !m_vecNodeToCheck.empty() )
+	nodes_to_check.push_back(0);
+
+	while( !nodes_to_check.empty() )
 	{
-		AABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
-		m_vecNodeToCheck.pop_back();
+		AABNode& rNode =  AABTree<TGeometry>::m_vecNode[ nodes_to_check.back() ];
+		nodes_to_check.pop_back();
 
 		if( rNode.IsLeaf() )
 		{
@@ -173,7 +175,7 @@ inline void LeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, st
 			for( i=0; i<rNode.veciGeometryIndex.size(); i++ )
 			{
 				const int geom_index = rNode.veciGeometryIndex[i];
-				const TGeometry& geom = m_vecGeometry[ geom_index ];
+				const TGeometry& geom = AABTree<TGeometry>::m_vecGeometry[ geom_index ];
 
 				if( m_TestCounter == m_vecTestCounter[ geom_index ] )
 					continue;	// already tested
@@ -189,13 +191,13 @@ inline void LeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, st
 			if( aabb.vMin[rNode.iAxis] <= rNode.fDist )
 			{
 				// 'aabb' is intersecting with the negative half-space
-				m_vecNodeToCheck.push_back( rNode.child[1] );
+				nodes_to_check.push_back( rNode.child[1] );
 			}
 
 			if( rNode.fDist <= aabb.vMax[rNode.iAxis] )
 			{
 				// 'aabb' is intersecting with the positive half-space
-				m_vecNodeToCheck.push_back( rNode.child[0] );
+				nodes_to_check.push_back( rNode.child[0] );
 			}
 		}
 	}
@@ -289,7 +291,9 @@ inline int GetSplitPlaneAxis( const AABB3& aabb )
 	}
 }
 
-
+/**
+ post condition: m_vecNode.size() == 1, and all the geometries are stored in the root node.
+*/
 template<class TGeometry>
 inline void AABTree<TGeometry>::InitRootNode()
 {
@@ -335,15 +339,17 @@ inline void AABTree<TGeometry>::InitRootNode()
 template<class TGeometry>
 inline void LeafyAABTree<TGeometry>::Build()
 {
-	if( m_vecGeometry.size() == 0 )
+	if( AABTree<TGeometry>::m_vecGeometry.size() == 0 )
 		return;
 
-	InitRootNode();
+	AABTree<TGeometry>::InitRootNode();
 
 	// stack of nodes we need to process
 	std::vector<int> veciNodeToProcess;
 	veciNodeToProcess.reserve( 256 );
 	veciNodeToProcess.push_back(0);	// put the root node
+
+	std::vector<AABNode>& nodes = AABTree<TGeometry>::m_vecNode;
 
 	size_t j;
 	while( !veciNodeToProcess.empty() )
@@ -355,59 +361,59 @@ inline void LeafyAABTree<TGeometry>::Build()
 		// and the volume of the current subspace cell is larger than 'm_fMinimumCellVolume'
 //		if( (size_t)m_iNumMaxTrianglesPerCell < m_vecNode[iNodeIndex].veciGeometryIndex.size()
 //		 && m_fMinimumCellVolume < m_vecNode[iNodeIndex].aabb.GetVolume() )
-		if( !ShouldStopRecursion(
-			m_vecNode[iNodeIndex].depth,
-			m_vecNode[iNodeIndex].aabb.GetVolume(),
-			(int)m_vecNode[iNodeIndex].veciGeometryIndex.size() ) )
+		if( !AABTree<TGeometry>::ShouldStopRecursion(
+			nodes[iNodeIndex].depth,
+			nodes[iNodeIndex].aabb.GetVolume(),
+			(int)nodes[iNodeIndex].veciGeometryIndex.size() ) )
 		{
 			// need to split
-			AABNode& current_node = m_vecNode[iNodeIndex];
+			AABNode& current_node = nodes[iNodeIndex];
 
-			int iAxis = m_vecNode[iNodeIndex].iAxis;
-			float fMidDist = ( m_vecNode[iNodeIndex].aabb.vMax[iAxis] + m_vecNode[iNodeIndex].aabb.vMin[iAxis] ) / 2.0f;
+			int iAxis = nodes[iNodeIndex].iAxis;
+			float fMidDist = ( nodes[iNodeIndex].aabb.vMax[iAxis] + nodes[iNodeIndex].aabb.vMin[iAxis] ) / 2.0f;
 			for( size_t i=0; i<2; i++ )
 			{
-				m_vecNode[iNodeIndex].child[i] = (int)m_vecNode.size();
-				veciNodeToProcess.push_back( (int)m_vecNode.size() );	// add to the stack
+				nodes[iNodeIndex].child[i] = (int)nodes.size();
+				veciNodeToProcess.push_back( (int)nodes.size() );	// add to the stack
 
 				// add a new node
-				m_vecNode.push_back( AABNode() );
+				nodes.push_back( AABNode() );
 
 				// axis of the plane (will not be used when this turns out to be a leaf node)
 //				m_vecNode.back().iAxis = (iAxis + 1) % 3;
 
 				// set aabb which represents subspace of the child nodes
-				m_vecNode.back().aabb = m_vecNode[iNodeIndex].aabb;
+				nodes.back().aabb = nodes[iNodeIndex].aabb;
 				if( i==0 )
-					m_vecNode.back().aabb.vMin[iAxis] = fMidDist;
+					nodes.back().aabb.vMin[iAxis] = fMidDist;
 				else
-					m_vecNode.back().aabb.vMax[iAxis] = fMidDist;
+					nodes.back().aabb.vMax[iAxis] = fMidDist;
 
-				m_vecNode.back().iAxis = GetSplitPlaneAxis( m_vecNode.back().aabb );
+				nodes.back().iAxis = GetSplitPlaneAxis( nodes.back().aabb );
 
-				m_vecNode.back().fDist = ( m_vecNode.back().aabb.vMin[m_vecNode.back().iAxis]
-					                     + m_vecNode.back().aabb.vMax[m_vecNode.back().iAxis] ) / 2.0f;
+				nodes.back().fDist = ( nodes.back().aabb.vMin[nodes.back().iAxis]
+					                     + nodes.back().aabb.vMax[nodes.back().iAxis] ) / 2.0f;
 
-				 m_vecNode.back().depth = m_vecNode[iNodeIndex].depth + 1;
+				nodes.back().depth = nodes[iNodeIndex].depth + 1;
 
 				// Move all the triangles of 'm_vecNode[iNodeIndex]' to either of its children.
 				// Triangles which cross the plane are handed to both of the children
-				for( j=0; j<m_vecNode[iNodeIndex].veciGeometryIndex.size(); j++ )
+				for( j=0; j<nodes[iNodeIndex].veciGeometryIndex.size(); j++ )
 				{
-					TGeometry& geom = m_vecGeometry[ m_vecNode[iNodeIndex].veciGeometryIndex[j] ];
-					if( m_vecNode.back().aabb.IsIntersectingWith( geom.GetAABB() ) )
-						m_vecNode.back().veciGeometryIndex.push_back( m_vecNode[iNodeIndex].veciGeometryIndex[j] );
+					TGeometry& geom = AABTree<TGeometry>::m_vecGeometry[ nodes[iNodeIndex].veciGeometryIndex[j] ];
+					if( nodes.back().aabb.IsIntersectingWith( geom.GetAABB() ) )
+						nodes.back().veciGeometryIndex.push_back( nodes[iNodeIndex].veciGeometryIndex[j] );
 				}
 			}
 
 //			RecordNode( m_vecNode[iNodeIndex], "split a node" );
 
 			// triangles are stored to child nodes - remove them from the parent node
-			m_vecNode[iNodeIndex].veciGeometryIndex.clear();
+			nodes[iNodeIndex].veciGeometryIndex.clear();
 		}
 		else
 		{
-			const AABNode& current_node = m_vecNode[iNodeIndex];
+			const AABNode& current_node = nodes[iNodeIndex];
 //			PERIODICAL( 256, RecordLeafNode( current_node ) );
 ///			RecordNode( current_node, "created a leaf node" );
 
@@ -420,22 +426,26 @@ inline void LeafyAABTree<TGeometry>::Build()
 template<class TGeometry>
 inline void LeafyAABTree<TGeometry>::Serialize( IArchive& ar, const unsigned int version )
 {
-	AABTree::Serialize( ar, version );
+	AABTree<TGeometry>::Serialize( ar, version );
 
 	ar & m_TestCounter;
 
 	if( ar.GetMode() == IArchive::MODE_INPUT )
-		m_vecTestCounter.resize( m_vecGeometry.size(), 0 );
+		m_vecTestCounter.resize( AABTree<TGeometry>::m_vecGeometry.size(), 0 );
 }
 
 
 template<class TGeometry>
 inline void CNonLeafyAABTree<TGeometry>::Build()
 {
-	if( m_vecGeometry.size() == 0 )
+	std::vector<TGeometry>& geometries = AABTree<TGeometry>::m_vecGeometry;
+
+	if( geometries.size() == 0 )
 		return;
 
-	InitRootNode();
+	AABTree<TGeometry>::InitRootNode();
+
+	std::vector<AABNode>& nodes = AABTree<TGeometry>::m_vecNode;
 
 	// stack of nodes we need to process
 	std::vector<int> veciNodeToProcess;
@@ -443,7 +453,7 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 	veciNodeToProcess.push_back(0);	// put the root node
 
 	std::vector<int> veciGeometryIndex;
-	veciGeometryIndex.reserve( m_vecGeometry.size() );
+	veciGeometryIndex.reserve( geometries.size() );
 	size_t j;
 	while( !veciNodeToProcess.empty() )
 	{
@@ -454,29 +464,29 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 		// and the volume of the current subspace cell is larger than 'm_fMinimumCellVolume'
 //		if( (size_t)m_iNumMaxTrianglesPerCell < m_vecNode[iNodeIndex].veciGeometryIndex.size()
 //		 && m_fMinimumCellVolume < m_vecNode[iNodeIndex].aabb.GetVolume() )
-		if( !ShouldStopRecursion(
-			m_vecNode[iNodeIndex].depth,
-			m_vecNode[iNodeIndex].aabb.GetVolume(),
-			(int)m_vecNode[iNodeIndex].veciGeometryIndex.size() ) )
+		if( !AABTree<TGeometry>::ShouldStopRecursion(
+			nodes[iNodeIndex].depth,
+			nodes[iNodeIndex].aabb.GetVolume(),
+			(int)nodes[iNodeIndex].veciGeometryIndex.size() ) )
 		{
 			// need to split
-			AABNode& current_node = m_vecNode[iNodeIndex];
+			AABNode& current_node = nodes[iNodeIndex];
 
-			int iAxis = m_vecNode[iNodeIndex].iAxis;
-			float fMidDist = m_vecNode[iNodeIndex].aabb.GetCenterPosition()[iAxis];
+			int iAxis = nodes[iNodeIndex].iAxis;
+			float fMidDist = nodes[iNodeIndex].aabb.GetCenterPosition()[iAxis];
 			for( size_t i=0; i<2; i++ )
 			{
-				m_vecNode[iNodeIndex].child[i] = (int)m_vecNode.size();
-				veciNodeToProcess.push_back( (int)m_vecNode.size() );	// add to the stack
+				nodes[iNodeIndex].child[i] = (int)nodes.size();
+				veciNodeToProcess.push_back( (int)nodes.size() );	// add to the stack
 
 				// add a new node
-				m_vecNode.push_back( AABNode() );
-				AABNode& new_node = m_vecNode.back();
+				nodes.push_back( AABNode() );
+				AABNode& new_node = nodes.back();
 
-				new_node.veciGeometryIndex.reserve( m_vecNode[iNodeIndex].veciGeometryIndex.size() / 2 );
+				new_node.veciGeometryIndex.reserve( nodes[iNodeIndex].veciGeometryIndex.size() / 2 );
 
 				// set aabb which represents subspace of the child nodes
-				new_node.aabb = m_vecNode[iNodeIndex].aabb;
+				new_node.aabb = nodes[iNodeIndex].aabb;
 				if( i==0 )
 					new_node.aabb.vMin[iAxis] = fMidDist;
 				else
@@ -486,40 +496,41 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 
 				new_node.fDist = ( new_node.aabb.vMin[new_node.iAxis] + new_node.aabb.vMax[new_node.iAxis] ) / 2.0f;
 
-				new_node.depth = m_vecNode[iNodeIndex].depth + 1;
+				new_node.depth = nodes[iNodeIndex].depth + 1;
 			}
 
 			// added the 2 child nodes
-			// place polygons to
+			// place geometris(such as polygons) to
 			// 1. current node when the polygon cross the current split plane
 			// 2. child node[0] 
 			// 3. child node[1]
 			int child_node_index[2];
-			child_node_index[0] = (int)m_vecNode.size() - 1;
-			child_node_index[1] = (int)m_vecNode.size() - 2;
+			child_node_index[0] = (int)nodes.size() - 1;
+			child_node_index[1] = (int)nodes.size() - 2;
 
 			// copy all indices in the current node
-			veciGeometryIndex = m_vecNode[iNodeIndex].veciGeometryIndex;
-			m_vecNode[iNodeIndex].veciGeometryIndex.resize( 0 );
+			veciGeometryIndex = nodes[iNodeIndex].veciGeometryIndex;
+			nodes[iNodeIndex].veciGeometryIndex.resize( 0 );
 
-			// Move all the triangles of 'm_vecNode[iNodeIndex]' to either of its children.
+			// Move all the triangles of 'm_vecNode[iNodeIndex]' to either of its children,
+			// or move back to itself if it crosses the plane.
 			const size_t num_geoms = veciGeometryIndex.size();
 			for( j=0; j<num_geoms; j++ )
 			{
-				TGeometry& geom = m_vecGeometry[ veciGeometryIndex[j] ];
+				TGeometry& geom = geometries[ veciGeometryIndex[j] ];
 
 				const int geom_index = veciGeometryIndex[j];
 
 				if( geom.GetAABB().vMax[iAxis] < fMidDist )
 				{
-					m_vecNode[child_node_index[0]].veciGeometryIndex.push_back( geom_index );
+					nodes[child_node_index[0]].veciGeometryIndex.push_back( geom_index );
 				}
 				else if( fMidDist < geom.GetAABB().vMin[iAxis] )
 				{
-					m_vecNode[child_node_index[1]].veciGeometryIndex.push_back( geom_index );
+					nodes[child_node_index[1]].veciGeometryIndex.push_back( geom_index );
 				}
 				else
-					m_vecNode[iNodeIndex].veciGeometryIndex.push_back( geom_index );
+					nodes[iNodeIndex].veciGeometryIndex.push_back( geom_index );
 			}
 
 //			RecordNode( m_vecNode[iNodeIndex], "split a node" );
@@ -540,25 +551,28 @@ inline void CNonLeafyAABTree<TGeometry>::Build()
 template<class TGeometry>
 inline void CNonLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb, std::vector<int>& rvecDestIndex )
 {
-	size_t i;
+	size_t i = 0;
+	std::vector<AABNode>& nodes = AABTree<TGeometry>::m_vecNode;
 
-	if( m_vecNode.empty() )
+	if( nodes.empty() )
 		return;
 
-	m_vecNodeToCheck.resize(0);
+	std::vector<int>& nodes_to_check = AABTree<TGeometry>::m_vecNodeToCheck;
 
-	m_vecNodeToCheck.push_back(0);
+	nodes_to_check.resize(0);
 
-	while( !m_vecNodeToCheck.empty() )
+	nodes_to_check.push_back(0);
+
+	while( !nodes_to_check.empty() )
 	{
-		AABNode& rNode =  m_vecNode[ m_vecNodeToCheck.back() ];
-		m_vecNodeToCheck.pop_back();
+		AABNode& rNode =  nodes[ nodes_to_check.back() ];
+		nodes_to_check.pop_back();
 
 		// check intersection with geometries in this cell
 		for( i=0; i<rNode.veciGeometryIndex.size(); i++ )
 		{
 			const int geom_index = rNode.veciGeometryIndex[i];
-			const TGeometry& geom = m_vecGeometry[ geom_index ];
+			const TGeometry& geom = AABTree<TGeometry>::m_vecGeometry[ geom_index ];
 
 			if( aabb.IsIntersectingWith( geom.GetAABB() ) )
 				rvecDestIndex.push_back( geom_index );
@@ -566,18 +580,18 @@ inline void CNonLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb
 
 		if( !rNode.IsLeaf() )
 		{
-			if( 0 <= rNode.child[1] && rNode.child[1] < (int)m_vecNode.size()
-			 && aabb.IsIntersectingWith( m_vecNode[ rNode.child[0] ].aabb ) )
+			if( 0 <= rNode.child[1] && rNode.child[1] < (int)nodes.size()
+			 && aabb.IsIntersectingWith( nodes[ rNode.child[0] ].aabb ) )
 			{
 				// 'aabb' is intersecting with the negative half-space
-				m_vecNodeToCheck.push_back( rNode.child[1] );
+				nodes_to_check.push_back( rNode.child[1] );
 			}
 
-			if( 0 <= rNode.child[0] && rNode.child[0] < (int)m_vecNode.size()
-			 && aabb.IsIntersectingWith( m_vecNode[ rNode.child[0] ].aabb ) )
+			if( 0 <= rNode.child[0] && rNode.child[0] < (int)nodes.size()
+			 && aabb.IsIntersectingWith( nodes[ rNode.child[0] ].aabb ) )
 			{
 				// 'aabb' is intersecting with the positive half-space
-				m_vecNodeToCheck.push_back( rNode.child[0] );
+				nodes_to_check.push_back( rNode.child[0] );
 			}
 		}
 	}
@@ -588,39 +602,41 @@ inline void CNonLeafyAABTree<TGeometry>::GetIntersectingAABBs( const AABB3& aabb
 template<class TGeometry>
 inline void CNonLeafyAABTree<TGeometry>::LinkGeometry( int geom_index )
 {
-	const Vector3 vTreePos = m_vWorldPos;
+	const Vector3 vTreePos = AABTree<TGeometry>::m_vWorldPos;
 
-	const AABB3& aabb = m_vecGeometry[geom_index].GetAABB();
+	const AABB3& aabb = AABTree<TGeometry>::m_vecGeometry[geom_index].GetAABB();
 
 	int index = 0;
 
+	std::vector<AABNode>& nodes = AABTree<TGeometry>::m_vecNode;
+
 	while(1)
 	{
-		if( m_vecNode[index].IsLeaf() )
+		if( nodes[index].IsLeaf() )
 		{
 			// reached the leaf - link to this node
-			m_vecNode[index].AddIndex( geom_index );
+			nodes[index].AddIndex( geom_index );
 			return;
 		}
 
-		int& axis = m_vecNode[index].iAxis;
+		int& axis = nodes[index].iAxis;
 
-		if( aabb.vMax[axis] < vTreePos[axis] + m_vecNode[index].fDist )
+		if( aabb.vMax[axis] < vTreePos[axis] + nodes[index].fDist )
 		{
 			// proceed to the front half-space
-			index = m_vecNode[index].child[0];
+			index = nodes[index].child[0];
 			continue;
 		}
-		else if( vTreePos[axis] + m_vecNode[index].fDist < aabb.vMin[axis] )
+		else if( vTreePos[axis] + nodes[index].fDist < aabb.vMin[axis] )
 		{
 			// proceed to the rear half-space
-			index = m_vecNode[index].child[1];
+			index = nodes[index].child[1];
 			continue;
 		}
 		else
 		{
 			// aabb is crossing the plane of the current node - link to this node
-			m_vecNode[index].AddIndex( geom_index );
+			nodes[index].AddIndex( geom_index );
 			return;
 		}
 	}

@@ -1,6 +1,7 @@
 #include "BinaryArchive_Input.hpp"
 #include "ArchiveObjectBase.hpp"
 #include "../Log/DefaultLog.hpp"
+#include <cstdlib> // for std::atoi()
 
 using namespace amorphous::serialization;
 
@@ -59,7 +60,7 @@ bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 	if( bin_archive_name == sg_pBinaryArchiveIdentifierString )
 	{
 		// Version 01 or higher
-		archive_ver = atoi( archive_string.substr(strlen(sg_pBinaryArchiveIdentifierString)).c_str() );
+		archive_ver = std::atoi( archive_string.substr(strlen(sg_pBinaryArchiveIdentifierString)).c_str() );
 	}
 	else
 	{

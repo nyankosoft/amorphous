@@ -2,6 +2,7 @@
 #define __OBBTree_HPP__
 
 #pragma warning(disable:4786)
+#include <string>
 #include <vector>
 #include "Matrix34.hpp"
 

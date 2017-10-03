@@ -84,7 +84,7 @@ public:
 
 	~PolygonMesh() { Release(); }
 
-	bool CreateMesh( vector<TCPolygon>& rvecPolygon );
+	bool CreateMesh( std::vector<TCPolygon>& rvecPolygon );
 
 	void Release();
 
@@ -93,9 +93,9 @@ public:
 
 	int GetNumPolygons() { return m_vecPolygon.size(); }
 
-	vector<TCPolygon>& GetPolygon() { return m_vecPolygon; }
+	std::vector<TCPolygon>& GetPolygon() { return m_vecPolygon; }
 
-	int GetIntersectingPolygons( vector<int>& rveciPolygonList, AABB3& aabb );
+	int GetIntersectingPolygons( std::vector<int>& rveciPolygonList, AABB3& aabb );
 //	{ return m_Tree.GetIntersectingPolygons( rveciPolygonList, aabb ); }
 
 	/// clip ray at the point of contact
@@ -332,7 +332,7 @@ bool PolygonMesh<TCPolygon>::RayTrace( SRay& ray )
 
 
 template <class TCPolygon>
-int PolygonMesh<TCPolygon>::GetIntersectingPolygons( std::vector<int>& rvestd::ygonList, AABB3& aabb )
+int PolygonMesh<TCPolygon>::GetIntersectingPolygons( std::vector<int>& rveciPolygonList, AABB3& aabb )
 {
 	int i, iPolygonIndex;
 

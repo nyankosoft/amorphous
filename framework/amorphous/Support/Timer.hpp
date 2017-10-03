@@ -17,7 +17,7 @@ class Timer
 {
 	std::chrono::high_resolution_clock m_Clock;
 
-	std::chrono::time_point<std::chrono::steady_clock> m_StartTime;
+	std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTime;
 
 	/// Below are somewhat undesirable backward compatibility necessities
 	/// The thing is that this Timer class assumes the duty of keeping frame time
@@ -47,7 +47,7 @@ public:
 	*/
 	inline unsigned long GetElapsedTimeInMilliseconds() const
 	{
-		auto now = m_Clock.now();
+		std::chrono::time_point<std::chrono::high_resolution_clock> now = m_Clock.now();
 		std::chrono::duration<double, std::milli> elapsed = now - m_StartTime;
 		return (unsigned long)elapsed.count();
 	}

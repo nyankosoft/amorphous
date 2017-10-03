@@ -369,9 +369,6 @@
     <ClInclude Include="..\..\amorphous\Graphics\LightStructs.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\amorphous\Graphics\LogOutput_OnScreen.hpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
@@ -1143,9 +1140,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\LensFlare.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\amorphous\Graphics\LogOutput_OnScreen.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\MeshContainerRenderMethod.cpp">

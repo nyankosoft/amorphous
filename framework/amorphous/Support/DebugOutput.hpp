@@ -2,8 +2,8 @@
 #define  __DEBUGOUTPUT_H__
 
 
+#include <memory>
 #include "amorphous/base.hpp"
-#include "amorphous/Graphics/fwd.hpp"
 #include "singleton.hpp"  // Used by CGlobalDebugOutput
 #include "DebugInfo.hpp"
 
@@ -86,7 +86,7 @@ public:
 
 	virtual void RenderDebugInfo(
 		const std::vector<std::string>& debug_info_texts,
-		const std::vector<SFloatRGBAColor> text_colors
+		const std::vector< std::array<unsigned char,4> >& text_colors
 		) = 0;
 };
 

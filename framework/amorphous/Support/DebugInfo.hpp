@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include "amorphous/Graphics/FloatRGBAColor.hpp"
+#include <array>
 
 
 namespace amorphous
@@ -26,7 +26,8 @@ protected:
 
 	std::vector<std::string> m_MultiLineTextBuffer;
 
-	std::vector<SFloatRGBAColor> m_LineColors;
+	//std::vector<SFloatRGBAColor> m_LineColors;
+	std::vector< std::array<unsigned char,4> > m_LineColors;
 
 public:
 
@@ -41,7 +42,7 @@ public:
 
 	const std::vector<std::string> GetMultiLineTextBuffer() const { return m_MultiLineTextBuffer; }
 
-	const std::vector<SFloatRGBAColor> GetMultiLineTextColors() const { return m_LineColors; }
+	const std::vector< std::array<unsigned char,4> >& GetMultiLineTextColors() const { return m_LineColors; }
 
 	virtual void UpdateDebugInfoText() = 0;
 };

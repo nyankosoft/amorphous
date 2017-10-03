@@ -1,6 +1,6 @@
 #include "DebugOutput.hpp"
 
-#include "amorphous/Graphics/LogOutput_OnScreen.hpp"
+#include "amorphous/Support/LogOutput_OnScreen.hpp"
 #include "amorphous/Support/memory_helpers.hpp"
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/Support/Profile.hpp"
@@ -21,19 +21,32 @@ m_pLogOutput(pLogOutput)
 }
 
 
+array<unsigned char,4> from_argb32(U32 s)
+{
+	array<unsigned char,4> c = {
+		(s >> 24) & 0x000000FF,
+		(s >> 16) & 0x000000FF,
+		(s >>  8) & 0x000000FF,
+		(s)       & 0x000000FF
+	};
+
+	return c;
+}
+
+
 void DebugInfo_Log::UpdateDebugInfoText()
 {
 	const int num_current_rows = m_pLogOutput->GetNumCurrentRows();
 
-	SFloatRGBAColor color;
+	//SFloatRGBAColor color;
 	for( int i=0; i<num_current_rows; i++ )
 	{
-		const char *pText = m_pLogOutput->GetText( i );
-		const U32 argb_color   = m_pLogOutput->GetTextColor( i );
+		const char *pText    = m_pLogOutput->GetText( i );
+		const U32 argb_color = m_pLogOutput->GetTextColor( i );
 
-		color.SetARGB32( argb_color );
+		//color.SetARGB32( argb_color );
 		m_MultiLineTextBuffer.push_back( pText );
-		m_LineColors.push_back( color );
+		m_LineColors.push_back( from_argb32(argb_color) );
 	}
 }
 

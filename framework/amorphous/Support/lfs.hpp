@@ -413,7 +413,7 @@ inline int create_directory( const std::string& pathname ) {
 	// Whereas everywhere else in the world, we have permission bits
 	// Since I'm coding and compiling on VS, I'll come back and
 	// work on this later
-	mode_t = mode_flags S_IRUSR | S_IWUSR | S_IXUSR;
+	mode_t mode_flags = S_IRUSR | S_IWUSR | S_IXUSR;
 	int ret = mkdir(pathname.c_str(), mode_flags);
 #endif /* _MSC_VER */
 

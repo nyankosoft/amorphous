@@ -61,9 +61,28 @@ void OnScreenDebugInfoRenderer::RenderDebugInfo( const std::string& debug_info_t
 }
 
 
+SFloatRGBAColor to_FloatRGBAColor( const std::array<unsigned char,4>& s )
+{
+	SFloatRGBAColor c;
+	c.red   = (float)s[0] / 255.0f;
+	c.green = (float)s[1] / 255.0f;
+	c.blue  = (float)s[2] / 255.0f;
+	c.alpha = (float)s[3] / 255.0f;
+	return c;
+}
+
+U32 to_ARGB32( const std::array<unsigned char,4>& s )
+{
+	return
+		( ( ((int)s[3]) << 24 ) & 0xFF000000 ) |
+		( ( ((int)s[0]) << 16 ) & 0x00FF0000 ) |
+		( ( ((int)s[1]) <<  8 ) & 0x0000FF00 ) |
+		(   ((int)s[2])         & 0x000000FF );}
+
+
 void OnScreenDebugInfoRenderer::RenderDebugInfo(
 	const std::vector<std::string>& debug_info_texts,
-	const std::vector<SFloatRGBAColor> text_colors
+	const std::vector< std::array<unsigned char,4> >& text_colors
 	)
 {
 	if( !m_pFont )
@@ -86,8 +105,8 @@ void OnScreenDebugInfoRenderer::RenderDebugInfo(
 
 	for( size_t i=0; i<debug_info_texts.size(); i++ )
 	{
-		SFloatRGBAColor color = (i < text_colors.size()) ? text_colors[i] : SFloatRGBAColor::White();
-		m_pFont->DrawText( debug_info_texts[i], pos, color.GetARGB32() );
+		std::array<unsigned char,4> color = (i < text_colors.size()) ? text_colors[i] : std::array<unsigned char,4>{1,1,1,1};
+		m_pFont->DrawText( debug_info_texts[i], pos, to_ARGB32(color) );
 		pos.y += (int)(m_pFont->GetFontHeight() * 1.2f );
 	}
 }
