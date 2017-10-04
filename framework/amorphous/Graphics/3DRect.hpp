@@ -2,6 +2,8 @@
 #define __3DRect_HPP__
 
 
+#include "amorphous/3DMath/Vector3.hpp"
+#include "FloatRGBAColor.hpp"
 #include "TextureCoord.hpp"
 
 
