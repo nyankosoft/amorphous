@@ -2,10 +2,10 @@
 #define  __2DGraph_H__
 
 #include <vector>
-#include "3DMath/AABB2.hpp"
-#include "Graphics/fwd.hpp"
-#include "2DPrimitive/2DRect.hpp"
-#include "General2DVertex.hpp"
+#include "amorphous/3DMath/AABB2.hpp"
+#include "amorphous/Graphics/fwd.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/General2DVertex.hpp"
 
 
 namespace amorphous
