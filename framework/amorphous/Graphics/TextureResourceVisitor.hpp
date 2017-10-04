@@ -2,7 +2,7 @@
 #define __TextureResourceVisitor_HPP__
 
 
-#include "../fwd.hpp"
+#include "amorphous/base.hpp"
 #include "Direct3D/fwd.hpp"
 #include "OpenGL/fwd.hpp"
 
