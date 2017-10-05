@@ -6,7 +6,8 @@
 #include "amorphous/3DMath/Perlin.hpp"
 #include "amorphous/Support/MTRand.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
-#include <boost/random.hpp>
+#include <ctime>
+#include <random>
 
 
 namespace amorphous
@@ -111,7 +112,7 @@ void SmokeParticleTextureGenerator::FillTexture( LockedTexture& texture )
 {
 	// Get a random integer to use as a seed.
 	std::time_t now = std::time(0);
-	boost::random::mt19937 gen{static_cast<std::uint32_t>(now)};
+	std::mt19937 gen{static_cast<std::uint32_t>(now)};
 
 	int num_horizontal_tiles = 4;
 	int num_vertical_tiles   = 4;
