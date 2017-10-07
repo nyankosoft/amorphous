@@ -140,7 +140,7 @@ Result::Name PrimitiveShapeRenderer::RenderPlane(
 	const Vector3 *positions,
 	const Vector3& normal,
 	const SFloatRGBAColor& color,
-	TextureHandle& texture,
+	const TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right,
 	ShaderManager& shader_mgr
@@ -189,7 +189,7 @@ void PrimitiveShapeRenderer::RenderPlane(
 	float width,
 	float height,
 	const SFloatRGBAColor& color,
-	TextureHandle& texture,
+	const TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right
 	)
@@ -226,7 +226,7 @@ void PrimitiveShapeRenderer::RenderAxisAlignedPlane(
 	float span_0,
 	float span_1,
 	const SFloatRGBAColor& color,
-	TextureHandle& texture,
+	const TextureHandle& texture,
 	const TEXCOORD2& top_left,
 	const TEXCOORD2& bottom_right
 	)
@@ -293,7 +293,7 @@ void PrimitiveShapeRenderer::RenderAxisAlignedPlane(
 }
 
 
-void PrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, TextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
+void PrimitiveShapeRenderer::RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, const TextureHandle& texture, const TEXCOORD2& top_left, const TEXCOORD2& bottom_right )
 {
 	RenderAxisAlignedPlane( 1, vCenter, width, depth, color, texture, top_left, bottom_right );
 }

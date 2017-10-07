@@ -2,7 +2,7 @@
 #include "TextureGenerators/TextureFillingAlgorithm.hpp"
 #include "TextureGenerators/TextureGeneratorFactory.hpp"
 #include "Shader/ShaderGenerator.hpp"
-#include "amorphous/XML.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous
@@ -140,23 +140,23 @@ int MeshResourceDesc::CanBeUsedAsMeshCache( const MeshResourceDesc& desc ) const
 }
 
 
-void MeshResourceDesc::LoadFromXMLNode( XMLNode& reader )
+void MeshResourceDesc::LoadFromXMLNode( XMLNode reader )
 {
 	GraphicsResourceDesc::LoadFromXMLNode( reader );
 
 	string mesh_type = reader.GetAttributeText( "type" );
 	if( 0 < mesh_type.length() )
 	{
-		if( mesh_type == "basic" )            this->MeshType = MeshType::BASIC;
-		else if( mesh_type == "progressive" ) this->MeshType = MeshType::PROGRESSIVE;
-		else if( mesh_type == "skeletal" )    this->MeshType = MeshType::SKELETAL;
+		if( mesh_type == "basic" )            this->MeshType = MeshTypeName::BASIC;
+		else if( mesh_type == "progressive" ) this->MeshType = MeshTypeName::PROGRESSIVE;
+		else if( mesh_type == "skeletal" )    this->MeshType = MeshTypeName::SKELETAL;
 	}
 }
 
 
 bool ShaderResourceDesc::IsValid() const
 {
-	if( ShaderType == ShaderType::NON_PROGRAMMABLE )
+	if( ShaderType == ShaderTypeName::NON_PROGRAMMABLE )
 		return true;
 	else
 	{

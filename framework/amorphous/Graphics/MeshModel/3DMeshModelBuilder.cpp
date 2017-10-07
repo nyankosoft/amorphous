@@ -1,6 +1,6 @@
 #include "3DMeshModelBuilder.hpp"
 #include "NVMeshMender.hpp"
-#include "ShadowVolumeMeshGenerator.hpp"
+//#include "ShadowVolumeMeshGenerator.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/Support/ImageArchive.hpp"
@@ -73,7 +73,7 @@ void C3DMeshModelBuilder::BuildMeshModelArchive( std::shared_ptr<General3DMesh> 
 	CreateMeshArchive();
 
 	// check if the mesh should be created as a shadow volume mesh
-	CheckShadowVolume();
+//	CheckShadowVolume();
 
 	if( build_option_flags & C3DMeshModelBuilder::BOF_CHANGE_TEXTURE_FILE_EXTENSIONS_TO_IA )
 	{
@@ -673,9 +673,9 @@ void C3DMeshModelBuilder::CheckShadowVolume()
 
 	C3DMeshModelArchive sv_mesh;
 
-	CShadowVolumeMeshGenerator sv_mesh_generator;
+//	CShadowVolumeMeshGenerator sv_mesh_generator;
 
-	sv_mesh_generator.GenerateShadowMesh( sv_mesh, m_MeshModelArchive );
+//	sv_mesh_generator.GenerateShadowMesh( sv_mesh, m_MeshModelArchive );
 
 	m_MeshModelArchive = sv_mesh;
 }

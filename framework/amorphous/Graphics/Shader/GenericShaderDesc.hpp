@@ -52,16 +52,12 @@ public:
 };
 
 
-class VertexBlendType
+enum class VertexBlendTypeName
 {
-public:
-	enum Name
-	{
-		NONE,
-		QUATERNION_AND_VECTOR3, ///< 3DMath/Transform class
-		MATRIX,                 ///< 3DMath/Matrix34 class
-		NUM_TYPES
-	};
+	NONE,
+	QUATERNION_AND_VECTOR3, ///< 3DMath/Transform class
+	MATRIX,                 ///< 3DMath/Matrix34 class
+	NUM_TYPES
 };
 
 class SpecularSource
@@ -118,7 +114,7 @@ public:
 	ShaderLightingTechnique::Name LightingTechnique;
 	ShaderLightingType::Name LightingType; // per-vertex / per-pixel
 	SpecularSource::Name Specular;
-	VertexBlendType::Name VertexBlendType;
+	VertexBlendTypeName VertexBlendType;
 	AlphaBlendType::Name AlphaBlend;
 	EnvMapOption::Name EnvMap;
 	PlanarReflectionOption::Name PlanarReflection;
@@ -135,7 +131,7 @@ public:
 	LightingTechnique(ShaderLightingTechnique::HEMISPHERIC),
 	LightingType(ShaderLightingType::PER_PIXEL),
 	Specular(SpecularSource::NONE),
-	VertexBlendType(VertexBlendType::NONE),
+	VertexBlendType(VertexBlendTypeName::NONE),
 	AlphaBlend(AlphaBlendType::NONE),
 	EnvMap(EnvMapOption::NONE),
 	PlanarReflection(PlanarReflectionOption::NONE),

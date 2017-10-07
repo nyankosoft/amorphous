@@ -23,7 +23,7 @@ class CGLShader : public ShaderManager
 {
 protected:
 
-	GLhandleARB m_Shader;
+	int m_Shader;
 
 	virtual GLenum GetShaderType() const = 0;
 
@@ -35,7 +35,7 @@ public:
 
 	virtual ~CGLShader();
 
-	GLhandleARB GetGLHandle() { return m_Shader; }
+	int GetGLHandle() { return m_Shader; }
 
 	bool LoadFromFile( const std::string& filepath );
 
@@ -51,7 +51,7 @@ public:
 
 class CGLVertexShader : public CGLShader
 {
-	GLenum GetShaderType() const { return GL_VERTEX_SHADER_ARB; }
+	GLenum GetShaderType() const { return GL_VERTEX_SHADER; }
 
 public:
 };
@@ -70,7 +70,7 @@ class CGLFragmentShader : public CGLShader
 
 protected:
 
-	GLenum GetShaderType() const { return GL_FRAGMENT_SHADER_ARB; }
+	GLenum GetShaderType() const { return GL_FRAGMENT_SHADER; }
 
 public:
 
@@ -95,7 +95,7 @@ class CGLProgram : public ShaderManager
 		NUM_TEXTURE_SAMPLER_UNIFORMS = 4,
 	};
 
-	GLhandleARB m_Program;
+	int m_Program;
 
 //	std::shared_ptr<CGLVertexShader> m_pVertexShader;
 //	std::shared_ptr<CGLFragmentShader> m_pFragmentShader;

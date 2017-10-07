@@ -1,7 +1,7 @@
 #include "MeshContainerRenderMethod.hpp"
 #include "MeshObjectContainer.hpp"
 #include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
-#include "amorphous/XML.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 #include "amorphous/XML/LoadFromXMLNode_3DMath.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/Serialization_ShaderTechniqueHandle.hpp"

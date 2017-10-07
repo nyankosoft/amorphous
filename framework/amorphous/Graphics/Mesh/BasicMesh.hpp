@@ -250,7 +250,7 @@ public:
 */
 	virtual ~BasicMesh() {}
 
-	virtual MeshType::Name GetMeshType() const { return MeshType::BASIC; }
+	virtual MeshTypeName GetMeshType() const { return MeshTypeName::BASIC; }
 
 	bool IsValid() const { return m_pImpl->IsValid(); }
 

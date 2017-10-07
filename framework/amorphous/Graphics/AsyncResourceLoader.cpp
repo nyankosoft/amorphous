@@ -154,11 +154,11 @@ void AsyncResourceLoader::ProcessResourceLoadRequest()
 /// called by file IO thread
 void AsyncResourceLoader::ProcessResourceLoadRequests()
 {
-	auto seconds_to_sleep = 1s; // 1 [sec]
+	int seconds_to_sleep = 1; // 1 [sec]
 
 	while( !m_bEndIOThread )
 	{
-		std::this_thread::sleep_for(seconds_to_sleep);
+		std::this_thread::sleep_for(std::chrono::seconds(seconds_to_sleep));
 
 		ProcessResourceLoadRequest();
 	}

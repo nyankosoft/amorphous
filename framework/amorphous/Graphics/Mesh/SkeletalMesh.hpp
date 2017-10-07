@@ -56,7 +56,7 @@ public:
 
 	inline void DumpSkeletonToTextFile( const std::string& output_filepath ) const { m_pImpl->DumpSkeletonToTextFile( output_filepath ); }
 
-	virtual MeshType::Name GetMeshType() const { return MeshType::SKELETAL; }
+	virtual MeshTypeName GetMeshType() const { return MeshTypeName::SKELETAL; }
 };
 
 

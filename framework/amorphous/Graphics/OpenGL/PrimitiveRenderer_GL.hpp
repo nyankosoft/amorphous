@@ -3,6 +3,7 @@
 
 
 #include "../PrimitiveRenderer.hpp"
+#include "GLHeaders.h"
 
 
 namespace amorphous

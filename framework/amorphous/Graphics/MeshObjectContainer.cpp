@@ -1,6 +1,6 @@
 #include "MeshObjectContainer.hpp"
 #include "amorphous/Support/Serialization/Serialization_BoostSmartPtr.hpp"
-#include "amorphous/XML.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 #include "amorphous/XML/LoadFromXMLNode_3DMath.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/Shader/FixedFunctionPipelineManager.hpp"
@@ -132,7 +132,7 @@ void MeshObjectContainer::Serialize( IArchive& ar, const unsigned int version )
 }
 
 
-void MeshObjectContainer::LoadFromXMLNode( XMLNode& reader )
+void MeshObjectContainer::LoadFromXMLNode( XMLNode reader )
 {
 	// A simplified version - load the path from the attribute "path"
 	string mesh_path;

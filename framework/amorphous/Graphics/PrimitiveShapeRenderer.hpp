@@ -29,7 +29,7 @@ private:
 		const Vector3 *positions,
 		const Vector3& normal,
 		const SFloatRGBAColor& color,
-		TextureHandle& texture,
+		const TextureHandle& texture,
 		const TEXCOORD2& top_left,
 		const TEXCOORD2& bottom_right,
 		ShaderManager& shader_mgr
@@ -52,7 +52,7 @@ public:
 		float width  = 100.0f,
 		float height = 100.0f,
 		const SFloatRGBAColor& color = SFloatRGBAColor::White(),
-		TextureHandle& tex = TextureHandle(),
+		const TextureHandle& tex = TextureHandle(),
 		const TEXCOORD2& top_left     = TEXCOORD2(0,0),
 		const TEXCOORD2& bottom_right = TEXCOORD2(1,1)
 		);
@@ -64,12 +64,12 @@ public:
 		float span_0 = 100.0f,
 		float span_1 = 100.0f,
 		const SFloatRGBAColor& color = SFloatRGBAColor::White(),
-		TextureHandle& texture = TextureHandle(),
+		const TextureHandle& texture = TextureHandle(),
 		const TEXCOORD2& top_left     = TEXCOORD2(0,0),
 		const TEXCOORD2& bottom_right = TEXCOORD2(1,1)
 		);
 
-	void RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, TextureHandle& texture = TextureHandle(), const TEXCOORD2& top_left = TEXCOORD2(0,0), const TEXCOORD2& bottom_right = TEXCOORD2(1,1) );
+	void RenderFloorPlane( const Vector3& vCenter, float width, float depth, const SFloatRGBAColor& color, const TextureHandle& texture = TextureHandle(), const TEXCOORD2& top_left = TEXCOORD2(0,0), const TEXCOORD2& bottom_right = TEXCOORD2(1,1) );
 
 	void RenderWireframeBox( const Vector3& vEdgeLengths, const Matrix34& world_pose, const SFloatRGBAColor& wireframe_color = SFloatRGBAColor::White() );
 

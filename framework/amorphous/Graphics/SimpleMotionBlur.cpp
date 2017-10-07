@@ -210,7 +210,7 @@ void SimpleMotionBlur::Render()
 	// - This is the motion blurred scene created from the last few scenes
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw();
-	SetRectRenderStates( pPrevRenderTarget->GetRenderTargetTexture() );
+	SetRectRenderStates( pPrevRenderTarget->RenderTargetTexture() );
 	rect.draw();
 //	rect.Draw( pPrevRenderTarget->GetRenderTargetTexture() );
 
@@ -234,7 +234,7 @@ void SimpleMotionBlur::Render()
 //	pd3dDev->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 	rect.SetColor( 0xFFFFFFFF );
 ///	rect.Draw( pDestRenderTarget->GetRenderTargetTexture() );
-	SetRectRenderStates( pDestRenderTarget->GetRenderTargetTexture() );
+	SetRectRenderStates( pDestRenderTarget->RenderTargetTexture() );
 	rect.draw();
 
 	// test

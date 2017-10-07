@@ -26,13 +26,13 @@ std::shared_ptr<MeshResource> MeshHandle::GetMeshResource()
 }
 
 
-MeshType::Name MeshHandle::GetMeshType()
+MeshTypeName MeshHandle::GetMeshType()
 {
 	if( GetEntry()
 	 && GetEntry()->GetMeshResource() )
 		return GetEntry()->GetMeshResource()->GetMeshType();
 	else
-		return MeshType::INVALID; // TODO: return a value that means invalid request
+		return MeshTypeName::INVALID; // TODO: return a value that means invalid request
 }
 
 

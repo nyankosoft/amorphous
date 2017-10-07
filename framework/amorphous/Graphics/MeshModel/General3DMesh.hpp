@@ -12,6 +12,9 @@ valid combinations of geometry filters
 #include "../General3DVertex.hpp"
 #include "../IndexedPolygon.hpp"
 #include "3DMeshModelArchive.hpp"
+#include <string>
+#include <vector>
+#include <algorithm>
 
 
 namespace amorphous
@@ -49,14 +52,14 @@ public:
 		using namespace std;
 
 		if( !to_include.empty()
-		 && find( to_include.begin(), to_include.end(), target_name ) == to_include.end() )
+		 && std::find( to_include.begin(), to_include.end(), target_name ) == to_include.end() )
 		{
 			// include filter is present and the target name was not found in the list
 			return false;
 		}
 
 		if( !to_exclude.empty()
-		 && find( to_exclude.begin(), to_exclude.end(), target_name ) != to_exclude.end() )
+		 && std::find( to_exclude.begin(), to_exclude.end(), target_name ) != to_exclude.end() )
 		{
 			// exclude filter is present and the target name was found in the list
 			return false;
@@ -108,6 +111,9 @@ public:
 	/// Converts the general 3d mesh into the triangulated mesh archive
 	/// \param dest [out] mesh archive
 //	void Create3DMeshModelArchive( C3DMeshModelArchive& dest );
+
+	// Returns a non-const reference to the vertex buffer.
+	std::shared_ptr< std::vector<General3DVertex> >& VertexBuffer() { return m_pVertexBuffer; }
 
 	std::shared_ptr< std::vector<General3DVertex> > GetVertexBuffer() { return m_pVertexBuffer; }
 

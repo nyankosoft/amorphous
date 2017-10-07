@@ -140,17 +140,13 @@ class GraphicsElementAnimationManagerBase;
 class GraphicsElementAnimationManager;
 
 
-class MeshType
+enum class MeshTypeName
 {
-public:
-	enum Name
-	{
-		BASIC,
-		PROGRESSIVE,
-		SKELETAL,
-		INVALID,
-		NUM_MESH_TYPES
-	};
+	BASIC,
+	PROGRESSIVE,
+	SKELETAL,
+	INVALID,
+	NUM_MESH_TYPES
 };
 
 

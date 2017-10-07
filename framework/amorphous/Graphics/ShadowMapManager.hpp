@@ -129,11 +129,11 @@ public:
 
 	ShaderHandle& GetShader() { return m_Shader; }
 
-	ShaderTechniqueHandle ShaderTechniqueForShadowCaster( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE );
+	ShaderTechniqueHandle ShaderTechniqueForShadowCaster( VertexBlendTypeName vertex_blend_type = VertexBlendTypeName::NONE );
 
-	ShaderTechniqueHandle ShaderTechniqueForShadowReceiver( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE );
+	ShaderTechniqueHandle ShaderTechniqueForShadowReceiver( VertexBlendTypeName vertex_blend_type = VertexBlendTypeName::NONE );
 
-	ShaderTechniqueHandle ShaderTechniqueForNonShadowedCasters( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE );
+	ShaderTechniqueHandle ShaderTechniqueForNonShadowedCasters( VertexBlendTypeName vertex_blend_type = VertexBlendTypeName::NONE );
 
 //	void Init( int texture_width, int texture_height );
 

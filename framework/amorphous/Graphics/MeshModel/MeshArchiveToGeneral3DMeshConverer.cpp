@@ -16,7 +16,7 @@ Result::Name CMeshArchiveToGeneral3DMeshConverer::Convert( const C3DMeshModelArc
 
 	// copy vertices
 
-	std::shared_ptr< vector<General3DVertex> >& pVerts = dest.GetVertexBuffer();
+	std::shared_ptr< vector<General3DVertex> >& pVerts = dest.VertexBuffer();
 	if( !pVerts )
 		return Result::INVALID_ARGS;
 

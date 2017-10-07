@@ -110,14 +110,14 @@ FlatShadowMap::FlatShadowMap()
 }
 
 
-ShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( VertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( VertexBlendTypeName vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
-	case VertexBlendType::NONE:
+	case VertexBlendTypeName::NONE:
 	default:
 		return m_ShadowMapTechnique;
-	case VertexBlendType::QUATERNION_AND_VECTOR3:
+	case VertexBlendTypeName::QUATERNION_AND_VECTOR3:
 		return m_VertexBlendShadowMapTechnique;
 //	case VertexBlendType::MATRIX:
 //		return ???;
@@ -125,16 +125,16 @@ ShaderTechniqueHandle& FlatShadowMap::ShadowMapTechnique( VertexBlendType::Name 
 }
 
 
-ShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( VertexBlendType::Name vertex_blend_type )
+ShaderTechniqueHandle& FlatShadowMap::DepthTestTechnique( VertexBlendTypeName vertex_blend_type )
 {
 	switch( vertex_blend_type )
 	{
-	case VertexBlendType::NONE:
+	case VertexBlendTypeName::NONE:
 	default:
 		return m_DepthTestTechnique;
-	case VertexBlendType::QUATERNION_AND_VECTOR3:
+	case VertexBlendTypeName::QUATERNION_AND_VECTOR3:
 		return m_VertexBlendDepthTestTechnique;
-//	case VertexBlendType::MATRIX:
+//	case VertexBlendTypeName::MATRIX:
 //		return ???;
 	}
 }

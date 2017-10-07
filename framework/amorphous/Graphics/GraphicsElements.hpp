@@ -671,8 +671,8 @@ public:
 			m_pFrameElement->SetLayer( layer_index );
 	}
 
-	std::shared_ptr<PrimitiveElement>& FillElement() { return m_pFillElement; }
-	std::shared_ptr<PrimitiveElement>& FrameElement() { return m_pFrameElement; }
+	std::shared_ptr<PrimitiveElement>& GetFillElement() { return m_pFillElement; }
+	std::shared_ptr<PrimitiveElement>& GetFrameElement() { return m_pFrameElement; }
 
 	void OnRemovalRequested();
 };
@@ -707,8 +707,8 @@ public:
 
 	void Draw() {}
 
-	std::shared_ptr<FillRectElement> FillRectElement() { return m_pFillRectElement; }
-	std::shared_ptr<FrameRectElement> FrameRectElement() { return m_pFrameRectElement; }
+	std::shared_ptr<FillRectElement> GetFillRectElement() { return m_pFillRectElement; }
+	std::shared_ptr<FrameRectElement> GetFrameRectElement() { return m_pFrameRectElement; }
 };
 
 
@@ -741,8 +741,8 @@ public:
 
 	void Draw() {}
 
-	std::shared_ptr<RoundFillRectElement> RoundFillRectElement() { return m_pRoundFillRectElement; }
-	std::shared_ptr<RoundFrameRectElement> RoundFrameRectElement() { return m_pRoundFrameRectElement; }
+	std::shared_ptr<RoundFillRectElement> GetRoundFillRectElement() { return m_pRoundFillRectElement; }
+	std::shared_ptr<RoundFrameRectElement> GetRoundFrameRectElement() { return m_pRoundFrameRectElement; }
 };
 
 
@@ -775,8 +775,8 @@ public:
 
 	void Draw() {}
 
-	std::shared_ptr<FillTriangleElement> FillTriangleElement() { return m_pFillTriangleElement; }
-	std::shared_ptr<FrameTriangleElement> FrameTriangleElement() { return m_pFrameTriangleElement; }
+	std::shared_ptr<FillTriangleElement> GetFillTriangleElement() { return m_pFillTriangleElement; }
+	std::shared_ptr<FrameTriangleElement> GetFrameTriangleElement() { return m_pFrameTriangleElement; }
 };
 
 

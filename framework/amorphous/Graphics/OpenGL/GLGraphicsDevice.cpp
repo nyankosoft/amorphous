@@ -105,7 +105,14 @@ bool CGLGraphicsDevice::Init( int iWindowWidth, int iWindowHeight, ScreenMode::N
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
+
+#ifdef __ANDROID__
+	// GLES 2.0, which the current Android version of the framework
+	// is configured for, does not support GL_PERSPECTIVE_CORRECTION_HINT,
+	// although GLES 2.0 does have glHint().
+#else /* __ANDROID__ */
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+#endif /* __ANDROID__ */
 
 	glEnable(GL_TEXTURE_2D);
 	LOG_GL_ERROR( "glEnable() failed." );

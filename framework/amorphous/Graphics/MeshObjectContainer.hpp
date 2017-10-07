@@ -79,7 +79,7 @@ public:
 
 	virtual unsigned int GetVersion() const { return 1; }
 
-	virtual void LoadFromXMLNode( XMLNode& reader );
+	virtual void LoadFromXMLNode( XMLNode reader );
 };
 
 

@@ -72,10 +72,10 @@ public:
 
 		if( glActiveTexture )
 			glActiveTexture( GL_TEXTURE0 + m_Stage );
-		else if( glActiveTextureARB )
-			glActiveTextureARB( GL_TEXTURE0_ARB + m_Stage );
+//		else if( glActiveTextureARB )
+//			glActiveTextureARB( GL_TEXTURE0_ARB + m_Stage );
 		else
-			LOG_PRINT_ERROR( " You don't have glActiveTexture()/glActiveTextureARB()?! Seriously?!" );
+			LOG_PRINT_ERROR( " glActiveTexture() not supported." );
 
 //		std::string error_message = fmt_string( " glActiveTexture() failed (stage: %d).", m_Stage );
 //		LOG_GL_ERROR( error_message.c_str() );

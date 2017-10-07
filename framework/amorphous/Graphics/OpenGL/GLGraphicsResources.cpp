@@ -115,18 +115,19 @@ SDim2 CGLTextureResource::GetSize2D( unsigned int level )
 	if( m_TextureID == 0 )
 		return SDim2(0,0);
 
-	glBindTexture( GL_TEXTURE_2D, m_TextureID );
-	LOG_GL_ERROR( "glBindTexture() returned an error." );
+//	glBindTexture( GL_TEXTURE_2D, m_TextureID );
+//	LOG_GL_ERROR( "glBindTexture() returned an error." );
 
-	GLint width = 0, height = 0;
+//	GLint width = 0, height = 0;
 
-	glGetTexLevelParameteriv( GL_TEXTURE_2D, (GLint)level, GL_TEXTURE_WIDTH,  &width );
-	LOG_GL_ERROR( fmt_string("glGetTexLevelParameteriv() returned an error (level: %u, called to retrieve width).", level).c_str() );
+//	glGetTexLevelParameteriv( GL_TEXTURE_2D, (GLint)level, GL_TEXTURE_WIDTH,  &width );
+//	LOG_GL_ERROR( fmt_string("glGetTexLevelParameteriv() returned an error (level: %u, called to retrieve width).", level).c_str() );
 
-	glGetTexLevelParameteriv( GL_TEXTURE_2D, (GLint)level, GL_TEXTURE_HEIGHT, &height );
-	LOG_GL_ERROR( fmt_string("glGetTexLevelParameteriv() returned an error (level: %u, called to retrieve height).", level).c_str() );
+//	glGetTexLevelParameteriv( GL_TEXTURE_2D, (GLint)level, GL_TEXTURE_HEIGHT, &height );
+//	LOG_GL_ERROR( fmt_string("glGetTexLevelParameteriv() returned an error (level: %u, called to retrieve height).", level).c_str() );
 
-	return SDim2( (int)width, (int)height );
+//	return SDim2( (int)width, (int)height );
+	return SDim2( m_TextureDesc.Width, m_TextureDesc.Height );
 }
 
 
@@ -381,7 +382,7 @@ static Result::Name GetSrcPixelTypeAndFormat_FreeImage( const TextureResourceDes
 
 	return supported ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
-#endif BUILD_WITH_FREE_IMAGE
+#endif /* BUILD_WITH_FREE_IMAGE */
 
 
 inline static int CalcNumMipmaps( int src )
@@ -987,13 +988,13 @@ ShaderManager *CGLShaderResource::CreateShaderManager()
 {
 	switch( m_ShaderDesc.ShaderType )
 	{
-	case ShaderType::VERTEX_SHADER:
+	case ShaderTypeName::VERTEX_SHADER:
 		return new CGLVertexShader;
-	case ShaderType::PIXEL_SHADER:
+	case ShaderTypeName::PIXEL_SHADER:
 		return new CGLFragmentShader;
-	case ShaderType::NON_PROGRAMMABLE:
+	case ShaderTypeName::NON_PROGRAMMABLE:
 		return NULL;//CGLFixedFunctionPipelineManager;
-	case ShaderType::PROGRAMMABLE:
+	case ShaderTypeName::PROGRAMMABLE:
 		{
 //			const string& resource_path = m_ShaderDesc.ResourcePath;
 //			if( resource_path.find(".cgfx") == resource_path.length() - 5 )

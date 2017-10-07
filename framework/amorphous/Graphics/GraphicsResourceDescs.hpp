@@ -202,7 +202,7 @@ class MeshResourceDesc : public GraphicsResourceDesc
 {
 public:
 
-	MeshType::Name MeshType;	///< used by mesh object
+	MeshTypeName MeshType;	///< used by mesh object
 
 	U32 LoadOptionFlags;
 
@@ -263,21 +263,17 @@ public:
 		ar & NumVertices & NumIndices & VertexFormatFlags;
 	}
 
-	void LoadFromXMLNode( XMLNode& reader );
+	void LoadFromXMLNode( XMLNode reader );
 };
 
 
-class ShaderType
+enum class ShaderTypeName
 {
-public:
-	enum Name
-	{
-		PROGRAMMABLE,
-		VERTEX_SHADER,
-		PIXEL_SHADER,
-		NON_PROGRAMMABLE,
-		NUM_TYPES
-	};
+	PROGRAMMABLE,
+	VERTEX_SHADER,
+	PIXEL_SHADER,
+	NON_PROGRAMMABLE,
+	NUM_TYPES
 };
 
 
@@ -285,13 +281,13 @@ class ShaderResourceDesc : public GraphicsResourceDesc
 {
 public:
 
-	ShaderType::Name ShaderType;
+	ShaderTypeName ShaderType;
 
 	std::shared_ptr<ShaderGenerator> pShaderGenerator;
 
 	ShaderResourceDesc()
 		:
-	ShaderType(ShaderType::PROGRAMMABLE)
+	ShaderType(ShaderTypeName::PROGRAMMABLE)
 	{}
 
 	virtual GraphicsResourceType::Name GetResourceType() const { return GraphicsResourceType::Shader; }
@@ -334,7 +330,7 @@ Sharable(true)
 
 inline MeshResourceDesc::MeshResourceDesc()
 :
-MeshType(MeshType::BASIC),
+MeshType(MeshTypeName::BASIC),
 LoadOptionFlags(0),
 NumVertices(0),
 NumIndices(0),

@@ -33,7 +33,7 @@ inline std::shared_ptr<MeshImplFactory>& GetMeshImplFactory()
 
 class MeshFactory
 {
-	BasicMesh *InitMeshInstance( MeshType::Name mesh_type, U32 load_option_flags );
+	BasicMesh *InitMeshInstance( MeshTypeName mesh_type, U32 load_option_flags );
 
 public:
 
@@ -44,9 +44,9 @@ public:
 	virtual std::shared_ptr<MeshImpl> CreateProgressiveMeshImpl() = 0;
 	virtual std::shared_ptr<MeshImpl> CreateSkeletalMeshImpl() = 0;
 */
-	BasicMesh *CreateMeshInstance( MeshType::Name mesh_type = MeshType::SKELETAL );
+	BasicMesh *CreateMeshInstance( MeshTypeName mesh_type = MeshTypeName::SKELETAL );
 
-	std::shared_ptr<BasicMesh> CreateMesh( MeshType::Name mesh_type = MeshType::SKELETAL );
+	std::shared_ptr<BasicMesh> CreateMesh( MeshTypeName mesh_type = MeshTypeName::SKELETAL );
 
 	BasicMesh *CreateBasicMeshInstance();
 	ProgressiveMesh *CreateProgressiveMeshInstance();
@@ -58,13 +58,13 @@ public:
 
 	BasicMesh* LoadMeshObjectFromFile( const std::string& filepath,
 		                                U32 load_option_flags = 0,
-		                                MeshType::Name mesh_type = MeshType::SKELETAL );
+		                                MeshTypeName mesh_type = MeshTypeName::SKELETAL );
 
 	/// TODO: support PMesh and SMesh
 	BasicMesh* LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 		                                    const std::string& filepath,
 											U32 load_option_flags = 0,
-											MeshType::Name mesh_type = MeshType::SKELETAL );
+											MeshTypeName mesh_type = MeshTypeName::SKELETAL );
 };
 
 

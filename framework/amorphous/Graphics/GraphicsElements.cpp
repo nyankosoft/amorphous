@@ -26,13 +26,18 @@ inline int get_num_rows( const string& str )
 	return num_rows;
 }
 
-template<class T>
+template<typename T>
 inline void erase_dupulicate_elements( std::vector<T>& vec )
 {
-	for( std::vector<T>::iterator itr0 = vec.begin(); itr0 != vec.end(); itr0++ )
+	// Without 'typename' before 'auto', ndk compiler complains as follows:
+	// ---
+	// error: need 'typename' before 'std::vector<T>::iterator'
+	// because 'std::vector<T>' is a dependent scope
+	// ---
+	// Same goes with 'auto itr1' inside the loop.
+	for( typename std::vector<T>::iterator itr0 = vec.begin(); itr0 != vec.end(); itr0++ )
 	{
-//		std::vector<T>::iterator itr1 = itr0++; //< causes error in vector - "vector iterator not dereferencable". Why?
-		std::vector<T>::iterator itr1 = itr0+1;
+		typename std::vector<T>::iterator itr1 = itr0 + 1;
 		while( itr1 != vec.end() )
 		{
 			if( (*itr0) == (*itr1) )

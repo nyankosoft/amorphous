@@ -281,7 +281,7 @@ public:
 
 	inline std::shared_ptr<BasicMesh> GetMeshInLoading();
 
-	MeshType::Name GetMeshType() const { return m_MeshDesc.MeshType; }
+	MeshTypeName GetMeshType() const { return m_MeshDesc.MeshType; }
 
 	const GraphicsResourceDesc& GetDesc() const { return m_MeshDesc; }
 

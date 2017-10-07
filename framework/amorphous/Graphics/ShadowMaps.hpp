@@ -175,8 +175,8 @@ public:
 	virtual void UpdateSpotlight( const Spotlight& light ) {}
 //	virtual void UpdateLight( const CSpotLight& light ) {}
 
-	virtual ShaderTechniqueHandle& ShadowMapTechnique( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE ) = 0;
-	virtual ShaderTechniqueHandle& DepthTestTechnique( VertexBlendType::Name vertex_blend_type = VertexBlendType::NONE ) = 0;
+	virtual ShaderTechniqueHandle& ShadowMapTechnique( VertexBlendTypeName vertex_blend_type = VertexBlendTypeName::NONE ) = 0;
+	virtual ShaderTechniqueHandle& DepthTestTechnique( VertexBlendTypeName vertex_blend_type = VertexBlendTypeName::NONE ) = 0;
 
 //	virtual TextureHandle GetShadowMapTexture() { return TextureHandle(); }
 
@@ -233,8 +233,8 @@ public:
 
 	virtual ~FlatShadowMap() {}
 
-	ShaderTechniqueHandle& ShadowMapTechnique( VertexBlendType::Name vertex_blend_type );
-	ShaderTechniqueHandle& DepthTestTechnique( VertexBlendType::Name vertex_blend_type );
+	ShaderTechniqueHandle& ShadowMapTechnique( VertexBlendTypeName vertex_blend_type );
+	ShaderTechniqueHandle& DepthTestTechnique( VertexBlendTypeName vertex_blend_type );
 
 	virtual bool CreateShadowMapTextures();
 

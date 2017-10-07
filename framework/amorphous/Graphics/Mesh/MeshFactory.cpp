@@ -20,7 +20,7 @@ void SetCustomMesh( BasicMesh& src_mesh )
 // MeshFactory
 //=============================================================================
 
-BasicMesh *MeshFactory::InitMeshInstance( MeshType::Name mesh_type, U32 load_option_flags )
+BasicMesh *MeshFactory::InitMeshInstance( MeshTypeName mesh_type, U32 load_option_flags )
 {
 	BasicMesh* pMesh = CreateMeshInstance( mesh_type );
 	if( !pMesh )
@@ -33,15 +33,15 @@ BasicMesh *MeshFactory::InitMeshInstance( MeshType::Name mesh_type, U32 load_opt
 }
 
 
-BasicMesh *MeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
+BasicMesh *MeshFactory::CreateMeshInstance( MeshTypeName mesh_type )
 {
 	switch( mesh_type )
 	{
-	case MeshType::BASIC:
+	case MeshTypeName::BASIC:
 		return CreateBasicMeshInstance();
-	case MeshType::PROGRESSIVE:
+	case MeshTypeName::PROGRESSIVE:
 		return CreateProgressiveMeshInstance();
-	case MeshType::SKELETAL:
+	case MeshTypeName::SKELETAL:
 		return CreateSkeletalMeshInstance();
 	default:
 		return nullptr;
@@ -51,7 +51,7 @@ BasicMesh *MeshFactory::CreateMeshInstance( MeshType::Name mesh_type )
 }
 
 
-shared_ptr<BasicMesh> MeshFactory::CreateMesh( MeshType::Name mesh_type )
+shared_ptr<BasicMesh> MeshFactory::CreateMesh( MeshTypeName mesh_type )
 {
 	return shared_ptr<BasicMesh>( CreateMeshInstance( mesh_type ) );
 }
@@ -68,7 +68,7 @@ shared_ptr<SkeletalMesh> MeshFactory::CreateSkeletalMesh() { shared_ptr<Skeletal
 
 BasicMesh* MeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 												  U32 load_option_flags,
-												  MeshType::Name mesh_type )
+												  MeshTypeName mesh_type )
 {
 	BasicMesh* pMesh = InitMeshInstance( mesh_type, load_option_flags );
 
@@ -87,7 +87,7 @@ BasicMesh* MeshFactory::LoadMeshObjectFromFile( const std::string& filepath,
 BasicMesh* MeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_archive,
 																    const std::string& filepath,
 																    U32 load_option_flags,
-																	MeshType::Name mesh_type )
+																	MeshTypeName mesh_type )
 {
 	BasicMesh* pMesh = InitMeshInstance( mesh_type, load_option_flags );
 
