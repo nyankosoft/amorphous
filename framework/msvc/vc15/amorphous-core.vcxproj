@@ -191,6 +191,25 @@
     <ClInclude Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\SamplingParameter.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShaderHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\BlendTransformsLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\EmbeddedMiscShaderGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Generic2DShaderDesc.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Generic2DShaderGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderDesc.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderHelpers.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\MiscShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\MiscShaderGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManager.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderParameter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderTechniqueHandle.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderVariableLoader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShadowMapManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShadowMaps.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\ShapeContainers.hpp" />
@@ -200,6 +219,17 @@
     <ClInclude Include="..\..\amorphous\Graphics\SkyboxMisc.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\SurfaceFormat.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\TextureCoord.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GradationTextureGenerators.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GridTextureGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\SingleColorTextureGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TCBSplineGradationTextureGenerators.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureFillingAlgorithm.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\TextureHandle.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\TextureRenderTarget.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\TextureResourceVisitor.hpp" />
@@ -433,12 +463,21 @@
     <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShaderHandle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManager.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShadowMapManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShadowMaps.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShapeDetector.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShapesExtractor.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\SimpleMotionBlur.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\SkyboxMisc.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\TextureHandle.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\TextureRenderTarget.cpp" />
     <ClCompile Include="..\..\amorphous\Input\ForceFeedback\ForceFeedbackEffect.cpp" />
@@ -550,7 +589,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>.vc\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <IncludePath>../../;C:\development\libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>../../;C:\development\libraries\glew-2.1.0\include;C:\development\libraries\freetype-2.8.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\development\libraries\freetype-2.8.1\objs\vc2010\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

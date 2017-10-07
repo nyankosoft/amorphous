@@ -88,6 +88,9 @@
     <Filter Include="Source Files\Input\ForceFeedback">
       <UniqueIdentifier>{5ac160a2-d970-4c51-9989-d8f45a4e911f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics\Shader\Embedded">
+      <UniqueIdentifier>{eb4d5527-660f-48aa-bda0-871ed95e9781}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\3DMath\3DGameMath.hpp">
@@ -1038,6 +1041,96 @@
     <ClInclude Include="..\..\amorphous\Support\BitmapImage_stb.hpp">
       <Filter>Source Files\Support</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\BuiltinImageTextureLoader.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GradationTextureGenerators.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\GridTextureGenerator.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\SingleColorTextureGenerator.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TCBSplineGradationTextureGenerators.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureFillingAlgorithm.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.hpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\BlendTransformsLoader.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\EmbeddedMiscShaderGenerator.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Generic2DShaderDesc.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Generic2DShaderGenerator.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderDesc.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderGenerator.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\GenericShaderHelpers.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\MiscShader.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\MiscShaderGenerator.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Serialization_ShaderTechniqueHandle.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderGenerator.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManager.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderParameter.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderTechniqueHandle.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderVariableLoader.hpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp">
@@ -1450,6 +1543,33 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Support\BitmapImage_stb.cpp">
       <Filter>Source Files\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\NoiseTextureGenerators.cpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\ParticleTextureGenerator.cpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\PerlinNoiseTextureGenerator.cpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureFilter.cpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\TextureGenerators\TextureGeneratorFactory.cpp">
+      <Filter>Source Files\Graphics\TextureGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.cpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.cpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManager.cpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.cpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
