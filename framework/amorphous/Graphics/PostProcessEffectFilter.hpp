@@ -92,6 +92,8 @@ public:
 	int GetLockCount() const { return m_NumLocks; }
 
 	TextureHandle GetTexture();
+
+	TextureHandle& Texture();
 };
 
 

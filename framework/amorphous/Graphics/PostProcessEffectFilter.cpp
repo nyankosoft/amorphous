@@ -22,6 +22,16 @@ TextureHandle RenderTargetTextureHolder::GetTexture()
 		return TextureHandle();
 }
 
+TextureHandle& RenderTargetTextureHolder::Texture()
+{
+	static TextureHandle stub;
+
+	if( m_pTextureRenderTarget )
+		return m_pTextureRenderTarget->RenderTargetTexture();
+	else
+		return stub;
+}
+
 
 /// Does not consider the current lock count
 int RenderTargetTextureCache::GetNumTextures( const TextureResourceDesc& desc )
@@ -264,7 +274,7 @@ void PostProcessEffectFilter::RenderBase( PostProcessEffectFilter& prev_filter )
 	if( res != Result::SUCCESS )
 		int failed_to_set_technique = 1;
 
-	TextureHandle& prev_scene_texture = m_pPrevScene->GetTexture();
+	TextureHandle& prev_scene_texture = m_pPrevScene->Texture();
 	if( !prev_scene_texture.IsLoaded() )
 		int texture_is_not_loaded = 1;
 
