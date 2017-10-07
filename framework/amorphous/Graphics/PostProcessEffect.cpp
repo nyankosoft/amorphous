@@ -754,7 +754,7 @@ void HDRBrightPassFilter::Render()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
-	HRESULT hr = S_OK;
+//	HRESULT hr = S_OK;
 
 //	D3DSURFACE_DESC desc;
 //	m_pPrevScene->m_Texture.GetTexture()->GetLevelDesc( 0, &desc );
@@ -1463,7 +1463,7 @@ void AdaptationCalcFilter::Render()
 
 	ShaderManager& shader_mgr = *pShaderMgr;
 
-	HRESULT hr = S_OK;
+//	HRESULT hr = S_OK;
 //	UINT uiPass, uiPassCount;
 
 	// Swap current & last luminance
