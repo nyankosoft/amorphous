@@ -34,7 +34,7 @@ inline void write_vec4_elements_to_file( FILE *fp, const char *tag, const std::v
 	const size_t num_elements = elements.size();
 	for( size_t i=0; i<num_elements; i++ )
 	{
-		const vec3_type& element = elements[i];
+		const vec4_type& element = elements[i];
 		fprintf( fp, "%s %f %f %f %f\n", tag, element.x, element.y, element.z, element.w );
 	}
 }
