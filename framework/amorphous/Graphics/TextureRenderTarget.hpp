@@ -75,6 +75,8 @@ public:
 
 	TextureHandle GetRenderTargetTexture() { return m_RenderTargetTexture; }
 
+	TextureHandle& RenderTargetTexture() { return m_RenderTargetTexture; }
+
 	virtual bool LoadTextures() { return false; }
 
 	virtual void ReleaseTextures() {}
