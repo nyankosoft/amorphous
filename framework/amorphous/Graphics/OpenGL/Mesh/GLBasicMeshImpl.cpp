@@ -108,8 +108,8 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( C3DMeshModelArchive& archi
 
 	const CMMA_VertexSet& vertex_set = archive.GetVertexSet();
 
-	glGenVertexArrays( 1, &m_VAO );
-	glBindVertexArray( m_VAO );
+//	glGenVertexArrays( 1, &m_VAO );
+//	glBindVertexArray( m_VAO );
 
 	GLuint vertex_element_index = 0;
 
@@ -173,7 +173,7 @@ Result::Name GLBasicMeshImpl::InitVerticesAndIndices( C3DMeshModelArchive& archi
 		}
 	}
 
-	glBindVertexArray( 0 );
+//	glBindVertexArray( 0 );
 
 	// Copy indices
 	glGenBuffers( 1, &m_IBO );
@@ -334,6 +334,8 @@ void GLBasicMeshImpl::Render()
 
 			const CMMA_TriangleSet& ts = m_TriangleSets[ i ];
 
+			// Note that glDrawRangeElements() is stubbed out for GLES 2.0 build,
+			// i.e. all the mesh object has to be single-subset.
 			glDrawRangeElements(
 				GL_TRIANGLES,                    // GLenum mode,
 				0,                               // GLuint start,

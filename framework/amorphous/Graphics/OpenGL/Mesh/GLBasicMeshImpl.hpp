@@ -15,6 +15,9 @@ namespace amorphous
 {
 
 
+/**
+  In GLES 2.0 build, only single-subset meshes are supported.
+*/
 class GLBasicMeshImpl : public MeshImpl
 {
 private:
