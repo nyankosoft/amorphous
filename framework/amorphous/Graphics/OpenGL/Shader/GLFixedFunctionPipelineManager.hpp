@@ -3,13 +3,14 @@
 
 
 #include "amorphous/base.hpp" // windows.h is included in this header. Need to be included before gl.h on Windows platform
-#include "amorphous/Support/stream_buffer.hpp"
+#include "amorphous/Support/fwd.hpp" // stream_buffer forward declaration
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderParameter.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/OpenGL/fwd.hpp"
 #include "amorphous/Graphics/OpenGL/GLHeaders.h"
+#include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 
 
 namespace amorphous
@@ -106,9 +107,13 @@ inline void CGLFixedFunctionPipelineManager::SetWorldTransform( const Matrix44& 
 	m_matWorld = matWorld;
 	Matrix44 matWorldView = m_matView * matWorld;
 
+	LOG_GL_ERROR( "Clearing OpenGL errors..." );
+
 	glMatrixMode( GL_MODELVIEW );
 	glLoadMatrixf( matWorldView.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
+
+	LOG_GL_ERROR( "leaving. Clearing OpenGL errors..." );
 }
 
 
@@ -117,13 +122,18 @@ inline void CGLFixedFunctionPipelineManager::SetViewTransform( const Matrix44& m
 	m_matView = matView;
 	Matrix44 matWorldView = matView * m_matWorld;
 
+	LOG_GL_ERROR( "Clearing OpenGL errors..." );
+	
 	glMatrixMode( GL_MODELVIEW );
 	glLoadMatrixf( matWorldView.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
 
 	// debug - check the values of the current matrix
-	float mat[16];
-	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
+	// Also note that this causes a GL_INVALID_ENUM error in OpenGL ES
+	// float mat[16];
+	// glGetFloatv( GL_MODELVIEW_MATRIX, mat );
+
+	LOG_GL_ERROR( "leaving. Clearing OpenGL errors..." );
 }
 
 
@@ -131,13 +141,17 @@ inline void CGLFixedFunctionPipelineManager::SetProjectionTransform( const Matri
 {
 	m_matProjection = matProj;
 
+	LOG_GL_ERROR( "Clearing OpenGL errors..." );
+
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( matProj.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
 
 	// debug - check the values of the current matrix
-	float mat[16];
-	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
+	// float mat[16];
+	// glGetFloatv( GL_MODELVIEW_MATRIX, mat );
+
+	LOG_GL_ERROR( "leaving. Clearing OpenGL errors..." );
 }
 
 
@@ -147,13 +161,17 @@ inline void CGLFixedFunctionPipelineManager::SetWorldViewTransform( const Matrix
 	m_matView  = matView;
 	Matrix44 matWorldView = matView * matWorld;
 
+	LOG_GL_ERROR( "Clearing OpenGL errors..." );
+
 	glMatrixMode( GL_MODELVIEW );
 	glLoadMatrixf( matWorldView.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
 
 	// debug - get the current matrix
-	float mat[16];
-	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
+	// float mat[16];
+	// glGetFloatv( GL_MODELVIEW_MATRIX, mat );
+
+	LOG_GL_ERROR( "leaving. Clearing OpenGL errors..." );
 }
 
 
@@ -166,6 +184,8 @@ inline void CGLFixedFunctionPipelineManager::SetWorldViewProjectionTransform( co
 	m_matProjection = matProj;
 	Matrix44 matWorldView = matView * matWorld;
 
+	LOG_GL_ERROR( "Clearing OpenGL errors..." );
+	
 	glMatrixMode( GL_MODELVIEW );
 	glLoadMatrixf( matWorldView.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
@@ -173,6 +193,7 @@ inline void CGLFixedFunctionPipelineManager::SetWorldViewProjectionTransform( co
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( matProj.GetData() );
 //	glLoadIdentity(); // debug - reset the projection matrix
+	LOG_GL_ERROR( "leaving. Clearing OpenGL errors..." );
 }
 
 
