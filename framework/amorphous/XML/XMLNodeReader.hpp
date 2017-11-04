@@ -85,12 +85,12 @@ public:
 	/// get the text content of a child node
 //	template<typename T>
 //	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
-	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest );
-	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest );
-	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest );
-	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest );
-	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest );
-	inline bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest );
+	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest ) const;
+	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest ) const;
+	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest ) const;
+	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest ) const;
+	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest ) const;
+	inline bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest ) const;
 	inline bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest );
 
 	/// get the text content of the current node
@@ -106,25 +106,25 @@ public:
 
 	inline std::string GetName();
 
-	inline CXMLNodeReader GetChild( const std::string& name );
+	inline CXMLNodeReader GetChild( const std::string& name ) const;
 
-	inline bool GetAttributeText( const std::string& attrib_name, std::string& dest );
+	inline bool GetAttributeText( const std::string& attrib_name, std::string& dest ) const;
 
-	inline std::string GetAttributeText( const std::string& attrib_name );
+	inline std::string GetAttributeText( const std::string& attrib_name ) const;
 
 	template<typename T>
-	inline void GetAttributeValue( const std::string& attrib_name, T& dest );
+	inline void GetAttributeValue( const std::string& attrib_name, T& dest ) const;
 
-	inline std::vector<CXMLNodeReader> GetImmediateChildren( const std::string& name );
+	inline std::vector<CXMLNodeReader> GetImmediateChildren( const std::string& name ) const;
 
-	inline std::vector<CXMLNodeReader> GetImmediateChildren();
+	inline std::vector<CXMLNodeReader> GetImmediateChildren() const;
 };
 
 //===================================== inline implementations ======================================
 
 
 /// get element node of the specified name
-inline xercesc::DOMNode *CXMLNodeReader::GetTargetElementNode( const std::string& child_element_path )
+inline xercesc::DOMNode *CXMLNodeReader::GetTargetElementNode( const std::string& child_element_path ) const
 {
 	if( child_element_path.length() == 0 )
 		return m_pNode;
@@ -145,7 +145,7 @@ inline xercesc::DOMNode *CXMLNodeReader::GetTargetElementNode( const std::string
 }
 
 
-inline std::string CXMLNodeReader::GetName()
+inline std::string CXMLNodeReader::GetName() const
 {
 	if( m_pNode )
 		return to_string(m_pNode->getNodeName());
@@ -154,13 +154,13 @@ inline std::string CXMLNodeReader::GetName()
 }
 
 
-inline CXMLNodeReader CXMLNodeReader::GetChild( const std::string& name )
+inline CXMLNodeReader CXMLNodeReader::GetChild( const std::string& name ) const
 {
 	return CXMLNodeReader( GetTargetElementNode( name ) );
 }
 
 
-inline bool CXMLNodeReader::GetAttributeText( const std::string& attrib_name, std::string& dest )
+inline bool CXMLNodeReader::GetAttributeText( const std::string& attrib_name, std::string& dest ) const
 {
 	if( !m_pNode )
 		return false;
@@ -174,7 +174,7 @@ inline bool CXMLNodeReader::GetAttributeText( const std::string& attrib_name, st
 }
 
 
-inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_name )
+inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_name ) const
 {
 	if( m_pNode )
 		return ::amorphous::GetAttributeText( m_pNode, attrib_name );
@@ -183,7 +183,7 @@ inline std::string CXMLNodeReader::GetAttributeText( const std::string& attrib_n
 }
 
 
-inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren( const std::string& name )
+inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren( const std::string& name ) const
 {
 	std::vector<CXMLNodeReader> children;
 
@@ -203,7 +203,7 @@ inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren( const s
 }
 
 
-inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren()
+inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren() const
 {
 	std::vector<CXMLNodeReader> children;
 
@@ -225,7 +225,7 @@ inline std::vector<CXMLNodeReader> CXMLNodeReader::GetImmediateChildren()
 }
 
 
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, std::string& dest )
+inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, std::string& dest ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
@@ -238,7 +238,7 @@ inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child
 }
 
 
-inline bool CXMLNodeReader::GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& rect )
+inline bool CXMLNodeReader::GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& rect ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
@@ -252,7 +252,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentLTWH( const std::string& c
 		return false;
 }
 
-inline bool CXMLNodeReader::GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& rect )
+inline bool CXMLNodeReader::GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& rect ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
@@ -266,7 +266,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentLTRB( const std::string& c
 		return false;
 }
 
-inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& color )
+inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& color ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
@@ -278,7 +278,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& ch
 		return false;
 }
 
-inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& color )
+inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& color ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
@@ -290,7 +290,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentRGB( const std::string& ch
 		return false;
 }
 
-inline bool CXMLNodeReader::GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& color )
+inline bool CXMLNodeReader::GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& color ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )
@@ -302,7 +302,7 @@ inline bool CXMLNodeReader::GetChildElementTextContentRGBA( const std::string& c
 		return false;
 }
 
-inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, Vector3& v )
+inline bool CXMLNodeReader::GetChildElementTextContent( const std::string& child_element_path, Vector3& v ) const
 {
 	xercesc::DOMNode *pNode = GetTargetElementNode( child_element_path );
 	if( pNode )

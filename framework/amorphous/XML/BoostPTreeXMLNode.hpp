@@ -26,7 +26,7 @@ public:
 
 	bool IsValid() const { return true; }
 
-	bool GetTargetElementNodeTextContent( const std::string& child_element_path, std::string& dest )
+	bool GetTargetElementNodeTextContent( const std::string& child_element_path, std::string& dest ) const
 	{
 		return false;
 	}
@@ -34,12 +34,12 @@ public:
 	/// get the text content of a child node
 //	template<typename T>
 //	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
-	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest );
-	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest );
-	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest );
-	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest );
-	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest );
-	inline bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest );
+	inline bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest ) const;
+	inline bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest ) const;
+	inline bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest ) const;
+	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest ) const;
+	inline bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest ) const;
+	inline bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest ) const;
 	inline bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest );
 
 	/// get the text content of the current node
@@ -75,7 +75,7 @@ inline std::string BoostPTreeXMLNode::GetName()
 }
 
 
-inline XMLNode BoostPTreeXMLNode::GetChild( const std::string& name )
+inline XMLNode BoostPTreeXMLNode::GetChild( const std::string& name ) const
 {
 	boost::property_tree::ptree empty_tree;
 	std::shared_ptr<XMLNodeImpl> pImpl( new BoostPTreeXMLNode( m_PropertyTree.get_child( name, empty_tree ) ) );
@@ -84,7 +84,7 @@ inline XMLNode BoostPTreeXMLNode::GetChild( const std::string& name )
 }
 
 
-inline std::string BoostPTreeXMLNode::GetAttributeText( const std::string& attrib_name )
+inline std::string BoostPTreeXMLNode::GetAttributeText( const std::string& attrib_name ) const
 {
 	std::string empty_text;
 	std::string attrib_text = m_PropertyTree.get( "<xmlattr>." + attrib_name, empty_text );
@@ -92,7 +92,7 @@ inline std::string BoostPTreeXMLNode::GetAttributeText( const std::string& attri
 }
 
 
-inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren( const std::string& name )
+inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren( const std::string& name ) const
 {
 	std::vector<XMLNode> children;
 
@@ -114,7 +114,7 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren( const std::
 }
 
 
-inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren()
+inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren() const
 {
 	std::vector<XMLNode> children;
 
@@ -132,7 +132,7 @@ inline std::vector<XMLNode> BoostPTreeXMLNode::GetImmediateChildren()
 }
 
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContent( const std::string& child_element_path, std::string& dest )
+inline bool BoostPTreeXMLNode::GetChildElementTextContent( const std::string& child_element_path, std::string& dest ) const
 {
 	if( m_PropertyTree.find( child_element_path ) == m_PropertyTree.not_found() )
 		return false;
@@ -143,7 +143,7 @@ inline bool BoostPTreeXMLNode::GetChildElementTextContent( const std::string& ch
 }
 
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& rect )
+inline bool BoostPTreeXMLNode::GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& rect ) const
 {
 	std::string text_content;
 	bool res = GetTargetElementNodeTextContent( child_element_path, text_content );
@@ -158,7 +158,7 @@ inline bool BoostPTreeXMLNode::GetChildElementTextContentLTWH( const std::string
 		return false;
 }
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& rect )
+inline bool BoostPTreeXMLNode::GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& rect ) const
 {
 	std::string text_content;
 	bool res = GetTargetElementNodeTextContent( child_element_path, text_content );
@@ -173,7 +173,7 @@ inline bool BoostPTreeXMLNode::GetChildElementTextContentLTRB( const std::string
 		return false;
 }
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& color )
+inline bool BoostPTreeXMLNode::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& color ) const
 {
 	std::string text_content;
 	bool res = GetTargetElementNodeTextContent( child_element_path, text_content );
@@ -186,7 +186,7 @@ inline bool BoostPTreeXMLNode::GetChildElementTextContentRGB( const std::string&
 		return false;
 }
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& color )
+inline bool BoostPTreeXMLNode::GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& color ) const
 {
 	std::string text_content;
 	bool res = GetTargetElementNodeTextContent( child_element_path, text_content );
@@ -199,7 +199,7 @@ inline bool BoostPTreeXMLNode::GetChildElementTextContentRGB( const std::string&
 		return false;
 }
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& color )
+inline bool BoostPTreeXMLNode::GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& color ) const
 {
 	std::string text_content;
 	bool res = GetTargetElementNodeTextContent( child_element_path, text_content );
@@ -212,7 +212,7 @@ inline bool BoostPTreeXMLNode::GetChildElementTextContentRGBA( const std::string
 		return false;
 }
 
-inline bool BoostPTreeXMLNode::GetChildElementTextContent( const std::string& child_element_path, Vector3& v )
+inline bool BoostPTreeXMLNode::GetChildElementTextContent( const std::string& child_element_path, Vector3& v ) const
 {
 	std::string text_content;
 	bool res = GetTargetElementNodeTextContent( child_element_path, text_content );

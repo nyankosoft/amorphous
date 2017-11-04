@@ -70,13 +70,13 @@ public:
 
 	virtual bool IsValid() const { return false; }
 
-	virtual bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest )         { return false; }
-	virtual bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest )           { return false; }
-	virtual bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest )           { return false; }
-	virtual bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest )   { return false; }
-	virtual bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest )  { return false; }
-	virtual bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest ) { return false; }
-	virtual bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest )             { return false; }
+	virtual bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest )         const { return false; }
+	virtual bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest )           const { return false; }
+	virtual bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest )           const { return false; }
+	virtual bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest )   const { return false; }
+	virtual bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest )  const { return false; }
+	virtual bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest ) const { return false; }
+	virtual bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest )             const { return false; }
 
 	virtual std::string GetName() { return ""; }
 
@@ -116,25 +116,25 @@ public:
 	template<typename T>
 	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
 
-	bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest )         { return m_pImpl->GetChildElementTextContent(child_element_path,dest); }
-	bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest )           { return m_pImpl->GetChildElementTextContentLTWH(child_element_path,dest); }
-	bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest )           { return m_pImpl->GetChildElementTextContentLTRB(child_element_path,dest); }
-	bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest )   { return m_pImpl->GetChildElementTextContentRGB(child_element_path,dest); }
-	bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest )  { return m_pImpl->GetChildElementTextContentRGB(child_element_path,dest); }
-	bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest ) { return m_pImpl->GetChildElementTextContentRGBA(child_element_path,dest); }
-	bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest )             { return m_pImpl->GetChildElementTextContent(child_element_path,dest); }
+	bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest )         const { return m_pImpl->GetChildElementTextContent(child_element_path,dest); }
+	bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest )           const { return m_pImpl->GetChildElementTextContentLTWH(child_element_path,dest); }
+	bool GetChildElementTextContentLTRB( const std::string& child_element_path, SRect& dest )           const { return m_pImpl->GetChildElementTextContentLTRB(child_element_path,dest); }
+	bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBColor& dest )   const { return m_pImpl->GetChildElementTextContentRGB(child_element_path,dest); }
+	bool GetChildElementTextContentRGB( const std::string& child_element_path, SFloatRGBAColor& dest )  const { return m_pImpl->GetChildElementTextContentRGB(child_element_path,dest); }
+	bool GetChildElementTextContentRGBA( const std::string& child_element_path, SFloatRGBAColor& dest ) const { return m_pImpl->GetChildElementTextContentRGBA(child_element_path,dest); }
+	bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest )             const { return m_pImpl->GetChildElementTextContent(child_element_path,dest); }
 
 	/// get the text content of the current node
 	inline std::string GetTextContent() { std::string dest; GetTextContent(dest); return dest; }
 
 	template<typename T>
-	inline bool GetTextContent( T& dest )                   { return GetChildElementTextContent( "", dest ); }
-	inline bool GetTextContentLTWH( SRect& dest )           { return GetChildElementTextContentLTWH( "", dest ); }
-	inline bool GetTextContentLTRB( SRect& dest )           { return GetChildElementTextContentLTRB( "", dest ); }
-	inline bool GetTextContentRGB( SFloatRGBColor& dest )   { return GetChildElementTextContentRGB( "", dest ); }
-	inline bool GetTextContentRGB( SFloatRGBAColor& dest )  { return GetChildElementTextContentRGB( "", dest ); }
-	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) { return GetChildElementTextContentRGBA( "", dest ); }
-	inline bool GetTextContent( Vector3& dest )             { return GetChildElementTextContent( "", dest ); }
+	inline bool GetTextContent( T& dest )                   const { return GetChildElementTextContent( "", dest ); }
+	inline bool GetTextContentLTWH( SRect& dest )           const { return GetChildElementTextContentLTWH( "", dest ); }
+	inline bool GetTextContentLTRB( SRect& dest )           const { return GetChildElementTextContentLTRB( "", dest ); }
+	inline bool GetTextContentRGB( SFloatRGBColor& dest )   const { return GetChildElementTextContentRGB( "", dest ); }
+	inline bool GetTextContentRGB( SFloatRGBAColor& dest )  const { return GetChildElementTextContentRGB( "", dest ); }
+	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) const { return GetChildElementTextContentRGBA( "", dest ); }
+	inline bool GetTextContent( Vector3& dest )             const { return GetChildElementTextContent( "", dest ); }
 
 	std::string GetName() { return m_pImpl->GetName(); }
 
