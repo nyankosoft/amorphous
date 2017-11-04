@@ -7,6 +7,7 @@
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 //#include "amorphous/Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "amorphous/Graphics/OpenGL/Shader/GLShader.hpp"
+#include "amorphous/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
@@ -247,65 +248,29 @@ static Result::Name GetSrcPixelTypeAndFormat( const TextureResourceDesc& desc, G
 */
 static Result::Name GetSrcPixelTypeAndFormat_stb( const TextureResourceDesc& desc, BitmapImage& img, bool is_render_target, GLenum& src_format, GLenum& src_type )
 {
-	//	if( desc.UsageFlags & UsageFlag::RENDER_TARGET )
-	//		bool is_render_target;
+	const int bits_per_pixel = img.GetBitsPerPixel();
+
+	LOG_PRINTF_VERBOSE(("bits_per_pixel: %d", bits_per_pixel));
 
 	src_format = GL_RGB;
 	src_type   = GL_UNSIGNED_BYTE;
 
-//	FIBITMAP *pFIBitmap = img.GetFBITMAP();
-//	if( !pFIBitmap )
-//		return Result::UNKNOWN_ERROR;
-
 	bool supported = true;
-/*
-	FREE_IMAGE_COLOR_TYPE color_type = FreeImage_GetColorType( pFIBitmap );
-	unsigned int bpp = FreeImage_GetBPP( pFIBitmap );
 
-	// Consider the format as the RGBA if the BPP is 32
-	// Rationale: FreeImage seems to return FIC_RGB if the all the alpha channel bytes are 0xFFs.
-	// See the definition of FreeImage_GetColorType() in Source/FreeImage/BitmapAccess.cpp
-	// in the source code of FreeImage library.
-	if( bpp == 32 )
-		color_type = FIC_RGBALPHA;
-
-	switch( color_type )
+	switch( bits_per_pixel )
 	{
-	case FIC_RGB:
-		//		src_format = GL_RGB;
-		src_format = GL_BGR;
-		switch( bpp )
-		{
-		case 24:
-			src_type = GL_UNSIGNED_BYTE;
-			break;
-		case 32:
-			src_type = GL_UNSIGNED_BYTE;
-			break;
-		default:
-			supported = false;
-			break;
-		}
+	case 24:
+		src_format = GL_RGB;
+		src_type = GL_UNSIGNED_BYTE;
 		break;
-	case FIC_RGBALPHA:
-		//		src_format = GL_RGBA; // Works when the texture is used as a render target.
-		//		src_format = GL_BGRA; // Works when an image file is used as a texture.
-		src_format = is_render_target ? GL_RGBA : GL_BGRA;
-		switch( bpp )
-		{
-		case 32:
-			src_type = GL_UNSIGNED_BYTE;
-			break;
-		default:
-			supported = false;
-			break;
-		}
+	case 32:
+		src_format = GL_RGBA;
+		src_type = GL_UNSIGNED_BYTE;
 		break;
 	default:
 		supported = false;
-		LOG_PRINT_ERROR( fmt_string( " An unsupported image format: color type = %s", img.GetColorTypeName() ) );
 		break;
-	}*/
+	}
 
 	return supported ? Result::SUCCESS : Result::UNKNOWN_ERROR;
 }
@@ -494,7 +459,8 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			}
 		}
 
-		image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",lfs::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
+		if( lfs::path_exists(".debug") ) // if( IsDebugOptionEnabled("gl.save_textures_as_files") )
+			image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",lfs::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
 
 		//void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
 		void *pImageData = image_copy.GetImageData();
@@ -601,7 +567,7 @@ bool GLTextureResourceBase::UpdateGLTextureImage(
 
 	LOG_GL_ERROR( "Clearing error before glTexImage2D()" );
 
-	LOG_PRINTF(( "glTexImage2D() level: %d, width: %d, height: %d", level, width, height ));
+	LOG_PRINTF(( "glTexImage2D() level: %d, width: %d, height: %d, format: %d, type: %d, internal_format: %d", level, width, height, (int)src_format, (int)src_type, (int)internal_format ));
 
 	if( true )
 	{
@@ -639,6 +605,8 @@ bool CGLTextureResource::CreateFromDesc()
 {
 	const TextureResourceDesc& desc = m_TextureDesc;
 
+	LOG_PRINTF_VERBOSE(("Creating a texture: '%s', %d x %d", desc.ResourcePath.c_str(), desc.Width, desc.Height ));
+
 	LOG_GL_ERROR( "clearing errors (if there is any) before calling glGenTextures()." );
 
 	glGenTextures( 1, &m_TextureID );
@@ -647,7 +615,7 @@ bool CGLTextureResource::CreateFromDesc()
 
 	if( m_TextureID == 0 )
 	{
-		int break_here = 1;
+		LOG_PRINTF_ERROR(( "Failed to create a texture." ));
 	}
 
 	// create an empty texture
