@@ -114,10 +114,9 @@ bool CGLGraphicsDevice::Init( int iWindowWidth, int iWindowHeight, ScreenMode::N
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 #endif /* __ANDROID__ */
 
-	glEnable(GL_TEXTURE_2D);
-	LOG_GL_ERROR( "glEnable() failed." );
-
 	m_State = CGraphicsDevice::STATE_INITIALIZED;
+
+	LOG_GL_ERROR( "leaving (GLGD::Init).");
 
 	return true;
 }

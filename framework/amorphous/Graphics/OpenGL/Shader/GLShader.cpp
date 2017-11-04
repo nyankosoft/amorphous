@@ -303,7 +303,7 @@ void CGLFragmentShader::InitGLShader()
 // CGLProgram
 //=============================================================================
 
-bool sg_UseGRM = false;
+static bool sg_UseGRM = false;
 
 CGLProgram::CGLProgram()
 :
@@ -543,7 +543,10 @@ Result::Name CGLProgram::SetTexture( const int iStage, const TextureHandle& text
 
 //	glUniform1i(m_TextureSamplerUniforms[iStage], iStage);
 
-	glEnable( GL_TEXTURE_2D );
+	// Commented out: glEnable(GL_TEXTURE_2D) is for FFP, and it also causes an error on OpenGL ES,
+	// so it is wrong to call it.
+//	glEnable( GL_TEXTURE_2D );
+//	LOG_GL_ERROR( "glEnable(GL_TEXTURE_2D) failed." );
 
 	// glMultiTexCoord2fARB
 
