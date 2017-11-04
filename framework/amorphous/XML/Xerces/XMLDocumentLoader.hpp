@@ -13,7 +13,7 @@
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
-#include "XMLDocumentBase.hpp"
+#include "amorphous/XML/XMLDocumentBase.hpp"
 #include "XMLNodeReader.hpp"
 
 

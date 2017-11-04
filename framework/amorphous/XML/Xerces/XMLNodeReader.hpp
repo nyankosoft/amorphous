@@ -9,7 +9,7 @@
 #include <xercesc/util/XMLString.hpp>
 
 #include "xmlch2x.hpp"
-#include "XMLNode.hpp"
+#include "amorphous/XML/XMLNode.hpp"
 
 
 namespace amorphous

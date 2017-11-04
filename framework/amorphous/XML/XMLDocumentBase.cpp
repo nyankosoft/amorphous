@@ -8,7 +8,7 @@
 #endif // _BUILD_WITH_BOOST_PROPERTY_TREE_
 
 #ifdef _BUILD_WITH_XERCESC_
-#include "XMLDocumentBase.hpp"
+#include "XMLDocumentLoader.hpp"
 #endif // _BUILD_WITH_XERCESC_
 
 
