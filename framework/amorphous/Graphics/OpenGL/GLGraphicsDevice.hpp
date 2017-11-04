@@ -32,6 +32,9 @@ void LogGLInfo();
 // Macro Definitions
 //------------------------------------------------------------------------------
 
+// Print OpenGL error(s) that have occurred since the last time the error(s) were cleared.
+// Note that nothing is logged if no OpenGL errors have been accumulated for retrieval
+// since the last call of LOG_GL_ERROR()
 #define LOG_GL_ERROR( msg ) LogGLError( __FUNCTION__, msg );
 
 
