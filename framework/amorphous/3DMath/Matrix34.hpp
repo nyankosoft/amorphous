@@ -184,7 +184,7 @@ typedef tMatrix34<float> Matrix34;
 typedef tMatrix34<double> dMatrix34;
 
 #define Matrix34Identity tMatrix34Identity<float>
-#define dMatrix3Identity tMatrix34Identity<double>
+#define dMatrix34Identity tMatrix34Identity<double>
 
 
 } // namespace amorphous
