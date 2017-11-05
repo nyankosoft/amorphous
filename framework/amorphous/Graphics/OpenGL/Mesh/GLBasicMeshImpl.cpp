@@ -320,6 +320,7 @@ void GLBasicMeshImpl::Render()
 
 	if( m_TriangleSets.size() == 1 )
 	{
+		//LOG_PRINTF_VERBOSE(("calling glDrawElements. num indices: %d, vertex_flags: %d", m_NumIndices, vertex_flags));
 		if( 0 < m_vecMaterial.size() )
 			SetGLTextures( m_vecMaterial[0] );
 		glDrawElements( GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_SHORT, 0 );
