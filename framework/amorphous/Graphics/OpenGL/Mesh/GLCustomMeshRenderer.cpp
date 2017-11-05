@@ -7,6 +7,7 @@
 //#include "amorphous/Graphics/OpenGL/GLTextureResourceVisitor.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous
@@ -21,6 +22,8 @@ GLCustomMeshRenderer GLCustomMeshRenderer::ms_Instance;
 
 void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, ShaderManager& shader_mgr )
 {
+	PERIODICAL( 500, LOG_PRINT_VERBOSE("entered") );
+
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	// NOTE: it seems that the fixed function pipeline does not work
@@ -58,13 +61,15 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 
 		if( use_vertex_attrib_array_and_ptr )
 		{
+			//LOG_GL_ERROR( "glEnableVertexAttribArray( 0 )" );
 			glEnableVertexAttribArray( 0 );
+			//LOG_GL_ERROR( "glVertexAttribPointer( 0 )" );
 			glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, vertex_size, pPos );
 		}
 		else
 		{
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glVertexPointer( 3, GL_FLOAT, vertex_size, pPos );
+			//glEnableClientState(GL_VERTEX_ARRAY);
+			//glVertexPointer( 3, GL_FLOAT, vertex_size, pPos );
 		}
 	}
 	else
@@ -80,12 +85,13 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 
 		if( use_vertex_attrib_array_and_ptr )
 		{
+			//LOG_GL_ERROR( "glEnableVertexAttribArray( 1 )" );
 			glEnableVertexAttribArray( 1 );
 			glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, vertex_size, pNormal );
 		}
 		else
 		{
-			glDisableClientState(GL_NORMAL_ARRAY);
+			//glDisableClientState(GL_NORMAL_ARRAY);
 //			glEnableClientState(GL_NORMAL_ARRAY);
 //			glNormalPointer( GL_FLOAT, vertex_size, pNormal );
 		}
@@ -97,12 +103,13 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 
 		if( use_vertex_attrib_array_and_ptr )
 		{
+			//LOG_GL_ERROR( "glEnableVertexAttribArray( 2 )" );
 			glEnableVertexAttribArray( 2 );
 			glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, vertex_size, pDiffuseColor );
 		}
 		else
 		{
-			glDisableClientState(GL_COLOR_ARRAY);
+			//glDisableClientState(GL_COLOR_ARRAY);
 //			glEnableClientState(GL_COLOR_ARRAY);
 //			glColorPointer( 4, GL_FLOAT, vertex_size, pDiffuseColor );
 		}
@@ -115,17 +122,23 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 
 		if( use_vertex_attrib_array_and_ptr )
 		{
+			//LOG_GL_ERROR( "glEnableVertexAttribArray( 3 )" );
 			glEnableVertexAttribArray( 3 );
 			glVertexAttribPointer( 3, 2, GL_FLOAT, GL_FALSE, vertex_size, pTex );
 		}
 		else
 		{
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 //			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 //			glTexCoordPointer( 2, GL_FLOAT, vertex_size, pTex );
 		}
 
-		glEnable(GL_TEXTURE_2D);
+		// Commented out; we don't need glEnable(GL_TEXTURE_2D) unless we use FFP.
+		// In fact, this causes the GL_INVALID_ENUM error on OpenGL ES so FFP simply seems to be non-option.
+		//LOG_GL_ERROR( "Calling glEnable()" );
+		//glEnable(GL_TEXTURE_2D);
+		//LOG_GL_ERROR( "Did glEnable(GL_TEXTURE_2D) cause an error? (hint: it would if your app runs on GL ES)" );
+
 //		glBindTexture(GL_TEXTURE_2D, mTexId);
 		/*glColor4f(1.0f, 1.0f, 1.0f,1.0f);*/
 	}
@@ -160,6 +173,7 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 //		}
 //		else
 		{
+			LOG_GL_ERROR( "calling glDrawElements().")
 			PROFILE_SCOPE( "glDrawElements( GL_TRIANGLES, num_indices, index_type, pI )" );
 //			glDrawElements( GL_TRIANGLES, num_indices, index_type, pI );
 			glDrawElements( GL_TRIANGLES, num_indices_of_current_subset, index_type, pI + index_offsets_in_bytes );
@@ -168,7 +182,7 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 
 	if( vert_flags & VFF::TEXCOORD2_0 )
 	{
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 //		glDisable(GL_TEXTURE_2D);
 	}
 
@@ -177,6 +191,8 @@ void GLCustomMeshRenderer::RenderMeshWithSpecifiedProgram( CustomMesh& mesh, Sha
 //	if( vert_flags & VFF::NORMAL )
 //		glDisableClientState(GL_NORMAL_ARRAY);
 //	glDisableClientState(GL_VERTEX_ARRAY);
+
+	LOG_GL_ERROR( "post-draw GL error clearing.")
 }
 
 
