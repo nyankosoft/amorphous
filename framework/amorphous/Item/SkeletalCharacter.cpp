@@ -111,7 +111,7 @@ m_vDesiredHorizontalDirection( Vector3(0,0,0) )
 	ShaderResourceDesc shader_desc;
 	GenericShaderDesc gen_shader_desc;
 	gen_shader_desc.Specular = SpecularSource::DECAL_TEX_ALPHA;
-	gen_shader_desc.VertexBlendType = VertexBlendType::QUATERNION_AND_VECTOR3;
+	gen_shader_desc.VertexBlendType = VertexBlendTypeName::QUATERNION_AND_VECTOR3;
 	shader_desc.pShaderGenerator.reset( new GenericShaderGenerator(gen_shader_desc) );
 	m_pRenderMethod->PrimaryMeshRenderMethod().m_Shader.Load( shader_desc );
 	m_pRenderMethod->PrimaryMeshRenderMethod().m_Technique.SetTechniqueName( "Default" );
