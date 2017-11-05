@@ -114,7 +114,7 @@ public:
 
 	/// get the text content of a child node
 	template<typename T>
-	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest );
+	inline bool GetChildElementTextContent( const std::string& child_element_path, T& dest ) const;
 
 	bool GetChildElementTextContent( const std::string& child_element_path, std::string& dest )         const { return m_pImpl->GetChildElementTextContent(child_element_path,dest); }
 	bool GetChildElementTextContentLTWH( const std::string& child_element_path, SRect& dest )           const { return m_pImpl->GetChildElementTextContentLTWH(child_element_path,dest); }
@@ -125,7 +125,7 @@ public:
 	bool GetChildElementTextContent( const std::string& child_element_path, Vector3& dest )             const { return m_pImpl->GetChildElementTextContent(child_element_path,dest); }
 
 	/// get the text content of the current node
-	inline std::string GetTextContent() { std::string dest; GetTextContent(dest); return dest; }
+	inline std::string GetTextContent() const { std::string dest; GetTextContent(dest); return dest; }
 
 	template<typename T>
 	inline bool GetTextContent( T& dest )                   const { return GetChildElementTextContent( "", dest ); }
@@ -136,23 +136,23 @@ public:
 	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) const { return GetChildElementTextContentRGBA( "", dest ); }
 	inline bool GetTextContent( Vector3& dest )             const { return GetChildElementTextContent( "", dest ); }
 
-	std::string GetName() { return m_pImpl->GetName(); }
+	std::string GetName() const { return m_pImpl->GetName(); }
 
-	XMLNode GetChild( const std::string& name ) { return m_pImpl->GetChild(name); }
+	XMLNode GetChild( const std::string& name ) const { return m_pImpl->GetChild(name); }
 
-	std::string GetAttributeText( const std::string& attrib_name ) { return m_pImpl->GetAttributeText(attrib_name); }
+	std::string GetAttributeText( const std::string& attrib_name ) const { return m_pImpl->GetAttributeText(attrib_name); }
 
 	template<typename T>
-	inline void GetAttributeValue( const std::string& attrib_name, T& dest );
+	inline void GetAttributeValue( const std::string& attrib_name, T& dest ) const;
 
-	std::vector<XMLNode> GetImmediateChildren( const std::string& name ) { return m_pImpl->GetImmediateChildren(name); }
+	std::vector<XMLNode> GetImmediateChildren( const std::string& name ) const { return m_pImpl->GetImmediateChildren(name); }
 
-	std::vector<XMLNode> GetImmediateChildren() { return m_pImpl->GetImmediateChildren(); }
+	std::vector<XMLNode> GetImmediateChildren() const { return m_pImpl->GetImmediateChildren(); }
 };
 
 
 template<typename T>
-inline bool XMLNode::GetChildElementTextContent( const std::string& child_element_path, T& dest )
+inline bool XMLNode::GetChildElementTextContent( const std::string& child_element_path, T& dest ) const
 {
 	std::string text;
 	bool res = GetChildElementTextContent( child_element_path, text );
@@ -169,7 +169,7 @@ inline bool XMLNode::GetChildElementTextContent( const std::string& child_elemen
 /// Udpates the values of dest if the attribute with the specified name is found in the node.
 /// If the attribute is not found, the value of dest is not changed.
 template<typename T>
-inline void XMLNode::GetAttributeValue( const std::string& attrib_name, T& dest )
+inline void XMLNode::GetAttributeValue( const std::string& attrib_name, T& dest ) const
 {
 	std::string text;
 	bool attribute_found = m_pImpl->GetAttributeText( attrib_name, text );

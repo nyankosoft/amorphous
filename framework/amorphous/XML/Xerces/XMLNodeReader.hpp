@@ -104,7 +104,7 @@ public:
 //	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) { return GetChildElementTextContentRGBA( "", dest ); }
 //	inline bool GetTextContent( Vector3& dest )             { return GetChildElementTextContent( "", dest ); }
 
-	inline std::string GetName();
+	inline std::string GetName() const;
 
 	inline CXMLNodeReader GetChild( const std::string& name ) const;
 

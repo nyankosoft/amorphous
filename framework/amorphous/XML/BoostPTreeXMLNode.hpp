@@ -53,15 +53,15 @@ public:
 //	inline bool GetTextContentRGBA( SFloatRGBAColor& dest ) { return GetChildElementTextContentRGBA( "", dest ); }
 //	inline bool GetTextContent( Vector3& dest )             { return GetChildElementTextContent( "", dest ); }
 
-	inline std::string GetName();
+	inline std::string GetName() const;
 
 	inline XMLNode GetChild( const std::string& name );
 
-	inline std::string GetAttributeText( const std::string& attrib_name );
+	inline std::string GetAttributeText( const std::string& attrib_name ) const;
 
-	inline std::vector<XMLNode> GetImmediateChildren( const std::string& name );
+	inline std::vector<XMLNode> GetImmediateChildren( const std::string& name ) const;
 
-	inline std::vector<XMLNode> GetImmediateChildren();
+	inline std::vector<XMLNode> GetImmediateChildren() const;
 
 	friend class BoostPTreeXMLDocument;
 };
