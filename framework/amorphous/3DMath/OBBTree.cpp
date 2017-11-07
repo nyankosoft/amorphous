@@ -1,7 +1,8 @@
 #include "OBBTree.hpp"
 #include "Matrix34.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
-#include <float.h>
+#include <cfloat>
+#include <cmath>
 
 
 namespace amorphous
@@ -265,9 +266,9 @@ bool OBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 	};
 
 	float absB[3][3] = {
-		{ fabs( B[0][0] ), fabs( B[0][1] ), fabs( B[0][2] ) },
-		{ fabs( B[1][0] ), fabs( B[1][1] ), fabs( B[1][2] ) },
-		{ fabs( B[2][0] ), fabs( B[2][1] ), fabs( B[2][2] ) }
+		{ std::abs( B[0][0] ), std::abs( B[0][1] ), std::abs( B[0][2] ) },
+		{ std::abs( B[1][0] ), std::abs( B[1][1] ), std::abs( B[1][2] ) },
+		{ std::abs( B[2][0] ), std::abs( B[2][1] ), std::abs( B[2][2] ) }
 	};
 
 	float T[3] = { VecAtoBTrans.x, VecAtoBTrans.y, VecAtoBTrans.z }; 
@@ -279,13 +280,13 @@ bool OBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 
 	// Separation axes A.Axis[?]
 	for( int i = 0; i < 3; ++i ){
-		if( fabs( T[i] )
+		if( std::abs( T[i] )
 			> a[i] + b[0] * absB[0][i] + b[1] * absB[1][i] + b[2] * absB[2][i] ) return false;
 	}
 
 	// Separation axes B.Axis[?]
 	for( int i = 0; i < 3; ++i ){
-		if( fabs( T[0] * B[i][0] + T[1] * B[i][1] + T[2] * B[i][2] )
+		if( std::abs( T[0] * B[i][0] + T[1] * B[i][1] + T[2] * B[i][2] )
 			> b[i] + a[0] * absB[i][0] + a[1] * absB[i][1] + a[2] * absB[i][2] ) return false;
 	}
 
@@ -296,7 +297,7 @@ bool OBBTree::IsCollision( OBBDATA &BoxA, OBBDATA &BoxB )
 		for( int i0 = 0; i0 < 3; ++i0 ){
 			int i1 = ( i0 + 1 ) % 3;
 			int i2 = ( i0 + 2 ) % 3;
-			if( fabs( -T[j1] * B[i0][j2] + T[j2] * B[i0][j1] ) 
+			if( std::abs( -T[j1] * B[i0][j2] + T[j2] * B[i0][j1] ) 
 				> a[j1] * absB[i0][j2] + a[j2] * absB[i0][j1]
 				+ b[i1] * absB[i2][j0] + b[i2] * absB[i1][j0] ) return false;
 		}
@@ -431,7 +432,7 @@ bool OBBTree::Jacobi( float a[3][3], float v[3][3], float d[3] )
 	for( i = 0; i < 50; i++ ){
 		sm = 0.0f;
 		for( ip = 0; ip < n - 1; ip++ ){
-			for( iq = ip + 1; iq < n; iq++ ) sm += (float)fabs(a[ip][iq]);
+			for( iq = ip + 1; iq < n; iq++ ) sm += std::abs(a[ip][iq]);
 		}
 
 		if( sm == 0.0f ) return true;
@@ -439,7 +440,7 @@ bool OBBTree::Jacobi( float a[3][3], float v[3][3], float d[3] )
 		else tresh = 0.0f;
 		for( ip = 0; ip < n - 1; ip++ ){
 			for( iq = ip + 1; iq < n; iq++ ){
-				g = 100.0f * (float)fabs( a[ip][iq] );
+				g = 100.0f * std::abs( a[ip][iq] );
 				if( i > 3 && ( fabs( d[ip] ) + g ) == fabs( d[ip] )
 					&& ( fabs( d[iq] ) + g ) == fabs( d[iq] ) ) a[ip][iq] = 0.0f;
 				else if( fabs( a[ip][iq] ) > tresh ){
@@ -447,10 +448,10 @@ bool OBBTree::Jacobi( float a[3][3], float v[3][3], float d[3] )
 					if( ( fabs( h ) + g ) == fabs( h ) ) t = a[ip][iq] / h;
 					else{
 						theta = 0.5f * h / a[ip][iq];
-						t = 1.0f / ( (float)fabs( theta ) + (float)sqrt( 1.0f + theta * theta ) );
+						t = 1.0f / ( std::abs( theta ) + std::sqrt( 1.0f + theta * theta ) );
 						if( theta < 0.0f ) t = -t;
 					}
-					c = 1.0f / (float)sqrt( 1 + t * t );
+					c = 1.0f / std::sqrt( 1 + t * t );
 					s = t * c;
 					tau = s / ( 1.0f + c );
 					h = t * a[ip][iq];
