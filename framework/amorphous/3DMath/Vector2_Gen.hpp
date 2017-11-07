@@ -23,7 +23,9 @@ public:
 
 	TScalar x, y;
 
-	inline TVector2() {}
+	// Constructor specializations for float and double follow after the class definition.
+	inline TVector2() : x(0), y(0) {}
+
 	inline TVector2( TScalar _x, TScalar _y );
 
 	//	~TVector2();
@@ -62,6 +64,9 @@ public:
 	inline TScalar GetLengthSq() const;
 
 };
+
+template<> inline TVector2<float>::TVector2() : x(0.0f), y(0.0f) {}
+template<> inline TVector2<double>::TVector2() : x(0.0), y(0.0) {}
 
 
 } // namespace amorphous

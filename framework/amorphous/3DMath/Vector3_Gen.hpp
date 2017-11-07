@@ -22,7 +22,9 @@ public:
 
 	T x, y, z;
 
-	inline tVector3() {}
+	// Constructor specializations for float and double follow after the class definition.
+	inline tVector3() : x(0), y(0), z(0) {}
+
 	inline tVector3( T _x, T _y, T _z );
 
 	//	~tVector3();
@@ -62,6 +64,10 @@ public:
 
 };
 
+// Specialize the init-by-zero constructors so that each type get the right notations (0.0f for float, and 0.0 for double)
+// Compilers might do all the necessary conversions at compile time, so this might be unnecessary to avoid performance drop.
+template<> inline tVector3<float>::tVector3() : x(0.0f), y(0.0f), z(0.0f) {}
+template<> inline tVector3<double>::tVector3() : x(0.0), y(0.0), z(0.0) {}
 
 
 typedef tVector3<float> Vector3;
