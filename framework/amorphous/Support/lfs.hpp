@@ -351,7 +351,13 @@ public:
 
 	path operator/(const path& rhs) const
 	{
-		return path(this->pathname + "/" + rhs.pathname);
+		if( rhs.pathname.find(".\\") == 0 || rhs.pathname.find("./") == 0 )
+		{
+			// rhs starts with ".\"
+			return path(this->pathname + "/" + rhs.pathname.substr(2));
+		}
+		else
+			return path(this->pathname + "/" + rhs.pathname);
 	}
 
 	path parent_path() const
@@ -400,6 +406,11 @@ public:
 	std::string string() const
 	{
 		return this->pathname;
+	}
+
+	bool operator==(const path& rhs) const
+	{
+		return (this->pathname == rhs.pathname);
 	}
 };
 
