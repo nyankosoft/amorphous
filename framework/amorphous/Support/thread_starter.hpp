@@ -39,11 +39,11 @@ public:
 
 
 template<class T>
-inline std::shared_ptr<boost::thread>start_thread( T *pTarget )
+inline std::shared_ptr<std::thread>start_thread( T *pTarget )
 {
 	thread_starter<T> starter(pTarget);
-	std::shared_ptr<boost::thread> pThread
-		= std::shared_ptr<boost::thread>( new boost::thread(starter) );
+	std::shared_ptr<std::thread> pThread
+		= std::shared_ptr<std::thread>( new std::thread(starter) );
 
 	return pThread;
 }
@@ -70,7 +70,7 @@ class thread_class
 {
 private:
 
-	std::shared_ptr<boost::thread> m_pThread;
+	std::shared_ptr<std::thread> m_pThread;
 
 public:
 
@@ -88,7 +88,7 @@ public:
 	void start_thread()
 	{
 		thread_starter<thread_class> starter(this);
-		m_pThread = std::shared_ptr<boost::thread>( new boost::thread(starter) );
+		m_pThread = std::shared_ptr<std::thread>( new std::thread(starter) );
 	}
 
 	void ThreadMain()
