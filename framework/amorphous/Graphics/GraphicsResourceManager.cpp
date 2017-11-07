@@ -306,7 +306,8 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 
 	if( !sg_bRenderThreadSpecified )
 	{
-		LOG_PRINT_WARNING( "Using GraphicsResourceManager without specifying render thread." );
+		LOG_PRINT_WARNING( "A render thread has not been specified. Setting the current thread as the render thread." );
+		SetCurrentThreadAsRenderThread();
 	}
 
 	if( std::this_thread::get_id() != GetRenderThreadID() )
