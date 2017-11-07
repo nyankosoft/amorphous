@@ -117,7 +117,7 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 				}
 				else
 				{
-					// relative apth
+					// relative path
 					lfs::path filepath = lfs::path(m_strFilename).parent_path() / tex_filename;
 					tex_filepath = filepath.string();
 				}
