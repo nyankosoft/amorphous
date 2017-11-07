@@ -5,7 +5,9 @@
 // Commented out because boost/progress is incompatible with boost/timer usd by LogInputBase.
 //#include <boost/progress.hpp>
 
-#include <boost/filesystem.hpp>
+//#include <filesystem> Have to wait for the C++17 support
+#include <chrono>
+#include <thread>
 #include "amorphous/Support/FileOpenDialog_Win32.hpp"
 #include "amorphous/Support/progress_display.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
@@ -22,7 +24,6 @@
 
 
 using namespace std;
-using namespace boost::filesystem;
 using namespace amorphous;
 
 
@@ -135,8 +136,8 @@ int main( int argc, char *argv[] )
 			}
 		}
 
-		using namespace boost::filesystem;
-		path src_directory_path = path(src_filepath).parent_path();
+		//using namespace boost::filesystem;
+		lfs::path src_directory_path = lfs::path(src_filepath).parent_path();
 		if( 0 < src_directory_path.string().length() )
 			lfs::set_wd( src_directory_path.string() );
 	}
@@ -147,8 +148,8 @@ int main( int argc, char *argv[] )
 
 	// Open a file for logging
 
-	path logfile_dirpath = path(src_filepath).parent_path();
-	path logfile_basepath = logfile_dirpath / ("mesh_model_compiler-" + path(src_filepath).leaf().string());
+	lfs::path logfile_dirpath = lfs::path(src_filepath).parent_path();
+	lfs::path logfile_basepath = logfile_dirpath / ("mesh_model_compiler-" + lfs::path(src_filepath).leaf().string());
 
 	InitHTMLLog( logfile_basepath.string() + ".html" );
 
@@ -160,9 +161,6 @@ int main( int argc, char *argv[] )
 	CLWO2MeshModelCompilerTask mesh_compiler(src_filepath,obfuscate_texture);
 
 	mesh_compiler.start_thread();
-
-	boost::xtime xt;
-	boost::xtime_get(&xt, boost::TIME_UTC_);
 
 //	const shared_ptr<morph::progress_display> pLoadingProgress;
 //	while( !pLoadingProgress )
@@ -196,8 +194,7 @@ int main( int argc, char *argv[] )
 			break;
 		}
 
-		xt.sec += 1; // 1 [sec]
-		boost::thread::sleep(xt);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 
 //		printf( "checking progress - done.\n" );
 	}
