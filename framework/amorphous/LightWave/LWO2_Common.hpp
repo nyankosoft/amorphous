@@ -7,9 +7,9 @@
 
 
 #ifdef _DEBUG
-#pragma comment ( lib, "LW_Framework_d.lib" )
+#pragma comment ( lib, "amorphous-lightwave_d.lib" )
 #else
-#pragma comment ( lib, "LW_Framework.lib" )
+#pragma comment ( lib, "amorphous-lightwave.lib" )
 #endif
 
 
