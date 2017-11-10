@@ -15,14 +15,8 @@ class InputDevice;
 class MouseInputDevice;
 class KeyboardInputDevice;
 class InputDeviceStateCallback;
-class Win32StdKeyboard;        /// for Windows platform
-class Win32StdMouseInput;      /// for Windows platform
-class DIKeyboard;         /// for Windows platform (DirectInput)
-class DirectInputMouse;   /// for Windows platform (DirectInput)
-class DirectInputGamepad; /// for Windows platform (DirectInput)
 
 typedef std::shared_ptr<InputHandler> InputHandlerSharedPtr;
-
 
 class InputDeviceParam
 {
@@ -33,6 +27,13 @@ public:
 		NUM_MAX_SIMULTANEOUS_PRESSES = 4,
 	};
 };
+
+// for Windows platform
+class Win32StdKeyboard;
+class Win32StdMouseInput;
+class DIKeyboard;         // DirectInput
+class DirectInputMouse;   // DirectInput
+class DirectInputGamepad; // DirectInput
 
 } // namespace amorphous
 
