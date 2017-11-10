@@ -7,6 +7,7 @@
 #include "amorphous/3DMath/AABB3.hpp"
 #include "amorphous/3DMath/OBB3.hpp"
 #include "amorphous/3DMath/Quaternion.hpp"
+#include "amorphous/3DMath/Matrix44.hpp"
 #include "amorphous/3DMath/AABB2.hpp"
 
 
@@ -79,6 +80,21 @@ inline std::string to_string( const Quaternion& q, int precision = 3, int num_zf
 inline std::string to_string( const OBB3& obb )
 {
 	return std::string( "[obb3] radii" + to_string(obb.radii) + ", center" + to_string(obb.center.vPosition) + ", rotation" + to_string(Quaternion(obb.center.matOrient)) );
+}
+
+
+inline std::string to_string( const Matrix44& mat )
+{
+	std::string str;
+	float *p =  (float *)mat.GetData();
+	char a[16];
+	for( int i=0; i<16; i++ ){
+		sprintf(a,"%f",p[i]);
+		str += a;
+		str += ", ";
+	}
+
+	return str;
 }
 
 
