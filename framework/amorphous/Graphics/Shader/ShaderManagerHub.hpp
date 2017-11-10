@@ -59,6 +59,9 @@ inline void ShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& vie
 	m_vecViewMatrix.push_back( view );
 	m_vecProjMatrix.push_back( proj );
 
+	// Note that m_vecpShaderManager contains the fixed function pipeline
+	// as well as programmable shaders.
+
 	size_t i, num_shader_mgrs = m_vecpShaderManager.size();
 	for( i=0; i<num_shader_mgrs; i++ )
 	{
@@ -66,8 +69,9 @@ inline void ShaderManagerHub::PushViewAndProjectionMatrices( const Matrix44& vie
 		m_vecpShaderManager[i]->SetProjectionTransform( proj );
 	}
 
-	FixedFunctionPipelineManager().SetViewTransform( view );
-	FixedFunctionPipelineManager().SetProjectionTransform( proj );
+	// Commented out; Set*Transform calls in the for loop above update the FFP as well.
+	//FixedFunctionPipelineManager().SetViewTransform( view );
+	//FixedFunctionPipelineManager().SetProjectionTransform( proj );
 }
 
 
@@ -102,8 +106,9 @@ inline void ShaderManagerHub::PopViewAndProjectionMatrices()
 	}
 
 	// update the transforms of fixed function pipeline as well
-	FixedFunctionPipelineManager().SetViewTransform( matView );
-	FixedFunctionPipelineManager().SetProjectionTransform( matProj );
+	// Commented out; Set*Transform calls in the for loop above update the FFP as well.
+	//FixedFunctionPipelineManager().SetViewTransform( matView );
+	//FixedFunctionPipelineManager().SetProjectionTransform( matProj );
 }
 
 
