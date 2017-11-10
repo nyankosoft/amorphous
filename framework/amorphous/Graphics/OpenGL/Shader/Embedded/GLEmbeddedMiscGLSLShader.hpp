@@ -12,7 +12,13 @@ namespace amorphous
 
 class GLEmbeddedMiscGLSLShader : public EmbeddedMiscShader
 {
+	//
+	// Vertex shaders
+	//
+
 	static void GetSingleDiffuseColorVertexShader( std::string& shader );
+
+	static void GetPositionOnlyVertexShader( std::string& shader );
 
 	static void GetVertexWeightMapDisplayVertexShader( std::string& shader );
 
@@ -22,7 +28,14 @@ class GLEmbeddedMiscGLSLShader : public EmbeddedMiscShader
 
 	static void GetSingleColorMembraneVertexShader( std::string& shader );
 
+
+	//
+	// Fragment shaders
+	//
+
 	static void GetSingleDiffuseColorFragmentShader( std::string& shader );
+
+	static void GetSingleFixedDiffuseColorFragmentShader( std::string& shader );
 
 	static void GetVertexWeightMapDisplayFragmentShader( std::string& shader );
 

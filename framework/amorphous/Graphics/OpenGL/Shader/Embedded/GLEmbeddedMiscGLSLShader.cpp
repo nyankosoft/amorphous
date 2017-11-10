@@ -22,6 +22,18 @@ void GLEmbeddedMiscGLSLShader::GetSingleDiffuseColorVertexShader( std::string& s
 }
 
 
+void GLEmbeddedMiscGLSLShader::GetPositionOnlyVertexShader( std::string& shader )
+{
+	static const char *vs =
+	"#version 330\n"\
+	"layout(location = 0) in vec4 position;\n"\
+	"uniform mat4 ProjViewWorld;\n"\
+	"void main(){gl_Position=ProjViewWorld*position;}\n";
+
+	shader = vs;
+}
+
+
 void GLEmbeddedMiscGLSLShader::GetVertexWeightMapDisplayVertexShader( std::string& shader )
 {
 	// Adapted from GenerateNoLightingVertexShader()
@@ -130,6 +142,17 @@ void GLEmbeddedMiscGLSLShader::GetSingleDiffuseColorFragmentShader( std::string&
 }
 
 
+void GLEmbeddedMiscGLSLShader::GetSingleFixedDiffuseColorFragmentShader( std::string& shader )
+{
+	static const char *fs =
+	"#version 330\n"\
+	"layout(location = 0) out vec4 fc;\n"\
+	"void main(){fc=vec4(1.0,1.0,1.0,1.0);}\n";
+
+	shader = fs;
+}
+
+
 void GLEmbeddedMiscGLSLShader::GetVertexWeightMapDisplayFragmentShader( std::string& shader )
 {
 	static const char *fs =
@@ -223,6 +246,9 @@ Result::Name GLEmbeddedMiscGLSLShader::GetVertexShader( MiscShader::ID shader_id
 	case MiscShader::SINGLE_DIFFUSE_COLOR:
 		GetSingleDiffuseColorVertexShader(shader);
 		break;
+	case MiscShader::SINGLE_DIFFUSE_COLOR_WHITE:
+		GetPositionOnlyVertexShader(shader);
+		break;
 	case MiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
 		GetSingleDiffuseColorVertexShader(shader);
 		break;
@@ -267,6 +293,9 @@ Result::Name GLEmbeddedMiscGLSLShader::GetFragmentShader( MiscShader::ID shader_
 	{
 	case MiscShader::SINGLE_DIFFUSE_COLOR:
 		GetSingleDiffuseColorFragmentShader(shader);
+		break;
+	case MiscShader::SINGLE_DIFFUSE_COLOR_WHITE:
+		GetSingleFixedDiffuseColorFragmentShader(shader);
 		break;
 	case MiscShader::SHADED_SINGLE_DIFFUSE_COLOR:
 		GetSingleDiffuseColorFragmentShader(shader);
