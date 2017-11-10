@@ -4,10 +4,10 @@
 
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "amorphous/Graphics/OpenGL/fwd.hpp"
-#include "amorphous/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/3DMath/Transform.hpp"
+#include "amorphous/Support/Vec3_StringAux.hpp"
 #include "GLSLShaderLightManager.hpp"
 
 
@@ -278,7 +278,7 @@ inline void CGLProgram::SetWorldTransform( const Matrix44& world )
 
 inline void CGLProgram::SetViewTransform( const Matrix44& view )
 {
-	LOG_GL_ERROR( " Entered." );
+	LOG_GL_ERROR( " Entered (CGLProgram)." );
 
 	glUseProgram( m_Program );
 
@@ -303,6 +303,8 @@ inline void CGLProgram::SetViewTransform( const Matrix44& view )
 
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );
+
+	LOG_GL_ERROR( " Leaving (CGLProgram)." );
 }
 
 
@@ -322,8 +324,12 @@ inline void CGLProgram::SetProjectionTransform( const Matrix44& proj )
 
 	Matrix44 proj_view_world = proj * m_ViewMatrix * m_WorldMatrix;
 
+	//LOG_PRINT("proj_view_world: " + to_string(proj_view_world));
+
 	if( 0 <= m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD] )
 		glUniformMatrix4fv( m_PredefinedMatrixUniforms[MATRIX_PROJ_VIEW_WORLD], 1, GL_FALSE, (GLfloat *)proj_view_world.GetData() );
+
+	LOG_GL_ERROR( " Leaving." );
 }
 
 
