@@ -4,9 +4,7 @@
 #include <vector>
 #include "fwd.hpp"
 #include "InputHandler.hpp"
-
-#include "../base.hpp"
-#include "../Support/SafeDelete.hpp"
+#include "amorphous/base.hpp"
 
 
 namespace amorphous
@@ -14,6 +12,14 @@ namespace amorphous
 
 
 /**
+ TODO: Rename the class from InputHub to InputEventDispatcher
+
+ \brief Dispatches input data to input event listeners (input handlers)
+
+ - Input event listeners are called 'input handlers' in the amorphous framework.
+ - This is a singleton class.
+ - To query the state of a given key, call GetInputDeviceHub().GetInputDeviceGroup(0)->GetInputState()
+
   Holds stacks of input handlers
   - This is a singleton class.
   About Input Handlers and Input Hub
@@ -21,22 +27,26 @@ namespace amorphous
   - There are total of NUM_MAX_INPUT_HANDLERS stacks.
     - Developer can simultaneously register input handlers up to the number of NUM_MAX_USER_INPUT_HANDLERS
     - Index of input handlers registered to the input hub by developer must be in the range [MIN_USER_INPUT_HANDLER_INDEX,MAX_USER_INPUT_HANDLER_INDEX]
-	- Developer can use stacks to proecess different inputs
-	    - Input handler on stack A - for processing game inputs (player movement, etc.)
-		- Input handler on stack B - debug input (turning on/off system info as overlay, etc.)
+	- Developer can use different stacks to proecess inputs for different purposes.
+	    - An input handler on stack A - for processing game inputs (player movement, etc.) using W, A, S, and D keys
+		- An input handler on stack B - debug input (turning on/off system info as overlay, etc.) using F1 to F5 keys.
     - All the registered input handlers at the top of each stack receive the same input data.
+	- Note that it is the responsibility of developers to make sure that input handlers are set up
+	  to process non-overlapping sets of keys, i.e. if the input handler on stack A uses WASD keys, the input handler
+	  on stack B should avoid using those keys. 
 	- Input handlers not on top of their stack do not receive input data.
-  - The input hub holds input handlers as borrowed reference. Developer is responsible for releasing them
-    after removing the borrowed reference from the input hub.
+  - The input dispatcher (currently input hub) holds input handlers as borrowed reference.
+    Developer is responsible for releasing them after removing the borrowed reference from the input hub.
   - The developer has two ways of registering and unregistering input handlers to the input hub.
     - 1. Set and remove input handlers to and from the input hub.
       - Use InputHandler::SetInputHandler() and InputHandler::RemoveInputHandler()
     - 2. Push and pop input handlers to and from the input hub.
       - Use InputHandler::PushInputHandler() and InputHandler::PopInputHandler()
       - You can pop a pushed input handler with InputHandler::RemoveInputHandler().
-	    This is usually safer because InputHandler::RemoveInputHandler() removes
-        the input handler even if another input handler is on top of the stack.
-    - Be careful when you use stack: all the input handlers in the stack must not be released until they are popped or removed.
+		This is usually safer because InputHandler::RemoveInputHandler() searches the stack
+		and removes the specified input handler even if other input handler(s) are sitting on top it
+		in the stack.
+	- Be careful when you use stack: all the input handlers in the stack must not be released until they are popped or removed.
  */
 class InputHub
 {
@@ -60,6 +70,8 @@ private:
 	std::vector<InputHandler *> m_vecpInputHandler[NUM_MAX_INPUT_HANDLERS];
 
 	int m_CurrentMaxIndex;
+
+//	std::array<char,NUM_GENERAL_INPUT_CODES> m_KeyStates;
 
 	static InputHub ms_InputHub_Instance_;		// singleton instance
 
@@ -85,11 +97,16 @@ public:
 
 //	inline void ReleaseInputHandler( int index );
 
-	/// Sets an input handler in the slot 0.
-	/// Calling this will cause memory leak if an input handler already exists in the slot with the specified index.
+	/**
+	 \brief Sets an input handler, i.e. adds a listener, in the slot 0.
+
+	  Calling this function will cause memory leak if an input handler already exists in the slot with the specified index.
+	 */
 	inline void SetInputHandler( int index, InputHandler *pInputHandler );
 
-	/// sets an input handler in the slot 0
+	/**
+	 \brief sets an input handler in the slot 0
+	 */
 	inline void SetInputHandler( InputHandler *pInputHandler );// { m_vecpInputHandler[0] = pInputHandler; }
 
 
@@ -118,10 +135,24 @@ public:
 
 	inline Result::Name RemoveInputHandler( InputHandler *pInputHandler );
 
-
+	/**
+	 * \breif Dispatches the specified input data to all the input handlers on top of the stacks.
+	 *
+	 */
 	inline void UpdateInput( InputData& input );
 
 	inline void SendAutoRepeatInputToInputHandlers( InputData& input );
+
+	/**
+	 * \brief Returns the state of the specified key
+	 *
+	 * \return 1 if the key is pressed, 0 if it is released
+	 *
+	 * Note that this is added as a convenience function. This only works if there is only one input device
+	 * of each type connected to the host device running the application, e.g. would not work if two or more
+	 * gamepads are connected to your laptop.
+	 */
+	 //inline int GetKeyState(int input_code) const;
 
 	void PrintInputHandlers( std::string& dest );
 
@@ -149,6 +180,15 @@ inline void InputHub::UpdateMaxIndex()
 
 inline void InputHub::UpdateInput( InputData& input )
 {
+/*	if( input.iType == ITYPE_KEY_PRESSED )
+	{
+		m_KeyStates[input.iGICode] = 1;
+	}
+	else if( input.iType == ITYPE_KEY_RELEASED )
+	{
+		m_KeyStates[input.iGICode] = 0;
+	}
+*/
 	for( int i=0; i<=m_CurrentMaxIndex; i++ )
 	{
 		if( m_vecpInputHandler[i].size() == 0 )
@@ -172,6 +212,15 @@ inline void InputHub::SendAutoRepeatInputToInputHandlers( InputData& input )
             m_vecpInputHandler[i].back()->ProcessInput( input );
 	}
 }
+
+
+// inline int InputHub::GetKeyState(int input_code) const
+// {
+// 	if( 0 <= input_code && input_code < NUM_GENERAL_INPUT_CODES )
+// 		return (int)m_KeyStates[input_code];
+// 	else
+// 		return 0;
+// }
 
 
 inline void InputHub::SetInputHandler( InputHandler *pInputHandler )
