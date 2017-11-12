@@ -25,6 +25,8 @@ m_CurrentMaxIndex(-1)
 //	m_NumInputHandlers = 0;
 
 //	m_pInputHandler = NULL;
+
+	//m_KeyStates.fill(0);
 }
 
 
