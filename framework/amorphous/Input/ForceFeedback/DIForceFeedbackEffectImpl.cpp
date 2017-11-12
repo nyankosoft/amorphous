@@ -191,7 +191,7 @@ Result::Name CDIForceFeedbackEffectImpl::Init( const CForceFeedbackEffectDesc& d
 
 InputDevice *CDIForceFeedbackEffectImpl::GetTargetInputDevice()
 {
-	vector<InputDevice *>& vecInputDevice = GetInputDeviceHub().GetInputDeviceGroup(m_Target.m_Group)->InputDevice();
+	vector<InputDevice *>& vecInputDevice = GetInputDeviceHub().GetInputDeviceGroup(m_Target.m_Group)->GetInputDevices();
 	for( size_t i=0; i<vecInputDevice.size(); i++ )
 	{
 		if( vecInputDevice[i]->GetInputDeviceType() != m_Target.m_Type )

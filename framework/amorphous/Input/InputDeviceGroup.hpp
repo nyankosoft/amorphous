@@ -30,7 +30,9 @@ public:
 
 	CInputState::Name GetInputState( int gi_code ) const { return m_aInputState[gi_code].m_State; }
 
-	std::vector<InputDevice *>& InputDevice() { return m_vecpDevice; }
+	std::vector<InputDevice *>& GetInputDevices() { return m_vecpDevice; }
+
+	const std::vector<InputDevice *>& GetInputDevices() const { return m_vecpDevice; }
 
 	friend class InputDevice;
 	friend class InputDeviceHub;

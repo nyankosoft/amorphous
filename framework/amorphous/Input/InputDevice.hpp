@@ -89,11 +89,24 @@ public:
 
 
 /// Used as a singleton class
+/**
+ *  
+ *
+ */
 class InputDeviceHub
 {
+	/**
+	 * Each input device object registers itself to this list from its ctor when it is created.
+	 *
+	 */
 	std::vector<InputDevice *> m_vecpInputDevice;
 
-	std::vector< std::shared_ptr<InputDeviceGroup> > m_vecpGroup;
+	/**
+	 * In addition to the list above, each input device object registers itself to one of the
+	 * input device groups in this list.
+	 *
+	 */
+	 std::vector< std::shared_ptr<InputDeviceGroup> > m_vecpGroup;
 
 	std::mutex m_Mutex;
 
@@ -135,9 +148,9 @@ inline InputDeviceClass *GetPrimaryInputDevice()
 {
 	std::shared_ptr<InputDeviceGroup> pGroup = GetInputDeviceHub().GetInputDeviceGroup(0);
 	if( !pGroup )
-		return NULL;
+		return nullptr;
 
-	const std::vector<InputDevice *>& pInputDevices = pGroup->InputDevice();
+	const std::vector<InputDevice *>& pInputDevices = pGroup->GetInputDevices();
 	for( size_t i=0; i<pInputDevices.size(); i++ )
 	{
 		InputDeviceClass *pDest = dynamic_cast<InputDeviceClass *>( pInputDevices[i] );

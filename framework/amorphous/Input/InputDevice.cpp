@@ -3,6 +3,7 @@
 #include "ForceFeedback/ForceFeedbackEffect.hpp"
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/Support/Profile.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 
 
 namespace amorphous
@@ -147,8 +148,12 @@ void InputDevice::SetImplToForceFeedbackEffect( std::shared_ptr<CForceFeedbackEf
 
 InputDeviceHub::InputDeviceHub()
 {
+	LOG_PRINTF(("Entered ctor."));
+	
 	m_vecpGroup.resize( 1 );
 	m_vecpGroup.back().reset( new InputDeviceGroup() );
+
+	LOG_PRINTF(("Leaving ctor."));	
 }
 
 
@@ -162,6 +167,9 @@ void InputDeviceHub::RegisterInputDevice( InputDevice *pDevice )
 
 void InputDeviceHub::RegisterInputDeviceToGroup( InputDevice *pDevice )
 {
+	if( !pDevice )
+		return;
+
 	switch( pDevice->GetInputDeviceType() )
 	{
 	case InputDevice::TYPE_GAMEPAD:
