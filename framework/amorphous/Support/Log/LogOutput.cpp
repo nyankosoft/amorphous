@@ -2,6 +2,7 @@
 #include "amorphous/base.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/StringAux.hpp"
+#include <thread>
 
 
 namespace amorphous
@@ -49,7 +50,14 @@ void LogOutput_TextFile::Print( const LogMessage& msg )
 //		return;
 //	fprintf( m_pFile, "%s %s", msg.m_Time.c_str(), msg.m_Text.c_str() );
 
-	m_OutputFileStream << "[" << msg.m_Time << "] " << msg.m_Text;
+	m_OutputFileStream << "[" << msg.m_Time << "] ";
+
+	// A hashed thread id
+	std::hash<std::thread::id> hasher;
+	size_t id = hasher(std::this_thread::get_id());
+	m_OutputFileStream << (id % 10000) << " "; // id is long so we just print the last four digits.
+	
+	m_OutputFileStream << msg.m_Text;
 
 	switch( m_NewLineCharacterOption )
 	{
