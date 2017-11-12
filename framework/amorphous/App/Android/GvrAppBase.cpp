@@ -1,15 +1,21 @@
 #include "GvrAppBase.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
+#include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
 #include "amorphous/Graphics/OpenGL/GLInitialization.hpp"
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 //#include <native_activity.h>
+//#include <iomanip> // std::put_time is missing in this (Android NDK)
+#include <ctime>
+#include <map>
 #include <jni.h>
 //#include <unistd.h> // chdir()
 #include <sys/param.h> // MAXPATHLEN
 // #include <ctime>
 // #include <iomanip>
+#include <android/keycodes.h>
 
 // To call Java methods when running native code inside an Android activity,
 // a reference is needed to the JavaVM.
@@ -124,12 +130,7 @@ int GetExtStoragePath(std::string& ext_storage_path) {
 
 int GvrAppBase::InitBase()
 {
-    Result::Name res = InitializeOpenGLClasses();
-
-	// Neither screen size nor screen mode is used in Init(), so we just pass random values here.
-	int w = 1280;
-	int h = 720;
-	GraphicsDevice().Init( w, h, ScreenMode::FULLSCREEN );
+    // Initialize the logging system
 
     //std::string logfile_pathname = "/data/local/tmp/log.txt"; // No success
     //std::string logfile_pathname = "/storage/emulated/0/data/local/tmp/log.txt"; // No success
@@ -137,8 +138,29 @@ int GvrAppBase::InitBase()
     std::string logfile_pathname = "/storage/emulated/0/Download/vr.log";
     int ret = InitTextlLog(logfile_pathname);
 
-    // std::time_t t = std::time(nullptr);
-//    std::string local_time = std::put_time(std::localtime(&t), "%c %Z");
+    // Log the current local time so we can find when the app was run.
+    // This is meant to help avoiding the mistake of looking into a wrong log file.
+
+    std::time_t t = std::time(nullptr);
+    //std::string local_time = std::put_time(std::localtime(&t), "%c %Z"); // error: 'put_time' is not a member of 'std'
+    std::string local_time = std::asctime(std::localtime(&t));
+    // >>> Since we do not have std::put_time we use strftime() instead to achieve the same string formatting.
+ /*   std::string local_time;
+    char buffer[24];
+    if(0 < strftime(buffer, sizeof(buffer), "[%T%z %F] ", std::localtime(&t))) {
+        local_time = buffer;
+    }*/
+    // <<<
+    LOG_PRINT("Local time: " + local_time);
+
+    // Initialize the OpenGL graphics device
+
+    Result::Name res = InitializeOpenGLClasses();
+    
+    // Neither screen size nor screen mode is used in Init(), so we just pass random values here.
+    int w = 1280;
+    int h = 720;
+    GraphicsDevice().Init( w, h, ScreenMode::FULLSCREEN );
 
     // std::tm tmobj = std::localtime(&t);
 
@@ -166,6 +188,9 @@ int GvrAppBase::InitBase()
     //LOG_PRINTF((internalDataPath));
 
     LOG_PRINTF(("logging"));
+ 
+    m_pCameraController.reset( new CameraController(0) );
+
     return 0;
 }
 
@@ -204,6 +229,80 @@ void GvrAppBase::SetProjectionTransform(const std::array<float, 16>& proj)
 
     // So this time we simply store the matrix
     m_ProjectionTransform.SetData(&proj[0]);
+}
+
+
+std::map<int,int> key_maps;
+
+void InitKeyMaps() {
+    key_maps[AKEYCODE_A] = 'A';
+    key_maps[AKEYCODE_B] = 'B';
+    key_maps[AKEYCODE_C] = 'C';
+    key_maps[AKEYCODE_D] = 'D';
+    key_maps[AKEYCODE_E] = 'E';
+    key_maps[AKEYCODE_F] = 'F';
+    key_maps[AKEYCODE_G] = 'G';
+    key_maps[AKEYCODE_H] = 'H';
+    key_maps[AKEYCODE_I] = 'I';
+    key_maps[AKEYCODE_J] = 'J';
+    key_maps[AKEYCODE_K] = 'K';
+    key_maps[AKEYCODE_L] = 'L';
+    key_maps[AKEYCODE_M] = 'M';
+    key_maps[AKEYCODE_N] = 'N';
+    key_maps[AKEYCODE_O] = 'O';
+    key_maps[AKEYCODE_P] = 'P';
+    key_maps[AKEYCODE_Q] = 'Q';
+    key_maps[AKEYCODE_R] = 'R';
+    key_maps[AKEYCODE_S] = 'S';
+    key_maps[AKEYCODE_T] = 'T';
+    key_maps[AKEYCODE_U] = 'U';
+    key_maps[AKEYCODE_V] = 'V';
+    key_maps[AKEYCODE_W] = 'W';
+    key_maps[AKEYCODE_X] = 'X';
+    key_maps[AKEYCODE_Y] = 'Y';
+    key_maps[AKEYCODE_Z] = 'Z';
+    key_maps[AKEYCODE_DPAD_UP]    = GIC_UP;
+    key_maps[AKEYCODE_DPAD_DOWN]  = GIC_DOWN;
+    key_maps[AKEYCODE_DPAD_LEFT]  = GIC_LEFT;
+    key_maps[AKEYCODE_DPAD_RIGHT] = GIC_RIGHT;
+}
+
+
+void GvrAppBase::OnKeyDown(int key_code)
+{
+    if( key_maps.find(key_code) == key_maps.end() ) {
+        // Key was not found.
+	    LOG_PRINTF_WARNING(("An unrecognized key: %d",key_code));
+        return;
+    }
+
+    int input_code = key_maps[key_code];
+
+    LOG_PRINTF(("Key pressed: %d",key_code));
+
+    InputData input;
+    input.iGICode = input_code;
+    input.iType = ITYPE_KEY_PRESSED;
+    HandleInput(input);
+}
+
+
+void GvrAppBase::OnKeyUp(int key_code)
+{
+    if( key_maps.find(key_code) == key_maps.end() ) {
+        // Key was not found.
+	    LOG_PRINTF_WARNING(("An unrecognized key: %d",key_code));
+        return;
+    }
+
+    int input_code = key_maps[key_code];
+    
+	LOG_PRINTF(("Key released: %d",key_code));
+
+    InputData input;
+    input.iGICode = input_code;
+    input.iType = ITYPE_KEY_RELEASED;
+    HandleInput(input);
 }
 
 

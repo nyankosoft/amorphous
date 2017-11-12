@@ -7,7 +7,8 @@
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/FloatRGBAColor.hpp"
-//#include "amorphous/Support/CameraController.hpp"
+#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Support/fwd.hpp"
 
 
 
@@ -30,7 +31,7 @@ class GvrAppBase
     Matrix44 m_ViewTransform;
     Matrix44 m_ProjectionTransform;
 
-//	std::shared_ptr<CameraControllerBase> m_pCameraController;
+	std::shared_ptr<CameraController> m_pCameraController;
 
 //	std::shared_ptr<FontBase> m_pFont;
 
@@ -48,7 +49,7 @@ protected:
 
 	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
 
-//	virtual void HandleInput( const InputData& input );
+	virtual void HandleInput( const InputData& input ) {}
 
 public:
 
@@ -68,6 +69,10 @@ public:
 	void SetViewTransform(const std::array<float, 16>& view);
 
 	void SetProjectionTransform(const std::array<float, 16>& proj);
+
+	void OnKeyDown(int key_code);
+
+	void OnKeyUp(int key_code);
 
 //	virtual void Update( float dt ) {}
 
