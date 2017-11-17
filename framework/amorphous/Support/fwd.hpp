@@ -8,6 +8,7 @@ namespace amorphous
 class stream_buffer;
 class Timer;
 class BitmapImage;
+class CameraController;
 
 } // namespace amorphous
 
