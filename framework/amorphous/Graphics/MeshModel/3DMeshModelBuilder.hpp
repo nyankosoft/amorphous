@@ -20,11 +20,19 @@ public:
 
 	enum Option
 	{
-		ORIGINAL_FILENAME = 0,
-		BODY_FILENAME_ONLY,
+		ORIGINAL_PATHNAME = 0,
+
+		/// Filename without any directory path
+		FILENAME,
+
 		RELATIVE_PATH_AND_BODY_FILENAME,
+
 		FIXEDPATH_AND_FILENAME,
-		NO_TEXTURE_FILENAME,	///< do nothing to texture filename. use this if you want to set the texture filename completely by the model-specific mesh builder
+
+		/// do nothing to texture filename. use this if you want to set the texture
+		/// filename completely by the model-specific mesh builder
+		NO_TEXTURE_FILENAME,
+
 		NUM_OPTIONS
 	};
 };

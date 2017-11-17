@@ -18,7 +18,7 @@ using namespace lfs;
 
 C3DModelLoader::C3DModelLoader()
 :
-m_TextureFilePathOption(TexturePathnameOption::ORIGINAL_FILENAME)
+m_TextureFilePathOption(TexturePathnameOption::ORIGINAL_PATHNAME)
 {
 }
 
@@ -557,8 +557,8 @@ const char* GetTexFilenameOptionTitle( TexturePathnameOption::Option option )
 {
 	switch(option)
 	{
-	case TexturePathnameOption::ORIGINAL_FILENAME:					return "TexturePathnameOption::ORIGINAL_FILENAME";
-	case TexturePathnameOption::BODY_FILENAME_ONLY:					return "TexturePathnameOption::BODY_FILENAME_ONLY";
+	case TexturePathnameOption::ORIGINAL_PATHNAME:					return "TexturePathnameOption::ORIGINAL_FILENAME";
+	case TexturePathnameOption::FILENAME:					        return "TexturePathnameOption::FILENAME";
 	case TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME:	return "TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME";
 	case TexturePathnameOption::FIXEDPATH_AND_FILENAME:				return "TexturePathnameOption::FIXEDPATH_AND_FILENAME";
 	case TexturePathnameOption::NO_TEXTURE_FILENAME:				return "TexturePathnameOption::NO_TEXTURE_FILENAME";
@@ -619,7 +619,9 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 
 			switch( m_pModelLoader->GetTexturePathnameOption() )
 			{
-			case TexturePathnameOption::BODY_FILENAME_ONLY:
+			case TexturePathnameOption::FILENAME:
+				strTextureFilename = lfs::path(strTextureFilename).filename().string();
+				LOG_PRINT("FILENAME: " + strTextureFilename);
 				break;
 
 			case TexturePathnameOption::FIXEDPATH_AND_FILENAME:
@@ -630,7 +632,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 				}
 				break;
 
-			case TexturePathnameOption::ORIGINAL_FILENAME:
+			case TexturePathnameOption::ORIGINAL_PATHNAME:
 				break;
 
 			case TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME:
@@ -739,7 +741,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 
 		switch( m_TextureFilenameOption )
 		{
-		case TexturePathnameOption::BODY_FILENAME_ONLY:
+		case TexturePathnameOption::FILENAME:
 			break;
 
 		case TexturePathnameOption::FIXEDPATH_AND_FILENAME:
@@ -756,7 +758,7 @@ void C3DMeshModelBuilder::ProcessTextureFilenames()
 			}
 			break;
 
-		case TexturePathnameOption::ORIGINAL_FILENAME:
+		case TexturePathnameOption::ORIGINAL_PATHNAME:
 			break;
 
 		case TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME:
