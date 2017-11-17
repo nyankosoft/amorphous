@@ -7,7 +7,7 @@
 namespace amorphous
 {
 
-
+using namespace std;
 
 /// each i-th element of output_filepaths corresponds to the i-th mesh group
 bool C3DShapesExporter_LW::ExtractShapes( std::shared_ptr<LWO2_Object> pObject, const std::vector<std::string>& output_filepaths )
