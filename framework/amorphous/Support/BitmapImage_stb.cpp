@@ -243,14 +243,15 @@ bool BitmapImage::Rescale( int dest_width, int dest_height/*, CImageFilter::Name
 
 bool BitmapImage::FlipVertical()
 {
-	if( m_pStbImage )
+	if( !m_pStbImage )
 	{
-		int bytes_per_pixel = m_NumChannels;
-		stbi__vertical_flip( m_pStbImage, m_ImageWidth, m_ImageHeight, bytes_per_pixel );
-		//return res ? true : false;
+		LOG_PRINT_ERROR("The source bitmap image is not valid.");
+		return false;
 	}
-	else
-		//return false;
+
+	int bytes_per_pixel = m_NumChannels;
+	stbi__vertical_flip( m_pStbImage, m_ImageWidth, m_ImageHeight, bytes_per_pixel );
+	//return res ? true : false;
 
 	return true;
 }
@@ -260,7 +261,7 @@ shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
 {
 	if( !m_pStbImage )
 	{
-		LOG_PRINT_ERROR( " The source bitmap image is not a valid." );
+		LOG_PRINT_ERROR( "The source bitmap image is not valid." );
 		return shared_ptr<BitmapImage>();
 	}
 
