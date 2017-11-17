@@ -801,7 +801,7 @@ bool C3DMeshModelBuilder_LW::BuildMeshFromLayer( LWO2_Layer& rLayer )
 
 	SetVertexFormatFlags( m_DefaultVertexFlags );
 
-	SetTexturePathnameOption( TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME );
+	//SetTexturePathnameOption( TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME );
 
 	// create the basic form of a mesh object
 	ProcessLayer( rLayer );
