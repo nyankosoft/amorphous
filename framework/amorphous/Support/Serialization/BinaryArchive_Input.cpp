@@ -8,14 +8,27 @@ using namespace amorphous::serialization;
 using namespace std;
 
 
+// See https://stackoverflow.com/questions/7781898/get-an-istream-from-a-char
+struct membuf : std::streambuf
+{
+    membuf(char* begin, char* end) {
+        this->setg(begin, begin, end);
+    }
+};
+
+
 BinaryArchive_Input::BinaryArchive_Input( const string& filename,
 											const char *pStringID,
-										    unsigned int flag )
+											unsigned int flag )
 {
-	m_InputFileStream.open( filename.c_str(), ios::in|ios::binary );
+	ifstream *ifs = new ifstream;
+	ifs->open( filename.c_str(), ios::in|ios::binary );
+	//m_InputFileStream.open( filename.c_str(), ios::in|ios::binary );
 
-	if( !m_InputFileStream.is_open() )
+	if( !ifs->is_open() )// ( !m_InputFileStream.is_open() )
 		LOG_PRINT_WARNING( " Failed to open the input file stream: " + filename );
+	
+	m_pInputStream.reset( ifs );
 
 	m_Mode = MODE_INPUT;
 
@@ -30,11 +43,49 @@ BinaryArchive_Input::BinaryArchive_Input( const string& filename,
 
 }
 
+BinaryArchive_Input::BinaryArchive_Input(
+	const void *buffer,
+	int buffer_size_in_bytes,
+	const char *pStringID,
+	unsigned int archive_option_flags )
+{
+	LOG_PRINTF(("buffer size: %d bytes",buffer_size_in_bytes));
+
+	//vector<char> char_buffer;
+	//char_buffer.resize(buffer_size_in_bytes);
+	//memcpy(&char_buffer[0],buffer,buffer_size_in_bytes);
+	char mybuffer[300000];
+	memset(mybuffer,0,sizeof(mybuffer));
+	memcpy(mybuffer,buffer,buffer_size_in_bytes);
+
+	//membuf sbuf((char *)buffer, (char *)buffer + buffer_size_in_bytes);//sizeof(buffer));
+	//membuf sbuf(&char_buffer[0], &char_buffer[0] + char_buffer.size());
+	membuf sbuf(mybuffer, mybuffer + sizeof(mybuffer));
+	std::istream *input_stream = new std::istream(&sbuf);
+	
+	m_pInputStream.reset( input_stream );
+
+	LOG_PRINT("setting the mode to MODE_INPUT.");
+
+	m_Mode = MODE_INPUT;
+	
+	/// Read from the stream later.
+	m_OptionFlags = 0;
+	
+	if( pStringID )
+		m_strUserDefinedID = pStringID;
+	else
+		m_strUserDefinedID = "";
+}
+
 
 bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 {
-	if( !m_InputFileStream.is_open() )
+	if( !m_pInputStream )//!m_InputFileStream.is_open() )
+	{
+		LOG_PRINT_ERROR("null m_pInputStream");
 		return false;
+	}
 
 	// test if the beginning part of the archive is the valid predifined id string
 	const int archive_string_data_length
@@ -44,6 +95,7 @@ bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 	char c = 0;
 	vector<char> archive_string_data;
 	archive_string_data.resize( archive_string_data_length, 0 );
+	LOG_PRINTF(("archive_string_data_length: %d",archive_string_data_length));
 	for( int i=0; i<archive_string_data_length; i++ )
 	{
 		HandleData( &c, sizeof(char) );
@@ -57,6 +109,8 @@ bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 	int archive_ver = 0;
 	string archive_string = &archive_string_data[0];
 	string bin_archive_name = archive_string.substr(0, strlen(sg_pBinaryArchiveIdentifierString));
+	LOG_PRINT("archive_string: " + archive_string);
+	LOG_PRINT("bin_archive_name: " + bin_archive_name);
 	if( bin_archive_name == sg_pBinaryArchiveIdentifierString )
 	{
 		// Version 01 or higher
@@ -91,6 +145,8 @@ bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 
 	if( m_strUserDefinedID != strID )
 		return false;
+
+	LOG_PRINT("Loading data from binary archive...");
 
 	// load binary archive data
 	(*this) & obj;
@@ -214,17 +270,23 @@ IArchive& BinaryArchive_Input::operator & (string& strData)
 
 void BinaryArchive_Input::HandleData( void *pData, const int size )
 {
+	if( !m_pInputStream )
+		return;
+
+	//istream& input_stream = m_InputFileStream;
+	istream& input_stream = *m_pInputStream;
+
 	if( m_OptionFlags & ArchiveOptionFlags::AOF_OBFUSCATE )
 	{
 		char read = 0;
 		for( int i=0; i<size; i++ )
 		{
-			m_InputFileStream.read( &read, 1 );
+			input_stream.read( &read, 1 );
 			read = read ^ ms_ObfucationBits[m_ObfucationBitIndex];
 			m_ObfucationBitIndex = (m_ObfucationBitIndex+1) % NUM_OBFUSCATION_BYTES;
 			((char *)pData)[i] = read;
 		}
 	}
 	else
-		m_InputFileStream.read( (char *)pData, size);
+		input_stream.read( (char *)pData, size);
 }

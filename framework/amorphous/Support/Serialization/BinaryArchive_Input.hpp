@@ -1,6 +1,7 @@
 #ifndef  __BINARYARCHIVE_INPUT_H__
 #define  __BINARYARCHIVE_INPUT_H__
 
+#include <memory>
 #include <iostream>
 #include <fstream>
 #include "BinaryArchive.hpp"
@@ -22,7 +23,13 @@ public:
 		                  const char *pcStringID = nullptr,
 						  unsigned int archive_option_flags = 0 );
 
-	virtual ~BinaryArchive_Input() { m_InputFileStream.close(); }
+	/// constructor
+	BinaryArchive_Input( const void *buffer,
+		int buffer_size_in_bytes,
+		const char *pcStringID = nullptr,
+		unsigned int archive_option_flags = 0 );
+
+	virtual ~BinaryArchive_Input() {}// { m_InputFileStream.close(); }
 
 	/// load archive objects saved in binary format file
 	bool operator>> ( IArchiveObjectBase& obj );
@@ -51,7 +58,8 @@ public:
 
 protected:
 
-	std::ifstream m_InputFileStream;
+	//std::ifstream m_InputFileStream;
+	std::unique_ptr<std::istream> m_pInputStream;
 
 };
 

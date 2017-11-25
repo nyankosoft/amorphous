@@ -27,6 +27,15 @@ bool IArchiveObjectBase::LoadFromFile( const string& filename )
 }
 
 
+bool IArchiveObjectBase::LoadFromMemory( const void *buffer, int buffer_size_in_bytes )
+{
+	BinaryArchive_Input archive( buffer, buffer_size_in_bytes );
+	return ( archive >> *this );
+
+//	return true;
+}
+
+
 bool IArchiveObjectBase::SaveToCompressedFile( const std::string& filename )
 {
 	CompressedArchive_Output archive( filename );

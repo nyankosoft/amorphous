@@ -66,6 +66,8 @@ public:
 
 	bool LoadFromFile( const std::string& filename );
 
+	bool LoadFromMemory( const void *buffer, int buffer_size_in_bytes );
+
 	bool SaveToCompressedFile( const std::string& filename );
 
 	bool LoadFromCompressedFile( const std::string& filename );
