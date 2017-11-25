@@ -4,8 +4,7 @@
 
 #include "Archive.hpp"
 #include "ArchiveObjectBase.hpp"
-
-#include "../Log/DefaultLog.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
