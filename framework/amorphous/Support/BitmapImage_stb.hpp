@@ -109,6 +109,8 @@ public:
 
 	bool CreateFromImageDataStream( stream_buffer& image_data, const std::string& image_format );
 
+	bool LoadFromMemory( const void *buffer, int size_in_bytes );
+
 	/**
 	\brief Paints the entire image with the specified color
 

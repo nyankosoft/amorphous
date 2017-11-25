@@ -224,16 +224,53 @@ bool BitmapImage::CreateFromImageDataStream( stream_buffer& image_data, const st
 }
 
 
+bool BitmapImage::LoadFromMemory( const void *buffer, int size_in_bytes )
+{
+	LOG_PRINTF_VERBOSE(("Loading an image from memory. Size: %d",size_in_bytes));
+
+	Release();
+
+	int w = 0, h = 0;
+	int channels_in_file = 0;
+	int desired_channels = 4;
+	unsigned char *img = stbi_load_from_memory( (unsigned char *)buffer, size_in_bytes, &w, &h, &channels_in_file, desired_channels );
+
+	if(!img)
+	{
+		LOG_PRINTF_ERROR(("stbi_load_from_memory returned nullptr."));
+		return false;
+	}
+
+	LOG_PRINTF_VERBOSE(("channels_in_file: %d, desired_channels (what is actually on memory): %d",channels_in_file,desired_channels));
+	
+	m_pStbImage   = img;
+	m_ImageWidth  = w;
+	m_ImageHeight = h;
+	m_NumChannels = desired_channels;
+
+	return true;
+}
+
+
 bool BitmapImage::Rescale( int dest_width, int dest_height/*, CImageFilter::Name filter */ )
 {
-	return false;
+	unsigned char *output_pixels = nullptr;
 	if( m_pStbImage )
 	{
-		// FreeImage_Rescale() does not change the image specified as the first argument.
-		// It returns the scaled image.
-		//		int ret = stbir_resize_uint8();
-		//		void *pScaledImage = xxx_rescale( m_pStbImage, dest_width, dest_height, FILTER_BILINEAR/*filter*/ );
-		//		Reset( pScaledImage );
+		int num_strides_in_bytes = 0;
+		int w = 0, h = 0;
+
+		int ret = stbir_resize_uint8(
+			m_pStbImage, // const unsigned char *input_pixels
+			m_ImageWidth,
+			m_ImageHeight,
+			num_strides_in_bytes, // input_stride_in_bytes
+			output_pixels,
+			w,
+			h,
+			num_strides_in_bytes,
+			m_NumChannels
+		);
 		return true;
 	}
 	else
@@ -288,16 +325,29 @@ shared_ptr<BitmapImage> BitmapImage::CreateCopy() const
 
 shared_ptr<BitmapImage> BitmapImage::GetRescaled( int dest_width, int dest_height/*, CImageFilter::Name filter */ ) const
 {
+	if( dest_width <= 0 || dest_height <= 0 )
+	{
+		return shared_ptr<BitmapImage>();
+	}
+
 	if( m_pStbImage )
 	{
-		int stride_in_bytes = m_NumChannels;
-		unsigned char *dest = nullptr;
-		int ret = stbir_resize_uint8( m_pStbImage, m_ImageWidth, m_ImageHeight, stride_in_bytes,
-			dest, dest_width, dest_height, stride_in_bytes,
-			m_NumChannels );
+		int num_strides_in_bytes = 0;
+		unsigned char *dest = (unsigned char *)STBI_MALLOC(dest_width * dest_height * m_NumChannels);
+		int ret = stbir_resize_uint8(
+			m_pStbImage,
+			m_ImageWidth,
+			m_ImageHeight,
+			num_strides_in_bytes,
+			dest,
+			dest_width,
+			dest_height,
+			num_strides_in_bytes,
+			m_NumChannels
+		);
 
 		shared_ptr<BitmapImage> pScaledImage( new BitmapImage() );
-		pScaledImage->m_pStbImage = dest;
+		pScaledImage->m_pStbImage   = dest;
 		pScaledImage->m_NumChannels = m_NumChannels;
 		pScaledImage->m_ImageWidth  = dest_width;
 		pScaledImage->m_ImageHeight = dest_height;
