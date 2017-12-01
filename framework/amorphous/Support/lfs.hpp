@@ -365,9 +365,15 @@ public:
 		return get_parent_path(pathname);
 	}
 
-	path leaf() const
+	path filename() const
 	{
 		return path(get_leaf(pathname));
+	}
+
+	// Deprecated in boost::filesystem
+	path leaf() const
+	{
+		return filename();
 	}
 
 	path stem() const
