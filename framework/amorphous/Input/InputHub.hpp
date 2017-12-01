@@ -5,6 +5,7 @@
 #include "fwd.hpp"
 #include "InputHandler.hpp"
 #include "amorphous/base.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 
 
 namespace amorphous
@@ -180,6 +181,8 @@ inline void InputHub::UpdateMaxIndex()
 
 inline void InputHub::UpdateInput( InputData& input )
 {
+	LOG_PRINTF_VERBOSE(("dispatching (code: %d).",input.iGICode));
+	
 /*	if( input.iType == ITYPE_KEY_PRESSED )
 	{
 		m_KeyStates[input.iGICode] = 1;
