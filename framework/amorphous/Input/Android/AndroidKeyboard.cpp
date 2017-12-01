@@ -49,7 +49,9 @@ AndroidKeyboard::AndroidKeyboard()
     static int s = 0;
 
     ONCE( InitKeyMaps() );
-    
+
+    LOG_PRINTF(("key map size: %d",(int)key_maps.size()));
+
     LOG_PRINTF(("Registering the device to a group. %d",s));
     s+=1;
     
@@ -62,6 +64,8 @@ AndroidKeyboard::AndroidKeyboard()
 
 void AndroidKeyboard::OnKeyDown(int android_keycode)
 {
+    //LOG_PRINTF(("map size: %d",(int)key_maps.size()));
+
     if( key_maps.find(android_keycode) == key_maps.end() ) {
         // Key was not found.
         LOG_PRINTF_WARNING(("An unrecognized key: %d",android_keycode));
@@ -84,6 +88,8 @@ void AndroidKeyboard::OnKeyDown(int android_keycode)
 
 void AndroidKeyboard::OnKeyUp(int android_keycode)
 {
+    //LOG_PRINTF(("map size: %d",(int)key_maps.size()));
+
     if( key_maps.find(android_keycode) == key_maps.end() ) {
         // Key was not found.
         LOG_PRINTF_WARNING(("An unrecognized key: %d",android_keycode));
