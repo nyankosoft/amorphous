@@ -36,8 +36,13 @@ InputDevice::~InputDevice()
 
 void InputDevice::UpdateInputState( const InputData& input_data )
 {
+	LOG_PRINTF_VERBOSE(("entered (code: %d)",input_data.iGICode));
+
 	if( !m_pGroup )
+	{
+		LOG_PRINTF(("null m_pGroup"));
 		return;
+	}
 
 	TCFixedVector<int,InputDeviceParam::NUM_MAX_SIMULTANEOUS_PRESSES>& pressed_key_list = PressedKeyList();
 
@@ -46,6 +51,8 @@ void InputDevice::UpdateInputState( const InputData& input_data )
 
 	if( input_data.iType == ITYPE_KEY_PRESSED )
 	{
+		LOG_PRINTF_VERBOSE(("Setting state to PRESSED (code: %d)",input_data.iGICode));
+
 		key.m_State = CInputState::PRESSED;
 
 		// schedule the first auto repeat event
@@ -68,6 +75,8 @@ void InputDevice::UpdateInputState( const InputData& input_data )
 	}
 	else // ( input_data.iType == ITYPE_KEY_RELEASED )
 	{
+		LOG_PRINTF_VERBOSE(("Setting state to RELEASED (code: %d)",input_data.iGICode));
+
 		key.m_State = CInputState::RELEASED;
 
 		// clear the key from the list of pressed keys
