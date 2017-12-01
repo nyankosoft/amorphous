@@ -24,6 +24,8 @@ class InputDeviceGroup
 
 public:
 
+	// Note that CInputState objects of m_aInputState initialize themselves via ctor
+	// and the key states are set to CInputState::RELEASED
 	InputDeviceGroup() {}
 
 	~InputDeviceGroup() {}
