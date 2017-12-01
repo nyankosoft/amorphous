@@ -47,6 +47,27 @@ bool TextureResourceDesc::IsValid() const
 }
 
 
+bool TextureResourceDesc::IsDiskResource() const
+{
+	if( this->pLoader
+	 || this->ResourcePath.length() == 0
+	 || this->UsageFlags & UsageFlag::RENDER_TARGET )
+	{
+		// Treat as non-disk resource if any one of the following is true
+		// - Has a texture loader, or an algorithm to fill the texture
+		// - Has no resource path
+		// - Sepcified as a render target texture
+		LOG_PRINT_VERBOSE( "false (t): " + this->ResourcePath );
+		return false;
+	}
+	else
+	{
+		LOG_PRINT_VERBOSE( "true (t): " + this->ResourcePath );
+		return true;
+	}
+}
+
+
 bool TextureResourceDesc::CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const
 {
 	if( 0 < this->ResourcePath.length()
