@@ -241,6 +241,8 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::FindSameLoadedResourc
 //    false (not found) -> send a load request to the resource I/O thread
 shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadAsync( const GraphicsResourceDesc& desc )
 {
+	LOG_PRINT("desc.ResourcePath: " + desc.ResourcePath);
+
 	if( !desc.IsValid() )
 		return shared_ptr<GraphicsResourceEntry>();
 
@@ -310,7 +312,8 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 		SetCurrentThreadAsRenderThread();
 	}
 
-	if( std::this_thread::get_id() != GetRenderThreadID() )
+	if(false)
+	//if( std::this_thread::get_id() != GetRenderThreadID() )
 	{
 		return LoadAsync( desc );
 	}
@@ -379,7 +382,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 	}
 	else
 	{
-		LOG_PRINTF_WARNING(( " Failed to create a graphics resource (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
+		LOG_PRINTF_WARNING(( " Failed to load a graphics resource (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
 
 		// decrement ref count
 		// - This will make the ref count zero and release the non-cachecd resource
@@ -432,7 +435,8 @@ void GraphicsResourceManager::LoadGraphicsResources( const GraphicsParameters& r
 		 && pEntry->GetResource()
 		 && !pEntry->GetResource()->IsCachedResource() ) // Do not load cached resources because it's a job of GraphicsResourceCacheManager
 		{
-			pEntry->GetResource()->Load();
+			//pEntry->GetResource()->Load();
+			pEntry->GetResource()->LoadGraphicsResources();
 		}
 	}
 }
@@ -457,7 +461,8 @@ void GraphicsResourceManager::ReleaseGraphicsResources()
 		if( pEntry
 		 && pEntry->GetResource() )
 		{
-			pEntry->GetResource()->ReleaseNonChachedResource(); // Do not release cached resources
+			//pEntry->GetResource()->ReleaseNonChachedResource(); // Do not release cached resources
+			pEntry->GetResource()->ReleaseGraphicsResources();
 		}
 	}
 }

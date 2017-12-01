@@ -12,12 +12,19 @@
 #include "amorphous/Support/fwd.hpp"
 #include "amorphous/3DMath/Rectangular.hpp"
 #include "amorphous/Graphics/OpenGL/GLHeaders.h"
+#ifdef __ANDROID__
+#include <android/asset_manager.h>
+#endif // __ANDROID__
 
 
 namespace amorphous
 {
 
 typedef SRectangular SDim2;
+
+#ifdef __ANDROID__
+void SetAssetManager(AAssetManager *pAssetManager);
+#endif // __ANDROID__
 
 
 class GraphicsResourceState
@@ -113,6 +120,8 @@ public:
 	/// - These are the strings obtained by decomposing m_Filename to "(db_filepath)::(keyname)"
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname ) = 0;
 
+	virtual bool LoadFromMemory(const unsigned char *buffer, int size_in_bytes) { return false; }
+	
 	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
 	virtual int CanBeUsedAsCache( const GraphicsResourceDesc& desc ) { return 0; }
@@ -131,6 +140,22 @@ public:
 
 	inline GraphicsResourceState::Name GetState();
 
+	/**
+	 * \brief Release those resources created via APIs of the graphics library, such as glGenTextures()
+	 *
+	 * Sometimes the graphics library, e.g. OpenGL, is re-initialized and when it happens all the resources
+	 * acquired via OpenGL APIs have to be re-created. This function is to do this without aksing the app developers
+	 * to mangually re-created resources themselves.
+	 */
+	 virtual void ReleaseGraphicsResources() { ReleaseNonChachedResource(); }
+	 
+	/**
+	* \brief Reload graphics resources released via ReleaseGraphicsResources()
+	*
+	* Must be always called in pairs with ReleaseGraphicsResources().
+	*/
+	virtual void LoadGraphicsResources() { Load(); }
+	 
 	/// Appends a string which represents the status of the graphics resource to dest_buffer
 	virtual void GetStatus( std::string& dest_buffer );
 
@@ -273,6 +298,8 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
+	virtual bool LoadFromMemory(const unsigned char *buffer, int size_in_bytes);
+	
 	virtual bool CanBeSharedAsSameResource( const GraphicsResourceDesc& desc );
 
 	int CanBeUsedAsCache( const GraphicsResourceDesc& desc );
@@ -300,6 +327,10 @@ public:
 	void CreateMeshAndLoadNonAsyncResources( C3DMeshModelArchive& archive );
 
 	bool LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive );
+
+	void ReleaseGraphicsResources();
+
+	void LoadGraphicsResources();
 
 	friend class GraphicsResourceManager;
 };

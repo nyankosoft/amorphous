@@ -13,6 +13,21 @@
 #include "amorphous/Support/Serialization/BinaryDatabase.hpp"
 
 
+#ifdef __ANDROID__
+namespace amorphous
+{
+AAssetManager *sg_pAssetManager = nullptr;
+void SetAssetManager(AAssetManager *pAssetManager)
+{
+	LOG_PRINT(" entered.");
+	if(!pAssetManager)
+		LOG_PRINT("null pAssetManager");
+
+	sg_pAssetManager = pAssetManager;
+}
+}
+#endif // __ANDROID__
+
 namespace amorphous
 {
 using namespace serialization;
@@ -125,6 +140,56 @@ bool GraphicsResource::LoadFromDisk()
 
 		target_filepath = db_filename;
 	}
+#ifdef __ANDROID__
+	else if(resource_path.find("asset://") == 0)
+	{
+		if( !sg_pAssetManager )
+		{
+			LOG_PRINT_ERROR("asset_manager == null");
+			return false;
+		}
+
+		const string asset_pathname = resource_path.substr(string("asset://").length());
+		LOG_PRINT("asset_pathname: " + asset_pathname);
+		
+		AAsset *asset = AAssetManager_open(sg_pAssetManager,asset_pathname.c_str(),AASSET_MODE_BUFFER);
+
+		if(!asset)
+		{
+			LOG_PRINTF_ERROR(("AAssetManager_open() returned null. File: %s",asset_pathname.c_str()));
+			return false;
+		}
+
+		const int buffer_size = 300000;
+		unsigned char buffer[buffer_size];
+
+		int num_bytes_read = AAsset_read(asset,buffer,(size_t)buffer_size);
+
+		LOG_PRINTF(("num_bytes_read: %d", num_bytes_read));
+
+		if(num_bytes_read < 0)
+		{
+			return false;
+		}
+
+		string output_pathname = "/storage/emulated/0/Download/" + asset_pathname;
+		FILE *fp = fopen(output_pathname.c_str(),"wb");
+		if(fp)
+		{
+			size_t written = fwrite(buffer,1,num_bytes_read,fp);
+			LOG_PRINTF(("written: %d",(int)written));
+			fclose(fp);
+		}
+
+		loaded = LoadFromMemory(buffer, num_bytes_read);
+
+		AAsset_close(asset);
+
+		asset = nullptr;
+
+		//loaded = LoadFromFile( output_pathname );
+	}
+#endif /* __ANDROID__ */
 	else
 	{
 		loaded = LoadFromFile( resource_path );
@@ -236,18 +301,7 @@ void TextureResource::Release()
 
 bool TextureResource::IsDiskResource() const
 {
-	if( m_TextureDesc.pLoader
-	 || m_TextureDesc.ResourcePath.length() == 0
-	 || m_TextureDesc.UsageFlags & UsageFlag::RENDER_TARGET )
-	{
-		// Treat as non-disk resource if any one of the following is true
-		// - Has a texture loader, or an algorithm to fill the texture
-		// - Has no resource path
-		// - Sepcified as a render target texture
-		return false;
-	}
-	else
-		return true;
+	return m_TextureDesc.IsDiskResource();
 
 //	if( 0 < m_TextureDesc.Width
 //	 && 0 < m_TextureDesc.Height
@@ -359,6 +413,30 @@ bool MeshResource::LoadFromFile( const std::string& filepath )
 	else
 	{
 		LOG_PRINT_WARNING( "Failed to load the mesh: " + filepath );
+		return false;
+	}
+}
+
+
+bool MeshResource::LoadFromMemory(const unsigned char *buffer, int size_in_bytes)
+{
+//	LOG_FUNCTION_SCOPE();
+
+	m_pMeshObject.reset();
+	
+	MeshFactory factory;
+	LOG_PRINT("Loading mesh from memory.");
+	BasicMesh *pMeshObject
+		= factory.LoadMeshFromMemory( buffer, size_in_bytes, m_MeshDesc.ResourcePath, m_MeshDesc.LoadOptionFlags, m_MeshDesc.MeshType );
+
+	if( pMeshObject )
+	{
+		m_pMeshObject = shared_ptr<BasicMesh>( pMeshObject );
+		return true;
+	}
+	else
+	{
+		LOG_PRINT_WARNING( "Failed to load the mesh from memory: " + m_MeshDesc.ResourcePath );
 		return false;
 	}
 }
@@ -567,6 +645,38 @@ bool MeshResource::LoadMeshFromArchive( C3DMeshModelArchive& mesh_archive )
 }
 
 
+void MeshResource::ReleaseGraphicsResources()
+{
+	if( !m_pMeshObject )
+		return;
+
+	if( m_pMeshObject->IsCustomMesh() )
+	{
+		// Since the mesh stores all the data using generic containers
+		// and does not use data type specpfic to a graphics library,
+		// we simply skip the releasing/re-creating process.
+		return;
+	}
+	else
+	{
+		ReleaseNonChachedResource();
+	}
+}
+
+
+void MeshResource::LoadGraphicsResources()
+{
+	if(m_pMeshObject && m_pMeshObject->IsCustomMesh())
+	{
+		return;
+	}
+	else
+	{
+		Load();
+	}
+}
+
+
 void MeshResource::GetStatus( std::string& dest_buffer )
 {
 	GraphicsResource::GetStatus( dest_buffer );
@@ -737,12 +847,19 @@ bool ShaderResource::CreateProgramFromSource( const std::string& vertex_shader, 
 		m_pShaderManager = CreateShaderManager();
 
 	if( !m_pShaderManager )
+	{
+		LOG_PRINT_ERROR("!m_pShaderManager");
 		return false;
+	}
 
 	bool loaded = m_pShaderManager->LoadShaderFromText( vertex_shader, fragment_shader );
 
 	if( loaded )
 		SetState( GraphicsResourceState::LOADED );
+	else
+	{
+		LOG_PRINT_ERROR("!loaded");
+	}
 
 	return loaded;
 }
