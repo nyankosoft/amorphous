@@ -1,5 +1,7 @@
 #include "CameraControllerBase.hpp"
-#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Input/InputHub.hpp"
+#include "amorphous/Input/InputDevice.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 
 
 namespace amorphous
@@ -14,7 +16,7 @@ m_Active(true)
 	m_fYaw = 0.0f;
 	m_fPitch = 0.0f;
 
-	m_fTranslationSpeed = 8.0f;
+	m_fTranslationSpeed = 2.0f;//8.0f;
 
 	m_iPrevMousePosX = 0;
 	m_iPrevMousePosY = 0;
@@ -44,27 +46,32 @@ void CameraControllerBase::UpdateCameraPose( float dt )
 	float forward=0, right=0, up=0, spd;
 //	Matrix33 matRot;
 
-	if( (GetAsyncKeyState(VK_SHIFT) & 0x8000) )
+	if( IsKeyPressed(GIC_LSHIFT) )
 		spd = m_fTranslationSpeed * 2.0f;
 	else
 		spd = m_fTranslationSpeed * 1.0f;
 
 	int *kb = m_CameraControlCode;
 
-	if( IsKeyPressed(kb[CameraControl::Forward]) )     forward =  spd * dt;
-	if( IsKeyPressed(kb[CameraControl::Backward]) )    forward = -spd * dt;
-	if( IsKeyPressed(kb[CameraControl::Right]) )       right   =  spd * dt;
-	if( IsKeyPressed(kb[CameraControl::Left]) )        right   = -spd * dt;
-	if( IsKeyPressed(kb[CameraControl::Up]) )          up      =  spd * dt * 3.0f;
-	if( IsKeyPressed(kb[CameraControl::Down]) )        up      = -spd * dt * 3.0f;
+	if( IsKeyPressed(kb[CameraControl::Forward]) )  forward =  spd * dt;
+	if( IsKeyPressed(kb[CameraControl::Backward]) ) forward = -spd * dt;
+	if( IsKeyPressed(kb[CameraControl::Right]) )    right   =  spd * dt;
+	if( IsKeyPressed(kb[CameraControl::Left]) )     right   = -spd * dt;
+	if( IsKeyPressed(kb[CameraControl::Up]) )       up      =  spd * dt * 3.0f;
+	if( IsKeyPressed(kb[CameraControl::Down]) )     up      = -spd * dt * 3.0f;
+
+	bool fwd_key_pressed   = IsKeyPressed(kb[CameraControl::Forward]);
+	bool right_key_pressed = IsKeyPressed(kb[CameraControl::Right]);
+	LOG_PRINTF(("fwd_key_pressed: %d",fwd_key_pressed ? 1 : 0));
+	LOG_PRINTF(("right_key_pressed: %d",right_key_pressed ? 1 : 0));
 
 /*
-//	if( GetAsyncKeyState('X') & 0x8000 )	m_fYaw += 3.141592f * dt;
-//	if( GetAsyncKeyState('Z') & 0x8000	)	m_fYaw -= 3.141592f * dt;
-//	if( GetAsyncKeyState('Q') & 0x8000 )	m_fPitch += 3.141592f * dt;
-//	if( GetAsyncKeyState('A') & 0x8000	)	m_fPitch -= 3.141592f * dt;
-//	if( GetAsyncKeyState('Q') & 0x8000 )	m_vCameraPosition.y += 2.0f * dt;
-//	if( GetAsyncKeyState('A') & 0x8000	)	m_vCameraPosition.y -= 2.0f * dt;
+//	if( IsKeyPressed('X') )	m_fYaw += PI * dt;
+//	if( IsKeyPressed('Z') ) m_fYaw -= PI * dt;
+//	if( IsKeyPressed('Q') )	m_fPitch += PI * dt;
+//	if( IsKeyPressed('A') ) m_fPitch -= PI * dt;
+//	if( IsKeyPressed('Q') ) m_vCameraPosition.y += 2.0f * dt;
+//	if( IsKeyPressed('A') ) m_vCameraPosition.y -= 2.0f * dt;
 */
 	Matrix34 pose = GetPose();
 
@@ -89,7 +96,7 @@ bool CameraControllerBase::IsKeyPressed( int general_input_code )
 	case GIC_MOUSE_BUTTON_L: return (m_IsMouseButtonPressed[MBTN_LEFT ] == 1);
 	case GIC_MOUSE_BUTTON_R: return (m_IsMouseButtonPressed[MBTN_RIGHT] == 1);
 	default:
-		return false;
+		return ( GetInputDeviceHub().GetInputDeviceGroup(0)->GetInputState(general_input_code) == CInputState::PRESSED );
 	}
 
 	return false;
@@ -119,6 +126,8 @@ void CameraControllerBase::AssignKeyForCameraControl( int general_input_code, Ca
 
 void CameraControllerBase::HandleInput( const InputData& input )
 {
+	LOG_PRINTF(("code: %d",input.iGICode));
+
 	switch( input.iGICode )
     {
 	case GIC_MOUSE_BUTTON_L:

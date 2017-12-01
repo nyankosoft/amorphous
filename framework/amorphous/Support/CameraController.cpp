@@ -1,5 +1,6 @@
 #include "CameraController.hpp"
 #include "amorphous/Input/InputDevice.hpp"
+#include "amorphous/Support/Log/DefaultLogAux.hpp"
 
 
 namespace amorphous
@@ -10,6 +11,8 @@ CameraController::CameraController( int input_handler_index )
 :
 m_InputHandlerIndex(input_handler_index)
 {
+	LOG_PRINTF(("listener index: %d",input_handler_index));
+
 	m_pInputDataDelagate.reset( new CInputDataDelegate<CameraController>(this) );
 
 	if( GetInputHub().GetInputHandler(input_handler_index) )
@@ -32,10 +35,12 @@ CameraController::CameraController( InputHandler *pParentInputHandler )
 
 CameraController::~CameraController()
 {
+	LOG_PRINTF(("removing the listener (index: %d)",m_InputHandlerIndex));
+
 	GetInputHub().RemoveInputHandler( m_InputHandlerIndex, m_pInputDataDelagate.get() );
 }
 
-
+/*
 bool CameraController::IsKeyPressed( int general_input_code )
 {
 	bool res = CameraControllerBase::IsKeyPressed( general_input_code );
@@ -48,7 +53,7 @@ bool CameraController::IsKeyPressed( int general_input_code )
 //	return ( GetInputHub().GetInputState(general_input_code) == CInputState::PRESSED );
 	return ( GetInputDeviceHub().GetInputDeviceGroup(0)->GetInputState(general_input_code) == CInputState::PRESSED );
 }
-
+*/
 
 void CameraController::SetActive( bool active )
 {

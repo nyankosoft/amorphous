@@ -2,8 +2,8 @@
 #define  __CameraControllerBase_H__
 
 
-#include "../3DMath/Matrix34.hpp"
-#include "../Input/fwd.hpp"
+#include "amorphous/3DMath/Matrix34.hpp"
+#include "amorphous/Input/fwd.hpp"
 
 
 namespace amorphous
@@ -26,37 +26,13 @@ public:
 	};
 };
 
-/*
 
-#include <memory>
-
-
-class CameraControllerBase : public CameraController
-{
-public:
-};
-
-
-class CameraController_Linux: public CameraController
-{
-public:
-};
-
-
-std::shared_ptr<CameraController> CreateCameraController()
-{
-	std::shared_ptr<CameraController> ptr;
-
-#ifdef WIN32
-	ptr = std::shared_ptr<CameraController>( new CameraControllerBase() );
-#else
-	ptr = std::shared_ptr<CameraController>( new CameraController_Linux() );
-#endif
-
-	return ptr;
-}
-*/
-
+/**
+ * \brief A class for controlling a simple first-person view using keyboard and mouse
+ *
+ * Helps to look around objects in a typical 3D scene by providing control for a camera that the app develper can move using keyboard and mouse.
+ * Takes keyboard and mouse input events and updates the viewer position.
+ */
 class CameraControllerBase
 {
 	float m_fYaw;
@@ -98,7 +74,7 @@ public:
 
 	virtual void SetActive( bool active ) { m_Active = active; }
 
-	virtual bool IsKeyPressed( int general_input_code );
+	bool IsKeyPressed( int general_input_code );
 
 	void AddYaw( float fYaw );
 
