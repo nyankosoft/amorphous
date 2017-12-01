@@ -2,6 +2,7 @@
 #include "ProgressiveMesh.hpp"
 #include "SkeletalMesh.hpp"
 #include "CustomMesh.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 
 namespace amorphous
@@ -102,5 +103,25 @@ BasicMesh* MeshFactory::LoadMeshObjectFromArchive( C3DMeshModelArchive& mesh_arc
 	}
 }
 
+
+BasicMesh* MeshFactory::LoadMeshFromMemory(
+	const void *buffer,
+	int buffer_size_in_bytes,
+	const std::string& filepath,
+	U32 load_option_flags,
+	MeshTypeName mesh_type
+)
+{
+	C3DMeshModelArchive ar;
+	LOG_PRINTF(("data size in bytes: %d",buffer_size_in_bytes));
+	bool loaded = ar.LoadFromMemory(buffer,buffer_size_in_bytes);
+
+	if(!loaded)
+	{
+		return nullptr;
+	}
+
+	return LoadMeshObjectFromArchive( ar, filepath, load_option_flags, mesh_type );
+}
 
 } // namespace amorphous

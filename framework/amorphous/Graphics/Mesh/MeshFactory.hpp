@@ -65,6 +65,14 @@ public:
 		                                    const std::string& filepath,
 											U32 load_option_flags = 0,
 											MeshTypeName mesh_type = MeshTypeName::SKELETAL );
+
+	BasicMesh* LoadMeshFromMemory(
+		const void *buffer,
+		int buffer_size_in_bytes,
+		const std::string& filepath,
+		U32 load_option_flags = 0,
+		MeshTypeName mesh_type = MeshTypeName::SKELETAL
+	);
 };
 
 
