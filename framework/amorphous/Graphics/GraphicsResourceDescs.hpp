@@ -171,6 +171,8 @@ public:
 
 	virtual bool IsValid() const;
 
+	bool IsDiskResource() const;
+
 	virtual std::shared_ptr<GraphicsResourceDesc> GetCopy() const { return std::shared_ptr<TextureResourceDesc>( new TextureResourceDesc(*this) ); }
 
 	bool CanBeSharedAsSameTextureResource( const TextureResourceDesc& desc ) const;
