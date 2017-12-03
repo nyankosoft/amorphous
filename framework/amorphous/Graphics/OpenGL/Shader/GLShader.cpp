@@ -166,12 +166,16 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 //	else if( glCreateShaderObjectARB )
 //		m_Shader = glCreateShaderObjectARB( GetShaderType() );
 	else
+	{
+		LOG_PRINT_ERROR("!glCreateShader");
 		return false;
+	}
 
 	vector<char> buffer;
 	int ret = read_text_file( filepath, buffer ); // load .vert or .frag file here
 	if( ret != 0 || buffer.empty() )
 	{
+		LOG_PRINT_ERROR("read_text_file failed.");
 		return false;
 	}
 
@@ -181,43 +185,58 @@ bool CGLShader::LoadFromFile( const std::string& filepath )
 
 static void GetCompileStatus( GLenum shader_type, int shader, std::string& error_info, const char *source )
 {
+	LOG_PRINT("entered");
+
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	GLint status = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	LOG_GL_ERROR( " glGetShaderiv() failed." );
-	if (status == GL_FALSE)
+
+	if(status == GL_TRUE)
 	{
-		GLint infoLogLength = 0;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if( infoLogLength == 0 )
-			return;
-
-		GLchar *strInfoLog = new GLchar[infoLogLength + 1];
-		glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
-		const char *strShaderType = "";
-		switch(shader_type)
-		{
-		case GL_VERTEX_SHADER:   strShaderType = "vertex";   break;
-		case GL_GEOMETRY_SHADER: strShaderType = "geometry"; break;
-		case GL_FRAGMENT_SHADER: strShaderType = "fragment"; break;
-		}
-
-		error_info = fmt_string( "Compile failure in %s shader:\n", strShaderType );
-		error_info += strInfoLog;
-
-		static int s_counter = 0;
-		// Save the shader source to a file
-		FILE *fp = fopen(fmt_string(".debug/compile_failed_%02d.glsl",s_counter).c_str(),"w");
-		s_counter += 1;
-		if( fp )
-		{
-			fprintf(fp,source);
-			int ret = fclose(fp);
-		}
-
-		delete[] strInfoLog;
+		LOG_PRINT("status == GL_TRUE. Returning.");
+		return;
 	}
+
+	// status == GL_FALSE
+
+	LOG_PRINT("status == GL_FALSE");
+
+	GLint infoLogLength = 0;
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+	if( infoLogLength == 0 )
+	{
+		LOG_PRINT("infoLogLength == 0");
+		//return;
+	}
+
+	infoLogLength = 4096;
+
+	GLchar *strInfoLog = new GLchar[infoLogLength + 1];
+	glGetShaderInfoLog(shader, infoLogLength, NULL, strInfoLog);
+	const char *strShaderType = "";
+	switch(shader_type)
+	{
+	case GL_VERTEX_SHADER:   strShaderType = "vertex";   break;
+	case GL_GEOMETRY_SHADER: strShaderType = "geometry"; break;
+	case GL_FRAGMENT_SHADER: strShaderType = "fragment"; break;
+	}
+
+	error_info = fmt_string( "Compile failure in %s shader:\n", strShaderType );
+	error_info += strInfoLog;
+
+	static int s_counter = 0;
+	// Save the shader source to a file
+	FILE *fp = fopen(fmt_string(".debug/compile_failed_%02d.glsl",s_counter).c_str(),"w");
+	s_counter += 1;
+	if( fp )
+	{
+		fprintf(fp,source);
+		int ret = fclose(fp);
+	}
+
+	delete[] strInfoLog;
 }
 
 
@@ -225,6 +244,8 @@ bool CGLShader::CreateShader( const char *source )
 {
 	if( !source || strlen(source) == 0 )
 		return false;
+
+	LOG_PRINT("Creating a shader:\n" + string(source));
 
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
@@ -234,6 +255,12 @@ bool CGLShader::CreateShader( const char *source )
 
 	LOG_GL_ERROR( "glCreateShader() failed." );
 
+	LOG_PRINTF(("m_Shader: %d",m_Shader));
+
+	GLboolean is_shader = glIsShader(m_Shader);
+
+	LOG_PRINTF(("is_shader: %d",(int)is_shader));
+	
 	string error_info;
 
 	const char *pBuffer = source;
@@ -264,7 +291,12 @@ void CGLShader::Release()
 {
 	if( 0 < m_Shader )
 	{
+		LOG_GL_ERROR( "Clearing errors before glDeleteShader" );
+
 		glDeleteShader( m_Shader );
+
+		LOG_GL_ERROR("error: glDeleteShader")
+		
 		m_Shader = 0;
 	}
 }
@@ -330,6 +362,7 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 	if( separator_pos == string::npos
 	 || filename.length() - 1 <= separator_pos )
 	{
+		LOG_PRINT_ERROR("argument needs to contain vert and frag shader pathnames separated by |.");
 		return false;
 	}
 
@@ -360,7 +393,6 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 //		m_pFragmentShader = dynamic_pointer_cast<CGLFragmentShader,ShaderManager>( m_FragmentShader.GetShaderManager() );
 		m_pVertexShader   = dynamic_cast<CGLVertexShader *>( m_VertexShader.GetShaderManager() );
 		m_pFragmentShader = dynamic_cast<CGLFragmentShader *>( m_FragmentShader.GetShaderManager() );
-
 	}
 	else
 	{
@@ -388,12 +420,25 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 	if( !vs_loaded || !fs_loaded )
 	{
 		bool min_shaders_loaded = LoadMimalShaders();
-		if( min_shaders_loaded )
+		if( !min_shaders_loaded )
 			return false;
 	}
 
-	if( !m_pVertexShader || !m_pFragmentShader )
+	// Sanity checks
+
+	if(!m_pVertexShader)
+	{
+		LOG_PRINT_ERROR( "!m_pVertexShader" );
 		return false;
+	}
+
+	if(!m_pFragmentShader)
+	{
+		LOG_PRINT_ERROR( "!m_pFragmentShader" );
+		return false;
+	}
+
+	// Ready to locate uniforms
 
 	Result::Name res = InitProgram();
 
@@ -403,8 +448,13 @@ bool CGLProgram::LoadShaderFromFile( const std::string& filename )
 
 Result::Name CGLProgram::InitProgram()
 {
+	LOG_PRINTF_VERBOSE(("CGLProgram::InitProgram() fn entered"));
+
 	if( !m_pVertexShader || !m_pFragmentShader )
+	{
+		LOG_PRINT_ERROR( "Either vs or fs is null." );
 		return Result::UNKNOWN_ERROR;
+	}
 
 	m_Program = glCreateProgram();
 
@@ -428,7 +478,25 @@ Result::Name CGLProgram::InitProgram()
 	LOG_GL_ERROR(" glGetProgramiv() error.");
 
 	if( link_status == GL_FALSE )
+	{
 		LOG_PRINT_ERROR("shaders are not linked.");
+
+		int max_length = 0;
+		// From https://www.khronos.org/registry/OpenGL-Refpages/es2.0/xhtml/glGetProgramiv.xml,
+		// params returns the number of characters in the information log for program
+		// including the null termination character
+		glGetProgramiv(m_Program,GL_INFO_LOG_LENGTH,&max_length);
+		LOG_GL_ERROR(" glGetProgramiv() error (log length).");
+		LOG_PRINTF(("GL_INFO_LOG_LENGTH: %d",max_length));
+		if(0 < max_length)
+		{
+			int length = 0;
+			vector<char> buffer;
+			buffer.resize(max_length);
+			glGetProgramInfoLog(m_Program,max_length,&length,&buffer[0]);
+			LOG_PRINT_ERROR("Link failure info:\n" + string(&buffer[0]));
+		}
+	}
 
 	InitUniforms();
 
@@ -439,6 +507,8 @@ Result::Name CGLProgram::InitProgram()
 	SetParam( "ViewportSize", v );
 
 	LOG_GL_ERROR( "fn end" );
+
+	LOG_PRINTF_VERBOSE(("CGLProgram::InitProgram() fn leaving"));
 
 	return Result::SUCCESS;
 }
@@ -455,6 +525,12 @@ bool CGLProgram::LoadMimalShaders()
 	bool min_vs_created = m_pVertexShader->CreateShader( sg_MinimalVertexShader );
 	bool min_fs_created = m_pFragmentShader->CreateShader( sg_MinimalFragmentShader );
 
+	if(!min_vs_created)
+		LOG_GL_ERROR( "!min_vs_created" );
+
+	if(!min_fs_created)
+		LOG_GL_ERROR( "!min_fs_created" );
+
 	return (min_vs_created && min_fs_created);
 }
 
@@ -467,6 +543,8 @@ bool CGLProgram::LoadShaderFromText( const stream_buffer& buffer )
 
 bool CGLProgram::LoadShaderFromText( const char *vertex_shader, const char *fragment_shader )
 {
+	LOG_PRINTF_VERBOSE((" (of CGLProgram) entered."));
+
 	SafeDelete( m_pVertexShader );
 	SafeDelete( m_pFragmentShader );
 
@@ -476,11 +554,19 @@ bool CGLProgram::LoadShaderFromText( const char *vertex_shader, const char *frag
 	bool vs_created = m_pVertexShader->CreateShader( vertex_shader );
 	bool fs_created = m_pFragmentShader->CreateShader( fragment_shader );
 
+	if(!vs_created)
+		LOG_PRINT_ERROR("Failed to create a vs.");
+
+	if(!fs_created)
+		LOG_PRINT_ERROR("Failed to create an fs.");
+
 	if( !vs_created || !fs_created )
 	{
 	}
 
 	Result::Name res = InitProgram();
+
+	LOG_PRINTF_VERBOSE((" (of CGLProgram) leaving."));
 
 	return (res == Result::SUCCESS) ? true : false;
 }
