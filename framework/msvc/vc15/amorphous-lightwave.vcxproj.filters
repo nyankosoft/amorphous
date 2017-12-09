@@ -7,6 +7,9 @@
     <Filter Include="Source Files\LightWave">
       <UniqueIdentifier>{61016184-e3df-4995-bcf3-0f9bcfadfc5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\LightWave app features">
+      <UniqueIdentifier>{e32a5fb7-2f58-4985-b278-b813e3206f04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\amorphous\LightWave\fwd.hpp">
@@ -33,6 +36,15 @@
     <ClInclude Include="..\..\amorphous\LightWave\LWS_Items.hpp">
       <Filter>Source Files\LightWave</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\LightWave\3DMeshModelBuilder_LW.hpp">
+      <Filter>Source Files\LightWave app features</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\LightWave\3DMeshModelExportManager_LW.hpp">
+      <Filter>Source Files\LightWave app features</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\LightWave\3DShapesExporter_LW.hpp">
+      <Filter>Source Files\LightWave app features</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\LightWave\LightWaveSceneLoader.cpp">
@@ -52,6 +64,15 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\LightWave\LWS_Items.cpp">
       <Filter>Source Files\LightWave</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\LightWave\3DMeshModelBuilder_LW.cpp">
+      <Filter>Source Files\LightWave app features</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\LightWave\3DMeshModelExportManager_LW.cpp">
+      <Filter>Source Files\LightWave app features</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\LightWave\3DShapesExporter_LW.cpp">
+      <Filter>Source Files\LightWave app features</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
