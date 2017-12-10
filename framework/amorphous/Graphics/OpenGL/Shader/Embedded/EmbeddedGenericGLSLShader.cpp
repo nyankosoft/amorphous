@@ -3,12 +3,23 @@
 #include "amorphous/Graphics/Shader/GenericShaderDesc.hpp"
 #include "amorphous/Graphics/Shader/Generic2DShaderDesc.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
+#include <regex>
 
 using std::string;
 
 
 namespace amorphous
 {
+
+
+void AdaptVersionDirective( std::string& shader )
+{
+	std::regex from("#version 330");
+	std::string to("#version 300 es");
+	shader = std::regex_replace( shader, from, to, std::regex_constants::format_first_only );
+
+	LOG_PRINT_VERBOSE( shader );
+}
 
 
 const char *g_pTransform =
@@ -78,7 +89,7 @@ static Result::Name GenerateLightingVertexShader( const GenericShaderDesc& desc,
 		"pos_ps = ProjViewWorld * position;"\
 		/*"t0 = tex0;"\*/
 		"t0.x = tex0.x;"\
-		"t0.y =-tex0.y+1;"\
+		"t0.y =-tex0.y+1.0;"\
 		"dc = diffuse_color;"\
 	"}\n";
 
@@ -102,7 +113,7 @@ static Result::Name GenerateNoLightingVertexShader( const GenericShaderDesc& des
 		"gl_Position = ProjViewWorld * position;"\
 		/*"t0 = tex0;"\*/
 		"t0.x = tex0.x;"\
-		"t0.y =-tex0.y+1;"\
+		"t0.y =-tex0.y+1.0;"\
 		"dc = diffuse_color;"\
 	"}\n";
 
@@ -114,16 +125,20 @@ static Result::Name GenerateNoLightingVertexShader( const GenericShaderDesc& des
 
 Result::Name EmbeddedGenericGLSLShader::GenerateVertexShader( const GenericShaderDesc& desc, std::string& vertex_shader )
 {
+	Result::Name r = Result::UNKNOWN_ERROR;
+
 	if( desc.Lighting )
 	{
-		return GenerateLightingVertexShader( desc, vertex_shader );
+		r = GenerateLightingVertexShader( desc, vertex_shader );
 	}
 	else
 	{
-		return GenerateNoLightingVertexShader( desc, vertex_shader );
+		r = GenerateNoLightingVertexShader( desc, vertex_shader );
 	}
 
-	return Result::UNKNOWN_ERROR;
+	AdaptVersionDirective(vertex_shader);
+
+	return r;
 }
 
 
@@ -238,8 +253,8 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 			"for(int i=0;i<NumHSDLs;i++)"\
 			"{"\
 				"vec3 dir_to_light = -HSDL_Dirs[i];"\
-				"float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
-				"br += HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd);"\
+				"float hsd = (dot(normal_vs,dir_to_light)+1.0)*0.5;"\
+				"br += HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1.0-hsd);"\
 			"}\n";
 
 		const char *specular_hsdl_calc =
@@ -256,8 +271,8 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		"		bt = cos_angle_incidence != 0.0 ? bt : 0.0;"\
 		/*"		bt = pow(bt,HSDL_Gs[i]);"\*/
 		"		bt = pow(bt,25);"\
-		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
-		"		br += ( HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1-hsd) );"\
+		"		float hsd = (dot(normal_vs,dir_to_light)+1.0)*0.5;"\
+		"		br += ( HSDL_UDCs[i] * hsd + HSDL_LDCs[i] * (1.0-hsd) );"\
 		/*"		br += HSPL_SCs[i] * bt;"\*/
 		"		br += vec4(1,1,1,1) * bt;"\
 		"	};\n";
@@ -290,8 +305,8 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 				"float dist = length(to_light);"\
 				"vec3 dir_to_light = to_light / dist;"\
 				"float att = 1.0f / (HSPL_Atts[i].x + HSPL_Atts[i].y*dist + HSPL_Atts[i].z*dist*dist);"\
-				"float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
-				"br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1-hsd) ) * att;"\
+				"float hsd = (dot(normal_vs,dir_to_light)+1.0)*0.5;"\
+				"br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1.0-hsd) ) * att;"\
 			"}\n";
 
 		const char *specular_hspl_calc =
@@ -311,8 +326,8 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		/*"		bt = pow(bt,HSPL_ShininessFactors[i]);"\*/
 		"		bt = pow(bt,3);"\
 		"		float att = 1.0f / (HSPL_Atts[i].x + HSPL_Atts[i].y*dist + HSPL_Atts[i].z*dist*dist);"\
-		"		float hsd = (dot(normal_vs,dir_to_light)+1)*0.5;"\
-		"		br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1-hsd) ) * att;"\
+		"		float hsd = (dot(normal_vs,dir_to_light)+1.0)*0.5;"\
+		"		br += ( HSPL_UDCs[i] * hsd + HSPL_LDCs[i] * (1.0-hsd) ) * att;"\
 		/*"		br += HSPL_SCs[i] * bt * att;"\*/
 		"		br += vec4(1,1,1,1) * bt * att;"\
 		"	}\n";
@@ -340,8 +355,8 @@ static Result::Name GenerateLightingFragmentShader( const GenericShaderDesc& des
 		"	for(int i=0;i<NumHSSLs;i++)"\
 		"	{"\
 		"		vec3 dir_vs = HSSL_Dirs[i];"\
-		"		float hsd = (dot(normal_vs,-dir_vs)+1)*0.5;"\
-		"		br += HSSL_UDCs[i] * hsd + HSSL_LDCs[i] * (1-hsd);"\
+		"		float hsd = (dot(normal_vs,-dir_vs)+1.0)*0.5;"\
+		"		br += HSSL_UDCs[i] * hsd + HSSL_LDCs[i] * (1.0-hsd);"\
 		"	}\n";
 		hssl_calc = non_specular_hssl_calc;
 	}
@@ -410,6 +425,8 @@ Result::Name EmbeddedGenericGLSLShader::GenerateFragmentShader( const GenericSha
 		res = GenerateNoLightingFragmentShader( desc, fragment_shader );
 	}
 
+	AdaptVersionDirective(fragment_shader);
+
 	{
 		static int s_counter = 0;
 		FILE *fp = fopen(fmt_string(".debug/fragment_shader_%02d.frag",s_counter).c_str(),"w");
@@ -448,10 +465,10 @@ static const char *sg_2d_glsl_vs =
 		"gl_Position = vec4(x,y,position.z,1);"\
 		"dc = diffuse_color;"\
 		"t0.x = tex0.x;"\
-		"t0.y =-tex0.y+1;"\
+		"t0.y =-tex0.y+1.0;"\
 		/*"t0 = tex0;"\*/
 		"t1.x = tex1.x;"\
-		"t1.y =-tex1.y+1;"\
+		"t1.y =-tex1.y+1.0;"\
 		/*"t1 = tex1;"\*/
 		"t2 = tex2;"\
 		"t3 = tex3;"\
@@ -562,13 +579,17 @@ Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2
 
 Result::Name EmbeddedGenericGLSLShader::GenerateMiscVertexShader( const MiscShader::ID id, std::string& shader )
 {
-	return GLEmbeddedMiscGLSLShader::GetVertexShader( id, shader );
+	Result::Name r = GLEmbeddedMiscGLSLShader::GetVertexShader( id, shader );
+	AdaptVersionDirective(shader);
+	return r;
 }
 
 
 Result::Name EmbeddedGenericGLSLShader::GenerateMiscFragmentShader( const MiscShader::ID id, std::string& shader )
 {
-	return GLEmbeddedMiscGLSLShader::GetFragmentShader( id, shader );
+	Result::Name r = GLEmbeddedMiscGLSLShader::GetFragmentShader( id, shader );
+	AdaptVersionDirective(shader);
+	return r;
 }
 
 
