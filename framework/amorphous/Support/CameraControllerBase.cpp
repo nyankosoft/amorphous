@@ -2,6 +2,7 @@
 #include "amorphous/Input/InputHub.hpp"
 #include "amorphous/Input/InputDevice.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
+#include "amorphous/Support/Macro.h"
 
 
 namespace amorphous
@@ -22,12 +23,12 @@ m_Active(true)
 	m_iPrevMousePosY = 0;
 
 	// set up standard keybinds
-	m_CameraControlCode[CameraControl::Forward]  = 'E';
-	m_CameraControlCode[CameraControl::Backward] = 'D';
-	m_CameraControlCode[CameraControl::Right]    = 'F';
-	m_CameraControlCode[CameraControl::Left]     = 'S';
+	m_CameraControlCode[CameraControl::Forward]  = 'W';
+	m_CameraControlCode[CameraControl::Backward] = 'S';
+	m_CameraControlCode[CameraControl::Right]    = 'D';
+	m_CameraControlCode[CameraControl::Left]     = 'A';
 	m_CameraControlCode[CameraControl::Up]       = 'Q';
-	m_CameraControlCode[CameraControl::Down]     = 'A';
+	m_CameraControlCode[CameraControl::Down]     = 'C';
 
 	memset( m_IsMouseButtonPressed, 0, sizeof(m_IsMouseButtonPressed) );
 }
@@ -62,21 +63,25 @@ void CameraControllerBase::UpdateCameraPose( float dt )
 
 	bool fwd_key_pressed   = IsKeyPressed(kb[CameraControl::Forward]);
 	bool right_key_pressed = IsKeyPressed(kb[CameraControl::Right]);
-	LOG_PRINTF(("fwd_key_pressed: %d",fwd_key_pressed ? 1 : 0));
-	LOG_PRINTF(("right_key_pressed: %d",right_key_pressed ? 1 : 0));
+	//LOG_PRINTF(("fwd_key_pressed: %d",fwd_key_pressed ? 1 : 0));
+	//LOG_PRINTF(("right_key_pressed: %d",right_key_pressed ? 1 : 0));
 
-/*
-//	if( IsKeyPressed('X') )	m_fYaw += PI * dt;
-//	if( IsKeyPressed('Z') ) m_fYaw -= PI * dt;
-//	if( IsKeyPressed('Q') )	m_fPitch += PI * dt;
-//	if( IsKeyPressed('A') ) m_fPitch -= PI * dt;
+
+	if( IsKeyPressed('X') )	m_fYaw   += PI * 0.5f * dt;
+	if( IsKeyPressed('Z') ) m_fYaw   -= PI * 0.5f * dt;
+	if( IsKeyPressed('R') )	m_fPitch += PI * 0.5f * dt;
+	if( IsKeyPressed('F') ) m_fPitch -= PI * 0.5f * dt;
 //	if( IsKeyPressed('Q') ) m_vCameraPosition.y += 2.0f * dt;
 //	if( IsKeyPressed('A') ) m_vCameraPosition.y -= 2.0f * dt;
-*/
+
+	PERIODICAL( 500, LOG_PRINTF(("yaw: %f, pitch: %f",m_fYaw,m_fPitch)) );
+
 	Matrix34 pose = GetPose();
 
+	// Rotation: m_fYaw and m_fPitch represent the absolute angles of rotation
 	pose.matOrient = Matrix33RotationY(m_fYaw) * Matrix33RotationX(m_fPitch);
 
+	// Position: Unlike rotation, positions are updated by adding traveled amount to the current location
 	pose.vPosition
 		+= pose.matOrient.GetColumn(2) * forward
 		+  pose.matOrient.GetColumn(0) * right
