@@ -23,6 +23,8 @@ public:
 	inline AABB3() : vMin(Vector3(0,0,0)), vMax(Vector3(0,0,0)) {}
 	inline AABB3( const Vector3& min, const Vector3& max ) : vMin(min), vMax(max) {}
 
+	inline bool operator==(const AABB3& other) const;
+
 	inline void Nullify();
 
 	inline void SetMaxAndMin( const Vector3& vMax, const Vector3& vMin ) { this->vMax = vMax; this->vMin = vMin; }
@@ -55,7 +57,12 @@ public:
 };
 
 
-// ================================ inline implementations ================================ 
+// ================================ inline implementations ================================
+
+inline bool AABB3::operator==(const AABB3& other) const
+{
+	return (vMin == other.vMin) && (vMax == other.vMax);
+}
 
 inline void AABB3::AddPoint( const Vector3& v )
 {
