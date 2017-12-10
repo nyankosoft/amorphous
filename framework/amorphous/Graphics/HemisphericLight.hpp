@@ -36,6 +36,17 @@ public:
 	LowerDiffuseColor( lower_diffuse_color )
 	{}
 
+	/**
+	 * \brief 
+	 *
+	 * Alpha values are set to 1.0f for both upper and lower colors.
+	 */
+	inline void SetColorsGrayscale( float upper, float lower )
+	{
+		UpperDiffuseColor = SFloatRGBAColor(upper,upper,upper,1.0f);
+		LowerDiffuseColor = SFloatRGBAColor(lower,lower,lower,1.0f);
+	}
+
 	inline SFloatRGBColor CalcHSLightAmount( float d )
 	{
 		return ToRGBColor( UpperDiffuseColor * d + LowerDiffuseColor * ( 1.0f - d ) );
