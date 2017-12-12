@@ -1131,6 +1131,15 @@
     <ClInclude Include="..\..\amorphous\Graphics\Shader\ShaderVariableLoader.hpp">
       <Filter>Source Files\Graphics\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.hpp">
+      <Filter>Source Files\Graphics\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedMiscShader.hpp">
+      <Filter>Source Files\Graphics\Shader\Embedded</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedPostProcessEffectShader.hpp">
+      <Filter>Source Files\Graphics\Shader\Embedded</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\amorphous\3DMath\AABB3.cpp">
@@ -1570,6 +1579,9 @@
     </ClCompile>
     <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManagerHub.cpp">
       <Filter>Source Files\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.cpp">
+      <Filter>Source Files\Graphics\Shader\Embedded</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

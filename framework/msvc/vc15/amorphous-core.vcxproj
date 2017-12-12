@@ -194,6 +194,9 @@
     <ClInclude Include="..\..\amorphous\Graphics\Shader\BlendTransformsLoader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\CommonShaders.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\EmbeddedMiscShaderGenerator.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedMiscShader.hpp" />
+    <ClInclude Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedPostProcessEffectShader.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\Generic2DShaderDesc.hpp" />
     <ClInclude Include="..\..\amorphous\Graphics\Shader\Generic2DShaderGenerator.hpp" />
@@ -463,6 +466,7 @@
     <ClCompile Include="..\..\amorphous\Graphics\RectTriListIndex.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ResourceLoadingStateHolder.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\ShaderHandle.cpp" />
+    <ClCompile Include="..\..\amorphous\Graphics\Shader\Embedded\EmbeddedGenericShader.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Shader\FixedFunctionPipelineManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderLightManager.cpp" />
     <ClCompile Include="..\..\amorphous\Graphics\Shader\ShaderManager.cpp" />
