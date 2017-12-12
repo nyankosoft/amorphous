@@ -5,14 +5,14 @@
 #include "amorphous/Support/memory_helpers.hpp"
 #include "amorphous/Support/progress_display.hpp"
 #include "amorphous/Support/lfs.hpp"
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
 
 
 namespace amorphous
 {
 
 using namespace std;
-using namespace boost::filesystem;
+//using namespace boost::filesystem;
 
 
 class sort_by_group_number
@@ -190,6 +190,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_
 {
 	const size_t num_layer_sets = layer_sets.size();
 
+	LOG_PRINT("num_layer_sets: " + to_string(num_layer_sets));
+
 	m_OutputFilepaths.clear();
 	m_OutputFilepaths.resize( num_layer_sets );
 	for( size_t i=0; i<num_layer_sets; i++ )
@@ -205,7 +207,8 @@ bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_
 		shared_ptr<C3DMeshModelBuilder_LW> pModelLoader;
 		pModelLoader.reset( new C3DMeshModelBuilder_LW( m_pObject ) );
 
-		pModelLoader->SetTexturePathnameOption( TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME );
+		//pModelLoader->SetTexturePathnameOption(TexturePathnameOption::RELATIVE_PATH_AND_BODY_FILENAME);
+		pModelLoader->SetTexturePathnameOption( TexturePathnameOption::FILENAME );
 
 		pModelLoader->BuildMeshModel( layer_sets[i] );
 
@@ -215,11 +218,11 @@ bool C3DMeshModelExportManager_LW::BuildMeshesAndSaveToFiles( const string& lwo_
 		m_vecpModelBuilder.back()->BuildMeshModel( pModelLoader, build_option_flags );
 
 		string loader_output_filepath = pModelLoader->GetOutputFilePath();
-		path output_path = path(lwo_filename).parent_path() / loader_output_filepath;
+		lfs::path output_path = lfs::path(lwo_filename).parent_path() / loader_output_filepath;
 
 		// Create output directory/directories if they are not present.
-		path output_directory = output_path.parent_path();
-		if( !exists(output_directory) )
+		lfs::path output_directory = output_path.parent_path();
+		if( !lfs::path_exists(output_directory.string()) )
 			create_directories( output_directory );
 
 		if( 0 < loader_output_filepath.length() )
@@ -247,6 +250,7 @@ bool C3DMeshModelExportManager_LW::BuildMeshModels( const string& lwo_filename, 
 
 	if( !m_pObject->LoadLWO2Object( lwo_filename.c_str() ) )
 	{
+		LOG_PRINT_ERROR("Failed to load an .lwo file: " + lwo_filename);
 		Release();
 		return false;
 	}
