@@ -117,7 +117,7 @@ int main( int argc, char *argv[] )
 		lfs::set_wd( "../../app" );
 	}
 
-	bool obfuscate_texture = true;
+	bool obfuscate_texture = false;
 	string src_filepath;
 	if( 2 <= argc )
 	{
