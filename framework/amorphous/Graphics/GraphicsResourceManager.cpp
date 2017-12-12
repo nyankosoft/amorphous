@@ -244,20 +244,26 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadAsync( const Grap
 	LOG_PRINT("desc.ResourcePath: " + desc.ResourcePath);
 
 	if( !desc.IsValid() )
+	{
 		return shared_ptr<GraphicsResourceEntry>();
+		LOG_PRINT_ERROR("An invalid desc");
+	}
 
 	if( desc.IsDiskResource() )
 	{
 		shared_ptr<GraphicsResourceEntry> ptr;
 		ptr = FindSameLoadedResource(desc);
 		if( ptr )
+		{
+			LOG_PRINT("Found the same resource already loaded.");
 			return ptr;
+		}
 	}
-	else
-	{
+//	else
+//	{
 		// non-disc resources are not sharable
-		return shared_ptr<GraphicsResourceEntry>();
-	}
+//		return shared_ptr<GraphicsResourceEntry>();
+//	}
 
 	// create a new empty resource entry to determine the resource index now.
 	// - reserves an entry index before loading the resource
@@ -274,18 +280,31 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadAsync( const Grap
 		// save a copy of the desc
 		pEntry->m_pDesc = desc.GetCopy();
 
-		ResourceLoadRequest req( ResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
-		GetAsyncResourceLoader().AddResourceLoadRequest( req );
+//		ResourceLoadRequest req( ResourceLoadRequest::LoadFromDisk, CreateResourceLoader(pEntry,desc), pEntry );
+//		GetAsyncResourceLoader().AddResourceLoadRequest( req );
 
 		// register to the loading state holder
-		if( desc.RegisterToLoadingStateHolder )
-		{
-			shared_ptr<ResourceLoadingStateHolder> pHolder
-				= GetResourceLoadingStateHolderForCurrentThread();
+//		if( desc.RegisterToLoadingStateHolder )
+//		{
+//			shared_ptr<ResourceLoadingStateHolder> pHolder
+//				= GetResourceLoadingStateHolderForCurrentThread();
 
-			if( pHolder )
-				pHolder->AddFromResourceEntry( pEntry );
+//			if( pHolder )
+//				pHolder->AddFromResourceEntry( pEntry );
+//		}
+
+		shared_ptr<GraphicsResource> pResource = GetGraphicsResourceFactory().CreateGraphicsResource( desc );
+
+		if( !pResource )
+		{
+			LOG_PRINTF_ERROR(( " Failed to create a graphics resource (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
+			return shared_ptr<GraphicsResourceEntry>();
 		}
+
+		pEntry->SetResource( pResource );
+
+		CGraphicsDeviceRequest req( CGraphicsDeviceRequest::LoadResourceAndCreateGraphicsResource, CreateResourceLoader(pEntry,desc), pEntry );
+		bool res = GetAsyncResourceLoader().AddGraphicsDeviceRequest(req);
 
 		return pEntry;
 	}
@@ -308,12 +327,14 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 
 	if( !sg_bRenderThreadSpecified )
 	{
-		LOG_PRINT_WARNING( "A render thread has not been specified. Setting the current thread as the render thread." );
-		SetCurrentThreadAsRenderThread();
+		//LOG_PRINT_WARNING( "A render thread has not been specified. Setting the current thread as the render thread." );
+		//SetCurrentThreadAsRenderThread();
+
+		LOG_PRINT_WARNING( "A render thread has not been specified." );
+		return shared_ptr<GraphicsResourceEntry>();
 	}
 
-	if(false)
-	//if( std::this_thread::get_id() != GetRenderThreadID() )
+	if( std::this_thread::get_id() != GetRenderThreadID() )
 	{
 		return LoadAsync( desc );
 	}
@@ -527,22 +548,6 @@ void GraphicsResourceManager::GetStatus( GraphicsResourceType::Name type, std::v
 		}
 	}
 }
-
-
-
-
-
-
-/*
-int GraphicsResourceManager::LoadAsync( const GraphicsResourceDesc& desc )
-{
-	size_t i, num_entries = m_vecpResourceEntry.size();
-	for( i=0; i<num_entries; i++ )
-	{
-//		m_vecpResourceCache[i]->;
-	}
-}
-*/
 
 
 } // namespace amorphous

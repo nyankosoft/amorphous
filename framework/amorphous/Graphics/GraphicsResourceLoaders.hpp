@@ -44,6 +44,8 @@ public:
 
 	inline std::shared_ptr<GraphicsResource> GetResource();
 
+	/// Loads resource, e.g. from a file, to some generic heap memory
+	/// Note that this function must not call APIs of graphics library
 	virtual Result::Name Load();
 
 	Result::Name LoadFromDisk();
@@ -90,6 +92,13 @@ public:
 	virtual const GraphicsResourceDesc *GetDesc() const { return NULL; }
 
 	virtual bool LoadToGraphicsMemoryByRenderThread() { return false; }
+
+	/// \brief Loads everything using render thread
+	///
+	/// Use this until async loading system is re-designed,
+	/// Note that this not free the render thread from loading tasks,
+	/// such as creating mipmaps.
+	bool LoadResourceAndCreateGraphicsResource();
 };
 
 
@@ -132,6 +141,7 @@ public:
 
 	virtual ~DiskTextureLoader() {}
 
+	// On success this creates an array of bitmap images containing the mipmaps of the specified texture image.
 	bool LoadFromFile( const std::string& filepath );
 
 	/// load image from the db as an image archive

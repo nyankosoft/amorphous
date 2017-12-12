@@ -23,7 +23,18 @@ using namespace std;
 
 Result::Name GraphicsResourceLoader::Load()
 {
-	return LoadFromDisk();
+	const GraphicsResourceDesc *desc = this->GetDesc();
+	if(desc) {
+		if(desc->IsDiskResource())
+			return LoadFromDisk();
+		else
+			return LoadFromDisk(); // TODO: create the resource from the desc
+	}
+	else
+	{
+		LOG_PRINT_ERROR("!desc");
+		return Result::UNKNOWN_ERROR;
+	}
 }
 
 
@@ -32,6 +43,8 @@ Result::Name GraphicsResourceLoader::LoadFromDisk()
 	bool loaded = false;
 	string target_filepath;
 	const string src_filepath = GetSourceFilepath();
+
+	LOG_PRINT("src_filepath: " + src_filepath);
 
 	if( is_db_filepath_and_keyname( src_filepath ) )
 	{
@@ -153,6 +166,19 @@ void GraphicsResourceLoader::OnResourceLoadedOnGraphicsMemory()
 {
 	if( GetResource() )
 		GetResource()->SetState( GraphicsResourceState::LOADED );
+}
+
+
+bool GraphicsResourceLoader::LoadResourceAndCreateGraphicsResource()
+{
+	bool res = false;
+	if( GetResource() )
+		return GetResource()->Load();
+	else
+	{
+		LOG_PRINT_ERROR("!GetResource()");
+		return false;
+	}
 }
 
 

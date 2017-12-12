@@ -66,6 +66,7 @@ public:
 		Lock,
 		Unlock,
 		LoadToGraphicsMemoryByRenderThread, ///< not a preferred way of async loading. used by mesh loading
+		LoadResourceAndCreateGraphicsResource, ///< Load and create everything using the render thread
 		NumRequestTypes
 	};
 
@@ -93,6 +94,11 @@ public:
 };
 
 
+/**
+ *
+ * - Runs its own thread for loading and creating graphics resources.
+ *
+ */
 class AsyncResourceLoader
 {
 	std::queue<ResourceLoadRequest> m_ResourceLoadRequestQueue;
@@ -148,6 +154,7 @@ public:
 
 	static AsyncResourceLoader* Get() { return m_obj.get(); }
 
+	/// Called by the graphics resource manager to add a request to load resource
 	bool AddResourceLoadRequest( const ResourceLoadRequest& req );
 
 	bool AddGraphicsDeviceRequest( const CGraphicsDeviceRequest& req );

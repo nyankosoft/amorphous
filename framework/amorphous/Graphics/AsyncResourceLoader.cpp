@@ -256,6 +256,16 @@ void AsyncResourceLoader::ProcessGraphicsDeviceRequests()
 				LOG_PRINT_ERROR( "req.m_pLoader->LoadToGraphicsMemoryByRenderThread() failed. Resource: " + req.m_pLoader->GetDesc()->ResourcePath );
 			}
 			break;
+
+		case CGraphicsDeviceRequest::LoadResourceAndCreateGraphicsResource:
+			LOG_PRINT("case LoadResourceAndCreateGraphicsResource");
+			res = req.m_pLoader->LoadResourceAndCreateGraphicsResource();
+			if(!res)
+				LOG_PRINT_ERROR("!res (LoadResourceAndCreateGraphicsResource)");
+			break;
+
+		default:
+			break;
 		}
 	}
 }
