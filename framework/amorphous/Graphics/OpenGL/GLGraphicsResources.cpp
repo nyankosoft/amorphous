@@ -426,8 +426,20 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 	if( next_width == 1024 && next_height == 1024 )
 		int break_here = 1;
 
-	for( int i=0; i<num_mipmaps; i++ )
+	shared_ptr<BitmapImage> pPrevScaledImage;
+
+	// Mipmap 0, i.e. the image without any scalingn
+	void *pImageData = src_img.GetImageData();
+	int level = 0;
+	bool r = UpdateGLTextureImage( target, level, next_width, next_height, src_format, src_type, pImageData, texture_id );
+
+	for( int i=1; i<num_mipmaps; i++ )
 	{
+		if(1 < i && !pPrevScaledImage)
+			break;
+		
+		BitmapImage& prev_scaled_image = (i==1) ? src_img : *pPrevScaledImage;
+		shared_ptr<BitmapImage> pScaledImage;
 		if( 0 < i )
 		{
 			// Scale the image to the half in width and height to create the mipmap texture(s).
@@ -443,11 +455,11 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			// Scale the image to half of its current size, if we have actually an image
 			// Sometimes people need to create an empty texture with a complete mipmap chain,
 			// and in such a case rescaling is unnecessary.
-			if( 0 < image_copy.GetWidth() )
+			if( 0 < prev_scaled_image.GetWidth() )
 			{
-				bool rescaled = image_copy.Rescale( next_width, next_height );
+				pScaledImage = prev_scaled_image.GetRescaled( next_width, next_height );
 				//LOG_PRINTF((" %s - target scale: %d x %d, rescaled: %s", m_TextureDesc.ResourcePath.c_str(), next_width, next_height, rescaled ? "true" : "false" ));
-				if( !rescaled )
+				if( !pScaledImage )
 				{
 					LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d, path=%s", i, m_TextureDesc.ResourcePath.c_str() ) );
 //					LOG_PRINT_ERROR( fmt_string(" Failed to scale an image for mipmap texture(s): level=%d", i ) );
@@ -459,15 +471,33 @@ bool GLTextureResourceBase::CreateGLTextureFromBitmapImage( GLenum target, Bitma
 			}
 		}
 
-		if( lfs::path_exists(".debug") ) // if( IsDebugOptionEnabled("gl.save_textures_as_files") )
-			image_copy.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",lfs::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
+		BitmapImage& scaled_image = *pScaledImage;
 
-		//void *pImageData = FreeImage_GetBits(image_copy.GetFBITMAP());
-		void *pImageData = image_copy.GetImageData();
-		bool res = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, pImageData, texture_id );
+		if( lfs::path_exists(".debug") ) // if( IsDebugOptionEnabled("gl.save_textures_as_files") )
+			scaled_image.SaveToFile( fmt_string(".debug/gl_textures/%s_%d.png",lfs::path(m_TextureDesc.ResourcePath).leaf().string().c_str(),i) );
+
+		pImageData = scaled_image.GetImageData();
+		r = UpdateGLTextureImage( target, i, next_width, next_height, src_format, src_type, pImageData, texture_id );
+
+		pPrevScaledImage = pScaledImage;
 	}
 
 	return true;//CreateGLTexture( GL_TEXTURE_2D, src_format, src_type, FreeImage_GetBits(img.GetFBITMAP()) );
+}
+
+
+bool CGLTextureResource::CreateFromBitmapImage( BitmapImage& img )
+{
+	m_TextureDesc.Width  = img.GetWidth();
+	m_TextureDesc.Height = img.GetHeight();
+
+//	GetSourcePixelType( img );
+
+	glGenTextures( 1, &m_TextureID );
+
+	LOG_GL_ERROR( "glGenTextures() failed." );
+
+	return CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, img, m_TextureID );
 }
 
 
@@ -503,16 +533,23 @@ bool CGLTextureResource::LoadFromFile( const std::string& filepath )
 	// FreeImage loads the image upside down, so we vertically flip the image data
 //	bool res = img.FlipVertical();
 
-	m_TextureDesc.Width  = img.GetWidth();
-	m_TextureDesc.Height = img.GetHeight();
+	return CreateFromBitmapImage(img);
+}
 
-//	GetSourcePixelType( img );
 
-	glGenTextures( 1, &m_TextureID );
+bool CGLTextureResource::LoadFromMemory(const unsigned char *buffer, int size_in_bytes)
+{
+	BitmapImage img;
 
-	LOG_GL_ERROR( "glGenTextures() failed." );
+	bool loaded = img.LoadFromMemory(buffer,size_in_bytes);
 
-	return CreateGLTextureFromBitmapImage( GL_TEXTURE_2D, img, m_TextureID );
+	if( !loaded )
+	{
+		LOG_PRINTF_ERROR(("img.LoadFromMemory() failed. Size: %d",size_in_bytes));
+		return false;
+	}
+
+	return CreateFromBitmapImage(img);
 }
 
 
@@ -847,7 +884,11 @@ void CGLTextureResource::Release()
 {
 //	LOG_FUNCTION_SCOPE();
 
+	LOG_GL_ERROR( "Clearing errors before glDeleteTextures" );
+
 	glDeleteTextures( 1, &m_TextureID );
+
+	LOG_GL_ERROR("error: glDeleteTextures")
 
 	m_TextureID = 0;
 
@@ -954,6 +995,8 @@ CGLShaderResource::~CGLShaderResource()
 
 ShaderManager *CGLShaderResource::CreateShaderManager()
 {
+	LOG_PRINTF(("shader type: %d",(int)m_ShaderDesc.ShaderType));
+
 	switch( m_ShaderDesc.ShaderType )
 	{
 	case ShaderTypeName::VERTEX_SHADER:
@@ -961,6 +1004,7 @@ ShaderManager *CGLShaderResource::CreateShaderManager()
 	case ShaderTypeName::PIXEL_SHADER:
 		return new CGLFragmentShader;
 	case ShaderTypeName::NON_PROGRAMMABLE:
+		LOG_PRINT_ERROR(("FFP is no longer supported."));
 		return NULL;//CGLFixedFunctionPipelineManager;
 	case ShaderTypeName::PROGRAMMABLE:
 		{

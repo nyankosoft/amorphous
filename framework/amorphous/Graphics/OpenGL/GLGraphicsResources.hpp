@@ -53,6 +53,10 @@ class CGLTextureResource : public GLTextureResourceBase
 
 	std::shared_ptr<BitmapImage> m_pLockedImage;
 
+private:
+
+	bool CreateFromBitmapImage( BitmapImage& img );
+
 protected:
 
 	/// Release texture without changing the reference count
@@ -81,6 +85,8 @@ public:
 
 	virtual bool LoadFromDB( CBinaryDatabase<std::string>& db, const std::string& keyname );
 
+	virtual bool LoadFromMemory(const unsigned char *buffer, int size_in_bytes);
+	
 	GLuint GetGLTextureID() const { return m_TextureID; }
 
 	/// Save the texture to disk as an image file
@@ -114,6 +120,8 @@ public:
 	/// - Succeeds only between a pair of Lock() and Unlock() calls
 	/// - Returns an object that provides access to the locked texture surface
 //	bool GetLockedTexture( std::shared_ptr<LockedTexture>& pLockedTexture );
+
+	//void ReleaseGraphicsResources();
 
 	friend class GraphicsResourceManager;
 };
