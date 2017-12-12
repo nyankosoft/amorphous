@@ -198,6 +198,19 @@ bool ShaderResourceDesc::IsValid() const
 }
 
 
+bool ShaderResourceDesc::IsDiskResource() const
+{
+	if( this->pShaderGenerator )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+
 bool ShaderResourceDesc::CanBeSharedAsSameShaderResource( const ShaderResourceDesc& desc ) const
 {
 	if( 0 < this->ResourcePath.length()

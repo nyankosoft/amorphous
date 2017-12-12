@@ -296,6 +296,8 @@ public:
 
 	virtual bool IsValid() const;
 
+	bool IsDiskResource() const;
+
 	virtual std::shared_ptr<GraphicsResourceDesc> GetCopy() const { return std::shared_ptr<ShaderResourceDesc>( new ShaderResourceDesc(*this) ); }
 
 	virtual bool CanBeSharedAsSameShaderResource( const ShaderResourceDesc& desc ) const;
