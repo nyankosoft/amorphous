@@ -1,4 +1,5 @@
 #include "GvrAppBase.hpp"
+#include "amorphous/3DMath/MatrixConversions.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
@@ -6,6 +7,7 @@
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "amorphous/Graphics/Shader/ShaderManagerHub.hpp"
 #include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Input/InputHub.hpp"
 //#include <native_activity.h>
 //#include <iomanip> // std::put_time is missing in this (Android NDK)
 #include <ctime>
@@ -188,8 +190,14 @@ int GvrAppBase::InitBase()
     //LOG_PRINTF((internalDataPath));
 
     LOG_PRINTF(("logging"));
+
+    int listener_index = 0;
+    //AddInputListener<GvrAppBase>(this,listener_index);
+    m_pInputEventListener.reset( new CInputDataDelegate<GvrAppBase>(this) );
+    GetInputHub().PushInputHandler(listener_index,m_pInputEventListener.get());
  
-    m_pCameraController.reset( new CameraController(0) );
+    int camera_controller_input_listener_index = 1;
+    m_pCameraController.reset( new CameraController(camera_controller_input_listener_index) );
 
     return 0;
 }
@@ -217,7 +225,22 @@ void GvrAppBase::RenderBase()
 
 void GvrAppBase::SetViewTransform(const std::array<float, 16>& view)
 {
-    m_ViewTransform.SetData(&view[0]);
+    Matrix44 eye_view;
+    eye_view.SetData(&view[0]);
+
+    //if(false)
+    if(m_pCameraController)
+    {
+        ONCE((LOG_PRINT("cam-view")));
+        Matrix44 camera_view = Matrix44CameraMatrixFromCameraPose(m_pCameraController->GetPose());
+
+        m_ViewTransform = eye_view * camera_view;
+    }
+    else
+    {
+        //eye_view.SetData(&view[0]);
+        m_ViewTransform.SetData(&view[0]);
+    }
 }
 
 
@@ -303,6 +326,13 @@ void GvrAppBase::OnKeyUp(int key_code)
     input.iGICode = input_code;
     input.iType = ITYPE_KEY_RELEASED;
     HandleInput(input);
+}
+
+
+void GvrAppBase::Update( float dt )
+{
+    if(m_pCameraController)
+        m_pCameraController->UpdateCameraPose(dt);
 }
 
 

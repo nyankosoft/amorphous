@@ -7,7 +7,7 @@
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/Graphics/FloatRGBAColor.hpp"
-#include "amorphous/Input/fwd.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 #include "amorphous/Support/fwd.hpp"
 
 
@@ -35,8 +35,9 @@ class GvrAppBase
 
 //	std::shared_ptr<FontBase> m_pFont;
 
-//	std::shared_ptr<InputHandler> m_pInputHandler;
-
+	//std::shared_ptr<InputHandler> m_pInputHandler;
+    std::shared_ptr< CInputDataDelegate<GvrAppBase> > m_pInputEventListener;
+	
 	SFloatRGBAColor m_BackgroundColor;
 
 protected:
@@ -74,9 +75,9 @@ public:
 
 	void OnKeyUp(int key_code);
 
-//	virtual void Update( float dt ) {}
+	virtual void Update( float dt );
 
-//	friend class CInputDataDelegate<GvrAppBase>;
+	friend class CInputDataDelegate<GvrAppBase>;
 };
 
 } // namespace amorphous
