@@ -59,10 +59,25 @@ static void InitKeyMaps() {
     key_maps[AKEYCODE_F10] = GIC_F10;
     key_maps[AKEYCODE_F11] = GIC_F11;
     key_maps[AKEYCODE_F12] = GIC_F12;
+    key_maps[AKEYCODE_ENTER] = GIC_ENTER;
+    key_maps[AKEYCODE_DEL]   = GIC_DELETE;
     key_maps[AKEYCODE_DPAD_UP]    = GIC_UP;
     key_maps[AKEYCODE_DPAD_DOWN]  = GIC_DOWN;
     key_maps[AKEYCODE_DPAD_LEFT]  = GIC_LEFT;
     key_maps[AKEYCODE_DPAD_RIGHT] = GIC_RIGHT;
+
+    key_maps[AKEYCODE_BUTTON_A]  = GIC_GPD_BUTTON_00;
+    key_maps[AKEYCODE_BUTTON_B]  = GIC_GPD_BUTTON_01;
+    key_maps[AKEYCODE_BUTTON_C]  = GIC_GPD_BUTTON_02;
+    key_maps[AKEYCODE_BUTTON_X]  = GIC_GPD_BUTTON_03;
+    key_maps[AKEYCODE_BUTTON_Y]  = GIC_GPD_BUTTON_04;
+    key_maps[AKEYCODE_BUTTON_Z]  = GIC_GPD_BUTTON_05;
+    key_maps[AKEYCODE_BUTTON_L1] = GIC_GPD_BUTTON_06;
+    key_maps[AKEYCODE_BUTTON_R1] = GIC_GPD_BUTTON_07;
+    key_maps[AKEYCODE_BUTTON_L2] = GIC_GPD_BUTTON_08;
+    key_maps[AKEYCODE_BUTTON_R2] = GIC_GPD_BUTTON_09;
+    key_maps[AKEYCODE_BUTTON_THUMBL] = GIC_GPD_BUTTON_10;
+    key_maps[AKEYCODE_BUTTON_THUMBR] = GIC_GPD_BUTTON_11;
 }
 
 
