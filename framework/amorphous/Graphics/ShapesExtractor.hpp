@@ -16,6 +16,11 @@ class ShapeContainerSet;
 class ShapeDetectionResults;
 
 
+/**
+ * \brief Detects and extracts primitive shapes, such as boxes and closed convex shapes, from a polygon mesh.
+ *
+ *
+ */
 class ShapesExtractor
 {
 	void AddShapeContainer( General3DMesh& connected_mesh, const ShapeDetectionResults& results, ShapeContainerSet& shape_set );
@@ -26,6 +31,12 @@ public:
 
 	~ShapesExtractor(){}
 
+	/**
+	 * \brief Extracts primitive shapes found in the input mesh.
+	 *
+	 * \param[in] pSrcMesh A polygon mesh containing primitive shapes such as boxes and closed convex shapes.
+	 * \param[out] shape_set Shapes found in the input mesh
+	 */
 	Result::Name ExtractShapes( const std::shared_ptr<General3DMesh> pSrcMesh, ShapeContainerSet& shape_set );
 
 	/// \param output_filepath [in] pathname of output file.
