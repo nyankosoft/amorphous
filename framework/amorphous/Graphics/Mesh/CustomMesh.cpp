@@ -3,6 +3,7 @@
 #include "../PrimitiveRenderer.hpp"
 #include "../Shader/ShaderManager.hpp"
 #include "amorphous/Support/Vec3_StringAux.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 #include "amorphous/Graphics/Graphics_StringAux.hpp"
 
 
@@ -250,8 +251,19 @@ void CustomMesh::GetVertexIndices( std::vector<unsigned int>& dest )
 
 bool CustomMesh::LoadFromArchive( C3DMeshModelArchive& archive, const std::string& filename, U32 option_flags )
 {
+	// The reason to save the mesh file pathname: to find if the mesh is a file or an asset when loading texture.
+	// 
+	// The mesh class loads textures as resources of the same type, e.g. if the mesh is an asset,
+	// the mesh class assumes that textures of the mesh are also assets, and it attempts to load
+	// the textures as assets.
+	// Since the resource types are encoded in the file path, we need to save the path so that the mesh class
+	// can later finds its own resource type when it loads texture images.
+	m_strFilename = filename;
+
 	const CMMA_VertexSet& vs = archive.GetVertexSet();
 	const int num_verts = vs.GetNumVertices();
+
+	LOG_PRINTF(( "file: %s, num_verts: %d", filename.c_str(), num_verts ));
 
 	U32 flags = ToVFF(vs.GetVertexFormat());
 
