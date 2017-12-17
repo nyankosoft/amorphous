@@ -13,25 +13,25 @@ bool sg_use_grm = true;
 
 void CheckFramebufferStatus( GLenum target )
 {
-	GLenum ret = glCheckFramebufferStatusEXT( target );
+	GLenum ret = glCheckFramebufferStatus( target );
 	switch( ret )
 	{
 //		case GL_FRAMEBUFFER_UNDEFINED:
 //			LOG_PRINT_ERROR("FBO undefined.");
 //			break;
-		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
 			LOG_PRINT_ERROR("FBO incomplete attachment.");
 			break;
-		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 			LOG_PRINT_ERROR("FBO missing attachment.");
 			break;
-		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
 			LOG_PRINT_ERROR("FBO incomplete draw buffer.");
 			break;
-		case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+		case GL_FRAMEBUFFER_UNSUPPORTED:
 			LOG_PRINT_ERROR("FBO unsupported.");
 			break;
-		case GL_FRAMEBUFFER_COMPLETE_EXT:
+		case GL_FRAMEBUFFER_COMPLETE:
 			LOG_PRINT_VERBOSE("FBO is complete.");
 			break;
 		default:
@@ -42,7 +42,7 @@ void CheckFramebufferStatus( GLenum target )
 
 void PrintFramebufferInfo(GLenum target, GLuint fbo)
 {
-	glBindFramebufferEXT(target,fbo);
+	glBindFramebuffer(target,fbo);
 
 	int res;
 
@@ -50,15 +50,15 @@ void PrintFramebufferInfo(GLenum target, GLuint fbo)
 	int i = 0;
 	do
 	{
-		glGetIntegerv(GL_DRAW_BUFFER0_ARB+i, &buffer);
+		glGetIntegerv(GL_DRAW_BUFFER0+i, &buffer);
 
 		if( buffer != GL_NONE )
 		{
-			LOG_PRINTF(("Shader Output Location %d - color attachment %d\n", i, buffer - GL_COLOR_ATTACHMENT0_EXT));
+			LOG_PRINTF(("Shader Output Location %d - color attachment %d\n", i, buffer - GL_COLOR_ATTACHMENT0));
 			
-			glGetFramebufferAttachmentParameterivEXT(target, buffer, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE_EXT, &res);
+			glGetFramebufferAttachmentParameteriv(target, buffer, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &res);
 			LOG_PRINTF(("  Attachment type: %s\n", res==GL_TEXTURE?"Texture":"Render Buffer"));
-			glGetFramebufferAttachmentParameterivEXT(target, buffer, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME_EXT, &res);
+			glGetFramebufferAttachmentParameteriv(target, buffer, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, &res);
 			LOG_PRINTF(("  Attachment object name: %d\n",res));
 		}
 		++i;
@@ -66,7 +66,7 @@ void PrintFramebufferInfo(GLenum target, GLuint fbo)
 	}
 	while( buffer != GL_NONE );
 
-	glBindFramebufferEXT(target,0);
+	glBindFramebuffer(target,0);
 }
 
 
@@ -84,9 +84,9 @@ public:
 			return Result::UNKNOWN_ERROR;
 		}
 
-		glFramebufferTexture2DEXT(GL_DRAW_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, texture, 0);
+		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
-		LOG_GL_ERROR( "glFramebufferTexture2DEXT() failed." );
+		LOG_GL_ERROR( "glFramebufferTexture2D() failed." );
 		return Result::SUCCESS;
 	}
 };
@@ -107,21 +107,21 @@ public:
 
 		// Attach a level of a texture object as a logical buffer to the currently bound framebuffer object
 		GLuint texture = texture_resource.GetGLTextureID();
-//		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_Target, texture, 0);
+//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_Target, texture, 0);
 
-		LOG_GL_ERROR( "glFramebufferTexture2DEXT() failed." );
+		LOG_GL_ERROR( "glFramebufferTexture2D() failed." );
 
 		// Set the list of draw buffers.
-		GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0_EXT};
+		GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0};
 		glDrawBuffers(1, DrawBuffers);
 
 		LOG_GL_ERROR( "glDrawBuffers() failed." );
 
-		GLenum fb_status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-		if( fb_status != GL_FRAMEBUFFER_COMPLETE_EXT )
+		GLenum fb_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if( fb_status != GL_FRAMEBUFFER_COMPLETE)
 			LOG_PRINT_ERROR( "The FBO is not framebuffer complete." );
 
-		LOG_GL_ERROR( "glCheckFramebufferStatusEXT() failed." );
+		LOG_GL_ERROR( "glCheckFramebufferStatus() failed." );
 
 		return Result::SUCCESS;
 	}
@@ -165,14 +165,14 @@ void GLTextureRenderTarget::ReleaseTextures()
 {
 	// Delete resources
 //	glDeleteTextures(1, &color_tex);
-	glDeleteRenderbuffersEXT(1, &m_DepthRenderBuffer);
+	glDeleteRenderbuffers(1, &m_DepthRenderBuffer);
 	m_DepthRenderBuffer = 0;
 
 	// Bind 0, which means render to back buffer.
 	// As a result, m_Framebuffer is unbound
-//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glDeleteFramebuffersEXT(1, &m_Framebuffer );
+	glDeleteFramebuffers(1, &m_Framebuffer );
 	m_Framebuffer = 0;
 }
 
@@ -195,9 +195,9 @@ bool GLTextureRenderTarget::LoadTextures()
 		LOG_PRINT_ERROR( " UsageFlag::RENDER_TARGET was not specified for the render target texture." );
 
 //	if( !extensionSupported((char *)glGetString(GL_EXTENSIONS),"GL_EXT_framebuffer_object") )
-	if( !glGenFramebuffersEXT
-	 || !glGenRenderbuffersEXT
-	 || !glBindFramebufferEXT )
+	if( !glGenFramebuffers
+	 || !glGenRenderbuffers
+	 || !glBindFramebuffer )
 	{
 //		LOG_PRINT_ERROR( " The OpenGL extension, 'GL_EXT_framebuffer_object', is not supported." );
 		LOG_PRINT_ERROR( " Seems like your video card does not support framebuffer object of OpenGL." );
@@ -268,22 +268,22 @@ bool GLTextureRenderTarget::LoadTextures()
 
 	LOG_GL_ERROR( "glClearColor() failed." );
 
-	glGenFramebuffersEXT(1, &m_Framebuffer);
+	glGenFramebuffers(1, &m_Framebuffer);
 
-	LOG_GL_ERROR( "glGenFramebuffersEXT() failed." );
+	LOG_GL_ERROR( "glGenFramebuffers() failed." );
 
 	//	glGenTextures(1, &tex);
 //	GLuint tex = m_RenderTargetTexture.GetGLTextureID();
 
-//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer);
-	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer);
+//	glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_Framebuffer);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer);
 
-	LOG_GL_ERROR( "glGenRenderbuffersEXT() failed." );
+	LOG_GL_ERROR( "glGenRenderbuffers() failed." );
 
 	int tex_width  = m_TextureDesc.Width;
 	int tex_height = m_TextureDesc.Height;
 
-	LOG_GL_ERROR( "glBindFramebufferEXT() failed." );
+	LOG_GL_ERROR( "glBindFramebuffer() failed." );
 
 	// (A) init texture
 	//	glBindTexture(texTarget, tex);
@@ -297,8 +297,8 @@ bool GLTextureRenderTarget::LoadTextures()
 	}
 	else
 	{
-		glFramebufferTexture2DEXT(GL_DRAW_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, m_RenderTargetTextureID, 0);
-		LOG_GL_ERROR( " glFramebufferTexture2DEXT() failed." );
+		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_RenderTargetTextureID, 0);
+		LOG_GL_ERROR( " glFramebufferTexture2D() failed." );
 	}
 
 	if( m_OptionFlags & OPTFLG_NO_DEPTH_BUFFER )
@@ -307,9 +307,9 @@ bool GLTextureRenderTarget::LoadTextures()
 	}
 	else
 	{
-		glGenRenderbuffersEXT(1, &m_DepthRenderBuffer);
+		glGenRenderbuffers(1, &m_DepthRenderBuffer);
 
-		LOG_GL_ERROR( " glGenRenderbuffersEXT() failed." );
+		LOG_GL_ERROR( " glGenRenderbuffers() failed." );
 
 //		GET_GLERROR(NULL);
 
@@ -327,33 +327,33 @@ bool GLTextureRenderTarget::LoadTextures()
 		LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 		// initialize depth renderbuffer
-		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, m_DepthRenderBuffer);
 
-		LOG_GL_ERROR( " glBindRenderbufferEXT() failed." );
+		LOG_GL_ERROR( " glBindRenderbuffer() failed." );
 
 		// Before we can bind a renderbuffer to a framebuffer object,
 		// we must allocate storage for the renderbuffer.
-		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, tex_width, tex_height);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, tex_width, tex_height);
 
-		LOG_GL_ERROR( " glRenderbufferStorageEXT() failed." );
+		LOG_GL_ERROR( " glRenderbufferStorage() failed." );
 
 		// Attach the renderbuffer object to the framebuffer object
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_DepthRenderBuffer);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderBuffer);
 
 //		GET_GLERROR(0);
-		LOG_GL_ERROR( " glFramebufferRenderbufferEXT() failed." );
+		LOG_GL_ERROR( " glFramebufferRenderbuffer() failed." );
 
-		CheckFramebufferStatus( GL_DRAW_FRAMEBUFFER_EXT );
+		CheckFramebufferStatus( GL_DRAW_FRAMEBUFFER);
 	}
 
 //	CheckFramebufferStatus();
 
 	// Bind 0, which means render to back buffer
-	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
-	LOG_GL_ERROR( " glBindFramebufferEXT() returned error(s)" );
+	LOG_GL_ERROR( " glBindFramebuffer() returned error(s)" );
 
-//	PrintFramebufferInfo( GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer );
+//	PrintFramebufferInfo( GL_DRAW_FRAMEBUFFER, m_Framebuffer );
 
 	return true;
 }
@@ -379,7 +379,7 @@ void GLTextureRenderTarget::SetRenderTarget()
 	LOG_GL_ERROR( " Clearing OpenGL errors..." );
 
 	// save the current framebuffer
-	glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &m_OrigFrameBuffer );
+	glGetIntegerv( GL_FRAMEBUFFER_BINDING, &m_OrigFrameBuffer );
 
 	LOG_GL_ERROR( " glGetIntegerv() failed. Failed to get the original frame buffer." );
 
@@ -388,10 +388,10 @@ void GLTextureRenderTarget::SetRenderTarget()
 
 	LOG_GL_ERROR( " glBindTexture() failed." );
 
-//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_Framebuffer );
-	glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, m_Framebuffer );
+//	glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer );
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer );
 
-	LOG_GL_ERROR( " glBindFramebufferEXT() failed." );
+	LOG_GL_ERROR( " glBindFramebuffer() failed." );
 
 //	glPushAttrib( GL_VIEWPORT_BIT );
 
@@ -399,7 +399,7 @@ void GLTextureRenderTarget::SetRenderTarget()
 //	m_RenderTargetTexture.AcceptTextureResourceVisitor( visitor );
 
 	// Set Drawing buffers
-	GLuint attachments[1] = {GL_COLOR_ATTACHMENT0_EXT};
+	GLuint attachments[1] = {GL_COLOR_ATTACHMENT0};
 	glDrawBuffers(1, attachments);
 
 	LOG_GL_ERROR( " glDrawBuffers() failed." );
@@ -434,7 +434,7 @@ void GLTextureRenderTarget::ResetRenderTarget()
 //	glPopAttrib();
 
 	// Bind the original frame buffer. 0 if it's the back buffer.
-	glBindFramebufferEXT( GL_DRAW_FRAMEBUFFER_EXT, m_OrigFrameBuffer );
+	glBindFramebuffer( GL_DRAW_FRAMEBUFFER, m_OrigFrameBuffer );
 
 //	GLenum src_format = (m_TextureDesc.Format == TextureFormat::R32F) ? 
 
@@ -442,7 +442,7 @@ void GLTextureRenderTarget::ResetRenderTarget()
 	if( save_rt_texture )
 		SaveGL2DTextureToImageFile( m_RenderTargetTextureID, m_TextureDesc.Width, m_TextureDesc.Height, GL_RGBA, GL_UNSIGNED_BYTE, "rt_tex.png" );
 
-	LOG_GL_ERROR( " glBindFramebufferEXT() failed." );
+	LOG_GL_ERROR( " glBindFramebuffer() failed." );
 }
 
 
