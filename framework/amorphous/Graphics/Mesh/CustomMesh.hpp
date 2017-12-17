@@ -182,6 +182,8 @@ public:
 
 	void RenderSubset( ShaderManager& rShaderMgr, int material_index );
 
+	bool IsCustomMesh() const { return true; }
+
 	/// \brief Dumps the content of the mesh to a text file in a human readable format (used for debugging).
 	void DumpToTextFile( const std::string& output_pathname );
 

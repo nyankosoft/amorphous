@@ -60,6 +60,8 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 	const int num_materials = (int)rvecSrcMaterial.size();
 	m_vecMaterial.resize( num_materials );
 
+	LOG_PRINTF(("mesh: %s, num_materials: %d",m_strFilename.c_str(),num_materials));
+
 	// create list of material indices
 	// - used by Render() to render all the materials in the default order
 	m_vecFullMaterialIndices.resize( num_materials );
@@ -99,10 +101,20 @@ Result::Name MeshImpl::LoadMaterialsFromArchive( C3DMeshModelArchive& rArchive, 
 		{
 			const TextureResourceDesc& texture_archive = rvecSrcMaterial[i].vecTexture[tex];
 			tex_filename = texture_archive.ResourcePath;
+			LOG_PRINT("tex_filename: " + tex_filename);
 			if( 0 < tex_filename.length() )
 			{
 				string tex_filepath;
-				if( 4 < tex_filename.length() // valid shortest abs. path filename - "C:/a"
+				if( m_strFilename.find("asset://") == 0 )
+				{
+					// The mesh file is stored as an asset; the framework assumes that texture
+					// image is also stored as an asset without the "asset://" prefix,
+					// and inserts "asset://" at the beginning.
+					tex_filepath = string("asset://") + tex_filename;
+
+					LOG_PRINT("tex_filepath is set to: " + tex_filepath);
+				}
+				else if( 4 < tex_filename.length() // valid shortest abs. path filename - "C:/a"
 					&& tex_filename[1] == ':'
 					&& tex_filename[2] != ':' ) // rule out database resource name - e.g., "a::b"
 				{

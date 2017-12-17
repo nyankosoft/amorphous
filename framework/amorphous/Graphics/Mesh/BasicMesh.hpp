@@ -230,6 +230,8 @@ public:
 	virtual void SetVertexDeclaration() {}
 
 	virtual void UpdateVisibility( const Camera& cam ) {}
+
+	virtual bool IsCustomMesh() const { return false; }
 };
 
 
@@ -337,6 +339,8 @@ public:
 	void SetVertexDeclaration() { m_pImpl->SetVertexDeclaration(); }
 
 	void UpdateVisibility( const Camera& cam ) { m_pImpl->UpdateVisibility( cam ); }
+
+	bool IsCustomMesh() const { return m_pImpl->IsCustomMesh(); }
 
 	friend std::shared_ptr<CustomMesh> GetCustomMesh( BasicMesh& src_mesh );
 
