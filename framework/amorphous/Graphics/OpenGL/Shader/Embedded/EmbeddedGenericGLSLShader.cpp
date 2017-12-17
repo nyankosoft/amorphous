@@ -18,6 +18,11 @@ void AdaptVersionDirective( std::string& shader )
 	std::string to("#version 300 es");
 	shader = std::regex_replace( shader, from, to, std::regex_constants::format_first_only );
 
+	// Initializing uniforms in shader causes error in GL ES
+	from = std::regex(" ViewportSize = vec2\\(1280,720\\)");
+	to = " ViewportSize";
+	shader = std::regex_replace( shader, from, to, std::regex_constants::format_first_only );
+	
 	LOG_PRINT_VERBOSE( shader );
 }
 
@@ -501,6 +506,7 @@ static const char *sg_2d_glsl_fs =
 Result::Name EmbeddedGenericGLSLShader::Generate2DVertexShader( const Generic2DShaderDesc& desc, std::string& shader )
 {
 	shader = sg_2d_glsl_vs;
+	AdaptVersionDirective(shader);
 	return Result::SUCCESS;
 }
 
@@ -573,6 +579,8 @@ Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2
 		}
 	}
 
+	AdaptVersionDirective(shader);
+	
 	return Result::SUCCESS;
 }
 
