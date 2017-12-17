@@ -504,6 +504,7 @@ Result::Name CGLProgram::InitProgram()
 		m_pLightManager->Init( m_Program );
 
 	Vector2 v( (float)GraphicsComponent::GetScreenWidth(), (float)GraphicsComponent::GetScreenHeight() );
+	LOG_PRINT( "setting ViewportSize: " + to_string(v) );
 	SetParam( "ViewportSize", v );
 
 	LOG_GL_ERROR( "fn end" );
