@@ -32,7 +32,7 @@ public:
 
 public:
 
-	PlayTime() : m_LastSavedTimeMS(0) { m_Timer.Start(); }
+	PlayTime() : m_LastSavedTimeMS(0) {}// m_Timer.Start(); }
 
 	virtual void Serialize( IArchive& ar, const unsigned int version )
 	{
@@ -63,7 +63,7 @@ inline unsigned long PlayTime::GetCurrentPlayTimeInSec() const
 
 inline unsigned long PlayTime::GetCurrentPlayTimeInMS() const
 {
-	return m_LastSavedTimeMS + m_Timer.GetTimeMS();
+	return m_LastSavedTimeMS + m_Timer.GetElapsedTimeInMilliseconds(); //GetTimeMS();
 }
 
 
