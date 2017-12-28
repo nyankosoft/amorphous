@@ -10,37 +10,38 @@ namespace amorphous
 {
 
 
-class Matrix23
+template<typename T>
+class tMatrix23
 {
 public:
 
 	/// rotation
-	Matrix22 matOrient;
+	tMatrix22<T> matOrient;
 
 	/// translation
-	Vector2 vPosition;
+	tVector2<T> vPosition;
 
 public:
 
-	inline Matrix23() {}
+	inline tMatrix23<T>() {}
 
-	inline Matrix23( const Vector2& pos, const Matrix22& orientation );
+	inline tMatrix23( const tVector2<T>& pos, const  tMatrix22<T>& orientation );
 
 	inline void Identity();
 
 	inline void Default() { Identity(); }
 
 	/// apply the affine transformation to a three element vector
-	inline void Transform( Vector2& rvDest, const Vector2& rvSrc ) const;
+	inline void Transform( tVector2<T>& rvDest, const tVector2<T>& rvSrc ) const;
 
 	/// apply the inverse transformation to a three element vector
-	inline void InvTransform( Vector2& rvDest, const Vector2& rvSrc ) const;
+	inline void InvTransform( tVector2<T>& rvDest, const tVector2<T>& rvSrc ) const;
 
 	/// get the inverse -- assumes that the orientation matrix is orthogonal
-	inline void GetInverseROT( Matrix23& dest ) const;
+	inline void GetInverseROT( tMatrix23<T>& dest ) const;
 
 	/// Non-peformance friendly version of GetInverseROT()
-	inline Matrix23 GetInverseROT() const;
+	inline tMatrix23<T> GetInverseROT() const;
 
 	/// copy orientation & translation from 4x4 row major matrix
 	/// translation needs to be stored in the fourth row of
@@ -50,7 +51,7 @@ public:
 	/// get data in the form of 4x4 row major matrix
 //	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
 
-	friend Matrix23 operator*(const Matrix23 & lhs, const Matrix23 & rhs);
+	friend tMatrix23<T> operator*(const tMatrix23<T> & lhs, const tMatrix23<T> & rhs);
 
 };
 
@@ -60,40 +61,46 @@ public:
 // inline implementations
 //===================================================================================
 
-inline Matrix23::Matrix23( const Vector2& pos, const Matrix22& orientation )
+template<typename T>
+inline tMatrix23<T>::tMatrix23( const tVector2<T>& pos, const  tMatrix22<T>& orientation )
 :
 vPosition(pos),
 matOrient(orientation) {}
 
 
-inline void Matrix23::Identity()
+template<typename T>
+inline void tMatrix23<T>::Identity()
 {
-	vPosition = Vector2(0,0);
-	matOrient = Matrix22Identity();
+	vPosition = tVector2<T>(0,0);
+	matOrient =  tMatrix22<T>Identity();
 }
 
 
-inline void Matrix23::Transform( Vector2& rvDest, const Vector2& rvSrc ) const
+template<typename T>
+inline void tMatrix23<T>::Transform( tVector2<T>& rvDest, const tVector2<T>& rvSrc ) const
 {
 	rvDest = matOrient * rvSrc;
 	rvDest += vPosition;
 }
 
 
-inline void Matrix23::InvTransform( Vector2& rvDest, const Vector2& rvSrc ) const
+template<typename T>
+inline void tMatrix23<T>::InvTransform( tVector2<T>& rvDest, const tVector2<T>& rvSrc ) const
 {
 	matOrient.TransformByTranspose( rvDest, ( rvSrc - vPosition ) );
 }
 
 
-inline void Matrix23::GetInverseROT( Matrix23& dest ) const
+template<typename T>
+inline void tMatrix23<T>::GetInverseROT( tMatrix23<T>& dest ) const
 {
-	dest.matOrient = Matrix22Transpose( matOrient );
+	dest.matOrient =  tMatrix22<T>Transpose( matOrient );
 	dest.vPosition = dest.matOrient * ( -1.0f * vPosition );
 }
 
 
-inline Matrix23 Matrix23::GetInverseROT() const
+template<typename T>
+inline tMatrix23<T> tMatrix23<T>::GetInverseROT() const
 {
 	Matrix23 dest;
 	GetInverseROT( dest );
@@ -105,7 +112,8 @@ inline Matrix23 Matrix23::GetInverseROT() const
 // usually, 
 //   lhs == world pose
 //   rhs == local pose
-inline Matrix23 operator*(const Matrix23 & lhs, const Matrix23 & rhs)
+template<typename T>
+inline tMatrix23<T> operator*(const tMatrix23<T> & lhs, const tMatrix23<T> & rhs)
 {
 	Matrix23 out;
 
@@ -115,7 +123,8 @@ inline Matrix23 operator*(const Matrix23 & lhs, const Matrix23 & rhs)
 }
 
 
-inline Vector2 operator*(const Matrix23 & pose, const Vector2 & pos)
+template<typename T>
+inline tVector2<T> operator*(const tMatrix23<T> & pose, const tVector2<T> & pos)
 {
 	return pose.matOrient * pos + pose.vPosition;
 }
@@ -123,11 +132,25 @@ inline Vector2 operator*(const Matrix23 & pose, const Vector2 & pos)
 
 // global functions
 
-inline Matrix23 Matrix23Identity()
+template<typename T>
+inline tMatrix23<T> tMatrix23Identity()
 {
-	return Matrix23( Vector2(0,0), Matrix22Identity() );
+	return tMatrix23<T>( tVector2<T>(0,0),  tMatrix22Identity<T>() );
 
 }
+
+
+//===================================================================================
+// typedefs
+//===================================================================================
+
+typedef tMatrix23<float> Matrix23;
+typedef tMatrix23<double> dMatrix23;
+
+#define Matrix23Identity tMatrix23Identity<float>
+#define dMatrix23Identity tMatrix23Identity<double>
+
+
 } // namespace amorphous
 
 

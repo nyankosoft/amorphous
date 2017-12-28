@@ -10,24 +10,24 @@ namespace amorphous
 {
 
 
-typedef TVector2<float> Vector2;
-typedef TVector2<double> dVector2;
+typedef tVector2<float> Vector2;
+typedef tVector2<double> dVector2;
 
 
-template<class TScalar>
-inline TScalar Vec2GetAngleBetween( const TVector2<TScalar>& a, const TVector2<TScalar>& b )
+template<class Scalar>
+inline Scalar Vec2GetAngleBetween( const tVector2<Scalar>& a, const tVector2<Scalar>& b )
 {
-	const TScalar margin = 0.000001f;
+	const Scalar margin = 0.000001f;
 
-	const TScalar length_a = Vec2Length(a);
-	const TScalar length_b = Vec2Length(b);
+	const Scalar length_a = Vec2Length(a);
+	const Scalar length_b = Vec2Length(b);
 
 	if( abs(length_a) < margin || abs(length_b) < margin )
 		return 0;
 
-	TScalar dot = Vec2Dot( a, b );
+	Scalar dot = Vec2Dot( a, b );
 
-	TScalar acos_arg = dot / ( length_a * length_b );
+	Scalar acos_arg = dot / ( length_a * length_b );
 
 //	if( acos_arg < -1.0f + margin )     acos_arg = -1.0f + margin;
 //	else if( 1.0f - margin < acos_arg ) acos_arg =  1.0f - margin;

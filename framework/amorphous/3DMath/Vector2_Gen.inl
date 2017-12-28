@@ -1,5 +1,5 @@
 //=====================================================================
-//  TVector2_Gen.inl
+//  tVector2_Gen.inl
 //     - inline implementations of generic 2-dimensional vector class
 //
 //                                                  by Takashi Kuamgai
@@ -14,19 +14,19 @@ namespace amorphous
 
 // global operators
 
-template<class TScalar>
-inline TVector2<TScalar> operator*( const TScalar f, const TVector2<TScalar>& v )
+template<class Scalar>
+inline tVector2<Scalar> operator*( const Scalar f, const tVector2<Scalar>& v )
 {
-	TVector2<TScalar> vOut;
+	tVector2<Scalar> vOut;
 	vOut.x = f * v.x;
 	vOut.y = f * v.y;
 	return vOut;
 }
 
-template<class TScalar>
-inline TVector2<TScalar> operator-( const TVector2<TScalar>& v )
+template<class Scalar>
+inline tVector2<Scalar> operator-( const tVector2<Scalar>& v )
 {
-	TVector2<TScalar> vOut;
+	tVector2<Scalar> vOut;
 	vOut.x = (-1) * v.x;
 	vOut.y = (-1) * v.y;
 	return vOut;
@@ -35,8 +35,8 @@ inline TVector2<TScalar> operator-( const TVector2<TScalar>& v )
 
 // global functions
 
-template<class TScalar>
-inline TScalar Vec2Dot( const TVector2<TScalar>& v0, const TVector2<TScalar>& v1 )
+template<class Scalar>
+inline Scalar Vec2Dot( const tVector2<Scalar>& v0, const tVector2<Scalar>& v1 )
 {
 	return (v0.x * v1.x + v0.y * v1.y);
 }
@@ -44,26 +44,26 @@ inline TScalar Vec2Dot( const TVector2<TScalar>& v0, const TVector2<TScalar>& v1
 
 //inline void Vec2Cross()
 
-template<class TScalar>
-inline TScalar Vec2LengthSq( const TVector2<TScalar>& v )
+template<class Scalar>
+inline Scalar Vec2LengthSq( const tVector2<Scalar>& v )
 {
 	return ( v.x * v.x + v.y * v.y );
 }
 
-template<class TScalar>
-inline TScalar Vec2Length( const TVector2<TScalar>& v )
+template<class Scalar>
+inline Scalar Vec2Length( const tVector2<Scalar>& v )
 {
-	return (TScalar)sqrt( v.x * v.x + v.y * v.y );
+	return (Scalar)sqrt( v.x * v.x + v.y * v.y );
 }
 
-template<class TScalar>
-inline void Vec2Normalize( TVector2<TScalar>& v )
+template<class Scalar>
+inline void Vec2Normalize( tVector2<Scalar>& v )
 {
 	v /= Vec2Length(v);
 }
 
-template<class TScalar>
-inline TVector2<TScalar> Vec2GetNormalized( const TVector2<TScalar>& v )
+template<class Scalar>
+inline tVector2<Scalar> Vec2GetNormalized( const tVector2<Scalar>& v )
 {
 	return v / Vec2Length(v);
 }
@@ -72,13 +72,13 @@ inline TVector2<TScalar> Vec2GetNormalized( const TVector2<TScalar>& v )
 
 // member functions & operators
 
-template<class TScalar>
-inline TVector2<TScalar>::TVector2( TScalar _x, TScalar _y )
+template<class Scalar>
+inline tVector2<Scalar>::tVector2( Scalar _x, Scalar _y )
 : x(_x), y(_y)
 {}
 
-template<class TScalar>
-inline TScalar& TVector2<TScalar>::operator[]( int i )
+template<class Scalar>
+inline Scalar& tVector2<Scalar>::operator[]( int i )
 {
 	switch( i )
 	{
@@ -91,8 +91,8 @@ inline TScalar& TVector2<TScalar>::operator[]( int i )
 	}
 }
 
-template<class TScalar>
-inline const TScalar& TVector2<TScalar>::operator[]( int i ) const
+template<class Scalar>
+inline const Scalar& tVector2<Scalar>::operator[]( int i ) const
 {
 	switch( i )
 	{
@@ -106,8 +106,8 @@ inline const TScalar& TVector2<TScalar>::operator[]( int i ) const
 }
 
 
-template<class TScalar>
-inline bool TVector2<TScalar>::operator==( const TVector2& v ) const
+template<class Scalar>
+inline bool tVector2<Scalar>::operator==( const tVector2& v ) const
 {
 	if( x == v.x && y == v.y )
 		return true;
@@ -115,8 +115,8 @@ inline bool TVector2<TScalar>::operator==( const TVector2& v ) const
 		return false;
 }
 
-template<class TScalar>
-inline TVector2<TScalar> TVector2<TScalar>::operator=( const TVector2<TScalar>& v )
+template<class Scalar>
+inline tVector2<Scalar> tVector2<Scalar>::operator=( const tVector2<Scalar>& v )
 {
 	x = v.x;
 	y = v.y;
@@ -124,94 +124,94 @@ inline TVector2<TScalar> TVector2<TScalar>::operator=( const TVector2<TScalar>& 
 }
 
 
-template<class TScalar>
-inline TVector2<TScalar> TVector2<TScalar>::operator+( const TVector2<TScalar>& v ) const
+template<class Scalar>
+inline tVector2<Scalar> tVector2<Scalar>::operator+( const tVector2<Scalar>& v ) const
 {
-	TVector2<TScalar> vOut;
+	tVector2<Scalar> vOut;
 	vOut.x = x + v.x;
 	vOut.y = y + v.y;
 	return vOut;
 }
 
 
-template<class TScalar>
-inline TVector2<TScalar> TVector2<TScalar>::operator-( const TVector2<TScalar>& v ) const
+template<class Scalar>
+inline tVector2<Scalar> tVector2<Scalar>::operator-( const tVector2<Scalar>& v ) const
 {
-	TVector2 vOut;
+	tVector2 vOut;
 	vOut.x = x - v.x;
 	vOut.y = y - v.y;
 	return vOut;
 }
 
 
-template<class TScalar>
-inline void TVector2<TScalar>::operator+=( const TVector2<TScalar>& v )
+template<class Scalar>
+inline void tVector2<Scalar>::operator+=( const tVector2<Scalar>& v )
 {
 	x += v.x;
 	y += v.y;
 }
 
 
-template<class TScalar>
-inline void TVector2<TScalar>::operator-=( const TVector2<TScalar>& v )
+template<class Scalar>
+inline void tVector2<Scalar>::operator-=( const tVector2<Scalar>& v )
 {
 	x -= v.x;
 	y -= v.y;
 }
 
 
-template<class TScalar>
-inline TVector2<TScalar> TVector2<TScalar>::operator*( const TScalar f ) const
+template<class Scalar>
+inline tVector2<Scalar> tVector2<Scalar>::operator*( const Scalar f ) const
 {
-	TVector2<TScalar> vOut;
+	tVector2<Scalar> vOut;
 	vOut.x = x * f;
 	vOut.y = y * f;
 	return vOut;
 }
 
 
-template<class TScalar>
-inline TVector2<TScalar> TVector2<TScalar>::operator/( const TScalar f ) const
+template<class Scalar>
+inline tVector2<Scalar> tVector2<Scalar>::operator/( const Scalar f ) const
 {
-	TVector2<TScalar> vOut;
+	tVector2<Scalar> vOut;
 	vOut.x = x / f;
 	vOut.y = y / f;
 	return vOut;
 }
 
 
-template<class TScalar>
-inline void TVector2<TScalar>::operator*=( const TScalar f )
+template<class Scalar>
+inline void tVector2<Scalar>::operator*=( const Scalar f )
 {
 	x *= f;
 	y *= f;
 }
 
 
-template<class TScalar>
-inline void TVector2<TScalar>::operator/=( const TScalar f )
+template<class Scalar>
+inline void tVector2<Scalar>::operator/=( const Scalar f )
 {
 	x /= f;
 	y /= f;
 }
 
 
-template<class TScalar>
-inline void TVector2<TScalar>::Normalize()
+template<class Scalar>
+inline void tVector2<Scalar>::Normalize()
 {
 	Vec2Normalize(*this);
 }
 
 
-template<class TScalar>
-inline TScalar TVector2<TScalar>::GetLength() const
+template<class Scalar>
+inline Scalar tVector2<Scalar>::GetLength() const
 {
 	return Vec2Length(*this);
 }
 
 
-template<class TScalar>
-inline TScalar TVector2<TScalar>::GetLengthSq() const
+template<class Scalar>
+inline Scalar tVector2<Scalar>::GetLengthSq() const
 {
 	return Vec2LengthSq(*this);
 }

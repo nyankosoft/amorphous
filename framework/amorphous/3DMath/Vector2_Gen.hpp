@@ -1,5 +1,5 @@
 //=====================================================================
-//  TVector2_Gen.hpp
+//  Vector2_Gen.hpp
 //     - generic 2-dimensional vector class
 //
 //                                                  by Takashi Kuamgai
@@ -16,57 +16,57 @@ namespace amorphous
 {
 
 
-template<class TScalar>
-class TVector2
+template<class Scalar>
+class tVector2
 {
 public:
 
-	TScalar x, y;
+	Scalar x, y;
 
 	// Constructor specializations for float and double follow after the class definition.
-	inline TVector2() : x(0), y(0) {}
+	inline tVector2() : x(0), y(0) {}
 
-	inline TVector2( TScalar _x, TScalar _y );
+	inline tVector2( Scalar _x, Scalar _y );
 
-	//	~TVector2();
+	//	~tVector2();
 
 	/// vector - vector operators
 
-	inline bool operator==( const TVector2& v ) const;
-	inline bool operator!=( const TVector2& v ) const { return !((*this) == v); }
+	inline bool operator==( const tVector2& v ) const;
+	inline bool operator!=( const tVector2& v ) const { return !((*this) == v); }
 
-	inline TVector2 operator=( const TVector2& v );
+	inline tVector2 operator=( const tVector2& v );
 
-	inline TVector2 operator+( const TVector2& v ) const;
-	inline TVector2 operator-( const TVector2& v ) const;
+	inline tVector2 operator+( const tVector2& v ) const;
+	inline tVector2 operator-( const tVector2& v ) const;
 
-	inline void operator+=( const TVector2& v );
-	inline void operator-=( const TVector2& v );
+	inline void operator+=( const tVector2& v );
+	inline void operator-=( const tVector2& v );
 
 
 	/// vector - scalar operators
 
-	inline TVector2 operator*( const TScalar f ) const;
-	inline TVector2 operator/( const TScalar f ) const;
+	inline tVector2 operator*( const Scalar f ) const;
+	inline tVector2 operator/( const Scalar f ) const;
 
-	inline void operator*=( const TScalar f );
-	inline void operator/=( const TScalar f );
+	inline void operator*=( const Scalar f );
+	inline void operator/=( const Scalar f );
 
-	inline TScalar& operator[]( int i );
+	inline Scalar& operator[]( int i );
 
-	inline const TScalar& operator[]( int i ) const;
+	inline const Scalar& operator[]( int i ) const;
 
 
 	inline void Normalize();
 
-	inline TScalar GetLength() const;
+	inline Scalar GetLength() const;
 
-	inline TScalar GetLengthSq() const;
+	inline Scalar GetLengthSq() const;
 
 };
 
-template<> inline TVector2<float>::TVector2() : x(0.0f), y(0.0f) {}
-template<> inline TVector2<double>::TVector2() : x(0.0), y(0.0) {}
+template<> inline tVector2<float>::tVector2() : x(0.0f), y(0.0f) {}
+template<> inline tVector2<double>::tVector2() : x(0.0), y(0.0) {}
 
 
 } // namespace amorphous

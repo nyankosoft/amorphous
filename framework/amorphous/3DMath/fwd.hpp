@@ -6,8 +6,8 @@ namespace amorphous
 {
 
 template<typename T> class TVector2;
-class Matrix22;
-class Matrix23;
+template<typename T> class tMatrix22;
+template<typename T> class tMatrix23;
 class AABB2;
 
 template<typename T> class tVector3;

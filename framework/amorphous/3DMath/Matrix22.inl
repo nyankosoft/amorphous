@@ -12,14 +12,15 @@ namespace amorphous
 
 //########################################################################
 // 
-//                       Matrix22
+//                       tMatrix22<T>
 //data: [0][2]
 //      [1][3]
 //########################################################################
-inline Matrix22::Matrix22() {};
-inline Matrix22::~Matrix22() {};
+template<typename T> inline tMatrix22<T>::tMatrix22() {};
+template<typename T> inline tMatrix22<T>::~tMatrix22() {};
 
-inline void Matrix22::SetTo(Scalar val)
+template<typename T>
+inline void tMatrix22<T>::SetTo(T val)
 {
   data[0] = val;
   data[1] = val;
@@ -27,10 +28,12 @@ inline void Matrix22::SetTo(Scalar val)
   data[3] = val;
 }
 
-inline Matrix22::Matrix22(Scalar val) {SetTo(val);}
+template<typename T>
+inline tMatrix22<T>::tMatrix22(T val) {SetTo(val);}
 
-inline Matrix22::Matrix22(Scalar v11, Scalar v21,	// first column
-                          Scalar v12, Scalar v22 )	// 2nd column
+template<typename T>
+inline tMatrix22<T>::tMatrix22(T v11, T v21,	// first column
+                          T v12, T v22 )	// 2nd column
 {
   data[0] = v11;
   data[1] = v21;
@@ -40,8 +43,9 @@ inline Matrix22::Matrix22(Scalar v11, Scalar v21,	// first column
 }
 
 
-inline Matrix22::Matrix22( const Vector2 & v1, // first column
-                           const Vector2 & v2 )
+template<typename T>
+inline tMatrix22<T>::tMatrix22( const tVector2<T> & v1, // first column
+                           const tVector2<T> & v2 )
 {
   data[0] = v1[0];
   data[1] = v1[1];
@@ -51,20 +55,23 @@ inline Matrix22::Matrix22( const Vector2 & v1, // first column
 }
 
 
-inline void Matrix22::SetData(const Scalar * d)
+template<typename T>
+inline void tMatrix22<T>::SetData(const T * d)
 {
-  memcpy(data, d, 4*sizeof(Scalar));
+  memcpy(data, d, 4*sizeof(T));
 }
 
 
-inline Vector2 Matrix22::GetColumn(uint i) const
+template<typename T>
+inline tVector2<T> tMatrix22<T>::GetColumn(uint i) const
 {
   const uint o = i*2; 
-  return Vector2(data[o], data[o+1]);
+  return tVector2<T>(data[o], data[o+1]);
 }
 
 
-inline void Matrix22::SetColumn(uint i, const Vector2 & col)
+template<typename T>
+inline void tMatrix22<T>::SetColumn(uint i, const tVector2<T> & col)
 {
   const uint o = i*2; 
   data[o]   = col[0];
@@ -72,7 +79,8 @@ inline void Matrix22::SetColumn(uint i, const Vector2 & col)
 }
 
 
-inline bool Matrix22::IsSensible() const
+template<typename T>
+inline bool tMatrix22<T>::IsSensible() const
 {
   for (unsigned i = 0 ; i < 4 ; ++i)
   {
@@ -83,10 +91,10 @@ inline bool Matrix22::IsSensible() const
 }
 
 /*
-inline void Matrix22::show(const char * str) const
+inline void tMatrix22<T>::show(const char * str) const
 {
   uint i, j;
-  TRACE("%s Matrix22::this = 0x%x \n", str, (int) this);
+  TRACE("%s tMatrix22<T>::this = 0x%x \n", str, (int) this);
   for (i = 0 ; i < 3 ; i++)
   {
     for (j = 0 ; j < 3 ; j++)
@@ -98,7 +106,8 @@ inline void Matrix22::show(const char * str) const
 }*/
 
 
-inline Matrix22 & Matrix22::operator+=(const Matrix22 & rhs)
+template<typename T>
+inline tMatrix22<T> & tMatrix22<T>::operator+=(const tMatrix22<T> & rhs)
 {
   for (uint i = 4 ; i-- != 0 ;)
     data[i] += rhs.data[i];
@@ -106,7 +115,8 @@ inline Matrix22 & Matrix22::operator+=(const Matrix22 & rhs)
 }
 
 
-inline Matrix22 & Matrix22::operator-=(const Matrix22 & rhs)
+template<typename T>
+inline tMatrix22<T> & tMatrix22<T>::operator-=(const tMatrix22<T> & rhs)
 {
   for (uint i = 4 ; i-- != 0 ;)
     data[i] -= rhs.data[i];
@@ -114,7 +124,8 @@ inline Matrix22 & Matrix22::operator-=(const Matrix22 & rhs)
 }
 
 
-inline Matrix22 & Matrix22::operator*=(const Scalar rhs)
+template<typename T>
+inline tMatrix22<T> & tMatrix22<T>::operator*=(const T rhs)
 {
   for (uint i = 4 ; i-- != 0 ;)
 		data[i] *= rhs;
@@ -122,28 +133,32 @@ inline Matrix22 & Matrix22::operator*=(const Scalar rhs)
 }
 
 
-inline Matrix22 & Matrix22::operator/=(const Scalar rhs)
+template<typename T>
+inline tMatrix22<T> & tMatrix22<T>::operator/=(const T rhs)
 {
-  const Scalar inv_rhs = 1.0f/rhs;
+  const T inv_rhs = 1.0f/rhs;
   for (uint i = 4 ; i-- != 0 ;)
 		data[i] *= inv_rhs;
   return *this;
 }
 
 
-inline Matrix22 Matrix22::operator+(const Matrix22 & rhs) const
+template<typename T>
+inline tMatrix22<T> tMatrix22<T>::operator+(const tMatrix22<T> & rhs) const
 {
-  return Matrix22(*this) += rhs;
+  return tMatrix22<T>(*this) += rhs;
 }
 
 
-inline Matrix22 Matrix22::operator-(const Matrix22 & rhs) const
+template<typename T>
+inline tMatrix22<T> tMatrix22<T>::operator-(const tMatrix22<T> & rhs) const
 {
-  return Matrix22(*this) -= rhs;
+  return tMatrix22<T>(*this) -= rhs;
 }
 
 
-inline bool Matrix22::operator==(const Matrix22 & rhs) const
+template<typename T>
+inline bool tMatrix22<T>::operator==(const tMatrix22<T> & rhs) const
 {
 	for( int i=0; i<4; i++ )
 	{
@@ -155,20 +170,22 @@ inline bool Matrix22::operator==(const Matrix22 & rhs) const
 }
 
 
-inline void Matrix22::SetIdentity()
+template<typename T>
+inline void tMatrix22<T>::SetIdentity()
 {
-	*this = Matrix22Identity();
+	*this = tMatrix22<T>Identity();
 }
 
 
-inline void Matrix22::SetRotation( const Scalar angle )
+template<typename T>
+inline void tMatrix22<T>::SetRotation( const T angle )
 {
-	*this = Matrix22Rotation( angle );
+	*this = tMatrix22<T>Rotation( angle );
 }
 
 
 /*
-inline void Matrix22::Orthonormalize()
+inline void tMatrix22<T>::Orthonormalize()
 {
 	Vector2 u1( operator()(0, 0), operator()(1, 0) );
 	Vector2 u2( operator()(0, 1), operator()(1, 1) );
@@ -198,19 +215,20 @@ inline void Matrix22::Orthonormalize()
 	if (IsSensible() == false)
 	{
 		//    TRACE("orthonormalize() resulted in bad matrix\n");
-		*this = Matrix22(Vector2(1, 0, 0), Vector2(0, 1, 0), Vector2(0, 0, 1));
+		*this = tMatrix22<T>(Vector2(1, 0, 0), Vector2(0, 1, 0), Vector2(0, 0, 1));
 	}
 }
 */
 
-inline void Matrix22::TransformByTranspose( Vector2 & dest, const Vector2 & src ) const
+template<typename T>
+inline void tMatrix22<T>::TransformByTranspose( tVector2<T> & dest, const tVector2<T> & src ) const
 {
 	dest[0] = operator()(0,0) * src[0] + operator()(1,0) * src[1];
 	dest[1] = operator()(0,1) * src[0] + operator()(1,1) * src[1];
 }
 
 /*
-inline void Matrix22::CopyRowMajorMatrix4( const Scalar *pSrcData )
+inline void tMatrix22<T>::CopyRowMajorMatrix4( const T *pSrcData )
 {
 	operator()(0, 0) = pSrcData[0];
 	operator()(1, 0) = pSrcData[1];
@@ -221,7 +239,7 @@ inline void Matrix22::CopyRowMajorMatrix4( const Scalar *pSrcData )
 }
 
 
-inline void Matrix22::GetRowMajorMatrix44( Scalar *pDest ) const
+inline void tMatrix22<T>::GetRowMajorMatrix44( T *pDest ) const
 {
 	// first row
 	pDest[4 * 0 + 0] = operator()(0, 0);
@@ -254,9 +272,10 @@ inline void Matrix22::GetRowMajorMatrix44( Scalar *pDest ) const
 // global operators
 //=============================================================================
 
-inline Matrix22 operator*(const Matrix22 & lhs, const Scalar rhs)
+template<typename T>
+inline tMatrix22<T> operator*(const tMatrix22<T> & lhs, const T rhs)
 {
-  Matrix22 result;
+  tMatrix22<T> result;
   
   for (uint i = 4 ; i-- != 0 ; )
     result.data[i] = rhs * lhs.data[i];
@@ -264,9 +283,10 @@ inline Matrix22 operator*(const Matrix22 & lhs, const Scalar rhs)
 }
 
 
-inline Matrix22 operator*(const Matrix22 & lhs, const Matrix22 & rhs)
+template<typename T>
+inline tMatrix22<T> operator*(const tMatrix22<T> & lhs, const tMatrix22<T> & rhs)
 {
-  static Matrix22 out; // avoid ctor/dtor
+  static tMatrix22<T> out; // avoid ctor/dtor
   
   for (uint oj = 2 ; oj-- != 0 ;)
   {
@@ -282,7 +302,8 @@ inline Matrix22 operator*(const Matrix22 & lhs, const Matrix22 & rhs)
 
 
 // matrix * vector
-inline Vector2 operator*(const Matrix22 & lhs, const Vector2 & rhs)
+template<typename T>
+inline Vector2 operator*(const tMatrix22<T> & lhs, const Vector2 & rhs)
 {
   return Vector2(
     lhs(0,0) * rhs[0] +
@@ -292,19 +313,21 @@ inline Vector2 operator*(const Matrix22 & lhs, const Vector2 & rhs)
 }
 
 
-inline Matrix22 Matrix22Transpose(const Matrix22 & rhs)
+template<typename T>
+inline tMatrix22<T> Matrix22Transpose(const tMatrix22<T> & rhs)
 {
-  return Matrix22(rhs(0, 0), rhs(0, 1),
+  return tMatrix22<T>(rhs(0, 0), rhs(0, 1),
                   rhs(1, 0), rhs(1, 1) );
 }
 
 
-//inline Matrix22 m3gamma(Scalar gamma)
-inline Matrix22 Matrix22Rotation( Scalar theta )
+//inline tMatrix22<T> m3gamma(T gamma)
+template<typename T>
+inline tMatrix22<T> Matrix22Rotation( T theta )
 {
-  Matrix22 result(0);
-  Scalar s = (Scalar) sin(theta);
-  Scalar c = (Scalar) cos(theta);
+  tMatrix22<T> result(0);
+  T s = (T) sin(theta);
+  T c = (T) cos(theta);
   
   result(0,0) = c;
   result(1,1) = c;
@@ -316,15 +339,15 @@ inline Matrix22 Matrix22Rotation( Scalar theta )
 
 
 /*
-inline Matrix22 GetSkewSymmetricMatrix( const Vector2 & rhs )
+inline tMatrix22<T> GetSkewSymmetricMatrix( const Vector2 & rhs )
 {
-	return Matrix22(     0, -rhs.z,  rhs.y,
+	return tMatrix22<T>(     0, -rhs.z,  rhs.y,
 		             rhs.z,      0, -rhs.x,
 					-rhs.y,  rhs.x,      0 );
 }
 
 
-inline Scalar trace(const Matrix22 & rhs)
+inline T trace(const tMatrix22<T> & rhs)
 {
   return rhs(0,0) + rhs(1,1) + rhs(2,2);
 }
