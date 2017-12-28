@@ -2,8 +2,8 @@
 #define __HUD_PLAYERSHIP_H__
 
 
-#include "Graphics/2DPrimitive/2DRect.hpp"
-#include "Graphics/Font/TextureFont.hpp"
+#include "amorphous/Graphics/2DPrimitive/2DRect.hpp"
+#include "amorphous/Graphics/Font/TextureFont.hpp"
 
 //#include "QuickMenuManager.hpp"
 

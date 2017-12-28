@@ -178,7 +178,7 @@ void CBE_Platform::MessageProcedure(GameMessage& rGameMessage, CCopyEntity* pCop
 			// decide the destination
 			// a destination which is the closest to the sensor will be selected
 
-			shared_ptr<CCopyEntity> pSenderEntity = rGameMessage.sender.Get();
+			std::shared_ptr<CCopyEntity> pSenderEntity = rGameMessage.sender.Get();
 			if( !pSenderEntity )
 				return;
 

@@ -4,9 +4,9 @@
 
 #include <vector>
 #include <list>
-#include "3DMath/3DStructs.hpp"
-#include "BSPMapCompiler/BaseFace.hpp"
-#include "BSPMapCompiler/MapFace.hpp"
+#include "amorphous/3DMath/3DStructs.hpp"
+#include "amorphous/BSPMapCompiler/BaseFace.hpp"
+#include "amorphous/BSPMapCompiler/MapFace.hpp"
 
 
 namespace amorphous

@@ -11,7 +11,7 @@
 namespace amorphous
 {
 
-
+using namespace std;
 
 EntityFactory::EntityFactory()
 {

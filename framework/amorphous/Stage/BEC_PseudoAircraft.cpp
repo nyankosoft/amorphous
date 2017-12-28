@@ -3,7 +3,7 @@
 #include "CopyEntity.hpp"
 #include "BaseEntity.hpp"
 #include "Stage.hpp"
-#include "Item/GI_Aircraft.hpp"
+#include "amorphous/Item/GI_Aircraft.hpp"
 #include "Stage.hpp"
 
 

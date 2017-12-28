@@ -2,8 +2,8 @@
 #define  __SoundEntity_HPP__
 
 
-#include "Stage/fwd.hpp"
-#include "Stage/CopyEntity.hpp"
+#include "amorphous/Stage/fwd.hpp"
+#include "amorphous/Stage/CopyEntity.hpp"
 
 
 namespace amorphous

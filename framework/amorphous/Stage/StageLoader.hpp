@@ -37,7 +37,7 @@ class CASyncStageLoader
 
 	bool m_bExitLoaderThread;
 
-	boost::thread *m_pLoader;
+	std::thread *m_pLoader;
 //	std::shared_ptr<boost::thread> m_pLoader;
 
 public:

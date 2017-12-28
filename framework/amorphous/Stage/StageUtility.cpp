@@ -1276,7 +1276,7 @@ EntityHandle<> StageMiscUtility::CreateNonCollidableEntityFromMesh(
 // StageEntityUtility
 //=============================================================================
 
-#include "Graphics/MeshContainerRenderMethod.hpp"
+#include "amorphous/Graphics/MeshContainerRenderMethod.hpp"
 
 
 namespace amorphous

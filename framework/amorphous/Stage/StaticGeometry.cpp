@@ -1,5 +1,5 @@
 #include "StaticGeometry.hpp"
-#include "bsptree.hpp"
+#include "BSPTree.hpp"
 #include "Stage.hpp" // used in CStaticGeometry::CreateCollisionGeometry() and dtor
 
 #include "amorphous/Graphics/Shader/ShaderManager.hpp"

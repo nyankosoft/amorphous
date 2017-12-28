@@ -48,7 +48,7 @@ void CBE_ParticleSet::ParticleThreadMain()
 	const int num_particle_sets = m_MaxNumParticleSets;
 	while( !m_TerminateParticleThread )
 	{
-		boost::this_thread::sleep( boost::posix_time::milliseconds(10) );
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
 		if( m_fFrameTimeLeft <= 0 )
 			continue;
@@ -123,13 +123,13 @@ CBE_ParticleSet::~CBE_ParticleSet()
 {
 	ReleaseGraphicsResources();
 
-	if( m_bCreateParticleThread )
-	{
-		m_TerminateParticleThread = true;
-
-		// wait until all the particle threads are released
-		m_ParticleThreadGroup.join_all();
-	}
+//	if( m_bCreateParticleThread )
+//	{
+//		m_TerminateParticleThread = true;
+//
+//		// wait until all the particle threads are released
+//		m_ParticleThreadGroup.join_all();
+//	}
 
 	SafeDeleteArray( m_paParticleSet );
 }
@@ -242,7 +242,7 @@ void CBE_ParticleSet::Init()
 	}*/
 
 	// start particle thread
-	if( m_bCreateParticleThread )
+	if( false )//m_bCreateParticleThread )
 	{
 /*		m_pThreadPooler = new CThreadPooler();
 
@@ -254,8 +254,8 @@ void CBE_ParticleSet::Init()
 		// let the particle thread do its job
 		m_pThreadPooler->Invoke( fn );*/
 
-		for( i=0; i<1; i++ )
-			m_ParticleThreadGroup.add_thread( new boost::thread(CParticleThreadStarter(this)) );
+//		for( i=0; i<1; i++ )
+//			m_ParticleThreadGroup.add_thread( new boost::thread(CParticleThreadStarter(this)) );
 	}
 
 //	m_MeshProperty.m_ShaderHandle = Get2DPrimitiveCommonShader( C2DPrimitiveCommonShaders::ST_DIFFUSE_COLOR_AND_TEXTURE );

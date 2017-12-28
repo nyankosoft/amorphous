@@ -7,7 +7,7 @@
 #include "BaseEntityManager.hpp"
 #include "BaseEntity.hpp"
 #include "EntityRenderManager.hpp"
-#include "bsptree.hpp"
+#include "BSPTree.hpp"
 #include "trace.hpp"
 #include "ViewFrustumTest.hpp"
 #include "Stage.hpp"

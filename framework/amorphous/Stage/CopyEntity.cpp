@@ -1,7 +1,7 @@
 #include "CopyEntity.hpp"
 #include "BaseEntity.hpp"
 //#include "EntitySet.hpp"
-#include "Physics/Actor.hpp"
+#include "amorphous/Physics/Actor.hpp"
 
 
 namespace amorphous

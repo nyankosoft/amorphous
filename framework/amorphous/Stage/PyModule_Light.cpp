@@ -1,8 +1,8 @@
 #include "PyModule_Light.hpp"
 #include "PyModule_Stage.hpp"
 
-#include "3DMath/3DGameMath.hpp"
-#include "Graphics/FloatRGBColor.hpp"
+#include "amorphous/3DMath/3DGameMath.hpp"
+#include "amorphous/Graphics/FloatRGBColor.hpp"
 
 #include "BE_DirectionalLight.hpp"
 #include "BE_PointLight.hpp"

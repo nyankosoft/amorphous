@@ -12,7 +12,7 @@
 
 #include "amorphous/3DMath/MathMisc.hpp"
 #include "amorphous/Input/InputHub.hpp"
-#include "amorphous/Input/InputHandler_Cutscene.hpp"
+#include "amorphous/Stage/Input/InputHandler_Cutscene.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 
 

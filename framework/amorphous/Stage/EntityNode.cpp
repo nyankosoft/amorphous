@@ -3,7 +3,7 @@
 #include "EntityRenderer.hpp"
 #include "EntityRenderManager.hpp"
 #include "BaseEntity.hpp"
-#include "bsptree.hpp"
+#include "BSPTree.hpp"
 #include "trace.hpp"
 #include "ViewFrustumTest.hpp"
 #include "Stage.hpp"

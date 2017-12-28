@@ -290,7 +290,7 @@ void CBE_StaticParticleSet::Draw(CCopyEntity* pCopyEnt)
 //		pd3dDev->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
 //		pd3dDev->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA /*m_DestAlphaBlendMode*/ );
 
-		shared_ptr<BasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
+		std::shared_ptr<BasicMesh> pMesh = m_MeshProperty.m_MeshObjectHandle.GetMesh();
 		if( pMesh )
 			pMesh->Render( shader_mgr );
 /*

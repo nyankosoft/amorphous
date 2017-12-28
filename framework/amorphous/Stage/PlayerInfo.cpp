@@ -14,8 +14,7 @@
 namespace amorphous
 {
 
-
-using std::string;
+using namespace std;
 
 
 // definition of the singleton instance

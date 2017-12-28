@@ -1,5 +1,5 @@
-#include "GameCommon/RandomDirectionTable.hpp"
-#include "Physics/Actor.hpp"
+#include "amorphous/GameCommon/RandomDirectionTable.hpp"
+#include "amorphous/Physics/Actor.hpp"
 #include "amorphous/Support/MTRand.hpp"
 #include "amorphous/Support/VectorRand.hpp"
 #include "amorphous/Utilities/TextFileScannerExtensions.hpp"

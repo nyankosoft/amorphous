@@ -27,7 +27,7 @@ SharedMeshContainer::SharedMeshContainer()
 {
 	m_ShaderTechnique.resize(1,1);
 	m_ShaderTechnique(0,0).SetTechniqueName( "NoShader" );
-	m_MeshDesc.MeshType = MeshType::BASIC;
+	m_MeshDesc.MeshType = MeshTypeName::BASIC;
 }
 
 
@@ -37,7 +37,7 @@ SharedMeshContainer::SharedMeshContainer( const string& filename )
 {
 	m_ShaderTechnique.resize(1,1);
 	m_ShaderTechnique(0,0).SetTechniqueName( "NoShader" );
-	m_MeshDesc.MeshType = MeshType::BASIC;
+	m_MeshDesc.MeshType = MeshTypeName::BASIC;
 	m_MeshDesc.ResourcePath = filename;
 }
 

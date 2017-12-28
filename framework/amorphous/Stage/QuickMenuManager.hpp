@@ -4,12 +4,10 @@
 #include <vector>
 #include <memory>
 
-#include "Input/InputHandler.hpp"
-
-#include "Stage/PlayerInfo.hpp"
-
-#include "Item/GameItem.hpp"
-#include "Item/WeaponSystem.hpp"
+#include "amorphous/Input/InputHandler.hpp"
+#include "amorphous/Stage/PlayerInfo.hpp"
+#include "amorphous/Item/GameItem.hpp"
+#include "amorphous/Item/WeaponSystem.hpp"
 
 #include <windows.h>
 

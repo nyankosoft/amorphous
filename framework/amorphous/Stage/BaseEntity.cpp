@@ -5,7 +5,7 @@
 #include "trace.hpp"
 #include "EntitySet.hpp"
 #include "Stage.hpp"
-#include "bsptree.hpp"
+#include "BSPTree.hpp"
 
 #include "amorphous/3DMath/3DGameMath.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
@@ -1076,10 +1076,10 @@ void BaseEntity::LoadFromFile( CTextFileScanner& scanner )
 
 		if( scanner.TryScanLine( "MESH_TYPE", str ) )
 		{
-			MeshType::Name type = MeshType::INVALID;
-			if( str == "BASIC" )            type = MeshType::BASIC;
-			else if( str == "PROGRESSIVE" ) type = MeshType::PROGRESSIVE;
-			else if( str == "SKELETAL" )    type = MeshType::SKELETAL;
+			MeshTypeName type = MeshTypeName::INVALID;
+			if( str == "BASIC" )            type = MeshTypeName::BASIC;
+			else if( str == "PROGRESSIVE" ) type = MeshTypeName::PROGRESSIVE;
+			else if( str == "SKELETAL" )    type = MeshTypeName::SKELETAL;
 			m_MeshProperty.m_MeshDesc.MeshType = type;
 		}
 

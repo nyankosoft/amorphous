@@ -288,7 +288,7 @@ void BaseEntity::SetMeshRenderMethod( CCopyEntity& entity )
 	if( !pMesh )
 		return;
 
-	if( pMesh->GetMeshType() == MeshType::SKELETAL )
+	if( pMesh->GetMeshType() == MeshTypeName::SKELETAL )
 	{
 //		shared_ptr<SkeletalMesh> pSkeletalMesh
 //			= std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
@@ -379,7 +379,7 @@ void BaseEntity::Init3DModel()
 	// set the mesh render method for the first LOD
 	m_MeshProperty.m_pMeshRenderMethod->PrimaryMeshRenderMethod() = render_method;
 
-	if( pMesh && pMesh->GetMeshType() == MeshType::SKELETAL )
+	if( pMesh && pMesh->GetMeshType() == MeshTypeName::SKELETAL )
 	{
 		// add blend matrices loader to m_MeshProperty.m_pBlendMatricesLoader
 		// if the base entity uses shared render methods
@@ -460,7 +460,7 @@ void BaseEntity::RenderAsShadowCaster(CCopyEntity* pCopyEnt)
 
 	pShaderMgr->SetWorldTransform( pCopyEnt->GetWorldPose() );
 
-	pShaderMgr->SetTechnique( pShadowMgr->ShaderTechniqueForShadowCaster( VertexBlendType::NONE ) );
+	pShaderMgr->SetTechnique( pShadowMgr->ShaderTechniqueForShadowCaster( VertexBlendTypeName::NONE ) );
 
 	pMesh->Render( *pShaderMgr );
 
@@ -532,9 +532,9 @@ void BaseEntity::RenderAsShadowReceiver(CCopyEntity* pCopyEnt)
 	ShaderTechniqueHandle tech;
 	const U32 entity_flags = pCopyEnt->GetEntityFlags();
 	if( entity_flags & BETYPE_SHADOW_RECEIVER )
-		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( VertexBlendType::NONE );
+		tech = pShadowMgr->ShaderTechniqueForShadowReceiver( VertexBlendTypeName::NONE );
 	else // i.e. entity_flags & BETYPE_SHADOW_CASTER. See EntityNode::RenderShadowReceivers() for details.
-		tech = pShadowMgr->ShaderTechniqueForNonShadowedCasters( VertexBlendType::NONE );
+		tech = pShadowMgr->ShaderTechniqueForNonShadowedCasters( VertexBlendTypeName::NONE );
 
 	pShaderMgr->SetTechnique( tech );
 

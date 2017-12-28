@@ -1,6 +1,6 @@
 #include "Stage.hpp"
 //#include "Stage/BSPMap.hpp"
-#include "amorphous/Stage/bsptree.hpp"
+#include "amorphous/Stage/BSPTree.hpp"
 #include "amorphous/Stage/StaticGeometry.hpp"
 #include "amorphous/Stage/EntitySet.hpp"
 #include "amorphous/Stage/EntityRenderManager.hpp"

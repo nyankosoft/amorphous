@@ -2,7 +2,7 @@
 #define __BINARYNODE_H__
 
 
-#include "3DMath/AABB3.hpp"
+#include "amorphous/3DMath/AABB3.hpp"
 
 
 namespace amorphous

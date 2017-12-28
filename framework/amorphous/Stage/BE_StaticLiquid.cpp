@@ -13,6 +13,7 @@
 namespace amorphous
 {
 
+using namespace std;
 
 /*
 class CStaticLiquidEntity : public CCopyEntity;
@@ -87,7 +88,7 @@ void CBE_StaticLiquid::Init()
 
 	bool loaded = m_MeshProperty.m_pMeshRenderMethod->LoadRenderMethodResources();
 
-	shared_ptr<ShaderParamsLoader> pReflectionTextureParam( new ShaderVariableLoader<TextureParam>() );
+	std::shared_ptr<ShaderParamsLoader> pReflectionTextureParam( new ShaderVariableLoader<TextureParam>() );
 	m_MeshProperty.m_pMeshRenderMethod->SetShaderParamsLoaderToAllMeshRenderMethods( pReflectionTextureParam );
 }
 

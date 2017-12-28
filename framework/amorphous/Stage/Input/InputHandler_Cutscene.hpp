@@ -1,7 +1,7 @@
 #ifndef  __INPUTHANDLER_CUTSCENE_H__
 #define  __INPUTHANDLER_CUTSCENE_H__
 
-#include "Input/InputHandler.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous

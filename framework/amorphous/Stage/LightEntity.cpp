@@ -13,6 +13,7 @@
 namespace amorphous
 {
 
+using namespace std;
 
 
 class CLightInitializer : public LightVisitor

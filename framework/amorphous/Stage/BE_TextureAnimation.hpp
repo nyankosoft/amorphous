@@ -3,7 +3,7 @@
 
 
 #include "BaseEntity.hpp"
-#include "Graphics/Mesh/RectSetMesh.hpp"
+#include "amorphous/Graphics/Mesh/RectSetMesh.hpp"
 
 
 namespace amorphous

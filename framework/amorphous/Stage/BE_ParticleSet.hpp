@@ -287,7 +287,7 @@ protected:
 
 	bool m_TerminateParticleThread;
 
-	boost::thread_group m_ParticleThreadGroup;
+	//boost::thread_group m_ParticleThreadGroup;
 
 public:
 

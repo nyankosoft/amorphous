@@ -8,8 +8,8 @@
 
 #include "../Stage/ScreenEffectManager.hpp"
 
-#include "Sound/SoundManager.hpp"
-#include "Sound/Serialization_SoundHandle.hpp"
+#include "amorphous/Sound/SoundManager.hpp"
+#include "amorphous/Sound/Serialization_SoundHandle.hpp"
 
 
 namespace amorphous
