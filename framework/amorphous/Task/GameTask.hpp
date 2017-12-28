@@ -237,14 +237,14 @@ inline void GameTask::Render()
 	if( !m_Rendered )
 	{
 		m_Rendered = true;
-		m_RenderStartTimeMS = m_Timer.GetTimeMS();
+		m_RenderStartTimeMS = m_Timer.GetElapsedTimeInMilliseconds(); //GetTimeMS();
 	}
 }
 
 
 inline void GameTask::StartFadeout()
 {
-	m_FadeoutStartTimeMS = m_Timer.GetTimeMS();
+	m_FadeoutStartTimeMS = m_Timer.GetElapsedTimeInMilliseconds(); //GetTimeMS();
 }
 
 
