@@ -10,7 +10,7 @@ namespace amorphous
 
 
 // TVector2 for interger type
-typedef TVector2<int> SPoint;
+typedef tVector2<int> SPoint;
 
 /**
  * holds a point in 2D coordinates
