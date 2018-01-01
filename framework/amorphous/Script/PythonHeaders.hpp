@@ -2,7 +2,7 @@
 #define __PythonHeaders_HPP__
 
 
-#define GDS_USE_BOOST_PYTHON
+//#define GDS_USE_BOOST_PYTHON
 
 #ifdef GDS_USE_BOOST_PYTHON
 /*
