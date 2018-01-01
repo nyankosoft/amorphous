@@ -4,10 +4,10 @@
 
 #include <vector>
 #include "fwd.hpp"
-#include "3DMath/Plane.hpp"
-#include "3DMath/aabb3.hpp"
-#include "Graphics/Direct3D/FVF_MapVertex.h"
-#include "Graphics/Direct3D/Conversions.hpp"
+#include "amorphous/3DMath/Plane.hpp"
+#include "amorphous/3DMath/aabb3.hpp"
+#include "amorphous/Graphics/Direct3D/FVF_MapVertex.h"
+#include "amorphous/Graphics/Direct3D/Conversions.hpp"
 
 
 namespace amorphous
