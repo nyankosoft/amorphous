@@ -1,6 +1,6 @@
 #include "IK_Node.hpp"
-#include "3DMath/Matrix33.hpp"
-#include "3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/Matrix33.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
 
 
 namespace amorphous

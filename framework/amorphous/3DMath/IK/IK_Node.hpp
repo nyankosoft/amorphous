@@ -1,7 +1,7 @@
 #ifndef __CLASS_IK_NODE_H__
 #define __CLASS_IK_NODE_H__
 
-#include "../3DMath/Vector3.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
 
 
 namespace amorphous

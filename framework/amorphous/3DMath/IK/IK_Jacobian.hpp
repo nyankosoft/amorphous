@@ -3,10 +3,10 @@
 
 #include "IK_Node.hpp"
 #include "IK_Tree.hpp"
-#include "3DMath/MathMisc.hpp"
-#include "3DMath/Vector3.hpp"
-#include "3DMath/VectorN.hpp"
-#include "3DMath/MatrixMN.hpp"
+#include "amorphous/3DMath/MathMisc.hpp"
+#include "amorphous/3DMath/Vector3.hpp"
+#include "amorphous/3DMath/VectorN.hpp"
+#include "amorphous/3DMath/MatrixMN.hpp"
 
 
 namespace amorphous
