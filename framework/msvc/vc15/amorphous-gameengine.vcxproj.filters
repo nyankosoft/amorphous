@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{b01e0661-29e1-43b8-9024-20810022a48b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{6adb44e0-5c98-428d-922a-8b4a23d2883c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{d80f4add-aafe-49e9-9d16-0f4da3b9416b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script">
+      <UniqueIdentifier>{b59767e2-b632-4155-bdb5-77585ed53308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{11795387-8225-40e4-8e7a-6ff5b87ba53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{c1bf711b-5e88-465b-bd83-aecccd464645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Input">
+      <UniqueIdentifier>{effa821b-adfc-4524-9fb1-92f33de612da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\PyModule">
+      <UniqueIdentifier>{bf66ddfc-e6e8-4129-b57e-41e23f86f6b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\amorphous\Stage\AlphaEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity_Draw.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntity_ScriptedMotion.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BaseEntityFactory.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_AreaSensor.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Blast.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Bullet.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_CameraController.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Cloud.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Decal.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_DirectionalLight.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Door.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_DoorController.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Enemy.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_EnemyAircraft.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_EnemyShip.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_EventTrigger.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_ExplosionSmoke.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Explosive.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_FixedTurretPod.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Floater.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_GeneralEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_HomingMissile.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_IndividualEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_LaserDot.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Light.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_MuzzleFlash.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_NozzleExhaust.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_ParticleSet.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PhysicsBaseEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Platform.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Player.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerPseudoAircraft.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerPseudoLeggedVehicle.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerShip.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PlayerShipEx.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_PointLight.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_ScriptedCamera.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Skybox.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_SmokeTrace.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticGeometry.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticLiquid.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_StaticParticleSet.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_SupplyItem.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_TextureAnimation.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BE_Turret.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BEC_Destruction.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BEC_PseudoAircraft.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\bspstructs.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\CopyEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\CopyEntityDescFileArchive.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\CoreBaseEntities.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EnemyState.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntityFactory.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntityNode.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntityRenderManager.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntitySet.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\EntitySplitter.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\GameMessage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerAircraft.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\HUD_PlayerShip.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\LightEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\LightEntityManager.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\ParticleThreadManager.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PlayerInfo.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\QuickMenuManager.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\ScreenEffect.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\ScreenEffectManager.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SharedMeshContainer.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SoundEntity.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\Stage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageCameraUtility.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageEntryPoint.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageGraph.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageLightUtility.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageLoader.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StageUtility.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StaticGeometry.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SubDisplay.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterial.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\SurfaceMaterialManager.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\trace.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\BSPTree.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Camera.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Entity.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_HUD.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Light.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Player.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_Stage.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amorphous\Stage\PyModule_VisualEffect.cpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\amorphous\Stage\AlphaEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntity_Draw.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityFactory.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BaseEntityHandle.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_AreaSensor.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Blast.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Bullet.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_CameraController.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Cloud.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Decal.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_DirectionalLight.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Door.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_DoorController.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Enemy.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_EnemyAircraft.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_EnemyShip.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_EventTrigger.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_ExplosionSmoke.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Explosive.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_FixedTurretPod.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Floater.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_GeneralEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_HomingMissile.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_IndividualEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_LaserDot.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Light.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_MuzzleFlash.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_NozzleExhaust.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_ParticleSet.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PhysicsBaseEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Platform.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Player.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerPseudoAircraft.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerPseudoLeggedVehicle.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PlayerShip.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_PointLight.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_ScriptedCamera.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Skybox.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_SmokeTrace.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticGeometry.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticLiquid.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_StaticParticleSet.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_SupplyItem.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_TextureAnimation.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BE_Turret.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BEC_Destruction.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BEC_PseudoAircraft.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BinaryNode.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BSPStaticGeometry.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\bspstructs.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityCallback.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityDesc.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CopyEntityDescFileArchive.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\CoreBaseEntitiesLoader.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\DynamicLightManagerForStaticGeometry.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EnemyState.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityCollisionGroups.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityFactory.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityFile.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityGroupHandle.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityHandle.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityMotionPathRequest.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityNode.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityRenderer.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntityRenderManager.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntitySet.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\EntitySplitter.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\fwd.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\GameMessage.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\GraphicsResourcesUpdateCallback.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerAircraft.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerBase.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\HUD_PlayerShip.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\LightEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\LightEntityManager.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\LinkNode.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\MeshBonesUpdateCallback.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\MirroredSceneTextureParam.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\MiscEntityRenderers.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\OverlapTestAABB.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ParticleThreadManager.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PlayerInfo.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\QuickMenuManager.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ScreenEffect.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ScreenEffectManager.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Serialization_BaseEntityHandle.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SharedMeshContainer.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SoundEntity.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\Stage.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageCameraUtility.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageEntryPoint.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageGraph.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageLightUtility.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageLoader.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StageUtility.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometry.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryArchiveFG.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\StaticGeometryBase.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SubDisplay.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterial.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterialHandle.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\SurfaceMaterialManager.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\trace.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\ViewFrustumTest.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\BSPTree.hpp">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Camera.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Entity.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_HUD.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Light.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Player.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_Stage.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amorphous\Stage\PyModule_VisualEffect.hpp">
+      <Filter>Stage\PyModule</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amorphous\Stage\CopyEntity.inl">
+      <Filter>Stage</Filter>
+    </None>
+  </ItemGroup>
+</Project>
