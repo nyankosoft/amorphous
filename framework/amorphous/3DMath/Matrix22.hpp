@@ -82,10 +82,6 @@ public:
 
 //	friend tMatrix22 tMatrix22Transpose(const tMatrix22 & rhs);
 //	friend T trace(const tMatrix22 & rhs);
-
-	friend tVector2<T> operator*(const tMatrix22 & lhs, const tVector2<T> & rhs);
-
-//  inline void show(const char * str = "") const;
   
 private:
 

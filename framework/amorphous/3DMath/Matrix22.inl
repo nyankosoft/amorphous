@@ -303,9 +303,9 @@ inline tMatrix22<T> operator*(const tMatrix22<T> & lhs, const tMatrix22<T> & rhs
 
 // matrix * vector
 template<typename T>
-inline Vector2 operator*(const tMatrix22<T> & lhs, const Vector2 & rhs)
+inline tVector2<T> operator*(const tMatrix22<T> & lhs, const tVector2<T> & rhs)
 {
-  return Vector2(
+  return tVector2<T>(
     lhs(0,0) * rhs[0] +
     lhs(0,1) * rhs[1],
     lhs(1,0) * rhs[0] +
