@@ -36,7 +36,7 @@ Please understand that many of them are experimental and not functional yet (i.e
 
 The framework depends on the following third party libraries:
 - boost (filesystem)
-- OpenGL
+- GLEW
 - The FreeType Project
 - PhysX
 - OpenAL
@@ -48,4 +48,4 @@ The framework depends on the following third party libraries:
 
 Along with the third-party libraries listed above, Amorphous also incorporates the following libraries. These are completely embedded inside the framework, i.e. their source code are compiled together with other Amourphous source code. Therefore, users of the framework do not have to be aware of them.
 - zlib
-- stb (stb_image*)
+- [stb (stb_image*)](https://github.com/nothings/stb)
