@@ -33,7 +33,7 @@ Please understand that many of them are experimental and not functional yet (i.e
  
 
 ## External dependencies
----------
+
 The framework depends on the following third party libraries:
 - boost (filesystem)
 - OpenGL
@@ -45,7 +45,7 @@ The framework depends on the following third party libraries:
 
 
 ## Other third-party libraries Amorphous uses
----------
+
 Along with the third-party libraries listed above, Amorphous also incorporates the following libraries. These are completely embedded inside the framework, i.e. their source code are compiled together with other Amourphous source code. Therefore, users of the framework do not have to be aware of them.
 - zlib
 - stb (stb_image*)
