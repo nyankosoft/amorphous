@@ -17,7 +17,6 @@ Please understand that many of them are experimental and not functional yet (i.e
 |GameTextSystem     |Deprecated           ||
 |Graphics           |Functional           ||
 |GUI                |Partially functional ||
-|IK                 |Not quite ready      ||
 |Input              |Functional           ||
 |Item               |Partially functional ||
 |LightWave          |Functional           ||
@@ -38,8 +37,6 @@ Please understand that many of them are experimental and not functional yet (i.e
 The framework depends on the following third party libraries:
 - boost
 - OpenGL
-- Direct3D
-- FreeImage
 - The FreeType Project
 - PhysX
 - OpenAL
