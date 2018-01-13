@@ -4,8 +4,8 @@
 
 #include "2DPrimitive.hpp"
 
-#include "../../3DMath/aabb2.hpp"
-#include "../../Support/SafeDelete.hpp"
+#include "amorphous/3DMath/AABB2.hpp"
+#include "amorphous/Support/SafeDelete.hpp"
 #include "2DPrimitiveRenderer.hpp"
 
 #include <vector>

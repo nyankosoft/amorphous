@@ -1,6 +1,6 @@
 /*!
   Copyright (C) 2002 Danny Chapman - flight@rowlhouse.freeserve.co.uk
-  
+
 	\file matrix_vector3.inl
 */
 
@@ -11,7 +11,7 @@ namespace amorphous
 {
 
 //########################################################################
-// 
+//
 //                       tMatrix22<T>
 //data: [0][2]
 //      [1][3]
@@ -49,7 +49,7 @@ inline tMatrix22<T>::tMatrix22( const tVector2<T> & v1, // first column
 {
   data[0] = v1[0];
   data[1] = v1[1];
-  
+
   data[2] = v2[0];
   data[3] = v2[1];
 }
@@ -65,7 +65,7 @@ inline void tMatrix22<T>::SetData(const T * d)
 template<typename T>
 inline tVector2<T> tMatrix22<T>::GetColumn(uint i) const
 {
-  const uint o = i*2; 
+  const uint o = i*2;
   return tVector2<T>(data[o], data[o+1]);
 }
 
@@ -73,7 +73,7 @@ inline tVector2<T> tMatrix22<T>::GetColumn(uint i) const
 template<typename T>
 inline void tMatrix22<T>::SetColumn(uint i, const tVector2<T> & col)
 {
-  const uint o = i*2; 
+  const uint o = i*2;
   data[o]   = col[0];
   data[o+1] = col[1];
 }
@@ -173,14 +173,14 @@ inline bool tMatrix22<T>::operator==(const tMatrix22<T> & rhs) const
 template<typename T>
 inline void tMatrix22<T>::SetIdentity()
 {
-	*this = tMatrix22<T>Identity();
+	*this = tMatrix22Identity<T>();
 }
 
 
 template<typename T>
 inline void tMatrix22<T>::SetRotation( const T angle )
 {
-	*this = tMatrix22<T>Rotation( angle );
+	*this = Matrix22Rotation<T>( angle );
 }
 
 
@@ -276,7 +276,7 @@ template<typename T>
 inline tMatrix22<T> operator*(const tMatrix22<T> & lhs, const T rhs)
 {
   tMatrix22<T> result;
-  
+
   for (uint i = 4 ; i-- != 0 ; )
     result.data[i] = rhs * lhs.data[i];
   return result;
@@ -287,7 +287,7 @@ template<typename T>
 inline tMatrix22<T> operator*(const tMatrix22<T> & lhs, const tMatrix22<T> & rhs)
 {
   static tMatrix22<T> out; // avoid ctor/dtor
-  
+
   for (uint oj = 2 ; oj-- != 0 ;)
   {
     for (uint oi = 2 ; oi-- != 0 ;)
@@ -328,12 +328,12 @@ inline tMatrix22<T> Matrix22Rotation( T theta )
   tMatrix22<T> result(0);
   T s = (T) sin(theta);
   T c = (T) cos(theta);
-  
+
   result(0,0) = c;
   result(1,1) = c;
   result(1,0) = s;
   result(0,1) = -s;
-  
+
   return result;
 }
 

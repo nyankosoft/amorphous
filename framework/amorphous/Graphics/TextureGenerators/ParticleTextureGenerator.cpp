@@ -6,6 +6,7 @@
 #include "amorphous/3DMath/Perlin.hpp"
 #include "amorphous/Support/MTRand.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
+#include <float.h>
 #include <ctime>
 #include <random>
 

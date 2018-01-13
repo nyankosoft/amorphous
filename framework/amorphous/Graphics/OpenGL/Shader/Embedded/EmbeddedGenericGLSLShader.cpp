@@ -438,7 +438,7 @@ Result::Name EmbeddedGenericGLSLShader::GenerateFragmentShader( const GenericSha
 		s_counter += 1;
 		if(fp)
 		{
-			fprintf(fp,fragment_shader.c_str());
+			fputs(fragment_shader.c_str(),fp);
 			fclose(fp);
 		}
 	}
@@ -574,7 +574,7 @@ Result::Name EmbeddedGenericGLSLShader::Generate2DFragmentShader( const Generic2
 		s_counter += 1;
 		if(fp)
 		{
-			fprintf(fp,fs.c_str());
+			fputs(fs.c_str(),fp);
 			fclose(fp);
 		}
 	}

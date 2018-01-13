@@ -232,7 +232,7 @@ static void GetCompileStatus( GLenum shader_type, int shader, std::string& error
 	s_counter += 1;
 	if( fp )
 	{
-		fprintf(fp,source);
+		fputs(source,fp);
 		int ret = fclose(fp);
 	}
 

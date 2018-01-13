@@ -732,7 +732,7 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 
 	fprintf( fp, "\n\n" );
 	fprintf( fp, "%d materials\n", num_materials );
-	fprintf( fp, "total %d triangles\n\n", m_vecVertexIndex.size() / 3 );
+	fprintf( fp, "total %zd triangles\n\n", m_vecVertexIndex.size() / 3 );
 
 	vector<unsigned int>& rvecIndex = m_vecVertexIndex;
 	for( i=0; i<num_materials; i++ )
@@ -743,7 +743,7 @@ void C3DMeshModelArchive::WriteToTextFile( const string& filename )
 
 		const size_t num_textures = m_vecMaterial[i].vecTexture.size();
 		for( size_t tex=0; tex<num_textures; tex++ )
-			fprintf( fp, "texture[%d]: \"%s\"\n", tex, m_vecMaterial[i].vecTexture[tex].ResourcePath.c_str() );
+			fprintf( fp, "texture[%zd]: \"%s\"\n", tex, m_vecMaterial[i].vecTexture[tex].ResourcePath.c_str() );
 
 		fprintf( fp, "min. vertex alpha: %f\n", m_vecMaterial[i].fMinVertexDiffuseAlpha );
 

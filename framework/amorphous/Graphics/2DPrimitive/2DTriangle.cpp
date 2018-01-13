@@ -1,5 +1,5 @@
 #include "2DTriangle.hpp"
-#include "amorphous/3DMath/aabb2.hpp"
+#include "amorphous/3DMath/AABB2.hpp"
 
 
 namespace amorphous

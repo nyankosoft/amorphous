@@ -51,7 +51,7 @@ public:
 	/// get data in the form of 4x4 row major matrix
 //	inline void GetRowMajorMatrix44( Scalar *pDest ) const;
 
-	friend tMatrix23<T> operator*(const tMatrix23<T> & lhs, const tMatrix23<T> & rhs);
+	//friend tMatrix23<T> operator*(const tMatrix23<T> & lhs, const tMatrix23<T> & rhs);
 
 };
 
@@ -72,7 +72,7 @@ template<typename T>
 inline void tMatrix23<T>::Identity()
 {
 	vPosition = tVector2<T>(0,0);
-	matOrient =  tMatrix22<T>Identity();
+	matOrient =  tMatrix22Identity<T>();
 }
 
 
@@ -94,7 +94,7 @@ inline void tMatrix23<T>::InvTransform( tVector2<T>& rvDest, const tVector2<T>& 
 template<typename T>
 inline void tMatrix23<T>::GetInverseROT( tMatrix23<T>& dest ) const
 {
-	dest.matOrient =  tMatrix22<T>Transpose( matOrient );
+	dest.matOrient =  Matrix22Transpose( matOrient );
 	dest.vPosition = dest.matOrient * ( -1.0f * vPosition );
 }
 
@@ -102,20 +102,20 @@ inline void tMatrix23<T>::GetInverseROT( tMatrix23<T>& dest ) const
 template<typename T>
 inline tMatrix23<T> tMatrix23<T>::GetInverseROT() const
 {
-	Matrix23 dest;
+	tMatrix23<T> dest;
 	GetInverseROT( dest );
 	return dest;
 }
 
 
 // used to calc the combination of two poses
-// usually, 
+// usually,
 //   lhs == world pose
 //   rhs == local pose
 template<typename T>
 inline tMatrix23<T> operator*(const tMatrix23<T> & lhs, const tMatrix23<T> & rhs)
 {
-	Matrix23 out;
+	tMatrix23<T> out;
 
 	out.vPosition = lhs.matOrient * rhs.vPosition + lhs.vPosition;
 	out.matOrient = lhs.matOrient * rhs.matOrient;

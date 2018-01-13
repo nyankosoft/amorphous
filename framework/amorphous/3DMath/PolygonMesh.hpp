@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "aabb3.hpp"
+#include "AABB3.hpp"
 #include "ray.hpp"
 #include "AABTree.hpp"
 

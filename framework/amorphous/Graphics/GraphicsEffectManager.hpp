@@ -7,7 +7,7 @@
 
 #include "amorphous/3DMath/Vector2.hpp"
 #include "amorphous/3DMath/Vector3.hpp"
-#include "amorphous/3DMath/aabb2.hpp"
+#include "amorphous/3DMath/AABB2.hpp"
 #include "amorphous/3DMath/CriticalDamping.hpp"
 #include "amorphous/Graphics/fwd.hpp"
 #include "amorphous/Graphics/2DPrimitive/2DRect.hpp"

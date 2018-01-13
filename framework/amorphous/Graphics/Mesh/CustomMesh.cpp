@@ -473,7 +473,7 @@ void CustomMesh::DumpToTextFile( const std::string& output_pathname )
 	fprintf( fp, "index size: %u\n\n", GetIndexSize() );
 
 	const size_t num_triangle_sets = m_TriangleSets.size();
-	fprintf( fp, "num triangle sets: %u\n\n", num_triangle_sets );
+	fprintf( fp, "num triangle sets: %zd\n\n", num_triangle_sets );
 	for( size_t i=0; i<num_triangle_sets; i++ )
 	{
 		fprintf( fp, "triangle set [%d]\n", (int)i );

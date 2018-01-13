@@ -280,25 +280,25 @@ void GLBasicMeshImpl::Render()
 	if( vertex_flags & VFF::BLEND_WEIGHTS )
 	{
 		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::BLEND_WEIGHTS] );
-		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::BLEND_WEIGHTS], 4, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::BLEND_WEIGHTS] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::BLEND_WEIGHTS], 4, GL_FLOAT, GL_FALSE, vertex_size, (const GLvoid*)(uintptr_t)m_VertexElementOffsets[VEE::BLEND_WEIGHTS] );
 	}
 
 	if( vertex_flags & VFF::BLEND_INDICES )
 	{
 		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::BLEND_INDICES] );
-		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::BLEND_INDICES], 4, GL_BYTE, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::BLEND_INDICES] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::BLEND_INDICES], 4, GL_BYTE, GL_FALSE, vertex_size, (const GLvoid*)(uintptr_t)m_VertexElementOffsets[VEE::BLEND_INDICES] );
 	}
 
 	if( vertex_flags & VFF::NORMAL )
 	{
 		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::NORMAL] );
-		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::NORMAL], 3, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::NORMAL] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::NORMAL], 3, GL_FLOAT, GL_FALSE, vertex_size, (const GLvoid*)(uintptr_t)m_VertexElementOffsets[VEE::NORMAL] );
 	}
 
 	if( vertex_flags & VFF::DIFFUSE_COLOR )
 	{
 		glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::DIFFUSE_COLOR] );
-		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::DIFFUSE_COLOR], 4, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::DIFFUSE_COLOR] );
+		glVertexAttribPointer( m_VertexElementStreamIndices[VEE::DIFFUSE_COLOR], 4, GL_FLOAT, GL_FALSE, vertex_size, (const GLvoid*)(uintptr_t)m_VertexElementOffsets[VEE::DIFFUSE_COLOR] );
 	}
 
 	U32 texcoord2_element_flags[] =
@@ -314,7 +314,7 @@ void GLBasicMeshImpl::Render()
 		if( vertex_flags & texcoord2_element_flags[i] )
 		{
 			glEnableVertexAttribArray( m_VertexElementStreamIndices[VEE::TEXCOORD2_0 + i] );
-			glVertexAttribPointer( m_VertexElementStreamIndices[VEE::TEXCOORD2_0 + i], 2, GL_FLOAT, GL_FALSE, vertex_size, (void *)m_VertexElementOffsets[VEE::TEXCOORD2_0 + i] );
+			glVertexAttribPointer( m_VertexElementStreamIndices[VEE::TEXCOORD2_0 + i], 2, GL_FLOAT, GL_FALSE, vertex_size, (const GLvoid*)(uintptr_t)m_VertexElementOffsets[VEE::TEXCOORD2_0 + i] );
 		}
 	}
 

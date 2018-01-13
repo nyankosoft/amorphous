@@ -1,6 +1,6 @@
 #include "DoubleConeScrollEffect.hpp"
 #include "amorphous/Graphics/GraphicsDevice.hpp"
-#include "amorphous/Graphics/Meshgenerators/MeshGenerator.hpp"
+#include "amorphous/Graphics/MeshGenerators/MeshGenerator.hpp"
 #include "amorphous/Graphics/TextureStage.hpp"
 #include "amorphous/Graphics/Mesh/BasicMesh.hpp"
 #include "amorphous/Graphics/MeshModel/General3DMesh.hpp"
