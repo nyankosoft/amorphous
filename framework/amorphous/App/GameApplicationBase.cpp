@@ -427,7 +427,7 @@ void GameApplicationBase::UpdateFrame()
 		RequestAppExit();
 	}
 
-	boost::this_thread::sleep( boost::posix_time::milliseconds(ms_DefaultSleepTimeMS) );
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms_DefaultSleepTimeMS));
 //	PERIODICAL( 2, Sleep(5) );
 }
 
@@ -446,7 +446,8 @@ void GameApplicationBase::Execute()
 	// initialize rand generator
 	InitRand( timeGetTime() );
 
-	::amorphous::MainLoop( this );
+	//::amorphous::MainLoop( this );
+	GetGameWindowManager().MainLoop( *this )
 
 	// Release graphics resources before the graphics device is released
 

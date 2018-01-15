@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include "amorphous/Input/fwd.hpp"
+#include "fwd.hpp"
+#include "ApplicationCore.hpp"
 
 
 #ifdef _DEBUG
@@ -17,21 +19,29 @@
 namespace amorphous
 {
 
-class ApplicationBase;
-
-
 // =============================== function externs ===============================
-extern void MainLoop( ApplicationBase *pApp );
-extern ApplicationBase *CreateApplicationInstance();
 
-// =============================== variable externs ===============================
-//extern ApplicationBase *g_pAppBase;
+// The users of the framework is required to implement this function in their source code.
+extern ApplicationBase *CreateApplicationInstance();
 
 /**
  * base class for 3d game app
  *
+ * Users of this class need to do these:
+ * - Define an application class derived from ApplicationBase.
+ * - Define CreateApplicationInstance() which creates an instance
+ *   of the defined application clcass
+ * - Call ApplicationBase::StartApp() from their C++ source code,
+ *   e.g. from main() function, to run the application
+ * 
+ * The ApplicationBase class has access to GameWindowManager and asks it to create a window for the application.
+ * GameWindowManager creates a window based on the window system of the OS.
+ * 
+ * Requirements for derived (user-defined) classes (what they need to implement):
+ * - Implement Run() to run the application. Note that GetGameWindowManager().MainLoop()
+ *   needs to be called inside the implemented Run().
  */
-class ApplicationBase
+class ApplicationBase : public ApplicationCore
 {
 protected:
 
@@ -96,9 +106,13 @@ public:
 		}
 	}
 
+	/**
+	 * \brief Creates a used-defined application instance and enters the main loop.
+	 */
+	static void StartApp();
+
 	static std::vector<std::string> ms_CommandLineArguments;
 
-	friend void MainLoop( ApplicationBase *pApp );
 	friend ApplicationBase *CreateApplicationInstance();
 };
 

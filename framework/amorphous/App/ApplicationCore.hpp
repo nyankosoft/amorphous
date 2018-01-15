@@ -12,7 +12,7 @@ public:
 
     virtual ~ApplicationCore() {}
 
-	virtual bool IsAppExitRequested() = 0;
+	virtual bool IsAppExitRequested() const = 0;
 
 	// Called every frame in the main loop
 	// The application needs to both update the application states and render the scene.

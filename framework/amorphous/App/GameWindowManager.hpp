@@ -3,6 +3,7 @@
 
 #include <string>
 #include "amorphous/base.hpp"
+#include "fwd.hpp"
 
 
 namespace amorphous
@@ -38,6 +39,8 @@ public:
 	virtual ~GameWindowManager() {}
 
 	virtual bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode = GameWindow::WINDOWED, const std::string& app_title = "Application" ) = 0;
+
+	virtual void MainLoop( ApplicationCore& app ) = 0;
 
 	virtual void ChangeScreenSize( int iNewScreenWidth, int iNewScreenHeight, bool bFullScreen ) {}
 

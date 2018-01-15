@@ -47,6 +47,8 @@ public:
 	/// do nothing in full screen mode
 	/// \param top-left corner of the window
 	void SetWindowLeftTopCornerPosition( int left, int top );
+
+	void MainLoop( ApplicationCore& app );
 };
 
 

@@ -75,7 +75,7 @@ void GraphicsApplicationBase::UpdateFrame()
 
 	ProfileDumpOutputToBuffer();
 
-	boost::this_thread::sleep( boost::posix_time::milliseconds( 2 ) );
+	std::this_thread::sleep_for(std::chrono::milliseconds(2));
 }
 
 
@@ -162,9 +162,9 @@ void GraphicsApplicationBase::GetResolution( int& w, int& h )
 		}
 		else
 		{
-			// Probably an old display or a display on a small laptop; we go with XGA.
-			w = 1024;
-			h =  768;
+			// Probably an old display or a display on a small laptop; we go with SVGA.
+			w =  800;
+			h =  600;
 		}
 	}
 }
@@ -193,7 +193,7 @@ void GraphicsApplicationBase::Run()
 
 	InitHTMLLog( app_title + "_" + string(GetBuildInfo()) + "_" + graphics_library_name + "_Log.html" );
 
-	InitFreeImage();
+	//InitFreeImage();
 
 	int w=0,h=0;
 	GetResolution( w, h );
@@ -231,7 +231,7 @@ void GraphicsApplicationBase::Run()
 	// init font
 	m_pFont = CreateDefaultBuiltinFont();
 
-	MainLoop( this );
+	GetGameWindowManager().MainLoop( *this );
 }
 
 

@@ -131,6 +131,3 @@ void X11_GLWindow::MainLoop( ApplicationCore& app )
 }
 
 } // namespace amorphous
-
-
-int main() {return 0;}

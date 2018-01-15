@@ -24,15 +24,11 @@ namespace amorphous
 using namespace std;
 
 
-// global variable(s)
-ApplicationBase *g_pAppBase = nullptr;
-
-
 #define APPBASE_TIMER_RESOLUTION	1
 
 
 /*
-class CUserDefinedApp : public ApplicationBase
+class UserDefinedApp : public ApplicationBase
 {
 public:
 };
@@ -40,35 +36,6 @@ public:
 extern ApplicationBase *CreateApplicationInstance() { return new CUserDefinedApp(); }
 
 */
-
-
-extern ApplicationBase *CreateApplicationInstance();
-
-
-/// Main loop function used on Windows platform
-void MainLoop( ApplicationBase *pApp )
-{
-    // Enter the message loop
-    MSG msg;
-    ZeroMemory( &msg, sizeof(msg) );
-    while( msg.message!=WM_QUIT && pApp->IsAppExitRequested() == false )
-    {
-        if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
-        {
-			CScopeProfile sp( "Windows message translation and dispatch" );
-
-            TranslateMessage( &msg );
-            DispatchMessage( &msg );
-        }
-        else
-		{
-			pApp->UpdateFrame();
-
-			GetGameWindowManager_Win32().OnMainLoopFinished();
-		}
-	}
-}
-
 
 
 // since we are using Direct Input, any pressing & releasing of keys will not be notified to this
@@ -111,17 +78,6 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 }
 
 
-void StartApp()
-{
-	// Create the instance of application implemented by the user
-	ApplicationBase::SetInstance( CreateApplicationInstance() );
-
-	ApplicationBase::GetInstance()->Run();
-
-	ApplicationBase::ReleaseInstance();
-}
-
-
 string GetExeFilepath()
 {
 	char exe_filepath[512];
@@ -151,9 +107,12 @@ static void SetCommandLineArguments( LPSTR lpCmdLine )
 } // namespace amorphous
 
 
+// This function executes code specific to Windows platform,
+// except the call of amorphous::StartApp().
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 {
-	amorphous::SetCurrentThreadAsRenderThread();
+	// set the message procedure for the game window
+	amorphous::g_pMessageProcedureForGameWindow = amorphous::MsgProc;
 
 	// timer resolution for timeGetTime()
 	timeBeginPeriod( APPBASE_TIMER_RESOLUTION );
@@ -165,7 +124,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, INT )
 
 	amorphous::SetCommandLineArguments( lpCmdLine );
 
-	amorphous::StartApp();
+	ApplicationBase::StartApp();
 
 	timeEndPeriod( APPBASE_TIMER_RESOLUTION );
 

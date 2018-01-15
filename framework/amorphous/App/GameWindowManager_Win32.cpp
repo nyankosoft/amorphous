@@ -83,6 +83,30 @@ void GameWindowManager_Win32::SetWindowLeftTopCornerPosition( int left, int top 
 }
 
 
+void GameWindowManager_Win32::MainLoop( ApplicationCore& app )
+{
+    // Enter the message loop
+    MSG msg;
+    ZeroMemory( &msg, sizeof(msg) );
+    while( msg.message!=WM_QUIT && app.IsAppExitRequested() == false )
+    {
+        if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+        {
+			CScopeProfile sp( "Windows message translation and dispatch" );
+
+            TranslateMessage( &msg );
+            DispatchMessage( &msg );
+        }
+        else
+		{
+			app.UpdateFrame();
+
+			OnMainLoopFinished();
+		}
+	}	
+}
+
+
 Result::Name SelectGraphicsLibrary_Win32( const std::string& graphics_library_name, GameWindowManager*& pGameWindowManager )
 {
 	if( graphics_library_name == "OpenGL" )

@@ -3,7 +3,7 @@
 #ifdef _MSC_VER
 #include "GameWindowManager_Win32.hpp"
 #else
-//#include "GameWindowManager_???.hpp"
+#include "GameWindowManager_Generic.hpp"
 #endif
 
 
@@ -22,7 +22,7 @@ Result::Name SelectGraphicsLibrary( const std::string& graphics_library_name )
 #ifdef _MSC_VER
 	Result::Name res = SelectGraphicsLibrary_Win32( graphics_library_name, g_pGameWindowManager );
 #else
-//	Result::Name res = return SelectGraphicsLibrary_???( graphics_library_name );
+	Result::Name res = SelectGraphicsLibrary_Generic( graphics_library_name, g_pGameWindowManager );
 #endif
 
 	if( res == Result::SUCCESS )

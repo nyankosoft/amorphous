@@ -16,8 +16,25 @@ namespace amorphous
 
 
 /**
- Base class for graphics application
- - This class is for state-less application that uses a window and graphics.
+ * \brief Base class for simple graphics applications
+ * 
+ * This class is for creating state-less applications that use a single window.
+ * It takes care of low-level setups related to rendering, but does not provide
+ * a high degree of flexibility.
+ * In other words, it is not as heavy-duty as to withstand the use for serious
+ * production-ready games.
+ * 
+ * What this class provides:
+ * - It provides a first-person camera which the application user can move
+ *   to navigate inside the scene.
+ * 
+ * Requirements for derived (user-defined) classes (what they need to implement):
+ * - Implement Render() to render the custom scene.
+ * 
+ * What derived (user-defined) classes can do:
+ * - Define a custom initialization function by implementing Init()
+ * - Set a custom background color by setting a color to m_BackgroundColor.
+ * - Set a custom window title by overriding GetApplicationTitle()
  */
 class GraphicsApplicationBase : public ApplicationBase
 {
@@ -65,7 +82,7 @@ protected:
 
 	std::shared_ptr<CameraControllerBase> GetCameraController() { return m_pCameraController; }
 
-	Camera& Camera() { return m_Camera; }
+	Camera& GetCamera() { return m_Camera; }
 
 	void SetBackgroundColor( const SFloatRGBAColor& bg_color ) { m_BackgroundColor = bg_color; }
 
@@ -85,6 +102,9 @@ public:
 
 //	static void SetDefaultSleepTime( int sleep_time_in_ms ) { ms_DefaultSleepTimeMS = sleep_time_in_ms; }
 
+	/**
+	 * \brief Creates the application window and returns enters the main loop.
+	 */
 	void Run();
 
 	void EnableCameraControl();
