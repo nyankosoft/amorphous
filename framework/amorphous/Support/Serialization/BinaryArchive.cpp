@@ -1,4 +1,5 @@
 #include "BinaryArchive.hpp"
+#include <cstring>
 
 
 using namespace amorphous::serialization;
@@ -23,7 +24,7 @@ void BinaryArchive::Initialize()
 {
 	if( !ms_IsInitialized )
 	{
-		memset( ms_ObfucationBits, sizeof(ms_ObfucationBits), 0 );
+		std::memset( ms_ObfucationBits, sizeof(ms_ObfucationBits), 0 );
 		ms_IsInitialized = true;
 	}
 }

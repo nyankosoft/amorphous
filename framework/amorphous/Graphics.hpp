@@ -32,7 +32,6 @@
 #include "Graphics/IndexedPolygon.hpp"
 #include "Graphics/LensFlare.hpp"
 #include "Graphics/LightStructs.hpp"
-#include "Graphics/LogOutput_OnScreen.hpp"
 #include "Graphics/MeshObjectContainer.hpp"
 #include "Graphics/RectTriListIndex.hpp"
 #include "Graphics/SimpleMotionBlur.hpp"

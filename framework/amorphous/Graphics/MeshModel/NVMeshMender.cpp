@@ -28,7 +28,7 @@ Comments:
 */
 
 
-#include "nvMeshMender.hpp"
+#include "NVMeshMender.hpp"
 #include "assert.h"
 
 

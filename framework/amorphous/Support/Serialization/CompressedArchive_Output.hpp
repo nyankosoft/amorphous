@@ -1,14 +1,10 @@
 #ifndef  __CompressedArchive_Output_H__
 #define  __CompressedArchive_Output_H__
 
-#include <vector>
-#include <iostream>
-#include <fstream>
-
 #include "BinaryArchive_Output.hpp"
 #include "ArchiveObjectBase.hpp"
 
-#include "../Zlib/zpipe_stream.h"
+#include "../ZLib/zpipe_stream.h"
 
 
 namespace amorphous

@@ -2,6 +2,9 @@
 #define  __WINDOWMISC_H__
 
 
+#ifdef _MSC_VER
+
+
 #include <windows.h>
 
 
@@ -76,8 +79,33 @@ inline void GetCurrentPrimaryDisplayResolution( unsigned int& width, unsigned in
 }
 
 
+
 } // amorphous
 
 
+#else // _MSC_VER
+
+
+#include <X11/Xlib.h>
+
+namespace amorphous
+{
+
+inline void GetCurrentPrimaryDisplayResolution( unsigned int& width, unsigned int& height )
+{
+	Display* disp = XOpenDisplay(NULL);
+	if(disp) {
+		Screen*  scrn = DefaultScreenOfDisplay(disp);
+		if(scrn) {
+			width  = scrn->width;
+			height = scrn->height;	
+		}
+	}
+}
+
+}
+
+
+#endif // _MSC_VER
 
 #endif  /*  __WINDOWMISC_H__  */

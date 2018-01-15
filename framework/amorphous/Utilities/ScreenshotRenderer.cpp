@@ -2,8 +2,8 @@
 #include "amorphous/Graphics/TextureRenderTarget.hpp"
 #include "amorphous/App/GameWindowManager.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
-#include <boost/lexical_cast.hpp>
-#include <boost/filesystem.hpp>
+//#include <boost/lexical_cast.hpp>
+#include "amorphous/Support/lfs.hpp"
 
 
 namespace amorphous
@@ -19,7 +19,8 @@ static std::string sg_ImageFormat = "png";
  */
 unsigned int GetNextImageFileNumber( const std::string& directory_path, const std::string& basename )
 {
-	using namespace boost::filesystem;
+	return -1;
+/*	using namespace boost::filesystem;
 
 	if( !exists(directory_path) )
 		return -1;
@@ -65,7 +66,7 @@ unsigned int GetNextImageFileNumber( const std::string& directory_path, const st
 //		}
 	}
 
-	return (max_num == -1) ? 0 : (unsigned int)(max_num + 1);
+	return (max_num == -1) ? 0 : (unsigned int)(max_num + 1);*/
 }
 
 
@@ -77,17 +78,18 @@ void _TakeScreenshot(
 	const char *image_format
 	)
 {
-	using namespace boost::filesystem;
+	//using namespace boost::filesystem;
 
-	if( !exists(directory_path) )
+	if( !lfs::path_exists(directory_path) )
 	{
-		boost::system::error_code ec;
-		create_directories( directory_path, ec );
-		if( ec.value() != 0 )
-		{
-			LOG_PRINT_ERROR( "create_directories() failed (error: " + ec.message() + ")." );
-			return;
-		}
+		//boost::system::error_code ec;
+		//create_directories( directory_path, ec );
+		lfs::create_directories( directory_path );
+		//if( ec.value() != 0 )
+		//{
+		//	LOG_PRINT_ERROR( "create_directories() failed (error: " + ec.message() + ")." );
+		//	return;
+		//}
 	}
 
 	// Decide on the image format
@@ -137,7 +139,7 @@ void _TakeScreenshot(
 	LOG_PRINT( "image_filename: " + image_filename );
 
 	pTextureRenderTarget->ResetRenderTarget();
-	path directory_path_and_basename = path(directory_path) / path(basename);
+	lfs::path directory_path_and_basename = lfs::path(directory_path) / lfs::path(basename);
 //	std::string img_file_path = fmt_string( "screenshots/image%04d", count ) + "." + img_ext;
 	std::string img_file_pathname
 		= fmt_string( "%s%04d.", directory_path_and_basename.string().c_str(), count ) + image_format_to_use;

@@ -7,7 +7,7 @@
 #include "GM_EventHandlerBase.hpp"
 #include "GM_ListBox.hpp"
 #include "GM_Button.hpp"
-#include "Sound/SoundHandle.hpp"
+#include "amorphous/Sound/SoundHandle.hpp"
 
 
 namespace amorphous

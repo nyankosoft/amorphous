@@ -9,7 +9,7 @@
 #include "ArchiveObjectBase.hpp"
 #include "../SerializableStream.hpp"
 
-#include "../Zlib/zpipe_stream.h"
+#include "../ZLib/zpipe_stream.h"
 
 
 namespace amorphous

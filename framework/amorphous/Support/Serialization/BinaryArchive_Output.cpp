@@ -1,5 +1,6 @@
 #include "BinaryArchive_Output.hpp"
 #include "ArchiveObjectBase.hpp"
+#include <cstring>
 
 using namespace amorphous::serialization;
 
