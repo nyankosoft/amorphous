@@ -6,6 +6,19 @@ It is primarily intended for my personal use, but it's up here on GitHub now, so
 Please understand that many of them are experimental and not functional yet (i.e. don't get mad at me for putting this on GitHub).
 
 ----
+## Build in Linux environment
+Before building the framework, make sure that the following packages are installed on your system.
+
+- cmake
+- libglu1-mesa-dev
+
+On Ubuntu and other Debian-based distributions, you can install the packages above by running the 'apt install' command from the terminal:
+
+```
+$ sudo apt install cmake
+$ sudo apt install libglu1-mesa-dev
+```
+
 ## Modules (framework/amorphous)
 
 |Module             |Status               |Description|
