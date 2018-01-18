@@ -1,6 +1,6 @@
 #include "InputDevice.hpp"
 #include "InputHub.hpp"
-#include "ForceFeedback/ForceFeedbackEffect.hpp"
+//#include "ForceFeedback/ForceFeedbackEffect.hpp"
 #include "amorphous/Support/StringAux.hpp"
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/Log/DefaultLogAux.hpp"
@@ -138,6 +138,7 @@ void InputDevice::SetGroup( InputDeviceGroup *pGroup )
 	m_pGroup = pGroup;
 }
 
+class CForceFeedbackEffect{};
 
 CForceFeedbackEffect InputDevice::CreateForceFeedbackEffect( const CForceFeedbackEffectDesc& desc )
 {
@@ -147,7 +148,7 @@ CForceFeedbackEffect InputDevice::CreateForceFeedbackEffect( const CForceFeedbac
 
 void InputDevice::SetImplToForceFeedbackEffect( std::shared_ptr<CForceFeedbackEffectImpl> pImpl, CForceFeedbackEffect& ffe )
 {
-	ffe.m_pImpl = pImpl;
+//	ffe.m_pImpl = pImpl;
 }
 
 
