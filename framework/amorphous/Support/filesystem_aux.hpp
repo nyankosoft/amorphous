@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <boost/filesystem.hpp>
+#include <experimental/filesystem>
 
 
 namespace amorphous
@@ -12,7 +12,7 @@ namespace amorphous
 
 inline void find_files_in_directory( const std::string& directory_path, std::vector<std::string>& found_files )
 {
-	using namespace boost::filesystem;
+	using namespace std::experimental::filesystem;
 
 	path p(directory_path);   // p reads clearer than argv[1] in the following code
 
