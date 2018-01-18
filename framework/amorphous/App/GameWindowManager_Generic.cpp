@@ -1,5 +1,5 @@
 #include "GameWindowManager_Generic.hpp"
-//#include "amorphous/Graphics/GraphicsDevice.hpp"
+#include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "amorphous/Graphics/OpenGL/GLInitialization.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 //#include "amorphous/Support/WindowMisc_Win32.hpp"
@@ -11,6 +11,11 @@ namespace amorphous
 
 GameWindowManager_Generic GameWindowManager_Generic::ms_SingletonInstance_;
 
+
+GameWindowManager_Generic& GetGameWindowManager_Generic()
+{
+	return GameWindowManager_Generic::GetSingletonInstance();
+}
 
 Result::Name SelectGraphicsLibrary_Generic( const std::string& graphics_library_name, GameWindowManager*& pGameWindowManager )
 {
@@ -39,14 +44,31 @@ bool GameWindowManager_Generic::CreateGameWindow(
 {
 #ifdef BUILD_WITH_X11_LIBS
    
+	LOG_PRINT("Creating an X11 window.");
+
     m_pX11GLWindow.reset( new X11_GLWindow );
 
     m_pX11GLWindow->Init( iScreenWidth, iScreenHeight, app_title.c_str() );
 
 #endif // BUILD_WITH_X11_LIBS
 
-    return true;
+	if( !GLGraphicsDevice().Init( iScreenWidth, iScreenHeight, (screen_mode == GameWindow::ScreenMode::WINDOWED) ? ScreenMode::WINDOWED : ScreenMode::FULLSCREEN ) )
+	{
+		LOG_PRINT_ERROR( "GLGraphicsDevice::Init() failed." );
+		return false;								// Return FALSE
+	}
+
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+		/* Problem: glewInit failed, something is seriously wrong. */
+		LOG_PRINTF_ERROR(( "glewInit error: %s", glewGetErrorString(err)));
+		return false;
+	}
+
+	return Init( iScreenWidth, iScreenHeight, screen_mode );
 }
+
 
 void GameWindowManager_Generic::MainLoop( ApplicationCore& app )
 {
@@ -60,9 +82,9 @@ void GameWindowManager_Generic::MainLoop( ApplicationCore& app )
 #endif // BUILD_WITH_X11_LIBS
 }
 
-GameWindowManager_Generic& GetGameWindowManager_Generic()
+void GameWindowManager_Generic::SetWindowLeftTopCornerPosition( int left, int top )
 {
-	return GameWindowManager_Generic::GetSingletonInstance();
+	LOG_PRINT_ERROR("Not implemented.");
 }
 
 } // namespace amorphous

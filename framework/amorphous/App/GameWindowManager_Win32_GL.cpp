@@ -1,6 +1,4 @@
 #include "GameWindowManager_Win32_GL.hpp"
-#include "amorphous/Graphics/GraphicsComponentCollector.hpp"
-#include "amorphous/Graphics/2DPrimitive/2DPrimitiveRenderer.hpp"
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 #include "amorphous/Support/WindowMisc_Win32.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
@@ -243,25 +241,11 @@ bool GameWindowManager_Win32_GL::CreateGameWindow( int iScreenWidth, int iScreen
 	if (GLEW_OK != err)
 	{
 		/* Problem: glewInit failed, something is seriously wrong. */
-		LOG_PRINTF_ERROR(( "Error: %s", glewGetErrorString(err)));
+		LOG_PRINTF_ERROR(( "glewInit error: %s", glewGetErrorString(err)));
 		return FALSE;
 	}
 
-	// save width and height
-	m_iCurrentScreenWidth  = iScreenWidth;
-	m_iCurrentScreenHeight = iScreenHeight;
-
-	// update graphics params
-	GraphicsParameters params = GraphicsComponentCollector::Get()->GetGraphicsParams();
-	params.ScreenWidth  = iScreenWidth;
-	params.ScreenHeight = iScreenHeight;
-	params.bWindowed = ( screen_mode == GameWindow::WINDOWED );
-	GraphicsComponentCollector::Get()->SetGraphicsPargams( params );
-
-	// init 2d primitive renderer
-	Get2DPrimitiveRenderer().Init();
-
-	return TRUE;									// Success
+	return Init( iScreenWidth, iScreenHeight, screen_mode );
 }
 
 

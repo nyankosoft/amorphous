@@ -38,6 +38,8 @@ public:
 
 	virtual ~GameWindowManager() {}
 
+	bool Init( int screen_width, int screen_height, GameWindow::ScreenMode screen_mode );
+
 	virtual bool CreateGameWindow( int iScreenWidth, int iScreenHeight, GameWindow::ScreenMode screen_mode = GameWindow::WINDOWED, const std::string& app_title = "Application" ) = 0;
 
 	virtual void MainLoop( ApplicationCore& app ) = 0;

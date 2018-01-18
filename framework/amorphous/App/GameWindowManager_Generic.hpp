@@ -5,6 +5,11 @@
 #include "GameWindowManager.hpp"
 #include <memory>
 
+// Include this before including X11_GLWindow.hpp or otherwise glew.h will spit
+// several dozens of errors. Likely cause is one of the X11 or GL/gl* headers
+// being included before glew.h but not sure.
+#include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
+
 #ifdef BUILD_WITH_X11_LIBS
 #include "X11_GLWindow.hpp"
 #endif // BUILD_WITH_X11_LIBS
@@ -53,8 +58,6 @@ public:
 
 
 Result::Name SelectGraphicsLibrary_Generic( const std::string& graphics_library_name, GameWindowManager*& pGameWindowManager );
-
-GameWindowManager_Generic& GetGameWindowManager_Generic();
 
 
 } // namespace amorphous
