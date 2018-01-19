@@ -2,7 +2,7 @@
 #define  __GameWindowManager_Win32_H__
 
 
-#include "GameWindowManager.hpp"
+#include "amorphous/App/GameWindowManager.hpp"
 #include <windows.h>
 #include <mmsystem.h>
 #include <stdlib.h>
