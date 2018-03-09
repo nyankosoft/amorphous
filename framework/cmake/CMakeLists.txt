@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(Amorphous)
 
+# See if OpenGL is available
+find_package(OpenGL REQUIRED)
+
 include_directories(
 "${CMAKE_CURRENT_LIST_DIR}/../../externals/glew-2.1.0/include"
 "${CMAKE_CURRENT_LIST_DIR}/../../externals/googletest-release-1.8.0/googletest/include"
@@ -11,6 +14,9 @@ include_directories(
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(stdc++fs UNKNOWN IMPORTED)
+set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/5/libstdc++fs.a")
 
 # TODO: do this after checking the window system and confirming
 # that the current OS is based on X11 (X Window System)
@@ -27,6 +33,7 @@ add_library(amorphous-core STATIC
 ../amorphous/3DMath/Perlin.cpp
 #../amorphous/3DMath/PolygonMesh.cpp
 ../amorphous/3DMath/PrimitivePolygonModelMaker.cpp
+../amorphous/3DMath/HelixPolygonModelMaker.cpp
 ../amorphous/Support/BitmapImage_stb.cpp
 ../amorphous/Support/MTRand.cpp
 ../amorphous/Support/Profile.cpp
@@ -39,7 +46,10 @@ add_library(amorphous-core STATIC
 ../amorphous/Support/ZLib/compress.c
 ../amorphous/Support/ZLib/crc32.c
 ../amorphous/Support/ZLib/deflate.c
-../amorphous/Support/ZLib/gzio.c
+../amorphous/Support/ZLib/gzclose.c
+../amorphous/Support/ZLib/gzlib.c
+../amorphous/Support/ZLib/gzread.c
+../amorphous/Support/ZLib/gzwrite.c
 ../amorphous/Support/ZLib/infback.c
 ../amorphous/Support/ZLib/inffast.c
 ../amorphous/Support/ZLib/inflate.c
@@ -53,6 +63,7 @@ add_library(amorphous-core STATIC
 ../amorphous/Support/Serialization/BinaryArchive_Input.cpp
 ../amorphous/Support/Serialization/BinaryArchive_Output.cpp
 ../amorphous/Graphics/AsyncResourceLoader.cpp
+../amorphous/Graphics/BoundingVolumeTreeRenderers.cpp
 ../amorphous/Graphics/Camera.cpp
 ../amorphous/Graphics/CubeMapManager.cpp
 ../amorphous/Graphics/CubeTextureRenderTarget.cpp
@@ -115,6 +126,7 @@ add_library(amorphous-core STATIC
 ../amorphous/Graphics/Mesh/RectSetMesh.cpp
 ../amorphous/Graphics/Mesh/ConvexMeshSplitter.cpp
 ../amorphous/Graphics/MeshGenerators/MeshGenerators.cpp
+../amorphous/Graphics/MeshGenerators/PipeMeshGenerator.cpp
 ../amorphous/Graphics/MeshModel/3DMeshModelArchive.cpp
 ../amorphous/Graphics/MeshModel/3DMeshModelBuilder.cpp
 ../amorphous/Graphics/MeshModel/General3DMeshFunctions.cpp
@@ -125,6 +137,7 @@ add_library(amorphous-core STATIC
 ../amorphous/Graphics/Shader/ShaderManager.cpp
 ../amorphous/Graphics/Shader/ShaderLightManager.cpp
 ../amorphous/Graphics/Shader/ShaderManagerHub.cpp
+../amorphous/Graphics/Shader/FixedFunctionPipelineManager.cpp
 ../amorphous/Graphics/Shader/Embedded/EmbeddedGenericShader.cpp
 ../amorphous/Graphics/TextureGenerators/ParticleTextureGenerator.cpp
 ../amorphous/Graphics/TextureGenerators/PerlinNoiseTextureGenerator.cpp
@@ -159,20 +172,30 @@ add_library(amorphous-core STATIC
 ../amorphous/Utilities/ScreenshotRenderer.cpp
 )
 
-add_executable(amorphous-core-test
-../test/3DMath_tests.cpp
-../test/Support_tests.cpp
-../test/Graphics_tests.cpp
-)
-
 target_link_libraries(amorphous-core
-${CMAKE_CURRENT_LIST_DIR}/../../externals/googletest-release-1.8.0/googlemock/gtest/libgtest.a
+${OPENGL_LIBRARIES}
+stdc++fs
+${CMAKE_CURRENT_LIST_DIR}/../../externals/glew-2.1.0/lib/libGLEW.a
 ${CMAKE_CURRENT_LIST_DIR}/../../externals/freetype-2.8.1/objs/.libs/libfreetype.a
+${CMAKE_CURRENT_LIST_DIR}/../../externals/libpng-1.6.34/libpng16.a
+${CMAKE_CURRENT_LIST_DIR}/../../externals/zlib-1.2.11/libz.a
 )
 
 # Enable -pthread option
 find_package(Threads)
 target_link_libraries(amorphous-core ${CMAKE_THREAD_LIBS_INIT})
 
+
+# unittesting
+add_executable(amorphous-core-test
+../test/3DMath_tests.cpp
+../test/Support_tests.cpp
+../test/Graphics_tests.cpp
+)
+
 target_link_libraries(amorphous-core-test amorphous-core)
+
+target_link_libraries(amorphous-core-test
+${CMAKE_CURRENT_LIST_DIR}/../../externals/googletest-release-1.8.0/googlemock/gtest/libgtest.a
+)
 
