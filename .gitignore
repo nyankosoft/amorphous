@@ -4,6 +4,7 @@ cmake_install.cmake
 Makefile
 libamorphous-core.a
 amorphous-core-test
+externals
 googletest-release-*
 glew-*
 freetype-*
