@@ -7,7 +7,7 @@
 #include "amorphous/Graphics/OpenGL/GLGraphicsDevice.hpp"
 //#include "amorphous/Graphics/OpenGL/Shader/GLCgEffect.hpp"
 #include "amorphous/Graphics/OpenGL/Shader/GLShader.hpp"
-#include "amorphous/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
+//#include "amorphous/Graphics/OpenGL/Shader/GLFixedFunctionPipelineManager.hpp"
 #include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/ImageArchiveAux.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
@@ -1027,7 +1027,9 @@ ShaderManager *CGLShaderResource::CreateShaderManager()
 
 ShaderManager *CGLShaderResource::CreateFixedFunctionPipelineManager()
 {
-	return new CGLFixedFunctionPipelineManager;
+	LOG_PRINT_ERROR("No longer supported.");
+	return nullptr;
+//	return new CGLFixedFunctionPipelineManager;
 }
 
 
