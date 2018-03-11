@@ -13,7 +13,7 @@
 #include "amorphous/Utilities/TextFileScannerExtensions.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 
-using std::string;
+using namespace std;
 
 
 LensFlareDemo::LensFlareDemo()
@@ -103,7 +103,7 @@ int LensFlareDemo::Init()
 	// load the terrain mesh
 	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = "LensFlareDemo/models/terrain06.msh";
-	mesh_desc.MeshType     = MeshType::BASIC;
+	mesh_desc.MeshType     = MeshTypeName::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
 	m_TestTexture.Load( "LensFlareDemo/textures/flare02.png" );

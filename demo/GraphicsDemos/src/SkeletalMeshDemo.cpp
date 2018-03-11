@@ -107,7 +107,7 @@ int SkeletalMeshDemo::Init()
 
 		MeshResourceDesc mrd;
 		mrd.ResourcePath = mesh_pathname;
-		mrd.MeshType = MeshType::SKELETAL;
+		mrd.MeshType = MeshTypeName::SKELETAL;
 
 //		bool loaded = m_Mesh.Load( mesh_pathname );
 		bool loaded = m_Mesh.Load( mrd );
@@ -118,7 +118,7 @@ int SkeletalMeshDemo::Init()
 		return -1;
 
 	shared_ptr<SkeletalMesh> pSMesh
-		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( m_Mesh.GetMesh() );
+		= std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( m_Mesh.GetMesh() );
 
 	if( !pSMesh )
 		return -1;
@@ -162,7 +162,7 @@ void SkeletalMeshDemo::RenderMesh()
 		return;
 
 	shared_ptr<SkeletalMesh> pSMesh
-		= boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pBasicMesh );
+		= std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>( pBasicMesh );
 
 	if( pSMesh )
 	{
@@ -227,7 +227,7 @@ Result::Name SkeletalMeshDemo::SetUniformRotations( float angle, unsigned int ax
 	if( !pMesh )
 		return Result::INVALID_ARGS;
 
-	std::shared_ptr<SkeletalMesh> pSMesh = boost::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
+	std::shared_ptr<SkeletalMesh> pSMesh = std::dynamic_pointer_cast<SkeletalMesh,BasicMesh>(pMesh);
 	if( !pSMesh )
 		return Result::INVALID_ARGS;
 

@@ -11,6 +11,7 @@
 #include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Support/CameraController.hpp"
 
+using namespace std;
 
 
 SimpleMotionBlurDemo::SimpleMotionBlurDemo()
@@ -47,7 +48,7 @@ int SimpleMotionBlurDemo::Init()
 	// load the terrain mesh
 	MeshResourceDesc mesh_desc;
 	mesh_desc.ResourcePath = "./models/terrain06.msh";
-	mesh_desc.MeshType     = MeshType::BASIC;
+	mesh_desc.MeshType     = MeshTypeName::BASIC;
 	m_TerrainMesh.Load( mesh_desc );
 
 	if( CameraController() )

@@ -12,9 +12,9 @@
 #include "amorphous/Support/Profile.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
-#include "amorphous/GUI.hpp"
+//#include "amorphous/GUI.hpp"
 
-using std::string;
+using namespace std;
 
 
 CTestMeshHolder::CTestMeshHolder( const std::string& filepath, LoadingStyleName loading_style, const Matrix34& pose )
@@ -244,8 +244,8 @@ void AsyncLoadingDemo::LoadResourcesAsync( CTestMeshHolder& holder )
 
 void AsyncLoadingDemo::Update( float dt )
 {
-	if( m_pSampleUI )
-		m_pSampleUI->Update( dt );
+	//if( m_pSampleUI )
+	//	m_pSampleUI->Update( dt );
 
 	if( true /*m_TestAsyncLoading*/ )
 	{
@@ -290,7 +290,7 @@ void AsyncLoadingDemo::RenderMeshes()
 		if( holder.m_Handle.GetEntryState() == GraphicsResourceState::LOADED )
 		{
 			// set world transform
-			FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
+			//FixedFunctionPipelineManager().SetWorldTransform( holder.m_Pose );
 			pShaderManager->SetWorldTransform( holder.m_Pose );
 
 			BasicMesh *pMesh = holder.m_Handle.GetMesh().get();
@@ -312,8 +312,8 @@ void AsyncLoadingDemo::Render()
 
 	RenderMeshes();
 
-	if( m_pSampleUI )
-		m_pSampleUI->Render();
+	//if( m_pSampleUI )
+	//	m_pSampleUI->Render();
 
 	// Must be called before GraphicsResourceManager().GetStatus()
 	AsyncResourceLoader().ProcessGraphicsDeviceRequests();
@@ -364,7 +364,7 @@ void AsyncLoadingDemo::SaveTexturesAsImageFiles()
 
 void AsyncLoadingDemo::HandleInput( const InputData& input )
 {
-	if( m_pUIInputHandler )
+	/*if( m_pUIInputHandler )
 	{
 //		InputHandler::ProcessInput() does not take const InputData&
 		InputData input_copy = input;
@@ -372,7 +372,7 @@ void AsyncLoadingDemo::HandleInput( const InputData& input )
 
 		if( m_pUIInputHandler->PrevInputProcessed() )
 			return;
-	}
+	}*/
 
 	switch( input.iGICode )
 	{

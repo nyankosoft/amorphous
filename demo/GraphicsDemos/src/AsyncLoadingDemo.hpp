@@ -7,7 +7,7 @@
 #include "amorphous/Graphics/ShaderHandle.hpp"
 #include "amorphous/Graphics/Shader/ShaderTechniqueHandle.hpp"
 #include "amorphous/Input/fwd.hpp"
-#include "amorphous/GUI/fwd.hpp"
+//#include "amorphous/GUI/fwd.hpp"
 
 #include "../../_Common/GraphicsTestBase.hpp"
 
@@ -45,9 +45,9 @@ class AsyncLoadingDemo : public CGraphicsTestBase, public GraphicsComponent
 
 	ShaderTechniqueHandle m_MeshTechnique;
 
-	std::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
+	//std::shared_ptr<CInputHandler_Dialog> m_pUIInputHandler;
 
-	CGM_DialogManagerSharedPtr m_pSampleUI;
+	//CGM_DialogManagerSharedPtr m_pSampleUI;
 
 	bool m_TestAsyncLoading;
 

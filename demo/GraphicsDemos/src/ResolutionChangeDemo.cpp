@@ -226,7 +226,7 @@ void ResolutionChangeDemo::Render()
 
 	int y = 50 + (int)m_AvailableDisplayModes.size() * h;
 	string digits = "> ";
-	digits += (0 <= m_CurrentlyEnteredDigits) ? to_string(m_CurrentlyEnteredDigits) : "-";
+	digits += (0 <= m_CurrentlyEnteredDigits) ? amorphous::to_string(m_CurrentlyEnteredDigits) : "-";
 	m_pFont->DrawText( digits, 20, y );
 }
 

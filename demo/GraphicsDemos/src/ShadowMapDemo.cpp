@@ -278,7 +278,7 @@ void ShadowMapDemo::HandleInput( const InputData& input )
 void ShadowMapDemo::RenderShadowCasters( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques )
 {
 //	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
-	ShaderHandle shader = shaders[VertexBlendType::NONE];
+	ShaderHandle shader = shaders[(int)VertexBlendTypeName::NONE];
 	ShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;
@@ -295,7 +295,7 @@ void ShadowMapDemo::RenderShadowCasters( Camera& camera, ShaderHandle *shaders, 
 void ShadowMapDemo::RenderShadowReceivers( Camera& camera, ShaderHandle *shaders, ShaderTechniqueHandle *shader_techniques )
 {
 //	ShaderManager *pShaderMgr = m_pShadowMapManager->GetShader().GetShaderManager();
-	ShaderHandle shader = shaders[VertexBlendType::NONE];
+	ShaderHandle shader = shaders[(int)VertexBlendTypeName::NONE];
 	ShaderManager *pShaderMgr = shader.GetShaderManager();
 	if( !pShaderMgr )
 		return;

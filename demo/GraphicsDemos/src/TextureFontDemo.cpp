@@ -7,8 +7,7 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/filesystem_aux.hpp"
 
-using std::vector;
-using std::string;
+using namespace std;
 
 
 TextureFontDemo::TextureFontDemo()

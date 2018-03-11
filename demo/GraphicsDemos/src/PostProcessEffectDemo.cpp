@@ -12,7 +12,7 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Input.hpp"
 
-using std::string;
+using namespace std;
 
 
 const float PostProcessEffectDemo::m_fBlurFactor = 0.02f;

@@ -13,7 +13,7 @@
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Macro.h"
 
-using std::string;
+using namespace std;
 
 
 GLSLDemo::GLSLDemo()

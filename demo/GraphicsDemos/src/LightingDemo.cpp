@@ -15,7 +15,7 @@
 #include "amorphous/Support/MTRand.hpp"
 #include "amorphous/Input.hpp"
 
-using std::string;
+using namespace std;
 
 
 LightingDemo::LightingDemo()
@@ -28,7 +28,7 @@ m_NumLightsZ(3)
 
 	SetBackgroundColor( SFloatRGBAColor( 0.2f, 0.2f, 0.5f, 1.0f ) );
 
-	InitRand( (unsigned long)timeGetTime() );
+	InitRand( 0 );//(unsigned long)timeGetTime() );
 }
 
 

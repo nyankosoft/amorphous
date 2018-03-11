@@ -3,7 +3,7 @@
 #include "amorphous/Support/Macro.h"
 #include "amorphous/Input.hpp"
 
-using std::string;
+using namespace std;
 
 
 GraphicsElementsDemo::GraphicsElementsDemo()

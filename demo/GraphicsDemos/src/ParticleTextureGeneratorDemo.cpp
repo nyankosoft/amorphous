@@ -11,7 +11,7 @@
 #include "amorphous/Utilities/PerlinAux.hpp"
 #include "amorphous/GUI.hpp"
 
-using std::string;
+using namespace std;
 
 
 ParticleTextureGeneratorDemo::ParticleTextureGeneratorDemo()
@@ -24,7 +24,7 @@ m_NumColorVariations(0)
 
 //	m_pTimer.reset( new Timer );
 
-	InitRand( (unsigned long)timeGetTime() );
+	InitRand( 0 );//(unsigned long)timeGetTime() );
 }
 
 

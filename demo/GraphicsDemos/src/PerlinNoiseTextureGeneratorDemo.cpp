@@ -11,7 +11,7 @@
 #include "amorphous/Utilities/PerlinAux.hpp"
 #include "amorphous/GUI.hpp"
 
-using std::string;
+using namespace std;
 
 
 PerlinNoiseTextureGeneratorDemo::PerlinNoiseTextureGeneratorDemo()
@@ -23,7 +23,7 @@ m_fTextureRepeats( 1.0f )
 
 	m_pTimer.reset( new Timer );
 
-	InitRand( (unsigned long)timeGetTime() );
+	InitRand( 0 );//(unsigned long)timeGetTime() );
 }
 
 

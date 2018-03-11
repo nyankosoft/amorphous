@@ -13,7 +13,7 @@
 #include "amorphous/Support/CameraController.hpp"
 #include "amorphous/Input.hpp"
 
-using std::string;
+using namespace std;
 
 
 SimpleOverlayEffectsDemo::SimpleOverlayEffectsDemo()

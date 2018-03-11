@@ -150,7 +150,7 @@ void TextureRenderTargetDemo::RenderMeshes()
 
 	Result::Name res = shader_mgr.SetTechnique( m_MeshTechnique );
 
-	double current_time = GlobalTimer().GetTime();
+	double current_time = GlobalTimer().GetElapsedTimeInSeconds();
 
 	Matrix34 world_transform( Vector3(0,1,3), Matrix33RotationY((float)current_time) * Matrix33RotationX((float)current_time * 0.3f) );
 	shader_mgr.SetWorldTransform( world_transform );

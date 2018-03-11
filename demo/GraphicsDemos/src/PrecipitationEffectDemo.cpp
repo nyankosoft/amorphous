@@ -1,4 +1,4 @@
-#include "PrecipitationEffectTest.hpp"
+#include "PrecipitationEffectDemo.hpp"
 #include "amorphous/Graphics/DoubleConeScrollEffect.hpp"
 #include "amorphous/Graphics/GraphicsResourceManager.hpp"
 #include "amorphous/Graphics/SkyboxMisc.hpp"

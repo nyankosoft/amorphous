@@ -10,7 +10,7 @@
 //#include "amorphous/Graphics/SkyboxMisc.hpp"
 #include "amorphous/Graphics/MeshModel/3DMeshModelArchive.hpp"
 
-using std::string;
+using namespace std;
 
 
 OBBTreeDemo::OBBTreeDemo()
