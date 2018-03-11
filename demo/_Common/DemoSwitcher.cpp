@@ -4,12 +4,20 @@
 #include "amorphous/Graphics/Camera.hpp"
 #include "amorphous/App/GameWindowManager.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
+#include "amorphous/Support/Log/DefaultLog.hpp"
 
 using std::string;
 //using namespace amorphous;
 
 
 ApplicationBase *amorphous::CreateApplicationInstance() { return new DemoSwitcher; }
+
+
+DemoSwitcher::DemoSwitcher()
+:
+m_DemoIndex(0),
+m_DisplayDebugInfo(true)
+{}
 
 
 int DemoSwitcher::Init()
@@ -60,6 +68,8 @@ void DemoSwitcher::Render()
 
 void DemoSwitcher::HandleInput( const InputData& input )
 {
+	LOG_PRINT("entered.");
+
 	if( m_pDemo )
 		m_pDemo->HandleInput( input );
 
@@ -98,6 +108,8 @@ CGraphicsTestBase *DemoSwitcher::CreateDemoInstance( unsigned int index )
 
 bool DemoSwitcher::InitDemo( int index )
 {
+	LOG_PRINTF(("index: %d", index));
+
 	if( index < 0 )
 		return false;
 
@@ -168,21 +180,25 @@ bool DemoSwitcher::InitDemo()
 
 void DemoSwitcher::NextDemo()
 {
+	LOG_PRINT("entered.");
 	if( !m_pDemoFactory )
 		return;
 
 	m_DemoIndex = (m_DemoIndex + 1) % m_pDemoFactory->GetNumDemos();
 
+	LOG_PRINTF(("index: %d", m_DemoIndex));
 	InitDemo( m_DemoIndex );
 }
 
 
 void DemoSwitcher::PrevDemo()
 {
+	LOG_PRINT("entered.");
 	if( !m_pDemoFactory )
 		return;
 
 	m_DemoIndex = (m_DemoIndex + m_pDemoFactory->GetNumDemos() - 1) % m_pDemoFactory->GetNumDemos();
 
+	LOG_PRINTF(("index: %d", m_DemoIndex));
 	InitDemo( m_DemoIndex );
 }

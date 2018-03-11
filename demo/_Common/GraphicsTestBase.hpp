@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-#include <boost/weak_ptr.hpp>
 
 #include "KeyState.hpp"
 #include "amorphous/3DMath/fwd.hpp"
@@ -118,11 +117,11 @@ public:
 
 class CGraphicsTestInputHandler : public InputHandler
 {
-	boost::weak_ptr<CGraphicsTestBase> m_pTest;
+	std::weak_ptr<CGraphicsTestBase> m_pTest;
 
 public:
 
-	CGraphicsTestInputHandler( boost::weak_ptr<CGraphicsTestBase> pTest )
+	CGraphicsTestInputHandler( std::weak_ptr<CGraphicsTestBase> pTest )
 		:
 	m_pTest(pTest) {}
 

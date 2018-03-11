@@ -2,7 +2,7 @@
 #define __DemoSwitcher_HPP__
 
 
-#include "amorphous/App/GraphicsApplicationbase.hpp"
+#include "amorphous/App/GraphicsApplicationBase.hpp"
 
 using namespace amorphous;
 
@@ -29,7 +29,7 @@ private:
 
 public:
 	
-	DemoSwitcher() : m_DemoIndex(-1), m_DisplayDebugInfo(true) {}
+	DemoSwitcher();
 
 	const std::string GetApplicationTitle() { return "demo_app"; }
 

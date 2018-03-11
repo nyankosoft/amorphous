@@ -33,21 +33,11 @@ public:
 };
 
 
-#define PLATFORM_IS_WINDOWS
-
-#ifdef PLATFORM_IS_WINDOWS
+#ifdef _MSC_VER
 
 #include "KeyState_Win32.hpp"
 
-#endif /* PLATFORM_IS_WINDOWS */
-
-
-#ifdef PLATFORM_IS_LINUX
-
-// ...
-
-#endif /* PLATFORM_IS_LINUX */
-
+#endif // _MSC_VER
 
 
 #endif /* __KeyState_H__ */
