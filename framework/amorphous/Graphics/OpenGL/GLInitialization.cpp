@@ -8,7 +8,7 @@
 #include "GLCubeTextureRenderTarget.hpp"
 #include "Mesh/GLSkeletalMeshImpl.hpp"	  // Used by GLMeshImplFactory
 #include "Mesh/GLCustomMeshRenderer.hpp"
-#include "Shader/GLFixedFunctionPipelineManager.hpp"
+//#include "Shader/GLFixedFunctionPipelineManager.hpp"
 #include "Shader/Embedded/EmbeddedGenericGLSLShader.hpp"
 #include "Shader/Embedded/EmbeddedPostProcessEffectGLSLShader.hpp"
 #include "amorphous/Graphics/GraphicsResources.hpp"
@@ -95,6 +95,7 @@ shared_ptr<ShaderResource> GLGraphicsResourceFactoryImpl::CreateShaderResource( 
 	return shared_ptr<ShaderResource>( new CGLShaderResource(&desc) );
 }
 
+ShaderManager sg_BlankShaderManager;
 
 Result::Name InitializeOpenGLClasses()
 {
@@ -104,7 +105,8 @@ Result::Name InitializeOpenGLClasses()
 	GetGraphicsResourceFactory().Init( new GLGraphicsResourceFactoryImpl() );
 	Ref2DPrimitiveFactory().Init( new C2DPrimitiveFactoryImpl_GL );
 	GetMeshImplFactory().reset( new GLMeshImplFactory );
-	CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
+	//CFixedFunctionPipelineManagerHolder::Get()->Init( &GLFixedFunctionPipelineManager() );
+	CFixedFunctionPipelineManagerHolder::Get()->Init( &sg_BlankShaderManager );
 	TextureRenderTarget::SetInstanceCreationFunction( GLTextureRenderTarget::Create );
 	CubeTextureRenderTarget::SetInstanceCreationFunction( GLCubeTextureRenderTarget::Create );
 	CustomMeshRenderer::ms_pInstance = &(GLCustomMeshRenderer::ms_Instance);
