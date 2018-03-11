@@ -237,8 +237,7 @@ bool ASCIIFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buff
 
 	FT_Face face;
 
-	int error;
-	error = FT_New_Face( ftlib.GetFTLibrary(), ttf_filepath.c_str(), 0, &face );
+	int error = FT_New_Face( ftlib.GetFTLibrary(), ttf_filepath.c_str(), 0, &face );
 
 	if ( error == FT_Err_Unknown_File_Format )
 	{
@@ -255,7 +254,7 @@ bool ASCIIFont::CreateFontTextureFromTrueTypeFont( array2d<U8>& dest_bitmap_buff
 
 	// When a new face object is created, all elements are set to 0 during initialization.
 	// To populate the structure with sensible values, simply call  FT_Set_Char_Size.
-	// Here is an example where the character size is set to 16pt for a 300Å~300dpi device:
+	// Here is an example where the character size is set to 16pt for a 300x300dpi device:
 	error = FT_Set_Char_Size( face, /* handle to face object */
 							  0, /* char_width in 1/64th of points */
 							  char_height*64, /* char_height in 1/64th of points */
