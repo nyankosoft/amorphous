@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Delete all the previously downloaded and built files
+rm -rf glew-2.1.0.tgz glew-2.1.0
+rm -rf googletest-release-1.8.0.tar.gz googletest-release-1.8.0
+rm -rf zlib-1.2.11.tar.gz zlib-1.2.11
+rm -rf libpng-1.6.34.tar.gz libpng-1.6.34
+rm -rf freetype-2.8.1.tar.gz freetype-2.8.1
+
 # GLEW
 wget https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz
 tar -xvf glew-2.1.0.tgz
@@ -11,6 +18,22 @@ cd ..
 wget -O googletest-release-1.8.0.tar.gz https://github.com/google/googletest/archive/release-1.8.0.tar.gz
 tar -xvf googletest-release-1.8.0.tar.gz
 cd googletest-release-1.8.0
+cmake .
+make
+cd ..
+
+# zlib (used by libpng)
+wget -O zlib-1.2.11.tar.gz https://github.com/madler/zlib/archive/v1.2.11.tar.gz
+tar -xvf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+./configure
+make
+cd ..
+
+# libpng (used by freetype)
+wget -O libpng-1.6.34.tar.gz https://github.com/glennrp/libpng/archive/v1.6.34.tar.gz
+tar -xvf libpng-1.6.34.tar.gz
+cd libpng-1.6.34
 cmake .
 make
 cd ..
