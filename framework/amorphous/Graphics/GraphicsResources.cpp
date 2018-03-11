@@ -811,16 +811,19 @@ bool ShaderResource::CreateFromDesc()
 
 		return CreateShaderFromTextBuffer( buffer );
 	}
-	else if( m_ShaderDesc.ShaderType == ShaderTypeName::NON_PROGRAMMABLE )
-	{
-		SafeDelete( m_pShaderManager );
+//	else if( m_ShaderDesc.ShaderType == ShaderTypeName::NON_PROGRAMMABLE )
+//	{
+//		SafeDelete( m_pShaderManager );
 
 		// create pseudo shader manager for fixed function pipleline.
-		m_pShaderManager = CreateFixedFunctionPipelineManager();
-		return true;
-	}
+//		m_pShaderManager = CreateFixedFunctionPipelineManager();
+//		return true;
+//	}
 	else
+	{
+		LOG_PRINT_ERROR("Failed to create a shader.");
 		return false;
+	}
 }
 
 
