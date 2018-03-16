@@ -14,6 +14,7 @@ matrix:
 sudo: required
 
 before_install:
+  - eval "${MATRIX_EVAL}"
   - sudo apt-get install zlib1g-dev
   - sudo apt-get install libglu1-mesa-dev
   
