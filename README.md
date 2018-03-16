@@ -1,6 +1,8 @@
 amorphous
 =========
 
+[![Build Status](https://travis-ci.org/nyankosoft/amorphous.svg?branch=master)](https://travis-ci.org/nyankosoft/amorphous)
+
 A C++-based framework I have written to create basic real-time 3D graphics applications.
 It is primarily intended for my personal use, but it's up here on GitHub now, so it is free for anyone to use for whatever peaceful purpose.
 Please understand that many of them are experimental and not functional yet (i.e. don't get mad at me for putting this on GitHub).
