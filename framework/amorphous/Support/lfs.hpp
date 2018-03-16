@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <string>
+#include <cstring> // std::memset
 #include <vector>
 #include <regex>
 
@@ -120,7 +121,7 @@ inline std::string get_leaf( const std::string& pathname )
 inline std::string get_cwd()
 {
 	char cwd[LFS_MAX_PATH];
-	memset( cwd, 0, sizeof(cwd) );
+	std::memset( cwd, 0, sizeof(cwd) );
 	getcwd( cwd, LFS_MAX_PATH );
 	return std::string(cwd);
 }
