@@ -15,8 +15,12 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Get the GCC version to determine the pathname of std::experimental::filesystem library file
+string(SUBSTRING "${CMAKE_CXX_COMPILER_VERSION}" 0 1 COMPILER_MAJOR_VERSION)
+set(fs_library_path "/usr/lib/gcc/x86_64-linux-gnu/${COMPILER_MAJOR_VERSION}/libstdc++fs.a")
+
 add_library(stdc++fs UNKNOWN IMPORTED)
-set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/5/libstdc++fs.a")
+set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "${fs_library_path}")
 
 # TODO: do this after checking the window system and confirming
 # that the current OS is based on X11 (X Window System)
