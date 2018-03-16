@@ -23,6 +23,14 @@ $ sudo apt install zlib1g-dev
 $ sudo apt install libglu1-mesa-dev
 ```
 
+
+Once you confirm that the packages listed above are installed on your system, run the build script in the project root directory to build the framework from the source code:
+
+```
+$ ./build.sh
+```
+
+
 ## Modules (framework/amorphous)
 
 |Module             |Status               |Description|
