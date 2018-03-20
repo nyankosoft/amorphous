@@ -4,6 +4,7 @@
 rm -rf glew-2.1.0.tgz glew-2.1.0
 rm -rf googletest-release-1.8.0.tar.gz googletest-release-1.8.0
 rm -rf zlib-1.2.11.tar.gz zlib-1.2.11
+rm -rf bzip2-1.0.6.tar.gz bzip2-1.0.6
 rm -rf libpng-1.6.34.tar.gz libpng-1.6.34
 rm -rf freetype-2.8.1.tar.gz freetype-2.8.1
 
@@ -27,6 +28,13 @@ wget -O zlib-1.2.11.tar.gz https://github.com/madler/zlib/archive/v1.2.11.tar.gz
 tar -xvf zlib-1.2.11.tar.gz
 cd zlib-1.2.11
 ./configure
+make
+cd ..
+
+# bzip2 (used by freetype)
+wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+tar -xvf bzip2-1.0.6.tar.gz
+cd bzip2-1.0.6
 make
 cd ..
 
