@@ -310,7 +310,7 @@ public:
 	/// returns const reference to the i-th material
 	const MeshMaterial& GetMaterial( int material_index ) const { return m_pImpl->GetMaterial( material_index ); }
 
-	const std::vector<MeshMaterial>& GetMaterials() const { m_pImpl->GetMaterials(); }
+	const std::vector<MeshMaterial>& GetMaterials() const { return m_pImpl->GetMaterials(); }
 
 	MeshMaterial& Material( int material_index ) { return m_pImpl->Material( material_index ); }
 
