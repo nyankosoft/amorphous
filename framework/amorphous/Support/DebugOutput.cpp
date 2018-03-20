@@ -24,10 +24,10 @@ m_pLogOutput(pLogOutput)
 array<unsigned char,4> from_argb32(U32 s)
 {
 	array<unsigned char,4> c = {
-		(s >> 24) & 0x000000FF,
-		(s >> 16) & 0x000000FF,
-		(s >>  8) & 0x000000FF,
-		(s)       & 0x000000FF
+		(unsigned char)((s >> 24) & 0x000000FF),
+		(unsigned char)((s >> 16) & 0x000000FF),
+		(unsigned char)((s >>  8) & 0x000000FF),
+		(unsigned char)((s)       & 0x000000FF)
 	};
 
 	return c;
