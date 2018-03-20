@@ -183,6 +183,7 @@ ${CMAKE_CURRENT_LIST_DIR}/../../externals/glew-2.1.0/lib/libGLEW.a
 ${CMAKE_CURRENT_LIST_DIR}/../../externals/freetype-2.8.1/objs/.libs/libfreetype.a
 ${CMAKE_CURRENT_LIST_DIR}/../../externals/libpng-1.6.34/libpng16.a
 ${CMAKE_CURRENT_LIST_DIR}/../../externals/zlib-1.2.11/libz.a
+${CMAKE_CURRENT_LIST_DIR}/../../externals/bzip2-1.0.6/libbz2.a
 )
 
 # Enable -pthread option
