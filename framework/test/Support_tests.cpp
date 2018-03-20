@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "../amorphous/Support/lfs.hpp"
 #include "../amorphous/Support/Serialization/Serialization.hpp"
+#include "../amorphous/Support/Log/DefaultLogAux.hpp"
 
 using namespace amorphous;
 
@@ -66,7 +67,8 @@ TEST(Serialization_test, Serialization_Tests) {
 }
 
 int main(int argc, char *argv[]) {
-  //init_opengl();
+  init_opengl();
   testing::InitGoogleTest(&argc,argv);
+  InitTextlLog("unittesting.log");
   return RUN_ALL_TESTS();
 }
