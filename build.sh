@@ -8,6 +8,6 @@ cd ..
 
 # Build the framework
 cd framework/cmake
-cmake .
-make
+chmod u+x build.sh
+./build.sh
 

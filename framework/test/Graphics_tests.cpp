@@ -69,7 +69,7 @@ TEST(TextureHandle_test, TextureHandle_Tests) {
 	ASSERT_EQ(res,false);
 
 	TextureHandle t;
-	res = t.Load("brick012-s512.jpg");
+	res = t.Load("../../demo/GraphicsDemos/app/MeshSplitterDemo/models/brick012-s512.jpg");
 	//res = t.Load("../../demo/GraphicsDemos/app/AsyncLoadingDemo/models/textures/FlakySlate.jpg");
 	ASSERT_EQ(res,true);
 

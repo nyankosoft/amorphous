@@ -43,6 +43,6 @@ install:
 
 # Build steps
 script:
+  # build.sh in the project root invokes cmake/build.sh, which runs unit tests after the build. 
   - ./build.sh
-  - cd framework/cmake
-  - ./amorphous-core-test
+
