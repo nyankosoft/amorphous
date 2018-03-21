@@ -181,6 +181,8 @@ void C2DPrimitiveRenderer_GL::RenderViaVertexAttribArray(
 
 void C2DPrimitiveRenderer_GL::Render( General2DVertex *paVertex, int num_vertices, PrimitiveType::Name primitive_type )
 {
+	LOG_GL_ERROR( " entered (C2DPrimitiveRenderer_GL)" );
+
 	ShaderHandle shader
 		= sg_2DPrimitiveCommonShaders.GetShader( C2DPrimitiveCommonShaders::ST_DIFFUSE_COLOR );
 
