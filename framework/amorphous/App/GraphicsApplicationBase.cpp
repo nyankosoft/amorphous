@@ -1,5 +1,6 @@
 #include "GraphicsApplicationBase.hpp"
 #include "amorphous/App/GameWindowManager.hpp"
+#include "amorphous/Support/lfs.hpp"
 #include "amorphous/Support/Timer.hpp"
 #include "amorphous/Support/ParamLoader.hpp"
 #include "amorphous/Support/Profile.hpp"
@@ -178,6 +179,7 @@ void GraphicsApplicationBase::Run()
 	// - released when leaving the scope
 //	CXMLParserInitReleaseManager parser_mgr;
 
+	lfs::set_wd("../app");
 
 	string graphics_library_name = "OpenGL";
 	ParamLoader param_loader( "config" );

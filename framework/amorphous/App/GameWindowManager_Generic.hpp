@@ -4,6 +4,7 @@
 
 #include "GameWindowManager.hpp"
 #include <memory>
+#include <map>
 
 // Include this before including X11_GLWindow.hpp or otherwise glew.h will spit
 // several dozens of errors. Likely cause is one of the X11 or GL/gl* headers
@@ -17,6 +18,9 @@
 
 namespace amorphous
 {
+
+
+void GetKeyMaps(std::map<unsigned int,int>& keymaps);
 
 
 class GameWindowManager_Generic : public GameWindowManager

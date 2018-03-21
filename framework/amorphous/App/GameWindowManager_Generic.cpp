@@ -3,6 +3,7 @@
 #include "amorphous/Graphics/OpenGL/GLInitialization.hpp"
 #include "amorphous/Support/Log/DefaultLog.hpp"
 //#include "amorphous/Support/WindowMisc_Win32.hpp"
+#include "amorphous/Input/InputHandler.hpp"
 
 
 namespace amorphous
@@ -42,6 +43,9 @@ bool GameWindowManager_Generic::CreateGameWindow(
     const std::string& app_title
     )
 {
+	// Will it take effect if we run 'export MESA_GL_VERSION_OVERRIDE=4.5' from here
+	system("export MESA_GL_VERSION_OVERRIDE=4.5");
+
 #ifdef BUILD_WITH_X11_LIBS
    
 	LOG_PRINT("Creating an X11 window.");
@@ -79,6 +83,65 @@ void GameWindowManager_Generic::MainLoop( ApplicationCore& app )
 		m_pX11GLWindow->MainLoop(app);
 	}
 
+#endif // BUILD_WITH_X11_LIBS
+}
+
+#ifdef BUILD_WITH_X11_LIBS
+void GetX11KeyMaps(std::map<unsigned int,int>& x11_to_gic)
+{
+	x11_to_gic[24] = 'Q';
+	x11_to_gic[25] = 'W';
+	x11_to_gic[26] = 'E';
+	x11_to_gic[27] = 'R';
+	x11_to_gic[28] = 'T';
+	x11_to_gic[29] = 'Y';
+	x11_to_gic[30] = 'U';
+	x11_to_gic[31] = 'I';
+	x11_to_gic[31] = 'Q';
+	x11_to_gic[32] = 'P';
+//	x11_to_gic[33] = '';
+//	x11_to_gic[34] = '';
+//	x11_to_gic[35] = '';
+//	x11_to_gic[36] = '';
+//	x11_to_gic[37] = '';
+	x11_to_gic[38] = 'A';
+	x11_to_gic[39] = 'S';
+	x11_to_gic[40] = 'D';
+	x11_to_gic[41] = 'F';
+	x11_to_gic[41] = 'G';
+	x11_to_gic[42] = 'H';
+	x11_to_gic[43] = 'J';
+	x11_to_gic[44] = 'K';
+	x11_to_gic[45] = 'L';
+//	x11_to_gic[46] = '';
+//	x11_to_gic[47] = '';
+//	x11_to_gic[48] = '';
+//	x11_to_gic[49] = '';
+//	x11_to_gic[50] = '';
+//	x11_to_gic[51] = '';
+	x11_to_gic[52] = 'Z';
+	x11_to_gic[53] = 'X';
+	x11_to_gic[54] = 'C';
+	x11_to_gic[55] = 'V';
+	x11_to_gic[56] = 'B';
+	x11_to_gic[57] = 'N';
+	x11_to_gic[58] = 'M';
+//	x11_to_gic[59] = '';
+	x11_to_gic[110] = GIC_HOME;
+	x11_to_gic[111] = GIC_UP;
+	x11_to_gic[112] = GIC_PAGE_UP;
+	x11_to_gic[113] = GIC_LEFT;
+	x11_to_gic[114] = GIC_RIGHT;
+	x11_to_gic[115] = GIC_END;
+	x11_to_gic[116] = GIC_DOWN;
+	x11_to_gic[117] = GIC_PAGE_DOWN;
+}
+#endif // BUILD_WITH_X11_LIBS
+
+void GetKeyMaps(std::map<unsigned int,int>& keymaps)
+{
+#ifdef BUILD_WITH_X11_LIBS
+	GetX11KeyMaps(keymaps);
 #endif // BUILD_WITH_X11_LIBS
 }
 

@@ -120,7 +120,19 @@ void X11_GLWindow::MainLoop( ApplicationCore& app )
             glXSwapBuffers(m_Display, m_Window);
         }
                 
-        else if(xev.type == KeyPress || !app.IsAppExitRequested()) {
+        else if(xev.type == KeyPress) {
+            app.OnKeyDown(xev.xkey.keycode);
+        }
+        else if(xev.type == KeyRelease) {
+            app.OnKeyUp(xev.xkey.keycode);
+        }
+        else if(xev.type == ButtonPress) {
+            app.OnButtonDown(xev.xkey.keycode);
+        }
+        else if(xev.type == ButtonRelease) {
+            app.OnButtonUp(xev.xkey.keycode);
+        }
+        else if(app.IsAppExitRequested()) {
             glXMakeCurrent(m_Display, None, NULL);
             glXDestroyContext(m_Display, m_GLContext);
             XDestroyWindow(m_Display, m_Window);

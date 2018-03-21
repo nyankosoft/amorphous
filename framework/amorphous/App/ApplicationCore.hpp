@@ -17,6 +17,11 @@ public:
 	// Called every frame in the main loop
 	// The application needs to both update the application states and render the scene.
 	virtual void UpdateFrame() = 0;
+
+	virtual void OnKeyDown(unsigned int keycode) {}
+	virtual void OnKeyUp(unsigned int keycode) {}
+	virtual void OnButtonDown(unsigned int button) {}
+	virtual void OnButtonUp(unsigned int button) {}
 };
 
 

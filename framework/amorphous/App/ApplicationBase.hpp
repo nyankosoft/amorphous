@@ -93,6 +93,11 @@ public:
 
 	bool UseDefaultMouse() const { return m_UseDefaultMouse; }
 
+	void OnKeyDown(unsigned int keycode);
+	void OnKeyUp(unsigned int keycode);
+	void OnButtonDown(unsigned int button);
+	void OnButtonUp(unsigned int button);
+
 	static void SetInstance( ApplicationBase *pApp ) { ms_pInstance = pApp; }
 
 	static ApplicationBase *GetInstance() { return ms_pInstance; }
