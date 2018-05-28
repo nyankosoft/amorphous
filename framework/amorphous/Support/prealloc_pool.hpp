@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <climits>
 #include "SafeDeleteVector.hpp"
 
 
