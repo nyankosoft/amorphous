@@ -103,8 +103,11 @@ bool BinaryArchive_Input::operator>> ( IArchiveObjectBase& obj )
 	}
 
 	// The last character should be a NULL character
-	if( !archive_string_data.back() == 0 )
+	if( archive_string_data.back() != 0 )
+	{
+		LOG_PRINT_ERROR("Missing NULL terminator character");
 		return false;
+	}
 
 	int archive_ver = 0;
 	string archive_string = &archive_string_data[0];
