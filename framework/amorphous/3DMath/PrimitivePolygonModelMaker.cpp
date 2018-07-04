@@ -228,15 +228,15 @@ void CreatePipe( float length, const float outer_radius, const float inner_radiu
 
 	const int num_polygons_to_create
 		= num_segments * num_divisions * 2
-		+ create_top_polygons ? num_segments : 0
-		+ create_bottom_polygons ? num_segments : 0;
+		+ (create_top_polygons ? num_segments : 0)
+		+ (create_bottom_polygons ? num_segments : 0);
 
 	vecDestPoly.reserve( vecDestPoly.size() + num_polygons_to_create );
 
 	const int num_vertices_to_create
 		= num_segments * (num_divisions+1) * 2
-		+ (top_style    == PolygonModelStyle::EDGE_VERTICES_UNWELDED) ? num_segments * 2 : 0
-		+ (bottom_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED) ? num_segments * 2 : 0;
+		+ ( (top_style    == PolygonModelStyle::EDGE_VERTICES_UNWELDED) ? num_segments * 2 : 0 )
+		+ ( (bottom_style == PolygonModelStyle::EDGE_VERTICES_UNWELDED) ? num_segments * 2 : 0 );
 
 	vecDestPos.reserve(    vecDestPos.size()    + num_vertices_to_create );
 	vecDestNormal.reserve( vecDestNormal.size() + num_vertices_to_create );
