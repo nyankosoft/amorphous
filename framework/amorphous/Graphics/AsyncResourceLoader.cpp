@@ -251,7 +251,7 @@ void AsyncResourceLoader::ProcessGraphicsDeviceRequests()
 
 		case CGraphicsDeviceRequest::LoadToGraphicsMemoryByRenderThread:
 			res = req.m_pLoader->LoadToGraphicsMemoryByRenderThread();
-			if( res = false )
+			if( res == false )
 			{
 				LOG_PRINT_ERROR( "req.m_pLoader->LoadToGraphicsMemoryByRenderThread() failed. Resource: " + req.m_pLoader->GetDesc()->ResourcePath );
 			}
