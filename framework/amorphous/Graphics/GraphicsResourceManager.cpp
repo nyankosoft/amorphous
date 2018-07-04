@@ -342,7 +342,7 @@ shared_ptr<GraphicsResourceEntry> GraphicsResourceManager::LoadGraphicsResource(
 //	if( desc.ResourcePath.length() == 0 )
 	if( !desc.IsValid() )
 	{
-		LOG_PRINT_ERROR(( " An invalid resource desc (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
+		LOG_PRINTF_ERROR(( " An invalid resource desc (type: %s, resource path: %s).", GetGraphicsResourceTypeText(desc.GetResourceType()), desc.ResourcePath.c_str() ));
 		return shared_ptr<GraphicsResourceEntry>();	// invalid filename
 	}
 
