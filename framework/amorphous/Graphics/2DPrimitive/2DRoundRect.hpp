@@ -516,7 +516,7 @@ inline void C2DRoundFrameRect::SetColor( const SFloatRGBAColor& color )
 	for( int i=0; i<4; i++ )
 		m_aCornerColor[i] = color;
 
-	if( 0 <= m_vecRectVertex.size() ) // avoid calling this from ctor
+	if( 0 < m_vecRectVertex.size() ) // avoid calling this from ctor
 		UpdateColor();
 }
 
