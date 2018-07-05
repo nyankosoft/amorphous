@@ -112,7 +112,7 @@ class CGLProgram : public ShaderManager
 
 	GLint m_PredefinedMatrixUniforms[NUM_PREDEFINED_MATRIX_UNIFORMS];
 
-	GLuint m_TextureSamplerUniforms[NUM_TEXTURE_SAMPLER_UNIFORMS];
+	GLint m_TextureSamplerUniforms[NUM_TEXTURE_SAMPLER_UNIFORMS];
 
 	std::shared_ptr<CGLSLShaderLightManager> m_pLightManager;
 
